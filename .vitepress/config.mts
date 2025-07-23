@@ -400,10 +400,11 @@ function sidebarTechnology(): DefaultTheme.SidebarItem[] {
       items: [
         { text: 'Обзор', link: '/technology/overview' },
         { text: 'Живая база знаний', link: '/technology/datahub' },
-        { text: 'Глубокая бизнес-аналитика', link: '/technology/analytics-360' },
+        { text: 'Аналитика 360°', link: '/technology/analytics-360' },
         { text: 'ИИ-ассистент продаж', link: '/technology/anna' },
         { text: 'Речевая аналитика', link: '/technology/wordpower' },
-        { text: 'Дистанционные стратегические сессии', link: '/technology/vision-now' }
+        { text: 'Дистанционные стратегические сессии', link: '/technology/vision-now' },
+        { text: 'Живые стандарты', link: '/technology/live-standarts' }
       ]
     }
   ]
