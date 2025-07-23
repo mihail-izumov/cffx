@@ -319,7 +319,7 @@ export default defineConfig({
         items: sidebarRadar()
       },
       // ✅ ДОБАВЛЕНО: Конфигурация sidebar для раздела Клиенты
-      '/radar/': {
+      '/clients/': {
         items: sidebarClients()
       }
     },
