@@ -128,15 +128,45 @@ export default defineConfig({
       .footer-row a { color:var(--vp-c-text-2); text-decoration:none; transition:color .3s; }
       .footer-row a:hover { color:var(--vp-c-brand); }
       .dot-separator { color:var(--vp-c-text-3); font-weight:bold; }
+      
+      /* ИСПРАВЛЕННЫЙ БЛОК ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
       @media(max-width:768px){
-        .VPNavBarSocialLinks { width:100%!important; flex-direction:column!important; gap:8px!important; padding:0 16px!important; }
-        .VPSocialLink { width:100%!important; justify-content:center!important; }
+        .VPNavBarSocialLinks {
+          width: 100% !important;
+          min-width: 100% !important;
+          flex-direction: column !important;
+          justify-content: center !important;
+          gap: 8px !important;
+          padding: 0 16px !important;
+          box-sizing: border-box !important;
+          margin-left: 0 !important;
+        }
+        
+        .VPSocialLink {
+          width: 100% !important;
+          display: flex !important;
+          justify-content: center !important;
+          box-sizing: border-box !important;
+        }
+
         .VPSocialLink[aria-label="login-link"]::after,
         .VPSocialLink[aria-label="apply-link"]::after {
-          width:100%!important; display:block!important; text-align:center; padding:10px 12px!important; margin:10!important;
+          width: 100% !important;
+          display: block !important;
+          text-align: center;
+          padding: 10px 12px !important;
+          margin: 0 !important;
+          box-sizing: border-box !important;
         }
-        .footer-row { flex-direction:column; gap:8px; }
-        .dot-separator { display:none; }
+
+        .footer-row {
+          flex-direction: column;
+          gap: 8px;
+        }
+        
+        .dot-separator {
+          display: none;
+        }
       }
     `]
   ],
