@@ -212,7 +212,6 @@ function sidebarAbout(): DefaultTheme.SidebarItem[] {
     { text: 'Компания', collapsed: false, items: [
         { text: 'О нас', link: '/about/overview' },
         { text: 'Мы, Растем', link: '/about/mission' },
-        { text: 'Мы, Растем', link: '/about/not-a-race' },
         { text: 'Контакт', link: '/about/contacts' }
       ]
     },
@@ -231,6 +230,7 @@ function sidebarMethod(): DefaultTheme.SidebarItem[] {
         { text: '3 принципа здоровой аналитики', link: '/method/different' },
         { text: 'Метод эффективной трансформации', link: '/method/transform' },
         { text: 'Фрейм-менеджмент', link: '/method/frames' },
+        { text: 'Рост – это не гонка, а приключение', link: '/method/not-a-race' },
         { text: 'Сравнить', link: '/method/pro-et-contra' }
       ]
     }
