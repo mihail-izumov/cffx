@@ -387,7 +387,7 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'О нас', link: '/about/overview' },
         { text: 'Метод', link: '/method/overview' },
         { text: 'Технологии', link: '/technology/overview' },
-        { text: 'Клиенты и кейсы', link: '/about/clients' }
+        { text: 'Клиенты и кейсы', link: '/clients/list' }
       ]
     }
   ]
@@ -402,7 +402,6 @@ function sidebarAbout(): DefaultTheme.SidebarItem[] {
       items: [
         { text: 'О нас', link: '/about/overview' },
         { text: 'Мы, Растем', link: '/about/mission' },
-        { text: 'Клиенты', link: '/about/clients' },
         { text: 'Контакт', link: '/about/contacts' }
       ]
     }
