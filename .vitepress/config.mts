@@ -536,7 +536,18 @@ function sidebarClients(): DefaultTheme.SidebarItem[] {
       collapsed: false,
       items: [
         { text: 'Обзор', link: '/clients/list' },
-        { text: 'Индекс Скрытого Потенциала', link: '/clients/konkordiya-auto' }
+        { text: 'Конкордия-Авто', link: '/clients/konkordiya-auto' },
+        { text: 'Блумкидс', link: '/clients/bloomkids' },
+        { text: 'Чишминский Молочный Завод', link: '/clients/chishminskiy' },
+        { text: 'Ермолаевъ', link: '/clients/ermolaev' },
+        { text: 'FIZ Культура', link: '/clients/fiz-kultura.md' },
+        { text: 'Фонд им. Дмитрия Хворостовского', link: '/clients/hvorostovsky-foundation' },
+        { text: 'Milimon', link: '/clients/milimon.md' },
+        { text: 'SM Live', link: '/clients/sm-live' },
+        { text: 'SMSTRETCHING', link: '/clients/smstretching' },
+        { text: 'СУПЕРЛЕНД', link: '/clients/superland' },
+        { text: 'WOODLED', link: '/clients/woodled' },
+        { text: 'World Plastics Summit 2022', link: '/clients/world-plastics-summit-2022' },
       ]
     }
   ]
