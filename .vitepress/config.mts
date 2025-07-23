@@ -401,6 +401,7 @@ function sidebarAbout(): DefaultTheme.SidebarItem[] {
       collapsed: false,
       items: [
         { text: 'Мы, Растем', link: '/about/mission' },
+        { text: 'Не только цифры, но и эмоции', link: '/about/balance' },
         { text: 'Контакт', link: '/about/contacts' }
       ]
     }
