@@ -384,10 +384,10 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Компания',
       items: [
-        { text: 'О нас', link: '/about/overview' },
+        { text: 'Мы, Растем', link: '/about/mission' },
         { text: 'Метод', link: '/method/overview' },
         { text: 'Технологии', link: '/technology/overview' },
-        { text: 'Клиенты и кейсы', link: '/clients/list' }
+        { text: 'Клиенты', link: '/clients/list' }
       ]
     }
   ]
@@ -400,7 +400,6 @@ function sidebarAbout(): DefaultTheme.SidebarItem[] {
       text: 'Компания',
       collapsed: false,
       items: [
-        { text: 'О нас', link: '/about/overview' },
         { text: 'Мы, Растем', link: '/about/mission' },
         { text: 'Контакт', link: '/about/contacts' }
       ]
@@ -434,10 +433,11 @@ function sidebarTechnology(): DefaultTheme.SidebarItem[] {
       items: [
         { text: 'Обзор', link: '/technology/overview' },
         { text: 'Живая база знаний', link: '/technology/datahub' },
-        { text: 'Глубокая бизнес-аналитика', link: '/technology/analytics-360' },
+        { text: 'Аналитика 360°', link: '/technology/analytics-360' },
         { text: 'ИИ-ассистент продаж', link: '/technology/anna' },
         { text: 'Речевая аналитика', link: '/technology/wordpower' },
-        { text: 'Дистанционные стратегические сессии', link: '/technology/vision-now' }
+        { text: 'Дистанционные стратегические сессии', link: '/technology/vision-now' },
+        { text: 'Живые Стандарты', link: '/technology/live-standarts' },
 
       ]
     }
