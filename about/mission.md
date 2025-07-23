@@ -14,8 +14,6 @@ const focusTab = ref('vision')
 
 # Мы, Растём
 
-<img src="/images/modul_rosta_banner.jpg" alt="Модуль Роста" style="width:100%;border-radius:8px;margin:1.5rem 0;" />
-
 ## Будущее — в устойчивом развитии
 
 Чтобы создать лучшее будущее, мы делаем устойчивый рост доступным для всех.  
