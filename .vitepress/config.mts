@@ -354,7 +354,7 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'О нас', link: '/about/overview' },
         { text: 'Метод', link: '/method/overview' },
         { text: 'Технологии', link: '/technology/overview' },
-        { text: 'Клиенты и кейсы', link: '/about/clients' }
+        { text: 'Клиенты и кейсы', link: '/about/clients/overview' }
       ]
     }
   ]
@@ -377,7 +377,7 @@ function sidebarAbout(): DefaultTheme.SidebarItem[] {
       collapsed: false,
       items: [
         { text: 'Обзор', link: '/about/clients/overview' },
-        { text: 'Обзор', link: '/about/clients/overview' }
+        { text: 'Конкордия-Авто', link: '/about/clients/konkordiya-auto' }
       ]
     }
   ]
