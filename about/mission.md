@@ -104,9 +104,12 @@ const focusTab = ref('vision')
 
 <div class="cards">
   <div class="card">
+    
     <strong>Чекап для бизнеса</strong><br>
     Находим скрытые разрывы в процессах, которые тормозят рост. Превращаем их в 3 конкретных улучшения за 30 дней.<br>
+    
     [Запустить улучшения →](/checkup/overview)
+    
   </div>
   <div class="card">
     <strong>Бизнес — это не только цифры, но и эмоции</strong><br>
