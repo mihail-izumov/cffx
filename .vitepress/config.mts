@@ -212,6 +212,7 @@ function sidebarAbout(): DefaultTheme.SidebarItem[] {
     { text: 'Компания', collapsed: false, items: [
         { text: 'О нас', link: '/about/overview' },
         { text: 'Мы, Растем', link: '/about/mission' },
+        { text: 'Мы, Растем', link: '/about/not-a-race' },
         { text: 'Контакт', link: '/about/contacts' }
       ]
     },
