@@ -317,6 +317,10 @@ export default defineConfig({
       // ✅ ДОБАВЛЕНО: Конфигурация sidebar для раздела Радар
       '/radar/': {
         items: sidebarRadar()
+      },
+      // ✅ ДОБАВЛЕНО: Конфигурация sidebar для раздела Клиенты
+      '/radar/': {
+        items: sidebarClients()
       }
     },
 
@@ -512,6 +516,23 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
   return [
     {
       text: 'Радар',
+      collapsed: false,
+      items: [
+        { text: 'Обзор', link: '/radar/overview' },
+        { text: 'Индекс Скрытого Потенциала', link: '/radar/scale_index' },
+        { text: 'Фильтр Потенциала', link: '/radar/filter' },
+        { text: 'Кто Анна', link: '/radar/who-is-anna' },
+        { text: 'Программа рекомендаций', link: '/radar/invite' }
+      ]
+    }
+  ]
+}
+
+// ✅ ДОБАВЛЕНО: Sidebar for Radar section
+function sidebarClients(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: 'Клиенты',
       collapsed: false,
       items: [
         { text: 'Обзор', link: '/radar/overview' },
