@@ -103,35 +103,22 @@ export default defineConfig({
       --vp-c-brand-3: #2e6b5e;
       --vp-c-brand-soft: rgba(46, 107, 94, 0.14);
     }
-    /* Логотип */
     .VPNavBarTitle .logo {
       height: 32px !important;
-      width: auto !important;
     }
-
-    /* Контейнер социальных ссылок */
     .VPNavBarSocialLinks {
       min-width: 280px !important;
       justify-content: flex-end !important;
       gap: 20px !important;
-      margin-left: 0px !important;
     }
-
-    /* Убираем все иконки GitHub */
     .VPSocialLink .vpi-social-github {
       display: none !important;
     }
-
-    /* Базовые стили для социальных ссылок */
     .VPSocialLink {
-      width: auto !important;
-      height: auto !important;
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
     }
-
-    /* Кнопка "Войти" */
     .VPSocialLink[aria-label="login-link"]::after {
       content: "Войти";
       font-size: 14px;
@@ -139,18 +126,14 @@ export default defineConfig({
       padding: 6px 12px;
       border: 1px solid var(--vp-c-divider);
       border-radius: 6px;
-      background: transparent;
       transition: all 0.3s ease;
       white-space: nowrap;
       margin: 0 4px;
     }
-
     .VPSocialLink[aria-label="login-link"]:hover::after {
       background: var(--vp-c-bg-soft);
       border-color: var(--vp-c-brand);
     }
-
-    /* Кнопка "Получить ответ" */
     .VPSocialLink[aria-label="apply-link"]::after {
       content: "Получить ответ";
       font-size: 14px;
@@ -163,20 +146,16 @@ export default defineConfig({
       white-space: nowrap;
       margin: 0 4px;
     }
-
     .VPSocialLink[aria-label="apply-link"]:hover::after {
       background: var(--vp-c-brand-darker, var(--vp-c-brand));
       transform: translateY(-1px);
     }
-
-    /* Стили для футера */
     .custom-footer-links {
       display: flex;
       flex-direction: column;
       gap: 3px;
       align-items: center;
     }
-
     .footer-row {
       display: flex;
       align-items: center;
@@ -184,34 +163,28 @@ export default defineConfig({
       flex-wrap: wrap;
       justify-content: center;
     }
-
     .footer-row a {
       color: var(--vp-c-text-2);
       text-decoration: none;
       transition: color 0.3s ease;
     }
-
     .footer-row a:hover {
       color: var(--vp-c-brand);
     }
-
     .dot-separator {
       color: var(--vp-c-text-3);
       font-weight: bold;
     }
 
-    .VPFooter .copyright {
-      margin-top: 2px !important;
-    }
-
-    /* --- ИСПРАВЛЕННЫЙ БЛОК ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
+    /* --- ФИНАЛЬНЫЙ БЛОК ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
     @media (max-width: 768px) {
       .VPNavBarSocialLinks {
         width: 100% !important;
         min-width: 100% !important;
         flex-direction: column !important;
-        gap: 8px !important;
-        padding: 0 16px !important;
+        justify-content: center !important;
+        gap: 16px !important; /* <-- УВЕЛИЧЕНО РАССТОЯНИЕ МЕЖДУ КНОПКАМИ */
+        padding: 16px !important;
         box-sizing: border-box !important;
         margin-left: 0 !important;
       }
