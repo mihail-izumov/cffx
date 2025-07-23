@@ -102,11 +102,13 @@ const focusTab = ref('vision')
 
 ### Помогаем лучше чувствовать бизнес
 
-::: card
+<Card>
+
 **Чекап для бизнеса**  
 Находим скрытые разрывы...  
 [Запустить улучшения →](/checkup/overview)
-:::
+
+</Card>
 
 <div class="card" markdown="1">
 <strong>Чекап для бизнеса</strong><br>
