@@ -27,264 +27,259 @@ export default defineConfig({
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
     ['script', {}, `
     (function() {
-    function createFooterContent() {
-      const links = [
-        { text: 'Журнал', href: '/journal/contents/index' },
-        { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
-        { text: 'Поддержка', href: '/support' },
-        { text: 'Условия использования', href: '/terms' },
-        { text: 'Контакт', href: '/about/contacts' }
-      ];
+      function createFooterContent() {
+        const links = [
+          { text: 'Журнал', href: '/journal/contents/index' },
+          { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
+          { text: 'Поддержка', href: '/support' },
+          { text: 'Условия использования', href: '/terms' },
+          { text: 'Контакт', href: '/about/contacts' }
+        ];
 
-      let html = '<hr style="border: 0; border-top: 1px solid var(--vp-c-divider); margin: 24px 0;">';
-      html += '<div class="custom-footer-links"><div class="footer-row">';
-      links.slice(0, 3).forEach((link, i) => {
-        if (i > 0) html += '<span class="dot-separator">•</span>';
-        html += '<a href="' + link.href + '"' + (link.target ? ' target="' + link.target + '" rel="noopener noreferrer"' : '') + '>' + link.text + '</a>';
-      });
-      html += '</div><div class="footer-row">';
-      links.slice(3).forEach((link, i) => {
-        if (i > 0) html += '<span class="dot-separator">•</span>';
-        html += '<a href="' + link.href + '">' + link.text + '</a>';
-      });
-      html += '</div></div>';
-      html += '<div style="margin-top: 24px; text-align: center;">';
-      html += '<div style="color: white; font-size: 14px;">Расти по своим правилам</div>';
-      html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Модуль Роста® 2010 — 2025</div>';
-      return html;
-    }
-
-    function replaceFooter() {
-      let footer = document.querySelector('.VPFooter');
-      if (!footer) {
-        footer = document.createElement('footer');
-        footer.className = 'VPFooter';
-        document.body.appendChild(footer);
-      }
-      footer.innerHTML = createFooterContent();
-      if (window.location.pathname !== '/') {
-        footer.style.position = 'relative';
-        footer.style.bottom = '70px';    // уменьшили отступ с 85px до 40px
-        footer.style.zIndex = '10';
-        footer.style.marginBottom = '-70px';  // уменьшили с -125px до -60px
-      } else {
-        footer.style.position = '';
-        footer.style.bottom = '';
-        footer.style.zIndex = '';
-        footer.style.paddingBottom = '30px';
-      }
-
-    }
-
-    function updateApplyLinkTarget() {
-      const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="apply-link"]');
-      applyLinks.forEach(applyLink => {
-        applyLink.href = '/apply';
-        applyLink.setAttribute('target', '_self');
-        applyLink.removeAttribute('rel');
-
-        // Создаем новую ссылку для замены
-        const newLink = document.createElement('a');
-        newLink.href = '/apply';
-        newLink.className = applyLink.className;
-        newLink.setAttribute('aria-label', 'apply-link');
-        newLink.setAttribute('target', '_self');
-
-        // Копируем все атрибуты кроме href и target
-        Array.from(applyLink.attributes).forEach(attr => {
-          if (attr.name !== 'href' && attr.name !== 'target' && attr.name !== 'rel') {
-            newLink.setAttribute(attr.name, attr.value);
-          }
+        let html = '<hr style="border: 0; border-top: 1px solid var(--vp-c-divider); margin: 24px 0;">';
+        html += '<div class="custom-footer-links"><div class="footer-row">';
+        links.slice(0, 3).forEach((link, i) => {
+          if (i > 0) html += '<span class="dot-separator">•</span>';
+          html += '<a href="' + link.href + '"' + (link.target ? ' target="' + link.target + '" rel="noopener noreferrer"' : '') + '>' + link.text + '</a>';
         });
+        html += '</div><div class="footer-row">';
+        links.slice(3).forEach((link, i) => {
+          if (i > 0) html += '<span class="dot-separator">•</span>';
+          html += '<a href="' + link.href + '">' + link.text + '</a>';
+        });
+        html += '</div></div>';
+        html += '<div style="margin-top: 24px; text-align: center;">';
+        html += '<div style="color: white; font-size: 14px;">Расти по своим правилам</div>';
+        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Модуль Роста® 2010 — 2025</div>';
+        return html;
+      }
 
-        // Заменяем элемент
-        applyLink.parentNode.replaceChild(newLink, applyLink);
-      });
-    }
+      function replaceFooter() {
+        let footer = document.querySelector('.VPFooter');
+        if (!footer) {
+          footer = document.createElement('footer');
+          footer.className = 'VPFooter';
+          document.body.appendChild(footer);
+        }
+        footer.innerHTML = createFooterContent();
+        if (window.location.pathname !== '/') {
+          footer.style.position = 'relative';
+          footer.style.bottom = '70px';
+          footer.style.zIndex = '10';
+          footer.style.marginBottom = '-70px';
+        } else {
+          footer.style.position = '';
+          footer.style.bottom = '';
+          footer.style.zIndex = '';
+          footer.style.paddingBottom = '30px';
+        }
+      }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
+      function updateApplyLinkTarget() {
+        const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="apply-link"]');
+        applyLinks.forEach(applyLink => {
+          applyLink.href = '/apply';
+          applyLink.setAttribute('target', '_self');
+          applyLink.removeAttribute('rel');
+
+          const newLink = document.createElement('a');
+          newLink.href = '/apply';
+          newLink.className = applyLink.className;
+          newLink.setAttribute('aria-label', 'apply-link');
+          newLink.setAttribute('target', '_self');
+
+          Array.from(applyLink.attributes).forEach(attr => {
+            if (!['href', 'target', 'rel'].includes(attr.name)) {
+              newLink.setAttribute(attr.name, attr.value);
+            }
+          });
+
+          applyLink.parentNode.replaceChild(newLink, applyLink);
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          replaceFooter();
+          updateApplyLinkTarget();
+        });
+      } else {
+        replaceFooter();
+        updateApplyLinkTarget();
+      }
+
+      window.addEventListener('load', () => {
         replaceFooter();
         updateApplyLinkTarget();
       });
-    } else {
-      replaceFooter();
-      updateApplyLinkTarget();
-    }
+      setTimeout(() => {
+        replaceFooter();
+        updateApplyLinkTarget();
+      }, 1000);
+      setTimeout(() => {
+        replaceFooter();
+        updateApplyLinkTarget();
+      }, 2000);
 
-    window.addEventListener('load', () => {
-      replaceFooter();
-      updateApplyLinkTarget();
-    });
-    setTimeout(() => {
-      replaceFooter();
-      updateApplyLinkTarget();
-    }, 1000);
-    setTimeout(() => {
-      replaceFooter();
-      updateApplyLinkTarget();
-    }, 2000);
-
-    let lastUrl = location.href;
-    new MutationObserver(() => {
-      const url = location.href;
-      if (url !== lastUrl) {
-        lastUrl = url;
-        setTimeout(() => {
-          replaceFooter();
-          updateApplyLinkTarget();
-        }, 100);
-      }
-    }).observe(document, { subtree: true, childList: true });
-  })();
-`],
+      let lastUrl = location.href;
+      new MutationObserver(() => {
+        const url = location.href;
+        if (url !== lastUrl) {
+          lastUrl = url;
+          setTimeout(() => {
+            replaceFooter();
+            updateApplyLinkTarget();
+          }, 100);
+        }
+      }).observe(document, { subtree: true, childList: true });
+    })();
+    `],
     ['style', {}, `
     :root {
-  --vp-c-brand-1: #2e6b5e;
-  --vp-c-brand-2: #3a7d6e;
-  --vp-c-brand-3: #2e6b5e;
-  --vp-c-brand-soft: rgba(46, 107, 94, 0.14);
-}
+      --vp-c-brand-1: #2e6b5e;
+      --vp-c-brand-2: #3a7d6e;
+      --vp-c-brand-3: #2e6b5e;
+      --vp-c-brand-soft: rgba(46, 107, 94, 0.14);
+    }
     /* Логотип */
-.VPNavBarTitle .logo {
-  height: 32px !important;
-  width: auto !important;
-}
+    .VPNavBarTitle .logo {
+      height: 32px !important;
+      width: auto !important;
+    }
 
-/* Контейнер социальных ссылок - добавляем правильный отступ слева */
-.VPNavBarSocialLinks {
-  min-width: 280px !important;
-  justify-content: flex-end !important;
-  gap: 20px !important;
-  margin-left: 0px !important; /* Уменьшенный отступ от переключателя темы */
-}
+    /* Контейнер социальных ссылок */
+    .VPNavBarSocialLinks {
+      min-width: 280px !important;
+      justify-content: flex-end !important;
+      gap: 20px !important;
+      margin-left: 0px !important;
+    }
 
-/* Убираем все иконки GitHub */
-.VPSocialLink .vpi-social-github {
-  display: none !important;
-}
+    /* Убираем все иконки GitHub */
+    .VPSocialLink .vpi-social-github {
+      display: none !important;
+    }
 
-/* Базовые стили для социальных ссылок */
-.VPSocialLink {
-  width: auto !important;
-  height: auto !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
+    /* Базовые стили для социальных ссылок */
+    .VPSocialLink {
+      width: auto !important;
+      height: auto !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
 
-/* Кнопка "Войти" (прозрачная) */
-.VPSocialLink[aria-label="login-link"]::after {
-  content: "Войти";
-  font-size: 14px;
-  color: var(--vp-c-text-1);
-  padding: 6px 12px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 6px;
-  background: transparent;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  margin: 0 4px;
-}
+    /* Кнопка "Войти" */
+    .VPSocialLink[aria-label="login-link"]::after {
+      content: "Войти";
+      font-size: 14px;
+      color: var(--vp-c-text-1);
+      padding: 6px 12px;
+      border: 1px solid var(--vp-c-divider);
+      border-radius: 6px;
+      background: transparent;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      margin: 0 4px;
+    }
 
-.VPSocialLink[aria-label="login-link"]:hover::after {
-  background: var(--vp-c-bg-soft);
-  border-color: var(--vp-c-brand);
-}
+    .VPSocialLink[aria-label="login-link"]:hover::after {
+      background: var(--vp-c-bg-soft);
+      border-color: var(--vp-c-brand);
+    }
 
-/* Кнопка "Расти с планом" (заполненная) */
-.VPSocialLink[aria-label="apply-link"]::after {
-  content: "Получить ответ";
-  font-size: 14px;
-  color: white;
-  padding: 6px 12px;
-  border: 1px solid var(--vp-c-brand);
-  border-radius: 6px;
-  background: var(--vp-c-brand);
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  margin: 0 4px;
-}
+    /* Кнопка "Получить ответ" */
+    .VPSocialLink[aria-label="apply-link"]::after {
+      content: "Получить ответ";
+      font-size: 14px;
+      color: white;
+      padding: 6px 12px;
+      border: 1px solid var(--vp-c-brand);
+      border-radius: 6px;
+      background: var(--vp-c-brand);
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      margin: 0 4px;
+    }
 
-.VPSocialLink[aria-label="apply-link"]:hover::after {
-  background: var(--vp-c-brand-darker, var(--vp-c-brand));
-  transform: translateY(-1px);
-}
+    .VPSocialLink[aria-label="apply-link"]:hover::after {
+      background: var(--vp-c-brand-darker, var(--vp-c-brand));
+      transform: translateY(-1px);
+    }
 
-/* Стили для футера */
-.custom-footer-links {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  align-items: center;
-}
+    /* Стили для футера */
+    .custom-footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      align-items: center;
+    }
 
-.footer-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
+    .footer-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-.footer-row a {
-  color: var(--vp-c-text-2);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
+    .footer-row a {
+      color: var(--vp-c-text-2);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
 
-.footer-row a:hover {
-  color: var(--vp-c-brand);
-}
+    .footer-row a:hover {
+      color: var(--vp-c-brand);
+    }
 
-.dot-separator {
-  color: var(--vp-c-text-3);
-  font-weight: bold;
-}
+    .dot-separator {
+      color: var(--vp-c-text-3);
+      font-weight: bold;
+    }
 
-.VPFooter .copyright {
-  margin-top: 2px !important;
-}
+    .VPFooter .copyright {
+      margin-top: 2px !important;
+    }
 
-/* Мобильные стили */
-@media (max-width: 768px) {
-  .VPNavBarSocialLinks {
-    width: 100% !important;
-    min-width: 100% !important;
-    flex-direction: column !important;
-    gap: 8px !important;
-    padding: 0 16px !important;
-    box-sizing: border-box !important;
-    margin-left: 8 !important;
-  }
+    /* Мобильные стили */
+    @media (max-width: 768px) {
+      .VPNavBarSocialLinks {
+        width: 100% !important;
+        min-width: 100% !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        padding: 0 16px !important;
+        box-sizing: border-box !important;
+        margin-left: 8 !important;
+      }
 
-  .VPSocialLink {
-    width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    box-sizing: border-box !important;
-  }
+      .VPSocialLink {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+      }
 
-  .VPSocialLink[aria-label="login-link"]::after,
-  .VPSocialLink[aria-label="apply-link"]::after {
-    width: 100% !important;
-    display: block !important;
-    text-align: center;
-    padding: 10px 12px !important;
-    margin: 10 !important;
-    box-sizing: border-box !important;
-  }
+      .VPSocialLink[aria-label="login-link"]::after,
+      .VPSocialLink[aria-label="apply-link"]::after {
+        width: 100% !important;
+        display: block !important;
+        text-align: center;
+        padding: 10px 12px !important;
+        margin: 10 !important;
+        box-sizing: border-box !important;
+      }
 
-  /* Футер на мобильных */
-  .footer-row {
-    flex-direction: column;
-    gap: 8px;
-  }
+      .footer-row {
+        flex-direction: column;
+        gap: 8px;
+      }
 
-  .dot-separator {
-    display: none;
-  }
-}
+      .dot-separator {
+        display: none;
+      }
+    }
     `]
   ],
   base: '/',
@@ -293,33 +288,15 @@ export default defineConfig({
   themeConfig: {
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста",
-
-    // Sidebar configuration для связанных страниц
     sidebar: {
-      '/about/': {
-        items: sidebarAbout()
-      },
-      '/method/': {
-        items: sidebarMethod()
-      },
-      '/technology/': {
-        items: sidebarTechnology()
-      },
-      '/checkup/': {
-        items: sidebarCheckup()
-      },
-      '/system/': {
-        items: sidebarSystem()
-      },
-      '/journal/': {
-        items: sidebarJournal()
-      },
-      // ✅ ДОБАВЛЕНО: Конфигурация sidebar для раздела Радар
-      '/radar/': {
-        items: sidebarRadar()
-      }
+      '/about/': { items: sidebarAbout() },
+      '/method/': { items: sidebarMethod() },
+      '/technology/': { items: sidebarTechnology() },
+      '/checkup/': { items: sidebarCheckup() },
+      '/system/': { items: sidebarSystem() },
+      '/journal/': { items: sidebarJournal() },
+      '/radar/': { items: sidebarRadar() }
     },
-
     search: {
       provider: 'local',
       options: {
@@ -343,34 +320,17 @@ export default defineConfig({
         }
       }
     },
-
-    // Navigation with dropdowns
     nav: nav(),
-
-    // Social links (header buttons)
     socialLinks: [
       { icon: 'github', link: 'https://app.mplan.sbs', ariaLabel: 'login-link' },
-      { icon: 'github', link: '/apply', ariaLabel: 'apply-link', target: '_self'  }
+      { icon: 'github', link: '/apply', ariaLabel: 'apply-link', target: '_self' }
     ],
-
-    // Footer configuration - простой текст для production
-    //footer: {
-    //  message: 'Журнал  •  Телеграм-канал  •  Поддержка  •  Условия использования  •  Контакт',
-    //  copyright: '© Модуль Роста® 2010 — 2025'
-    //},
   }
 })
 
-// ✅ ИСПРАВЛЕНО: Navigation with dropdown menus - добавлен раздел "Радар"
+// Новая функция nav с измененным порядком
 function nav(): DefaultTheme.NavItem[] {
   return [
-    {
-      text: 'Продукты',
-      items: [
-        { text: 'Чекап', link: '/checkup/overview' },
-        { text: 'Система роста бизнеса', link: '/system/overview' }
-      ]
-    },
     {
       text: 'Радар',
       items: [
@@ -379,6 +339,13 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'Фильтр Потенциала', link: '/radar/filter' },
         { text: 'Кто Анна', link: '/radar/who-is-anna' },
         { text: 'Программа рекомендаций', link: '/radar/invite' }
+      ]
+    },
+    {
+      text: 'Продукты',
+      items: [
+        { text: 'Чекап', link: '/checkup/overview' },
+        { text: 'Система роста бизнеса', link: '/system/overview' }
       ]
     },
     {
@@ -393,7 +360,7 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-// Sidebar for About section
+// Функции sidebar остаются без изменений
 function sidebarAbout(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -409,7 +376,6 @@ function sidebarAbout(): DefaultTheme.SidebarItem[] {
   ]
 }
 
-// Sidebar for Method section
 function sidebarMethod(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -426,7 +392,6 @@ function sidebarMethod(): DefaultTheme.SidebarItem[] {
   ]
 }
 
-// Sidebar for Technology section
 function sidebarTechnology(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -439,13 +404,11 @@ function sidebarTechnology(): DefaultTheme.SidebarItem[] {
         { text: 'ИИ-ассистент продаж', link: '/technology/anna' },
         { text: 'Речевая аналитика', link: '/technology/wordpower' },
         { text: 'Дистанционные стратегические сессии', link: '/technology/vision-now' }
-
       ]
     }
   ]
 }
 
-// Sidebar for Checkup section
 function sidebarCheckup(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -459,11 +422,11 @@ function sidebarCheckup(): DefaultTheme.SidebarItem[] {
         { text: 'Чек-лист готовности', link: '/checkup/checklist' }
       ]
     },
-{
+    {
       text: 'Подготовка к чекапу',
       collapsed: false,
       items: [
-        { text: 'Обзор', link: '/checkup/prep/overview' },        
+        { text: 'Обзор', link: '/checkup/prep/overview' },
         { text: '1 - Скрытые проблемы, которые блокируют рост', link: '/checkup/prep/01-hidden-problems-blocking-growth' },
         { text: '2 - Почему мы запрашиваем готовые отчёты, а не доступы к системам', link: '/checkup/prep/02-why-we-request-ready-reports-not-system-access' },
         { text: '3 - Почему важно смотреть на весь бизнес, а не на «локальные проблемы»', link: '/checkup/prep/03-system-diagnostics-vs-one-time-solutions' },
@@ -477,7 +440,6 @@ function sidebarCheckup(): DefaultTheme.SidebarItem[] {
   ]
 }
 
-// Sidebar for System section
 function sidebarSystem(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -497,7 +459,7 @@ function sidebarJournal(): DefaultTheme.SidebarItem[] {
       text: 'Журнал',
       collapsed: false,
       items: [
-        { text: 'Содержание', link: '/journal/contents/index' },        
+        { text: 'Содержание', link: '/journal/contents/index' },
         { text: 'Кейсы', link: '/journal/contents/cases' },
         { text: 'Статьи', link: '/journal/contents/articles' },
         { text: 'Экспертиза', link: '/journal/contents/expertise' }
@@ -506,7 +468,6 @@ function sidebarJournal(): DefaultTheme.SidebarItem[] {
   ]
 }
 
-// ✅ ДОБАВЛЕНО: Sidebar for Radar section
 function sidebarRadar(): DefaultTheme.SidebarItem[] {
   return [
     {
