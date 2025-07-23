@@ -338,7 +338,7 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'Индекс Скрытого Потенциала', link: '/radar/scale_index' },
         { text: 'Фильтр Потенциала', link: '/radar/filter' },
         { text: 'Кто Анна', link: '/radar/who-is-anna' },
-        { text: 'Программа рекомендаций', link: '/radar/invite' }
+        { text: 'Программа рекомендаций', link: '/radar/invite' }
       ]
     },
     {
@@ -360,7 +360,7 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-// Функции sidebar остаются без изменений
+// Исправленная функция sidebarAbout
 function sidebarAbout(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -372,15 +372,13 @@ function sidebarAbout(): DefaultTheme.SidebarItem[] {
         { text: 'Клиенты', link: '/about/clients' },
         { text: 'Контакт', link: '/about/contacts' }
       ]
-    }
-  ]
-},
+    },
     {
       text: 'Клиенты',
       collapsed: false,
       items: [
         { text: 'Обзор', link: '/about/clients' },
-        { text: 'Обзор', link: '/about/clients' },
+        { text: 'Обзор', link: '/about/clients' }
       ]
     }
   ]
@@ -489,7 +487,7 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
         { text: 'Индекс Скрытого Потенциала', link: '/radar/scale_index' },
         { text: 'Фильтр Потенциала', link: '/radar/filter' },
         { text: 'Кто Анна', link: '/radar/who-is-anna' },
-        { text: 'Программа рекомендаций', link: '/radar/invite' }
+        { text: 'Программа рекомендаций', link: '/radar/invite' }
       ]
     }
   ]
