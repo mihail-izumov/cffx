@@ -369,7 +369,6 @@ function sidebarAbout(): DefaultTheme.SidebarItem[] {
       items: [
         { text: 'О нас', link: '/about/overview' },
         { text: 'Мы, Растем', link: '/about/mission' },
-        { text: 'Клиенты', link: '/about/clients' },
         { text: 'Контакт', link: '/about/contacts' }
       ]
     },
@@ -377,8 +376,8 @@ function sidebarAbout(): DefaultTheme.SidebarItem[] {
       text: 'Клиенты',
       collapsed: false,
       items: [
-        { text: 'Обзор', link: '/about/clients' },
-        { text: 'Обзор', link: '/about/clients' }
+        { text: 'Обзор', link: '/about/clients/overview' },
+        { text: 'Обзор', link: '/about/clients/overview' }
       ]
     }
   ]
