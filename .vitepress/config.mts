@@ -528,18 +528,15 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
   ]
 }
 
-// ✅ ДОБАВЛЕНО: Sidebar for Radar section
+// ✅ ДОБАВЛЕНО: Sidebar for Clients section
 function sidebarClients(): DefaultTheme.SidebarItem[] {
   return [
     {
       text: 'Клиенты',
       collapsed: false,
       items: [
-        { text: 'Обзор', link: '/radar/overview' },
-        { text: 'Индекс Скрытого Потенциала', link: '/radar/scale_index' },
-        { text: 'Фильтр Потенциала', link: '/radar/filter' },
-        { text: 'Кто Анна', link: '/radar/who-is-anna' },
-        { text: 'Программа рекомендаций', link: '/radar/invite' }
+        { text: 'Обзор', link: '/clients/list' },
+        { text: 'Индекс Скрытого Потенциала', link: '/clients/konkordiya-auto' }
       ]
     }
   ]
