@@ -368,8 +368,7 @@ function nav(): DefaultTheme.NavItem[] {
       text: 'Продукты',
       items: [
         { text: 'Чекап', link: '/checkup/overview' },
-        { text: 'Система роста бизнеса', link: '/system/overview' },
-        { text: 'ИИ-автоматизация', link: '/technology/overview' }
+        { text: 'Система роста бизнеса', link: '/system/overview' }
       ]
     },
     {
