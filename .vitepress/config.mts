@@ -374,6 +374,16 @@ function sidebarAbout(): DefaultTheme.SidebarItem[] {
       ]
     }
   ]
+},
+    {
+      text: 'Клиенты',
+      collapsed: false,
+      items: [
+        { text: 'Обзор', link: '/about/clients' },
+        { text: 'Обзор', link: '/about/clients' },
+      ]
+    }
+  ]
 }
 
 function sidebarMethod(): DefaultTheme.SidebarItem[] {
