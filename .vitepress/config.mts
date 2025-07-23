@@ -8,7 +8,7 @@ export default defineConfig({
     '/': {
       lang: 'ru-RU',
       title: 'Модуль Роста® – Расти по своим правилам',
-      description: 'Расти по своим правилам с Модуль Роста®',
+      description: 'Находим то, что другие упускают.',
     },
   },
 
