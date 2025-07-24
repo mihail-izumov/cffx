@@ -26,3 +26,32 @@
 | [**Тренировки как в студии, только дома**](/journal/cases/trenirovki-kak-v-studii-tolko-doma)                                                                             | Как сеть фитнес-студий, основанная чемпионкой, не только пережила пандемию, но и стала лидером в онлайне? Погружаемся в кейс SMSTRETCHING, где кризис стал катализатором для создания мощного цифрового бренда. История о том, как гибкость, анализ данных и смелость формируют будущее фитнеса.                                 |
 | [**Ускоряем доставку еды**](/journal/cases/uskoryaem-dostavku-edy)                                                                                                        | Как объединить службы доставки 30 разных ресторанов в единый механизм, работающий как часы, и доставлять заказы за 55 минут? Разбираем кейс ресторанной группы Milimon. Это история о масштабной трансформации, где за 6 месяцев была выстроена новую систему — от колл-центра и логистики до сайта, который работает и сегодня. |
 
+<br>
+
+<div class="specs-button">
+  <a href="/journal/contents/cases">Кейсы →</a>
+</div>
+
+<style>
+.specs-button a {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #42b983;
+  color: white !important;
+  text-decoration: none !important;
+  border-radius: 4px;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  /* Новые важные свойства */
+  -webkit-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+}
+
+.specs-button a:hover {
+  background-color: #33a06f;
+  transform: translateY(-1px); /* Эффект нажатия */
+}
+</style>
