@@ -23,3 +23,33 @@ td, th {
 | [Milimon](/clients/milimon)                                             | Рестораны                                      | Ускоряем доставку еды                                                                                                                                                                  | Автоматизация, Продажи, Маркетинг, Веб, Стратегия     |
 | [Фонд им. Дмитрия Хворостовского](/clients/hvorostovsky-foundation)                      | Благотворительный фонд                         | Как мы превратили наследие Хворостовского в инструмент для помощи детям                                                                                                                 | Автоматизация, Маркетинг, Брендинг, Веб               |
 | [World Plastics Summit 2022](/clients/world-plastics-summit-2022)                          | Международный саммит по переработке пластика в Монако | Как объединить науку, искусство и коммуникацию для решения глобальной проблемы                                                                                                            | Брендинг, Веб, Стратегия                              |
+
+<br>
+
+<div class="specs-button">
+  <a href="/journal/contents/cases">Кейсы →</a>
+</div>
+
+<style>
+.specs-button a {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #42b983;
+  color: white !important;
+  text-decoration: none !important;
+  border-radius: 4px;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  /* Новые важные свойства */
+  -webkit-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+}
+
+.specs-button a:hover {
+  background-color: #33a06f;
+  transform: translateY(-1px); /* Эффект нажатия */
+}
+</style>
