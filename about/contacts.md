@@ -1,5 +1,4 @@
-# Компания
-## Контакты
+# Контакт
 
 <form id="myForm" class="custom-form">
   <div class="form-group">
