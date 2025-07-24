@@ -10,9 +10,46 @@
 4. В 2020 году запустили первую версию сайта фонда.
 5. В 2023 году разработали [новую версию сайта](https://hvorostovsky.com/).
 
-[**Кейс на Behance**](https://www.behance.net/gallery/175592297/sajt-fonda-hvorostovskogo)
+<br>
 
-{% embed url="https://70e1aad645fc.hosting.myjino.ru/video-thecreativeact/intro_hvorostovsky_foundation%20(720p).mp4" %}
+<div class="specs-button">
+  <a href="https://www.behance.net/gallery/175592297/sajt-fonda-hvorostovskogo">Кейс на Behance →</a>
+</div>
+
+<style>
+.specs-button a {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #42b983;
+  color: white !important;
+  text-decoration: none !important;
+  border-radius: 4px;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  /* Новые важные свойства */
+  -webkit-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+}
+
+.specs-button a:hover {
+  background-color: #33a06f;
+  transform: translateY(-1px); /* Эффект нажатия */
+}
+</style>
+
+
+<ClientOnly>
+<video
+  width="100%"
+  controls
+  src="https://70e1aad645fc.hosting.myjino.ru/video-thecreativeact/intro_hvorostovsky_foundation%20(720p).mp4)"
+>
+  Ваш браузер не поддерживает тег video.
+</video>
+</ClientOnly>
 
 ### Сайт фонда Хворостовского - 2020.
 
