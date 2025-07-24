@@ -27,7 +27,7 @@ td, th {
 <br>
 
 <div class="specs-button">
-  <a href="/clients/list">Клиенты →</a>
+  <a href="/journal/contents/cases">Кейсы →</a>
 </div>
 
 <style>
