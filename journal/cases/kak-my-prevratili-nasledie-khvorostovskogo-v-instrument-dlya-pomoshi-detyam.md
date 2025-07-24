@@ -16,6 +16,8 @@
   <a href="https://www.behance.net/gallery/175592297/sajt-fonda-hvorostovskogo">Кейс на Behance →</a>
 </div>
 
+<br>
+
 <style>
 .specs-button a {
   display: inline-block;
@@ -45,7 +47,7 @@
 <video
   width="100%"
   controls
-  src="https://70e1aad645fc.hosting.myjino.ru/video-thecreativeact/intro_hvorostovsky_foundation%20(720p).mp4)"
+  src="https://70e1aad645fc.hosting.myjino.ru/video-thecreativeact/intro_hvorostovsky_foundation%20(720p).mp4"
 >
   Ваш браузер не поддерживает тег video.
 </video>
