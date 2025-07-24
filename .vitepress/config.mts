@@ -504,8 +504,7 @@ function sidebarJournal(): DefaultTheme.SidebarItem[] {
       items: [
         { text: 'Содержание', link: '/journal/contents/index' },        
         { text: 'Кейсы', link: '/journal/contents/cases' },
-        { text: 'Статьи', link: '/journal/contents/articles' },
-        { text: 'Экспертиза', link: '/journal/contents/expertise' }
+        { text: 'Статьи', link: '/journal/contents/articles' }
       ]
     }
   ]
