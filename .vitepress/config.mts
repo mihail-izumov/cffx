@@ -33,7 +33,8 @@ export default defineConfig({
         { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
         { text: 'Поддержка', href: '/support' },
         { text: 'Условия использования', href: '/terms' },
-        { text: 'Контакт', href: '/about/contacts' }
+        { text: 'Контакт', href: '/about/contacts' },
+        { text: 'Orxaos', href: 'https://orxaos.sbs', target: '_blank' }
       ];
 
       let html = '<hr style="border: 0; border-top: 1px solid var(--vp-c-divider); margin: 24px 0;">';
@@ -359,7 +360,7 @@ export default defineConfig({
 
     // Footer configuration - простой текст для production
     //footer: {
-    //  message: 'Журнал  •  Телеграм-канал  •  Поддержка  •  Условия использования  •  Контакт',
+    //  message: 'Журнал  •  Телеграм-канал  •  Поддержка  •  Условия использования  •  Контакт •  Orxaos',
     //  copyright: '© Модуль Роста® 2010 — 2025'
     //},
   }
