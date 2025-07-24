@@ -12,12 +12,10 @@ export default defineConfig({
     },
   },
 
-  // Добавляем хук для обработки данных страницы
   transformPageData(pageData) {
     return pageData
   },
 
-  // Добавляем buildEnd хук для модификации HTML после сборки
   buildEnd(siteConfig) {
     // Этот хук выполняется после сборки
   },
@@ -46,7 +44,8 @@ export default defineConfig({
       html += '</div><div class="footer-row">';
       links.slice(3).forEach((link, i) => {
         if (i > 0) html += '<span class="dot-separator">•</span>';
-        html += '<a href="' + link.href + '">' + link.text + '</a>';
+        // ✅ ИСПРАВЛЕНО: Добавлена логика для target="_blank" для второй строки ссылок
+        html += '<a href="' + link.href + '"' + (link.target ? ' target="' + link.target + '" rel="noopener noreferrer"' : '') + '>' + link.text + '</a>';
       });
       html += '</div></div>';
       html += '<div style="margin-top: 24px; text-align: center;">';
@@ -65,16 +64,15 @@ export default defineConfig({
       footer.innerHTML = createFooterContent();
       if (window.location.pathname !== '/') {
         footer.style.position = 'relative';
-        footer.style.bottom = '70px';    // уменьшили отступ с 85px до 40px
+        footer.style.bottom = '70px';
         footer.style.zIndex = '10';
-        footer.style.marginBottom = '-70px';  // уменьшили с -125px до -60px
+        footer.style.marginBottom = '-70px';
       } else {
         footer.style.position = '';
         footer.style.bottom = '';
         footer.style.zIndex = '';
         footer.style.paddingBottom = '30px';
       }
-
     }
 
     function updateApplyLinkTarget() {
@@ -84,21 +82,18 @@ export default defineConfig({
         applyLink.setAttribute('target', '_self');
         applyLink.removeAttribute('rel');
 
-        // Создаем новую ссылку для замены
         const newLink = document.createElement('a');
         newLink.href = '/apply';
         newLink.className = applyLink.className;
         newLink.setAttribute('aria-label', 'apply-link');
         newLink.setAttribute('target', '_self');
 
-        // Копируем все атрибуты кроме href и target
         Array.from(applyLink.attributes).forEach(attr => {
           if (attr.name !== 'href' && attr.name !== 'target' && attr.name !== 'rel') {
             newLink.setAttribute(attr.name, attr.value);
           }
         });
 
-        // Заменяем элемент
         applyLink.parentNode.replaceChild(newLink, applyLink);
       });
     }
@@ -146,26 +141,19 @@ export default defineConfig({
   --vp-c-brand-3: #2e6b5e;
   --vp-c-brand-soft: rgba(46, 107, 94, 0.14);
 }
-    /* Логотип */
 .VPNavBarTitle .logo {
   height: 32px !important;
   width: auto !important;
 }
-
-/* Контейнер социальных ссылок - добавляем правильный отступ слева */
 .VPNavBarSocialLinks {
   min-width: 280px !important;
   justify-content: flex-end !important;
   gap: 20px !important;
-  margin-left: 0px !important; /* Уменьшенный отступ от переключателя темы */
+  margin-left: 0px !important;
 }
-
-/* Убираем все иконки GitHub */
 .VPSocialLink .vpi-social-github {
   display: none !important;
 }
-
-/* Базовые стили для социальных ссылок */
 .VPSocialLink {
   width: auto !important;
   height: auto !important;
@@ -173,8 +161,6 @@ export default defineConfig({
   align-items: center !important;
   justify-content: center !important;
 }
-
-/* Кнопка "Войти" (прозрачная) */
 .VPSocialLink[aria-label="login-link"]::after {
   content: "Войти";
   font-size: 14px;
@@ -187,13 +173,10 @@ export default defineConfig({
   white-space: nowrap;
   margin: 0 4px;
 }
-
 .VPSocialLink[aria-label="login-link"]:hover::after {
   background: var(--vp-c-bg-soft);
   border-color: var(--vp-c-brand);
 }
-
-/* Кнопка "Расти с планом" (заполненная) */
 .VPSocialLink[aria-label="apply-link"]::after {
   content: "Получить ответ";
   font-size: 14px;
@@ -206,20 +189,16 @@ export default defineConfig({
   white-space: nowrap;
   margin: 0 4px;
 }
-
 .VPSocialLink[aria-label="apply-link"]:hover::after {
   background: var(--vp-c-brand-darker, var(--vp-c-brand));
   transform: translateY(-1px);
 }
-
-/* Стили для футера */
 .custom-footer-links {
   display: flex;
   flex-direction: column;
   gap: 3px;
   align-items: center;
 }
-
 .footer-row {
   display: flex;
   align-items: center;
@@ -227,27 +206,21 @@ export default defineConfig({
   flex-wrap: wrap;
   justify-content: center;
 }
-
 .footer-row a {
   color: var(--vp-c-text-2);
   text-decoration: none;
   transition: color 0.3s ease;
 }
-
 .footer-row a:hover {
   color: var(--vp-c-brand);
 }
-
 .dot-separator {
   color: var(--vp-c-text-3);
   font-weight: bold;
 }
-
 .VPFooter .copyright {
   margin-top: 2px !important;
 }
-
-/* Мобильные стили */
 @media (max-width: 768px) {
   .VPNavBarSocialLinks {
     width: 100% !important;
@@ -258,14 +231,12 @@ export default defineConfig({
     box-sizing: border-box !important;
     margin-left: 8 !important;
   }
-
   .VPSocialLink {
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
     box-sizing: border-box !important;
   }
-
   .VPSocialLink[aria-label="login-link"]::after,
   .VPSocialLink[aria-label="apply-link"]::after {
     width: 100% !important;
@@ -275,13 +246,10 @@ export default defineConfig({
     margin: 10 !important;
     box-sizing: border-box !important;
   }
-
-  /* Футер на мобильных */
   .footer-row {
     flex-direction: column;
     gap: 8px;
   }
-
   .dot-separator {
     display: none;
   }
@@ -294,91 +262,48 @@ export default defineConfig({
   themeConfig: {
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста",
-
-    // Sidebar configuration для связанных страниц
     sidebar: {
-      '/about/': {
-        items: sidebarAbout()
-      },
-      '/method/': {
-        items: sidebarMethod()
-      },
-      '/technology/': {
-        items: sidebarTechnology()
-      },
-      '/checkup/': {
-        items: sidebarCheckup()
-      },
-      '/system/': {
-        items: sidebarSystem()
-      },
-      '/journal/': {
-        items: sidebarJournal()
-      },
-      // ✅ ДОБАВЛЕНО: Конфигурация sidebar для раздела Радар
-      '/radar/': {
-        items: sidebarRadar()
-      },
-      // ✅ ДОБАВЛЕНО: Конфигурация sidebar для раздела Клиенты
-      '/clients/': {
-        items: sidebarClients()
-      }
+      '/about/': { items: sidebarAbout() },
+      '/method/': { items: sidebarMethod() },
+      '/technology/': { items: sidebarTechnology() },
+      '/checkup/': { items: sidebarCheckup() },
+      '/system/': { items: sidebarSystem() },
+      '/journal/': { items: sidebarJournal() },
+      '/radar/': { items: sidebarRadar() },
+      '/clients/': { items: sidebarClients() }
     },
-
     search: {
       provider: 'local',
       options: {
         placeholder: 'Поиск…',
         translations: {
-          button: {
-            buttonText: 'Поиск',
-            buttonAriaLabel: 'Поиск'
-          },
+          button: { buttonText: 'Поиск', buttonAriaLabel: 'Поиск' },
           modal: {
             displayDetails: 'Показать подробные результаты',
             resetButtonTitle: 'Сбросить поиск',
             backButtonTitle: 'Закрыть поиск',
             noResultsText: 'Результаты не найдены для',
-            footer: {
-              selectText: 'выбрать',
-              navigateText: 'навигация',
-              closeText: 'закрыть'
-            }
+            footer: { selectText: 'выбрать', navigateText: 'навигация', closeText: 'закрыть' }
           }
         }
       }
     },
-
-    // Navigation with dropdowns
     nav: nav(),
-
-    // Social links (header buttons)
     socialLinks: [
       { icon: 'github', link: 'https://app.mplan.sbs', ariaLabel: 'login-link' },
       { icon: 'github', link: '/apply', ariaLabel: 'apply-link', target: '_self'  }
     ],
-
-    // Footer configuration - простой текст для production
-    //footer: {
-    //  message: 'Журнал  •  Телеграм-канал  •  Поддержка  •  Условия использования  •  Контакт •  Orxaos',
-    //  copyright: '© Модуль Роста® 2010 — 2025'
-    //},
   }
 })
 
-// ✅ ИСПРАВЛЕНО: Navigation with dropdown menus - добавлен раздел "Радар"
 function nav(): DefaultTheme.NavItem[] {
   return [
-    {
-      text: 'Продукты',
-      items: [
+    { text: 'Продукты', items: [
         { text: 'Чекап', link: '/checkup/overview' },
         { text: 'Система роста бизнеса', link: '/system/overview' }
       ]
     },
-    {
-      text: 'Радар',
-      items: [
+    { text: 'Радар', items: [
         { text: 'Обзор', link: '/radar/overview' },
         { text: 'Индекс Скрытого Потенциала', link: '/radar/scale_index' },
         { text: 'Фильтр Потенциала', link: '/radar/filter' },
@@ -386,9 +311,7 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'Программа рекомендаций', link: '/radar/invite' }
       ]
     },
-    {
-      text: 'Компания',
-      items: [
+    { text: 'Компания', items: [
         { text: 'Кто мы', link: '/about/company' },
         { text: 'Метод', link: '/method/overview' },
         { text: 'Технологии', link: '/technology/overview' },
@@ -398,29 +321,20 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-// Sidebar for About section
 function sidebarAbout(): DefaultTheme.SidebarItem[] {
-  return [
-    {
-      text: 'Компания',
-      collapsed: false,
-      items: [
+  return [{
+      text: 'Компания', collapsed: false, items: [
         { text: 'Кто мы', link: '/about/company' },
         { text: 'Мы, Растем', link: '/about/mission' },
         { text: 'Не только цифры, но и эмоции', link: '/about/balance' },
         { text: 'Контакт', link: '/about/contacts' }
       ]
-    }
-  ]
+    }]
 }
 
-// Sidebar for Method section
 function sidebarMethod(): DefaultTheme.SidebarItem[] {
-  return [
-    {
-      text: 'Метод',
-      collapsed: false,
-      items: [
+  return [{
+      text: 'Метод', collapsed: false, items: [
         { text: 'Обзор', link: '/method/overview' },
         { text: '3 принципа здоровой аналитики', link: '/method/the-three-principles' },
         { text: 'Метод эффективной трансформации', link: '/method/transform' },
@@ -428,17 +342,12 @@ function sidebarMethod(): DefaultTheme.SidebarItem[] {
         { text: 'Рост – это не гонка, а приключение', link: '/method/not-a-race' },
         { text: 'Сравнить', link: '/method/pro-et-contra' }
       ]
-    }
-  ]
+    }]
 }
 
-// Sidebar for Technology section
 function sidebarTechnology(): DefaultTheme.SidebarItem[] {
-  return [
-    {
-      text: 'Технологии',
-      collapsed: false,
-      items: [
+  return [{
+      text: 'Технологии', collapsed: false, items: [
         { text: 'Обзор', link: '/technology/overview' },
         { text: 'Живая база знаний', link: '/technology/datahub' },
         { text: 'Аналитика 360°', link: '/technology/analytics-360' },
@@ -446,19 +355,13 @@ function sidebarTechnology(): DefaultTheme.SidebarItem[] {
         { text: 'Речевая аналитика', link: '/technology/wordpower' },
         { text: 'Дистанционные стратегические сессии', link: '/technology/vision-now' },
         { text: 'Живые Стандарты', link: '/technology/live-standarts' },
-
       ]
-    }
-  ]
+    }]
 }
 
-// Sidebar for Checkup section
 function sidebarCheckup(): DefaultTheme.SidebarItem[] {
   return [
-    {
-      text: 'Бизнес-чекап',
-      collapsed: false,
-      items: [
+    { text: 'Бизнес-чекап', collapsed: false, items: [
         { text: 'Обзор', link: '/checkup/overview' },
         { text: 'Детали чекапа', link: '/checkup/specs' },
         { text: 'Глубокий чекап', link: '/checkup/deep' },
@@ -466,10 +369,7 @@ function sidebarCheckup(): DefaultTheme.SidebarItem[] {
         { text: 'Чек-лист готовности', link: '/checkup/checklist' }
       ]
     },
-{
-      text: 'Подготовка к чекапу',
-      collapsed: false,
-      items: [
+    { text: 'Подготовка к чекапу', collapsed: false, items: [
         { text: 'Обзор', link: '/checkup/prep/overview' },        
         { text: '1 - Скрытые проблемы, которые блокируют рост', link: '/checkup/prep/01-hidden-problems-blocking-growth' },
         { text: '2 - Почему мы запрашиваем готовые отчёты, а не доступы к системам', link: '/checkup/prep/02-why-we-request-ready-reports-not-system-access' },
@@ -484,58 +384,40 @@ function sidebarCheckup(): DefaultTheme.SidebarItem[] {
   ]
 }
 
-// Sidebar for System section
 function sidebarSystem(): DefaultTheme.SidebarItem[] {
-  return [
-    {
-      text: 'Система роста бизнеса',
-      collapsed: false,
-      items: [
+  return [{
+      text: 'Система роста бизнеса', collapsed: false, items: [
         { text: 'Обзор', link: '/system/overview' },
         { text: '12-нед. интенсив', link: '/system/12-weeks' }
       ]
-    }
-  ]
+    }]
 }
 
 function sidebarJournal(): DefaultTheme.SidebarItem[] {
-  return [
-    {
-      text: 'Журнал',
-      collapsed: false,
-      items: [
+  return [{
+      text: 'Журнал', collapsed: false, items: [
         { text: 'Содержание', link: '/journal/contents/index' },        
         { text: 'Кейсы', link: '/journal/contents/cases' },
         { text: 'Статьи', link: '/journal/contents/articles' }
       ]
-    }
-  ]
+    }]
 }
 
-// ✅ ДОБАВЛЕНО: Sidebar for Radar section
 function sidebarRadar(): DefaultTheme.SidebarItem[] {
-  return [
-    {
-      text: 'Радар',
-      collapsed: false,
-      items: [
+  return [{
+      text: 'Радар', collapsed: false, items: [
         { text: 'Обзор', link: '/radar/overview' },
         { text: 'Индекс Скрытого Потенциала', link: '/radar/scale_index' },
         { text: 'Фильтр Потенциала', link: '/radar/filter' },
         { text: 'Кто Анна', link: '/radar/who-is-anna' },
         { text: 'Программа рекомендаций', link: '/radar/invite' }
       ]
-    }
-  ]
+    }]
 }
 
-// ✅ ДОБАВЛЕНО: Sidebar for Clients section
 function sidebarClients(): DefaultTheme.SidebarItem[] {
-  return [
-    {
-      text: 'Клиенты',
-      collapsed: false,
-      items: [
+  return [{
+      text: 'Клиенты', collapsed: false, items: [
         { text: 'Обзор', link: '/clients/list' },
         { text: 'Конкордия-Авто', link: '/clients/konkordiya-auto' },
         { text: 'Блумкидс', link: '/clients/bloomkids' },
@@ -550,6 +432,5 @@ function sidebarClients(): DefaultTheme.SidebarItem[] {
         { text: 'WOODLED', link: '/clients/woodled' },
         { text: 'World Plastics Summit 2022', link: '/clients/world-plastics-summit-2022' },
       ]
-    }
-  ]
+    }]
 }
