@@ -10,6 +10,8 @@
   <a href="https://www.behance.net/gallery/156308617/World-Plastics-Summit-Brand-Identity-Website">Проект на Behance →</a>
 </div>
 
+<br>
+
 <style>
 .specs-button a {
   display: inline-block;
