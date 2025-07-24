@@ -7,7 +7,7 @@ import { ref } from 'vue'
 const activeTab = ref('methodology')
 </script>
 
-# Мы — Модуль Роста
+# Мы — Модуль Роста®
 
 ## Почувствуйте силу данных и любовь клиентов
 
