@@ -420,7 +420,7 @@ function sidebarMethod(): DefaultTheme.SidebarItem[] {
       collapsed: false,
       items: [
         { text: 'Обзор', link: '/method/overview' },
-        { text: '3 принципа здоровой аналитики', link: '/method/different' },
+        { text: '3 принципа здоровой аналитики', link: '/method/the-three-principles' },
         { text: 'Метод эффективной трансформации', link: '/method/transform' },
         { text: 'Фрейм-менеджмент', link: '/method/frames' },
         { text: 'Рост – это не гонка, а приключение', link: '/method/not-a-race' },
