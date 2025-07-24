@@ -6,7 +6,14 @@
 
 [**Проект на Behance**](https://www.behance.net/gallery/156308617/World-Plastics-Summit-Brand-Identity-Website)
 
-{% embed url="https://70e1aad645fc.hosting.myjino.ru/video-thecreativeact/wps22-main-movie%20(1080p).mp4" %}
+<video 
+  width="100%" 
+  controls 
+  src="https://70e1aad645fc.hosting.myjino.ru/video-thecreativeact/wps22-main-movie%20(1080p).mp4"
+>
+  Ваш браузер не поддерживает тег video.
+</video>
+
 
 ### Шаг 0. Определение целей
 
