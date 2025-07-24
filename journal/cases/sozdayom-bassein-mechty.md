@@ -4,9 +4,9 @@
 
 ### Маркетинговая стратегия премиального детского бассейна
 
-{% hint style="info" %}
+
 [Проект на Behance](https://www.behance.net/gallery/175530883/blumkids-ajdentika-i-veb-sajt?tracking_source=project_owner_other_projects)
-{% endhint %}
+
 
 ## Услуги
 
