@@ -8,7 +8,7 @@ description: 'Время чтения: 12 минут'
 
 #### Вот, что мы сделали:
 
-1. Разработали пакет рекламных и информационных материалов для Благотворительного концерта «Хворостовский и друзья - детям», который прошел в Большом зале консерватории 21 Октября 2ет о событии](https://hvorostovsky.com/events/template?filters601188225=record_id__eq__reckD4Dpso9nwDP4Z&filters532072168=record_id__eq__reckD4Dpso9nwDP4Z&filters535532804=record_id__eq__reckD4Dpso9nwDP4Z&filters532072695=record_id__eq__reckD4Dpso9nwDP4Z&filters599547526=record_id__eq__reckD4Dpso9nwDP4Z)
+1. Разработали пакет рекламных и информационных материалов для Благотворительного концерта «Хворостовский и друзья - детям», который прошел в Большом зале консерватории 21 Октября 2019 года. [Смотреть отчет о событии](https://hvorostovsky.com/events/template?filters601188225=record_id__eq__reckD4Dpso9nwDP4Z&filters532072168=record_id__eq__reckD4Dpso9nwDP4Z&filters535532804=record_id__eq__reckD4Dpso9nwDP4Z&filters532072695=record_id__eq__reckD4Dpso9nwDP4Z&filters599547526=record_id__eq__reckD4Dpso9nwDP4Z)
 2. В том же году разработали логотип фонда и пакет фирменного стиля фонда.
 3. В 2020 году организовали сбор пожертвований для телемарафона «Мы вместе ради детей» [Смотреть отчет о событии](https://hvorostovsky.com/events/template?filters601188225=record_id__eq__recGhEtsdltHPc3iw&filters532072168=record_id__eq__recGhEtsdltHPc3iw&filters535532804=record_id__eq__recGhEtsdltHPc3iw&filters532072695=record_id__eq__recGhEtsdltHPc3iw&filters599547526=record_id__eq__recGhEtsdltHPc3iw)
 4. В 2020 году запустили первую версию сайта фонда.
