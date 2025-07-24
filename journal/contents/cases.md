@@ -29,7 +29,7 @@
 <br>
 
 <div class="specs-button">
-  <a href="/journal/contents/cases">Кейсы →</a>
+  <a href="/clients/list">Клиенты →</a>
 </div>
 
 <style>
