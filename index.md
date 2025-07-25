@@ -7,7 +7,7 @@ hero:
   tagline: Находим то, что другие упускают.
   actions:
     - theme: brand
-      text: Радар
+      text: Индекс Роста
       link: /radar/overview
     - theme: alt
       text: Получить ответ
