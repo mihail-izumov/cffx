@@ -304,8 +304,8 @@ function nav(): DefaultTheme.NavItem[] {
       ]
     },
     { text: 'Радар', items: [
-        { text: 'Обзор', link: '/radar/overview' },
-        { text: 'Индекс Скрытого Потенциала', link: '/radar/scale_index' },
+        { text: 'Индекс Роста', link: '/radar/overview' },
+        { text: 'Критерии для расчета индекса', link: '/radar/scale_index' },
         { text: 'Фильтр Потенциала', link: '/radar/filter' },
         { text: 'Кто Анна', link: '/radar/who-is-anna' },
         { text: 'Программа рекомендаций', link: '/radar/invite' }
@@ -406,8 +406,8 @@ function sidebarJournal(): DefaultTheme.SidebarItem[] {
 function sidebarRadar(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Радар', collapsed: false, items: [
-        { text: 'Обзор', link: '/radar/overview' },
-        { text: 'Индекс Скрытого Потенциала', link: '/radar/scale_index' },
+        { text: 'Индекс Роста', link: '/radar/overview' },
+        { text: 'Критерии для расчета индекса', link: '/radar/scale_index' },
         { text: 'Фильтр Потенциала', link: '/radar/filter' },
         { text: 'Кто Анна', link: '/radar/who-is-anna' },
         { text: 'Программа рекомендаций', link: '/radar/invite' }
