@@ -6,14 +6,33 @@
 
 ## Компании в фокусе Радара
 
-| Компания                                                 | Потенциал Роста | Сигнал | Статус                                                     |
-| -------------------------------------------------------- | --------------- | ------ | ---------------------------------------------------------- |
-| [Green House](https://grnhs.ru/)                         | ~               | ⚡      | В фокусе                                                   |
-| [Корж](https://korzhcoffee.ru/)                          | ~               | ⚡      | В фокусе                                                   |
-| [Ресторан Честных Цен](https://rchc.ru/)                 | 81,5%           | ⚡      | В архиве [(Почему?)](/radar/overview.html#почему-в-архиве) |
-| [Brooklyn Bowl](https://brooklynbowl.ru/)                | 75,6%           | ·      | В архиве [(Почему?)](/radar/overview.html#почему-в-архиве) |
-| [Vaffel](https://vaffel.ru/)                             | 56,2%           | ·      | В архиве [(Почему?)](/radar/overview.html#почему-в-архиве) |
-| [Re:Imagined Villas Ubud](https://reimaginedvillas.com/) | 52,1%           | ·      | В архиве [(Почему?)](/radar/overview.html#почему-в-архиве) |
+<style>
+  .radar-table th:nth-child(2), .radar-table td:nth-child(2),
+  .radar-table th:nth-child(3), .radar-table td:nth-child(3) {
+    text-align: center;
+  }
+  .signal-active {
+    color: #facc15; /* Яркий золотой/желтый цвет для молнии */
+  }
+  .signal-passive {
+    color: #6b7280; /* Спокойный серый цвет для точки */
+    font-weight: bold;
+  }
+</style>
+
+<div class="radar-table">
+
+| Компания | Потенциал Роста | Сигнал | Статус |
+| :--- | :---: | :---: | :--- |
+| [Green House](https://grnhs.ru/) | ~ | <span class="signal-active">⚡</span> | В фокусе |
+| [Корж](https://korzhcoffee.ru/) | ~ | <span class="signal-active">⚡</span> | В фокусе |
+| [Ресторан Честных Цен](https://rchc.ru/) | 81,5% | <span class="signal-active">⚡</span> | В архиве [(Почему?)](/radar/overview.html#почему-в-архиве) |
+| [Brooklyn Bowl](https://brooklynbowl.ru/) | 75,6% | <span class="signal-passive">·</span> | В архиве [(Почему?)](/radar/overview.html#почему-в-архиве) |
+| [Vaffel](https://vaffel.ru/) | 56,2% | <span class="signal-passive">·</span> | В архиве [(Почему?)](/radar/overview.html#почему-в-архиве) |
+| [Re:Imagined Villas Ubud](https://reimaginedvillas.com/) | 52,1% | <span class="signal-passive">·</span> | В архиве [(Почему?)](/radar/overview.html#почему-в-архиве) |
+
+</div>
+
 
 ## Анна
 
