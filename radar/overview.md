@@ -7,6 +7,12 @@
 ## Компании в фокусе Радара
 
 <style>
+  /*
+    Магия адаптивности:
+    Мы используем переменные VitePress (--vp-c-...),
+    которые автоматически меняют цвет для темной и светлой тем.
+    Это гарантирует, что текст всегда будет читаемым.
+  */
   .radar-table-html {
     width: 100%;
     border-collapse: separate;
@@ -14,28 +20,37 @@
   }
   .radar-table-html th, .radar-table-html td {
     padding: 12px 15px;
-    border-bottom: 1px solid rgba(82, 82, 89, 0.5);
+    border-bottom: 1px solid var(--vp-c-divider); /* Адаптивная линия */
   }
   .radar-table-html th {
     text-transform: uppercase;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.5px;
-    color: rgba(235, 235, 245, 0.6);
+    color: var(--vp-c-text-2); /* Адаптивный цвет текста шапки */
+  }
+  .radar-table-html th a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted var(--vp-c-text-3); /* Адаптивное подчеркивание */
+  }
+  .radar-table-html th a:hover {
+    color: var(--vp-c-text-1); /* Адаптивный цвет при наведении */
+    border-bottom-color: var(--vp-c-text-1);
   }
   .radar-table-html th:nth-child(2), .radar-table-html td:nth-child(2),
   .radar-table-html th:nth-child(3), .radar-table-html td:nth-child(3) {
     text-align: center;
   }
   .signal-active-symbol {
-    color: #fde047; /* Более яркий, "электрический" желтый */
+    color: #fde047;
   }
   .signal-passive-symbol {
     color: #6b7280;
     font-weight: bold;
   }
   .highlight-signal-cell {
-     background-color: rgba(74, 58, 6, 0.3); /* Глубокий, прозрачный золотой фон */
+     background-color: rgba(74, 58, 6, 0.3);
   }
 </style>
 
@@ -43,9 +58,9 @@
   <thead>
     <tr>
       <th>Компания</th>
-      <th>Потенциал<br>Роста</th>
+      <th><a href="/radar/overview.html#как-мы-находим-компании-со-скрытым-потенциалом">Потенциал</a></th>
       <th>Сигнал</th>
-      <th>Статус</th>
+      <th><a href="/radar/overview.html#почему-в-архиве">Статус</a></th>
     </tr>
   </thead>
   <tbody>
@@ -87,8 +102,6 @@
     </tr>
   </tbody>
 </table>
-
-
 
 ## Как мы находим компании со скрытым потенциалом
 Наш «Радар» — это не стандартный бизнес-анализ. Это проприетарная система оценки, созданная для поиска компаний, чей потенциал значительно превышает их текущие результаты. Мы не ищем «проблемные» бизнесы. Мы ищем «спящих гигантов».
