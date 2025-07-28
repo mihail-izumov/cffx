@@ -65,43 +65,44 @@
   </thead>
   <tbody>
     <tr>
-      <td><a href="https://grnhs.ru/">Green House</a></td>
+      <td><a href="https://grnhs.ru/" target="_blank" rel="noopener noreferrer">Green House</a></td>
       <td>~</td>
       <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span></td>
       <td>В фокусе</td>
     </tr>
     <tr>
-      <td><a href="https://korzhcoffee.ru/">Корж</a></td>
+      <td><a href="https://korzhcoffee.ru/" target="_blank" rel="noopener noreferrer">Корж</a></td>
       <td>~</td>
       <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span></td>
       <td>В фокусе</td>
     </tr>
     <tr>
-      <td><a href="https://rchc.ru/">Ресторан Честных Цен</a></td>
+      <td><a href="https://rchc.ru/" target="_blank" rel="noopener noreferrer">Ресторан Честных Цен</a></td>
       <td>81,5%</td>
       <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span></td>
       <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
     </tr>
     <tr>
-      <td><a href="https://brooklynbowl.ru/">Brooklyn Bowl</a></td>
+      <td><a href="https://brooklynbowl.ru/" target="_blank" rel="noopener noreferrer">Brooklyn Bowl</a></td>
       <td>75,6%</td>
       <td><span class="signal-passive-symbol">·</span></td>
       <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
     </tr>
     <tr>
-      <td><a href="https://vaffel.ru/">Vaffel</a></td>
+      <td><a href="https://vaffel.ru/" target="_blank" rel="noopener noreferrer">Vaffel</a></td>
       <td>56,2%</td>
       <td><span class="signal-passive-symbol">·</span></td>
       <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
     </tr>
     <tr>
-      <td><a href="https://reimaginedvillas.com/">Re:Imagined Villas Ubud</a></td>
+      <td><a href="https://reimaginedvillas.com/" target="_blank" rel="noopener noreferrer">Re:Imagined Villas Ubud</a></td>
       <td>52,1%</td>
       <td><span class="signal-passive-symbol">·</span></td>
       <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
     </tr>
   </tbody>
 </table>
+
 
 ## Как мы находим компании со скрытым потенциалом
 Наш «Радар» — это не стандартный бизнес-анализ. Это проприетарная система оценки, созданная для поиска компаний, чей потенциал значительно превышает их текущие результаты. Мы не ищем «проблемные» бизнесы. Мы ищем «спящих гигантов».
