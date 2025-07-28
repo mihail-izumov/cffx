@@ -173,22 +173,10 @@ export default {
 }
 </script>
 
-
-
-_Звонки не принимаем. Только письменные заявки._
-
-## Компании в фокусе
-
-| Компания                                                 | Потенциал Роста | Статус             |
-| -------------------------------------------------------- | --------------- | ------------------ |
-| [Green House](https://grnhs.ru/)                         | –               | В фокусе           |
-| [Ресторан Честных Цен](https://rchc.ru/)                 | 81,5%           | В архиве [(Почему?)](/radar/overview.html#почему-в-архиве) |
-| [Brooklyn Bowl](https://brooklynbowl.ru/)                | 75,6%           | В архиве [(Почему?)](/radar/overview.html#почему-в-архиве) |
-| [Vaffel](https://vaffel.ru/)                             | 56,2%           | В архиве [(Почему?)](/radar/overview.html#почему-в-архиве) |
-| [Re:Imagined Villas Ubud](https://reimaginedvillas.com/) | 52,1%           | В архиве [(Почему?)](/radar/overview.html#почему-в-архиве) |
+<br>
 
 <div class="specs-button">
-  <a href="/radar/overviewп">Индекс Роста →</a>
+  <a href="/radar/overviewп">Компании в фокусе сейчас →</a>
 </div>
 
 ## Процесс подачи заявки
