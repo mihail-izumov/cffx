@@ -176,7 +176,7 @@ export default {
 <br>
 
 <div class="specs-button">
-  <a href="/radar/overviewп">Компании в фокусе сейчас →</a>
+  <a href="/radar/overview">Компании в фокусе</a>
 </div>
 
 ## Процесс подачи заявки
