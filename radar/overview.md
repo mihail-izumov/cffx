@@ -73,7 +73,7 @@
     <tr>
       <td><a href="https://korzhcoffee.ru/" target="_blank" rel="noopener noreferrer">Корж</a></td>
       <td>~</td>
-      <td class="highlight-signal-cell">[<span class="signal-active-symbol">⚡</span> <a href="/radar/signal/coffee-points-smr-2025/review">Отчет</a>]</td>
+      <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="/radar/signal/coffee-points-smr-2025/review">Отчет</a></td>
       <td>В фокусе</td>
     </tr>
     <tr>
