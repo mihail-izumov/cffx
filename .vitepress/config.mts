@@ -305,9 +305,7 @@ function nav(): DefaultTheme.NavItem[] {
     },
     { text: 'Радар', items: [
         { text: 'Индекс Роста', link: '/radar/overview' },
-        { text: 'Критерии для расчета индекса', link: '/radar/scale_index' },
-        { text: 'Фильтр Потенциала', link: '/radar/filter' },
-        { text: 'Кто Анна', link: '/radar/who-is-anna' },
+        { text: 'Сигнал Радара', link: '/radar/signal/log' },
         { text: 'Программа рекомендаций', link: '/radar/invite' }
       ]
     },
@@ -408,6 +406,7 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
       text: 'Радар', collapsed: false, items: [
         { text: 'Индекс Роста', link: '/radar/overview' },
         { text: 'Критерии для расчета индекса', link: '/radar/scale_index' },
+        { text: 'Сигнал Радара', link: '/radar/signal/log' },
         { text: 'Фильтр Потенциала', link: '/radar/filter' },
         { text: 'Кто Анна', link: '/radar/who-is-anna' },
         { text: 'Программа рекомендаций', link: '/radar/invite' }
