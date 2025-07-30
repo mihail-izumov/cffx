@@ -1,6 +1,4 @@
 # Контакт
-
-# Контакт
 <br>
 <form id="myForm" class="custom-form">
   <div class="form-group">
