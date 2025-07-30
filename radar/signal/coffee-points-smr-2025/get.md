@@ -4,9 +4,9 @@
 Актуальность: 29.07.2025
 
 <ClientOnly>
-  <div class="payment-form-container" style="background-color: #ffffff; padding: 2rem 1rem; border-radius: 8px;">
+  <div class="payment-form-container" style="background-color: #ffffff; padding: 3rem 1rem; border-radius: 8px;">
     <link rel="stylesheet" href="https://yookassa.ru/integration/simplepay/css/yookassa_construct_form.css?v=1.25.0">
-    <form class="yoomoney-payment-form" action="https://yookassa.ru/integration/simplepay/payment" method="post" accept-charset="utf-8">
+    <form class="yoomoney-payment-form" action="https://yookassa.ru/integration/simplepay/payment" method="post" accept-charset="utf-8" target="_blank">
         <div class="ym-products">
             <div class="ym-block-title ym-products-title">Товары</div>
             <div class="ym-product">
@@ -46,6 +46,7 @@
   </div>
   <script src="https://yookassa.ru/integration/simplepay/js/yookassa_construct_form.js?v=1.25.0"></script>
 </ClientOnly>
+
 
 <br>
 
