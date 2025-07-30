@@ -74,7 +74,7 @@
 ## Сигналы Радара
 
 <div class="specs-button">
-  <a href="/radar/overview">Индекс Роста →</a>
+  <a href="/radar/signal/log">Как это работает →</a>
 </div>
 
 <style>
