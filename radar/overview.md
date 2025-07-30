@@ -1,7 +1,7 @@
 # Индекс Роста 
 
-Все забыли, что такое настоящий рост.
-Они измеряют очевидное. Мы находим то, что не видят другие.
+Все забыли, что такое настоящий рост. <br>
+Они измеряют очевидное. Мы находим то, что не видят другие. <br>
 Наш Индекс показывает не размер вашего бизнеса сегодня, а возможностей, которые вы можете реализовать завтра.
 
 ## Компании в фокусе Радара
@@ -59,7 +59,7 @@
     <tr>
       <th>Компания</th>
       <th><a href="/radar/overview.html#как-мы-находим-компании-со-скрытым-потенциалом">Потенциал</a></th>
-      <th>Сигнал</th>
+      <th><a href="/radar/overview.html#что-такое-«сигнал-радара»">Сигнал</a></th>
       <th><a href="/radar/overview.html#почему-в-архиве">Статус</a></th>
     </tr>
   </thead>
@@ -73,13 +73,19 @@
     <tr>
       <td><a href="https://korzhcoffee.ru/" target="_blank" rel="noopener noreferrer">Корж</a></td>
       <td>~</td>
+      <td class="highlight-signal-cell">[<span class="signal-active-symbol">⚡</span> <a href="/radar/signal/coffee-points-smr-2025/review">Отчет</a>]</td>
+      <td>В фокусе</td>
+    </tr>
+    <tr>
+      <td><a href="https://skuratovcoffee.ru/" target="_blank" rel="noopener noreferrer">Skuratov</a></td>
+      <td>~</td>
       <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span></td>
       <td>В фокусе</td>
     </tr>
     <tr>
       <td><a href="https://rchc.ru/" target="_blank" rel="noopener noreferrer">Ресторан Честных Цен</a></td>
       <td>81,5%</td>
-      <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span></td>
+      <td><span class="signal-passive-symbol">·</span></td>
       <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
     </tr>
     <tr>
@@ -102,6 +108,7 @@
     </tr>
   </tbody>
 </table>
+
 
 
 ## Как мы находим компании со скрытым потенциалом
