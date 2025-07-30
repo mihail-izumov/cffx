@@ -109,3 +109,25 @@
 Данные показывают проблему. <br>
 План показывает решение. <br>
 Результат — рост, который увидят все. <br>
+
+<div class="specs-button">
+  <a href="/radar/overview">Индекс Роста →</a>
+</div>
+
+<style>
+.specs-button a {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #42b983;
+  color: white !important;
+  text-decoration: none !important;
+  border-radius: 4px;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  /* Новые важные свойства */
+  -webkit-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+}
