@@ -46,3 +46,10 @@
   </div>
   <script src="https://yookassa.ru/integration/simplepay/js/yookassa_construct_form.js?v=1.25.0"></script>
 </ClientOnly>
+
+<br>
+
+После оплаты нажмите → Вернуться на сайт → Пройдите по ссылке к отчёту
+[**Техническая поддержка**](/about/contacts) по вопросам оплаты и доступа
+
+Удачи в работе.
