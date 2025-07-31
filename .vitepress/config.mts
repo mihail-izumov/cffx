@@ -268,6 +268,12 @@ export default defineConfig({
   themeConfig: {
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста",
+    
+    // ✅ ДОБАВЛЕННЫЙ КОД ДЛЯ ПЕРЕВОДА ИНТЕРФЕЙСА
+    sidebarMenuLabel: 'Меню',
+    outlineTitle: 'На этой странице',
+    returnToTopLabel: 'Наверх', // Также можно перевести кнопку "Наверх"
+    
     sidebar: {
       '/about/': { items: sidebarAbout() },
       '/method/': { items: sidebarMethod() },
