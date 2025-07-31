@@ -44,7 +44,6 @@ export default defineConfig({
       html += '</div><div class="footer-row">';
       links.slice(3).forEach((link, i) => {
         if (i > 0) html += '<span class="dot-separator">•</span>';
-        // ✅ ИСПРАВЛЕНО: Добавлена логика для target="_blank" для второй строки ссылок
         html += '<a href="' + link.href + '"' + (link.target ? ' target="' + link.target + '" rel="noopener noreferrer"' : '') + '>' + link.text + '</a>';
       });
       html += '</div></div>';
@@ -135,125 +134,132 @@ export default defineConfig({
   })();
 `],
     ['style', {}, `
+    /* === ДОБАВЛЕННЫЙ КОД === */
+    .VPHero .text,
+    .VPHero .tagline {
+      color: white !important;
+    }
+    /* === КОНЕЦ ДОБАВЛЕННОГО КОДА === */
+
     :root {
-  --vp-c-brand-1: #2e6b5e;
-  --vp-c-brand-2: #3a7d6e;
-  --vp-c-brand-3: #2e6b5e;
-  --vp-c-brand-soft: rgba(46, 107, 94, 0.14);
-}
-.VPNavBarTitle .logo {
-  height: 32px !important;
-  width: auto !important;
-}
-.VPNavBarSocialLinks {
-  min-width: 280px !important;
-  justify-content: flex-end !important;
-  gap: 20px !important;
-  margin-left: 0px !important;
-}
-.VPSocialLink .vpi-social-github {
-  display: none !important;
-}
-.VPSocialLink {
-  width: auto !important;
-  height: auto !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-.VPSocialLink[aria-label="login-link"]::after {
-  content: "Войти";
-  font-size: 14px;
-  color: var(--vp-c-text-1);
-  padding: 6px 12px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 6px;
-  background: transparent;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  margin: 0 4px;
-}
-.VPSocialLink[aria-label="login-link"]:hover::after {
-  background: var(--vp-c-bg-soft);
-  border-color: var(--vp-c-brand);
-}
-.VPSocialLink[aria-label="apply-link"]::after {
-  content: "Получить ответ";
-  font-size: 14px;
-  color: white;
-  padding: 6px 12px;
-  border: 1px solid var(--vp-c-brand);
-  border-radius: 6px;
-  background: var(--vp-c-brand);
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  margin: 0 4px;
-}
-.VPSocialLink[aria-label="apply-link"]:hover::after {
-  background: var(--vp-c-brand-darker, var(--vp-c-brand));
-  transform: translateY(-1px);
-}
-.custom-footer-links {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  align-items: center;
-}
-.footer-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.footer-row a {
-  color: var(--vp-c-text-2);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-.footer-row a:hover {
-  color: var(--vp-c-brand);
-}
-.dot-separator {
-  color: var(--vp-c-text-3);
-  font-weight: bold;
-}
-.VPFooter .copyright {
-  margin-top: 2px !important;
-}
-@media (max-width: 768px) {
-  .VPNavBarSocialLinks {
-    width: 100% !important;
-    min-width: 100% !important;
-    flex-direction: column !important;
-    gap: 8px !important;
-    padding: 0 16px !important;
-    box-sizing: border-box !important;
-    margin-left: 8 !important;
-  }
-  .VPSocialLink {
-    width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    box-sizing: border-box !important;
-  }
-  .VPSocialLink[aria-label="login-link"]::after,
-  .VPSocialLink[aria-label="apply-link"]::after {
-    width: 100% !important;
-    display: block !important;
-    text-align: center;
-    padding: 10px 12px !important;
-    margin: 10 !important;
-    box-sizing: border-box !important;
-  }
-  .footer-row {
-    flex-direction: column;
-    gap: 8px;
-  }
-  .dot-separator {
-    display: none;
-  }
-}
+      --vp-c-brand-1: #2e6b5e;
+      --vp-c-brand-2: #3a7d6e;
+      --vp-c-brand-3: #2e6b5e;
+      --vp-c-brand-soft: rgba(46, 107, 94, 0.14);
+    }
+    .VPNavBarTitle .logo {
+      height: 32px !important;
+      width: auto !important;
+    }
+    .VPNavBarSocialLinks {
+      min-width: 280px !important;
+      justify-content: flex-end !important;
+      gap: 20px !important;
+      margin-left: 0px !important;
+    }
+    .VPSocialLink .vpi-social-github {
+      display: none !important;
+    }
+    .VPSocialLink {
+      width: auto !important;
+      height: auto !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    .VPSocialLink[aria-label="login-link"]::after {
+      content: "Войти";
+      font-size: 14px;
+      color: var(--vp-c-text-1);
+      padding: 6px 12px;
+      border: 1px solid var(--vp-c-divider);
+      border-radius: 6px;
+      background: transparent;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      margin: 0 4px;
+    }
+    .VPSocialLink[aria-label="login-link"]:hover::after {
+      background: var(--vp-c-bg-soft);
+      border-color: var(--vp-c-brand);
+    }
+    .VPSocialLink[aria-label="apply-link"]::after {
+      content: "Получить ответ";
+      font-size: 14px;
+      color: white;
+      padding: 6px 12px;
+      border: 1px solid var(--vp-c-brand);
+      border-radius: 6px;
+      background: var(--vp-c-brand);
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      margin: 0 4px;
+    }
+    .VPSocialLink[aria-label="apply-link"]:hover::after {
+      background: var(--vp-c-brand-darker, var(--vp-c-brand));
+      transform: translateY(-1px);
+    }
+    .custom-footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      align-items: center;
+    }
+    .footer-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .footer-row a {
+      color: var(--vp-c-text-2);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .footer-row a:hover {
+      color: var(--vp-c-brand);
+    }
+    .dot-separator {
+      color: var(--vp-c-text-3);
+      font-weight: bold;
+    }
+    .VPFooter .copyright {
+      margin-top: 2px !important;
+    }
+    @media (max-width: 768px) {
+      .VPNavBarSocialLinks {
+        width: 100% !important;
+        min-width: 100% !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        padding: 0 16px !important;
+        box-sizing: border-box !important;
+        margin-left: 8 !important;
+      }
+      .VPSocialLink {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+      }
+      .VPSocialLink[aria-label="login-link"]::after,
+      .VPSocialLink[aria-label="apply-link"]::after {
+        width: 100% !important;
+        display: block !important;
+        text-align: center;
+        padding: 10px 12px !important;
+        margin: 10 !important;
+        box-sizing: border-box !important;
+      }
+      .footer-row {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .dot-separator {
+        display: none;
+      }
+    }
     `]
   ],
   base: '/',
