@@ -16,7 +16,7 @@
 
   <div class="project-card">
     <div>
-      <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Публикации</h3>
+      <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Система Роста Бизнеса</h3>
       <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">12 нед. непрерывный мониторинг по DMAIC, 90-мин трекинг-сессии каждую неделю.</p>
     </div>
     <a href="/system/overview" class="project-button">
