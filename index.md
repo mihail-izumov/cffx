@@ -13,8 +13,8 @@ hero:
       text: Индекс Роста
       link: /radar/overview
     - theme: alt
-      text: Получить ответ
-      link: /apply
+      text: Сигнал Радара
+      link: /radar/signal/log
 
 features:
   - title: Чекап
