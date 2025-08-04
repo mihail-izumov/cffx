@@ -1,4 +1,4 @@
-# Запрос на стратегический аудит
+# Запрос на [чекап](/checkup/overview)
 
 Если вы прошли 5-дневную подготовку и готовы к системным изменениям, 
 этот запрос — ваш следующий шаг на пути к системному росту.
@@ -11,7 +11,7 @@
 
 Если вы уже изучили эти материалы и готовы войти в процесс, заполните форму ниже.
 
-## Форма запроса на стратегический аудит
+## Форма запроса на чекап
 
 <form id="myForm" class="custom-form">
   <!-- Основные поля для запроса -->
@@ -35,7 +35,7 @@
     <h4>Профессиональная рекомендация</h4>
     <div class="form-group">
       <label for="friendContact">Telegram или телефон партнера:</label>
-      <input type="text" id="friendContact" name="friendContact" class="form-input" placeholder="@username или +7 ___ ___-__-__">
+      <input type="text" id="friendContact" name="friendContact" class="form-input" placeholder="@username или +7 ___ ___-__-__">
     </div>
     <div class="form-hint">
       Укажите контакт партнера и после оплаты вашей первой сессии мы добавим его в приоритетный анализ «Радара».
@@ -64,98 +64,26 @@
   Ваш запрос принят. ИИ-ассистент Анна проведет первичный анализ и сообщит о возможности стратегической сессии в течение 3 рабочих дней.
 </div>
 
-<style>
-/* --- ОБЩИЕ СТИЛИ ФОРМЫ --- */
-.custom-form { max-width: 500px; margin: 0; padding: 20px; background-color: #000000; border-radius: 5px; color: #ffffff; }
-.form-group { margin-bottom: 15px; }
-.form-input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #444; border-radius: 4px; font-size: 16px; background-color: #000000; color: #ffffff; }
-.checkbox-group { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 20px; }
-.checkbox-group input { margin-top: 3px; width: auto; }
-.checkbox-group label { font-size: 14px; line-height: 1.4; }
-.policy-link { color: #4CAF50; text-decoration: underline; }
-
-/* --- СТИЛИ КНОПКИ И СООБЩЕНИЙ --- */
-.submit-btn { background-color: #ffffff; color: #000000; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; font-weight: bold; transition: opacity 0.3s; }
-.submit-btn:hover { opacity: 0.9; }
-.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.success-message { margin-top: 15px; color: white; font-weight: normal; font-size: 16px; display: flex; align-items: center; gap: 8px; }
-.success-message::before { content: "✓"; color: white; font-size: 18px; }
-
-/* --- СТИЛИ ДЛЯ БЛОКА РЕКОМЕНДАЦИЙ --- */
-.recommendation-section { border-top: 1px solid #444; margin-top: 20px; padding-top: 30px; padding-bottom: 30px; }
-.recommendation-section h4 { margin-top: 0; margin-bottom: 15px; color: #ffffff; font-weight: 500; }
-.recommendation-section .form-group label { display: block; margin-bottom: 10px; }
-.form-hint { color: #808080; font-style: normal; text-align: left; font-size: 0.8em; line-height: 1.5; margin-top: 15px; }
-</style>
-
-<script>
-export default {
-  mounted() {
-    this.initForm();
-  },
-  methods: {
-    initForm() {
-      if (typeof document === 'undefined') return;
-      const form = document.getElementById('myForm');
-      if (!form) return;
-      const successMessage = document.getElementById('successMessage');
-      const submitBtn = form.querySelector('.submit-btn');
-      const requiredInputs = Array.from(form.querySelectorAll('input[required]'));
-      const checkFormValidity = () => {
-        const allRequiredFilled = requiredInputs.every(input => input.value.trim() !== '');
-        submitBtn.disabled = !allRequiredFilled;
-      };
-      requiredInputs.forEach(input => {
-        input.addEventListener('input', checkFormValidity);
-      });
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (submitBtn.disabled) return;
-        const friendContact = form.friendContact.value.trim();
-        const formData = {
-          name: form.name.value,
-          phone: form.phone.value,
-          email: form.email.value,
-          _subject: `Новый запрос на аудит ${friendContact ? '(+ Рекомендация)' : ''}`,
-          ...(friendContact && { recommendation_for: friendContact })
-        };
-        form.reset();
-        successMessage.style.display = 'flex';
-        submitBtn.disabled = true;
-        fetch('https://formspree.io/f/mdkzjopz', {
-          method: 'POST',
-          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        }).then(response => { if (!response.ok) throw new Error('Ошибка сервера');
-        }).catch(error => { console.error('Ошибка:', error);
-          const mailtoBody = `Имя: ${formData.name}\nТелефон: ${formData.phone}\nEmail: ${formData.email}${friendContact ? `\nРекомендация для: ${friendContact}`:''}`;
-          window.location.href = `mailto:theorchestramanco@gmail.com?subject=${encodeURIComponent(formData._subject)}&body=${encodeURIComponent(mailtoBody)}`;
-        }).finally(() => { setTimeout(() => { successMessage.style.display = 'none'; checkFormValidity(); }, 15000); });
-      });
-      checkFormValidity();
-    }
-  }
-}
-</script>
-
 <br>
 
 <div class="start-button-container">
-  <!-- Основная кнопка -->
-  <a href="/radar/overview" target="_blank">Компании в фокусе</a>
+  <!-- Кнопка с классом для стилизации -->
+  <a href="/radar/overview" class="btn btn-primary" target="_blank">Компании в фокусе</a>
 </div>
 
 ## Процесс рассмотрения запроса
-1. **Подача запроса** → Запуск процесса отбора
-2. **Заполнение формы** → Получение приглашения на сессию
-3. **Диагностическая сессия** → Решение о допуске к аудиту (24 ч)
-4. **Одобрение** → Договор и старт работы (48 ч)
+1. **Подача запроса** → Проверка [потенциала роста](/radar/scale_index) Радаром
+2. **Потенциал >75%** → Приглашение на 90-минутную стартовую сессию (₽35000)
+3. **После сессии** → Решение и проверка выполнения условий (24 ч)
+4. **Условия выполнены** → Старт Чекапа (48 ч)
+
+> Мы рассматриваем запросы и определяем сроки самостоятельно. Подробнее — в [Регламенте отбора](/checkup/selection-rules).
 
 ### Инвестиция
-- От **365 000 ₽** за полный цикл анализа бизнеса
+- От **₽365000 ** за полный цикл анализа бизнеса
 - **Индивидуальный** расчёт после диагностики
 - **Гарантия**: [платите за движение](/checkup/pay-as-you-go)
-	- Если через 30 дней **хотя бы один** из трех пилотных проектов не запущен **по нашей вине**, мы продолжаем работать до выполнения **без дополнительной оплаты**
+- Если через 30 дней **хотя бы один** из трех пилотных проектов не запущен **по нашей вине**, мы продолжаем работать до выполнения **без дополнительной оплаты**
 
 ### Не готовы?
 [Скачайте чек-лист готовности](/checkup/checklist) и вернитесь позже
@@ -281,43 +209,140 @@ export default {
 
 | Решение | Действие |
 | :-- | :-- |
-| **ДА** | [Заполните форму запроса](/apply#форма-запроса-на-стратегическии-аудит) |
+| **ДА** | [Заполните форму запроса](#форма-запроса-на-чекап) |
 | **НЕТ** | [Изучить методологию подробнее](/checkup/overview) |
 | **НЕ ЗНАЮ** | [Возвращайтесь](/checkup/checklist), когда будете готовы |
 
 ## Контакты для стратегических запросов
 
 <div class="start-button-container">
-  <!-- Основная кнопка -->
-  <a href="/apply#форма-запроса-на-стратегическии-аудит">Запросить аудит →</a>
+  <!-- Основная кнопка с правильным классом -->
+  <a href="#форма-запроса-на-чекап" class="btn btn-primary">Запросить чекап →</a>
 </div>
 
+> После получения запроса – отправим форму подтверждения.
+> Звонки не принимаем. Только письменные запросы с развёрнутыми ответами.
+
+### Ещё не готовы?
+- [Вернуться к 5-дневной подготовке](/checkup/prep/overview)
+- [Проверить готовность по чек-листу](/checkup/checklist)
 
 <style>
-/* --- Стили для карточек --- */
-.project-card {
-  background: rgba(52, 123, 108, 0.3);
-  border-radius: 12px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 200px;
+/* --- ОБЩИЕ СТИЛИ ФОРМЫ --- */
+.custom-form { 
+  max-width: 500px; 
+  margin: 0; 
+  padding: 20px; 
+  background-color: #000000; 
+  border-radius: 5px; 
+  color: #ffffff; 
+}
+.form-group { 
+  margin-bottom: 15px; 
+}
+.form-input { 
+  width: 100%; 
+  padding: 10px; 
+  box-sizing: border-box; 
+  border: 1px solid #444; 
+  border-radius: 4px; 
+  font-size: 16px; 
+  background-color: #000000; 
+  color: #ffffff; 
+}
+.checkbox-group { 
+  display: flex; 
+  align-items: flex-start; 
+  gap: 8px; 
+  margin-bottom: 20px; 
+}
+.checkbox-group input { 
+  margin-top: 3px; 
+  width: auto; 
+}
+.checkbox-group label { 
+  font-size: 14px; 
+  line-height: 1.4; 
+}
+.policy-link { 
+  color: #4CAF50; 
+  text-decoration: underline; 
+}
+
+/* --- СТИЛИ КНОПКИ И СООБЩЕНИЙ --- */
+.submit-btn { 
+  background-color: #ffffff; 
+  color: #000000; 
+  padding: 12px 20px; 
+  border: none; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-size: 16px; 
+  width: 100%; 
+  font-weight: bold; 
+  transition: opacity 0.3s; 
+}
+.submit-btn:hover { 
+  opacity: 0.9; 
+}
+.submit-btn:disabled { 
+  opacity: 0.5; 
+  cursor: not-allowed; 
+}
+.success-message { 
+  margin-top: 15px; 
+  color: white; 
+  font-weight: normal; 
+  font-size: 16px; 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+.success-message::before { 
+  content: "✓"; 
+  color: white; 
+  font-size: 18px; 
+}
+
+/* --- СТИЛИ ДЛЯ БЛОКА РЕКОМЕНДАЦИЙ --- */
+.recommendation-section { 
+  border-top: 1px solid #444; 
+  margin-top: 20px; 
+  padding-top: 30px; 
+  padding-bottom: 30px; 
+}
+.recommendation-section h4 { 
+  margin-top: 0; 
+  margin-bottom: 15px; 
+  color: #ffffff; 
+  font-weight: 500; 
+}
+.recommendation-section .form-group label { 
+  display: block; 
+  margin-bottom: 10px; 
+}
+.form-hint { 
+  color: #808080; 
+  font-style: normal; 
+  text-align: left; 
+  font-size: 0.8em; 
+  line-height: 1.5; 
+  margin-top: 15px; 
 }
 
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
 .btn {
-  display: block;
-  padding: 12px 16px;
+  display: inline-block;
+  padding: 12px 24px;
   border-radius: 8px;
   font-weight: 700;
   font-size: 16px;
   text-align: center;
-  margin-top: 1.5rem;
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
   border: none;
+  margin: 10px 0;
 }
 
 .btn:hover {
@@ -347,17 +372,64 @@ export default {
   color: #000 !important;
 }
 
-/* --- Контейнер для отдельной кнопки "Начать" --- */
+/* --- Контейнер для отдельной кнопки --- */
+.start-button-container {
+  margin: 20px 0;
+  text-align: left;
+}
+
 .start-button-container .btn {
   display: inline-block;
-  padding: 12px 24px;
+  margin: 0;
 }
 </style>
 
-
-> После получения запроса – отправим форму подтверждения.
-> Звонки не принимаем. Только письменные запросы с развёрнутыми ответами.
-
-### Ещё не готовы?
-- [Вернуться к 5-дневной подготовке](/checkup/prep/overview)
-- [Проверить готовность по чек-листу](/checkup/checklist)
+<script>
+export default {
+  mounted() {
+    this.initForm();
+  },
+  methods: {
+    initForm() {
+      if (typeof document === 'undefined') return;
+      const form = document.getElementById('myForm');
+      if (!form) return;
+      const successMessage = document.getElementById('successMessage');
+      const submitBtn = form.querySelector('.submit-btn');
+      const requiredInputs = Array.from(form.querySelectorAll('input[required]'));
+      const checkFormValidity = () => {
+        const allRequiredFilled = requiredInputs.every(input => input.value.trim() !== '');
+        submitBtn.disabled = !allRequiredFilled;
+      };
+      requiredInputs.forEach(input => {
+        input.addEventListener('input', checkFormValidity);
+      });
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (submitBtn.disabled) return;
+        const friendContact = form.friendContact.value.trim();
+        const formData = {
+          name: form.name.value,
+          phone: form.phone.value,
+          email: form.email.value,
+          _subject: `Новый запрос на аудит ${friendContact ? '(+ Рекомендация)' : ''}`,
+          ...(friendContact && { recommendation_for: friendContact })
+        };
+        form.reset();
+        successMessage.style.display = 'flex';
+        submitBtn.disabled = true;
+        fetch('https://formspree.io/f/mdkzjopz', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        }).then(response => { if (!response.ok) throw new Error('Ошибка сервера');
+        }).catch(error => { console.error('Ошибка:', error);
+          const mailtoBody = `Имя: ${formData.name}\nТелефон: ${formData.phone}\nEmail: ${formData.email}${friendContact ? `\nРекомендация для: ${friendContact}`:''}`;
+          window.location.href = `mailto:theorchestramanco@gmail.com?subject=${encodeURIComponent(formData._subject)}&body=${encodeURIComponent(mailtoBody)}`;
+        }).finally(() => { setTimeout(() => { successMessage.style.display = 'none'; checkFormValidity(); }, 15000); });
+      });
+      checkFormValidity();
+    }
+  }
+}
+</script>
