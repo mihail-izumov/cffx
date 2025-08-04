@@ -140,77 +140,78 @@ export default defineConfig({
     .VPHero .tagline {
       color: white !important;
     }
-    /* === КОНЕЦ СТИЛЕЙ ДЛЯ HERO-СЕКЦИИ === */
 
-    /* === СТИЛИ ДЛЯ ССЫЛОК И КНОПОК НА ГЛАВНОЙ СТРАНИЦЕ === */
+    /* === СТИЛИ ДЛЯ КНОПОК И ССЫЛОК В HERO === */
     .VPHero .tagline a {
       color: var(--vp-c-brand-2) !important;
       text-decoration: none;
       transition: all 0.3s ease;
     }
-
     .VPHero .tagline a:hover {
       color: var(--vp-c-brand-1) !important;
       text-decoration: underline;
     }
-
     .VPHero .VPButton {
       background-color: var(--vp-c-brand-1) !important;
       border-color: var(--vp-c-brand-1) !important;
       color: white !important;
       transition: all 0.3s ease;
-      text-decoration: none !important;
     }
-
     .VPHero .VPButton:hover {
       background-color: var(--vp-c-brand-2) !important;
       border-color: var(--vp-c-brand-2) !important;
       color: #000 !important;
       transform: translateY(-2px);
-      text-decoration: none !important;
     }
 
-    .VPContent a {
-      color: var(--vp-c-brand-2);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: all 0.3s ease;
-    }
-
-    .VPContent a:hover {
-      color: var(--vp-c-brand-1);
-      border-bottom-color: var(--vp-c-brand-1);
-    }
-    
-    /* === ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ КАРТОЧЕК (ВСЕГДА ТЕМНЫЕ) === */
+    /* === СТИЛИ ДЛЯ КАРТОЧЕК (VPFEATURE) НА ГЛАВНОЙ === */
+    /* Эти стили будут применяться по умолчанию (в темной теме) */
     .VPFeature {
-      background-color: #202124 !important;
-      border: 1px solid #3c3c3c !important;
+        background-color: var(--vp-c-bg-soft-dark);
+        border: 1px solid var(--vp-c-divider-dark-1);
+        transition: background-color .25s, border-color .25s;
     }
-    
     .VPFeature .title {
-      color: var(--vp-c-brand-2) !important;
+        color: var(--vp-c-brand-2);
     }
-    
     .VPFeature .details {
-      color: var(--vp-c-text-dark-2) !important;
+        color: var(--vp-c-text-dark-2);
     }
-    
     .VPFeature .link-text {
-      color: var(--vp-c-brand-1) !important;
+        color: var(--vp-c-brand-1);
     }
-    
     .VPFeature .link-text .icon {
-      fill: var(--vp-c-brand-1) !important;
+        fill: var(--vp-c-brand-1);
     }
-    
-    /* При наведении меняется только фон и рамка карточки, текст остается прежним */
     a.VPFeature.link:hover {
+        background-color: var(--vp-c-bg-dark);
+        border-color: var(--vp-c-divider-dark-2);
+    }
+
+    /* ПРИНУДИТЕЛЬНЫЕ СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ */
+    /* Этот блок заставляет карточки выглядеть темными, даже если включена светлая тема */
+    html:not(.dark) .VPFeature {
+      background-color: #202124 !important;
+      border-color: #3c3c3c !important;
+    }
+    html:not(.dark) .VPFeature .title {
+      color: #C5F946 !important;
+    }
+    html:not(.dark) .VPFeature .details {
+      color: rgba(235, 235, 245, 0.6) !important;
+    }
+    html:not(.dark) .VPFeature .link-text {
+      color: #347b6c !important;
+    }
+    html:not(.dark) .VPFeature .link-text .icon {
+      fill: #347b6c !important;
+    }
+    html:not(.dark) a.VPFeature.link:hover {
       background-color: #2f2f2f !important;
       border-color: #555 !important;
     }
-    /* === КОНЕЦ СТИЛЕЙ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ === */
-
+    
+    /* === ОСНОВНЫЕ ПЕРЕМЕННЫЕ И СТИЛИ === */
     :root {
       --vp-c-brand-1: #347b6c;
       --vp-c-brand-2: #C5F946;
@@ -229,13 +230,6 @@ export default defineConfig({
     }
     .VPSocialLink .vpi-social-github {
       display: none !important;
-    }
-    .VPSocialLink {
-      width: auto !important;
-      height: auto !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
     }
     .VPSocialLink[aria-label="login-link"]::after {
       content: "Войти";
@@ -271,6 +265,8 @@ export default defineConfig({
       color: #000 !important;
       transform: translateY(-1px);
     }
+    
+    /* Стили футера и адаптивности */
     .custom-footer-links {
       display: flex;
       flex-direction: column;
@@ -311,9 +307,6 @@ export default defineConfig({
       }
       .VPSocialLink {
         width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
-        box-sizing: border-box !important;
       }
       .VPSocialLink[aria-label="login-link"]::after,
       .VPSocialLink[aria-label="apply-link"]::after {
