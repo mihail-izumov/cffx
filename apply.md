@@ -140,20 +140,21 @@ export default {
 
 <br>
 
-<div class="specs-button">
-  <a href="/radar/overview">Компании в фокусе</a>
+<div class="start-button-container">
+  <!-- Основная кнопка -->
+  <a href="/radar/overview" target="_blank">Компании в фокусе</a>
 </div>
 
 ## Процесс рассмотрения запроса
-1. **Подача запроса** → Запуск процесса отбора.
-2. **Заполнение формы** → Получение приглашения на сессию.
-3. **Диагностическая сессия** → Решение о допуске к аудиту (24 ч).
-4. **Одобрение** → Договор и старт работы (48 ч).
+1. **Подача запроса** → Запуск процесса отбора
+2. **Заполнение формы** → Получение приглашения на сессию
+3. **Диагностическая сессия** → Решение о допуске к аудиту (24 ч)
+4. **Одобрение** → Договор и старт работы (48 ч)
 
 ### Инвестиция
 - От **365 000 ₽** за полный цикл анализа бизнеса
 - **Индивидуальный** расчёт после диагностики
-- **Гарантия**: [платите за движение](checkup/pay-as-you-go)
+- **Гарантия**: [платите за движение](/checkup/pay-as-you-go)
 	- Если через 30 дней **хотя бы один** из трех пилотных проектов не запущен **по нашей вине**, мы продолжаем работать до выполнения **без дополнительной оплаты**
 
 ### Не готовы?
@@ -280,38 +281,79 @@ export default {
 
 | Решение | Действие |
 | :-- | :-- |
-| **ДА** | [Заполните форму запроса](#форма-запроса-на-стратегический-аудит) |
+| **ДА** | [Заполните форму запроса](/apply#форма-запроса-на-стратегическии-аудит) |
 | **НЕТ** | [Изучить методологию подробнее](/checkup/overview) |
 | **НЕ ЗНАЮ** | [Возвращайтесь](/checkup/checklist), когда будете готовы |
 
 ## Контакты для стратегических запросов
 
-<div class="specs-button">
-  <a href="#форма-запроса-на-стратегический-аудит">Запросить аудит →</a>
+<div class="start-button-container">
+  <!-- Основная кнопка -->
+  <a href="/apply#форма-запроса-на-стратегическии-аудит" target="_blank">Запросить аудит →</a>
 </div>
 
+
 <style>
-.specs-button a {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #42b983;
-  color: white !important;
-  text-decoration: none !important;
-  border-radius: 4px;
-  font-family: inherit;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s;
-  -webkit-user-select: none;
-  user-select: none;
-  line-height: 1.5;
+/* --- Стили для карточек --- */
+.project-card {
+  background: rgba(52, 123, 108, 0.3);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
 }
 
-.specs-button a:hover {
-  background-color: #33a06f;
-  transform: translateY(-1px);
+/* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
+.btn {
+  display: block;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 1.5rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  text-decoration: none !important;
+}
+
+/* --- СТИЛЬ 1: ОСНОВНАЯ КНОПКА (ЯРКАЯ) --- */
+.btn-primary {
+  background-color: #C5F946; /* Яркий лаймовый */
+  color: #000 !important;
+}
+
+.btn-primary:hover {
+  background-color: #347b6c; /* Темный при наведении */
+  color: white !important;
+}
+
+/* --- СТИЛЬ 2: ВТОРОСТЕПЕННАЯ КНОПКА (ТЕМНАЯ) --- */
+.btn-secondary {
+  background-color: #347b6c; /* Темный */
+  color: white !important;
+}
+
+.btn-secondary:hover {
+  background-color: #C5F946; /* Яркий при наведении */
+  color: #000 !important;
+}
+
+/* --- Контейнер для отдельной кнопки "Начать" --- */
+.start-button-container .btn {
+  display: inline-block;
+  padding: 12px 24px;
 }
 </style>
+
 
 > После получения запроса – отправим форму подтверждения.
 > Звонки не принимаем. Только письменные запросы с развёрнутыми ответами.
