@@ -1,3 +1,7 @@
+---
+title: Мы — Модуль Роста®
+---
+
 <script setup>
 import { ref } from 'vue'
 const activeTab = ref('methodology')
@@ -88,7 +92,7 @@ const activeTab = ref('methodology')
 </div>
 
 <style>
-/* --- СТИЛИ ДЛЯ ПЕРЕКЛЮЧАТЕЛЕЙ (ТЭБОВ), АДАПТИРОВАННЫЕ ДЛЯ СВЕТЛОЙ И ТЕМНОЙ ТЕМ --- */
+/* --- ОБЩИЕ СТИЛИ ДЛЯ ПЕРЕКЛЮЧАТЕЛЕЙ (ТЭБОВ) --- */
 .tabs {
   display: flex;
   flex-wrap: wrap;
@@ -96,47 +100,63 @@ const activeTab = ref('methodology')
   margin: 1.5rem 0 1rem;
 }
 
-/* Базовое (неактивное) состояние кнопки */
 .tabs button {
-  background-color: var(--vp-c-bg-soft); /* Адаптивный фон */
-  color: var(--vp-c-text-2); /* Адаптивный цвет текста */
-  border: 1px solid var(--vp-c-divider); /* Адаптивная рамка */
   padding: 10px 16px;
   border-radius: 8px;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.25s ease;
+  border: 1px solid transparent; /* Убираем рамку по умолчанию, чтобы задать ее в темах */
 }
 
-/* Состояние при наведении (для всех кнопок) и для активной кнопки */
+/* --- СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ (ПО УМОЛЧАНИЮ) --- */
+:root {
+  --tabs-button-bg: #f2f2f2;
+  --tabs-button-text: #333;
+  --tabs-button-border: #e2e2e2;
+}
+.tabs button {
+  background-color: var(--tabs-button-bg);
+  color: var(--tabs-button-text);
+  border-color: var(--tabs-button-border);
+}
+
+/* --- СТИЛИ ДЛЯ ТЕМНОЙ ТЕМЫ --- */
+:root.dark {
+  --tabs-button-bg: #2a2a2a;
+  --tabs-button-text: #adadad;
+  --tabs-button-border: #444;
+}
+
+/* --- СТИЛИ ДЛЯ АКТИВНОЙ/HOVER КНОПКИ (УНИВЕРСАЛЬНЫЕ) --- */
 .tabs button:hover,
 .tabs button.active {
-  background-color: #C5F946; /* Яркий брендовый фон */
-  color: #1a2a00; /* Очень темный, почти черный текст для высокого контраста */
-  border-color: #C5F946; /* Рамка в цвет фона */
+  background-color: #C5F946 !important; /* Ярко-зеленый фон */
+  color: #1a2a00 !important; /* Очень темный текст для контраста */
+  border-color: #C5F946 !important; /* Рамка в цвет фона */
   font-weight: 700;
   transform: translateY(-2px);
 }
 
-/* Возвращаем активную кнопку на место, чтобы она не "прыгала" */
 .tabs button.active {
-  transform: none;
+  transform: none; /* Убираем "прыжок" для активной кнопки */
 }
 
-/* --- СТИЛИ ДЛЯ КОНТЕНТА ВНУТРИ ТЭБОВ --- */
-.tab-content {
+
+/* --- СТИЛИ ДЛЯ КОНТЕНТА И КАРТОЧЕК (ИСПОЛЬЗУЮТ ПЕРЕМЕННЫЕ VITEPRESS) --- */
+.tab-content, .card {
   padding: 1.25rem;
   border-radius: 12px;
-  background-color: var(--vp-c-bg-alt); /* Адаптивный фон для блоков */
+  background-color: var(--vp-c-bg-alt);
   border: 1px solid var(--vp-c-divider);
 }
 
-.tab-content h4 {
-  margin-top: .5rem;
+.tab-content h4, .card h4 {
+  margin-top: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--vp-c-brand-1); /* Используем брендовый цвет темы */
+  color: var(--vp-c-brand-1);
 }
 
 .tab-content p, .tab-content ul, .tab-content ol {
@@ -148,28 +168,10 @@ const activeTab = ref('methodology')
   margin-bottom: 0.5rem;
 }
 
-/* --- СТИЛИ ДЛЯ КАРТОЧЕК --- */
 .grid.cards {
   margin-top: 2rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
-}
-
-.card {
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
-  padding: 1.5rem;
-  background-color: var(--vp-c-bg-alt); /* Единый стиль с блоком вкладок */
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.card h4 {
-  margin-top: 0;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--vp-c-brand-1);
 }
 </style>
