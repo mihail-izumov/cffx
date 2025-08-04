@@ -143,7 +143,6 @@ export default defineConfig({
     /* === КОНЕЦ СТИЛЕЙ ДЛЯ HERO-СЕКЦИИ === */
 
     /* === СТИЛИ ДЛЯ ССЫЛОК И КНОПОК НА ГЛАВНОЙ СТРАНИЦЕ === */
-    /* Ссылки в hero-секции (не кнопки) */
     .VPHero .tagline a {
       color: var(--vp-c-brand-2) !important;
       text-decoration: none;
@@ -155,7 +154,6 @@ export default defineConfig({
       text-decoration: underline;
     }
 
-    /* Кнопки действий в hero-секции */
     .VPHero .VPButton {
       background-color: var(--vp-c-brand-1) !important;
       border-color: var(--vp-c-brand-1) !important;
@@ -172,7 +170,6 @@ export default defineConfig({
       text-decoration: none !important;
     }
 
-    /* Ссылки в основном контенте главной страницы */
     .VPContent a {
       color: var(--vp-c-brand-2);
       text-decoration: none;
@@ -185,24 +182,20 @@ export default defineConfig({
       border-bottom-color: var(--vp-c-brand-1);
     }
     
-    /* === ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ КАРТОЧЕК, ЧТОБЫ ОНИ ВСЕГДА БЫЛИ ТЕМНЫМИ === */
-    /* Фиксируем темный фон для карточек в любой теме */
+    /* === ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ КАРТОЧЕК (ВСЕГДА ТЕМНЫЕ) === */
     .VPFeature {
       background-color: #202124 !important;
       border: 1px solid #3c3c3c !important;
     }
     
-    /* ЗАГОЛОВОК КАРТОЧКИ: всегда ярко-зеленый */
     .VPFeature .title {
       color: var(--vp-c-brand-2) !important;
     }
     
-    /* ОПИСАНИЕ В КАРТОЧКЕ: всегда светло-серый */
     .VPFeature .details {
       color: var(--vp-c-text-dark-2) !important;
     }
     
-    /* ССЫЛКА В КАРТОЧКЕ: всегда приглушенный зеленый */
     .VPFeature .link-text {
       color: var(--vp-c-brand-1) !important;
     }
@@ -211,23 +204,15 @@ export default defineConfig({
       fill: var(--vp-c-brand-1) !important;
     }
     
-    /* --- СТИЛИ ПРИ НАВЕДЕНИИ НА КАРТОЧКУ --- */
+    /* При наведении меняется только фон и рамка карточки, текст остается прежним */
     a.VPFeature.link:hover {
       background-color: #2f2f2f !important;
       border-color: #555 !important;
     }
-    
-    /* При наведении меняем цвет только у ссылки */
-    a.VPFeature.link:hover .link-text {
-      color: var(--vp-c-brand-2) !important;
-    }
-    a.VPFeature.link:hover .link-text .icon {
-      fill: var(--vp-c-brand-2) !important;
-    }
     /* === КОНЕЦ СТИЛЕЙ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ === */
 
     :root {
-      --vp-c-brand-1: #347b6c; /* Новый, более яркий зеленый */
+      --vp-c-brand-1: #347b6c;
       --vp-c-brand-2: #C5F946;
       --vp-c-brand-3: #347b6c;
       --vp-c-brand-soft: rgba(52, 123, 108, 0.14);
@@ -281,9 +266,9 @@ export default defineConfig({
       margin: 0 4px;
     }
     .VPSocialLink[aria-label="apply-link"]:hover::after {
-      background: var(--vp-c-brand-2) !important; /* Ярко-зеленый фон */
+      background: var(--vp-c-brand-2) !important;
       border-color: var(--vp-c-brand-2) !important;
-      color: #000 !important; /* Черный текст для читаемости */
+      color: #000 !important;
       transform: translateY(-1px);
     }
     .custom-footer-links {
