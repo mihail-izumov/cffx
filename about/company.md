@@ -1,3 +1,7 @@
+---
+title: Мы — Модуль Роста®
+---
+
 <script setup>
 import { ref } from 'vue'
 const activeTab = ref('methodology')
@@ -88,33 +92,34 @@ const activeTab = ref('methodology')
 </div>
 
 <style>
-/* --- СТИЛИ ДЛЯ ПЕРЕКЛЮЧАТЕЛЕЙ (ТЭБОВ) --- */
+/* --- СТИЛИ ДЛЯ ПЕРЕКЛЮЧАТЕЛЕЙ (ТЭБОВ), АДАПТИРОВАННЫЕ ДЛЯ СВЕТЛОЙ И ТЕМНОЙ ТЕМ --- */
 .tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.75rem;
   margin: 1.5rem 0 1rem;
 }
 
 /* Базовое (неактивное) состояние кнопки */
 .tabs button {
-  background-color: var(--vp-c-bg-soft);
-  color: var(--vp-c-text-2);
-  border: 1px solid var(--vp-c-divider);
-  padding: 12px 16px;
+  background-color: var(--vp-c-bg-soft); /* Адаптивный фон */
+  color: var(--vp-c-text-2); /* Адаптивный цвет текста */
+  border: 1px solid var(--vp-c-divider); /* Адаптивная рамка */
+  padding: 10px 16px;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 /* Состояние при наведении (для всех кнопок) и для активной кнопки */
 .tabs button:hover,
 .tabs button.active {
-  background-color: #C5F946; /* Ярко-зеленый фон */
-  color: #000; /* ИСПРАВЛЕНО: Чёрный текст для контраста */
+  background-color: #C5F946; /* Яркий брендовый фон */
+  color: #1a2a00; /* Очень темный, почти черный текст для высокого контраста */
   border-color: #C5F946; /* Рамка в цвет фона */
+  font-weight: 700;
   transform: translateY(-2px);
 }
 
@@ -127,7 +132,7 @@ const activeTab = ref('methodology')
 .tab-content {
   padding: 1.25rem;
   border-radius: 12px;
-  background: rgba(52, 123, 108, 0.15); /* Фон с легкой прозрачностью */
+  background-color: var(--vp-c-bg-alt); /* Адаптивный фон для блоков */
   border: 1px solid var(--vp-c-divider);
 }
 
@@ -135,7 +140,7 @@ const activeTab = ref('methodology')
   margin-top: .5rem;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #C5F946; /* Акцентный цвет для заголовков */
+  color: var(--vp-c-brand-1); /* Используем брендовый цвет темы */
 }
 
 .tab-content p, .tab-content ul, .tab-content ol {
@@ -159,7 +164,7 @@ const activeTab = ref('methodology')
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
   padding: 1.5rem;
-  background-color: var(--vp-c-bg-soft);
+  background-color: var(--vp-c-bg-alt); /* Единый стиль с блоком вкладок */
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -169,6 +174,6 @@ const activeTab = ref('methodology')
   margin-top: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #C5F946;
+  color: var(--vp-c-brand-1);
 }
 </style>
