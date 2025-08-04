@@ -289,7 +289,7 @@ export default {
 
 <div class="start-button-container">
   <!-- Основная кнопка -->
-  <a href="/apply#форма-запроса-на-стратегическии-аудит" target="_blank">Запросить аудит →</a>
+  <a href="/apply#форма-запроса-на-стратегическии-аудит">Запросить аудит →</a>
 </div>
 
 
