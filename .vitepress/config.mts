@@ -185,22 +185,42 @@ export default defineConfig({
       border-bottom-color: var(--vp-c-brand-1);
     }
     
-    /* === СТИЛИ ДЛЯ КАРТОЧЕК НА ГЛАВНОЙ СТРАНИЦЕ === */
-    /* Плавный переход для заголовка и ссылки */
+    /* === ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ КАРТОЧЕК НА ГЛАВНОЙ СТРАНИЦЕ === */
+    /* Фиксируем темный фон для карточек в любой теме */
+    .VPFeature {
+      background-color: #202124 !important;
+      border: 1px solid var(--vp-c-divider-dark-1) !important;
+    }
+
+    /* Весь текст внутри карточки делаем светлым */
     .VPFeature .title,
-    .VPFeature .link-text {
-      transition: color 0.25s ease-in-out;
+    .VPFeature .details {
+      color: var(--vp-c-text-dark-1) !important;
     }
     
-    /* Начальный цвет для ссылки и стрелки */
+    /* Ссылка внутри карточки */
     .VPFeature .link-text {
-      color: var(--vp-c-brand-1);
+      color: var(--vp-c-brand-1) !important;
     }
     
-    /* При наведении на ВСЮ карточку (которая является ссылкой)... */
+    .VPFeature .link-text .icon {
+        fill: var(--vp-c-brand-1) !important;
+    }
+    
+    /* При наведении на карточку */
+    a.VPFeature.link:hover {
+      background-color: #28292c !important;
+      border-color: var(--vp-c-divider-dark-2) !important;
+    }
+    
+    /* Меняем цвет заголовка и ссылки на акцентный при наведении */
     a.VPFeature.link:hover .title,
     a.VPFeature.link:hover .link-text {
-      color: var(--vp-c-brand-2); /* ...меняем цвет и заголовка, и ссылки на яркий */
+      color: var(--vp-c-brand-2) !important;
+    }
+
+    a.VPFeature.link:hover .link-text .icon {
+        fill: var(--vp-c-brand-2) !important;
     }
     /* === КОНЕЦ СТИЛЕЙ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ === */
 
@@ -338,12 +358,10 @@ export default defineConfig({
     outlineTitle: 'На этой странице',
     returnToTopLabel: 'Наверх',
     
-    // --- ДОБАВЛЕН ПЕРЕВОД НАВИГАЦИИ ---
     docFooter: {
       prev: 'Предыдущая страница',
       next: 'Следующая страница'
     },
-    // ---------------------------------
     
     sidebar: {
       '/about/': { items: sidebarAbout() },
