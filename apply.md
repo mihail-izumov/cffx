@@ -381,13 +381,24 @@ export default {
       const successMessage = document.getElementById('successMessage');
       const submitBtn = form.querySelector('.submit-btn');
       const requiredInputs = Array.from(form.querySelectorAll('input[required]'));
+      
       const checkFormValidity = () => {
-        const allRequiredFilled = requiredInputs.every(input => input.value.trim() !== '');
+        const allRequiredFilled = requiredInputs.every(input => {
+          if (input.type === 'checkbox') {
+            return input.checked; // Для чекбокса проверяем, нажат ли он
+          } else {
+            return input.value.trim() !== ''; // Для остальных полей - не пустое ли значение
+          }
+        });
         submitBtn.disabled = !allRequiredFilled;
       };
+      
       requiredInputs.forEach(input => {
-        input.addEventListener('input', checkFormValidity);
+        // Для чекбокса событие 'change' подходит лучше, чем 'input'
+        const eventType = input.type === 'checkbox' ? 'change' : 'input';
+        input.addEventListener(eventType, checkFormValidity);
       });
+      
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         if (submitBtn.disabled) return;
@@ -406,12 +417,20 @@ export default {
           method: 'POST',
           headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)
-        }).then(response => { if (!response.ok) throw new Error('Ошибка сервера');
-        }).catch(error => { console.error('Ошибка:', error);
+        }).then(response => { 
+          if (!response.ok) throw new Error('Ошибка сервера');
+        }).catch(error => { 
+          console.error('Ошибка:', error);
           const mailtoBody = `Имя: ${formData.name}\nТелефон: ${formData.phone}\nEmail: ${formData.email}${friendContact ? `\nРекомендация для: ${friendContact}`:''}`;
           window.location.href = `mailto:theorchestramanco@gmail.com?subject=${encodeURIComponent(formData._subject)}&body=${encodeURIComponent(mailtoBody)}`;
-        }).finally(() => { setTimeout(() => { successMessage.style.display = 'none'; checkFormValidity(); }, 15000); });
+        }).finally(() => { 
+          setTimeout(() => { 
+            successMessage.style.display = 'none'; 
+            checkFormValidity(); 
+          }, 15000); 
+        });
       });
+      
       checkFormValidity();
     }
   }
