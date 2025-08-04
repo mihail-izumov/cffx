@@ -185,42 +185,44 @@ export default defineConfig({
       border-bottom-color: var(--vp-c-brand-1);
     }
     
-    /* === ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ КАРТОЧЕК НА ГЛАВНОЙ СТРАНИЦЕ === */
+    /* === ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ КАРТОЧЕК, ЧТОБЫ ОНИ ВСЕГДА БЫЛИ ТЕМНЫМИ === */
     /* Фиксируем темный фон для карточек в любой теме */
     .VPFeature {
       background-color: #202124 !important;
-      border: 1px solid var(--vp-c-divider-dark-1) !important;
-    }
-
-    /* Весь текст внутри карточки делаем светлым */
-    .VPFeature .title,
-    .VPFeature .details {
-      color: var(--vp-c-text-dark-1) !important;
+      border: 1px solid #3c3c3c !important;
     }
     
-    /* Ссылка внутри карточки */
+    /* ЗАГОЛОВОК КАРТОЧКИ: всегда ярко-зеленый */
+    .VPFeature .title {
+      color: var(--vp-c-brand-2) !important;
+    }
+    
+    /* ОПИСАНИЕ В КАРТОЧКЕ: всегда светло-серый */
+    .VPFeature .details {
+      color: var(--vp-c-text-dark-2) !important;
+    }
+    
+    /* ССЫЛКА В КАРТОЧКЕ: всегда приглушенный зеленый */
     .VPFeature .link-text {
       color: var(--vp-c-brand-1) !important;
     }
     
     .VPFeature .link-text .icon {
-        fill: var(--vp-c-brand-1) !important;
+      fill: var(--vp-c-brand-1) !important;
     }
     
-    /* При наведении на карточку */
+    /* --- СТИЛИ ПРИ НАВЕДЕНИИ НА КАРТОЧКУ --- */
     a.VPFeature.link:hover {
-      background-color: #28292c !important;
-      border-color: var(--vp-c-divider-dark-2) !important;
+      background-color: #2f2f2f !important;
+      border-color: #555 !important;
     }
     
-    /* Меняем цвет заголовка и ссылки на акцентный при наведении */
-    a.VPFeature.link:hover .title,
+    /* При наведении меняем цвет только у ссылки */
     a.VPFeature.link:hover .link-text {
       color: var(--vp-c-brand-2) !important;
     }
-
     a.VPFeature.link:hover .link-text .icon {
-        fill: var(--vp-c-brand-2) !important;
+      fill: var(--vp-c-brand-2) !important;
     }
     /* === КОНЕЦ СТИЛЕЙ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ === */
 
