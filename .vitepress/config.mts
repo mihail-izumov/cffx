@@ -338,6 +338,13 @@ export default defineConfig({
     outlineTitle: 'На этой странице',
     returnToTopLabel: 'Наверх',
     
+    // --- ДОБАВЛЕН ПЕРЕВОД НАВИГАЦИИ ---
+    docFooter: {
+      prev: 'Предыдущая страница',
+      next: 'Следующая страница'
+    },
+    // ---------------------------------
+    
     sidebar: {
       '/about/': { items: sidebarAbout() },
       '/method/': { items: sidebarMethod() },
