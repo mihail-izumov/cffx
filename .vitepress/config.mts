@@ -27,7 +27,7 @@ export default defineConfig({
     (function() {
     function createFooterContent() {
       const links = [
-        { text: 'Журнал', href: '/journal/contents/index' },
+        { text: 'Журнал', href: '/journal/contents/overview' },
         { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
         { text: 'Поддержка', href: '/support' },
         { text: 'Условия использования', href: '/terms' },
@@ -491,7 +491,7 @@ function sidebarSystem(): DefaultTheme.SidebarItem[] {
 function sidebarJournal(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Журнал', collapsed: false, items: [
-        { text: 'Содержание', link: '/journal/contents/index' },        
+        { text: 'Содержание', link: '/journal/contents/overview' },        
         { text: 'Кейсы', link: '/journal/contents/cases' },
         { text: 'Статьи', link: '/journal/contents/articles' }
       ]
