@@ -95,45 +95,44 @@ const activeTab = ref('methodology')
 /* --- СТИЛИ ДЛЯ ПЕРЕКЛЮЧАТЕЛЕЙ (ТЭБОВ) --- */
 .tabs {
   display: flex;
-  flex-wrap: wrap; /* Для адаптивности на мобильных */
+  flex-wrap: wrap;
   gap: 1rem;
   margin: 1.5rem 0 1rem;
 }
 
+/* Базовое (неактивное) состояние кнопки */
 .tabs button {
-  /* Базовый стиль из .project-button */
-  background-color: #347b6c;
-  color: white;
+  background-color: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  border: 1px solid var(--vp-c-divider);
   padding: 12px 16px;
   border-radius: 8px;
   font-weight: 700;
   font-size: 14px;
-  text-align: center;
-  text-decoration: none;
-  border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
-.tabs button:hover {
-  /* Стиль при наведении из .project-button:hover */
-  background-color: #C5F946;
-  color: #000;
+/* Состояние при наведении (для всех кнопок) и для активной кнопки */
+.tabs button:hover,
+.tabs button.active {
+  background-color: #C5F946; /* Ярко-зеленый фон */
+  color: #000; /* ИСПРАВЛЕНО: Чёрный текст для контраста */
+  border-color: #C5F946; /* Рамка в цвет фона */
   transform: translateY(-2px);
 }
 
+/* Возвращаем активную кнопку на место, чтобы она не "прыгала" */
 .tabs button.active {
-  /* Активное состояние в стиле hover для наглядности */
-  background-color: #C5F946;
-  color: #000;
-  transform: none; /* Убираем сдвиг для активного элемента */
+  transform: none;
 }
 
 /* --- СТИЛИ ДЛЯ КОНТЕНТА ВНУТРИ ТЭБОВ --- */
 .tab-content {
-  padding: 1rem 1.25rem;
+  padding: 1.25rem;
   border-radius: 12px;
-  background: rgba(52, 123, 108, 0.2); /* Немного прозрачности для фона */
+  background: rgba(52, 123, 108, 0.15); /* Фон с легкой прозрачностью */
+  border: 1px solid var(--vp-c-divider);
 }
 
 .tab-content h4 {
@@ -155,16 +154,16 @@ const activeTab = ref('methodology')
 /* --- СТИЛИ ДЛЯ КАРТОЧЕК --- */
 .grid.cards {
   margin-top: 2rem;
-  display: grid; /* Убедимся, что это grid */
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
 }
 
 .card {
-  border: none; /* Убираем рамку */
+  border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
-  padding: 1.5rem; /* 24px */
-  background: rgba(52, 123, 108, 0.2);
+  padding: 1.5rem;
+  background-color: var(--vp-c-bg-soft);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -174,6 +173,6 @@ const activeTab = ref('methodology')
   margin-top: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #C5F946; /* Акцентный цвет */
+  color: #C5F946;
 }
 </style>
