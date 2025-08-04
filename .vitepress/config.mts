@@ -134,18 +134,81 @@ export default defineConfig({
   })();
 `],
     ['style', {}, `
-    /* === ДОБАВЛЕННЫЙ КОД === */
+    /* === СТИЛИ ДЛЯ HERO-СЕКЦИИ === */
+    .VPHero .name,
     .VPHero .text,
     .VPHero .tagline {
       color: white !important;
     }
-    /* === КОНЕЦ ДОБАВЛЕННОГО КОДА === */
+    /* === КОНЕЦ СТИЛЕЙ ДЛЯ HERO-СЕКЦИИ === */
+
+    /* === СТИЛИ ДЛЯ ССЫЛОК И КНОПОК НА ГЛАВНОЙ СТРАНИЦЕ === */
+    /* Ссылки в hero-секции (не кнопки) */
+    .VPHero .tagline a {
+      color: var(--vp-c-brand-2) !important;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .VPHero .tagline a:hover {
+      color: var(--vp-c-brand-1) !important;
+      text-decoration: underline;
+    }
+
+    /* Кнопки действий в hero-секции */
+    .VPHero .VPButton {
+      background-color: var(--vp-c-brand-1) !important;
+      border-color: var(--vp-c-brand-1) !important;
+      color: white !important;
+      transition: all 0.3s ease;
+      text-decoration: none !important;
+    }
+
+    .VPHero .VPButton:hover {
+      background-color: var(--vp-c-brand-2) !important;
+      border-color: var(--vp-c-brand-2) !important;
+      color: #000 !important;
+      transform: translateY(-2px);
+      text-decoration: none !important;
+    }
+
+    /* Ссылки в основном контенте главной страницы */
+    .VPContent a {
+      color: var(--vp-c-brand-2);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .VPContent a:hover {
+      color: var(--vp-c-brand-1);
+      border-bottom-color: var(--vp-c-brand-1);
+    }
+    
+    /* === СТИЛИ ДЛЯ КАРТОЧЕК НА ГЛАВНОЙ СТРАНИЦЕ === */
+    /* Плавный переход для заголовка и ссылки */
+    .VPFeature .title,
+    .VPFeature .link-text {
+      transition: color 0.25s ease-in-out;
+    }
+    
+    /* Начальный цвет для ссылки и стрелки */
+    .VPFeature .link-text {
+      color: var(--vp-c-brand-1);
+    }
+    
+    /* При наведении на ВСЮ карточку (которая является ссылкой)... */
+    a.VPFeature.link:hover .title,
+    a.VPFeature.link:hover .link-text {
+      color: var(--vp-c-brand-2); /* ...меняем цвет и заголовка, и ссылки на яркий */
+    }
+    /* === КОНЕЦ СТИЛЕЙ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ === */
 
     :root {
-      --vp-c-brand-1: #2e6b5e;
-      --vp-c-brand-2: #3a7d6e;
-      --vp-c-brand-3: #2e6b5e;
-      --vp-c-brand-soft: rgba(46, 107, 94, 0.14);
+      --vp-c-brand-1: #347b6c; /* Новый, более яркий зеленый */
+      --vp-c-brand-2: #C5F946;
+      --vp-c-brand-3: #347b6c;
+      --vp-c-brand-soft: rgba(52, 123, 108, 0.14);
     }
     .VPNavBarTitle .logo {
       height: 32px !important;
@@ -196,7 +259,9 @@ export default defineConfig({
       margin: 0 4px;
     }
     .VPSocialLink[aria-label="apply-link"]:hover::after {
-      background: var(--vp-c-brand-darker, var(--vp-c-brand));
+      background: var(--vp-c-brand-2) !important; /* Ярко-зеленый фон */
+      border-color: var(--vp-c-brand-2) !important;
+      color: #000 !important; /* Черный текст для читаемости */
       transform: translateY(-1px);
     }
     .custom-footer-links {
@@ -269,10 +334,9 @@ export default defineConfig({
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста",
     
-    // ✅ ДОБАВЛЕННЫЙ КОД ДЛЯ ПЕРЕВОДА ИНТЕРФЕЙСА
     sidebarMenuLabel: 'Меню',
     outlineTitle: 'На этой странице',
-    returnToTopLabel: 'Наверх', // Также можно перевести кнопку "Наверх"
+    returnToTopLabel: 'Наверх',
     
     sidebar: {
       '/about/': { items: sidebarAbout() },
