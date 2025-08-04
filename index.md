@@ -5,6 +5,9 @@ layout: home
 hero:
   name: "Расти по своим правилам."
   tagline: Находим то, что другие упускают.
+  image:
+    src: /runscale_main_ban.png
+    alt: Модуль Роста®
   actions:
     - theme: brand
       text: Индекс Роста
