@@ -141,55 +141,66 @@ export default defineConfig({
       color: white !important;
     }
 
-    /* === СТИЛИ ДЛЯ КНОПОК И ССЫЛОК В HERO === */
+    /* === СТИЛИ ДЛЯ ССЫЛОК И КНОПОК НА ГЛАВНОЙ СТРАНИЦЕ === */
     .VPHero .tagline a {
       color: var(--vp-c-brand-2) !important;
       text-decoration: none;
       transition: all 0.3s ease;
     }
+
     .VPHero .tagline a:hover {
       color: var(--vp-c-brand-1) !important;
       text-decoration: underline;
     }
+
     .VPHero .VPButton {
       background-color: var(--vp-c-brand-1) !important;
       border-color: var(--vp-c-brand-1) !important;
       color: white !important;
       transition: all 0.3s ease;
+      text-decoration: none !important;
     }
+
     .VPHero .VPButton:hover {
       background-color: var(--vp-c-brand-2) !important;
       border-color: var(--vp-c-brand-2) !important;
       color: #000 !important;
       transform: translateY(-2px);
+      text-decoration: none !important;
     }
 
-    /* === СТИЛИ ДЛЯ КАРТОЧЕК (VPFEATURE) НА ГЛАВНОЙ === */
-    /* Эти стили будут применяться по умолчанию (в темной теме) */
-    .VPFeature {
-        background-color: var(--vp-c-bg-soft-dark);
-        border: 1px solid var(--vp-c-divider-dark-1);
-        transition: background-color .25s, border-color .25s;
+    .VPContent a {
+      color: var(--vp-c-brand-2);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: all 0.3s ease;
     }
-    .VPFeature .title {
-        color: var(--vp-c-brand-2);
+
+    .VPContent a:hover {
+      color: var(--vp-c-brand-1);
+      border-bottom-color: var(--vp-c-brand-1);
     }
-    .VPFeature .details {
-        color: var(--vp-c-text-dark-2);
-    }
+    
+    /* === СТИЛИ ДЛЯ КАРТОЧЕК НА ГЛАВНОЙ СТРАНИЦЕ === */
+    /* Плавный переход для заголовка и ссылки */
+    .VPFeature .title,
     .VPFeature .link-text {
-        color: var(--vp-c-brand-1);
+      transition: color 0.25s ease-in-out;
     }
-    .VPFeature .link-text .icon {
-        fill: var(--vp-c-brand-1);
+    
+    /* Начальный цвет для ссылки и стрелки */
+    .VPFeature .link-text {
+      color: var(--vp-c-brand-1);
     }
-    a.VPFeature.link:hover {
-        background-color: var(--vp-c-bg-dark);
-        border-color: var(--vp-c-divider-dark-2);
+    
+    /* При наведении на ВСЮ карточку (которая является ссылкой)... */
+    a.VPFeature.link:hover .title,
+    a.VPFeature.link:hover .link-text {
+      color: var(--vp-c-brand-2); /* ...меняем цвет и заголовка, и ссылки на яркий */
     }
 
-    /* ПРИНУДИТЕЛЬНЫЕ СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ */
-    /* Этот блок заставляет карточки выглядеть темными, даже если включена светлая тема */
+    /* СПЕЦИФИЧНЫЕ СТИЛИ ТОЛЬКО ДЛЯ КАРТОЧЕК В СВЕТЛОЙ ТЕМЕ */
+    /* Эти правила действуют только на .VPFeature и не влияют на остальные элементы */
     html:not(.dark) .VPFeature {
       background-color: #202124 !important;
       border-color: #3c3c3c !important;
@@ -210,10 +221,10 @@ export default defineConfig({
       background-color: #2f2f2f !important;
       border-color: #555 !important;
     }
-    
-    /* === ОСНОВНЫЕ ПЕРЕМЕННЫЕ И СТИЛИ === */
+    /* === КОНЕЦ СТИЛЕЙ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ === */
+
     :root {
-      --vp-c-brand-1: #347b6c;
+      --vp-c-brand-1: #347b6c; /* Новый, более яркий зеленый */
       --vp-c-brand-2: #C5F946;
       --vp-c-brand-3: #347b6c;
       --vp-c-brand-soft: rgba(52, 123, 108, 0.14);
@@ -230,6 +241,13 @@ export default defineConfig({
     }
     .VPSocialLink .vpi-social-github {
       display: none !important;
+    }
+    .VPSocialLink {
+      width: auto !important;
+      height: auto !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
     }
     .VPSocialLink[aria-label="login-link"]::after {
       content: "Войти";
@@ -260,13 +278,11 @@ export default defineConfig({
       margin: 0 4px;
     }
     .VPSocialLink[aria-label="apply-link"]:hover::after {
-      background: var(--vp-c-brand-2) !important;
+      background: var(--vp-c-brand-2) !important; /* Ярко-зеленый фон */
       border-color: var(--vp-c-brand-2) !important;
-      color: #000 !important;
+      color: #000 !important; /* Черный текст для читаемости */
       transform: translateY(-1px);
     }
-    
-    /* Стили футера и адаптивности */
     .custom-footer-links {
       display: flex;
       flex-direction: column;
@@ -307,6 +323,9 @@ export default defineConfig({
       }
       .VPSocialLink {
         width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
       }
       .VPSocialLink[aria-label="login-link"]::after,
       .VPSocialLink[aria-label="apply-link"]::after {
@@ -377,6 +396,7 @@ export default defineConfig({
   }
 })
 
+// Остальные функции остаются без изменений
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Продукты', items: [
@@ -387,7 +407,7 @@ function nav(): DefaultTheme.NavItem[] {
     { text: 'Радар', items: [
         { text: 'Индекс Роста', link: '/radar/overview' },
         { text: 'Сигнал Радара', link: '/radar/signal/log' },
-        { text: 'Программа рекомендаций', link: '/radar/invite' }
+        { text: 'Программа рекомендаций', link: '/radar/invite' }
       ]
     },
     { text: 'Компания', items: [
@@ -490,7 +510,7 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
         { text: 'Сигнал Радара', link: '/radar/signal/log' },
         { text: 'Фильтр Потенциала', link: '/radar/filter' },
         { text: 'Кто Анна', link: '/radar/who-is-anna' },
-        { text: 'Программа рекомендаций', link: '/radar/invite' }
+        { text: 'Программа рекомендаций', link: '/radar/invite' }
       ]
     }]
 }
