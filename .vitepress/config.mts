@@ -332,7 +332,7 @@ export default defineConfig({
   description: 'Эксперты по системному росту бизнеса. Помогаем владельцам компаний находить скрытые резервы прибыли через data-driven подход и глубокую диагностику процессов.',
   themeConfig: {
     logo: '/favicon.svg',
-    siteTitle: "Модуль Роста",
+    siteTitle: "Модуль Роста®",
     
     sidebarMenuLabel: 'Меню',
     outlineTitle: 'На этой странице',
