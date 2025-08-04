@@ -1,7 +1,3 @@
----
-title: Мы — Модуль Роста®
----
-
 <script setup>
 import { ref } from 'vue'
 const activeTab = ref('methodology')
