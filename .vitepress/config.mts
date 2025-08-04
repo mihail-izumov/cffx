@@ -308,7 +308,7 @@ export default defineConfig({
       color: var(--vp-c-text-3);
       font-weight: bold;
     }
-    .VPFooter .copyright {
+    .VPFootер .copyright {
       margin-top: 2px !important;
     }
     @media (max-width: 768px) {
@@ -399,11 +399,6 @@ export default defineConfig({
 // Остальные функции остаются без изменений
 function nav(): DefaultTheme.NavItem[] {
   return [
-    { text: 'Продукты', items: [
-        { text: 'Чекап', link: '/checkup/overview' },
-        { text: 'Система роста бизнеса', link: '/system/overview' }
-      ]
-    },
     { text: 'Радар', items: [
         { text: 'Индекс Роста', link: '/radar/overview' },
         { text: 'Сигнал Радара', link: '/radar/signal/log' },
@@ -413,6 +408,7 @@ function nav(): DefaultTheme.NavItem[] {
     { text: 'Компания', items: [
         { text: 'Кто мы', link: '/about/company' },
         { text: 'Метод', link: '/method/overview' },
+        { text: 'Продукты', link: '/products/overview' },
         { text: 'Технологии', link: '/technology/overview' },
         { text: 'Клиенты', link: '/clients/list' }
       ]
