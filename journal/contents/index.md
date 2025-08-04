@@ -9,7 +9,7 @@
       <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Кейсы</h3>
       <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">За 15 лет через наши руки прошло 80 проектов в 15 городах России, Франции и Монако. Некоторые стали историями успеха, другие — ценными уроками.</p>
     </div>
-    <a href="/projects/diary-guide/unlock/overview" class="project-button">
+    <a href="/journal/contents/cases" class="project-button">
       Исследовать
     </a>
   </div>
@@ -19,7 +19,7 @@
       <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Публикации</h3>
       <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Полное погружение в био-цифровой джаз Модуля Роста®. Здесь говорим о важном в деталях. От рефлексии на основе данных до страхов в отношениях с клиентами.</p>
     </div>
-    <a href="/projects/runscale" class="project-button">
+    <a href="/journal/contents/articles" class="project-button">
       Читать
     </a>
   </div>
