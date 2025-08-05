@@ -532,7 +532,8 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
       collapsed: false, 
       items: [
         { text: 'Лог Сигналов', link: '/radar/signal/log' },
-        { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' }
+        { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' },
+        { text: 'Инструкция по применению', link: '/radar/signal/instruction' }
       ]
     }
   ]
