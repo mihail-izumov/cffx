@@ -308,7 +308,7 @@ export default defineConfig({
       color: var(--vp-c-text-3);
       font-weight: bold;
     }
-    .VPFootер .copyright {
+    .VPFooter .copyright {
       margin-top: 2px !important;
     }
     @media (max-width: 768px) {
@@ -396,13 +396,27 @@ export default defineConfig({
   }
 })
 
-// Остальные функции остаются без изменений
+// Функция навигации с обновленным разделом Радар
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Радар', items: [
-        { text: 'Индекс Роста', link: '/radar/overview' },
-        { text: 'Сигнал Радара', link: '/radar/signal/log' },
-        { text: 'Программа рекомендаций', link: '/radar/invite' }
+        { 
+          text: 'Индекс Роста', 
+          items: [
+            { text: 'Индекс Роста', link: '/radar/overview' },
+            { text: 'Критерии для расчёта', link: '/radar/scale_index' },
+            { text: 'Фильтр потенциала', link: '/radar/filter' },
+            { text: 'Кто Анна', link: '/radar/who-is-anna' },
+            { text: 'Программа рекомендаций', link: '/radar/invite' }
+          ]
+        },
+        {
+          text: 'Сигнал Радара',
+          items: [
+            { text: 'Лог Сигналов', link: '/radar/signal/log' },
+            { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' }
+          ]
+        }
       ]
     },
     { text: 'Компания', items: [
@@ -498,17 +512,29 @@ function sidebarJournal(): DefaultTheme.SidebarItem[] {
     }]
 }
 
+// Обновленная функция sidebarRadar с двумя группами меню
 function sidebarRadar(): DefaultTheme.SidebarItem[] {
-  return [{
-      text: 'Радар', collapsed: false, items: [
+  return [
+    {
+      text: 'Индекс Роста', 
+      collapsed: false, 
+      items: [
         { text: 'Индекс Роста', link: '/radar/overview' },
-        { text: 'Критерии для расчета индекса', link: '/radar/scale_index' },
-        { text: 'Сигнал Радара', link: '/radar/signal/log' },
-        { text: 'Фильтр Потенциала', link: '/radar/filter' },
+        { text: 'Критерии для расчёта', link: '/radar/scale_index' },
+        { text: 'Фильтр потенциала', link: '/radar/filter' },
         { text: 'Кто Анна', link: '/radar/who-is-anna' },
         { text: 'Программа рекомендаций', link: '/radar/invite' }
       ]
-    }]
+    },
+    {
+      text: 'Сигнал Радара', 
+      collapsed: false, 
+      items: [
+        { text: 'Лог Сигналов', link: '/radar/signal/log' },
+        { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' }
+      ]
+    }
+  ]
 }
 
 function sidebarClients(): DefaultTheme.SidebarItem[] {
