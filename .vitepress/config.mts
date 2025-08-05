@@ -414,7 +414,6 @@ function nav(): DefaultTheme.NavItem[] {
           text: 'Сигнал Радара',
           items: [
             { text: 'Лог Сигналов', link: '/radar/signal/log' },
-            { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' },
             { text: 'Навигатор по кофейному рынку Самары', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
           ]
         }
