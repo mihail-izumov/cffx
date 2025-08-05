@@ -414,7 +414,8 @@ function nav(): DefaultTheme.NavItem[] {
           text: 'Сигнал Радара',
           items: [
             { text: 'Лог Сигналов', link: '/radar/signal/log' },
-            { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' }
+            { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' },
+            { text: 'Инструкция по применению', link: '/radar/signal/instruction' }
           ]
         }
       ]
