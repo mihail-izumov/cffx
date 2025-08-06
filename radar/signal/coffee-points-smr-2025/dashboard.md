@@ -76,7 +76,6 @@
 |**[Скрытые ниши →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#8)**|[B2B-возможности](/radar/signal/coffee-points-smr-2025/dashboard#г9-b2b-возможности)|Монетизация сегмента «цифровых кочевников»|Развитие бизнеса|
 |**[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**|[Региональная экспансия](/radar/signal/coffee-points-smr-2025/dashboard#г10-региональная-экспансия)|Самара как модель для других городов|Инвесторы|
 
----
 ## Детали
 
 ### Детали по зонам роста (А1-А3)
