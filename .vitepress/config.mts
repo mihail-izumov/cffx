@@ -187,25 +187,20 @@ export default defineConfig({
     }
     
     /* === СТИЛИ ДЛЯ КАРТОЧЕК НА ГЛАВНОЙ СТРАНИЦЕ === */
-    /* Плавный переход для заголовка и ссылки */
     .VPFeature .title,
     .VPFeature .link-text {
       transition: color 0.25s ease-in-out;
     }
     
-    /* Начальный цвет для ссылки и стрелки */
     .VPFeature .link-text {
       color: var(--vp-c-brand-1);
     }
     
-    /* При наведении на ВСЮ карточку (которая является ссылкой)... */
     a.VPFeature.link:hover .title,
     a.VPFeature.link:hover .link-text {
-      color: var(--vp-c-brand-2); /* ...меняем цвет и заголовка, и ссылки на яркий */
+      color: var(--vp-c-brand-2);
     }
 
-    /* СПЕЦИФИЧНЫЕ СТИЛИ ТОЛЬКО ДЛЯ КАРТОЧЕК В СВЕТЛОЙ ТЕМЕ */
-    /* Эти правила действуют только на .VPFeature и не влияют на остальные элементы */
     html:not(.dark) .VPFeature {
       background-color: #202124 !important;
       border-color: #3c3c3c !important;
@@ -226,10 +221,9 @@ export default defineConfig({
       background-color: #2f2f2f !important;
       border-color: #555 !important;
     }
-    /* === КОНЕЦ СТИЛЕЙ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ === */
 
     :root {
-      --vp-c-brand-1: #347b6c; /* Новый, более яркий зеленый */
+      --vp-c-brand-1: #347b6c;
       --vp-c-brand-2: #C5F946;
       --vp-c-brand-3: #347b6c;
       --vp-c-brand-soft: rgba(52, 123, 108, 0.14);
@@ -239,35 +233,105 @@ export default defineConfig({
       width: auto !important;
     }
     
-    /* ИСПРАВЛЕНО: Убираем пустое пространство и делаем одинаковые отступы */
-    .VPNavBar .content {
-      gap: 0 !important;
+    /* ДЕСКТОПНАЯ ВЕРСИЯ (больше 960px) */
+    @media (min-width: 961px) {
+      .VPNavBar .content {
+        gap: 0 !important;
+      }
+      
+      .VPNavBarMenu {
+        margin-right: 0 !important;
+      }
+      
+      .VPSwitchAppearance {
+        margin-left: 8px !important;
+        margin-right: 8px !important;
+      }
+      
+      .VPNavBarSocialLinks {
+        min-width: auto !important;
+        justify-content: flex-end !important;
+        gap: 16px !important;
+        margin-left: 0 !important;
+        flex-shrink: 0 !important;
+      }
+      
+      .VPSocialLink:not(:last-child) {
+        margin-right: 4px !important;
+      }
     }
-    
-    .VPNavBarMenu {
-      margin-right: 0 !important;
+
+    /* ПЛАНШЕТНАЯ/ПРОМЕЖУТОЧНАЯ ВЕРСИЯ (769px-960px) */
+    @media (max-width: 960px) and (min-width: 769px) {
+      .VPNavBar .content {
+        gap: 0 !important;
+      }
+      
+      .VPNavBarMenu {
+        margin-right: 0 !important;
+      }
+      
+      .VPSwitchAppearance {
+        margin-left: 4px !important;
+        margin-right: 4px !important;
+      }
+      
+      .VPNavBarSocialLinks {
+        margin-left: 4px !important;
+        gap: 12px !important;
+        flex-shrink: 0 !important;
+      }
+      
+      .VPSocialLink:not(:last-child) {
+        margin-right: 2px !important;
+      }
     }
-    
-    /* Делаем одинаковые отступы для переключателя тем */
-    .VPSwitchAppearance {
-      margin-left: 8px !important;
-      margin-right: 8px !important;
+
+    /* МОБИЛЬНАЯ ВЕРСИЯ (меньше 768px) */
+    @media (max-width: 768px) {
+      .VPNavBarSocialLinks {
+        width: 100% !important;
+        min-width: 100% !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        padding: 0 16px !important;
+        box-sizing: border-box !important;
+        margin-left: 0 !important;
+        margin-top: 8px !important;
+      }
+      .VPSocialLink {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+      }
+      .VPSocialLink:not(:last-child) {
+        margin-right: 0 !important;
+      }
+      .VPSocialLink[aria-label="login-link"]::after {
+        width: 100% !important;
+        display: block !important;
+        text-align: center;
+        padding: 10px 12px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+      }
+      
+      .VPSwitchAppearance {
+        margin: 8px 16px !important;
+        display: flex !important;
+        justify-content: center !important;
+      }
+      
+      .footer-row {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .dot-separator {
+        display: none;
+      }
     }
-    
-    /* ИСПРАВЛЕНО: Увеличиваем отступы еще больше между социальными иконками */
-    .VPNavBarSocialLinks {
-      min-width: auto !important;
-      justify-content: flex-end !important;
-      gap: 16px !important;
-      margin-left: 0 !important;
-      flex-shrink: 0 !important;
-    }
-    
-    /* Дополнительно: принудительно задаем отступ для каждой социальной ссылки */
-    .VPSocialLink:not(:last-child) {
-      margin-right: 4px !important;
-    }
-    
+
     .VPSocialLink .vpi-social-github {
       display: none !important;
     }
@@ -323,64 +387,6 @@ export default defineConfig({
     }
     .VPFooter .copyright {
       margin-top: 2px !important;
-    }
-    
-    /* ИСПРАВЛЕНО: Мобильные стили для предотвращения наезжания кнопок */
-    @media (max-width: 768px) {
-      .VPNavBarSocialLinks {
-        width: 100% !important;
-        min-width: 100% !important;
-        flex-direction: column !important;
-        gap: 8px !important;
-        padding: 0 16px !important;
-        box-sizing: border-box !important;
-        margin-left: 0 !important;
-        margin-top: 8px !important;
-      }
-      .VPSocialLink {
-        width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
-        box-sizing: border-box !important;
-      }
-      .VPSocialLink:not(:last-child) {
-        margin-right: 0 !important;
-      }
-      .VPSocialLink[aria-label="login-link"]::after {
-        width: 100% !important;
-        display: block !important;
-        text-align: center;
-        padding: 10px 12px !important;
-        margin: 0 !important;
-        box-sizing: border-box !important;
-      }
-      
-      /* Исправляем отступы переключателя тем в мобильной версии */
-      .VPSwitchAppearance {
-        margin: 8px 16px !important;
-        display: flex !important;
-        justify-content: center !important;
-      }
-      
-      .footer-row {
-        flex-direction: column;
-        gap: 8px;
-      }
-      .dot-separator {
-        display: none;
-      }
-    }
-    
-    /* ДОПОЛНИТЕЛЬНО: Исправляем отступы в средних размерах экрана */
-    @media (max-width: 960px) and (min-width: 769px) {
-      .VPNavBarSocialLinks {
-        margin-left: 4px !important;
-        gap: 12px !important;
-      }
-      .VPSwitchAppearance {
-        margin-left: 4px !important;
-        margin-right: 4px !important;
-      }
     }
     `]
   ],
