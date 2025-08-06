@@ -266,7 +266,7 @@ export default defineConfig({
       border-color: var(--vp-c-brand);
     }
     .VPSocialLink[aria-label="apply-link"]::after {
-      content: "Чекап";
+      content: "Начать";
       font-size: 14px;
       color: white;
       padding: 6px 12px;
@@ -348,7 +348,7 @@ export default defineConfig({
   ],
   base: '/',
   outDir: '.vitepress/dist',
-  description: 'Находим то, что другие упускают.',
+  description: 'Технологический партнер, который помогает бизнесу с высоким потенциалом обрести ясность, построить автономную систему управления и выйти на траекторию устойчивого роста.',
   themeConfig: {
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста®",
@@ -397,28 +397,14 @@ export default defineConfig({
   }
 })
 
-// Функция навигации с измененным пунктом BREW (без подменю, прямая ссылка)
+// Функция навигации с переименованным "Радар" в "Инструменты" и упрощенным подменю
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'BREW', link: '/brew/run' },
-    { text: 'Радар', items: [
-        { 
-          text: 'Индекс Роста', 
-          items: [
-            { text: 'Индекс Роста', link: '/radar/overview' },
-            { text: 'Критерии для расчёта', link: '/radar/scale_index' },
-            { text: 'Фильтр потенциала', link: '/radar/filter' },
-            { text: 'Кто Анна', link: '/radar/who-is-anna' },
-            { text: 'Программа рекомендаций', link: '/radar/invite' }
-          ]
-        },
-        {
-          text: 'Сигнал Радара',
-          items: [
-            { text: 'Лог Сигналов', link: '/radar/signal/log' },
-            { text: 'Рынок кофеен // Самара', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
-          ]
-        }
+    { text: 'Инструменты', items: [
+        { text: 'Индекс Роста', link: '/radar/overview' },
+        { text: 'Сигнал Радара', link: '/radar/signal/log' },
+        { text: 'Чекап', link: '/checkup/overview' }
       ]
     },
     { text: 'Компания', items: [
@@ -480,9 +466,10 @@ function sidebarTechnology(): DefaultTheme.SidebarItem[] {
     }]
 }
 
+// Изменено название с "Бизнес-чекап" на "Чекап"
 function sidebarCheckup(): DefaultTheme.SidebarItem[] {
   return [
-    { text: 'Бизнес-чекап', collapsed: false, items: [
+    { text: 'Чекап', collapsed: false, items: [
         { text: 'Обзор', link: '/checkup/overview' },
         { text: 'Детали чекапа', link: '/checkup/specs' },
         { text: 'Глубокий чекап', link: '/checkup/deep' },
@@ -545,7 +532,7 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
         { text: 'Лог Сигналов', link: '/radar/signal/log' },
         { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' },
         { text: 'Инструкция по применению', link: '/radar/signal/instruction' },
-        { text: 'Рынок кофеен // Самара', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
+        { text: 'Навигатор по кофейному рынку Самары', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
       ]
     }
   ]
