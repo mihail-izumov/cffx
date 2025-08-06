@@ -134,16 +134,6 @@ export default defineConfig({
   })();
 `],
     ['style', {}, `
-    /* Убираем переключатель тем везде */
-    .VPSwitchAppearance { 
-      display: none !important; 
-    }
-    
-    /* Убираем надпись Appearance в мобильной версии */
-    .VPNavScreenAppearance { 
-      display: none !important; 
-    }
-    
     /* Делаем текст в кнопке "Войти" жирнее */
     .VPSocialLink[aria-label="login-link"]::after {
       font-weight: 600 !important;
@@ -358,8 +348,7 @@ export default defineConfig({
   outDir: '.vitepress/dist',
   description: 'Технологический партнер, который помогает бизнесу с высоким потенциалом обрести ясность, построить автономную систему управления и выйти на траекторию устойчивого роста.',
   themeConfig: {
-    // Убираем переключатель тем
-    appearance: false,
+    // Возвращаем переключатель тем (убрал appearance: false)
     
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста®",
@@ -401,7 +390,7 @@ export default defineConfig({
       }
     },
     nav: nav(),
-    // Добавляем правильную иконку Telegram в правильное место
+    // Telegram и кнопка "Войти"
     socialLinks: [
       { 
         icon: { 
