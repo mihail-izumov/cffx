@@ -204,7 +204,7 @@
 Серьёзная аналитика — это партнёрство, а не услуга.
 
 <div class="start-button-container">
-  <a href="/apply#форма-запроса-на-чекап" class="btn btn-primary">Запросить чекап →</a>
+  <a href="/apply#форма-запроса-на-чекап" class="btn btn-primary">Пройти Чекап →</a>
 </div>
 
 ### Ещё не готовы?
