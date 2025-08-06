@@ -134,8 +134,13 @@ export default defineConfig({
   })();
 `],
     ['style', {}, `
-    /* Убираем переключатель тем */
+    /* Убираем переключатель тем везде */
     .VPSwitchAppearance { 
+      display: none !important; 
+    }
+    
+    /* Убираем надпись Appearance в мобильной версии */
+    .VPNavScreenAppearance { 
       display: none !important; 
     }
     
@@ -243,10 +248,11 @@ export default defineConfig({
       height: 32px !important;
       width: auto !important;
     }
+    /* Убираем лишние отступы для социальных ссылок */
     .VPNavBarSocialLinks {
-      min-width: 280px !important;
+      min-width: auto !important;
       justify-content: flex-end !important;
-      gap: 20px !important;
+      gap: 0 !important;
       margin-left: 0px !important;
     }
     .VPSocialLink .vpi-social-github {
@@ -274,24 +280,6 @@ export default defineConfig({
     .VPSocialLink[aria-label="login-link"]:hover::after {
       background: var(--vp-c-bg-soft);
       border-color: var(--vp-c-brand);
-    }
-    .VPSocialLink[aria-label="apply-link"]::after {
-      content: "Пройти Чекап";
-      font-size: 14px;
-      color: white;
-      padding: 6px 12px;
-      border: 1px solid var(--vp-c-brand);
-      border-radius: 6px;
-      background: var(--vp-c-brand);
-      transition: all 0.3s ease;
-      white-space: nowrap;
-      margin: 0 4px;
-    }
-    .VPSocialLink[aria-label="apply-link"]:hover::after {
-      background: var(--vp-c-brand-2) !important; /* Ярко-зеленый фон */
-      border-color: var(--vp-c-brand-2) !important;
-      color: #000 !important; /* Черный текст для читаемости */
-      transform: translateY(-1px);
     }
     .custom-footer-links {
       display: flex;
@@ -337,8 +325,7 @@ export default defineConfig({
         justify-content: center !important;
         box-sizing: border-box !important;
       }
-      .VPSocialLink[aria-label="login-link"]::after,
-      .VPSocialLink[aria-label="apply-link"]::after {
+      .VPSocialLink[aria-label="login-link"]::after {
         width: 100% !important;
         display: block !important;
         text-align: center;
@@ -358,7 +345,7 @@ export default defineConfig({
   ],
   base: '/',
   outDir: '.vitepress/dist',
-  description: 'Находим то, что другие упускают.',
+  description: 'Технологический партнер, который помогает бизнесу с высоким потенциалом обрести ясность, построить автономную систему управления и выйти на траекторию устойчивого роста.',
   themeConfig: {
     // Убираем переключатель тем
     appearance: false,
