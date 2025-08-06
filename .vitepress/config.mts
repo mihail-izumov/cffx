@@ -287,48 +287,70 @@ export default defineConfig({
       }
     }
 
-    /* МОБИЛЬНАЯ ВЕРСИЯ (меньше 768px) */
+    /* МОБИЛЬНАЯ ВЕРСИЯ (меньше 768px) - ИСПРАВЛЕНО */
     @media (max-width: 768px) {
-      .VPNavBarSocialLinks {
-        width: 100% !important;
-        min-width: 100% !important;
+      /* Скрываем стандартные социальные ссылки в шапке */
+      .VPNavBar .VPNavBarSocialLinks {
+        display: none !important;
+      }
+      
+      /* Стилизуем элементы в мобильном меню */
+      .VPNavScreen {
+        overflow-y: auto !important;
+      }
+      
+      .VPNavScreen .VPNavScreenMenu {
+        padding-bottom: 16px !important;
+      }
+      
+      /* Группа с социальными ссылками и переключателем */
+      .VPNavScreen .VPNavScreenSocialLinks,
+      .VPNavScreen .VPNavScreenAppearance {
+        margin: 16px !important;
+        padding: 16px !important;
+        border: 1px solid var(--vp-c-divider) !important;
+        border-radius: 8px !important;
+        background: var(--vp-c-bg-soft) !important;
+      }
+      
+      .VPNavScreen .VPNavScreenSocialLinks {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+      }
+      
+      .VPNavScreen .VPSocialLink {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 12px !important;
+        background: var(--vp-c-bg) !important;
+        border-radius: 6px !important;
+        border: 1px solid var(--vp-c-divider) !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+      }
+      
+      .VPNavScreen .VPSocialLink:hover {
+        background: var(--vp-c-bg-mute) !important;
+        border-color: var(--vp-c-brand) !important;
+      }
+      
+      /* Текст для кнопки "Войти" */
+      .VPNavScreen .VPSocialLink[aria-label="login-link"]::after {
+        content: "Войти" !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        color: var(--vp-c-text-1) !important;
+      }
+      
+      /* Стили для футера */
+      .footer-row {
         flex-direction: column !important;
         gap: 8px !important;
-        padding: 0 16px !important;
-        box-sizing: border-box !important;
-        margin-left: 0 !important;
-        margin-top: 8px !important;
-      }
-      .VPSocialLink {
-        width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
-        box-sizing: border-box !important;
-      }
-      .VPSocialLink:not(:last-child) {
-        margin-right: 0 !important;
-      }
-      .VPSocialLink[aria-label="login-link"]::after {
-        width: 100% !important;
-        display: block !important;
-        text-align: center;
-        padding: 10px 12px !important;
-        margin: 0 !important;
-        box-sizing: border-box !important;
-      }
-      
-      .VPSwitchAppearance {
-        margin: 8px 16px !important;
-        display: flex !important;
-        justify-content: center !important;
-      }
-      
-      .footer-row {
-        flex-direction: column;
-        gap: 8px;
       }
       .dot-separator {
-        display: none;
+        display: none !important;
       }
     }
 
