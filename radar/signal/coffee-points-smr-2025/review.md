@@ -74,6 +74,7 @@
   <a href="/radar/signal/coffee-points-smr-2025/dashboard" class="btn btn-primary">Диалог с отчётом →</a>
 </div>
 
+<style>
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
 .btn {
   display: inline-block;
