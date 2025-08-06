@@ -82,7 +82,7 @@
 **Важно:** Анна — не бот. Она обрабатывает каждый запрос индивидуально, поэтому ответ может занять некоторое время. Это шаг для тех, кто готов превратить точную модель в реальность.
 
 <div class="start-button-container">
-  <a href="https://t.me/Anna_runScale" class="btn btn-primary">Начать диалог с Анной →</a>
+  <a href="https://t.me/Anna_runScale" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Начать диалог с Анной →</a>
 </div>
 
 <style>
