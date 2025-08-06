@@ -17,8 +17,8 @@
 
 Эта навигация — структурированный доступ к результатам анализа 2,415 развернутых отзывов о сети-лидере и сотнях мнений о ее конкурентах. «Сигнал Радара» от Модуля Роста® обрабатывает большие объемы неструктурированных данных (отзывы, комментарии) и выявляет в них ключевые факторы, влияющие на бизнес-показатели.
 
-**[Исправить проблему →](/radar/signal/coffee-points-smr-2025/dashboard#раздел-а-критические-слабости-красная-зона)** <br>
-**[Усилить преимущество →](/radar/signal/coffee-points-smr-2025/dashboard#раздел-б-суперсилы-лидеров-зеленая-зона)** <br>
+**[Исправить проблему →](/radar/signal/coffee-points-smr-2025/dashboard.html#раздел-а-критические-слабости-«красная-зона»)** <br>
+**[Усилить преимущество →](/radar/signal/coffee-points-smr-2025/dashboard.html#раздел-б-суперсилы-лидеров-«зеленая-зона»)** <br>
 **[Изучить конкурентов →](/radar/signal/coffee-points-smr-2025/dashboard#раздел-в-конкурентная-карта)** <br>
 **[Найти возможности роста →](/radar/signal/coffee-points-smr-2025/dashboard#раздел-г-10-готовых-запросов-для-исследования-конкретных-бизнес-задач)** <br>
 
@@ -58,7 +58,7 @@
 
 |**Диалог**|**Сеть**|**Суперсила**|**Секрет успеха**|
 |---|---|---|---|
-|**[Как масштабировать уют →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#13)**|**[Корж](/radar/signal/coffee-points-smr-2025/dashboard#б1-корж-технология-создания-эмоциональной-связи)**|Эмоциональная связь (9/10)|«Домашняя» атмосфера + персональный сервис|
+|**[Как масштабировать уют →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#13)**|**[Корж](/radar/signal/coffee-points-smr-2025/dashboard.html#б1-«корж»-технология-создания-эмоциональнои-связи)**|Эмоциональная связь (9/10)|«Домашняя» атмосфера + персональный сервис|
 |**[Как построить систему →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#14)**|**[Skuratov](/radar/signal/coffee-points-smr-2025/dashboard#б2-skuratov-coffee-сила-в-системе-и-стабильности)**|Системность (9/10 кофе)|Стандартизация процессов + стабильность|
 |**[Как создать культ бренда →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#15)**|**[Surf Coffee](/radar/signal/coffee-points-smr-2025/dashboard#б3-surf-coffee-мастерство-нишевого-брендинга)**|Нишевый брендинг (9/10 дизайн)|«Племя» молодежи + субкультурная эстетика|
 |**[Как монетизировать локацию →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#16)**|**[White Cup](/radar/signal/coffee-points-smr-2025/dashboard#б4-white-cup-сила-уникального-места)**|Уникальность места (9/10 атмосфера)|«Дворик как в Европе» + destination place|
