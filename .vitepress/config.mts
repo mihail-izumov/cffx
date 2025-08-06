@@ -266,7 +266,7 @@ export default defineConfig({
       border-color: var(--vp-c-brand);
     }
     .VPSocialLink[aria-label="apply-link"]::after {
-      content: "Начать";
+      content: "Пройти Чекап";
       font-size: 14px;
       color: white;
       padding: 6px 12px;
