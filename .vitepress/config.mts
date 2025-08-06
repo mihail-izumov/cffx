@@ -254,10 +254,11 @@ export default defineConfig({
       margin-right: 8px !important;
     }
     
+    /* ИСПРАВЛЕНО: Добавляем правильные отступы между социальными иконками */
     .VPNavBarSocialLinks {
       min-width: auto !important;
       justify-content: flex-end !important;
-      gap: 8px !important;
+      gap: 12px !important;
       margin-left: 0 !important;
       flex-shrink: 0 !important;
     }
@@ -364,6 +365,7 @@ export default defineConfig({
     @media (max-width: 960px) and (min-width: 769px) {
       .VPNavBarSocialLinks {
         margin-left: 4px !important;
+        gap: 8px !important;
       }
       .VPSwitchAppearance {
         margin-left: 4px !important;
