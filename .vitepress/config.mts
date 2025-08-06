@@ -239,7 +239,7 @@ export default defineConfig({
       width: auto !important;
     }
     
-    /* Убираем пустое пространство между меню и социальными иконками */
+    /* ИСПРАВЛЕНО: Убираем пустое пространство и делаем одинаковые отступы */
     .VPNavBar .content {
       gap: 0 !important;
     }
@@ -248,11 +248,17 @@ export default defineConfig({
       margin-right: 0 !important;
     }
     
+    /* Делаем одинаковые отступы для переключателя тем */
+    .VPSwitchAppearance {
+      margin-left: 8px !important;
+      margin-right: 8px !important;
+    }
+    
     .VPNavBarSocialLinks {
       min-width: auto !important;
       justify-content: flex-end !important;
       gap: 8px !important;
-      margin-left: 8px !important;
+      margin-left: 0 !important;
       flex-shrink: 0 !important;
     }
     
@@ -310,6 +316,8 @@ export default defineConfig({
     .VPFooter .copyright {
       margin-top: 2px !important;
     }
+    
+    /* ИСПРАВЛЕНО: Мобильные стили для предотвращения наезжания кнопок */
     @media (max-width: 768px) {
       .VPNavBarSocialLinks {
         width: 100% !important;
@@ -318,7 +326,8 @@ export default defineConfig({
         gap: 8px !important;
         padding: 0 16px !important;
         box-sizing: border-box !important;
-        margin-left: 8 !important;
+        margin-left: 0 !important;
+        margin-top: 8px !important;
       }
       .VPSocialLink {
         width: 100% !important;
@@ -334,6 +343,14 @@ export default defineConfig({
         margin: 0 !important;
         box-sizing: border-box !important;
       }
+      
+      /* Исправляем отступы переключателя тем в мобильной версии */
+      .VPSwitchAppearance {
+        margin: 8px 16px !important;
+        display: flex !important;
+        justify-content: center !important;
+      }
+      
       .footer-row {
         flex-direction: column;
         gap: 8px;
@@ -342,13 +359,24 @@ export default defineConfig({
         display: none;
       }
     }
+    
+    /* ДОПОЛНИТЕЛЬНО: Исправляем отступы в средних размерах экрана */
+    @media (max-width: 960px) and (min-width: 769px) {
+      .VPNavBarSocialLinks {
+        margin-left: 4px !important;
+      }
+      .VPSwitchAppearance {
+        margin-left: 4px !important;
+        margin-right: 4px !important;
+      }
+    }
     `]
   ],
   base: '/',
   outDir: '.vitepress/dist',
   description: 'Технологический партнер, который помогает бизнесу с высоким потенциалом обрести ясность, построить автономную систему управления и выйти на траекторию устойчивого роста.',
   themeConfig: {
-    // Возвращаем переключатель тем (убрал appearance: false)
+    // Переключатель тем включен
     
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста®",
