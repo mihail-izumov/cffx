@@ -134,6 +134,16 @@ export default defineConfig({
   })();
 `],
     ['style', {}, `
+    /* Убираем переключатель тем */
+    .VPSwitchAppearance { 
+      display: none !important; 
+    }
+    
+    /* Делаем текст в кнопке "Войти" жирнее */
+    .VPSocialLink[aria-label="login-link"]::after {
+      font-weight: 600 !important;
+    }
+
     /* === СТИЛИ ДЛЯ HERO-СЕКЦИИ === */
     .VPHero .name,
     .VPHero .text,
@@ -348,8 +358,11 @@ export default defineConfig({
   ],
   base: '/',
   outDir: '.vitepress/dist',
-  description: 'Технологический партнер, который помогает бизнесу с высоким потенциалом обрести ясность, построить автономную систему управления и выйти на траекторию устойчивого роста.',
+  description: 'Находим то, что другие упускают.',
   themeConfig: {
+    // Убираем переключатель тем
+    appearance: false,
+    
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста®",
     
@@ -390,9 +403,9 @@ export default defineConfig({
       }
     },
     nav: nav(),
+    // Убираем кнопку "Пройти чекап", оставляем только "Войти"
     socialLinks: [
-      { icon: 'github', link: 'https://app.mplan.sbs', ariaLabel: 'login-link' },
-      { icon: 'github', link: '/apply', ariaLabel: 'apply-link', target: '_self'  }
+      { icon: 'github', link: 'https://app.mplan.sbs', ariaLabel: 'login-link' }
     ],
   }
 })
