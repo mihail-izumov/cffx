@@ -348,7 +348,7 @@ export default defineConfig({
   ],
   base: '/',
   outDir: '.vitepress/dist',
-  description: 'Находим то, что другие упускают.',
+  description: 'Технологический партнер, который помогает бизнесу с высоким потенциалом обрести ясность, построить автономную систему управления и выйти на траекторию устойчивого роста.',
   themeConfig: {
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста®",
@@ -397,14 +397,10 @@ export default defineConfig({
   }
 })
 
-// Функция навигации с добавленным пунктом BREW первым
+// Функция навигации с измененным пунктом BREW (без подменю, прямая ссылка)
 function nav(): DefaultTheme.NavItem[] {
   return [
-    { text: 'BREW', items: [
-        { text: 'Ваша Умная Кофейня', link: '/brew/run' },
-        { text: 'Кофейный Протокол', link: '/brew/protocol' }
-      ]
-    },
+    { text: 'BREW', link: '/brew/run' },
     { text: 'Радар', items: [
         { 
           text: 'Индекс Роста', 
@@ -436,7 +432,7 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-// Новая функция sidebar для раздела BREW
+// Функция sidebar для раздела BREW остается прежней
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'BREW', collapsed: false, items: [
@@ -549,7 +545,7 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
         { text: 'Лог Сигналов', link: '/radar/signal/log' },
         { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' },
         { text: 'Инструкция по применению', link: '/radar/signal/instruction' },
-        { text: 'Рынок кофеен // Самара', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
+        { text: 'Навигатор по кофейному рынку Самары', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
       ]
     }
   ]
