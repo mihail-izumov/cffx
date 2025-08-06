@@ -70,32 +70,60 @@
 
 Этот отчет существует в единственном экземпляре и содержит уникальные данные, которые больше нигде не найти.
 
-## Сигналы Радара
-
-<div class="specs-button">
-  <a href="/radar/signal/log">Как это работает →</a>
+<div class="start-button-container">
+  <a href="/radar/signal/coffee-points-smr-2025/dashboard" class="btn btn-primary">Диалог с отчётом →</a>
 </div>
 
-<style>
-.specs-button a {
+/* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
+.btn {
   display: inline-block;
-  padding: 8px 16px;
-  background-color: #42b983;
-  color: white !important;
-  text-decoration: none !important;
-  border-radius: 4px;
-  font-family: inherit;
-  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
   cursor: pointer;
-  transition: background 0.2s;
-  /* Новые важные свойства */
-  -webkit-user-select: none;
-  user-select: none;
-  line-height: 1.5;
+  border: none;
+  margin: 10px 0;
 }
 
-.specs-button a:hover {
-  background-color: #33a06f;
-  transform: translateY(-1px); /* Эффект нажатия */
+.btn:hover {
+  transform: translateY(-2px);
+  text-decoration: none !important;
+}
+
+/* --- СТИЛЬ 1: ОСНОВНАЯ КНОПКА (ЯРКАЯ) --- */
+.btn-primary {
+  background-color: #C5F946; /* Яркий лаймовый */
+  color: #000 !important;
+}
+
+.btn-primary:hover {
+  background-color: #347b6c; /* Темный при наведении */
+  color: white !important;
+}
+
+/* --- СТИЛЬ 2: ВТОРОСТЕПЕННАЯ КНОПКА (ТЕМНАЯ) --- */
+.btn-secondary {
+  background-color: #347b6c; /* Темный */
+  color: white !important;
+}
+
+.btn-secondary:hover {
+  background-color: #C5F946; /* Яркий при наведении */
+  color: #000 !important;
+}
+
+/* --- Контейнер для отдельной кнопки --- */
+.start-button-container {
+  margin: 20px 0;
+  text-align: left;
+}
+
+.start-button-container .btn {
+  display: inline-block;
+  margin: 0;
 }
 </style>
