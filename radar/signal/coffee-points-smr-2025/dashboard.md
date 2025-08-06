@@ -224,10 +224,239 @@
 
 **[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**
 
-### От Сигнала к Системе
+## От Сигнала к Системе
 
 Вы изучили срез самарского рынка. Вы видите сильные и слабые стороны — свои и чужие. Это знание. Но знание без действия — это мертвый груз.
 
 **BREW** — это система, которая превращает знание в ежедневные действия и предсказуемый результат.
 
-**[Узнайте, как работает мета-франшиза BREW](/brew/run)**
+<div class="start-button-container">
+  <a href="/brew/run" class="btn btn-primary">Как работает мета-франшиза ☕️ BREW →</a>
+</div>
+
+<style>
+/* --- ОБЩИЕ СТИЛИ ФОРМЫ --- */
+.custom-form { 
+  max-width: 500px; 
+  margin: 0; 
+  padding: 20px; 
+  background-color: #000000; 
+  border-radius: 5px; 
+  color: #ffffff; 
+}
+.form-group { 
+  margin-bottom: 15px; 
+}
+.form-input { 
+  width: 100%; 
+  padding: 10px; 
+  box-sizing: border-box; 
+  border: 1px solid #444; 
+  border-radius: 4px; 
+  font-size: 16px; 
+  background-color: #000000; 
+  color: #ffffff; 
+}
+.checkbox-group { 
+  display: flex; 
+  align-items: flex-start; 
+  gap: 8px; 
+  margin-bottom: 20px; 
+}
+.checkbox-group input { 
+  margin-top: 3px; 
+  width: auto; 
+}
+.checkbox-group label { 
+  font-size: 14px; 
+  line-height: 1.4; 
+}
+.policy-link { 
+  color: #4CAF50; 
+  text-decoration: underline; 
+}
+
+/* --- СТИЛИ КНОПКИ И СООБЩЕНИЙ --- */
+.submit-btn { 
+  background-color: #ffffff; 
+  color: #000000; 
+  padding: 12px 20px; 
+  border: none; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-size: 16px; 
+  width: 100%; 
+  font-weight: bold; 
+  transition: opacity 0.3s; 
+}
+.submit-btn:hover { 
+  opacity: 0.9; 
+}
+.submit-btn:disabled { 
+  opacity: 0.5; 
+  cursor: not-allowed; 
+}
+.success-message { 
+  margin-top: 15px; 
+  color: white; 
+  font-weight: normal; 
+  font-size: 16px; 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+.success-message::before { 
+  content: "✓"; 
+  color: white; 
+  font-size: 18px; 
+}
+
+/* --- СТИЛИ ДЛЯ БЛОКА РЕКОМЕНДАЦИЙ --- */
+.recommendation-section { 
+  border-top: 1px solid #444; 
+  margin-top: 20px; 
+  padding-top: 30px; 
+  padding-bottom: 30px; 
+}
+.recommendation-section h4 { 
+  margin-top: 0; 
+  margin-bottom: 15px; 
+  color: #ffffff; 
+  font-weight: 500; 
+}
+.recommendation-section .form-group label { 
+  display: block; 
+  margin-bottom: 10px; 
+}
+.form-hint { 
+  color: #808080; 
+  font-style: normal; 
+  text-align: left; 
+  font-size: 0.8em; 
+  line-height: 1.5; 
+  margin-top: 15px; 
+}
+
+/* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  margin: 10px 0;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  text-decoration: none !important;
+}
+
+/* --- СТИЛЬ 1: ОСНОВНАЯ КНОПКА (ЯРКАЯ) --- */
+.btn-primary {
+  background-color: #C5F946; /* Яркий лаймовый */
+  color: #000 !important;
+}
+
+.btn-primary:hover {
+  background-color: #347b6c; /* Темный при наведении */
+  color: white !important;
+}
+
+/* --- СТИЛЬ 2: ВТОРОСТЕПЕННАЯ КНОПКА (ТЕМНАЯ) --- */
+.btn-secondary {
+  background-color: #347b6c; /* Темный */
+  color: white !important;
+}
+
+.btn-secondary:hover {
+  background-color: #C5F946; /* Яркий при наведении */
+  color: #000 !important;
+}
+
+/* --- Контейнер для отдельной кнопки --- */
+.start-button-container {
+  margin: 20px 0;
+  text-align: left;
+}
+
+.start-button-container .btn {
+  display: inline-block;
+  margin: 0;
+}
+</style>
+
+<script>
+export default {
+  mounted() {
+    this.initForm();
+  },
+  methods: {
+    initForm() {
+      if (typeof document === 'undefined') return;
+      const form = document.getElementById('myForm');
+      if (!form) return;
+      const successMessage = document.getElementById('successMessage');
+      const submitBtn = form.querySelector('.submit-btn');
+      const requiredInputs = Array.from(form.querySelectorAll('input[required]'));
+      
+      const checkFormValidity = () => {
+        const allRequiredFilled = requiredInputs.every(input => {
+          if (input.type === 'checkbox') {
+            return input.checked; // Для чекбокса проверяем, нажат ли он
+          } else {
+            return input.value.trim() !== ''; // Для остальных полей - не пустое ли значение
+          }
+        });
+        submitBtn.disabled = !allRequiredFilled;
+      };
+      
+      requiredInputs.forEach(input => {
+        // Для чекбокса событие 'change' подходит лучше, чем 'input'
+        const eventType = input.type === 'checkbox' ? 'change' : 'input';
+        input.addEventListener(eventType, checkFormValidity);
+      });
+      
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (submitBtn.disabled) return;
+        const friendContact = form.friendContact.value.trim();
+        const formData = {
+          name: form.name.value,
+          phone: form.phone.value,
+          email: form.email.value,
+          _subject: `Новый запрос на аудит ${friendContact ? '(+ Рекомендация)' : ''}`,
+          ...(friendContact && { recommendation_for: friendContact })
+        };
+        form.reset();
+        successMessage.style.display = 'flex';
+        submitBtn.disabled = true;
+        fetch('https://formspree.io/f/mdkzjopz', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        }).then(response => { 
+          if (!response.ok) throw new Error('Ошибка сервера');
+        }).catch(error => { 
+          console.error('Ошибка:', error);
+          const mailtoBody = `Имя: ${formData.name}\nТелефон: ${formData.phone}\nEmail: ${formData.email}${friendContact ? `\nРекомендация для: ${friendContact}`:''}`;
+          window.location.href = `mailto:theorchestramanco@gmail.com?subject=${encodeURIComponent(formData._subject)}&body=${encodeURIComponent(mailtoBody)}`;
+        }).finally(() => { 
+          setTimeout(() => { 
+            successMessage.style.display = 'none'; 
+            checkFormValidity(); 
+          }, 15000); 
+        });
+      });
+      
+      checkFormValidity();
+    }
+  }
+}
+</script>
+
