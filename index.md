@@ -20,10 +20,10 @@ features:
     linkText: Cигналы Радара
   - title: Индекс Роста
     details: Измерять потенциал любого бизнеса. Узнайте, сколько на самом деле может приносить ваша компания.
-    link: /system/overview
+    link: /radar/overview
     linkText: Компании в фокусе
   - title: Чекап
     details: Найти скрытые разрывы в процессах, которые тормозят рост. Получить 3 конкретных улучшения за 30 дней.
-    link: /technology/overview
+    link: /apply
     linkText: Пройти Чекап
 ---
