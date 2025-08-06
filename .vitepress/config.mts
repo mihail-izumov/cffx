@@ -348,7 +348,7 @@ export default defineConfig({
   ],
   base: '/',
   outDir: '.vitepress/dist',
-  description: 'Технологический партнер, который помогает бизнесу с высоким потенциалом обрести ясность, построить автономную систему управления и выйти на траекторию устойчивого роста.',
+  description: 'Находим то, что другие упускают.',
   themeConfig: {
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста®",
@@ -545,7 +545,7 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
         { text: 'Лог Сигналов', link: '/radar/signal/log' },
         { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' },
         { text: 'Инструкция по применению', link: '/radar/signal/instruction' },
-        { text: 'Навигатор по кофейному рынку Самары', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
+        { text: 'Рынок кофеен // Самара', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
       ]
     }
   ]
