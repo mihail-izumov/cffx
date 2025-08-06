@@ -1,19 +1,41 @@
 # Чекап
 
-## От отчётов к работающим решениям
+## Глубокий аудит эффективности для компаний, готовых к радикальной оптимизации.
 
 Не ещё один отчёт, а системный подход шаг за шагом: все одинаково видят цели, оценивают как работает бизнес, непрерывно его улучшают и действуют в соответствии с точным и гибким планом.
+
+Разбираем бизнес по 10 направлениям и 180 взаимосвязанным метрикам. Определяем конкретные резервы роста и составляем точный план действий. 
+
+Работает на [технологиях Модуля Роста®](/technology/overview).
+
+## Детали чекапа
+
+### Результаты
+- [X] **Конкретные цифры** — не общие советы, а точные метрики: "Увеличить маржинальность на X% через оптимизацию закупок" или "Снизить текучесть персонала на Y% через изменение системы мотивации"
+- [X] **Приоритизированный план** — что делать в первую очередь для максимального эффекта, а что может подождать. Ранжированный список действий с указанием потенциального эффекта и сроков внедрения.
+- [X] **Готовые решения** — не только диагностика проблем, но и пошаговые алгоритмы их устранения с учетом взаимосвязей между процессами.
+### Финальное резюме чекапа
+- [X]  **Детальный отчёт** с анализом ~180 ключевых метрик
+- [X]  **Карта приоритетов** — что делать в первую очередь
+- [X]  **Конкретные цифры** потенциала роста по каждому направлению
+- [X]  **Пошаговый план** внедрения с временными рамками
+- [X]  **Система контроля** для отслеживания результатов
+### Результат для собственника
+- [X] **Новый уровень стратегического мышления** (как применить фрейм-менеджмент к конкретному бизнесу)
+- [X] **Конкретные инструменты** для решения текущих задач (план изменений)
+- [X] **Систематизация и структурирование** имеющегося опыта
+- [X] **Профессиональная поддержка** на этапе трансформации бизнеса
 
 ## Как мы работаем
 
 **1. Чекапы работают как диагностика — показывают, где именно нужно действовать** <br>
-  Не гадаем по симптомам, а получаем объективную картину всех 10 разделов бизнеса за месяц
+Не гадаем по симптомам, а получаем объективную картину всех 10 разделов бизнеса за месяц
 <br>
 **2. Запускаем изменения, пока другие готовят отчёты** <br>
-  Быстро и точно против долго и сложно — как GPT против классического поиска: вместо сотен ссылок получаете готовый ответ
+Быстро и точно против долго и сложно — как GPT против классического поиска: вместо сотен ссылок получаете готовый ответ
 <br>
 **3. Платите за движение, а не за презентации** <br>
-  Если за 30 дней не запустили 3 реальных улучшения — продолжаем бесплатно
+Если за 30 дней не запустили 3 реальных улучшения — продолжаем бесплатно
 
 ## Что делает нас точными
 
@@ -61,44 +83,243 @@
 [↗ Прочитайте 8 публикаций](/checkup/prep/overview) → поймите нашу методологию → приходите на сессию подготовленными
 
 ### Способ 2: Сразу к сессии
-[↗ Подайте заявку](/apply) → мы расскажем о подходе во время 90-минутной диагностики
+[↗ Подайте заявку](/apply) → расскажем о подходе во время 90-мин. диагностики
 
 Результат любого способа:
-90-минутная диагностическая сессия → персонализированный план чекапа → взвешенное решение о дальнейшей работе
+90-мин. диагностическая сессия → персонализированный план чекапа → взвешенное решение о дальнейшей работе
 
 ## Старт
 
-Нажмите Получить ответ → заполните короткую форму → мы свяжемся и назначим диагностическую сессию
-
-<div class="button-link-container">
-  <div class="specs-button">
-    <a href="/apply">Получить ответ →</a>
-  </div>
-  <a href="/checkup/specs" class="text-link">Детали чекапа</a>
+<div class="start-button-container">
+  <a href="/apply" class="btn btn-primary">Пройти Чекап →</a>
 </div>
 
+### Ещё не готовы?
+- [Посмотреть детали](/checkup/specs)
+- [Проверить готовность по чек-листу](/checkup/checklist)
+
 <style>
-.button-link-container {
-  display: flex;
-  align-items: center;
-  gap: 16px; /* Расстояние между элементами */
-  margin: 1rem 0;
+/* --- ОБЩИЕ СТИЛИ ФОРМЫ --- */
+.custom-form { 
+  max-width: 500px; 
+  margin: 0; 
+  padding: 20px; 
+  background-color: #000000; 
+  border-radius: 5px; 
+  color: #ffffff; 
+}
+.form-group { 
+  margin-bottom: 15px; 
+}
+.form-input { 
+  width: 100%; 
+  padding: 10px; 
+  box-sizing: border-box; 
+  border: 1px solid #444; 
+  border-radius: 4px; 
+  font-size: 16px; 
+  background-color: #000000; 
+  color: #ffffff; 
+}
+.checkbox-group { 
+  display: flex; 
+  align-items: flex-start; 
+  gap: 8px; 
+  margin-bottom: 20px; 
+}
+.checkbox-group input { 
+  margin-top: 3px; 
+  width: auto; 
+}
+.checkbox-group label { 
+  font-size: 14px; 
+  line-height: 1.4; 
+}
+.policy-link { 
+  color: #4CAF50; 
+  text-decoration: underline; 
 }
 
-.specs-button a {
+/* --- СТИЛИ КНОПКИ И СООБЩЕНИЙ --- */
+.submit-btn { 
+  background-color: #ffffff; 
+  color: #000000; 
+  padding: 12px 20px; 
+  border: none; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-size: 16px; 
+  width: 100%; 
+  font-weight: bold; 
+  transition: opacity 0.3s; 
+}
+.submit-btn:hover { 
+  opacity: 0.9; 
+}
+.submit-btn:disabled { 
+  opacity: 0.5; 
+  cursor: not-allowed; 
+}
+.success-message { 
+  margin-top: 15px; 
+  color: white; 
+  font-weight: normal; 
+  font-size: 16px; 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+.success-message::before { 
+  content: "✓"; 
+  color: white; 
+  font-size: 18px; 
+}
+
+/* --- СТИЛИ ДЛЯ БЛОКА РЕКОМЕНДАЦИЙ --- */
+.recommendation-section { 
+  border-top: 1px solid #444; 
+  margin-top: 20px; 
+  padding-top: 30px; 
+  padding-bottom: 30px; 
+}
+.recommendation-section h4 { 
+  margin-top: 0; 
+  margin-bottom: 15px; 
+  color: #ffffff; 
+  font-weight: 500; 
+}
+.recommendation-section .form-group label { 
+  display: block; 
+  margin-bottom: 10px; 
+}
+.form-hint { 
+  color: #808080; 
+  font-style: normal; 
+  text-align: left; 
+  font-size: 0.8em; 
+  line-height: 1.5; 
+  margin-top: 15px; 
+}
+
+/* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
+.btn {
   display: inline-block;
-  padding: 8px 16px;
-  background-color: #42b983;
-  color: white !important;
-  text-decoration: none !important;
-  border-radius: 4px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  margin: 10px 0;
 }
 
-.text-link {
-  color: var(--vp-c-brand); /* Используем переменные VitePress */
-  text-decoration: underline !important;
+.btn:hover {
+  transform: translateY(-2px);
+  text-decoration: none !important;
+}
+
+/* --- СТИЛЬ 1: ОСНОВНАЯ КНОПКА (ЯРКАЯ) --- */
+.btn-primary {
+  background-color: #C5F946; /* Яркий лаймовый */
+  color: #000 !important;
+}
+
+.btn-primary:hover {
+  background-color: #347b6c; /* Темный при наведении */
+  color: white !important;
+}
+
+/* --- СТИЛЬ 2: ВТОРОСТЕПЕННАЯ КНОПКА (ТЕМНАЯ) --- */
+.btn-secondary {
+  background-color: #347b6c; /* Темный */
+  color: white !important;
+}
+
+.btn-secondary:hover {
+  background-color: #C5F946; /* Яркий при наведении */
+  color: #000 !important;
+}
+
+/* --- Контейнер для отдельной кнопки --- */
+.start-button-container {
+  margin: 20px 0;
+  text-align: left;
+}
+
+.start-button-container .btn {
+  display: inline-block;
+  margin: 0;
 }
 </style>
 
-## Дальнейшие шаги
-Подготовительный чекап (5 дней) → глубокий анализ (15 дней) → быстрые внедрения → постоянные улучшения
+<script>
+export default {
+  mounted() {
+    this.initForm();
+  },
+  methods: {
+    initForm() {
+      if (typeof document === 'undefined') return;
+      const form = document.getElementById('myForm');
+      if (!form) return;
+      const successMessage = document.getElementById('successMessage');
+      const submitBtn = form.querySelector('.submit-btn');
+      const requiredInputs = Array.from(form.querySelectorAll('input[required]'));
+      
+      const checkFormValidity = () => {
+        const allRequiredFilled = requiredInputs.every(input => {
+          if (input.type === 'checkbox') {
+            return input.checked; // Для чекбокса проверяем, нажат ли он
+          } else {
+            return input.value.trim() !== ''; // Для остальных полей - не пустое ли значение
+          }
+        });
+        submitBtn.disabled = !allRequiredFilled;
+      };
+      
+      requiredInputs.forEach(input => {
+        // Для чекбокса событие 'change' подходит лучше, чем 'input'
+        const eventType = input.type === 'checkbox' ? 'change' : 'input';
+        input.addEventListener(eventType, checkFormValidity);
+      });
+      
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (submitBtn.disabled) return;
+        const friendContact = form.friendContact.value.trim();
+        const formData = {
+          name: form.name.value,
+          phone: form.phone.value,
+          email: form.email.value,
+          _subject: `Новый запрос на аудит ${friendContact ? '(+ Рекомендация)' : ''}`,
+          ...(friendContact && { recommendation_for: friendContact })
+        };
+        form.reset();
+        successMessage.style.display = 'flex';
+        submitBtn.disabled = true;
+        fetch('https://formspree.io/f/mdkzjopz', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        }).then(response => { 
+          if (!response.ok) throw new Error('Ошибка сервера');
+        }).catch(error => { 
+          console.error('Ошибка:', error);
+          const mailtoBody = `Имя: ${formData.name}\nТелефон: ${formData.phone}\nEmail: ${formData.email}${friendContact ? `\nРекомендация для: ${friendContact}`:''}`;
+          window.location.href = `mailto:theorchestramanco@gmail.com?subject=${encodeURIComponent(formData._subject)}&body=${encodeURIComponent(mailtoBody)}`;
+        }).finally(() => { 
+          setTimeout(() => { 
+            successMessage.style.display = 'none'; 
+            checkFormValidity(); 
+          }, 15000); 
+        });
+      });
+      
+      checkFormValidity();
+    }
+  }
+}
+</script>
