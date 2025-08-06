@@ -248,13 +248,24 @@ export default defineConfig({
       height: 32px !important;
       width: auto !important;
     }
-    /* Убираем лишние отступы для социальных ссылок */
+    
+    /* ИСПРАВЛЕНО: Убираем пустое пространство между меню и кнопкой */
+    .VPNavBar .content {
+      gap: 0 !important;
+    }
+    
+    .VPNavBarMenu {
+      margin-right: 0 !important;
+    }
+    
     .VPNavBarSocialLinks {
       min-width: auto !important;
       justify-content: flex-end !important;
       gap: 0 !important;
-      margin-left: 0px !important;
+      margin-left: 8px !important;
+      flex-shrink: 0 !important;
     }
+    
     .VPSocialLink .vpi-social-github {
       display: none !important;
     }
@@ -275,7 +286,7 @@ export default defineConfig({
       background: transparent;
       transition: all 0.3s ease;
       white-space: nowrap;
-      margin: 0 4px;
+      margin: 0;
     }
     .VPSocialLink[aria-label="login-link"]:hover::after {
       background: var(--vp-c-bg-soft);
@@ -330,7 +341,7 @@ export default defineConfig({
         display: block !important;
         text-align: center;
         padding: 10px 12px !important;
-        margin: 10 !important;
+        margin: 0 !important;
         box-sizing: border-box !important;
       }
       .footer-row {
@@ -345,7 +356,7 @@ export default defineConfig({
   ],
   base: '/',
   outDir: '.vitepress/dist',
-  description: 'Технологический партнер, который помогает бизнесу с высоким потенциалом обрести ясность, построить автономную систему управления и выйти на траекторию устойчивого роста.',
+  description: 'Находим то, что другие упускают.',
   themeConfig: {
     // Убираем переключатель тем
     appearance: false,
