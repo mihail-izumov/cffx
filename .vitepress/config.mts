@@ -348,7 +348,7 @@ export default defineConfig({
   ],
   base: '/',
   outDir: '.vitepress/dist',
-  description: 'Технологический партнер, который помогает бизнесу с высоким потенциалом обрести ясность, построить автономную систему управления и выйти на траекторию устойчивого роста.',
+  description: 'Находим то, что другие упускают.',
   themeConfig: {
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста®",
@@ -363,6 +363,7 @@ export default defineConfig({
     },
     
     sidebar: {
+      '/brew/': { items: sidebarBrew() },
       '/about/': { items: sidebarAbout() },
       '/method/': { items: sidebarMethod() },
       '/technology/': { items: sidebarTechnology() },
@@ -396,9 +397,14 @@ export default defineConfig({
   }
 })
 
-// Функция навигации с обновленным разделом Радар
+// Функция навигации с добавленным пунктом BREW первым
 function nav(): DefaultTheme.NavItem[] {
   return [
+    { text: 'BREW', items: [
+        { text: 'Ваша Умная Кофейня', link: '/brew/run' },
+        { text: 'Кофейный Протокол', link: '/brew/protocol' }
+      ]
+    },
     { text: 'Радар', items: [
         { 
           text: 'Индекс Роста', 
@@ -428,6 +434,16 @@ function nav(): DefaultTheme.NavItem[] {
       ]
     }
   ]
+}
+
+// Новая функция sidebar для раздела BREW
+function sidebarBrew(): DefaultTheme.SidebarItem[] {
+  return [{
+      text: 'BREW', collapsed: false, items: [
+        { text: 'Ваша Умная Кофейня', link: '/brew/run' },
+        { text: 'Кофейный Протокол', link: '/brew/protocol' }
+      ]
+    }]
 }
 
 function sidebarAbout(): DefaultTheme.SidebarItem[] {
@@ -533,7 +549,7 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
         { text: 'Лог Сигналов', link: '/radar/signal/log' },
         { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' },
         { text: 'Инструкция по применению', link: '/radar/signal/instruction' },
-        { text: 'Навигатор по кофейному рынку Самары', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
+        { text: 'Рынок кофеен // Самара', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
       ]
     }
   ]
