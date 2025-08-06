@@ -2,10 +2,6 @@
 
 ## Рынок кофеен (Самара) // фокус на «Корж»
 
-<div class="start-button-container">
-  <a href="/radar/signal/coffee-points-smr-2025/dashboard" class="btn btn-primary">Диалог с отчётом →</a>
-</div>
-
 ### Объекты и объем исследования
 
 - **Фокус-компания:** Корж (2 415+ отзывов)
@@ -16,6 +12,10 @@
     - Coffee Balance (78+ отзывов)
 - **Итого проанализировано:** 3 980+ уникальных, очищенных от дублей отзывов.
 - **Потенциал расширения:** Существует возможность увеличения выборки на 80-190% для еще более глубокого анализа будущих периодов.
+
+<div class="start-button-container">
+  <a href="/radar/signal/coffee-points-smr-2025/dashboard" class="btn btn-primary">Диалог с отчётом →</a>
+</div>
 
 ## Детали отчёта
 
