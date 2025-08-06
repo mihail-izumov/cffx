@@ -44,7 +44,7 @@
 
 |**Диалог**|**Сеть**|**Суперсила**|**Секрет успеха**|
 |---|---|---|---|
-|**[Как масштабировать уют →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#13)**|**[«Корж»](#б1-корж-технология-создания-эмоциональной-связи)**|Эмоциональная связь (9/10)|«Домашняя» атмосфера + персональный сервис|
+|**[Как масштабировать уют →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#13)**|**[Корж](#б1-корж-технология-создания-эмоциональной-связи)**|Эмоциональная связь (9/10)|«Домашняя» атмосфера + персональный сервис|
 |**[Как построить систему →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#14)**|**[Skuratov](#б2-skuratov-coffee-сила-в-системе-и-стабильности)**|Системность (9/10 кофе)|Стандартизация процессов + стабильность|
 |**[Как создать культ бренда →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#15)**|**[Surf Coffee](#б3-surf-coffee-мастерство-нишевого-брендинга)**|Нишевый брендинг (9/10 дизайн)|«Племя» молодежи + субкультурная эстетика|
 |**[Как монетизировать локацию →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#16)**|**[White Cup](#б4-white-cup-сила-уникального-места)**|Уникальность места (9/10 атмосфера)|«Дворик как в Европе» + destination place|
