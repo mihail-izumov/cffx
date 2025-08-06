@@ -10,7 +10,7 @@
       <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Находим скрытые разрывы в процессах, которые тормозят рост. Превращаем их в 3 конкретных улучшения за 30 дней.</p>
     </div>
     <a href="/checkup/overview" class="project-button">
-      Запустить улучшения →
+      Запустить Улучшения →
     </a>
   </div>
 
@@ -20,7 +20,7 @@
       <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">12 нед. непрерывный мониторинг по DMAIC, 90-мин трекинг-сессии каждую неделю.</p>
     </div>
     <a href="/system/overview" class="project-button">
-      Как строим →
+      Построить Систему →
     </a>
   </div>
 
