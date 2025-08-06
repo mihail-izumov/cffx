@@ -254,13 +254,18 @@ export default defineConfig({
       margin-right: 8px !important;
     }
     
-    /* ИСПРАВЛЕНО: Добавляем правильные отступы между социальными иконками */
+    /* ИСПРАВЛЕНО: Увеличиваем отступы еще больше между социальными иконками */
     .VPNavBarSocialLinks {
       min-width: auto !important;
       justify-content: flex-end !important;
-      gap: 12px !important;
+      gap: 16px !important;
       margin-left: 0 !important;
       flex-shrink: 0 !important;
+    }
+    
+    /* Дополнительно: принудительно задаем отступ для каждой социальной ссылки */
+    .VPSocialLink:not(:last-child) {
+      margin-right: 4px !important;
     }
     
     .VPSocialLink .vpi-social-github {
@@ -272,6 +277,7 @@ export default defineConfig({
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
+      flex-shrink: 0 !important;
     }
     .VPSocialLink[aria-label="login-link"]::after {
       content: "Войти";
@@ -284,6 +290,7 @@ export default defineConfig({
       transition: all 0.3s ease;
       white-space: nowrap;
       margin: 0;
+      flex-shrink: 0;
     }
     .VPSocialLink[aria-label="login-link"]:hover::after {
       background: var(--vp-c-bg-soft);
@@ -336,6 +343,9 @@ export default defineConfig({
         justify-content: center !important;
         box-sizing: border-box !important;
       }
+      .VPSocialLink:not(:last-child) {
+        margin-right: 0 !important;
+      }
       .VPSocialLink[aria-label="login-link"]::after {
         width: 100% !important;
         display: block !important;
@@ -365,7 +375,7 @@ export default defineConfig({
     @media (max-width: 960px) and (min-width: 769px) {
       .VPNavBarSocialLinks {
         margin-left: 4px !important;
-        gap: 8px !important;
+        gap: 12px !important;
       }
       .VPSwitchAppearance {
         margin-left: 4px !important;
@@ -376,7 +386,7 @@ export default defineConfig({
   ],
   base: '/',
   outDir: '.vitepress/dist',
-  description: 'Технологический партнер, который помогает бизнесу с высоким потенциалом обрести ясность, построить автономную систему управления и выйти на траекторию устойчивого роста.',
+  description: 'Находим то, что другие упускают.',
   themeConfig: {
     // Переключатель тем включен
     
