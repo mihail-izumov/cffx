@@ -13,7 +13,7 @@ hero:
       text: Индекс Роста
       link: /radar/overview
     - theme: alt
-      text: Сигнал Радара ☕️
+      text: Сигнал Радара
       link: /radar/signal/log
 
 features:
