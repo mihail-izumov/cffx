@@ -249,7 +249,7 @@ export default defineConfig({
       width: auto !important;
     }
     
-    /* ИСПРАВЛЕНО: Убираем пустое пространство между меню и кнопкой */
+    /* Убираем пустое пространство между меню и социальными иконками */
     .VPNavBar .content {
       gap: 0 !important;
     }
@@ -261,7 +261,7 @@ export default defineConfig({
     .VPNavBarSocialLinks {
       min-width: auto !important;
       justify-content: flex-end !important;
-      gap: 0 !important;
+      gap: 8px !important;
       margin-left: 8px !important;
       flex-shrink: 0 !important;
     }
@@ -401,8 +401,14 @@ export default defineConfig({
       }
     },
     nav: nav(),
-    // Убираем кнопку "Пройти чекап", оставляем только "Войти"
+    // Добавляем иконку Telegram и кнопку "Войти"
     socialLinks: [
+      { 
+        icon: { 
+          svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Telegram</title><path d="m9.417 15.181-.397-.131-.964-.375c-1.544-.617-3.219-1.286-3.989-1.611-1.285-.543-1.464-.723-1.464-1.184 0-.765.493-.966 1.515-1.443l13.024-4.952c1.064-.405 2.082-.614 2.082.55 0 .479-.275 2.22-.604 5.045-.347 2.977-.713 6.141-.955 8.13-.107.874-.397 1.15-.913 1.15-.51 0-1.078-.269-1.83-.722l-7.425-4.457z"/></svg>' 
+        }, 
+        link: 'https://t.me/runscale' 
+      },
       { icon: 'github', link: 'https://app.mplan.sbs', ariaLabel: 'login-link' }
     ],
   }
