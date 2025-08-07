@@ -27,7 +27,6 @@ const activeTab = ref('problem')
 </div>
 
 <!-- Контент для вкладок -->
-<!-- Заменяем v-if на v-show -->
 <div class="tab-content">
 
   <!-- Вкладка 1: Исправить проблему -->
@@ -280,7 +279,4 @@ const activeTab = ref('problem')
   color: var(--vp-c-text-2);
 }
 
-.custom-table tr:last-child td {
-  border-bottom: none;
-}
 </style>
