@@ -90,36 +90,63 @@
 <style>
 /* --- СТИЛИ ДЛЯ ТАБЛИЦ --- */
 
-/* Общие правила для таблиц внутри оберток */
-.radar-signals-table table,
-.comparison-table table {
-  table-layout: fixed;
+/* --- Таблица "Сигналы Радара" --- */
+
+/* Контейнер таблицы оборачиваем для скролла на мобильных */
+.radar-signals-table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Сама таблица "Сигналы Радара" */
+.radar-signals-table table {
   width: 100%;
+  min-width: 650px; /* Гарантирует появление скролла, а не сжатие */
+  table-layout: fixed;
+  border-collapse: collapse;
 }
 
-/* Таблица "Сигналы Радара" */
-/* Первый столбец ("Период"): фиксированная ширина и запрет переноса */
+/* --- Таблица сравнения "ДО/ПОСЛЕ" --- */
+.comparison-table table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+/* --- Общие стили для ячеек ОБЕИХ таблиц для единообразия --- */
+.radar-signals-table th, .radar-signals-table td,
+.comparison-table th, .comparison-table td {
+  padding: 12px 15px;
+  vertical-align: top;
+  text-align: left;
+  word-break: break-word; /* Разрешаем перенос для длинных слов */
+}
+
+/* --- Специфичные стили для колонок таблицы "Сигналы Радара" --- */
+
+/* Столбец 1 ("Период"): Фиксированная ширина, без переноса */
 .radar-signals-table td:nth-child(1) {
-  width: 150px;
+  width: 130px;
   white-space: nowrap;
-}
-/* Третий столбец ("Статус"): ширина по контенту и запрет переноса */
-.radar-signals-table td:nth-child(3) {
-  width: 1%;
-  white-space: nowrap;
-}
-/* Второй столбец ("Сигнал Радара"): разрешаем перенос текста */
-.radar-signals-table td:nth-child(2) {
-  white-space: normal;
-  word-break: break-word;
 }
 
-/* Таблица сравнения "ДО/ПОСЛЕ" */
-/* Оба столбца делят ширину поровну */
+/* Столбец 2 ("Сигнал Радара"): Разрешаем перенос текста */
+.radar-signals-table td:nth-child(2) {
+  width: 350px;
+  white-space: normal;
+}
+
+/* Столбец 3 ("Статус"): Фиксированная ширина, без переноса */
+.radar-signals-table td:nth-child(3) {
+  width: 170px;
+  white-space: nowrap;
+}
+
+/* --- Специфичные стили для колонок таблицы "ДО/ПОСЛЕ" --- */
 .comparison-table td {
   width: 50%;
-  word-break: break-word; /* Разрешаем перенос для длинного текста */
 }
+
 
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
 .btn {
