@@ -1,6 +1,6 @@
 # Сигнал Радара
 
-Отслеживайте любую компанию, которая попала в фокус Радара: конкурентов, инвестпроекты и свою компанию. Проверяйте гипотезы, следите за трендами и находите то, что другие упускают прямо на ходу в [Perplexity](https://www.perplexity.ai/mobile).
+Отслеживайте любую компанию, которая попала в фокус Радара: конкурентов, инвестпроекты и свою компанию. Проверяйте гипотезы, следите за трендами и находите то, что другие упускают прямо на ходу.
 
 Когда угодно. С кем угодно.
 
@@ -43,6 +43,14 @@
 .comparison-table table {
   table-layout: fixed;
   width: 100%;
+  /* Предотвращаем сжатие таблицы на мобильных устройствах */
+  min-width: 100%;
+}
+
+/* Контейнер таблицы с горизонтальным скроллом на мобильных */
+.radar-signals-table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Таблица "Сигналы Радара" */
@@ -50,16 +58,54 @@
 .radar-signals-table td:nth-child(1) {
   width: 150px;
   white-space: nowrap;
+  min-width: 150px;
 }
+
 /* Третий столбец ("Статус"): ширина по контенту и запрет переноса */
 .radar-signals-table td:nth-child(3) {
-  width: 1%;
+  width: 200px;
   white-space: nowrap;
+  min-width: 200px;
 }
-/* Второй столбец ("Сигнал Радара"): разрешаем перенос текста */
+
+/* Второй столбец ("Сигнал Радара"): фиксированная ширина для 2 строк текста */
 .radar-signals-table td:nth-child(2) {
+  width: 300px;
+  min-width: 300px;
   white-space: normal;
   word-break: break-word;
+  line-height: 1.4;
+  /* Ограничиваем высоту примерно до 2 строк */
+  max-height: 2.8em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Медиа-запрос для мобильных устройств */
+@media screen and (max-width: 768px) {
+  .radar-signals-table table {
+    /* Устанавливаем минимальную ширину таблицы */
+    min-width: 650px;
+    width: 650px;
+  }
+  
+  /* На мобильных устройствах сохраняем фиксированные размеры столбцов */
+  .radar-signals-table td:nth-child(1) {
+    width: 150px;
+    min-width: 150px;
+  }
+  
+  .radar-signals-table td:nth-child(2) {
+    width: 300px;
+    min-width: 300px;
+  }
+  
+  .radar-signals-table td:nth-child(3) {
+    width: 200px;
+    min-width: 200px;
+  }
 }
 
 /* Таблица сравнения "ДО/ПОСЛЕ" */
