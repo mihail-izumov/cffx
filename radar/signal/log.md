@@ -1,6 +1,6 @@
 # Сигнал Радара
 
-Отслеживайте любую компанию, которая попала в фокус Радара: конкурентов, инвестпроекты и свою компанию. Проверяйте гипотезы, следите за трендами и находите то, что другие упускают прямо на ходу.
+Отслеживайте любую компанию, которая попала в фокус Радара: конкурентов, инвестпроекты и свою компанию. Проверяйте гипотезы, следите за трендами и находите то, что другие упускают прямо на ходу в [Perplexity](https://www.perplexity.ai/mobile).
 
 Когда угодно. С кем угодно.
 
@@ -38,99 +38,60 @@
 <style>
 /* --- СТИЛИ ДЛЯ ТАБЛИЦ --- */
 
-/* Контейнер таблицы с горизонтальным скроллом */
+/* Контейнер таблицы оборачиваем для скролла */
 .radar-signals-table {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  margin: 20px 0;
 }
 
-/* Основные стили таблицы */
+/* Общие правила для таблицы "Сигналы Радара" */
 .radar-signals-table table {
-  table-layout: fixed;
   width: 100%;
+  /* Минимальная ширина гарантирует, что таблица не сожмется и появится скролл на мобильных */
+  min-width: 650px; 
+  table-layout: fixed;
   border-collapse: collapse;
-  min-width: 650px; /* Минимальная ширина для предотвращения сжатия */
 }
 
-/* Стили для всех ячеек и заголовков */
+/* Стили для ячеек для аккуратного вида */
 .radar-signals-table th,
 .radar-signals-table td {
-  padding: 12px;
-  vertical-align: top;
-  border: 1px solid #ddd;
+  padding: 12px 15px;
+  vertical-align: top; /* Выравнивание по верху — лучший вариант при разной высоте строк */
+  text-align: left;
 }
 
-/* Первый столбец ("Период"): фиксированная ширина */
-.radar-signals-table th:nth-child(1),
+/* Столбец 1 ("Период"): Фиксированная ширина, без переноса */
 .radar-signals-table td:nth-child(1) {
-  width: 150px;
-  min-width: 150px;
+  width: 130px;
   white-space: nowrap;
 }
 
-/* Второй столбец ("Сигнал Радара"): ширина для 2 строк текста */
-.radar-signals-table th:nth-child(2),
+/* Столбец 2 ("Сигнал Радара"): ГЛАВНОЕ ИЗМЕНЕНИЕ. 
+   Убираем сложное ограничение по строкам и просто разрешаем тексту свободно переноситься. */
 .radar-signals-table td:nth-child(2) {
   width: 350px;
-  min-width: 350px;
-  white-space: normal;
-  word-break: break-word;
-  line-height: 1.4;
+  white-space: normal; /* Разрешаем перенос текста */
+  word-break: break-word; /* Разрешаем перенос для длинных слов */
 }
 
-/* Третий столбец ("Статус"): фиксированная ширина */
-.radar-signals-table th:nth-child(3),
+/* Столбец 3 ("Статус"): Фиксированная ширина, без переноса */
 .radar-signals-table td:nth-child(3) {
-  width: 150px;
-  min-width: 150px;
+  width: 170px;
   white-space: nowrap;
 }
 
-/* Медиа-запросы для разных размеров экрана */
-@media screen and (max-width: 768px) {
-  .radar-signals-table table {
-    min-width: 650px;
-    width: 650px;
-  }
-  
-  .radar-signals-table th:nth-child(1),
-  .radar-signals-table td:nth-child(1) {
-    width: 140px;
-    min-width: 140px;
-    font-size: 14px;
-  }
-  
-  .radar-signals-table th:nth-child(2),
-  .radar-signals-table td:nth-child(2) {
-    width: 350px;
-    min-width: 350px;
-    font-size: 14px;
-  }
-  
-  .radar-signals-table th:nth-child(3),
-  .radar-signals-table td:nth-child(3) {
-    width: 160px;
-    min-width: 160px;
-    font-size: 14px;
-  }
+/* Таблица сравнения "ДО/ПОСЛЕ" (остается без изменений) */
+.comparison-table table {
+  table-layout: fixed;
+  width: 100%;
 }
-
-@media screen and (max-width: 480px) {
-  .radar-signals-table th,
-  .radar-signals-table td {
-    padding: 8px;
-    font-size: 13px;
-  }
-}
-
-/* Таблица сравнения "ДО/ПОСЛЕ" */
 .comparison-table td {
   width: 50%;
   word-break: break-word;
 }
 
-/* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
+/* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК (остаются без изменений) --- */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -152,23 +113,23 @@
 
 /* --- СТИЛЬ 1: ОСНОВНАЯ КНОПКА (ЯРКАЯ) --- */
 .btn-primary {
-  background-color: #C5F946;
+  background-color: #C5F946; /* Яркий лаймовый */
   color: #000 !important;
 }
 
 .btn-primary:hover {
-  background-color: #347b6c;
+  background-color: #347b6c; /* Темный при наведении */
   color: white !important;
 }
 
 /* --- СТИЛЬ 2: ВТОРОСТЕПЕННАЯ КНОПКА (ТЕМНАЯ) --- */
 .btn-secondary {
-  background-color: #347b6c;
+  background-color: #347b6c; /* Темный */
   color: white !important;
 }
 
 .btn-secondary:hover {
-  background-color: #C5F946;
+  background-color: #C5F946; /* Яркий при наведении */
   color: #000 !important;
 }
 
