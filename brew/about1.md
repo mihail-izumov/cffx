@@ -1,28 +1,19 @@
 # 123
 
-
-
-
 ---
-
-<script setup>
-import { ref } from 'vue'
-// Устанавливаем первую вкладку активной по умолчанию
-const activeTab = ref('problem')
-</script>
 
 <!-- Блок с кнопками для переключения вкладок -->
 <div class="tabs">
-  <button :class="{ active: activeTab === 'problem' }" @click="activeTab = 'problem'">
+  <button class="tab-button active" data-tab="problem">
     🎯 Исправить проблему
   </button>
-  <button :class="{ active: activeTab === 'advantage' }" @click="activeTab = 'advantage'">
+  <button class="tab-button" data-tab="advantage">
     💪 Усилить преимущество
   </button>
-  <button :class="{ active: activeTab === 'competitors' }" @click="activeTab = 'competitors'">
+  <button class="tab-button" data-tab="competitors">
     🔍 Изучить конкурентов
   </button>
-  <button :class="{ active: activeTab === 'growth' }" @click="activeTab = 'growth'">
+  <button class="tab-button" data-tab="growth">
     🚀 Найти рост
   </button>
 </div>
@@ -31,7 +22,7 @@ const activeTab = ref('problem')
 <div class="tab-content">
 
   <!-- Вкладка 1: Исправить проблему -->
-  <div v-if="activeTab === 'problem'">
+  <div class="tab-panel active" data-panel="problem">
     <p><strong>Превратите жалобы клиентов в точки кратного роста.</strong></p>
     <table class="custom-table">
       <thead>
@@ -63,7 +54,7 @@ const activeTab = ref('problem')
   </div>
 
   <!-- Вкладка 2: Усилить преимущество -->
-  <div v-if="activeTab === 'advantage'">
+  <div class="tab-panel" data-panel="advantage">
     <p><strong>Превратите магию в технологию.</strong></p>
     <table class="custom-table">
       <thead>
@@ -95,7 +86,7 @@ const activeTab = ref('problem')
   </div>
 
   <!-- Вкладка 3: Изучить конкурентов -->
-  <div v-if="activeTab === 'competitors'">
+  <div class="tab-panel" data-panel="competitors">
     <p><strong>Получить объективную карту поля боя.</strong></p>
     <table class="custom-table">
       <thead>
@@ -127,7 +118,7 @@ const activeTab = ref('problem')
   </div>
 
   <!-- Вкладка 4: Найти рост -->
-  <div v-if="activeTab === 'growth'">
+  <div class="tab-panel" data-panel="growth">
     <p><strong>Обнаружить скрытые сокровища.</strong></p>
     <table class="custom-table">
       <thead>
@@ -183,6 +174,31 @@ const activeTab = ref('problem')
 
 **[Начать диалог с Анной →](https://t.me/Anna_runScale)**
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      // Убираем активный класс со всех кнопок и панелей
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      tabPanels.forEach(panel => panel.classList.remove('active'));
+
+      // Добавляем активный класс к выбранной кнопке
+      this.classList.add('active');
+
+      // Показываем соответствующую панель
+      const targetPanel = document.querySelector(`[data-panel="${targetTab}"]`);
+      if (targetPanel) {
+        targetPanel.classList.add('active');
+      }
+    });
+  });
+});
+</script>
 
 <style>
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ПЕРЕКЛЮЧАТЕЛЕЙ (ТЭБОВ) --- */
@@ -193,7 +209,7 @@ const activeTab = ref('problem')
   margin: 1.5rem 0 1rem;
 }
 
-.tabs button {
+.tab-button {
   padding: 10px 16px;
   border-radius: 8px;
   font-weight: 600;
@@ -209,7 +225,7 @@ const activeTab = ref('problem')
   --tabs-button-text: #333;
   --tabs-button-border: #e2e2e2;
 }
-.tabs button {
+.tab-button {
   background-color: var(--tabs-button-bg);
   color: var(--tabs-button-text);
   border-color: var(--tabs-button-border);
@@ -223,8 +239,8 @@ const activeTab = ref('problem')
 }
 
 /* --- СТИЛИ ДЛЯ АКТИВНОЙ/HOVER КНОПКИ (УНИВЕРСАЛЬНЫЕ) --- */
-.tabs button:hover,
-.tabs button.active {
+.tab-button:hover,
+.tab-button.active {
   background-color: #C5F946 !important;
   color: #1a2a00 !important;
   border-color: #C5F946 !important;
@@ -232,7 +248,7 @@ const activeTab = ref('problem')
   transform: translateY(-2px);
 }
 
-.tabs button.active {
+.tab-button.active {
   transform: none;
 }
 
@@ -244,18 +260,20 @@ const activeTab = ref('problem')
   border: 1px solid var(--vp-c-divider);
 }
 
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
 .tab-content p {
   margin: 0 0 1rem;
 }
 
 .tab-content p:last-of-type {
   margin-bottom: 0;
-}
-
-.visual-element-note {
-  margin-top: 1rem;
-  font-size: 0.9em;
-  color: var(--vp-c-text-2);
 }
 
 /* Стили для таблицы */
