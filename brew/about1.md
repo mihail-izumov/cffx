@@ -31,7 +31,7 @@ const activeTab = ref('problem')
 
   <!-- Вкладка 1: Исправить проблему -->
   <div v-show="activeTab === 'problem'">
-    <p><strong>Превратите жалобы клиентов в точки кратного роста.</strong></p>
+    <p><strong>Превратите жалобы клиентов в точки кратного роста</strong></p>
     <table class="custom-table">
       <thead>
         <tr>
@@ -63,7 +63,7 @@ const activeTab = ref('problem')
 
   <!-- Вкладка 2: Усилить преимущество -->
   <div v-show="activeTab === 'advantage'">
-    <p><strong>Превратите магию в технологию.</strong></p>
+    <p><strong>Превратите магию в технологию</strong></p>
     <table class="custom-table">
       <thead>
         <tr>
@@ -95,7 +95,7 @@ const activeTab = ref('problem')
 
   <!-- Вкладка 3: Изучить конкурентов -->
   <div v-show="activeTab === 'competitors'">
-    <p><strong>Получить объективную карту поля боя.</strong></p>
+    <p><strong>Получить объективную карту поля боя</strong></p>
     <table class="custom-table">
       <thead>
         <tr>
@@ -127,7 +127,7 @@ const activeTab = ref('problem')
 
   <!-- Вкладка 4: Найти рост -->
   <div v-show="activeTab === 'growth'">
-    <p><strong>Обнаружить скрытые сокровища.</strong></p>
+    <p><strong>Обнаружить скрытые сокровища</strong></p>
     <table class="custom-table">
       <thead>
         <tr>
