@@ -1,28 +1,41 @@
 # 123
 
+
+
+
 ---
+
+<script setup>
+import { ref } from 'vue'
+
+// Устанавливаем первую вкладку активной по умолчанию.
+// Это состояние будет управляться Vue.
+const activeTab = ref('problem')
+</script>
 
 <!-- Блок с кнопками для переключения вкладок -->
 <div class="tabs">
-  <button class="tab-button active" data-tab="problem">
+  <button :class="{ active: activeTab === 'problem' }" @click="activeTab = 'problem'">
     🎯 Исправить проблему
   </button>
-  <button class="tab-button" data-tab="advantage">
+  <button :class="{ active: activeTab === 'advantage' }" @click="activeTab = 'advantage'">
     💪 Усилить преимущество
   </button>
-  <button class="tab-button" data-tab="competitors">
+  <button :class="{ active: activeTab === 'competitors' }" @click="activeTab = 'competitors'">
     🔍 Изучить конкурентов
   </button>
-  <button class="tab-button" data-tab="growth">
+  <button :class="{ active: activeTab === 'growth' }" @click="activeTab = 'growth'">
     🚀 Найти рост
   </button>
 </div>
 
 <!-- Контент для вкладок -->
+<!-- v-if гарантирует, что неактивные блоки не будут отображаться. -->
+<!-- Vue управляет этим, и это безопасно для SSR. -->
 <div class="tab-content">
 
   <!-- Вкладка 1: Исправить проблему -->
-  <div class="tab-panel active" data-panel="problem">
+  <div v-if="activeTab === 'problem'">
     <p><strong>Превратите жалобы клиентов в точки кратного роста.</strong></p>
     <table class="custom-table">
       <thead>
@@ -54,7 +67,7 @@
   </div>
 
   <!-- Вкладка 2: Усилить преимущество -->
-  <div class="tab-panel" data-panel="advantage">
+  <div v-if="activeTab === 'advantage'">
     <p><strong>Превратите магию в технологию.</strong></p>
     <table class="custom-table">
       <thead>
@@ -86,7 +99,7 @@
   </div>
 
   <!-- Вкладка 3: Изучить конкурентов -->
-  <div class="tab-panel" data-panel="competitors">
+  <div v-if="activeTab === 'competitors'">
     <p><strong>Получить объективную карту поля боя.</strong></p>
     <table class="custom-table">
       <thead>
@@ -118,7 +131,7 @@
   </div>
 
   <!-- Вкладка 4: Найти рост -->
-  <div class="tab-panel" data-panel="growth">
+  <div v-if="activeTab === 'growth'">
     <p><strong>Обнаружить скрытые сокровища.</strong></p>
     <table class="custom-table">
       <thead>
@@ -174,31 +187,6 @@
 
 **[Начать диалог с Анной →](https://t.me/Anna_runScale)**
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const tabButtons = document.querySelectorAll('.tab-button');
-  const tabPanels = document.querySelectorAll('.tab-panel');
-
-  tabButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const targetTab = this.getAttribute('data-tab');
-
-      // Убираем активный класс со всех кнопок и панелей
-      tabButtons.forEach(btn => btn.classList.remove('active'));
-      tabPanels.forEach(panel => panel.classList.remove('active'));
-
-      // Добавляем активный класс к выбранной кнопке
-      this.classList.add('active');
-
-      // Показываем соответствующую панель
-      const targetPanel = document.querySelector(`[data-panel="${targetTab}"]`);
-      if (targetPanel) {
-        targetPanel.classList.add('active');
-      }
-    });
-  });
-});
-</script>
 
 <style>
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ПЕРЕКЛЮЧАТЕЛЕЙ (ТЭБОВ) --- */
@@ -209,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
   margin: 1.5rem 0 1rem;
 }
 
-.tab-button {
+.tabs button {
   padding: 10px 16px;
   border-radius: 8px;
   font-weight: 600;
@@ -225,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
   --tabs-button-text: #333;
   --tabs-button-border: #e2e2e2;
 }
-.tab-button {
+.tabs button {
   background-color: var(--tabs-button-bg);
   color: var(--tabs-button-text);
   border-color: var(--tabs-button-border);
@@ -239,8 +227,8 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 /* --- СТИЛИ ДЛЯ АКТИВНОЙ/HOVER КНОПКИ (УНИВЕРСАЛЬНЫЕ) --- */
-.tab-button:hover,
-.tab-button.active {
+.tabs button:hover,
+.tabs button.active {
   background-color: #C5F946 !important;
   color: #1a2a00 !important;
   border-color: #C5F946 !important;
@@ -248,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
   transform: translateY(-2px);
 }
 
-.tab-button.active {
+.tabs button.active {
   transform: none;
 }
 
@@ -260,20 +248,18 @@ document.addEventListener('DOMContentLoaded', function() {
   border: 1px solid var(--vp-c-divider);
 }
 
-.tab-panel {
-  display: none;
-}
-
-.tab-panel.active {
-  display: block;
-}
-
 .tab-content p {
   margin: 0 0 1rem;
 }
 
 .tab-content p:last-of-type {
   margin-bottom: 0;
+}
+
+.visual-element-note {
+  margin-top: 1rem;
+  font-size: 0.9em;
+  color: var(--vp-c-text-2);
 }
 
 /* Стили для таблицы */
