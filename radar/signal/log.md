@@ -38,81 +38,96 @@
 <style>
 /* --- СТИЛИ ДЛЯ ТАБЛИЦ --- */
 
-/* Общие правила для таблиц внутри оберток */
-.radar-signals-table table,
-.comparison-table table {
-  table-layout: fixed;
-  width: 100%;
-  /* Предотвращаем сжатие таблицы на мобильных устройствах */
-  min-width: 100%;
-}
-
-/* Контейнер таблицы с горизонтальным скроллом на мобильных */
+/* Контейнер таблицы с горизонтальным скроллом */
 .radar-signals-table {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  margin: 20px 0;
 }
 
-/* Таблица "Сигналы Радара" */
-/* Первый столбец ("Период"): фиксированная ширина и запрет переноса */
+/* Основные стили таблицы */
+.radar-signals-table table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 650px; /* Минимальная ширина для предотвращения сжатия */
+}
+
+/* Стили для всех ячеек и заголовков */
+.radar-signals-table th,
+.radar-signals-table td {
+  padding: 12px;
+  vertical-align: top;
+  border: 1px solid #ddd;
+}
+
+/* Первый столбец ("Период"): фиксированная ширина */
+.radar-signals-table th:nth-child(1),
 .radar-signals-table td:nth-child(1) {
   width: 150px;
-  white-space: nowrap;
   min-width: 150px;
-}
-
-/* Третий столбец ("Статус"): ширина по контенту и запрет переноса */
-.radar-signals-table td:nth-child(3) {
-  width: 200px;
   white-space: nowrap;
-  min-width: 200px;
 }
 
-/* Второй столбец ("Сигнал Радара"): фиксированная ширина для 2 строк текста */
+/* Второй столбец ("Сигнал Радара"): ширина для 2 строк текста */
+.radar-signals-table th:nth-child(2),
 .radar-signals-table td:nth-child(2) {
-  width: 300px;
-  min-width: 300px;
+  width: 350px;
+  min-width: 350px;
   white-space: normal;
   word-break: break-word;
   line-height: 1.4;
-  /* Ограничиваем высоту примерно до 2 строк */
-  max-height: 2.8em;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
 }
 
-/* Медиа-запрос для мобильных устройств */
+/* Третий столбец ("Статус"): фиксированная ширина */
+.radar-signals-table th:nth-child(3),
+.radar-signals-table td:nth-child(3) {
+  width: 150px;
+  min-width: 150px;
+  white-space: nowrap;
+}
+
+/* Медиа-запросы для разных размеров экрана */
 @media screen and (max-width: 768px) {
   .radar-signals-table table {
-    /* Устанавливаем минимальную ширину таблицы */
     min-width: 650px;
     width: 650px;
   }
   
-  /* На мобильных устройствах сохраняем фиксированные размеры столбцов */
+  .radar-signals-table th:nth-child(1),
   .radar-signals-table td:nth-child(1) {
-    width: 150px;
-    min-width: 150px;
+    width: 140px;
+    min-width: 140px;
+    font-size: 14px;
   }
   
+  .radar-signals-table th:nth-child(2),
   .radar-signals-table td:nth-child(2) {
-    width: 300px;
-    min-width: 300px;
+    width: 350px;
+    min-width: 350px;
+    font-size: 14px;
   }
   
+  .radar-signals-table th:nth-child(3),
   .radar-signals-table td:nth-child(3) {
-    width: 200px;
-    min-width: 200px;
+    width: 160px;
+    min-width: 160px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .radar-signals-table th,
+  .radar-signals-table td {
+    padding: 8px;
+    font-size: 13px;
   }
 }
 
 /* Таблица сравнения "ДО/ПОСЛЕ" */
-/* Оба столбца делят ширину поровну */
 .comparison-table td {
   width: 50%;
-  word-break: break-word; /* Разрешаем перенос для длинного текста */
+  word-break: break-word;
 }
 
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
@@ -137,23 +152,23 @@
 
 /* --- СТИЛЬ 1: ОСНОВНАЯ КНОПКА (ЯРКАЯ) --- */
 .btn-primary {
-  background-color: #C5F946; /* Яркий лаймовый */
+  background-color: #C5F946;
   color: #000 !important;
 }
 
 .btn-primary:hover {
-  background-color: #347b6c; /* Темный при наведении */
+  background-color: #347b6c;
   color: white !important;
 }
 
 /* --- СТИЛЬ 2: ВТОРОСТЕПЕННАЯ КНОПКА (ТЕМНАЯ) --- */
 .btn-secondary {
-  background-color: #347b6c; /* Темный */
+  background-color: #347b6c;
   color: white !important;
 }
 
 .btn-secondary:hover {
-  background-color: #C5F946; /* Яркий при наведении */
+  background-color: #C5F946;
   color: #000 !important;
 }
 
