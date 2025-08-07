@@ -184,4 +184,105 @@ const activeTab = ref('problem')
 
 
 <style>
-/* --- ОБЩИЕ СТИЛИ
+/* --- ОБЩИЕ СТИЛИ ДЛЯ ПЕРЕКЛЮЧАТЕЛЕЙ (ТЭБОВ) --- */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0 1rem;
+}
+
+.tabs button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+}
+
+/* --- СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ (ПО УМОЛЧАНИЮ) --- */
+:root {
+  --tabs-button-bg: #f2f2f2;
+  --tabs-button-text: #333;
+  --tabs-button-border: #e2e2e2;
+}
+.tabs button {
+  background-color: var(--tabs-button-bg);
+  color: var(--tabs-button-text);
+  border-color: var(--tabs-button-border);
+}
+
+/* --- СТИЛИ ДЛЯ ТЕМНОЙ ТЕМЫ --- */
+:root.dark {
+  --tabs-button-bg: #2a2a2a;
+  --tabs-button-text: #adadad;
+  --tabs-button-border: #444;
+}
+
+/* --- СТИЛИ ДЛЯ АКТИВНОЙ/HOVER КНОПКИ (УНИВЕРСАЛЬНЫЕ) --- */
+.tabs button:hover,
+.tabs button.active {
+  background-color: #C5F946 !important;
+  color: #1a2a00 !important;
+  border-color: #C5F946 !important;
+  font-weight: 700;
+  transform: translateY(-2px);
+}
+
+.tabs button.active {
+  transform: none;
+}
+
+/* --- СТИЛИ ДЛЯ КОНТЕНТА --- */
+.tab-content {
+  padding: 1.25rem;
+  border-radius: 12px;
+  background-color: var(--vp-c-bg-alt);
+  border: 1px solid var(--vp-c-divider);
+}
+
+.tab-content p {
+  margin: 0 0 1rem;
+}
+
+.tab-content p:last-of-type {
+  margin-bottom: 0;
+}
+
+.visual-element-note {
+  margin-top: 1rem;
+  font-size: 0.9em;
+  color: var(--vp-c-text-2);
+}
+
+/* Стили для таблицы */
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  border: 1px solid var(--vp-c-divider);
+}
+
+.custom-table th, .custom-table td {
+  text-align: left;
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.custom-table th {
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.custom-table td {
+  color: var(--vp-c-text-2);
+}
+
+/* УДАЛЕНО ПРОБЛЕМНОЕ ПРАВИЛО:
+.custom-table tr:last-child td {
+  border-bottom: none;
+}
+*/
+</style>
