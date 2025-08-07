@@ -474,7 +474,7 @@ export default defineConfig({
 // Функция навигации с переименованным "Радар" в "Инструменты" и упрощенным подменю
 function nav(): DefaultTheme.NavItem[] {
   return [
-    { text: 'BREW', link: '/brew/run' },
+    { text: 'B-R-E-W', link: '/brew/run' },
     { text: 'Инструменты', items: [
         { text: 'Индекс Роста', link: '/radar/overview' },
         { text: 'Сигнал Радара', link: '/radar/signal/log' },
@@ -495,7 +495,7 @@ function nav(): DefaultTheme.NavItem[] {
 // Функция sidebar для раздела BREW остается прежней
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [{
-      text: 'BREW', collapsed: false, items: [
+      text: 'B-R-E-W', collapsed: false, items: [
         { text: 'Ваша Умная Кофейня', link: '/brew/run' },
         { text: 'Кофейный Протокол', link: '/brew/protocol' }
       ]
