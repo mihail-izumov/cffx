@@ -24,9 +24,10 @@
 /* Контейнер для карточек */
 .features-container {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Жёстко задаём 2 столбца равной ширины */
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* Принудительно 2 столбца */
   gap: 16px;
   margin: 32px 0;
+  max-width: 100%; /* Ограничиваем максимальную ширину */
 }
 
 /* --- ОБНОВЛЁННЫЕ СТИЛИ КАРТОЧКИ --- */
@@ -36,6 +37,7 @@
   border-radius: 12px;
   padding: 24px 20px;
   height: 100%;
+  min-width: 0; /* Позволяет карточкам сжиматься */
 }
 
 /* Стили для ТЁМНОЙ темы */
@@ -65,10 +67,10 @@
   margin: 0;
 }
 
-/* Мобильная адаптация - на узких экранах в один столбец */
+/* Мобильная адаптация */
 @media (max-width: 640px) {
   .features-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* На мобильных - 1 столбец */
   }
 }
 </style>
