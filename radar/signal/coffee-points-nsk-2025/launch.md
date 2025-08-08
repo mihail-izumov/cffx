@@ -21,7 +21,6 @@ Skuratov здесь выступает не как «премиум-антипо
 
 ## Первым войти в симуляцию
 
-# Контакт
 <br>
 <form id="myForm" class="custom-form">
   <div class="form-group">
@@ -57,7 +56,7 @@ Skuratov здесь выступает не как «премиум-антипо
 </form>
 
 <div id="successMessage" class="success-message" style="display: none;">
-  Заявка успешно отправлена. Скоро свяжемся.
+  Успешно. Анна отправит уведомление, когда придёт время.
 </div>
 
 <style>
