@@ -7,7 +7,7 @@ export default defineConfig({
   locales: {
     '/': {
       lang: 'ru-RU',
-      title: 'Модуль Роста® – Расти по своим правилам',
+      title: 'Модуль Роста®',
       description: 'Находим то, что другие упускают.',
     },
   },
