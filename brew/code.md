@@ -24,7 +24,7 @@
 /* Контейнер для карточек */
 .features-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 1fr 1fr; /* Жёстко задаём 2 столбца равной ширины */
   gap: 16px;
   margin: 32px 0;
 }
@@ -63,5 +63,12 @@
   font-size: 12px;
   line-height: 1.5;
   margin: 0;
+}
+
+/* Мобильная адаптация - на узких экранах в один столбец */
+@media (max-width: 640px) {
+  .features-container {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
