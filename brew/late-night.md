@@ -280,7 +280,7 @@ BREW использует **Кофейный Протокол** — анализ
         <p class="spec-label">Система-партнер</p>
       </div>
       <div class="spec-item">
-        <span class="spec-value">Чекап, Система Роста Бизнеса</span>
+        <span class="spec-value">[Чекап](/checkup/overview), [Система Роста Бизнеса](/system/overview)</span>
         <p class="spec-label">Доступные услуги</p>
       </div>
       <div class="spec-item">
