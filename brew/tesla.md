@@ -77,10 +77,10 @@
 <style>
   :root {
     --brand-color: #C5F946;
-    --panel-bg: #1c1c1e;     /* плотная заливка под обе темы */
+    --panel-bg: #1c1c1e;
     --panel-border: #3a3a3c;
-    --text-1: #f2f2f7;
-    --text-2: #8e8e93;
+    --text-primary: #f2f2f7;
+    --text-secondary: #8e8e93;
   }
 
   .simulator-card {
@@ -92,8 +92,8 @@
     flex-direction: column;
     overflow: hidden;
     transition: all 0.3s ease;
-    box-sizing: border-box;
-    min-height: 460px;
+    box-sizing: border-box; /* Гарантирует, что padding и border не ломают размеры */
+    min-height: 480px; /* Увеличено для лучшего баланса */
   }
 
   .simulator-card:hover {
@@ -102,7 +102,7 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.25);
   }
 
-  /* Шапка в одну строку: статус + город слева, сложность справа */
+  /* Шапка в одну строку */
   .card-header-row {
     display: flex;
     align-items: center;
@@ -110,19 +110,21 @@
     gap: 12px;
     padding: 4px 2px 8px 2px;
   }
+  
   .card-header-left {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    min-width: 0; /* для безопасного усечения текста */
+    min-width: 0;
   }
+  
   .status-dot {
-    flex: 0 0 auto;
     font-size: 1rem;
     line-height: 1;
   }
+  
   .card-city-title {
-    color: var(--text-2);
+    color: var(--text-secondary);
     font-size: 0.84rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -131,24 +133,26 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  
   .card-header-right {
-    flex: 0 0 auto;
-    color: var(--text-2);
+    flex-shrink: 0; /* Запрещает сжатие элемента */
+    color: var(--text-secondary);
     font-size: 0.8rem;
     white-space: nowrap;
-  }
-  .card-difficulty {
-    opacity: 0.95;
   }
 
   /* Главный сценарий */
   .scenario-line {
-    color: var(--text-1);
-    font-size: 1.22rem;
+    color: var(--text-primary);
+    font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.3;
     text-align: center;
-    margin: 8px 8px 14px 8px;
+    margin: 8px 0 16px 0;
+    min-height: 40px; /* Резерв для выравнивания карточек */
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* Изображение */
@@ -157,8 +161,9 @@
     height: 168px;
     border-radius: 12px;
     overflow: hidden;
-    margin: 6px 0 18px 0;
+    margin-bottom: 20px;
   }
+  
   .card-image {
     width: 100%;
     height: 100%;
@@ -168,28 +173,32 @@
 
   /* Спецификации */
   .card-specs {
-    display: grid;
-    gap: 12px;
-    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex-grow: 1; /* Занимает все пространство, толкая кнопку вниз */
   }
+  
   .spec-item { line-height: 1.45; }
+  
   .spec-label {
     display: block;
-    font-size: 0.76rem;
-    color: var(--text-2);
-    margin-bottom: 2px;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-bottom: 3px;
     font-weight: 500;
   }
+  
   .spec-value {
     display: block;
-    font-size: 0.92rem;
+    font-size: 0.94rem;
     font-weight: 500;
-    color: var(--text-1);
+    color: var(--text-primary);
   }
 
   /* Кнопки */
   .card-button {
-    margin-top: 18px;
+    margin-top: 20px;
     background-color: var(--brand-color);
     color: #000;
     padding: 12px 16px;
@@ -198,22 +207,25 @@
     font-size: 0.92rem;
     text-align: center;
     text-decoration: none;
-    transition: background .25s ease, color .25s ease, transform .2s ease, border-color .2s ease;
-    border: 2px solid transparent; /* резерв, чтобы не дёргалось */
+    transition: all 0.25s ease;
+    border: 2px solid transparent; /* Резерв, чтобы не было "прыжка" при ховере */
     box-sizing: border-box;
+    display: block;
   }
+
   .card-button:hover {
     background: #fff !important;
     color: #000 !important;
     transform: translateY(-1px);
   }
 
-  .card-button--secondary {
+  .card-button.card-button--secondary {
     background: transparent;
     color: var(--brand-color);
     border-color: var(--brand-color);
   }
-  .card-button--secondary:hover {
+
+  .card-button.card-button--secondary:hover {
     background: var(--brand-color) !important;
     color: #000 !important;
   }
