@@ -92,8 +92,8 @@
     flex-direction: column;
     overflow: hidden;
     transition: all 0.3s ease;
-    box-sizing: border-box; /* Гарантирует, что padding и border не ломают размеры */
-    min-height: 480px; /* Увеличено для лучшего баланса */
+    box-sizing: border-box;
+    min-height: 480px;
   }
 
   .simulator-card:hover {
@@ -135,7 +135,7 @@
   }
   
   .card-header-right {
-    flex-shrink: 0; /* Запрещает сжатие элемента */
+    flex-shrink: 0;
     color: var(--text-secondary);
     font-size: 0.8rem;
     white-space: nowrap;
@@ -149,7 +149,7 @@
     line-height: 1.3;
     text-align: center;
     margin: 8px 0 16px 0;
-    min-height: 40px; /* Резерв для выравнивания карточек */
+    min-height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -176,10 +176,12 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
-    flex-grow: 1; /* Занимает все пространство, толкая кнопку вниз */
+    flex-grow: 1;
   }
   
-  .spec-item { line-height: 1.45; }
+  .spec-item { 
+    line-height: 1.45; 
+  }
   
   .spec-label {
     display: block;
@@ -208,7 +210,7 @@
     text-align: center;
     text-decoration: none;
     transition: all 0.25s ease;
-    border: 2px solid transparent; /* Резерв, чтобы не было "прыжка" при ховере */
+    border: 2px solid transparent;
     box-sizing: border-box;
     display: block;
   }
