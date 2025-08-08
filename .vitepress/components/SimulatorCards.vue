@@ -67,10 +67,10 @@
 }
 
 .simulator-card {
-  background-color: #2d2d30; /* Светлее чем фон страницы */
-  border: 2px solid #444444; /* Заметная рамка */
+  background-color: #2d2d30;
+  border: 2px solid #444444;
   border-radius: 18px;
-  padding: 20px; /* Больше внутреннего пространства */
+  padding: 20px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -81,9 +81,9 @@
 
 .simulator-card:hover {
   transform: translateY(-6px);
-  border-color: #C5F946; /* Яркая рамка при наведении */
-  box-shadow: 0 12px 35px rgba(197, 249, 70, 0.15); /* Зеленое свечение */
-  background-color: #353538; /* Еще светлее при наведении */
+  border-color: #C5F946;
+  box-shadow: 0 12px 35px rgba(197, 249, 70, 0.15);
+  background-color: #353538;
 }
 
 .card-header {
@@ -123,9 +123,10 @@
   justify-content: center;
 }
 
+/* ИЗМЕНЕНИЕ ЗДЕСЬ */
 .card-image-wrapper {
   width: 100%;
-  height: 168px;
+  aspect-ratio: 12 / 7; /* Задает жесткое соотношение сторон, отменяя хаос */
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 22px;
