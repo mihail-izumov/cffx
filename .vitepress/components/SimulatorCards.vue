@@ -25,7 +25,7 @@
           <span class="spec-value">Как масштабировать уют, не потеряв магию бренда?</span>
         </div>
       </div>
-      <a href="/simulator/samara" class="card-button card-button--ghost">Войти →</a>
+      <a href="/simulator/samara" class="card-button">Войти →</a>
     </div>
 
     <!-- КАРТОЧКА СИМУЛЯТОРА: НОВОСИБИРСК -->
@@ -52,21 +52,13 @@
           <span class="spec-value">Как устранить разрыв между ярким маркетингом и операционным хаосом в масштабе федеральной сети?</span>
         </div>
       </div>
-      <a href="/radar/signal/coffee-points-nsk-2025/launch" class="card-button card-button--outline">Анонс →</a>
+      <a href="/radar/signal/coffee-points-nsk-2025/launch" class="card-button card-button--secondary">Анонс →</a>
     </div>
 
   </div>
 </template>
 
 <style scoped>
-:root {
-  --brand-color: #C5F946;
-  --panel-bg: #2a2a2e; /* Светлее для контраста */
-  --panel-border: #444; /* Более заметная базовая рамка */
-  --text-primary: #f2f2f7;
-  --text-secondary: #8e8e93;
-}
-
 .simulator-grid {
   display: grid; 
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
@@ -74,32 +66,33 @@
   margin: 2rem 0;
 }
 
-/* 1. КАЛИБРОВКА КАРТОЧКИ: ФОН И ОБВОДКА */
 .simulator-card {
-  background-color: var(--panel-bg);
-  border: 1px solid var(--panel-border); /* Базовая рамка теперь заметнее */
+  background-color: #2d2d30; /* Светлее чем фон страницы */
+  border: 2px solid #444444; /* Заметная рамка */
   border-radius: 18px;
-  padding: 16px;
+  padding: 20px; /* Больше внутреннего пространства */
   display: flex;
   flex-direction: column;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+  transition: all 0.3s ease;
   box-sizing: border-box;
   min-height: 480px;
 }
 
 .simulator-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--brand-color); /* Обводка при наведении */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  transform: translateY(-6px);
+  border-color: #C5F946; /* Яркая рамка при наведении */
+  box-shadow: 0 12px 35px rgba(197, 249, 70, 0.15); /* Зеленое свечение */
+  background-color: #353538; /* Еще светлее при наведении */
 }
 
 .card-header {
-  padding: 4px 2px 8px 2px;
+  padding: 6px 4px 12px 4px;
   min-height: 40px;
 }
 
 .card-city-title {
-  color: var(--text-secondary);
+  color: #a8a8a8;
   font-size: 0.84rem;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -107,23 +100,23 @@
 
 .card-city-title .city-name {
   font-weight: 600;
-  color: var(--text-primary);
+  color: #ffffff;
   text-transform: uppercase;
 }
 
 .card-difficulty {
-  color: var(--text-secondary);
+  color: #a8a8a8;
   font-size: 0.8rem;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .scenario-line {
-  color: var(--text-primary);
+  color: #ffffff;
   font-size: 1.35rem;
   font-weight: 600;
   line-height: 1.3;
   text-align: center;
-  margin: 8px 0 16px 0;
+  margin: 12px 0 18px 0;
   min-height: 45px;
   display: flex;
   align-items: center;
@@ -135,7 +128,7 @@
   height: 168px;
   border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .card-image {
@@ -148,59 +141,62 @@
 .card-specs {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   flex-grow: 1;
 }
 
-.spec-item { line-height: 1.45; }
+.spec-item {
+  line-height: 1.45;
+}
+
 .spec-label {
   display: block;
   font-size: 0.78rem;
-  color: var(--text-secondary);
-  margin-bottom: 3px;
+  color: #a8a8a8;
+  margin-bottom: 4px;
   font-weight: 500;
 }
+
 .spec-value {
   display: block;
   font-size: 0.94rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
-/* 2. КАЛИБРОВКА КНОПОК: ПРИЗРАК И КОНТУР */
 .card-button {
-  margin-top: 20px;
-  padding: 12px 16px;
-  border-radius: 10px;
+  margin-top: 24px;
+  background-color: #C5F946;
+  color: #000000;
+  padding: 14px 18px;
+  border-radius: 12px;
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   text-align: center;
   text-decoration: none;
-  transition: all 0.2s ease;
-  display: block;
+  transition: all 0.25s ease;
+  border: 2px solid #C5F946;
   box-sizing: border-box;
+  display: block;
 }
 
-/* Кнопка "Призрак" (Войти) */
-.card-button--ghost {
-  background-color: transparent;
-  border: 1px solid transparent;
-  color: var(--text-secondary);
-}
-.card-button--ghost:hover {
-  color: var(--text-primary);
-  background-color: rgba(255, 255, 255, 0.05);
+.card-button:hover {
+  background-color: #ffffff;
+  border-color: #ffffff;
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
 }
 
-/* Кнопка "Контур" (Анонс) */
-.card-button--outline {
+.card-button--secondary {
   background-color: transparent;
-  border: 1px solid var(--panel-border); /* Тусклая рамка по умолчанию */
-  color: var(--text-secondary);
+  color: #C5F946;
+  border-color: #C5F946;
 }
-.card-button--outline:hover {
-  border-color: var(--brand-color);
-  color: var(--brand-color);
-  background-color: rgba(197, 249, 70, 0.1);
+
+.card-button--secondary:hover {
+  background-color: #C5F946;
+  color: #000000;
+  border-color: #C5F946;
 }
 </style>
