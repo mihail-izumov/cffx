@@ -349,14 +349,6 @@ BREW использует **Кофейный Протокол** — анализ
     line-height: 1.4;
     margin-bottom: 4px;
   }
-  /* Стили для ссылок */
-  .spec-item .spec-value a {
-    color: inherit; /* Наследует белый цвет родителя */
-    text-decoration: underline; /* Добавляет подчеркивание для наглядности */
-  }
-  .spec-item .spec-value a:hover {
-    text-decoration: none; /* Убирает подчеркивание при наведении */
-  }
   .criteria-section {
     margin-top: 32px;
   }
