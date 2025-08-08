@@ -4,7 +4,7 @@
     <!-- КАРТОЧКА СИМУЛЯТОРА: САМАРА -->
     <div class="simulator-card">
       <div class="card-header">
-        <div class="card-city-title">симулятор // <span class="city-name">Самара</span></div>
+        <div class="card-city-title">Симулятор // <span class="city-name">Самара</span></div>
         <div class="card-difficulty">🟢 Сложность: ★☆☆</div>
       </div>
       <div class="scenario-line">Душа против системы</div>
@@ -18,7 +18,7 @@
         </div>
         <div class="spec-item">
           <span class="spec-label">Ядро симуляции</span>
-          <span class="spec-value">~20 точек, формирующих эпицентр конкуренции</span>
+          <span class="spec-value">~20 точек формируют эпицентр конкуренции</span>
         </div>
         <div class="spec-item">
           <span class="spec-label">Вызов</span>
@@ -31,7 +31,7 @@
     <!-- КАРТОЧКА СИМУЛЯТОРА: НОВОСИБИРСК -->
     <div class="simulator-card">
       <div class="card-header">
-        <div class="card-city-title">симулятор // <span class="city-name">Новосибирск</span></div>
+        <div class="card-city-title">Симулятор // <span class="city-name">Новосибирск</span></div>
         <div class="card-difficulty">🟡 Сложность: ★★☆</div>
       </div>
       <div class="scenario-line">Разлом Гиганта</div>
