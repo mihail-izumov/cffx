@@ -35,8 +35,7 @@
   <a href="/brew/about" class="btn btn-primary"  rel="noopener noreferrer">Узнать Больше →</a>
 </div>
 
-<br><br><br>
-
+<br><br>
 
 
 <style>
@@ -375,4 +374,6 @@
   }
 </style>
 
+<br><br>
 ![BREW-outro](/brew_outro_ban.webp)
+<br>
