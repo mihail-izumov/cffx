@@ -1,77 +1,63 @@
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+<script setup>
+const cards = [
+  {
+    status: '🟢',
+    city: 'Симулятор Самары',
+    difficulty: 'Сложность: ★★☆',
+    scenario: '⚔️ Душа против системы',
+    image: 'https://i.postimg.cc/mDw1xVz3/samara-korzh.jpg',
+    specs: [
+      { label: 'Игроки в фокусе', value: 'Корж, Skuratov, Surf Coffee, White Cup, Coffee Balance' },
+      { label: 'Ядро симуляции', value: '~20 точек, формирующих эпицентр конкуренции' },
+      { label: 'Вызов', value: 'Как масштабировать уют, не потеряв магию бренда?' }
+    ],
+    button: { text: 'Войти →', href: '/simulator/samara', secondary: false }
+  },
+  {
+    status: '🟡',
+    city: 'Симулятор Новосибирска',
+    difficulty: 'Сложность: ★★★',
+    scenario: '🎯 Массовость против премиума',
+    image: 'https://i.postimg.cc/x15tDnzj/novosibirsk-skuratov-greenhouse.jpg',
+    specs: [
+      { label: 'Игроки в фокусе', value: 'Green House (массовость) vs. Skuratov (качество)' },
+      { label: 'Ядро симуляции', value: '~100 точек двух ключевых титанов рынка' },
+      { label: 'Вызов', 'value': 'Найти асимметричный ответ федеральному гиганту, вскрыв его внутренние противоречия' }
+    ],
+    button: { text: 'Следить →', href: '/simulator/novosibirsk', secondary: true }
+  }
+]
+</script>
 
-  <!-- КАРТОЧКА СИМУЛЯТОРА: САМАРА -->
-  <div class="simulator-card">
+<div class="card-grid-container">
+  <div v-for="card in cards" :key="card.city" class="simulator-card">
     <div class="card-header-row">
       <div class="card-header-left">
-        <span class="status-dot">🟢</span>
-        <span class="card-city-title">Симулятор Самары</span>
+        <span class="status-dot">{{ card.status }}</span>
+        <span class="card-city-title">{{ card.city }}</span>
       </div>
       <div class="card-header-right">
-        <span class="card-difficulty">Сложность: ★★☆</span>
+        <span class="card-difficulty">{{ card.difficulty }}</span>
       </div>
     </div>
 
-    <div class="scenario-line">⚔️ Душа против системы</div>
+    <div class="scenario-line">{{ card.scenario }}</div>
 
     <div class="card-image-wrapper">
-      <img src="https://i.postimg.cc/mDw1xVz3/samara-korzh.jpg" alt="Симулятор Самары" class="card-image">
+      <img :src="card.image" :alt="card.city" class="card-image">
     </div>
 
     <div class="card-specs">
-      <div class="spec-item">
-        <span class="spec-label">Игроки в фокусе</span>
-        <span class="spec-value">Корж, Skuratov, Surf Coffee, White Cup, Coffee Balance</span>
-      </div>
-      <div class="spec-item">
-        <span class="spec-label">Ядро симуляции</span>
-        <span class="spec-value">~20 точек, формирующих эпицентр конкуренции</span>
-      </div>
-      <div class="spec-item">
-        <span class="spec-label">Вызов</span>
-        <span class="spec-value">Как масштабировать уют, не потеряв магию бренда?</span>
+      <div v-for="spec in card.specs" :key="spec.label" class="spec-item">
+        <span class="spec-label">{{ spec.label }}</span>
+        <span class="spec-value">{{ spec.value }}</span>
       </div>
     </div>
 
-    <a href="/simulator/samara" class="card-button">Войти →</a>
+    <a :href="card.button.href" class="card-button" :class="{ 'card-button--secondary': card.button.secondary }">
+      {{ card.button.text }}
+    </a>
   </div>
-
-  <!-- КАРТОЧКА СИМУЛЯТОРА: НОВОСИБИРСК -->
-  <div class="simulator-card">
-    <div class="card-header-row">
-      <div class="card-header-left">
-        <span class="status-dot">🟡</span>
-        <span class="card-city-title">Симулятор Новосибирска</span>
-      </div>
-      <div class="card-header-right">
-        <span class="card-difficulty">Сложность: ★★★</span>
-      </div>
-    </div>
-
-    <div class="scenario-line">🎯 Массовость против премиума</div>
-
-    <div class="card-image-wrapper">
-      <img src="https://i.postimg.cc/x15tDnzj/novosibirsk-skuratov-greenhouse.jpg" alt="Симулятор Новосибирска" class="card-image">
-    </div>
-
-    <div class="card-specs">
-      <div class="spec-item">
-        <span class="spec-label">Игроки в фокусе</span>
-        <span class="spec-value">Green House (массовость) vs. Skuratov (качество)</span>
-      </div>
-      <div class="spec-item">
-        <span class="spec-label">Ядро симуляции</span>
-        <span class="spec-value">~100 точек двух ключевых титанов рынка</span>
-      </div>
-      <div class="spec-item">
-        <span class="spec-label">Вызов</span>
-        <span class="spec-value">Найти асимметричный ответ федеральному гиганту, вскрыв его внутренние противоречия</span>
-      </div>
-    </div>
-
-    <a href="/simulator/novosibirsk" class="card-button card-button--secondary">Следить →</a>
-  </div>
-
 </div>
 
 <style>
@@ -81,6 +67,13 @@
     --panel-border: #3a3a3c;
     --text-primary: #f2f2f7;
     --text-secondary: #8e8e93;
+  }
+
+  .card-grid-container {
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+    gap: 1.5rem; 
+    margin: 2rem 0;
   }
 
   .simulator-card {
@@ -93,7 +86,7 @@
     overflow: hidden;
     transition: all 0.3s ease;
     box-sizing: border-box;
-    min-height: 480px;
+    min-height: 490px;
   }
 
   .simulator-card:hover {
