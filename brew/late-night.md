@@ -31,13 +31,13 @@
   </div>
 </div>
 
-BREW использует [Кофейный Протокол](/brew/protocol) — анализ тысяч реальных отзывов, — чтобы давать прямые ответы на ваши вопросы. Вам больше никогда не придется действовать вслепую, теряя время и деньги на гипотезах.
-
 <div class="start-button-container">
   <a href="/brew/about" class="btn btn-primary"  rel="noopener noreferrer">Узнать Больше →</a>
 </div>
 
-<br>
+<br><br><br>
+
+
 
 <style>
 /* Контейнер для карточек */
