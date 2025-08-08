@@ -25,6 +25,9 @@ Skuratov здесь выступает не как «премиум-антипо
 ## Первым войти в симуляцию
 
 <br>
+
+# Контакт
+<br>
 <form id="myForm" class="custom-form">
   <div class="form-group">
     <label for="name">Имя:</label>
@@ -188,9 +191,8 @@ export default {
           phone: form.phone.value,
           email: form.email.value,
           consent: checkbox.checked ? 'Да' : 'Нет',
-          // --- ИЗМЕНЕНИЕ ЗДЕСЬ ---
-          // Добавляем метку прямо в тему письма
-          _subject: 'Симулятор – Рынок кофеен Новосибирска'
+          // Ваша новая тема, но с обычным дефисом
+          _subject: 'Рынок кофеен Новосибирска'
         };
         
         form.reset();
@@ -210,8 +212,7 @@ export default {
         })
         .catch(error => {
           console.error('Error:', error);
-          // Тему для резервного письма тоже можно обновить
-          const mailtoSubject = 'Симулятор – Рынок кофеен Новосибирска';
+          const mailtoSubject = 'Рынок кофеен Новосибирска';
           const mailtoBody = `Имя: ${formData.name}%0AТелефон: ${formData.phone}%0AEmail: ${formData.email}`;
           window.location.href = `mailto:theorchestramanco@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`;
         })
@@ -228,3 +229,4 @@ export default {
   }
 }
 </script>
+
