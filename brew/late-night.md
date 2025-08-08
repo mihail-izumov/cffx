@@ -193,7 +193,9 @@ BREW использует **Кофейный Протокол** — анализ
         <p class="spec-label">Тип</p>
       </div>
       <div class="spec-item">
-        <span class="spec-value">Открытая</span>
+        <span class="spec-value">
+          <a href="/brew/protocol">Открытая</a>
+          </span>
         <p class="spec-label">Модель доступа</p>
       </div>
       <div class="spec-item">
@@ -220,7 +222,9 @@ BREW использует **Кофейный Протокол** — анализ
         <p class="spec-label">Метод анализа</p>
       </div>
       <div class="spec-item">
-        <span class="spec-value">Анна</span>
+        <span class="spec-value">
+          <a href="/radar/who-is-anna">Анна</a>
+          </span>
         <p class="spec-label">ИИ-ассистент</p>
       </div>
     </div>
@@ -235,7 +239,9 @@ BREW использует **Кофейный Протокол** — анализ
     <h2 class="section-title">Симулятор Роста</h2>
     <div class="specs-grid four-cols">
         <div class="spec-item">
-            <span class="spec-value">Сигналы Радара</span>
+            <span class="spec-value">
+            <a href="/radar/signal/log">Сигналы Радара</a>
+            </span>
             <p class="spec-label">Инструмент</p>
         </div>
         <div class="spec-item">
@@ -243,12 +249,12 @@ BREW использует **Кофейный Протокол** — анализ
             <p class="spec-label">Назначение</p>
         </div>
         <div class="spec-item">
-            <span class="spec-value">Самара (Демо)</span>
+            <span class="spec-value">Самара // Фокус на «Корж»</span>
             <p class="spec-label">Доступные сигналы</p>
         </div>
         <div class="spec-item">
             <span class="spec-value">Новосибирск, Москва, СПб, Сочи +</span>
-            <p class="spec-label">Сигналы в разработке</p>
+            <p class="spec-label">Работает Радар</p>
         </div>
     </div>
   </div>
