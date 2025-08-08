@@ -65,6 +65,8 @@
   <a href="https://t.me/Anna_runScale" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Начать диалог с Анной →</a>
 </div>
 
+<br>
+
 <style>
 /* --- СТИЛИ ДЛЯ ТАБЛИЦ --- */
 
