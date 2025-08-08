@@ -156,6 +156,7 @@ BREW использует **Кофейный Протокол** — анализ
 </style>
 
 ---
+
 <div class="brew-specs-container">
 
   <h1 class="main-specs-title">Характеристики <br> B-R-E-W</h1>
@@ -280,7 +281,10 @@ BREW использует **Кофейный Протокол** — анализ
         <p class="spec-label">Система-партнер</p>
       </div>
       <div class="spec-item">
-        <span class="spec-value">[Чекап](/checkup/overview), [Система Роста Бизнеса](/system/overview)</span>
+        <span class="spec-value">
+          <a href="/checkup/overview">Чекап</a>, 
+          <a href="/system/overview">Система Роста Бизнеса</a>
+        </span>
         <p class="spec-label">Доступные услуги</p>
       </div>
       <div class="spec-item">
@@ -344,6 +348,14 @@ BREW использует **Кофейный Протокол** — анализ
     color: #fff;
     line-height: 1.4;
     margin-bottom: 4px;
+  }
+  /* Стили для ссылок */
+  .spec-item .spec-value a {
+    color: inherit; /* Наследует белый цвет родителя */
+    text-decoration: underline; /* Добавляет подчеркивание для наглядности */
+  }
+  .spec-item .spec-value a:hover {
+    text-decoration: none; /* Убирает подчеркивание при наведении */
   }
   .criteria-section {
     margin-top: 32px;
