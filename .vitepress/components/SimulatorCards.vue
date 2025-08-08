@@ -11,7 +11,7 @@
       <div class="scenario-line">Душа против системы</div>
 
       <div class="card-image-wrapper">
-        <img src="/signal_skrtv_krzh.svg" alt="Симулятор Самары" class="card-image">
+        <img src="/signal-krzh_skrtv.svg" alt="Симулятор Самары" class="card-image">
       </div>
 
       <div class="card-specs">
@@ -42,7 +42,7 @@
       <div class="scenario-line">Массовость против премиума</div>
 
       <div class="card-image-wrapper">
-        <img src="/signal_skrtv_krzh.svg" alt="Симулятор Новосибирска" class="card-image">
+        <img src="/signal-gtrnhs_skrtv.svg" alt="Симулятор Новосибирска" class="card-image">
       </div>
 
       <div class="card-specs">
