@@ -32,7 +32,7 @@
     <div class="simulator-card">
       <div class="card-header">
         <div class="card-city-title">симулятор // <span class="city-name">Новосибирск</span></div>
-        <div class="card-difficulty">🟡 Сложность: ★★★</div>
+        <div class="card-difficulty">🟡 Сложность: ★★☆</div>
       </div>
       <div class="scenario-line">Разлом Гиганта</div>
       <div class="card-image-wrapper">
