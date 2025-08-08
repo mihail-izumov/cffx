@@ -1,12 +1,18 @@
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
 
-  <!-- САМАРА -->
+  <!-- КАРТОЧКА СИМУЛЯТОРА: САМАРА -->
   <div class="simulator-card">
-    <div class="card-header">
-      <div class="simulator-line">Симулятор Самары</div>
-      <div class="difficulty-line">🟢 ★★☆</div>
-      <div class="scenario-line">⚔️ Душа против системы</div>
+    <div class="card-header-row">
+      <div class="card-header-left">
+        <span class="status-dot">🟢</span>
+        <span class="card-city-title">Симулятор Самары</span>
+      </div>
+      <div class="card-header-right">
+        <span class="card-difficulty">Сложность: ★★☆</span>
+      </div>
     </div>
+
+    <div class="scenario-line">⚔️ Душа против системы</div>
 
     <div class="card-image-wrapper">
       <img src="https://i.postimg.cc/mDw1xVz3/samara-korzh.jpg" alt="Симулятор Самары" class="card-image">
@@ -30,13 +36,19 @@
     <a href="/simulator/samara" class="card-button">Войти →</a>
   </div>
 
-  <!-- НОВОСИБИРСК -->
+  <!-- КАРТОЧКА СИМУЛЯТОРА: НОВОСИБИРСК -->
   <div class="simulator-card">
-    <div class="card-header">
-      <div class="simulator-line">Симулятор Новосибирска</div>
-      <div class="difficulty-line">🟡 ★★★</div>
-      <div class="scenario-line">🎯 Массовость против премиума</div>
+    <div class="card-header-row">
+      <div class="card-header-left">
+        <span class="status-dot">🟡</span>
+        <span class="card-city-title">Симулятор Новосибирска</span>
+      </div>
+      <div class="card-header-right">
+        <span class="card-difficulty">Сложность: ★★★</span>
+      </div>
     </div>
+
+    <div class="scenario-line">🎯 Массовость против премиума</div>
 
     <div class="card-image-wrapper">
       <img src="https://i.postimg.cc/x15tDnzj/novosibirsk-skuratov-greenhouse.jpg" alt="Симулятор Новосибирска" class="card-image">
@@ -63,63 +75,91 @@
 </div>
 
 <style>
-  :root{
-    --brand: #C5F946;
-    --bg: #1b1c1f;        /* плотная сплошная заливка под обе темы */
-    --panel: #232428;     /* панель карточки */
-    --border: #3a3b41;
-    --text-1: #f2f3f7;    /* первичный текст */
-    --text-2: #9aa0a6;    /* вторичный текст */
+  :root {
+    --brand-color: #C5F946;
+    --panel-bg: #1c1c1e;     /* плотная заливка под обе темы */
+    --panel-border: #3a3a3c;
+    --text-1: #f2f2f7;
+    --text-2: #8e8e93;
   }
 
-  .simulator-card{
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 16px;
+  .simulator-card {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 18px;
     padding: 16px;
     display: flex;
     flex-direction: column;
-    min-height: 460px;
+    overflow: hidden;
+    transition: all 0.3s ease;
     box-sizing: border-box;
-    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-  }
-  .simulator-card:hover{
-    transform: translateY(-4px);
-    border-color: var(--brand);
-    box-shadow: 0 10px 28px rgba(0,0,0,.25);
+    min-height: 460px;
   }
 
-  /* Верхняя зона: симулятор/звезды/сценарий */
-  .card-header{
-    padding: 6px 4px 10px 4px; /* используем верхнее пространство */
+  .simulator-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--brand-color);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
   }
-  .simulator-line{
+
+  /* Шапка в одну строку: статус + город слева, сложность справа */
+  .card-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 2px 8px 2px;
+  }
+  .card-header-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0; /* для безопасного усечения текста */
+  }
+  .status-dot {
+    flex: 0 0 auto;
+    font-size: 1rem;
+    line-height: 1;
+  }
+  .card-city-title {
     color: var(--text-2);
-    font-size: .84rem;      /* малый, как у Polestar/Tesla */
-    letter-spacing: .02em;
-    margin-bottom: 4px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  .difficulty-line{
+  .card-header-right {
+    flex: 0 0 auto;
     color: var(--text-2);
-    font-size: .78rem;      /* ещё меньше звезды */
-    margin-bottom: 8px;
+    font-size: 0.8rem;
+    white-space: nowrap;
   }
-  .scenario-line{
+  .card-difficulty {
+    opacity: 0.95;
+  }
+
+  /* Главный сценарий */
+  .scenario-line {
     color: var(--text-1);
-    font-size: 1.22rem;     /* самая крупная фраза */
+    font-size: 1.22rem;
     font-weight: 600;
     line-height: 1.3;
+    text-align: center;
+    margin: 8px 8px 14px 8px;
   }
 
   /* Изображение */
-  .card-image-wrapper{
+  .card-image-wrapper {
     width: 100%;
     height: 168px;
     border-radius: 12px;
     overflow: hidden;
-    margin: 14px 0 18px 0;
+    margin: 6px 0 18px 0;
   }
-  .card-image{
+  .card-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -127,60 +167,54 @@
   }
 
   /* Спецификации */
-  .card-specs{
+  .card-specs {
     display: grid;
     gap: 12px;
-    flex: 1 1 auto; /* тянется, чтобы кнопка упиралась вниз */
+    flex: 1 1 auto;
   }
-  .spec-item{ line-height: 1.45; }
-  .spec-label{
-    display:block;
+  .spec-item { line-height: 1.45; }
+  .spec-label {
+    display: block;
+    font-size: 0.76rem;
     color: var(--text-2);
-    font-size:.76rem;
-    margin-bottom:2px;
-    font-weight:500;
+    margin-bottom: 2px;
+    font-weight: 500;
   }
-  .spec-value{
-    display:block;
+  .spec-value {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 500;
     color: var(--text-1);
-    font-size:.92rem;
-    font-weight:500;
   }
 
   /* Кнопки */
-  .card-button{
+  .card-button {
     margin-top: 18px;
-    background: var(--brand);
-    color:#000;
+    background-color: var(--brand-color);
+    color: #000;
     padding: 12px 16px;
     border-radius: 10px;
     font-weight: 700;
-    font-size: .92rem;
-    text-align:center;
-    text-decoration:none;
+    font-size: 0.92rem;
+    text-align: center;
+    text-decoration: none;
     transition: background .25s ease, color .25s ease, transform .2s ease, border-color .2s ease;
-    border: 2px solid transparent;   /* резерв, чтобы не дёргалось */
+    border: 2px solid transparent; /* резерв, чтобы не дёргалось */
     box-sizing: border-box;
   }
-  .card-button:hover{
-    background:#fff;
-    color:#000;
+  .card-button:hover {
+    background: #fff !important;
+    color: #000 !important;
     transform: translateY(-1px);
   }
 
-  .card-button--secondary{
+  .card-button--secondary {
     background: transparent;
-    color: var(--brand);
-    border-color: var(--brand);       /* видимая рамка без обрезания */
+    color: var(--brand-color);
+    border-color: var(--brand-color);
   }
-  .card-button--secondary:hover{
-    background: var(--brand);
-    color:#000;
-  }
-
-  /* Контекстный фон секции (если нужен подложка для блока) */
-  body{ 
-    background: var(--bg);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Для лучшего рендеринга на демо */
+  .card-button--secondary:hover {
+    background: var(--brand-color) !important;
+    color: #000 !important;
   }
 </style>
