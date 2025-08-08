@@ -73,6 +73,7 @@
   --panel-border: #3a3a3c;
   --text-primary: #f2f2f7;
   --text-secondary: #8e8e93;
+  --hover-color: #ffffff;
 }
 
 .simulator-grid {
@@ -179,7 +180,6 @@
   color: var(--text-primary);
 }
 
-/* Фикс артефакта на кнопке */
 .card-button {
   margin-top: 20px;
   background-color: var(--brand-color);
@@ -190,14 +190,17 @@
   font-size: 0.92rem;
   text-align: center;
   text-decoration: none;
-  transition: background-color 0.25s ease, transform 0.2s ease; /* Убрали лишние transition */
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
   border: 2px solid transparent;
   box-sizing: border-box;
   display: block;
 }
 
+/* ФИНАЛЬНЫЙ ФИКС АРТЕФАКТА */
 .card-button:hover {
-  background-color: #ffffff; /* Убрали !important */
+  background-color: var(--hover-color);
+  border-color: var(--hover-color); /* Приказ: рамка и фон одного цвета */
+  color: #000;
   transform: translateY(-1px);
 }
 
@@ -209,6 +212,6 @@
 
 .card-button.card-button--secondary:hover {
   background-color: var(--brand-color);
-  color: #000; /* Убрали !important */
+  color: #000;
 }
 </style>
