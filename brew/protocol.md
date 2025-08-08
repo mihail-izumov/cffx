@@ -5,9 +5,9 @@
 
 Наша философия проста: мы не продаем информацию. Мы создаем **новое поколение управленцев**, которые мыслят и действуют эффективнее, делая старые подходы менее конкурентными. 
 
-## Простой код BREW
+## Простой код B-R-E-W
 
-**BREW построена на простом коде, который вы уже отлично знаете:**
+**B-R-E-W построена на простом коде, который вы уже отлично знаете:**
 
 <div class="features-container-brew">
   <div class="feature-card-brew">
@@ -105,5 +105,19 @@
 
 Проведя анализ в чате, вы можете скопировать ссылку на диалог и отправить ее партнеру, инвестору или коллеге. Они увидят всю цепочку ваших рассуждений и смогут продолжить диалог. Это обеспечивает прямой обмен знаниями без посредников, превращая экосистему в сеть.
 
-
-
+<div style="text-align: center; margin: 2rem 0;">
+  <img 
+    src="/brew_intro_ban.svg" 
+    alt="BREW intro"
+    style="
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      border-radius: max(12px, min(24px, 3vw));
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    "
+    onmouseover="this.style.transform='scale(1.02)'"
+    onmouseout="this.style.transform='scale(1)'"
+  />
+</div>
