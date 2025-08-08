@@ -21,6 +21,20 @@ export default defineConfig({
   },
 
   head: [
+    // ПРИНУДИТЕЛЬНАЯ ТЁМНАЯ ТЕМА - ПЕРВЫМ СКРИПТОМ!
+    ['script', {}, `
+      (function() {
+        // Устанавливаем тёмную тему в localStorage перед загрузкой
+        localStorage.setItem('vitepress-theme-appearance', 'dark');
+        
+        // Добавляем класс dark к html элементу немедленно
+        document.documentElement.classList.add('dark');
+        
+        // Убираем светлый класс если он есть
+        document.documentElement.classList.remove('auto');
+      })();
+    `],
+    
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
     ['script', {}, `
@@ -416,7 +430,7 @@ export default defineConfig({
   outDir: '.vitepress/dist',
   description: 'Находим то, что другие упускают.',
   themeConfig: {
-    // Переключатель тем включен
+    // Переключатель тем включен (можно оставить, чтобы пользователи могли переключиться если захотят)
     
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста®",
