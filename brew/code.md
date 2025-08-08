@@ -64,12 +64,4 @@
   line-height: 1.5;
   margin: 0;
 }
-
-/* Мобильная адаптация */
-@media (max-width: 768px) {
-  .features-container {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-}
 </style>
