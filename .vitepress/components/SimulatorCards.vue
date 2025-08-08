@@ -5,7 +5,7 @@
     <div class="simulator-card">
       <div class="card-header">
         <div class="card-city-title">симулятор // <span class="city-name">Самара</span></div>
-        <div class="card-difficulty">🟢 Сложность: ★★☆</div>
+        <div class="card-difficulty">🟢 Сложность: ★☆☆</div>
       </div>
       <div class="scenario-line">Душа против системы</div>
       <div class="card-image-wrapper">
@@ -25,7 +25,7 @@
           <span class="spec-value">Как масштабировать уют, не потеряв магию бренда?</span>
         </div>
       </div>
-      <a href="/simulator/samara" class="card-button">Войти →</a>
+      <a href="/radar/signal/coffee-points-smr-2025/dashboard" class="card-button">Войти →</a>
     </div>
 
     <!-- КАРТОЧКА СИМУЛЯТОРА: НОВОСИБИРСК -->
