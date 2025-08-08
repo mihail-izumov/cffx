@@ -1,4 +1,4 @@
-# Подписка на [Сигналы Радара](/radar/signal/)
+# Подписка на [Сигналы Радара](/radar/signal/log)
 
 <br>
 <form id="myForm" class="custom-form">
