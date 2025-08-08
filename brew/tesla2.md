@@ -102,7 +102,6 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.25);
   }
 
-  /* Шапка в одну строку */
   .card-header-row {
     display: flex;
     align-items: center;
@@ -141,7 +140,6 @@
     white-space: nowrap;
   }
 
-  /* Главный сценарий */
   .scenario-line {
     color: var(--text-primary);
     font-size: 1.25rem;
@@ -155,7 +153,6 @@
     justify-content: center;
   }
 
-  /* Изображение */
   .card-image-wrapper {
     width: 100%;
     height: 168px;
@@ -171,7 +168,6 @@
     display: block;
   }
 
-  /* Спецификации */
   .card-specs {
     display: flex;
     flex-direction: column;
@@ -198,7 +194,6 @@
     color: var(--text-primary);
   }
 
-  /* Кнопки */
   .card-button {
     margin-top: 20px;
     background-color: var(--brand-color);
