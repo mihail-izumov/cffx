@@ -8,19 +8,20 @@
 
 Официальная Мечта: Green House декларирует ценности премиального качества, безупречного сервиса и «команды-семьи». Они обещают гостю счастье и стабильность.
 
-Жесткая Реальность: анализ 48000+ отзывов показывает системный сбой. Нестабильное качество напитков, медленное обслуживание из-за перегрузки, выгорание и текучка персонала.
-
-Ключевое противоречие Green House — это колоссальный разрыв между маркетинговым обещанием и операционным исполнением. Их система не выдерживает собственного масштаба.
+Реальность: анализ 48000+ отзывов показывает системный сбой. Нестабильное качество напитков, медленное обслуживание из-за перегрузки, выгорание и текучка персонала. Ключевое противоречие Green House — это колоссальный разрыв между маркетинговым обещанием и операционным исполнением. Их система не выдерживает собственного масштаба.
 
 Skuratov здесь выступает не как «премиум-антипод», а как живое доказательство того, что федеральная сеть может сохранять стабильное качество. Он лишь подсвечивает внутренний разлом Green House.
 
 ## Август 2025
 
-Мы готовим к запуску новый симулятор на основе реального кейса федеральной сети Green House. Наш Радар проанализировал более 48 000 отзывов и сигналов, чтобы вскрыть ключевой конфликт современного бизнеса на примере Green House: колоссальный разрыв между ярким маркетинговым образом и операционной реальностью.
+Мы готовим к запуску новый симулятор на основе реального кейса федеральной сети Green House. <br>
+В фокусе Радара сегодня – ключевой конфликт современного бизнеса на примере Green House. Колоссальный разрыв между ярким маркетинговым образом и операционной реальностью. <br>
+
 Эта симуляция будет полезна для тех, кто готов перейти от тактики захвата рынка к стратегии удержания власти.
 
 ## Первым войти в симуляцию
 
+# Контакт
 <br>
 <form id="myForm" class="custom-form">
   <div class="form-group">
@@ -37,6 +38,9 @@ Skuratov здесь выступает не как «премиум-антипо
     <label for="email">Email (необязательно):</label>
     <input type="email" id="email" name="email" class="form-input">
   </div>
+
+  <!-- Добавленное невидимое поле -->
+  <input type="hidden" name="source" value="Сигнал - Новосибирск">
   
   <div class="form-group checkbox-group">
     <input type="checkbox" id="consent" name="consent" required>
@@ -53,7 +57,7 @@ Skuratov здесь выступает не как «премиум-антипо
 </form>
 
 <div id="successMessage" class="success-message" style="display: none;">
-Успешно. Анна отправит уведомление, когда придёт время.
+  Заявка успешно отправлена. Скоро свяжемся.
 </div>
 
 <style>
@@ -166,17 +170,13 @@ export default {
         const phoneValid = document.getElementById('phone').value.trim() !== '';
         const consentValid = checkbox.checked;
         
-        // Кнопка активна, если заполнены имя, телефон и отмечено согласие
         submitBtn.disabled = !(nameValid && phoneValid && consentValid);
       };
       
-      // Назначаем обработчики на все обязательные поля
       requiredInputs.forEach(input => {
         input.addEventListener('input', checkFormValidity);
       });
-      // И отдельно на необязательное поле email, если оно тоже влияет на что-то
       emailInput.addEventListener('input', checkFormValidity); 
-      
       checkbox.addEventListener('change', checkFormValidity);
       
       form.addEventListener('submit', (e) => {
@@ -187,7 +187,8 @@ export default {
         const formData = {
           name: form.name.value,
           phone: form.phone.value,
-          email: form.email.value, // Email отправится, даже если он пустой
+          email: form.email.value,
+          source: form.source.value, // Добавили значение из скрытого поля
           consent: checkbox.checked ? 'Да' : 'Нет',
           _subject: 'Новая заявка с сайта'
         };
@@ -209,7 +210,8 @@ export default {
         })
         .catch(error => {
           console.error('Error:', error);
-          const mailtoBody = `Имя: ${formData.name}%0AТелефон: ${formData.phone}%0AEmail: ${formData.email}`;
+          // Добавляем новое поле в тело письма
+          const mailtoBody = `Имя: ${formData.name}%0AТелефон: ${formData.phone}%0AEmail: ${formData.email}%0AИсточник: ${formData.source}`;
           window.location.href = `mailto:theorchestramanco@gmail.com?subject=Заявка&body=${mailtoBody}`;
         })
         .finally(() => {
