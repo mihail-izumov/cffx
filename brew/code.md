@@ -20,29 +20,18 @@
   </div>
 </div>
 
-<div class="start-button-container">
-  <a href="/brew/about" class="btn btn-primary" rel="noopener noreferrer">Узнать Больше →</a>
-</div>
-
-<br><br>
-
 <style>
 /* Контейнер для карточек */
 .features-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Изменено: 2 столбца вместо 3 */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
   margin: 32px 0;
 }
 
 /* --- ОБНОВЛЁННЫЕ СТИЛИ КАРТОЧКИ --- */
 .feature-card {
-  /* 
-    Изменено: Установлен конкретный светло-серый фон для светлой темы,
-    чтобы карточка была видна на белом фоне страницы без обводки.
-  */
   background-color: #f6f6f7;
-  /* Изменено: Обводка убрана по вашему запросу. */
   border: none;
   border-radius: 12px;
   padding: 24px 20px;
@@ -51,19 +40,11 @@
 
 /* Стили для ТЁМНОЙ темы */
 :root.dark .feature-card {
-  /* 
-    Для тёмной темы используем стандартную переменную VitePress,
-    она создаёт отличный контраст.
-  */
   background-color: var(--vp-c-bg-soft);
 }
 
 /* --- ОБНОВЛЁННЫЕ СТИЛИ ЗАГОЛОВКА --- */
 .feature-card h3 {
-  /* 
-    Изменено: Цвет для светлой темы теперь тёмный для лучшей читаемости.
-    Используем переменную основного текста.
-  */
   color: var(--vp-c-text-1);
   font-size: 15px;
   line-height: 1.3;
@@ -74,7 +55,6 @@
 
 /* Цвет заголовка для ТЁМНОЙ темы */
 :root.dark .feature-card h3 {
-  /* Возвращаем ваш яркий цвет для тёмной темы, где он отлично смотрится */
   color: #c5f946;
 }
 
