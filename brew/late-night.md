@@ -107,11 +107,13 @@ BREW использует **Кофейный Протокол** — анализ
 
 ### Ваша Умная Кофейня. Начинается Здесь.
 
+Безопасное пространство для самых смелых экспериментов, которое экономит вам миллионы на реальных ошибках.
+
 <div class="start-button-container">
   <a href="/brew/about" class="btn btn-primary"  rel="noopener noreferrer">Узнать Больше →</a>
 </div>
 
-![[brew_outro_ban.jpg]]
+![[/brew_outro_ban.webp]]
 
 
 <style>
