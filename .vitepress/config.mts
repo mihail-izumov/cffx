@@ -3,7 +3,7 @@ import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
 
 export default defineConfig({
-  title: 'Модуль Роста® – Расти по своим правилам',
+  title: 'Модуль Роста®',
   locales: {
     '/': {
       lang: 'ru-RU',
