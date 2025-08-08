@@ -277,7 +277,9 @@ BREW использует **Кофейный Протокол** — анализ
     <h2 class="section-title">Расширенные услуги</h2>
     <div class="specs-grid three-cols">
       <div class="spec-item">
-        <span class="spec-value">Модуль Роста®</span>
+        <span class="spec-value">
+          <a href="/about/company">Модуль Роста®</a>
+          </span>
         <p class="spec-label">Система-партнер</p>
       </div>
       <div class="spec-item">
