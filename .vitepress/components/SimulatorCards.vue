@@ -1,20 +1,14 @@
-
 <template>
   <div class="simulator-grid">
 
     <!-- КАРТОЧКА СИМУЛЯТОРА: САМАРА -->
     <div class="simulator-card">
-      <div class="card-header-row">
-        <div class="card-header-left">
-          <span class="status-dot">🟢</span>
-          <span class="card-city-title">Симулятор Самары</span>
-        </div>
-        <div class="card-header-right">
-          <span class="card-difficulty">Сложность: ★★☆</span>
-        </div>
+      <div class="card-header">
+        <div class="card-city-title">симулятор // <span class="city-name">Самара</span></div>
+        <div class="card-difficulty">🟢 Сложность: ★★☆</div>
       </div>
 
-      <div class="scenario-line">⚔️ Душа против системы</div>
+      <div class="scenario-line">Душа против системы</div>
 
       <div class="card-image-wrapper">
         <img src="https://i.postimg.cc/mDw1xVz3/samara-korzh.jpg" alt="Симулятор Самары" class="card-image">
@@ -40,17 +34,12 @@
 
     <!-- КАРТОЧКА СИМУЛЯТОРА: НОВОСИБИРСК -->
     <div class="simulator-card">
-      <div class="card-header-row">
-        <div class="card-header-left">
-          <span class="status-dot">🟡</span>
-          <span class="card-city-title">Симулятор Новосибирска</span>
-        </div>
-        <div class="card-header-right">
-          <span class="card-difficulty">Сложность: ★★★</span>
-        </div>
+      <div class="card-header">
+        <div class="card-city-title">симулятор // <span class="city-name">Новосибирск</span></div>
+        <div class="card-difficulty">🟡 Сложность: ★★★</div>
       </div>
 
-      <div class="scenario-line">🎯 Массовость против премиума</div>
+      <div class="scenario-line">Массовость против премиума</div>
 
       <div class="card-image-wrapper">
         <img src="https://i.postimg.cc/x15tDnzj/novosibirsk-skuratov-greenhouse.jpg" alt="Симулятор Новосибирска" class="card-image">
@@ -112,52 +101,38 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
-.card-header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+.card-header {
   padding: 4px 2px 8px 2px;
-}
-
-.card-header-left {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-.status-dot {
-  font-size: 1rem;
-  line-height: 1;
+  min-height: 40px; /* Резерв высоты */
 }
 
 .card-city-title {
   color: var(--text-secondary);
   font-size: 0.84rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
-.card-header-right {
-  flex-shrink: 0;
+.card-city-title .city-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+.card-difficulty {
   color: var(--text-secondary);
   font-size: 0.8rem;
-  white-space: nowrap;
+  margin-top: 4px;
 }
 
 .scenario-line {
   color: var(--text-primary);
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 600;
   line-height: 1.3;
   text-align: center;
   margin: 8px 0 16px 0;
-  min-height: 40px;
+  min-height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -204,6 +179,7 @@
   color: var(--text-primary);
 }
 
+/* Фикс артефакта на кнопке */
 .card-button {
   margin-top: 20px;
   background-color: var(--brand-color);
@@ -214,26 +190,25 @@
   font-size: 0.92rem;
   text-align: center;
   text-decoration: none;
-  transition: all 0.25s ease;
+  transition: background-color 0.25s ease, transform 0.2s ease; /* Убрали лишние transition */
   border: 2px solid transparent;
   box-sizing: border-box;
   display: block;
 }
 
 .card-button:hover {
-  background: #fff !important;
-  color: #000 !important;
+  background-color: #ffffff; /* Убрали !important */
   transform: translateY(-1px);
 }
 
 .card-button.card-button--secondary {
-  background: transparent;
+  background-color: transparent;
   color: var(--brand-color);
   border-color: var(--brand-color);
 }
 
 .card-button.card-button--secondary:hover {
-  background: var(--brand-color) !important;
-  color: #000 !important;
+  background-color: var(--brand-color);
+  color: #000; /* Убрали !important */
 }
 </style>
