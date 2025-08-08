@@ -5,7 +5,7 @@
     <div class="simulator-card">
       <div class="card-header">
         <div class="card-city-title">симулятор // <span class="city-name">Самара</span></div>
-        <div class="card-difficulty">🟢 Сложность: ★☆☆</div>
+        <div class="card-difficulty">🟢 Сложность: ★★☆</div>
       </div>
 
       <div class="scenario-line">Душа против системы</div>
@@ -32,10 +32,7 @@
       <a href="/simulator/samara" class="card-button">Войти →</a>
     </div>
 
-    <template>
-  <div class="simulator-grid">
-
-    <!-- КАРТОЧКА СИМУЛЯТОРА: НОВОСИБИРСК (ПОЛНОСТЬЮ ОБНОВЛЕНА) -->
+    <!-- КАРТОЧКА СИМУЛЯТОРА: НОВОСИБИРСК -->
     <div class="simulator-card">
       <div class="card-header">
         <div class="card-city-title">симулятор // <span class="city-name">Новосибирск</span></div>
