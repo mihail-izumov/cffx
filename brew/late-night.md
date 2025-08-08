@@ -113,7 +113,7 @@ BREW использует **Кофейный Протокол** — анализ
   <a href="/brew/about" class="btn btn-primary"  rel="noopener noreferrer">Узнать Больше →</a>
 </div>
 
-![[/brew_outro_ban.webp]]
+![BREW-outro](/brew_outro_ban.webp)
 
 
 <style>
