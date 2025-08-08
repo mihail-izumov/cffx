@@ -5,7 +5,7 @@
     <div class="simulator-card">
       <div class="card-header">
         <div class="card-city-title">симулятор // <span class="city-name">Самара</span></div>
-        <div class="card-difficulty">🟢 Сложность: ★★☆</div>
+        <div class="card-difficulty">🟢 Сложность: ★☆☆</div>
       </div>
 
       <div class="scenario-line">Душа против системы</div>
