@@ -510,7 +510,9 @@ function nav(): DefaultTheme.NavItem[] {
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'B-R-E-W', collapsed: false, items: [
-        { text: 'Ваша Умная Кофейня', link: '/brew/run' },
+        { text: 'Симулятор', link: '/brew/run' },
+        { text: 'Платформа', link: '/brew/about' },
+        { text: 'Как работать', link: '/brew/how-it-works' },
         { text: 'Кофейный Протокол', link: '/brew/protocol' }
       ]
     }]
@@ -620,7 +622,8 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
         { text: 'Лог Сигналов', link: '/radar/signal/log' },
         { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' },
         { text: 'Инструкция по применению', link: '/radar/signal/instruction' },
-        { text: 'Рынок кофеен // Самара', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
+        { text: 'Рынок кофеен // Самара', link: '/radar/signal/coffee-points-smr-2025/dashboard' },
+        { text: 'Рынок кофеен // Новосибирск', link: '/radar/signal/coffee-points-nsk-2025/launch' }
       ]
     }
   ]
