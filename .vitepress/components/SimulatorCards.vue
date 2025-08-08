@@ -32,35 +32,34 @@
       <a href="/simulator/samara" class="card-button">Войти →</a>
     </div>
 
-    <!-- КАРТОЧКА СИМУЛЯТОРА: НОВОСИБИРСК -->
+    <template>
+  <div class="simulator-grid">
+
+    <!-- КАРТОЧКА СИМУЛЯТОРА: НОВОСИБИРСК (ПОЛНОСТЬЮ ОБНОВЛЕНА) -->
     <div class="simulator-card">
       <div class="card-header">
         <div class="card-city-title">симулятор // <span class="city-name">Новосибирск</span></div>
         <div class="card-difficulty">🟡 Сложность: ★★★</div>
       </div>
-
-      <div class="scenario-line">Массовость против премиума</div>
-
+      <div class="scenario-line">Разлом Гиганта</div>
       <div class="card-image-wrapper">
         <img src="/signal-gtrnhs_skrtv.svg" alt="Симулятор Новосибирска" class="card-image">
       </div>
-
       <div class="card-specs">
         <div class="spec-item">
           <span class="spec-label">Игроки в фокусе</span>
-          <span class="spec-value">Green House (массовость) vs. Skuratov (качество)</span>
+          <span class="spec-value">Green House (внутренний конфликт) при участии Skuratov (эталон системы)</span>
         </div>
         <div class="spec-item">
           <span class="spec-label">Ядро симуляции</span>
-          <span class="spec-value">~100 точек двух ключевых титанов рынка</span>
+          <span class="spec-value">~100 точек, где обещания сталкиваются с реальностью</span>
         </div>
         <div class="spec-item">
           <span class="spec-label">Вызов</span>
-          <span class="spec-value">Найти асимметричный ответ федеральному гиганту, вскрыв его внутренние противоречия</span>
+          <span class="spec-value">Как устранить разрыв между ярким маркетингом и операционным хаосом в масштабе федеральной сети?</span>
         </div>
       </div>
-
-      <a href="/simulator/novosibirsk" class="card-button card-button--secondary">Следить →</a>
+      <a href="/radar/signal/coffee-points-nsk-2025/launch" class="card-button card-button--secondary">Анонс →</a>
     </div>
 
   </div>
@@ -196,10 +195,9 @@
   display: block;
 }
 
-/* ФИНАЛЬНЫЙ ФИКС АРТЕФАКТА */
 .card-button:hover {
   background-color: var(--hover-color);
-  border-color: var(--hover-color); /* Приказ: рамка и фон одного цвета */
+  border-color: var(--hover-color);
   color: #000;
   transform: translateY(-1px);
 }
