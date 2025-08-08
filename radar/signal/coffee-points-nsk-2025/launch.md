@@ -24,7 +24,6 @@ Skuratov здесь выступает не как «премиум-антипо
 
 ## Первым войти в симуляцию
 
-# Контакт
 <br>
 <form id="myForm" class="custom-form">
   <div class="form-group">
