@@ -12,20 +12,20 @@ outline: false
 
 ## Выберите формат участия
 
-<div style="overflow-x: auto;">
-  <table style="width: 100%; min-width: 600px; border-radius: 8px; border: 2px solid var(--vp-c-divider); border-collapse: collapse;">
+<div style="display: grid; grid-template-columns: auto repeat(3, 130px); overflow-x: auto;">
+  <table style="border-radius: 8px; border: 2px solid var(--vp-c-divider); border-collapse: collapse; grid-column: 1 / -1;">
     <thead>
       <tr style="background-color: var(--vp-c-bg-soft);">
         <th style="padding: 0 12px;"></th>
-        <th style="text-align: center; vertical-align: top; padding: 12px; width: 130px; border-bottom: 2px solid var(--vp-c-divider);">
+        <th style="text-align: center; vertical-align: top; padding: 12px; border-bottom: 2px solid var(--vp-c-divider);">
           <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Симулятор</span>
           <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
         </th>
-        <th style="text-align: center; vertical-align: top; padding: 12px; width: 130px; border-bottom: 2px solid var(--vp-c-divider);">
+        <th style="text-align: center; vertical-align: top; padding: 12px; border-bottom: 2px solid var(--vp-c-divider);">
           <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Инсайдер</span>
           <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Продвинутые данные и инсайты для рыночного преимущества.</span>
         </th>
-        <th style="text-align: center; vertical-align: top; padding: 12px; width: 130px; border-bottom: 2px solid var(--vp-c-divider);">
+        <th style="text-align: center; vertical-align: top; padding: 12px; border-bottom: 2px solid var(--vp-c-divider);">
           <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Партнёр</span>
           <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Максимальная сила влияния для формирования будущего индустрии.</span>
         </th>
@@ -119,6 +119,7 @@ outline: false
     </tbody>
   </table>
 </div>
+
 
 
 ## Да, вы правда можете масштабировать любую кофейню здесь
