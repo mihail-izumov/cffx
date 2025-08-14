@@ -15,10 +15,19 @@ outline: false
 <table>
   <thead>
     <tr style="background-color: var(--vp-c-bg-soft);">
-      <th style="text-transform: uppercase;">Преимущества</th>
-      <th style="white-space: nowrap; text-align: center; text-transform: uppercase;">Наблюдатель</th>
-      <th style="white-space: nowrap; text-align: center; text-transform: uppercase;">Инсайдер</th>
-      <th style="white-space: nowrap; text-align: center; text-transform: uppercase;">Партнёр</th>
+      <th style="text-transform: uppercase; color: var(--vp-c-text-1);">Преимущества</th>
+      <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px;">
+        <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Симулятор</span>
+        <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none;">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
+      </th>
+      <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px;">
+        <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Инсайдер</span>
+        <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none;">Продвинутые данные и инсайты для рыночного преимущества.</span>
+      </th>
+      <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px;">
+        <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Партнёр</span>
+        <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none;">Максимальная сила влияния для формирования будущего индустрии.</span>
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -108,6 +117,7 @@ outline: false
     </tr>
   </tbody>
 </table>
+
 
 ## Да, вы правда можете масштабировать любую кофейню здесь 😎
 
