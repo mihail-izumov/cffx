@@ -79,8 +79,8 @@
   padding: 20px 16px !important;
   display: flex;
   flex-direction: column;
-  border: 1px solid; /* Задаем основу для рамки */
-  border-top-width: 4px; /* Делаем верхнюю рамку толще */
+  border: 1px solid;
+  border-top-width: 4px; /* Утолщенная верхняя рамка */
   transition: all 0.25s ease;
 }
 
@@ -95,13 +95,13 @@
 .card-insider {
   background-color: #ffffff !important;
   border-color: #e5e7eb !important;
-  border-top-color: var(--vp-c-brand-1) !important; /* Бирюзовый акцент */
+  border-top-color: #347b6c !important; /* Прямое значение цвета */
 }
 /* Партнёр (премиум) */
 .card-partner {
   background-color: #ffffff !important;
   border-color: #e5e7eb !important;
-  border-top-color: var(--vp-c-brand-2) !important; /* Лаймовый акцент */
+  border-top-color: #C5F946 !important; /* Прямое значение цвета */
 }
 
 /* --- СТИЛИ ДЛЯ ТЁМНОЙ ТЕМЫ --- */
@@ -115,13 +115,13 @@
 :root.dark .card-insider {
   background-color: #242427 !important;
   border-color: #444444 !important;
-  border-top-color: var(--vp-c-brand-1) !important; /* Бирюзовый акцент */
+  border-top-color: #347b6c !important; /* Прямое значение цвета */
 }
 /* Партнёр (премиум) */
 :root.dark .card-partner {
   background-color: #1e1e20 !important;
   border-color: #444444 !important;
-  border-top-color: var(--vp-c-brand-2) !important; /* Лаймовый акцент */
+  border-top-color: #C5F946 !important; /* Прямое значение цвета */
 }
 
 
@@ -131,7 +131,7 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* --- СТИЛИ ТЕКСТА (остаются без изменений, т.к. управляются глобально) --- */
+/* --- СТИЛИ ТЕКСТА (остаются без изменений) --- */
 .brand-card h3 {
   color: #1a1a1a !important;
   font-size: 15px !important;
