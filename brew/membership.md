@@ -7,7 +7,7 @@ outline: false
 **Подключитесь к коллективному разуму кофейной индустрии. Без паушальных взносов и роялти. Полный контроль и вся прибыль — ваши.**
 
 <div class="start-button-container">
-  <a href="/radar/overview" class="btn btn-primary"  rel="noopener noreferrer">Участвовать →</a>
+  <a href="/radar/overview" class="btn btn-primary"  rel="noopener noreferrer">Подключиться →</a>
 </div>
 
 ## Выберите формат участия
@@ -32,13 +32,13 @@ outline: false
   </thead>
   <tbody>
     <tr style="background-color: var(--vp-c-bg);">
-      <td>Симулятор города</td>
+      <td>Симулятор городов</td>
       <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
     </tr>
     <tr style="background-color: var(--vp-c-bg);">
-      <td>Тестирование бизнес-моделей</td>
+      <td>Тест бизнес-моделей</td>
       <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
@@ -80,7 +80,7 @@ outline: false
       <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
     </tr>
     <tr style="background-color: var(--vp-c-bg);">
-      <td>Персональные рекомендации для пользователей симулятора</td>
+      <td>Персональные рекомендации для пользователей</td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;"></td>
       <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
@@ -98,7 +98,7 @@ outline: false
       <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
     </tr>
     <tr style="background-color: var(--vp-c-bg);">
-      <td>Место в совете B-R-E-W</td>
+      <td>Место в совете BREW</td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;"></td>
       <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
