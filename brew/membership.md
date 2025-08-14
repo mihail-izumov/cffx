@@ -106,7 +106,7 @@ outline: false
     <tr style="background-color: var(--vp-c-bg-soft);">
       <td></td>
       <td style="text-align: center; white-space: nowrap;"><strong>Бесплатно</strong></td>
-      <td style="text-align: center; white-space: nowrap;"><strong>₽12000/мес.</strong></td>
+      <td style="text-align: center; white-space: nowrap;"><strong>₽12500/мес.</strong></td>
       <td style="text-align: center; white-space: nowrap;"><strong>₽390000/год</strong></td>
     </tr>
     <tr style="background-color: var(--vp-c-bg);">
