@@ -9,7 +9,7 @@
         </p>
       </div>
       <a href="https://runscale.ru/brew/protocol.html" rel="noopener noreferrer" class="card-button">
-        Больше
+        Изучить Протокол
       </a>
     </div>
     <!-- Карточка 2: Индекс Роста -->
@@ -21,7 +21,7 @@
         </p>
       </div>
       <a href="https://runscale.ru/radar/overview.html" rel="noopener noreferrer" class="card-button">
-        Больше
+        Посмотреть рейтинг
       </a>
     </div>
   </div>
