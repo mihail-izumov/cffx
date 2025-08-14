@@ -20,6 +20,11 @@
       <p class="description-main">Масштабировать уют без потери магии бренда</p>
       <p class="description-goals">Создать культ бренда, Доминировать по цене</p>
     </div>
+    <div class="brand-card">
+      <h3>Корж</h3>
+      <p class="description-main">Вашей кофейни здесь нет?</p>
+      <p class="description-goals"><a href="/radar/overview">Рассчитать Индекс Роста →</a></p>
+    </div>
   </div>
 </template>
 
