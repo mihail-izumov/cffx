@@ -26,9 +26,9 @@
 .brands-container {
   display: flex !important;
   overflow-x: auto !important;
-  gap: 16px !important;
-  padding: 4px 0 16px 4px !important;
-  margin: 32px 0 !important;
+  gap: 12px !important; /* Уменьшен отступ между карточками */
+  padding: 4px 0 12px 4px !important;
+  margin: 24px 0 !important; /* Уменьшен вертикальный отступ всего блока */
   /* Стилизация скроллбара */
   &::-webkit-scrollbar {
     height: 6px;
@@ -42,10 +42,10 @@
 /* --- СТИЛИ КАРТОЧКИ --- */
 .brand-card {
   flex: 0 0 260px; /* Фиксированная ширина карточки */
-  background-color: #f5f5f7 !important; /* Светло-серый фон, одинаковый для обеих тем */
+  background-color: #f5f5f7 !important;
   border-radius: 12px !important;
-  padding: 24px 20px !important;
-  border: none !important; /* Убираем обводку */
+  padding: 20px 16px !important; /* Уменьшены внутренние отступы */
+  border: none !important;
 }
 
 /* В тёмной теме фон карточки можно сделать чуть темнее для лучшей интеграции */
@@ -55,26 +55,26 @@
 
 /* --- СТИЛИ ЗАГОЛОВКА --- */
 .brand-card h3 {
-  color: #1a1a1a !important; /* Чёрный цвет */
+  color: #1a1a1a !important;
   font-size: 16px !important;
   line-height: 1.4 !important;
   margin-top: 0 !important;
-  margin-bottom: 12px !important;
+  margin-bottom: 8px !important; /* Уменьшен отступ под заголовком */
   font-weight: 700 !important;
 }
 
 /* --- СТИЛИ ТЕКСТА --- */
 /* Первая строка описания - чёрная */
 .description-main {
-  color: #1a1a1a !important; /* Чёрный цвет */
+  color: #1a1a1a !important;
   font-size: 14px !important;
   line-height: 1.6 !important;
-  margin: 0 0 6px 0 !important; /* Отступ ~ в полстроки */
+  margin: 0 0 4px 0 !important; /* Уменьшен отступ ~ в полстроки */
 }
 
 /* Текст с целями - серый */
 .description-goals {
-  color: #6b7280 !important; /* Серый цвет для второстепенного текста */
+  color: #6b7280 !important;
   font-size: 13px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
@@ -82,7 +82,7 @@
 
 /* Стиль для слова "Цели" */
 .description-goals strong {
-  font-weight: 600; /* Немного выделить жирностью */
-  color: inherit !important; /* Наследовать серый цвет родителя */
+  font-weight: 600;
+  color: inherit !important;
 }
 </style>
