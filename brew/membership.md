@@ -13,7 +13,7 @@ outline: false
 ## Выберите формат участия
 
 <div style="overflow-x: auto;">
-  <table style="min-width: 600px; border-radius: 8px; overflow: hidden; border: 2px solid var(--vp-c-divider); border-collapse: collapse;">
+  <table style="width: 100%; min-width: 600px; table-layout: fixed; border-radius: 8px; border: 2px solid var(--vp-c-divider); border-collapse: collapse;">
     <thead>
       <tr style="background-color: var(--vp-c-bg-soft);">
         <th style="padding: 0 12px;"></th>
@@ -33,85 +33,85 @@ outline: false
     </thead>
     <tbody>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="white-space: nowrap; padding: 0 12px;">Симулятор города</td>
+        <td style="white-space: nowrap; padding: 8px 12px;">Симулятор города</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       </tr>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="white-space: nowrap; padding: 0 12px;">Тестирование бизнес-моделей</td>
+        <td style="white-space: nowrap; padding: 8px 12px;">Тестирование бизнес-моделей</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       </tr>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="white-space: nowrap; padding: 0 12px;">Доступ к Кофейному Протоколу</td>
+        <td style="white-space: nowrap; padding: 8px 12px;">Доступ к Кофейному Протоколу</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       </tr>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="white-space: nowrap; padding: 0 12px;">Поддержка Анны при старте</td>
+        <td style="white-space: nowrap; padding: 8px 12px;">Поддержка Анны при старте</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       </tr>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="white-space: nowrap; padding: 0 12px;">Ежемесячный обзор рынка</td>
+        <td style="white-space: nowrap; padding: 8px 12px;">Ежемесячный обзор рынка</td>
         <td style="text-align: center;"></td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       </tr>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="white-space: nowrap; padding: 0 12px;">Доступ к Индексу Роста</td>
+        <td style="white-space: nowrap; padding: 8px 12px;">Доступ к Индексу Роста</td>
         <td style="text-align: center;"></td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       </tr>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="white-space: nowrap; padding: 0 12px;">Анализ компаний в фокусе</td>
+        <td style="white-space: nowrap; padding: 8px 12px;">Анализ компаний в фокусе</td>
         <td style="text-align: center;"></td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       </tr>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="white-space: nowrap; padding: 0 12px;">Обновления симулятора</td>
+        <td style="white-space: nowrap; padding: 8px 12px;">Обновления симулятора</td>
         <td style="text-align: center;"></td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       </tr>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="white-space: nowrap; padding: 0 12px;">Персональные рекомендации для пользователей симулятора</td>
+        <td style="white-space: nowrap; padding: 8px 12px;">Персональные рекомендации для пользователей симулятора</td>
         <td style="text-align: center;"></td>
         <td style="text-align: center;"></td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       </tr>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="white-space: nowrap; padding: 0 12px;">Участие в обратной связи по платформе</td>
+        <td style="white-space: nowrap; padding: 8px 12px;">Участие в обратной связи по платформе</td>
         <td style="text-align: center;"></td>
         <td style="text-align: center;"></td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       </tr>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="white-space: nowrap; padding: 0 12px;">Приоритетный доступ к Чекапам</td>
+        <td style="white-space: nowrap; padding: 8px 12px;">Приоритетный доступ к Чекапам</td>
         <td style="text-align: center;"></td>
         <td style="text-align: center;"></td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       </tr>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="white-space: nowrap; padding: 0 12px;">Место в совете B-R-E-W</td>
+        <td style="white-space: nowrap; padding: 8px 12px;">Место в совете B-R-E-W</td>
         <td style="text-align: center;"></td>
         <td style="text-align: center;"></td>
         <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
       </tr>
       <tr style="background-color: var(--vp-c-bg-soft);">
-        <td style="padding: 0 12px;"></td>
+        <td style="padding: 8px 12px;"></td>
         <td style="text-align: center; white-space: nowrap;"><strong>Бесплатно</strong></td>
         <td style="text-align: center; white-space: nowrap;"><strong>₽12000/мес.</strong></td>
         <td style="text-align: center; white-space: nowrap;"><strong>₽390000/год</strong></td>
       </tr>
       <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 0 12px;"></td>
+        <td style="padding: 8px 12px;"></td>
         <td style="text-align: center; font-size: 0.9em; opacity: 0.6;">Мгновенный доступ</td>
         <td style="text-align: center; font-size: 0.9em; opacity: 0.6;">Ежемесячная подписка</td>
         <td style="text-align: center; font-size: 0.9em; opacity: 0.6;">Годовой взнос</td>
@@ -119,7 +119,6 @@ outline: false
     </tbody>
   </table>
 </div>
-
 
 
 ## Да, вы правда можете масштабировать любую кофейню здесь
