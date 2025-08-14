@@ -9,7 +9,7 @@
         </p>
       </div>
       <a href="https://runscale.ru/brew/protocol.html" target="_blank" rel="noopener noreferrer" class="card-button">
-        Перейти →
+        Больше
       </a>
     </div>
 
@@ -22,7 +22,7 @@
         </p>
       </div>
       <a href="https://runscale.ru/radar/overview.html" target="_blank" rel="noopener noreferrer" class="card-button">
-        Перейти →
+        Больше
       </a>
     </div>
   </div>
