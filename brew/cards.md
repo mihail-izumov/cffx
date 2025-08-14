@@ -1,19 +1,23 @@
 <div class="brands-container">
   <div class="brand-card">
     <h3>Green House</h3>
-    <p>Региональное доминирование и риски экспансии.<br><strong>Цели:</strong> Формула успеха, Ключевые элементы, Адаптация.</p>
+    <p class="description-main">Региональное доминирование и риски экспансии.</p>
+    <p class="description-goals"><strong>Цели:</strong> Формула успеха, Ключевые элементы, Адаптация.</p>
   </div>
   <div class="brand-card">
     <h3>Skuratov Coffee</h3>
-    <p>Формула «скорости» и пределы роста для «качества».<br><strong>Цели:</strong> Формула успеха, Рост без потерь.</p>
+    <p class="description-main">Формула «скорости» и пределы роста для «качества».</p>
+    <p class="description-goals"><strong>Цели:</strong> Формула успеха, Рост без потерь.</p>
   </div>
   <div class="brand-card">
     <h3>Surf Coffee</h3>
-    <p>Формула «атмосферы» и возможность её масштабирования.<br><strong>Цель:</strong> Ядро бренда, Рост без потерь.</p>
+    <p class="description-main">Формула «атмосферы» и возможность её масштабирования.</p>
+    <p class="description-goals"><strong>Цель:</strong> Ядро бренда, Рост без потерь.</p>
   </div>
   <div class="brand-card">
     <h3>Корж</h3>
-    <p>Масштабировать уют, не потеряв магию бренда.<br><strong>Цель:</strong> Масштабировать «уют», Создать культ бренда, Доминировать по цене.</p>
+    <p class="description-main">Масштабировать уют, не потеряв магию бренда.</p>
+    <p class="description-goals"><strong>Цель:</strong> Масштабировать «уют», Создать культ бренда, Доминировать по цене.</p>
   </div>
 </div>
 
@@ -21,11 +25,11 @@
 /* Контейнер для горизонтальной прокрутки */
 .brands-container {
   display: flex !important;
-  overflow-x: auto !important; /* Включаем горизонтальную прокрутку */
+  overflow-x: auto !important;
   gap: 16px !important;
-  padding: 4px 0 16px 4px !important; /* Добавим отступ снизу для тени скроллбара */
+  padding: 4px 0 16px 4px !important;
   margin: 32px 0 !important;
-  /* Стилизация скроллбара для Webkit-браузеров (Chrome, Safari) */
+  /* Стилизация скроллбара */
   &::-webkit-scrollbar {
     height: 6px;
   }
@@ -37,21 +41,21 @@
 
 /* --- СТИЛИ КАРТОЧКИ --- */
 .brand-card {
-  flex: 0 0 260px; /* Карточки не сжимаются и имеют фиксированную ширину */
-  background-color: #2c2c2e !important; /* Тёмно-серый фон, хорошо читается на обеих темах */
-  border: 1px solid var(--vp-c-bg-soft);
+  flex: 0 0 260px; /* Фиксированная ширина карточки */
+  background-color: #f5f5f7 !important; /* Светло-серый фон, одинаковый для обеих тем */
   border-radius: 12px !important;
   padding: 24px 20px !important;
-  height: 100% !important;
-  transition: border-color 0.25s;
+  border: none !important; /* Убираем обводку */
 }
-.brand-card:hover {
-  border-color: var(--vp-c-brand-1);
+
+/* В тёмной теме фон карточки можно сделать чуть темнее для лучшей интеграции */
+:root.dark .brand-card {
+    background-color: #eaeaef !important;
 }
 
 /* --- СТИЛИ ЗАГОЛОВКА --- */
 .brand-card h3 {
-  color: #1e1e20 !important; /* Черный цвет для светлой темы */
+  color: #1a1a1a !important; /* Чёрный цвет */
   font-size: 16px !important;
   line-height: 1.4 !important;
   margin-top: 0 !important;
@@ -59,22 +63,26 @@
   font-weight: 700 !important;
 }
 
-/* Цвет заголовка для ТЁМНОЙ темы */
-:root.dark .brand-card h3 {
-  color: #EAEAEB !important; /* Почти белый для лучшего контраста на тёмном фоне */
+/* --- СТИЛИ ТЕКСТА --- */
+/* Первая строка описания - чёрная */
+.description-main {
+  color: #1a1a1a !important; /* Чёрный цвет */
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  margin: 0 0 6px 0 !important; /* Отступ ~ в полстроки */
 }
 
-/* Стили текста */
-.brand-card p {
-  color: #c7c7c7 !important; /* Светло-серый текст, хорошо читается на тёмном фоне карточки */
+/* Текст с целями - серый */
+.description-goals {
+  color: #6b7280 !important; /* Серый цвет для второстепенного текста */
   font-size: 13px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
 }
 
-.brand-card p strong {
-    color: #e0e0e0; /* Делаем "Цели" немного ярче */
+/* Стиль для слова "Цели" */
+.description-goals strong {
+  font-weight: 600; /* Немного выделить жирностью */
+  color: inherit !important; /* Наследовать серый цвет родителя */
 }
-
-/* Удаляем медиа-запрос, так как слайдер адаптируется сам */
 </style>
