@@ -8,7 +8,7 @@
           Открытая база знаний, содержащая коллективный опыт сотен кофеен. От выбора зерна до найма бариста — все, что нужно для создания бизнеса, который любят клиенты и боятся конкуренты.
         </p>
       </div>
-      <a href="https://runscale.ru/brew/protocol.html" target="_blank" rel="noopener noreferrer" class="card-button">
+      <a href="https://runscale.ru/brew/protocol.html" rel="noopener noreferrer" class="card-button">
         Больше
       </a>
     </div>
@@ -20,7 +20,7 @@
           Единственная в отрасли система оценки, которая измеряет не размер, а потенциал роста компании. Попасть в Индекс — значит стать видимым для инвесторов, партнеров и лучших талантов рынка.
         </p>
       </div>
-      <a href="https://runscale.ru/radar/overview.html" target="_blank" rel="noopener noreferrer" class="card-button">
+      <a href="https://runscale.ru/radar/overview.html" rel="noopener noreferrer" class="card-button">
         Больше
       </a>
     </div>
