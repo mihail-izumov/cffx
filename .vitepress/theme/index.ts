@@ -1,7 +1,8 @@
 import { h } from 'vue'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-import SimulatorCards from '../components/SimulatorCards.vue' // 1. ПРИКАЗ: НАЙТИ ОРУЖЕЙНИКА
+import SimulatorCards from '../components/SimulatorCards.vue'
+import BrandCards from '../components/BrandCards.vue'
 
 export default {
   extends: DefaultTheme,
@@ -11,7 +12,8 @@ export default {
     })
   },
   enhanceApp({ app }) {
-    // 2. ПРИКАЗ: ДАТЬ ДОСТУП В ЛЮБОЙ ЗАЛ
+    // Регистрация компонентов, чтобы они были доступны глобально
     app.component('SimulatorCards', SimulatorCards)
+    app.component('BrandCards', BrandCards)
   }
 } satisfies Theme
