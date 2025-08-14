@@ -98,9 +98,9 @@ outline: false
     </tr>
     <tr style="background-color: var(--vp-c-bg-soft);">
       <td><strong>Стоимость</strong></td>
-      <td style="text-align: center;"><strong>Бесплатно</strong></td>
-      <td style="text-align: center;"><strong>12 000 ₽/мес.</strong></td>
-      <td style="text-align: center;"><strong>390 000 ₽/год</strong></td>
+      <td style="text-align: center; white-space: nowrap;"><strong>Бесплатно</strong></td>
+      <td style="text-align: center; white-space: nowrap;"><strong>12 000 ₽/мес.</strong></td>
+      <td style="text-align: center; white-space: nowrap;"><strong>390 000 ₽/год</strong></td>
     </tr>
     <tr style="background-color: var(--vp-c-bg);">
       <td></td>
@@ -110,7 +110,6 @@ outline: false
     </tr>
   </tbody>
 </table>
-
 
 ## Да, вы правда можете масштабировать любую кофейню здесь. 😎
 
