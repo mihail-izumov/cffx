@@ -4,7 +4,7 @@
 Они измеряют очевидное. Мы находим то, что не видят другие. <br>
 Наш Индекс показывает не размер вашего бизнеса сегодня, а возможностей, которые вы можете реализовать завтра.
 
-## Компании в фокусе Радара
+## В фокусе Радара
 
 <style>
   /*
@@ -109,7 +109,44 @@
   </tbody>
 </table>
 
+## В архиве
 
+<table class="radar-table-html">
+  <thead>
+    <tr>
+      <th>Компания</th>
+      <th><a href="/radar/overview.html#как-мы-находим-компании-со-скрытым-потенциалом">Потенциал</a></th>
+      <th><a href="/radar/overview.html#что-такое-«сигнал-радара»">Сигнал</a></th>
+      <th><a href="/radar/overview.html#почему-в-архиве">Статус</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://rchc.ru/" target="_blank" rel="noopener noreferrer">Ресторан Честных Цен</a></td>
+      <td>81,5%</td>
+      <td><span class="signal-passive-symbol">·</span></td>
+      <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
+    </tr>
+    <tr>
+      <td><a href="https://brooklynbowl.ru/" target="_blank" rel="noopener noreferrer">Brooklyn Bowl</a></td>
+      <td>75,6%</td>
+      <td><span class="signal-passive-symbol">·</span></td>
+      <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
+    </tr>
+    <tr>
+      <td><a href="https://vaffel.ru/" target="_blank" rel="noopener noreferrer">Vaffel</a></td>
+      <td>56,2%</td>
+      <td><span class="signal-passive-symbol">·</span></td>
+      <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
+    </tr>
+    <tr>
+      <td><a href="https://reimaginedvillas.com/" target="_blank" rel="noopener noreferrer">Re:Imagined Villas Ubud</a></td>
+      <td>52,1%</td>
+      <td><span class="signal-passive-symbol">·</span></td>
+      <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
+    </tr>
+  </tbody>
+</table>
 
 ## Как мы находим компании со скрытым потенциалом
 Наш «Радар» — это не стандартный бизнес-анализ. Это проприетарная система оценки, созданная для поиска компаний, чей потенциал значительно превышает их текущие результаты. Мы не ищем «проблемные» бизнесы. Мы ищем «спящих гигантов».
