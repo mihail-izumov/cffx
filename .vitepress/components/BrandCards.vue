@@ -12,13 +12,13 @@
     </div>
     <div class="brand-card">
       <h3>Surf Coffee</h3>
-      <p class="description-main">Формула «атмосферы» и возможность её масштабирования</p>
+      <p class="description-main">Масштабирование на формуле «атмосферы»</p>
       <p class="description-goals">Ядро бренда, Рост без потерь</p>
     </div>
     <div class="brand-card">
       <h3>Корж</h3>
-      <p class="description-main">Масштабировать уют, не потеряв магию бренда</p>
-      <p class="description-goals">Масштабировать «уют», Создать культ бренда, Доминировать по цене</p>
+      <p class="description-main">Масштабировать уют без потери магии бренда</p>
+      <p class="description-goals">Создать культ бренда, Доминировать по цене</p>
     </div>
   </div>
 </template>
