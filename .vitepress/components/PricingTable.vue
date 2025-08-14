@@ -1,6 +1,12 @@
 <template>
   <div class="table-wrapper">
     <table class="responsive-table">
+      <colgroup>
+        <col /> <!-- 1. Этот столбец будет гибким -->
+        <col style="width: 130px" /> <!-- 2. Эти три — строго фиксированными -->
+        <col style="width: 130px" />
+        <col style="width: 130px" />
+      </colgroup>
       <thead>
         <tr>
           <th class="header-feature"></th>
@@ -19,6 +25,7 @@
         </tr>
       </thead>
       <tbody>
+        <!-- Содержимое таблицы остается прежним -->
         <tr>
           <td class="cell-feature">Симулятор города</td>
           <td class="cell-check"><span class="checkmark">✓</span></td>
@@ -109,18 +116,17 @@
 </template>
 
 <style scoped>
-/* scoped гарантирует, что стили применяются только к этому компоненту */
 .table-wrapper {
   overflow-x: auto;
   width: 100%;
 }
 .responsive-table {
   width: 100%;
-  min-width: 600px; /* Защита от сжатия на мобильных */
+  table-layout: fixed; /* 3. Это свойство — ключ к предсказуемому поведению */
   border-collapse: collapse;
   border: 2px solid var(--vp-c-divider);
   border-radius: 8px;
-  overflow: hidden; /* Прячет фон, вылезающий за рамки */
+  overflow: hidden;
 }
 .responsive-table th, .responsive-table td {
   padding: 8px 12px;
@@ -140,7 +146,6 @@
 }
 .header-tariff {
   text-align: center;
-  width: 130px; /* Фиксированная ширина для тарифов */
   border-bottom: 2px solid var(--vp-c-divider);
 }
 .tariff-title {
@@ -157,7 +162,7 @@
   line-height: 1.2;
 }
 .cell-feature {
-  white-space: nowrap; /* Ключевое свойство для гибкого первого столбца */
+  white-space: nowrap;
 }
 .cell-check {
   text-align: center;
