@@ -165,6 +165,14 @@
         <td>В фокусе</td>
       </tr>
       <tr>
+        <td><a href="https://www.surfcoffee.ru/" target="_blank" rel="noopener noreferrer">Surf Coffee</a></td>
+        <td>~110+</td>
+        <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="https://runscale.ru/brew/run.html">B-R-E-W</a></td>
+        <td>Формула их "атмосферы" и возможность её масштабирования</td>
+        <td>Измерение "атмосферы", Ядро бренда, Рост без потерь</td>
+        <td>В фокусе</td>
+      </tr>
+      <tr>
         <td>Cofix</td>
         <td>~290+</td>
         <td><span class="signal-passive-symbol">·</span></td>
@@ -178,14 +186,6 @@
         <td><span class="signal-passive-symbol">·</span></td>
         <td>Пределы IT-автоматизации и эмоциональная связь с клиентом</td>
         <td>Поведение гостей, Сценарии, Сбои системы</td>
-        <td>В фокусе</td>
-      </tr>
-      <tr>
-        <td>Surf Coffee</td>
-        <td>~110+</td>
-        <td><span class="signal-passive-symbol">·</span></td>
-        <td>Формула их "атмосферы" и возможность её масштабирования</td>
-        <td>Измерение "атмосферы", Ядро бренда, Рост без потерь</td>
         <td>В фокусе</td>
       </tr>
       <tr>
