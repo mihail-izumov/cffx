@@ -1,6 +1,6 @@
 <template>
   <div class="brands-container">
-    <!-- ТАРИФ: Наблюдатель -->
+    <!-- ТАРИФ: На-блюдатель -->
     <div class="brand-card card-observer">
       <h3>Симулятор города</h3>
       <p class="description-main">Тестируйте гипотезы, анализируйте форматы и делайте прогнозы выручки без финансовых рисков.</p>
