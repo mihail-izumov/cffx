@@ -13,7 +13,7 @@ outline: false
 ## Выберите формат участия
 
 <div style="overflow-x: auto;">
-  <table style="width: 100%; min-width: 600px; table-layout: fixed; border-radius: 8px; border: 2px solid var(--vp-c-divider); border-collapse: collapse;">
+  <table style="width: 100%; min-width: 600px; border-radius: 8px; border: 2px solid var(--vp-c-divider); border-collapse: collapse;">
     <thead>
       <tr style="background-color: var(--vp-c-bg-soft);">
         <th style="padding: 0 12px;"></th>
