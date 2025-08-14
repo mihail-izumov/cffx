@@ -12,19 +12,19 @@ outline: false
 
 ## Выберите формат участия
 
-<table>
+<table style="width: 100%; table-layout: fixed;">
   <thead>
     <tr style="background-color: var(--vp-c-bg-soft);">
       <th style="text-transform: uppercase; color: var(--vp-c-text-1);"></th>
-      <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px;">
+      <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px; width: 130px;">
         <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Симулятор</span>
         <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
       </th>
-      <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px;">
+      <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px; width: 130px;">
         <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Инсайдер</span>
         <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Продвинутые данные и инсайты для рыночного преимущества.</span>
       </th>
-      <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px;">
+      <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px; width: 130px;">
         <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Партнёр</span>
         <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Максимальная сила влияния для формирования будущего индустрии.</span>
       </th>
