@@ -79,26 +79,27 @@
   padding: 20px 16px !important;
   display: flex;
   flex-direction: column;
-  border-top: 4px solid transparent; /* Задаем основу для рамки */
+  border-top: 4px solid transparent; /* Основа для рамки */
   transition: all 0.25s ease;
 }
 
 /* --- КОНТРАСТНЫЕ СТИЛИ ДЛЯ РАЗНЫХ ТАРИФОВ --- */
+/* Используем :root.dark для повышения специфичности селекторов */
 
 /* Наблюдатель (базовый) */
-.card-observer {
+:root.dark .card-observer {
   background-color: #2d2d30 !important;
   border-top-color: #444444;
 }
 
 /* Инсайдер (средний) */
-.card-insider {
+:root.dark .card-insider {
   background-color: #242427 !important;
   border-top-color: var(--vp-c-brand-1); /* Бирюзовый */
 }
 
 /* Партнёр (премиум) */
-.card-partner {
+:root.dark .card-partner {
   background-color: #1e1e20 !important;
   border-top-color: var(--vp-c-brand-2); /* Яркий лаймовый */
 }
