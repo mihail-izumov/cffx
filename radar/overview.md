@@ -144,7 +144,7 @@
         <td><a href="https://grnhs.ru/" target="_blank" rel="noopener noreferrer">Green House</a></td>
         <td>~126+</td>
         <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="https://runscale.ru/brew/run.html">B-R-E-W</a></td>
-        <td>Секреты регионального доминирования и риски экспансии</td>
+        <td>Региональное доминирование и риски экспансии</td>
         <td>Формула успеха, Ключевые элементы, Адаптация</td>
         <td>В фокусе</td>
       </tr>
@@ -152,24 +152,24 @@
         <td><a href="https://korzhcoffee.ru/" target="_blank" rel="noopener noreferrer">Корж</a></td>
         <td>~10+</td>
         <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="https://runscale.ru/brew/run.html">B-R-E-W</a></td>
-        <td>Разрыв между сильной атмосферой и слабой операционной эффективностью</td>
-        <td>Скорость, Стабильность, Качество продукта</td>
+        <td>Масштабировать уют без потери магии бренда</td>
+        <td>Создать культ бренда, Доминировать по цене</td>
         <td>В фокусе</td>
       </tr>
       <tr>
         <td><a href="https://skuratovcoffee.ru/" target="_blank" rel="noopener noreferrer">Skuratov Coffee</a></td>
         <td>~63+</td>
         <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="https://runscale.ru/brew/run.html">B-R-E-W</a></td>
-        <td>Пределы роста для "качества" и поиск новых источников дохода</td>
-        <td>Спрос на качество, Монетизация, Пределы ниши</td>
+        <td>Формула «скорости» и пределы роста для «качества»</td>
+        <td>Формула успеха, Рост без потерь</td>
         <td>В фокусе</td>
       </tr>
       <tr>
         <td><a href="https://www.surfcoffee.ru/" target="_blank" rel="noopener noreferrer">Surf Coffee</a></td>
         <td>~110+</td>
         <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="https://runscale.ru/brew/run.html">B-R-E-W</a></td>
-        <td>Формула их "атмосферы" и возможность её масштабирования</td>
-        <td>Измерение "атмосферы", Ядро бренда, Рост без потерь</td>
+        <td>Масштабирование на формуле «атмосферы»</td>
+        <td>Ядро бренда, Рост без потерь</td>
         <td>В фокусе</td>
       </tr>
       <tr>
