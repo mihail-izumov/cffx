@@ -77,27 +77,41 @@
 .brand-card {
   border-radius: 12px !important;
   padding: 20px 16px !important;
-  border: none !important;
   display: flex;
   flex-direction: column;
+  border-top: 4px solid transparent; /* Задаем основу для рамки */
+  transition: all 0.25s ease;
 }
 
-/* --- ЦВЕТА КАРТОЧЕК В ЗАВИСИМОСТИ ОТ ТАРИФА --- */
+/* --- КОНТРАСТНЫЕ СТИЛИ ДЛЯ РАЗНЫХ ТАРИФОВ --- */
 
-/* Светлая тема */
-.card-observer { background-color: #f5f5f7 !important; } /* Самый светлый (базовый) */
-.card-insider  { background-color: #ebebef !important; } /* Средний */
-.card-partner  { background-color: #e1e1e3 !important; } /* Самый темный из светлых */
+/* Наблюдатель (базовый) */
+.card-observer {
+  background-color: #2d2d30 !important;
+  border-top-color: #444444;
+}
 
-/* Темная тема */
-:root.dark .card-observer { background-color: #3c3c40 !important; } /* Светлее */
-:root.dark .card-insider  { background-color: #2d2d30 !important; } /* Средний (оригинальный) */
-:root.dark .card-partner  { background-color: #1e1e20 !important; } /* Супер-тёмный */
+/* Инсайдер (средний) */
+.card-insider {
+  background-color: #242427 !important;
+  border-top-color: var(--vp-c-brand-1); /* Бирюзовый */
+}
 
+/* Партнёр (премиум) */
+.card-partner {
+  background-color: #1e1e20 !important;
+  border-top-color: var(--vp-c-brand-2); /* Яркий лаймовый */
+}
+
+/* Эффект при наведении */
+.brand-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
 
 /* --- СТИЛИ ЗАГОЛОВКА --- */
 .brand-card h3 {
-  color: #1a1a1a !important;
+  color: #ffffff !important;
   font-size: 15px !important;
   line-height: 1.4 !important;
   margin-top: 0 !important;
@@ -106,29 +120,20 @@
   border: none !important;
   padding: 0 !important;
 }
-:root.dark .brand-card h3 {
-  color: #ffffff !important;
-}
 
 /* --- СТИЛИ ТЕКСТА --- */
 .description-main {
-  color: #1a1a1a !important;
+  color: #f0f0f0 !important;
   font-size: 13px !important;
   line-height: 1.6 !important;
   margin: 0 0 4px 0 !important;
   flex-grow: 1;
 }
-:root.dark .description-main {
-  color: #f0f0f0 !important; /* Чуть мягче чистого белого для лучшей читаемости */
-}
 
 .description-goals {
-  color: #6b7280 !important;
+  color: #8e8e93 !important;
   font-size: 12px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
-}
-:root.dark .description-goals {
-  color: #8e8e93 !important;
 }
 </style>
