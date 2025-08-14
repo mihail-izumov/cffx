@@ -1,6 +1,6 @@
 <template>
-  <div class="brands-container">
-    <!-- ТАРИФ: На-блюдатель -->
+  <div id="tariff-feature-cards" class="brands-container">
+    <!-- ТАРИФ: Наблюдатель -->
     <div class="brand-card card-observer">
       <h3>Симулятор города</h3>
       <p class="description-main">Тестируйте гипотезы, анализируйте форматы и делайте прогнозы выручки без финансовых рисков.</p>
@@ -63,9 +63,9 @@
   </div>
 </template>
 
-<style scoped>
-/* Контейнер для сетки */
-.brands-container {
+<style>
+/* Контейнер для сетки (стили теперь привязаны к ID) */
+#tariff-feature-cards {
   display: grid !important;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 16px !important;
@@ -74,66 +74,77 @@
 }
 
 /* Общий стиль карточки */
-.brand-card {
+#tariff-feature-cards .brand-card {
   border-radius: 12px !important;
   padding: 20px 16px !important;
   display: flex;
   flex-direction: column;
   border: 1px solid;
-  border-top-width: 4px; /* Утолщенная верхняя рамка */
+  border-top-width: 4px;
   transition: all 0.25s ease;
 }
 
 /* --- СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ --- */
-
-/* Наблюдатель (базовый) */
-.card-observer {
+#tariff-feature-cards .card-observer {
   background-color: #f9fafb !important;
   border-color: #e5e7eb !important;
 }
-/* Инсайдер (средний) */
-.card-insider {
+#tariff-feature-cards .card-insider {
   background-color: #ffffff !important;
   border-color: #e5e7eb !important;
-  border-top-color: #347b6c !important; /* Прямое значение цвета */
+  border-top-color: #347b6c !important; /* Бирюзовый */
 }
-/* Партнёр (премиум) */
-.card-partner {
+#tariff-feature-cards .card-partner {
   background-color: #ffffff !important;
   border-color: #e5e7eb !important;
-  border-top-color: #C5F946 !important; /* Прямое значение цвета */
+  border-top-color: #C5F946 !important; /* Лаймовый */
 }
 
 /* --- СТИЛИ ДЛЯ ТЁМНОЙ ТЕМЫ --- */
-
-/* Наблюдатель (базовый) */
-:root.dark .card-observer {
+:root.dark #tariff-feature-cards .card-observer {
   background-color: #2d2d30 !important;
   border-color: #444444 !important;
 }
-/* Инсайдер (средний) */
-:root.dark .card-insider {
+:root.dark #tariff-feature-cards .card-insider {
   background-color: #242427 !important;
   border-color: #444444 !important;
-  border-top-color: #347b6c !important; /* Прямое значение цвета */
+  border-top-color: #347b6c !important; /* Бирюзовый */
 }
-/* Партнёр (премиум) */
-:root.dark .card-partner {
+:root.dark #tariff-feature-cards .card-partner {
   background-color: #1e1e20 !important;
   border-color: #444444 !important;
-  border-top-color: #C5F946 !important; /* Прямое значение цвета */
+  border-top-color: #C5F946 !important; /* Лаймовый */
 }
 
-
-/* Эффект при наведении (общий для обеих тем) */
-.brand-card:hover {
+/* Эффект при наведении */
+#tariff-feature-cards .brand-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* --- СТИЛИ ТЕКСТА (остаются без изменений) --- */
-.brand-card h3 {
+/* --- СТИЛИ ТЕКСТА --- */
+#tariff-feature-cards .brand-card h3 {
   color: #1a1a1a !important;
+}
+:root.dark #tariff-feature-cards .brand-card h3 {
+  color: #ffffff !important;
+}
+#tariff-feature-cards .description-main {
+  color: #1a1a1a !important;
+  flex-grow: 1;
+}
+:root.dark #tariff-feature-cards .description-main {
+  color: #f0f0f0 !important;
+}
+#tariff-feature-cards .description-goals {
+  color: #6b7280 !important;
+}
+:root.dark #tariff-feature-cards .description-goals {
+  color: #8e8e93 !important;
+}
+
+/* Общие стили текста, которые были в прошлых версиях */
+#tariff-feature-cards .brand-card h3 {
   font-size: 15px !important;
   line-height: 1.4 !important;
   margin-top: 0 !important;
@@ -142,26 +153,14 @@
   border: none !important;
   padding: 0 !important;
 }
-:root.dark .brand-card h3 {
-  color: #ffffff !important;
-}
-.description-main {
-  color: #1a1a1a !important;
+#tariff-feature-cards .description-main {
   font-size: 13px !important;
   line-height: 1.6 !important;
   margin: 0 0 4px 0 !important;
-  flex-grow: 1;
 }
-:root.dark .description-main {
-  color: #f0f0f0 !important;
-}
-.description-goals {
-  color: #6b7280 !important;
+#tariff-feature-cards .description-goals {
   font-size: 12px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
-}
-:root.dark .description-goals {
-  color: #8e8e93 !important;
 }
 </style>
