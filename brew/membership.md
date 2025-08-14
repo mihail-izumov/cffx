@@ -12,19 +12,19 @@ outline: false
 
 ## Выберите формат участия
 
-<table style="width: 100%; table-layout: fixed; border-radius: 8px; overflow: hidden;">
+<table style="width: 100%; table-layout: fixed; border-radius: 8px; overflow: hidden; border: 2px solid var(--vp-c-divider); border-collapse: collapse;">
   <thead>
     <tr style="background-color: var(--vp-c-bg-soft);">
-      <th style="background-color: transparent;"></th>
-      <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px; width: 130px;">
+      <th></th>
+      <th style="text-align: center; vertical-align: top; padding: 12px; width: 130px; border-bottom: 2px solid var(--vp-c-divider);">
         <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Симулятор</span>
         <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
       </th>
-      <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px; width: 130px;">
+      <th style="text-align: center; vertical-align: top; padding: 12px; width: 130px; border-bottom: 2px solid var(--vp-c-divider);">
         <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Инсайдер</span>
         <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Продвинутые данные и инсайты для рыночного преимущества.</span>
       </th>
-      <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px; width: 130px;">
+      <th style="text-align: center; vertical-align: top; padding: 12px; width: 130px; border-bottom: 2px solid var(--vp-c-divider);">
         <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Партнёр</span>
         <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Максимальная сила влияния для формирования будущего индустрии.</span>
       </th>
