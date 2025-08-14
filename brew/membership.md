@@ -17,57 +17,55 @@ outline: false
     overflow-x: auto;
     width: 100%;
   }
-  .pricing-table {
+  .responsive-table {
     width: 100%;
+    min-width: 600px; /* Защита от сжатия на мобильных */
     border-collapse: collapse;
-    table-layout: fixed; /* Это ключ к решению */
     border: 2px solid var(--vp-c-divider);
     border-radius: 8px;
     overflow: hidden;
   }
-  .pricing-table th, .pricing-table td {
+  .responsive-table th, .responsive-table td {
     padding: 8px 12px;
     vertical-align: middle;
   }
-  .pricing-table thead tr {
+  .responsive-table thead tr {
     background-color: var(--vp-c-bg-soft);
   }
-  .pricing-table th {
+  .responsive-table th {
     vertical-align: top;
     padding-top: 12px;
     padding-bottom: 12px;
   }
-  .pricing-table .header-feature {
-    padding-left: 12px; /* Отступ для пустого заголовка */
+  .responsive-table .header-feature {
+    background: transparent !important;
+    border: none;
   }
-  .pricing-table .header-tariff {
-    width: 130px; /* Фиксированная ширина */
+  .responsive-table .header-tariff {
     text-align: center;
+    width: 130px; /* Фиксированная ширина для тарифов */
     border-bottom: 2px solid var(--vp-c-divider);
   }
-  .pricing-table .cell-feature {
-    white-space: nowrap; /* Важно для корректного скролла */
+  .responsive-table .cell-feature {
+    white-space: nowrap; /* Ключ к правильному поведению первого столбца */
   }
-  .pricing-table .cell-check {
+  .responsive-table .cell-check {
     text-align: center;
   }
-  .pricing-table .checkmark {
+  .responsive-table .checkmark {
     color: var(--vp-c-brand-2);
     font-weight: bold;
   }
-  .pricing-table .price-row {
+  .responsive-table .price-row {
     background-color: var(--vp-c-bg-soft);
+  }
+  .responsive-table .price-row .cell-check, .responsive-table .sub-price-row .cell-check {
+    white-space: nowrap;
   }
 </style>
 
 <div class="table-wrapper">
-  <table class="pricing-table">
-    <colgroup>
-      <col> <!-- Гибкий столбец -->
-      <col style="width: 130px;"> <!-- Фиксированный -->
-      <col style="width: 130px;"> <!-- Фиксированный -->
-      <col style="width: 130px;"> <!-- Фиксированный -->
-    </colgroup>
+  <table class="responsive-table">
     <thead>
       <tr>
         <th class="header-feature"></th>
@@ -164,7 +162,7 @@ outline: false
         <td class="cell-check"><strong>₽12000/мес.</strong></td>
         <td class="cell-check"><strong>₽390000/год</strong></td>
       </tr>
-      <tr>
+      <tr class="sub-price-row">
         <td></td>
         <td class="cell-check" style="font-size: 0.9em; opacity: 0.6;">Мгновенный доступ</td>
         <td class="cell-check" style="font-size: 0.9em; opacity: 0.6;">Ежемесячная подписка</td>
