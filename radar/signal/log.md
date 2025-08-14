@@ -147,10 +147,6 @@
 }
 </style>
 
-<div class="start-button-container">
-  <a href="/brew/about" class="btn btn-primary" rel="noopener noreferrer">Узнать Больше →</a>
-</div>
-
 <style>
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
 .btn {
