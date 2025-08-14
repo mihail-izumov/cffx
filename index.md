@@ -10,7 +10,7 @@ hero:
     alt: Модуль Роста®
   actions:
     - theme: brand
-      text: Ваша Умная Кофейня ☕️
+      text: Ваша Умная Кофейня
       link: /brew/run
 
 features:
