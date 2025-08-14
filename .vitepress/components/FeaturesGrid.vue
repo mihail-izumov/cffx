@@ -11,7 +11,16 @@
       <p class="description-main">Оценивайте, какая модель принесет максимальную прибыль в конкретной локации.</p>
       <p class="description-goals" style="color: #BDB095 !important;">Проверка различных концепций: от классической кофейни до коворкинга с кофе.</p>
     </div>
-    <!-- ... и другие карточки "Наблюдатель" ... -->
+    <div class="brand-card" style="background-color: #2B2A27 !important; border-color: #383633 !important; border-top-color: #A98E60 !important;">
+      <h3>Доступ к Кофейному Протоколу</h3>
+      <p class="description-main">Коллективный опыт сотен кофеен, структурированный для немедленного применения.</p>
+      <p class="description-goals" style="color: #BDB095 !important;">Открытая живая база знаний с проверенными практиками: оборудование, поставщики, персонал, маркетинг.</p>
+    </div>
+    <div class="brand-card" style="background-color: #2B2A27 !important; border-color: #383633 !important; border-top-color: #A98E60 !important;">
+      <h3>Поддержка Анны при старте</h3>
+      <p class="description-main">Рекомендации по действиям для максимально эффективного старта.</p>
+      <p class="description-goals" style="color: #BDB095 !important;">Персональная помощь ИИ-ассистента Анны по методологии B-R-E-W-</p>
+    </div>
 
     <!-- ТАРИФ: Инсайдер (Стальной синий оттенок) -->
     <div class="brand-card" style="background-color: #272A2B !important; border-color: #333638 !important; border-top-color: #608DA9 !important;">
@@ -22,22 +31,35 @@
     <div class="brand-card" style="background-color: #272A2B !important; border-color: #333638 !important; border-top-color: #608DA9 !important;">
       <h3>Доступ к Индексу Роста</h3>
       <p class="description-main">Отслеживайте динамику конкурентов и проверяйте бенчмарки по рынку.</p>
-      <p class="description-goals" style="color: #95B2BD !important;">Объективная оценка эффективности кофейных компаний на основе 15 ключевых метрик.</p>
+      <p class="description-goals" style="color: #95B2BD !important;">Объективная оценка эффективности кофейных компаний на основе 15 ключевых метрик на базе сотен тысяч очищенных отзывов.</p>
     </div>
-    <!-- ... и другие карточки "Инсайдер" ... -->
+    <div class="brand-card" style="background-color: #272A2B !important; border-color: #333638 !important; border-top-color: #608DA9 !important;">
+      <h3>Анализ компаний в фокусе</h3>
+      <p class="description-main">Возможность учиться на чужом опыте и избегать типичных ловушек.</p>
+      <p class="description-goals" style="color: #95B2BD !important;">Подробные кейсы успешных и провальных проектов с анализом ключевых факторов роста или падения.</p>
+    </div>
+    <div class="brand-card" style="background-color: #272A2B !important; border-color: #333638 !important; border-top-color: #608DA9 !important;">
+      <h3>Обновления симулятора</h3>
+      <p class="description-main">Первый доступ к новым версиям и участие в тестировании новых возможностей.</p>
+      <p class="description-goals" style="color: #95B2BD !important;">Регулярное добавление новых городов, локаций и функций.</p>
+    </div>
 
     <!-- ТАРИФ: Партнёр (Глубокий зелёный оттенок) -->
     <div class="brand-card" style="background-color: #272B2A !important; border-color: #333836 !important; border-top-color: #60A994 !important;">
       <h3>Участие в обратной связи</h3>
       <p class="description-main">Ваш опыт помогает улучшать платформу для всех участников.</p>
-      <p class="description-goals" style="color: #95BDB3 !important;">Предлагайте новые функции и влияйте на приоритеты разработки.</p>
+      <p class="description-goals" style="color: #95BDB3 !important;">Предлагайте новые функции и влияйте на приоритеты разработки через опросы и интервью.</p>
     </div>
     <div class="brand-card" style="background-color: #272B2A !important; border-color: #333836 !important; border-top-color: #60A994 !important;">
       <h3>Приоритетный доступ к Чекапам</h3>
       <p class="description-main">Глубокий анализ с персональными рекомендациями по оптимизации и масштабированию.</p>
       <p class="description-goals" style="color: #95BDB3 !important;">Первоочередная запись на комплексную диагностику бизнеса от команды B-R-E-W.</p>
     </div>
-    <!-- ... и другие карточки "Партнёр" ... -->
+    <div class="brand-card" style="background-color: #272B2A !important; border-color: #333836 !important; border-top-color: #60A994 !important;">
+      <h3>Место в совете B-R-E-W</h3>
+      <p class="description-main">Статус сооснователя и право формировать правила игры для всей отрасли.</p>
+      <p class="description-goals" style="color: #95BDB3 !important;">Участие в стратегических решениях платформы, влияние на выбор партнеров и направления исследований.</p>
+    </div>
   </div>
 </template>
 
