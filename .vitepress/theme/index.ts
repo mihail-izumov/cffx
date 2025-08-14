@@ -20,3 +20,4 @@ export default {
     app.component('FeaturesGrid', InstrumentsGrid)
   }
 } satisfies Theme
+
