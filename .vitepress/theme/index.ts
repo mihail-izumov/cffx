@@ -7,6 +7,7 @@ import BrandCards from '../components/BrandCards.vue'
 import FeaturesGrid from '../components/FeaturesGrid.vue'
 import InstrumentsGrid from '../components/InstrumentsGrid.vue'
 import InfoCardsPro from '../components/InfoCardsPro.vue'
+import ValueCards from '../components/ValueCards.vue' // <-- ДОБАВЛЕНО
 
 export default {
   extends: DefaultTheme,
@@ -21,5 +22,6 @@ export default {
     app.component('FeaturesGrid', FeaturesGrid)
     app.component('InstrumentsGrid', InstrumentsGrid)
     app.component('InfoCardsPro', InfoCardsPro)
+    app.component('ValueCards', ValueCards) // <-- ДОБАВЛЕНО
   }
 } satisfies Theme
