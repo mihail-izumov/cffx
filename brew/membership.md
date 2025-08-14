@@ -12,10 +12,10 @@ outline: false
 
 ## Выберите формат участия
 
-<table style="width: 100%; table-layout: fixed;">
+<table style="width: 100%; table-layout: fixed; border-radius: 8px; overflow: hidden;">
   <thead>
     <tr style="background-color: var(--vp-c-bg-soft);">
-      <th style="text-transform: uppercase; color: var(--vp-c-text-1);"></th>
+      <th style="background-color: transparent;"></th>
       <th style="text-align: center; vertical-align: top; padding-top: 12px; padding-bottom: 12px; width: 130px;">
         <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Симулятор</span>
         <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
@@ -104,7 +104,7 @@ outline: false
       <td style="text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
     </tr>
     <tr style="background-color: var(--vp-c-bg-soft);">
-      <td><strong>Стоимость</strong></td>
+      <td></td>
       <td style="text-align: center; white-space: nowrap;"><strong>Бесплатно</strong></td>
       <td style="text-align: center; white-space: nowrap;"><strong>₽12000/мес.</strong></td>
       <td style="text-align: center; white-space: nowrap;"><strong>₽390000/год</strong></td>
