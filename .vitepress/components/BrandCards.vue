@@ -2,23 +2,23 @@
   <div class="brands-container">
     <div class="brand-card">
       <h3>Green House</h3>
-      <p class="description-main">Региональное доминирование и риски экспансии.</p>
-      <p class="description-goals"><strong>Цели:</strong> Формула успеха, Ключевые элементы, Адаптация.</p>
+      <p class="description-main">Региональное доминирование и риски экспансии</p>
+      <p class="description-goals">Формула успеха, Ключевые элементы, Адаптация</p>
     </div>
     <div class="brand-card">
       <h3>Skuratov Coffee</h3>
-      <p class="description-main">Формула «скорости» и пределы роста для «качества».</p>
-      <p class="description-goals"><strong>Цели:</strong> Формула успеха, Рост без потерь.</p>
+      <p class="description-main">Формула «скорости» и пределы роста для «качества»</p>
+      <p class="description-goals">Формула успеха, Рост без потерь</p>
     </div>
     <div class="brand-card">
       <h3>Surf Coffee</h3>
-      <p class="description-main">Формула «атмосферы» и возможность её масштабирования.</p>
-      <p class="description-goals"><strong>Цель:</strong> Ядро бренда, Рост без потерь.</p>
+      <p class="description-main">Формула «атмосферы» и возможность её масштабирования</p>
+      <p class="description-goals">Ядро бренда, Рост без потерь</p>
     </div>
     <div class="brand-card">
       <h3>Корж</h3>
-      <p class="description-main">Масштабировать уют, не потеряв магию бренда.</p>
-      <p class="description-goals"><strong>Цель:</strong> Масштабировать «уют», Создать культ бренда, Доминировать по цене.</p>
+      <p class="description-main">Масштабировать уют, не потеряв магию бренда</p>
+      <p class="description-goals">Масштабировать «уют», Создать культ бренда, Доминировать по цене</p>
     </div>
   </div>
 </template>
