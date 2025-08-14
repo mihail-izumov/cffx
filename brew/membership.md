@@ -89,7 +89,7 @@ outline: false
       <td style="text-align: center;">✓</td>
     </tr>
     <tr style="background-color: var(--vp-c-bg);">
-      <td>Место в совете BREW</td>
+      <td>Место в совете B-R-E-W</td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;">✓</td>
