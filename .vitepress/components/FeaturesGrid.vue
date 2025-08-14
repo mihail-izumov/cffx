@@ -79,40 +79,61 @@
   padding: 20px 16px !important;
   display: flex;
   flex-direction: column;
-  border-top: 4px solid transparent; /* Основа для рамки */
+  border: 1px solid; /* Задаем основу для рамки */
+  border-top-width: 4px; /* Делаем верхнюю рамку толще */
   transition: all 0.25s ease;
 }
 
-/* --- КОНТРАСТНЫЕ СТИЛИ ДЛЯ РАЗНЫХ ТАРИФОВ --- */
-/* Используем :root.dark для повышения специфичности селекторов */
+/* --- СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ --- */
+
+/* Наблюдатель (базовый) */
+.card-observer {
+  background-color: #f9fafb !important;
+  border-color: #e5e7eb !important;
+}
+/* Инсайдер (средний) */
+.card-insider {
+  background-color: #ffffff !important;
+  border-color: #e5e7eb !important;
+  border-top-color: var(--vp-c-brand-1) !important; /* Бирюзовый акцент */
+}
+/* Партнёр (премиум) */
+.card-partner {
+  background-color: #ffffff !important;
+  border-color: #e5e7eb !important;
+  border-top-color: var(--vp-c-brand-2) !important; /* Лаймовый акцент */
+}
+
+/* --- СТИЛИ ДЛЯ ТЁМНОЙ ТЕМЫ --- */
 
 /* Наблюдатель (базовый) */
 :root.dark .card-observer {
   background-color: #2d2d30 !important;
-  border-top-color: #444444;
+  border-color: #444444 !important;
 }
-
 /* Инсайдер (средний) */
 :root.dark .card-insider {
   background-color: #242427 !important;
-  border-top-color: var(--vp-c-brand-1); /* Бирюзовый */
+  border-color: #444444 !important;
+  border-top-color: var(--vp-c-brand-1) !important; /* Бирюзовый акцент */
 }
-
 /* Партнёр (премиум) */
 :root.dark .card-partner {
   background-color: #1e1e20 !important;
-  border-top-color: var(--vp-c-brand-2); /* Яркий лаймовый */
+  border-color: #444444 !important;
+  border-top-color: var(--vp-c-brand-2) !important; /* Лаймовый акцент */
 }
 
-/* Эффект при наведении */
+
+/* Эффект при наведении (общий для обеих тем) */
 .brand-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* --- СТИЛИ ЗАГОЛОВКА --- */
+/* --- СТИЛИ ТЕКСТА (остаются без изменений, т.к. управляются глобально) --- */
 .brand-card h3 {
-  color: #ffffff !important;
+  color: #1a1a1a !important;
   font-size: 15px !important;
   line-height: 1.4 !important;
   margin-top: 0 !important;
@@ -121,20 +142,26 @@
   border: none !important;
   padding: 0 !important;
 }
-
-/* --- СТИЛИ ТЕКСТА --- */
+:root.dark .brand-card h3 {
+  color: #ffffff !important;
+}
 .description-main {
-  color: #f0f0f0 !important;
+  color: #1a1a1a !important;
   font-size: 13px !important;
   line-height: 1.6 !important;
   margin: 0 0 4px 0 !important;
   flex-grow: 1;
 }
-
+:root.dark .description-main {
+  color: #f0f0f0 !important;
+}
 .description-goals {
-  color: #8e8e93 !important;
+  color: #6b7280 !important;
   font-size: 12px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
+}
+:root.dark .description-goals {
+  color: #8e8e93 !important;
 }
 </style>
