@@ -60,54 +60,103 @@
       <th>Компания</th>
       <th><a href="/radar/overview.html#как-мы-находим-компании-со-скрытым-потенциалом">Потенциал</a></th>
       <th><a href="/radar/overview.html#что-такое-«сигнал-радара»">Сигнал</a></th>
+      <th>Поиск</th>
+      <th>Цели</th>
       <th><a href="/radar/overview.html#почему-в-архиве">Статус</a></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td><a href="https://grnhs.ru/" target="_blank" rel="noopener noreferrer">Green House</a></td>
-      <td>~</td>
-      <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span></td>
+      <td>~126+</td>
+      <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="https://runscale.ru/brew/run.html">B-R-E-W</a></td>
+      <td>Секреты регионального доминирования и риски экспансии</td>
+      <td>Формула успеха, Ключевые элементы, Адаптация</td>
       <td>В фокусе</td>
     </tr>
     <tr>
       <td><a href="https://korzhcoffee.ru/" target="_blank" rel="noopener noreferrer">Корж</a></td>
-      <td>~</td>
-      <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="/radar/signal/coffee-points-smr-2025/dashboard">Отчет</a></td>
+      <td>~10+</td>
+      <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="https://runscale.ru/brew/run.html">B-R-E-W</a></td>
+      <td>Разрыв между сильной атмосферой и слабой операционной эффективностью</td>
+      <td>Скорость, Стабильность, Качество продукта</td>
       <td>В фокусе</td>
     </tr>
     <tr>
-      <td><a href="https://skuratovcoffee.ru/" target="_blank" rel="noopener noreferrer">Skuratov</a></td>
-      <td>~</td>
-      <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span></td>
+      <td><a href="https://skuratovcoffee.ru/" target="_blank" rel="noopener noreferrer">Skuratov Coffee</a></td>
+      <td>~63+</td>
+      <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="https://runscale.ru/brew/run.html">B-R-E-W</a></td>
+      <td>Пределы роста для "качества" и поиск новых источников дохода</td>
+      <td>Спрос на качество, Монетизация, Пределы ниши</td>
       <td>В фокусе</td>
     </tr>
     <tr>
-      <td><a href="https://rchc.ru/" target="_blank" rel="noopener noreferrer">Ресторан Честных Цен</a></td>
-      <td>81,5%</td>
+      <td>Cofix</td>
+      <td>~290+</td>
       <td><span class="signal-passive-symbol">·</span></td>
-      <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
+      <td>Формула прибыли при фиксированной цене в разных локациях</td>
+      <td>Выбор локации, Трафик, Прибыль точки</td>
+      <td>В фокусе</td>
     </tr>
     <tr>
-      <td><a href="https://brooklynbowl.ru/" target="_blank" rel="noopener noreferrer">Brooklyn Bowl</a></td>
-      <td>75,6%</td>
+      <td>Дринкит</td>
+      <td>~65+</td>
       <td><span class="signal-passive-symbol">·</span></td>
-      <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
+      <td>Пределы IT-автоматизации и эмоциональная связь с клиентом</td>
+      <td>Поведение гостей, Сценарии, Сбои системы</td>
+      <td>В фокусе</td>
     </tr>
     <tr>
-      <td><a href="https://vaffel.ru/" target="_blank" rel="noopener noreferrer">Vaffel</a></td>
-      <td>56,2%</td>
+      <td>Surf Coffee</td>
+      <td>~110+</td>
       <td><span class="signal-passive-symbol">·</span></td>
-      <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
+      <td>Формула их "атмосферы" и возможность её масштабирования</td>
+      <td>Измерение "атмосферы", Ядро бренда, Рост без потерь</td>
+      <td>В фокусе</td>
     </tr>
     <tr>
-      <td><a href="https://reimaginedvillas.com/" target="_blank" rel="noopener noreferrer">Re:Imagined Villas Ubud</a></td>
-      <td>52,1%</td>
+      <td>Do.bro Coffee</td>
+      <td>~236+</td>
       <td><span class="signal-passive-symbol">·</span></td>
-      <td>В архиве <a href="/radar/overview.html#почему-в-архиве">(Почему?)</a></td>
+      <td>Баланс между скоростью роста и устойчивостью системы</td>
+      <td>Скорость роста, Точность операций, Стабильность</td>
+      <td>В фокусе</td>
+    </tr>
+    <tr>
+      <td>Stars Coffee</td>
+      <td>~110+</td>
+      <td><span class="signal-passive-symbol">·</span></td>
+      <td>Поиск своего лица и выход из тени унаследованного бренда</td>
+      <td>Поиск идентичности, Продукты, Реакция рынка</td>
+      <td>В фокусе</td>
+    </tr>
+    <tr>
+      <td>ДаблБи</td>
+      <td>~66+</td>
+      <td><span class="signal-passive-symbol">·</span></td>
+      <td>Ключевые детали сервиса, создающие премиум-опыт</td>
+      <td>Ключевые детали, Влияние мелочей, Карта сервиса</td>
+      <td>В фокусе</td>
+    </tr>
+    <tr>
+      <td>ДаблБи Express</td>
+      <td>~70+</td>
+      <td><span class="signal-passive-symbol">·</span></td>
+      <td>Баланс скорости и качества в экспресс-формате</td>
+      <td>Скорость, Стабильность, Качество опыта</td>
+      <td>В фокусе</td>
+    </tr>
+    <tr>
+      <td>Jeffrey's Coffeeshop</td>
+      <td>~28+</td>
+      <td><span class="signal-passive-symbol">·</span></td>
+      <td>Как расти, оставаясь "своим" и не теряя уникальности</td>
+      <td>Новая аудитория, Ценности, Расширение круга</td>
+      <td>В фокусе</td>
     </tr>
   </tbody>
 </table>
+
 
 ### Как мы находим компании со скрытым потенциалом
 Наш «Радар» — это не стандартный бизнес-анализ. Это проприетарная система оценки, созданная для поиска компаний, чей потенциал значительно превышает их текущие результаты. Мы не ищем «проблемные» бизнесы. Мы ищем «спящих гигантов».
