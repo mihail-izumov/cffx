@@ -12,113 +12,100 @@ outline: false
 
 ## Форматы участия
 
-<div style="overflow-x: auto;">
-  <table style="width: 100%; min-width: 600px; border-collapse: collapse; border: 2px solid var(--vp-c-divider); border-radius: 8px;">
+<style>
+.table-wrapper {
+  overflow-x: auto; /* скролл на мобиле */
+  width: 100%;
+}
+
+.pricing-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 600px; /* чтобы на мобиле ушло в скролл */
+  border: 2px solid var(--vp-c-divider);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.pricing-table th,
+.pricing-table td {
+  padding: 8px 12px;
+  vertical-align: middle;
+}
+
+.pricing-table thead tr {
+  background-color: var(--vp-c-bg-soft);
+}
+
+.pricing-table .feature-col {
+  /* первый столбец — растягивается */
+  white-space: nowrap; 
+}
+
+.pricing-table .tariff-col {
+  width: 130px; /* фиксированные тарифные */
+  text-align: center;
+}
+
+.pricing-table .check {
+  text-align: center;
+  color: var(--vp-c-brand-2);
+  font-weight: bold;
+}
+
+.pricing-table .price-row {
+  background-color: var(--vp-c-bg-soft);
+}
+</style>
+
+<div class="table-wrapper">
+  <table class="pricing-table">
     <thead>
-      <tr style="background-color: var(--vp-c-bg-soft);">
-        <th style="padding: 12px; text-align: left;"></th>
-        <th style="padding: 12px; text-align: center; width: 130px; border-bottom: 2px solid var(--vp-c-divider);">
-          <div style="text-transform: uppercase; color: var(--vp-c-text-1); margin-bottom: 4px;">Симулятор</div>
-          <div style="font-size: 0.85em; font-weight: normal; opacity: 0.7; line-height: 1.2;">Профессиональная аналитика для вашего бизнеса. Без риска.</div>
+      <tr>
+        <th class="feature-col"></th>
+        <th class="tariff-col">
+          <span style="text-transform: uppercase;">Симулятор</span>
+          <span style="display: block; opacity: 0.7; font-size: 0.85em;">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
         </th>
-        <th style="padding: 12px; text-align: center; width: 130px; border-bottom: 2px solid var(--vp-c-divider);">
-          <div style="text-transform: uppercase; color: var(--vp-c-text-1); margin-bottom: 4px;">Инсайдер</div>
-          <div style="font-size: 0.85em; font-weight: normal; opacity: 0.7; line-height: 1.2;">Продвинутые данные и инсайты для рыночного преимущества.</div>
+        <th class="tariff-col">
+          <span style="text-transform: uppercase;">Инсайдер</span>
+          <span style="display: block; opacity: 0.7; font-size: 0.85em;">Продвинутые данные и инсайты для рыночного преимущества.</span>
         </th>
-        <th style="padding: 12px; text-align: center; width: 130px; border-bottom: 2px solid var(--vp-c-divider);">
-          <div style="text-transform: uppercase; color: var(--vp-c-text-1); margin-bottom: 4px;">Партнёр</div>
-          <div style="font-size: 0.85em; font-weight: normal; opacity: 0.7; line-height: 1.2;">Максимальная сила влияния для формирования будущего индустрии.</div>
+        <th class="tariff-col">
+          <span style="text-transform: uppercase;">Партнёр</span>
+          <span style="display: block; opacity: 0.7; font-size: 0.85em;">Максимальная сила влияния для формирования будущего индустрии.</span>
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px; white-space: nowrap;">Симулятор города</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
+      <tr>
+        <td class="feature-col">Симулятор города</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
       </tr>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px; white-space: nowrap;">Тестирование бизнес-моделей</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
+      <tr>
+        <td class="feature-col">Тестирование бизнес-моделей</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
       </tr>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px; white-space: nowrap;">Доступ к Кофейному Протоколу</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
+      <tr>
+        <td class="feature-col">Доступ к Кофейному Протоколу</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
       </tr>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px; white-space: nowrap;">Поддержка Анны при старте</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-      </tr>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px; white-space: nowrap;">Ежемесячный обзор рынка</td>
-        <td style="padding: 8px 12px; text-align: center;"></td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-      </tr>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px; white-space: nowrap;">Доступ к Индексу Роста</td>
-        <td style="padding: 8px 12px; text-align: center;"></td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-      </tr>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px; white-space: nowrap;">Анализ компаний в фокусе</td>
-        <td style="padding: 8px 12px; text-align: center;"></td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-      </tr>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px; white-space: nowrap;">Обновления симулятора</td>
-        <td style="padding: 8px 12px; text-align: center;"></td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-      </tr>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px; white-space: nowrap;">Персональные рекомендации для пользователей симулятора</td>
-        <td style="padding: 8px 12px; text-align: center;"></td>
-        <td style="padding: 8px 12px; text-align: center;"></td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-      </tr>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px; white-space: nowrap;">Участие в обратной связи по платформе</td>
-        <td style="padding: 8px 12px; text-align: center;"></td>
-        <td style="padding: 8px 12px; text-align: center;"></td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-      </tr>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px; white-space: nowrap;">Приоритетный доступ к Чекапам</td>
-        <td style="padding: 8px 12px; text-align: center;"></td>
-        <td style="padding: 8px 12px; text-align: center;"></td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-      </tr>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px; white-space: nowrap;">Место в совете B-R-E-W</td>
-        <td style="padding: 8px 12px; text-align: center;"></td>
-        <td style="padding: 8px 12px; text-align: center;"></td>
-        <td style="padding: 8px 12px; text-align: center; color: var(--vp-c-brand-2); font-weight: bold;">✓</td>
-      </tr>
-      <tr style="background-color: var(--vp-c-bg-soft);">
-        <td style="padding: 8px 12px;"></td>
-        <td style="padding: 8px 12px; text-align: center;"><strong>Бесплатно</strong></td>
-        <td style="padding: 8px 12px; text-align: center;"><strong>₽12000/мес.</strong></td>
-        <td style="padding: 8px 12px; text-align: center;"><strong>₽390000/год</strong></td>
-      </tr>
-      <tr style="background-color: var(--vp-c-bg);">
-        <td style="padding: 8px 12px;"></td>
-        <td style="padding: 8px 12px; text-align: center; font-size: 0.9em; opacity: 0.6;">Мгновенный доступ</td>
-        <td style="padding: 8px 12px; text-align: center; font-size: 0.9em; opacity: 0.6;">Ежемесячная подписка</td>
-        <td style="padding: 8px 12px; text-align: center; font-size: 0.9em; opacity: 0.6;">Годовой взнос</td>
+      <tr class="price-row">
+        <td class="feature-col"></td>
+        <td><strong>Бесплатно</strong></td>
+        <td><strong>₽12000/мес.</strong></td>
+        <td><strong>₽390000/год</strong></td>
       </tr>
     </tbody>
   </table>
 </div>
+
 
 
 ## Да, вы правда можете масштабировать любую кофейню здесь
