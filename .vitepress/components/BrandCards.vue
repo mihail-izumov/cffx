@@ -21,12 +21,26 @@
       <p class="description-goals">Создать культ бренда, Доминировать по цене</p>
     </div>
     <div class="brand-card">
-      <h3>Корж</h3>
-      <p class="description-main">Вашей кофейни здесь нет?</p>
+      <h3>Вашей кофейни здесь нет?</h3>
       <p class="description-goals"><a href="/radar/overview">Рассчитать Индекс Роста →</a></p>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Стиль для ссылки в состоянии покоя */
+.brand-card .description-goals a {
+  color: #555555; /* Темно-серый цвет */
+  text-decoration: none; /* Убираем подчеркивание */
+  transition: color 0.3s ease; /* Плавный переход цвета */
+}
+
+/* Стиль для ссылки при наведении курсора */
+.brand-card .description-goals a:hover {
+  color: #000000; /* Черный цвет */
+}
+</style>
+
 
 <style>
 /* Контейнер для горизонтальной прокрутки */
