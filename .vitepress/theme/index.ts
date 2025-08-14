@@ -5,6 +5,7 @@ import DefaultTheme from 'vitepress/theme'
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
 import FeaturesGrid from '../components/FeaturesGrid.vue'
+import FeaturesGrid from '../components/InstrumentsGrid.vue'
 
 export default {
   extends: DefaultTheme,
@@ -16,5 +17,6 @@ export default {
     app.component('SimulatorCards', SimulatorCards)
     app.component('BrandCards', BrandCards)
     app.component('FeaturesGrid', FeaturesGrid)
+    app.component('FeaturesGrid', InstrumentsGrid)
   }
 } satisfies Theme
