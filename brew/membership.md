@@ -13,7 +13,7 @@ outline: false
 ## Выберите формат участия
 
 <div style="overflow-x: auto;">
-  <table style="border-radius: 8px; overflow: hidden; border: 2px solid var(--vp-c-divider); border-collapse: collapse;">
+  <table style="min-width: 600px; border-radius: 8px; overflow: hidden; border: 2px solid var(--vp-c-divider); border-collapse: collapse;">
     <thead>
       <tr style="background-color: var(--vp-c-bg-soft);">
         <th style="padding: 0 12px;"></th>
@@ -119,6 +119,7 @@ outline: false
     </tbody>
   </table>
 </div>
+
 
 
 ## Да, вы правда можете масштабировать любую кофейню здесь
