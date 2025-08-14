@@ -7,7 +7,12 @@
 ## В фокусе Радара
 
 <style>
-
+  /*
+    Магия адаптивности:
+    Мы используем переменные VitePress (--vp-c-...),
+    которые автоматически меняют цвет для темной и светлой тем.
+    Это гарантирует, что текст всегда будет читаемым.
+  */
   .radar-table-container {
     width: 100%;
     overflow-x: auto;
@@ -18,13 +23,12 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    table-layout: fixed; /* Фиксированная ширина для десктопа */
-    min-width: 900px; /* Минимальная ширина для горизонтальной прокрутки */
+    table-layout: fixed;
   }
   
   .radar-table-html th, .radar-table-html td {
     padding: 12px 15px;
-    border-bottom: 1px solid var(--vp-c-divider); /* Адаптивная линия */
+    border-bottom: 1px solid var(--vp-c-divider);
   }
   
   .radar-table-html th {
@@ -32,17 +36,17 @@
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.5px;
-    color: var(--vp-c-text-2); /* Адаптивный цвет текста шапки */
+    color: var(--vp-c-text-2);
   }
   
   .radar-table-html th a {
     color: inherit;
     text-decoration: none;
-    border-bottom: 1px dotted var(--vp-c-text-3); /* Адаптивное подчеркивание */
+    border-bottom: 1px dotted var(--vp-c-text-3);
   }
   
   .radar-table-html th a:hover {
-    color: var(--vp-c-text-1); /* Адаптивный цвет при наведении */
+    color: var(--vp-c-text-1);
     border-bottom-color: var(--vp-c-text-1);
   }
   
@@ -51,13 +55,13 @@
     text-align: center;
   }
   
-  /* Фиксированная ширина для столбцов на десктопе */
-  .radar-table-html th:nth-child(1), .radar-table-html td:nth-child(1) { width: 15%; } /* Компания */
-  .radar-table-html th:nth-child(2), .radar-table-html td:nth-child(2) { width: 8%; }  /* Потенциал */
-  .radar-table-html th:nth-child(3), .radar-table-html td:nth-child(3) { width: 12%; } /* Сигнал */
-  .radar-table-html th:nth-child(4), .radar-table-html td:nth-child(4) { width: 35%; } /* Поиск */
-  .radar-table-html th:nth-child(5), .radar-table-html td:nth-child(5) { width: 20%; } /* Цели */
-  .radar-table-html th:nth-child(6), .radar-table-html td:nth-child(6) { width: 10%; } /* Статус */
+  /* Оптимизированная ширина столбцов для десктопа */
+  .radar-table-html th:nth-child(1), .radar-table-html td:nth-child(1) { width: 13%; } /* Компания */
+  .radar-table-html th:nth-child(2), .radar-table-html td:nth-child(2) { width: 7%; }  /* Потенциал */
+  .radar-table-html th:nth-child(3), .radar-table-html td:nth-child(3) { width: 10%; } /* Сигнал */
+  .radar-table-html th:nth-child(4), .radar-table-html td:nth-child(4) { width: 40%; } /* Поиск */
+  .radar-table-html th:nth-child(5), .radar-table-html td:nth-child(5) { width: 22%; } /* Цели */
+  .radar-table-html th:nth-child(6), .radar-table-html td:nth-child(6) { width: 8%; }  /* Статус */
   
   /* Запрет переноса для столбцов Сигнал и Статус */
   .radar-table-html th:nth-child(3), .radar-table-html td:nth-child(3),
@@ -78,7 +82,7 @@
      background-color: rgba(74, 58, 6, 0.3);
   }
   
-  /* Адаптивность для планшетов */
+  /* Адаптивность для планшетов - добавляем горизонтальную прокрутку */
   @media (max-width: 1024px) {
     .radar-table-html {
       min-width: 800px;
@@ -227,7 +231,6 @@
     </tbody>
   </table>
 </div>
-
 
 
 ### Как мы находим компании со скрытым потенциалом
