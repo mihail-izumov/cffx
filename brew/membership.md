@@ -16,101 +16,100 @@ outline: false
 
 <table>
   <thead>
-    <tr>
-      <th>Преимущества</th>
-      <th style="white-space: nowrap; text-align: center;">Симулятор</th>
-      <th style="white-space: nowrap; text-align: center;">Наблюдатель</th>
-      <th style="white-space: nowrap; text-align: center;">Партнёр</th>
+    <tr style="background-color: var(--vp-c-bg-soft);">
+      <th style="text-transform: uppercase;">Преимущества</th>
+      <th style="white-space: nowrap; text-align: center; text-transform: uppercase;">Наблюдатель</th>
+      <th style="white-space: nowrap; text-align: center; text-transform: uppercase;">Инсайдер</th>
+      <th style="white-space: nowrap; text-align: center; text-transform: uppercase;">Партнёр</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg);">
       <td>Симулятор города</td>
       <td style="text-align: center;">✓</td>
       <td style="text-align: center;">✓</td>
       <td style="text-align: center;">✓</td>
     </tr>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg);">
       <td>Тестирование бизнес-моделей</td>
       <td style="text-align: center;">✓</td>
       <td style="text-align: center;">✓</td>
       <td style="text-align: center;">✓</td>
     </tr>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg);">
       <td>Доступ к Кофейному Протоколу</td>
       <td style="text-align: center;">✓</td>
       <td style="text-align: center;">✓</td>
       <td style="text-align: center;">✓</td>
     </tr>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg);">
       <td>Поддержка Анны при старте</td>
       <td style="text-align: center;">✓</td>
       <td style="text-align: center;">✓</td>
       <td style="text-align: center;">✓</td>
     </tr>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg);">
       <td>Ежемесячный обзор рынка</td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;">✓</td>
       <td style="text-align: center;">✓</td>
     </tr>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg);">
       <td>Доступ к Индексу Роста</td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;">✓</td>
       <td style="text-align: center;">✓</td>
     </tr>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg);">
       <td>Анализ компаний в фокусе</td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;">✓</td>
       <td style="text-align: center;">✓</td>
     </tr>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg);">
       <td>Обновления симулятора</td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;">✓</td>
       <td style="text-align: center;">✓</td>
     </tr>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg);">
       <td>Персональные рекомендации для пользователей симулятора</td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;">✓</td>
     </tr>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg);">
       <td>Участие в обратной связи по платформе</td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;">✓</td>
     </tr>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg);">
       <td>Приоритетный доступ к Чекапам</td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;">✓</td>
     </tr>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg);">
       <td>Место в совете BREW</td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;"></td>
       <td style="text-align: center;">✓</td>
     </tr>
-    <tr>
+    <tr style="background-color: var(--vp-c-bg-soft);">
       <td><strong>Стоимость</strong></td>
       <td style="text-align: center;"><strong>Бесплатно</strong></td>
       <td style="text-align: center;"><strong>12 000 ₽/мес.</strong></td>
       <td style="text-align: center;"><strong>390 000 ₽/год</strong></td>
     </tr>
-    <tr>
-      <td><strong>Условия</strong></td>
-      <td style="text-align: center;"><strong>Мгновенный доступ</strong></td>
-      <td style="text-align: center;"><strong>Ежемесячная подписка</strong></td>
-      <td style="text-align: center;"><strong>Годовой взнос</strong></td>
+    <tr style="background-color: var(--vp-c-bg);">
+      <td></td>
+      <td style="text-align: center; font-size: 0.9em; opacity: 0.6;">Мгновенный доступ</td>
+      <td style="text-align: center; font-size: 0.9em; opacity: 0.6;">Ежемесячная подписка</td>
+      <td style="text-align: center; font-size: 0.9em; opacity: 0.6;">Годовой взнос</td>
     </tr>
   </tbody>
 </table>
-
 
 
 ## Да, вы правда можете масштабировать любую кофейню здесь. 😎
