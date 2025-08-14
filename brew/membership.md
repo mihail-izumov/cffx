@@ -17,55 +17,61 @@ outline: false
     overflow-x: auto;
     width: 100%;
   }
-  .responsive-table {
+  .pricing-table {
     width: 100%;
-    min-width: 600px; /* Защита от сжатия на мобильных */
+    table-layout: fixed; /* Это главный ключ к решению */
     border-collapse: collapse;
     border: 2px solid var(--vp-c-divider);
     border-radius: 8px;
-    overflow: hidden;
+    overflow: hidden; /* Чтобы скругление работало */
   }
-  .responsive-table th, .responsive-table td {
+  .pricing-table th, .pricing-table td {
     padding: 8px 12px;
     vertical-align: middle;
+    word-wrap: break-word;
   }
-  .responsive-table thead tr {
+  .pricing-table thead tr {
     background-color: var(--vp-c-bg-soft);
   }
-  .responsive-table th {
+  .pricing-table th {
     vertical-align: top;
     padding-top: 12px;
     padding-bottom: 12px;
   }
-  .responsive-table .header-feature {
+  .pricing-table .header-feature {
     background: transparent !important;
     border: none;
   }
-  .responsive-table .header-tariff {
+  .pricing-table .header-tariff {
     text-align: center;
-    width: 130px; /* Фиксированная ширина для тарифов */
     border-bottom: 2px solid var(--vp-c-divider);
   }
-  .responsive-table .cell-feature {
-    white-space: nowrap; /* Ключ к правильному поведению первого столбца */
+  .pricing-table .cell-feature {
+    white-space: nowrap; /* Чтобы названия преимуществ не переносились */
   }
-  .responsive-table .cell-check {
+  .pricing-table .cell-check {
     text-align: center;
   }
-  .responsive-table .checkmark {
+  .pricing-table .checkmark {
     color: var(--vp-c-brand-2);
     font-weight: bold;
   }
-  .responsive-table .price-row {
+  .pricing-table .price-row {
     background-color: var(--vp-c-bg-soft);
   }
-  .responsive-table .price-row .cell-check, .responsive-table .sub-price-row .cell-check {
+  .pricing-table .price-row .cell-check, .pricing-table .sub-price-row .cell-check {
     white-space: nowrap;
   }
 </style>
 
 <div class="table-wrapper">
-  <table class="responsive-table">
+  <table class="pricing-table">
+    <colgroup>
+      <col> <!-- Гибкий столбец -->
+      <col style="width: 130px;">
+      <col style="width: 130px;">
+      <col style="width: 130px;">
+    </colgroup>
     <thead>
       <tr>
         <th class="header-feature"></th>
@@ -171,6 +177,7 @@ outline: false
     </tbody>
   </table>
 </div>
+
 
 
 ## Да, вы правда можете масштабировать любую кофейню здесь
