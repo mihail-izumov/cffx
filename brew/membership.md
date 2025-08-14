@@ -13,71 +13,73 @@ outline: false
 ## Форматы участия
 
 <style>
-  .table-container {
+  .table-wrapper {
     overflow-x: auto;
-    margin-bottom: 1em;
-  }
-  .responsive-table {
     width: 100%;
-    min-width: 600px;
+  }
+  .pricing-table {
+    width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* Это ключ к решению */
     border: 2px solid var(--vp-c-divider);
     border-radius: 8px;
     overflow: hidden;
   }
-  .responsive-table th, .responsive-table td {
+  .pricing-table th, .pricing-table td {
     padding: 8px 12px;
     vertical-align: middle;
   }
-  .responsive-table thead tr {
+  .pricing-table thead tr {
     background-color: var(--vp-c-bg-soft);
   }
-  .responsive-table th {
+  .pricing-table th {
     vertical-align: top;
     padding-top: 12px;
     padding-bottom: 12px;
   }
-  .responsive-table .empty-header {
-    background: transparent !important;
-    border: none;
+  .pricing-table .header-feature {
+    padding-left: 12px; /* Отступ для пустого заголовка */
   }
-  .responsive-table .tariff-header {
+  .pricing-table .header-tariff {
+    width: 130px; /* Фиксированная ширина */
     text-align: center;
-    width: 130px;
     border-bottom: 2px solid var(--vp-c-divider);
   }
-  .responsive-table .feature-cell {
-    white-space: nowrap;
+  .pricing-table .cell-feature {
+    white-space: nowrap; /* Важно для корректного скролла */
   }
-  .responsive-table tbody tr {
-    background-color: var(--vp-c-bg);
-  }
-  .responsive-table .price-row {
-    background-color: var(--vp-c-bg-soft);
-  }
-  .responsive-table .center-cell {
+  .pricing-table .cell-check {
     text-align: center;
   }
-  .responsive-table .checkmark {
+  .pricing-table .checkmark {
     color: var(--vp-c-brand-2);
     font-weight: bold;
   }
+  .pricing-table .price-row {
+    background-color: var(--vp-c-bg-soft);
+  }
 </style>
 
-<div class="table-container">
-  <table class="responsive-table">
+<div class="table-wrapper">
+  <table class="pricing-table">
+    <colgroup>
+      <col> <!-- Гибкий столбец -->
+      <col style="width: 130px;"> <!-- Фиксированный -->
+      <col style="width: 130px;"> <!-- Фиксированный -->
+      <col style="width: 130px;"> <!-- Фиксированный -->
+    </colgroup>
     <thead>
       <tr>
-        <th class="empty-header"></th>
-        <th class="tariff-header">
+        <th class="header-feature"></th>
+        <th class="header-tariff">
           <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Симулятор</span>
           <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
         </th>
-        <th class="tariff-header">
+        <th class="header-tariff">
           <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Инсайдер</span>
           <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Продвинутые данные и инсайты для рыночного преимущества.</span>
         </th>
-        <th class="tariff-header">
+        <th class="header-tariff">
           <span style="text-transform: uppercase; color: var(--vp-c-text-1);">Партнёр</span>
           <span style="display: block; margin-top: 4px; font-size: 0.85em; font-weight: normal; opacity: 0.7; text-transform: none; line-height: 1.2;">Максимальная сила влияния для формирования будущего индустрии.</span>
         </th>
@@ -85,93 +87,92 @@ outline: false
     </thead>
     <tbody>
       <tr>
-        <td class="feature-cell">Симулятор города</td>
-        <td class="center-cell checkmark">✓</td>
-        <td class="center-cell checkmark">✓</td>
-        <td class="center-cell checkmark">✓</td>
+        <td class="cell-feature">Симулятор города</td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
       </tr>
       <tr>
-        <td class="feature-cell">Тестирование бизнес-моделей</td>
-        <td class="center-cell checkmark">✓</td>
-        <td class="center-cell checkmark">✓</td>
-        <td class="center-cell checkmark">✓</td>
+        <td class="cell-feature">Тестирование бизнес-моделей</td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
       </tr>
       <tr>
-        <td class="feature-cell">Доступ к Кофейному Протоколу</td>
-        <td class="center-cell checkmark">✓</td>
-        <td class="center-cell checkmark">✓</td>
-        <td class="center-cell checkmark">✓</td>
+        <td class="cell-feature">Доступ к Кофейному Протоколу</td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
       </tr>
       <tr>
-        <td class="feature-cell">Поддержка Анны при старте</td>
-        <td class="center-cell checkmark">✓</td>
-        <td class="center-cell checkmark">✓</td>
-        <td class="center-cell checkmark">✓</td>
+        <td class="cell-feature">Поддержка Анны при старте</td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
       </tr>
       <tr>
-        <td class="feature-cell">Ежемесячный обзор рынка</td>
-        <td class="center-cell"></td>
-        <td class="center-cell checkmark">✓</td>
-        <td class="center-cell checkmark">✓</td>
+        <td class="cell-feature">Ежемесячный обзор рынка</td>
+        <td class="cell-check"></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
       </tr>
       <tr>
-        <td class="feature-cell">Доступ к Индексу Роста</td>
-        <td class="center-cell"></td>
-        <td class="center-cell checkmark">✓</td>
-        <td class="center-cell checkmark">✓</td>
+        <td class="cell-feature">Доступ к Индексу Роста</td>
+        <td class="cell-check"></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
       </tr>
       <tr>
-        <td class="feature-cell">Анализ компаний в фокусе</td>
-        <td class="center-cell"></td>
-        <td class="center-cell checkmark">✓</td>
-        <td class="center-cell checkmark">✓</td>
+        <td class="cell-feature">Анализ компаний в фокусе</td>
+        <td class="cell-check"></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
       </tr>
       <tr>
-        <td class="feature-cell">Обновления симулятора</td>
-        <td class="center-cell"></td>
-        <td class="center-cell checkmark">✓</td>
-        <td class="center-cell checkmark">✓</td>
+        <td class="cell-feature">Обновления симулятора</td>
+        <td class="cell-check"></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
       </tr>
       <tr>
-        <td class="feature-cell">Персональные рекомендации для пользователей симулятора</td>
-        <td class="center-cell"></td>
-        <td class="center-cell"></td>
-        <td class="center-cell checkmark">✓</td>
+        <td class="cell-feature">Персональные рекомендации для пользователей симулятора</td>
+        <td class="cell-check"></td>
+        <td class="cell-check"></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
       </tr>
       <tr>
-        <td class="feature-cell">Участие в обратной связи по платформе</td>
-        <td class="center-cell"></td>
-        <td class="center-cell"></td>
-        <td class="center-cell checkmark">✓</td>
+        <td class="cell-feature">Участие в обратной связи по платформе</td>
+        <td class="cell-check"></td>
+        <td class="cell-check"></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
       </tr>
       <tr>
-        <td class="feature-cell">Приоритетный доступ к Чекапам</td>
-        <td class="center-cell"></td>
-        <td class="center-cell"></td>
-        <td class="center-cell checkmark">✓</td>
+        <td class="cell-feature">Приоритетный доступ к Чекапам</td>
+        <td class="cell-check"></td>
+        <td class="cell-check"></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
       </tr>
       <tr>
-        <td class="feature-cell">Место в совете B-R-E-W</td>
-        <td class="center-cell"></td>
-        <td class="center-cell"></td>
-        <td class="center-cell checkmark">✓</td>
+        <td class="cell-feature">Место в совете B-R-E-W</td>
+        <td class="cell-check"></td>
+        <td class="cell-check"></td>
+        <td class="cell-check"><span class="checkmark">✓</span></td>
       </tr>
       <tr class="price-row">
         <td></td>
-        <td class="center-cell"><strong>Бесплатно</strong></td>
-        <td class="center-cell"><strong>₽12000/мес.</strong></td>
-        <td class="center-cell"><strong>₽390000/год</strong></td>
+        <td class="cell-check"><strong>Бесплатно</strong></td>
+        <td class="cell-check"><strong>₽12000/мес.</strong></td>
+        <td class="cell-check"><strong>₽390000/год</strong></td>
       </tr>
       <tr>
         <td></td>
-        <td class="center-cell" style="font-size: 0.9em; opacity: 0.6;">Мгновенный доступ</td>
-        <td class="center-cell" style="font-size: 0.9em; opacity: 0.6;">Ежемесячная подписка</td>
-        <td class="center-cell" style="font-size: 0.9em; opacity: 0.6;">Годовой взнос</td>
+        <td class="cell-check" style="font-size: 0.9em; opacity: 0.6;">Мгновенный доступ</td>
+        <td class="cell-check" style="font-size: 0.9em; opacity: 0.6;">Ежемесячная подписка</td>
+        <td class="cell-check" style="font-size: 0.9em; opacity: 0.6;">Годовой взнос</td>
       </tr>
     </tbody>
   </table>
 </div>
-
 
 
 ## Да, вы правда можете масштабировать любую кофейню здесь
