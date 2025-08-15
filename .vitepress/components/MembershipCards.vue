@@ -1,6 +1,6 @@
 <template>
   <div class="pricing-grid">
-    <!-- КАРТОЧКА: СИМУЛЯТОР (БЕС-ПЛАТНО) -->
+    <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) -->
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title">Симулятор</h3>
       <div class="card-image-wrapper">
@@ -127,13 +127,10 @@ const CheckIcon = () =>
 /* --- НОВЫЙ СТИЛЬ: Выделение бесплатной карточки (как в референсе) --- */
 .pricing-card--featured {
   border-color: #555;
-  /* Можно использовать ваш фирменный цвет для выделения */
-  /* border-color: #C5F946; */
 }
 .pricing-card--featured:hover {
-  border-color: #C5F946; /* Уже есть в основном ховере, но для ясности дублируем */
+  border-color: #C5F946;
 }
-
 
 /* --- Заголовок карточки --- */
 .card-title {
