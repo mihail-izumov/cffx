@@ -104,7 +104,7 @@ const features = ref([
   opacity: 0.7;
   text-transform: none;
   line-height: 1.2;
-  max-width: 150px; /* ИЗМЕНЕНИЕ: Ограничиваем ширину описания */
+  max-width: 150px; /* ИЗМЕНЕНИЕ: Ограничиваем ширину описания на десктопе */
 }
 .cell-feature {
   justify-content: flex-start;
