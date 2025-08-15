@@ -1,6 +1,6 @@
 <template>
   <div class="brands-container">
-    <!-- ФУНКЦИИ ТАРИФА: Инсайдер -->
+    <!-- ФУНКЦИИ ТА-РИФА: Инсайдер -->
     <div class="brand-card insider-card">
       <div class="tariff-badge insider">Инсайдер</div>
       <h3>Ежемесячный обзор рынка</h3>
