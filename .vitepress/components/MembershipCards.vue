@@ -1,8 +1,8 @@
 <template>
   <div class="pricing-grid">
     <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) -->
-    <div class="pricing-card pricing-card--featured">
-      <h3 class="card-title">Симулятор</h3>
+    <div class="pricing-card">
+      <h3 class="card-title">СИМУЛЯТОР</h3>
       <div class="card-image-wrapper">
         <img src="https://via.placeholder.com/400x225/2d2d30/ffffff?text=Simulator" alt="Симулятор" class="card-image">
       </div>
@@ -38,8 +38,8 @@
     </div>
 
     <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) -->
-    <div class="pricing-card">
-      <h3 class="card-title">Инсайдер</h3>
+    <div class="pricing-card pricing-card--featured">
+      <h3 class="card-title">ИНСАЙДЕР</h3>
       <div class="card-image-wrapper">
         <img src="https://via.placeholder.com/400x225/353538/C5F946?text=Insider" alt="Инсайдер" class="card-image">
       </div>
@@ -124,9 +124,13 @@ const CheckIcon = () =>
   background-color: #353538;
 }
 
-/* --- Выделение бесплатной карточки --- */
+/* --- Выделение карточки ИНСАЙДЕР --- */
 .pricing-card--featured {
-  border-color: #666;
+  border-color: #C5F946;
+}
+
+.pricing-card--featured:hover {
+  border-color: #C5F946;
 }
 
 /* --- Заголовок карточки --- */
@@ -157,14 +161,14 @@ const CheckIcon = () =>
   display: block;
 }
 
-/* --- Блок с ценой --- */
+/* --- Блок с ценой (средняя жирность) --- */
 .card-price {
   text-align: center;
   margin-bottom: 24px;
 }
 .card-price strong {
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 600; /* ИЗМЕНЕНО: средняя жирность вместо 700 */
   color: #ffffff;
 }
 
@@ -181,7 +185,7 @@ const CheckIcon = () =>
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px; /* ИЗМЕНЕНО: уменьшено с 14px до 10px для меньшего межстрочного расстояния */
   flex-grow: 1;
 }
 
@@ -190,13 +194,13 @@ const CheckIcon = () =>
   align-items: center;
   gap: 12px;
   color: #e0e0e0;
-  font-size: 0.95rem;
-  line-height: 1.4;
+  font-size: 0.813rem; /* ИЗМЕНЕНО: уменьшено с 0.95rem на 2 пункта (примерно 13px) */
+  line-height: 1.2; /* ИЗМЕНЕНО: уменьшено межстрочное расстояние с 1.4 */
 }
 
 .checkmark-icon {
-  width: 20px;
-  height: 20px;
+  width: 18px; /* ИЗМЕНЕНО: уменьшено с 20px для соответствия меньшему шрифту */
+  height: 18px;
   color: #C5F946;
   flex-shrink: 0;
 }
