@@ -32,34 +32,52 @@ outline: false
 ## Для новых лидеров рынка
 
 <style>
-.simple-table {
-  width: 100%;
-  border-collapse: collapse;
+/* базовая таблица */
+.simple-table{
+  width:100%;
+  border-collapse:collapse;
 }
 
-.simple-table th,
-.simple-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #333;
-  color: #e0e0e0;
+/* строка-заголовок (чёрный фон, белый текст) */
+.simple-table thead th{
+  padding:10px 16px;
+  height:48px;                 /* ниже — одинаковая высота всех строк */
+  background:#1b1b1b;
+  color:#ffffff;
+  font:600 16px/1.2 var(--vp-font-family-base,sans-serif);
+  text-align:left;
+  border:none;
 }
 
-.simple-table th {
-  text-align: left;
-  font-weight: 600;
-  font-size: 16px;
+/* ячейка с ценой */
+.simple-table thead th.price{
+  color:#9aff00;
+  text-align:center;
+  white-space:nowrap;
 }
 
-.simple-table th.price,
-.simple-table td.price {
-  text-align: center;
-  color: #9aff00;
+/* обычные ячейки данных */
+.simple-table tbody td{
+  padding:10px 16px;
+  height:48px;
+  vertical-align:middle;       /* жёсткое центрирование по вертикали */
+  border-top:1px solid var(--vp-c-divider,#cfcfcf);
+  background:transparent;      /* убираем «зебру» */
+  color:var(--vp-c-text-1,#333);
+  font:14px/1.3 var(--vp-font-family-base,sans-serif);
 }
 
-.simple-table td.check {
-  text-align: center;
-  color: #9aff00;
-  font-size: 18px;
+/* зелёные галочки */
+.simple-table td.check{
+  text-align:center;
+  color:#9aff00;
+  font-size:18px;
+  font-weight:600;
+}
+
+/* на всякий случай блокируем возможное поло­са­тие VitePress */
+.simple-table tbody tr:nth-child(even){
+  background:transparent !important;
 }
 </style>
 
@@ -95,6 +113,7 @@ outline: false
     </tr>
   </tbody>
 </table>
+
 
 <div class="start-button-container">
   <a href="/brew/koin/partner" class="btn btn-primary" rel="noopener noreferrer">Получить приглашение →</a>
