@@ -24,7 +24,7 @@
         <li class="feature-item"><CheckIcon /><span>Поддержка Анны при старте</span></li>
       </ul>
 
-      <a href="/brew/membership" class="card-button card-button--secondary">
+      <a href="/brew/join/free" class="card-button card-button--secondary">
         Начать с Симулятора
       </a>
     </div>
@@ -54,7 +54,7 @@
         <li class="feature-item"><CheckIcon /><span>Обновления симулятора</span></li>
       </ul>
 
-      <a href="/brew/membership" class="card-button">Стать Инсайдером</a>
+      <a href="/brew/join/insider" class="card-button">Стать Инсайдером</a>
     </div>
   </div>
 </template>
