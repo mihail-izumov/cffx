@@ -1,6 +1,6 @@
 <template>
   <div class="pricing-grid">
-    <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) — теперь первая -->
+    <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) — те-перь первая -->
     <div class="pricing-card">
       <h3 class="card-title card-title--simulator">СИМУЛЯТОР</h3>
 
