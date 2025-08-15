@@ -35,8 +35,8 @@ const features = ref([
       <!-- Price Row -->
       <div class="grid-cell cell-feature price-row"></div>
       <div class="grid-cell cell-check price-row"><strong>Бесплатно</strong></div>
-      <div class="grid-cell cell-check price-row"><strong>&#8381;12000/мес.</strong></div>
-      <div class="grid-cell cell-check price-row"><strong>&#8381;390000/год</strong></div>
+      <div class="grid-cell cell-check price-row"><strong>₽12000/мес.</strong></div>
+      <div class="grid-cell cell-check price-row"><strong>₽390000/год</strong></div>
       <!-- Sub-Price Row -->
       <div class="grid-cell cell-feature sub-price-separator"></div>
       <div class="grid-cell cell-check sub-price sub-price-separator">Мгновенный доступ</div>
@@ -54,7 +54,7 @@ const features = ref([
           class="grid-cell cell-check"
           :class="{ 'last-row-cell': featureIndex === features.length - 1 }"
         >
-          <span v-if="isIncluded" class="checkmark">&#10003;</span>
+          <span v-if="isIncluded" class="checkmark">✓</span>
         </div>
       </template>
     </div>
@@ -87,7 +87,7 @@ const features = ref([
   border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
   text-align: center;
-  justify-content: flex-start;
+  justify-content: flex-start; /* ИЗМЕНЕНИЕ: Выравниваем заголовки по верху */
 }
 .header-feature {
   border-bottom: 2px solid var(--vp-c-divider);
@@ -104,12 +104,11 @@ const features = ref([
   opacity: 0.7;
   text-transform: none;
   line-height: 1.2;
-  max-width: 150px; /* ИЗМЕНЕНИЕ: Ограничиваем ширину описания на десктопе */
 }
 .cell-feature {
   justify-content: flex-start;
   font-size: 0.9em;
-  line-height: 1.3;
+  line-height: 1.3; /* ИЗМЕНЕНИЕ: Уменьшаем межстрочное расстояние */
 }
 .cell-check {
   text-align: center;
@@ -133,13 +132,5 @@ const features = ref([
 }
 .last-row-cell {
   border-bottom: none;
-}
-
-/* Единственный медиа-запрос для мобильного скролла */
-@media (max-width: 768px) {
-  .pricing-grid .cell-feature,
-  .pricing-grid .tariff-description { /* Добавляем сюда описание */
-    white-space: nowrap; /* Запрещаем перенос при скролле */
-  }
 }
 </style>
