@@ -34,7 +34,7 @@
         </li>
       </ul>
       
-      <a href="/brew/membership" class="card-button">Начать с Симулятора</a>
+      <a href="/brew/membership" class="card-button card-button--secondary">Начать с Симулятора</a>
     </div>
 
     <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) -->
@@ -69,7 +69,7 @@
         </li>
       </ul>
       
-      <a href="/brew/membership" class="card-button card-button--secondary">Стать Инсайдером</a>
+      <a href="/brew/membership" class="card-button">Стать Инсайдером</a>
     </div>
   </div>
 </template>
@@ -109,7 +109,7 @@ const CheckIcon = () =>
   background-color: #2d2d30;
   border: 2px solid #444444;
   border-radius: 18px;
-  padding: 24px;
+  padding: 48px 24px; /* ИЗМЕНЕНО: увеличен отступ сверху и снизу с 24px до 48px */
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -136,13 +136,13 @@ const CheckIcon = () =>
 /* --- Заголовок карточки --- */
 .card-title {
   color: #ffffff;
-  font-size: 1.5rem;
+  font-size: 1.375rem; /* ИЗМЕНЕНО: уменьшено с 1.5rem на 2 пункта (примерно 22px -> 20px) */
   font-weight: 600;
   text-align: center;
-  margin: 0 0 20px 0;
+  margin: 0 0 40px 0; /* ИЗМЕНЕНО: увеличен отступ снизу с 20px до 40px */
   padding: 0;
   border: none;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.1em; /* ИЗМЕНЕНО: увеличено межбуквенное расстояние на 200% (0.02em * 5 = 0.1em) */
 }
 
 /* --- Изображение --- */
@@ -168,7 +168,7 @@ const CheckIcon = () =>
 }
 .card-price strong {
   font-size: 1.3rem;
-  font-weight: 600; /* ИЗМЕНЕНО: средняя жирность вместо 700 */
+  font-weight: 600;
   color: #ffffff;
 }
 
@@ -185,7 +185,7 @@ const CheckIcon = () =>
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px; /* ИЗМЕНЕНО: уменьшено с 14px до 10px для меньшего межстрочного расстояния */
+  gap: 10px;
   flex-grow: 1;
 }
 
@@ -194,20 +194,20 @@ const CheckIcon = () =>
   align-items: center;
   gap: 12px;
   color: #e0e0e0;
-  font-size: 0.813rem; /* ИЗМЕНЕНО: уменьшено с 0.95rem на 2 пункта (примерно 13px) */
-  line-height: 1.2; /* ИЗМЕНЕНО: уменьшено межстрочное расстояние с 1.4 */
+  font-size: 0.813rem;
+  line-height: 1.2;
 }
 
 .checkmark-icon {
-  width: 18px; /* ИЗМЕНЕНО: уменьшено с 20px для соответствия меньшему шрифту */
+  width: 18px;
   height: 18px;
   color: #C5F946;
   flex-shrink: 0;
 }
 
-/* --- Кнопка --- */
+/* --- Кнопка основная (яркая для ИНСАЙДЕР) --- */
 .card-button {
-  margin-top: 24px;
+  margin-top: 48px; /* ИЗМЕНЕНО: увеличен отступ сверху с 24px до 48px */
   background-color: #C5F946;
   color: #000000;
   padding: 14px 18px;
@@ -230,8 +230,9 @@ const CheckIcon = () =>
   box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
 }
 
+/* --- Кнопка вторичная (менее яркая для СИМУЛЯТОР) --- */
 .card-button--secondary {
-  background-color: transparent;
+  background-color: transparent; /* ИЗМЕНЕНО: теперь вторичная кнопка менее яркая */
   color: #C5F946;
   border-color: #C5F946;
 }
