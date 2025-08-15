@@ -39,7 +39,7 @@
 
     <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) -->
     <div class="pricing-card pricing-card--featured">
-      <h3 class="card-title">ИНСАЙДЕР</h3>
+      <h3 class="card-title card-title--insider">ИНСАЙДЕР</h3>
       <div class="card-image-wrapper">
         <img src="https://via.placeholder.com/400x225/353538/C5F946?text=Insider" alt="Инсайдер" class="card-image">
       </div>
@@ -109,7 +109,7 @@ const CheckIcon = () =>
   background-color: #2d2d30;
   border: 2px solid #444444;
   border-radius: 18px;
-  padding: 48px 24px; /* ИЗМЕНЕНО: увеличен отступ сверху и снизу с 24px до 48px */
+  padding: 48px 24px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -133,16 +133,21 @@ const CheckIcon = () =>
   border-color: #C5F946;
 }
 
-/* --- Заголовок карточки --- */
+/* --- Заголовок карточки (общие стили) --- */
 .card-title {
   color: #ffffff;
-  font-size: 1.375rem; /* ИЗМЕНЕНО: уменьшено с 1.5rem на 2 пункта (примерно 22px -> 20px) */
-  font-weight: 600;
+  font-size: 1.375rem;
+  font-weight: 300; /* ИЗМЕНЕНО: сделано очень тонким как "ONE" и "PEAK" */
   text-align: center;
-  margin: 0 0 40px 0; /* ИЗМЕНЕНО: увеличен отступ снизу с 20px до 40px */
+  margin: 0 0 40px 0;
   padding: 0;
   border: none;
-  letter-spacing: 0.1em; /* ИЗМЕНЕНО: увеличено межбуквенное расстояние на 200% (0.02em * 5 = 0.1em) */
+  letter-spacing: 0.2em; /* ИЗМЕНЕНО: увеличено межбуквенное расстояние ещё в 2 раза (0.1em * 2 = 0.2em) */
+}
+
+/* --- Специальный стиль для заголовка ИНСАЙДЕР --- */
+.card-title--insider {
+  font-size: 1.25rem; /* ИЗМЕНЕНО: сделано чуть меньше чем СИМУЛЯТОР (1.375rem -> 1.25rem) */
 }
 
 /* --- Изображение --- */
@@ -207,7 +212,7 @@ const CheckIcon = () =>
 
 /* --- Кнопка основная (яркая для ИНСАЙДЕР) --- */
 .card-button {
-  margin-top: 48px; /* ИЗМЕНЕНО: увеличен отступ сверху с 24px до 48px */
+  margin-top: 48px;
   background-color: #C5F946;
   color: #000000;
   padding: 14px 18px;
@@ -232,7 +237,7 @@ const CheckIcon = () =>
 
 /* --- Кнопка вторичная (менее яркая для СИМУЛЯТОР) --- */
 .card-button--secondary {
-  background-color: transparent; /* ИЗМЕНЕНО: теперь вторичная кнопка менее яркая */
+  background-color: transparent;
   color: #C5F946;
   border-color: #C5F946;
 }
