@@ -12,6 +12,7 @@ import PricingTable from '../components/PricingTable.vue'
 import MembershipCards from '../components/MembershipCards.vue'
 import TariffFeatures from '../components/TariffFeatures.vue'
 import LeadersTable from '../components/LeadersTable.vue'
+import YooKassaPayment from '../components/YooKassaPayment.vue'
 
 export default {
   extends: DefaultTheme,
@@ -31,5 +32,6 @@ export default {
     app.component('MembershipCards', MembershipCards)
     app.component('TariffFeatures', TariffFeatures)
     app.component('LeadersTable', LeadersTable)
+    app.component('YooKassaPayment', YooKassaPayment)
   }
 } satisfies Theme
