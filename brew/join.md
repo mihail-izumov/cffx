@@ -1,3 +1,7 @@
+---
+outline: false
+---
+
 # Подключитесь к Умной Кофейне
 
 <div style="text-align: center; margin: 2rem 0;">
@@ -31,76 +35,54 @@
 .pricing-table {
   width: 100%;
   border-collapse: collapse;
+  margin: 32px 0 24px 0;
   background: #2a2a2a;
+  border: 2px solid #404040;
   border-radius: 16px;
   overflow: hidden;
-  margin: 32px 0 24px 0;
-  border: 2px solid #404040;
-  box-sizing: border-box;
-}
-
-.pricing-table th, .pricing-table td {
-  border: none !important;
-  border-bottom: 1px solid #333333 !important;
 }
 
 .pricing-table th {
-  color: #ffffff !important;
   padding: 16px 20px;
+  background: #1a1a1a !important;
   font-weight: 600;
   font-size: 16px;
-  border-bottom: 2px solid #404040 !important;
-  background: #1a1a1a !important;
-}
-
-.pricing-table th:first-child {
+  color: #ffffff !important;
   text-align: left;
-  border-top-left-radius: 14px;
+  border: none;
 }
 
 .pricing-table th:last-child {
-  text-align: center;
   color: #9aff00 !important;
-  font-size: 16px;
-  font-weight: 600;
+  text-align: center;
   white-space: nowrap;
-  border-top-right-radius: 14px;
 }
 
 .pricing-table td {
   padding: 16px 20px;
+  font-size: 14px;
   color: #e0e0e0 !important;
   background: #2a2a2a !important;
+  border-top: 1px solid #333333;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
   vertical-align: middle;
 }
 
 .pricing-table td:first-child {
-  font-size: 14px;
   text-align: left;
 }
 
 .pricing-table td:last-child {
-  text-align: center;
   color: #9aff00 !important;
   font-size: 18px;
   font-weight: 600;
-}
-
-.pricing-table tr:last-child td {
-  border-bottom: none !important;
-}
-
-.pricing-table tr:last-child td:first-child {
-  border-bottom-left-radius: 14px;
-}
-
-.pricing-table tr:last-child td:last-child {
-  border-bottom-right-radius: 14px;
+  text-align: center;
 }
 
 .partner-btn {
   width: 100%;
-  max-width: 100%;
   padding: 14px 20px;
   border-radius: 8px;
   font-size: 16px;
