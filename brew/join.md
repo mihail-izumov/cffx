@@ -36,7 +36,12 @@
   overflow: hidden;
   margin: 32px 0 24px 0;
   border: 2px solid #404040;
-  table-layout: fixed;
+  box-sizing: border-box;
+}
+
+.pricing-table th, .pricing-table td {
+  border: none !important;
+  border-bottom: 1px solid #333333 !important;
 }
 
 .pricing-table th {
@@ -50,6 +55,7 @@
 
 .pricing-table th:first-child {
   text-align: left;
+  border-top-left-radius: 14px;
 }
 
 .pricing-table th:last-child {
@@ -58,12 +64,12 @@
   font-size: 16px;
   font-weight: 600;
   white-space: nowrap;
+  border-top-right-radius: 14px;
 }
 
 .pricing-table td {
   padding: 16px 20px;
   color: #e0e0e0 !important;
-  border-bottom: 1px solid #333333 !important;
   background: #2a2a2a !important;
   vertical-align: middle;
 }
@@ -82,6 +88,14 @@
 
 .pricing-table tr:last-child td {
   border-bottom: none !important;
+}
+
+.pricing-table tr:last-child td:first-child {
+  border-bottom-left-radius: 14px;
+}
+
+.pricing-table tr:last-child td:last-child {
+  border-bottom-right-radius: 14px;
 }
 
 .partner-btn {
