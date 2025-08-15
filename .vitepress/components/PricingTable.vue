@@ -2,10 +2,10 @@
   <div class="table-wrapper">
     <table class="responsive-table">
       <colgroup>
-        <col /> <!-- Гибкий столбец -->
-        <col style="width: 130px" /> <!-- Фиксированный -->
-        <col style="width: 130px" /> <!-- Фиксированный -->
-        <col style="width: 130px" /> <!-- Фиксированный -->
+        <col /> <!-- 1. Гибкий столбец -->
+        <col style="width: 140px" /> <!-- 2. Фиксированные столбцы с оптимальной шириной -->
+        <col style="width: 140px" />
+        <col style="width: 140px" />
       </colgroup>
       <thead>
         <tr>
@@ -25,6 +25,7 @@
         </tr>
       </thead>
       <tbody>
+        <!-- Содержимое таблицы -->
         <tr>
           <td class="cell-feature">Симулятор города</td>
           <td class="cell-check"><span class="checkmark">✓</span></td>
@@ -121,7 +122,7 @@
 }
 .responsive-table {
   width: 100%;
-  table-layout: fixed; /* Приказываем таблице строго следовать ширинам */
+  table-layout: fixed;
   border-collapse: collapse;
   border: 2px solid var(--vp-c-divider);
   border-radius: 8px;
@@ -162,8 +163,7 @@
   line-height: 1.2;
 }
 .cell-feature {
-  /* white-space: nowrap; <-- ЭТО СВОЙСТВО УДАЛЕНО! */
-  /* Теперь столбец может быть гибким. */
+  /* У этого столбца нет white-space: nowrap, он гибкий */
 }
 .cell-check {
   text-align: center;
