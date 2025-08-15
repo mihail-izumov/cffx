@@ -7,7 +7,7 @@ outline: false
 **Подключитесь к коллективному разуму кофейной индустрии. Без паушальных взносов и роялти. Полный контроль и вся прибыль — ваши.**
 
 <div class="start-button-container">
-  <a href="/radar/overview" class="btn btn-primary"  rel="noopener noreferrer">Подключиться →</a>
+  <a href="/brew/join" class="btn btn-primary"  rel="noopener noreferrer">Подключиться →</a>
 </div>
 
 ## Форматы участия
