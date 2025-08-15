@@ -31,4 +31,67 @@ outline: false
 
 ## Для новых лидеров рынка
 
-<LeadersTable />
+<style>
+.simple-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.simple-table th,
+.simple-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #333;
+  color: #e0e0e0;
+}
+
+.simple-table th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.simple-table th.price,
+.simple-table td.price {
+  text-align: center;
+  color: #9aff00;
+}
+
+.simple-table td.check {
+  text-align: center;
+  color: #9aff00;
+  font-size: 18px;
+}
+</style>
+
+## Для новых лидеров рынка
+
+<table class="simple-table">
+  <thead>
+    <tr>
+      <th>Преимущества</th>
+      <th class="price">₽390000/год</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Все, что в Симуляторе и Инсайдере, плюс:</td>
+      <td class="check">✓</td>
+    </tr>
+    <tr>
+      <td>Персональные рекомендации для пользователей симулятора</td>
+      <td class="check">✓</td>
+    </tr>
+    <tr>
+      <td>Участие в обратной связи по платформе</td>
+      <td class="check">✓</td>
+    </tr>
+    <tr>
+      <td>Приоритетный доступ к Чекапам</td>
+      <td class="check">✓</td>
+    </tr>
+    <tr>
+      <td>Место в совете BREW</td>
+      <td class="check">✓</td>
+    </tr>
+  </tbody>
+</table>
