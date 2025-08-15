@@ -1,20 +1,24 @@
 <template>
   <div class="table-wrapper">
-    <table class="simple-responsive-table">
+    <table class="responsive-table">
+      <colgroup>
+        <col /> <!-- Гибкий столбец -->
+        <col style="width: 130px" /> <!-- Фиксированный -->
+        <col style="width: 130px" /> <!-- Фиксированный -->
+        <col style="width: 130px" /> <!-- Фиксированный -->
+      </colgroup>
       <thead>
         <tr>
-          <!-- Первый столбец без фиксированной ширины -->
-          <th class="feature-header"></th>
-          <!-- Три столбца с фиксированной шириной -->
-          <th class="tariff-header">
+          <th class="header-feature"></th>
+          <th class="header-tariff">
             <span class="tariff-title">Симулятор</span>
             <span class="tariff-description">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
           </th>
-          <th class="tariff-header">
+          <th class="header-tariff">
             <span class="tariff-title">Инсайдер</span>
             <span class="tariff-description">Продвинутые данные и инсайты для рыночного преимущества.</span>
           </th>
-          <th class="tariff-header">
+          <th class="header-tariff">
             <span class="tariff-title">Партнёр</span>
             <span class="tariff-description">Максимальная сила влияния для формирования будущего индустрии.</span>
           </th>
@@ -113,37 +117,36 @@
 <style scoped>
 .table-wrapper {
   overflow-x: auto;
-}
-.simple-responsive-table {
   width: 100%;
-  min-width: 600px;
-  border-collapse: collapse;
 }
-.simple-responsive-table th, 
-.simple-responsive-table td {
-  border: 1px solid var(--vp-c-divider);
+.responsive-table {
+  width: 100%;
+  table-layout: fixed; /* Приказываем таблице строго следовать ширинам */
+  border-collapse: collapse;
+  border: 2px solid var(--vp-c-divider);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.responsive-table th, 
+.responsive-table td {
   padding: 8px 12px;
   vertical-align: middle;
 }
-.feature-header {
-  border: none;
-  background-color: transparent !important;
+.responsive-table thead tr {
+  background-color: var(--vp-c-bg-soft);
 }
-.tariff-header {
-  width: 130px; /* Фиксированная ширина */
-  text-align: center;
+.responsive-table th {
   vertical-align: top;
   padding-top: 12px;
   padding-bottom: 12px;
 }
-.simple-responsive-table thead {
-  background-color: var(--vp-c-bg-soft);
+.header-feature {
+  background: transparent !important;
+  border: none;
 }
-.cell-feature {
-  white-space: nowrap; /* Главное свойство для гибкого столбца */
-}
-.cell-check {
+.header-tariff {
   text-align: center;
+  border-bottom: 2px solid var(--vp-c-divider);
 }
 .tariff-title {
   text-transform: uppercase;
@@ -158,15 +161,20 @@
   text-transform: none;
   line-height: 1.2;
 }
+.cell-feature {
+  /* white-space: nowrap; <-- ЭТО СВОЙСТВО УДАЛЕНО! */
+  /* Теперь столбец может быть гибким. */
+}
+.cell-check {
+  text-align: center;
+  white-space: nowrap; /* Защита от переноса для цен и галочек */
+}
 .checkmark {
   color: var(--vp-c-brand-2);
   font-weight: bold;
 }
 .price-row {
   background-color: var(--vp-c-bg-soft);
-}
-.price-row .cell-check, .sub-price {
-  white-space: nowrap;
 }
 .sub-price {
   font-size: 0.9em;
