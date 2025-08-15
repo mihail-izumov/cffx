@@ -97,7 +97,7 @@ const CheckIcon = () =>
   background: #2d2d30;
   border: 2px solid #444;
   border-radius: 18px;
-  padding: 48px 24px; /* увеличенные отступы сверху/снизу */
+  padding: 48px 24px;
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
@@ -117,16 +117,16 @@ const CheckIcon = () =>
 
 /* ЗАГОЛОВКИ --------------------------------------------------------------- */
 .card-title {
-  font-weight: 300;          /* тонкий как ONE/PEAK */
+  font-weight: 300;
   text-align: center;
-  letter-spacing: 0.2em;     /* очень широкое межбуквенное */
+  letter-spacing: 0.2em;
   margin: 0 0 40px 0;
   color: #fff;
   border: none;
 }
 
-.card-title--insider { font-size: 1.5rem; }     /* крупнее */
-.card-title--simulator { font-size: 1.25rem; }  /* меньше */
+.card-title--insider { font-size: 1.5rem; }
+.card-title--simulator { font-size: 1.25rem; }
 
 /* ИЗОБРАЖЕНИЕ ------------------------------------------------------------- */
 .card-image-wrapper {
@@ -169,7 +169,7 @@ const CheckIcon = () =>
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;       /* плотнее строки */
+  gap: 10px;
   flex-grow: 1;
 }
 
@@ -177,14 +177,14 @@ const CheckIcon = () =>
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 0.813rem;  /* –2 пункта для десктопа */
-  line-height: 1.2;
+  font-size: 0.9rem; /* ИЗМЕНЕНО: увеличено с 0.813rem до 0.9rem для лучшей читаемости на всех устройствах */
+  line-height: 1.3; /* ИЗМЕНЕНО: увеличено с 1.2 до 1.3 для лучшей читаемости */
   color: #e0e0e0;
 }
 
 .checkmark-icon {
-  width: 18px;
-  height: 18px;
+  width: 20px; /* ИЗМЕНЕНО: увеличено с 18px до 20px */
+  height: 20px;
   color: #c5f946;
   flex-shrink: 0;
 }
@@ -226,18 +226,5 @@ const CheckIcon = () =>
 .card-button--secondary:hover {
   background: #c5f946;
   color: #000;
-}
-
-/* МОБИЛЬНАЯ ВЕРСИЯ -------------------------------------------------------- */
-@media (max-width: 480px) {
-  .feature-item {
-    font-size: 0.938rem; /* ≈15 px для мобильных */
-    line-height: 1.35;   /* чуть свободнее */
-  }
-  
-  .checkmark-icon {
-    width: 20px;
-    height: 20px;
-  }
 }
 </style>
