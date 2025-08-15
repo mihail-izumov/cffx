@@ -35,38 +35,39 @@ outline: false
 .simple-table{
   width:100%;
   border-collapse:collapse;
+  border:2px solid var(--vp-c-divider,#444); /* толще обводка + использует цвет темы */
+  border-radius:10px;                         /* скруглённые углы */
+  overflow:hidden;                            /* обрезаем углы у строк */
 }
 
-/* единая высота и вертикальное центрирование */
+/* одинаковая высота и чёткое центрирование */
 .simple-table th,
 .simple-table td{
   height:48px;
   padding:0 16px;
-  vertical-align:middle;
+  vertical-align:middle;                      /* строго по центру */
   font:14px/1.3 var(--vp-font-family-base,sans-serif);
   color:var(--vp-c-text-1,#333);
 }
 
-/* чёрная полоса-заголовок с нижней линией */
+/* шапка */
 .simple-table thead th{
   background:#1b1b1b;
   color:#fff;
   font-weight:600;
   font-size:16px;
-  border-bottom:1px solid var(--vp-c-divider,#cfcfcf);
+  border-bottom:1px solid var(--vp-c-divider,#444);
 }
-
 .simple-table thead th.price{
   color:#9aff00;
   text-align:center;
   white-space:nowrap;
 }
 
-/* данные */
+/* строки */
 .simple-table tbody td{
-  border-bottom:1px solid var(--vp-c-divider,#cfcfcf);
+  border-top:1px solid var(--vp-c-divider,#444);
 }
-
 .simple-table td.check{
   text-align:center;
   color:#9aff00;
@@ -74,7 +75,7 @@ outline: false
   font-weight:600;
 }
 
-/* убираем возможное чередование VitePress */
+/* убираем возможное авто-поло­са­тие VitePress */
 .simple-table tbody tr:nth-child(even){
   background:transparent !important;
 }
@@ -110,6 +111,7 @@ outline: false
     </tr>
   </tbody>
 </table>
+
 
 
 <div class="start-button-container">
