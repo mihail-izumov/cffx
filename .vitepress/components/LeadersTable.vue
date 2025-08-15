@@ -1,5 +1,6 @@
+<!-- .vitepress/components/LeadersTable.vue -->
 <template>
-  <div class="wrapper">
+  <div class="pricing-block">
     <table class="pricing-table">
       <thead>
         <tr>
@@ -9,7 +10,7 @@
       </thead>
 
       <tbody>
-        <tr><td>Все, что в Симуляторе и&nbsp;Инсайдере, плюс:</td><td>✓</td></tr>
+        <tr><td>Все, что в Симуляторе и Инсайдере, плюс:</td><td>✓</td></tr>
         <tr><td>Персональные рекомендации для пользователей симулятора</td><td>✓</td></tr>
         <tr><td>Участие в обратной связи по платформе</td><td>✓</td></tr>
         <tr><td>Приоритетный доступ к Чекапам</td><td>✓</td></tr>
@@ -22,26 +23,34 @@
 </template>
 
 <style scoped>
-.wrapper{
+/* Внешняя «рамка» — один-единственный слой с радиусом */
+.pricing-block{
   margin:32px 0;
+  border:2px solid #404040;
+  border-radius:16px;
+  background:#2a2a2a;
+  overflow:hidden;            /* обрезает вложенные элементы по радиусу */
 }
 
-/* таблица */
+/* Если VitePress завернёт таблицу в .vp-table / .table-wrapper */
+.pricing-block :is(.vp-table, .table-wrapper){
+  background:transparent;
+  border:none;
+}
+
+/* Сама таблица */
 .pricing-table{
   width:100%;
   border-collapse:collapse;
-  background:#2a2a2a;
-  border:2px solid #404040;
-  border-radius:16px;
-  overflow:hidden;
+  background:transparent;
 }
 
-/* заголовок */
+/* Заголовок */
 .pricing-table thead th{
   padding:16px 20px;
   font:600 16px/1.4 var(--vp-font-family-base, sans-serif);
-  background:#1a1a1a;
   color:#fff;
+  background:#1a1a1a;
   text-align:left;
   border:none;
 }
@@ -51,12 +60,12 @@
   white-space:nowrap;
 }
 
-/* ячейки данных */
+/* Данные */
 .pricing-table td{
   padding:16px 20px;
   font:14px/1.4 var(--vp-font-family-base, sans-serif);
   color:#e0e0e0;
-  background:#2a2a2a;
+  background:transparent;
   border-top:1px solid #333;
 }
 .pricing-table td:last-child{
@@ -66,14 +75,14 @@
   text-align:center;
 }
 
-/* кнопка */
+/* Кнопка */
 .partner-btn{
   width:100%;
   margin-top:24px;
   padding:14px 20px;
   font:600 16px/1 var(--vp-font-family-base, sans-serif);
-  border-radius:8px;
   border:2px solid #9aff00;
+  border-radius:8px;
   background:transparent;
   color:#9aff00;
   cursor:pointer;
