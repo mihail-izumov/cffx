@@ -1,6 +1,12 @@
 <template>
-  <div class="grid-table-wrapper">
+  <div class="table-wrapper">
     <table class="responsive-table">
+      <colgroup>
+        <col /> <!-- Гибкий столбец для десктопа -->
+        <col style="width: 140px" />
+        <col style="width: 140px" />
+        <col style="width: 140px" />
+      </colgroup>
       <thead>
         <tr>
           <th class="header-feature"></th>
@@ -19,7 +25,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Содержимое таблицы -->
         <tr>
           <td class="cell-feature">Симулятор города</td>
           <td class="cell-check"><span class="checkmark">✓</span></td>
@@ -110,25 +115,19 @@
 </template>
 
 <style scoped>
-.grid-table-wrapper {
-  display: grid;
-  grid-template-columns: auto repeat(3, 140px); /* Гибкая + 3 фиксированных колонки */
-  width: 100%;
-  overflow-x: auto; /* Скролл для мобильных */
-  min-width: 650px; /* Заставляет грид быть широким на мобильных */
+.table-wrapper {
+  overflow-x: auto;
 }
-
+/* Стили для десктопа по умолчанию */
 .responsive-table {
-  grid-column: 1 / -1; /* Таблица растягивается на все колонки грида */
   width: 100%;
+  table-layout: fixed; /* Режим для гибкого первого столбца */
   border-collapse: collapse;
   border-spacing: 0;
   border: 2px solid var(--vp-c-divider);
   border-radius: 8px;
   overflow: hidden;
 }
-
-/* Общие стили для ячеек */
 .responsive-table th, 
 .responsive-table td {
   padding: 8px 12px;
@@ -163,7 +162,7 @@
   line-height: 1.2;
 }
 .cell-feature {
-  white-space: nowrap; /* Важно, чтобы текст не переносился при скролле */
+  /* На десктопе текст может переноситься, столбец гибкий */
 }
 .cell-check {
   text-align: center;
@@ -179,5 +178,15 @@
 .sub-price {
   font-size: 0.9em;
   opacity: 0.6;
+}
+
+/* КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ ДЛЯ МОБИЛЬНЫХ */
+@media (max-width: 768px) {
+  .responsive-table {
+    table-layout: auto; /* Режим для скролла, ширина по контенту */
+  }
+  .responsive-table .cell-feature {
+    white-space: nowrap; /* Запрещаем перенос для чистого скролла */
+  }
 }
 </style>
