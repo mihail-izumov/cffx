@@ -21,7 +21,7 @@ const features = ref([
   <div class="table-wrapper">
     <div class="pricing-grid">
       <!-- Header Row -->
-      <div class="grid-cell header-feature"></div>
+      <div class="grid-cell grid-header header-feature"></div>
       <div class="grid-cell grid-header">
         <span class="tariff-title">Симулятор</span>
         <span class="tariff-description">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
@@ -50,10 +50,10 @@ const features = ref([
       <div class="grid-cell cell-check price-row"><strong>&#8381;390000/год</strong></div>
 
       <!-- Sub-Price Row -->
-      <div class="grid-cell cell-feature"></div>
-      <div class="grid-cell cell-check sub-price">Мгновенный доступ</div>
-      <div class="grid-cell cell-check sub-price">Ежемесячная подписка</div>
-      <div class="grid-cell cell-check sub-price">Годовой взнос</div>
+      <div class="grid-cell cell-feature sub-price-row"></div>
+      <div class="grid-cell cell-check sub-price sub-price-row">Мгновенный доступ</div>
+      <div class="grid-cell cell-check sub-price sub-price-row">Ежемесячная подписка</div>
+      <div class="grid-cell cell-check sub-price sub-price-row">Годовой взнос</div>
     </div>
   </div>
 </template>
@@ -67,7 +67,7 @@ const features = ref([
 
 .pricing-grid {
   display: grid;
-  /* ГЛАВНОЕ ИЗМЕНЕНИЕ: 1 гибкая колонка + 3 авто-колонки, ширина которых определяется контентом */
+  /* ГЛАВНОЕ ПРАВИЛО: 1 гибкая колонка + 3 авто-колонки, ширина которых определяется контентом */
   grid-template-columns: 1fr repeat(3, auto); 
   align-items: center; /* Центрируем ячейки по вертикали */
 }
@@ -105,7 +105,7 @@ const features = ref([
 
 .cell-feature {
   justify-content: flex-start;
-  /* `white-space: nowrap` здесь не нужен по умолчанию, чтобы текст переносился на десктопе */
+  /* `white-space: nowrap` здесь не нужен, чтобы текст переносился на десктопе */
 }
 
 .cell-check {
@@ -127,15 +127,7 @@ const features = ref([
   opacity: 0.6;
 }
 
-/* Убираем последнюю нижнюю рамку у всех ячеек в последнем ряду */
-.pricing-grid > .grid-cell:nth-last-child(-n+4) {
-    border-bottom: none;
-}
-
-/* Единственный медиа-запрос, который нужен */
-@media (max-width: 768px) {
-  .pricing-grid .cell-feature {
-    white-space: nowrap; /* Запрещаем перенос названий опций при скролле на мобильных */
-  }
+.sub-price-row {
+  border-bottom: none;
 }
 </style>
