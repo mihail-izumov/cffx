@@ -58,6 +58,7 @@
   font-size: 16px;
   border-bottom: 2px solid #404040;
   background: #1a1a1a;
+  vertical-align: middle;
 }
 
 .enterprise-table th:first-child {
@@ -73,20 +74,16 @@
 }
 
 .enterprise-table td {
-  padding: 0;
+  padding: 16px 20px;
   color: #e0e0e0;
   border-bottom: 1px solid #333333;
   background: transparent;
-  height: 60px;
+  vertical-align: middle;
 }
 
 .enterprise-table td:first-child {
   font-size: 14px;
   text-align: left;
-  padding-left: 20px;
-  padding-right: 20px;
-  display: flex;
-  align-items: center;
   line-height: 1.4;
 }
 
@@ -95,9 +92,6 @@
   color: #9aff00;
   font-size: 18px;
   font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .enterprise-table tr:last-child td {
