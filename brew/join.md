@@ -8,8 +8,6 @@
 
 <TariffFeatures />
 
-## Для новых лидеров рынка
-
 <style>
 .enterprise-table {
   background: #2a2a2a;
@@ -37,17 +35,22 @@
 .enterprise-table th {
   color: #ffffff;
   padding: 16px 20px;
-  text-align: center;
   font-weight: 600;
   font-size: 16px;
   border-bottom: 2px solid #404040;
-  background: transparent;
+  background: #1a1a1a;
+}
+
+.enterprise-table th:first-child {
+  text-align: left;
 }
 
 .enterprise-table th:last-child {
+  text-align: center;
   color: #9aff00;
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .enterprise-table td {
@@ -56,15 +59,16 @@
   border-bottom: 1px solid #333333;
   vertical-align: middle;
   background: transparent;
-  text-align: center;
 }
 
 .enterprise-table td:first-child {
   font-size: 14px;
   line-height: 1.4;
+  text-align: left;
 }
 
 .enterprise-table td:last-child {
+  text-align: center;
   color: #9aff00;
   font-size: 18px;
   font-weight: 600;
@@ -75,11 +79,11 @@
 }
 
 .enterprise-table tr:hover {
-  background: rgba(154, 255, 0, 0.05);
+  background: transparent;
 }
 
 .enterprise-table tr:hover td {
-  background: transparent;
+  background: rgba(154, 255, 0, 0.05);
 }
 
 .checkmark {
@@ -113,6 +117,8 @@
   color: #9aff00;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: block;
+  box-sizing: border-box;
 }
 
 .partner-button:hover {
