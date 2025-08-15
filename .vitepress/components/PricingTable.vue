@@ -116,8 +116,7 @@
   overflow-x: auto;
 }
 .responsive-table {
-  width: 100%;
-  min-width: 600px;
+  width: 100%; /* По умолчанию таблица растягивается */
   border-collapse: collapse;
   border-spacing: 0;
 }
@@ -160,7 +159,7 @@
   line-height: 1.2;
 }
 .cell-feature {
-  /* По умолчанию `white-space: nowrap` ОТСУТСТВУЕТ, что делает столбец гибким */
+  /* На десктопе у этого столбца НЕТ white-space: nowrap */
 }
 .cell-check {
   text-align: center;
@@ -178,10 +177,13 @@
   opacity: 0.6;
 }
 
-/* КЛЮЧЕВОЕ РЕШЕНИЕ: Правила для мобильных устройств */
+/* КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ ДЛЯ МОБИЛЬНЫХ */
 @media (max-width: 768px) {
+  .responsive-table {
+    width: auto; /* Позволяем таблице самой определять свою ширину */
+  }
   .responsive-table .cell-feature {
-    white-space: nowrap; /* Возвращаем `nowrap` только на узких экранах для чистого скролла */
+    white-space: nowrap; /* Запрещаем перенос для чистого скролла */
   }
 }
 </style>
