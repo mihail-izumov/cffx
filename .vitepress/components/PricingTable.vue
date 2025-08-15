@@ -67,8 +67,9 @@ const features = ref([
 
 .pricing-grid {
   display: grid;
-  grid-template-columns: 1fr repeat(3, 140px); /* ГЛАВНОЕ ПРАВИЛО: Гибкая + 3 фиксированных колонки */
-  min-width: 650px; /* Заставляет грид быть широким на мобильных */
+  /* ГЛАВНОЕ ИЗМЕНЕНИЕ: 1 гибкая колонка + 3 авто-колонки, ширина которых определяется контентом */
+  grid-template-columns: 1fr repeat(3, auto); 
+  align-items: center; /* Центрируем ячейки по вертикали */
 }
 
 .grid-cell {
@@ -77,12 +78,10 @@ const features = ref([
   flex-direction: column;
   justify-content: center;
   border-bottom: 1px solid var(--vp-c-divider);
+  height: 100%; /* Заставляем ячейки занимать всю высоту строки */
 }
 
 .grid-header {
-  vertical-align: top;
-  padding-top: 12px;
-  padding-bottom: 12px;
   border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
   text-align: center;
@@ -106,13 +105,13 @@ const features = ref([
 
 .cell-feature {
   justify-content: flex-start;
-  white-space: nowrap;
+  /* `white-space: nowrap` здесь не нужен по умолчанию, чтобы текст переносился на десктопе */
 }
 
 .cell-check {
   text-align: center;
   align-items: center;
-  white-space: nowrap;
+  white-space: nowrap; /* Важно, чтобы галочки и цены не переносились */
 }
 .checkmark {
   color: var(--vp-c-brand-2);
@@ -131,5 +130,12 @@ const features = ref([
 /* Убираем последнюю нижнюю рамку у всех ячеек в последнем ряду */
 .pricing-grid > .grid-cell:nth-last-child(-n+4) {
     border-bottom: none;
+}
+
+/* Единственный медиа-запрос, который нужен */
+@media (max-width: 768px) {
+  .pricing-grid .cell-feature {
+    white-space: nowrap; /* Запрещаем перенос названий опций при скролле на мобильных */
+  }
 }
 </style>
