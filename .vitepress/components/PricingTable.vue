@@ -35,25 +35,33 @@ const features = ref([
         <span class="tariff-description">Максимальная сила влияния для формирования будущего индустрии.</span>
       </div>
 
-      <!-- Feature Rows -->
-      <template v-for="feature in features" :key="feature.name">
-        <div class="grid-cell cell-feature">{{ feature.name }}</div>
-        <div v-for="(isIncluded, index) in feature.included" :key="index" class="grid-cell cell-check">
-          <span v-if="isIncluded" class="checkmark">&#10003;</span>
-        </div>
-      </template>
-      
-      <!-- Price Row -->
+      <!-- Price Row (Moved Up) -->
       <div class="grid-cell cell-feature price-row"></div>
       <div class="grid-cell cell-check price-row"><strong>Бесплатно</strong></div>
       <div class="grid-cell cell-check price-row"><strong>&#8381;12000/мес.</strong></div>
       <div class="grid-cell cell-check price-row"><strong>&#8381;390000/год</strong></div>
 
-      <!-- Sub-Price Row -->
-      <div class="grid-cell cell-feature sub-price-row"></div>
-      <div class="grid-cell cell-check sub-price sub-price-row">Мгновенный доступ</div>
-      <div class="grid-cell cell-check sub-price sub-price-row">Ежемесячная подписка</div>
-      <div class="grid-cell cell-check sub-price sub-price-row">Годовой взнос</div>
+      <!-- Sub-Price Row (Moved Up) -->
+      <div class="grid-cell cell-feature sub-price-separator"></div>
+      <div class="grid-cell cell-check sub-price sub-price-separator">Мгновенный доступ</div>
+      <div class="grid-cell cell-check sub-price sub-price-separator">Ежемесячная подписка</div>
+      <div class="grid-cell cell-check sub-price sub-price-separator">Годовой взнос</div>
+      
+      <!-- Feature Rows -->
+      <template v-for="(feature, featureIndex) in features" :key="feature.name">
+        <div 
+          class="grid-cell cell-feature"
+          :class="{ 'last-row-cell': featureIndex === features.length - 1 }"
+        >{{ feature.name }}</div>
+        <div 
+          v-for="(isIncluded, checkIndex) in feature.included" :key="checkIndex" 
+          class="grid-cell cell-check"
+          :class="{ 'last-row-cell': featureIndex === features.length - 1 }"
+        >
+          <span v-if="isIncluded" class="checkmark">&#10003;</span>
+        </div>
+      </template>
+
     </div>
   </div>
 </template>
@@ -67,9 +75,8 @@ const features = ref([
 
 .pricing-grid {
   display: grid;
-  /* ГЛАВНОЕ ПРАВИЛО: 1 гибкая колонка + 3 авто-колонки, ширина которых определяется контентом */
   grid-template-columns: 1fr repeat(3, auto); 
-  align-items: center; /* Центрируем ячейки по вертикали */
+  align-items: center;
 }
 
 .grid-cell {
@@ -78,7 +85,13 @@ const features = ref([
   flex-direction: column;
   justify-content: center;
   border-bottom: 1px solid var(--vp-c-divider);
-  height: 100%; /* Заставляем ячейки занимать всю высоту строки */
+  border-right: 1px solid var(--vp-c-divider); /* Вертикальные разделители */
+  height: 100%;
+}
+
+/* Убираем правый бордер у последней колонки */
+.pricing-grid > .grid-cell:nth-child(4n) {
+  border-right: none;
 }
 
 .grid-header {
@@ -105,17 +118,17 @@ const features = ref([
 
 .cell-feature {
   justify-content: flex-start;
-  /* `white-space: nowrap` здесь не нужен, чтобы текст переносился на десктопе */
+  font-size: 0.9em; /* Текст на 2 кегля меньше */
 }
 
 .cell-check {
   text-align: center;
   align-items: center;
-  white-space: nowrap; /* Важно, чтобы галочки и цены не переносились */
+  white-space: nowrap;
 }
 .checkmark {
   color: var(--vp-c-brand-2);
-  font-weight: bold;
+  font-weight: normal; /* Убираем жирность */
   font-size: 1.2em;
 }
 
@@ -126,8 +139,11 @@ const features = ref([
   font-size: 0.9em;
   opacity: 0.6;
 }
+.sub-price-separator {
+  border-bottom: 2px solid var(--vp-c-divider); /* Толстая линия под подписями */
+}
 
-.sub-price-row {
-  border-bottom: none;
+.last-row-cell {
+  border-bottom: none; /* Убираем последнюю нижнюю рамку */
 }
 </style>
