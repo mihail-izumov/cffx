@@ -10,16 +10,6 @@
 
 ## Для новых лидеров рынка
 
-| Преимущества                                           | ₽390000/год |
-| ------------------------------------------------------ | ----------- |
-| Все, что в Симуляторе и Инсайдере, плюс:               | ✓           |
-| Персональные рекомендации для пользователей симулятора | ✓           |
-| Участие в обратной связи по платформе                  | ✓           |
-| Приоритетный доступ к Чекапам                          | ✓           |
-| Место в совете BREW                                    | ✓           |
-
----
-
 <style>
 .enterprise-table {
   background: #2a2a2a;
@@ -29,27 +19,35 @@
   margin: 32px 0;
 }
 
+.enterprise-table h2 {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 24px 0;
+  text-align: center;
+}
+
 .enterprise-table table {
   width: 100%;
   border-collapse: collapse;
   background: transparent;
+  margin-bottom: 24px;
 }
 
 .enterprise-table th {
-  background: #1a1a1a;
   color: #ffffff;
   padding: 16px 20px;
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   font-size: 16px;
   border-bottom: 2px solid #404040;
+  background: transparent;
 }
 
 .enterprise-table th:last-child {
-  text-align: center;
   color: #9aff00;
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .enterprise-table td {
@@ -57,6 +55,8 @@
   color: #e0e0e0;
   border-bottom: 1px solid #333333;
   vertical-align: middle;
+  background: transparent;
+  text-align: center;
 }
 
 .enterprise-table td:first-child {
@@ -65,7 +65,6 @@
 }
 
 .enterprise-table td:last-child {
-  text-align: center;
   color: #9aff00;
   font-size: 18px;
   font-weight: 600;
@@ -77,6 +76,10 @@
 
 .enterprise-table tr:hover {
   background: rgba(154, 255, 0, 0.05);
+}
+
+.enterprise-table tr:hover td {
+  background: transparent;
 }
 
 .checkmark {
@@ -98,9 +101,29 @@
   font-weight: bold;
   font-size: 12px;
 }
+
+.partner-button {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  border: 2px solid #9aff00;
+  background: transparent;
+  color: #9aff00;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.partner-button:hover {
+  background: #9aff00;
+  color: #1a1a1a;
+}
 </style>
 
 <div class="enterprise-table">
+  <h2>Для новых лидеров рынка</h2>
+  
   <table>
     <thead>
       <tr>
@@ -131,4 +154,6 @@
       </tr>
     </tbody>
   </table>
+  
+  <button class="partner-button">Приглашение для партнёра</button>
 </div>
