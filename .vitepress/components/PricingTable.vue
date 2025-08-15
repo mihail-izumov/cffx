@@ -3,9 +3,9 @@
     <table class="responsive-table">
       <colgroup>
         <col /> <!-- Гибкий столбец для десктопа -->
-        <col style="width: 140px" />
-        <col style="width: 140px" />
-        <col style="width: 140px" />
+        <col /> <!-- Столбцы тарифов теперь тоже гибкие -->
+        <col />
+        <col />
       </colgroup>
       <thead>
         <tr>
@@ -128,65 +128,4 @@
   border-radius: 8px;
   overflow: hidden;
 }
-.responsive-table th, 
-.responsive-table td {
-  padding: 8px 12px;
-  vertical-align: middle;
-}
-.responsive-table thead tr {
-  background-color: var(--vp-c-bg-soft);
-}
-.responsive-table th {
-  vertical-align: top;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid var(--vp-c-divider);
-}
-.header-feature {
-  border-bottom-color: transparent;
-}
-.header-tariff {
-  text-align: center;
-}
-.tariff-title {
-  text-transform: uppercase;
-  color: var(--vp-c-text-1);
-}
-.tariff-description {
-  display: block;
-  margin-top: 4px;
-  font-size: 0.85em;
-  font-weight: normal;
-  opacity: 0.7;
-  text-transform: none;
-  line-height: 1.2;
-}
-.cell-feature {
-  /* На десктопе текст может переноситься, столбец гибкий */
-}
-.cell-check {
-  text-align: center;
-  white-space: nowrap;
-}
-.checkmark {
-  color: var(--vp-c-brand-2);
-  font-weight: bold;
-}
-.price-row {
-  background-color: var(--vp-c-bg-soft);
-}
-.sub-price {
-  font-size: 0.9em;
-  opacity: 0.6;
-}
-
-/* КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ ДЛЯ МОБИЛЬНЫХ */
-@media (max-width: 768px) {
-  .responsive-table {
-    table-layout: auto; /* Режим для скролла, ширина по контенту */
-  }
-  .responsive-table .cell-feature {
-    white-space: nowrap; /* Запрещаем перенос для чистого скролла */
-  }
-}
-</style>
+/* Мы больше НЕ задаем фиксированную ширину столбцам */
