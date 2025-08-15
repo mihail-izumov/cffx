@@ -114,23 +114,21 @@
 <style scoped>
 .table-wrapper {
   overflow-x: auto;
-  width: 100%;
 }
 .responsive-table {
   width: 100%;
-  min-width: 600px; /* Защита от сжатия и ключ к скроллу на мобильных */
+  min-width: 600px;
   border-collapse: collapse;
   border-spacing: 0;
-  /* Убираем table-layout: fixed, позволяя браузеру управлять шириной */
 }
 .responsive-table th, 
 .responsive-table td {
   padding: 8px 12px;
   vertical-align: middle;
-  border-bottom: 1px solid var(--vp-c-divider); /* Стандартные разделители */
+  border-bottom: 1px solid var(--vp-c-divider);
 }
 .responsive-table tr:last-child td {
-  border-bottom: none; /* Убираем последнюю линию */
+  border-bottom: none;
 }
 .responsive-table thead tr {
   background-color: var(--vp-c-bg-soft);
@@ -139,13 +137,13 @@
   vertical-align: top;
   padding-top: 12px;
   padding-bottom: 12px;
-  border-bottom: 2px solid var(--vp-c-divider); /* Толстая линия под заголовком */
+  border-bottom: 2px solid var(--vp-c-divider);
 }
 .header-feature {
-  border-bottom-color: transparent; /* Убираем линию у пустой ячейки */
+  border-bottom-color: transparent;
 }
 .header-tariff {
-  width: 140px; /* Фиксированная ширина для тарифов */
+  width: 140px;
   text-align: center;
 }
 .tariff-title {
@@ -162,11 +160,11 @@
   line-height: 1.2;
 }
 .cell-feature {
-  white-space: nowrap; /* Важно, чтобы текст не переносился при скролле */
+  /* По умолчанию `white-space: nowrap` ОТСУТСТВУЕТ, что делает столбец гибким */
 }
 .cell-check {
   text-align: center;
-  white-space: nowrap; /* Защита от переноса для цен и галочек */
+  white-space: nowrap;
 }
 .checkmark {
   color: var(--vp-c-brand-2);
@@ -178,5 +176,12 @@
 .sub-price {
   font-size: 0.9em;
   opacity: 0.6;
+}
+
+/* КЛЮЧЕВОЕ РЕШЕНИЕ: Правила для мобильных устройств */
+@media (max-width: 768px) {
+  .responsive-table .cell-feature {
+    white-space: nowrap; /* Возвращаем `nowrap` только на узких экранах для чистого скролла */
+  }
 }
 </style>
