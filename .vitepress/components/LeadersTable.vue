@@ -6,7 +6,7 @@
       <div class="cell header price">₽390000/год</div>
       <!-- Данные -->
       <div class="cell subtitle">Все, что в Симуляторе и Инсайдере, плюс:</div>
-      <div class="cell check">✓</div>
+      <div class="cell subtitle-check"></div>
       <div class="cell">Персональные рекомендации для пользователей симулятора</div>
       <div class="cell check">✓</div>
       <div class="cell">Участие в обратной связи по платформе</div>
@@ -46,7 +46,8 @@
 }
 
 /* Убираем верхнюю границу первой строки данных */
-.pricing-grid .cell:nth-child(3) {
+.pricing-grid .cell:nth-child(3),
+.pricing-grid .cell:nth-child(4) {
   border-top: none;
 }
 
@@ -69,6 +70,11 @@
 /* Серый подзаголовок */
 .subtitle {
   color: #999;
+}
+
+/* Пустая ячейка для подзаголовка */
+.subtitle-check {
+  border-top: none;
 }
 
 /* Галочка */
