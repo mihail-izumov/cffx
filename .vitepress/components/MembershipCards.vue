@@ -35,7 +35,7 @@
 
       <div class="card-image-wrapper">
         <img
-          src="https://via.placeholder.com/400x225/353538/C5F946?text=Insider"
+          src="/insider-ban.svg"
           alt="Инсайдер"
           class="card-image"
         />
