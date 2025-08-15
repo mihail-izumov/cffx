@@ -6,7 +6,7 @@
 
       <div class="card-image-wrapper">
         <img
-          src="https://via.placeholder.com/400x225/2d2d30/ffffff?text=Simulator"
+          src="/simulator-ban.svg"
           alt="Симулятор"
           class="card-image"
         />
