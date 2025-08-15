@@ -1,99 +1,95 @@
 <template>
-  <!-- 1-й и единственный радиус / фон -->
   <div class="pricing-block">
-    <table class="pricing-table">
-      <thead>
-        <tr><th>Преимущества</th><th>₽390000/год</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Все, что в Симуляторе и Инсайдере, плюс:</td><td>✓</td></tr>
-        <tr><td>Персональные рекомендации для пользователей симулятора</td><td>✓</td></tr>
-        <tr><td>Участие в обратной связи по платформе</td><td>✓</td></tr>
-        <tr><td>Приоритетный доступ к Чекапам</td><td>✓</td></tr>
-        <tr><td>Место в совете BREW</td><td>✓</td></tr>
-      </tbody>
-    </table>
-
+    <div class="pricing-grid">
+      <!-- Заголовок -->
+      <div class="cell header">Преимущества</div>
+      <div class="cell header price">₽390000/год</div>
+      <!-- Данные -->
+      <div class="cell">Все, что в Симуляторе и Инсайдере, плюс:</div>
+      <div class="cell check">✓</div>
+      <div class="cell">Персональные рекомендации для пользователей симулятора</div>
+      <div class="cell check">✓</div>
+      <div class="cell">Участие в обратной связи по платформе</div>
+      <div class="cell check">✓</div>
+      <div class="cell">Приоритетный доступ к Чекапам</div>
+      <div class="cell check">✓</div>
+      <div class="cell">Место в совете BREW</div>
+      <div class="cell check">✓</div>
+    </div>
     <button class="partner-btn">Приглашение для партнёра</button>
   </div>
 </template>
 
 <style scoped>
-/* Контейнер с единым скруглением */
-.pricing-block{
-  margin:32px 0;
-  border:2px solid #404040;
-  border-radius:16px;
-  background:#2a2a2a;
-  overflow:hidden;                 /* обрезает всё лишнее */
+.pricing-block {
+  margin: 32px 0;
+  border: 2px solid var(--vp-c-divider, #444);
+  border-radius: 16px;
+  background: var(--vp-c-bg-base, #2a2a2a);
+  overflow: hidden;
 }
 
-/* —--- отменяем дефолтные стили VitePress —--- */
-:deep(.vp-table),
-:deep(.table-wrapper){
-  background:transparent !important;
-  border:none      !important;
-  border-radius:0  !important;
-}
-:deep(.vp-table tr),
-:deep(.table-wrapper tr:nth-child(2n)){
-  background:transparent !important;          /* убираем «шахматку» */
-}
-:deep(.vp-table td),
-:deep(.vp-table th),
-:deep(.table-wrapper td),
-:deep(.table-wrapper th){
-  border-right:none !important;               /* убираем вертикаль */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  width: 100%;
 }
 
-/* Таблица */
-.pricing-table{
-  width:100%;
-  border-collapse:collapse;
-  background:transparent;
+/* Общие ячейки */
+.cell {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  height: 48px;
+  border-top: 1px solid var(--vp-c-divider, #444);
+  font: 14px/1.3 var(--vp-font-family-base, sans-serif);
+  color: var(--vp-c-text-1, #e0e0e0);
 }
-.pricing-table thead th{
-  padding:16px 20px;
-  font:600 16px/1.4 var(--vp-font-family-base,sans-serif);
-  background:#1a1a1a;
-  color:#fff;
-  text-align:left;
-  border:none;
+
+/* Убираем верхнюю границу первой строки данных */
+.pricing-grid .cell:nth-child(3) {
+  border-top: none;
 }
-.pricing-table thead th:last-child{
-  color:#9aff00;
-  text-align:center;
-  white-space:nowrap;
+
+/* Шапка */
+.header {
+  background: var(--vp-c-bg-emphasis, #1b1b1b);
+  color: var(--vp-c-text-base, #fff);
+  font-weight: 600;
+  font-size: 16px;
+  border-top: none;
 }
-.pricing-table td{
-  padding:16px 20px;
-  font:14px/1.4 var(--vp-font-family-base,sans-serif);
-  color:#e0e0e0;
-  background:transparent;
-  border-top:1px solid #333;
+
+/* Цена */
+.price {
+  justify-content: center;
+  color: #9aff00;
+  font-size: 16px;
 }
-.pricing-table td:last-child{
-  color:#9aff00;
-  font-size:18px;
-  font-weight:600;
-  text-align:center;
+
+/* Галочка */
+.check {
+  justify-content: center;
+  color: #9aff00;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 /* Кнопка */
-.partner-btn{
-  width:100%;
-  margin-top:24px;
-  padding:14px 20px;
-  font:600 16px/1 var(--vp-font-family-base,sans-serif);
-  border:2px solid #9aff00;
-  border-radius:8px;
-  background:transparent;
-  color:#9aff00;
-  cursor:pointer;
-  transition:.2s;
+.partner-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px 0;
+  font: 600 16px/1 var(--vp-font-family-base, sans-serif);
+  border: 2px solid #9aff00;
+  border-radius: 8px;
+  background: transparent;
+  color: #9aff00;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
 }
-.partner-btn:hover{
-  background:#9aff00;
-  color:#1a1a1a;
+.partner-btn:hover {
+  background: #9aff00;
+  color: #1a1a1a;
 }
 </style>
