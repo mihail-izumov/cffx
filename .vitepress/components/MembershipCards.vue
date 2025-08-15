@@ -177,14 +177,14 @@ const CheckIcon = () =>
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 0.9rem; /* ИЗМЕНЕНО: увеличено с 0.813rem до 0.9rem для лучшей читаемости на всех устройствах */
-  line-height: 1.3; /* ИЗМЕНЕНО: увеличено с 1.2 до 1.3 для лучшей читаемости */
+  font-size: 0.813rem;  /* маленький для десктопа */
+  line-height: 1.2;
   color: #e0e0e0;
 }
 
 .checkmark-icon {
-  width: 20px; /* ИЗМЕНЕНО: увеличено с 18px до 20px */
-  height: 20px;
+  width: 18px;
+  height: 18px;
   color: #c5f946;
   flex-shrink: 0;
 }
@@ -226,5 +226,31 @@ const CheckIcon = () =>
 .card-button--secondary:hover {
   background: #c5f946;
   color: #000;
+}
+
+/* МОБИЛЬНАЯ ВЕРСИЯ -------------------------------------------------------- */
+/* Увеличиваем брейкпоинт и добавляем !important для гарантии */
+@media (max-width: 768px) {
+  .feature-item {
+    font-size: 1rem !important;     /* увеличиваем до 16px */
+    line-height: 1.4 !important;    /* больше межстрочное */
+  }
+  
+  .checkmark-icon {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  
+  .pricing-card {
+    padding: 32px 20px !important;  /* меньше отступы на мобильных */
+  }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+  .feature-item {
+    font-size: 0.95rem !important;  /* чуть меньше для очень узких */
+    line-height: 1.35 !important;
+  }
 }
 </style>
