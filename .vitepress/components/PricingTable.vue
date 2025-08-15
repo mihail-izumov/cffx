@@ -1,11 +1,15 @@
 <template>
   <div class="table-wrapper">
     <table class="responsive-table">
+      <colgroup>
+        <col /> <!-- Гибкий столбец -->
+        <col style="width: 140px" /> <!-- Фиксированные столбцы (ширина чуть увеличена для надёжности) -->
+        <col style="width: 140px" />
+        <col style="width: 140px" />
+      </colgroup>
       <thead>
         <tr>
-          <!-- 1. Гибкий столбец (без заданной ширины) -->
           <th class="header-feature"></th>
-          <!-- 2. Три столбца с фиксированной шириной -->
           <th class="header-tariff">
             <span class="tariff-title">Симулятор</span>
             <span class="tariff-description">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
@@ -21,7 +25,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Содержимое таблицы -->
         <tr>
           <td class="cell-feature">Симулятор города</td>
           <td class="cell-check"><span class="checkmark">✓</span></td>
@@ -95,7 +98,7 @@
           <td class="cell-check"><span class="checkmark">✓</span></td>
         </tr>
         <tr class="price-row">
-          <td class="cell-feature"></td>
+          <td class="cell-feature"></td> <!-- Ячейка, где было слово "Стоимость" -->
           <td class="cell-check"><strong>Бесплатно</strong></td>
           <td class="cell-check"><strong>₽12000/мес.</strong></td>
           <td class="cell-check"><strong>₽390000/год</strong></td>
@@ -114,11 +117,11 @@
 <style scoped>
 .table-wrapper {
   overflow-x: auto;
-  width: 100%;
 }
+/* Стили для десктопа по умолчанию */
 .responsive-table {
   width: 100%;
-  min-width: 650px; /* Защита от сжатия и ключ к скроллу на мобильных */
+  table-layout: fixed; /* Делаем столбцы предсказуемыми */
   border-collapse: collapse;
   border-spacing: 0;
   border: 2px solid var(--vp-c-divider);
@@ -143,7 +146,6 @@
   border-bottom-color: transparent;
 }
 .header-tariff {
-  width: 140px; /* Фиксированная ширина для тарифов */
   text-align: center;
 }
 .tariff-title {
@@ -160,11 +162,11 @@
   line-height: 1.2;
 }
 .cell-feature {
-  white-space: nowrap; /* Важно, чтобы текст не переносился при скролле */
+  /* На десктопе текст может переноситься, чтобы столбец был гибким */
 }
 .cell-check {
   text-align: center;
-  white-space: nowrap; /* Защита от переноса для цен и галочек */
+  white-space: nowrap;
 }
 .checkmark {
   color: var(--vp-c-brand-2);
@@ -176,5 +178,16 @@
 .sub-price {
   font-size: 0.9em;
   opacity: 0.6;
+}
+
+/* КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ ДЛЯ МОБИЛЬНЫХ */
+@media (max-width: 768px) {
+  .responsive-table {
+    table-layout: auto; /* Возвращаем браузеру контроль над шириной */
+    width: auto; /* Позволяем таблице самой определять свою ширину по контенту */
+  }
+  .responsive-table .cell-feature {
+    white-space: nowrap; /* Запрещаем перенос для чистого скролла */
+  }
 }
 </style>
