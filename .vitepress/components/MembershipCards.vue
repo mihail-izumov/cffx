@@ -1,34 +1,6 @@
 <template>
   <div class="pricing-grid">
-    <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) — теперь первая  -->
-    <div class="pricing-card pricing-card--featured">
-      <h3 class="card-title card-title--insider">ИНСАЙДЕР</h3>
-
-      <div class="card-image-wrapper">
-        <img
-          src="https://via.placeholder.com/400x225/353538/C5F946?text=Insider"
-          alt="Инсайдер"
-          class="card-image"
-        />
-      </div>
-
-      <div class="card-price">
-        <strong>12 000 ₽/мес.</strong>
-      </div>
-
-      <p class="includes-all">Все, что в Симуляторе, плюс:</p>
-
-      <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Ежемесячный обзор рынка</span></li>
-        <li class="feature-item"><CheckIcon /><span>Доступ к Индексу Роста</span></li>
-        <li class="feature-item"><CheckIcon /><span>Анализ компаний в фокусе</span></li>
-        <li class="feature-item"><CheckIcon /><span>Обновления симулятора</span></li>
-      </ul>
-
-      <a href="/brew/membership" class="card-button">Стать Инсайдером</a>
-    </div>
-
-    <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) — теперь вторая -->
+    <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) — теперь первая -->
     <div class="pricing-card">
       <h3 class="card-title card-title--simulator">СИМУЛЯТОР</h3>
 
@@ -55,6 +27,34 @@
       <a href="/brew/membership" class="card-button card-button--secondary">
         Начать с Симулятора
       </a>
+    </div>
+
+    <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) — теперь вторая -->
+    <div class="pricing-card pricing-card--featured">
+      <h3 class="card-title card-title--insider">ИНСАЙДЕР</h3>
+
+      <div class="card-image-wrapper">
+        <img
+          src="https://via.placeholder.com/400x225/353538/C5F946?text=Insider"
+          alt="Инсайдер"
+          class="card-image"
+        />
+      </div>
+
+      <div class="card-price">
+        <strong>₽12500/мес.</strong>
+      </div>
+
+      <p class="includes-all">Все, что в Симуляторе, плюс:</p>
+
+      <ul class="feature-list">
+        <li class="feature-item"><CheckIcon /><span>Ежемесячный обзор рынка</span></li>
+        <li class="feature-item"><CheckIcon /><span>Доступ к Индексу Роста</span></li>
+        <li class="feature-item"><CheckIcon /><span>Анализ компаний в фокусе</span></li>
+        <li class="feature-item"><CheckIcon /><span>Обновления симулятора</span></li>
+      </ul>
+
+      <a href="/brew/membership" class="card-button">Стать Инсайдером</a>
     </div>
   </div>
 </template>
@@ -177,7 +177,7 @@ const CheckIcon = () =>
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 0.813rem;  /* маленький для десктопа */
+  font-size: 0.813rem;
   line-height: 1.2;
   color: #e0e0e0;
 }
@@ -229,11 +229,10 @@ const CheckIcon = () =>
 }
 
 /* МОБИЛЬНАЯ ВЕРСИЯ -------------------------------------------------------- */
-/* Увеличиваем брейкпоинт и добавляем !important для гарантии */
 @media (max-width: 768px) {
   .feature-item {
-    font-size: 1rem !important;     /* увеличиваем до 16px */
-    line-height: 1.4 !important;    /* больше межстрочное */
+    font-size: 1rem !important;
+    line-height: 1.4 !important;
   }
   
   .checkmark-icon {
@@ -242,14 +241,13 @@ const CheckIcon = () =>
   }
   
   .pricing-card {
-    padding: 32px 20px !important;  /* меньше отступы на мобильных */
+    padding: 32px 20px !important;
   }
 }
 
-/* Для очень маленьких экранов */
 @media (max-width: 480px) {
   .feature-item {
-    font-size: 0.95rem !important;  /* чуть меньше для очень узких */
+    font-size: 0.95rem !important;
     line-height: 1.35 !important;
   }
 }
