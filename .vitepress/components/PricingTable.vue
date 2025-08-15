@@ -116,7 +116,7 @@
   overflow-x: auto;
 }
 .responsive-table {
-  width: 100%; /* По умолчанию таблица растягивается */
+  width: 100%; /* По умолчанию таблица растягивается на всю ширину контейнера */
   border-collapse: collapse;
   border-spacing: 0;
 }
@@ -142,7 +142,7 @@
   border-bottom-color: transparent;
 }
 .header-tariff {
-  width: 140px;
+  width: 140px; /* Фиксированная ширина для тарифов */
   text-align: center;
 }
 .tariff-title {
@@ -159,7 +159,7 @@
   line-height: 1.2;
 }
 .cell-feature {
-  /* На десктопе у этого столбца НЕТ white-space: nowrap */
+  /* На десктопе у этого столбца НЕТ white-space: nowrap, он гибкий */
 }
 .cell-check {
   text-align: center;
@@ -180,7 +180,7 @@
 /* КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ ДЛЯ МОБИЛЬНЫХ */
 @media (max-width: 768px) {
   .responsive-table {
-    width: auto; /* Позволяем таблице самой определять свою ширину */
+    width: auto; /* Позволяем таблице самой определять свою ширину по контенту */
   }
   .responsive-table .cell-feature {
     white-space: nowrap; /* Запрещаем перенос для чистого скролла */
