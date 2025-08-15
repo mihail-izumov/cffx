@@ -35,13 +35,13 @@ const features = ref([
         <span class="tariff-description">Максимальная сила влияния для формирования будущего индустрии.</span>
       </div>
 
-      <!-- Price Row (Moved Up) -->
+      <!-- Price Row -->
       <div class="grid-cell cell-feature price-row"></div>
       <div class="grid-cell cell-check price-row"><strong>Бесплатно</strong></div>
       <div class="grid-cell cell-check price-row"><strong>&#8381;12000/мес.</strong></div>
       <div class="grid-cell cell-check price-row"><strong>&#8381;390000/год</strong></div>
 
-      <!-- Sub-Price Row (Moved Up) -->
+      <!-- Sub-Price Row -->
       <div class="grid-cell cell-feature sub-price-separator"></div>
       <div class="grid-cell cell-check sub-price sub-price-separator">Мгновенный доступ</div>
       <div class="grid-cell cell-check sub-price sub-price-separator">Ежемесячная подписка</div>
@@ -85,11 +85,10 @@ const features = ref([
   flex-direction: column;
   justify-content: center;
   border-bottom: 1px solid var(--vp-c-divider);
-  border-right: 1px solid var(--vp-c-divider); /* Вертикальные разделители */
+  border-right: 1px solid var(--vp-c-divider);
   height: 100%;
 }
 
-/* Убираем правый бордер у последней колонки */
 .pricing-grid > .grid-cell:nth-child(4n) {
   border-right: none;
 }
@@ -98,6 +97,7 @@ const features = ref([
   border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
   text-align: center;
+  justify-content: flex-start; /* ИЗМЕНЕНИЕ: Выравниваем заголовки по верху */
 }
 .header-feature {
   border-bottom: 2px solid var(--vp-c-divider);
@@ -118,7 +118,8 @@ const features = ref([
 
 .cell-feature {
   justify-content: flex-start;
-  font-size: 0.9em; /* Текст на 2 кегля меньше */
+  font-size: 0.9em;
+  line-height: 1.3; /* ИЗМЕНЕНИЕ: Уменьшаем межстрочное расстояние */
 }
 
 .cell-check {
@@ -128,7 +129,7 @@ const features = ref([
 }
 .checkmark {
   color: var(--vp-c-brand-2);
-  font-weight: normal; /* Убираем жирность */
+  font-weight: normal;
   font-size: 1.2em;
 }
 
@@ -140,10 +141,10 @@ const features = ref([
   opacity: 0.6;
 }
 .sub-price-separator {
-  border-bottom: 2px solid var(--vp-c-divider); /* Толстая линия под подписями */
+  border-bottom: 2px solid var(--vp-c-divider);
 }
 
 .last-row-cell {
-  border-bottom: none; /* Убираем последнюю нижнюю рамку */
+  border-bottom: none;
 }
 </style>
