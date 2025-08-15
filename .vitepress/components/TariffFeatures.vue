@@ -1,6 +1,6 @@
 <template>
   <div class="brands-container">
-    <!-- ФУНКЦИИ ТА-РИФА: Инсайдер -->
+    <!-- ФУНКЦИИ ТАРИФА: Инсайдер -->
     <div class="brand-card insider-card">
       <div class="tariff-badge insider">Инсайдер</div>
       <h3>Ежемесячный обзор рынка</h3>
@@ -87,15 +87,27 @@
   position: relative;
 }
 
-/* Карточки Инсайдер - темно-зеленый стиль как на верхних карточках */
+/* СВЕТЛАЯ ТЕМА - карточки светлые */
 .insider-card {
+  background-color: #f8f9f8 !important;
+  border-color: #e0e5e0 !important;
+  border-top-color: #60A994 !important;
+}
+
+.simulator-card {
+  background-color: #f9f8f6 !important;
+  border-color: #e5e2dd !important;
+  border-top-color: #A98E60 !important;
+}
+
+/* ТЕМНАЯ ТЕМА - карточки темные */
+.dark .insider-card {
   background-color: #272B2A !important;
   border-color: #333836 !important;
   border-top-color: #60A994 !important;
 }
 
-/* Карточки Симулятор - золотистый стиль */
-.simulator-card {
+.dark .simulator-card {
   background-color: #2B2A27 !important;
   border-color: #383633 !important;
   border-top-color: #A98E60 !important;
@@ -104,7 +116,7 @@
 /* Стили для бейджей тарифов */
 .tariff-badge {
   display: inline-block;
-  padding: 1px 6px; /* уменьшенные отступы сверху и снизу */
+  padding: 1px 6px;
   border-radius: 4px;
   font-size: 9px;
   font-weight: 600;
@@ -112,7 +124,7 @@
   letter-spacing: 0.3px;
   margin-bottom: 6px;
   width: fit-content;
-  border: none; /* убираем обводку */
+  border: none;
 }
 
 .tariff-badge.insider {
@@ -125,8 +137,8 @@
   color: #8b7348;
 }
 
+/* Заголовки */
 .brand-card h3 {
-  color: #ffffff !important;
   font-size: 15px;
   line-height: 1.4;
   margin-top: 0;
@@ -136,26 +148,47 @@
   padding: 0;
 }
 
+/* СВЕТЛАЯ ТЕМА - текст темный */
+.brand-card h3 {
+  color: #2c3e2c !important;
+}
+
 .description-main {
-  color: #f0f0f0 !important;
+  color: #4a5a4a !important;
   font-size: 13px;
   line-height: 1.6;
   margin: 0 0 4px 0;
   flex-grow: 1;
 }
 
-/* Цвета текста description-goals для каждого типа карточки */
 .insider-card .description-goals {
-  color: #95BDB3 !important;
+  color: #5a7a6a !important;
   font-size: 12px;
   line-height: 1.6;
   margin: 0;
 }
 
 .simulator-card .description-goals {
-  color: #BDB095 !important;
+  color: #7a6e5a !important;
   font-size: 12px;
   line-height: 1.6;
   margin: 0;
+}
+
+/* ТЕМНАЯ ТЕМА - текст светлый */
+.dark .brand-card h3 {
+  color: #ffffff !important;
+}
+
+.dark .description-main {
+  color: #f0f0f0 !important;
+}
+
+.dark .insider-card .description-goals {
+  color: #95BDB3 !important;
+}
+
+.dark .simulator-card .description-goals {
+  color: #BDB095 !important;
 }
 </style>
