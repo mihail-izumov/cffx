@@ -27,11 +27,21 @@
 
 <style>
 .enterprise-table {
-  background: var(--vp-c-bg-alt);
+  background: #2a2a2a;
   border-radius: 16px;
-  border: 2px solid var(--vp-c-border);
+  border: 2px solid #404040;
   padding: 24px;
   margin: 32px 0;
+}
+
+.enterprise-table .custom-title {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 24px 0;
+  text-align: center;
+  border: none;
+  padding: 0;
 }
 
 .enterprise-table table {
@@ -42,12 +52,12 @@
 }
 
 .enterprise-table th {
-  color: var(--vp-c-text-1);
+  color: #ffffff;
   padding: 16px 20px;
   font-weight: 600;
   font-size: 16px;
-  border-bottom: 2px solid var(--vp-c-border);
-  background: transparent;
+  border-bottom: 2px solid #404040;
+  background: #1a1a1a;
 }
 
 .enterprise-table th:first-child {
@@ -63,18 +73,21 @@
 }
 
 .enterprise-table td {
-  padding: 16px 20px;
-  color: var(--vp-c-text-2);
-  border-bottom: 1px solid var(--vp-c-border);
-  vertical-align: middle;
+  padding: 0;
+  color: #e0e0e0;
+  border-bottom: 1px solid #333333;
   background: transparent;
-  height: auto;
-  line-height: 1.4;
+  height: 60px;
 }
 
 .enterprise-table td:first-child {
   font-size: 14px;
   text-align: left;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+  line-height: 1.4;
 }
 
 .enterprise-table td:last-child {
@@ -82,6 +95,9 @@
   color: #9aff00;
   font-size: 18px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .enterprise-table tr:last-child td {
@@ -134,6 +150,8 @@
 </style>
 
 <div class="enterprise-table">
+  <div class="custom-title">Для новых лидеров рынка</div>
+  
   <table>
     <thead>
       <tr>
