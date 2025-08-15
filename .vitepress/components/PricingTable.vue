@@ -73,11 +73,11 @@ const features = ref([
   border-radius: 8px;
 }
 
+/* --- Режим "Десктоп" (по умолчанию) --- */
 .pricing-grid {
   display: grid;
-  /* ГЛАВНОЕ ИЗМЕНЕНИЕ: Даём столбцам умные инструкции по ширине */
-  grid-template-columns: minmax(200px, 1fr) repeat(3, minmax(120px, auto));
-  align-items: center;
+  grid-template-columns: 1fr repeat(3, 150px); /* 1 гибкая + 3 фиксированных */
+  align-items: stretch; /* Растягиваем ячейки на всю высоту */
 }
 
 .grid-cell {
@@ -87,7 +87,6 @@ const features = ref([
   justify-content: center;
   border-bottom: 1px solid var(--vp-c-divider);
   border-right: 1px solid var(--vp-c-divider);
-  height: 100%;
 }
 
 .pricing-grid > .grid-cell:nth-child(4n) {
@@ -101,12 +100,12 @@ const features = ref([
   justify-content: flex-start;
 }
 .header-feature {
-  border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
 }
 .tariff-title {
   text-transform: uppercase;
   color: var(--vp-c-text-1);
+  font-weight: bold;
 }
 .tariff-description {
   margin-top: 4px;
@@ -149,9 +148,32 @@ const features = ref([
   border-bottom: none;
 }
 
+/* --- Режим "Мобильный / Скролл" (экраны 768px и меньше) --- */
 @media (max-width: 768px) {
-  .pricing-grid .cell-feature {
-    white-space: nowrap;
+  .pricing-grid {
+    display: block; /* Отключаем сложную сетку */
+    width: max-content; /* Ширина по содержимому для скролла */
+  }
+
+  /* Для мобильных мы должны воссоздать структуру сетки, но уже внутри display: block */
+  .grid-cell {
+    display: inline-block;
+    width: 150px; /* Задаем ширину, чтобы они выстроились */
+    vertical-align: top;
+  }
+
+  .cell-feature {
+    width: 250px; /* Явно задаем ширину для первого столбца */
+    white-space: nowrap; /* Запрещаем любой перенос текста */
+  }
+
+  .grid-header, .price-row, .sub-price-separator, .last-row-cell {
+    display: block; /* Шапка и футер должны быть блочными */
+  }
+
+  /* Это сложный селектор, но он необходим, чтобы ячейки снова выстроились в строку */
+  .pricing-grid > .grid-cell:not(.grid-header):not(.price-row):not(.sub-price-separator):not(.last-row-cell) {
+    display: inline-block;
   }
 }
 </style>
