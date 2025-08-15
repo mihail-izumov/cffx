@@ -1,83 +1,68 @@
 <template>
   <div class="pricing-grid">
-    <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) -->
+    <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) — теперь первая  -->
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title card-title--insider">ИНСАЙДЕР</h3>
+
       <div class="card-image-wrapper">
-        <img src="https://via.placeholder.com/400x225/353538/C5F946?text=Insider" alt="Инсайдер" class="card-image">
+        <img
+          src="https://via.placeholder.com/400x225/353538/C5F946?text=Insider"
+          alt="Инсайдер"
+          class="card-image"
+        />
       </div>
 
       <div class="card-price">
         <strong>12 000 ₽/мес.</strong>
       </div>
-      
+
       <p class="includes-all">Все, что в Симуляторе, плюс:</p>
-      
+
       <ul class="feature-list">
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Ежемесячный обзор рынка</span>
-        </li>
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Доступ к Индексу Роста</span>
-        </li>
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Анализ компаний в фокусе</span>
-        </li>
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Обновления симулятора</span>
-        </li>
+        <li class="feature-item"><CheckIcon /><span>Ежемесячный обзор рынка</span></li>
+        <li class="feature-item"><CheckIcon /><span>Доступ к Индексу Роста</span></li>
+        <li class="feature-item"><CheckIcon /><span>Анализ компаний в фокусе</span></li>
+        <li class="feature-item"><CheckIcon /><span>Обновления симулятора</span></li>
       </ul>
-      
+
       <a href="/brew/membership" class="card-button">Стать Инсайдером</a>
     </div>
 
-    <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) -->
+    <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) — теперь вторая -->
     <div class="pricing-card">
       <h3 class="card-title card-title--simulator">СИМУЛЯТОР</h3>
+
       <div class="card-image-wrapper">
-        <img src="https://via.placeholder.com/400x225/2d2d30/ffffff?text=Simulator" alt="Симулятор" class="card-image">
+        <img
+          src="https://via.placeholder.com/400x225/2d2d30/ffffff?text=Simulator"
+          alt="Симулятор"
+          class="card-image"
+        />
       </div>
-      
+
       <div class="card-price">
         <strong>Бесплатно</strong>
       </div>
 
       <ul class="feature-list">
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Симулятор города</span>
-        </li>
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Тестирование бизнес-моделей</span>
-        </li>
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Делиться чатами с Анной</span>
-        </li>
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Доступ к Кофейному Протоколу</span>
-        </li>
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Поддержка Анны при старте</span>
-        </li>
+        <li class="feature-item"><CheckIcon /><span>Симулятор города</span></li>
+        <li class="feature-item"><CheckIcon /><span>Тестирование бизнес-моделей</span></li>
+        <li class="feature-item"><CheckIcon /><span>Делиться чатами с Анной</span></li>
+        <li class="feature-item"><CheckIcon /><span>Доступ к Кофейному Протоколу</span></li>
+        <li class="feature-item"><CheckIcon /><span>Поддержка Анны при старте</span></li>
       </ul>
-      
-      <a href="/brew/membership" class="card-button card-button--secondary">Начать с Симулятора</a>
+
+      <a href="/brew/membership" class="card-button card-button--secondary">
+        Начать с Симулятора
+      </a>
     </div>
   </div>
 </template>
 
 <script setup>
-import { h } from 'vue';
+import { h } from 'vue'
 
-// Компонент для иконки-галочки
+/* Простая SVG-галочка */
 const CheckIcon = () =>
   h(
     'svg',
@@ -89,75 +74,64 @@ const CheckIcon = () =>
       stroke: 'currentColor',
       'stroke-width': '2.5',
       'stroke-linecap': 'round',
-      'stroke-linejoin': 'round',
+      'stroke-linejoin': 'round'
     },
-    [h('path', { d: 'M22 11.08V12a10 10 0 1 1-5.93-9.14' }), h('polyline', { points: '22 4 12 14.01 9 11.01' })]
-  );
+    [
+      h('path', { d: 'M22 11.08V12a10 10 0 1 1-5.93-9.14' }),
+      h('polyline', { points: '22 4 12 14.01 9 11.01' })
+    ]
+  )
 </script>
 
 <style scoped>
-/* --- Базовая сетка --- */
+/* СЕТКА ------------------------------------------------------------------- */
 .pricing-grid {
-  display: grid; 
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-  gap: 1.5rem; 
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
   margin: 2rem 0;
 }
 
-/* --- Стиль карточки --- */
+/* КАРТОЧКИ ---------------------------------------------------------------- */
 .pricing-card {
-  background-color: #2d2d30;
-  border: 2px solid #444444;
+  background: #2d2d30;
+  border: 2px solid #444;
   border-radius: 18px;
-  padding: 48px 24px;
+  padding: 48px 24px; /* увеличенные отступы сверху/снизу */
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   transition: all 0.3s ease;
-  box-sizing: border-box;
 }
 
 .pricing-card:hover {
   transform: translateY(-6px);
-  border-color: #C5F946;
+  border-color: #c5f946;
   box-shadow: 0 12px 35px rgba(197, 249, 70, 0.15);
-  background-color: #353538;
+  background: #353538;
 }
 
-/* --- Выделение карточки ИНСАЙДЕР --- */
+/* Выделяем ИНСАЙДЕР зелёной рамкой */
 .pricing-card--featured {
-  border-color: #C5F946;
+  border-color: #c5f946;
 }
 
-.pricing-card--featured:hover {
-  border-color: #C5F946;
-}
-
-/* --- Заголовок карточки (общие стили) --- */
+/* ЗАГОЛОВКИ --------------------------------------------------------------- */
 .card-title {
-  color: #ffffff;
-  font-weight: 300;
+  font-weight: 300;          /* тонкий как ONE/PEAK */
   text-align: center;
+  letter-spacing: 0.2em;     /* очень широкое межбуквенное */
   margin: 0 0 40px 0;
-  padding: 0;
+  color: #fff;
   border: none;
-  letter-spacing: 0.2em;
 }
 
-/* --- Специальный стиль для заголовка ИНСАЙДЕР (крупнее) --- */
-.card-title--insider {
-  font-size: 1.5rem; /* ИЗМЕНЕНО: сделано крупнее */
-}
+.card-title--insider { font-size: 1.5rem; }     /* крупнее */
+.card-title--simulator { font-size: 1.25rem; }  /* меньше */
 
-/* --- Специальный стиль для заголовка СИМУЛЯТОР (меньше) --- */
-.card-title--simulator {
-  font-size: 1.25rem; /* ИЗМЕНЕНО: сделано меньше */
-}
-
-/* --- Изображение --- */
+/* ИЗОБРАЖЕНИЕ ------------------------------------------------------------- */
 .card-image-wrapper {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16/9;
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 22px;
@@ -167,34 +141,35 @@ const CheckIcon = () =>
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
-/* --- Блок с ценой (средняя жирность) --- */
+/* ЦЕНА -------------------------------------------------------------------- */
 .card-price {
   text-align: center;
   margin-bottom: 24px;
 }
+
 .card-price strong {
-  font-size: 1.3rem;
   font-weight: 600;
-  color: #ffffff;
+  font-size: 1.3rem;
+  color: #fff;
 }
 
-/* --- Список преимуществ --- */
+/* ДОПОЛНИТЕЛЬНЫЙ ТЕКСТ ---------------------------------------------------- */
 .includes-all {
   font-size: 0.9rem;
   color: #a8a8a8;
   margin: 0 0 16px 4px;
 }
 
+/* СПИСОК ------------------------------------------------------------------ */
 .feature-list {
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 10px;       /* плотнее строки */
   flex-grow: 1;
 }
 
@@ -202,53 +177,67 @@ const CheckIcon = () =>
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #e0e0e0;
-  font-size: 0.813rem;
+  font-size: 0.813rem;  /* –2 пункта для десктопа */
   line-height: 1.2;
+  color: #e0e0e0;
 }
 
 .checkmark-icon {
   width: 18px;
   height: 18px;
-  color: #C5F946;
+  color: #c5f946;
   flex-shrink: 0;
 }
 
-/* --- Кнопка основная (яркая для ИНСАЙДЕР) --- */
+/* КНОПКИ ------------------------------------------------------------------ */
 .card-button {
   margin-top: 48px;
-  background-color: #C5F946;
-  color: #000000;
+  display: block;
   padding: 14px 18px;
   border-radius: 12px;
-  font-weight: 700;
   font-size: 0.94rem;
+  font-weight: 700;
   text-align: center;
   text-decoration: none;
   transition: all 0.25s ease;
-  border: 2px solid #C5F946;
+  border: 2px solid #c5f946;
   box-sizing: border-box;
-  display: block;
+}
+
+.card-button {
+  background: #c5f946;
+  color: #000;
 }
 
 .card-button:hover {
-  background-color: #ffffff;
-  border-color: #ffffff;
-  color: #000000;
+  background: #fff;
+  border-color: #fff;
+  color: #000;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
 }
 
-/* --- Кнопка вторичная (менее яркая для СИМУЛЯТОР) --- */
+/* «СИМУЛЯТОР» — вторичная кнопка */
 .card-button--secondary {
-  background-color: transparent;
-  color: #C5F946;
-  border-color: #C5F946;
+  background: transparent;
+  color: #c5f946;
 }
 
 .card-button--secondary:hover {
-  background-color: #C5F946;
-  color: #000000;
-  border-color: #C5F946;
+  background: #c5f946;
+  color: #000;
+}
+
+/* МОБИЛЬНАЯ ВЕРСИЯ -------------------------------------------------------- */
+@media (max-width: 480px) {
+  .feature-item {
+    font-size: 0.938rem; /* ≈15 px для мобильных */
+    line-height: 1.35;   /* чуть свободнее */
+  }
+  
+  .checkmark-icon {
+    width: 20px;
+    height: 20px;
+  }
 }
 </style>
