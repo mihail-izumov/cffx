@@ -1,5 +1,7 @@
 # Подключение к B-R-E-W
 
+<br>
+
 <form id="myForm" class="custom-form">
   <div class="form-group">
     <label for="name">Имя:</label>
@@ -7,12 +9,12 @@
   </div>
   
   <div class="form-group">
-    <label for="phone">Телефон:</label>
+    <label for="phone">Телефон (Телеграм):</label>
     <input type="tel" id="phone" name="phone" class="form-input" required>
   </div>
   
   <div class="form-group">
-    <label for="email">Email (необязательно):</label>
+    <label for="email">Email:</label>
     <input type="email" id="email" name="email" class="form-input">
   </div>
   
@@ -26,7 +28,7 @@
   </div>
   
   <button type="submit" class="submit-btn" disabled>
-    Отправить →
+    Отправить заявку →
   </button>
 </form>
 
