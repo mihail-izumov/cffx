@@ -1,31 +1,26 @@
 <template>
   <div class="table-wrapper">
-    <table class="responsive-table">
-      <colgroup>
-        <col /> <!-- 1. Этот столбец будет гибким -->
-        <col style="width: 130px" /> <!-- 2. Эти три — строго фиксированными -->
-        <col style="width: 130px" />
-        <col style="width: 130px" />
-      </colgroup>
+    <table class="simple-responsive-table">
       <thead>
         <tr>
-          <th class="header-feature"></th>
-          <th class="header-tariff">
+          <!-- Первый столбец без фиксированной ширины -->
+          <th class="feature-header"></th>
+          <!-- Три столбца с фиксированной шириной -->
+          <th class="tariff-header">
             <span class="tariff-title">Симулятор</span>
             <span class="tariff-description">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
           </th>
-          <th class="header-tariff">
+          <th class="tariff-header">
             <span class="tariff-title">Инсайдер</span>
             <span class="tariff-description">Продвинутые данные и инсайты для рыночного преимущества.</span>
           </th>
-          <th class="header-tariff">
+          <th class="tariff-header">
             <span class="tariff-title">Партнёр</span>
             <span class="tariff-description">Максимальная сила влияния для формирования будущего индустрии.</span>
           </th>
         </tr>
       </thead>
       <tbody>
-        <!-- Содержимое таблицы остается прежним -->
         <tr>
           <td class="cell-feature">Симулятор города</td>
           <td class="cell-check"><span class="checkmark">✓</span></td>
@@ -118,35 +113,37 @@
 <style scoped>
 .table-wrapper {
   overflow-x: auto;
-  width: 100%;
 }
-.responsive-table {
+.simple-responsive-table {
   width: 100%;
-  table-layout: fixed; /* 3. Это свойство — ключ к предсказуемому поведению */
+  min-width: 600px;
   border-collapse: collapse;
-  border: 2px solid var(--vp-c-divider);
-  border-radius: 8px;
-  overflow: hidden;
 }
-.responsive-table th, .responsive-table td {
+.simple-responsive-table th, 
+.simple-responsive-table td {
+  border: 1px solid var(--vp-c-divider);
   padding: 8px 12px;
   vertical-align: middle;
 }
-.responsive-table thead tr {
-  background-color: var(--vp-c-bg-soft);
+.feature-header {
+  border: none;
+  background-color: transparent !important;
 }
-.responsive-table th {
+.tariff-header {
+  width: 130px; /* Фиксированная ширина */
+  text-align: center;
   vertical-align: top;
   padding-top: 12px;
   padding-bottom: 12px;
 }
-.header-feature {
-  background: transparent !important;
-  border: none;
+.simple-responsive-table thead {
+  background-color: var(--vp-c-bg-soft);
 }
-.header-tariff {
+.cell-feature {
+  white-space: nowrap; /* Главное свойство для гибкого столбца */
+}
+.cell-check {
   text-align: center;
-  border-bottom: 2px solid var(--vp-c-divider);
 }
 .tariff-title {
   text-transform: uppercase;
@@ -160,12 +157,6 @@
   opacity: 0.7;
   text-transform: none;
   line-height: 1.2;
-}
-.cell-feature {
-  white-space: nowrap;
-}
-.cell-check {
-  text-align: center;
 }
 .checkmark {
   color: var(--vp-c-brand-2);
