@@ -75,7 +75,8 @@ const features = ref([
 
 .pricing-grid {
   display: grid;
-  grid-template-columns: 1fr repeat(3, auto); 
+  /* ГЛАВНОЕ ИЗМЕНЕНИЕ: Даём столбцам умные инструкции по ширине */
+  grid-template-columns: minmax(200px, 1fr) repeat(3, minmax(120px, auto));
   align-items: center;
 }
 
@@ -97,7 +98,7 @@ const features = ref([
   border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
   text-align: center;
-  justify-content: flex-start; /* ИЗМЕНЕНИЕ: Выравниваем заголовки по верху */
+  justify-content: flex-start;
 }
 .header-feature {
   border-bottom: 2px solid var(--vp-c-divider);
@@ -119,7 +120,7 @@ const features = ref([
 .cell-feature {
   justify-content: flex-start;
   font-size: 0.9em;
-  line-height: 1.3; /* ИЗМЕНЕНИЕ: Уменьшаем межстрочное расстояние */
+  line-height: 1.3;
 }
 
 .cell-check {
@@ -146,5 +147,11 @@ const features = ref([
 
 .last-row-cell {
   border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .pricing-grid .cell-feature {
+    white-space: nowrap;
+  }
 }
 </style>
