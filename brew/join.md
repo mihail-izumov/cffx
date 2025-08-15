@@ -10,19 +10,11 @@
 
 <style>
 .enterprise-table {
-  background: #2a2a2a;
+  background: var(--vp-c-bg-alt);
   border-radius: 16px;
-  border: 2px solid #404040;
+  border: 2px solid var(--vp-c-border);
   padding: 24px;
   margin: 32px 0;
-}
-
-.enterprise-table h2 {
-  color: #ffffff;
-  font-size: 24px;
-  font-weight: 600;
-  margin: 0 0 24px 0;
-  text-align: center;
 }
 
 .enterprise-table table {
@@ -33,12 +25,12 @@
 }
 
 .enterprise-table th {
-  color: #ffffff;
+  color: var(--vp-c-text-1);
   padding: 16px 20px;
   font-weight: 600;
   font-size: 16px;
-  border-bottom: 2px solid #404040;
-  background: #1a1a1a;
+  border-bottom: 2px solid var(--vp-c-border);
+  background: transparent;
 }
 
 .enterprise-table th:first-child {
@@ -54,16 +46,17 @@
 }
 
 .enterprise-table td {
-  padding: 14px 20px;
-  color: #e0e0e0;
-  border-bottom: 1px solid #333333;
+  padding: 16px 20px;
+  color: var(--vp-c-text-2);
+  border-bottom: 1px solid var(--vp-c-border);
   vertical-align: middle;
   background: transparent;
+  height: auto;
+  line-height: 1.4;
 }
 
 .enterprise-table td:first-child {
   font-size: 14px;
-  line-height: 1.4;
   text-align: left;
 }
 
@@ -78,12 +71,8 @@
   border-bottom: none;
 }
 
-.enterprise-table tr:hover {
-  background: transparent;
-}
-
 .enterprise-table tr:hover td {
-  background: rgba(154, 255, 0, 0.05);
+  background: transparent;
 }
 
 .checkmark {
@@ -128,8 +117,6 @@
 </style>
 
 <div class="enterprise-table">
-  <h2>Для новых лидеров рынка</h2>
-  
   <table>
     <thead>
       <tr>
