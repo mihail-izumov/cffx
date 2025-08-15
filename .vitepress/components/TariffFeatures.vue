@@ -90,24 +90,26 @@
 /* Стили для бейджей тарифов */
 .tariff-badge {
   display: inline-block;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 10px;
+  padding: 1px 4px; /* максимально уменьшенные поля */
+  border-radius: 4px; /* уменьшенный радиус */
+  font-size: 9px; /* уменьшенный шрифт */
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
+  letter-spacing: 0.3px; /* уменьшенный межбуквенный интервал */
+  margin-bottom: 6px; /* уменьшенный отступ снизу */
   width: fit-content;
 }
 
 .tariff-badge.insider {
-  background-color: #608DA9;
-  color: #ffffff;
+  background-color: rgba(197, 249, 70, 0.25); /* полупрозрачный зеленый */
+  color: #7a9c2e; /* приглушенный темно-зеленый для читаемости */
+  border: 1px solid rgba(197, 249, 70, 0.15); /* тонкая полупрозрачная граница */
 }
 
 .tariff-badge.simulator {
-  background-color: #A98E60;
-  color: #ffffff;
+  background-color: rgba(169, 142, 96, 0.25); /* полупрозрачный золотистый */
+  color: #8b7348; /* приглушенный коричневато-золотистый */
+  border: 1px solid rgba(169, 142, 96, 0.15); /* тонкая полупрозрачная граница */
 }
 
 .brand-card h3 {
