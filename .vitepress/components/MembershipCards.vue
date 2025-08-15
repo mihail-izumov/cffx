@@ -4,7 +4,7 @@
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title">Симулятор</h3>
       <div class="card-image-wrapper">
-        <img src="/simulator-ban.svg" alt="Симулятор" class="card-image">
+        <img src="https://via.placeholder.com/400x225/2d2d30/ffffff?text=Simulator" alt="Симулятор" class="card-image">
       </div>
       
       <div class="card-price">
@@ -41,7 +41,7 @@
     <div class="pricing-card">
       <h3 class="card-title">Инсайдер</h3>
       <div class="card-image-wrapper">
-        <img src="/insider-ban.svg" alt="Инсайдер" class="card-image">
+        <img src="https://via.placeholder.com/400x225/353538/C5F946?text=Insider" alt="Инсайдер" class="card-image">
       </div>
 
       <div class="card-price">
@@ -77,7 +77,7 @@
 <script setup>
 import { h } from 'vue';
 
-// Компонент для иконки-галочки, чтобы не загромождать шаблон
+// Компонент для иконки-галочки
 const CheckIcon = () =>
   h(
     'svg',
@@ -96,7 +96,7 @@ const CheckIcon = () =>
 </script>
 
 <style scoped>
-/* --- Базовая сетка (из вашего кода) --- */
+/* --- Базовая сетка --- */
 .pricing-grid {
   display: grid; 
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
@@ -104,7 +104,7 @@ const CheckIcon = () =>
   margin: 2rem 0;
 }
 
-/* --- Стиль карточки (адаптировано из вашего .simulator-card) --- */
+/* --- Стиль карточки --- */
 .pricing-card {
   background-color: #2d2d30;
   border: 2px solid #444444;
@@ -124,12 +124,9 @@ const CheckIcon = () =>
   background-color: #353538;
 }
 
-/* --- НОВЫЙ СТИЛЬ: Выделение бесплатной карточки (как в референсе) --- */
+/* --- Выделение бесплатной карточки --- */
 .pricing-card--featured {
-  border-color: #555;
-}
-.pricing-card--featured:hover {
-  border-color: #C5F946;
+  border-color: #666;
 }
 
 /* --- Заголовок карточки --- */
@@ -140,14 +137,14 @@ const CheckIcon = () =>
   text-align: center;
   margin: 0 0 20px 0;
   padding: 0;
-  border: none; /* Сброс стилей VitePress для h3 */
+  border: none;
   letter-spacing: 0.02em;
 }
 
-/* --- Изображение (из вашего кода) --- */
+/* --- Изображение --- */
 .card-image-wrapper {
   width: 100%;
-  aspect-ratio: 16 / 9; /* Соотношение сторон для баннеров */
+  aspect-ratio: 16 / 9;
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 22px;
@@ -160,7 +157,7 @@ const CheckIcon = () =>
   display: block;
 }
 
-/* --- НОВЫЙ СТИЛЬ: Блок с ценой (как в референсе) --- */
+/* --- Блок с ценой --- */
 .card-price {
   text-align: center;
   margin-bottom: 24px;
@@ -171,7 +168,7 @@ const CheckIcon = () =>
   color: #ffffff;
 }
 
-/* --- НОВЫЙ СТИЛЬ: Список преимуществ --- */
+/* --- Список преимуществ --- */
 .includes-all {
   font-size: 0.9rem;
   color: #a8a8a8;
@@ -185,7 +182,7 @@ const CheckIcon = () =>
   display: flex;
   flex-direction: column;
   gap: 14px;
-  flex-grow: 1; /* Растягивает список, чтобы кнопка была внизу */
+  flex-grow: 1;
 }
 
 .feature-item {
@@ -201,10 +198,10 @@ const CheckIcon = () =>
   width: 20px;
   height: 20px;
   color: #C5F946;
-  flex-shrink: 0; /* Иконка не будет сжиматься */
+  flex-shrink: 0;
 }
 
-/* --- Кнопка (из вашего кода) --- */
+/* --- Кнопка --- */
 .card-button {
   margin-top: 24px;
   background-color: #C5F946;
