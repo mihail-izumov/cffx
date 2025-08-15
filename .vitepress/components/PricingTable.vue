@@ -9,10 +9,10 @@ const features = ref([
   { name: 'Доступ к Индексу Роста', included: [false, true, true] },
   { name: 'Анализ компаний в фокусе', included: [false, true, true] },
   { name: 'Обновления симулятора', included: [false, true, true] },
-  { name: 'Персональные рекомендации для пользователей симулятора', included: [false, false, true] },
+  { name: 'Персональные рекомендации для пользователей', included: [false, false, true] },
   { name: 'Участие в обратной связи по платформе', included: [false, false, true] },
   { name: 'Приоритетный доступ к Чекапам', included: [false, false, true] },
-  { name: 'Место в совете B-R-E-W', included: [false, false, true] }
+  { name: 'Место в совете BREW', included: [false, false, true] }
 ])
 </script>
 <template>
@@ -35,7 +35,7 @@ const features = ref([
       <!-- Price Row -->
       <div class="grid-cell cell-feature price-row"></div>
       <div class="grid-cell cell-check price-row"><strong>Бесплатно</strong></div>
-      <div class="grid-cell cell-check price-row"><strong>₽12000/мес.</strong></div>
+      <div class="grid-cell cell-check price-row"><strong>₽12500/мес.</strong></div>
       <div class="grid-cell cell-check price-row"><strong>₽390000/год</strong></div>
       <!-- Sub-Price Row -->
       <div class="grid-cell cell-feature sub-price-separator"></div>
