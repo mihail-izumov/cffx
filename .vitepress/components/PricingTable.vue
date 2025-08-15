@@ -34,7 +34,7 @@ const features = ref([
       </div>
       <!-- Price Row -->
       <div class="grid-cell cell-feature price-row"></div>
-      <div class="grid-cell cell-check price-row"><strong>&#8381;Бесплатно</strong></div>
+      <div class="grid-cell cell-check price-row"><strong>Бесплатно</strong></div>
       <div class="grid-cell cell-check price-row"><strong>&#8381;12000/мес.</strong></div>
       <div class="grid-cell cell-check price-row"><strong>&#8381;390000/год</strong></div>
       <!-- Sub-Price Row -->
@@ -68,8 +68,7 @@ const features = ref([
 }
 .pricing-grid {
   display: grid;
-  /* ИЗМЕНЕНИЕ: Даём первому столбцу приоритет и минимальную ширину */
-  grid-template-columns: minmax(250px, 1.5fr) repeat(3, auto); 
+  grid-template-columns: 1fr repeat(3, auto); 
   align-items: center;
 }
 .grid-cell {
@@ -105,6 +104,7 @@ const features = ref([
   opacity: 0.7;
   text-transform: none;
   line-height: 1.2;
+  max-width: 150px; /* ИЗМЕНЕНИЕ: Ограничиваем ширину описания */
 }
 .cell-feature {
   justify-content: flex-start;
@@ -135,9 +135,11 @@ const features = ref([
   border-bottom: none;
 }
 
+/* Единственный медиа-запрос для мобильного скролла */
 @media (max-width: 768px) {
-  .pricing-grid .cell-feature {
-    white-space: nowrap;
+  .pricing-grid .cell-feature,
+  .pricing-grid .tariff-description { /* Добавляем сюда описание */
+    white-space: nowrap; /* Запрещаем перенос при скролле */
   }
 }
 </style>
