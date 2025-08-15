@@ -32,60 +32,53 @@ outline: false
 ## Для новых лидеров рынка
 
 <style>
-.simple-table {
-  width: 100%;
-  border-collapse: collapse;
+.simple-table{
+  width:100%;
+  border-collapse:collapse;
 }
 
-/* Заголовок */
-.simple-table thead th {
-  padding: 10px 16px;
-  height: 48px;
-  line-height: 48px;                      /* центр по вертикали */
-  background: #1b1b1b;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 16px;
-  text-align: left;
-  border: none;
-  border-bottom: 2px solid #404040;       /* чёткая обводка под шапкой */
+/* единая высота и вертикальное центрирование */
+.simple-table th,
+.simple-table td{
+  height:48px;
+  padding:0 16px;
+  vertical-align:middle;
+  font:14px/1.3 var(--vp-font-family-base,sans-serif);
+  color:var(--vp-c-text-1,#333);
 }
 
-/* Цена в шапке */
-.simple-table thead th.price {
-  text-align: center;
-  color: #9aff00;
-  white-space: nowrap;
+/* чёрная полоса-заголовок с нижней линией */
+.simple-table thead th{
+  background:#1b1b1b;
+  color:#fff;
+  font-weight:600;
+  font-size:16px;
+  border-bottom:1px solid var(--vp-c-divider,#cfcfcf);
 }
 
-/* Данные */
-.simple-table tbody td {
-  padding: 10px 16px;
-  height: 48px;
-  line-height: 48px;                      /* центр по вертикали */
-  text-align: left;
-  font-size: 14px;
-  color: var(--vp-c-text-1, #333333);
-  border-top: 1px solid var(--vp-c-divider, #cccccc);
-  background: transparent;                /* убираем «зебру» */
+.simple-table thead th.price{
+  color:#9aff00;
+  text-align:center;
+  white-space:nowrap;
 }
 
-/* Галочка */
-.simple-table td.check {
-  text-align: center;
-  color: #9aff00;
-  font-size: 18px;
-  font-weight: 600;
+/* данные */
+.simple-table tbody td{
+  border-bottom:1px solid var(--vp-c-divider,#cfcfcf);
 }
 
-/* Если VitePress добавляет «зебру» */
-.simple-table tbody tr:nth-child(even),
-.simple-table tbody tr:nth-child(odd) {
-  background: transparent !important;
+.simple-table td.check{
+  text-align:center;
+  color:#9aff00;
+  font-size:18px;
+  font-weight:600;
+}
+
+/* убираем возможное чередование VitePress */
+.simple-table tbody tr:nth-child(even){
+  background:transparent !important;
 }
 </style>
-
-## Для новых лидеров рынка
 
 <table class="simple-table">
   <thead>
@@ -118,8 +111,9 @@ outline: false
   </tbody>
 </table>
 
+
 <div class="start-button-container">
-  <a href="/brew/koin/partner" class="btn btn-primary" rel="noopener noreferrer">Получить приглашение →</a>
+  <a href="/brew/join/partner" class="btn btn-primary" rel="noopener noreferrer">Получить приглашение →</a>
 </div>
 
 <style>
