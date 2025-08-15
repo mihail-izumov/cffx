@@ -32,6 +32,7 @@
   border: 2px solid #404040;
   padding: 24px;
   margin: 32px 0;
+  color: #e0e0e0;
 }
 
 .enterprise-table .custom-title {
@@ -51,14 +52,19 @@
   margin-bottom: 24px;
 }
 
+.enterprise-table th, .enterprise-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #333333;
+  background: transparent;
+  vertical-align: middle;
+}
+
 .enterprise-table th {
   color: #ffffff;
-  padding: 16px 20px;
   font-weight: 600;
   font-size: 16px;
   border-bottom: 2px solid #404040;
   background: #1a1a1a;
-  vertical-align: middle;
 }
 
 .enterprise-table th:first-child {
@@ -73,18 +79,10 @@
   white-space: nowrap;
 }
 
-.enterprise-table td {
-  padding: 16px 20px;
-  color: #e0e0e0;
-  border-bottom: 1px solid #333333;
-  background: transparent;
-  vertical-align: middle;
-}
-
 .enterprise-table td:first-child {
   font-size: 14px;
   text-align: left;
-  line-height: 1.4;
+  line-height: 18px;
 }
 
 .enterprise-table td:last-child {
@@ -96,30 +94,6 @@
 
 .enterprise-table tr:last-child td {
   border-bottom: none;
-}
-
-.enterprise-table tr:hover td {
-  background: transparent;
-}
-
-.checkmark {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background: #9aff00;
-  border-radius: 50%;
-  position: relative;
-}
-
-.checkmark::after {
-  content: '✓';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  color: #1a1a1a;
-  font-weight: bold;
-  font-size: 12px;
 }
 
 .partner-button {
@@ -156,23 +130,23 @@
     <tbody>
       <tr>
         <td>Все, что в Симуляторе и Инсайдере, плюс:</td>
-        <td><span class="checkmark"></span></td>
+        <td>✓</td>
       </tr>
       <tr>
         <td>Персональные рекомендации для пользователей симулятора</td>
-        <td><span class="checkmark"></span></td>
+        <td>✓</td>
       </tr>
       <tr>
         <td>Участие в обратной связи по платформе</td>
-        <td><span class="checkmark"></span></td>
+        <td>✓</td>
       </tr>
       <tr>
         <td>Приоритетный доступ к Чекапам</td>
-        <td><span class="checkmark"></span></td>
+        <td>✓</td>
       </tr>
       <tr>
         <td>Место в совете BREW</td>
-        <td><span class="checkmark"></span></td>
+        <td>✓</td>
       </tr>
     </tbody>
   </table>
