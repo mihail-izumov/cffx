@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-
 const features = ref([
   { name: 'Симулятор города', included: [true, true, true] },
   { name: 'Тестирование бизнес-моделей', included: [true, true, true] },
@@ -16,7 +15,6 @@ const features = ref([
   { name: 'Место в совете B-R-E-W', included: [false, false, true] }
 ])
 </script>
-
 <template>
   <div class="table-wrapper">
     <div class="pricing-grid">
@@ -34,13 +32,11 @@ const features = ref([
         <span class="tariff-title">Партнёр</span>
         <span class="tariff-description">Максимальная сила влияния для формирования будущего индустрии.</span>
       </div>
-
       <!-- Price Row -->
       <div class="grid-cell cell-feature price-row"></div>
-      <div class="grid-cell cell-check price-row"><strong>Бесплатно</strong></div>
+      <div class="grid-cell cell-check price-row"><strong>&#8381;Бесплатно</strong></div>
       <div class="grid-cell cell-check price-row"><strong>&#8381;12000/мес.</strong></div>
       <div class="grid-cell cell-check price-row"><strong>&#8381;390000/год</strong></div>
-
       <!-- Sub-Price Row -->
       <div class="grid-cell cell-feature sub-price-separator"></div>
       <div class="grid-cell cell-check sub-price sub-price-separator">Мгновенный доступ</div>
@@ -61,24 +57,21 @@ const features = ref([
           <span v-if="isIncluded" class="checkmark">&#10003;</span>
         </div>
       </template>
-
     </div>
   </div>
 </template>
-
 <style scoped>
 .table-wrapper {
   overflow-x: auto;
   border: 2px solid var(--vp-c-divider);
   border-radius: 8px;
 }
-
 .pricing-grid {
   display: grid;
-  grid-template-columns: 1fr repeat(3, auto); 
+  /* ИЗМЕНЕНИЕ: Даём первому столбцу приоритет и минимальную ширину */
+  grid-template-columns: minmax(250px, 1.5fr) repeat(3, auto); 
   align-items: center;
 }
-
 .grid-cell {
   padding: 8px 12px;
   display: flex;
@@ -88,16 +81,14 @@ const features = ref([
   border-right: 1px solid var(--vp-c-divider);
   height: 100%;
 }
-
 .pricing-grid > .grid-cell:nth-child(4n) {
   border-right: none;
 }
-
 .grid-header {
   border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
   text-align: center;
-  justify-content: flex-start; /* ИЗМЕНЕНИЕ: Выравниваем заголовки по верху */
+  justify-content: flex-start;
 }
 .header-feature {
   border-bottom: 2px solid var(--vp-c-divider);
@@ -115,13 +106,11 @@ const features = ref([
   text-transform: none;
   line-height: 1.2;
 }
-
 .cell-feature {
   justify-content: flex-start;
   font-size: 0.9em;
-  line-height: 1.3; /* ИЗМЕНЕНИЕ: Уменьшаем межстрочное расстояние */
+  line-height: 1.3;
 }
-
 .cell-check {
   text-align: center;
   align-items: center;
@@ -132,7 +121,6 @@ const features = ref([
   font-weight: normal;
   font-size: 1.2em;
 }
-
 .price-row {
   background-color: var(--vp-c-bg-soft);
 }
@@ -143,8 +131,13 @@ const features = ref([
 .sub-price-separator {
   border-bottom: 2px solid var(--vp-c-divider);
 }
-
 .last-row-cell {
   border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .pricing-grid .cell-feature {
+    white-space: nowrap;
+  }
 }
 </style>
