@@ -1,7 +1,7 @@
 import { h } from 'vue'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-// Импортируем каждый компонент с уникальным им-енем
+// Импортируем каждый компонент с уникальным именем
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
 import FeaturesGrid from '../components/FeaturesGrid.vue'
@@ -11,6 +11,7 @@ import ValueCards from '../components/ValueCards.vue'
 import PricingTable from '../components/PricingTable.vue'
 import MembershipCards from '../components/MembershipCards.vue'
 import TariffFeatures from '../components/TariffFeatures.vue'
+import LeadersTable from '../components/LeadersTable.vue'
 
 export default {
   extends: DefaultTheme,
@@ -29,5 +30,6 @@ export default {
     app.component('PricingTable', PricingTable)
     app.component('MembershipCards', MembershipCards)
     app.component('TariffFeatures', TariffFeatures)
+    app.component('LeadersTable', LeadersTable)
   }
 } satisfies Theme
