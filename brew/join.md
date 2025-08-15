@@ -2,7 +2,7 @@
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
-    src="/brew_intro_ban.svg" 
+    src="/join-now_ban.webp" 
     alt="BREW intro"
     style="
       width: 100%;
