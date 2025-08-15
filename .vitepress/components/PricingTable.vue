@@ -1,15 +1,11 @@
 <template>
   <div class="table-wrapper">
     <table class="responsive-table">
-      <colgroup>
-        <col /> <!-- 1. Гибкий столбец -->
-        <col style="width: 140px" /> <!-- 2. Фиксированные столбцы с оптимальной шириной -->
-        <col style="width: 140px" />
-        <col style="width: 140px" />
-      </colgroup>
       <thead>
         <tr>
+          <!-- 1. Гибкий столбец (без заданной ширины) -->
           <th class="header-feature"></th>
+          <!-- 2. Три столбца с фиксированной шириной -->
           <th class="header-tariff">
             <span class="tariff-title">Симулятор</span>
             <span class="tariff-description">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
@@ -122,16 +118,19 @@
 }
 .responsive-table {
   width: 100%;
-  table-layout: fixed;
+  min-width: 600px; /* Защита от сжатия и ключ к скроллу на мобильных */
   border-collapse: collapse;
-  border: 2px solid var(--vp-c-divider);
-  border-radius: 8px;
-  overflow: hidden;
+  border-spacing: 0;
+  /* Убираем table-layout: fixed, позволяя браузеру управлять шириной */
 }
 .responsive-table th, 
 .responsive-table td {
   padding: 8px 12px;
   vertical-align: middle;
+  border-bottom: 1px solid var(--vp-c-divider); /* Стандартные разделители */
+}
+.responsive-table tr:last-child td {
+  border-bottom: none; /* Убираем последнюю линию */
 }
 .responsive-table thead tr {
   background-color: var(--vp-c-bg-soft);
@@ -140,14 +139,14 @@
   vertical-align: top;
   padding-top: 12px;
   padding-bottom: 12px;
+  border-bottom: 2px solid var(--vp-c-divider); /* Толстая линия под заголовком */
 }
 .header-feature {
-  background: transparent !important;
-  border: none;
+  border-bottom-color: transparent; /* Убираем линию у пустой ячейки */
 }
 .header-tariff {
+  width: 140px; /* Фиксированная ширина для тарифов */
   text-align: center;
-  border-bottom: 2px solid var(--vp-c-divider);
 }
 .tariff-title {
   text-transform: uppercase;
@@ -163,7 +162,7 @@
   line-height: 1.2;
 }
 .cell-feature {
-  /* У этого столбца нет white-space: nowrap, он гибкий */
+  white-space: nowrap; /* Важно, чтобы текст не переносился при скролле */
 }
 .cell-check {
   text-align: center;
