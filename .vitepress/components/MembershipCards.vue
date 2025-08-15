@@ -1,42 +1,5 @@
 <template>
   <div class="pricing-grid">
-    <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) -->
-    <div class="pricing-card">
-      <h3 class="card-title">СИМУЛЯТОР</h3>
-      <div class="card-image-wrapper">
-        <img src="https://via.placeholder.com/400x225/2d2d30/ffffff?text=Simulator" alt="Симулятор" class="card-image">
-      </div>
-      
-      <div class="card-price">
-        <strong>Бесплатно</strong>
-      </div>
-
-      <ul class="feature-list">
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Симулятор города</span>
-        </li>
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Тестирование бизнес-моделей</span>
-        </li>
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Делиться чатами с Анной</span>
-        </li>
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Доступ к Кофейному Протоколу</span>
-        </li>
-        <li class="feature-item">
-          <CheckIcon />
-          <span>Поддержка Анны при старте</span>
-        </li>
-      </ul>
-      
-      <a href="/brew/membership" class="card-button card-button--secondary">Начать с Симулятора</a>
-    </div>
-
     <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) -->
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title card-title--insider">ИНСАЙДЕР</h3>
@@ -70,6 +33,43 @@
       </ul>
       
       <a href="/brew/membership" class="card-button">Стать Инсайдером</a>
+    </div>
+
+    <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) -->
+    <div class="pricing-card">
+      <h3 class="card-title card-title--simulator">СИМУЛЯТОР</h3>
+      <div class="card-image-wrapper">
+        <img src="https://via.placeholder.com/400x225/2d2d30/ffffff?text=Simulator" alt="Симулятор" class="card-image">
+      </div>
+      
+      <div class="card-price">
+        <strong>Бесплатно</strong>
+      </div>
+
+      <ul class="feature-list">
+        <li class="feature-item">
+          <CheckIcon />
+          <span>Симулятор города</span>
+        </li>
+        <li class="feature-item">
+          <CheckIcon />
+          <span>Тестирование бизнес-моделей</span>
+        </li>
+        <li class="feature-item">
+          <CheckIcon />
+          <span>Делиться чатами с Анной</span>
+        </li>
+        <li class="feature-item">
+          <CheckIcon />
+          <span>Доступ к Кофейному Протоколу</span>
+        </li>
+        <li class="feature-item">
+          <CheckIcon />
+          <span>Поддержка Анны при старте</span>
+        </li>
+      </ul>
+      
+      <a href="/brew/membership" class="card-button card-button--secondary">Начать с Симулятора</a>
     </div>
   </div>
 </template>
@@ -136,18 +136,22 @@ const CheckIcon = () =>
 /* --- Заголовок карточки (общие стили) --- */
 .card-title {
   color: #ffffff;
-  font-size: 1.375rem;
-  font-weight: 300; /* ИЗМЕНЕНО: сделано очень тонким как "ONE" и "PEAK" */
+  font-weight: 300;
   text-align: center;
   margin: 0 0 40px 0;
   padding: 0;
   border: none;
-  letter-spacing: 0.2em; /* ИЗМЕНЕНО: увеличено межбуквенное расстояние ещё в 2 раза (0.1em * 2 = 0.2em) */
+  letter-spacing: 0.2em;
 }
 
-/* --- Специальный стиль для заголовка ИНСАЙДЕР --- */
+/* --- Специальный стиль для заголовка ИНСАЙДЕР (крупнее) --- */
 .card-title--insider {
-  font-size: 1.25rem; /* ИЗМЕНЕНО: сделано чуть меньше чем СИМУЛЯТОР (1.375rem -> 1.25rem) */
+  font-size: 1.5rem; /* ИЗМЕНЕНО: сделано крупнее */
+}
+
+/* --- Специальный стиль для заголовка СИМУЛЯТОР (меньше) --- */
+.card-title--simulator {
+  font-size: 1.25rem; /* ИЗМЕНЕНО: сделано меньше */
 }
 
 /* --- Изображение --- */
