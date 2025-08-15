@@ -25,53 +25,33 @@
 
 <TariffFeatures />
 
+## Для новых лидеров рынка
+
 <style>
-.enterprise-table {
-  background: #2a2a2a;
-  border-radius: 16px;
-  border: 2px solid #404040;
-  padding: 24px;
-  margin: 32px 0;
-  color: #e0e0e0;
-}
-
-.enterprise-table .custom-title {
-  color: #ffffff;
-  font-size: 24px;
-  font-weight: 600;
-  margin: 0 0 24px 0;
-  text-align: center;
-  border: none;
-  padding: 0;
-}
-
-.enterprise-table table {
+.pricing-table {
   width: 100%;
   border-collapse: collapse;
-  background: transparent;
-  margin-bottom: 24px;
+  background: #2a2a2a;
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 32px 0 24px 0;
+  border: 2px solid #404040;
 }
 
-.enterprise-table th, .enterprise-table td {
-  padding: 16px 20px;
-  border-bottom: 1px solid #333333;
-  background: transparent;
-  vertical-align: middle;
-}
-
-.enterprise-table th {
+.pricing-table th {
   color: #ffffff;
+  padding: 16px 20px;
   font-weight: 600;
   font-size: 16px;
   border-bottom: 2px solid #404040;
   background: #1a1a1a;
 }
 
-.enterprise-table th:first-child {
+.pricing-table th:first-child {
   text-align: left;
 }
 
-.enterprise-table th:last-child {
+.pricing-table th:last-child {
   text-align: center;
   color: #9aff00;
   font-size: 16px;
@@ -79,25 +59,33 @@
   white-space: nowrap;
 }
 
-.enterprise-table td:first-child {
-  font-size: 14px;
-  text-align: left;
-  line-height: 18px;
+.pricing-table td {
+  padding: 16px 20px;
+  color: #e0e0e0;
+  border-bottom: 1px solid #333333;
+  background: transparent;
+  vertical-align: middle;
 }
 
-.enterprise-table td:last-child {
+.pricing-table td:first-child {
+  font-size: 14px;
+  text-align: left;
+}
+
+.pricing-table td:last-child {
   text-align: center;
   color: #9aff00;
   font-size: 18px;
   font-weight: 600;
 }
 
-.enterprise-table tr:last-child td {
+.pricing-table tr:last-child td {
   border-bottom: none;
 }
 
-.partner-button {
+.partner-btn {
   width: 100%;
+  max-width: 100%;
   padding: 14px 20px;
   border-radius: 8px;
   font-size: 16px;
@@ -107,49 +95,47 @@
   color: #9aff00;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: block;
+  margin: 0;
   box-sizing: border-box;
 }
 
-.partner-button:hover {
+.partner-btn:hover {
   background: #9aff00;
   color: #1a1a1a;
 }
 </style>
 
-<div class="enterprise-table">
-  <div class="custom-title">Для новых лидеров рынка</div>
-  
-  <table>
-    <thead>
-      <tr>
-        <th>Преимущества</th>
-        <th>₽390000/год</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Все, что в Симуляторе и Инсайдере, плюс:</td>
-        <td>✓</td>
-      </tr>
-      <tr>
-        <td>Персональные рекомендации для пользователей симулятора</td>
-        <td>✓</td>
-      </tr>
-      <tr>
-        <td>Участие в обратной связи по платформе</td>
-        <td>✓</td>
-      </tr>
-      <tr>
-        <td>Приоритетный доступ к Чекапам</td>
-        <td>✓</td>
-      </tr>
-      <tr>
-        <td>Место в совете BREW</td>
-        <td>✓</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  <button class="partner-button">Приглашение для партнёра</button>
-</div>
+## Для новых лидеров рынка
+
+<table class="pricing-table">
+  <thead>
+    <tr>
+      <th>Преимущества</th>
+      <th>₽390000/год</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Все, что в Симуляторе и Инсайдере, плюс:</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>Персональные рекомендации для пользователей симулятора</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>Участие в обратной связи по платформе</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>Приоритетный доступ к Чекапам</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>Место в совете BREW</td>
+      <td>✓</td>
+    </tr>
+  </tbody>
+</table>
+
+<button class="partner-btn">Приглашение для партнёра</button>
