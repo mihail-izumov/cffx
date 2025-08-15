@@ -46,6 +46,7 @@ export default defineConfig({
         { text: 'Поддержка', href: '/support' },
         { text: 'Условия использования', href: '/terms' },
         { text: 'Контакт', href: '/about/contacts' },
+        { text: 'Реквизиты', href: '/credits' },
         { text: 'Orxaos', href: 'https://orxaos.sbs', target: '_blank' }
       ];
 
