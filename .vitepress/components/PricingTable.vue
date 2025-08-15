@@ -1,9 +1,11 @@
 <template>
-  <div class="grid-table-wrapper">
+  <div class="table-wrapper">
     <table class="responsive-table">
       <thead>
         <tr>
+          <!-- 1. Гибкий столбец (без заданной ширины) -->
           <th class="header-feature"></th>
+          <!-- 2. Три столбца с фиксированной шириной -->
           <th class="header-tariff">
             <span class="tariff-title">Симулятор</span>
             <span class="tariff-description">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
@@ -110,24 +112,19 @@
 </template>
 
 <style scoped>
-/* Стили для десктопа по умолчанию */
-.grid-table-wrapper {
-  display: grid;
-  grid-template-columns: auto repeat(3, 140px); /* Гибкая + 3 фиксированных колонки */
+.table-wrapper {
+  overflow-x: auto;
   width: 100%;
 }
-
 .responsive-table {
-  grid-column: 1 / -1; /* Таблица растягивается на все колонки грида */
   width: 100%;
+  min-width: 650px; /* Защита от сжатия и ключ к скроллу на мобильных */
   border-collapse: collapse;
   border-spacing: 0;
   border: 2px solid var(--vp-c-divider);
   border-radius: 8px;
   overflow: hidden;
 }
-
-/* Общие стили для ячеек */
 .responsive-table th, 
 .responsive-table td {
   padding: 8px 12px;
@@ -146,6 +143,7 @@
   border-bottom-color: transparent;
 }
 .header-tariff {
+  width: 140px; /* Фиксированная ширина для тарифов */
   text-align: center;
 }
 .tariff-title {
@@ -162,11 +160,11 @@
   line-height: 1.2;
 }
 .cell-feature {
-  /* На десктопе текст может переноситься */
+  white-space: nowrap; /* Важно, чтобы текст не переносился при скролле */
 }
 .cell-check {
   text-align: center;
-  white-space: nowrap;
+  white-space: nowrap; /* Защита от переноса для цен и галочек */
 }
 .checkmark {
   color: var(--vp-c-brand-2);
@@ -178,19 +176,5 @@
 .sub-price {
   font-size: 0.9em;
   opacity: 0.6;
-}
-
-/* КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ ДЛЯ МОБИЛЬНЫХ */
-@media (max-width: 768px) {
-  .grid-table-wrapper {
-    display: block; /* Отключаем Grid */
-    overflow-x: auto; /* Включаем скролл */
-  }
-  .responsive-table {
-    width: auto; /* Позволяем таблице самой определять свою ширину */
-  }
-  .responsive-table .cell-feature {
-    white-space: nowrap; /* Запрещаем перенос для чистого скролла */
-  }
 }
 </style>
