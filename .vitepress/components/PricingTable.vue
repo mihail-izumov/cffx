@@ -1,119 +1,68 @@
+<script setup>
+import { ref } from 'vue'
+
+const features = ref([
+  { name: 'Симулятор города', included: [true, true, true] },
+  { name: 'Тестирование бизнес-моделей', included: [true, true, true] },
+  { name: 'Доступ к Кофейному Протоколу', included: [true, true, true] },
+  { name: 'Поддержка Анны при старте', included: [true, true, true] },
+  { name: 'Ежемесячный обзор рынка', included: [false, true, true] },
+  { name: 'Доступ к Индексу Роста', included: [false, true, true] },
+  { name: 'Анализ компаний в фокусе', included: [false, true, true] },
+  { name: 'Обновления симулятора', included: [false, true, true] },
+  { name: 'Персональные рекомендации для пользователей симулятора', included: [false, false, true] },
+  { name: 'Участие в обратной связи по платформе', included: [false, false, true] },
+  { name: 'Приоритетный доступ к Чекапам', included: [false, false, true] },
+  { name: 'Место в совете B-R-E-W', included: [false, false, true] }
+])
+</script>
+
 <template>
   <div class="table-wrapper">
-    <table class="responsive-table">
-      <colgroup>
-        <col class="feature-column" />
-        <col class="tariff-column" />
-        <col class="tariff-column" />
-        <col class="tariff-column" />
-      </colgroup>
-      <thead>
-        <tr>
-          <th class="header-cell"></th>
-          <th class="header-cell header-tariff">
-            <span class="tariff-title">Симулятор</span>
-            <span class="tariff-description">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
-          </th>
-          <th class="header-cell header-tariff">
-            <span class="tariff-title">Инсайдер</span>
-            <span class="tariff-description">Продвинутые данные и инсайты для рыночного преимущества.</span>
-          </th>
-          <th class="header-cell header-tariff">
-            <span class="tariff-title">Партнёр</span>
-            <span class="tariff-description">Максимальная сила влияния для формирования будущего индустрии.</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Price Row -->
-        <tr class="price-row">
-          <td class="data-cell"></td>
-          <td class="data-cell cell-check"><strong>Бесплатно</strong></td>
-          <td class="data-cell cell-check"><strong>&#8381;12000/мес.</strong></td>
-          <td class="data-cell cell-check"><strong>&#8381;390000/год</strong></td>
-        </tr>
-        <!-- Sub-Price Row -->
-        <tr class="sub-price-row">
-          <td class="data-cell"></td>
-          <td class="data-cell cell-check sub-price">Мгновенный доступ</td>
-          <td class="data-cell cell-check sub-price">Ежемесячная подписка</td>
-          <td class="data-cell cell-check sub-price">Годовой взнос</td>
-        </tr>
-        <!-- Feature Rows -->
-        <tr>
-          <td class="data-cell cell-feature">Симулятор города</td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-        </tr>
-        <tr>
-          <td class="data-cell cell-feature">Тестирование бизнес-моделей</td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-        </tr>
-        <tr>
-          <td class="data-cell cell-feature">Доступ к Кофейному Протоколу</td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-        </tr>
-        <tr>
-          <td class="data-cell cell-feature">Поддержка Анны при старте</td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-        </tr>
-        <tr>
-          <td class="data-cell cell-feature">Ежемесячный обзор рынка</td>
-          <td class="data-cell cell-check"></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-        </tr>
-        <tr>
-          <td class="data-cell cell-feature">Доступ к Индексу Роста</td>
-          <td class="data-cell cell-check"></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-        </tr>
-        <tr>
-          <td class="data-cell cell-feature">Анализ компаний в фокусе</td>
-          <td class="data-cell cell-check"></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-        </tr>
-        <tr>
-          <td class="data-cell cell-feature">Обновления симулятора</td>
-          <td class="data-cell cell-check"></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-        </tr>
-        <tr>
-          <td class="data-cell cell-feature">Персональные рекомендации для пользователей симулятора</td>
-          <td class="data-cell cell-check"></td>
-          <td class="data-cell cell-check"></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-        </tr>
-        <tr>
-          <td class="data-cell cell-feature">Участие в обратной связи по платформе</td>
-          <td class="data-cell cell-check"></td>
-          <td class="data-cell cell-check"></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-        </tr>
-        <tr>
-          <td class="data-cell cell-feature">Приоритетный доступ к Чекапам</td>
-          <td class="data-cell cell-check"></td>
-          <td class="data-cell cell-check"></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-        </tr>
-        <tr>
-          <td class="data-cell cell-feature">Место в совете B-R-E-W</td>
-          <td class="data-cell cell-check"></td>
-          <td class="data-cell cell-check"></td>
-          <td class="data-cell cell-check"><span class="checkmark">&#10003;</span></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="pricing-grid">
+      <!-- Header Row -->
+      <div class="grid-cell grid-header header-feature"></div>
+      <div class="grid-cell grid-header">
+        <span class="tariff-title">Симулятор</span>
+        <span class="tariff-description">Профессиональная аналитика для вашего бизнеса. Без риска.</span>
+      </div>
+      <div class="grid-cell grid-header">
+        <span class="tariff-title">Инсайдер</span>
+        <span class="tariff-description">Продвинутые данные и инсайты для рыночного преимущества.</span>
+      </div>
+      <div class="grid-cell grid-header">
+        <span class="tariff-title">Партнёр</span>
+        <span class="tariff-description">Максимальная сила влияния для формирования будущего индустрии.</span>
+      </div>
+
+      <!-- Price Row -->
+      <div class="grid-cell cell-feature price-row"></div>
+      <div class="grid-cell cell-check price-row"><strong>Бесплатно</strong></div>
+      <div class="grid-cell cell-check price-row"><strong>&#8381;12000/мес.</strong></div>
+      <div class="grid-cell cell-check price-row"><strong>&#8381;390000/год</strong></div>
+
+      <!-- Sub-Price Row -->
+      <div class="grid-cell cell-feature sub-price-separator"></div>
+      <div class="grid-cell cell-check sub-price sub-price-separator">Мгновенный доступ</div>
+      <div class="grid-cell cell-check sub-price sub-price-separator">Ежемесячная подписка</div>
+      <div class="grid-cell cell-check sub-price sub-price-separator">Годовой взнос</div>
+      
+      <!-- Feature Rows -->
+      <template v-for="(feature, featureIndex) in features" :key="feature.name">
+        <div 
+          class="grid-cell cell-feature"
+          :class="{ 'last-row-cell': featureIndex === features.length - 1 }"
+        >{{ feature.name }}</div>
+        <div 
+          v-for="(isIncluded, checkIndex) in feature.included" :key="checkIndex" 
+          class="grid-cell cell-check"
+          :class="{ 'last-row-cell': featureIndex === features.length - 1 }"
+        >
+          <span v-if="isIncluded" class="checkmark">&#10003;</span>
+        </div>
+      </template>
+
+    </div>
   </div>
 </template>
 
@@ -124,71 +73,59 @@
   border-radius: 8px;
 }
 
-/* --- Режим "Десктоп" (по умолчанию) --- */
-.responsive-table {
-  width: 100%;
-  table-layout: fixed; /* ГЛАВНОЕ ПРАВИЛО для десктопа */
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-.tariff-column {
-  width: 150px;
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr repeat(3, auto); 
+  align-items: center;
 }
 
-.header-cell, .data-cell {
+.grid-cell {
   padding: 8px 12px;
-  vertical-align: middle;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid var(--vp-c-divider);
   border-right: 1px solid var(--vp-c-divider);
+  height: 100%;
 }
-.header-cell:last-child, .data-cell:last-child {
+
+.pricing-grid > .grid-cell:nth-child(4n) {
   border-right: none;
 }
-.header-cell {
-  vertical-align: top;
-  padding-top: 12px;
-  padding-bottom: 12px;
+
+.grid-header {
+  border-bottom: 2px solid var(--vp-c-divider);
+  background-color: var(--vp-c-bg-soft);
+  text-align: center;
+  justify-content: flex-start; /* ИЗМЕНЕНИЕ: Выравниваем заголовки по верху */
+}
+.header-feature {
   border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
 }
-.data-cell {
-  border-bottom: 1px solid var(--vp-c-divider);
-}
-tbody tr:last-child .data-cell {
-  border-bottom: none;
-}
-.header-tariff {
-  text-align: center;
-}
 .tariff-title {
   text-transform: uppercase;
-  font-weight: bold;
+  color: var(--vp-c-text-1);
 }
 .tariff-description {
   margin-top: 4px;
   font-size: 0.85em;
   font-weight: normal;
   opacity: 0.7;
+  text-transform: none;
   line-height: 1.2;
 }
 
-.price-row .data-cell {
-  background-color: var(--vp-c-bg-soft);
-  font-weight: bold;
-}
-.sub-price-row .data-cell {
-  border-bottom: 2px solid var(--vp-c-divider);
-}
-.sub-price {
-  font-size: 0.9em;
-  opacity: 0.6;
-  font-weight: normal;
-}
 .cell-feature {
+  justify-content: flex-start;
   font-size: 0.9em;
-  line-height: 1.3;
+  line-height: 1.3; /* ИЗМЕНЕНИЕ: Уменьшаем межстрочное расстояние */
 }
+
 .cell-check {
   text-align: center;
+  align-items: center;
+  white-space: nowrap;
 }
 .checkmark {
   color: var(--vp-c-brand-2);
@@ -196,15 +133,18 @@ tbody tr:last-child .data-cell {
   font-size: 1.2em;
 }
 
-/* --- Режим "Мобильный / Скролл" --- */
-@media (max-width: 768px) {
-  .responsive-table {
-    table-layout: auto; /* ГЛАВНОЕ ПРАВИЛО для мобильных */
-  }
-  .cell-feature,
-  .tariff-description,
-  .cell-check {
-    white-space: nowrap; /* Запрещаем любой перенос текста для чистого скролла */
-  }
+.price-row {
+  background-color: var(--vp-c-bg-soft);
+}
+.sub-price {
+  font-size: 0.9em;
+  opacity: 0.6;
+}
+.sub-price-separator {
+  border-bottom: 2px solid var(--vp-c-divider);
+}
+
+.last-row-cell {
+  border-bottom: none;
 }
 </style>
