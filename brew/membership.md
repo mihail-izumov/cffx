@@ -89,12 +89,12 @@ next: false
   />
 </div>
 
-<style>
+style>
 /* --- КОНТЕЙНЕР ДЛЯ ГРУППЫ КНОПОК --- */
 .button-group {
   display: flex;
   align-items: center;
-  gap: 20px; /* Расстояние между кнопками */
+  gap: 20px;
   margin: 24px 0;
 }
 
@@ -109,8 +109,8 @@ next: false
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
-  border: 1px solid transparent; 
-  box-shadow: none !important; /* Принудительно убираем любую тень, чтобы избавиться от артефакта */
+  border: none; /* Убираем рамку по умолчанию для всех кнопок */
+  box-shadow: none !important; /* Убираем тень для всех кнопок */
 }
 .btn:hover {
   transform: translateY(-2px);
@@ -119,37 +119,33 @@ next: false
 
 /* --- СТИЛЬ ОСНОВНОЙ КНОПКИ (ЯРКАЯ) --- */
 .btn-primary {
-  background-color: #C5F946; /* Яркий лаймовый */
+  background-color: #C5F946;
   color: #000 !important;
-  border-color: #C5F946;
 }
 .btn-primary:hover {
   background-color: #b2de34;
-  border-color: #b2de34;
-  color: #000 !important;
 }
 
 /* --- СТИЛИ ВТОРИЧНОЙ КНОПКИ --- */
 
-/* СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ (ПО УМОЛЧАНИЮ) */
-/* Кнопка в серо-черной гамме для контраста */
+/* СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ (по умолчанию) */
+/* Правая кнопка в серо-черной гамме */
 .btn-secondary {
-  background-color: #2f2f32;      /* Темно-серый фон */
-  color: #a1a1aa !important;      /* Приглушенный светлый текст */
-  border-color: #2f2f32;          /* Рамка в цвет фона, чтобы была невидимой */
+  background-color: #2f2f32;
+  color: #a1a1aa !important;
 }
 .btn-secondary:hover {
   background-color: #434349;
-  border-color: #434349;
   color: #e0e0e0 !important;
 }
 
-/* СТИЛИ ДЛЯ ТЕМНОЙ ТЕМЫ (КАК БЫЛО В ПРОШЛОЙ ИТЕРАЦИИ) */
-/* Кнопка почти сливается с фоном */
+/* СТИЛИ ДЛЯ ТЕМНОЙ ТЕМЫ (как было раньше) */
+/* Правая кнопка почти сливается с фоном */
 html.dark .btn-secondary {
-  background-color: #2f2f32;      /* Почти сливается с темным фоном */
-  color: #a1a1aa !important;      /* Приглушенный светлый текст */
-  border-color: #434349;          /* Рамка для легкого отделения */
+  background-color: #2f2f32;
+  color: #a1a1aa !important;
+  /* Для легкого отделения от фона в темной теме добавляем рамку */
+  border: 1px solid #434349; 
 }
 html.dark .btn-secondary:hover {
   background-color: #434349;
