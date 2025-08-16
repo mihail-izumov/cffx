@@ -94,7 +94,7 @@ next: false
 .button-group {
   display: flex;
   align-items: center;
-  gap: 20px; /* Увеличенное расстояние между кнопками */
+  gap: 20px; /* Расстояние между кнопками */
   margin: 24px 0;
 }
 
@@ -109,7 +109,7 @@ next: false
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
-  border: 1px solid transparent; /* Добавляем прозрачную рамку для стабильности при наведении */
+  border: 1px solid transparent; /* Рамка для стабильности размера при наведении */
 }
 .btn:hover {
   transform: translateY(-2px);
@@ -123,34 +123,21 @@ next: false
   border-color: #C5F946;
 }
 .btn-primary:hover {
-  background-color: #b2de34; /* Чуть темнее при наведении */
+  background-color: #b2de34;
   border-color: #b2de34;
   color: #000 !important;
 }
 
-/* --- СТИЛИ ВТОРИЧНОЙ КНОПКИ (НЕЗАМЕТНАЯ) --- */
-
-/* СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ (ПО УМОЛЧАНИЮ) */
+/* --- СТИЛИ ВТОРИЧНОЙ КНОПКИ (СЕРО-ЧЕРНАЯ ГАММА) --- */
+/* Эти стили теперь применяются и в светлой, и в темной теме */
 .btn-secondary {
-  background-color: #f6f6f7; /* Почти сливается с фоном VitePress */
-  color: #666 !important; /* Приглушенный текст */
-  border-color: #e5e5e5;
+  background-color: #2f2f32; /* Темно-серый фон */
+  color: #a1a1aa !important; /* Приглушенный светлый текст */
+  border-color: #2f2f32;      /* Рамка того же цвета, что и фон (невидима) */
 }
 .btn-secondary:hover {
-  background-color: #eaeaeb; /* Становится чуть заметнее */
-  border-color: #ddd;
-  color: #333 !important;
-}
-
-/* СТИЛИ ДЛЯ ТЕМНОЙ ТЕМЫ (АКТИВИРУЮТСЯ КЛАССОМ .dark НА <html>) */
-html.dark .btn-secondary {
-  background-color: #2f2f32; /* Почти сливается с темным фоном */
-  color: #a1a1aa !important; /* Приглушенный светлый текст */
-  border-color: #434349;
-}
-html.dark .btn-secondary:hover {
-  background-color: #434349; /* Становится чуть заметнее */
-  border-color: #555;
+  background-color: #434349; /* Чуть светлее при наведении */
+  border-color: #434349;      /* Рамка также меняет цвет, оставаясь невидимой */
   color: #e0e0e0 !important;
 }
 </style>
