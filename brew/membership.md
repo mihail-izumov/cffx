@@ -89,7 +89,7 @@ next: false
   />
 </div>
 
-style>
+<style>
 /* --- КОНТЕЙНЕР ДЛЯ ГРУППЫ КНОПОК --- */
 .button-group {
   display: flex;
