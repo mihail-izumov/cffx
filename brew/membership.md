@@ -9,7 +9,7 @@ next: false
 **Подключитесь к коллективному разуму кофейной индустрии. Без паушальных взносов и роялти. Полный контроль и вся прибыль — ваши.**
 
 <div class="button-group">
-  <a href="/brew/join" class="btn btn-primary" rel="noopener noreferrer">Подключиться →</a>
+  <a href="/brew/join" class="btn btn-primary" rel="noopener noreferrer">Подключиться</a>
   <a href="https://www.perplexity.ai/page/meta-franshiza-b-r-e-w-Tl5xfN_GREy2qFe4qDqSSg" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">НЕ франшиза</a>
 </div>
 
@@ -89,8 +89,6 @@ next: false
   />
 </div>
 
-
-
 <style>
 /* --- КОНТЕЙНЕР ДЛЯ ГРУППЫ КНОПОК --- */
 .button-group {
@@ -126,13 +124,14 @@ next: false
 }
 .btn-primary:hover {
   background-color: #b2de34 !important;
+  color: #000 !important; /* Текст остается черным при наведении */
 }
 
 /* --- СТИЛИ ВТОРИЧНОЙ КНОПКИ --- */
 
 /* СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ (почти сливается со светлым фоном) */
 .button-group .btn-secondary {
-  background-color: #f6f6f7 !important; /* Принудительно перебиваем стили VitePress */
+  background-color: #f6f6f7 !important;
   color: #666 !important;
   border: 1px solid #e5e5e5 !important;
   box-shadow: none !important;
