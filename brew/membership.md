@@ -8,7 +8,7 @@ next: false
 
 **Подключитесь к коллективному разуму кофейной индустрии. Без паушальных взносов и роялти. Полный контроль и вся прибыль — ваши.**
 
-<div class="start-button-container">
+<div class="button-group">
   <a href="/brew/join" class="btn btn-primary" rel="noopener noreferrer">Подключиться</a>
   <a href="https://www.perplexity.ai/page/meta-franshiza-b-r-e-w-Tl5xfN_GREy2qFe4qDqSSg" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">НЕ франшиза</a>
 </div>
@@ -90,6 +90,14 @@ next: false
 </div>
 
 <style>
+/* --- КОНТЕЙНЕР ДЛЯ ГРУППЫ КНОПОК --- */
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Увеличенное расстояние между кнопками */
+  margin: 24px 0;
+}
+
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
 .btn {
   display: inline-block;
@@ -101,42 +109,48 @@ next: false
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
-  border: none;
-  margin: 10px 0;
+  border: 1px solid transparent; /* Добавляем прозрачную рамку для стабильности при наведении */
 }
 .btn:hover {
   transform: translateY(-2px);
   text-decoration: none !important;
 }
+
 /* --- СТИЛЬ ОСНОВНОЙ КНОПКИ (ЯРКАЯ) --- */
 .btn-primary {
   background-color: #C5F946; /* Яркий лаймовый */
   color: #000 !important;
+  border-color: #C5F946;
 }
 .btn-primary:hover {
-  background-color: #347b6c; /* Темный при наведении */
-  color: white !important;
+  background-color: #b2de34; /* Чуть темнее при наведении */
+  border-color: #b2de34;
+  color: #000 !important;
 }
-/* --- НОВЫЙ СТИЛЬ ВТОРИЧНОЙ КНОПКИ ("менее слабовидимая") --- */
+
+/* --- СТИЛИ ВТОРИЧНОЙ КНОПКИ (НЕЗАМЕТНАЯ) --- */
+
+/* СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ (ПО УМОЛЧАНИЮ) */
 .btn-secondary {
-  background-color: #f0f0f0; /* Светло-серый фон */
-  color: #666 !important; /* Серый текст */
-  border: 1px solid #ddd; /* Светлая рамка */
-  margin-left: 15px; /* Отступ от первой кнопки */
+  background-color: #f6f6f7; /* Почти сливается с фоном VitePress */
+  color: #666 !important; /* Приглушенный текст */
+  border-color: #e5e5e5;
 }
 .btn-secondary:hover {
-  background-color: #e0e0e0; /* Чуть темнее серый при наведении */
+  background-color: #eaeaeb; /* Становится чуть заметнее */
+  border-color: #ddd;
   color: #333 !important;
-  border-color: #ccc;
 }
-/* --- Контейнер для отдельной кнопки --- */
-.start-button-container {
-  margin: 20px 0;
-  text-align: left;
-  display: flex; /* Используем flexbox для размещения кнопок в ряд */
-  align-items: center; /* Выравнивание по центру по вертикали */
+
+/* СТИЛИ ДЛЯ ТЕМНОЙ ТЕМЫ (АКТИВИРУЮТСЯ КЛАССОМ .dark НА <html>) */
+html.dark .btn-secondary {
+  background-color: #2f2f32; /* Почти сливается с темным фоном */
+  color: #a1a1aa !important; /* Приглушенный светлый текст */
+  border-color: #434349;
 }
-.start-button-container .btn {
-  margin: 0; /* Убираем margin, так как flexbox сам управляет отступами */
+html.dark .btn-secondary:hover {
+  background-color: #434349; /* Становится чуть заметнее */
+  border-color: #555;
+  color: #e0e0e0 !important;
 }
 </style>
