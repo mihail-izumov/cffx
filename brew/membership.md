@@ -9,7 +9,8 @@ next: false
 **Подключитесь к коллективному разуму кофейной индустрии. Без паушальных взносов и роялти. Полный контроль и вся прибыль — ваши.**
 
 <div class="start-button-container">
-  <a href="/brew/join" class="btn btn-primary"  rel="noopener noreferrer">Подключиться →</a>
+  <a href="/brew/join" class="btn btn-primary" rel="noopener noreferrer">Подключиться</a>
+  <a href="https://www.perplexity.ai/page/meta-franshiza-b-r-e-w-Tl5xfN_GREy2qFe4qDqSSg" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">НЕ франшиза</a>
 </div>
 
 ## Форматы участия
@@ -103,32 +104,39 @@ next: false
   border: none;
   margin: 10px 0;
 }
-
 .btn:hover {
   transform: translateY(-2px);
   text-decoration: none !important;
 }
-
 /* --- СТИЛЬ ОСНОВНОЙ КНОПКИ (ЯРКАЯ) --- */
 .btn-primary {
   background-color: #C5F946; /* Яркий лаймовый */
   color: #000 !important;
 }
-
 .btn-primary:hover {
   background-color: #347b6c; /* Темный при наведении */
   color: white !important;
 }
-
+/* --- НОВЫЙ СТИЛЬ ВТОРИЧНОЙ КНОПКИ ("менее слабовидимая") --- */
+.btn-secondary {
+  background-color: #f0f0f0; /* Светло-серый фон */
+  color: #666 !important; /* Серый текст */
+  border: 1px solid #ddd; /* Светлая рамка */
+  margin-left: 15px; /* Отступ от первой кнопки */
+}
+.btn-secondary:hover {
+  background-color: #e0e0e0; /* Чуть темнее серый при наведении */
+  color: #333 !important;
+  border-color: #ccc;
+}
 /* --- Контейнер для отдельной кнопки --- */
 .start-button-container {
   margin: 20px 0;
   text-align: left;
+  display: flex; /* Используем flexbox для размещения кнопок в ряд */
+  align-items: center; /* Выравнивание по центру по вертикали */
 }
-
 .start-button-container .btn {
-  display: inline-block;
-  margin: 0;
+  margin: 0; /* Убираем margin, так как flexbox сам управляет отступами */
 }
 </style>
-
