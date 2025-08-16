@@ -1,5 +1,7 @@
 ---
 outline: false
+prev: false
+next: false
 ---
 
 # Ваша Умная Кофейня. Начинается Здесь.
