@@ -511,7 +511,7 @@ function nav(): DefaultTheme.NavItem[] {
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'B-R-E-W', collapsed: false, items: [
-        { text: 'Начать Здесь', link: '/brew/run' },
+        { text: 'Мета-франшиза', link: '/brew/run' },
         { text: 'Платформа', link: '/brew/about' },
         { text: 'Кофейный Протокол', link: '/brew/protocol' },
         { text: 'Подключиться', link: '/brew/membership' },
