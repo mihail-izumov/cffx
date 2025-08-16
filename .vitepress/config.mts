@@ -511,10 +511,12 @@ function nav(): DefaultTheme.NavItem[] {
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'B-R-E-W', collapsed: false, items: [
-        { text: 'Симулятор', link: '/brew/run' },
+        { text: 'Начать Здесь', link: '/brew/run' },
         { text: 'Платформа', link: '/brew/about' },
-        { text: 'Как работать', link: '/brew/how-it-works' },
-        { text: 'Кофейный Протокол', link: '/brew/protocol' }
+        { text: 'Кофейный Протокол', link: '/brew/protocol' },
+        { text: 'Подключиться', link: '/brew/membership' },
+        { text: 'Инструкции', link: '/brew/how-it-works' }
+
       ]
     }]
 }
