@@ -109,7 +109,8 @@ next: false
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
-  border: 1px solid transparent; /* Рамка для стабильности размера при наведении */
+  border: 1px solid transparent; 
+  box-shadow: none !important; /* Принудительно убираем любую тень, чтобы избавиться от артефакта */
 }
 .btn:hover {
   transform: translateY(-2px);
@@ -128,16 +129,31 @@ next: false
   color: #000 !important;
 }
 
-/* --- СТИЛИ ВТОРИЧНОЙ КНОПКИ (СЕРО-ЧЕРНАЯ ГАММА) --- */
-/* Эти стили теперь применяются и в светлой, и в темной теме */
+/* --- СТИЛИ ВТОРИЧНОЙ КНОПКИ --- */
+
+/* СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ (ПО УМОЛЧАНИЮ) */
+/* Кнопка в серо-черной гамме для контраста */
 .btn-secondary {
-  background-color: #2f2f32; /* Темно-серый фон */
-  color: #a1a1aa !important; /* Приглушенный светлый текст */
-  border-color: #2f2f32;      /* Рамка того же цвета, что и фон (невидима) */
+  background-color: #2f2f32;      /* Темно-серый фон */
+  color: #a1a1aa !important;      /* Приглушенный светлый текст */
+  border-color: #2f2f32;          /* Рамка в цвет фона, чтобы была невидимой */
 }
 .btn-secondary:hover {
-  background-color: #434349; /* Чуть светлее при наведении */
-  border-color: #434349;      /* Рамка также меняет цвет, оставаясь невидимой */
+  background-color: #434349;
+  border-color: #434349;
+  color: #e0e0e0 !important;
+}
+
+/* СТИЛИ ДЛЯ ТЕМНОЙ ТЕМЫ (КАК БЫЛО В ПРОШЛОЙ ИТЕРАЦИИ) */
+/* Кнопка почти сливается с фоном */
+html.dark .btn-secondary {
+  background-color: #2f2f32;      /* Почти сливается с темным фоном */
+  color: #a1a1aa !important;      /* Приглушенный светлый текст */
+  border-color: #434349;          /* Рамка для легкого отделения */
+}
+html.dark .btn-secondary:hover {
+  background-color: #434349;
+  border-color: #555;
   color: #e0e0e0 !important;
 }
 </style>
