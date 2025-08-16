@@ -109,8 +109,6 @@ next: false
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
-  border: none; /* Убираем рамку по умолчанию для всех кнопок */
-  box-shadow: none !important; /* Убираем тень для всех кнопок */
 }
 .btn:hover {
   transform: translateY(-2px);
@@ -121,6 +119,8 @@ next: false
 .btn-primary {
   background-color: #C5F946;
   color: #000 !important;
+  border: none;
+  box-shadow: none !important;
 }
 .btn-primary:hover {
   background-color: #b2de34;
@@ -128,24 +128,25 @@ next: false
 
 /* --- СТИЛИ ВТОРИЧНОЙ КНОПКИ --- */
 
-/* СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ (по умолчанию) */
-/* Правая кнопка в серо-черной гамме */
+/* СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ (почти сливается со светлым фоном) */
 .btn-secondary {
-  background-color: #2f2f32;
-  color: #a1a1aa !important;
+  background-color: #f6f6f7; /* Почти как фон VitePress */
+  color: #666 !important;
+  border: 1px solid #e5e5e5; /* Едва заметная рамка */
+  box-shadow: none !important; /* Убираем артефакт принудительно */
 }
 .btn-secondary:hover {
-  background-color: #434349;
-  color: #e0e0e0 !important;
+  background-color: #eaeaeb;
+  border-color: #ddd;
+  color: #333 !important;
 }
 
-/* СТИЛИ ДЛЯ ТЕМНОЙ ТЕМЫ (как было раньше) */
-/* Правая кнопка почти сливается с фоном */
+/* СТИЛИ ДЛЯ ТЕМНОЙ ТЕМЫ (как было - почти сливается с тёмным фоном) */
 html.dark .btn-secondary {
   background-color: #2f2f32;
   color: #a1a1aa !important;
-  /* Для легкого отделения от фона в темной теме добавляем рамку */
-  border: 1px solid #434349; 
+  border: 1px solid #434349;
+  box-shadow: none !important;
 }
 html.dark .btn-secondary:hover {
   background-color: #434349;
