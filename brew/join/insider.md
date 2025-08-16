@@ -4,6 +4,8 @@ prev: false
 next: false
 ---
 
+[← Тарифы](/brew/join)
+
 # Подписка на B-R-E-W Инсайдер
 
 <br>
