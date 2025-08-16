@@ -1,3 +1,9 @@
+---
+outline: false
+prev: false
+next: false
+---
+
 # Подключение к B-R-E-W
 
 <br>
