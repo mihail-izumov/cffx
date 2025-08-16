@@ -1,3 +1,9 @@
+---
+outline: false
+prev: false
+next: false
+---
+
 # Подписка на B-R-E-W Инсайдер
 
 <br>
