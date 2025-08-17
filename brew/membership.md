@@ -3,11 +3,8 @@ outline: false
 prev: false
 next: false
 ---
-
 # Ваша Умная Кофейня. Начинается Здесь.
-
 **Подключитесь к коллективному разуму кофейной индустрии. Без паушальных взносов и роялти. Полный контроль и вся прибыль — ваши.**
-
 <div style="text-align: center; margin: 2rem 0;">
   <img 
     src="/join-now_ban.webp" 
@@ -24,79 +21,48 @@ next: false
     onmouseout="this.style.transform='scale(1)'"
   />
 </div>
-
 ## Начните расти по своим правилам
-
 <MembershipCards />
-
 ### Что внутри
-
 <TariffFeatures />
-
 ## Для новых лидеров рынка
-
 <LeadersTable />
-
-
 <div class="start-button-container">
   <a href="/brew/join/partner" class="btn btn-primary" rel="noopener noreferrer">Получить приглашение →</a>
 </div>
-
 ## Да, вы правда можете масштабировать любую кофейню здесь
-
 **Первая и единственная платформа, которая нужна для роста.**
-
 <FeaturesGrid />
-  
-
 ## Что делает участие в B-R-E-W уникальным
-
 Кофейный Протокол превращает разрозненный опыт тысяч кофеен в готовые решения для любой ситуации. Индекс Роста создает объективную систему измерения успеха, которая делает ваши достижения видимыми для всего рынка.
-
 <InstrumentsGrid />
-
 ## Преимущества участия
-
 <InfoCardsPro />
-
 ## **Начните бесплатно. Выберите позже.**
-
 ### Никто на рынке не позволит вам протестировать бизнес-модель до того, как вы заплатите.
-
 Мы верим в силу нашей платформы, поэтому даем её бесплатно. Симулятор BREW — это не демо-версия. Это полнофункциональный инструмент, который позволяет:
-
 <ValueCards /> 
-
 → [Войти в Симулятор](/brew/run#симулятор-роста)
-
 ## Вопросы и Ответы
-
 ::: details В чем ключевое отличие от покупки франшизы?
 Франшиза продает готовый шаблон и забирает вашу свободу и часть прибыли в виде роялти. B-R-E-W дает инструменты для создания вашего уникального, более сильного и прибыльного бизнеса, оставляя 100% контроля и прибыли вам.
 :::
-
 ::: details Это очередной бизнес-клуб?
 Нет. Бизнес-клубы продают нетворкинг и статус. Мы даем технологическое преимущество. Вместо пустых разговоров на конференциях вы получаете доступ к платформе для моделирования и завоевания рынка.
 :::
-
 ::: details Что включает "Поддержка Анны при старте"?
 После регистрации и проведения первой симуляции вы можете задать вопросы ИИ-ассистенту Анне по методологии B-R-E-W для правильной интерпретации результатов и понимания логики платформы.
 :::
-
 ::: details Подходит ли платформа для новичков в кофейном бизнесе?
 Да. С помощью Симулятора и Кофейного Протокола вы избежите 90% ошибок новичков и запустите проект, конкурентоспособный с первого дня.
 :::
-
 ::: details Можно ли отменить подписку в любой момент?
 Да, ежемесячную подписку "Инсайдер" можно отменить в любое время.
 :::
-
 ::: details Помогает ли BREW с поставками оборудования или зерна?
 Мы не навязываем поставщиков. Симулятор B-R-E-W содержит базу проверенных партнеров и рекомендации участников рынка для принятия лучших решений.
 :::
-
 <br>
-
 <div style="text-align: center; margin: 2rem 0;">
   <img 
     src="/brew_intro_ban.svg" 
@@ -114,7 +80,6 @@ next: false
   />
 </div>
 
-
 <style>
 /* --- КОНТЕЙНЕР ДЛЯ ГРУППЫ КНОПОК --- */
 .button-group {
@@ -124,35 +89,6 @@ next: false
   margin: 24px 0;
 }
 
-/* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
-.btn {
-  display: inline-block;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 16px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-.btn:hover {
-  transform: translateY(-2px);
-  text-decoration: none !important;
-}
-
-/* --- СТИЛЬ ОСНОВНОЙ КНОПКИ (ЯРКАЯ) --- */
-.btn-primary {
-  background-color: #C5F946 !important;
-  color: #000 !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-.btn-primary:hover {
-  background-color: #b2de34 !important;
-}
-
-<style>
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
 .btn {
   display: inline-block;
@@ -175,12 +111,14 @@ next: false
 
 /* --- СТИЛЬ ОСНОВНОЙ КНОПКИ (ЯРКАЯ) --- */
 .btn-primary {
-  background-color: #C5F946; /* Яркий лаймовый */
+  background-color: #C5F946 !important;
   color: #000 !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .btn-primary:hover {
-  background-color: #347b6c; /* Темный при наведении */
+  background-color: #347b6c !important;
   color: white !important;
 }
 
@@ -194,18 +132,16 @@ next: false
   display: inline-block;
   margin: 0;
 }
-</style>
-
 
 /* --- СТИЛИ ВТОРИЧНОЙ КНОПКИ --- */
-
 /* СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ (почти сливается со светлым фоном) */
 .button-group .btn-secondary {
-  background-color: #f6f6f7 !important; /* Принудительно перебиваем стили VitePress */
+  background-color: #f6f6f7 !important;
   color: #666 !important;
   border: 1px solid #e5e5e5 !important;
   box-shadow: none !important;
 }
+
 .button-group .btn-secondary:hover {
   background-color: #eaeaeb !important;
   border-color: #ddd !important;
@@ -219,6 +155,7 @@ html.dark .button-group .btn-secondary {
   border: 1px solid #434349 !important;
   box-shadow: none !important;
 }
+
 html.dark .button-group .btn-secondary:hover {
   background-color: #434349 !important;
   border-color: #555 !important;
