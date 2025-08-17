@@ -86,8 +86,8 @@ next: false
     <input type="checkbox" id="consent" name="consent" required>
     <label for="consent">
       Нажимая на кнопку, вы соглашаетесь с 
-      <a href="/terms/policy" target="\_blank" class="policy-link">политикой конфиденциальности</a>, 
-      <a href="/terms/privacy" target="\_blank" class="policy-link">согласием на обработку персональных данных</a>
+      <a href="/terms/policy" target="_blank" class="policy-link">политикой конфиденциальности</a>, 
+      <a href="/terms/privacy" target="_blank" class="policy-link">согласием на обработку персональных данных</a>
     </label>
   </div>
   <button type="submit" class="submit-btn" disabled>
@@ -216,7 +216,7 @@ export default {
           phone: form.phone.value,
           email: form.email.value,
           consent: checkbox.checked ? 'Да' : 'Нет',
-          \_subject: 'Партнёрство'
+          _subject: 'Партнёрство'
         };
         
         form.reset();
