@@ -151,7 +151,7 @@
       <tr>
         <td><a href="https://korzhcoffee.ru/" target="_blank" rel="noopener noreferrer">Корж</a></td>
         <td>~10+</td>
-        <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="https://runscale.ru/brew/run.html">B-R-E-W</a></td>
+        <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="/brew/sim">B-R-E-W</a></td>
         <td>Масштабировать уют без потери магии бренда</td>
         <td>Создать культ бренда, Доминировать по цене</td>
         <td>В фокусе</td>
@@ -159,7 +159,7 @@
       <tr>
         <td><a href="https://skuratovcoffee.ru/" target="_blank" rel="noopener noreferrer">Skuratov Coffee</a></td>
         <td>~63+</td>
-        <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="https://runscale.ru/brew/run.html">B-R-E-W</a></td>
+        <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="/brew/sim">B-R-E-W</a></td>
         <td>Формула «скорости» и пределы роста для «качества»</td>
         <td>Формула успеха, Рост без потерь</td>
         <td>В фокусе</td>
@@ -167,7 +167,7 @@
       <tr>
         <td><a href="https://www.surfcoffee.ru/" target="_blank" rel="noopener noreferrer">Surf Coffee</a></td>
         <td>~110+</td>
-        <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="https://runscale.ru/brew/run.html">B-R-E-W</a></td>
+        <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="/brew/sim">B-R-E-W</a></td>
         <td>Масштабирование на формуле «атмосферы»</td>
         <td>Ядро бренда, Рост без потерь</td>
         <td>В фокусе</td>
