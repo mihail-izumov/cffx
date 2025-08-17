@@ -67,10 +67,6 @@ next: false
 
 <form id="myForm" class="custom-form">
   <div class="form-group">
-    <label for="coffeehouse">Ваша Кофейня:</label>
-    <input type="text" id="coffeehouse" name="coffeehouse" class="form-input" required>
-  </div>
-  <div class="form-group">
     <label for="name">Имя:</label>
     <input type="text" id="name" name="name" class="form-input" required>
   </div>
@@ -191,12 +187,11 @@ export default {
       const checkbox = document.getElementById('consent');
       
       const checkFormValidity = () => {
-        const coffeehouseValid = document.getElementById('coffeehouse').value.trim() !== '';
         const nameValid = document.getElementById('name').value.trim() !== '';
         const phoneValid = document.getElementById('phone').value.trim() !== '';
         const consentValid = checkbox.checked;
         
-        submitBtn.disabled = !(coffeehouseValid && nameValid && phoneValid && consentValid);
+        submitBtn.disabled = !(nameValid && phoneValid && consentValid);
       };
       
       requiredInputs.forEach(input => {
@@ -211,11 +206,11 @@ export default {
         if (submitBtn.disabled) return;
         
         const formData = {
-          coffeehouse: form.coffeehouse.value,
           name: form.name.value,
           phone: form.phone.value,
           email: form.email.value,
           consent: checkbox.checked ? 'Да' : 'Нет',
+          // Ваша новая тема, но с обычным дефисом
           _subject: 'Партнёрство'
         };
         
@@ -237,8 +232,8 @@ export default {
         .catch(error => {
           console.error('Error:', error);
           const mailtoSubject = 'Рынок кофеен Новосибирска';
-          const mailtoBody = `Кофейня: ${formData.coffeehouse}%0AИмя: ${formData.name}%0AТелефон: ${formData.phone}%0AEmail: ${formData.email}`;
-          window.location.href = `mailto:theorchestramanco@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`;
+          const mailtoBody = Имя: ${formData.name}%0AТелефон: ${formData.phone}%0AEmail: ${formData.email};
+          window.location.href = mailto:theorchestramanco@gmail.com?subject=${mailtoSubject}&body=${mailtoBody};
         })
         .finally(() => {
           setTimeout(() => {
