@@ -143,7 +143,7 @@
       <tr>
         <td><a href="https://grnhs.ru/" target="_blank" rel="noopener noreferrer">Green House</a></td>
         <td>~126+</td>
-        <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="https://runscale.ru/brew/run.html">B-R-E-W</a></td>
+        <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="/brew/sim">B-R-E-W</a></td>
         <td>Региональное доминирование и риски экспансии</td>
         <td>Формула успеха, Ключевые элементы, Адаптация</td>
         <td>В фокусе</td>
