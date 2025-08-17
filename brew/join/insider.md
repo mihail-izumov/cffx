@@ -43,7 +43,7 @@ next: false
 </form>
 
 <div id="successMessage" class="success-message" style="display: none;">
-  Успешно. Анна отправит приглашение в Телеграм.
+  Вы в списке. Анна отправит приглашение в Телеграм.
 </div>
 
 <style>
