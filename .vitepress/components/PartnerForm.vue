@@ -77,7 +77,7 @@ export default {
           phone: form.phone.value,
           email: form.email.value,
           consent: checkbox.checked ? 'Да' : 'Нет',
-          _subject: 'Партнёрство'
+          _subject: 'Тариф - Новый лидер'
         };
         
         form.reset();
@@ -97,7 +97,7 @@ export default {
         })
         .catch(error => {
           console.error('Error:', error);
-          const mailtoSubject = 'Рынок кофеен Новосибирска';
+          const mailtoSubject = 'Тариф - Новый лидер';
           const mailtoBody = `Кофейня: ${formData.coffeehouse}%0AИмя: ${formData.name}%0AТелефон: ${formData.phone}%0AEmail: ${formData.email}`;
           window.location.href = `mailto:theorchestramanco@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`;
         })
