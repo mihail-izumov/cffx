@@ -511,11 +511,12 @@ function nav(): DefaultTheme.NavItem[] {
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'B-R-E-W', collapsed: false, items: [
-        { text: 'Мета-франшиза', link: '/brew/run' },
-        { text: 'Платформа', link: '/brew/about' },
-        { text: 'Кофейный Протокол', link: '/brew/protocol' },
+        { text: 'Платформа', link: '/brew/run' },
         { text: 'Подключиться', link: '/brew/membership' },
-        { text: 'Инструкции', link: '/brew/how-it-works' }
+        { text: 'Симулятор', link: '/brew/sim' },
+        { text: 'Кофейная экосистема', link: '/brew/about' },
+        { text: 'Кофейный Протокол', link: '/brew/protocol' },
+        { text: 'Как работает', link: '/brew/how-it-works' }
 
       ]
     }]
