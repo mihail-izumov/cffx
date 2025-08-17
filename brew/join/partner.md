@@ -65,3 +65,8 @@ next: false
 
 ## Заявка для новых лидеров рынка
 
+<script setup>
+import PartnerForm from '../../.vitepress/components/PartnerForm.vue'
+</script>
+
+<PartnerForm />
