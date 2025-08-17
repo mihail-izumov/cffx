@@ -67,6 +67,10 @@ next: false
 
 <form id="myForm" class="custom-form">
   <div class="form-group">
+    <label for="coffeehouse">Ваша Кофейня:</label>
+    <input type="text" id="coffeehouse" name="coffeehouse" class="form-input" required>
+  </div>
+  <div class="form-group">
     <label for="name">Имя:</label>
     <input type="text" id="name" name="name" class="form-input" required>
   </div>
@@ -82,8 +86,8 @@ next: false
     <input type="checkbox" id="consent" name="consent" required>
     <label for="consent">
       Нажимая на кнопку, вы соглашаетесь с 
-      <a href="/terms/policy" target="_blank" class="policy-link">политикой конфиденциальности</a>, 
-      <a href="/terms/privacy" target="_blank" class="policy-link">согласием на обработку персональных данных</a>
+      <a href="/terms/policy" target="\_blank" class="policy-link">политикой конфиденциальности</a>, 
+      <a href="/terms/privacy" target="\_blank" class="policy-link">согласием на обработку персональных данных</a>
     </label>
   </div>
   <button type="submit" class="submit-btn" disabled>
@@ -187,11 +191,12 @@ export default {
       const checkbox = document.getElementById('consent');
       
       const checkFormValidity = () => {
+        const coffeehouseValid = document.getElementById('coffeehouse').value.trim() !== '';
         const nameValid = document.getElementById('name').value.trim() !== '';
         const phoneValid = document.getElementById('phone').value.trim() !== '';
         const consentValid = checkbox.checked;
         
-        submitBtn.disabled = !(nameValid && phoneValid && consentValid);
+        submitBtn.disabled = !(coffeehouseValid && nameValid && phoneValid && consentValid);
       };
       
       requiredInputs.forEach(input => {
@@ -206,12 +211,13 @@ export default {
         if (submitBtn.disabled) return;
         
         const formData = {
+          coffeehouse: form.coffeehouse.value,
           name: form.name.value,
           phone: form.phone.value,
           email: form.email.value,
           consent: checkbox.checked ? 'Да' : 'Нет',
           // Ваша новая тема, но с обычным дефисом
-          _subject: 'Партнёрство'
+          \_subject: 'Партнёрство'
         };
         
         form.reset();
@@ -232,8 +238,8 @@ export default {
         .catch(error => {
           console.error('Error:', error);
           const mailtoSubject = 'Рынок кофеен Новосибирска';
-          const mailtoBody = Имя: ${formData.name}%0AТелефон: ${formData.phone}%0AEmail: ${formData.email};
-          window.location.href = mailto:theorchestramanco@gmail.com?subject=${mailtoSubject}&body=${mailtoBody};
+          const mailtoBody = `Кофейня: ${formData.coffeehouse}%0AИмя: ${formData.name}%0AТелефон: ${formData.phone}%0AEmail: ${formData.email}`;
+          window.location.href = `mailto:theorchestramanco@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`;
         })
         .finally(() => {
           setTimeout(() => {
