@@ -6,7 +6,9 @@ next: false
 
 [← Тарифы](/brew/membership)
 
-# Подписка на B-R-E-W Инсайдер
+# Присоединяйтесь к приоритетному списку
+
+## Зарезервируйте место в B-R-E-W Инсайдер
 
 <br>
 
@@ -36,7 +38,7 @@ next: false
   </div>
   
   <button type="submit" class="submit-btn" disabled>
-    Отправить заявку →
+    Получить приглашение
   </button>
 </form>
 
