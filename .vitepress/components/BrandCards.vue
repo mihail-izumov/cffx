@@ -1,24 +1,24 @@
 <template>
   <div class="brands-container">
     <div class="brand-card">
-      <h3>Green House</h3>
-      <p class="description-main">Региональное доминирование и риски экспансии</p>
-      <p class="description-goals">Формула успеха, Ключевые элементы, Адаптация</p>
-    </div>
-    <div class="brand-card">
-      <h3>Skuratov Coffee</h3>
+      <h3>Skuratov</h3>
       <p class="description-main">Формула «скорости» и пределы роста для «качества»</p>
       <p class="description-goals">Формула успеха, Рост без потерь</p>
+    </div>
+      <div class="brand-card">
+      <h3>Корж</h3>
+      <p class="description-main">Масштабировать уют без потери магии бренда</p>
+      <p class="description-goals">Создать культ бренда, Доминировать по цене</p>
     </div>
     <div class="brand-card">
       <h3>Surf Coffee</h3>
       <p class="description-main">Масштабирование на формуле «атмосферы»</p>
       <p class="description-goals">Ядро бренда, Рост без потерь</p>
     </div>
-    <div class="brand-card">
-      <h3>Корж</h3>
-      <p class="description-main">Масштабировать уют без потери магии бренда</p>
-      <p class="description-goals">Создать культ бренда, Доминировать по цене</p>
+      <div class="brand-card">
+      <h3>Green House</h3>
+      <p class="description-main">Региональное доминирование и риски экспансии</p>
+      <p class="description-goals">Формула успеха, Ключевые элементы, Адаптация</p>
     </div>
     <div class="brand-card">
       <h3>Вашей кофейни здесь нет?</h3>
