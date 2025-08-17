@@ -6,7 +6,9 @@ next: false
 
 [← Тарифы](/brew/membership)
 
-# Подключение к B-R-E-W
+# Ранний доступ
+
+## Получите приглашение в Симулятор B-R-E-W
 
 <br>
 
@@ -212,3 +214,6 @@ export default {
 }
 </script>
 
+### Что внутри
+
+<TariffFeatures />
