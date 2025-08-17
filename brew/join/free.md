@@ -4,7 +4,7 @@ prev: false
 next: false
 ---
 
-[← Тарифы](/brew/join)
+[← Тарифы](/brew/membership)
 
 # Подключение к B-R-E-W
 
