@@ -6,9 +6,9 @@ next: false
 
 [← Тарифы](/brew/membership)
 
-# Присоединяйтесь к приоритетному списку
+# Присоединяйтесь к Инсайдерам рынка
 
-## Зарезервируйте место в B-R-E-W Инсайдер
+## Отслеживайте, где конкуренты зарабатывают ваши деньги
 
 <script setup>
 import InsiderForm from '../../.vitepress/components/InsiderForm.vue'
