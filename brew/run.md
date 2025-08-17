@@ -10,8 +10,9 @@ outline: false
 
 Мы создали открытую платформу B-R-E-W, чтобы положить этому конец.
 
-<div class="start-button-container">
-  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Подключиться →</a>
+<div class="button-group">
+  <a href="/brew/join" class="btn btn-primary" rel="noopener noreferrer">Подключиться</a>
+  <a href="https://www.perplexity.ai/page/meta-franshiza-b-r-e-w-Tl5xfN_GREy2qFe4qDqSSg" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">НЕ франшиза</a>
 </div>
 
 <div style="text-align: center; margin: 2rem 0;">
@@ -207,9 +208,14 @@ const activeTab = ref('problem')
   </div>
 </div>
 
-<div class="start-button-container">
-  <a href="/brew/about" class="btn btn-primary"  rel="noopener noreferrer">Узнать Больше →</a>
-</div>
+## Клонируйте успех
+
+Применяйте лучший опыт рынка, чтобы расти по своим правилам.
+
+<BrandCards />
+
+→ [Все компании в фокусе](/radar/overview)
+
 
 ## Ваш личный стратегический тренажер
 
@@ -222,8 +228,8 @@ const activeTab = ref('problem')
       <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Кто начинает с нуля</h3>
       <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Вы мечтаете о своей кофейне. Вы хотите избежать дорогих ошибок и запустить бизнес, который сразу начнет приносить радость, а не проблемы. B-R-E-W — это ваш самый короткий путь от идеи до первой прибыли. <br><br> Мы уже сделали всю сложную работу за вас.</p>
     </div>
-    <a href="/brew/run" class="project-button">
-      Войти в Симулятор →
+    <a href="/brew/membership" class="project-button">
+      Начать Бесплатно →
     </a>
   </div>
 
@@ -232,23 +238,12 @@ const activeTab = ref('problem')
       <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Кто уже в игре</h3>
       <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">У вас уже есть кофейня, и скорее всего даже не одна. Вы знаете цену успеху и устали от операционной рутины. Вы хотите расти, систематизировать хаос и превратить свой бизнес в актив, который работает на вас. <br><br> B-R-E-W — это ваша операционная система для масштабирования.</p>
     </div>
-    <a href="/brew/run" class="project-button">
-      Войти в Симулятор →
+    <a href="/brew/membership" class="project-button">
+      Стать Инсайдером →
     </a>
   </div>
 
 </div>
-
-## Клонируйте успех
-
-Применяйте лучший опыт рынка, чтобы расти по своим правилам.
-
-<BrandCards />
-
-→ [Все компании в фокусе](/radar/overview)
-
-
-<br><br>
 
 
 <style>
@@ -321,6 +316,14 @@ const activeTab = ref('problem')
 
 
 <style>
+/* --- КОНТЕЙНЕР ДЛЯ ГРУППЫ КНОПОК --- */
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 24px 0;
+}
+
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
 .btn {
   display: inline-block;
@@ -332,10 +335,7 @@ const activeTab = ref('problem')
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
-  border: none;
-  margin: 10px 0;
 }
-
 .btn:hover {
   transform: translateY(-2px);
   text-decoration: none !important;
@@ -343,26 +343,44 @@ const activeTab = ref('problem')
 
 /* --- СТИЛЬ ОСНОВНОЙ КНОПКИ (ЯРКАЯ) --- */
 .btn-primary {
-  background-color: #C5F946; /* Яркий лаймовый */
+  background-color: #C5F946 !important;
   color: #000 !important;
+  border: none !important;
+  box-shadow: none !important;
 }
-
 .btn-primary:hover {
-  background-color: #347b6c; /* Темный при наведении */
-  color: white !important;
+  background-color: #b2de34 !important;
 }
 
-/* --- Контейнер для отдельной кнопки --- */
-.start-button-container {
-  margin: 20px 0;
-  text-align: left;
+/* --- СТИЛИ ВТОРИЧНОЙ КНОПКИ --- */
+
+/* СТИЛИ ДЛЯ СВЕТЛОЙ ТЕМЫ (почти сливается со светлым фоном) */
+.button-group .btn-secondary {
+  background-color: #f6f6f7 !important; /* Принудительно перебиваем стили VitePress */
+  color: #666 !important;
+  border: 1px solid #e5e5e5 !important;
+  box-shadow: none !important;
+}
+.button-group .btn-secondary:hover {
+  background-color: #eaeaeb !important;
+  border-color: #ddd !important;
+  color: #333 !important;
 }
 
-.start-button-container .btn {
-  display: inline-block;
-  margin: 0;
+/* СТИЛИ ДЛЯ ТЕМНОЙ ТЕМЫ (как было - почти сливается с тёмным фоном) */
+html.dark .button-group .btn-secondary {
+  background-color: #2f2f32 !important;
+  color: #a1a1aa !important;
+  border: 1px solid #434349 !important;
+  box-shadow: none !important;
+}
+html.dark .button-group .btn-secondary:hover {
+  background-color: #434349 !important;
+  border-color: #555 !important;
+  color: #e0e0e0 !important;
 }
 </style>
+
 
 <div class="brew-specs-container">
 
