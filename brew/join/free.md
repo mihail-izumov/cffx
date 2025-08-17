@@ -36,7 +36,7 @@ next: false
   </div>
   
   <button type="submit" class="submit-btn" disabled>
-    Отправить заявку →
+    Получить приглашение
   </button>
 </form>
 
