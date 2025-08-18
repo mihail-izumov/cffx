@@ -12,6 +12,7 @@ import PricingTable from '../components/PricingTable.vue'
 import MembershipCards from '../components/MembershipCards.vue'
 import TariffFeatures from '../components/TariffFeatures.vue'
 import TariffFeaturesFree from '../components/TariffFeaturesFree.vue'
+import TariffFeaturesInsider from '../components/TariffFeaturesInsider.vue'
 import LeadersTable from '../components/LeadersTable.vue'
 import YooKassaPayment from '../components/YooKassaPayment.vue'
 import FreeForm from '../components/FreeForm.vue'
@@ -36,6 +37,7 @@ export default {
     app.component('MembershipCards', MembershipCards)
     app.component('TariffFeatures', TariffFeatures)
     app.component('TariffFeaturesFree', TariffFeaturesFree)
+    app.component('TariffFeaturesInsider', TariffFeaturesInsider)
     app.component('LeadersTable', LeadersTable)
     app.component('YooKassaPayment', YooKassaPayment)
     app.component('FreeForm', FreeForm)
