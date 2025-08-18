@@ -3,7 +3,7 @@
     <div class="pricing-grid">
       <!-- Заголовок -->
       <div class="cell header">Преимущества</div>
-      <div class="cell header price">₽390000/год</div>
+      <div class="cell header price">₽360000/год</div>
       <!-- Данные -->
       <div class="cell subtitle">Все, что в Симуляторе и Инсайдере, плюс:</div>
       <div class="cell subtitle-check"></div>
@@ -85,6 +85,7 @@
 .subtitle {
   color: #999;
   font-size: 16px;
+  font-weight: 600;
 }
 /* Пустая ячейка для подзаголовка */
 .subtitle-check {
