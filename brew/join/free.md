@@ -16,6 +16,8 @@ next: false
 
 <FreeForm />
 
+[Техническая поддержка](https://t.me/Anna_runScale) по вопросам доступа
+
 ### Что внутри
 
 <TariffFeaturesFree />
