@@ -148,7 +148,7 @@
 
 .description-main {
   color: #4a5a4a !important;
-  font-size: 15px;
+  font-size: 15px !important;
   line-height: 1.6;
   margin: 0 0 4px 0;
   flex-grow: 1;
