@@ -10,7 +10,7 @@
       
       <div class="cell feature">
         <div class="feature-title">Участие в развитии платформы</div>
-        <div class="feature-description">Определяйте приоритеты развития BREW</div>
+        <div class="feature-description">Ваше место в экосистеме BREW</div>
         <div class="feature-details">Голосование за новые функции и города для анализа</div>
       </div>
       <div class="cell check">✓</div>
@@ -30,7 +30,7 @@
       <div class="cell check">✓</div>
       
       <div class="cell feature">
-        <div class="feature-title">-20% на Чекап Модуля Роста®</div>
+        <div class="feature-title">-20% на <a href="/checkup/overview" target="_blank" rel="noopener">Чекап</a> Модуля Роста®</div>
         <div class="feature-description">Найти скрытые разрывы в процессах, которые тормозят рост</div>
         <div class="feature-details">3 конкретных улучшения за 30 дней</div>
       </div>
@@ -84,6 +84,7 @@
 /* Серый подзаголовок */
 .subtitle {
   color: #999;
+  font-size: 16px;
 }
 /* Пустая ячейка для подзаголовка */
 .subtitle-check {
@@ -108,6 +109,14 @@
   font-size: 16px;
   color: #fff;
   margin-bottom: 4px;
+}
+.feature-title a {
+  color: #9aff00;
+  text-decoration: none;
+  font-weight: 600;
+}
+.feature-title a:hover {
+  text-decoration: underline;
 }
 .feature-description {
   font-weight: 400;
