@@ -10,8 +10,8 @@ next: false
 
 ## Отслеживайте, где конкуренты зарабатывают ваши деньги
 
-<script setup>
-import InsiderForm from '../../.vitepress/components/InsiderForm.vue'
-</script>
-
 <InsiderForm />
+
+### Что внутри
+
+<TariffFeaturesInsider />
