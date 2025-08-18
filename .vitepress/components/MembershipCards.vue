@@ -38,7 +38,7 @@
         />
       </div>
       <div class="card-price">
-        <strong>₽12,500</strong>
+        <strong>₽12,500/мес.</strong>
         <div class="payment-type">Ежемесячная оплата</div>
       </div>
       <p class="includes-all">Все, что в Симуляторе, плюс:</p>
@@ -110,12 +110,13 @@ const CheckIcon = () =>
 
 /* ЗАГОЛОВКИ --------------------------------------------------------------- */
 .card-title {
-  font-weight: 300;
+  font-weight: 600;
   text-align: center;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
   margin: 0 0 8px 0;
   color: #fff;
   border: none;
+  text-transform: uppercase;
 }
 
 .card-title--insider { font-size: 1.5rem; }
