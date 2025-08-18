@@ -20,6 +20,4 @@ import FreeForm from '../../.vitepress/components/FreeForm.vue'
 
 ### Что внутри
 
-<script setup>
-import FreeForm from '../../.vitepress/components/TariffFeaturesFree.vue'
-</script>
+
