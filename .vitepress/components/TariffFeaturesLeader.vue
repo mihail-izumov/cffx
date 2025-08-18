@@ -215,7 +215,7 @@
 }
 
 .leader-card .description-goals {
-  color: #5a6a7a !important;
+  color: #5a6a9a !important;
   font-size: 12px;
   line-height: 1.6;
   margin: 0;
@@ -239,6 +239,6 @@
 }
 
 .dark .leader-card .description-goals {
-  color: #95B3BD !important;
+  color: #95a9bd !important;
 }
 </style>
