@@ -1,7 +1,6 @@
 import { defineConfig, DefaultTheme } from 'vitepress'
 import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
-
 export default defineConfig({
   title: 'Модуль Роста®',
   locales: {
@@ -11,15 +10,12 @@ export default defineConfig({
       description: 'Находим то, что другие упускают.',
     },
   },
-
   transformPageData(pageData) {
     return pageData
   },
-
   buildEnd(siteConfig) {
     // Этот хук выполняется после сборки
   },
-
   head: [
     // ПРИНУДИТЕЛЬНАЯ ТЁМНАЯ ТЕМА - ПЕРВЫМ СКРИПТОМ!
     ['script', {}, `
@@ -49,7 +45,6 @@ export default defineConfig({
         { text: 'Реквизиты', href: '/credits' },
         { text: 'Orxaos', href: 'https://orxaos.sbs', target: '_blank' }
       ];
-
       let html = '<hr style="border: 0; border-top: 1px solid var(--vp-c-divider); margin: 24px 0;">';
       html += '<div class="custom-footer-links"><div class="footer-row">';
       links.slice(0, 3).forEach((link, i) => {
@@ -67,7 +62,6 @@ export default defineConfig({
       html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Модуль Роста® 2010 — 2025</div>';
       return html;
     }
-
     function replaceFooter() {
       let footer = document.querySelector('.VPFooter');
       if (!footer) {
@@ -88,30 +82,25 @@ export default defineConfig({
         footer.style.paddingBottom = '30px';
       }
     }
-
     function updateApplyLinkTarget() {
       const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="apply-link"]');
       applyLinks.forEach(applyLink => {
         applyLink.href = '/apply';
         applyLink.setAttribute('target', '_self');
         applyLink.removeAttribute('rel');
-
         const newLink = document.createElement('a');
         newLink.href = '/apply';
         newLink.className = applyLink.className;
         newLink.setAttribute('aria-label', 'apply-link');
         newLink.setAttribute('target', '_self');
-
         Array.from(applyLink.attributes).forEach(attr => {
-          if (attr.name !== 'href' && attr.name !== 'target' && attr.name !== 'rel') {
+          if (attr.name ! 'href' && attr.name ! 'target' && attr.name !== 'rel') {
             newLink.setAttribute(attr.name, attr.value);
           }
         });
-
         applyLink.parentNode.replaceChild(newLink, applyLink);
       });
     }
-
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => {
         replaceFooter();
@@ -121,7 +110,6 @@ export default defineConfig({
       replaceFooter();
       updateApplyLinkTarget();
     }
-
     window.addEventListener('load', () => {
       replaceFooter();
       updateApplyLinkTarget();
@@ -134,7 +122,6 @@ export default defineConfig({
       replaceFooter();
       updateApplyLinkTarget();
     }, 2000);
-
     let lastUrl = location.href;
     new MutationObserver(() => {
       const url = location.href;
@@ -153,26 +140,22 @@ export default defineConfig({
     .VPSocialLink[aria-label="login-link"]::after {
       font-weight: 600 !important;
     }
-
-    /* === СТИЛИ ДЛЯ HERO-СЕКЦИИ === */
+    /* = СТИЛИ ДЛЯ HERO-СЕКЦИИ = */
     .VPHero .name,
     .VPHero .text,
     .VPHero .tagline {
       color: white !important;
     }
-
-    /* === СТИЛИ ДЛЯ ССЫЛОК И КНОПОК НА ГЛАВНОЙ СТРАНИЦЕ === */
+    /* = СТИЛИ ДЛЯ ССЫЛОК И КНОПОК НА ГЛАВНОЙ СТРАНИЦЕ = */
     .VPHero .tagline a {
       color: var(--vp-c-brand-2) !important;
       text-decoration: none;
       transition: all 0.3s ease;
     }
-
     .VPHero .tagline a:hover {
       color: var(--vp-c-brand-1) !important;
       text-decoration: underline;
     }
-
     .VPHero .VPButton {
       background-color: var(--vp-c-brand-1) !important;
       border-color: var(--vp-c-brand-1) !important;
@@ -180,7 +163,6 @@ export default defineConfig({
       transition: all 0.3s ease;
       text-decoration: none !important;
     }
-
     .VPHero .VPButton:hover {
       background-color: var(--vp-c-brand-2) !important;
       border-color: var(--vp-c-brand-2) !important;
@@ -188,20 +170,18 @@ export default defineConfig({
       transform: translateY(-2px);
       text-decoration: none !important;
     }
-
     .VPContent a {
       color: var(--vp-c-brand-2);
       text-decoration: none;
       border-bottom: 1px solid transparent;
       transition: all 0.3s ease;
     }
-
     .VPContent a:hover {
       color: var(--vp-c-brand-1);
       border-bottom-color: var(--vp-c-brand-1);
     }
     
-    /* === СТИЛИ ДЛЯ КАРТОЧЕК НА ГЛАВНОЙ СТРАНИЦЕ === */
+    /* = СТИЛИ ДЛЯ КАРТОЧЕК НА ГЛАВНОЙ СТРАНИЦЕ = */
     .VPFeature .title,
     .VPFeature .link-text {
       transition: color 0.25s ease-in-out;
@@ -215,7 +195,6 @@ export default defineConfig({
     a.VPFeature.link:hover .link-text {
       color: var(--vp-c-brand-2);
     }
-
     html:not(.dark) .VPFeature {
       background-color: #202124 !important;
       border-color: #3c3c3c !important;
@@ -236,7 +215,6 @@ export default defineConfig({
       background-color: #2f2f2f !important;
       border-color: #555 !important;
     }
-
     :root {
       --vp-c-brand-1: #347b6c;
       --vp-c-brand-2: #C5F946;
@@ -275,7 +253,6 @@ export default defineConfig({
         margin-right: 4px !important;
       }
     }
-
     /* ПЛАНШЕТНАЯ/ПРОМЕЖУТОЧНАЯ ВЕРСИЯ (769px-960px) */
     @media (max-width: 960px) and (min-width: 769px) {
       .VPNavBar .content {
@@ -301,7 +278,6 @@ export default defineConfig({
         margin-right: 2px !important;
       }
     }
-
     /* МОБИЛЬНАЯ ВЕРСИЯ (меньше 768px) - ИСПРАВЛЕНО */
     @media (max-width: 768px) {
       /* Скрываем стандартные социальные ссылки в шапке */
@@ -368,7 +344,6 @@ export default defineConfig({
         display: none !important;
       }
     }
-
     .VPSocialLink .vpi-social-github {
       display: none !important;
     }
@@ -454,7 +429,8 @@ export default defineConfig({
       '/system/': { items: sidebarSystem() },
       '/journal/': { items: sidebarJournal() },
       '/radar/': { items: sidebarRadar() },
-      '/clients/': { items: sidebarClients() }
+      '/clients/': { items: sidebarClients() },
+      '/terms/': { items: sidebarTerms() }
     },
     search: {
       provider: 'local',
@@ -517,7 +493,6 @@ function sidebarBrew(): DefaultTheme.SidebarItem[] {
         { text: 'Кофейная экосистема', link: '/brew/about' },
         { text: 'Кофейный Протокол', link: '/brew/protocol' },
         { text: 'Как работает', link: '/brew/how-it-works' }
-
       ]
     }]
 }
@@ -649,6 +624,17 @@ function sidebarClients(): DefaultTheme.SidebarItem[] {
         { text: 'СУПЕРЛЕНД', link: '/clients/superland' },
         { text: 'WOODLED', link: '/clients/woodled' },
         { text: 'World Plastics Summit 2022', link: '/clients/world-plastics-summit-2022' },
+      ]
+    }]
+}
+
+// Функция для раздела "Условия использования" с добавленным пунктом "Соглашения"
+function sidebarTerms(): DefaultTheme.SidebarItem[] {
+  return [{
+      text: 'Условия использования', collapsed: false, items: [
+        { text: 'Соглашения', link: '/terms' },
+        { text: 'Политика конфиденциальности', link: '/terms/policy' },
+        { text: 'Согласие на обработку данных', link: '/terms/privacy' }
       ]
     }]
 }
