@@ -38,7 +38,7 @@
         />
       </div>
       <div class="card-price">
-        <strong>₽12,500/мес.</strong>
+        <strong>₽12,500</strong>
         <div class="payment-type">Ежемесячная оплата</div>
       </div>
       <p class="includes-all">Все, что в Симуляторе, плюс:</p>
