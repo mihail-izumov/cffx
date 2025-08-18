@@ -8,7 +8,7 @@ outline: false
 
 Каждый владелец кофейни знает это чувство: ты один на один с рынком. Принимаешь решения, основываясь на интуиции и чужих советах. Этот путь полон дорогих ошибок.
 
-Мы создали открытую платформу B-R-E-W, чтобы положить этому конец.
+Мы создали открытую платформу BREW, чтобы положить этому конец.
 
 <div class="button-group">
   <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Подключиться</a>
@@ -240,7 +240,7 @@ const activeTab = ref('problem')
   <div class="project-card">
     <div>
       <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Кто начинает с нуля</h3>
-      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Вы мечтаете о своей кофейне. Вы хотите избежать дорогих ошибок и запустить бизнес, который сразу начнет приносить радость, а не проблемы. B-R-E-W — это ваш самый короткий путь от идеи до первой прибыли. <br><br> Мы уже сделали всю сложную работу за вас.</p>
+      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Вы мечтаете о своей кофейне. Вы хотите избежать дорогих ошибок и запустить бизнес, который сразу начнет приносить радость, а не проблемы. BREW — это ваш самый короткий путь от идеи до первой прибыли. <br><br> Мы уже сделали всю сложную работу за вас.</p>
     </div>
     <a href="/brew/membership" class="project-button">
       Начать Бесплатно →
@@ -250,7 +250,7 @@ const activeTab = ref('problem')
   <div class="project-card">
     <div>
       <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Кто уже в игре</h3>
-      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">У вас уже есть кофейня, и скорее всего даже не одна. Вы знаете цену успеху и устали от операционной рутины. Вы хотите расти, систематизировать хаос и превратить свой бизнес в актив, который работает на вас. <br><br> B-R-E-W — это ваша операционная система для масштабирования.</p>
+      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">У вас уже есть кофейня, и скорее всего даже не одна. Вы знаете цену успеху и устали от операционной рутины. Вы хотите расти, систематизировать хаос и превратить свой бизнес в актив, который работает на вас. <br><br> BREW — это ваша операционная система для масштабирования.</p>
     </div>
     <a href="/brew/membership" class="project-button">
       Стать Инсайдером →
@@ -400,7 +400,7 @@ html.dark .button-group .btn-secondary:hover {
 
 <div class="brew-specs-container">
 
-  <h1 class="main-specs-title">Характеристики <br> B-R-E-W</h1>
+  <h1 class="main-specs-title">Характеристики <br> BREW</h1>
 
   <!-- Ключевые показатели -->
   <div class="specs-section">
@@ -427,7 +427,7 @@ html.dark .button-group .btn-secondary:hover {
 
   <!-- Платформа B-R-E-W -->
   <div class="specs-section">
-    <h2 class="section-title">Платформа B-R-E-W</h2>
+    <h2 class="section-title">Платформа BREW</h2>
     <div class="specs-grid four-cols">
       <div class="spec-item">
         <span class="spec-value">Мета-франшиза</span>
