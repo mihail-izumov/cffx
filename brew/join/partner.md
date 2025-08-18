@@ -6,7 +6,7 @@ next: false
 
 [← Тарифы](/brew/membership)
 
-# Ваше место в экосистеме B-R-E-W
+# Ваше место в экосистеме BREW
 
 Лидеры B-R-E-W получают право первыми выбирать города для симуляции, компании для анализа Радаром и влиять на разработку новых инструментов. 
 
@@ -65,8 +65,10 @@ next: false
 
 ## Заявка для новых лидеров рынка
 
-<script setup>
-import PartnerForm from '../../.vitepress/components/PartnerForm.vue'
-</script>
+**Подписка ₽360000/год**
 
 <PartnerForm />
+
+## Что внутри
+
+<TariffFeaturesLeader />
