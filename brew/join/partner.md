@@ -69,6 +69,8 @@ next: false
 
 <PartnerForm />
 
+[Техническая поддержка](https://t.me/Anna_runScale) по вопросам оплаты и доступа
+
 ## Что внутри
 
 <TariffFeaturesLeader />
