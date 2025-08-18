@@ -94,7 +94,7 @@ export default defineConfig({
         newLink.setAttribute('aria-label', 'apply-link');
         newLink.setAttribute('target', '_self');
         Array.from(applyLink.attributes).forEach(attr => {
-          if (attr.name ! 'href' && attr.name ! 'target' && attr.name !== 'rel') {
+          if (attr.name !== 'href' && attr.name !== 'target' && attr.name !== 'rel') {
             newLink.setAttribute(attr.name, attr.value);
           }
         });
@@ -461,7 +461,6 @@ export default defineConfig({
     ],
   }
 })
-
 // Функция навигации с переименованным "Радар" в "Инструменты" и упрощенным подменю
 function nav(): DefaultTheme.NavItem[] {
   return [
@@ -482,7 +481,6 @@ function nav(): DefaultTheme.NavItem[] {
     }
   ]
 }
-
 // Функция sidebar для раздела BREW остается прежней
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [{
@@ -496,7 +494,6 @@ function sidebarBrew(): DefaultTheme.SidebarItem[] {
       ]
     }]
 }
-
 function sidebarAbout(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Компания', collapsed: false, items: [
@@ -507,7 +504,6 @@ function sidebarAbout(): DefaultTheme.SidebarItem[] {
       ]
     }]
 }
-
 function sidebarMethod(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Метод', collapsed: false, items: [
@@ -520,7 +516,6 @@ function sidebarMethod(): DefaultTheme.SidebarItem[] {
       ]
     }]
 }
-
 function sidebarTechnology(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Технологии', collapsed: false, items: [
@@ -534,7 +529,6 @@ function sidebarTechnology(): DefaultTheme.SidebarItem[] {
       ]
     }]
 }
-
 // Изменено название с "Бизнес-чекап" на "Чекап"
 function sidebarCheckup(): DefaultTheme.SidebarItem[] {
   return [
@@ -560,7 +554,6 @@ function sidebarCheckup(): DefaultTheme.SidebarItem[] {
     }
   ]
 }
-
 function sidebarSystem(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Система роста бизнеса', collapsed: false, items: [
@@ -569,7 +562,6 @@ function sidebarSystem(): DefaultTheme.SidebarItem[] {
       ]
     }]
 }
-
 function sidebarJournal(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Журнал', collapsed: false, items: [
@@ -579,7 +571,6 @@ function sidebarJournal(): DefaultTheme.SidebarItem[] {
       ]
     }]
 }
-
 // Обновленная функция sidebarRadar с двумя группами меню
 function sidebarRadar(): DefaultTheme.SidebarItem[] {
   return [
@@ -607,7 +598,6 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
     }
   ]
 }
-
 function sidebarClients(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Клиенты', collapsed: false, items: [
@@ -627,8 +617,6 @@ function sidebarClients(): DefaultTheme.SidebarItem[] {
       ]
     }]
 }
-
-// Функция для раздела "Условия использования" с добавленным пунктом "Соглашения"
 function sidebarTerms(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Условия использования', collapsed: false, items: [
