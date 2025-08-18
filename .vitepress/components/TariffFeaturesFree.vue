@@ -1,0 +1,137 @@
+<template>
+  <div class="brands-container">
+    <!-- ФУНКЦИИ ТАРИФА: Симулятор -->
+    <div class="brand-card simulator-card">
+      <div class="tariff-badge simulator">Симулятор</div>
+      <h3>Анализ и симулятор</h3>
+      <p class="description-main">Используйте опыт тысяч кофеен для роста без потерь</p>
+      <p class="description-goals">Цифровая копия ТОП-10 кофейных рынков РФ</p>
+    </div>
+    
+    <div class="brand-card simulator-card">
+      <div class="tariff-badge simulator">Симулятор</div>
+      <h3>Готовые диалоги для быстрого старта</h3>
+      <p class="description-main">Начинайте работу с проверенными сценариями</p>
+      <p class="description-goals">Базовые диалоги для анализа конкретных задач</p>
+    </div>
+    
+    <div class="brand-card simulator-card">
+      <div class="tariff-badge simulator">Симулятор</div>
+      <h3>Клонировать успех лидеров рынка</h3>
+      <p class="description-main">Применяйте лучший опыт для своего роста</p>
+      <p class="description-goals">Формулы успеха: культ бренда, ценовое доминирование</p>
+    </div>
+    
+    <div class="brand-card simulator-card">
+      <div class="tariff-badge simulator">Симулятор</div>
+      <h3>ИИ-ассистент <a href="/radar/who-is-anna" target="_blank">Анна</a></h3>
+      <p class="description-main">Персональный навигатор по платформе</p>
+      <p class="description-goals">Базовые рекомендации для работы с BREW</p>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.brands-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 4px 0 12px 0;
+  margin: 24px 0;
+}
+
+/* Мобильная адаптивность - на узких экранах делаем 1 колонку */
+@media (max-width: 768px) {
+  .brands-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.brand-card {
+  border-radius: 12px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  border-style: solid;
+  border-width: 1px;
+  border-top-width: 4px;
+  position: relative;
+}
+
+/* СВЕТЛАЯ ТЕМА - карточки светлые */
+.simulator-card {
+  background-color: #f9f8f6 !important;
+  border-color: #e5e2dd !important;
+  border-top-color: #A98E60 !important;
+}
+
+/* ТЕМНАЯ ТЕМА - карточки темные */
+.dark .simulator-card {
+  background-color: #2B2A27 !important;
+  border-color: #383633 !important;
+  border-top-color: #A98E60 !important;
+}
+
+/* Стили для бейджей тарифов */
+.tariff-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+  width: fit-content;
+  border: none;
+}
+
+.tariff-badge.simulator {
+  background-color: rgba(169, 142, 96, 0.25);
+  color: #8b7348;
+}
+
+/* Заголовки */
+.brand-card h3 {
+  font-size: 15px;
+  line-height: 1.4;
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-weight: 700;
+  border: none;
+  padding: 0;
+}
+
+/* СВЕТЛАЯ ТЕМА - текст темный */
+.brand-card h3 {
+  color: #2c3e2c !important;
+}
+
+.description-main {
+  color: #4a5a4a !important;
+  font-size: 15px !important;
+  line-height: 1.6;
+  margin: 0 0 4px 0;
+  flex-grow: 1;
+}
+
+.simulator-card .description-goals {
+  color: #7a6e5a !important;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ТЕМНАЯ ТЕМА - текст светлый */
+.dark .brand-card h3 {
+  color: #ffffff !important;
+}
+
+.dark .description-main {
+  color: #f0f0f0 !important;
+}
+
+.dark .simulator-card .description-goals {
+  color: #BDB095 !important;
+}
+</style>
