@@ -29,7 +29,7 @@
     <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) -->
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title card-title--insider">ИНСАЙДЕР</h3>
-      <p class="card-subtitle">Отследить, где конкуренты зарабывают ваши деньги</p>
+      <p class="card-subtitle">Отследить, где конкуренты зарабатывают ваши деньги</p>
       <div class="card-image-wrapper">
         <img
           src="/insider-ban.svg"
@@ -123,12 +123,15 @@ const CheckIcon = () =>
 
 /* ПОДЗАГОЛОВОК ------------------------------------------------------------ */
 .card-subtitle {
-  font-size: 0.85rem;
-  color: #a8a8a8;
+  font-size: 1rem;
+  color: #c0c0c0;
   text-align: center;
   margin: 0 0 32px 0;
   line-height: 1.4;
-  font-style: italic;
+  font-weight: 400;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ИЗОБРАЖЕНИЕ ------------------------------------------------------------- */
@@ -255,7 +258,8 @@ const CheckIcon = () =>
   }
   
   .card-subtitle {
-    font-size: 0.9rem !important;
+    font-size: 1rem !important;
+    max-width: none !important;
   }
 }
 
