@@ -172,8 +172,8 @@
 }
 
 .tariff-badge.leader {
-  background-color: rgba(74, 114, 160, 0.3);
-  color: #2d4b79;
+  background-color: rgba(100, 149, 237, 0.25);
+  color: #4169E1;
 }
 
 /* Заголовки */
