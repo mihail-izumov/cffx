@@ -1,9 +1,9 @@
 <template>
   <div class="pricing-grid">
-    <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) — те-перь первая -->
+    <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) -->
     <div class="pricing-card">
       <h3 class="card-title card-title--simulator">СИМУЛЯТОР</h3>
-
+      <p class="card-subtitle">Избежать 3 самых дорогих ошибок новичков</p>
       <div class="card-image-wrapper">
         <img
           src="/simulator-ban.svg"
@@ -11,28 +11,25 @@
           class="card-image"
         />
       </div>
-
       <div class="card-price">
         <strong>Бесплатно</strong>
+        <div class="payment-type">Регистрация</div>
       </div>
-
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Симулятор города</span></li>
-        <li class="feature-item"><CheckIcon /><span>Тестирование бизнес-моделей</span></li>
-        <li class="feature-item"><CheckIcon /><span>Делиться чатами с Анной</span></li>
-        <li class="feature-item"><CheckIcon /><span>Доступ к Кофейному Протоколу</span></li>
-        <li class="feature-item"><CheckIcon /><span>Поддержка Анны при старте</span></li>
+        <li class="feature-item"><CheckIcon /><span>Анализ и симулятор</span></li>
+        <li class="feature-item"><CheckIcon /><span>Готовые диалоги для быстрого старта</span></li>
+        <li class="feature-item"><CheckIcon /><span>Клонировать успех лидеров рынка</span></li>
+        <li class="feature-item"><CheckIcon /><span>ИИ-ассистент Анна</span></li>
       </ul>
-
       <a href="/brew/join/free" class="card-button card-button--secondary">
         Начать с Симулятора
       </a>
     </div>
 
-    <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) — теперь вторая -->
+    <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) -->
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title card-title--insider">ИНСАЙДЕР</h3>
-
+      <p class="card-subtitle">Отследить, где конкуренты зарабывают ваши деньги</p>
       <div class="card-image-wrapper">
         <img
           src="/insider-ban.svg"
@@ -40,20 +37,16 @@
           class="card-image"
         />
       </div>
-
       <div class="card-price">
-        <strong>₽12500/мес.</strong>
+        <strong>₽12,500/мес.</strong>
+        <div class="payment-type">Ежемесячная оплата</div>
       </div>
-
       <p class="includes-all">Все, что в Симуляторе, плюс:</p>
-
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Ежемесячный обзор рынка</span></li>
-        <li class="feature-item"><CheckIcon /><span>Доступ к Индексу Роста</span></li>
-        <li class="feature-item"><CheckIcon /><span>Анализ компаний в фокусе</span></li>
-        <li class="feature-item"><CheckIcon /><span>Обновления симулятора</span></li>
+        <li class="feature-item"><CheckIcon /><span>Ваша кофейня VS Рынок в реальном времени</span></li>
+        <li class="feature-item"><CheckIcon /><span>Индекс Роста: сигналы изменений</span></li>
+        <li class="feature-item"><CheckIcon /><span>Ранний доступ к новым городам</span></li>
       </ul>
-
       <a href="/brew/join/insider" class="card-button">Стать Инсайдером</a>
     </div>
   </div>
@@ -120,13 +113,23 @@ const CheckIcon = () =>
   font-weight: 300;
   text-align: center;
   letter-spacing: 0.2em;
-  margin: 0 0 40px 0;
+  margin: 0 0 8px 0;
   color: #fff;
   border: none;
 }
 
 .card-title--insider { font-size: 1.5rem; }
 .card-title--simulator { font-size: 1.25rem; }
+
+/* ПОДЗАГОЛОВОК ------------------------------------------------------------ */
+.card-subtitle {
+  font-size: 0.85rem;
+  color: #a8a8a8;
+  text-align: center;
+  margin: 0 0 32px 0;
+  line-height: 1.4;
+  font-style: italic;
+}
 
 /* ИЗОБРАЖЕНИЕ ------------------------------------------------------------- */
 .card-image-wrapper {
@@ -153,6 +156,13 @@ const CheckIcon = () =>
   font-weight: 600;
   font-size: 1.3rem;
   color: #fff;
+  display: block;
+}
+
+.payment-type {
+  font-size: 0.8rem;
+  color: #a8a8a8;
+  margin-top: 4px;
 }
 
 /* ДОПОЛНИТЕЛЬНЫЙ ТЕКСТ ---------------------------------------------------- */
@@ -242,6 +252,10 @@ const CheckIcon = () =>
   
   .pricing-card {
     padding: 32px 20px !important;
+  }
+  
+  .card-subtitle {
+    font-size: 0.9rem !important;
   }
 }
 
