@@ -11,8 +11,12 @@ import ValueCards from '../components/ValueCards.vue'
 import PricingTable from '../components/PricingTable.vue'
 import MembershipCards from '../components/MembershipCards.vue'
 import TariffFeatures from '../components/TariffFeatures.vue'
+import TariffFeaturesFree from '../components/TariffFeaturesFree.vue'
 import LeadersTable from '../components/LeadersTable.vue'
 import YooKassaPayment from '../components/YooKassaPayment.vue'
+import FreeForm from '../components/FreeForm.vue'
+import InsiderForm from '../components/InsiderForm.vue'
+import PartnerForm from '../components/PartnerForm.vue'
 
 export default {
   extends: DefaultTheme,
@@ -31,7 +35,11 @@ export default {
     app.component('PricingTable', PricingTable)
     app.component('MembershipCards', MembershipCards)
     app.component('TariffFeatures', TariffFeatures)
+    app.component('TariffFeaturesFree', TariffFeaturesFree)
     app.component('LeadersTable', LeadersTable)
     app.component('YooKassaPayment', YooKassaPayment)
+    app.component('FreeForm', FreeForm)
+    app.component('InsiderForm', InsiderForm)
+    app.component('PartnerForm', PartnerForm)
   }
 } satisfies Theme
