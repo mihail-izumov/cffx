@@ -24,7 +24,7 @@
     
     <div class="brand-card leader-card">
       <div class="tariff-badge leader">Новый Лидер</div>
-      <h3>-20% на Чекап Модуля Роста®</h3>
+      <h3>-20% на <a href="/checkup/overview" target="_blank">Чекап</a> Модуля Роста®</h3>
       <p class="description-main">Найти скрытые разрывы в процессах, которые тормозят рост</p>
       <p class="description-goals">3 конкретных улучшения за 30 дней</p>
     </div>
@@ -172,8 +172,8 @@
 }
 
 .tariff-badge.leader {
-  background-color: rgba(74, 114, 160, 0.18);
-  color: #3d5a80;
+  background-color: rgba(74, 114, 160, 0.3);
+  color: #2d4b79;
 }
 
 /* Заголовки */
