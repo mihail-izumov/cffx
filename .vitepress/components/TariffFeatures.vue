@@ -4,28 +4,28 @@
     <div class="brand-card simulator-card">
       <div class="tariff-badge simulator">Симулятор</div>
       <h3>Анализ и симулятор</h3>
-      <p class="description-main">Используйте опыт тысяч кофеен для роста без потерь.</p>
+      <p class="description-main">Используйте опыт тысяч кофеен для роста без потерь</p>
       <p class="description-goals">Цифровая копия ТОП-10 кофейных рынков РФ</p>
     </div>
     
     <div class="brand-card simulator-card">
       <div class="tariff-badge simulator">Симулятор</div>
       <h3>Готовые диалоги для быстрого старта</h3>
-      <p class="description-main">Начинайте работу с проверенными сценариями.</p>
+      <p class="description-main">Начинайте работу с проверенными сценариями</p>
       <p class="description-goals">Базовые диалоги для анализа конкретных задач</p>
     </div>
     
     <div class="brand-card simulator-card">
       <div class="tariff-badge simulator">Симулятор</div>
       <h3>Клонировать успех лидеров рынка</h3>
-      <p class="description-main">Применяйте лучший опыт для своего роста.</p>
+      <p class="description-main">Применяйте лучший опыт для своего роста</p>
       <p class="description-goals">Формулы успеха: культ бренда, ценовое доминирование</p>
     </div>
     
     <div class="brand-card simulator-card">
       <div class="tariff-badge simulator">Симулятор</div>
       <h3>ИИ-ассистент Анна</h3>
-      <p class="description-main">Персональный навигатор по платформе.</p>
+      <p class="description-main">Персональный навигатор по платформе</p>
       <p class="description-goals">Базовые рекомендации для работы с BREW</p>
     </div>
 
@@ -33,21 +33,21 @@
     <div class="brand-card insider-card">
       <div class="tariff-badge insider">Инсайдер</div>
       <h3>Ваша кофейня VS Рынок в реальном времени</h3>
-      <p class="description-main">Отследить, где конкуренты зарабатывают ваши деньги.</p>
+      <p class="description-main">Отследить, где конкуренты зарабатывают ваши деньги</p>
       <p class="description-goals">1 раз/мес. анализ отзывов и сравнение с конкурентами</p>
     </div>
     
     <div class="brand-card insider-card">
       <div class="tariff-badge insider">Инсайдер</div>
       <h3>Индекс Роста: сигналы изменений</h3>
-      <p class="description-main">Получайте уведомления о движениях рынка.</p>
+      <p class="description-main">Получайте уведомления о движениях рынка</p>
       <p class="description-goals">Тренды, сдвиги в поведении гостей, новые возможности</p>
     </div>
     
     <div class="brand-card insider-card">
       <div class="tariff-badge insider">Инсайдер</div>
       <h3>Ранний доступ к новым городам</h3>
-      <p class="description-main">На месяц раньше всех остальных.</p>
+      <p class="description-main">На месяц раньше всех остальных</p>
       <p class="description-goals">Новые города, локации, обновления аналитики</p>
     </div>
   </div>
@@ -148,7 +148,7 @@
 
 .description-main {
   color: #4a5a4a !important;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.6;
   margin: 0 0 4px 0;
   flex-grow: 1;
@@ -156,14 +156,14 @@
 
 .insider-card .description-goals {
   color: #5a7a6a !important;
-  font-size: 15px;
+  font-size: 12px;
   line-height: 1.6;
   margin: 0;
 }
 
 .simulator-card .description-goals {
   color: #7a6e5a !important;
-  font-size: 15px;
+  font-size: 12px;
   line-height: 1.6;
   margin: 0;
 }
