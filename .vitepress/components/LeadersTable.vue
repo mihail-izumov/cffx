@@ -3,7 +3,7 @@
     <div class="pricing-grid">
       <!-- Заголовок -->
       <div class="cell header">Преимущества</div>
-      <div class="cell header price">₽360000/год</div>
+      <div class="cell header price">₽390000/год</div>
       <!-- Данные -->
       <div class="cell subtitle">Все, что в Симуляторе и Инсайдере, плюс:</div>
       <div class="cell subtitle-check"></div>
@@ -105,7 +105,7 @@
 }
 .feature-title {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   color: #fff;
   margin-bottom: 4px;
 }
@@ -117,7 +117,7 @@
   line-height: 1.4;
 }
 .feature-details {
-  font-size: 12px;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.3;
 }
