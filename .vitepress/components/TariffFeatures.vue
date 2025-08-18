@@ -1,61 +1,54 @@
 <template>
   <div class="brands-container">
-    <!-- ФУНКЦИИ ТАРИФА: Инсайдер -->
-    <div class="brand-card insider-card">
-      <div class="tariff-badge insider">Инсайдер</div>
-      <h3>Ежемесячный обзор рынка</h3>
-      <p class="description-main">Стратегическая информация для точных решений.</p>
-      <p class="description-goals">Глубокий отчет о ключевых трендах, изменениях в поведении потребителей и сдвигах в отрасли.</p>
-    </div>
-    
-    <div class="brand-card insider-card">
-      <div class="tariff-badge insider">Инсайдер</div>
-      <h3>Доступ к Индексу Роста</h3>
-      <p class="description-main">Отслеживайте динамику конкурентов и проверяйте бенчмарки по рынку.</p>
-      <p class="description-goals">Объективная оценка эффективности кофейных компаний на основе 15 ключевых метрик на базе сотен тысяч очищенных отзывов.</p>
-    </div>
-    
-    <div class="brand-card insider-card">
-      <div class="tariff-badge insider">Инсайдер</div>
-      <h3>Анализ компаний в фокусе</h3>
-      <p class="description-main">Возможность учиться на чужом опыте и избегать типичных ловушек.</p>
-      <p class="description-goals">Подробные кейсы успешных и провальных проектов с анализом ключевых факторов роста или падения.</p>
-    </div>
-    
-    <div class="brand-card insider-card">
-      <div class="tariff-badge insider">Инсайдер</div>
-      <h3>Обновления симулятора</h3>
-      <p class="description-main">Первый доступ к новым версиям и участие в тестировании новых возможностей.</p>
-      <p class="description-goals">Регулярное добавление новых городов, локаций и функций.</p>
-    </div>
-
     <!-- ФУНКЦИИ ТАРИФА: Симулятор -->
     <div class="brand-card simulator-card">
       <div class="tariff-badge simulator">Симулятор</div>
-      <h3>Симулятор города</h3>
-      <p class="description-main">Тестируйте гипотезы, анализируйте форматы и делайте прогнозы выручки без финансовых рисков.</p>
-      <p class="description-goals">Цифровая копия реального города с точными данными о локациях, конкурентах и проходимости.</p>
+      <h3>Анализ и симулятор</h3>
+      <p class="description-main">Используйте опыт тысяч кофеен для роста без потерь.</p>
+      <p class="description-goals">Цифровая копия ТОП-10 кофейных рынков РФ</p>
     </div>
     
     <div class="brand-card simulator-card">
       <div class="tariff-badge simulator">Симулятор</div>
-      <h3>Тестирование бизнес-моделей</h3>
-      <p class="description-main">Оценивайте, какая модель принесет максимальную прибыль в конкретной локации.</p>
-      <p class="description-goals">Проверка различных концепций: от классической кофейни до коворкинга с кофе.</p>
+      <h3>Готовые диалоги для быстрого старта</h3>
+      <p class="description-main">Начинайте работу с проверенными сценариями.</p>
+      <p class="description-goals">Базовые диалоги для анализа конкретных задач</p>
     </div>
     
     <div class="brand-card simulator-card">
       <div class="tariff-badge simulator">Симулятор</div>
-      <h3>Доступ к Кофейному Протоколу</h3>
-      <p class="description-main">Коллективный опыт сотен кофеен, структурированный для немедленного применения.</p>
-      <p class="description-goals">Открытая живая база знаний с проверенными практиками: оборудование, поставщики, персонал, маркетинг.</p>
+      <h3>Клонировать успех лидеров рынка</h3>
+      <p class="description-main">Применяйте лучший опыт для своего роста.</p>
+      <p class="description-goals">Формулы успеха: культ бренда, ценовое доминирование</p>
     </div>
     
     <div class="brand-card simulator-card">
       <div class="tariff-badge simulator">Симулятор</div>
-      <h3>Поддержка Анны при старте</h3>
-      <p class="description-main">Рекомендации по действиям для максимально эффективного старта.</p>
-      <p class="description-goals">Персональная помощь ИИ-ассистента Анны по методологии B-R-E-W-</p>
+      <h3>ИИ-ассистент Анна</h3>
+      <p class="description-main">Персональный навигатор по платформе.</p>
+      <p class="description-goals">Базовые рекомендации для работы с BREW</p>
+    </div>
+
+    <!-- ФУНКЦИИ ТАРИФА: Инсайдер -->
+    <div class="brand-card insider-card">
+      <div class="tariff-badge insider">Инсайдер</div>
+      <h3>Ваша кофейня VS Рынок в реальном времени</h3>
+      <p class="description-main">Отследить, где конкуренты зарабатывают ваши деньги.</p>
+      <p class="description-goals">1 раз/мес. анализ отзывов и сравнение с конкурентами</p>
+    </div>
+    
+    <div class="brand-card insider-card">
+      <div class="tariff-badge insider">Инсайдер</div>
+      <h3>Индекс Роста: сигналы изменений</h3>
+      <p class="description-main">Получайте уведомления о движениях рынка.</p>
+      <p class="description-goals">Тренды, сдвиги в поведении гостей, новые возможности</p>
+    </div>
+    
+    <div class="brand-card insider-card">
+      <div class="tariff-badge insider">Инсайдер</div>
+      <h3>Ранний доступ к новым городам</h3>
+      <p class="description-main">На месяц раньше всех остальных.</p>
+      <p class="description-goals">Новые города, локации, обновления аналитики</p>
     </div>
   </div>
 </template>
