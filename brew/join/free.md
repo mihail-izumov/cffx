@@ -12,12 +12,8 @@ next: false
 
 <br>
 
-<script setup>
-import FreeForm from '../../.vitepress/components/FreeForm.vue'
-</script>
-
 <FreeForm />
 
 ### Что внутри
 
-
+<TariffFeaturesFree />
