@@ -119,12 +119,12 @@ const CheckIcon = () =>
   text-transform: uppercase;
 }
 
-.card-title--insider { font-size: 1.5rem; }
-.card-title--simulator { font-size: 1.25rem; }
+.card-title--insider { font-size: 1.625rem; }
+.card-title--simulator { font-size: 1.375rem; }
 
 /* ПОДЗАГОЛОВОК ------------------------------------------------------------ */
 .card-subtitle {
-  font-size: 1rem;
+  font-size: 1.125rem;
   color: #c0c0c0;
   text-align: center;
   margin: 0 0 32px 0;
@@ -158,20 +158,20 @@ const CheckIcon = () =>
 
 .card-price strong {
   font-weight: 600;
-  font-size: 1.3rem;
+  font-size: 1.425rem;
   color: #fff;
   display: block;
 }
 
 .payment-type {
-  font-size: 0.8rem;
+  font-size: 0.925rem;
   color: #a8a8a8;
   margin-top: 4px;
 }
 
 /* ДОПОЛНИТЕЛЬНЫЙ ТЕКСТ ---------------------------------------------------- */
 .includes-all {
-  font-size: 0.9rem;
+  font-size: 1.025rem;
   color: #a8a8a8;
   margin: 0 0 16px 4px;
 }
@@ -191,7 +191,7 @@ const CheckIcon = () =>
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 0.813rem;
+  font-size: 0.938rem;
   line-height: 1.2;
   color: #e0e0e0;
 }
@@ -209,7 +209,7 @@ const CheckIcon = () =>
   display: block;
   padding: 14px 18px;
   border-radius: 12px;
-  font-size: 0.94rem;
+  font-size: 1.065rem;
   font-weight: 700;
   text-align: center;
   text-decoration: none;
@@ -245,7 +245,7 @@ const CheckIcon = () =>
 /* МОБИЛЬНАЯ ВЕРСИЯ -------------------------------------------------------- */
 @media (max-width: 768px) {
   .feature-item {
-    font-size: 1rem !important;
+    font-size: 1.125rem !important;
     line-height: 1.4 !important;
   }
   
@@ -259,14 +259,14 @@ const CheckIcon = () =>
   }
   
   .card-subtitle {
-    font-size: 1rem !important;
+    font-size: 1.125rem !important;
     max-width: none !important;
   }
 }
 
 @media (max-width: 480px) {
   .feature-item {
-    font-size: 0.95rem !important;
+    font-size: 1.075rem !important;
     line-height: 1.35 !important;
   }
 }
