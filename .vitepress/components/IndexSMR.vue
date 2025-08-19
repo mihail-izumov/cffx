@@ -3,9 +3,8 @@
     <table class="index-smr-table">
       <thead>
         <tr>
-          <th>Значок</th>
-          <th>Индекс</th>
           <th>Кофейня</th>
+          <th>Индекс</th>
           <th>Точки</th>
           <th>Масштаб</th>
           <th>Статус</th>
@@ -22,14 +21,14 @@
           v-for="(coffee, idx) in coffeeData"
           :key="`${coffee.name}-${coffee.index}`"
           :class="{
-            'golden-row': idx < 6,
+            'golden-row': idx < 6
           }"
         >
-          <td>
+          <td class="cell-left">
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
+            {{ coffee.name }}
           </td>
           <td class="cell-center">{{ coffee.index }}</td>
-          <td class="cell-left">{{ coffee.name }}</td>
           <td class="cell-center">{{ coffee.points }}</td>
           <td class="cell-center">{{ coffee.scale }}</td>
           <td class="cell-nowrap">{{ coffee.status }}</td>
@@ -51,7 +50,7 @@ export default {
   data() {
     return {
       coffeeData: [
-        { icon:'🟡', index:98,  name:'Корж',               points:8,  scale:'~12+', status:'Лидер 👑', type:'Независимая сеть',    potential:'Высокий',   stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Очень высокий' },
+        { icon:'🟡', index:98,  name:'Корж',  points:8,  scale:'~12+', status:'Лидер 👑', type:'Независимая сеть',    potential:'Высокий',   stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Очень высокий' },
         { icon:'🔴', index:96,  name:'Skuratov Coffee',    points:6,  scale:'~10+', status:'Лидер 👑', type:'Независимая сеть',    potential:'Высокий',   stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Высокий' },
         { icon:'🔴', index:93,  name:'Surf Coffee',        points:3,  scale:'~8+',  status:'Лидер 👑', type:'Сеть (франшиза)',     potential:'Высокий',   stage:'Экспансия', innovation:'Средняя', influence:'Высокое', growth:'Высокий' },
         { icon:'🟡', index:91,  name:'Mosaic coffee&tea',  points:7,  scale:'~11+', status:'Лидер 👑', type:'Независимая сеть',    potential:'Высокий',   stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Высокий' },
@@ -140,37 +139,32 @@ export default {
   position: sticky;
   top: 0;
   z-index: 2;
-  background: var(--vp-c-bg-soft, #f8fafc);
+  background: var(--vp-c-bg-soft, #222);
   text-transform: uppercase;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 1px;
-  color: var(--vp-c-text-2, #64748b);
-  border-bottom: 1px solid var(--vp-c-divider, #e5e7eb);
+  color: var(--vp-c-text-2, #888);
+  border-bottom: 1px solid var(--vp-c-divider, #333);
   padding: 12px 10px;
   white-space: nowrap;
 }
 
 .index-smr-table td {
   padding: 10px 8px;
-  border-bottom: 1px solid var(--vp-c-divider, #e5e7eb);
+  border-bottom: 1px solid var(--vp-c-divider, #333);
   font-size: 15px;
   background: none;
-  transition: background 0.12s;
-  color: var(--vp-c-text-1, #1e293b);
+  transition: background 0.14s;
+  color: var(--vp-c-text-1, #e6e6e6);
 }
 
 .index-smr-table tbody tr:hover {
-  background: var(--vp-c-bg-mute, #f3f4f6);
+  background: rgba(130,130,130,0.11);
 }
 
 .golden-row {
-  background: linear-gradient(90deg,rgba(255,224,82,0.06) 0%,rgba(255,226,120,0.01) 100%);
-}
-
-.index-smr-table th,
-.index-smr-table td {
-  box-sizing: border-box;
+  background: linear-gradient(90deg,rgba(255,230,90,0.07) 0%,rgba(255,226,120,0.0) 100%);
 }
 
 /* Центрирование для числовых и коротких данных */
@@ -187,7 +181,7 @@ export default {
 }
 
 .icon-yellow {
-  color: #fbbf24; /* gold */
+  color: #fbbf24;
   font-weight: bold;
 }
 
@@ -209,7 +203,7 @@ export default {
     font-size: 13px;
   }
   .index-smr-table {
-    min-width: 840px;
+    min-width: 900px;
   }
 }
 @media (max-width: 760px) {
@@ -219,7 +213,7 @@ export default {
     font-size: 12px;
   }
   .index-smr-table {
-    min-width: 670px;
+    min-width: 680px;
   }
 }
 @media (max-width: 480px) {
@@ -229,7 +223,7 @@ export default {
     font-size: 11px;
   }
   .index-smr-table {
-    min-width: 610px;
+    min-width: 620px;
   }
 }
 </style>
