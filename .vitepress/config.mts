@@ -580,8 +580,8 @@ function sidebarRadar(): DefaultTheme.SidebarItem[] {
       items: [
         { text: 'Индекс Роста – Кофейни // Россия', link: '/radar/overview' },
         { text: 'Индекс Роста – Кофейни // Самара', link: '/radar/index-smr/overview' },
-        { text: 'Как считаем // Индекс // Самара', link: '/radar/index-smr/method' },
-        { text: 'Скрытый потенциал // Метод', link: '/radar/scale_index' },
+        { text: 'Как считаем', link: '/radar/index-smr/method' },
+        { text: 'Скрытый потенциал', link: '/radar/scale_index' },
         { text: 'Фильтр потенциала', link: '/radar/filter' },
         { text: 'Кто Анна', link: '/radar/who-is-anna' },
         { text: 'Программа рекомендаций', link: '/radar/invite' }
