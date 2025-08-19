@@ -19,6 +19,7 @@ import YooKassaPayment from '../components/YooKassaPayment.vue'
 import FreeForm from '../components/FreeForm.vue'
 import InsiderForm from '../components/InsiderForm.vue'
 import PartnerForm from '../components/PartnerForm.vue'
+import IndexSMR from '../components/IndexSMR.vue'
 
 export default {
   extends: DefaultTheme,
@@ -45,5 +46,6 @@ export default {
     app.component('FreeForm', FreeForm)
     app.component('InsiderForm', InsiderForm)
     app.component('PartnerForm', PartnerForm)
+    app.component('IndexSMR', IndexSMR)
   }
 } satisfies Theme
