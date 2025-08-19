@@ -16,16 +16,15 @@
         <div class="payment-type">Регистрация</div>
       </div>
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Анализ и симулятор</span></li>
+        <li class="feature-item"><CheckIcon /><span>Анализ и <a href="/brew/sim" class="feature-link">симулятор</a></span></li>
         <li class="feature-item"><CheckIcon /><span>Готовые диалоги для быстрого старта</span></li>
         <li class="feature-item"><CheckIcon /><span>Клонировать успех лидеров рынка</span></li>
-        <li class="feature-item"><CheckIcon /><span>ИИ-ассистент Анна</span></li>
+        <li class="feature-item"><CheckIcon /><span><a href="/radar/who-is-anna" class="feature-link">ИИ-ассистент Анна</a></span></li>
       </ul>
       <a href="/brew/join/free" class="card-button card-button--secondary">
         Начать с Симулятора
       </a>
     </div>
-
     <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) -->
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title card-title--insider">ИНСАЙДЕР</h3>
@@ -44,7 +43,7 @@
       <p class="includes-all">Все, что в Симуляторе, плюс:</p>
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>Ваша кофейня VS Рынок в реальном времени</span></li>
-        <li class="feature-item"><CheckIcon /><span>Индекс Роста: сигналы изменений</span></li>
+        <li class="feature-item"><CheckIcon /><span><a href="/radar/index-smr/overview" target="_blank" class="feature-link">Индекс Роста</a>: сигналы изменений</span></li>
         <li class="feature-item"><CheckIcon /><span>Ранний доступ к новым городам</span></li>
       </ul>
       <a href="/brew/join/insider" class="card-button">Стать Инсайдером</a>
@@ -201,6 +200,18 @@ const CheckIcon = () =>
   height: 18px;
   color: #c5f946;
   flex-shrink: 0;
+}
+
+/* ССЫЛКИ В СПИСКЕ ФУНКЦИЙ ------------------------------------------------- */
+.feature-link {
+  color: #c5f946;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.feature-link:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 
 /* КНОПКИ ------------------------------------------------------------------ */
