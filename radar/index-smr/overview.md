@@ -10,6 +10,10 @@ next: false
 ## Потенциал роста
 <PriceCalculator />
 
+<div class="start-button-container">
+  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Подключиться →</a>
+</div>
+
 <IndexSMR />
 
 ## Обновляется каждую пятницу 15:00 мск
