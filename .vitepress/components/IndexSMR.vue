@@ -4,8 +4,8 @@
       <thead>
         <tr>
           <th>Кофейня</th>
-          <th>Отзывы</th>
           <th>Индекс</th>
+          <th>Отзывы</th>
           <th>Точки</th>
           <th>Масштаб</th>
           <th>Статус</th>
@@ -27,8 +27,8 @@
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
             {{ coffee.name }}
           </td>
-          <td class="cell-center">{{ coffee.reviews }}</td>
           <td class="cell-center">{{ coffee.index }}</td>
+          <td class="cell-center">{{ coffee.reviews }}</td>
           <td class="cell-center">{{ coffee.points }}</td>
           <td class="cell-center">{{ coffee.scale }}</td>
           <td class="cell-nowrap">{{ coffee.status }}</td>
@@ -90,7 +90,7 @@ export default {
         { icon:'🔴', index:40,  name:'Art Coffee', reviews:'57', points:1,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Coffee cake', reviews:'947', points:1,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Этажи', reviews:'904', points:1,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
-        { icon:'🔴', index:40,  name:'Кофейная поляна', reviews:'629', points:3,  scale:'3+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { icon:'🔴', index:40,  name:'Кофейная поляна', reviews:'629', points:3,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Pluma', reviews:'93', points:1,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:30,  name:'Толстой', reviews:'398', points:1,  scale:'стагнация', status:'Начинающий 🚀', type:'Локальное заведение', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:30,  name:'Coffee time', reviews:'70', points:1,  scale:'стагнация', status:'Начинающий 🚀', type:'Локальное заведение', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
@@ -136,95 +136,4 @@ export default {
   position: sticky;
   top: 0;
   z-index: 2;
-  background: var(--vp-c-bg-soft, #222);
-  text-transform: uppercase;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--vp-c-text-2, #888);
-  border-bottom: 1px solid var(--vp-c-divider, #333);
-  padding: 12px 10px;
-  white-space: nowrap;
-}
-
-.index-smr-table td {
-  padding: 10px 8px;
-  border-bottom: 1px solid var(--vp-c-divider, #333);
-  font-size: 15px;
-  background: none;
-  transition: background 0.14s;
-  color: var(--vp-c-text-1, #e6e6e6);
-}
-
-/* Первый столбец — всегда одна строка, без переноса, не ограничен по ширине */
-.index-smr-table th:first-child,
-.index-smr-table td:first-child,
-.nowrap {
-  white-space: nowrap !important;
-  max-width: none !important;
-  width: auto !important;
-}
-
-.index-smr-table tbody tr:hover {
-  background: rgba(120,120,120,0.12);
-}
-
-.golden-row {
-  background: linear-gradient(90deg,rgba(255,230,90,0.05) 0%,rgba(255,226,120,0.0) 100%);
-}
-
-.cell-center {
-  text-align: center;
-}
-.cell-left {
-  text-align: left;
-}
-.cell-nowrap {
-  white-space: nowrap;
-}
-
-.icon-yellow {
-  color: #fbbf24;
-  font-weight: bold;
-}
-.icon-red {
-  color: #dc2626;
-  font-weight: bold;
-}
-.icon-green {
-  color: #22c55e;
-  font-weight: bold;
-}
-
-/* Адаптивность */
-@media (max-width: 1024px) {
-  .index-smr-table th,
-  .index-smr-table td {
-    padding: 9px 7px;
-    font-size: 13px;
-  }
-  .index-smr-table {
-    min-width: 900px;
-  }
-}
-@media (max-width: 760px) {
-  .index-smr-table th,
-  .index-smr-table td {
-    padding: 7px 6px;
-    font-size: 12px;
-  }
-  .index-smr-table {
-    min-width: 680px;
-  }
-}
-@media (max-width: 480px) {
-  .index-smr-table th,
-  .index-smr-table td {
-    padding: 5px 4px;
-    font-size: 11px;
-  }
-  .index-smr-table {
-    min-width: 620px;
-  }
-}
-</style>
+  background: var(--v
