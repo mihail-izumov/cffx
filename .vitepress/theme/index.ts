@@ -20,6 +20,7 @@ import FreeForm from '../components/FreeForm.vue'
 import InsiderForm from '../components/InsiderForm.vue'
 import PartnerForm from '../components/PartnerForm.vue'
 import IndexSMR from '../components/IndexSMR.vue'
+import PriceCalculator from '../components/PriceCalculator.vue'
 
 export default {
   extends: DefaultTheme,
@@ -47,5 +48,6 @@ export default {
     app.component('InsiderForm', InsiderForm)
     app.component('PartnerForm', PartnerForm)
     app.component('IndexSMR', IndexSMR)
+    app.component('PriceCalculator', PriceCalculator)
   }
 } satisfies Theme
