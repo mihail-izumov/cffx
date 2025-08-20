@@ -51,7 +51,7 @@
         <!-- Блок 3: Обоснование -->
         <div class="result-block">
           <p><strong>Обоснование роста:</strong>&nbsp;{{ result.reasoning }}</p>
-          <p><strong>Ключевой вопрос:</strong>&nbsp;{{ formatKeyQuestion(result.keyQuestion) }}</p>
+          <p><strong>Ключевой вопрос:</strong>&nbsp;<span v-html="formatKeyQuestion(result.keyQuestion)"></span></p>
         </div>
 
         <!-- Улучшенный expandable блок -->
@@ -163,82 +163,103 @@ function calculate () {
 </script>
 
 <style scoped>
-/* ---------- КАРТОЧКА ---------- */
+/* ---------- ПРИНУДИТЕЛЬНО ТЕМНАЯ КАРТОЧКА ---------- */
 .calculator-card{
   width:100%;
   max-width:720px;
   margin:0 auto 32px;
   padding:20px 24px;
-  background:var(--vp-c-bg-soft,#1e1e1e);
-  border:1px solid var(--vp-c-divider,#2b2b2b);
+  background:#1e1e1e !important;
+  border:1px solid #2b2b2b !important;
   border-radius:12px;
   box-shadow:0 4px 16px rgba(0,0,0,.25);
-  color:var(--vp-c-text-1,#fff);
-  font-family:var(--vp-font-family-base,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif);
+  color:#ffffff !important;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 }
 
 /* ---------- ПОЛЯ ВВОДА ---------- */
 .input-group{margin-bottom:16px}
-label{display:block;margin-bottom:6px;font:600 14px/1 var(--vp-font-family-base);}
+label{
+  display:block;
+  margin-bottom:6px;
+  font:600 14px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color:#ffffff !important;
+}
 
 select,
 input{
   width:100%;
   height:44px;
   padding:0 14px;
-  font:500 15px/44px var(--vp-font-family-base);
-  background:var(--vp-c-bg,#141414);
-  border:1px solid var(--vp-c-divider,#333);
+  font:500 15px/44px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:#141414 !important;
+  border:1px solid #333333 !important;
   border-radius:8px;
-  color:var(--vp-c-text-1,#fff);
+  color:#ffffff !important;
   transition:border-color .25s ease;
 }
-select:focus,input:focus{border-color:var(--vp-c-brand-2,#C5F946);outline:0}
+select:focus,input:focus{
+  border-color:#C5F946 !important;
+  outline:0;
+}
+
+/* Цвет placeholder */
+input::placeholder{color:#888888 !important;}
+
+/* Опции в select */
+select option{
+  background:#141414 !important;
+  color:#ffffff !important;
+}
 
 /* ---------- КНОПКА ---------- */
 .btn-calc{
   width:100%;
   height:44px;
   margin-top:12px;
-  font:700 16px/44px var(--vp-font-family-base);
+  font:700 16px/44px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   text-transform:uppercase;
-  color:#000;
-  background:var(--vp-c-brand-2,#C5F946);
+  color:#000000 !important;
+  background:#C5F946 !important;
   border:none;
   border-radius:8px;
   cursor:pointer;
   transition:background .2s,transform .2s;
 }
 .btn-calc:disabled{
-  background:var(--vp-c-text-3,#555);
-  color:var(--vp-c-bg);
+  background:#555555 !important;
+  color:#cccccc !important;
   cursor:not-allowed;
 }
-.btn-calc:not(:disabled):hover{background:var(--vp-c-brand-1,#347b6c);color:#fff;transform:translateY(-2px)}
+.btn-calc:not(:disabled):hover{
+  background:#347b6c !important;
+  color:#ffffff !important;
+  transform:translateY(-2px);
+}
 
 /* ---------- РЕЗУЛЬТАТ ---------- */
 .result{
   margin-top:20px;
   padding:20px;
-  background:var(--vp-c-bg,#141414);
-  border:1px solid var(--vp-c-divider,#2b2b2b);
+  background:#141414 !important;
+  border:1px solid #2b2b2b !important;
   border-radius:10px;
 }
 
 /* Заголовок результата */
 .result-title{
   margin:0 0 20px;
-  font:600 18px/1.3 var(--vp-font-family-base);
+  font:600 18px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   text-align:center;
-  color:var(--vp-c-brand-2,#C5F946);
+  color:#C5F946 !important;
 }
 
 /* Блоки результата */
 .result-block{
   margin:0 0 16px;
   padding:12px 16px;
-  background:var(--vp-c-bg-soft,#1a1a1a);
-  border:1px solid var(--vp-c-divider,#2b2b2b);
+  background:#1a1a1a !important;
+  border:1px solid #2b2b2b !important;
   border-radius:8px;
 }
 .result-block:last-of-type{margin-bottom:20px}
@@ -246,18 +267,22 @@ select:focus,input:focus{border-color:var(--vp-c-brand-2,#C5F946);outline:0}
 /* Весь текст в блоках одинакового размера */
 .result-block p{
   margin:8px 0;
-  font:400 14px/1.5 var(--vp-font-family-base);
+  font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color:#ffffff !important;
 }
 .result-block p:first-child{margin-top:0}
 .result-block p:last-child{margin-bottom:0}
 
-.highlight{color:var(--vp-c-brand-2,#C5F946);font-weight:600}
+.highlight{
+  color:#C5F946 !important;
+  font-weight:600;
+}
 
 /* ---------- БАБЛ-СТАТУСЫ ---------- */
 .badge-status{
   display:inline-block;
-  background:var(--vp-c-brand-1,#347b6c);
-  color:#d0f0d0;
+  background:#347b6c !important;
+  color:#d0f0d0 !important;
   border-radius:50px;
   padding:2px 8px;
   font-size:0.85em;
@@ -266,19 +291,19 @@ select:focus,input:focus{border-color:var(--vp-c-brand-2,#C5F946);outline:0}
   margin:0 2px;
 }
 
-/* ---------- УЛУЧШЕННЫЙ "ПОЧЕМУ ВСЁ ПОЛУЧИТСЯ" ---------- */
+/* ---------- ПРИНУДИТЕЛЬНО ТЕМНЫЙ "ПОЧЕМУ ВСЁ ПОЛУЧИТСЯ" ---------- */
 .why-section{
   margin:0;
   border:none;
   border-radius:8px;
   padding:0;
-  background:var(--vp-c-brand-1,#347b6c);
+  background:#347b6c !important;
 }
 
 .why-summary{
   cursor:pointer;
-  font:600 16px/1 var(--vp-font-family-base);
-  color:#fff;
+  font:600 16px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color:#ffffff !important;
   padding:18px 16px;
   margin:0;
   border-radius:8px;
@@ -300,7 +325,7 @@ select:focus,input:focus{border-color:var(--vp-c-brand-2,#C5F946);outline:0}
   height:0;
   border-left:6px solid transparent;
   border-right:6px solid transparent;
-  border-top:8px solid #fff;
+  border-top:8px solid #ffffff;
   transition:transform .3s ease;
 }
 .why-section[open] .why-summary::before{
@@ -309,13 +334,13 @@ select:focus,input:focus{border-color:var(--vp-c-brand-2,#C5F946);outline:0}
 
 /* Убираем hover эффект */
 .why-summary:hover{
-  background:none;
-  color:#fff;
+  background:none !important;
+  color:#ffffff !important;
 }
 
 .why-content{
   padding:8px 16px 18px;
-  background:var(--vp-c-brand-1,#347b6c);
+  background:#347b6c !important;
   border-radius:0 0 8px 8px;
 }
 
@@ -327,15 +352,15 @@ select:focus,input:focus{border-color:var(--vp-c-brand-2,#C5F946);outline:0}
 }
 .why-list li{
   margin:3px 0;
-  font:400 14px/1.2 var(--vp-font-family-base);
-  color:#fff;
+  font:400 14px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color:#ffffff !important;
 }
 
 .why-total{
   margin:0;
   padding:8px 0 0;
-  font:600 14px/1.4 var(--vp-font-family-base);
-  color:#fff;
+  font:600 14px/1.4 -apple-system,BlinkMacSystemFont,'Segue UI',sans-serif;
+  color:#ffffff !important;
   text-align:left;
 }
 
