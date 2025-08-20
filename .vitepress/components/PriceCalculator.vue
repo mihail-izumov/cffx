@@ -51,7 +51,7 @@
         <!-- Блок 3: Обоснование -->
         <div class="result-block">
           <p><strong>Обоснование роста:</strong>&nbsp;{{ result.reasoning }}</p>
-          <p><strong>Ключевой вопрос:</strong>&nbsp;{{ result.keyQuestion }}</p>
+          <p><strong>Ключевой вопрос:</strong>&nbsp;{{ formatKeyQuestion(result.keyQuestion) }}</p>
         </div>
 
         <!-- Улучшенный expandable блок -->
@@ -65,7 +65,7 @@
               <li>Стратегическое планирование (+3–4 %)</li>
               <li>Раннее предупреждение о конкурентах (+2–3 %)</li>
             </ul>
-            <p class="why-total"><strong>Итого математически: 17–26 % обоснованного роста</strong></p>
+            <p class="why-total">Итого математически: 17–26 % обоснованного роста</p>
           </div>
         </details>
       </div>
@@ -133,6 +133,14 @@ function timeToCapture (iq, K) {
 }
 
 const format = (n) => new Intl.NumberFormat('ru-RU').format(Math.round(n))
+
+function formatKeyQuestion(question) {
+  // Заменяем статусы на HTML с классом badge-status
+  return question
+    .replace(/«Растущий 📈»/g, '<span class="badge-status">Растущий 📈</span>')
+    .replace(/«Сильный 💪»/g, '<span class="badge-status">Сильный 💪</span>')
+    .replace(/«Лидер 👑»/g, '<span class="badge-status">Лидер 👑</span>')
+}
 
 function calculate () {
   const cafe = cafes.value.find(c => c.id === Number(selectedCafeId.value))
@@ -245,6 +253,19 @@ select:focus,input:focus{border-color:var(--vp-c-brand-2,#C5F946);outline:0}
 
 .highlight{color:var(--vp-c-brand-2,#C5F946);font-weight:600}
 
+/* ---------- БАБЛ-СТАТУСЫ ---------- */
+.badge-status{
+  display:inline-block;
+  background:var(--vp-c-brand-1,#347b6c);
+  color:#d0f0d0;
+  border-radius:50px;
+  padding:2px 8px;
+  font-size:0.85em;
+  white-space:nowrap;
+  vertical-align:baseline;
+  margin:0 2px;
+}
+
 /* ---------- УЛУЧШЕННЫЙ "ПОЧЕМУ ВСЁ ПОЛУЧИТСЯ" ---------- */
 .why-section{
   margin:0;
@@ -258,14 +279,33 @@ select:focus,input:focus{border-color:var(--vp-c-brand-2,#C5F946);outline:0}
   cursor:pointer;
   font:600 16px/1 var(--vp-font-family-base);
   color:#fff;
-  padding:14px 16px;
+  padding:18px 16px;
   margin:0;
   border-radius:8px;
   outline:0;
   list-style:none;
   display:block;
+  position:relative;
 }
 .why-summary::-webkit-details-marker{display:none}
+
+/* Стрелка для выпадающего меню */
+.why-summary::before{
+  content:'';
+  position:absolute;
+  right:16px;
+  top:50%;
+  transform:translateY(-50%) rotate(0deg);
+  width:0;
+  height:0;
+  border-left:6px solid transparent;
+  border-right:6px solid transparent;
+  border-top:8px solid #fff;
+  transition:transform .3s ease;
+}
+.why-section[open] .why-summary::before{
+  transform:translateY(-50%) rotate(180deg);
+}
 
 /* Убираем hover эффект */
 .why-summary:hover{
@@ -274,27 +314,29 @@ select:focus,input:focus{border-color:var(--vp-c-brand-2,#C5F946);outline:0}
 }
 
 .why-content{
-  padding:0 16px 16px;
+  padding:8px 16px 18px;
   background:var(--vp-c-brand-1,#347b6c);
   border-radius:0 0 8px 8px;
 }
 
 .why-list{
-  margin:12px 0;
-  padding-left:20px;
+  margin:0 0 12px;
+  padding-left:10px;
   list-style:disc;
+  line-height:1.2;
 }
 .why-list li{
-  margin:6px 0;
-  font:400 14px/1.4 var(--vp-font-family-base);
+  margin:3px 0;
+  font:400 14px/1.2 var(--vp-font-family-base);
   color:#fff;
 }
 
 .why-total{
-  margin:12px 0 0;
+  margin:0;
+  padding:8px 0 0;
   font:600 14px/1.4 var(--vp-font-family-base);
   color:#fff;
-  text-align:center;
+  text-align:left;
 }
 
 /* ---------- АНИМАЦИЯ ---------- */
@@ -311,8 +353,10 @@ select:focus,input:focus{border-color:var(--vp-c-brand-2,#C5F946);outline:0}
   .result-title{font-size:16px}
   .result-block{padding:10px 12px}
   .result-block p{font-size:13px}
-  .why-summary{font-size:15px;padding:12px 14px}
+  .why-summary{font-size:15px;padding:16px 14px}
+  .why-list{padding-left:8px}
   .why-list li{font-size:13px}
   .why-total{font-size:13px}
+  .badge-status{font-size:0.8em;padding:1px 6px}
 }
 </style>
