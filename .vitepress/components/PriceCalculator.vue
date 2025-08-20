@@ -135,12 +135,10 @@ function timeToCapture (iq, K) {
 const format = (n) => new Intl.NumberFormat('ru-RU').format(Math.round(n))
 
 function formatKeyQuestion(question) {
-  // Ищем статус после слова "статуса" и до знака вопроса
-  const regex = /статуса\s+([^?]+)\?/;
+  // Ищем статус в кавычках после слова "статуса"
+  const regex = /статуса\s+«([^»]+)»\?/;
   return question.replace(regex, (match, statusPart) => {
-    // Убираем лишние пробелы и кавычки
-    const cleanStatus = statusPart.trim().replace(/[«»]/g, '');
-    return `статуса <span class="badge-status">${cleanStatus}</span>?`;
+    return `статуса <span class="badge-status">${statusPart}</span>?`;
   });
 }
 
