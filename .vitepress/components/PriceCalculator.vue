@@ -1,7 +1,6 @@
-<!-- PriceCalculator.vue – Финальный компонент с нативными стилями BREW -->
 <template>
   <div class="calculator-card">
-    <h2>КАЛЬКУЛЯТОР «ЦЕНА БЕЗДЕЙСТВИЯ»</h2>
+    <!-- Убран заголовок h2 -->
 
     <!-- Поля ввода -->
     <div class="input-group">
@@ -32,33 +31,42 @@
     <!-- Блок результата -->
     <transition name="fade">
       <div v-if="resultShown" class="result">
-        <h3>{{ result.name }} (Индекс {{ result.index }})</h3>
+        <!-- Заголовок сохраняет размер для выделения -->
+        <h3 class="result-title">{{ result.name }} (Индекс {{ result.index }})</h3>
 
-        <p><strong>Потенциал роста:</strong>&nbsp;
-           <span class="highlight">{{ format(result.total) }} ₽</span> в год (+{{ result.percent }}%)
-        </p>
+        <!-- Блок 1: Основные показатели -->
+        <div class="result-block">
+          <p><strong>Потенциал роста:</strong>&nbsp;<span class="highlight">{{ format(result.total) }} ₽</span> в год (+{{ result.percent }}%)</p>
+          <p><strong>На каждую точку ({{ result.points }}):</strong>&nbsp;<span class="highlight">{{ format(result.perPoint) }} ₽/год</span></p>
+          <p><strong>Время на захват:</strong>&nbsp;{{ result.months }} мес. с BREW | 30 000 ₽/мес.</p>
+        </div>
 
-        <p><strong>На каждую точку ({{ result.points }}):</strong>&nbsp;
-          <span class="highlight">{{ format(result.perPoint) }} ₽/год</span>
-        </p>
+        <!-- Блок 2: Анализ конкуренции -->
+        <div class="result-block">
+          <p><strong>Целевые конкуренты:</strong>&nbsp;{{ result.competitors }}</p>
+          <p><strong>Сигнал:</strong>&nbsp;{{ result.signal }}</p>
+          <p><strong>Решение:</strong>&nbsp;{{ result.solution }}</p>
+        </div>
 
-        <p><strong>Время на захват:</strong>&nbsp;{{ result.months }} мес. с BREW | 30 000 ₽/мес.</p>
-        <p><strong>Целевые конкуренты:</strong>&nbsp;{{ result.competitors }}</p>
-        <p><strong>Сигнал:</strong>&nbsp;{{ result.signal }}</p>
-        <p><strong>Решение:</strong>&nbsp;{{ result.solution }}</p>
-        <p><strong>Обоснование роста:</strong>&nbsp;{{ result.reasoning }}</p>
-        <p><strong>Ключевой вопрос:</strong>&nbsp;{{ result.keyQuestion }}</p>
+        <!-- Блок 3: Обоснование -->
+        <div class="result-block">
+          <p><strong>Обоснование роста:</strong>&nbsp;{{ result.reasoning }}</p>
+          <p><strong>Ключевой вопрос:</strong>&nbsp;{{ result.keyQuestion }}</p>
+        </div>
 
-        <details class="expandable-section">
-          <summary><strong>Почему&nbsp;всё&nbsp;получится</strong></summary>
-          <ul>
-            <li>Системная аналитика устраняет «слепые зоны» (+5–8 %)</li>
-            <li>Оптимизация ценообразования (+3–5 %)</li>
-            <li>Бенчмаркинг процессов (+4–6 %)</li>
-            <li>Стратегическое планирование (+3–4 %)</li>
-            <li>Раннее предупреждение о конкурентах (+2–3 %)</li>
-          </ul>
-          <p><strong>Итого математически: 17–26 % обоснованного роста</strong></p>
+        <!-- Улучшенный expandable блок -->
+        <details class="why-section">
+          <summary class="why-summary">Почему всё получится</summary>
+          <div class="why-content">
+            <ul class="why-list">
+              <li>Системная аналитика устраняет «слепые зоны» (+5–8 %)</li>
+              <li>Оптимизация ценообразования (+3–5 %)</li>
+              <li>Бенчмаркинг процессов (+4–6 %)</li>
+              <li>Стратегическое планирование (+3–4 %)</li>
+              <li>Раннее предупреждение о конкурентах (+2–3 %)</li>
+            </ul>
+            <p class="why-total"><strong>Итого математически: 17–26 % обоснованного роста</strong></p>
+          </div>
         </details>
       </div>
     </transition>
@@ -147,7 +155,7 @@ function calculate () {
 </script>
 
 <style scoped>
-/* ---------- КАРТОЧКА (строится на токенах BREW / VitePress) ---------- */
+/* ---------- КАРТОЧКА ---------- */
 .calculator-card{
   width:100%;
   max-width:720px;
@@ -161,15 +169,7 @@ function calculate () {
   font-family:var(--vp-font-family-base,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif);
 }
 
-/* ---------- ЗАГОЛОВОК ---------- */
-h2{
-  margin:0 0 24px;
-  font:600 24px/1.3 var(--vp-font-family-base,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif);
-  text-align:center;
-  letter-spacing:.3px;
-}
-
-/* ---------- ГРУППЫ ВВОДА ---------- */
+/* ---------- ПОЛЯ ВВОДА ---------- */
 .input-group{margin-bottom:16px}
 label{display:block;margin-bottom:6px;font:600 14px/1 var(--vp-font-family-base);}
 
@@ -216,50 +216,103 @@ select:focus,input:focus{border-color:var(--vp-c-brand-2,#C5F946);outline:0}
   border:1px solid var(--vp-c-divider,#2b2b2b);
   border-radius:10px;
 }
-.result h3{
-  margin:0 0 16px;
-  font:600 20px/1.3 var(--vp-font-family-base);
+
+/* Заголовок результата */
+.result-title{
+  margin:0 0 20px;
+  font:600 18px/1.3 var(--vp-font-family-base);
   text-align:center;
   color:var(--vp-c-brand-2,#C5F946);
 }
-.result p{margin:10px 0;font:400 14px/1.5 var(--vp-font-family-base);}
-.highlight{color:var(--vp-c-brand-2,#C5F946);font-weight:600}
 
-/* ---------- EXPANDABLE SECTION ---------- */
-.expandable-section{
-  margin-top:12px;
+/* Блоки результата */
+.result-block{
+  margin:0 0 16px;
+  padding:12px 16px;
+  background:var(--vp-c-bg-soft,#1a1a1a);
   border:1px solid var(--vp-c-divider,#2b2b2b);
   border-radius:8px;
-  padding:10px;
 }
-.expandable-section summary{
-  cursor:pointer;
-  font-weight:600;
-  outline:0;
-  padding:5px;
+.result-block:last-of-type{margin-bottom:20px}
+
+/* Весь текст в блоках одинакового размера */
+.result-block p{
+  margin:8px 0;
+  font:400 14px/1.5 var(--vp-font-family-base);
 }
-.expandable-section summary:hover{
+.result-block p:first-child{margin-top:0}
+.result-block p:last-child{margin-bottom:0}
+
+.highlight{color:var(--vp-c-brand-2,#C5F946);font-weight:600}
+
+/* ---------- УЛУЧШЕННЫЙ "ПОЧЕМУ ВСЁ ПОЛУЧИТСЯ" ---------- */
+.why-section{
+  margin:0;
+  border:none;
+  border-radius:8px;
+  padding:0;
   background:var(--vp-c-brand-1,#347b6c);
-  color:#fff;
-  border-radius:4px;
 }
-.expandable-section[open] summary{margin-bottom:8px}
-.expandable-section ul{margin:10px 0 0 18px;list-style:disc}
-.expandable-section li{margin:4px 0}
+
+.why-summary{
+  cursor:pointer;
+  font:600 16px/1 var(--vp-font-family-base);
+  color:#fff;
+  padding:14px 16px;
+  margin:0;
+  border-radius:8px;
+  outline:0;
+  list-style:none;
+  display:block;
+}
+.why-summary::-webkit-details-marker{display:none}
+
+/* Убираем hover эффект */
+.why-summary:hover{
+  background:none;
+  color:#fff;
+}
+
+.why-content{
+  padding:0 16px 16px;
+  background:var(--vp-c-brand-1,#347b6c);
+  border-radius:0 0 8px 8px;
+}
+
+.why-list{
+  margin:12px 0;
+  padding-left:20px;
+  list-style:disc;
+}
+.why-list li{
+  margin:6px 0;
+  font:400 14px/1.4 var(--vp-font-family-base);
+  color:#fff;
+}
+
+.why-total{
+  margin:12px 0 0;
+  font:600 14px/1.4 var(--vp-font-family-base);
+  color:#fff;
+  text-align:center;
+}
 
 /* ---------- АНИМАЦИЯ ---------- */
 .fade-enter-active,.fade-leave-active{transition:opacity .35s,transform .35s}
 .fade-enter-from{opacity:0;transform:translateY(12px)}
 .fade-leave-to{opacity:0;transform:translateY(-12px)}
 
-/* ---------- МОБИЛЬНЫЙ (<768 px) ---------- */
+/* ---------- МОБИЛЬНЫЙ ---------- */
 @media(max-width:768px){
   .calculator-card{padding:16px 18px;margin-bottom:24px}
-  h2{font-size:20px;margin-bottom:20px}
   select,input{height:38px;font-size:14px;line-height:38px}
   .btn-calc{height:40px;font-size:15px;line-height:40px}
   .result{padding:16px}
-  .result h3{font-size:18px}
-  .result p{font-size:13px}
+  .result-title{font-size:16px}
+  .result-block{padding:10px 12px}
+  .result-block p{font-size:13px}
+  .why-summary{font-size:15px;padding:12px 14px}
+  .why-list li{font-size:13px}
+  .why-total{font-size:13px}
 }
 </style>
