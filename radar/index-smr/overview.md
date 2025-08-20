@@ -7,7 +7,8 @@ next: false
 
 # Индекс Роста – Кофейни // Самара
 
-
+## Потенциал роста
+<PriceCalculator />
 
 <IndexSMR />
 
