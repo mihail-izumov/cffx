@@ -51,7 +51,7 @@
         <!-- Блок 3: Обоснование -->
         <div class="result-block">
           <p><strong>Обоснование роста:</strong>&nbsp;{{ result.reasoning }}</p>
-          <p><strong>Ключевой вопрос:</strong>&nbsp;<span v-html="formatKeyQuestion(result.keyQuestion)"></span></p>
+          <p v-html="'<strong>Ключевой вопрос:</strong>&nbsp;' + formatKeyQuestion(result.keyQuestion)"></p>
         </div>
 
         <!-- Улучшенный expandable блок -->
@@ -135,11 +135,13 @@ function timeToCapture (iq, K) {
 const format = (n) => new Intl.NumberFormat('ru-RU').format(Math.round(n))
 
 function formatKeyQuestion(question) {
-  // Заменяем статусы на HTML с классом badge-status
-  return question
-    .replace(/«Растущий 📈»/g, '<span class="badge-status">Растущий 📈</span>')
-    .replace(/«Сильный 💪»/g, '<span class="badge-status">Сильный 💪</span>')
-    .replace(/«Лидер 👑»/g, '<span class="badge-status">Лидер 👑</span>')
+  // Ищем статус после слова "статуса" и до знака вопроса
+  const regex = /статуса\s+([^?]+)\?/;
+  return question.replace(regex, (match, statusPart) => {
+    // Убираем лишние пробелы и кавычки
+    const cleanStatus = statusPart.trim().replace(/[«»]/g, '');
+    return `статуса <span class="badge-status">${cleanStatus}</span>?`;
+  });
 }
 
 function calculate () {
@@ -359,7 +361,7 @@ select option{
 .why-total{
   margin:0;
   padding:8px 0 0;
-  font:600 14px/1.4 -apple-system,BlinkMacSystemFont,'Segue UI',sans-serif;
+  font:600 14px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   color:#ffffff !important;
   text-align:left;
 }
