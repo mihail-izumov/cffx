@@ -1,6 +1,8 @@
-<!-- PriceCalculator.vue – Финальный, полностью рабочий компонент -->
+<!-- PriceCalculator.vue – Финальный компонент с нативными стилями BREW -->
 <template>
-  <div class="calculator">
+  <div class="calculator-card">
+    <h2>КАЛЬКУЛЯТОР «ЦЕНА БЕЗДЕЙСТВИЯ»</h2>
+
     <!-- Поля ввода -->
     <div class="input-group">
       <label for="cafeSelect">Выберите кофейню:</label>
@@ -145,112 +147,119 @@ function calculate () {
 </script>
 
 <style scoped>
-:root {
-  --bg-soft: var(--vp-c-bg-soft, #f7f7f7);
-  --bg-base: var(--vp-c-bg, #ffffff);
-  --bg-alt: var(--vp-c-bg-alt, #ffffff);
-  --border-color: var(--vp-c-border, #d8d8d8);
-  --text-main: var(--vp-c-text-1, #2c3e50);
-  --text-fade: var(--vp-c-text-3, #9ca3af);
+/* ---------- КАРТОЧКА (строится на токенах BREW / VitePress) ---------- */
+.calculator-card{
+  width:100%;
+  max-width:720px;
+  margin:0 auto 32px;
+  padding:20px 24px;
+  background:var(--vp-c-bg-soft,#1e1e1e);
+  border:1px solid var(--vp-c-divider,#2b2b2b);
+  border-radius:12px;
+  box-shadow:0 4px 16px rgba(0,0,0,.25);
+  color:var(--vp-c-text-1,#fff);
+  font-family:var(--vp-font-family-base,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif);
 }
 
-.calculator {
-  max-width: 720px;
-  margin: 24px auto;
-  padding: 24px;
-  background: var(--bg-soft);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  color: var(--text-main);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+/* ---------- ЗАГОЛОВОК ---------- */
+h2{
+  margin:0 0 24px;
+  font:600 24px/1.3 var(--vp-font-family-base,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif);
+  text-align:center;
+  letter-spacing:.3px;
 }
 
-h2 {
-  margin: 0 0 32px;
-  text-align: center;
-  font-size: 28px;
-  font-weight: 700;
-}
+/* ---------- ГРУППЫ ВВОДА ---------- */
+.input-group{margin-bottom:16px}
+label{display:block;margin-bottom:6px;font:600 14px/1 var(--vp-font-family-base);}
 
-.input-group { margin-bottom: 20px; }
-label { display: block; margin-bottom: 8px; font-weight: 600; }
+select,
+input{
+  width:100%;
+  height:44px;
+  padding:0 14px;
+  font:500 15px/44px var(--vp-font-family-base);
+  background:var(--vp-c-bg,#141414);
+  border:1px solid var(--vp-c-divider,#333);
+  border-radius:8px;
+  color:var(--vp-c-text-1,#fff);
+  transition:border-color .25s ease;
+}
+select:focus,input:focus{border-color:var(--vp-c-brand-2,#C5F946);outline:0}
 
-select, input {
-  width: 100%;
-  padding: 12px 16px;
-  font-size: 16px;
-  background: var(--bg-base);
-  color: var(--text-main);
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
-  transition: border-color .3s;
+/* ---------- КНОПКА ---------- */
+.btn-calc{
+  width:100%;
+  height:44px;
+  margin-top:12px;
+  font:700 16px/44px var(--vp-font-family-base);
+  text-transform:uppercase;
+  color:#000;
+  background:var(--vp-c-brand-2,#C5F946);
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  transition:background .2s,transform .2s;
 }
-select:focus, input:focus { outline: none; border-color: #2c3e50; }
+.btn-calc:disabled{
+  background:var(--vp-c-text-3,#555);
+  color:var(--vp-c-bg);
+  cursor:not-allowed;
+}
+.btn-calc:not(:disabled):hover{background:var(--vp-c-brand-1,#347b6c);color:#fff;transform:translateY(-2px)}
 
-.btn-calc {
-  width: 100%;
-  padding: 16px 0;
-  margin: 32px 0 24px;
-  font-size: 20px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #fff;
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all .2s;
+/* ---------- РЕЗУЛЬТАТ ---------- */
+.result{
+  margin-top:20px;
+  padding:20px;
+  background:var(--vp-c-bg,#141414);
+  border:1px solid var(--vp-c-divider,#2b2b2b);
+  border-radius:10px;
 }
-.btn-calc:disabled { background: var(--text-fade); cursor: not-allowed; }
-.btn-calc:hover:not(:disabled) {
-  background: linear-gradient(135deg, #c0392b, #a93226);
-  transform: translateY(-2px);
+.result h3{
+  margin:0 0 16px;
+  font:600 20px/1.3 var(--vp-font-family-base);
+  text-align:center;
+  color:var(--vp-c-brand-2,#C5F946);
 }
+.result p{margin:10px 0;font:400 14px/1.5 var(--vp-font-family-base);}
+.highlight{color:var(--vp-c-brand-2,#C5F946);font-weight:600}
 
-.result {
-  padding: 24px;
-  background: var(--bg-alt);
-  border: 2px solid #2c3e50;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(44, 62, 80, .1);
+/* ---------- EXPANDABLE SECTION ---------- */
+.expandable-section{
+  margin-top:12px;
+  border:1px solid var(--vp-c-divider,#2b2b2b);
+  border-radius:8px;
+  padding:10px;
 }
-.result h3 {
-  margin: 0 0 20px;
-  text-align: center;
-  font-size: 26px;
-  font-weight: 700;
-  border-bottom: 2px solid #e74c3c;
-  padding-bottom: 12px;
+.expandable-section summary{
+  cursor:pointer;
+  font-weight:600;
+  outline:0;
+  padding:5px;
 }
-.result p { margin: 12px 0; font-size: 16px; line-height: 1.6; }
-.highlight { color: #e74c3c; font-weight: 700; font-size: 18px; }
+.expandable-section summary:hover{
+  background:var(--vp-c-brand-1,#347b6c);
+  color:#fff;
+  border-radius:4px;
+}
+.expandable-section[open] summary{margin-bottom:8px}
+.expandable-section ul{margin:10px 0 0 18px;list-style:disc}
+.expandable-section li{margin:4px 0}
 
-.expandable-section {
-  margin-top: 15px;
-  border: 1px solid var(--border-color);
-  border-radius: 5px;
-  padding: 10px;
-}
-.expandable-section summary {
-  cursor: pointer;
-  padding: 5px;
-  font-weight: bold;
-}
-.expandable-section summary:hover {
-  background: #2c3e50;
-  color: #fff;
-}
-.expandable-section ul { margin: 10px 0 0 18px; }
-.expandable-section li { margin: 4px 0; }
+/* ---------- АНИМАЦИЯ ---------- */
+.fade-enter-active,.fade-leave-active{transition:opacity .35s,transform .35s}
+.fade-enter-from{opacity:0;transform:translateY(12px)}
+.fade-leave-to{opacity:0;transform:translateY(-12px)}
 
-.fade-enter-active, .fade-leave-active { transition: all .5s; }
-.fade-enter-from { opacity: 0; transform: translateY(20px); }
-.fade-leave-to { opacity: 0; transform: translateY(-20px); }
-
-@media (max-width: 768px) {
-  .calculator { padding: 16px; margin: 16px; }
-  h2 { font-size: 24px; }
-  .result h3 { font-size: 22px; }
-  .result p { font-size: 15px; }
+/* ---------- МОБИЛЬНЫЙ (<768 px) ---------- */
+@media(max-width:768px){
+  .calculator-card{padding:16px 18px;margin-bottom:24px}
+  h2{font-size:20px;margin-bottom:20px}
+  select,input{height:38px;font-size:14px;line-height:38px}
+  .btn-calc{height:40px;font-size:15px;line-height:40px}
+  .result{padding:16px}
+  .result h3{font-size:18px}
+  .result p{font-size:13px}
 }
 </style>
