@@ -200,7 +200,7 @@ export default {
 
 /* Жирный разделитель для "Вне игры" */
 .out-of-game-separator td {
-  border-top: 4px solid var(--vp-c-text-2, #ff6b6b) !important;
+  border-top: 4px solid #8B5A4B !important;
   padding-top: 14px;
 }
 
@@ -244,10 +244,10 @@ export default {
   font-weight: bold;
 }
 
-/* Бейджи статусов */
+/* Бейджи статусов - приглушенные цвета в стиле сайта */
 .badge-status {
   display: inline-block;
-  border-radius: 50px;
+  border-radius: 4px;
   padding: 2px 8px;
   font-size: 0.85em;
   white-space: nowrap;
@@ -256,29 +256,34 @@ export default {
   font-weight: 500;
 }
 
+/* Приглушенный золотистый для лидера */
 .status-leader {
-  background: #fbbf24 !important;
-  color: #92400e !important;
+  background: rgba(184, 134, 66, 0.8) !important;
+  color: #f3e8d0 !important;
 }
 
+/* Приглушенный синий для сильного */
 .status-strong {
-  background: #3b82f6 !important;
-  color: #dbeafe !important;
+  background: rgba(91, 128, 193, 0.8) !important;
+  color: #d4e1f5 !important;
 }
 
+/* Приглушенный зеленый для растущего */
 .status-growing {
-  background: #347b6c !important;
-  color: #d0f0d0 !important;
+  background: rgba(106, 140, 111, 0.8) !important;
+  color: #e0f0e0 !important;
 }
 
+/* Приглушенный серый для стабильного */
 .status-stable {
-  background: #6b7280 !important;
-  color: #f3f4f6 !important;
+  background: rgba(107, 114, 128, 0.8) !important;
+  color: #e5e7eb !important;
 }
 
+/* Приглушенный коралловый для вне игры */
 .status-out {
-  background: #ff6b6b !important;
-  color: #fff5f5 !important;
+  background: rgba(139, 90, 75, 0.8) !important;
+  color: #f5e6e0 !important;
 }
 
 /* Адаптивность */
