@@ -263,6 +263,12 @@ export default {
   vertical-align: middle;
 }
 
+/* Полужирный для столбцов "Кофейня" и "Индекс" */
+.index-smr-table td:nth-child(1),
+.index-smr-table td:nth-child(2) {
+  font-weight: 600;
+}
+
 /* Жирный разделитель для "Вне игры" */
 .out-of-game-separator td {
   border-top: 4px solid #ff6b6b !important;
