@@ -34,7 +34,11 @@
           <td class="cell-center">{{ coffee.reviews }}</td>
           <td class="cell-center">{{ coffee.points }}</td>
           <td class="cell-center">{{ coffee.scale }}</td>
-          <td class="cell-nowrap">{{ coffee.status }}</td>
+          <td class="cell-nowrap">
+            <span class="badge-status" :class="statusClass(coffee.status)">
+              {{ coffee.status }}
+            </span>
+          </td>
           <td class="cell-left">{{ coffee.type }}</td>
           <td class="cell-center">{{ coffee.potential }}</td>
           <td class="cell-center">{{ coffee.stage }}</td>
@@ -140,6 +144,14 @@ export default {
       if (icon === '🟢') return 'icon-green'
       return ''
     },
+    statusClass(status) {
+      if (status === 'Лидер 👑') return 'status-leader'
+      if (status === 'Сильный 💪') return 'status-strong'
+      if (status === 'Растущий 📈') return 'status-growing'
+      if (status === 'Стабильный 🎯') return 'status-stable'
+      if (status === 'Вне игры 🚫') return 'status-out'
+      return ''
+    },
     isFirstOutOfGame(coffee, index) {
       return coffee.status === 'Вне игры 🚫' && 
              (index === 0 || this.sortedCoffeeData[index - 1].status !== 'Вне игры 🚫')
@@ -188,7 +200,7 @@ export default {
 
 /* Жирный разделитель для "Вне игры" */
 .out-of-game-separator td {
-  border-top: 4px solid var(--vp-c-text-2, #dc2626) !important;
+  border-top: 4px solid var(--vp-c-text-2, #ff6b6b) !important;
   padding-top: 14px;
 }
 
@@ -232,6 +244,43 @@ export default {
   font-weight: bold;
 }
 
+/* Бейджи статусов */
+.badge-status {
+  display: inline-block;
+  border-radius: 50px;
+  padding: 2px 8px;
+  font-size: 0.85em;
+  white-space: nowrap;
+  vertical-align: baseline;
+  margin: 0 2px;
+  font-weight: 500;
+}
+
+.status-leader {
+  background: #fbbf24 !important;
+  color: #92400e !important;
+}
+
+.status-strong {
+  background: #3b82f6 !important;
+  color: #dbeafe !important;
+}
+
+.status-growing {
+  background: #347b6c !important;
+  color: #d0f0d0 !important;
+}
+
+.status-stable {
+  background: #6b7280 !important;
+  color: #f3f4f6 !important;
+}
+
+.status-out {
+  background: #ff6b6b !important;
+  color: #fff5f5 !important;
+}
+
 /* Адаптивность */
 @media (max-width: 1024px) {
   .index-smr-table th,
@@ -244,6 +293,10 @@ export default {
   }
   .out-of-game-separator td {
     padding-top: 12px;
+  }
+  .badge-status {
+    font-size: 0.8em;
+    padding: 1px 6px;
   }
 }
 @media (max-width: 760px) {
@@ -258,6 +311,10 @@ export default {
   .out-of-game-separator td {
     padding-top: 10px;
   }
+  .badge-status {
+    font-size: 0.75em;
+    padding: 1px 4px;
+  }
 }
 @media (max-width: 480px) {
   .index-smr-table th,
@@ -270,6 +327,10 @@ export default {
   }
   .out-of-game-separator td {
     padding-top: 8px;
+  }
+  .badge-status {
+    font-size: 0.7em;
+    padding: 1px 3px;
   }
 }
 </style>
