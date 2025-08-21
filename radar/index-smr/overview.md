@@ -31,7 +31,7 @@ next: false
 [Как считаем](/radar/index-smr/method)
 
 <div class="start-button-container">
-  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Выбрать тариф BREW и подключиться →</a>
+  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Выбрать тариф и подключиться →</a>
 </div>
 
 <style>
