@@ -250,6 +250,7 @@ export default {
   border-bottom: 1px solid var(--vp-c-divider, #333);
   padding: 12px 10px;
   white-space: nowrap;
+  vertical-align: middle;
 }
 
 .index-smr-table td {
@@ -259,6 +260,7 @@ export default {
   background: none;
   transition: background 0.14s;
   color: var(--vp-c-text-1, #e6e6e6);
+  vertical-align: middle;
 }
 
 /* Жирный разделитель для "Вне игры" */
