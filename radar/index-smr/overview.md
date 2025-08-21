@@ -1,11 +1,10 @@
 ---
-outline: false
 prev: false
 next: false
 ---
 [← Симулятор Самары](/brew/sim)
 
-# Индекс Роста – Кофейни // Самара
+# Индекс Роста
 
 ## Потенциал роста
 <PriceCalculator />
@@ -13,6 +12,8 @@ next: false
 <div class="start-button-container">
   <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Подключиться →</a>
 </div>
+
+## Кофейни // Самара
 
 <IndexSMR />
 
