@@ -200,7 +200,7 @@ export default {
 
 /* Жирный разделитель для "Вне игры" */
 .out-of-game-separator td {
-  border-top: 4px solid #8B5A4B !important;
+  border-top: 4px solid #ff6b6b !important;
   padding-top: 14px;
 }
 
@@ -244,46 +244,52 @@ export default {
   font-weight: bold;
 }
 
-/* Бейджи статусов - приглушенные цвета в стиле сайта */
+/* Бейджи статусов - кислотные приглушенные цвета в стиле UX 2025 */
 .badge-status {
   display: inline-block;
-  border-radius: 4px;
-  padding: 2px 8px;
+  border-radius: 6px;
+  padding: 3px 10px;
   font-size: 0.85em;
   white-space: nowrap;
   vertical-align: baseline;
   margin: 0 2px;
   font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
-/* Приглушенный золотистый для лидера */
+/* Кислотный лайм для лидера */
 .status-leader {
-  background: rgba(184, 134, 66, 0.8) !important;
-  color: #f3e8d0 !important;
+  background: rgba(197, 249, 70, 0.15) !important;
+  color: #c5f946 !important;
+  border: 1px solid rgba(197, 249, 70, 0.3);
 }
 
-/* Приглушенный синий для сильного */
+/* Кислотный синий для сильного */
 .status-strong {
-  background: rgba(91, 128, 193, 0.8) !important;
-  color: #d4e1f5 !important;
+  background: rgba(59, 130, 246, 0.15) !important;
+  color: #60a5fa !important;
+  border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
-/* Приглушенный зеленый для растущего */
+/* Кислотный зеленый для растущего (как на сайте) */
 .status-growing {
-  background: rgba(106, 140, 111, 0.8) !important;
-  color: #e0f0e0 !important;
+  background: rgba(34, 197, 94, 0.15) !important;
+  color: #4ade80 !important;
+  border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
 /* Приглушенный серый для стабильного */
 .status-stable {
-  background: rgba(107, 114, 128, 0.8) !important;
-  color: #e5e7eb !important;
+  background: rgba(156, 163, 175, 0.12) !important;
+  color: #9ca3af !important;
+  border: 1px solid rgba(156, 163, 175, 0.25);
 }
 
-/* Приглушенный коралловый для вне игры */
+/* Коралловый для вне игры */
 .status-out {
-  background: rgba(139, 90, 75, 0.8) !important;
-  color: #f5e6e0 !important;
+  background: rgba(255, 107, 107, 0.15) !important;
+  color: #ff6b6b !important;
+  border: 1px solid rgba(255, 107, 107, 0.3);
 }
 
 /* Адаптивность */
@@ -301,7 +307,7 @@ export default {
   }
   .badge-status {
     font-size: 0.8em;
-    padding: 1px 6px;
+    padding: 2px 8px;
   }
 }
 @media (max-width: 760px) {
@@ -318,7 +324,7 @@ export default {
   }
   .badge-status {
     font-size: 0.75em;
-    padding: 1px 4px;
+    padding: 2px 6px;
   }
 }
 @media (max-width: 480px) {
@@ -335,7 +341,7 @@ export default {
   }
   .badge-status {
     font-size: 0.7em;
-    padding: 1px 3px;
+    padding: 1px 4px;
   }
 }
 </style>
