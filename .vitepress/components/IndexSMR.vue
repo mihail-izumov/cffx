@@ -19,7 +19,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="(coffee, idx) in coffeeData"
+          v-for="(coffee, idx) in sortedCoffeeData"
           :key="`${coffee.name}-${coffee.index}`"
           :class="{ 'golden-row': idx < 6 }"
         >
@@ -49,6 +49,13 @@ export default {
   name: 'IndexSMR',
   data() {
     return {
+      statusOrder: [
+        'Лидер 👑',
+        'Сильный 💪', 
+        'Растущий 📈',
+        'Начинающий 🚀',
+        'Вне игры 🚫'
+      ],
       coffeeData: [
         { icon:'🟡', index:98,  name:'Корж', reviews:'4,520', points:8,  scale:'~12+', status:'Лидер 👑', type:'Независимая сеть', potential:'Высокий', stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Очень высокий' },
         { icon:'🔴', index:96,  name:'Skuratov Coffee', reviews:'3,129', points:6,  scale:'~10+', status:'Лидер 👑', type:'Независимая сеть', potential:'Высокий', stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Высокий' },
@@ -61,7 +68,6 @@ export default {
         { icon:'🟢', index:67,  name:'8 Атомов', reviews:'34', points:1,  scale:'~2+', status:'Сильный 💪', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Высокий' },
         { icon:'🔴', index:65,  name:'Vandal coffee', reviews:'273', points:3,  scale:'~5+', status:'Сильный 💪', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Низкое', growth:'Высокий' },
         { icon:'🟡', index:63,  name:'Lumos barista lab', reviews:'303', points:2,  scale:'~4+', status:'Сильный 💪', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Низкое', growth:'Средний' },
-        { icon:'🔴', index:58,  name:'Muwa', reviews:'672', points:1,  scale:'~2+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Средний' },
         { icon:'🔴', index:57,  name:'Cofix', reviews:'253', points:5,  scale:'~7+', status:'Растущий 📈', type:'Сеть (франшиза)', potential:'Средний', stage:'Рост', innovation:'Низкая', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:55,  name:'Green Stag Roasters', reviews:'119', points:1,  scale:'~3+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Высокий' },
         { icon:'🔴', index:55,  name:'Shu Authentic Coffee', reviews:'151', points:1, scale:'~2+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Высокий' },
@@ -74,10 +80,8 @@ export default {
         { icon:'🔴', index:45,  name:'Coffetino', reviews:'186', points:2,  scale:'~3+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:45,  name:'Кофейный лис', reviews:'47', points:2,  scale:'~3+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:41,  name:'Юни', reviews:'376', points:3,  scale:'~5+', status:'Растущий 📈', type:'Локальное заведение', potential:'Низкий', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:39,  name:'Coffee Like', reviews:'170', points:3,  scale:'~6+', status:'Начинающий 🚀', type:'Локальное заведение', potential:'Низкий', stage:'Экспансия', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:40,  name:'Balance coffee', reviews:'147', points:1,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Стартап', innovation:'Средняя', influence:'Низкое', growth:'Высокий' },
         { icon:'🔴', index:40,  name:'Days Coffee', reviews:'15', points:1,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
-        { icon:'🔴', index:40,  name:'Twinz', reviews:'115', points:1,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Ягоза', reviews:'437', points:1,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Тепло', reviews:'789', points:1,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Комод', reviews:'1,783', points:1,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
@@ -92,6 +96,7 @@ export default {
         { icon:'🔴', index:40,  name:'Этажи', reviews:'904', points:1,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Кофейная поляна', reviews:'629', points:3,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Pluma', reviews:'93', points:1,  scale:'1+', status:'Растущий 📈', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { icon:'🔴', index:39,  name:'Coffee Like', reviews:'170', points:3,  scale:'~6+', status:'Начинающий 🚀', type:'Локальное заведение', potential:'Низкий', stage:'Экспансия', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:30,  name:'Толстой', reviews:'398', points:1,  scale:'стагнация', status:'Начинающий 🚀', type:'Локальное заведение', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:30,  name:'Coffee time', reviews:'70', points:1,  scale:'стагнация', status:'Начинающий 🚀', type:'Локальное заведение', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:30,  name:'Точка притяжения', reviews:'122', points:1,  scale:'стагнация', status:'Начинающий 🚀', type:'Локальное заведение', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
@@ -103,8 +108,26 @@ export default {
         { icon:'🔴', index:30,  name:'Coffee inn', reviews:'138', points:1,  scale:'стагнация', status:'Начинающий 🚀', type:'Локальное заведение', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:30,  name:'Coffee Cup', reviews:'114', points:2,  scale:'стагнация', status:'Начинающий 🚀', type:'Локальное заведение', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:30,  name:'Cappuccino cup', reviews:'132', points:1,  scale:'стагнация', status:'Начинающий 🚀', type:'Локальное заведение', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:25,  name:'New coffee', reviews:'203', points:1,  scale:'стагнация', status:'Начинающий 🚀', type:'Локальное заведение', potential:'Низкий', stage:'Стартап', innovation:'Низкая', influence:'Низкое', growth:'Средний' }
+        { icon:'🔴', index:25,  name:'New coffee', reviews:'203', points:1,  scale:'стагнация', status:'Начинающий 🚀', type:'Локальное заведение', potential:'Низкий', stage:'Стартап', innovation:'Низкая', influence:'Низкое', growth:'Средний' },
+        { icon:'🔴', index:58,  name:'Muwa', reviews:'672', points:1,  scale:'~2+', status:'Вне игры 🚫', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Средний' },
+        { icon:'🔴', index:40,  name:'Twinz', reviews:'115', points:1,  scale:'1+', status:'Вне игры 🚫', type:'Локальное заведение', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' }
       ]
+    }
+  },
+  computed: {
+    sortedCoffeeData() {
+      return [...this.coffeeData].sort((a, b) => {
+        // Сначала сортируем по статусу
+        const statusOrderA = this.statusOrder.indexOf(a.status)
+        const statusOrderB = this.statusOrder.indexOf(b.status)
+        
+        if (statusOrderA !== statusOrderB) {
+          return statusOrderA - statusOrderB
+        }
+        
+        // Если статусы одинаковые, сортируем по индексу (по убыванию)
+        return b.index - a.index
+      })
     }
   },
   methods: {
