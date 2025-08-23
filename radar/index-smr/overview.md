@@ -2,7 +2,6 @@
 prev: false
 next: false
 ---
-[← Симулятор Самары](/brew/sim)
 
 # Индекс Роста
 
