@@ -475,7 +475,7 @@ function nav(): DefaultTheme.NavItem[] {
       items: [
         { text: 'Кофейни // Россия', link: '/radar/overview' },
         { text: 'Кофейни // Самара', link: '/radar/index-smr/overview' },
-        { text: 'Симуляторы', link: '/index/simulators/overview' }
+        { text: 'Симуляторы', link: 'brew/sim' }
       ]
     },
     { text: 'B‑R‑E‑W', link: '/brew/run' },
@@ -528,7 +528,9 @@ function sidebarRadarRussia(): DefaultTheme.SidebarItem[] {
 function sidebarSimulators(): DefaultTheme.SidebarItem[] {
   return [
     { text: 'Симуляторы', collapsed: false, items: [
-      { text: 'Обзор', link: '/index/simulators/overview' }
+      { text: 'Обзор', link: '/brew/sim' },
+      { text: 'Кофейни // Самара', link: '/radar/signal/coffee-points-smr-2025/dashboard' },
+      { text: 'Кофейни // Новосибирск', link: '/radar/signal/coffee-points-nsk-2025/launch' }
     ]}
   ]
 }
