@@ -245,13 +245,13 @@
   background-color: #1F1F1F;
   border: 1px solid #333;
   border-radius: 12px;
-  padding: 16px 20px;
-  margin: 24px 0;
+  padding: 14px 20px; /* Уменьшены вертикальные отступы */
+  margin: 20px 0; /* Уменьшен вертикальный margin */
 }
 .info-card-title {
   font-size: 16px;
   font-weight: 500;
-  color: #E5E7EB; /* Светло-серый для заголовка */
+  color: #E5E7EB;
   margin: 0 0 8px 0;
   line-height: 1.4;
 }
@@ -259,11 +259,11 @@
   margin: 0;
   padding-left: 20px;
   font-size: 14px;
-  color: #A1A1A9; /* Приглушенный серый для списка */
-  line-height: 1.6;
+  color: #A1A1A9;
+  line-height: 1.5; /* Немного уменьшили для компактности */
 }
 .info-card-list li {
-  margin-bottom: 4px;
+  margin-bottom: 2px; /* Сделали список плотнее */
 }
 .info-card-list li:last-child {
   margin-bottom: 0;
@@ -274,27 +274,27 @@
   background: transparent;
   border: 1px solid #333;
   border-radius: 12px;
-  margin: 24px 0;
+  margin: 20px 0; /* Уменьшен отступ */
   transition: all 0.2s ease-in-out;
 }
 .details-compact:hover {
   border-color: #444;
 }
 .details-summary {
-  padding: 14px 20px;
+  padding: 12px 20px; /* Уменьшен padding */
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
   user-select: none;
-  list-style: none; /* Убираем стандартный маркер */
+  list-style: none;
 }
 .details-summary::-webkit-details-marker {
-  display: none; /* Убираем стандартный маркер в Chrome */
+  display: none;
 }
 .details-title {
-  font-size: 16px; /* Размер как у основного текста */
-  font-weight: 700; /* Жирный */
+  font-size: 16px;
+  font-weight: 700;
   color: #E5E7EB;
 }
 .details-arrow {
@@ -307,9 +307,9 @@
   transform: rotate(90deg);
 }
 .details-content {
-  padding: 0px 20px 16px 20px;
+  padding: 4px 20px 14px 20px; /* Уменьшены отступы */
   border-top: 1px solid #333;
-  margin-top: 8px;
+  margin-top: 4px; /* Уменьшен отступ от разделителя */
   animation: slideDown 0.3s ease-out;
 }
 @keyframes slideDown {
@@ -327,29 +327,29 @@
   padding: 0;
   list-style-type: none;
 }
+/* Flexbox для идеального выравнивания буллетов */
 .details-content ul li {
   color: #D1D5DB;
   font-size: 15px;
-  line-height: 1.6;
-  padding-left: 22px;
-  position: relative;
-  margin-top: 10px;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start; /* Выравнивание по верху для многострочного текста */
+  margin-top: 8px; /* Уменьшен отступ между пунктами */
 }
 .details-content ul li::before {
   content: "•";
-  position: absolute;
-  left: 0;
-  top: -2px;
-  color: #C5F946; /* Акцентный лаймовый цвет */
-  font-size: 24px;
+  color: #C5F946;
+  font-size: 20px; /* Оптимальный размер буллета */
   font-weight: bold;
+  margin-right: 10px; /* Отступ от буллета до текста */
+  line-height: 1.35; /* Коррекция для идеального центра */
 }
 .details-content ul li strong {
   font-weight: 600;
   color: #fff;
 }
 
-/* --- 3. Общие стили кнопок (из вашего кода) --- */
+/* --- 3. Общие стили кнопок (без изменений) --- */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -375,14 +375,6 @@
   background-color: #347b6c;
   color: white !important;
 }
-.btn-secondary {
-  background-color: #347b6c;
-  color: white !important;
-}
-.btn-secondary:hover {
-  background-color: #C5F946;
-  color: #000 !important;
-}
 .start-button-container {
   margin: 20px 0;
   text-align: left;
@@ -392,40 +384,25 @@
   margin: 0;
 }
 
-/* --- 4. Стили таблиц (из вашего кода) --- */
+/* --- 4. Стили таблиц (без изменений) --- */
 .radar-signals-table table,
 .comparison-table table {
   table-layout: fixed;
   width: 100%;
-}
-.radar-signals-table td:nth-child(1) {
-  width: 150px;
-  white-space: nowrap;
-}
-.radar-signals-table td:nth-child(3) {
-  width: 1%;
-  white-space: nowrap;
-}
-.radar-signals-table td:nth-child(2) {
-  white-space: normal;
-  word-break: break-word;
 }
 .comparison-table td {
   width: 50%;
   word-break: break-word;
 }
 
-/* --- 5. Стили форм (из вашего кода) --- */
+/* --- 5. Стили форм (без изменений) --- */
 .custom-form {
   max-width: 500px;
   margin: 0;
   padding: 20px;
-  background-color: transparent; /* Изменено для лучшей интеграции */
+  background-color: transparent;
   border-radius: 5px;
   color: #ffffff;
-}
-.form-group {
-  margin-bottom: 15px;
 }
 .form-input {
   width: 100%;
@@ -439,14 +416,12 @@
 }
 .form-hint {
   color: #808080;
-  font-style: normal;
-  text-align: left;
   font-size: 0.8em;
   line-height: 1.5;
   margin-top: 15px;
 }
 
-/* --- 6. Адаптивность --- */
+/* --- 6. Адаптивность (без изменений) --- */
 @media (max-width: 768px) {
   .info-card {
     padding: 14px 16px;
