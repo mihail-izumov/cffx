@@ -4,7 +4,7 @@ const { version } = pkg
 
 export default defineConfig({
   title: 'Модуль Роста®',
-  appearance: 'force-dark', // фиксируем только тёмную тему и скрываем переключатель
+  appearance: 'force-dark', // только тёмная тема
   locales: {
     '/': {
       lang: 'ru-RU',
@@ -19,16 +19,7 @@ export default defineConfig({
     // Этот хук выполняется после сборки
   },
   head: [
-    // При force-dark ниже скрипт не обязателен — можно удалить.
-    // Оставляю закомментированным на случай, если хочешь принудительный класс.
-    // ['script', {}, `
-    //   (function() {
-    //     localStorage.setItem('vitepress-theme-appearance', 'dark');
-    //     document.documentElement.classList.add('dark');
-    //     document.documentElement.classList.remove('auto');
-    //   })();
-    // `],
-    
+    // скрипт принудительной темы не нужен при force-dark
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
     ['script', {}, `
@@ -100,18 +91,11 @@ export default defineConfig({
         });
       }
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-          replaceFooter();
-          updateApplyLinkTarget();
-        });
+        document.addEventListener('DOMContentLoaded', () => { replaceFooter(); updateApplyLinkTarget(); });
       } else {
-        replaceFooter();
-        updateApplyLinkTarget();
+        replaceFooter(); updateApplyLinkTarget();
       }
-      window.addEventListener('load', () => {
-        replaceFooter();
-        updateApplyLinkTarget();
-      });
+      window.addEventListener('load', () => { replaceFooter(); updateApplyLinkTarget(); });
       setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 1000);
       setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 2000);
       let lastUrl = location.href;
@@ -119,244 +103,67 @@ export default defineConfig({
         const url = location.href;
         if (url !== lastUrl) {
           lastUrl = url;
-          setTimeout(() => {
-            replaceFooter();
-            updateApplyLinkTarget();
-          }, 100);
+          setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 100);
         }
       }).observe(document, { subtree: true, childList: true });
     })();
     `],
     ['style', {}, `
-    /* Делаем текст в кнопке "Войти" жирнее */
-    .VPSocialLink[aria-label="login-link"]::after {
-      font-weight: 600 !important;
+    .VPSwitchAppearance{display:none!important}
+    .VPSocialLink[aria-label="login-link"]::after{font-weight:600!important}
+    .VPHero .name,.VPHero .text,.VPHero .tagline{color:white!important}
+    .VPHero .tagline a{color:var(--vp-c-brand-2)!important;text-decoration:none;transition:all .3s ease}
+    .VPHero .tagline a:hover{color:var(--vp-c-brand-1)!important;text-decoration:underline}
+    .VPHero .VPButton{background-color:var(--vp-c-brand-1)!important;border-color:var(--vp-c-brand-1)!important;color:white!important;transition:all .3s ease;text-decoration:none!important}
+    .VPHero .VPButton:hover{background-color:var(--vp-c-brand-2)!important;border-color:var(--vp-c-brand-2)!important;color:#000!important;transform:translateY(-2px);text-decoration:none!important}
+    .VPContent a{color:var(--vp-c-brand-2);text-decoration:none;border-bottom:1px solid transparent;transition:all .3s ease}
+    .VPContent a:hover{color:var(--vp-c-brand-1);border-bottom-color:var(--vp-c-brand-1)}
+    .VPFeature .title,.VPFeature .link-text{transition:color .25s ease-in-out}
+    .VPFeature .link-text{color:var(--vp-c-brand-1)}
+    a.VPFeature.link:hover .title,a.VPFeature.link:hover .link-text{color:var(--vp-c-brand-2)}
+    html:not(.dark) .VPFeature{background-color:#202124!important;border-color:#3c3c3c!important}
+    html:not(.dark) .VPFeature .title{color:#C5F946!important}
+    html:not(.dark) .VPFeature .details{color:rgba(235,235,245,.6)!important}
+    html:not(.dark) .VPFeature .link-text{color:#347b6c!important}
+    html:not(.dark) .VPFeature .link-text .icon{fill:#347b6c!important}
+    html:not(.dark) a.VPFeature.link:hover{background-color:#2f2f2f!important;border-color:#555!important}
+    :root{--vp-c-brand-1:#347b6c;--vp-c-brand-2:#C5F946;--vp-c-brand-3:#347b6c;--vp-c-brand-soft:rgba(52,123,108,.14)}
+    .VPNavBarTitle .logo{height:32px!important;width:auto!important}
+    @media (min-width:961px){
+      .VPNavBar .content{gap:0!important}
+      .VPNavBarMenu{margin-right:0!important}
+      .VPNavBarSocialLinks{min-width:auto!important;justify-content:flex-end!important;gap:16px!important;margin-left:0!important;flex-shrink:0!important}
+      .VPSocialLink:not(:last-child){margin-right:4px!important}
     }
-    /* = СТИЛИ ДЛЯ HERO-СЕКЦИИ = */
-    .VPHero .name,
-    .VPHero .text,
-    .VPHero .tagline {
-      color: white !important;
+    @media (max-width:960px) and (min-width:769px){
+      .VPNavBar .content{gap:0!important}
+      .VPNavBarMenu{margin-right:0!important}
+      .VPNavBarSocialLinks{margin-left:4px!important;gap:12px!important;flex-shrink:0!important}
+      .VPSocialLink:not(:last-child){margin-right:2px!important}
     }
-    /* = СТИЛИ ДЛЯ ССЫЛОК И КНОПОК НА ГЛАВНОЙ СТРАНИЦЕ = */
-    .VPHero .tagline a {
-      color: var(--vp-c-brand-2) !important;
-      text-decoration: none;
-      transition: all 0.3s ease;
+    @media (max-width:768px){
+      .VPNavBar .VPNavBarSocialLinks{display:none!important}
+      .VPNavScreen{overflow-y:auto!important}
+      .VPNavScreen .VPNavScreenMenu{padding-bottom:16px!important}
+      .VPNavScreen .VPNavScreenSocialLinks,.VPNavScreen .VPNavScreenAppearance{margin:16px!important;padding:16px!important;border:1px solid var(--vp-c-divider)!important;border-radius:8px!important;background:var(--vp-c-bg-soft)!important}
+      .VPNavScreen .VPNavScreenAppearance{display:none!important}
+      .VPNavScreen .VPNavScreenSocialLinks{display:flex!important;flex-direction:column!important;gap:12px!important}
+      .VPNavScreen .VPSocialLink{display:flex!important;align-items:center!important;justify-content:center!important;padding:12px!important;background:var(--vp-c-bg)!important;border-radius:6px!important;border:1px solid var(--vp-c-divider)!important;transition:all .3s ease!important;text-decoration:none!important}
+      .VPNavScreen .VPSocialLink:hover{background:var(--vp-c-bg-mute)!important;border-color:var(--vp-c-brand)!important}
+      .VPNavScreen .VPSocialLink[aria-label="login-link"]::after{content:"Войти"!important;font-size:16px!important;font-weight:600!important;color:var(--vp-c-text-1)!important}
+      .footer-row{flex-direction:column!important;gap:8px!important}
+      .dot-separator{display:none!important}
     }
-    .VPHero .tagline a:hover {
-      color: var(--vp-c-brand-1) !important;
-      text-decoration: underline;
-    }
-    .VPHero .VPButton {
-      background-color: var(--vp-c-brand-1) !important;
-      border-color: var(--vp-c-brand-1) !important;
-      color: white !important;
-      transition: all 0.3s ease;
-      text-decoration: none !important;
-    }
-    .VPHero .VPButton:hover {
-      background-color: var(--vp-c-brand-2) !important;
-      border-color: var(--vp-c-brand-2) !important;
-      color: #000 !important;
-      transform: translateY(-2px);
-      text-decoration: none !important;
-    }
-    .VPContent a {
-      color: var(--vp-c-brand-2);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: all 0.3s ease;
-    }
-    .VPContent a:hover {
-      color: var(--vp-c-brand-1);
-      border-bottom-color: var(--vp-c-brand-1);
-    }
-    
-    /* = СТИЛИ ДЛЯ КАРТОЧЕК НА ГЛАВНОЙ СТРАНИЦЕ = */
-    .VPFeature .title,
-    .VPFeature .link-text {
-      transition: color 0.25s ease-in-out;
-    }
-    
-    .VPFeature .link-text {
-      color: var(--vp-c-brand-1);
-    }
-    
-    a.VPFeature.link:hover .title,
-    a.VPFeature.link:hover .link-text {
-      color: var(--vp-c-brand-2);
-    }
-    html:not(.dark) .VPFeature {
-      background-color: #202124 !important;
-      border-color: #3c3c3c !important;
-    }
-    html:not(.dark) .VPFeature .title {
-      color: #C5F946 !important;
-    }
-    html:not(.dark) .VPFeature .details {
-      color: rgba(235, 235, 245, 0.6) !important;
-    }
-    html:not(.dark) .VPFeature .link-text {
-      color: #347b6c !important;
-    }
-    html:not(.dark) .VPFeature .link-text .icon {
-      fill: #347b6c !important;
-    }
-    html:not(.dark) a.VPFeature.link:hover {
-      background-color: #2f2f2f !important;
-      border-color: #555 !important;
-    }
-    :root {
-      --vp-c-brand-1: #347b6c;
-      --vp-c-brand-2: #C5F946;
-      --vp-c-brand-3: #347b6c;
-      --vp-c-brand-soft: rgba(52, 123, 108, 0.14);
-    }
-    .VPNavBarTitle .logo {
-      height: 32px !important;
-      width: auto !important;
-    }
-    
-    /* ДЕСКТОПНАЯ ВЕРСИЯ (больше 960px) */
-    @media (min-width: 961px) {
-      .VPNavBar .content {
-        gap: 0 !important;
-      }
-      .VPNavBarMenu {
-        margin-right: 0 !important;
-      }
-      .VPSwitchAppearance {
-        display: none !important; /* на случай если элемент всё же окажется в DOM */
-      }
-      .VPNavBarSocialLinks {
-        min-width: auto !important;
-        justify-content: flex-end !important;
-        gap: 16px !important;
-        margin-left: 0 !important;
-        flex-shrink: 0 !important;
-      }
-      .VPSocialLink:not(:last-child) {
-        margin-right: 4px !important;
-      }
-    }
-    /* ПЛАНШЕТНАЯ/ПРОМЕЖУТОЧНАЯ ВЕРСИЯ (769px-960px) */
-    @media (max-width: 960px) and (min-width: 769px) {
-      .VPNavBar .content {
-        gap: 0 !important;
-      }
-      .VPNavBarMenu {
-        margin-right: 0 !important;
-      }
-      .VPSwitchAppearance { display: none !important; }
-      .VPNavBarSocialLinks {
-        margin-left: 4px !important;
-        gap: 12px !important;
-        flex-shrink: 0 !important;
-      }
-      .VPSocialLink:not(:last-child) {
-        margin-right: 2px !important;
-      }
-    }
-    /* МОБИЛЬНАЯ ВЕРСИЯ (меньше 768px) */
-    @media (max-width: 768px) {
-      .VPNavBar .VPNavBarSocialLinks {
-        display: none !important;
-      }
-      .VPNavScreen { overflow-y: auto !important; }
-      .VPNavScreen .VPNavScreenMenu { padding-bottom: 16px !important; }
-      .VPNavScreen .VPNavScreenSocialLinks,
-      .VPNavScreen .VPNavScreenAppearance {
-        margin: 16px !important;
-        padding: 16px !important;
-        border: 1px solid var(--vp-c-divider) !important;
-        border-radius: 8px !important;
-        background: var(--vp-c-bg-soft) !important;
-      }
-      .VPNavScreen .VPNavScreenAppearance { display: none !important; } /* скрыть тумблер в мобильном меню */
-      .VPNavScreen .VPNavScreenSocialLinks {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 12px !important;
-      }
-      .VPNavScreen .VPSocialLink {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 12px !important;
-        background: var(--vp-c-bg) !important;
-        border-radius: 6px !important;
-        border: 1px solid var(--vp-c-divider) !important;
-        transition: all 0.3s ease !important;
-        text-decoration: none !important;
-      }
-      .VPNavScreen .VPSocialLink:hover {
-        background: var(--vp-c-bg-mute) !important;
-        border-color: var(--vp-c-brand) !important;
-      }
-      .VPNavScreen .VPSocialLink[aria-label="login-link"]::after {
-        content: "Войти" !important;
-        font-size: 16px !important;
-        font-weight: 600 !important;
-        color: var(--vp-c-text-1) !important;
-      }
-      .footer-row { flex-direction: column !important; gap: 8px !important; }
-      .dot-separator { display: none !important; }
-    }
-    .VPSocialLink .vpi-social-github { display: none !important; }
-    .VPSocialLink {
-      width: auto !important;
-      height: auto !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      flex-shrink: 0 !important;
-    }
-    .VPSocialLink[aria-label="login-link"]::after {
-      content: "Войти";
-      font-size: 14px;
-      color: var(--vp-c-text-1);
-      padding: 6px 12px;
-      border: 1px solid var(--vp-c-divider);
-      border-radius: 6px;
-      background: transparent;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-      margin: 0;
-      flex-shrink: 0;
-    }
-    .VPSocialLink[aria-label="login-link"]:hover::after {
-      background: var(--vp-c-bg-soft);
-      border-color: var(--vp-c-brand);
-    }
-    .custom-footer-links {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      align-items: center;
-    }
-    .footer-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .footer-row a {
-      color: var(--vp-c-text-2);
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    .footer-row a:hover {
-      color: var(--vp-c-brand);
-    }
-    .dot-separator {
-      color: var(--vp-c-text-3);
-      font-weight: bold;
-    }
-    .VPFooter .copyright {
-      margin-top: 2px !important;
-    }
+    .VPSocialLink .vpi-social-github{display:none!important}
+    .VPSocialLink{width:auto!important;height:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important}
+    .VPSocialLink[aria-label="login-link"]::after{content:"Войти";font-size:14px;color:var(--vp-c-text-1);padding:6px 12px;border:1px solid var(--vp-c-divider);border-radius:6px;background:transparent;transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0}
+    .VPSocialLink[aria-label="login-link"]:hover::after{background:var(--vp-c-bg-soft);border-color:var(--vp-c-brand)}
+    .custom-footer-links{display:flex;flex-direction:column;gap:3px;align-items:center}
+    .footer-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
+    .footer-row a{color:var(--vp-c-text-2);text-decoration:none;transition:color .3s ease}
+    .footer-row a:hover{color:var(--vp-c-brand)}
+    .dot-separator{color:var(--vp-c-text-3);font-weight:bold}
+    .VPFooter .copyright{margin-top:2px!important}
     `]
   ],
   base: '/',
@@ -372,14 +179,29 @@ export default defineConfig({
       prev: 'Предыдущая страница',
       next: 'Следующая страница'
     },
-    // ВАЖНО: Сохраняем рабочее сопоставление сайдбаров!
+
+    // Порядок: от более специфичных к более общим
     sidebar: {
+      // BREW
       '/brew/': { items: sidebarBrew() },
+
+      // Самара: обзор/метод
       '/radar/index-smr/': { items: sidebarRadarSamara() },
-      '/radar/signal/': { items: sidebarRadarSamara() }, // весь сигнал → Самара (чтобы instruction и dashboard были с нужным сайдбаром)
-      '/radar/': { items: sidebarRadarRussia() },
+
+      // Новосибирск — ОТВЯЗАН ОТ САЙДБАРА (важно ставить выше общего /radar/signal/)
+      '/radar/signal/coffee-points-nsk-2025/': { items: [] },
+
+      // Самара: весь блок signal (инструкция, дашборд и т.д.)
+      '/radar/signal/': { items: sidebarRadarSamara() },
+
+      // Чекап
       '/checkup/': { items: sidebarCheckup() },
       '/checkup/prep/': { items: sidebarCheckupPrep() },
+
+      // Общий Радар (Россия)
+      '/radar/': { items: sidebarRadarRussia() },
+
+      // Остальные разделы
       '/about/': { items: sidebarAbout() },
       '/method/': { items: sidebarMethod() },
       '/technology/': { items: sidebarTechnology() },
@@ -388,6 +210,7 @@ export default defineConfig({
       '/clients/': { items: sidebarClients() },
       '/terms/': { items: sidebarTerms() }
     },
+
     search: {
       provider: 'local',
       options: {
@@ -404,11 +227,14 @@ export default defineConfig({
         }
       }
     },
+
+    // Навигация — ссылки на существующие страницы (без попыток «активных пунктов»)
     nav: nav(),
+
     socialLinks: [
       { 
         icon: { 
-          svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Telegram</title><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" fill="currentColor"/></svg>' 
+          svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Telegram</title><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.480.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" fill="currentColor"/></svg>' 
         }, 
         link: 'https://t.me/runscale' 
       },
@@ -417,7 +243,7 @@ export default defineConfig({
   }
 })
 
-// Навигация (ссылки на конкретные страницы — как в рабочей версии)
+// Навигация (ссылки на конкретные существующие страницы)
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
@@ -442,7 +268,7 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-// Сайдбары
+// SIDEBARS
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -576,7 +402,7 @@ function sidebarClients(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Клиенты', collapsed: false, items: [
         { text: 'Обзор', link: '/clients/list' },
-        { text: 'Конкордия-Авто', link: '/clients/konkordiya-auto' },
+        { text: 'Конкордия-Авто', link: '/clients/konkорdiya-auto' },
         { text: 'Блумкидс', link: '/clients/bloomkids' },
         { text: 'Чишминский Молочный Завод', link: '/clients/chishminskiy' },
         { text: 'Ермолаевъ', link: '/clients/ermolaev' },
