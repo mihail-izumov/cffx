@@ -6,7 +6,7 @@
 
 Структурированный доступ к результатам анализа 29,600+ развернутых отзывов о фокус-компании "Корж" и её ключевых конкурентах: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**.
 
-<!-- ИНФОРМАЦИОННАЯ КАРТОЧКА -->
+<!-- ИНФОРМАЦИОННАЯ КАРТОЧКА (СВЕРХКОМПАКТНАЯ) -->
 <div class="info-card">
   <p class="info-card-title">Каждый диалог — это готовый разбор бизнес-задачи на самарском рынке</p>
   <ol class="info-card-list">
@@ -20,7 +20,7 @@
 
 **Это только начало.** Вы поработали с базовой версией и видели возможности. Но 85% критически важных данных доступны только подписчикам Инсайдер и Партнер.
 
-<!-- ВЫПАДАЮЩИЙ СПИСОК -->
+<!-- ВЫПАДАЮЩИЙ СПИСОК (СВЕРХКОМПАКТНЫЙ) -->
 <details class="details-compact">
   <summary class="details-summary">
     <span class="details-title">Что скрыто от бесплатных пользователей</span>
@@ -47,8 +47,6 @@
 
 <DialogTables />
 
----
-
 ## Как получить максимум от симулятора
 
 Вы получаете доступ к аналитике и решениям по конкретным вопросам через 20 готовых диалогов.  
@@ -74,6 +72,7 @@
 <div class="start-button-container">
   <a href="https://t.me/Anna_runScale" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Начать диалог с Анной →</a>
 </div>
+
 ## Диалоги
 
 ### Детали по зонам роста (А1-А3)
@@ -231,48 +230,48 @@
 **[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**
 
 <style>
-/* --- 1. Информационная карточка ("Каждый диалог...") --- */
+/* --- 1. Информационная карточка ("Каждый диалог...") - ФИНАЛЬНАЯ КОМПАКТНАЯ ВЕРСИЯ --- */
 .info-card {
   background-color: #1F1F1F;
   border: 1px solid #333;
   border-radius: 12px;
-  padding: 16px 20px;
-  margin: 16px 0; /* Уменьшены вертикальные отступы */
+  padding: 14px 20px; /* Компактные вертикальные отступы */
+  margin: 16px 0;
 }
 .info-card-title {
   font-size: 16px;
   font-weight: 500;
   color: #E5E7EB;
-  margin: 0 0 10px 0; /* Чуть больше отступ после заголовка */
+  margin: 0 0 8px 0;
   line-height: 1.4;
 }
 .info-card-list {
   margin: 0;
-  padding-left: 20px; /* Стандартный отступ для списка */
+  padding-left: 20px;
   font-size: 14px;
   color: #A1A1A9;
   line-height: 1.5;
 }
 .info-card-list li {
-  margin-bottom: 4px; /* Компактный отступ между пунктами */
+  margin-bottom: 4px;
 }
 .info-card-list li:last-child {
   margin-bottom: 0;
 }
 
-/* --- 2. Выпадающий список ("Что скрыто...") --- */
+/* --- 2. Выпадающий список ("Что скрыто...") - ФИНАЛЬНАЯ КОМПАКТНАЯ ВЕРСИЯ --- */
 .details-compact {
   background: transparent;
   border: 1px solid #333;
   border-radius: 12px;
-  margin: 16px 0 20px 0; /* Отступ до и после блока */
+  margin: 16px 0 20px 0;
   transition: border-color 0.2s ease-in-out;
 }
 .details-compact:hover {
   border-color: #444;
 }
 .details-summary {
-  padding: 12px 20px;
+  padding: 10px 20px; /* Уменьшен padding для компактности */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -298,10 +297,10 @@
   transform: rotate(90deg);
 }
 .details-content {
-  padding: 8px 20px 14px 20px; /* Компактные отступы */
+  padding: 8px 20px 12px 20px; /* Радикально уменьшены отступы */
   border-top: 1px solid #333;
   margin-top: 4px;
-  animation: slideDown 0.3s ease-out;
+  animation: slideDown 0.2s ease-out;
 }
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-5px); }
@@ -314,24 +313,24 @@
 }
 .details-content ul li {
   position: relative;
-  padding-left: 20px; /* Место для буллета */
+  padding-left: 20px;
   color: #D1D5DB;
   font-size: 15px;
   line-height: 1.5;
-  margin-top: 8px; /* Уменьшенный отступ между элементами */
+  margin-top: 6px; /* Минимальный отступ между пунктами */
 }
 .details-content ul li:first-child {
-  margin-top: 4px; /* Еще меньше отступ для первого элемента */
+  margin-top: 2px; /* Первый элемент еще ближе к границе */
 }
+/* ТОЧНОЕ ВЫРАВНИВАНИЕ БУЛЛЕТА - ГАРАНТИРОВАННЫЙ МЕТОД */
 .details-content ul li::before {
   content: "•";
   position: absolute;
   left: 0;
-  top: 50%; /* Центрируем по вертикали */
-  transform: translateY(-50%); /* Точная корректировка центра */
+  top: 0.75em; /* Половина высоты строки (line-height/2) */
+  transform: translateY(-50%); /* Центрируем сам буллет */
   color: #C5F946;
-  font-size: 22px; /* Чуть меньше буллет */
-  font-weight: bold;
+  font-size: 20px;
 }
 .details-content ul li strong {
   font-weight: 600;
@@ -339,38 +338,23 @@
 }
 
 /* --- 3. Общие стили кнопок (без изменений) --- */
-.btn {
-  display: inline-block; padding: 12px 24px; border-radius: 8px;
-  font-weight: 700; font-size: 16px; text-align: center; text-decoration: none;
-  transition: all 0.3s ease; cursor: pointer; border: none; margin: 10px 0;
-}
+.btn { display: inline-block; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 16px; text-align: center; text-decoration: none; transition: all 0.3s ease; cursor: pointer; border: none; margin: 10px 0; }
 .btn:hover { transform: translateY(-2px); text-decoration: none !important; }
 .btn-primary { background-color: #C5F946; color: #000 !important; }
 .btn-primary:hover { background-color: #347b6c; color: white !important; }
 .start-button-container { margin: 20px 0; text-align: left; }
 .start-button-container .btn { display: inline-block; margin: 0; }
 
-/* --- 4. Стили таблиц (без изменений) --- */
-.radar-signals-table table, .comparison-table table {
-  table-layout: fixed; width: 100%;
-}
+/* --- 4. Стили таблиц и форм (без изменений) --- */
+.radar-signals-table table, .comparison-table table { table-layout: fixed; width: 100%; }
 .comparison-table td { width: 50%; word-break: break-word; }
-
-/* --- 5. Стили форм (без изменений) --- */
-.custom-form { max-width: 500px; margin: 0; padding: 20px;
-  background-color: transparent; border-radius: 5px; color: #ffffff;
-}
-.form-input { width: 100%; padding: 10px; box-sizing: border-box;
-  border: 1px solid #444; border-radius: 4px; font-size: 16px;
-  background-color: #1F1F1F; color: #ffffff;
-}
+.custom-form { max-width: 500px; margin: 0; padding: 20px; background-color: transparent; border-radius: 5px; color: #ffffff; }
+.form-input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #444; border-radius: 4px; font-size: 16px; background-color: #1F1F1F; color: #ffffff; }
 .form-hint { color: #808080; font-size: 0.8em; line-height: 1.5; margin-top: 15px; }
 
-/* --- 6. Адаптивность (без изменений) --- */
+/* --- 5. Адаптивность (без изменений) --- */
 @media (max-width: 768px) {
-  .info-card, .details-summary, .details-content {
-    padding-left: 16px; padding-right: 16px;
-  }
+  .info-card, .details-summary, .details-content { padding-left: 16px; padding-right: 16px; }
   .btn { padding: 10px 20px; font-size: 15px; }
 }
 </style>
