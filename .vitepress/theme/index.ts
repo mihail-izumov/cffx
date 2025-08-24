@@ -1,6 +1,6 @@
 import { h } from 'vue'
-import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
+
 // Импортируем каждый компонент с уникальным именем
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
@@ -21,12 +21,12 @@ import InsiderForm from '../components/InsiderForm.vue'
 import PartnerForm from '../components/PartnerForm.vue'
 import IndexSMR from '../components/IndexSMR.vue'
 import PriceCalculator from '../components/PriceCalculator.vue'
+import SimulatorTabs from '../components/SimulatorTabs.vue'
 
 export default {
   extends: DefaultTheme,
   Layout() {
-    return h(DefaultTheme.Layout, null, {
-    })
+    return h(DefaultTheme.Layout, null, {})
   },
   enhanceApp({ app }) {
     // Регистрируем каждый компонент с уникальным тегом
@@ -49,5 +49,6 @@ export default {
     app.component('PartnerForm', PartnerForm)
     app.component('IndexSMR', IndexSMR)
     app.component('PriceCalculator', PriceCalculator)
+    app.component('SimulatorTabs', SimulatorTabs)
   }
-} satisfies Theme
+}
