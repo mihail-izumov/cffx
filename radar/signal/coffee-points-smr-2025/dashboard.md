@@ -14,7 +14,7 @@
 • **Темный режим** — инсайты, которые видят только 10% игроков (только Партнер)
 
 <div class="start-button-container">
-  <a href="/brew/run" class="btn btn-primary">Получить полный доступ →</a>
+  <a href="/brew/membership" class="btn btn-primary">Получить полный доступ →</a>
 </div>
 
 ## Почему «Корж» побеждает в сердцах, а Skuratov — в головах
