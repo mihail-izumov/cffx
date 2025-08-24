@@ -542,13 +542,15 @@ function sidebarCheckup(): DefaultTheme.SidebarItem[] {
       collapsed: false, 
       items: [
         { text: 'Обзор', link: '/checkup/overview' },
+        { text: '→ Пройти Чекап', link: '/apply' },
+        { text: 'Подготовка к чекапу', link: '/checkup/prep/overview' },
         { text: 'Детали чекапа', link: '/checkup/specs' },
         { text: 'Глубокий чекап', link: '/checkup/deep' },
         { text: 'Платите за движение', link: '/checkup/pay-as-you-go' },
         { text: 'Чек-лист готовности', link: '/checkup/checklist' },
         { text: 'Фильтр потенциала', link: '/radar/filter' },
-        { text: 'Программа рекомендаций', link: '/radar/invite' },
-        { text: 'Подготовка к чекапу', link: '/checkup/prep/overview' }
+        { text: 'Программа рекомендаций', link: '/radar/invite' }
+
       ]
     }
   ]
