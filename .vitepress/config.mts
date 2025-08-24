@@ -4,7 +4,7 @@ const { version } = pkg
 
 export default defineConfig({
   title: 'Модуль Роста®',
-  appearance: 'force-dark', // только тёмная тема
+  appearance: 'force-dark',
   locales: {
     '/': {
       lang: 'ru-RU',
@@ -19,7 +19,6 @@ export default defineConfig({
     // Этот хук выполняется после сборки
   },
   head: [
-    // скрипт принудительной темы не нужен при force-dark
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
     ['script', {}, `
@@ -92,9 +91,7 @@ export default defineConfig({
       }
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => { replaceFooter(); updateApplyLinkTarget(); });
-      } else {
-        replaceFooter(); updateApplyLinkTarget();
-      }
+      } else { replaceFooter(); updateApplyLinkTarget(); }
       window.addEventListener('load', () => { replaceFooter(); updateApplyLinkTarget(); });
       setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 1000);
       setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 2000);
@@ -180,7 +177,7 @@ export default defineConfig({
       next: 'Следующая страница'
     },
 
-    // Порядок: от более специфичных к более общим
+    // ВАЖНО: порядок от более специфичных к более общим!
     sidebar: {
       // BREW
       '/brew/': { items: sidebarBrew() },
@@ -188,17 +185,21 @@ export default defineConfig({
       // Самара: обзор/метод
       '/radar/index-smr/': { items: sidebarRadarSamara() },
 
-      // Новосибирск — ОТВЯЗАН ОТ САЙДБАРА (важно ставить выше общего /radar/signal/)
+      // Новосибирск — без сайдбара
       '/radar/signal/coffee-points-nsk-2025/': { items: [] },
 
-      // Самара: весь блок signal (инструкция, дашборд и т.д.)
+      // Самара: весь блок signal
       '/radar/signal/': { items: sidebarRadarSamara() },
+
+      // ИСПРАВЛЕНИЕ: Принудительно привязываем страницы Фильтра и Программы к сайдбару Чекапа
+      '/radar/filter': { items: sidebarCheckup() },
+      '/radar/invite': { items: sidebarCheckup() },
 
       // Чекап
       '/checkup/': { items: sidebarCheckup() },
       '/checkup/prep/': { items: sidebarCheckupPrep() },
 
-      // Общий Радар (Россия)
+      // Общий Радар (Россия) — ДОЛЖЕН БЫТЬ ПОСЛЕ специфичных /radar/filter и /radar/invite
       '/radar/': { items: sidebarRadarRussia() },
 
       // Остальные разделы
@@ -228,13 +229,11 @@ export default defineConfig({
       }
     },
 
-    // Навигация — ссылки на существующие страницы (без попыток «активных пунктов»)
     nav: nav(),
-
     socialLinks: [
       { 
         icon: { 
-          svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Telegram</title><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.480.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" fill="currentColor"/></svg>' 
+          svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Telegram</title><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" fill="currentColor"/></svg>' 
         }, 
         link: 'https://t.me/runscale' 
       },
@@ -243,7 +242,6 @@ export default defineConfig({
   }
 })
 
-// Навигация (ссылки на конкретные существующие страницы)
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
@@ -268,7 +266,6 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-// SIDEBARS
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -402,7 +399,7 @@ function sidebarClients(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Клиенты', collapsed: false, items: [
         { text: 'Обзор', link: '/clients/list' },
-        { text: 'Конкордия-Авто', link: '/clients/konkорdiya-auto' },
+        { text: 'Конкордия-Авто', link: '/clients/konkordiya-auto' },
         { text: 'Блумкидс', link: '/clients/bloomkids' },
         { text: 'Чишминский Молочный Завод', link: '/clients/chishminskiy' },
         { text: 'Ермолаевъ', link: '/clients/ermolaev' },
