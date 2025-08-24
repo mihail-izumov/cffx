@@ -4,46 +4,46 @@
 
 ## Кофейни // Самара
 
-Структурированный доступ к результатам анализа 29,600+ развернутых отзывов о фокус-компании "Корж" и ее ключевых конкурентах: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**. 
+Структурированный доступ к результатам анализа 29,600+ развернутых отзывов о фокус-компании "Корж" и ее ключевых конкурентах: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**.
 
-<!-- Плашка с инструкцией -->
-<div class="instruction-card">
-<h3 class="instruction-title">Каждый диалог — это готовый разбор с углубленным анализом конкретной бизнес-задачи на самарском рынке</h3>
-<ol class="instruction-steps">
-<li>Определите главную задачу сейчас и выберите раздел</li>
-<li>Войдите в нужный диалог и продолжите задавать уточняющие вопросы</li>
-<li>Превратите каждый диалог в системный рост вашего бизнеса сегодня</li>
-</ol>
+<div class="dialog-tip">
+  <div class="dialog-tip-title">
+    Каждый диалог — разбор реальной задачи вашего бизнеса на самарском рынке
+  </div>
+  <ol class="dialog-tip-list">
+    <li>Определите главную задачу и выберите раздел</li>
+    <li>Войдите в нужный диалог и задавайте уточняющие вопросы</li>
+    <li>Используйте выводы — применяйте их для роста</li>
+  </ol>
 </div>
 
 ### 29,600+ уникальных отзывов → 20 готовых диалогов → мгновенный доступ к инсайтам
 
 **Это только начало.** Вы поработали с базовой версией и видели возможности. Но 85% критически важных данных доступны только подписчикам Инсайдер и Партнер.
 
-<!-- Выпадающий список премиум-функций -->
 <details class="premium-features">
-<summary class="premium-summary">
-<span class="premium-title">Что скрыто от бесплатных пользователей</span>
-<span class="premium-arrow">›</span>
-</summary>
-<div class="premium-content">
-<div class="premium-item">
-<span class="premium-feature">Ваша кофейня VS конкуренты</span>
-<span class="premium-description">— живые данные каждый месяц</span>
-</div>
-<div class="premium-item">
-<span class="premium-feature">Сигналы изменений</span>
-<span class="premium-description">— тренды рынка в режиме реального времени</span>
-</div>
-<div class="premium-item">
-<span class="premium-feature">Персональная поддержка Анны</span>
-<span class="premium-description">— умные рекомендации для вашего бизнеса</span>
-</div>
-<div class="premium-item">
-<span class="premium-feature">Темный режим</span>
-<span class="premium-description">— инсайты, которые видят только 10% игроков (только Партнер)</span>
-</div>
-</div>
+  <summary class="premium-summary">
+    <span class="premium-title">Что скрыто от бесплатных пользователей</span>
+    <span class="premium-arrow">›</span>
+  </summary>
+  <div class="premium-content">
+    <div class="premium-item">
+      <span class="premium-feature">Ваша кофейня VS конкуренты</span>
+      <span class="premium-description">— живые данные каждый месяц</span>
+    </div>
+    <div class="premium-item">
+      <span class="premium-feature">Сигналы изменений</span>
+      <span class="premium-description">— тренды рынка в режиме реального времени</span>
+    </div>
+    <div class="premium-item">
+      <span class="premium-feature">Персональная поддержка Анны</span>
+      <span class="premium-description">— умные рекомендации для вашего бизнеса</span>
+    </div>
+    <div class="premium-item">
+      <span class="premium-feature">Темный режим</span>
+      <span class="premium-description">— инсайты для 10% игроков (Партнер)</span>
+    </div>
+  </div>
 </details>
 
 <div class="start-button-container">
@@ -52,8 +52,8 @@
 
 ## Почему «Корж» побеждает в сердцах, а Skuratov — в головах
 
-Фокус-компания: **Корж** <br>
-Анализ конкурентного поля: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance** <br>
+Фокус-компания: **Корж**  
+Анализ конкурентного поля: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**
 
 <DialogTables />
 
@@ -62,15 +62,15 @@
 ## Как получить максимум от симулятора
 
 Вы получаете доступ к аналитике и решениям по конкретным вопросам через 20 готовых диалогов.  
-Можно начать с любого диалога и продолжить работу с Анной в своём режиме.  
+Можно начать с любого диалога и продолжить работу с Анной в своём режиме.
 
 <SimulatorTabs />
 
 ## От модели к реальности
 
-Вы изучили срез самарского рынка. Вы видите сильные и слабые стороны — свои и чужие. Это знание. Но знание без действия — это мертвый груз.
+Вы изучили срез самарского рынка. Вы видите сильные и слабые стороны — свои и чужие. Это знание. Но знание без действия — это мёртвый груз.
 
-Когда вы, поработав с симулятором, получили ощутимые результаты, но чувствуете, что для реализации вашей дорожной карты нужна система, поддержка или полная автоматизация — это точный сигнал о готовности к партнерству с **Модулем Роста®**.
+Когда вы, поработав с симулятором, получили ощутимые результаты, но чувствуете, что для реализации вашей дорожной карты нужна система, поддержка или полная автоматизация — это точный сигнал о готовности к партнёрству с **Модулем Роста®**.
 
 Следующий шаг — персональный диалог с ассистентом Анной. Она поможет определить, подходит ли ваш бизнес для полной интеграции решений Модуля Роста® и какие шаги для этого необходимы.
 
@@ -89,55 +89,63 @@
 
 ### Детали по зонам роста (А1-А3)
 
-### <a name="а1-скорость-обслуживания"></a>**А1. Скорость обслуживания**
--   **Что внутри:** Анализ показывает, что 31% негативных упоминаний о скорости напрямую коррелируют с утренними и вечерними часами пик. Данные свидетельствуют о системной проблеме в распределении ресурсов, а не о случайных ошибках персонала.
--   **Почему это важно:** Оптимизация скорости обслуживания является точкой кратного роста. Устранение этой проблемы способно не только вернуть уходящих клиентов, но и повысить пропускную способность заведения в самые прибыльные часы, что напрямую влияет на дневную выручку.
+#### А1. Скорость обслуживания
 
-**[Как увеличить скорость в 2 раза →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#10)**
+- **Что внутри:** Анализ показывает, что 31% негативных упоминаний о скорости напрямую коррелируют с утренними и вечерними часами пик. Данные свидетельствуют о системной проблеме в распределении ресурсов, а не о случайных ошибках персонала.
+- **Почему это важно:** Оптимизация скорости обслуживания является точкой кратного роста. Устранение этой проблемы способно не только вернуть уходящих клиентов, но и повысить пропускную способность заведения в самые прибыльные часы, что напрямую влияет на дневную выручку.
 
-### <a name="а2-нестабильность-качества"></a>**А2. Нестабильность качества**
--   **Что внутри:** Анализ показывает, что разброс в оценках качества кофе напрямую связан с отсутствием единых стандартов приготовления и обучения в разных филиалах сети.
--   **Почему это важно:** Стабильность — это ключевой элемент доверия к бренду. Клиент должен быть уверен, что получит продукт ожидаемого качества в любой точке сети. Стандартизация является обязательным условием для успешного масштабирования и поддержания репутации.
+[Как увеличить скорость в 2 раза →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#10)
 
-**[Как стандартизировать качество →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#11)**
+#### А2. Нестабильность качества
 
-### <a name="а3-восприятие-цены"></a>**А3. Восприятие цены**
--   **Что внутри:** Глубокий анализ восприятия цены. Данные показывают, что «дорого» и «справедливо» — это оценки от разных сегментов с разными потребностями.
--   **Почему это важно:** Этот анализ дает основу для более сложной и эффективной ценовой политики. Вместо единой цены для всех, компания может разрабатывать разные ценностные предложения для разных сегментов, тем самым оптимизируя и выручку, и лояльность.
+- **Что внутри:** Анализ показывает, что разброс в оценках качества кофе напрямую связан с отсутствием единых стандартов приготовления и обучения в разных филиалах сети.
+- **Почему это важно:** Стабильность — это ключевой элемент доверия к бренду. Клиент должен быть уверен, что получит продукт ожидаемого качества в любой точке сети. Стандартизация является обязательным условием для успешного масштабирования и поддержания репутации.
 
-**[Как найти правильную цену →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#12)**
+[Как стандартизировать качество →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#11)
+
+#### А3. Восприятие цены
+
+- **Что внутри:** Глубокий анализ восприятия цены. Данные показывают, что «дорого» и «справедливо» — это оценки от разных сегментов с разными потребностями.
+- **Почему это важно:** Этот анализ даёт основу для более сложной и эффективной ценовой политики. Вместо единой цены для всех, компания может разрабатывать разные ценностные предложения для разных сегментов, тем самым оптимизируя и выручку, и лояльность.
+
+[Как найти правильную цену →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#12)
 
 ### Детали по моделям успеха (Б1-Б5)
 
-### <a name="б1-корж-технология-создания-эмоциональной-связи"></a>**Б1. «Корж»: Технология создания эмоциональной связи**
--   **Что внутри:** Анализ показывает, что сила «Коржа» — в создании уникальной **эмоциональной экосистемы**. Они лидируют по качеству обслуживания (87% позитива) и атмосфере (84% позитива). В отличие от «профессионального, но холодного» сервиса Skuratov, персонал «Коржа» описывается как «тактичный», «внимательный», создающий ощущение «желанного гостя». Это, в сочетании с «домашней» атмосферой, формирует мощную лояльность, которая даже заставляет клиентов прощать операционные недостатки.
--   **Почему это важно:** «Корж» демонстрирует, что в современной экономике впечатлений эмоциональная связь может быть более весомым активом, чем операционное совершенство. Их успех — это модель построения локального бренда с сильной культурной идентичностью, которую сложно скопировать федеральным сетям. Это доказывает, что инвестиции в корпоративную культуру и создание уникального опыта напрямую конвертируются в рыночную долю.
+#### Б1. «Корж»: Технология создания эмоциональной связи
 
-**[Как масштабировать уют →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#13)**
+- **Что внутри:** Анализ показывает, что сила «Коржа» — в создании уникальной **эмоциональной экосистемы**. Они лидируют по качеству обслуживания (87% позитива) и атмосфере (84% позитива). Персонал «Коржа» описывается как «тактичный», «внимательный», создающий ощущение «желанного гостя».
+- **Почему это важно:** «Корж» демонстрирует, что в современной экономике впечатлений эмоциональная связь может быть более весомым активом, чем операционное совершенство.
 
-### <a name="б2-skuratov-coffee-сила-в-системе-и-стабильности"></a>**Б2. Skuratov Coffee: Сила в системе и стабильности**
--   **Что внутри:** «Секрет» Skuratov — в **безупречной систематизации**. Они — абсолютный лидер по качеству кофе с оценкой 9/10, что достигается за счет строгих стандартов и унифицированных процессов. Клиенты описывают их продукт как «эталонный» и «стабильный». В отличие от «Коржа» с его «плавающим» качеством, Skuratov предлагает предсказуемость. Их сервис может быть «холодноватым», но он быстрый (8/10) и профессиональный.
--   **Почему это важно:** Skuratov представляет собой альтернативную модель успеха, основанную не на эмоциях, а на **рациональном доверии**. Они доказывают, что для значительной части рынка предсказуемость и стабильность продукта важнее «теплой» атмосферы. Это идеальная модель для изучения теми, кто планирует строить крупную, масштабируемую сеть, где в основе лежит не уникальность каждой точки, а единый высокий стандарт всей системы.
+[Как масштабировать уют →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#13)
 
-**[Как построить систему →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#14)**
+#### Б2. Skuratov Coffee: Сила в системе и стабильности
 
-### <a name="б3-surf-coffee-мастерство-нишевого-брендинга"></a>**Б3. Surf Coffee: Мастерство нишевого брендинга**
--   **Что внутри:** Успех Surf Coffee — в **силе нишевого позиционирования**. Они делят лидерство по атмосфере и дизайну, но их «серф-вайб» и «яркий, молодежный» стиль привлекают очень конкретную аудиторию (Gen Z, миллениалы). В отличие от «домашнего» и универсального «Коржа», Surf сознательно выбирает «своих», что приводит к «молодежной поляризации»: восторгу целевой аудитории и критике со стороны старшего поколения за «шумность».
--   **Почему это важно:** Surf Coffee — это пример того, как не бояться быть «не для всех». Их стратегия доказывает, что создание сильного субкультурного бренда может быть более эффективным, чем попытка угодить широкой аудитории. Они строят «племя» вокруг своей эстетики, что обеспечивает высочайшую лояльность внутри ядра и создает мощный барьер для конкурентов, работающих на массовом рынке.
+- **Что внутри:** «Секрет» Skuratov — в **безупречной систематизации**. Они — абсолютный лидер по качеству кофе (9/10) благодаря строгим стандартам и унифицированным процессам.
+- **Почему это важно:** Skuratov — модель для масштабируемых сетей, где в основе лежит единый высокий стандарт всей системы.
 
-**[Как создать культ бренда →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#15)**
+[Как построить систему →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#14)
 
-### <a name="б4-white-cup-сила-уникального-места"></a>**Б4. White Cup: Сила уникального места**
--   **Что внутри:** White Cup демонстрирует **силу уникального места**. Не будучи крупной сетью, они достигают высших оценок (9/10) за атмосферу и дизайн за счет «исторического шарма» и знаменитого «дворика как в Европе». Их преимущество — не в системности или бренде, а в превращении самой локации в уникальный продукт.
--   **Почему это важно:** White Cup — это вдохновляющая модель для несетевых проектов. Они доказывают, что можно успешно конкурировать с гигантами, если найти и максимально капитализировать свою уникальность. Их стратегия — не пытаться копировать сети, а создавать «destination place», место-событие, куда люди приходят за опытом, который невозможно воспроизвести где-либо еще.
+#### Б3. Surf Coffee: Мастерство нишевого брендинга
 
-**[Как монетизировать локацию →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#16)**
+- **Что внутри:** Успех Surf Coffee — в **силе нишевого позиционирования** ("серф-вайб", молодёжный стиль).
+- **Почему это важно:** Пример того, как не бояться быть «не для всех»: ультра-лояльная целевая аудитория.
 
-### <a name="б5-coffee-balance-стратегия-ценового-позиционирования"></a>**Б5. Coffee Balance: Стратегия ценового позиционирования**
--   **Что внутри:** Coffee Balance, несмотря на самые низкие оценки по продукту и сервису, имеет одну из самых высоких оценок по критерию «Цена/качество» (8/10), опережая лидеров рынка. Клиенты воспринимают их как «доступных» и «недорогих». Они сознательно жертвуют качеством кофе («водянистый») и выпечки («привозная») ради удержания низкой цены.
--   **Почему это важно:** Coffee Balance демонстрирует жизнеспособность **четкой ценовой стратегии**. Они не пытаются конкурировать с лидерами на их поле (качество, атмосфера), а занимают понятную и востребованную нишу — «кофе на каждый день по доступной цене». Это пример того, как правильное ценовое позиционирование может стать ключевым конкурентным преимуществом, особенно при работе с самым массовым и чувствительным к цене сегментом рынка.
+[Как создать культ бренда →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#15)
 
-**[Как доминировать по цене →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#17)**
+#### Б4. White Cup: Сила уникального места
+
+- **Что внутри:** White Cup — успех за счёт "дворика как в Европе", атмосферы исторического шарма.
+- **Почему это важно:** Лучший кейс для несетевых проектов: капитализация локального преимущества.
+
+[Как монетизировать локацию →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#16)
+
+#### Б5. Coffee Balance: Стратегия ценового позиционирования
+
+- **Что внутри:** Coffee Balance — самые низкие оценки по продукту, но лидеры по критерию "цена/качество" (8/10).
+- **Почему это важно:** Чёткая ценовая стратегия — ключевое конкурентное преимущество для самого массового сегмента.
+
+[Как доминировать по цене →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#17)
 
 ### Детали по карте конкурентного поля (В1-В5)
 
@@ -233,177 +241,107 @@
 
 **[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**
 
-<style>
-/* Выпадающий список премиум-функций */
-.premium-features {
-  background: #1a1a1a;
+/* --- Мини-инфо подсказка "каждый диалог" --- */
+.dialog-tip {
+  background: transparent;
   border: 1px solid #2d2d2d;
-  border-radius: 12px;
-  margin: 24px 0;
+  border-radius: 8px;
+  padding: 14px 18px 8px 18px;
+  margin: 22px 0 10px 0;
+  font-size: 14px;
+  color: #A1A1A9;
+  box-shadow: none;
+}
+.dialog-tip-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #d1d5db;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.dialog-tip-list {
+  margin: 0 0 0 18px;
+  padding: 0;
+  color: #888;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.dialog-tip-list li {
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+/* --- Компактный выпадающий список премиум-функций --- */
+.premium-features {
+  background: none;
+  border: 1px solid #2d2d2d;
+  border-radius: 10px;
+  margin: 14px 0 24px 0;
   overflow: hidden;
-  transition: all 0.3s ease;
 }
-
-.premium-features:hover {
-  border-color: #3d3d3d;
-}
-
 .premium-summary {
-  padding: 20px 24px;
+  padding: 10px 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, #252525 0%, #1a1a1a 100%);
-  transition: all 0.3s ease;
+  background: none;
+  transition: background 0.2s;
   user-select: none;
 }
-
-.premium-summary:hover {
-  background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
-}
-
 .premium-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
   margin: 0;
 }
-
 .premium-arrow {
-  font-size: 24px;
+  font-size: 20px;
   color: #9ca3af;
-  transform: rotate(0deg);
-  transition: transform 0.3s ease;
+  margin-left: 8px;
+  transition: transform 0.2s;
 }
-
 .premium-features[open] .premium-arrow {
   transform: rotate(90deg);
 }
-
 .premium-content {
-  padding: 0 24px 24px 24px;
-  border-top: 1px solid #2d2d2d;
-  animation: slideDown 0.3s ease;
+  padding: 0 16px 10px 16px;
+  border-top: 1px solid #232323;
+  background: none;
 }
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .premium-item {
-  display: block;
-  margin: 16px 0;
-  padding-left: 20px;
+  display: flex;
+  align-items: baseline;
+  margin: 10px 0 0 0;
+  padding-left: 18px;
   position: relative;
+  font-size: 14px;
+  line-height: 1.4;
 }
-
+.premium-item:first-of-type {
+  margin-top: 8px;
+}
 .premium-item::before {
   content: "•";
   position: absolute;
   left: 0;
-  color: #6ee7b7;
+  top: 0;
+  color: #C5F946;
+  font-size: 20px;
   font-weight: bold;
-  font-size: 18px;
+  line-height: 1;
 }
-
 .premium-feature {
   font-weight: 600;
-  color: #ffffff;
+  color: #fff;
 }
-
 .premium-description {
-  color: #9ca3af;
-  margin-left: 4px;
+  color: #b0b6c6;
+  margin-left: 5px;
+  font-weight: 400;
 }
 
-/* Плашка с инструкцией */
-.instruction-card {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 32px;
-  margin: 32px 0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-}
-
-.instruction-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #6ee7b7 0%, #3b82f6 100%);
-}
-
-.instruction-title {
-  color: #ffffff !important;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.4;
-  margin: 0 0 24px 0;
-  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-.instruction-steps {
-  margin: 0;
-  padding: 0;
-  counter-reset: step-counter;
-  list-style: none;
-}
-
-.instruction-steps li {
-  counter-increment: step-counter;
-  margin: 16px 0;
-  padding: 16px 20px;
-  padding-left: 60px;
-  position: relative;
-  color: #64748b;
-  font-size: 16px;
-  line-height: 1.5;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-.instruction-steps li:hover {
-  background: rgba(255, 255, 255, 0.8);
-  transform: translateX(4px);
-}
-
-.instruction-steps li::before {
-  content: counter(step-counter);
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-  color: white;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 14px;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
-}
-
-/* Кнопки */
+/* --- Кнопки (общие стили) --- */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -417,66 +355,160 @@
   border: none;
   margin: 10px 0;
 }
-
-.btn:hover {
-  transform: translateY(-2px);
-  text-decoration: none !important;
-}
-
 .btn-primary {
   background-color: #C5F946;
   color: #000 !important;
 }
-
 .btn-primary:hover {
   background-color: #347b6c;
   color: white !important;
 }
-
+.btn-secondary {
+  background-color: #347b6c;
+  color: white !important;
+}
+.btn-secondary:hover {
+  background-color: #C5F946;
+  color: #000 !important;
+}
 .start-button-container {
   margin: 20px 0;
   text-align: left;
 }
-
 .start-button-container .btn {
   display: inline-block;
   margin: 0;
 }
 
-/* Адаптивность */
-@media (max-width: 768px) {
-  .premium-summary {
-    padding: 16px 20px;
-  }
-  
-  .premium-title {
-    font-size: 16px;
-  }
-  
-  .premium-content {
-    padding: 0 20px 20px 20px;
-  }
-  
-  .instruction-card {
-    padding: 24px 20px;
-    margin: 24px 0;
-  }
-  
-  .instruction-title {
-    font-size: 18px;
-    padding: 16px;
-  }
-  
-  .instruction-steps li {
-    padding-left: 50px;
-    font-size: 15px;
-  }
-  
-  .instruction-steps li::before {
-    width: 24px;
-    height: 24px;
-    font-size: 12px;
-    left: 16px;
-  }
+/* --- Таблицы --- */
+.radar-signals-table table,
+.comparison-table table {
+  table-layout: fixed;
+  width: 100%;
 }
-</style>
+.radar-signals-table td:nth-child(1) {
+  width: 150px;
+  white-space: nowrap;
+}
+.radar-signals-table td:nth-child(3) {
+  width: 1%;
+  white-space: nowrap;
+}
+.radar-signals-table td:nth-child(2) {
+  white-space: normal;
+  word-break: break-word;
+}
+.comparison-table td {
+  width: 50%;
+  word-break: break-word;
+}
+
+/* --- Форма --- */
+.custom-form { 
+  max-width: 500px; 
+  margin: 0; 
+  padding: 20px; 
+  background-color: #000000; 
+  border-radius: 5px; 
+  color: #ffffff; 
+}
+.form-group { 
+  margin-bottom: 15px; 
+}
+.form-input { 
+  width: 100%; 
+  padding: 10px; 
+  box-sizing: border-box; 
+  border: 1px solid #444; 
+  border-radius: 4px; 
+  font-size: 16px; 
+  background-color: #000000; 
+  color: #ffffff; 
+}
+.checkbox-group { 
+  display: flex; 
+  align-items: flex-start; 
+  gap: 8px; 
+  margin-bottom: 20px; 
+}
+.checkbox-group input { 
+  margin-top: 3px; 
+  width: auto; 
+}
+.checkbox-group label { 
+  font-size: 14px; 
+  line-height: 1.4; 
+}
+.policy-link { 
+  color: #4CAF50; 
+  text-decoration: underline; 
+}
+.submit-btn { 
+  background-color: #ffffff; 
+  color: #000000; 
+  padding: 12px 20px; 
+  border: none; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-size: 16px; 
+  width: 100%; 
+  font-weight: bold; 
+  transition: opacity 0.3s; 
+}
+.submit-btn:hover { 
+  opacity: 0.9; 
+}
+.submit-btn:disabled { 
+  opacity: 0.5; 
+  cursor: not-allowed; 
+}
+.success-message { 
+  margin-top: 15px; 
+  color: white; 
+  font-weight: normal; 
+  font-size: 16px; 
+  display: none; 
+  align-items: center; 
+  gap: 8px; 
+}
+.success-message::before { 
+  content: "✓"; 
+  color: white; 
+  font-size: 18px; 
+}
+.recommendation-section { 
+  border-top: 1px solid #444; 
+  margin-top: 20px; 
+  padding-top: 30px; 
+  padding-bottom: 30px; 
+}
+.recommendation-section h4 { 
+  margin-top: 0; 
+  margin-bottom: 15px; 
+  color: #ffffff; 
+  font-weight: 500; 
+}
+.recommendation-section .form-group label { 
+  display: block; 
+  margin-bottom: 10px; 
+}
+.form-hint { 
+  color: #808080; 
+  font-style: normal; 
+  text-align: left; 
+  font-size: 0.8em; 
+  line-height: 1.5; 
+  margin-top: 15px; 
+}
+
+/* --- Адаптивность --- */
+@media (max-width: 600px) {
+  .dialog-tip, .premium-content {
+    padding: 10px 8px 6px 8px;
+    font-size: 13px;
+  }
+  .premium-summary { padding: 8px 10px; }
+  .premium-title { font-size: 15px; }
+  .custom-form { padding: 10px; }
+  .start-button-container { margin: 12px 0; }
+}
