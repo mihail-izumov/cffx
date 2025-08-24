@@ -106,9 +106,10 @@ const activeTab = ref('task')
   padding: 18px;
 }
 
-/* Текстовые стили под тёмную тему */
+/* Текстовые стили под тёмную тему - УВЕЛИЧЕННЫЙ РАЗМЕР */
 .content {
   color: rgba(255,255,255,0.92);
+  font-size: 15px; /* Увеличен с 14px до 15px */
 }
 .content h3 {
   margin: 0 0 10px;
@@ -122,6 +123,7 @@ const activeTab = ref('task')
 }
 .content p, .content li {
   color: rgba(255,255,255,0.85);
+  font-size: 15px; /* Увеличен размер текста */
 }
 .content a {
   color: #c8ff5a;
@@ -137,7 +139,7 @@ const activeTab = ref('task')
   width: 100%;
   border-collapse: collapse;
   margin-top: 12px;
-  font-size: 14px;
+  font-size: 15px; /* Увеличен с 14px до 15px */
 }
 .custom-table th,
 .custom-table td {
