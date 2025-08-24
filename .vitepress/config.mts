@@ -4,7 +4,7 @@ const { version } = pkg
 
 export default defineConfig({
   title: 'Модуль Роста®',
-  appearance: 'force-dark',
+  appearance: 'force-dark', // фиксируем только тёмную тему и скрываем переключатель
   locales: {
     '/': {
       lang: 'ru-RU',
@@ -16,9 +16,19 @@ export default defineConfig({
     return pageData
   },
   buildEnd(siteConfig) {
-    // post build hook
+    // Этот хук выполняется после сборки
   },
   head: [
+    // При force-dark ниже скрипт не обязателен — можно удалить.
+    // Оставляю закомментированным на случай, если хочешь принудительный класс.
+    // ['script', {}, `
+    //   (function() {
+    //     localStorage.setItem('vitepress-theme-appearance', 'dark');
+    //     document.documentElement.classList.add('dark');
+    //     document.documentElement.classList.remove('auto');
+    //   })();
+    // `],
+    
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
     ['script', {}, `
@@ -90,11 +100,18 @@ export default defineConfig({
         });
       }
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => { replaceFooter(); updateApplyLinkTarget(); });
+        document.addEventListener('DOMContentLoaded', () => {
+          replaceFooter();
+          updateApplyLinkTarget();
+        });
       } else {
-        replaceFooter(); updateApplyLinkTarget();
+        replaceFooter();
+        updateApplyLinkTarget();
       }
-      window.addEventListener('load', () => { replaceFooter(); updateApplyLinkTarget(); });
+      window.addEventListener('load', () => {
+        replaceFooter();
+        updateApplyLinkTarget();
+      });
       setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 1000);
       setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 2000);
       let lastUrl = location.href;
@@ -102,7 +119,10 @@ export default defineConfig({
         const url = location.href;
         if (url !== lastUrl) {
           lastUrl = url;
-          setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 100);
+          setTimeout(() => {
+            replaceFooter();
+            updateApplyLinkTarget();
+          }, 100);
         }
       }).observe(document, { subtree: true, childList: true });
     })();
@@ -352,35 +372,14 @@ export default defineConfig({
       prev: 'Предыдущая страница',
       next: 'Следующая страница'
     },
-    // ВАЖНО: порядок от более специфичных к более общим
+    // ВАЖНО: Сохраняем рабочее сопоставление сайдбаров!
     sidebar: {
-      // B‑R‑E‑W
       '/brew/': { items: sidebarBrew() },
-      
-      // Самара — симулятор (специфичный префикс)
-      '/radar/signal/coffee-points-smr-2025/': { items: sidebarRadarSamara() },
-      
-      // Новосибирск — без сайдбара
-      '/radar/signal/coffee-points-nsk-2025/': { items: [] },
-      
-      // Инвайт и Фильтр — должны быть в «Чекап»
-      '/radar/invite': { items: sidebarCheckup() },
-      '/radar/filter': { items: sidebarCheckup() },
-      
-      // Все сигнальные страницы по умолчанию — Россия
-      '/radar/signal/': { items: sidebarRadarRussia() },
-      
-      // Самара раздел обзора/метод
       '/radar/index-smr/': { items: sidebarRadarSamara() },
-      
-      // Общий «Радар» — Россия
+      '/radar/signal/': { items: sidebarRadarSamara() }, // весь сигнал → Самара (чтобы instruction и dashboard были с нужным сайдбаром)
       '/radar/': { items: sidebarRadarRussia() },
-      
-      // Чекап
       '/checkup/': { items: sidebarCheckup() },
       '/checkup/prep/': { items: sidebarCheckupPrep() },
-      
-      // Остальные разделы
       '/about/': { items: sidebarAbout() },
       '/method/': { items: sidebarMethod() },
       '/technology/': { items: sidebarTechnology() },
@@ -418,6 +417,7 @@ export default defineConfig({
   }
 })
 
+// Навигация (ссылки на конкретные страницы — как в рабочей версии)
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
@@ -428,8 +428,8 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'Кофейни // Новосибирск', link: '/radar/signal/coffee-points-nsk-2025/launch.md' }
       ]
     },
-    { text: 'B‑R‑E‑W', link: '/brew/' },
-    { text: 'Чекап', link: '/checkup/' },
+    { text: 'B‑R‑E‑W', link: '/brew/run' },
+    { text: 'Чекап', link: '/checkup/overview' },
     { 
       text: 'Компания', items: [
         { text: 'Кто мы', link: '/about/company' },
@@ -442,6 +442,7 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
+// Сайдбары
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [
     {
