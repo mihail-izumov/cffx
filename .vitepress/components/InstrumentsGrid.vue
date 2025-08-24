@@ -15,13 +15,13 @@
     <!-- Карточка 2: Индекс Роста -->
     <div class="product-card">
       <div class="card-content">
-        <h3 class="card-title">Индекс // Самара</h3>
+        <h3 class="card-title">Индекс Роста</h3>
         <p class="card-description">
           Единственная в отрасли система оценки, которая измеряет не размер, а потенциал роста компании. Попасть в Индекс — значит стать видимым для инвесторов, поставщиков и лучших талантов рынка.
         </p>
       </div>
       <a href="/radar/index-smr/overview" rel="noopener noreferrer" class="card-button">
-        Посмотреть рейтинг
+        Индекс // Самара
       </a>
     </div>
   </div>
