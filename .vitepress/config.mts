@@ -425,6 +425,7 @@ export default defineConfig({
     sidebar: {
       '/brew/': { items: sidebarBrew() },
       '/radar/index-smr/': { items: sidebarRadarSamara() },
+      '/radar/signal/': { items: sidebarRadarSamara() }, // чтобы /radar/signal/... использовал сайдбар Самары
       '/radar/': { items: sidebarRadarRussia() },
       '/checkup/': { items: sidebarCheckup() },
       '/checkup/prep/': { items: sidebarCheckupPrep() },
