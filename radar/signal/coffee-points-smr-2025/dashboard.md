@@ -18,7 +18,7 @@
 
 ### 29,600+ уникальных отзывов → 20 готовых диалогов → мгновенный доступ к инсайтам
 
-**Это только начало.** Вы поработали с базовой версией и видели возможности. Но 85% критически важных данных доступны только подписчикам Инсайдер и Партнер. <br>
+**Это только начало.** Вы поработали с базовой версией и видели возможности. Но 85% критически важных данных доступны только подписчикам Инсайдер и Партнер.
 
 <!-- Выпадающий список премиум-функций -->
 <details class="premium-features">
@@ -49,212 +49,6 @@
 <div class="start-button-container">
   <a href="/brew/membership" class="btn btn-primary">Получить полный доступ →</a>
 </div>
-
-/* Выпадающий список премиум-функций */
-.premium-features {
-  background: #1a1a1a;
-  border: 1px solid #2d2d2d;
-  border-radius: 12px;
-  margin: 24px 0;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.premium-features:hover {
-  border-color: #3d3d3d;
-}
-
-.premium-summary {
-  padding: 20px 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(135deg, #252525 0%, #1a1a1a 100%);
-  transition: all 0.3s ease;
-  user-select: none;
-}
-
-.premium-summary:hover {
-  background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
-}
-
-.premium-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #ffffff;
-  margin: 0;
-}
-
-.premium-arrow {
-  font-size: 24px;
-  color: #9ca3af;
-  transform: rotate(0deg);
-  transition: transform 0.3s ease;
-}
-
-.premium-features[open] .premium-arrow {
-  transform: rotate(90deg);
-}
-
-.premium-content {
-  padding: 0 24px 24px 24px;
-  border-top: 1px solid #2d2d2d;
-  animation: slideDown 0.3s ease;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.premium-item {
-  display: block;
-  margin: 16px 0;
-  padding-left: 20px;
-  position: relative;
-}
-
-.premium-item::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: #6ee7b7;
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.premium-feature {
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.premium-description {
-  color: #9ca3af;
-  margin-left: 4px;
-}
-
-/* Плашка с инструкцией */
-.instruction-card {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 32px;
-  margin: 32px 0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-}
-
-.instruction-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #6ee7b7 0%, #3b82f6 100%);
-}
-
-.instruction-title {
-  color: #ffffff !important;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.4;
-  margin: 0 0 24px 0;
-  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-.instruction-steps {
-  margin: 0;
-  padding: 0;
-  counter-reset: step-counter;
-  list-style: none;
-}
-
-.instruction-steps li {
-  counter-increment: step-counter;
-  margin: 16px 0;
-  padding: 16px 20px;
-  padding-left: 60px;
-  position: relative;
-  color: #64748b;
-  font-size: 16px;
-  line-height: 1.5;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-.instruction-steps li:hover {
-  background: rgba(255, 255, 255, 0.8);
-  transform: translateX(4px);
-}
-
-.instruction-steps li::before {
-  content: counter(step-counter);
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-  color: white;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 14px;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-  .premium-summary {
-    padding: 16px 20px;
-  }
-  
-  .premium-title {
-    font-size: 16px;
-  }
-  
-  .premium-content {
-    padding: 0 20px 20px 20px;
-  }
-  
-  .instruction-card {
-    padding: 24px 20px;
-    margin: 24px 0;
-  }
-  
-  .instruction-title {
-    font-size: 18px;
-    padding: 16px;
-  }
-  
-  .instruction-steps li {
-    padding-left: 50px;
-    font-size: 15px;
-  }
-  
-  .instruction-steps li::before {
-    width: 24px;
-    height: 24px;
-    font-size: 12px;
-    left: 16px;
-  }
-}
 
 ## Почему «Корж» побеждает в сердцах, а Skuratov — в головах
 
@@ -439,32 +233,177 @@
 
 **[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**
 
-
 <style>
-/* --- СТИЛИ ДЛЯ ТАБЛИЦ --- */
-.radar-signals-table table,
-.comparison-table table {
-  table-layout: fixed;
-  width: 100%;
-}
-.radar-signals-table td:nth-child(1) {
-  width: 150px;
-  white-space: nowrap;
-}
-.radar-signals-table td:nth-child(3) {
-  width: 1%;
-  white-space: nowrap;
-}
-.radar-signals-table td:nth-child(2) {
-  white-space: normal;
-  word-break: break-word;
-}
-.comparison-table td {
-  width: 50%;
-  word-break: break-word;
+/* Выпадающий список премиум-функций */
+.premium-features {
+  background: #1a1a1a;
+  border: 1px solid #2d2d2d;
+  border-radius: 12px;
+  margin: 24px 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-/* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
+.premium-features:hover {
+  border-color: #3d3d3d;
+}
+
+.premium-summary {
+  padding: 20px 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #252525 0%, #1a1a1a 100%);
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.premium-summary:hover {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+}
+
+.premium-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.premium-arrow {
+  font-size: 24px;
+  color: #9ca3af;
+  transform: rotate(0deg);
+  transition: transform 0.3s ease;
+}
+
+.premium-features[open] .premium-arrow {
+  transform: rotate(90deg);
+}
+
+.premium-content {
+  padding: 0 24px 24px 24px;
+  border-top: 1px solid #2d2d2d;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.premium-item {
+  display: block;
+  margin: 16px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.premium-item::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #6ee7b7;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.premium-feature {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.premium-description {
+  color: #9ca3af;
+  margin-left: 4px;
+}
+
+/* Плашка с инструкцией */
+.instruction-card {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 32px;
+  margin: 32px 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.instruction-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #6ee7b7 0%, #3b82f6 100%);
+}
+
+.instruction-title {
+  color: #ffffff !important;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 24px 0;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.instruction-steps {
+  margin: 0;
+  padding: 0;
+  counter-reset: step-counter;
+  list-style: none;
+}
+
+.instruction-steps li {
+  counter-increment: step-counter;
+  margin: 16px 0;
+  padding: 16px 20px;
+  padding-left: 60px;
+  position: relative;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.5;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.instruction-steps li:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateX(4px);
+}
+
+.instruction-steps li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+/* Кнопки */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -494,16 +433,6 @@
   color: white !important;
 }
 
-.btn-secondary {
-  background-color: #347b6c;
-  color: white !important;
-}
-
-.btn-secondary:hover {
-  background-color: #C5F946;
-  color: #000 !important;
-}
-
 .start-button-container {
   margin: 20px 0;
   text-align: left;
@@ -514,171 +443,40 @@
   margin: 0;
 }
 
-/* --- ОБЩИЕ СТИЛИ ФОРМЫ --- */
-.custom-form { 
-  max-width: 500px; 
-  margin: 0; 
-  padding: 20px; 
-  background-color: #000000; 
-  border-radius: 5px; 
-  color: #ffffff; 
-}
-.form-group { 
-  margin-bottom: 15px; 
-}
-.form-input { 
-  width: 100%; 
-  padding: 10px; 
-  box-sizing: border-box; 
-  border: 1px solid #444; 
-  border-radius: 4px; 
-  font-size: 16px; 
-  background-color: #000000; 
-  color: #ffffff; 
-}
-.checkbox-group { 
-  display: flex; 
-  align-items: flex-start; 
-  gap: 8px; 
-  margin-bottom: 20px; 
-}
-.checkbox-group input { 
-  margin-top: 3px; 
-  width: auto; 
-}
-.checkbox-group label { 
-  font-size: 14px; 
-  line-height: 1.4; 
-}
-.policy-link { 
-  color: #4CAF50; 
-  text-decoration: underline; 
-}
-
-.submit-btn { 
-  background-color: #ffffff; 
-  color: #000000; 
-  padding: 12px 20px; 
-  border: none; 
-  border-radius: 4px; 
-  cursor: pointer; 
-  font-size: 16px; 
-  width: 100%; 
-  font-weight: bold; 
-  transition: opacity 0.3s; 
-}
-.submit-btn:hover { 
-  opacity: 0.9; 
-}
-.submit-btn:disabled { 
-  opacity: 0.5; 
-  cursor: not-allowed; 
-}
-.success-message { 
-  margin-top: 15px; 
-  color: white; 
-  font-weight: normal; 
-  font-size: 16px; 
-  display: none; 
-  align-items: center; 
-  gap: 8px; 
-}
-.success-message::before { 
-  content: "✓"; 
-  color: white; 
-  font-size: 18px; 
-}
-
-.recommendation-section { 
-  border-top: 1px solid #444; 
-  margin-top: 20px; 
-  padding-top: 30px; 
-  padding-bottom: 30px; 
-}
-.recommendation-section h4 { 
-  margin-top: 0; 
-  margin-bottom: 15px; 
-  color: #ffffff; 
-  font-weight: 500; 
-}
-.recommendation-section .form-group label { 
-  display: block; 
-  margin-bottom: 10px; 
-}
-.form-hint { 
-  color: #808080; 
-  font-style: normal; 
-  text-align: left; 
-  font-size: 0.8em; 
-  line-height: 1.5; 
-  margin-top: 15px; 
-}
-</style>
-
-<script>
-export default {
-  mounted() {
-    this.initForm();
-  },
-  methods: {
-    initForm() {
-      if (typeof document === 'undefined') return;
-      const form = document.getElementById('myForm');
-      if (!form) return;
-      const successMessage = document.getElementById('successMessage');
-      const submitBtn = form.querySelector('.submit-btn');
-      const requiredInputs = Array.from(form.querySelectorAll('input[required]'));
-      
-      const checkFormValidity = () => {
-        const allRequiredFilled = requiredInputs.every(input => {
-          if (input.type === 'checkbox') {
-            return input.checked;
-          } else {
-            return input.value.trim() !== '';
-          }
-        });
-        submitBtn.disabled = !allRequiredFilled;
-      };
-      
-      requiredInputs.forEach(input => {
-        const eventType = input.type === 'checkbox' ? 'change' : 'input';
-        input.addEventListener(eventType, checkFormValidity);
-      });
-      
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (submitBtn.disabled) return;
-        const friendContact = form.friendContact.value.trim();
-        const formData = {
-          name: form.name.value,
-          phone: form.phone.value,
-          email: form.email.value,
-          _subject: `Новый запрос на аудит ${friendContact ? '(+ Рекомендация)' : ''}`,
-          ...(friendContact && { recommendation_for: friendContact })
-        };
-        form.reset();
-        successMessage.style.display = 'flex';
-        submitBtn.disabled = true;
-        fetch('https://formspree.io/f/mdkzjopz', {
-          method: 'POST',
-          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        }).then(response => { 
-          if (!response.ok) throw new Error('Ошибка сервера');
-        }).catch(error => { 
-          console.error('Ошибка:', error);
-          const mailtoBody = `Имя: ${formData.name}\nТелефон: ${formData.phone}\nEmail: ${formData.email}${friendContact ? `\nРекомендация для: ${friendContact}`:''}`;
-          window.location.href = `mailto:theorchestramanco@gmail.com?subject=${encodeURIComponent(formData._subject)}&body=${encodeURIComponent(mailtoBody)}`;
-        }).finally(() => { 
-          setTimeout(() => { 
-            successMessage.style.display = 'none'; 
-            checkFormValidity(); 
-          }, 15000); 
-        });
-      });
-      
-      checkFormValidity();
-    }
+/* Адаптивность */
+@media (max-width: 768px) {
+  .premium-summary {
+    padding: 16px 20px;
+  }
+  
+  .premium-title {
+    font-size: 16px;
+  }
+  
+  .premium-content {
+    padding: 0 20px 20px 20px;
+  }
+  
+  .instruction-card {
+    padding: 24px 20px;
+    margin: 24px 0;
+  }
+  
+  .instruction-title {
+    font-size: 18px;
+    padding: 16px;
+  }
+  
+  .instruction-steps li {
+    padding-left: 50px;
+    font-size: 15px;
+  }
+  
+  .instruction-steps li::before {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    left: 16px;
   }
 }
-</script>
+</style>
