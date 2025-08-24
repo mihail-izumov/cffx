@@ -1,12 +1,12 @@
 # Симулятор
 
-Этот Симулятор — часть платформы **[B-R-E-W](/brew/run)**. Он создан на основе Кофейного Протокола, чтобы дать не просто данные, а готовые решения для роста на самарском рынке. Мы не продаем отчеты. Мы показываем, как работает наша система, делясь ценностью бесплатно.
+Этот Симулятор — часть платформы **[B-R-E-W](/brew/run)**. Он создан на основе Кофейного Протокола, чтобы дать не просто данные, а готовые решения для роста на самарском рынке.
 
 ## Кофейни // Самара
 
 Структурированный доступ к результатам анализа 29,600+ развернутых отзывов о фокус-компании "Корж" и её ключевых конкурентах: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**.
 
-<!-- Информационная карточка: компактная, пропорциональная кеглю -->
+<!-- 1) Информационная карточка (компактная и неброская) -->
 <div class="info-card">
   <p class="info-card-title">Каждый диалог — это готовый разбор бизнес-задачи на самарском рынке</p>
   <ol class="info-card-list">
@@ -20,7 +20,7 @@
 
 **Это только начало.** 85% критически важных данных доступны подписчикам Инсайдер и Партнер.
 
-<!-- Выпадающий список: компактный, с правильным выравниванием буллетов -->
+<!-- 2) Выпадающий тизер (короткий, «тихий», с идеальными буллетами) -->
 <details class="details-compact">
   <summary class="details-summary">
     <span class="details-title">Что скрыто от бесплатных пользователей</span>
@@ -227,118 +227,106 @@
    ========================= */
 .info-card{
   background:#1f1f1f;
-  border:1px solid #333;
+  border:1px solid #2c2c2c;
   border-radius:12px;
-  /* вертикальные отступы привязаны к кеглю для пропорций */
-  padding:0.75em 1.0em;      /* компактно относительно 1rem */
-  margin:0.9em 0;            /* не раздувает полотно */
+  /* ритм «по кеглю» — блок не кажется громоздким */
+  padding:0.6em 0.9em;
+  margin:0.75em 0;
 }
 .info-card-title{
-  font-size:1rem;            /* ~16px */
-  line-height:1.35;
+  font-size:1rem;           /* 16px от базового */
+  line-height:1.3;
   font-weight:500;
-  color:#e5e7eb;
-  margin:0 0 0.55em 0;
+  color:#e6e7eb;
+  margin:0 0 0.5em 0;
 }
 .info-card-list{
   margin:0;
-  padding:0 0 0 1.1em;       /* стандартный левый отступ для списка */
-  font-size:0.9375rem;       /* ~15px */
-  line-height:1.45;          /* читаемо, но плотно */
+  padding:0 0 0 1.05em;
+  font-size:0.9375rem;      /* ~15px — тише абзаца */
+  line-height:1.4;          /* плотнее, читабельно */
   color:#a1a1a9;
 }
-.info-card-list li{ margin:0.25em 0; }
+.info-card-list li{ margin:0.22em 0; }
 
-/* ==============================
-   2) Выпадающий список (details)
-   ============================== */
+/* ======================================
+   2) Тизер-подробности (details-compact)
+   Глобальная цель — «подогреть» CTA, не спорить с ней
+   ====================================== */
 .details-compact{
+  font-size:0.95rem;        /* лёгкое снижение контраста блока */
   background:transparent;
-  border:1px solid #333;
+  border:1px solid #292929;
   border-radius:12px;
-  margin:0.9em 0 0.75em;       /* ближе к CTA, не конфликтует */
-  transition:border-color .2s ease;
+  margin:0.7em 0 0.55em;    /* короче и ближе к CTA */
+  transition:border-color .18s ease;
 }
-.details-compact:hover{ border-color:#444; }
+.details-compact:hover{ border-color:#3a3a3a; }
 
+/* заголовок — высота как у строки текста */
 .details-summary{
-  padding:0.6em 0.9em;         /* высота как у строки текста */
+  padding:0.5em 0.85em;
   display:flex; align-items:center; justify-content:space-between;
   cursor:pointer; user-select:none; list-style:none;
 }
 .details-summary::-webkit-details-marker{ display:none; }
-.details-title{ font-size:1rem; font-weight:700; color:#e5e7eb; }
+.details-title{
+  font-size:1rem;           /* как основной текст */
+  font-weight:700;
+  color:#e7e9ee;
+}
 .details-arrow{
-  font-size:1rem; color:#9ca3af;
+  font-size:0.95rem;
+  color:#9aa3b2;
   transform:rotate(0deg);
   transition:transform .2s ease;
 }
 .details-compact[open] .details-arrow{ transform:rotate(180deg); }
 
+/* контент — максимально плотный, без лишнего воздуха */
 .details-content{
-  padding:0.4em 0.9em 0.7em;    /* сильно компактнее */
-  border-top:1px solid #333;
-  animation:dc-slide .22s ease-out;
+  padding:0.35em 0.85em 0.55em;
+  border-top:1px solid #2a2a2a;
+  animation:dc-in .18s ease-out;
 }
-@keyframes dc-slide{
-  from{opacity:0; transform:translateY(-4px)}
+@keyframes dc-in{
+  from{opacity:0; transform:translateY(-3px)}
   to{opacity:1; transform:translateY(0)}
 }
 
-/* Список с точной центровкой маркера относительно первой строки */
+/* список с идеальной центровкой маркера для многострочных пунктов */
 .details-content ul{ margin:0; padding:0; list-style:none; }
 .details-content li{
-  display:flex;                /* делаем маркер и текст flex-элементами */
-  align-items:flex-start;      /* старт по верху, чтобы маркер не «плавал» при переносах */
-  gap:0.6em;
-  font-size:0.975rem;          /* ~15.6px — чуть контрастнее описания */
-  line-height:1.45;
-  color:#d1d5db;
-  margin:0.34em 0;             /* плотнее между пунктами */
+  display:flex;              /* маркер + текст в одной оси */
+  align-items:flex-start;    /* выравнивание по первой строке */
+  gap:0.55em;
+  margin:0.28em 0;           /* плотнее между пунктами */
+  line-height:1.35;          /* ещё короче для компактности */
+  color:#cbd2dd;
 }
 .details-content li::before{
   content:"";
   flex:0 0 auto;
-  width:0.46em; height:0.46em; /* размер масштабируется от кегля */
+  width:0.38em; height:0.38em; /* малый, аккуратный маркер */
   border-radius:50%;
-  background:#C5F946;          /* фирменный акцент */
-  /* оптическая коррекция по вертикали у многострочных пунктов */
-  margin-top:calc((1.45em - 0.46em)/2);
+  background:#C5F946;        /* фирменный лайм (как кнопки/ссылки) */
+  /* оптический центр относительно первой строки (LH 1.35) */
+  margin-top:calc((1.35em - 0.38em)/2);
 }
-.details-content li strong{ font-weight:600; color:#fff; }
-
-/* уменьшить зазор между блоком и CTA локально */
-.details-compact + .start-button-container{ margin-top:0.75em !important; }
-
-/* ==================
-   3) Кнопки (общие)
-   ================== */
-.btn{
-  display:inline-block;
-  padding:12px 24px;
-  border-radius:8px;
-  font-weight:700;
-  font-size:16px;
-  text-align:center;
-  text-decoration:none;
-  transition:all .3s ease;
-  cursor:pointer;
-  border:none;
-  margin:10px 0;
+.details-content li strong{
+  color:#eef0f3;
+  font-weight:600;
+  line-height:1.3;
 }
-.btn:hover{ transform:translateY(-2px); text-decoration:none !important; }
-.btn-primary{ background:#C5F946; color:#000 !important; }
-.btn-primary:hover{ background:#347b6c; color:#fff !important; }
-.start-button-container{ margin:20px 0; text-align:left; }
-.start-button-container .btn{ margin:0; }
 
-/* ==============
-   4) Адаптивность
-   ============== */
+/* прижимаем CTA ближе только к этому блоку */
+.details-compact + .start-button-container{ margin-top:0.6em !important; }
+
+/* ====== адаптив ====== */
 @media (max-width:768px){
-  .info-card{ padding:0.65em 0.9em; margin:0.8em 0; }
-  .details-summary{ padding:0.55em 0.85em; }
-  .details-content{ padding:0.35em 0.85em 0.6em; }
-  .details-content li{ margin:0.3em 0; }
+  .info-card{ padding:0.55em 0.85em; margin:0.7em 0; }
+  .details-summary{ padding:0.48em 0.8em; }
+  .details-content{ padding:0.32em 0.8em 0.5em; }
+  .details-content li{ margin:0.26em 0; }
 }
 </style>
