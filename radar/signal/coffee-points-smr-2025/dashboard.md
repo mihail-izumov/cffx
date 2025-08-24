@@ -4,16 +4,15 @@
 
 ## Кофейни // Самара
 
-Структурированный доступ к результатам анализа 29,600+ развернутых отзывов о фокус-компании "Корж" и ее ключевых конкурентах: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**.
+Структурированный доступ к результатам анализа 29,600+ развернутых отзывов о фокус-компании "Корж" и её ключевых конкурентах: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**.
 
-<div class="dialog-tip">
-  <div class="dialog-tip-title">
-    Каждый диалог — разбор реальной задачи вашего бизнеса на самарском рынке
-  </div>
-  <ol class="dialog-tip-list">
+<!-- ИНФОРМАЦИОННАЯ КАРТОЧКА -->
+<div class="info-card">
+  <p class="info-card-title">Каждый диалог — это готовый разбор бизнес-задачи на самарском рынке</p>
+  <ol class="info-card-list">
     <li>Определите главную задачу и выберите раздел</li>
-    <li>Войдите в нужный диалог и задавайте уточняющие вопросы</li>
-    <li>Используйте выводы — применяйте их для роста</li>
+    <li>Войдите в диалог и задавайте уточняющие вопросы</li>
+    <li>Превратите инсайты в системный рост вашего бизнеса</li>
   </ol>
 </div>
 
@@ -21,28 +20,27 @@
 
 **Это только начало.** Вы поработали с базовой версией и видели возможности. Но 85% критически важных данных доступны только подписчикам Инсайдер и Партнер.
 
-<details class="premium-features">
-  <summary class="premium-summary">
-    <span class="premium-title">Что скрыто от бесплатных пользователей</span>
-    <span class="premium-arrow">›</span>
+<!-- ВЫПАДАЮЩИЙ СПИСОК -->
+<details class="details-compact">
+  <summary class="details-summary">
+    <span class="details-title">Что скрыто от бесплатных пользователей</span>
+    <span class="details-arrow">›</span>
   </summary>
-  <div class="premium-content">
-    <div class="premium-item">
-      <span class="premium-feature">Ваша кофейня VS конкуренты</span>
-      <span class="premium-description">— живые данные каждый месяц</span>
-    </div>
-    <div class="premium-item">
-      <span class="premium-feature">Сигналы изменений</span>
-      <span class="premium-description">— тренды рынка в режиме реального времени</span>
-    </div>
-    <div class="premium-item">
-      <span class="premium-feature">Персональная поддержка Анны</span>
-      <span class="premium-description">— умные рекомендации для вашего бизнеса</span>
-    </div>
-    <div class="premium-item">
-      <span class="premium-feature">Темный режим</span>
-      <span class="premium-description">— инсайты для 10% игроков (Партнер)</span>
-    </div>
+  <div class="details-content">
+    <ul>
+      <li>
+        <strong>Ваша кофейня VS конкуренты</strong> — живые данные каждый месяц
+      </li>
+      <li>
+        <strong>Сигналы изменений</strong> — тренды рынка в режиме реального времени
+      </li>
+      <li>
+        <strong>Персональная поддержка Анны</strong> — умные рекомендации для вашего бизнеса
+      </li>
+      <li>
+        <strong>Темный режим</strong> — инсайты, которые видят только 10% игроков (только Партнер)
+      </li>
+    </ul>
   </div>
 </details>
 
@@ -53,7 +51,7 @@
 ## Почему «Корж» побеждает в сердцах, а Skuratov — в головах
 
 Фокус-компания: **Корж**  
-Анализ конкурентного поля: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**
+Анализ конкурентного поля: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**  
 
 <DialogTables />
 
@@ -62,15 +60,15 @@
 ## Как получить максимум от симулятора
 
 Вы получаете доступ к аналитике и решениям по конкретным вопросам через 20 готовых диалогов.  
-Можно начать с любого диалога и продолжить работу с Анной в своём режиме.
+Можно начать с любого диалога и продолжить работу с Анной в своём режиме.  
 
 <SimulatorTabs />
 
 ## От модели к реальности
 
-Вы изучили срез самарского рынка. Вы видите сильные и слабые стороны — свои и чужие. Это знание. Но знание без действия — это мёртвый груз.
+Вы изучили срез самарского рынка. Вы видите сильные и слабые стороны — свои и чужие. Это знание. Но знание без действия — это мертвый груз.
 
-Когда вы, поработав с симулятором, получили ощутимые результаты, но чувствуете, что для реализации вашей дорожной карты нужна система, поддержка или полная автоматизация — это точный сигнал о готовности к партнёрству с **Модулем Роста®**.
+Когда вы, поработав с симулятором, получили ощутимые результаты, но чувствуете, что для реализации вашей дорожной карты нужна система, поддержка или полная автоматизация — это точный сигнал о готовности к партнерству с **Модулем Роста®**.
 
 Следующий шаг — персональный диалог с ассистентом Анной. Она поможет определить, подходит ли ваш бизнес для полной интеграции решений Модуля Роста® и какие шаги для этого необходимы.
 
@@ -241,107 +239,117 @@
 
 **[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**
 
-/* --- Мини-инфо подсказка "каждый диалог" --- */
-.dialog-tip {
-  background: transparent;
-  border: 1px solid #2d2d2d;
-  border-radius: 8px;
-  padding: 14px 18px 8px 18px;
-  margin: 22px 0 10px 0;
-  font-size: 14px;
-  color: #A1A1A9;
-  box-shadow: none;
+<style>
+/* --- 1. Информационная карточка ("Каждый диалог...") --- */
+.info-card {
+  background-color: #1F1F1F;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 24px 0;
 }
-.dialog-tip-title {
-  font-size: 15px;
+.info-card-title {
+  font-size: 16px;
   font-weight: 500;
-  color: #d1d5db;
+  color: #E5E7EB; /* Светло-серый для заголовка */
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+.info-card-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  color: #A1A1A9; /* Приглушенный серый для списка */
+  line-height: 1.6;
+}
+.info-card-list li {
   margin-bottom: 4px;
-  line-height: 1.3;
 }
-.dialog-tip-list {
-  margin: 0 0 0 18px;
-  padding: 0;
-  color: #888;
-  font-size: 13px;
-  line-height: 1.45;
-}
-.dialog-tip-list li {
+.info-card-list li:last-child {
   margin-bottom: 0;
-  padding-left: 0;
 }
 
-/* --- Компактный выпадающий список премиум-функций --- */
-.premium-features {
-  background: none;
-  border: 1px solid #2d2d2d;
-  border-radius: 10px;
-  margin: 14px 0 24px 0;
-  overflow: hidden;
+/* --- 2. Выпадающий список ("Что скрыто...") --- */
+.details-compact {
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 12px;
+  margin: 24px 0;
+  transition: all 0.2s ease-in-out;
 }
-.premium-summary {
-  padding: 10px 16px;
+.details-compact:hover {
+  border-color: #444;
+}
+.details-summary {
+  padding: 14px 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: none;
-  transition: background 0.2s;
   user-select: none;
+  list-style: none; /* Убираем стандартный маркер */
 }
-.premium-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  margin: 0;
+.details-summary::-webkit-details-marker {
+  display: none; /* Убираем стандартный маркер в Chrome */
 }
-.premium-arrow {
-  font-size: 20px;
+.details-title {
+  font-size: 16px; /* Размер как у основного текста */
+  font-weight: 700; /* Жирный */
+  color: #E5E7EB;
+}
+.details-arrow {
+  font-size: 22px;
   color: #9ca3af;
-  margin-left: 8px;
-  transition: transform 0.2s;
+  transform: rotate(0deg);
+  transition: transform 0.25s ease-in-out;
 }
-.premium-features[open] .premium-arrow {
+.details-compact[open] > .details-summary .details-arrow {
   transform: rotate(90deg);
 }
-.premium-content {
-  padding: 0 16px 10px 16px;
-  border-top: 1px solid #232323;
-  background: none;
-}
-.premium-item {
-  display: flex;
-  align-items: baseline;
-  margin: 10px 0 0 0;
-  padding-left: 18px;
-  position: relative;
-  font-size: 14px;
-  line-height: 1.4;
-}
-.premium-item:first-of-type {
+.details-content {
+  padding: 0px 20px 16px 20px;
+  border-top: 1px solid #333;
   margin-top: 8px;
+  animation: slideDown 0.3s ease-out;
 }
-.premium-item::before {
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.details-content ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+.details-content ul li {
+  color: #D1D5DB;
+  font-size: 15px;
+  line-height: 1.6;
+  padding-left: 22px;
+  position: relative;
+  margin-top: 10px;
+}
+.details-content ul li::before {
   content: "•";
   position: absolute;
   left: 0;
-  top: 0;
-  color: #C5F946;
-  font-size: 20px;
+  top: -2px;
+  color: #C5F946; /* Акцентный лаймовый цвет */
+  font-size: 24px;
   font-weight: bold;
-  line-height: 1;
 }
-.premium-feature {
+.details-content ul li strong {
   font-weight: 600;
   color: #fff;
 }
-.premium-description {
-  color: #b0b6c6;
-  margin-left: 5px;
-  font-weight: 400;
-}
 
-/* --- Кнопки (общие стили) --- */
+/* --- 3. Общие стили кнопок (из вашего кода) --- */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -354,6 +362,10 @@
   cursor: pointer;
   border: none;
   margin: 10px 0;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  text-decoration: none !important;
 }
 .btn-primary {
   background-color: #C5F946;
@@ -380,7 +392,7 @@
   margin: 0;
 }
 
-/* --- Таблицы --- */
+/* --- 4. Стили таблиц (из вашего кода) --- */
 .radar-signals-table table,
 .comparison-table table {
   table-layout: fixed;
@@ -403,112 +415,49 @@
   word-break: break-word;
 }
 
-/* --- Форма --- */
-.custom-form { 
-  max-width: 500px; 
-  margin: 0; 
-  padding: 20px; 
-  background-color: #000000; 
-  border-radius: 5px; 
-  color: #ffffff; 
+/* --- 5. Стили форм (из вашего кода) --- */
+.custom-form {
+  max-width: 500px;
+  margin: 0;
+  padding: 20px;
+  background-color: transparent; /* Изменено для лучшей интеграции */
+  border-radius: 5px;
+  color: #ffffff;
 }
-.form-group { 
-  margin-bottom: 15px; 
+.form-group {
+  margin-bottom: 15px;
 }
-.form-input { 
-  width: 100%; 
-  padding: 10px; 
-  box-sizing: border-box; 
-  border: 1px solid #444; 
-  border-radius: 4px; 
-  font-size: 16px; 
-  background-color: #000000; 
-  color: #ffffff; 
+.form-input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #444;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: #1F1F1F;
+  color: #ffffff;
 }
-.checkbox-group { 
-  display: flex; 
-  align-items: flex-start; 
-  gap: 8px; 
-  margin-bottom: 20px; 
-}
-.checkbox-group input { 
-  margin-top: 3px; 
-  width: auto; 
-}
-.checkbox-group label { 
-  font-size: 14px; 
-  line-height: 1.4; 
-}
-.policy-link { 
-  color: #4CAF50; 
-  text-decoration: underline; 
-}
-.submit-btn { 
-  background-color: #ffffff; 
-  color: #000000; 
-  padding: 12px 20px; 
-  border: none; 
-  border-radius: 4px; 
-  cursor: pointer; 
-  font-size: 16px; 
-  width: 100%; 
-  font-weight: bold; 
-  transition: opacity 0.3s; 
-}
-.submit-btn:hover { 
-  opacity: 0.9; 
-}
-.submit-btn:disabled { 
-  opacity: 0.5; 
-  cursor: not-allowed; 
-}
-.success-message { 
-  margin-top: 15px; 
-  color: white; 
-  font-weight: normal; 
-  font-size: 16px; 
-  display: none; 
-  align-items: center; 
-  gap: 8px; 
-}
-.success-message::before { 
-  content: "✓"; 
-  color: white; 
-  font-size: 18px; 
-}
-.recommendation-section { 
-  border-top: 1px solid #444; 
-  margin-top: 20px; 
-  padding-top: 30px; 
-  padding-bottom: 30px; 
-}
-.recommendation-section h4 { 
-  margin-top: 0; 
-  margin-bottom: 15px; 
-  color: #ffffff; 
-  font-weight: 500; 
-}
-.recommendation-section .form-group label { 
-  display: block; 
-  margin-bottom: 10px; 
-}
-.form-hint { 
-  color: #808080; 
-  font-style: normal; 
-  text-align: left; 
-  font-size: 0.8em; 
-  line-height: 1.5; 
-  margin-top: 15px; 
+.form-hint {
+  color: #808080;
+  font-style: normal;
+  text-align: left;
+  font-size: 0.8em;
+  line-height: 1.5;
+  margin-top: 15px;
 }
 
-/* --- Адаптивность --- */
-@media (max-width: 600px) {
-  .dialog-tip, .premium-content {
-    padding: 10px 8px 6px 8px;
-    font-size: 13px;
+/* --- 6. Адаптивность --- */
+@media (max-width: 768px) {
+  .info-card {
+    padding: 14px 16px;
   }
-  .premium-summary { padding: 8px 10px; }
-  .premium-title { font-size: 15px; }
-  .custom-form { padding: 10px; }
-  .start-button-container { margin: 12px 0; }
+  .details-summary, .details-content {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .btn {
+    padding: 10px 20px;
+    font-size: 15px;
+  }
 }
+</style>
