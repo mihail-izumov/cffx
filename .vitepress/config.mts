@@ -4,6 +4,7 @@ const { version } = pkg
 
 export default defineConfig({
   title: 'Модуль Роста®',
+  appearance: 'force-dark', // фиксируем только тёмную тему и скрываем переключатель
   locales: {
     '/': {
       lang: 'ru-RU',
@@ -18,124 +19,114 @@ export default defineConfig({
     // Этот хук выполняется после сборки
   },
   head: [
-    // ПРИНУДИТЕЛЬНАЯ ТЁМНАЯ ТЕМА - ПЕРВЫМ СКРИПТОМ!
-    ['script', {}, `
-      (function() {
-        // Устанавливаем тёмную тему в localStorage перед загрузкой
-        localStorage.setItem('vitepress-theme-appearance', 'dark');
-        
-        // Добавляем класс dark к html элементу немедленно
-        document.documentElement.classList.add('dark');
-        
-        // Убираем светлый класс если он есть
-        document.documentElement.classList.remove('auto');
-      })();
-    `],
+    // При force-dark ниже скрипт не обязателен — можно удалить.
+    // Оставляю закомментированным на случай, если хочешь принудительный класс.
+    // ['script', {}, `
+    //   (function() {
+    //     localStorage.setItem('vitepress-theme-appearance', 'dark');
+    //     document.documentElement.classList.add('dark');
+    //     document.documentElement.classList.remove('auto');
+    //   })();
+    // `],
     
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
     ['script', {}, `
     (function() {
-    function createFooterContent() {
-      const links = [
-        { text: 'Журнал', href: '/journal/contents/overview' },
-        { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
-        { text: 'Поддержка', href: '/support' },
-        { text: 'Условия использования', href: '/terms' },
-        { text: 'Контакт', href: '/about/contacts' },
-        { text: 'Реквизиты', href: '/credits' },
-        { text: 'Orxaos', href: 'https://orxaos.sbs', target: '_blank' }
-      ];
-      let html = '<hr style="border: 0; border-top: 1px solid var(--vp-c-divider); margin: 24px 0;">';
-      html += '<div class="custom-footer-links"><div class="footer-row">';
-      links.slice(0, 3).forEach((link, i) => {
-        if (i > 0) html += '<span class="dot-separator">•</span>';
-        html += '<a href="' + link.href + '"' + (link.target ? ' target="' + link.target + '" rel="noopener noreferrer"' : '') + '>' + link.text + '</a>';
-      });
-      html += '</div><div class="footer-row">';
-      links.slice(3).forEach((link, i) => {
-        if (i > 0) html += '<span class="dot-separator">•</span>';
-        html += '<a href="' + link.href + '"' + (link.target ? ' target="' + link.target + '" rel="noopener noreferrer"' : '') + '>' + link.text + '</a>';
-      });
-      html += '</div></div>';
-      html += '<div style="margin-top: 24px; text-align: center;">';
-      html += '<div style="color: white; font-size: 14px;">Расти по своим правилам</div>';
-      html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Модуль Роста® 2010 — 2025</div>';
-      return html;
-    }
-    function replaceFooter() {
-      let footer = document.querySelector('.VPFooter');
-      if (!footer) {
-        footer = document.createElement('footer');
-        footer.className = 'VPFooter';
-        document.body.appendChild(footer);
-      }
-      footer.innerHTML = createFooterContent();
-      if (window.location.pathname !== '/') {
-        footer.style.position = 'relative';
-        footer.style.bottom = '70px';
-        footer.style.zIndex = '10';
-        footer.style.marginBottom = '-70px';
-      } else {
-        footer.style.position = '';
-        footer.style.bottom = '';
-        footer.style.zIndex = '';
-        footer.style.paddingBottom = '30px';
-      }
-    }
-    function updateApplyLinkTarget() {
-      const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="apply-link"]');
-      applyLinks.forEach(applyLink => {
-        applyLink.href = '/apply';
-        applyLink.setAttribute('target', '_self');
-        applyLink.removeAttribute('rel');
-        const newLink = document.createElement('a');
-        newLink.href = '/apply';
-        newLink.className = applyLink.className;
-        newLink.setAttribute('aria-label', 'apply-link');
-        newLink.setAttribute('target', '_self');
-        Array.from(applyLink.attributes).forEach(attr => {
-          if (attr.name !== 'href' && attr.name !== 'target' && attr.name !== 'rel') {
-            newLink.setAttribute(attr.name, attr.value);
-          }
+      function createFooterContent() {
+        const links = [
+          { text: 'Журнал', href: '/journal/contents/overview' },
+          { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
+          { text: 'Поддержка', href: '/support' },
+          { text: 'Условия использования', href: '/terms' },
+          { text: 'Контакт', href: '/about/contacts' },
+          { text: 'Реквизиты', href: '/credits' },
+          { text: 'Orxaos', href: 'https://orxaos.sbs', target: '_blank' }
+        ];
+        let html = '<hr style="border: 0; border-top: 1px solid var(--vp-c-divider); margin: 24px 0;">';
+        html += '<div class="custom-footer-links"><div class="footer-row">';
+        links.slice(0, 3).forEach((link, i) => {
+          if (i > 0) html += '<span class="dot-separator">•</span>';
+          html += '<a href="' + link.href + '"' + (link.target ? ' target="' + link.target + '" rel="noopener noreferrer"' : '') + '>' + link.text + '</a>';
         });
-        applyLink.parentNode.replaceChild(newLink, applyLink);
-      });
-    }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
+        html += '</div><div class="footer-row">';
+        links.slice(3).forEach((link, i) => {
+          if (i > 0) html += '<span class="dot-separator">•</span>';
+          html += '<a href="' + link.href + '"' + (link.target ? ' target="' + link.target + '" rel="noopener noreferrer"' : '') + '>' + link.text + '</a>';
+        });
+        html += '</div></div>';
+        html += '<div style="margin-top: 24px; text-align: center;">';
+        html += '<div style="color: white; font-size: 14px;">Расти по своим правилам</div>';
+        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Модуль Роста® 2010 — 2025</div>';
+        return html;
+      }
+      function replaceFooter() {
+        let footer = document.querySelector('.VPFooter');
+        if (!footer) {
+          footer = document.createElement('footer');
+          footer.className = 'VPFooter';
+          document.body.appendChild(footer);
+        }
+        footer.innerHTML = createFooterContent();
+        if (window.location.pathname !== '/') {
+          footer.style.position = 'relative';
+          footer.style.bottom = '70px';
+          footer.style.zIndex = '10';
+          footer.style.marginBottom = '-70px';
+        } else {
+          footer.style.position = '';
+          footer.style.bottom = '';
+          footer.style.zIndex = '';
+          footer.style.paddingBottom = '30px';
+        }
+      }
+      function updateApplyLinkTarget() {
+        const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="apply-link"]');
+        applyLinks.forEach(applyLink => {
+          applyLink.href = '/apply';
+          applyLink.setAttribute('target', '_self');
+          applyLink.removeAttribute('rel');
+          const newLink = document.createElement('a');
+          newLink.href = '/apply';
+          newLink.className = applyLink.className;
+          newLink.setAttribute('aria-label', 'apply-link');
+          newLink.setAttribute('target', '_self');
+          Array.from(applyLink.attributes).forEach(attr => {
+            if (attr.name !== 'href' && attr.name !== 'target' && attr.name !== 'rel') {
+              newLink.setAttribute(attr.name, attr.value);
+            }
+          });
+          applyLink.parentNode.replaceChild(newLink, applyLink);
+        });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          replaceFooter();
+          updateApplyLinkTarget();
+        });
+      } else {
+        replaceFooter();
+        updateApplyLinkTarget();
+      }
+      window.addEventListener('load', () => {
         replaceFooter();
         updateApplyLinkTarget();
       });
-    } else {
-      replaceFooter();
-      updateApplyLinkTarget();
-    }
-    window.addEventListener('load', () => {
-      replaceFooter();
-      updateApplyLinkTarget();
-    });
-    setTimeout(() => {
-      replaceFooter();
-      updateApplyLinkTarget();
-    }, 1000);
-    setTimeout(() => {
-      replaceFooter();
-      updateApplyLinkTarget();
-    }, 2000);
-    let lastUrl = location.href;
-    new MutationObserver(() => {
-      const url = location.href;
-      if (url !== lastUrl) {
-        lastUrl = url;
-        setTimeout(() => {
-          replaceFooter();
-          updateApplyLinkTarget();
-        }, 100);
-      }
-    }).observe(document, { subtree: true, childList: true });
-  })();
-`],
+      setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 1000);
+      setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 2000);
+      let lastUrl = location.href;
+      new MutationObserver(() => {
+        const url = location.href;
+        if (url !== lastUrl) {
+          lastUrl = url;
+          setTimeout(() => {
+            replaceFooter();
+            updateApplyLinkTarget();
+          }, 100);
+        }
+      }).observe(document, { subtree: true, childList: true });
+    })();
+    `],
     ['style', {}, `
     /* Делаем текст в кнопке "Войти" жирнее */
     .VPSocialLink[aria-label="login-link"]::after {
@@ -232,16 +223,12 @@ export default defineConfig({
       .VPNavBar .content {
         gap: 0 !important;
       }
-      
       .VPNavBarMenu {
         margin-right: 0 !important;
       }
-      
       .VPSwitchAppearance {
-        margin-left: 8px !important;
-        margin-right: 8px !important;
+        display: none !important; /* на случай если элемент всё же окажется в DOM */
       }
-      
       .VPNavBarSocialLinks {
         min-width: auto !important;
         justify-content: flex-end !important;
@@ -249,7 +236,6 @@ export default defineConfig({
         margin-left: 0 !important;
         flex-shrink: 0 !important;
       }
-      
       .VPSocialLink:not(:last-child) {
         margin-right: 4px !important;
       }
@@ -259,43 +245,26 @@ export default defineConfig({
       .VPNavBar .content {
         gap: 0 !important;
       }
-      
       .VPNavBarMenu {
         margin-right: 0 !important;
       }
-      
-      .VPSwitchAppearance {
-        margin-left: 4px !important;
-        margin-right: 4px !important;
-      }
-      
+      .VPSwitchAppearance { display: none !important; }
       .VPNavBarSocialLinks {
         margin-left: 4px !important;
         gap: 12px !important;
         flex-shrink: 0 !important;
       }
-      
       .VPSocialLink:not(:last-child) {
         margin-right: 2px !important;
       }
     }
-    /* МОБИЛЬНАЯ ВЕРСИЯ (меньше 768px) - ИСПРАВЛЕНО */
+    /* МОБИЛЬНАЯ ВЕРСИЯ (меньше 768px) */
     @media (max-width: 768px) {
-      /* Скрываем стандартные социальные ссылки в шапке */
       .VPNavBar .VPNavBarSocialLinks {
         display: none !important;
       }
-      
-      /* Стилизуем элементы в мобильном меню */
-      .VPNavScreen {
-        overflow-y: auto !important;
-      }
-      
-      .VPNavScreen .VPNavScreenMenu {
-        padding-bottom: 16px !important;
-      }
-      
-      /* Группа с социальными ссылками и переключателем */
+      .VPNavScreen { overflow-y: auto !important; }
+      .VPNavScreen .VPNavScreenMenu { padding-bottom: 16px !important; }
       .VPNavScreen .VPNavScreenSocialLinks,
       .VPNavScreen .VPNavScreenAppearance {
         margin: 16px !important;
@@ -304,13 +273,12 @@ export default defineConfig({
         border-radius: 8px !important;
         background: var(--vp-c-bg-soft) !important;
       }
-      
+      .VPNavScreen .VPNavScreenAppearance { display: none !important; } /* скрыть тумблер в мобильном меню */
       .VPNavScreen .VPNavScreenSocialLinks {
         display: flex !important;
         flex-direction: column !important;
         gap: 12px !important;
       }
-      
       .VPNavScreen .VPSocialLink {
         display: flex !important;
         align-items: center !important;
@@ -322,32 +290,20 @@ export default defineConfig({
         transition: all 0.3s ease !important;
         text-decoration: none !important;
       }
-      
       .VPNavScreen .VPSocialLink:hover {
         background: var(--vp-c-bg-mute) !important;
         border-color: var(--vp-c-brand) !important;
       }
-      
-      /* Текст для кнопки "Войти" */
       .VPNavScreen .VPSocialLink[aria-label="login-link"]::after {
         content: "Войти" !important;
         font-size: 16px !important;
         font-weight: 600 !important;
         color: var(--vp-c-text-1) !important;
       }
-      
-      /* Стили для футера */
-      .footer-row {
-        flex-direction: column !important;
-        gap: 8px !important;
-      }
-      .dot-separator {
-        display: none !important;
-      }
+      .footer-row { flex-direction: column !important; gap: 8px !important; }
+      .dot-separator { display: none !important; }
     }
-    .VPSocialLink .vpi-social-github {
-      display: none !important;
-    }
+    .VPSocialLink .vpi-social-github { display: none !important; }
     .VPSocialLink {
       width: auto !important;
       height: auto !important;
@@ -407,25 +363,19 @@ export default defineConfig({
   outDir: '.vitepress/dist',
   description: 'Находим то, что другие упускают.',
   themeConfig: {
-    // Переключатель тем включен (можно оставить, чтобы пользователи могли переключиться если захотят)
-    
     logo: '/favicon.svg',
     siteTitle: "Модуль Роста®",
-    
     sidebarMenuLabel: 'Меню',
     outlineTitle: 'На этой странице',
     returnToTopLabel: 'Наверх',
-    
     docFooter: {
       prev: 'Предыдущая страница',
       next: 'Следующая страница'
     },
-    
-    // ОБНОВЛЕННАЯ СТРУКТУРА SIDEBAR
     sidebar: {
       '/brew/': { items: sidebarBrew() },
       '/radar/index-smr/': { items: sidebarRadarSamara() },
-      '/radar/signal/': { items: sidebarRadarSamara() }, // чтобы /radar/signal/... использовал сайдбар Самары
+      '/radar/signal/': { items: sidebarRadarSamara() },
       '/radar/': { items: sidebarRadarRussia() },
       '/checkup/': { items: sidebarCheckup() },
       '/checkup/prep/': { items: sidebarCheckupPrep() },
@@ -454,7 +404,6 @@ export default defineConfig({
       }
     },
     nav: nav(),
-    // Telegram и кнопка "Войти"
     socialLinks: [
       { 
         icon: { 
@@ -467,7 +416,7 @@ export default defineConfig({
   }
 })
 
-// ОБНОВЛЕННАЯ ФУНКЦИЯ НАВИГАЦИИ
+// Навигация
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
@@ -492,7 +441,7 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-// ОБНОВЛЕННЫЕ ФУНКЦИИ SIDEBAR
+// Сайдбары
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [
     {
