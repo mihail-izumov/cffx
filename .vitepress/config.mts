@@ -1,6 +1,7 @@
 import { defineConfig, DefaultTheme } from 'vitepress'
 import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
+
 export default defineConfig({
   title: 'Модуль Роста®',
   locales: {
@@ -420,15 +421,19 @@ export default defineConfig({
       next: 'Следующая страница'
     },
     
+    // ОБНОВЛЕННАЯ СТРУКТУРА SIDEBAR
     sidebar: {
       '/brew/': { items: sidebarBrew() },
+      '/radar/index-smr/': { items: sidebarRadarSamara() },
+      '/radar/': { items: sidebarRadarRussia() },
+      '/index/simulators/': { items: sidebarSimulators() },
+      '/checkup/': { items: sidebarCheckup() },
+      '/checkup/prep/': { items: sidebarCheckupPrep() },
       '/about/': { items: sidebarAbout() },
       '/method/': { items: sidebarMethod() },
       '/technology/': { items: sidebarTechnology() },
-      '/checkup/': { items: sidebarCheckup() },
       '/system/': { items: sidebarSystem() },
       '/journal/': { items: sidebarJournal() },
-      '/radar/': { items: sidebarRadar() },
       '/clients/': { items: sidebarClients() },
       '/terms/': { items: sidebarTerms() }
     },
@@ -461,17 +466,22 @@ export default defineConfig({
     ],
   }
 })
-// Функция навигации с переименованным "Радар" в "Инструменты" и упрощенным подменю
+
+// ОБНОВЛЕННАЯ ФУНКЦИЯ НАВИГАЦИИ
 function nav(): DefaultTheme.NavItem[] {
   return [
-    { text: 'B-R-E-W', link: '/brew/run' },
-    { text: 'Инструменты', items: [
-        { text: 'Индекс Роста', link: '/radar/overview' },
-        { text: 'Сигнал Радара', link: '/radar/signal/log' },
-        { text: 'Чекап', link: '/checkup/overview' }
+    {
+      text: 'Индекс Роста',
+      items: [
+        { text: 'Кофейни // Россия', link: '/radar/overview' },
+        { text: 'Кофейни // Самара', link: '/radar/index-smr/overview' },
+        { text: 'Симуляторы', link: '/index/simulators/overview' }
       ]
     },
-    { text: 'Компания', items: [
+    { text: 'B‑R‑E‑W', link: '/brew/run' },
+    { text: 'Чекап', link: '/checkup/overview' },
+    { 
+      text: 'Компания', items: [
         { text: 'Кто мы', link: '/about/company' },
         { text: 'Метод', link: '/method/overview' },
         { text: 'Продукты', link: '/products/overview' },
@@ -481,66 +491,73 @@ function nav(): DefaultTheme.NavItem[] {
     }
   ]
 }
-// Функция sidebar для раздела BREW остается прежней
+
+// ОБНОВЛЕННЫЕ ФУНКЦИИ SIDEBAR
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
-  return [{
-      text: 'B-R-E-W', collapsed: false, items: [
+  return [
+    {
+      text: "B‑R‑E‑W",
+      collapsed: false,
+      items: [
         { text: 'Платформа', link: '/brew/run' },
-        { text: 'Подключиться', link: '/brew/membership' },
-        { text: 'Симулятор', link: '/brew/sim' },
-        { text: 'Кофейная экосистема', link: '/brew/about' },
-        { text: 'Кофейный Протокол', link: '/brew/protocol' },
-        { text: 'Как работает', link: '/brew/how-it-works' }
+        { text: 'Протокол', link: '/brew/protocol' },
+        { text: '→ Подключиться', link: '/brew/membership' }
       ]
-    }]
+    }
+  ]
 }
-function sidebarAbout(): DefaultTheme.SidebarItem[] {
-  return [{
-      text: 'Компания', collapsed: false, items: [
-        { text: 'Кто мы', link: '/about/company' },
-        { text: 'Мы, Растем', link: '/about/mission' },
-        { text: 'Не только цифры, но и эмоции', link: '/about/balance' },
-        { text: 'Контакт', link: '/about/contacts' }
-      ]
-    }]
+
+function sidebarRadarSamara(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: 'Рейтинг', link: '/radar/index-smr/overview' },
+    { text: 'Как считаем', link: '/radar/index-smr/method' },
+    { text: 'Как использовать', link: '/radar/signal/instruction' },
+    { text: 'Симулятор', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
+  ]
 }
-function sidebarMethod(): DefaultTheme.SidebarItem[] {
-  return [{
-      text: 'Метод', collapsed: false, items: [
-        { text: 'Обзор', link: '/method/overview' },
-        { text: '3 принципа здоровой аналитики', link: '/method/the-three-principles' },
-        { text: 'Метод эффективной трансформации', link: '/method/transform' },
-        { text: 'Фрейм-менеджмент', link: '/method/frames' },
-        { text: 'Рост – это не гонка, а приключение', link: '/method/not-a-race' },
-        { text: 'Сравнить', link: '/method/pro-et-contra' }
-      ]
-    }]
+
+function sidebarRadarRussia(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: 'Обзор рынка', link: '/radar/overview' },
+    { text: 'Скрытый потенциал', link: '/radar/scale_index' },
+    { text: 'Кто Анна', link: '/radar/who-is-anna' },
+    { text: 'Радар', link: '/radar/signal/log' }
+  ]
 }
-function sidebarTechnology(): DefaultTheme.SidebarItem[] {
-  return [{
-      text: 'Технологии', collapsed: false, items: [
-        { text: 'Обзор', link: '/technology/overview' },
-        { text: 'Живая база знаний', link: '/technology/datahub' },
-        { text: 'Аналитика 360°', link: '/technology/analytics-360' },
-        { text: 'ИИ-ассистент продаж', link: '/technology/anna' },
-        { text: 'Речевая аналитика', link: '/technology/wordpower' },
-        { text: 'Дистанционные стратегические сессии', link: '/technology/vision-now' },
-        { text: 'Живые Стандарты', link: '/technology/live-standarts' },
-      ]
-    }]
+
+function sidebarSimulators(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: 'Симуляторы', collapsed: false, items: [
+      { text: 'Обзор', link: '/index/simulators/overview' }
+    ]}
+  ]
 }
-// Изменено название с "Бизнес-чекап" на "Чекап"
+
 function sidebarCheckup(): DefaultTheme.SidebarItem[] {
   return [
-    { text: 'Чекап', collapsed: false, items: [
+    { 
+      text: 'Чекап', 
+      collapsed: false, 
+      items: [
         { text: 'Обзор', link: '/checkup/overview' },
         { text: 'Детали чекапа', link: '/checkup/specs' },
         { text: 'Глубокий чекап', link: '/checkup/deep' },
         { text: 'Платите за движение', link: '/checkup/pay-as-you-go' },
-        { text: 'Чек-лист готовности', link: '/checkup/checklist' }
+        { text: 'Чек-лист готовности', link: '/checkup/checklist' },
+        { text: 'Фильтр потенциала', link: '/radar/filter' },
+        { text: 'Программа рекомендаций', link: '/radar/invite' },
+        { text: 'Подготовка к чекапу', link: '/checkup/prep/overview' }
       ]
-    },
-    { text: 'Подготовка к чекапу', collapsed: false, items: [
+    }
+  ]
+}
+
+function sidebarCheckupPrep(): DefaultTheme.SidebarItem[] {
+  return [
+    { 
+      text: 'Подготовка к чекапу', 
+      collapsed: false, 
+      items: [
         { text: 'Обзор', link: '/checkup/prep/overview' },        
         { text: '1 - Скрытые проблемы, которые блокируют рост', link: '/checkup/prep/01-hidden-problems-blocking-growth' },
         { text: '2 - Почему мы запрашиваем готовые отчёты, а не доступы к системам', link: '/checkup/prep/02-why-we-request-ready-reports-not-system-access' },
@@ -554,6 +571,45 @@ function sidebarCheckup(): DefaultTheme.SidebarItem[] {
     }
   ]
 }
+
+function sidebarAbout(): DefaultTheme.SidebarItem[] {
+  return [{
+      text: 'Компания', collapsed: false, items: [
+        { text: 'Кто мы', link: '/about/company' },
+        { text: 'Мы, Растем', link: '/about/mission' },
+        { text: 'Не только цифры, но и эмоции', link: '/about/balance' },
+        { text: 'Контакт', link: '/about/contacts' }
+      ]
+    }]
+}
+
+function sidebarMethod(): DefaultTheme.SidebarItem[] {
+  return [{
+      text: 'Метод', collapsed: false, items: [
+        { text: 'Обзор', link: '/method/overview' },
+        { text: '3 принципа здоровой аналитики', link: '/method/the-three-principles' },
+        { text: 'Метод эффективной трансформации', link: '/method/transform' },
+        { text: 'Фрейм-менеджмент', link: '/method/frames' },
+        { text: 'Рост – это не гонка, а приключение', link: '/method/not-a-race' },
+        { text: 'Сравнить', link: '/method/pro-et-contra' }
+      ]
+    }]
+}
+
+function sidebarTechnology(): DefaultTheme.SidebarItem[] {
+  return [{
+      text: 'Технологии', collapsed: false, items: [
+        { text: 'Обзор', link: '/technology/overview' },
+        { text: 'Живая база знаний', link: '/technology/datahub' },
+        { text: 'Аналитика 360°', link: '/technology/analytics-360' },
+        { text: 'ИИ-ассистент продаж', link: '/technology/anna' },
+        { text: 'Речевая аналитика', link: '/technology/wordpower' },
+        { text: 'Дистанционные стратегические сессии', link: '/technology/vision-now' },
+        { text: 'Живые Стандарты', link: '/technology/live-standarts' },
+      ]
+    }]
+}
+
 function sidebarSystem(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Система роста бизнеса', collapsed: false, items: [
@@ -562,6 +618,7 @@ function sidebarSystem(): DefaultTheme.SidebarItem[] {
       ]
     }]
 }
+
 function sidebarJournal(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Журнал', collapsed: false, items: [
@@ -571,35 +628,7 @@ function sidebarJournal(): DefaultTheme.SidebarItem[] {
       ]
     }]
 }
-// Обновленная функция sidebarRadar с двумя группами меню
-function sidebarRadar(): DefaultTheme.SidebarItem[] {
-  return [
-    {
-      text: 'Индекс Роста', 
-      collapsed: false, 
-      items: [
-        { text: 'Индекс Роста – Кофейни // Россия', link: '/radar/overview' },
-        { text: 'Индекс Роста – Кофейни // Самара', link: '/radar/index-smr/overview' },
-        { text: 'Как считаем', link: '/radar/index-smr/method' },
-        { text: 'Скрытый потенциал', link: '/radar/scale_index' },
-        { text: 'Фильтр потенциала', link: '/radar/filter' },
-        { text: 'Кто Анна', link: '/radar/who-is-anna' },
-        { text: 'Программа рекомендаций', link: '/radar/invite' }
-      ]
-    },
-    {
-      text: 'Сигнал Радара', 
-      collapsed: false, 
-      items: [
-        { text: 'Лог Сигналов', link: '/radar/signal/log' },
-        { text: 'Как работает Сигнал', link: '/radar/signal/how-it-works' },
-        { text: 'Инструкция по применению', link: '/radar/signal/instruction' },
-        { text: 'Рынок кофеен // Самара', link: '/radar/signal/coffee-points-smr-2025/dashboard' },
-        { text: 'Рынок кофеен // Новосибирск', link: '/radar/signal/coffee-points-nsk-2025/launch' }
-      ]
-    }
-  ]
-}
+
 function sidebarClients(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Клиенты', collapsed: false, items: [
@@ -619,6 +648,7 @@ function sidebarClients(): DefaultTheme.SidebarItem[] {
       ]
     }]
 }
+
 function sidebarTerms(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Условия использования', collapsed: false, items: [
