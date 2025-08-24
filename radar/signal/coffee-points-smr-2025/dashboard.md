@@ -1,12 +1,12 @@
 # Симулятор
 
-Этот Симулятор — часть платформы **[B-R-E-W](/brew/run)**. Он создан на основе Кофейного Протокола, чтобы дать не просто данные, а готовые решения для роста на самарском рынке.
+Этот Симулятор — часть платформы **[B-R-E-W](/brew/run)**. Он создан на основе Кофейного Протокола, чтобы дать вам не просто данные, а готовые решения для роста на самарском рынке. Мы не продаем отчеты. Мы показываем, как работает наша система, делясь ценностью бесплатно.
 
 ## Кофейни // Самара
 
 Структурированный доступ к результатам анализа 29,600+ развернутых отзывов о фокус-компании "Корж" и её ключевых конкурентах: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**.
 
-<!-- 1) Информационная карточка (компактная и неброская) -->
+<!-- 1) Информационная карточка: компактная, не отвлекает -->
 <div class="info-card">
   <p class="info-card-title">Каждый диалог — это готовый разбор бизнес-задачи на самарском рынке</p>
   <ol class="info-card-list">
@@ -18,13 +18,13 @@
 
 ### 29,600+ уникальных отзывов → 20 готовых диалогов → мгновенный доступ к инсайтам
 
-**Это только начало.** 85% критически важных данных доступны подписчикам Инсайдер и Партнер.
+**Это только начало.** Вы поработали с базовой версией и видели возможности. Но 85% критически важных данных доступны только подписчикам Инсайдер и Партнер.
 
-<!-- 2) Выпадающий тизер (короткий, «тихий», с идеальными буллетами) -->
+<!-- 2) Выпадающий тизер: компактный, с большой тонкой стрелкой и идеальными буллетами -->
 <details class="details-compact">
   <summary class="details-summary">
     <span class="details-title">Что скрыто от бесплатных пользователей</span>
-    <span class="details-arrow">▾</span>
+    <span class="details-arrow"></span>
   </summary>
   <div class="details-content">
     <ul>
@@ -43,7 +43,7 @@
 ## Почему «Корж» побеждает в сердцах, а Skuratov — в головах
 
 Фокус-компания: **Корж**  
-Анализ конкурентного поля: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**
+Анализ конкурентного поля: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**  
 
 <DialogTables />
 
@@ -51,15 +51,25 @@
 
 ## Как получить максимум от симулятора
 
-Вы получаете доступ к аналитике и решениям по конкретным вопросам через 20 готовых диалогов. Можно начать с любого диалога и продолжить работу с Анной в своём режиме.
+Вы получаете доступ к аналитике и решениям по конкретным вопросам через 20 готовых диалогов.  
+Можно начать с любого диалога и продолжить работу с Анной в своём режиме.  
 
 <SimulatorTabs />
 
 ## От модели к реальности
 
-Вы изучили срез самарского рынка. Вы видите сильные и слабые стороны — свои и чужие. Это знание. Но знание без действия — мертвый груз.
+Вы изучили срез самарского рынка. Вы видите сильные и слабые стороны — свои и чужие. Это знание. Но знание без действия — это мертвый груз.
 
-Следующий шаг — персональный диалог с ассистентом Анной. Она поможет оценить готовность к интеграции решений Модуля Роста® и подобрать шаги.
+Когда вы, поработав с симулятором, получили ощутимые результаты, но чувствуете, что для реализации вашей дорожной карты нужна система, поддержка или полная автоматизация — это точный сигнал о готовности к партнерству с **Модулем Роста®**.
+
+Следующий шаг — персональный диалог с ассистентом Анной. Она поможет определить, подходит ли ваш бизнес для полной интеграции решений Модуля Роста® и какие шаги для этого необходимы.
+
+**О чем можно спросить Анну:**
+* Провести конфиденциальный разбор вашей позиции на рынке
+* Получить доступ к закрытым данным или еженедельным Сигналам Радара
+* Обсудить условия интеграции Модуля Роста® в ваши бизнес-процессы
+
+**Важно:** Анна — не бот. Она обрабатывает каждый запрос индивидуально, поэтому ответ может занять некоторое время. Это шаг для тех, кто готов превратить точную модель в реальность.
 
 <div class="start-button-container">
   <a href="https://t.me/Anna_runScale" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Начать диалог с Анной →</a>
@@ -229,12 +239,11 @@
   background:#1f1f1f;
   border:1px solid #2c2c2c;
   border-radius:12px;
-  /* ритм «по кеглю» — блок не кажется громоздким */
-  padding:0.6em 0.9em;
+  padding:0.6em 0.9em;          /* компактно, пропорционально кеглю */
   margin:0.75em 0;
 }
 .info-card-title{
-  font-size:1rem;           /* 16px от базового */
+  font-size:1rem;                /* 16px */
   line-height:1.3;
   font-weight:500;
   color:#e6e7eb;
@@ -242,91 +251,158 @@
 }
 .info-card-list{
   margin:0;
-  padding:0 0 0 1.05em;
-  font-size:0.9375rem;      /* ~15px — тише абзаца */
-  line-height:1.4;          /* плотнее, читабельно */
+  padding:0 0 0 1.05em;          /* отступ для маркеров */
+  font-size:0.9375rem;           /* ~15px */
+  line-height:1.4;
   color:#a1a1a9;
 }
 .info-card-list li{ margin:0.22em 0; }
 
 /* ======================================
-   2) Тизер-подробности (details-compact)
-   Глобальная цель — «подогреть» CTA, не спорить с ней
+   2) Выпадающий тизер (details-compact)
+   — компактный, «подводит» к CTA
    ====================================== */
 .details-compact{
-  font-size:0.95rem;        /* лёгкое снижение контраста блока */
+  font-size:0.95rem;
   background:transparent;
-  border:1px solid #292929;
-  border-radius:12px;
-  margin:0.7em 0 0.55em;    /* короче и ближе к CTA */
-  transition:border-color .18s ease;
+  border:1.5px solid #353537;
+  border-radius:13px;
+  margin:0.85em 0 0.6em;
+  transition:border-color .17s;
 }
-.details-compact:hover{ border-color:#3a3a3a; }
+.details-compact:hover{ border-color:#a1a1a9; }
 
-/* заголовок — высота как у строки текста */
 .details-summary{
-  padding:0.5em 0.85em;
+  padding:0.56em 1em;
+  cursor:pointer;
   display:flex; align-items:center; justify-content:space-between;
-  cursor:pointer; user-select:none; list-style:none;
+  user-select:none;
+  list-style:none;
 }
 .details-summary::-webkit-details-marker{ display:none; }
+
 .details-title{
-  font-size:1rem;           /* как основной текст */
+  font-size:1.03rem;
   font-weight:700;
   color:#e7e9ee;
+  letter-spacing:-0.01em;
 }
-.details-arrow{
-  font-size:0.95rem;
-  color:#9aa3b2;
-  transform:rotate(0deg);
-  transition:transform .2s ease;
-}
-.details-compact[open] .details-arrow{ transform:rotate(180deg); }
 
-/* контент — максимально плотный, без лишнего воздуха */
-.details-content{
-  padding:0.35em 0.85em 0.55em;
-  border-top:1px solid #2a2a2a;
-  animation:dc-in .18s ease-out;
+/* Большая, тонкая стрелка (CSS-стрелка, а не символ) */
+.details-arrow{
+  display:inline-block;
+  min-width:40px; height:40px;              /* крупная кликабельная область */
+  position:relative;
+  margin-left:0.4em;
 }
-@keyframes dc-in{
-  from{opacity:0; transform:translateY(-3px)}
+.details-arrow::before{
+  content:"";
+  position:absolute;
+  left:50%; top:50%;
+  width:26px; height:26px;                  /* размер стрелки */
+  border-right:2.3px solid #a1aab6;         /* тонкая линия */
+  border-bottom:2.3px solid #a1aab6;
+  transform:translate(-50%,-68%) rotate(45deg);
+  transition:transform .22s;
+  border-radius:1.5px;
+  pointer-events:none;
+}
+.details-compact[open] .details-arrow::before{
+  transform:translate(-50%,-50%) rotate(135deg);
+}
+
+/* Контент — плотно и ровно */
+.details-content{
+  padding:0.34em 1em 0.6em;
+  border-top:1.1px solid #353537;
+  animation:dcin .17s ease-out;
+}
+@keyframes dcin{
+  from{opacity:0; transform:translateY(-2px)}
   to{opacity:1; transform:translateY(0)}
 }
 
-/* список с идеальной центровкой маркера для многострочных пунктов */
 .details-content ul{ margin:0; padding:0; list-style:none; }
 .details-content li{
-  display:flex;              /* маркер + текст в одной оси */
-  align-items:flex-start;    /* выравнивание по первой строке */
-  gap:0.55em;
-  margin:0.28em 0;           /* плотнее между пунктами */
-  line-height:1.35;          /* ещё короче для компактности */
-  color:#cbd2dd;
+  display:flex; align-items:flex-start;
+  gap:0.6em;
+  margin:0.22em 0;
+  line-height:1.36;
+  color:#d1d5db;
+  word-break:break-word;
 }
 .details-content li::before{
   content:"";
   flex:0 0 auto;
-  width:0.38em; height:0.38em; /* малый, аккуратный маркер */
+  width:0.42em; height:0.42em;
   border-radius:50%;
-  background:#C5F946;        /* фирменный лайм (как кнопки/ссылки) */
-  /* оптический центр относительно первой строки (LH 1.35) */
-  margin-top:calc((1.35em - 0.38em)/2);
+  background:#C5F946;                         /* фирменный акцент */
+  margin-top:calc((1.36em - 0.42em)/2);        /* идеальная центровка по первой строке */
 }
 .details-content li strong{
-  color:#eef0f3;
-  font-weight:600;
-  line-height:1.3;
+  color:#fff; font-weight:600; line-height:1.25;
 }
 
-/* прижимаем CTA ближе только к этому блоку */
-.details-compact + .start-button-container{ margin-top:0.6em !important; }
+/* Прижимаем CTA ближе строго к этому блоку */
+.details-compact + .start-button-container{ margin-top:0.62em !important; }
 
-/* ====== адаптив ====== */
+/* ==================
+   3) Кнопки (общие)
+   ================== */
+.btn{
+  display:inline-block;
+  padding:12px 24px;
+  border-radius:8px;
+  font-weight:700;
+  font-size:16px;
+  text-align:center;
+  text-decoration:none;
+  transition:all .3s ease;
+  cursor:pointer;
+  border:none;
+  margin:10px 0;
+}
+.btn:hover{ transform:translateY(-2px); text-decoration:none !important; }
+.btn-primary{ background:#C5F946; color:#000 !important; }
+.btn-primary:hover{ background:#347b6c; color:#fff !important; }
+.start-button-container{ margin:20px 0; text-align:left; }
+.start-button-container .btn{ margin:0; }
+
+/* =============
+   4) Таблицы
+   ============= */
+.radar-signals-table table,
+.comparison-table table{
+  table-layout:fixed; width:100%;
+}
+.radar-signals-table td:nth-child(1){ width:150px; white-space:nowrap; }
+.radar-signals-table td:nth-child(3){ width:1%; white-space:nowrap; }
+.radar-signals-table td:nth-child(2){ white-space:normal; word-break:break-word; }
+.comparison-table td{ width:50%; word-break:break-word; }
+
+/* ============
+   5) Формы
+   ============ */
+.custom-form{ max-width:500px; margin:0; padding:20px; background:transparent; border-radius:5px; color:#fff; }
+.form-group{ margin-bottom:15px; }
+.form-input{
+  width:100%; padding:10px; box-sizing:border-box;
+  border:1px solid #444; border-radius:4px; font-size:16px;
+  background:#1F1F1F; color:#fff;
+}
+.form-hint{ color:#808080; font-size:0.8em; line-height:1.5; margin-top:15px; }
+
+/* ==============
+   6) Адаптивность
+   ============== */
+@media (max-width:700px){
+  .details-summary, .details-content{ padding-left:4vw; padding-right:4vw; }
+  .details-title{ font-size:0.99rem; }
+  .details-arrow{ min-width:34px; height:34px; }
+  .details-arrow::before{ width:18px; height:18px; }
+  .details-content li{ font-size:0.99rem; }
+}
 @media (max-width:768px){
   .info-card{ padding:0.55em 0.85em; margin:0.7em 0; }
-  .details-summary{ padding:0.48em 0.8em; }
-  .details-content{ padding:0.32em 0.8em 0.5em; }
-  .details-content li{ margin:0.26em 0; }
 }
 </style>
