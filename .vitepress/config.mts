@@ -426,7 +426,6 @@ export default defineConfig({
       '/brew/': { items: sidebarBrew() },
       '/radar/index-smr/': { items: sidebarRadarSamara() },
       '/radar/': { items: sidebarRadarRussia() },
-      '/index/simulators/': { items: sidebarSimulators() },
       '/checkup/': { items: sidebarCheckup() },
       '/checkup/prep/': { items: sidebarCheckupPrep() },
       '/about/': { items: sidebarAbout() },
@@ -475,7 +474,7 @@ function nav(): DefaultTheme.NavItem[] {
       items: [
         { text: 'Кофейни // Россия', link: '/radar/overview' },
         { text: 'Кофейни // Самара', link: '/radar/index-smr/overview' },
-        { text: 'Симуляторы', link: 'brew/sim' }
+        { text: 'Кофейни // Новосибирск', link: '/radar/signal/coffee-points-nsk-2025/launch.md' }
       ]
     },
     { text: 'B‑R‑E‑W', link: '/brew/run' },
@@ -525,16 +524,6 @@ function sidebarRadarRussia(): DefaultTheme.SidebarItem[] {
   ]
 }
 
-function sidebarSimulators(): DefaultTheme.SidebarItem[] {
-  return [
-    { text: 'Симуляторы', collapsed: false, items: [
-      { text: 'Обзор', link: '/brew/sim' },
-      { text: 'Кофейни // Самара', link: '/radar/signal/coffee-points-smr-2025/dashboard' },
-      { text: 'Кофейни // Новосибирск', link: '/radar/signal/coffee-points-nsk-2025/launch' }
-    ]}
-  ]
-}
-
 function sidebarCheckup(): DefaultTheme.SidebarItem[] {
   return [
     { 
@@ -550,7 +539,6 @@ function sidebarCheckup(): DefaultTheme.SidebarItem[] {
         { text: 'Чек-лист готовности', link: '/checkup/checklist' },
         { text: 'Фильтр потенциала', link: '/radar/filter' },
         { text: 'Программа рекомендаций', link: '/radar/invite' }
-
       ]
     }
   ]
