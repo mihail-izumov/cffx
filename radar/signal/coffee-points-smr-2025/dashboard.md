@@ -1,29 +1,260 @@
 # Симулятор
 
-Этот Симулятор — часть платформы **[BREW](/brew/run)**. Он создан на основе **[Кофейного Протокола](/brew/protocol)**, чтобы дать вам не просто данные, а готовые решения для роста на самарском рынке. Мы не продаем отчеты. Мы показываем, как работает наша система, делясь ценностью бесплатно.
+Этот Симулятор — часть платформы **[B-R-E-W](/brew/run)**. Он создан на основе Кофейного Протокола, чтобы дать вам не просто данные, а готовые решения для роста на самарском рынке. Мы не продаем отчеты. Мы показываем, как работает наша система, делясь ценностью бесплатно.
 
 ## Кофейни // Самара
 
-Структурированный доступ к результатам анализа 29,600+ развернутых отзывов о фокус-компании "Корж" и ее ключевых конкурентах: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**. Каждый диалог — это готовый разбор с углубленным анализом конкретной бизнес-задачи на **самарском рынке**.
+Структурированный доступ к результатам анализа 29,600+ развернутых отзывов о фокус-компании "Корж" и ее ключевых конкурентах: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**. 
 
-1. Определите главную задачу сейчас и выберите раздел
-2. Войдите в нужный диалог и продолжите задавать уточняющие вопросы
-3. Превратите каждый диалог в системный рост вашего бизнеса сегодня
+<!-- Плашка с инструкцией -->
+<div class="instruction-card">
+<h3 class="instruction-title">Каждый диалог — это готовый разбор с углубленным анализом конкретной бизнес-задачи на самарском рынке</h3>
+<ol class="instruction-steps">
+<li>Определите главную задачу сейчас и выберите раздел</li>
+<li>Войдите в нужный диалог и продолжите задавать уточняющие вопросы</li>
+<li>Превратите каждый диалог в системный рост вашего бизнеса сегодня</li>
+</ol>
+</div>
 
 ### 29,600+ уникальных отзывов → 20 готовых диалогов → мгновенный доступ к инсайтам
 
 **Это только начало.** Вы поработали с базовой версией и видели возможности. Но 85% критически важных данных доступны только подписчикам Инсайдер и Партнер. <br>
 
-**Что скрыто от бесплатных пользователей:**
-
-• **Ваша кофейня VS конкуренты** — живые данные каждый месяц <br>
-• **Сигналы изменений** — тренды рынка в режиме реального времени <br>
-• **Персональная поддержка Анны** — умные рекомендации для вашего бизнеса <br>
-• **Темный режим** — инсайты, которые видят только 10% игроков (только Партнер)
+<!-- Выпадающий список премиум-функций -->
+<details class="premium-features">
+<summary class="premium-summary">
+<span class="premium-title">Что скрыто от бесплатных пользователей</span>
+<span class="premium-arrow">›</span>
+</summary>
+<div class="premium-content">
+<div class="premium-item">
+<span class="premium-feature">Ваша кофейня VS конкуренты</span>
+<span class="premium-description">— живые данные каждый месяц</span>
+</div>
+<div class="premium-item">
+<span class="premium-feature">Сигналы изменений</span>
+<span class="premium-description">— тренды рынка в режиме реального времени</span>
+</div>
+<div class="premium-item">
+<span class="premium-feature">Персональная поддержка Анны</span>
+<span class="premium-description">— умные рекомендации для вашего бизнеса</span>
+</div>
+<div class="premium-item">
+<span class="premium-feature">Темный режим</span>
+<span class="premium-description">— инсайты, которые видят только 10% игроков (только Партнер)</span>
+</div>
+</div>
+</details>
 
 <div class="start-button-container">
   <a href="/brew/membership" class="btn btn-primary">Получить полный доступ →</a>
 </div>
+
+/* Выпадающий список премиум-функций */
+.premium-features {
+  background: #1a1a1a;
+  border: 1px solid #2d2d2d;
+  border-radius: 12px;
+  margin: 24px 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.premium-features:hover {
+  border-color: #3d3d3d;
+}
+
+.premium-summary {
+  padding: 20px 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #252525 0%, #1a1a1a 100%);
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.premium-summary:hover {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+}
+
+.premium-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.premium-arrow {
+  font-size: 24px;
+  color: #9ca3af;
+  transform: rotate(0deg);
+  transition: transform 0.3s ease;
+}
+
+.premium-features[open] .premium-arrow {
+  transform: rotate(90deg);
+}
+
+.premium-content {
+  padding: 0 24px 24px 24px;
+  border-top: 1px solid #2d2d2d;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.premium-item {
+  display: block;
+  margin: 16px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.premium-item::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #6ee7b7;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.premium-feature {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.premium-description {
+  color: #9ca3af;
+  margin-left: 4px;
+}
+
+/* Плашка с инструкцией */
+.instruction-card {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 32px;
+  margin: 32px 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.instruction-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #6ee7b7 0%, #3b82f6 100%);
+}
+
+.instruction-title {
+  color: #ffffff !important;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 24px 0;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.instruction-steps {
+  margin: 0;
+  padding: 0;
+  counter-reset: step-counter;
+  list-style: none;
+}
+
+.instruction-steps li {
+  counter-increment: step-counter;
+  margin: 16px 0;
+  padding: 16px 20px;
+  padding-left: 60px;
+  position: relative;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.5;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.instruction-steps li:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateX(4px);
+}
+
+.instruction-steps li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .premium-summary {
+    padding: 16px 20px;
+  }
+  
+  .premium-title {
+    font-size: 16px;
+  }
+  
+  .premium-content {
+    padding: 0 20px 20px 20px;
+  }
+  
+  .instruction-card {
+    padding: 24px 20px;
+    margin: 24px 0;
+  }
+  
+  .instruction-title {
+    font-size: 18px;
+    padding: 16px;
+  }
+  
+  .instruction-steps li {
+    padding-left: 50px;
+    font-size: 15px;
+  }
+  
+  .instruction-steps li::before {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    left: 16px;
+  }
+}
 
 ## Почему «Корж» побеждает в сердцах, а Skuratov — в головах
 
