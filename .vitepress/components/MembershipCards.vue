@@ -42,7 +42,7 @@
       </div>
       <p class="includes-all">Все, что в Симуляторе, плюс:</p>
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Ваша кофейня VS Рынок в реальном времени</span></li>
+        <li class="feature-item"><CheckIcon /><span>Ваша компания VS Рынок в реальном времени</span></li>
         <li class="feature-item"><CheckIcon /><span><a href="/radar/index-smr/overview" target="_blank" class="feature-link">Индекс Роста</a>: сигналы изменений</span></li>
         <li class="feature-item"><CheckIcon /><span>Ранний доступ к новым городам</span></li>
       </ul>
