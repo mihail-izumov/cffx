@@ -28,18 +28,10 @@
   </summary>
   <div class="details-content">
     <ul>
-      <li>
-        <strong>Ваша кофейня VS конкуренты</strong> — живые данные каждый месяц
-      </li>
-      <li>
-        <strong>Сигналы изменений</strong> — тренды рынка в режиме реального времени
-      </li>
-      <li>
-        <strong>Персональная поддержка Анны</strong> — умные рекомендации для вашего бизнеса
-      </li>
-      <li>
-        <strong>Темный режим</strong> — инсайты, которые видят только 10% игроков (только Партнер)
-      </li>
+      <li><strong>Ваша кофейня VS конкуренты</strong> — живые данные каждый месяц</li>
+      <li><strong>Сигналы изменений</strong> — тренды рынка в режиме реального времени</li>
+      <li><strong>Персональная поддержка Анны</strong> — умные рекомендации для вашего бизнеса</li>
+      <li><strong>Темный режим</strong> — инсайты, которые видят только 10% игроков (только Партнер)</li>
     </ul>
   </div>
 </details>
@@ -82,7 +74,6 @@
 <div class="start-button-container">
   <a href="https://t.me/Anna_runScale" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Начать диалог с Анной →</a>
 </div>
-
 ## Диалоги
 
 ### Детали по зонам роста (А1-А3)
@@ -245,25 +236,25 @@
   background-color: #1F1F1F;
   border: 1px solid #333;
   border-radius: 12px;
-  padding: 14px 20px; /* Уменьшены вертикальные отступы */
-  margin: 20px 0; /* Уменьшен вертикальный margin */
+  padding: 16px 20px;
+  margin: 16px 0; /* Уменьшены вертикальные отступы */
 }
 .info-card-title {
   font-size: 16px;
   font-weight: 500;
   color: #E5E7EB;
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0; /* Чуть больше отступ после заголовка */
   line-height: 1.4;
 }
 .info-card-list {
   margin: 0;
-  padding-left: 20px;
+  padding-left: 20px; /* Стандартный отступ для списка */
   font-size: 14px;
   color: #A1A1A9;
-  line-height: 1.5; /* Немного уменьшили для компактности */
+  line-height: 1.5;
 }
 .info-card-list li {
-  margin-bottom: 2px; /* Сделали список плотнее */
+  margin-bottom: 4px; /* Компактный отступ между пунктами */
 }
 .info-card-list li:last-child {
   margin-bottom: 0;
@@ -274,14 +265,14 @@
   background: transparent;
   border: 1px solid #333;
   border-radius: 12px;
-  margin: 20px 0; /* Уменьшен отступ */
-  transition: all 0.2s ease-in-out;
+  margin: 16px 0 20px 0; /* Отступ до и после блока */
+  transition: border-color 0.2s ease-in-out;
 }
 .details-compact:hover {
   border-color: #444;
 }
 .details-summary {
-  padding: 12px 20px; /* Уменьшен padding */
+  padding: 12px 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -307,42 +298,40 @@
   transform: rotate(90deg);
 }
 .details-content {
-  padding: 4px 20px 14px 20px; /* Уменьшены отступы */
+  padding: 8px 20px 14px 20px; /* Компактные отступы */
   border-top: 1px solid #333;
-  margin-top: 4px; /* Уменьшен отступ от разделителя */
+  margin-top: 4px;
   animation: slideDown 0.3s ease-out;
 }
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .details-content ul {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
-/* Flexbox для идеального выравнивания буллетов */
 .details-content ul li {
+  position: relative;
+  padding-left: 20px; /* Место для буллета */
   color: #D1D5DB;
   font-size: 15px;
   line-height: 1.5;
-  display: flex;
-  align-items: flex-start; /* Выравнивание по верху для многострочного текста */
-  margin-top: 8px; /* Уменьшен отступ между пунктами */
+  margin-top: 8px; /* Уменьшенный отступ между элементами */
+}
+.details-content ul li:first-child {
+  margin-top: 4px; /* Еще меньше отступ для первого элемента */
 }
 .details-content ul li::before {
   content: "•";
+  position: absolute;
+  left: 0;
+  top: 50%; /* Центрируем по вертикали */
+  transform: translateY(-50%); /* Точная корректировка центра */
   color: #C5F946;
-  font-size: 20px; /* Оптимальный размер буллета */
+  font-size: 22px; /* Чуть меньше буллет */
   font-weight: bold;
-  margin-right: 10px; /* Отступ от буллета до текста */
-  line-height: 1.35; /* Коррекция для идеального центра */
 }
 .details-content ul li strong {
   font-weight: 600;
@@ -351,88 +340,37 @@
 
 /* --- 3. Общие стили кнопок (без изменений) --- */
 .btn {
-  display: inline-block;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 16px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: none;
-  margin: 10px 0;
+  display: inline-block; padding: 12px 24px; border-radius: 8px;
+  font-weight: 700; font-size: 16px; text-align: center; text-decoration: none;
+  transition: all 0.3s ease; cursor: pointer; border: none; margin: 10px 0;
 }
-.btn:hover {
-  transform: translateY(-2px);
-  text-decoration: none !important;
-}
-.btn-primary {
-  background-color: #C5F946;
-  color: #000 !important;
-}
-.btn-primary:hover {
-  background-color: #347b6c;
-  color: white !important;
-}
-.start-button-container {
-  margin: 20px 0;
-  text-align: left;
-}
-.start-button-container .btn {
-  display: inline-block;
-  margin: 0;
-}
+.btn:hover { transform: translateY(-2px); text-decoration: none !important; }
+.btn-primary { background-color: #C5F946; color: #000 !important; }
+.btn-primary:hover { background-color: #347b6c; color: white !important; }
+.start-button-container { margin: 20px 0; text-align: left; }
+.start-button-container .btn { display: inline-block; margin: 0; }
 
 /* --- 4. Стили таблиц (без изменений) --- */
-.radar-signals-table table,
-.comparison-table table {
-  table-layout: fixed;
-  width: 100%;
+.radar-signals-table table, .comparison-table table {
+  table-layout: fixed; width: 100%;
 }
-.comparison-table td {
-  width: 50%;
-  word-break: break-word;
-}
+.comparison-table td { width: 50%; word-break: break-word; }
 
 /* --- 5. Стили форм (без изменений) --- */
-.custom-form {
-  max-width: 500px;
-  margin: 0;
-  padding: 20px;
-  background-color: transparent;
-  border-radius: 5px;
-  color: #ffffff;
+.custom-form { max-width: 500px; margin: 0; padding: 20px;
+  background-color: transparent; border-radius: 5px; color: #ffffff;
 }
-.form-input {
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  border: 1px solid #444;
-  border-radius: 4px;
-  font-size: 16px;
-  background-color: #1F1F1F;
-  color: #ffffff;
+.form-input { width: 100%; padding: 10px; box-sizing: border-box;
+  border: 1px solid #444; border-radius: 4px; font-size: 16px;
+  background-color: #1F1F1F; color: #ffffff;
 }
-.form-hint {
-  color: #808080;
-  font-size: 0.8em;
-  line-height: 1.5;
-  margin-top: 15px;
-}
+.form-hint { color: #808080; font-size: 0.8em; line-height: 1.5; margin-top: 15px; }
 
 /* --- 6. Адаптивность (без изменений) --- */
 @media (max-width: 768px) {
-  .info-card {
-    padding: 14px 16px;
+  .info-card, .details-summary, .details-content {
+    padding-left: 16px; padding-right: 16px;
   }
-  .details-summary, .details-content {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  .btn {
-    padding: 10px 20px;
-    font-size: 15px;
-  }
+  .btn { padding: 10px 20px; font-size: 15px; }
 }
 </style>
