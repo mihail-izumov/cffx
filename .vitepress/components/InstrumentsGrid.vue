@@ -8,19 +8,19 @@
           Открытая база знаний, содержащая коллективный опыт сотен кофеен. От выбора зерна до найма бариста — все, что нужно для создания бизнеса, который любят клиенты и боятся конкуренты.
         </p>
       </div>
-      <a href="https://runscale.ru/brew/protocol.html" rel="noopener noreferrer" class="card-button">
+      <a href="/brew/protocol" rel="noopener noreferrer" class="card-button">
         Изучить Протокол
       </a>
     </div>
     <!-- Карточка 2: Индекс Роста -->
     <div class="product-card">
       <div class="card-content">
-        <h3 class="card-title">Индекс Роста</h3>
+        <h3 class="card-title">Индекс // Самара</h3>
         <p class="card-description">
-          Единственная в отрасли система оценки, которая измеряет не размер, а потенциал роста компании. Попасть в Индекс — значит стать видимым для инвесторов, партнеров и лучших талантов рынка.
+          Единственная в отрасли система оценки, которая измеряет не размер, а потенциал роста компании. Попасть в Индекс — значит стать видимым для инвесторов, поставщиков и лучших талантов рынка.
         </p>
       </div>
-      <a href="https://runscale.ru/radar/overview.html" rel="noopener noreferrer" class="card-button">
+      <a href="/radar/index-smr/overview" rel="noopener noreferrer" class="card-button">
         Посмотреть рейтинг
       </a>
     </div>
