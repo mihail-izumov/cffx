@@ -185,13 +185,16 @@ export default defineConfig({
       // Самара: обзор/метод
       '/radar/index-smr/': { items: sidebarRadarSamara() },
 
+      // ИСПРАВЛЕНИЕ: Принудительная привязка страницы log к сайдбару России (ПЕРЕД /radar/signal/)
+      '/radar/signal/log': { items: sidebarRadarRussia() },
+
       // Новосибирск — без сайдбара
       '/radar/signal/coffee-points-nsk-2025/': { items: [] },
 
-      // Самара: весь блок signal
+      // Самара: весь остальной блок signal
       '/radar/signal/': { items: sidebarRadarSamara() },
 
-      // ИСПРАВЛЕНИЕ: Принудительно привязываем страницы Фильтра и Программы к сайдбару Чекапа
+      // Фильтр и Программа рекомендаций — привязка к Чекапу
       '/radar/filter': { items: sidebarCheckup() },
       '/radar/invite': { items: sidebarCheckup() },
 
@@ -199,7 +202,7 @@ export default defineConfig({
       '/checkup/': { items: sidebarCheckup() },
       '/checkup/prep/': { items: sidebarCheckupPrep() },
 
-      // Общий Радар (Россия) — ДОЛЖЕН БЫТЬ ПОСЛЕ специфичных /radar/filter и /radar/invite
+      // Общий Радар (Россия)
       '/radar/': { items: sidebarRadarRussia() },
 
       // Остальные разделы
