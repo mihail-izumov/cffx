@@ -232,171 +232,96 @@
 **[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**
 
 <style>
-/* =========================
-   1) Информационная карточка
-   ========================= */
-.info-card {
-  background: #1f1f1f;
-  border: 1px solid #2c2c2c;
-  border-radius: 12px;
-  padding: 14px 20px;
-  margin: 16px 0;
-}
-.info-card-title {
-  font-size: 1rem;
-  line-height: 1.35;
-  font-weight: 500;
-  color: #e6e7eb;
-  margin: 0 0 8px 0;
-}
-.info-card-list {
-  margin: 0;
-  padding-left: 20px;
-  font-size: 0.94rem;
-  line-height: 1.4;
-  color: #a1a1a9;
-}
-.info-card-list li {
-  margin-bottom: 4px;
-}
-.info-card-list li:last-child {
-  margin-bottom: 0;
-}
-
-/* ======================================
-   2) Выпадающий тизер (details-compact)
-   ====================================== */
 .details-compact {
   background: transparent;
-  border: 1.5px solid #353537;
+  border: 1.2px solid #353537;
   border-radius: 13px;
   margin: 16px 0;
-  transition: border-color 0.2s;
+  transition: border-color .18s;
 }
-.details-compact:hover {
-  border-color: #555;
-}
+.details-compact:hover{ border-color:#99a1af; }
 
-/* РЕШЕНИЕ ПРОБЛЕМЫ ВЫСОТЫ:
-   Задаем min-height как у кнопки и центрируем контент флексом. */
 .details-summary {
+  min-height:48px; height:48px;
+  padding: 0 20px !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 48px; /* Жесткая высота, как у кнопки */
-  padding: 0 20px; /* Только горизонтальные отступы */
   cursor: pointer;
   user-select: none;
   list-style: none;
+  box-sizing: border-box;
+  background: transparent;
 }
-.details-summary::-webkit-details-marker {
-  display: none;
-}
+.details-summary::-webkit-details-marker{ display:none; }
 .details-title {
-  font-size: 1rem; /* Уменьшаем для гармонии */
-  font-weight: 600;
-  color: #e7e9ee;
-  padding-right: 16px;
+  font-size:1rem;
+  font-weight:600;
+  color:#e7e9ee;
+  letter-spacing:-.01em;
+  line-height:1;
+  padding-right:18px;
 }
 .details-arrow {
-  width: 12px;
-  height: 12px;
-  border-top: 2px solid #a0a6b4;
-  border-right: 2px solid #a0a6b4;
-  transform: rotate(135deg);
-  transition: transform 0.2s ease-in-out;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
+  border-style: solid;
+  border-width: 0 2.2px 2.2px 0;
+  border-color:#a0a6b4;
+  background: none;
+  transform: rotate(45deg);
+  transition: transform .22s;
 }
-.details-compact[open] > .details-summary .details-arrow {
-  transform: rotate(-45deg);
-}
-
+.details-compact[open] .details-arrow {transform: rotate(-135deg);}
 .details-content {
-  padding: 8px 20px 14px;
-  border-top: 1.5px solid #353537;
-  animation: fadeIn 0.2s ease-out;
+  padding: 10px 20px 16px 20px;
+  border-top: 1.2px solid #353537;
+  animation: fadeIn .13s;
 }
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.details-content ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-/* РЕШЕНИЕ ПРОБЛЕМЫ ВЫРАВНИВАНИЯ:
-   Используем Flexbox на li, а текст оборачиваем в span. */
+@keyframes fadeIn {from {opacity: 0;} to {opacity: 1;}}
+.details-content ul {margin:0; padding:0; list-style:none;}
 .details-content li {
-  display: flex;
-  align-items: flex-start; /* Выравнивание по верху строки */
-  gap: 0.7em; /* Расстояние между буллетом и текстом */
-  margin-top: 10px;
-  line-height: 1.45;
-  font-size: 15px;
-}
-.details-content li::before {
-  content: "•";
-  color: #C5F946;
-  font-size: 20px;
-  line-height: 0.75; /* Оптическая коррекция, чтобы буллет был по центру первой строки */
-  flex-shrink: 0;
-}
-.list-item-text {
-  color: #d1d5db;
-}
-.list-item-text strong {
-  font-weight: 600;
-  color: #fff;
-}
-
-/* ==================
-   3) Кнопки (общие)
-   ================== */
-.btn {
-  padding: 12px 24px;
-  min-height: 48px; /* Высота для соответствия */
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  font-weight: 700;
+  position: relative;
+  padding-left: 20px;
+  margin-top: 9px;
   font-size: 16px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: none;
+  line-height: 1.44;
+  color: #cfd4de;
+  font-weight: 400;
+  word-break: break-word;
 }
-.btn:hover {
-  transform: translateY(-2px);
-}
-.btn-primary {
+.details-content li strong{color:#fff;font-weight:700;}
+.details-content li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.53em;
+  width: 0.48em;
+  height: 0.48em;
   background: #C5F946;
-  color: #000 !important;
-}
-.btn-primary:hover {
-  background: #347b6c;
-  color: #fff !important;
-}
-.start-button-container {
-  margin: 20px 0;
-}
-.details-compact + .start-button-container {
-  margin-top: 16px;
+  border-radius: 50%;
 }
 
-/* ==============
-   4) Адаптивность
-   ============== */
-@media (max-width: 700px) {
-  .details-summary {
-    padding: 0 16px; /* Адаптивные отступы */
-  }
-  .details-content {
-    padding: 8px 16px 14px;
-  }
+/* CTA блок */
+.details-compact + .start-button-container {margin-top: 16px!important;}
+.btn {
+  min-height:48px; box-sizing:border-box;
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:12px 24px; border-radius:8px; font-weight:700; font-size:16px;
+  transition:all .2s; border:none; text-align:center; cursor:pointer;
+}
+.btn-primary{background:#C5F946;color:#000!important;}
+.btn-primary:hover{background:#347b6c;color:#fff!important;}
+.start-button-container{margin:20px 0;}
+
+/* mobile: компактнее все */
+@media (max-width:700px){
+  .details-summary{min-height:44px;height:44px;padding:0 12px !important;}
+  .details-title{font-size:0.97rem;padding-right:12px;}
+  .details-content{padding:8px 12px 13px 12px;}
+  .details-content li{font-size:15.5px;padding-left:19px;}
+  .details-content li::before{width:0.44em;height:0.44em;}
 }
 </style>
