@@ -243,49 +243,58 @@
 /* --- шапка summary --- */
 .vp-doc details>summary{
   display:flex;align-items:center;justify-content:space-between;
-  padding:10px 20px;            /* MOBILE высота ≈ 48 px */
+  padding:10px 20px;
   cursor:pointer;user-select:none;list-style:none
 }
 .vp-doc details>summary::-webkit-details-marker{display:none}
-.vp-doc details>summary>span:first-child{   /* заголовок */
+.vp-doc details>summary>span:first-child{
   font-size:1rem;font-weight:600;color:#e7e9ee;padding-right:16px
 }
-.vp-doc details>summary::after{             /* стрелка */
+.vp-doc details>summary::after{
   content:'';width:12px;height:12px;flex-shrink:0;
   border-top:2px solid #a0a6b4;border-right:2px solid #a0a6b4;
   transform:rotate(135deg);transition:transform .2s
 }
 .vp-doc details[open]>summary::after{transform:rotate(-45deg)}
-/* разделитель под шапкой */
 .vp-doc details[open]>summary{border-bottom:1.5px solid #353537}
 
 /* --- контент --- */
-.vp-doc details>div{padding:0 20px 22px}   /* нижний отступ увеличен */
+.vp-doc details>div{padding:0 20px 22px}
 .vp-doc details ul{margin:0;padding:0;list-style:none}
 .vp-doc details li{
   position:relative;padding-left:20px;margin-top:12px;
   font-size:15px;line-height:1.45;color:#d1d5db
 }
 .vp-doc details li::before{
-  content:'•';position:absolute;left:0;top:0;line-height:inherit;
-  color:#C5F946;font-size:1em
+  content:'•';position:absolute;left:0;top:0.53em;
+  width:0.48em;height:0.48em;background:#C5F946;
+  border-radius:50%;
 }
 .vp-doc details strong{font-weight:600;color:#fff}
 
-/* ---------- кнопка ---------- */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;
-  height:48px;padding:12px 24px;border-radius:8px;font:700 16px/1 sans-serif;
-  border:none;cursor:pointer;transition:transform .2s
+/* ---------- кнопка (ИСПРАВЛЕНО) ---------- */
+.btn {
+  display:inline-flex; align-items:center; justify-content:center;
+  height:48px;
+  box-sizing: border-box; /* Важно для корректной высоты */
+  padding:12px 24px;
+  border-radius:8px;
+  font-weight:700;
+  font-size:16px;
+  line-height: 1; /* Возвращаем line-height для центрирования */
+  border:none;
+  cursor:pointer;
+  transition:transform .2s;
+  text-decoration: none;
 }
 .btn:hover{transform:translateY(-2px)}
 .btn-primary{background:#C5F946;color:#000!important}
 .btn-primary:hover{background:#347b6c;color:#fff!important}
 .start-button-container{margin:20px 0}
 
-/* ---------- десктоп: делаем шапку компактнее ---------- */
+/* ---------- десктоп: компактная шапка ---------- */
 @media(min-width:700px){
-  .vp-doc details>summary{padding:6px 24px} /* высота ~40 px */
-  .vp-doc details>div{padding:0 24px 24px}  /* ещё чуть больше снизу */
+  .vp-doc details>summary{padding:6px 24px}
+  .vp-doc details>div{padding:0 24px 24px}
 }
 </style>
