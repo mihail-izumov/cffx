@@ -28,10 +28,10 @@
   </summary>
   <div class="details-content">
     <ul>
-      <li><strong>Ваша кофейня VS конкуренты</strong> — живые данные каждый месяц</li>
-      <li><strong>Сигналы изменений</strong> — тренды рынка в режиме реального времени</li>
-      <li><strong>Персональная поддержка Анны</strong> — умные рекомендации для вашего бизнеса</li>
-      <li><strong>Темный режим</strong> — инсайты, которые видят только 10% игроков (только Партнер)</li>
+      <li><span class="list-item-text"><strong>Ваша кофейня VS конкуренты</strong> — живые данные каждый месяц</span></li>
+      <li><span class="list-item-text"><strong>Сигналы изменений</strong> — тренды рынка в режиме реального времени</span></li>
+      <li><span class="list-item-text"><strong>Персональная поддержка Анны</strong> — умные рекомендации для вашего бизнеса</span></li>
+      <li><span class="list-item-text"><strong>Темный режим</strong> — инсайты, которые видят только 10% игроков (только Партнер)</span></li>
     </ul>
   </div>
 </details>
@@ -283,8 +283,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 48px; /* Примерная высота кнопки */
-  padding: 5px 20px; /* Горизонтальные отступы */
+  min-height: 48px; /* Жесткая высота, как у кнопки */
+  padding: 0 20px; /* Только горизонтальные отступы */
   cursor: pointer;
   user-select: none;
   list-style: none;
@@ -293,8 +293,8 @@
   display: none;
 }
 .details-title {
-  font-size: 1.02rem;
-  font-weight: 700;
+  font-size: 1rem; /* Уменьшаем для гармонии */
+  font-weight: 600;
   color: #e7e9ee;
   padding-right: 16px;
 }
@@ -327,24 +327,26 @@
 }
 
 /* РЕШЕНИЕ ПРОБЛЕМЫ ВЫРАВНИВАНИЯ:
-   Классический метод position:relative/absolute. Весь текст теперь в едином потоке. */
+   Используем Flexbox на li, а текст оборачиваем в span. */
 .details-content li {
-  position: relative;
-  padding-left: 18px; /* Место для буллета */
-  margin-top: 8px;
+  display: flex;
+  align-items: flex-start; /* Выравнивание по верху строки */
+  gap: 0.7em; /* Расстояние между буллетом и текстом */
+  margin-top: 10px;
   line-height: 1.45;
-  color: #d1d5db;
   font-size: 15px;
 }
 .details-content li::before {
   content: "•";
-  position: absolute;
-  left: 0;
-  top: -2px; /* Оптическая коррекция */
   color: #C5F946;
-  font-size: 24px;
+  font-size: 20px;
+  line-height: 0.75; /* Оптическая коррекция, чтобы буллет был по центру первой строки */
+  flex-shrink: 0;
 }
-.details-content li strong {
+.list-item-text {
+  color: #d1d5db;
+}
+.list-item-text strong {
   font-weight: 600;
   color: #fff;
 }
@@ -353,7 +355,6 @@
    3) Кнопки (общие)
    ================== */
 .btn {
-  display: inline-block;
   padding: 12px 24px;
   min-height: 48px; /* Высота для соответствия */
   box-sizing: border-box;
@@ -387,20 +388,12 @@
   margin-top: 16px;
 }
 
-/* ==================
-   4) Прочие стили
-   ================== */
-.custom-form, .comparison-table, .radar-signals-table {
-  /* Сюда можно добавить стили для этих элементов, если они понадобятся */
-}
-
 /* ==============
-   5) Адаптивность
+   4) Адаптивность
    ============== */
 @media (max-width: 700px) {
-  /* Сохраняем компактность и отступы на мобильных */
   .details-summary {
-    padding: 5px 16px;
+    padding: 0 16px; /* Адаптивные отступы */
   }
   .details-content {
     padding: 8px 16px 14px;
