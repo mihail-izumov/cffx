@@ -7,8 +7,8 @@
           <th>Индекс</th>
           <th>Точки</th>
           <th>Статус</th>
-          <th><a href="/radar/index-smr/overview#типы-зерна">Тип зерна</a></th>
-          <th><a href="/radar/index-smr/overview#типы-поставщиков-зерна">Поставщик</a></th>
+          <th><a href="/radar/index-smr/test#типы-зерна">Тип зерна</a></th>
+          <th><a href="/radar/index-smr/test#типы-поставщиков-зерна">Поставщик</a></th>
           <th>Отзывы</th>
           <th>Масштаб</th>
           <th>Тип</th>
@@ -31,6 +31,13 @@
           <td class="cell-left nowrap">
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
             {{ coffee.name }}
+            <a 
+              v-if="isInGrowthCalculator(coffee.name)" 
+              href="/radar/index-smr/overview#потенциал-роста" 
+              class="growth-calculator-link"
+            >
+              [+₽↑]
+            </a>
           </td>
           <td class="cell-center">{{ coffee.index }}</td>
           <td class="cell-center">{{ coffee.points }}</td>
@@ -94,6 +101,26 @@ export default {
         'Растущий 📈',
         'Стабильный 🎯',
         'Вне игры 🚫'
+      ],
+      growthCalculatorList: [
+        'Balance coffee',
+        'Bonfix',
+        'Булка нетто',
+        'Coffee Bean',
+        'Cup-cup',
+        'Дринкит',
+        'Кофеваркин',
+        'Корж',
+        'Lumos barista lab',
+        'MB Cafe',
+        'Mosaic coffee&tea',
+        'Skuratov Coffee',
+        'Surf Coffee',
+        'Uco Coffee Roaster',
+        'Vandal coffee',
+        'White Cup',
+        'Хюггешная',
+        'Юни'
       ],
       coffeeData: [
         { icon:'🟡', index:98,  name:'Корж', reviews:'4,520', points:8,  scale:'~12+', status:'Лидер 👑', supplier:'Berry Coffee (Тольятти)', beanType:'Свой бренд 🏷️', type:'Независимая', potential:'Высокий', stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Очень высокий' },
@@ -234,6 +261,9 @@ export default {
     isFirstOutOfGame(coffee, index) {
       return coffee.status === 'Вне игры 🚫' && 
              (index === 0 || this.sortedCoffeeData[index - 1].status !== 'Вне игры 🚫')
+    },
+    isInGrowthCalculator(coffeeName) {
+      return this.growthCalculatorList.includes(coffeeName)
     }
   }
 }
@@ -350,6 +380,27 @@ export default {
 .icon-green {
   color: #22c55e;
   font-weight: bold;
+}
+
+/* Стили для ссылки калькулятора роста */
+.growth-calculator-link {
+  color: #22c55e !important;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85em;
+  margin-left: 6px;
+  transition: all 0.2s ease;
+  opacity: 0.8;
+}
+
+.growth-calculator-link:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-decoration-style: solid;
+}
+
+.growth-calculator-link:visited {
+  color: #22c55e !important;
 }
 
 /* Бейджи статусов - кислотные приглушенные цвета в стиле UX 2025 */
@@ -572,6 +623,9 @@ export default {
     font-size: 0.75em;
     padding: 2px 6px;
   }
+  .growth-calculator-link {
+    font-size: 0.8em;
+  }
 }
 @media (max-width: 760px) {
   .index-smr-table th,
@@ -597,6 +651,9 @@ export default {
     font-size: 0.7em;
     padding: 2px 5px;
   }
+  .growth-calculator-link {
+    font-size: 0.75em;
+  }
 }
 @media (max-width: 480px) {
   .index-smr-table th,
@@ -621,6 +678,9 @@ export default {
   .badge-bean {
     font-size: 0.65em;
     padding: 1px 4px;
+  }
+  .growth-calculator-link {
+    font-size: 0.7em;
   }
 }
 </style>
