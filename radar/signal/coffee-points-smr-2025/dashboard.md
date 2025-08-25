@@ -222,7 +222,7 @@
 **[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**
 
 <style>
-/* ----------- Информационная карточка ----------- */
+/* Информационная карточка (оставьте свой код) */
 .info-card {
   background: #1f1f1f;
   border: 1px solid #2c2c2c;
@@ -247,11 +247,10 @@
 .info-card-list li {
   margin-bottom: 4px;
 }
-.info-card-list li:last-child {
-  margin-bottom: 0;
-}
+.info-card-list li:last-child { margin-bottom: 0; }
 
-/* ----------- Выпадающий details-контейнер ----------- */
+
+/* --- Выпадающий details-контейнер --- */
 .vp-doc details {
   border: 1.2px solid #353537;
   border-radius: 13px;
@@ -259,8 +258,13 @@
   background: transparent;
   padding: 0;
   overflow: hidden;
+  transition: border-color .18s;
 }
-.vp-doc details[open] { border-color: #99a1af; }
+.vp-doc details[open] {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
 
 .vp-doc details > summary {
   min-height: 48px;
@@ -277,23 +281,34 @@
   background: transparent;
   transition: background 0.12s;
   position: relative;
+  border-radius: 13px;
+  justify-content: space-between;
+  /* Важно! Чтобы текст в свернутом виде был по вертикали по центру */
+  line-height: 1;
 }
 .vp-doc details > summary::-webkit-details-marker { display:none; }
+
 .vp-doc details > summary:after {
   content: '';
   position: absolute;
   right: 20px;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-right: 2.2px solid #a0a6b4;
   border-bottom: 2.2px solid #a0a6b4;
-  transform: rotate(-45deg);
-  transition: transform 0.2s;
+  /* По умолчанию СМОТРИТ ВНИЗ */
+  transform: rotate(45deg);
+  transition: transform 0.22s;
 }
 .vp-doc details[open] > summary:after {
-  transform: rotate(45deg);
+  /* При открытии стрелка смотрит ВВЕРХ */
+  transform: rotate(-135deg);
 }
-.vp-doc details[open] > summary { border-bottom: 1.2px solid #353537; }
+
+.vp-doc details[open] > summary {
+  background: transparent;
+  border-radius: 13px 13px 0 0;
+}
 
 .vp-doc details ul, .vp-doc details ol {
   margin: 10px 0 0 1.1em;
@@ -306,14 +321,15 @@
   color: #cfd4de;
   font-weight: 400;
   word-break: break-word;
+  /* Маркеры дефолтные, но цвет меняем (см. ниже) */
 }
 .vp-doc details li strong { color: #fff; font-weight: 700; }
 .vp-doc details ul li::marker {
   color: #C5F946;
-  font-size: 1.1em;
+  font-size: 1.15em;
 }
 
-/* ----------- Кнопки ----------- */
+/* Кнопки */
 .btn {
   min-height: 48px;
   box-sizing: border-box;
@@ -335,7 +351,7 @@
 .btn-primary:hover{background:#347b6c;color:#fff!important;}
 .start-button-container{margin:20px 0;}
 
-/* ----------- Формы ----------- */
+/* Формы */
 .custom-form {
   max-width: 500px;
   margin: 0;
@@ -344,9 +360,7 @@
   border-radius: 5px;
   color: white;
 }
-.form-group {
-  margin-bottom: 15px;
-}
+.form-group { margin-bottom: 15px; }
 .form-input {
   width: 100%;
   padding: 10px;
@@ -364,7 +378,7 @@
   margin-bottom: 10px;
 }
 
-/* ----------- Адаптив ----------- */
+/* Адаптив */
 @media (max-width:700px){
   .vp-doc details > summary{
     min-height: 42px;
@@ -377,3 +391,4 @@
   .start-button-container{margin:15px 0;}
 }
 </style>
+
