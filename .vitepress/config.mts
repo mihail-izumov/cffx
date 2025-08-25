@@ -294,12 +294,19 @@ function sidebarRadarSamara(): DefaultTheme.SidebarItem[] {
 
 function sidebarRadarRussia(): DefaultTheme.SidebarItem[] {
   return [
-    { text: 'Обзор рынка', link: '/radar/overview' },
-    { text: 'Скрытый потенциал', link: '/radar/scale_index' },
-    { text: 'Кто Анна', link: '/radar/who-is-anna' },
-    { text: 'Радар', link: '/radar/signal/log' }
+    {
+      text: 'Индекс Роста // Россия', // <--- Заголовок для сайдбара
+      collapsed: false,
+      items: [
+        { text: 'Обзор рынка', link: '/radar/overview' },
+        { text: 'Скрытый потенциал', link: '/radar/scale_index' },
+        { text: 'Кто Анна', link: '/radar/who-is-anna' },
+        { text: 'Радар', link: '/radar/signal/log' }
+      ]
+    }
   ]
 }
+
 
 function sidebarCheckup(): DefaultTheme.SidebarItem[] {
   return [
