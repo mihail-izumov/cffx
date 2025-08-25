@@ -5,10 +5,10 @@
         <tr>
           <th>Кофейня</th>
           <th>Индекс</th>
-          <th>Статус</th>
           <th>Точки</th>
-          <th>Поставщик</th>
+          <th>Статус</th>
           <th>Тип зерна</th>
+          <th>Поставщик</th>
           <th>Отзывы</th>
           <th>Масштаб</th>
           <th>Тип</th>
@@ -33,18 +33,18 @@
             {{ coffee.name }}
           </td>
           <td class="cell-center">{{ coffee.index }}</td>
+          <td class="cell-center">{{ coffee.points }}</td>
           <td class="cell-nowrap">
             <span class="badge-status" :class="statusClass(coffee.status)">
               {{ coffee.status }}
             </span>
           </td>
-          <td class="cell-center">{{ coffee.points }}</td>
-          <td class="cell-left">{{ coffee.supplier }}</td>
           <td class="cell-left">
             <span class="badge-bean" :class="beanTypeClass(coffee.beanType)">
               {{ coffee.beanType }}
             </span>
           </td>
+          <td class="cell-left">{{ coffee.supplier }}</td>
           <td class="cell-center">{{ coffee.reviews }}</td>
           <td class="cell-center">{{ coffee.scale }}</td>
           <td class="cell-left">
@@ -279,9 +279,10 @@ export default {
   vertical-align: middle;
 }
 
-/* Полужирный для столбцов "Кофейня" и "Индекс" */
+/* Полужирный для столбцов "Кофейня", "Индекс" и "Точки" */
 .index-smr-table td:nth-child(1),
-.index-smr-table td:nth-child(2) {
+.index-smr-table td:nth-child(2),
+.index-smr-table td:nth-child(3) {
   font-weight: 600;
 }
 
