@@ -1,5 +1,5 @@
 ## Кофейни // Самара
 
-<IndexSMR_test />
+<IndexSMRTest />
 
 тест
