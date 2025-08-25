@@ -6,7 +6,7 @@
 
 Структурированный доступ к результатам анализа 29,600+ развернутых отзывов о фокус-компании "Корж" и её ключевых конкурентах: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**.
 
-<!-- 1) Информационная карточка: компактная, не отвлекает -->
+<!-- 1) Информационная карточка (компактная, не отвлекает) -->
 <div class="info-card">
   <p class="info-card-title">Каждый диалог — это готовый разбор бизнес-задачи на самарском рынке</p>
   <ol class="info-card-list">
@@ -235,156 +235,186 @@
 /* =========================
    1) Информационная карточка
    ========================= */
-.info-card{
-  background:#1f1f1f;
-  border:1px solid #2c2c2c;
-  border-radius:12px;
-  padding:0.5em 0.85em;
-  margin:0.65em 0;
+.info-card {
+  background: #1f1f1f;
+  border: 1px solid #2c2c2c;
+  border-radius: 12px;
+  padding: 14px 20px; /* Сбалансированные отступы */
+  margin: 16px 0;
 }
-.info-card-title{
-  font-size:1rem;
-  line-height:1.3;
-  font-weight:500;
-  color:#e6e7eb;
-  margin:0 0 0.45em 0;
+.info-card-title {
+  font-size: 1rem;
+  line-height: 1.35;
+  font-weight: 500;
+  color: #e6e7eb;
+  margin: 0 0 8px 0;
 }
-.info-card-list{
-  margin:0;
-  padding-left:1em;
-  font-size:0.94rem;
-  line-height:1.38;
-  color:#a1a1a9;
+.info-card-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 0.94rem;
+  line-height: 1.4;
+  color: #a1a1a9;
 }
-.info-card-list li{ margin:0.2em 0; }
+.info-card-list li {
+  margin-bottom: 4px;
+}
+.info-card-list li:last-child {
+  margin-bottom: 0;
+}
 
 /* ======================================
    2) Выпадающий тизер (details-compact)
    ====================================== */
-.details-compact{
-  font-size:0.96rem;
-  background:transparent;
-  border:1.2px solid #353537;
-  border-radius:12px;
-  margin:0.7em 0 0.48em;
-  transition:border-color .15s;
+.details-compact {
+  background: transparent;
+  border: 1.5px solid #353537;
+  border-radius: 13px;
+  margin: 16px 0; /* Равномерный отступ сверху и снизу */
+  transition: border-color 0.2s;
 }
-.details-compact:hover{ border-color:#909097; }
-
-.details-summary{
-  padding:0.46em 0.9em;
-  display:flex; align-items:center; justify-content:space-between;
-  cursor:pointer; user-select:none; list-style:none;
-  background:transparent;
-}
-.details-summary::-webkit-details-marker{display:none;}
-
-.details-title{
-  font-size:1.02rem;
-  font-weight:700;
-  color:#e7e9ee;
-  letter-spacing:-.01em;
-}
-.details-arrow{
-  width:20px; height:20px;
-  position:relative;
-  margin-left:0.4em;
-  flex:0 0 20px;
-  display:inline-block;
-}
-.details-arrow::before{
-  content:"";
-  position:absolute; inset:0;
-  border-right:1.6px solid #a0a6b4;
-  border-bottom:1.6px solid #a0a6b4;
-  transform:rotate(45deg) translateY(-18%);
-  transform-origin:center;
-  transition:transform .18s;
-}
-.details-compact[open] .details-arrow::before{
-  transform:rotate(135deg) translateY(-8%);
+.details-compact:hover {
+  border-color: #555;
 }
 
-.details-content{
-  padding:0.28em 0.9em 0.5em;
-  border-top:1px solid #353537;
-  animation:fade .14s ease;
+.details-summary {
+  padding: 12px 20px; /* Увеличен горизонтальный отступ */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  list-style: none;
 }
-@keyframes fade{from{opacity:0}to{opacity:1}}
+.details-summary::-webkit-details-marker {
+  display: none;
+}
+.details-title {
+  font-size: 1.03rem;
+  font-weight: 700;
+  color: #e7e9ee;
+  letter-spacing: -0.01em;
+  padding-right: 12px; /* Отступ от текста до стрелки */
+}
 
-.details-content ul{margin:0;padding:0;list-style:none;}
-.details-content li{
-  display:flex; align-items:flex-start; gap:0.55em;
-  margin:0.18em 0;
-  line-height:1.34;
-  color:#cfd4de;
-  word-break:break-word;
+/* Аккуратная и пропорциональная стрелка */
+.details-arrow {
+  display: inline-block;
+  width: 14px; /* Умеренный размер */
+  height: 14px;
+  position: relative;
+  flex-shrink: 0; /* Запрещаем стрелке сжиматься */
 }
-.details-content li::before{
-  content:"";
-  width:0.4em; height:0.4em;
-  border-radius:50%;
-  background:#C5F946;
-  margin-top:calc((1.34em - 0.4em)/2);
-  flex:0 0 0.4em;
+.details-arrow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-right: 2px solid #a0a6b4; /* Тонкие линии */
+  border-bottom: 2px solid #a0a6b4;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease-in-out;
 }
-.details-content li strong{color:#fff;font-weight:600;line-height:1.25;}
+.details-compact[open] > .details-summary .details-arrow::before {
+  transform: rotate(-135deg); /* Правильное вращение вниз */
+}
 
-.details-compact + .start-button-container{margin-top:0.5em!important;}
+.details-content {
+  padding: 8px 20px 14px;
+  border-top: 1.5px solid #353537;
+  animation: fadeIn 0.2s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.details-content ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.details-content li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6em;
+  margin-top: 8px;
+  line-height: 1.4;
+  color: #d1d5db;
+  word-break: break-word;
+}
+.details-content li::before {
+  content: "";
+  flex: 0 0 0.4em;
+  width: 0.4em;
+  height: 0.4em;
+  border-radius: 50%;
+  background: #C5F946;
+  margin-top: calc((1.4em - 0.4em) / 2);
+}
+.details-content li strong {
+  color: #fff;
+  font-weight: 600;
+}
 
 /* ==================
    3) Кнопки (общие)
    ================== */
-.btn{
-  display:inline-block;
-  padding:12px 24px;
-  border-radius:8px;
-  font-weight:700;
-  font-size:16px;
-  text-align:center;
-  text-decoration:none;
-  transition:transform .25s;
-  cursor:pointer;
-  border:none;
-  margin:10px 0;
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  margin: 10px 0;
 }
-.btn:hover{transform:translateY(-2px);}
-.btn-primary{background:#C5F946;color:#000!important;}
-.btn-primary:hover{background:#347b6c;color:#fff!important;}
-.start-button-container{margin:20px 0;text-align:left;}
-.start-button-container .btn{margin:0;}
-
-/* =============
-   4) Таблицы
-   ============= */
-.radar-signals-table table,
-.comparison-table table{table-layout:fixed;width:100%;}
-.radar-signals-table td:nth-child(1){width:150px;white-space:nowrap;}
-.radar-signals-table td:nth-child(3){width:1%;white-space:nowrap;}
-.radar-signals-table td:nth-child(2){white-space:normal;word-break:break-word;}
-.comparison-table td{width:50%;word-break:break-word;}
-
-/* ============
-   5) Формы
-   ============ */
-.custom-form{max-width:500px;margin:0;padding:20px;background:transparent;border-radius:5px;color:#fff;}
-.form-group{margin-bottom:15px;}
-.form-input{
-  width:100%;padding:10px;box-sizing:border-box;
-  border:1px solid #444;border-radius:4px;font-size:16px;background:#1F1F1F;color:#fff;
+.btn:hover {
+  transform: translateY(-2px);
 }
-.form-hint{color:#808080;font-size:0.8em;line-height:1.5;margin-top:15px;}
+.btn-primary {
+  background: #C5F946;
+  color: #000 !important;
+}
+.btn-primary:hover {
+  background: #347b6c;
+  color: #fff !important;
+}
+.start-button-container {
+  margin: 20px 0;
+}
+.details-compact + .start-button-container {
+  margin-top: 16px; /* Стабильный отступ до кнопки */
+}
+
+/* ==================
+   4) Прочие стили
+   ================== */
+.custom-form, .comparison-table, .radar-signals-table {
+  /* Сюда можно добавить стили для этих элементов, если они понадобятся */
+}
 
 /* ==============
-   6) Адаптивность
+   5) Адаптивность
    ============== */
-@media(max-width:700px){
-  .details-summary, .details-content{ padding-left:4vw; padding-right:4vw; }
-  .details-title{ font-size:0.98rem; }
-  .details-arrow{ width:18px; height:18px;}
-  .details-content li{ font-size:0.97rem; }
-}
-@media(max-width:768px){
-  .info-card{padding:0.5em 0.8em;margin:0.6em 0;}
+@media (max-width: 700px) {
+  /* Агрессивно уменьшаем высоту шапки на мобильных */
+  .details-summary {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .details-title {
+    font-size: 0.98rem; /* Чуть меньше текст для компактности */
+  }
+  /* Уменьшаем отступы в контенте */
+  .details-content {
+    padding-top: 10px;
+    padding-bottom: 12px;
+  }
+  .details-content li {
+    margin-top: 6px;
+  }
 }
 </style>
