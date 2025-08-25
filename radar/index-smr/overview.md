@@ -12,7 +12,7 @@ next: false
 <PriceCalculator />
 
 ### Рейтинг
-<br>
+
 <IndexSMR />
 
 ## Обновляется каждую пятницу 15:00 мск
