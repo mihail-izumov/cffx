@@ -23,6 +23,7 @@ import IndexSMR from '../components/IndexSMR.vue'
 import PriceCalculator from '../components/PriceCalculator.vue'
 import SimulatorTabs from '../components/SimulatorTabs.vue'
 import DialogTables from '../components/DialogTables.vue'
+import IndexSMR_test from '../components/IndexSMR_test.vue'
 
 export default {
   extends: DefaultTheme,
@@ -52,5 +53,6 @@ export default {
     app.component('PriceCalculator', PriceCalculator)
     app.component('SimulatorTabs', SimulatorTabs)
     app.component('DialogTables', DialogTables)
+    app.component('IndexSMR_test', IndexSMR_test)
   }
 }
