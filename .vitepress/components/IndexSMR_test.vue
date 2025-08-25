@@ -272,13 +272,17 @@ export default {
 /* Стили для ссылок в заголовках */
 .index-smr-table th a {
   color: inherit;
-  text-decoration: none;
-  transition: color 0.2s ease;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  font-weight: 700;
+  transition: all 0.2s ease;
 }
 
 .index-smr-table th a:hover {
   color: var(--vp-c-brand-1, #646cff);
-  text-decoration: underline;
+  text-decoration-style: solid;
 }
 
 .index-smr-table th a:visited {
