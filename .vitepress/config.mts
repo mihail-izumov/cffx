@@ -285,12 +285,19 @@ function sidebarBrew(): DefaultTheme.SidebarItem[] {
 
 function sidebarRadarSamara(): DefaultTheme.SidebarItem[] {
   return [
-    { text: 'Рейтинг', link: '/radar/index-smr/overview' },
-    { text: 'Как считаем', link: '/radar/index-smr/method' },
-    { text: 'Как использовать', link: '/radar/signal/instruction' },
-    { text: 'Симулятор', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
+    {
+      text: 'Индекс Роста // Самара', // <--- Заголовок для сайдбара
+      collapsed: false,
+      items: [
+        { text: 'Рейтинг', link: '/radar/index-smr/overview' },
+        { text: 'Как считаем', link: '/radar/index-smr/method' },
+        { text: 'Как использовать', link: '/radar/signal/instruction' },
+        { text: 'Симулятор', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
+      ]
+    }
   ]
 }
+
 
 function sidebarRadarRussia(): DefaultTheme.SidebarItem[] {
   return [
