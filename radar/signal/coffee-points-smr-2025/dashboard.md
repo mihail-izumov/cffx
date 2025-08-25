@@ -222,162 +222,70 @@
 **[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**
 
 <style>
-/* =========================
-   1) Информационная карточка (без изменений)
-   ========================= */
-.info-card {
-  background: #1f1f1f;
-  border: 1px solid #2c2c2c;
-  border-radius: 12px;
-  padding: 14px 20px;
-  margin: 16px 0;
-}
-.info-card-title {
-  font-size: 1rem;
-  line-height: 1.35;
-  font-weight: 500;
-  color: #e6e7eb;
-  margin: 0 0 8px 0;
-}
-.info-card-list {
-  margin: 0;
-  padding-left: 20px;
-  font-size: 0.94rem;
-  line-height: 1.4;
-  color: #a1a1a9;
-}
-.info-card-list li { margin-bottom: 4px; }
-.info-card-list li:last-child { margin-bottom: 0; }
+/* ---------- база (без изменений) ---------- */
+.info-card{background:#1f1f1f;border:1px solid #2c2c2c;border-radius:12px;padding:14px 20px;margin:16px 0}
+.info-card-title{font-size:1rem;line-height:1.35;font-weight:500;color:#e6e7eb;margin:0 0 8px}
+.info-card-list{margin:0;padding-left:20px;font-size:.94rem;line-height:1.4;color:#a1a1a9}
+.info-card-list li{margin-bottom:4px}
+.info-card-list li:last-child{margin-bottom:0}
 
-/* ======================================
-   2) Выпадающий тизер — ФИНАЛЬНАЯ ВЕРСИЯ
-   ====================================== */
-.vp-doc details, .details-compact {
-  border: 1.5px solid #353537;
-  border-radius: 13px;
-  margin: 16px 0;
-  background: #23252B; /* Постоянный фон для всего блока */
-  transition: border-color 0.2s;
-  overflow: hidden;
+/* ---------- collapsible (финальная версия) ---------- */
+.vp-doc details{
+  border:1.5px solid #353537;
+  border-radius:13px;
+  margin:16px 0;
+  background:#23252B;
+  overflow:hidden;
+  transition:border-color .2s
 }
-.vp-doc details:hover, .details-compact:hover {
-  border-color: #555;
-}
+.vp-doc details:hover{border-color:#555}
 
-/* РЕШЕНИЕ ПРОБЛЕМЫ ВЫСОТЫ И ЦЕНТРИРОВАНИЯ:
-   Адаптивная высота: auto на мобильных, фиксированная на десктопе. */
-.vp-doc details > summary, .details-summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 20px; /* Отступы для мобильной версии по умолчанию */
-  height: auto; /* Авто-высота для мобильных */
-  cursor: pointer;
-  user-select: none;
-  list-style: none;
+/* --- шапка summary --- */
+.vp-doc details>summary{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px;            /* MOBILE высота ≈ 48 px */
+  cursor:pointer;user-select:none;list-style:none
 }
-.vp-doc details > summary::-webkit-details-marker,
-.details-summary::-webkit-details-marker { display: none; }
+.vp-doc details>summary::-webkit-details-marker{display:none}
+.vp-doc details>summary>span:first-child{   /* заголовок */
+  font-size:1rem;font-weight:600;color:#e7e9ee;padding-right:16px
+}
+.vp-doc details>summary::after{             /* стрелка */
+  content:'';width:12px;height:12px;flex-shrink:0;
+  border-top:2px solid #a0a6b4;border-right:2px solid #a0a6b4;
+  transform:rotate(135deg);transition:transform .2s
+}
+.vp-doc details[open]>summary::after{transform:rotate(-45deg)}
+/* разделитель под шапкой */
+.vp-doc details[open]>summary{border-bottom:1.5px solid #353537}
 
-.details-title, .vp-doc summary > .details-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #e7e9ee;
-  line-height: 1.3;
-  padding-right: 16px;
+/* --- контент --- */
+.vp-doc details>div{padding:0 20px 22px}   /* нижний отступ увеличен */
+.vp-doc details ul{margin:0;padding:0;list-style:none}
+.vp-doc details li{
+  position:relative;padding-left:20px;margin-top:12px;
+  font-size:15px;line-height:1.45;color:#d1d5db
 }
-.details-arrow, .vp-doc summary::after {
-  content: '';
-  width: 12px;
-  height: 12px;
-  border-top: 2px solid #a0a6b4;
-  border-right: 2px solid #a0a6b4;
-  transform: rotate(135deg); /* ВНИЗ */
-  transition: transform 0.2s ease-in-out;
-  flex-shrink: 0;
+.vp-doc details li::before{
+  content:'•';position:absolute;left:0;top:0;line-height:inherit;
+  color:#C5F946;font-size:1em
 }
-.vp-doc details[open] > summary::after,
-.details-compact[open] .details-arrow {
-  transform: rotate(-45deg); /* ВВЕРХ */
-}
+.vp-doc details strong{font-weight:600;color:#fff}
 
-/* Линия-разделитель при открытии */
-.vp-doc details[open] > summary,
-.details-compact[open] > .details-summary {
-  border-bottom: 1.5px solid #353537;
+/* ---------- кнопка ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:48px;padding:12px 24px;border-radius:8px;font:700 16px/1 sans-serif;
+  border:none;cursor:pointer;transition:transform .2s
 }
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:#C5F946;color:#000!important}
+.btn-primary:hover{background:#347b6c;color:#fff!important}
+.start-button-container{margin:20px 0}
 
-.details-content, .vp-doc details > div {
-  padding: 8px 20px 20px; /* Увеличен нижний отступ */
-  animation: fadeIn 0.2s ease-out;
-}
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-/* Надежные буллет-поинты */
-.details-content ul, .vp-doc details ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.details-content li, .vp-doc details li {
-  position: relative;
-  padding-left: 20px;
-  margin-top: 12px;
-  font-size: 15px;
-  line-height: 1.45;
-  color: #d1d5db;
-}
-.details-content li::before, .vp-doc details li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  top: 0;
-  line-height: inherit;
-  color: #C5F946;
-  font-size: 1em;
-}
-.details-content strong, .vp-doc details strong {
-  font-weight: 600;
-  color: #fff;
-}
-
-/* ==================
-   3) Кнопки (общие)
-   ================== */
-.btn {
-  padding: 12px 24px;
-  height: 48px;
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 16px;
-  text-decoration: none;
-  cursor: pointer;
-  border: none;
-  transition: transform 0.2s;
-}
-.btn:hover { transform: translateY(-2px); }
-.btn-primary { background: #C5F946; color: #000 !important; }
-.btn-primary:hover { background: #347b6c; color: #fff !important; }
-.start-button-container { margin: 20px 0; }
-.vp-doc details + .start-button-container,
-.details-compact + .start-button-container {
-  margin-top: 16px;
-}
-
-/* ==============
-   4) АДАПТИВНАЯ ЛОГИКА ДЛЯ ДЕСКТОПА
-   ============== */
-@media (min-width: 500px) {
-  /* На широких экранах делаем шапку компактнее */
-  .vp-doc details > summary,
-  .details-summary {
-    height: 48px; /* Жесткая высота */
-    padding-top: 0;
-    padding-bottom: 0;
-  }
+/* ---------- десктоп: делаем шапку компактнее ---------- */
+@media(min-width:700px){
+  .vp-doc details>summary{padding:6px 24px} /* высота ~40 px */
+  .vp-doc details>div{padding:0 24px 24px}  /* ещё чуть больше снизу */
 }
 </style>
