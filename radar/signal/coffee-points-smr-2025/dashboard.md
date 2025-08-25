@@ -246,112 +246,97 @@
   line-height: 1.4;
   color: #a1a1a9;
 }
-.info-card-list li {
-  margin-bottom: 4px;
-}
-.info-card-list li:last-child {
-  margin-bottom: 0;
-}
+.info-card-list li { margin-bottom: 4px; }
+.info-card-list li:last-child { margin-bottom: 0; }
 
 /* ======================================
-   2) Выпадающий тизер (details-compact) — НОВАЯ ЛОГИКА
+   2) Выпадающий тизер — НОВАЯ АДАПТИВНАЯ ЛОГИКА
    ====================================== */
 .vp-doc details, .details-compact {
   border: 1.5px solid #353537;
   border-radius: 13px;
   margin: 16px 0;
-  background: #23252B; /* Фон для всего блока */
+  background: #23252B; /* Фон для всего блока, не исчезает */
   transition: border-color 0.2s;
-  overflow: hidden; /* Скрываем все, что выходит за рамки */
+  overflow: hidden;
 }
 .vp-doc details:hover, .details-compact:hover {
   border-color: #555;
 }
-.vp-doc details[open], .details-compact[open] {
-  padding-bottom: 6px; /* Небольшой отступ снизу в открытом состоянии */
-}
 
 /* РЕШЕНИЕ ПРОБЛЕМЫ ВЫСОТЫ И ЦЕНТРИРОВАНИЯ:
-   Жесткая высота и Flexbox для идеального центрирования */
+   Адаптивные отступы, а не жесткая высота. */
 .vp-doc details > summary, .details-summary {
   display: flex;
-  align-items: center; /* Центрирование по вертикали */
-  justify-content: space-between; /* Текст слева, стрелка справа */
-  height: 48px; /* Жесткая высота, как у кнопки */
-  padding: 0 20px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px; /* Отступы для мобильной версии с переносом */
   cursor: pointer;
   user-select: none;
   list-style: none;
-  background: #23252B; /* Фон для шапки */
 }
 .vp-doc details > summary::-webkit-details-marker,
-.details-summary::-webkit-details-marker {
-  display: none;
-}
-.details-title {
+.details-summary::-webkit-details-marker { display: none; }
+
+.details-title, .vp-doc summary > .details-title { /* Уточнение для VitePress */
   font-size: 1rem;
   font-weight: 600;
   color: #e7e9ee;
+  line-height: 1.3; /* Для корректного отображения двух строк */
+  padding-right: 16px; /* Защита от наезда стрелки */
 }
-.details-arrow,
-.vp-doc summary::after {
+.details-arrow, .vp-doc summary::after {
   content: '';
   width: 12px;
   height: 12px;
   border-top: 2px solid #a0a6b4;
   border-right: 2px solid #a0a6b4;
-  transform: rotate(135deg); /* По умолчанию стрелка ВНИЗ */
+  transform: rotate(135deg); /* По умолчанию ВНИЗ */
   transition: transform 0.2s ease-in-out;
-  flex-shrink: 0; /* Стрелка не сжимается */
+  flex-shrink: 0;
 }
 .vp-doc details[open] > summary::after,
 .details-compact[open] .details-arrow {
-  transform: rotate(-45deg); /* При открытии стрелка ВВЕРХ */
+  transform: rotate(-45deg); /* Вверх */
 }
 
-.details-content,
-.vp-doc details > div {
-  padding: 0 20px 0;
+/* Линия-разделитель при открытии */
+.vp-doc details[open] > summary,
+.details-compact[open] > .details-summary {
+  border-bottom: 1.5px solid #353537;
+}
+
+.details-content, .vp-doc details > div {
+  padding: 8px 20px 14px;
   animation: fadeIn 0.2s ease-out;
 }
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 /* РЕШЕНИЕ ПРОБЛЕМЫ БУЛЛЕТОВ:
-   Классический метод с position:relative/absolute, который не ломается */
-.details-content ul,
-.vp-doc details ul {
+   Классический метод, который не ломается при переносах */
+.details-content ul, .vp-doc details ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.details-content li,
-.vp-doc details li {
+.details-content li, .vp-doc details li {
   position: relative;
-  padding-left: 20px; /* Место для буллета */
+  padding-left: 20px;
   margin-top: 10px;
   font-size: 15px;
   line-height: 1.45;
   color: #d1d5db;
 }
-.details-content li::before,
-.vp-doc details li::before {
+.details-content li::before, .vp-doc details li::before {
   content: "•";
   position: absolute;
   left: 0;
-  top: 0; /* Привязка к верху текстового блока */
-  line-height: inherit; /* Наследуем высоту строки */
+  top: 0;
+  line-height: inherit;
   color: #C5F946;
   font-size: 1em;
 }
-.details-content li:last-child,
-.vp-doc details li:last-child {
-    padding-bottom: 4px;
-}
-.details-content strong,
-.vp-doc details strong {
+.details-content strong, .vp-doc details strong {
   font-weight: 600;
   color: #fff;
 }
@@ -369,46 +354,32 @@
   border-radius: 8px;
   font-weight: 700;
   font-size: 16px;
-  text-align: center;
   text-decoration: none;
-  transition: all 0.3s ease;
   cursor: pointer;
   border: none;
+  transition: transform 0.2s;
 }
-.btn:hover {
-  transform: translateY(-2px);
-}
-.btn-primary {
-  background: #C5F946;
-  color: #000 !important;
-}
-.btn-primary:hover {
-  background: #347b6c;
-  color: #fff !important;
-}
-.start-button-container {
-  margin: 20px 0;
-}
-.details-compact + .start-button-container,
-.vp-doc details + .start-button-container {
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: #C5F946; color: #000 !important; }
+.btn-primary:hover { background: #347b6c; color: #fff !important; }
+.start-button-container { margin: 20px 0; }
+
+.vp-doc details + .start-button-container,
+.details-compact + .start-button-container {
   margin-top: 16px;
 }
 
 /* ==============
-   4) Адаптивность
+   4) АДАПТИВНАЯ ЛОГИКА ДЛЯ ДЕСКТОПА
    ============== */
-@media (max-width: 700px) {
+@media (min-width: 500px) {
+  /* На широких экранах делаем шапку компактнее, так как текст в одну строку */
   .vp-doc details > summary,
   .details-summary {
-    height: 44px; /* Чуть компактнее на мобильных */
-    padding: 0 16px;
-  }
-  .details-title {
-    font-size: 0.98rem;
-  }
-  .details-content,
-  .vp-doc details > div {
-    padding: 0 16px 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    height: auto; /* Сбрасываем жесткую высоту, теперь она определяется паддингом */
+    min-height: 48px; /* Сохраняем минимальную высоту как у кнопки */
   }
 }
 </style>
