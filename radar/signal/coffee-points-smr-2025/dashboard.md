@@ -20,7 +20,7 @@
 
 **Это только начало.** Вы поработали с базовой версией и видели возможности. Но 85% критически важных данных доступны только подписчикам Инсайдер и Партнер.
 
-<!-- 2) Выпадающий тизер: компактный, с большой тонкой стрелкой и идеальными буллетами -->
+<!-- 2) Выпадающий тизер: финальная, исправленная версия -->
 <details class="details-compact">
   <summary class="details-summary">
     <span class="details-title">Что скрыто от бесплатных пользователей</span>
@@ -239,7 +239,7 @@
   background: #1f1f1f;
   border: 1px solid #2c2c2c;
   border-radius: 12px;
-  padding: 14px 20px; /* Сбалансированные отступы */
+  padding: 14px 20px;
   margin: 16px 0;
 }
 .info-card-title {
@@ -270,19 +270,22 @@
   background: transparent;
   border: 1.5px solid #353537;
   border-radius: 13px;
-  margin: 16px 0; /* Равномерный отступ сверху и снизу */
+  margin: 16px 0;
   transition: border-color 0.2s;
 }
 .details-compact:hover {
   border-color: #555;
 }
 
+/* РЕШЕНИЕ ПРОБЛЕМЫ ВЫСОТЫ:
+   Задаем min-height как у кнопки и центрируем контент флексом. */
 .details-summary {
-  padding: 12px 20px; /* Увеличен горизонтальный отступ */
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 48px; /* Примерная высота кнопки */
+  padding: 5px 20px; /* Горизонтальные отступы */
+  cursor: pointer;
   user-select: none;
   list-style: none;
 }
@@ -290,32 +293,22 @@
   display: none;
 }
 .details-title {
-  font-size: 1.03rem;
+  font-size: 1.02rem;
   font-weight: 700;
   color: #e7e9ee;
-  letter-spacing: -0.01em;
-  padding-right: 12px; /* Отступ от текста до стрелки */
+  padding-right: 16px;
 }
-
-/* Аккуратная и пропорциональная стрелка */
 .details-arrow {
-  display: inline-block;
-  width: 14px; /* Умеренный размер */
-  height: 14px;
-  position: relative;
-  flex-shrink: 0; /* Запрещаем стрелке сжиматься */
-}
-.details-arrow::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-right: 2px solid #a0a6b4; /* Тонкие линии */
-  border-bottom: 2px solid #a0a6b4;
-  transform: rotate(45deg);
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #a0a6b4;
+  border-right: 2px solid #a0a6b4;
+  transform: rotate(135deg);
   transition: transform 0.2s ease-in-out;
+  flex-shrink: 0;
 }
-.details-compact[open] > .details-summary .details-arrow::before {
-  transform: rotate(-135deg); /* Правильное вращение вниз */
+.details-compact[open] > .details-summary .details-arrow {
+  transform: rotate(-45deg);
 }
 
 .details-content {
@@ -332,27 +325,28 @@
   padding: 0;
   list-style: none;
 }
+
+/* РЕШЕНИЕ ПРОБЛЕМЫ ВЫРАВНИВАНИЯ:
+   Классический метод position:relative/absolute. Весь текст теперь в едином потоке. */
 .details-content li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6em;
+  position: relative;
+  padding-left: 18px; /* Место для буллета */
   margin-top: 8px;
-  line-height: 1.4;
+  line-height: 1.45;
   color: #d1d5db;
-  word-break: break-word;
+  font-size: 15px;
 }
 .details-content li::before {
-  content: "";
-  flex: 0 0 0.4em;
-  width: 0.4em;
-  height: 0.4em;
-  border-radius: 50%;
-  background: #C5F946;
-  margin-top: calc((1.4em - 0.4em) / 2);
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: -2px; /* Оптическая коррекция */
+  color: #C5F946;
+  font-size: 24px;
 }
 .details-content li strong {
-  color: #fff;
   font-weight: 600;
+  color: #fff;
 }
 
 /* ==================
@@ -361,6 +355,11 @@
 .btn {
   display: inline-block;
   padding: 12px 24px;
+  min-height: 48px; /* Высота для соответствия */
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
   font-weight: 700;
   font-size: 16px;
@@ -369,7 +368,6 @@
   transition: all 0.3s ease;
   cursor: pointer;
   border: none;
-  margin: 10px 0;
 }
 .btn:hover {
   transform: translateY(-2px);
@@ -386,7 +384,7 @@
   margin: 20px 0;
 }
 .details-compact + .start-button-container {
-  margin-top: 16px; /* Стабильный отступ до кнопки */
+  margin-top: 16px;
 }
 
 /* ==================
@@ -400,21 +398,12 @@
    5) Адаптивность
    ============== */
 @media (max-width: 700px) {
-  /* Агрессивно уменьшаем высоту шапки на мобильных */
+  /* Сохраняем компактность и отступы на мобильных */
   .details-summary {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 5px 16px;
   }
-  .details-title {
-    font-size: 0.98rem; /* Чуть меньше текст для компактности */
-  }
-  /* Уменьшаем отступы в контенте */
   .details-content {
-    padding-top: 10px;
-    padding-bottom: 12px;
-  }
-  .details-content li {
-    margin-top: 6px;
+    padding: 8px 16px 14px;
   }
 }
 </style>
