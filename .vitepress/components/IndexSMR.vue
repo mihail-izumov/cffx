@@ -7,8 +7,8 @@
           <th>Индекс</th>
           <th>Точки</th>
           <th>Статус</th>
-          <th><a href="/radar/index-smr/test#типы-зерна">Тип зерна</a></th>
-          <th><a href="/radar/index-smr/test#типы-поставщиков-зерна">Поставщик</a></th>
+          <th><a href="/radar/index-smr/overview#типы-зерна">Тип зерна</a></th>
+          <th><a href="/radar/index-smr/overview#типы-поставщиков-зерна">Поставщик</a></th>
           <th>Отзывы</th>
           <th>Масштаб</th>
           <th>Тип</th>
