@@ -1,6 +1,6 @@
 # Симулятор
 
-Этот Симулятор — часть платформы **[B-R-E-W](/brew/run)**. Он создан на основе Кофейного Протокола, чтобы дать вам не просто данные, а готовые решения для роста на самарском рынке. Мы не продаем отчеты. Мы показываем, как работает наша система, делясь ценностью бесплатно.
+Этот Симулятор — часть платформы **[BREW](/brew/run)**. Он создан на основе Кофейного Протокола, чтобы дать вам не просто данные, а готовые решения для роста на самарском рынке. Мы не продаем отчеты. Мы показываем, как работает наша система, делясь ценностью бесплатно.
 
 ## Кофейни // Самара
 
@@ -250,13 +250,13 @@
 .info-card-list li:last-child { margin-bottom: 0; }
 
 /* ======================================
-   2) Выпадающий тизер — НОВАЯ АДАПТИВНАЯ ЛОГИКА
+   2) Выпадающий тизер — ФИНАЛЬНАЯ ВЕРСИЯ
    ====================================== */
 .vp-doc details, .details-compact {
   border: 1.5px solid #353537;
   border-radius: 13px;
   margin: 16px 0;
-  background: #23252B; /* Фон для всего блока, не исчезает */
+  background: #23252B; /* Постоянный фон для всего блока */
   transition: border-color 0.2s;
   overflow: hidden;
 }
@@ -265,12 +265,12 @@
 }
 
 /* РЕШЕНИЕ ПРОБЛЕМЫ ВЫСОТЫ И ЦЕНТРИРОВАНИЯ:
-   Адаптивные отступы, а не жесткая высота. */
+   Высота определяется только паддингами, что гарантирует центрирование. */
 .vp-doc details > summary, .details-summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px; /* Отступы для мобильной версии с переносом */
+  padding: 14px 20px; /* Сбалансированные отступы для высоты */
   cursor: pointer;
   user-select: none;
   list-style: none;
@@ -278,12 +278,11 @@
 .vp-doc details > summary::-webkit-details-marker,
 .details-summary::-webkit-details-marker { display: none; }
 
-.details-title, .vp-doc summary > .details-title { /* Уточнение для VitePress */
+.details-title, .vp-doc summary > .details-title {
   font-size: 1rem;
   font-weight: 600;
   color: #e7e9ee;
-  line-height: 1.3; /* Для корректного отображения двух строк */
-  padding-right: 16px; /* Защита от наезда стрелки */
+  padding-right: 16px;
 }
 .details-arrow, .vp-doc summary::after {
   content: '';
@@ -300,20 +299,13 @@
   transform: rotate(-45deg); /* Вверх */
 }
 
-/* Линия-разделитель при открытии */
-.vp-doc details[open] > summary,
-.details-compact[open] > .details-summary {
-  border-bottom: 1.5px solid #353537;
-}
-
 .details-content, .vp-doc details > div {
-  padding: 8px 20px 14px;
+  padding: 0 20px 18px; /* Увеличен нижний отступ */
+  border-top: 1.5px solid #353537;
   animation: fadeIn 0.2s ease-out;
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* РЕШЕНИЕ ПРОБЛЕМЫ БУЛЛЕТОВ:
-   Классический метод, который не ломается при переносах */
 .details-content ul, .vp-doc details ul {
   margin: 0;
   padding: 0;
@@ -322,7 +314,7 @@
 .details-content li, .vp-doc details li {
   position: relative;
   padding-left: 20px;
-  margin-top: 10px;
+  margin-top: 12px; /* Равномерный отступ между элементами */
   font-size: 15px;
   line-height: 1.45;
   color: #d1d5db;
@@ -370,16 +362,17 @@
 }
 
 /* ==============
-   4) АДАПТИВНАЯ ЛОГИКА ДЛЯ ДЕСКТОПА
+   4) Адаптивность
    ============== */
-@media (min-width: 500px) {
-  /* На широких экранах делаем шапку компактнее, так как текст в одну строку */
+@media (max-width: 700px) {
+  /* Уменьшаем отступы для мобильных, сохраняя пропорции */
   .vp-doc details > summary,
   .details-summary {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    height: auto; /* Сбрасываем жесткую высоту, теперь она определяется паддингом */
-    min-height: 48px; /* Сохраняем минимальную высоту как у кнопки */
+    padding: 12px 16px;
+  }
+  .details-content,
+  .vp-doc details > div {
+    padding: 0 16px 16px;
   }
 }
 </style>
