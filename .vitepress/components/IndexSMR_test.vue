@@ -7,8 +7,8 @@
           <th>Индекс</th>
           <th>Точки</th>
           <th>Статус</th>
-          <th>Тип зерна</th>
-          <th>Поставщик</th>
+          <th><a href="/radar/index-smr/test#типы-зерна">Тип зерна</a></th>
+          <th><a href="/radar/index-smr/test#типы-поставщиков-зерна">Поставщик</a></th>
           <th>Отзывы</th>
           <th>Масштаб</th>
           <th>Тип</th>
@@ -267,6 +267,22 @@ export default {
   padding: 12px 10px;
   white-space: nowrap;
   vertical-align: middle;
+}
+
+/* Стили для ссылок в заголовках */
+.index-smr-table th a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.index-smr-table th a:hover {
+  color: var(--vp-c-brand-1, #646cff);
+  text-decoration: underline;
+}
+
+.index-smr-table th a:visited {
+  color: inherit;
 }
 
 .index-smr-table td {
