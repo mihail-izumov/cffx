@@ -222,7 +222,9 @@
 **[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**
 
 <style>
-/* Информационная карточка */
+/* =========================
+   1) Информационная карточка (без изменений)
+   ========================= */
 .info-card {
   background: #1f1f1f;
   border: 1px solid #2c2c2c;
@@ -244,149 +246,169 @@
   line-height: 1.4;
   color: #a1a1a9;
 }
-.info-card-list li { margin-bottom: 4px; }
-.info-card-list li:last-child { margin-bottom: 0; }
-
-
-/* --- DETAILS: аккуратная адаптивная шапка --- */
-.vp-doc details {
-  border: 1.2px solid #353537;
-  border-radius: 13px;
-  margin: 16px 0 0 0;
-  background: transparent;
-  padding: 0;
-  overflow: hidden;
-  transition: border-color .18s;
+.info-card-list li {
+  margin-bottom: 4px;
 }
-.vp-doc details[open] { border: none; box-shadow: none; background: transparent; }
+.info-card-list li:last-child {
+  margin-bottom: 0;
+}
 
-.vp-doc details > summary {
-  min-height: 48px;
-  height: 48px;
-  box-sizing: border-box;
+/* ======================================
+   2) Выпадающий тизер (details-compact) — НОВАЯ ЛОГИКА
+   ====================================== */
+.vp-doc details, .details-compact {
+  border: 1.5px solid #353537;
+  border-radius: 13px;
+  margin: 16px 0;
+  background: #23252B; /* Фон для всего блока */
+  transition: border-color 0.2s;
+  overflow: hidden; /* Скрываем все, что выходит за рамки */
+}
+.vp-doc details:hover, .details-compact:hover {
+  border-color: #555;
+}
+.vp-doc details[open], .details-compact[open] {
+  padding-bottom: 6px; /* Небольшой отступ снизу в открытом состоянии */
+}
+
+/* РЕШЕНИЕ ПРОБЛЕМЫ ВЫСОТЫ И ЦЕНТРИРОВАНИЯ:
+   Жесткая высота и Flexbox для идеального центрирования */
+.vp-doc details > summary, .details-summary {
   display: flex;
-  align-items: center;
-  position: relative;
-  font-weight: 700;
-  font-size: 1rem;
-  color: #e7e9ee;
+  align-items: center; /* Центрирование по вертикали */
+  justify-content: space-between; /* Текст слева, стрелка справа */
+  height: 48px; /* Жесткая высота, как у кнопки */
+  padding: 0 20px;
   cursor: pointer;
-  outline: none;
-  margin: 0;
-  padding: 0 44px 0 20px; /* справа 44px под стрелку */
-  border-radius: 13px;
-  justify-content: flex-start;
-  background: #23252B; /* Всегда серый фон для фокуса и разделения */
-
-  /* Центрация текста для multi-line */
-  line-height: 1.2;
+  user-select: none;
+  list-style: none;
+  background: #23252B; /* Фон для шапки */
 }
-.vp-doc details > summary::-webkit-details-marker { display:none; }
-
-.vp-doc details > summary:after {
+.vp-doc details > summary::-webkit-details-marker,
+.details-summary::-webkit-details-marker {
+  display: none;
+}
+.details-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e7e9ee;
+}
+.details-arrow,
+.vp-doc summary::after {
   content: '';
-  display: block;
-  position: absolute;
-  right: 22px;
-  top: 50%;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #a0a6b4;
   border-right: 2px solid #a0a6b4;
-  border-bottom: 2px solid #a0a6b4;
-  background: none;
-  /* ▼ по умолчанию */
-  transform: translateY(-50%) rotate(45deg);
-  transition: transform 0.22s;
-  pointer-events: none;
+  transform: rotate(135deg); /* По умолчанию стрелка ВНИЗ */
+  transition: transform 0.2s ease-in-out;
+  flex-shrink: 0; /* Стрелка не сжимается */
 }
-.vp-doc details[open] > summary:after {
-  /* ▲ в открытом состоянии */
-  transform: translateY(-50%) rotate(-135deg);
+.vp-doc details[open] > summary::after,
+.details-compact[open] .details-arrow {
+  transform: rotate(-45deg); /* При открытии стрелка ВВЕРХ */
 }
 
-.vp-doc details[open] > summary {
-  background: #23252B; /* тот же серый, не исчезает при открытии */
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+.details-content,
+.vp-doc details > div {
+  padding: 0 20px 0;
+  animation: fadeIn 0.2s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.vp-doc details ul, .vp-doc details ol {
-  margin: 10px 0 0 1.1em;
+/* РЕШЕНИЕ ПРОБЛЕМЫ БУЛЛЕТОВ:
+   Классический метод с position:relative/absolute, который не ломается */
+.details-content ul,
+.vp-doc details ul {
+  margin: 0;
   padding: 0;
+  list-style: none;
 }
+.details-content li,
 .vp-doc details li {
-  margin: 0.55em 0 0 0;
-  font-size: 16px;
-  line-height: 1.44;
-  color: #cfd4de;
-  font-weight: 400;
-  word-break: break-word;
+  position: relative;
+  padding-left: 20px; /* Место для буллета */
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: #d1d5db;
 }
-.vp-doc details li strong { color: #fff; font-weight: 700; }
-.vp-doc details ul li::marker { color: #C5F946; font-size: 1.15em; }
+.details-content li::before,
+.vp-doc details li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0; /* Привязка к верху текстового блока */
+  line-height: inherit; /* Наследуем высоту строки */
+  color: #C5F946;
+  font-size: 1em;
+}
+.details-content li:last-child,
+.vp-doc details li:last-child {
+    padding-bottom: 4px;
+}
+.details-content strong,
+.vp-doc details strong {
+  font-weight: 600;
+  color: #fff;
+}
 
-
-/* Кнопки */
+/* ==================
+   3) Кнопки (общие)
+   ================== */
 .btn {
-  min-height: 48px;
+  padding: 12px 24px;
+  height: 48px;
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 24px;
   border-radius: 8px;
   font-weight: 700;
   font-size: 16px;
   text-align: center;
   text-decoration: none;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
   cursor: pointer;
   border: none;
-  margin: 10px 0;
 }
-.btn-primary{background:#C5F946;color:#000!important;}
-.btn-primary:hover{background:#347b6c;color:#fff!important;}
-.start-button-container{margin:20px 0;}
-
-/* Формы */
-.custom-form {
-  max-width: 500px;
-  margin: 0;
-  padding: 20px;
-  background-color: transparent;
-  border-radius: 5px;
-  color: white;
+.btn:hover {
+  transform: translateY(-2px);
 }
-.form-group { margin-bottom: 15px; }
-.form-input {
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  border: 1px solid #444;
-  border-radius: 4px;
-  font-size: 16px;
-  background-color: #111;
-  color: white;
+.btn-primary {
+  background: #C5F946;
+  color: #000 !important;
 }
-.form-hint {
-  color: #808080;
-  font-size: 0.8em;
-  margin-top: 15px;
-  margin-bottom: 10px;
+.btn-primary:hover {
+  background: #347b6c;
+  color: #fff !important;
+}
+.start-button-container {
+  margin: 20px 0;
+}
+.details-compact + .start-button-container,
+.vp-doc details + .start-button-container {
+  margin-top: 16px;
 }
 
-/* --- Mobile: все еще плотнее и стрелка не наезжает --- */
-@media (max-width:700px){
-  .vp-doc details > summary{
-    min-height: 42px;
-    height: 42px;
-    font-size:0.96rem;
-    padding: 0 42px 0 12px !important;
-    line-height: 1.27;
+/* ==============
+   4) Адаптивность
+   ============== */
+@media (max-width: 700px) {
+  .vp-doc details > summary,
+  .details-summary {
+    height: 44px; /* Чуть компактнее на мобильных */
+    padding: 0 16px;
   }
-  .vp-doc details > summary:after { right: 15px; width:13px; height:13px; }
-  .vp-doc details ul{margin-left:1em;}
-  .vp-doc details li{font-size:15.5px;}
-  .start-button-container{margin:15px 0;}
+  .details-title {
+    font-size: 0.98rem;
+  }
+  .details-content,
+  .vp-doc details > div {
+    padding: 0 16px 0;
+  }
 }
 </style>
