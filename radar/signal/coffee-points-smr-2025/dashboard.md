@@ -265,12 +265,13 @@
 }
 
 /* РЕШЕНИЕ ПРОБЛЕМЫ ВЫСОТЫ И ЦЕНТРИРОВАНИЯ:
-   Высота определяется только паддингами, что гарантирует центрирование. */
+   Адаптивная высота: auto на мобильных, фиксированная на десктопе. */
 .vp-doc details > summary, .details-summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px; /* Сбалансированные отступы для высоты */
+  padding: 14px 20px; /* Отступы для мобильной версии по умолчанию */
+  height: auto; /* Авто-высота для мобильных */
   cursor: pointer;
   user-select: none;
   list-style: none;
@@ -282,6 +283,7 @@
   font-size: 1rem;
   font-weight: 600;
   color: #e7e9ee;
+  line-height: 1.3;
   padding-right: 16px;
 }
 .details-arrow, .vp-doc summary::after {
@@ -290,22 +292,28 @@
   height: 12px;
   border-top: 2px solid #a0a6b4;
   border-right: 2px solid #a0a6b4;
-  transform: rotate(135deg); /* По умолчанию ВНИЗ */
+  transform: rotate(135deg); /* ВНИЗ */
   transition: transform 0.2s ease-in-out;
   flex-shrink: 0;
 }
 .vp-doc details[open] > summary::after,
 .details-compact[open] .details-arrow {
-  transform: rotate(-45deg); /* Вверх */
+  transform: rotate(-45deg); /* ВВЕРХ */
+}
+
+/* Линия-разделитель при открытии */
+.vp-doc details[open] > summary,
+.details-compact[open] > .details-summary {
+  border-bottom: 1.5px solid #353537;
 }
 
 .details-content, .vp-doc details > div {
-  padding: 0 20px 18px; /* Увеличен нижний отступ */
-  border-top: 1.5px solid #353537;
+  padding: 8px 20px 20px; /* Увеличен нижний отступ */
   animation: fadeIn 0.2s ease-out;
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+/* Надежные буллет-поинты */
 .details-content ul, .vp-doc details ul {
   margin: 0;
   padding: 0;
@@ -314,7 +322,7 @@
 .details-content li, .vp-doc details li {
   position: relative;
   padding-left: 20px;
-  margin-top: 12px; /* Равномерный отступ между элементами */
+  margin-top: 12px;
   font-size: 15px;
   line-height: 1.45;
   color: #d1d5db;
@@ -355,24 +363,21 @@
 .btn-primary { background: #C5F946; color: #000 !important; }
 .btn-primary:hover { background: #347b6c; color: #fff !important; }
 .start-button-container { margin: 20px 0; }
-
 .vp-doc details + .start-button-container,
 .details-compact + .start-button-container {
   margin-top: 16px;
 }
 
 /* ==============
-   4) Адаптивность
+   4) АДАПТИВНАЯ ЛОГИКА ДЛЯ ДЕСКТОПА
    ============== */
-@media (max-width: 700px) {
-  /* Уменьшаем отступы для мобильных, сохраняя пропорции */
+@media (min-width: 500px) {
+  /* На широких экранах делаем шапку компактнее */
   .vp-doc details > summary,
   .details-summary {
-    padding: 12px 16px;
-  }
-  .details-content,
-  .vp-doc details > div {
-    padding: 0 16px 16px;
+    height: 48px; /* Жесткая высота */
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }
 </style>
