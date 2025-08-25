@@ -4,9 +4,6 @@
 
 ## Кофейни // Самара
 
-Структурированный доступ к результатам анализа 29,600+ развернутых отзывов о фокус-компании "Корж" и её ключевых конкурентах: **Skuratov Coffee, Surf Coffee, White Cup, Coffee Balance**.
-
-<!-- 1) Информационная карточка (компактная, не отвлекает) -->
 <div class="info-card">
   <p class="info-card-title">Каждый диалог — это готовый разбор бизнес-задачи на самарском рынке</p>
   <ol class="info-card-list">
@@ -20,21 +17,14 @@
 
 **Это только начало.** Вы поработали с базовой версией и видели возможности. Но 85% критически важных данных доступны только подписчикам Инсайдер и Партнер.
 
-<!-- 2) Выпадающий тизер: финальная, исправленная версия -->
-<details class="details-compact">
-  <summary class="details-summary">
-    <span class="details-title">Что скрыто от бесплатных пользователей</span>
-    <span class="details-arrow"></span>
-  </summary>
-  <div class="details-content">
-    <ul>
-      <li><span class="list-item-text"><strong>Ваша кофейня VS конкуренты</strong> — живые данные каждый месяц</span></li>
-      <li><span class="list-item-text"><strong>Сигналы изменений</strong> — тренды рынка в режиме реального времени</span></li>
-      <li><span class="list-item-text"><strong>Персональная поддержка Анны</strong> — умные рекомендации для вашего бизнеса</span></li>
-      <li><span class="list-item-text"><strong>Темный режим</strong> — инсайты, которые видят только 10% игроков (только Партнер)</span></li>
-    </ul>
-  </div>
-</details>
+::: details Что скрыто от бесплатных пользователей
+
+- **Ваша кофейня VS конкуренты** — живые данные каждый месяц
+- **Сигналы изменений** — тренды рынка в режиме реального времени
+- **Персональная поддержка Анны** — умные рекомендации для вашего бизнеса
+- **Темный режим** — инсайты, которые видят только 10% игроков (только Партнер)
+
+:::
 
 <div class="start-button-container">
   <a href="/brew/membership" class="btn btn-primary">Получить полный доступ →</a>
@@ -232,96 +222,158 @@
 **[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**
 
 <style>
-.details-compact {
-  background: transparent;
+/* ----------- Информационная карточка ----------- */
+.info-card {
+  background: #1f1f1f;
+  border: 1px solid #2c2c2c;
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin: 16px 0;
+}
+.info-card-title {
+  font-size: 1rem;
+  line-height: 1.35;
+  font-weight: 500;
+  color: #e6e7eb;
+  margin: 0 0 8px 0;
+}
+.info-card-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 0.94rem;
+  line-height: 1.4;
+  color: #a1a1a9;
+}
+.info-card-list li {
+  margin-bottom: 4px;
+}
+.info-card-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* ----------- Выпадающий details-контейнер ----------- */
+.vp-doc details {
   border: 1.2px solid #353537;
   border-radius: 13px;
-  margin: 16px 0;
-  transition: border-color .18s;
+  margin: 16px 0 0 0;
+  background: transparent;
+  padding: 0;
+  overflow: hidden;
 }
-.details-compact:hover{ border-color:#99a1af; }
+.vp-doc details[open] { border-color: #99a1af; }
 
-.details-summary {
-  min-height:48px; height:48px;
-  padding: 0 20px !important;
+.vp-doc details > summary {
+  min-height: 48px;
+  height: 48px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  padding: 0 20px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #e7e9ee;
   cursor: pointer;
-  user-select: none;
-  list-style: none;
-  box-sizing: border-box;
+  outline: none;
   background: transparent;
-}
-.details-summary::-webkit-details-marker{ display:none; }
-.details-title {
-  font-size:1rem;
-  font-weight:600;
-  color:#e7e9ee;
-  letter-spacing:-.01em;
-  line-height:1;
-  padding-right:18px;
-}
-.details-arrow {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  border-style: solid;
-  border-width: 0 2.2px 2.2px 0;
-  border-color:#a0a6b4;
-  background: none;
-  transform: rotate(45deg);
-  transition: transform .22s;
-}
-.details-compact[open] .details-arrow {transform: rotate(-135deg);}
-.details-content {
-  padding: 10px 20px 16px 20px;
-  border-top: 1.2px solid #353537;
-  animation: fadeIn .13s;
-}
-@keyframes fadeIn {from {opacity: 0;} to {opacity: 1;}}
-.details-content ul {margin:0; padding:0; list-style:none;}
-.details-content li {
+  transition: background 0.12s;
   position: relative;
-  padding-left: 20px;
-  margin-top: 9px;
+}
+.vp-doc details > summary::-webkit-details-marker { display:none; }
+.vp-doc details > summary:after {
+  content: '';
+  position: absolute;
+  right: 20px;
+  width: 10px;
+  height: 10px;
+  border-right: 2.2px solid #a0a6b4;
+  border-bottom: 2.2px solid #a0a6b4;
+  transform: rotate(-45deg);
+  transition: transform 0.2s;
+}
+.vp-doc details[open] > summary:after {
+  transform: rotate(45deg);
+}
+.vp-doc details[open] > summary { border-bottom: 1.2px solid #353537; }
+
+.vp-doc details ul, .vp-doc details ol {
+  margin: 10px 0 0 1.1em;
+  padding: 0;
+}
+.vp-doc details li {
+  margin: 0.55em 0 0 0;
   font-size: 16px;
   line-height: 1.44;
   color: #cfd4de;
   font-weight: 400;
   word-break: break-word;
 }
-.details-content li strong{color:#fff;font-weight:700;}
-.details-content li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.53em;
-  width: 0.48em;
-  height: 0.48em;
-  background: #C5F946;
-  border-radius: 50%;
+.vp-doc details li strong { color: #fff; font-weight: 700; }
+.vp-doc details ul li::marker {
+  color: #C5F946;
+  font-size: 1.1em;
 }
 
-/* CTA блок */
-.details-compact + .start-button-container {margin-top: 16px!important;}
+/* ----------- Кнопки ----------- */
 .btn {
-  min-height:48px; box-sizing:border-box;
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:12px 24px; border-radius:8px; font-weight:700; font-size:16px;
-  transition:all .2s; border:none; text-align:center; cursor:pointer;
+  min-height: 48px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+  margin: 10px 0;
 }
 .btn-primary{background:#C5F946;color:#000!important;}
 .btn-primary:hover{background:#347b6c;color:#fff!important;}
 .start-button-container{margin:20px 0;}
 
-/* mobile: компактнее все */
+/* ----------- Формы ----------- */
+.custom-form {
+  max-width: 500px;
+  margin: 0;
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 5px;
+  color: white;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+.form-input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #444;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: #111;
+  color: white;
+}
+.form-hint {
+  color: #808080;
+  font-size: 0.8em;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+/* ----------- Адаптив ----------- */
 @media (max-width:700px){
-  .details-summary{min-height:44px;height:44px;padding:0 12px !important;}
-  .details-title{font-size:0.97rem;padding-right:12px;}
-  .details-content{padding:8px 12px 13px 12px;}
-  .details-content li{font-size:15.5px;padding-left:19px;}
-  .details-content li::before{width:0.44em;height:0.44em;}
+  .vp-doc details > summary{
+    min-height: 42px;
+    height: 42px;
+    font-size:0.96rem;
+    padding: 0 12px;
+  }
+  .vp-doc details ul{margin-left:1em;}
+  .vp-doc details li{font-size:15.5px;}
+  .start-button-container{margin:15px 0;}
 }
 </style>
