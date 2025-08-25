@@ -222,7 +222,7 @@
 **[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**
 
 <style>
-/* Информационная карточка (оставьте свой код) */
+/* Информационная карточка */
 .info-card {
   background: #1f1f1f;
   border: 1px solid #2c2c2c;
@@ -244,13 +244,11 @@
   line-height: 1.4;
   color: #a1a1a9;
 }
-.info-card-list li {
-  margin-bottom: 4px;
-}
+.info-card-list li { margin-bottom: 4px; }
 .info-card-list li:last-child { margin-bottom: 0; }
 
 
-/* --- Выпадающий details-контейнер --- */
+/* --- DETAILS: аккуратная адаптивная шапка --- */
 .vp-doc details {
   border: 1.2px solid #353537;
   border-radius: 13px;
@@ -260,11 +258,7 @@
   overflow: hidden;
   transition: border-color .18s;
 }
-.vp-doc details[open] {
-  border: none;
-  box-shadow: none;
-  background: transparent;
-}
+.vp-doc details[open] { border: none; box-shadow: none; background: transparent; }
 
 .vp-doc details > summary {
   min-height: 48px;
@@ -272,42 +266,48 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  position: relative;
   font-weight: 700;
   font-size: 1rem;
   color: #e7e9ee;
   cursor: pointer;
   outline: none;
-  background: transparent;
-  transition: background 0.12s;
-  position: relative;
+  margin: 0;
+  padding: 0 44px 0 20px; /* справа 44px под стрелку */
   border-radius: 13px;
-  justify-content: space-between;
-  /* Важно! Чтобы текст в свернутом виде был по вертикали по центру */
-  line-height: 1;
+  justify-content: flex-start;
+  background: #23252B; /* Всегда серый фон для фокуса и разделения */
+
+  /* Центрация текста для multi-line */
+  line-height: 1.2;
 }
 .vp-doc details > summary::-webkit-details-marker { display:none; }
 
 .vp-doc details > summary:after {
   content: '';
+  display: block;
   position: absolute;
-  right: 20px;
-  width: 12px;
-  height: 12px;
-  border-right: 2.2px solid #a0a6b4;
-  border-bottom: 2.2px solid #a0a6b4;
-  /* По умолчанию СМОТРИТ ВНИЗ */
-  transform: rotate(45deg);
+  right: 22px;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-right: 2px solid #a0a6b4;
+  border-bottom: 2px solid #a0a6b4;
+  background: none;
+  /* ▼ по умолчанию */
+  transform: translateY(-50%) rotate(45deg);
   transition: transform 0.22s;
+  pointer-events: none;
 }
 .vp-doc details[open] > summary:after {
-  /* При открытии стрелка смотрит ВВЕРХ */
-  transform: rotate(-135deg);
+  /* ▲ в открытом состоянии */
+  transform: translateY(-50%) rotate(-135deg);
 }
 
 .vp-doc details[open] > summary {
-  background: transparent;
-  border-radius: 13px 13px 0 0;
+  background: #23252B; /* тот же серый, не исчезает при открытии */
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .vp-doc details ul, .vp-doc details ol {
@@ -321,13 +321,10 @@
   color: #cfd4de;
   font-weight: 400;
   word-break: break-word;
-  /* Маркеры дефолтные, но цвет меняем (см. ниже) */
 }
 .vp-doc details li strong { color: #fff; font-weight: 700; }
-.vp-doc details ul li::marker {
-  color: #C5F946;
-  font-size: 1.15em;
-}
+.vp-doc details ul li::marker { color: #C5F946; font-size: 1.15em; }
+
 
 /* Кнопки */
 .btn {
@@ -378,17 +375,18 @@
   margin-bottom: 10px;
 }
 
-/* Адаптив */
+/* --- Mobile: все еще плотнее и стрелка не наезжает --- */
 @media (max-width:700px){
   .vp-doc details > summary{
     min-height: 42px;
     height: 42px;
     font-size:0.96rem;
-    padding: 0 12px;
+    padding: 0 42px 0 12px !important;
+    line-height: 1.27;
   }
+  .vp-doc details > summary:after { right: 15px; width:13px; height:13px; }
   .vp-doc details ul{margin-left:1em;}
   .vp-doc details li{font-size:15.5px;}
   .start-button-container{margin:15px 0;}
 }
 </style>
-
