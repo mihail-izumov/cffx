@@ -222,79 +222,30 @@
 **[Масштабирование →](https://www.perplexity.ai/search/vystupi-v-roli-konsultanta-po-DWXYrOxdTxChS3Akfde6_g#9)**
 
 <style>
-/* ---------- база (без изменений) ---------- */
-.info-card{background:#1f1f1f;border:1px solid #2c2c2c;border-radius:12px;padding:14px 20px;margin:16px 0}
-.info-card-title{font-size:1rem;line-height:1.35;font-weight:500;color:#e6e7eb;margin:0 0 8px}
-.info-card-list{margin:0;padding-left:20px;font-size:.94rem;line-height:1.4;color:#a1a1a9}
-.info-card-list li{margin-bottom:4px}
-.info-card-list li:last-child{margin-bottom:0}
-
-/* ---------- collapsible (финальная версия) ---------- */
-.vp-doc details{
-  border:1.5px solid #353537;
-  border-radius:13px;
-  margin:16px 0;
-  background:#23252B;
-  overflow:hidden;
-  transition:border-color .2s
-}
-.vp-doc details:hover{border-color:#555}
-
-/* --- шапка summary --- */
-.vp-doc details>summary{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 20px;
-  cursor:pointer;user-select:none;list-style:none
-}
-.vp-doc details>summary::-webkit-details-marker{display:none}
-.vp-doc details>summary>span:first-child{
-  font-size:1rem;font-weight:600;color:#e7e9ee;padding-right:16px
-}
-.vp-doc details>summary::after{
-  content:'';width:12px;height:12px;flex-shrink:0;
-  border-top:2px solid #a0a6b4;border-right:2px solid #a0a6b4;
-  transform:rotate(135deg);transition:transform .2s
-}
-.vp-doc details[open]>summary::after{transform:rotate(-45deg)}
-.vp-doc details[open]>summary{border-bottom:1.5px solid #353537}
-
-/* --- контент --- */
-.vp-doc details>div{padding:0 20px 22px}
-.vp-doc details ul{margin:0;padding:0;list-style:none}
-.vp-doc details li{
-  position:relative;padding-left:20px;margin-top:12px;
-  font-size:15px;line-height:1.45;color:#d1d5db
-}
-.vp-doc details li::before{
-  content:'•';position:absolute;left:0;top:0.53em;
-  width:0.48em;height:0.48em;background:#C5F946;
-  border-radius:50%;
-}
-.vp-doc details strong{font-weight:600;color:#fff}
-
-/* ---------- кнопка (ИСПРАВЛЕНО) ---------- */
+/* --------- Кнопка: теперь текст всегда по центру --------- */
 .btn {
-  display:inline-flex; align-items:center; justify-content:center;
-  height:48px;
-  box-sizing: border-box; /* Важно для корректной высоты */
-  padding:12px 24px;
+  min-height:48px;
+  padding:0 24px;
   border-radius:8px;
   font-weight:700;
   font-size:16px;
-  line-height: 1; /* Возвращаем line-height для центрирования */
-  border:none;
+  text-align:center;
+  text-decoration:none;
   cursor:pointer;
-  transition:transform .2s;
-  text-decoration: none;
+  border:none;
+  background:#C5F946;
+  color:#000 !important;
+  line-height:48px;        /* Центрирование текста внутри кнопки высотой 48px */
+  box-sizing:border-box;
+  transition:background .2s, color .2s, transform .2s;
 }
-.btn:hover{transform:translateY(-2px)}
-.btn-primary{background:#C5F946;color:#000!important}
-.btn-primary:hover{background:#347b6c;color:#fff!important}
-.start-button-container{margin:20px 0}
-
-/* ---------- десктоп: компактная шапка ---------- */
-@media(min-width:700px){
-  .vp-doc details>summary{padding:6px 24px}
-  .vp-doc details>div{padding:0 24px 24px}
+.btn-primary:hover {
+  background:#347b6c;
+  color:#fff !important;
 }
+.start-button-container {
+  margin:20px 0;
+  text-align:left;
+}
+.start-button-container .btn {margin:0;}
 </style>
