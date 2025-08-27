@@ -5,7 +5,7 @@
         <tr>
           <th>Индекс</th>
           <th>Кофейня</th>
-          <th>Точки</th>
+          <th class="points-column">Точки</th>
           <th>Отзывы</th>
           <th>Статус</th>
           <th>Потенциал</th>
@@ -32,7 +32,7 @@
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
             {{ coffee.name }}
           </td>
-          <td class="cell-left">
+          <td class="cell-left points-column">
             {{ coffee.points }}
             <span v-if="coffee.scale !== '·'" class="scale-text"> ({{ coffee.scale }})</span>
             <span v-else class="stagnation-dot">·</span>
@@ -116,7 +116,7 @@ export default {
         { icon:'🔴', index:57,  name:'Cofix', reviews:'253', points:5,  scale:'~7+', status:'Растущий 📈', supplier:'Cofix (контрактная обжарка)', beanType:'Свой бренд 🏷️', type:'Франшиза', potential:'Средний', stage:'Рост', innovation:'Низкая', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:55,  name:'Green Stag Roasters', reviews:'119', points:1,  scale:'~3+', status:'Растущий 📈', supplier:'Собственная обжарка', beanType:'Спешелти ⭐', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Высокий' },
         { icon:'🔴', index:55,  name:'Shu Authentic Coffee', reviews:'151', points:1, scale:'~2+', status:'Растущий 📈', supplier:'Собственная обжарка', beanType:'Спешелти ⭐', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Высокий' },
-        { icon:'🔴', index:53,  name:'Cup-cup', reviews:'1,505', points:20,  scale:'~27+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Независимая', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Среднее', growth:'Низкий' },
+        { icon:'🔴', index:53,  name:'Cup-cup', reviews:'1,505', points:20,  scale:'~27+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Независимая', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Среднее', growth:'Средний' },
         { icon:'🔴', index:52,  name:'Хюггешная', reviews:'885', points:6,  scale:'~6+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Среднее', growth:'Средний' },
         { icon:'🔴', index:50,  name:'Булка нетто', reviews:'771', points:3,  scale:'~5+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:45,  name:'Coffee Bean', reviews:'1,703', points:1,  scale:'~2+', status:'Растущий 📈', supplier:'LEON (Coffee Bean)', beanType:'Коммерция 📦', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
@@ -124,7 +124,7 @@ export default {
         { icon:'🔴', index:45,  name:'Bonfix', reviews:'143', points:2,  scale:'~3+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:45,  name:'Coffetino', reviews:'186', points:2,  scale:'~3+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:45,  name:'Кофейный лис', reviews:'47', points:2,  scale:'~3+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:41,  name:'Юни', reviews:'376', points:3,  scale:'~5+', status:'Растущий 📈', supplier:'Tasty Coffee', beanType:'Коммерция 📦', type:'Локальная', potential:'Низкий', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
+        { icon:'🔴', index:41,  name:'Юни', reviews:'376', points:3,  scale:'~5+', status:'Растущий 📈', supplier:'Tasty Coffee', beanType:'Коммерция 📦', type:'Локальная', potential:'Низкий', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Balance coffee', reviews:'147', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Стартап', innovation:'Средняя', influence:'Низкое', growth:'Высокий' },
         { icon:'🔴', index:40,  name:'Days Coffee', reviews:'15', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Ягоза', reviews:'437', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
@@ -161,14 +161,7 @@ export default {
   },
   computed: {
     sortedCoffeeData() {
-      const updatedData = this.coffeeData.map(coffee => {
-        if (coffee.name === 'Cup-cup' || coffee.name === 'Юни') {
-          return { ...coffee, growth: 'Средний' };
-        }
-        return coffee;
-      });
-
-      return [...updatedData].sort((a, b) => {
+      return [...this.coffeeData].sort((a, b) => {
         const statusOrderA = this.statusOrder.indexOf(a.status);
         const statusOrderB = this.statusOrder.indexOf(b.status);
         if (statusOrderA !== statusOrderB) {
@@ -245,8 +238,8 @@ export default {
              (index === 0 || this.sortedCoffeeData[index - 1].status !== 'Вне игры 🚫');
     },
     potentialEmoji(potential) {
-      if (potential === 'Высокий') return '⬆️';
-      if (potential === 'Низкий') return '⬇️';
+      if (potential === 'Высокий') return '🚀';
+      if (potential === 'Низкий') return '🌱';
       if (potential === 'Средний') return '✨';
       return '';
     },
@@ -316,7 +309,7 @@ export default {
   vertical-align: middle;
 }
 
-.index-smr-table td:nth-child(1), .index-smr-table td:nth-child(2), .index-smr-table td:nth-child(3) { font-weight: 600; }
+.index-smr-table td:nth-child(1), .index-smr-table td:nth-child(2) { font-weight: 600; }
 .index-smr-table th:nth-child(2), .index-smr-table td:nth-child(2), .nowrap {
   white-space: nowrap !important; max-width: none !important; width: auto !important;
 }
@@ -329,6 +322,12 @@ export default {
 .cell-left { text-align: left; }
 .cell-nowrap { white-space: nowrap; }
 .supplier-cell { line-height: 1.6; }
+
+/* Стилизация столбца "Точки" */
+.points-column {
+  white-space: nowrap;
+  font-weight: 600;
+}
 
 /* Точка стагнации */
 .scale-text { font-size: 0.9em; color: #888; }
