@@ -24,6 +24,7 @@ import PriceCalculator from '../components/PriceCalculator.vue'
 import SimulatorTabs from '../components/SimulatorTabs.vue'
 import DialogTables from '../components/DialogTables.vue'
 import IndexSMRTest from '../components/IndexSMR_test.vue'
+import CoffeeGlossaryTabs from '../components/CoffeeGlossaryTabs.vue'
 
 export default {
   extends: DefaultTheme,
@@ -54,5 +55,6 @@ export default {
     app.component('SimulatorTabs', SimulatorTabs)
     app.component('DialogTables', DialogTables)
     app.component('IndexSMRTest', IndexSMRTest)
+    app.component('CoffeeGlossaryTabs', CoffeeGlossaryTabs)
   }
 }
