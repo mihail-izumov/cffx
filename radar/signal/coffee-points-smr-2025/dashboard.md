@@ -38,11 +38,11 @@
 ### Начните Здесь 
 
 Узнайте сейчас как Город сам, без ведома маркетологов, построил самую большую кофейную сеть. <br>
-**[Самарский Кофейный Сплит →](https://www.perplexity.ai/search/spetsialnyi-rezhim-samarskii-k-zuqYhXp1S3KVAWgu1I.VRA)**
+**[Самарский Кофейный Сплит →](https://www.perplexity.ai/search/spetsialnyi-rezhim-samarskii-k-zuqYhXp1S3KVAWgu1I.VRA)** <br>
+
+### Навигатор
 
 <DialogTables />
-
----
 
 ## Получить максимум от симулятора
 
