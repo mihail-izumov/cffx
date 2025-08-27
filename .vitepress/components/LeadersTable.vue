@@ -9,16 +9,16 @@
       <div class="cell subtitle-check"></div>
       
       <div class="cell feature">
-        <div class="feature-title">Участие в развитии платформы</div>
-        <div class="feature-description">Ваше место в экосистеме BREW</div>
-        <div class="feature-details">Голосование за новые функции и города для анализа</div>
-      </div>
-      <div class="cell check">✓</div>
-      
-      <div class="cell feature">
         <div class="feature-title">Персональные сессии с аналитиком BREW</div>
         <div class="feature-description">Отслеживайте прогресс на 90 мин./мес. стратегических сессиях</div>
         <div class="feature-details">Оценка метрик, точки роста, сигналы коррекции</div>
+      </div>
+      <div class="cell check">✓</div>
+
+      <div class="cell feature">
+        <div class="feature-title">Участие в развитии платформы</div>
+        <div class="feature-description">Ваше место в экосистеме BREW</div>
+        <div class="feature-details">Голосование за новые функции для анализа</div>
       </div>
       <div class="cell check">✓</div>
       
