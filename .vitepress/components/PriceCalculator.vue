@@ -73,9 +73,9 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+
 /* ---------- ОБНОВЛЕННЫЙ МАССИВ ДАННЫХ ---------- */
 const cafes = ref([
-  // ... (здесь полный массив с измененной структурой keyQuestion)
   { id: 1, name: 'Balance coffee', index: 40, points: 1, reviews: 147, potential: 14, stage: 15, innovation: 14, influence: 11, type: 5, K: 3.0, scaleFactor: 5.7, reasoning: 'Стартап с низким индексом — огромный потенциал базовых улучшений', signal: '1 точка и индекс 40 — разрыв между достижениями и признанием', solution: 'Системное усиление всех параметров индекса', keyQuestion: { prefix: 'Почему, имея 147+ отзывов, вы не достигли статуса', status: 'Растущий 📈', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' },
   { id: 2, name: 'Bonfix', index: 45, points: 2, reviews: 143, potential: 15, stage: 15, innovation: 14, influence: 10, type: 5, K: 3.0, scaleFactor: 5.7, reasoning: 'Малая сеть может быстро масштабировать лучшие практики', signal: '2 точки и индекс 45 — разрыв между возможностями и признанием', solution: 'Системное усиление всех параметров индекса', keyQuestion: { prefix: 'Почему, имея 143+ отзывов, вы не достигли статуса', status: 'Сильный 💪', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' },
   { id: 3, name: 'Булка нетто', index: 50, points: 3, reviews: 771, potential: 15, stage: 15, innovation: 13, influence: 8, type: 5, K: 5.0, scaleFactor: 3.6, reasoning: 'Популярна у гостей, но низкое влияние — нужен маркетинг', signal: '3 точки и 771 отзыв — недооценённая популярность', solution: 'Системное усиление всех параметров индекса', keyQuestion: { prefix: 'Почему, имея 771+ отзывов, вы не достигли статуса', status: 'Сильный 💪', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' },
@@ -95,18 +95,22 @@ const cafes = ref([
   { id: 17, name: 'Хюггешная', index: 52, points: 6, reviews: 885, potential: 15, stage: 15, innovation: 15, influence: 14, type: 5, K: 3.0, scaleFactor: 5.3, reasoning: 'Средний эшелон с базой для прорыва', signal: '6 точек и 885 отзывов', solution: 'Системное усиление для прорыва', keyQuestion: { prefix: 'Почему, имея 885+ отзывов, вы не достигли статуса', status: 'Сильный 💪', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' },
   { id: 18, name: 'Юни', index: 41, points: 3, reviews: 376, potential: 10, stage: 15, innovation: 14, influence: 12, type: 5, K: 3.0, scaleFactor: 6.0, reasoning: 'Системные ограничения — нужна перестройка модели', signal: '3 точки с низким потенциалом', solution: 'Кардинальная перестройка операционной модели', keyQuestion: { prefix: 'Почему, имея 376+ отзывов, вы не достигли статуса', status: 'Сильный 💪', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' }
 ])
+
 const selectedCafeId = ref('')
 const revenueStr     = ref('')
 const resultShown    = ref(false)
 const result         = ref({})
+
 function onRevenueInput (e) {
   const digits = e.target.value.replace(/\D/g, '')
   revenueStr.value = digits ? Number(digits).toLocaleString('ru-RU') : ''
   resultShown.value = false
 }
+
 const revenueNum = computed(() => Number(revenueStr.value.replace(/\s|,/g, '')))
 const W = { potential: .25, stage: .20, innovation: .25, influence: .20, type: .10 }
 const canCalculate = computed(() => selectedCafeId.value && revenueNum.value >= 100000)
+
 function calcIQ (c) {
   return W.potential  * c.potential  / 25 +
          W.stage      * c.stage      / 20 +
@@ -114,22 +118,28 @@ function calcIQ (c) {
          W.influence  * c.influence  / 20 +
          W.type       * c.type       / 10
 }
+
 function priceOfInaction (w, cafe) {
   const base = w * calcIQ(cafe) * cafe.K * 0.25 * cafe.points
   return Math.round(base * cafe.scaleFactor)
 }
+
 function timeToCapture (iq, K) {
   const months = 6 * (1 - Math.min(iq * (K / 10), 0.9))
   return Math.max(1, Math.round(months))
 }
+
 const format = (n) => new Intl.NumberFormat('ru-RU').format(Math.round(n))
+
 function calculate () {
   const cafe = cafes.value.find(c => c.id === Number(selectedCafeId.value))
   if (!cafe) return
+
   const iq      = calcIQ(cafe)
   const total   = priceOfInaction(revenueNum.value, cafe)
   const perPoint = total / cafe.points
   const percent = Math.round(total / (revenueNum.value * cafe.points * 12) * 100)
+
   result.value = {
     ...cafe,
     total,
@@ -155,14 +165,17 @@ function calculate () {
   color:#ffffff !important;
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 }
+
 /* ---------- ПОЛЯ ВВОДА ---------- */
 .input-group{margin-bottom:16px}
+
 label{
   display:block;
   margin-bottom:6px;
   font:600 14px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   color:#ffffff !important;
 }
+
 select,
 input{
   width:100%;
@@ -175,17 +188,21 @@ input{
   color:#ffffff !important;
   transition:border-color .25s ease;
 }
+
 select:focus,input:focus{
   border-color:#C5F946 !important;
   outline:0;
 }
+
 /* Цвет placeholder */
 input::placeholder{color:#888888 !important;}
+
 /* Опции в select */
 select option{
   background:#141414 !important;
   color:#ffffff !important;
 }
+
 /* ---------- КНОПКА ---------- */
 .btn-calc{
   width:100%;
@@ -200,24 +217,27 @@ select option{
   cursor:pointer;
   transition:background .2s,transform .2s;
 }
+
 .btn-calc:disabled{
   background:#555555 !important;
   color:#cccccc !important;
   cursor:not-allowed;
 }
+
 .btn-calc:not(:disabled):hover{
   background:#347b6c !important;
   color:#ffffff !important;
   transform:translateY(-2px);
 }
+
 /* ---------- РЕЗУЛЬТАТ ---------- */
 .result{
   margin-top:20px;
   padding:20px;
   background:#141414 !important;
-  border:1px solid #2b2b2b !important;
   border-radius:10px;
 }
+
 /* Заголовок результата */
 .result-title{
   margin:0 0 20px;
@@ -225,6 +245,7 @@ select option{
   text-align:center;
   color:#C5F946 !important;
 }
+
 /* Блоки результата */
 .result-block{
   margin:0 0 16px;
@@ -233,19 +254,24 @@ select option{
   border:1px solid #2b2b2b !important;
   border-radius:8px;
 }
+
 .result-block:last-of-type{margin-bottom:20px}
+
 /* Весь текст в блоках одинакового размера */
 .result-block p{
   margin:8px 0;
   font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   color:#ffffff !important;
 }
+
 .result-block p:first-child{margin-top:0}
 .result-block p:last-child{margin-bottom:0}
+
 .highlight{
   color:#C5F946 !important;
   font-weight:600;
 }
+
 /* ---------- БАБЛ-СТАТУСЫ ---------- */
 .badge-status{
   display:inline-block;
@@ -258,6 +284,7 @@ select option{
   vertical-align:baseline;
   margin:0 2px;
 }
+
 /* ---------- ПРИНУДИТЕЛЬНО ТЕМНЫЙ "ПОЧЕМУ ВСЁ ПОЛУЧИТСЯ" ---------- */
 .why-section{
   margin:0;
@@ -266,8 +293,8 @@ select option{
   padding:0;
   background:#347b6c !important;
 }
+
 .why-summary{
-  cursor:pointer;
   font:600 16px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   color:#ffffff !important;
   padding:18px 16px;
@@ -277,9 +304,11 @@ select option{
   list-style:none;
   display:block;
   position:relative;
-  caret-color: transparent; /* ИСПРАВЛЕНИЕ 1: Убирает курсор */
+  user-select:none;
 }
+
 .why-summary::-webkit-details-marker{display:none}
+
 /* Стрелка для выпадающего меню */
 .why-summary::before{
   content:'';
@@ -294,31 +323,40 @@ select option{
   border-top:8px solid #ffffff;
   transition:transform .3s ease;
 }
+
 .why-section[open] .why-summary::before{
   transform:translateY(-50%) rotate(180deg);
 }
-/* Убираем hover эффект */
-.why-summary:hover{
-  background:none !important;
-  color:#ffffff !important;
-}
+
 .why-content{
   padding:8px 16px 18px;
   background:#347b6c !important;
   border-radius:0 0 8px 8px;
-  border-top: 1px solid #347b6c; /* ИСПРАВЛЕНИЕ 2: Маскирует обводку */
 }
+
 .why-list{
   margin:0 0 12px;
-  padding-left:10px;
-  list-style: none; /* ИСПРАВЛЕНИЕ 3: Убирает двойные буллеты */
+  padding:0;
+  list-style:none;
   line-height:1.2;
 }
+
 .why-list li{
   margin:3px 0;
+  padding-left:16px;
+  position:relative;
   font:400 14px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   color:#ffffff !important;
 }
+
+.why-list li::before{
+  content:'•';
+  position:absolute;
+  left:0;
+  color:#ffffff;
+  font-weight:bold;
+}
+
 .why-total{
   margin:0;
   padding:8px 0 0;
@@ -326,10 +364,12 @@ select option{
   color:#ffffff !important;
   text-align:left;
 }
+
 /* ---------- АНИМАЦИЯ ---------- */
 .fade-enter-active,.fade-leave-active{transition:opacity .35s,transform .35s}
 .fade-enter-from{opacity:0;transform:translateY(12px)}
 .fade-leave-to{opacity:0;transform:translateY(-12px)}
+
 /* ---------- МОБИЛЬНЫЙ ---------- */
 @media(max-width:768px){
   .calculator-card{padding:16px 18px;margin-bottom:24px}
@@ -340,7 +380,6 @@ select option{
   .result-block{padding:10px 12px}
   .result-block p{font-size:13px}
   .why-summary{font-size:15px;padding:16px 14px}
-  .why-list{padding-left:8px}
   .why-list li{font-size:13px}
   .why-total{font-size:13px}
   .badge-status{font-size:0.8em;padding:1px 6px}
