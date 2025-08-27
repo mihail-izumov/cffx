@@ -21,7 +21,7 @@
       />
     </div>
     <button class="btn-calc" :disabled="!canCalculate" @click="calculate">
-      Рассчитать [+₽↑]
+      РАССЧИТАТЬ [+₽↑]
     </button>
     <!-- Блок результата -->
     <transition name="fade">
