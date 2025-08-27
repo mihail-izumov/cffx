@@ -24,9 +24,11 @@
         <tr
           v-for="(coffee, idx) in sortedCoffeeData"
           :key="`${coffee.name}-${coffee.index}`"
+          @click="setActiveRow(idx)"
           :class="{ 
             'golden-row': idx < 6,
-            'out-of-game-separator': isFirstOutOfGame(coffee, idx)
+            'out-of-game-separator': isFirstOutOfGame(coffee, idx),
+            'active-row': activeRowIndex === idx
           }"
         >
           <td class="cell-center index-column">{{ coffee.index }}</td>
@@ -96,6 +98,7 @@ export default {
   name: 'IndexSMR',
   data() {
     return {
+      activeRowIndex: null, // <-- Новое состояние для хранения индекса активной строки
       statusOrder: [
         'Лидер 👑',
         'Сильный 💪', 
@@ -174,6 +177,13 @@ export default {
     }
   },
   methods: {
+    setActiveRow(index) {
+      if (this.activeRowIndex === index) {
+        this.activeRowIndex = null; // Повторный клик снимает выделение
+      } else {
+        this.activeRowIndex = index;
+      }
+    },
     iconClass(icon) {
       if (icon === '🟡') return 'icon-yellow';
       if (icon === '🔴') return 'icon-red';
@@ -339,8 +349,27 @@ export default {
   white-space: nowrap !important; max-width: none !important; width: auto !important;
 }
 
-.index-smr-table tbody tr:hover { background: rgba(120,120,120,0.12); }
-.golden-row { background: linear-gradient(90deg,rgba(255,230,90,0.05) 0%,rgba(255,226,120,0.0) 100%); }
+.index-smr-table tbody tr {
+  cursor: pointer;
+}
+
+.index-smr-table tbody tr:hover { 
+  background: rgba(120,120,120,0.12); 
+}
+
+/* Стиль для активной (кликнутой) строки */
+.active-row {
+  background: rgba(var(--vp-c-brand-rgb), 0.1) !important;
+}
+
+.active-row td {
+  color: var(--vp-c-brand-1);
+}
+
+.golden-row { 
+  background: linear-gradient(90deg,rgba(255,230,90,0.05) 0%,rgba(255,226,120,0.0) 100%); 
+}
+
 .out-of-game-separator td { border-top: 4px solid #ff6b6b !important; padding-top: 14px; }
 
 .cell-center { text-align: center; }
