@@ -3,7 +3,7 @@
     <div class="pricing-grid">
       <!-- Заголовок -->
       <div class="cell header">Преимущества</div>
-      <div class="cell header price">₽360000/год</div>
+      <div class="cell header price">₽180000/6 мес.</div>
       <!-- Данные -->
       <div class="cell subtitle">Все, что в Симуляторе и Инсайдере, плюс:</div>
       <div class="cell subtitle-check"></div>
