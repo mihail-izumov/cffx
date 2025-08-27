@@ -16,9 +16,8 @@
         <div class="payment-type">Регистрация</div>
       </div>
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Анализ и <a href="/brew/sim" target="_blank" class="feature-link">симулятор</a></span></li>
-        <li class="feature-item"><CheckIcon /><span>Готовые диалоги для быстрого старта</span></li>
-        <li class="feature-item"><CheckIcon /><span>Клонировать успех лидеров рынка</span></li>
+        <li class="feature-item"><CheckIcon /><span>Анализ рынка и <a href="/brew/sim" target="_blank" class="feature-link">симулятор</a></span></li>
+        <li class="feature-item"><CheckIcon /><span>Готовые инсайты для быстрого старта</span></li>
         <li class="feature-item"><CheckIcon /><span><a href="/radar/who-is-anna" target="_blank" class="feature-link">ИИ-ассистент Анна</a></span></li>
       </ul>
       <a href="/brew/join/free" class="card-button card-button--secondary">
@@ -44,7 +43,6 @@
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>Ваша компания VS Рынок в реальном времени</span></li>
         <li class="feature-item"><CheckIcon /><span><a href="/radar/index-smr/overview" target="_blank" class="feature-link">Индекс Роста</a>: сигналы изменений</span></li>
-        <li class="feature-item"><CheckIcon /><span>Ранний доступ к новым городам</span></li>
       </ul>
       <a href="/brew/join/insider" class="card-button">Стать Инсайдером</a>
     </div>
