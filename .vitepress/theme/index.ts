@@ -26,6 +26,7 @@ import DialogTables from '../components/DialogTables.vue'
 import IndexSMRTest from '../components/IndexSMR_test.vue'
 import CoffeeGlossaryTabs from '../components/CoffeeGlossaryTabs.vue'
 import GrowthIndexMethod from '../components/GrowthIndexMethod.vue'
+import IndexGuide from '../components/IndexGuide.vue'
 
 export default {
   extends: DefaultTheme,
@@ -58,5 +59,6 @@ export default {
     app.component('IndexSMRTest', IndexSMRTest)
     app.component('CoffeeGlossaryTabs', CoffeeGlossaryTabs)
     app.component('GrowthIndexMethod', GrowthIndexMethod)
+    app.component('IndexGuide', IndexGuide)
   }
 }
