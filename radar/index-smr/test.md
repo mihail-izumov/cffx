@@ -6,6 +6,8 @@ outline: false
 
 <IndexSMRTest />
 
+<CoffeeGlossaryTabs />
+
 ## Типы поставщиков зерна
 
 | Тип поставщика | Что означает | Примеры в таблице |
