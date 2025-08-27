@@ -18,10 +18,7 @@ const activeTab = ref('competitors')
     <button :class="{ active: activeTab === 'quotes' }" @click="activeTab = 'quotes'">
       Цитаты клиентов
     </button>
-    <button :class="{ active: activeTab === 'three-actions' }" @click="activeTab = 'three-actions'">
-      3 действия
-    </button>
-    <button :class="{ active: activeTab === 'next-step' }" @click="activeTab = 'next-step'">
+    <button :class="{ active: activeTab === 'next-steps' }" @click="activeTab = 'next-steps'">
       Следующий шаг
     </button>
   </div>
@@ -76,30 +73,15 @@ const activeTab = ref('competitors')
       </ul>
     </div>
 
-    <!-- Вкладка: 3 действия -->
-    <div v-show="activeTab === 'three-actions'" class="content-mr">
+    <!-- Вкладка: Следующий шаг -->
+    <div v-show="activeTab === 'next-steps'" class="content-mr">
         <h3>Три безупречных действия для роста выручки за 30 дней</h3>
         <h4>Действие 1: Найдите свою «суперсилу» (15 минут)</h4>
         <p>Посмотрите на Индекс и найдите критерий, где у вас максимальная оценка, а у конкурентов меньше. Это ваше уникальное преимущество. Завтра же начните рассказывать о нем всем клиентам.</p>
         <h4>Действие 2: Устраните ключевой баг в системе (1 неделя)</h4>
         <p>Найдите критерий с самой низкой оценкой — это то, из-за чего вы теряете клиентов прямо сейчас. Примените метод «5 почему» и устраните корневую причину.</p>
         <h4>Действие 3: Скопируйте лучшую практику (1 месяц)</h4>
-        <p>Посмотрите, какой конкурент лидирует по критерию, важному для ваших гостей. Откройте Симулятор Самары, изучите что говорят гости о нем и о вас, попросите Анну создать план быстрых изменений. Возвращайтесь за новыми ответами в любое время.</p>
-    </div>
-
-    <!-- Вкладка: Следующий шаг -->
-    <div v-show="activeTab === 'next-step'" class="content-mr">
-        <h3>От анализа к результату</h3>
-        <p>Индекс Роста показывает вам <strong>что</strong> происходит с вашим бизнесом в глазах клиентов. Это точный диагноз текущей ситуации. Но чтобы превратить найденные проблемы в план роста, нужно понять <strong>почему</strong> это происходит и <strong>как</strong> это исправить.</p>
-        <p>Именно для этого существует <strong>Чекап Модуля Роста®</strong> — системная работа, где данные сигналы рынка становятся отправной точкой для глубокого анализа и разработки конкретного плана с тремя измеримыми улучшениями, которые мы поможем внедрить за 30 дней.</p>
-        <p>
-            Данные показывают проблему. <br>
-            План показывает решение. <br>
-            Результат — рост, который увидят все.
-        </p>
-        <div class="specs-button">
-            <a href="/apply">Чекап →</a>
-        </div>
+        <p>Посмотрите, какой конкурент лидирует по критерию, важному для ваших гостей. <a href="/radar/signal/coffee-points-smr-2025/dashboard">Откройте Симулятор Самары</a>, изучите что говорят гости о нем и о вас, попросите Анну создать план быстрых изменений. Возвращайтесь за новыми ответами в любое время.</p>
     </div>
   </div>
 </template>
@@ -154,6 +136,15 @@ const activeTab = ref('competitors')
   color: rgba(255,255,255,0.88);
   line-height: 1.46;
 }
+.content-mr a {
+  color: #c8ff5a;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(200,255,90,0.5);
+  font-weight: 600;
+}
+.content-mr a:hover {
+  opacity: .9;
+}
 .content-mr h3 {
   margin: 0 0 12px;
   font-size: 16px;
@@ -190,33 +181,5 @@ const activeTab = ref('competitors')
   position: absolute;
   left: 0;
   color: rgba(200,255,90,0.7);
-}
-.content-mr hr {
-    border: none;
-    height: 1px;
-    background-color: rgba(255,255,255,0.1);
-    margin: 20px 0;
-}
-.specs-button {
-    margin-top: 16px;
-}
-.specs-button a {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #c8ff5a;
-  color: #0a0a0a !important;
-  text-decoration: none !important;
-  border-radius: 8px;
-  font-family: inherit;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s;
-  -webkit-user-select: none;
-  user-select: none;
-  line-height: 1.5;
-}
-.specs-button a:hover {
-    background-color: #d2ff7c;
 }
 </style>
