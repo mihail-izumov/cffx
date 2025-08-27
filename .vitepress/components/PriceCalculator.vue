@@ -27,22 +27,19 @@
     <transition name="fade">
       <div v-if="resultShown" class="result">
         <h3 class="result-title">{{ result.name }} (Индекс {{ result.index }})</h3>
-        <!-- Блок 1: Основные показатели -->
+        <!-- ... (остальные блоки результата без изменений) ... -->
         <div class="result-block">
           <p><strong>Потенциал роста:</strong>&nbsp;<span class="highlight">{{ format(result.total) }} ₽</span> в год (+{{ result.percent }}%)</p>
           <p><strong>На каждую точку ({{ result.points }}):</strong>&nbsp;<span class="highlight">{{ format(result.perPoint) }} ₽/год</span></p>
           <p><strong>Время на захват:</strong>&nbsp;{{ result.months }} мес. с BREW | 30 000 ₽/мес.</p>
         </div>
-        <!-- Блок 2: Анализ конкуренции -->
         <div class="result-block">
           <p><strong>Целевые конкуренты:</strong>&nbsp;{{ result.competitors }}</p>
           <p><strong>Сигнал:</strong>&nbsp;{{ result.signal }}</p>
           <p><strong>Решение:</strong>&nbsp;{{ result.solution }}</p>
         </div>
-        <!-- Блок 3: Обоснование -->
         <div class="result-block">
           <p><strong>Обоснование роста:</strong>&nbsp;{{ result.reasoning }}</p>
-          <!-- Надежный рендеринг бейджа -->
           <p>
             <strong>Ключевой вопрос:</strong>&nbsp;
             <span>{{ result.keyQuestion.prefix }}&nbsp;</span>
@@ -52,20 +49,29 @@
             <span>{{ result.keyQuestion.suffix }}</span>
           </p>
         </div>
-        <!-- Улучшенный expandable блок -->
-        <details class="why-section">
-          <summary class="why-summary">Почему всё получится</summary>
-          <div class="why-content">
-            <ul class="why-list">
-              <li>Системная аналитика устраняет «слепые зоны» (+5–8 %)</li>
-              <li>Оптимизация ценообразования (+3–5 %)</li>
-              <li>Бенчмаркинг процессов (+4–6 %)</li>
-              <li>Стратегическое планирование (+3–4 %)</li>
-              <li>Раннее предупреждение о конкурентах (+2–3 %)</li>
-            </ul>
-            <p class="why-total">Итого: 17–26 % обоснованного роста</p>
-          </div>
-        </details>
+
+        <!-- НОВЫЙ, НАДЕЖНЫЙ ВЫПАДАЮЩИЙ БЛОК -->
+        <div class="why-section">
+          <button 
+            class="why-summary" 
+            :class="{ 'is-open': isWhyOpen }"
+            @click="isWhyOpen = !isWhyOpen"
+          >
+            Почему всё получится
+          </button>
+          <transition name="slide-fade">
+            <div v-if="isWhyOpen" class="why-content">
+              <ul class="why-list">
+                <li>Системная аналитика устраняет «слепые зоны» (+5–8 %)</li>
+                <li>Оптимизация ценообразования (+3–5 %)</li>
+                <li>Бенчмаркинг процессов (+4–6 %)</li>
+                <li>Стратегическое планирование (+3–4 %)</li>
+                <li>Раннее предупреждение о конкурентах (+2–3 %)</li>
+              </ul>
+              <p class="why-total">Итого: 17–26 % обоснованного роста</p>
+            </div>
+          </transition>
+        </div>
       </div>
     </transition>
   </div>
@@ -74,7 +80,9 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-/* ---------- МАССИВ ДАННЫХ ---------- */
+const isWhyOpen = ref(false) // Переключатель для нового блока
+
+// ... (остальной скрипт без изменений)
 const cafes = ref([
   { id: 1, name: 'Balance coffee', index: 40, points: 1, reviews: 147, potential: 14, stage: 15, innovation: 14, influence: 11, type: 5, K: 3.0, scaleFactor: 5.7, reasoning: 'Стартап с низким индексом — огромный потенциал базовых улучшений', signal: '1 точка и индекс 40 — разрыв между достижениями и признанием', solution: 'Системное усиление всех параметров индекса', keyQuestion: { prefix: 'Почему, имея 147+ отзывов, вы не достигли статуса', status: 'Растущий 📈', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' },
   { id: 2, name: 'Bonfix', index: 45, points: 2, reviews: 143, potential: 15, stage: 15, innovation: 14, influence: 10, type: 5, K: 3.0, scaleFactor: 5.7, reasoning: 'Малая сеть может быстро масштабировать лучшие практики', signal: '2 точки и индекс 45 — разрыв между возможностями и признанием', solution: 'Системное усиление всех параметров индекса', keyQuestion: { prefix: 'Почему, имея 143+ отзывов, вы не достигли статуса', status: 'Сильный 💪', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' },
@@ -99,33 +107,26 @@ const selectedCafeId = ref('')
 const revenueStr = ref('')
 const resultShown = ref(false)
 const result = ref({})
-
 function onRevenueInput(e) {
   const digits = e.target.value.replace(/\D/g, '')
   revenueStr.value = digits ? Number(digits).toLocaleString('ru-RU') : ''
   resultShown.value = false
 }
-
 const revenueNum = computed(() => Number(revenueStr.value.replace(/\s|,/g, '')))
 const W = { potential: 0.25, stage: 0.2, innovation: 0.25, influence: 0.2, type: 0.1 }
 const canCalculate = computed(() => selectedCafeId.value && revenueNum.value >= 100000)
-
 function calcIQ(c) {
   return W.potential * c.potential / 25 + W.stage * c.stage / 20 + W.innovation * c.innovation / 25 + W.influence * c.influence / 20 + W.type * c.type / 10
 }
-
 function priceOfInaction(w, cafe) {
   const base = w * calcIQ(cafe) * cafe.K * 0.25 * cafe.points
   return Math.round(base * cafe.scaleFactor)
 }
-
 function timeToCapture(iq, K) {
   const months = 6 * (1 - Math.min(iq * (K / 10), 0.9))
   return Math.max(1, Math.round(months))
 }
-
 const format = (n) => new Intl.NumberFormat('ru-RU').format(Math.round(n))
-
 function calculate() {
   const cafe = cafes.value.find(c => c.id === Number(selectedCafeId.value))
   if (!cafe) return
@@ -145,175 +146,54 @@ function calculate() {
 </script>
 
 <style scoped>
-/* ---------- ОБЩИЕ СТИЛИ КОМПОНЕНТА ---------- */
-.calculator-card {
-  width: 100%;
-  max-width: 720px;
-  margin: 0 auto 32px;
-  padding: 20px 24px;
-  background: #1e1e1e !important;
-  border: 1px solid #2b2b2b !important;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-  color: #ffffff !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
+/* ... (здесь все стили до .why-section без изменений) ... */
+.calculator-card { width: 100%; max-width: 720px; margin: 0 auto 32px; padding: 20px 24px; background: #1e1e1e !important; border: 1px solid #2b2b2b !important; border-radius: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25); color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 .input-group { margin-bottom: 16px; }
-label {
-  display: block;
-  margin-bottom: 6px;
-  font: 600 14px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #ffffff !important;
-}
-select,
-input {
-  width: 100%;
-  height: 44px;
-  padding: 0 14px;
-  font: 500 15px/44px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #141414 !important;
-  border: 1px solid #333333 !important;
-  border-radius: 8px;
-  color: #ffffff !important;
-  transition: border-color 0.25s ease;
-}
-select:focus, input:focus {
-  border-color: #c5f946 !important;
-  outline: 0;
-}
+label { display: block; margin-bottom: 6px; font: 600 14px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #ffffff !important; }
+select, input { width: 100%; height: 44px; padding: 0 14px; font: 500 15px/44px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #141414 !important; border: 1px solid #333333 !important; border-radius: 8px; color: #ffffff !important; transition: border-color 0.25s ease; }
+select:focus, input:focus { border-color: #c5f946 !important; outline: 0; }
 input::placeholder { color: #888888 !important; }
-select option {
-  background: #141414 !important;
-  color: #ffffff !important;
-}
-.btn-calc {
-  width: 100%;
-  height: 44px;
-  margin-top: 12px;
-  font: 700 16px/44px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  text-transform: uppercase;
-  color: #000000 !important;
-  background: #c5f946 !important;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-}
-.btn-calc:disabled {
-  background: #555555 !important;
-  color: #cccccc !important;
-  cursor: not-allowed;
-}
-.btn-calc:not(:disabled):hover {
-  background: #347b6c !important;
-  color: #ffffff !important;
-  transform: translateY(-2px);
-}
-.result {
-  margin-top: 20px;
-  padding: 20px;
-  background: #141414 !important;
-  border: 1px solid #2b2b2b !important;
-  border-radius: 10px;
-}
-.result-title {
-  margin: 0 0 20px;
-  font: 600 18px/1.3 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  text-align: center;
-  color: #c5f946 !important;
-}
-.result-block {
-  margin: 0 0 16px;
-  padding: 12px 16px;
-  background: #1a1a1a !important;
-  border: 1px solid #2b2b2b !important;
-  border-radius: 8px;
-}
+select option { background: #141414 !important; color: #ffffff !important; }
+.btn-calc { width: 100%; height: 44px; margin-top: 12px; font: 700 16px/44px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; text-transform: uppercase; color: #000000 !important; background: #c5f946 !important; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+.btn-calc:disabled { background: #555555 !important; color: #cccccc !important; cursor: not-allowed; }
+.btn-calc:not(:disabled):hover { background: #347b6c !important; color: #ffffff !important; transform: translateY(-2px); }
+.result { margin-top: 20px; padding: 20px; background: #141414 !important; border: 1px solid #2b2b2b !important; border-radius: 10px; }
+.result-title { margin: 0 0 20px; font: 600 18px/1.3 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; text-align: center; color: #c5f946 !important; }
+.result-block { margin: 0 0 16px; padding: 12px 16px; background: #1a1a1a !important; border: 1px solid #2b2b2b !important; border-radius: 8px; }
 .result-block:last-of-type { margin-bottom: 20px; }
-.result-block p {
-  margin: 8px 0;
-  font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #ffffff !important;
-}
+.result-block p { margin: 8px 0; font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #ffffff !important; }
 .result-block p:first-child { margin-top: 0; }
 .result-block p:last-child { margin-bottom: 0; }
-.highlight {
-  color: #c5f946 !important;
-  font-weight: 600;
-}
-.badge-status {
-  display: inline-block;
-  background: #347b6c !important;
-  color: #d0f0d0 !important;
-  border-radius: 50px;
-  padding: 2px 8px;
-  font-size: 0.85em;
-  white-space: nowrap;
-  vertical-align: baseline;
-  margin: 0 2px;
-}
+.highlight { color: #c5f946 !important; font-weight: 600; }
+.badge-status { display: inline-block; background: #347b6c !important; color: #d0f0d0 !important; border-radius: 50px; padding: 2px 8px; font-size: 0.85em; white-space: nowrap; vertical-align: baseline; margin: 0 2px; }
 
-/* ---------- ИСПРАВЛЕННЫЙ БЛОК "ПОЧЕМУ ВСЁ ПОЛУЧИТСЯ" ---------- */
+/* ---------- УПРОЩЕННЫЙ БЛОК "ПОЧЕМУ ВСЁ ПОЛУЧИТСЯ" ---------- */
 .why-section {
   overflow: hidden;
-  margin: 0;
   border-radius: 8px;
-  background: #347b6c !important;
+  background: #347b6c;
 }
 
 .why-summary {
-  display: block;
-  position: relative;
+  /* Стилизация кнопки, чтобы она выглядела как заголовок */
+  width: 100%;
   padding: 14px 16px;
   margin: 0;
+  
   font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #ffffff !important;
-  cursor: pointer;
-  user-select: none !important;
-  outline: none !important;
-  border: none !important;
-  background: transparent !important;
+  color: #ffffff;
   text-align: left;
-  width: 100%;
-  box-sizing: border-box;
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  appearance: none !important;
-  transition: none !important;
-  -webkit-user-select: none !important;
-  -moz-user-select: none !important;
-  -ms-user-select: none !important;
-  -webkit-tap-highlight-color: transparent !important;
-  -webkit-touch-callout: none !important;
+  
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  
+  position: relative;
+  -webkit-tap-highlight-color: transparent; /* Убрать синюю вспышку на мобильных */
 }
 
-.why-summary:hover,
-.why-summary:focus,
-.why-summary:active {
-  outline: none !important;
-  border: none !important;
-  box-shadow: none !important;
-  background: transparent !important;
-}
-
-.why-summary::-webkit-details-marker {
-  display: none !important;
-}
-
-.why-summary::-moz-focus-inner {
-  border: 0 !important;
-  padding: 0 !important;
-  outline: none !important;
-}
-
-.why-summary::selection {
-  background: transparent !important;
-}
-
-.why-summary::-moz-selection {
-  background: transparent !important;
-}
-
+/* Псевдо-элемент для стрелки */
 .why-summary::before {
   content: '';
   position: absolute;
@@ -328,29 +208,28 @@ select option {
   transition: transform 0.3s ease;
 }
 
-.why-section[open] > .why-summary::before {
+/* Поворот стрелки при открытии */
+.why-summary.is-open::before {
   transform: translateY(-50%) rotate(180deg);
 }
 
 .why-content {
   padding: 8px 16px 18px;
-  background: #347b6c !important;
+  background: #347b6c;
 }
 
-/* ИСПРАВЛЕННЫЙ СПИСОК */
 .why-list {
-  list-style: none !important;
-  padding: 0 !important;
-  margin: 0 0 12px 0 !important;
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 12px 0;
 }
 
 .why-list li {
   position: relative;
-  padding-left: 18px;
+  padding-left: 18px; /* Место для кастомного буллета */
   margin: 3px 0;
   font: 400 14px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #ffffff !important;
-  list-style: none !important;
+  color: #ffffff;
 }
 
 .why-list li::before {
@@ -367,14 +246,29 @@ select option {
   margin: 0;
   padding: 8px 0 0;
   font: 600 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #ffffff !important;
+  color: #ffffff;
   text-align: left;
 }
 
-/* ---------- АНИМАЦИЯ ---------- */
-.fade-enter-active, .fade-leave-active { transition: opacity 0.35s, transform 0.35s; }
+/* ---------- АНИМАЦИИ ---------- */
+.fade-enter-active, .fade-leave-active { 
+  transition: opacity 0.35s, transform 0.35s; 
+}
 .fade-enter-from { opacity: 0; transform: translateY(12px); }
 .fade-leave-to { opacity: 0; transform: translateY(-12px); }
+
+/* Анимация для выпадающего списка */
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+.slide-fade-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(-10px);
+  opacity: 0;
+}
 
 /* ---------- МОБИЛЬНЫЙ ---------- */
 @media(max-width:768px){
