@@ -41,7 +41,7 @@
 **[Самарский Кофейный Сплит →](https://www.perplexity.ai/search/spetsialnyi-rezhim-samarskii-k-zuqYhXp1S3KVAWgu1I.VRA)** <br>
 
 ### Навигатор
-
+<br>
 <DialogTables />
 
 ## Получить максимум от симулятора
