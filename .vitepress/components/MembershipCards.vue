@@ -16,7 +16,7 @@
         <div class="payment-type">Регистрация</div>
       </div>
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Анализ рынка и <a href="/brew/sim" target="_blank" class="feature-link">симулятор</a></span></li>
+        <li class="feature-item"><CheckIcon /><span>Анализ рынка и <a href="/radar/signal/coffee-points-smr-2025/dashboard" target="_blank" class="feature-link">Симулятор Самары</a></span></li>
         <li class="feature-item"><CheckIcon /><span>Готовые инсайты для быстрого старта</span></li>
         <li class="feature-item"><CheckIcon /><span><a href="/radar/who-is-anna" target="_blank" class="feature-link">ИИ-ассистент Анна</a></span></li>
       </ul>
