@@ -3,10 +3,10 @@
     <table class="index-smr-table">
       <thead>
         <tr>
-          <th class="index-column">
+          <th class="sticky-col index-column">
             <span class="animated-icon">⚡</span>
           </th>
-          <th>Кофейня</th>
+          <th class="sticky-col second-col">Кофейня</th>
           <th class="points-column">Точки</th>
           <th>Отзывы</th>
           <th>Статус</th>
@@ -31,8 +31,8 @@
             'active-row': activeRowIndex === idx
           }"
         >
-          <td class="cell-center index-column">{{ coffee.index }}</td>
-          <td class="cell-left nowrap">
+          <td class="sticky-col cell-center index-column">{{ coffee.index }}</td>
+          <td class="sticky-col second-col cell-left nowrap">
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
             {{ coffee.name }}
           </td>
@@ -289,7 +289,7 @@ export default {
 .index-smr-table th {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 10;
   background: var(--vp-c-bg-soft, #222);
   text-transform: uppercase;
   font-size: 13px;
@@ -300,6 +300,17 @@ export default {
   padding: 12px 10px;
   white-space: nowrap;
   vertical-align: middle;
+}
+
+/* ФИКСАЦИЯ СТОЛБЦОВ */
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: var(--vp-c-bg-soft, #222);
+  z-index: 5;
+}
+.sticky-col.second-col {
+  left: 60px; /* Ширина первого столбца */
 }
 
 .index-smr-table th a {
@@ -345,29 +356,35 @@ export default {
 }
 
 .index-smr-table td:nth-child(2) { font-weight: 600; }
-.index-smr-table th:nth-child(2), .index-smr-table td:nth-child(2), .nowrap {
-  white-space: nowrap !important; max-width: none !important; width: auto !important;
-}
+.nowrap { white-space: nowrap !important; }
 
 .index-smr-table tbody tr {
   cursor: pointer;
   transition: box-shadow 0.2s ease-in-out;
 }
 
-.index-smr-table tbody tr:hover { 
-  background: rgba(120,120,120,0.12); 
+.index-smr-table tbody tr:hover .sticky-col { 
+  background: rgba(120,120,120,0.12);
+}
+.index-smr-table tbody tr:hover td {
+  background: rgba(120,120,120,0.12);
 }
 
 /* Стиль для активной (кликнутой) строки */
 .active-row {
-  box-shadow: inset 3px 0 0 #c5f946, inset -3px 0 0 #c5f946;
+  box-shadow: inset 0 2px 0 #c5f946, inset 0 -2px 0 #c5f946;
+}
+.active-row .sticky-col {
+  background: rgba(197, 249, 70, 0.08) !important;
+}
+.active-row td {
   background: rgba(197, 249, 70, 0.08) !important;
 }
 
 .golden-row { 
   background: linear-gradient(90deg,rgba(255,230,90,0.05) 0%,rgba(255,226,120,0.0) 100%); 
 }
-.active-row.golden-row {
+.active-row.golden-row td, .active-row.golden-row .sticky-col {
   background: linear-gradient(90deg, rgba(255,230,90,0.1) 0%, rgba(197, 249, 70, 0.05) 100%) !important;
 }
 
