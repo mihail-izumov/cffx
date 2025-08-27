@@ -33,7 +33,7 @@
           <p><strong>На каждую точку ({{ result.points }}):</strong>&nbsp;<span class="highlight">{{ format(result.perPoint) }} ₽/год</span></p>
           <p>
             <strong>Захват ({{ result.months }} мес.):</strong>&nbsp;
-            <a href="/brew/membership" class="link-membership">30 000 ₽/мес. с BREW</a>
+            <a href="/brew/membership" class="link-membership">30 000 ₽/мес.</a> с BREW
           </p>
         </div>
         <!-- Блок 2: Анализ конкуренции -->
@@ -57,8 +57,8 @@
 
         <!-- Надежный выпадающий блок -->
         <div class="why-section">
-          <button 
-            class="why-summary" 
+          <button
+            class="why-summary"
             :class="{ 'is-open': isWhyOpen }"
             @click="isWhyOpen = !isWhyOpen"
           >
@@ -157,7 +157,19 @@ select, input { width: 100%; height: 44px; padding: 0 14px; font: 500 15px/44px 
 select:focus, input:focus { border-color: #c5f946 !important; outline: 0; }
 input::placeholder { color: #888888 !important; }
 select option { background: #141414 !important; color: #ffffff !important; }
-.btn-calc { width: 100%; height: 44px; margin-top: 12px; font: 700 16px/44px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #000000 !important; background: #c5f946 !important; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+.btn-calc {
+  width: 100%;
+  height: 44px;
+  margin-top: 12px;
+  font: 700 16px/44px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  text-transform: uppercase; /* Текст заглавными */
+  color: #000000 !important;
+  background: #c5f946 !important;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
 .btn-calc:disabled { background: #555555 !important; color: #cccccc !important; cursor: not-allowed; }
 .btn-calc:not(:disabled):hover { background: #347b6c !important; color: #ffffff !important; transform: translateY(-2px); }
 .result { margin-top: 20px; padding: 20px; background: #141414 !important; border: 1px solid #2b2b2b !important; border-radius: 10px; }
@@ -234,14 +246,14 @@ select option { background: #141414 !important; color: #ffffff !important; }
 
 .why-list li {
   position: relative;
-  padding-left: 18px;
-  margin: 8px 0; /* Увеличил отступ для лучшей читаемости */
+  /* padding-left: 18px; */
+  margin: 8px 0;
   font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #ffffff;
 }
 
 .why-list li::before {
-  content: ''; /* Убираем стандартный буллет, так как он теперь в тексте */
+  content: '';
 }
 
 .why-total {
