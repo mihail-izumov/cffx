@@ -11,8 +11,8 @@
           <th>Отзывы</th>
           <th>Статус</th>
           <th>Потенциал</th>
-          <th><a href="/radar/index-smr/test#типы-зерна">Тип зерна</a></th>
-          <th><a href="/radar/index-smr/test#типы-поставщиков-зерна">Поставщик</a></th>
+          <th><a class="header-link" href="/radar/index-smr/test#типы-зерна">Тип зерна</a></th>
+          <th><a class="header-link" href="/radar/index-smr/test#типы-поставщиков-зерна">Поставщик</a></th>
           <th>Тип</th>
           <th>Стадия</th>
           <th>Инновации</th>
@@ -300,6 +300,21 @@ export default {
   white-space: nowrap;
   vertical-align: middle;
 }
+.header-link {
+  color: inherit; 
+  text-decoration: underline; 
+  text-decoration-style: dashed;
+  text-decoration-thickness: 1px; 
+  text-underline-offset: 3px; 
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+.header-link:hover { 
+  color: var(--vp-c-brand-1, #646cff); 
+  text-decoration-style: solid; 
+}
+.header-link:visited { color: inherit; }
+
 .index-column { width: 60px; text-align: center; }
 .points-column { white-space: nowrap; font-weight: 600; width: 100px; }
 .nowrap { white-space: nowrap !important; }
@@ -334,11 +349,11 @@ export default {
 }
 
 /* Выделение активной строки */
-.active-row td {
-  background: rgba(197, 249, 70, 0.08) !important;
-}
 .active-row {
   box-shadow: inset 0 2px 0 #c5f946, inset 0 -2px 0 #c5f946;
+}
+.active-row td {
+  background: rgba(197, 249, 70, 0.08) !important;
 }
 
 .index-smr-table tbody tr:hover td {
