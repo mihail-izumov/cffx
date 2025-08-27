@@ -10,5 +10,8 @@ outline: false
 ## Как считаем
 <GrowthIndexMethod />
 
+## Как пользоваться
+<IndexGuide />
+
 ## Зерно → Выручка
 <CoffeeGlossaryTabs />
