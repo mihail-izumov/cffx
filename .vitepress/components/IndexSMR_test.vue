@@ -3,16 +3,15 @@
     <table class="index-smr-table">
       <thead>
         <tr>
-          <th>Кофейня</th>
           <th>Индекс</th>
+          <th>Кофейня</th>
           <th>Точки</th>
+          <th>Отзывы</th>
           <th>Статус</th>
+          <th>Потенциал</th>
           <th><a href="/radar/index-smr/test#типы-зерна">Тип зерна</a></th>
           <th><a href="/radar/index-smr/test#типы-поставщиков-зерна">Поставщик</a></th>
-          <th>Отзывы</th>
-          <th>Масштаб</th>
           <th>Тип</th>
-          <th>Потенциал</th>
           <th>Стадия</th>
           <th>Инновации</th>
           <th>Влияние</th>
@@ -28,15 +27,21 @@
             'out-of-game-separator': isFirstOutOfGame(coffee, idx)
           }"
         >
+          <td class="cell-center">{{ coffee.index }}</td>
           <td class="cell-left nowrap">
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
             {{ coffee.name }}
           </td>
-          <td class="cell-center">{{ coffee.index }}</td>
-          <td class="cell-center">{{ coffee.points }}</td>
+          <td class="cell-center">{{ coffee.points }} ({{ coffee.scale }})</td>
+          <td class="cell-center">{{ coffee.reviews }}</td>
           <td class="cell-nowrap">
             <span class="badge-status" :class="statusClass(coffee.status)">
               {{ coffee.status }}
+            </span>
+          </td>
+          <td class="cell-left">
+            <span class="badge-param" :class="potentialClass(coffee.potential)">
+              {{ coffee.potential }}
             </span>
           </td>
           <td class="cell-left">
@@ -45,16 +50,9 @@
             </span>
           </td>
           <td class="cell-left">{{ coffee.supplier }}</td>
-          <td class="cell-center">{{ coffee.reviews }}</td>
-          <td class="cell-center">{{ coffee.scale }}</td>
           <td class="cell-left">
             <span class="badge-param" :class="typeClass(coffee.type)">
               {{ coffee.type }}
-            </span>
-          </td>
-          <td class="cell-left">
-            <span class="badge-param" :class="potentialClass(coffee.potential)">
-              {{ coffee.potential }}
             </span>
           </td>
           <td class="cell-left">
@@ -299,7 +297,7 @@ export default {
   vertical-align: middle;
 }
 
-/* Полужирный для столбцов "Кофейня", "Индекс" и "Точки" */
+/* Полужирный для столбцов "Индекс", "Кофейня" и "Точки" */
 .index-smr-table td:nth-child(1),
 .index-smr-table td:nth-child(2),
 .index-smr-table td:nth-child(3) {
@@ -312,9 +310,9 @@ export default {
   padding-top: 14px;
 }
 
-/* Первый столбец — всегда одна строка, без переноса, не ограничен по ширине */
-.index-smr-table th:first-child,
-.index-smr-table td:first-child,
+/* Второй столбец — всегда одна строка, без переноса, не ограничен по ширине */
+.index-smr-table th:nth-child(2),
+.index-smr-table td:nth-child(2),
 .nowrap {
   white-space: nowrap !important;
   max-width: none !important;
@@ -332,9 +330,11 @@ export default {
 .cell-center {
   text-align: center;
 }
+
 .cell-left {
   text-align: left;
 }
+
 .cell-nowrap {
   white-space: nowrap;
 }
@@ -343,10 +343,12 @@ export default {
   color: #fbbf24;
   font-weight: bold;
 }
+
 .icon-red {
   color: #dc2626;
   font-weight: bold;
 }
+
 .icon-green {
   color: #22c55e;
   font-weight: bold;
@@ -573,6 +575,7 @@ export default {
     padding: 2px 6px;
   }
 }
+
 @media (max-width: 760px) {
   .index-smr-table th,
   .index-smr-table td {
@@ -598,6 +601,7 @@ export default {
     padding: 2px 5px;
   }
 }
+
 @media (max-width: 480px) {
   .index-smr-table th,
   .index-smr-table td {
