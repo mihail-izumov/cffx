@@ -267,31 +267,54 @@ select option {
 .why-summary {
   display: block;
   position: relative;
-  padding: 14px 16px; /* Уменьшил паддинг для нужной высоты */
+  padding: 14px 16px;
   margin: 0;
   font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #ffffff !important;
   cursor: pointer;
-  user-select: none;
-  outline: none;
-  border: none;
-  background: transparent;
+  user-select: none !important;
+  outline: none !important;
+  border: none !important;
+  background: transparent !important;
   text-align: left;
   width: 100%;
   box-sizing: border-box;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  transition: none;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  transition: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
 }
 
-.why-summary:focus {
+.why-summary:hover,
+.why-summary:focus,
+.why-summary:active {
   outline: none !important;
+  border: none !important;
   box-shadow: none !important;
+  background: transparent !important;
 }
 
 .why-summary::-webkit-details-marker {
   display: none !important;
+}
+
+.why-summary::-moz-focus-inner {
+  border: 0 !important;
+  padding: 0 !important;
+  outline: none !important;
+}
+
+.why-summary::selection {
+  background: transparent !important;
+}
+
+.why-summary::-moz-selection {
+  background: transparent !important;
 }
 
 .why-summary::before {
@@ -351,19 +374,6 @@ select option {
   text-align: left;
 }
 
-/* Дополнительные правила для подавления артефактов */
-.why-summary::-moz-focus-inner {
-  border: 0;
-  padding: 0;
-}
-.why-summary::selection {
-  background: transparent;
-}
-.why-summary::-moz-selection {
-  background: transparent;
-}
-
-
 /* ---------- МОБИЛЬНЫЙ ---------- */
 @media(max-width:768px){
   .calculator-card{padding:16px 18px;margin-bottom:24px}
@@ -375,7 +385,7 @@ select option {
   .result-block p{font-size:13px}
   .why-summary{
     font-size:15px;
-    padding:12px 14px; /* Уменьшил паддинг и для мобильной версии */
+    padding:12px 14px;
   }
   .why-list li{font-size:13px}
   .why-total{font-size:13px}
