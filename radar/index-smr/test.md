@@ -1,3 +1,8 @@
+---
+layout: fullwidth
+outline: false
+---
+
 # Кофейни // Самара (тест)
 
 <IndexSMRTest />
