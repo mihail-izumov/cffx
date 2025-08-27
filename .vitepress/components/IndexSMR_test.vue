@@ -98,7 +98,7 @@ export default {
   name: 'IndexSMR',
   data() {
     return {
-      activeRowIndex: null, // <-- Новое состояние для хранения индекса активной строки
+      activeRowIndex: null,
       statusOrder: [
         'Лидер 👑',
         'Сильный 💪', 
@@ -179,7 +179,7 @@ export default {
   methods: {
     setActiveRow(index) {
       if (this.activeRowIndex === index) {
-        this.activeRowIndex = null; // Повторный клик снимает выделение
+        this.activeRowIndex = null;
       } else {
         this.activeRowIndex = index;
       }
@@ -351,6 +351,7 @@ export default {
 
 .index-smr-table tbody tr {
   cursor: pointer;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 .index-smr-table tbody tr:hover { 
@@ -359,15 +360,15 @@ export default {
 
 /* Стиль для активной (кликнутой) строки */
 .active-row {
-  background: rgba(var(--vp-c-brand-rgb), 0.1) !important;
-}
-
-.active-row td {
-  color: var(--vp-c-brand-1);
+  box-shadow: inset 3px 0 0 #c5f946, inset -3px 0 0 #c5f946;
+  background: rgba(197, 249, 70, 0.08) !important;
 }
 
 .golden-row { 
   background: linear-gradient(90deg,rgba(255,230,90,0.05) 0%,rgba(255,226,120,0.0) 100%); 
+}
+.active-row.golden-row {
+  background: linear-gradient(90deg, rgba(255,230,90,0.1) 0%, rgba(197, 249, 70, 0.05) 100%) !important;
 }
 
 .out-of-game-separator td { border-top: 4px solid #ff6b6b !important; padding-top: 14px; }
