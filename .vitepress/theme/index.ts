@@ -27,6 +27,7 @@ import IndexSMRTest from '../components/IndexSMR_test.vue'
 import CoffeeGlossaryTabs from '../components/CoffeeGlossaryTabs.vue'
 import GrowthIndexMethod from '../components/GrowthIndexMethod.vue'
 import IndexGuide from '../components/IndexGuide.vue'
+import IndexPlans from '../components/IndexPlans.vue'
 
 export default {
   extends: DefaultTheme,
@@ -60,5 +61,6 @@ export default {
     app.component('CoffeeGlossaryTabs', CoffeeGlossaryTabs)
     app.component('GrowthIndexMethod', GrowthIndexMethod)
     app.component('IndexGuide', IndexGuide)
+    app.component('IndexPlans', IndexPlans)
   }
 }
