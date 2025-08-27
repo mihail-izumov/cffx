@@ -74,7 +74,6 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-/* ---------- МАССИВ ДАННЫХ ---------- */
 const cafes = ref([
   { id: 1, name: 'Balance coffee', index: 40, points: 1, reviews: 147, potential: 14, stage: 15, innovation: 14, influence: 11, type: 5, K: 3.0, scaleFactor: 5.7, reasoning: 'Стартап с низким индексом — огромный потенциал базовых улучшений', signal: '1 точка и индекс 40 — разрыв между достижениями и признанием', solution: 'Системное усиление всех параметров индекса', keyQuestion: { prefix: 'Почему, имея 147+ отзывов, вы не достигли статуса', status: 'Растущий 📈', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' },
   { id: 2, name: 'Bonfix', index: 45, points: 2, reviews: 143, potential: 15, stage: 15, innovation: 14, influence: 10, type: 5, K: 3.0, scaleFactor: 5.7, reasoning: 'Малая сеть может быстро масштабировать лучшие практики', signal: '2 точки и индекс 45 — разрыв между возможностями и признанием', solution: 'Системное усиление всех параметров индекса', keyQuestion: { prefix: 'Почему, имея 143+ отзывов, вы не достигли статуса', status: 'Сильный 💪', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' },
@@ -147,191 +146,138 @@ function calculate() {
 <style scoped>
 /* ---------- ОБЩИЕ СТИЛИ КОМПОНЕНТА ---------- */
 .calculator-card {
-  width: 100%;
-  max-width: 720px;
-  margin: 0 auto 32px;
-  padding: 20px 24px;
-  background: #1e1e1e !important;
-  border: 1px solid #2b2b2b !important;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-  color: #ffffff !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  width: 100%; max-width: 720px; margin: 0 auto 32px; padding: 20px 24px;
+  background: #1e1e1e !important; border: 1px solid #2b2b2b !important;
+  border-radius: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 .input-group { margin-bottom: 16px; }
 label {
-  display: block;
-  margin-bottom: 6px;
+  display: block; margin-bottom: 6px;
   font: 600 14px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #ffffff !important;
 }
-select,
-input {
-  width: 100%;
-  height: 44px;
-  padding: 0 14px;
+select, input {
+  width: 100%; height: 44px; padding: 0 14px;
   font: 500 15px/44px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #141414 !important;
-  border: 1px solid #333333 !important;
-  border-radius: 8px;
-  color: #ffffff !important;
-  transition: border-color 0.25s ease;
+  background: #141414 !important; border: 1px solid #333333 !important;
+  border-radius: 8px; color: #ffffff !important; transition: border-color 0.25s ease;
 }
-select:focus, input:focus {
-  border-color: #c5f946 !important;
-  outline: 0;
-}
+select:focus, input:focus { border-color: #c5f946 !important; outline: 0; }
 input::placeholder { color: #888888 !important; }
-select option {
-  background: #141414 !important;
-  color: #ffffff !important;
-}
+select option { background: #141414 !important; color: #ffffff !important; }
 .btn-calc {
-  width: 100%;
-  height: 44px;
-  margin-top: 12px;
+  width: 100%; height: 44px; margin-top: 12px;
   font: 700 16px/44px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  text-transform: uppercase;
-  color: #000000 !important;
-  background: #c5f946 !important;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  text-transform: uppercase; color: #000000 !important; background: #c5f946 !important;
+  border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s, transform 0.2s;
 }
-.btn-calc:disabled {
-  background: #555555 !important;
-  color: #cccccc !important;
-  cursor: not-allowed;
-}
-.btn-calc:not(:disabled):hover {
-  background: #347b6c !important;
-  color: #ffffff !important;
-  transform: translateY(-2px);
-}
+.btn-calc:disabled { background: #555555 !important; color: #cccccc !important; cursor: not-allowed; }
+.btn-calc:not(:disabled):hover { background: #347b6c !important; color: #ffffff !important; transform: translateY(-2px); }
 
 /* ---------- БЛОК РЕЗУЛЬТАТА ---------- */
 .result {
-  margin-top: 20px;
-  padding: 20px;
-  background: #141414 !important;
-  border-radius: 10px;
-  border: 1px solid #2b2b2b !important; /* Эта обводка была в вашем коде, я ее вернул, т.к. возможно она нужна для всего блока */
+  margin-top: 20px; padding: 20px; background: #141414 !important;
+  border: 1px solid #2b2b2b !important; border-radius: 10px;
 }
 .result-title {
-  margin: 0 0 20px;
-  font: 600 18px/1.3 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  text-align: center;
-  color: #c5f946 !important;
+  margin: 0 0 20px; font: 600 18px/1.3 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  text-align: center; color: #c5f946 !important;
 }
 .result-block {
-  margin: 0 0 16px;
-  padding: 12px 16px;
-  background: #1a1a1a !important;
-  border: 1px solid #2b2b2b !important;
-  border-radius: 8px;
+  margin: 0 0 16px; padding: 12px 16px; background: #1a1a1a !important;
+  border: 1px solid #2b2b2b !important; border-radius: 8px;
 }
 .result-block:last-of-type { margin-bottom: 20px; }
 .result-block p {
-  margin: 8px 0;
-  font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  margin: 8px 0; font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #ffffff !important;
 }
 .result-block p:first-child { margin-top: 0; }
 .result-block p:last-child { margin-bottom: 0; }
-.highlight {
-  color: #c5f946 !important;
-  font-weight: 600;
-}
+.highlight { color: #c5f946 !important; font-weight: 600; }
 .badge-status {
-  display: inline-block;
-  background: #347b6c !important;
-  color: #d0f0d0 !important;
-  border-radius: 50px;
-  padding: 2px 8px;
-  font-size: 0.85em;
-  white-space: nowrap;
-  vertical-align: baseline;
-  margin: 0 2px;
+  display: inline-block; background: #347b6c !important; color: #d0f0d0 !important;
+  border-radius: 50px; padding: 2px 8px; font-size: 0.85em;
+  white-space: nowrap; vertical-align: baseline; margin: 0 2px;
 }
 
 /* ---------- ИСПРАВЛЕННЫЙ БЛОК "ПОЧЕМУ ВСЁ ПОЛУЧИТСЯ" ---------- */
 .why-section {
-  overflow: hidden; /* Предотвращает "вылезание" контента */
   margin: 0;
   border-radius: 8px;
-  background: #347b6c !important;
+  background-color: #347b6c !important;
+  border: none;
+  padding: 0;
 }
 .why-summary {
   display: block;
   position: relative;
+  /* ✔️ ВОЗВРАЩАЕМ ИСХОДНЫЕ РАЗМЕРЫ И КУРСОР */
   padding: 18px 16px;
-  font: 600 16px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font: 600 16px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   color: #ffffff !important;
-  cursor: default;     /* Убираем курсор-руку */
-  user-select: none;   /* Убираем выделение текста и курсор | */
-  outline: none;       /* Убираем синюю рамку при фокусе */
-  transition: border-radius 0.3s;
+  cursor: pointer;
+  /* ✔️ УБИРАЕМ АРТЕФАКТ КУРСОРА "|" */
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+  list-style: none; /* Убираем маркер для <summary> */
+  margin: 0;
+  border-radius: 8px;
+  transition: border-bottom-left-radius 0s .2s, border-bottom-right-radius 0s .2s;
 }
+.why-summary::-webkit-details-marker { display: none; }
 .why-summary:hover {
-  background: none !important; /* Убираем эффект ховера из прошлого кода */
+  background: none !important;
+  color: #ffffff !important;
 }
-.why-summary::-webkit-details-marker { display: none; } /* Скрываем стандартную стрелку */
-.why-summary::before { /* Кастомная стрелка */
+.why-summary::before {
   content: '';
   position: absolute;
   right: 16px;
   top: 50%;
   transform: translateY(-50%) rotate(0deg);
-  width: 0;
-  height: 0;
+  width: 0; height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   border-top: 8px solid #ffffff;
-  transition: transform 0.3s ease;
+  transition: transform .3s ease;
 }
-/* Анимация радиуса и стрелки при открытии */
+/* ✔️ УБИРАЕМ АРТЕФАКТ-ЛИНИЮ МЕЖДУ БЛОКАМИ */
 .why-section[open] > .why-summary {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+  transition-delay: 0s;
 }
-.why-section[open] > .why-summary::before {
-  transform: translateY(-50%) rotate(180deg);
-}
-
 .why-content {
-  padding: 0 16px 18px; /* Убираем верхний паддинг, чтобы не было отступа */
-  background: #347b6c !important;
+  padding: 8px 16px 18px;
+  border-radius: 0 0 8px 8px;
 }
-
-/* ИСПРАВЛЕННЫЙ СПИСОК */
+/* ✔️ ИСПРАВЛЯЕМ ДВОЙНЫЕ БУЛЛЕТЫ */
 .why-list {
-  list-style: none; /* Убираем стандартные буллеты */
-  padding: 0;       /* Убираем стандартный отступ */
-  margin: 0 0 12px 0;
+  padding: 0;
+  margin: 0 0 12px;
+  list-style-type: none; /* Главное правило для удаления буллетов */
 }
 .why-list li {
   position: relative;
-  padding-left: 18px; /* Место для кастомного буллета */
-  margin: 8px 0;
-  font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding-left: 15px; /* Место для кастомного буллета */
+  margin: 6px 0;
+  font: 400 14px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   color: #ffffff !important;
 }
 .why-list li::before {
-  content: '•'; /* Наш кастомный буллет */
+  content: "•";
   position: absolute;
   left: 0;
-  top: 0;
-  font-size: 1.2em;
-  line-height: 1;
+  top: 1px;
   color: #ffffff;
 }
-
 .why-total {
   margin: 0;
   padding: 8px 0 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Разделитель */
-  font: 600 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font: 600 14px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   color: #ffffff !important;
   text-align: left;
 }
