@@ -3,7 +3,9 @@
     <table class="index-smr-table">
       <thead>
         <tr>
-          <th>Индекс</th>
+          <th class="index-column">
+            <span class="animated-icon">⚡</span>
+          </th>
           <th>Кофейня</th>
           <th class="points-column">Точки</th>
           <th>Отзывы</th>
@@ -27,7 +29,7 @@
             'out-of-game-separator': isFirstOutOfGame(coffee, idx)
           }"
         >
-          <td class="cell-center">{{ coffee.index }}</td>
+          <td class="cell-center index-column">{{ coffee.index }}</td>
           <td class="cell-left nowrap">
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
             {{ coffee.name }}
@@ -298,6 +300,29 @@ export default {
 .index-smr-table th a:hover { color: var(--vp-c-brand-1, #646cff); text-decoration-style: solid; }
 .index-smr-table th a:visited { color: inherit; }
 
+/* Стилизация столбца "Индекс" */
+.index-column {
+  width: 60px;
+  text-align: center;
+}
+
+.animated-icon {
+  display: inline-block;
+  font-size: 1.2em;
+  animation: pulse 2.5s infinite;
+  transition: transform 0.3s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); text-shadow: 0 0 5px rgba(255, 255, 0, 0); }
+  50% { transform: scale(1.1); text-shadow: 0 0 10px rgba(255, 193, 7, 0.7); }
+  100% { transform: scale(1); text-shadow: 0 0 5px rgba(255, 255, 0, 0); }
+}
+
+.index-smr-table th:hover .animated-icon {
+  transform: scale(1.2);
+}
+
 /* ЯЧЕЙКИ */
 .index-smr-table td {
   padding: 10px 8px;
@@ -309,7 +334,7 @@ export default {
   vertical-align: middle;
 }
 
-.index-smr-table td:nth-child(1), .index-smr-table td:nth-child(2) { font-weight: 600; }
+.index-smr-table td:nth-child(2) { font-weight: 600; }
 .index-smr-table th:nth-child(2), .index-smr-table td:nth-child(2), .nowrap {
   white-space: nowrap !important; max-width: none !important; width: auto !important;
 }
@@ -327,6 +352,7 @@ export default {
 .points-column {
   white-space: nowrap;
   font-weight: 600;
+  width: 100px;
 }
 
 /* Точка стагнации */
