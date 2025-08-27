@@ -6,6 +6,9 @@ outline: false
 
 <IndexSMRTest />
 
-<CoffeeGlossaryTabs />
 
+## Как считаем
 <GrowthIndexMethod />
+
+## Зерно → Выручка
+<CoffeeGlossaryTabs />
