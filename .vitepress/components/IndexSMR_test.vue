@@ -300,7 +300,6 @@ export default {
   white-space: nowrap;
   vertical-align: middle;
 }
-
 .index-column { width: 60px; text-align: center; }
 .points-column { white-space: nowrap; font-weight: 600; width: 100px; }
 .nowrap { white-space: nowrap !important; }
@@ -338,11 +337,8 @@ export default {
 .active-row td {
   background: rgba(197, 249, 70, 0.08) !important;
 }
-.active-row td:first-child {
-  box-shadow: inset 3px 0 0 #c5f946;
-}
-.active-row td:last-child {
-  box-shadow: inset -3px 0 0 #c5f946;
+.active-row {
+  box-shadow: inset 0 2px 0 #c5f946, inset 0 -2px 0 #c5f946;
 }
 
 .index-smr-table tbody tr:hover td {
@@ -351,6 +347,7 @@ export default {
 .active-row:hover td {
   background: rgba(197, 249, 70, 0.12) !important;
 }
+
 
 .golden-row {
   background: linear-gradient(90deg,rgba(255,230,90,0.05) 0%,rgba(255,226,120,0.0) 100%);
