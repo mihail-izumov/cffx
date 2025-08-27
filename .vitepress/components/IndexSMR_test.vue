@@ -32,8 +32,12 @@
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
             {{ coffee.name }}
           </td>
-          <td class="cell-center">{{ coffee.points }} ({{ coffee.scale }})</td>
-          <td class="cell-center">{{ coffee.reviews }}</td>
+          <td class="cell-left">
+            {{ coffee.points }}
+            <span v-if="coffee.scale !== '·'" class="scale-text"> ({{ coffee.scale }})</span>
+            <span v-else class="stagnation-dot">·</span>
+          </td>
+          <td class="cell-left">{{ coffee.reviews }}</td>
           <td class="cell-nowrap">
             <span class="badge" :class="statusClass(coffee.status)">
               {{ coffee.status }}
@@ -112,7 +116,7 @@ export default {
         { icon:'🔴', index:57,  name:'Cofix', reviews:'253', points:5,  scale:'~7+', status:'Растущий 📈', supplier:'Cofix (контрактная обжарка)', beanType:'Свой бренд 🏷️', type:'Франшиза', potential:'Средний', stage:'Рост', innovation:'Низкая', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:55,  name:'Green Stag Roasters', reviews:'119', points:1,  scale:'~3+', status:'Растущий 📈', supplier:'Собственная обжарка', beanType:'Спешелти ⭐', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Высокий' },
         { icon:'🔴', index:55,  name:'Shu Authentic Coffee', reviews:'151', points:1, scale:'~2+', status:'Растущий 📈', supplier:'Собственная обжарка', beanType:'Спешелти ⭐', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Высокий' },
-        { icon:'🔴', index:53,  name:'Cup-cup', reviews:'1,505', points:20,  scale:'~27+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Независимая', potential:'Средний', stage:'Зрелость', innovation:'Низкая', influence:'Среднее', growth:'Средний' },
+        { icon:'🔴', index:53,  name:'Cup-cup', reviews:'1,505', points:20,  scale:'~27+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Независимая', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Среднее', growth:'Низкий' },
         { icon:'🔴', index:52,  name:'Хюггешная', reviews:'885', points:6,  scale:'~6+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Среднее', growth:'Средний' },
         { icon:'🔴', index:50,  name:'Булка нетто', reviews:'771', points:3,  scale:'~5+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:45,  name:'Coffee Bean', reviews:'1,703', points:1,  scale:'~2+', status:'Растущий 📈', supplier:'LEON (Coffee Bean)', beanType:'Коммерция 📦', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
@@ -120,7 +124,7 @@ export default {
         { icon:'🔴', index:45,  name:'Bonfix', reviews:'143', points:2,  scale:'~3+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:45,  name:'Coffetino', reviews:'186', points:2,  scale:'~3+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:45,  name:'Кофейный лис', reviews:'47', points:2,  scale:'~3+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:41,  name:'Юни', reviews:'376', points:3,  scale:'~5+', status:'Растущий 📈', supplier:'Tasty Coffee', beanType:'Коммерция 📦', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { icon:'🔴', index:41,  name:'Юни', reviews:'376', points:3,  scale:'~5+', status:'Растущий 📈', supplier:'Tasty Coffee', beanType:'Коммерция 📦', type:'Локальная', potential:'Низкий', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
         { icon:'🔴', index:40,  name:'Balance coffee', reviews:'147', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Стартап', innovation:'Средняя', influence:'Низкое', growth:'Высокий' },
         { icon:'🔴', index:40,  name:'Days Coffee', reviews:'15', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Ягоза', reviews:'437', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
@@ -138,18 +142,18 @@ export default {
         { icon:'🔴', index:40,  name:'Кофейная поляна', reviews:'629', points:3,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Pluma', reviews:'93', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:39,  name:'Coffee Like', reviews:'170', points:3,  scale:'~6+', status:'Стабильный 🎯', supplier:'Coffee Like (контрактная обжарка)', beanType:'Свой бренд 🏷️', type:'Локальная', potential:'Низкий', stage:'Экспансия', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:30,  name:'Толстой', reviews:'398', points:1,  scale:'стагнация', status:'Стабильный 🎯', supplier:'Tasty Coffee', beanType:'Коммерция 📦', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:30,  name:'Coffee time', reviews:'70', points:1,  scale:'стагнация', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:30,  name:'Точка притяжения', reviews:'122', points:1,  scale:'стагнация', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:30,  name:'Капуч', reviews:'65', points:1,  scale:'стагнация', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:30,  name:'Кофеваркин', reviews:'185', points:1,  scale:'стагнация', status:'Стабильный 🎯', supplier:'Собственная обжарка', beanType:'Спешелти ⭐', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:30,  name:'Белый кот', reviews:'50', points:1,  scale:'стагнация', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:30,  name:'Cup to cup', reviews:'342', points:1,  scale:'стагнация', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:30,  name:'Котель', reviews:'158', points:1,  scale:'стагнация', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:30,  name:'Coffee inn', reviews:'138', points:1,  scale:'стагнация', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:30,  name:'Coffee Cup', reviews:'114', points:2,  scale:'стагнация', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:30,  name:'Cappuccino cup', reviews:'132', points:1,  scale:'стагнация', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
-        { icon:'🔴', index:25,  name:'New coffee', reviews:'203', points:1,  scale:'стагнация', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Стартап', innovation:'Низкая', influence:'Низкое', growth:'Средний' },
+        { icon:'🔴', index:30,  name:'Толстой', reviews:'398', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Tasty Coffee', beanType:'Коммерция 📦', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { icon:'🔴', index:30,  name:'Coffee time', reviews:'70', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { icon:'🔴', index:30,  name:'Точка притяжения', reviews:'122', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { icon:'🔴', index:30,  name:'Капуч', reviews:'65', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { icon:'🔴', index:30,  name:'Кофеваркин', reviews:'185', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Собственная обжарка', beanType:'Спешелти ⭐', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { icon:'🔴', index:30,  name:'Белый кот', reviews:'50', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { icon:'🔴', index:30,  name:'Cup to cup', reviews:'342', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { icon:'🔴', index:30,  name:'Котель', reviews:'158', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { icon:'🔴', index:30,  name:'Coffee inn', reviews:'138', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { icon:'🔴', index:30,  name:'Coffee Cup', reviews:'114', points:2,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { icon:'🔴', index:30,  name:'Cappuccino cup', reviews:'132', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { icon:'🔴', index:25,  name:'New coffee', reviews:'203', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Стартап', innovation:'Низкая', influence:'Низкое', growth:'Средний' },
         { icon:'🔴', index:58,  name:'Muwa', reviews:'672', points:1,  scale:'~2+', status:'Вне игры 🚫', supplier:'Экспериментальные', beanType:'Эксперимент 🧪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Средний' },
         { icon:'🔴', index:40,  name:'Twinz', reviews:'115', points:1,  scale:'1+', status:'Вне игры 🚫', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' }
       ]
@@ -157,7 +161,6 @@ export default {
   },
   computed: {
     sortedCoffeeData() {
-      // Обновляем данные перед сортировкой
       const updatedData = this.coffeeData.map(coffee => {
         if (coffee.name === 'Cup-cup' || coffee.name === 'Юни') {
           return { ...coffee, growth: 'Средний' };
@@ -327,11 +330,14 @@ export default {
 .cell-nowrap { white-space: nowrap; }
 .supplier-cell { line-height: 1.6; }
 
+/* Точка стагнации */
+.scale-text { font-size: 0.9em; color: #888; }
+.stagnation-dot { font-weight: 900; font-size: 1.5em; line-height: 1; vertical-align: middle; color: #888; padding-left: 4px; }
+
 /* ИКОНКИ */
 .icon-yellow { color: #fbbf24; font-weight: bold; }
 .icon-red { color: #dc2626; font-weight: bold; }
 .icon-green { color: #22c55e; font-weight: bold; }
-
 
 /* --- ЕДИНЫЙ СТИЛЬ БЕЙДЖЕЙ --- */
 .badge {
@@ -369,16 +375,16 @@ export default {
 /* Параметры: Тип, Стадия, Рост и т.д. */
 .param-independent { background: rgba(197, 249, 70, 0.1); color: rgba(197, 249, 70, 0.9); border-color: rgba(197, 249, 70, 0.2); }
 .param-network { background: rgba(59, 130, 246, 0.1); color: rgba(96, 165, 250, 0.9); border-color: rgba(59, 130, 246, 0.2); }
-.param-franchise { background: rgba(168, 85, 247, 0.1); color: rgba(192, 132, 252, 0.9); border-color: rgba(168, 85, 247, 0.25); }
-.param-local { background: rgba(107, 114, 128, 0.1); color: rgba(156, 163, 175, 0.9); border-color: rgba(107, 114, 128, 0.2); }
+.param-franchise { background: rgba(168, 85, 247, 0.15); color: rgba(192, 132, 252, 1); border-color: rgba(168, 85, 247, 0.3); }
+.param-local { background: rgba(107, 114, 128, 0.15); color: rgba(156, 163, 175, 1); border-color: rgba(107, 114, 128, 0.25); }
 
-.param-very-high, .param-high, .badge-potential.param-high { background: rgba(34, 197, 94, 0.1); color: rgba(52, 211, 153, 1); border-color: rgba(34, 197, 94, 0.25); }
-.param-medium, .badge-potential.param-medium { background: rgba(234, 179, 8, 0.1); color: rgba(252, 211, 77, 1); border-color: rgba(234, 179, 8, 0.25); }
-.param-low, .badge-potential.param-low { background: rgba(239, 68, 68, 0.1); color: rgba(248, 113, 113, 1); border-color: rgba(239, 68, 68, 0.25); }
+.param-very-high, .param-high, .badge.param-high { background: rgba(34, 197, 94, 0.15); color: rgba(52, 211, 153, 1); border-color: rgba(34, 197, 94, 0.3); }
+.param-medium, .badge.param-medium { background: rgba(234, 179, 8, 0.15); color: rgba(252, 211, 77, 1); border-color: rgba(234, 179, 8, 0.3); }
+.param-low, .badge.param-low { background: rgba(239, 68, 68, 0.15); color: rgba(248, 113, 113, 1); border-color: rgba(239, 68, 68, 0.3); }
 
 .param-expansion { background: rgba(59, 130, 246, 0.1); color: rgba(96, 165, 250, 0.9); border-color: rgba(59, 130, 246, 0.2); }
 .param-growth { background: rgba(34, 197, 94, 0.1); color: rgba(52, 211, 153, 0.9); border-color: rgba(34, 197, 94, 0.2); }
-.param-mature { background: rgba(156, 163, 175, 0.1); color: rgba(156, 163, 175, 0.9); border-color: rgba(156, 163, 175, 0.2); }
+.param-mature { background: rgba(156, 163, 175, 0.15); color: rgba(156, 163, 175, 1); border-color: rgba(156, 163, 175, 0.25); }
 .param-startup { background: rgba(168, 85, 247, 0.1); color: rgba(192, 132, 252, 0.9); border-color: rgba(168, 85, 247, 0.2); }
 .param-default { background: rgba(107, 114, 128, 0.1); color: rgba(107, 114, 128, 0.9); border-color: rgba(107, 114, 128, 0.2); }
 
