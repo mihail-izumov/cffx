@@ -40,8 +40,8 @@
             </span>
           </td>
           <td class="cell-left">
-            <span class="badge-param" :class="potentialClass(coffee.potential)">
-              {{ coffee.potential }}
+            <span class="badge-potential" :class="potentialClass(coffee.potential)">
+              {{ coffee.potential }} {{ potentialEmoji(coffee.potential) }}
             </span>
           </td>
           <td class="cell-left">
@@ -49,7 +49,11 @@
               {{ coffee.beanType }}
             </span>
           </td>
-          <td class="cell-left">{{ coffee.supplier }}</td>
+          <td class="cell-left">
+            <span class="supplier-name">
+              {{ supplierNameClean(coffee.supplier) }}
+            </span>
+          </td>
           <td class="cell-left">
             <span class="badge-param" :class="typeClass(coffee.type)">
               {{ coffee.type }}
@@ -232,6 +236,22 @@ export default {
     isFirstOutOfGame(coffee, index) {
       return coffee.status === 'Вне игры 🚫' && 
              (index === 0 || this.sortedCoffeeData[index - 1].status !== 'Вне игры 🚫')
+    },
+    potentialEmoji(potential) {
+      if (potential === 'Высокий') return '⬆️'
+      if (potential === 'Низкий') return '⬇️'
+      if (potential === 'Средний') return '✨'
+      return ''
+    },
+    supplierNameClean(supplier) {
+      let name = supplier
+      // Удалить "контрактная обжарка"
+      name = name.replace(/\(контрактная обжарка\)/gi, '').trim()
+      // Заменить "Собственная обжарка" на "Своя обжарка"
+      if (name === 'Собственная обжарка') name = 'Своя обжарка'
+      // Убрать названия городов (текст в скобках)
+      name = name.replace(/\s*\([^\)]*\)/gi, '').trim()
+      return name
     }
   }
 }
@@ -455,6 +475,30 @@ export default {
   border: 1px solid rgba(107, 114, 128, 0.1);
 }
 
+/* Бейджи потенциала - сделать крупнее и заметнее */
+.badge-potential {
+  display: inline-block;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 1.2em;
+  white-space: nowrap;
+  vertical-align: baseline;
+  margin: 0 8px 0 4px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Стили для серых названий поставщиков */
+.supplier-name {
+  color: #999;
+  font-weight: 400;
+  font-size: 0.9em;
+  white-space: nowrap;
+  opacity: 0.75;
+  user-select: text;
+}
+
 /* Приглушенные бейджи для параметров */
 .badge-param {
   display: inline-block;
@@ -566,6 +610,10 @@ export default {
     font-size: 0.8em;
     padding: 2px 8px;
   }
+  .badge-potential {
+    font-size: 1.1em;
+    padding: 5px 12px;
+  }
   .badge-param {
     font-size: 0.7em;
     padding: 1px 4px;
@@ -592,6 +640,10 @@ export default {
     font-size: 0.75em;
     padding: 2px 6px;
   }
+  .badge-potential {
+    font-size: 1em;
+    padding: 4px 10px;
+  }
   .badge-param {
     font-size: 0.65em;
     padding: 1px 3px;
@@ -617,6 +669,10 @@ export default {
   .badge-status {
     font-size: 0.7em;
     padding: 1px 4px;
+  }
+  .badge-potential {
+    font-size: 0.9em;
+    padding: 3px 8px;
   }
   .badge-param {
     font-size: 0.6em;
