@@ -49,9 +49,9 @@
               {{ coffee.beanType }}
             </span>
           </td>
-          <td class="cell-left">
-            <span class="supplier-name">
-              {{ supplierNameClean(coffee.supplier) }}
+          <td class="cell-left supplier-cell">
+            <span v-for="name in getCleanedSuppliers(coffee.supplier)" :key="name" class="badge-supplier">
+              {{ name }}
             </span>
           </td>
           <td class="cell-left">
@@ -243,15 +243,16 @@ export default {
       if (potential === 'Средний') return '✨'
       return ''
     },
-    supplierNameClean(supplier) {
-      let name = supplier
-      // Удалить "контрактная обжарка"
-      name = name.replace(/\(контрактная обжарка\)/gi, '').trim()
-      // Заменить "Собственная обжарка" на "Своя обжарка"
-      if (name === 'Собственная обжарка') name = 'Своя обжарка'
-      // Убрать названия городов (текст в скобках)
-      name = name.replace(/\s*\([^\)]*\)/gi, '').trim()
-      return name
+    getCleanedSuppliers(supplier) {
+      const names = supplier.split(/, |,/g);
+      return names.map(name => {
+        let cleaned = name.replace(/\(контрактная обжарка\)/gi, '').trim();
+        cleaned = cleaned.replace(/\s*\([^\)]*\)/gi, '').trim();
+        if (cleaned === 'Собственная обжарка') {
+          return 'Своя обжарка';
+        }
+        return cleaned;
+      });
     }
   }
 }
@@ -359,6 +360,10 @@ export default {
   white-space: nowrap;
 }
 
+.supplier-cell {
+  line-height: 1.6;
+}
+
 .icon-yellow {
   color: #fbbf24;
   font-weight: bold;
@@ -374,7 +379,7 @@ export default {
   font-weight: bold;
 }
 
-/* Бейджи статусов - кислотные приглушенные цвета в стиле UX 2025 */
+/* Бейджи статусов */
 .badge-status {
   display: inline-block;
   border-radius: 6px;
@@ -387,35 +392,30 @@ export default {
   letter-spacing: 0.02em;
 }
 
-/* Кислотный лайм для лидера */
 .status-leader {
   background: rgba(197, 249, 70, 0.15) !important;
   color: #c5f946 !important;
   border: 1px solid rgba(197, 249, 70, 0.3);
 }
 
-/* Кислотный синий для сильного */
 .status-strong {
   background: rgba(59, 130, 246, 0.15) !important;
   color: #60a5fa !important;
   border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
-/* Кислотный зеленый для растущего (как на сайте) */
 .status-growing {
   background: rgba(34, 197, 94, 0.15) !important;
   color: #4ade80 !important;
   border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
-/* Приглушенный серый для стабильного */
 .status-stable {
   background: rgba(156, 163, 175, 0.12) !important;
   color: #9ca3af !important;
   border: 1px solid rgba(156, 163, 175, 0.25);
 }
 
-/* Коралловый для вне игры */
 .status-out {
   background: rgba(255, 107, 107, 0.15) !important;
   color: #ff6b6b !important;
@@ -434,35 +434,30 @@ export default {
   border: 1px solid transparent;
 }
 
-/* Свой бренд - золотисто-оранжевый */
 .bean-own-brand {
   background: rgba(245, 158, 11, 0.12) !important;
   color: #f59e0b !important;
   border: 1px solid rgba(245, 158, 11, 0.25);
 }
 
-/* Коммерция - фиолетово-синий */
 .bean-commercial {
   background: rgba(99, 102, 241, 0.12) !important;
   color: #6366f1 !important;
   border: 1px solid rgba(99, 102, 241, 0.25);
 }
 
-/* Спешелти - изумрудно-зеленый */
 .bean-specialty {
   background: rgba(16, 185, 129, 0.12) !important;
   color: #10b981 !important;
   border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
-/* Без бренда - нейтральный серый */
 .bean-no-brand {
   background: rgba(107, 114, 128, 0.08) !important;
   color: rgba(107, 114, 128, 0.8) !important;
   border: 1px solid rgba(107, 114, 128, 0.15);
 }
 
-/* Эксперимент - кислотный розово-фиолетовый */
 .bean-experiment {
   background: rgba(236, 72, 153, 0.12) !important;
   color: #ec4899 !important;
@@ -475,28 +470,32 @@ export default {
   border: 1px solid rgba(107, 114, 128, 0.1);
 }
 
-/* Бейджи потенциала - сделать крупнее и заметнее */
+/* Бейджи потенциала - пропорциональный размер + рамка */
 .badge-potential {
   display: inline-block;
-  border-radius: 8px;
-  padding: 6px 14px;
-  font-size: 1.2em;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.95em;
   white-space: nowrap;
   vertical-align: baseline;
-  margin: 0 8px 0 4px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  margin: 0 4px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
 }
 
-/* Стили для серых названий поставщиков */
-.supplier-name {
-  color: #999;
-  font-weight: 400;
-  font-size: 0.9em;
+/* Стили для серых бейджей поставщиков */
+.badge-supplier {
+  display: inline-block;
+  background: rgba(107, 114, 128, 0.1);
+  color: #a0a0a0;
+  border: 1px solid rgba(107, 114, 128, 0.2);
+  padding: 2px 8px;
+  margin: 2px;
+  font-size: 0.8em;
+  font-weight: 500;
+  border-radius: 4px;
   white-space: nowrap;
-  opacity: 0.75;
-  user-select: text;
 }
 
 /* Приглушенные бейджи для параметров */
@@ -538,28 +537,28 @@ export default {
 }
 
 /* Уровни (Высокий/Средний/Низкий) */
-.param-very-high {
-  background: rgba(34, 197, 94, 0.08) !important;
-  color: rgba(34, 197, 94, 0.9) !important;
-  border-color: rgba(34, 197, 94, 0.15);
+.param-very-high, .badge-potential.param-high {
+  background: rgba(34, 197, 94, 0.1) !important;
+  color: rgba(52, 211, 153, 1) !important;
+  border-color: rgba(34, 197, 94, 0.3) !important;
 }
 
 .param-high {
   background: rgba(34, 197, 94, 0.06) !important;
   color: rgba(34, 197, 94, 0.8) !important;
-  border-color: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.12) !important;
 }
 
-.param-medium {
-  background: rgba(234, 179, 8, 0.06) !important;
-  color: rgba(234, 179, 8, 0.8) !important;
-  border-color: rgba(234, 179, 8, 0.12);
+.param-medium, .badge-potential.param-medium {
+  background: rgba(234, 179, 8, 0.1) !important;
+  color: rgba(252, 211, 77, 1) !important;
+  border-color: rgba(234, 179, 8, 0.3) !important;
 }
 
-.param-low {
-  background: rgba(239, 68, 68, 0.06) !important;
-  color: rgba(239, 68, 68, 0.8) !important;
-  border-color: rgba(239, 68, 68, 0.12);
+.param-low, .badge-potential.param-low {
+  background: rgba(239, 68, 68, 0.08) !important;
+  color: rgba(248, 113, 113, 1) !important;
+  border-color: rgba(239, 68, 68, 0.25) !important;
 }
 
 /* Стадии */
@@ -611,8 +610,8 @@ export default {
     padding: 2px 8px;
   }
   .badge-potential {
-    font-size: 1.1em;
-    padding: 5px 12px;
+    font-size: 0.9em;
+    padding: 3px 8px;
   }
   .badge-param {
     font-size: 0.7em;
@@ -621,6 +620,9 @@ export default {
   .badge-bean {
     font-size: 0.75em;
     padding: 2px 6px;
+  }
+  .badge-supplier {
+    font-size: 0.75em;
   }
 }
 
@@ -641,8 +643,8 @@ export default {
     padding: 2px 6px;
   }
   .badge-potential {
-    font-size: 1em;
-    padding: 4px 10px;
+    font-size: 0.85em;
+    padding: 3px 7px;
   }
   .badge-param {
     font-size: 0.65em;
@@ -651,6 +653,9 @@ export default {
   .badge-bean {
     font-size: 0.7em;
     padding: 2px 5px;
+  }
+  .badge-supplier {
+    font-size: 0.7em;
   }
 }
 
@@ -671,8 +676,8 @@ export default {
     padding: 1px 4px;
   }
   .badge-potential {
-    font-size: 0.9em;
-    padding: 3px 8px;
+    font-size: 0.8em;
+    padding: 2px 6px;
   }
   .badge-param {
     font-size: 0.6em;
@@ -681,6 +686,9 @@ export default {
   .badge-bean {
     font-size: 0.65em;
     padding: 1px 4px;
+  }
+  .badge-supplier {
+    font-size: 0.65em;
   }
 }
 </style>
