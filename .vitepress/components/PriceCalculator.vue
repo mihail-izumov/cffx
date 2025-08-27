@@ -21,23 +21,28 @@
       />
     </div>
     <button class="btn-calc" :disabled="!canCalculate" @click="calculate">
-      РАССЧИТАТЬ
+      Рассчитать [+₽↑]
     </button>
     <!-- Блок результата -->
     <transition name="fade">
       <div v-if="resultShown" class="result">
         <h3 class="result-title">{{ result.name }} (Индекс {{ result.index }})</h3>
-        <!-- ... (остальные блоки результата без изменений) ... -->
+        <!-- Блок 1: Основные показатели -->
         <div class="result-block">
           <p><strong>Потенциал роста:</strong>&nbsp;<span class="highlight">{{ format(result.total) }} ₽</span> в год (+{{ result.percent }}%)</p>
           <p><strong>На каждую точку ({{ result.points }}):</strong>&nbsp;<span class="highlight">{{ format(result.perPoint) }} ₽/год</span></p>
-          <p><strong>Время на захват:</strong>&nbsp;{{ result.months }} мес. с BREW | 30 000 ₽/мес.</p>
+          <p>
+            <strong>Захват ({{ result.months }} мес.):</strong>&nbsp;
+            <a href="/brew/membership" class="link-membership">30 000 ₽/мес. с BREW</a>
+          </p>
         </div>
+        <!-- Блок 2: Анализ конкуренции -->
         <div class="result-block">
           <p><strong>Целевые конкуренты:</strong>&nbsp;{{ result.competitors }}</p>
           <p><strong>Сигнал:</strong>&nbsp;{{ result.signal }}</p>
           <p><strong>Решение:</strong>&nbsp;{{ result.solution }}</p>
         </div>
+        <!-- Блок 3: Обоснование -->
         <div class="result-block">
           <p><strong>Обоснование роста:</strong>&nbsp;{{ result.reasoning }}</p>
           <p>
@@ -50,7 +55,7 @@
           </p>
         </div>
 
-        <!-- НОВЫЙ, НАДЕЖНЫЙ ВЫПАДАЮЩИЙ БЛОК -->
+        <!-- Надежный выпадающий блок -->
         <div class="why-section">
           <button 
             class="why-summary" 
@@ -62,11 +67,11 @@
           <transition name="slide-fade">
             <div v-if="isWhyOpen" class="why-content">
               <ul class="why-list">
-                <li>Системная аналитика устраняет «слепые зоны» (+5–8 %)</li>
-                <li>Оптимизация ценообразования (+3–5 %)</li>
-                <li>Бенчмаркинг процессов (+4–6 %)</li>
-                <li>Стратегическое планирование (+3–4 %)</li>
-                <li>Раннее предупреждение о конкурентах (+2–3 %)</li>
+                <li>↑ 5–8%&nbsp; Системная аналитика устраняет «слепые зоны»</li>
+                <li>↑ 3–5%&nbsp; Оптимизация ценообразования</li>
+                <li>↑ 4–6%&nbsp; Бенчмаркинг процессов</li>
+                <li>↑ 3–4%&nbsp; Стратегическое планирование</li>
+                <li>↑ 2–3%&nbsp; Раннее предупреждение о конкурентах</li>
               </ul>
               <p class="why-total">Итого: 17–26 % обоснованного роста</p>
             </div>
@@ -80,9 +85,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-const isWhyOpen = ref(false) // Переключатель для нового блока
+const isWhyOpen = ref(false)
 
-// ... (остальной скрипт без изменений)
 const cafes = ref([
   { id: 1, name: 'Balance coffee', index: 40, points: 1, reviews: 147, potential: 14, stage: 15, innovation: 14, influence: 11, type: 5, K: 3.0, scaleFactor: 5.7, reasoning: 'Стартап с низким индексом — огромный потенциал базовых улучшений', signal: '1 точка и индекс 40 — разрыв между достижениями и признанием', solution: 'Системное усиление всех параметров индекса', keyQuestion: { prefix: 'Почему, имея 147+ отзывов, вы не достигли статуса', status: 'Растущий 📈', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' },
   { id: 2, name: 'Bonfix', index: 45, points: 2, reviews: 143, potential: 15, stage: 15, innovation: 14, influence: 10, type: 5, K: 3.0, scaleFactor: 5.7, reasoning: 'Малая сеть может быстро масштабировать лучшие практики', signal: '2 точки и индекс 45 — разрыв между возможностями и признанием', solution: 'Системное усиление всех параметров индекса', keyQuestion: { prefix: 'Почему, имея 143+ отзывов, вы не достигли статуса', status: 'Сильный 💪', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' },
@@ -146,7 +150,6 @@ function calculate() {
 </script>
 
 <style scoped>
-/* ... (здесь все стили до .why-section без изменений) ... */
 .calculator-card { width: 100%; max-width: 720px; margin: 0 auto 32px; padding: 20px 24px; background: #1e1e1e !important; border: 1px solid #2b2b2b !important; border-radius: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25); color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 .input-group { margin-bottom: 16px; }
 label { display: block; margin-bottom: 6px; font: 600 14px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #ffffff !important; }
@@ -154,7 +157,7 @@ select, input { width: 100%; height: 44px; padding: 0 14px; font: 500 15px/44px 
 select:focus, input:focus { border-color: #c5f946 !important; outline: 0; }
 input::placeholder { color: #888888 !important; }
 select option { background: #141414 !important; color: #ffffff !important; }
-.btn-calc { width: 100%; height: 44px; margin-top: 12px; font: 700 16px/44px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; text-transform: uppercase; color: #000000 !important; background: #c5f946 !important; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+.btn-calc { width: 100%; height: 44px; margin-top: 12px; font: 700 16px/44px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #000000 !important; background: #c5f946 !important; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s, transform 0.2s; }
 .btn-calc:disabled { background: #555555 !important; color: #cccccc !important; cursor: not-allowed; }
 .btn-calc:not(:disabled):hover { background: #347b6c !important; color: #ffffff !important; transform: translateY(-2px); }
 .result { margin-top: 20px; padding: 20px; background: #141414 !important; border: 1px solid #2b2b2b !important; border-radius: 10px; }
@@ -164,7 +167,18 @@ select option { background: #141414 !important; color: #ffffff !important; }
 .result-block p { margin: 8px 0; font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #ffffff !important; }
 .result-block p:first-child { margin-top: 0; }
 .result-block p:last-child { margin-bottom: 0; }
-.highlight { color: #c5f946 !important; font-weight: 600; }
+.highlight {
+  color: #c5f946 !important;
+  font-weight: 600;
+}
+.link-membership {
+  color: #c5f946 !important;
+  font-weight: 600;
+  text-decoration: none;
+}
+.link-membership:hover {
+  text-decoration: underline;
+}
 .badge-status { display: inline-block; background: #347b6c !important; color: #d0f0d0 !important; border-radius: 50px; padding: 2px 8px; font-size: 0.85em; white-space: nowrap; vertical-align: baseline; margin: 0 2px; }
 
 /* ---------- УПРОЩЕННЫЙ БЛОК "ПОЧЕМУ ВСЁ ПОЛУЧИТСЯ" ---------- */
@@ -175,25 +189,20 @@ select option { background: #141414 !important; color: #ffffff !important; }
 }
 
 .why-summary {
-  /* Стилизация кнопки, чтобы она выглядела как заголовок */
   width: 100%;
   padding: 14px 16px;
   margin: 0;
-  
   font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #ffffff;
   text-align: left;
-  
   background: transparent;
   border: none;
   cursor: pointer;
   outline: none;
-  
   position: relative;
-  -webkit-tap-highlight-color: transparent; /* Убрать синюю вспышку на мобильных */
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Псевдо-элемент для стрелки */
 .why-summary::before {
   content: '';
   position: absolute;
@@ -208,7 +217,6 @@ select option { background: #141414 !important; color: #ffffff !important; }
   transition: transform 0.3s ease;
 }
 
-/* Поворот стрелки при открытии */
 .why-summary.is-open::before {
   transform: translateY(-50%) rotate(180deg);
 }
@@ -226,20 +234,14 @@ select option { background: #141414 !important; color: #ffffff !important; }
 
 .why-list li {
   position: relative;
-  padding-left: 18px; /* Место для кастомного буллета */
-  margin: 3px 0;
-  font: 400 14px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding-left: 18px;
+  margin: 8px 0; /* Увеличил отступ для лучшей читаемости */
+  font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #ffffff;
 }
 
 .why-list li::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  top: 0;
-  font-size: 1.2em;
-  line-height: 1;
-  color: #ffffff;
+  content: ''; /* Убираем стандартный буллет, так как он теперь в тексте */
 }
 
 .why-total {
@@ -251,19 +253,12 @@ select option { background: #141414 !important; color: #ffffff !important; }
 }
 
 /* ---------- АНИМАЦИИ ---------- */
-.fade-enter-active, .fade-leave-active { 
-  transition: opacity 0.35s, transform 0.35s; 
-}
+.fade-enter-active, .fade-leave-active { transition: opacity 0.35s, transform 0.35s; }
 .fade-enter-from { opacity: 0; transform: translateY(12px); }
 .fade-leave-to { opacity: 0; transform: translateY(-12px); }
 
-/* Анимация для выпадающего списка */
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
-}
-.slide-fade-leave-active {
-  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
-}
+.slide-fade-enter-active { transition: all 0.3s ease-out; }
+.slide-fade-leave-active { transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1); }
 .slide-fade-enter-from,
 .slide-fade-leave-to {
   transform: translateY(-10px);
@@ -279,10 +274,7 @@ select option { background: #141414 !important; color: #ffffff !important; }
   .result-title{font-size:16px}
   .result-block{padding:10px 12px}
   .result-block p{font-size:13px}
-  .why-summary{
-    font-size:15px;
-    padding:12px 14px;
-  }
+  .why-summary{ font-size:15px; padding:12px 14px; }
   .why-list li{font-size:13px}
   .why-total{font-size:13px}
   .badge-status{font-size:0.8em;padding:1px 6px}
