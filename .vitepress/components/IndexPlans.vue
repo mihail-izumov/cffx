@@ -30,7 +30,7 @@
     <!-- КАРТОЧКА 2: КАЛЬКУЛЯТОР -->
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title card-title--insider">КАЛЬКУЛЯТОР</h3>
-      <p class="card-subtitle">Потенциал [+₽↑] 3–6 мес.</p>
+      <p class="card-subtitle">Потенциал роста 3–6 мес.</p>
       <div class="card-image-wrapper">
         <!-- Я оставил старое изображение, но возможно, вы захотите его поменять на что-то связанное с калькулятором -->
         <img
