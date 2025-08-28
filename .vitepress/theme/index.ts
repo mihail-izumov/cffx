@@ -29,6 +29,7 @@ import GrowthIndexMethod from '../components/GrowthIndexMethod.vue'
 import IndexGuide from '../components/IndexGuide.vue'
 import IndexPlans from '../components/IndexPlans.vue'
 import TariffFeaturesCalc from '../components/TariffFeaturesCalc.vue'
+import BrewFirst30Days from '../components/BrewFirst30Days.vue'
 
 export default {
   extends: DefaultTheme,
@@ -64,5 +65,6 @@ export default {
     app.component('IndexGuide', IndexGuide)
     app.component('IndexPlans', IndexPlans)
     app.component('TariffFeaturesCalc', TariffFeaturesCalc)
+    app.component('BrewFirst30Days', BrewFirst30Days)
   }
 }
