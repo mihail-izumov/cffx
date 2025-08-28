@@ -43,7 +43,7 @@
         <strong>Ваша Кофейня</strong>
         <div class="payment-type">Отзывы → Потенциал → Выручка</div>
       </div>
-      <p class="includes-all">Потенциал роста 3–6 мес.:</p>
+      <p class="includes-all">Потенциал роста:</p>
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>↑ Выручка ₽/год</span></li>
         <li class="feature-item"><CheckIcon /><span>Время на захват X/мес.</span></li>
