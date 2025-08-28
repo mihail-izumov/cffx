@@ -50,7 +50,7 @@
         <li class="feature-item"><CheckIcon /><span>Целевые конкуренты</span></li>
       </ul>
       <!-- Я обновил ссылку, чтобы она соответствовала новому названию -->
-      <a href="/brew/join/calculator" class="card-button">Рассчитать [+₽↑]</a>
+      <a href="/brew/join/calculator" class="card-button">Рассчитать [+₽↑] выручки</a>
     </div>
   </div>
 </template>
