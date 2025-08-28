@@ -45,7 +45,7 @@ next: false
 **Подключитесь к коллективному разуму кофейной индустрии. Без паушальных взносов и роялти. Полный контроль и вся прибыль — ваши.**
 
 <div class="start-button-container">
-  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Подключиться к BREW→</a>
+  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Подключиться к BREW →</a>
 </div>
 
 <style>
