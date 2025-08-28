@@ -30,7 +30,7 @@
     <!-- КАРТОЧКА 2: КАЛЬКУЛЯТОР -->
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title card-title--insider">КАЛЬКУЛЯТОР</h3>
-      <p class="card-subtitle">Рассчитать рост выручки за 3–6 мес.</p>
+      <p class="card-subtitle">Потенциал [+₽↑] 3–6 мес.</p>
       <div class="card-image-wrapper">
         <!-- Я оставил старое изображение, но возможно, вы захотите его поменять на что-то связанное с калькулятором -->
         <img
@@ -41,12 +41,13 @@
       </div>
       <div class="card-price">
         <strong>Ваша Кофейня</strong>
-        <div class="payment-type">Потенциал Роста</div>
+        <div class="payment-type">Отзывы → Потенциал → Выручка</div>
       </div>
       <p class="includes-all">Что показывает Индекс Роста:</p>
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>↑ Выручка ₽/год</span></li>
         <li class="feature-item"><CheckIcon /><span>Время на захват X/мес.</span></li>
+        <li class="feature-item"><CheckIcon /><span>Целевые конкуренты</span></li>
       </ul>
       <!-- Я обновил ссылку, чтобы она соответствовала новому названию -->
       <a href="/brew/join/calculator" class="card-button">Рассчитать [+₽↑]</a>
