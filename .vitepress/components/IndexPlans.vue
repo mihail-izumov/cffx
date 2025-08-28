@@ -7,7 +7,7 @@
       <div class="card-image-wrapper">
         <!-- Убедитесь, что путь к изображению верный -->
         <img
-          src="/simulator-ban.svg"
+          src="/sim-ban.svg"
           alt="Симулятор"
           class="card-image"
         />
@@ -34,7 +34,7 @@
       <div class="card-image-wrapper">
         <!-- Я оставил старое изображение, но возможно, вы захотите его поменять на что-то связанное с калькулятором -->
         <img
-          src="/insider-ban.svg" 
+          src="/calc-ban.svg" 
           alt="Калькулятор"
           class="card-image"
         />
