@@ -19,7 +19,7 @@ next: false
   <a href="/radar/index-smr/overview#от-анализа-к-результату" class="btn btn-primary" rel="noopener noreferrer">Увеличить выручку за 30 дней</a>
 </div>
 
-<IndexSMRTest />
+<IndexSMR />
 
 ## Как считаем
 <GrowthIndexMethod />
