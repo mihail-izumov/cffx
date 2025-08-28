@@ -1,5 +1,6 @@
 import { defineConfig, DefaultTheme } from 'vitepress'
 import pkg from '../package.json' assert { type: 'json' }
+
 const { version } = pkg
 
 export default defineConfig({
@@ -176,35 +177,35 @@ export default defineConfig({
       prev: 'Предыдущая страница',
       next: 'Следующая страница'
     },
-
+    
+    // --- ДОБАВЛЕННЫЙ БЛОК ДЛЯ СТРАНИЦЫ 404 ---
+    notFound: {
+      title: 'СТРАНИЦА НЕ НАЙДЕНА',
+      quote: 'Но если вы не измените направление, и если вы продолжите искать, вы можете в конечном итоге оказаться там, куда вы направляетесь.',
+      linkText: 'Вернуться домой'
+    },
+    // --- КОНЕЦ ДОБАВЛЕННОГО БЛОКА ---
+    
     // ВАЖНО: порядок от более специфичных к более общим!
     sidebar: {
       // BREW
       '/brew/': { items: sidebarBrew() },
-
       // Самара: обзор/метод
       '/radar/index-smr/': { items: sidebarRadarSamara() },
-
       // ИСПРАВЛЕНИЕ: Принудительная привязка страницы log к сайдбару России (ПЕРЕД /radar/signal/)
       '/radar/signal/log': { items: sidebarRadarRussia() },
-
       // Новосибирск — без сайдбара
       '/radar/signal/coffee-points-nsk-2025/': { items: [] },
-
       // Самара: весь остальной блок signal
       '/radar/signal/': { items: sidebarRadarSamara() },
-
       // Фильтр и Программа рекомендаций — привязка к Чекапу
       '/radar/filter': { items: sidebarCheckup() },
       '/radar/invite': { items: sidebarCheckup() },
-
       // Чекап
       '/checkup/': { items: sidebarCheckup() },
       '/checkup/prep/': { items: sidebarCheckupPrep() },
-
       // Общий Радар (Россия)
       '/radar/': { items: sidebarRadarRussia() },
-
       // Остальные разделы
       '/about/': { items: sidebarAbout() },
       '/method/': { items: sidebarMethod() },
@@ -214,7 +215,6 @@ export default defineConfig({
       '/clients/': { items: sidebarClients() },
       '/terms/': { items: sidebarTerms() }
     },
-
     search: {
       provider: 'local',
       options: {
@@ -231,7 +231,6 @@ export default defineConfig({
         }
       }
     },
-
     nav: nav(),
     socialLinks: [
       { 
@@ -297,7 +296,6 @@ function sidebarRadarSamara(): DefaultTheme.SidebarItem[] {
   ]
 }
 
-
 function sidebarRadarRussia(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -312,7 +310,6 @@ function sidebarRadarRussia(): DefaultTheme.SidebarItem[] {
     }
   ]
 }
-
 
 function sidebarCheckup(): DefaultTheme.SidebarItem[] {
   return [
