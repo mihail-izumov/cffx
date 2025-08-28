@@ -290,8 +290,7 @@ function sidebarRadarSamara(): DefaultTheme.SidebarItem[] {
       collapsed: false,
       items: [
         { text: 'Рейтинг', link: '/radar/index-smr/overview' },
-        { text: 'Как считаем', link: '/radar/index-smr/method' },
-        { text: 'Как использовать', link: '/radar/signal/instruction' },
+        { text: 'Калькулятор', link: '/radar/index-smr/calc' },
         { text: 'Симулятор', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
       ]
     }
