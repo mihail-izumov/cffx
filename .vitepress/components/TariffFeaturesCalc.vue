@@ -36,7 +36,7 @@
       <div class="tariff-badge simulator">Симулятор</div>
       <h3>Аналитика и разборы</h3>
       <p class="description-main">Используйте опыт тысяч кофеен для роста без потерь</p>
-      <p class="description-goals">Цифровая копия кофейного рынка РФ</p>
+      <p class="description-goals">Цифровая копия кофейного рынка</p>
     </div>
     
     <div class="brand-card simulator-card">
