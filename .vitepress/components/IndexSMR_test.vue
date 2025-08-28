@@ -35,6 +35,12 @@
           <td class="cell-left nowrap">
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
             {{ coffee.name }}
+            <a v-if="isInCalculator(coffee.name)" href="/radar/index-smr/calc" class="badge badge-calculator" title="Рассчитать потенциал роста">
+              <strong>[+₽↑]</strong>
+            </a>
+            <span v-if="getDessertEmoji(coffee.name)" class="dessert-emoji">
+              {{ getDessertEmoji(coffee.name) }}
+            </span>
           </td>
           <td class="cell-left points-column">
             {{ coffee.points }}
@@ -92,7 +98,6 @@
     </table>
   </div>
 </template>
-
 <script>
 export default {
   name: 'IndexSMR',
@@ -106,6 +111,14 @@ export default {
         'Стабильный 🎯',
         'Вне игры 🚫'
       ],
+      calculatorShops: [
+        'Balance coffee', 'Bonfix', 'Булка нетто', 'Coffee Bean', 'Cup-cup',
+        'Дринкит', 'Кофеваркин', 'Корж', 'Lumos barista lab', 'MB Cafe',
+        'Mosaic coffee&tea', 'Skuratov Coffee', 'Surf Coffee', 'Uco Coffee Roaster',
+        'Vandal coffee', 'White Cup', 'Хюггешная', 'Юни'
+      ],
+      dessertLeaders: ['Корж', 'Этажи', 'Muwa', 'Конфитюр', 'Coffee Bean', 'Shu Authentic Coffee'],
+      otherDesserts: ['Булка нетто', 'Lumos barista lab', 'Комод', 'Хюггешная', 'Кофейная поляна', 'Дринкит'],
       coffeeData: [
         { icon:'🟡', index:98,  name:'Корж', reviews:'4,520', points:8,  scale:'~12+', status:'Лидер 👑', supplier:'Berry Coffee (Тольятти)', beanType:'Свой бренд 🏷️', type:'Независимая', potential:'Высокий', stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Очень высокий' },
         { icon:'🔴', index:96,  name:'Skuratov Coffee', reviews:'3,129', points:6,  scale:'~10+', status:'Лидер 👑', supplier:'Skuratov Coffee Roasters', beanType:'Свой бренд 🏷️', type:'Сеть', potential:'Высокий', stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Высокий' },
@@ -183,6 +196,14 @@ export default {
       } else {
         this.activeRowIndex = index;
       }
+    },
+    isInCalculator(name) {
+      return this.calculatorShops.includes(name);
+    },
+    getDessertEmoji(name) {
+      if (this.dessertLeaders.includes(name)) return '🥐🥐';
+      if (this.otherDesserts.includes(name)) return '🥐';
+      return '';
     },
     iconClass(icon) {
       if (icon === '🟡') return 'icon-yellow';
@@ -269,21 +290,18 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 .index-smr-table-container {
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-
 .index-smr-table {
   width: 100%;
   border-spacing: 0;
   border-collapse: separate;
   table-layout: fixed;
 }
-
 /* Заголовки */
 .index-smr-table th {
   position: sticky;
@@ -314,11 +332,9 @@ export default {
   text-decoration-style: solid; 
 }
 .header-link:visited { color: inherit; }
-
 .index-column { width: 60px; text-align: center; }
 .points-column { white-space: nowrap; font-weight: 600; width: 100px; }
 .nowrap { white-space: nowrap !important; }
-
 .animated-icon {
   display: inline-block;
   font-size: 1.2em;
@@ -330,7 +346,6 @@ export default {
   50% { transform: scale(1.1); text-shadow: 0 0 10px rgba(255, 193, 7, 0.7); }
   100% { transform: scale(1); text-shadow: 0 0 5px rgba(255, 255, 0, 0); }
 }
-
 /* Ячейки */
 .index-smr-table td {
   padding: 10px 8px;
@@ -342,12 +357,10 @@ export default {
   vertical-align: middle;
 }
 .index-smr-table td:nth-child(2) { font-weight: 600; }
-
 .index-smr-table tbody tr {
   cursor: pointer;
   transition: box-shadow 0.2s ease-in-out, background 0.2s;
 }
-
 /* Выделение активной строки */
 .active-row {
   box-shadow: inset 0 2px 0 #c5f946, inset 0 -2px 0 #c5f946;
@@ -355,36 +368,28 @@ export default {
 .active-row td {
   background: rgba(197, 249, 70, 0.08) !important;
 }
-
 .index-smr-table tbody tr:hover td {
   background: rgba(120,120,120,0.12);
 }
 .active-row:hover td {
   background: rgba(197, 249, 70, 0.12) !important;
 }
-
-
 .golden-row {
   background: linear-gradient(90deg,rgba(255,230,90,0.05) 0%,rgba(255,226,120,0.0) 100%);
 }
 .active-row.golden-row td {
   background: linear-gradient(90deg, rgba(255,230,90,0.1) 0%, rgba(197, 249, 70, 0.05) 100%) !important;
 }
-
 .out-of-game-separator td { border-top: 4px solid #ff6b6b !important; padding-top: 14px; }
-
 .cell-center { text-align: center; }
 .cell-left { text-align: left; }
 .cell-nowrap { white-space: nowrap; }
 .supplier-cell { line-height: 1.6; }
-
 .scale-text { font-size: 0.9em; color: #888; }
 .stagnation-dot { font-weight: 900; font-size: 1.5em; line-height: 1; vertical-align: middle; color: #888; padding-left: 4px; }
-
 .icon-yellow { color: #fbbf24; font-weight: bold; }
 .icon-red { color: #dc2626; font-weight: bold; }
 .icon-green { color: #22c55e; font-weight: bold; }
-
 .badge {
   display: inline-block;
   border-radius: 6px;
@@ -402,27 +407,45 @@ export default {
 .status-growing { background: rgba(34, 197, 94, 0.15); color: #4ade80; border-color: rgba(34, 197, 94, 0.3); }
 .status-stable { background: rgba(156, 163, 175, 0.15); color: #9ca3af; border-color: rgba(156, 163, 175, 0.3); }
 .status-out { background: rgba(255, 107, 107, 0.15); color: #ff6b6b; border-color: rgba(255, 107, 107, 0.3); }
-
 .bean-own-brand { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3); }
 .bean-commercial { background: rgba(99, 102, 241, 0.15); color: #818cf8; border-color: rgba(99, 102, 241, 0.3); }
 .bean-specialty { background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3); }
 .bean-no-brand { background: rgba(107, 114, 128, 0.15); color: #9ca3af; border-color: rgba(107, 114, 128, 0.3); }
 .bean-experiment { background: rgba(236, 72, 153, 0.15); color: #f472b6; border-color: rgba(236, 72, 153, 0.3); }
-
 .badge-supplier { background: rgba(107, 114, 128, 0.1); color: #a0a0a0; border-color: rgba(107, 114, 128, 0.2); }
-
 .param-independent { background: rgba(197, 249, 70, 0.1); color: rgba(197, 249, 70, 0.9); border-color: rgba(197, 249, 70, 0.2); }
 .param-network { background: rgba(59, 130, 246, 0.1); color: rgba(96, 165, 250, 0.9); border-color: rgba(59, 130, 246, 0.2); }
 .param-franchise { background: rgba(168, 85, 247, 0.15); color: rgba(192, 132, 252, 1); border-color: rgba(168, 85, 247, 0.3); }
 .param-local { background: rgba(107, 114, 128, 0.15); color: rgba(156, 163, 175, 1); border-color: rgba(107, 114, 128, 0.25); }
-
 .param-very-high, .param-high, .badge.param-high { background: rgba(34, 197, 94, 0.15); color: rgba(52, 211, 153, 1); border-color: rgba(34, 197, 94, 0.3); }
 .param-medium, .badge.param-medium { background: rgba(234, 179, 8, 0.15); color: rgba(252, 211, 77, 1); border-color: rgba(234, 179, 8, 0.3); }
 .param-low, .badge.param-low { background: rgba(239, 68, 68, 0.15); color: rgba(248, 113, 113, 1); border-color: rgba(239, 68, 68, 0.3); }
-
 .param-expansion { background: rgba(59, 130, 246, 0.1); color: rgba(96, 165, 250, 0.9); border-color: rgba(59, 130, 246, 0.2); }
 .param-growth { background: rgba(34, 197, 94, 0.1); color: rgba(52, 211, 153, 0.9); border-color: rgba(34, 197, 94, 0.2); }
 .param-mature { background: rgba(156, 163, 175, 0.15); color: rgba(156, 163, 175, 1); border-color: rgba(156, 163, 175, 0.25); }
 .param-startup { background: rgba(168, 85, 247, 0.1); color: rgba(192, 132, 252, 0.9); border-color: rgba(168, 85, 247, 0.2); }
 .param-default { background: rgba(107, 114, 128, 0.1); color: rgba(107, 114, 128, 0.9); border-color: rgba(107, 114, 128, 0.2); }
+
+/* Новые стили */
+a.badge-calculator {
+  margin-left: 8px;
+  background-color: rgba(197, 249, 70, 0.12);
+  color: #c5f946;
+  border: 1px solid rgba(197, 249, 70, 0.25);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  padding: 4px 8px;
+  font-size: 0.8em;
+  vertical-align: middle;
+}
+a.badge-calculator:hover {
+  background-color: rgba(197, 249, 70, 0.25);
+  border-color: rgba(197, 249, 70, 0.5);
+  color: #fff;
+}
+.dessert-emoji {
+  margin-left: 6px;
+  vertical-align: middle;
+  font-size: 1.1em;
+}
 </style>
