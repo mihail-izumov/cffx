@@ -28,6 +28,7 @@ import CoffeeGlossaryTabs from '../components/CoffeeGlossaryTabs.vue'
 import GrowthIndexMethod from '../components/GrowthIndexMethod.vue'
 import IndexGuide from '../components/IndexGuide.vue'
 import IndexPlans from '../components/IndexPlans.vue'
+import TariffFeaturesCalc from '../components/TariffFeaturesCalc.vue'
 
 export default {
   extends: DefaultTheme,
@@ -62,5 +63,6 @@ export default {
     app.component('GrowthIndexMethod', GrowthIndexMethod)
     app.component('IndexGuide', IndexGuide)
     app.component('IndexPlans', IndexPlans)
+    app.component('TariffFeaturesCalc', TariffFeaturesCalc)
   }
 }
