@@ -426,29 +426,28 @@ export default {
 .param-startup { background: rgba(168, 85, 247, 0.1); color: rgba(192, 132, 252, 0.9); border-color: rgba(168, 85, 247, 0.2); }
 .param-default { background: rgba(107, 114, 128, 0.1); color: rgba(107, 114, 128, 0.9); border-color: rgba(107, 114, 128, 0.2); }
 
-/* Новые стили для кнопки */
+/* Новые стили для кнопки (v3) */
 a.badge-calculator {
-  margin-left: 8px;
-  background: linear-gradient(145deg, #4a4a4a, #2c2c2c);
-  color: #e0e0e0;
-  border: 1px solid #555;
+  margin-left: 6px;
+  background: #2b2b2b;
+  color: #777;
+  border: 1px solid #444;
   text-decoration: none;
   transition: all 0.2s ease;
-  padding: 4px 9px;
-  font-size: 0.9em;
+  padding: 2px 7px;
+  font-size: 0.8em;
   vertical-align: middle;
   border-radius: 5px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-  text-shadow: 0 -1px 1px rgba(0,0,0,0.4);
-  font-weight: 700;
+  font-weight: 600;
+  box-shadow: none;
+  text-shadow: none;
 }
 
 a.badge-calculator:hover {
-  background: linear-gradient(145deg, #5a5a5a, #3c3c3c);
+  background: #3c3c3c;
   border-color: #777;
   color: #fff;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .dessert-emoji {
