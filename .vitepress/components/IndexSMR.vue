@@ -11,8 +11,8 @@
           <th>Отзывы</th>
           <th>Статус</th>
           <th>Потенциал</th>
-          <th><a class="header-link" href="/radar/index-smr/overview.html#зерно-→-выручка">Тип зерна</a></th>
-          <th><a class="header-link" href="/radar/index-smr/overviewhtml#зерно-→-выручка">Поставщик</a></th>
+          <th><a class="header-link" href="/radar/index-smr/overview#зерно-→-выручка">Тип зерна</a></th>
+          <th><a class="header-link" href="/radar/index-smr/overview#зерно-→-выручка">Поставщик</a></th>
           <th>Тип</th>
           <th>Стадия</th>
           <th>Инновации</th>
