@@ -35,12 +35,12 @@
           <td class="cell-left nowrap">
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
             {{ coffee.name }}
-            <a v-if="isInCalculator(coffee.name)" href="/radar/index-smr/calc" class="badge badge-calculator" title="Рассчитать потенциал роста">
-              <strong>+₽↑</strong>
-            </a>
             <span v-if="getDessertEmoji(coffee.name)" class="dessert-emoji">
               {{ getDessertEmoji(coffee.name) }}
             </span>
+            <a v-if="isInCalculator(coffee.name)" href="/radar/index-smr/calc" class="badge badge-calculator" title="Рассчитать потенциал роста">
+              <strong>+₽↑</strong>
+            </a>
           </td>
           <td class="cell-left points-column">
             {{ coffee.points }}
