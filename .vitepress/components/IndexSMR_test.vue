@@ -36,7 +36,7 @@
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
             {{ coffee.name }}
             <a v-if="isInCalculator(coffee.name)" href="/radar/index-smr/calc" class="badge badge-calculator" title="Рассчитать потенциал роста">
-              <strong>[+₽↑]</strong>
+              <strong>+₽↑</strong>
             </a>
             <span v-if="getDessertEmoji(coffee.name)" class="dessert-emoji">
               {{ getDessertEmoji(coffee.name) }}
@@ -426,23 +426,31 @@ export default {
 .param-startup { background: rgba(168, 85, 247, 0.1); color: rgba(192, 132, 252, 0.9); border-color: rgba(168, 85, 247, 0.2); }
 .param-default { background: rgba(107, 114, 128, 0.1); color: rgba(107, 114, 128, 0.9); border-color: rgba(107, 114, 128, 0.2); }
 
-/* Новые стили */
+/* Новые стили для кнопки */
 a.badge-calculator {
   margin-left: 8px;
-  background-color: rgba(197, 249, 70, 0.12);
-  color: #c5f946;
-  border: 1px solid rgba(197, 249, 70, 0.25);
+  background: linear-gradient(145deg, #4a4a4a, #2c2c2c);
+  color: #e0e0e0;
+  border: 1px solid #555;
   text-decoration: none;
   transition: all 0.2s ease;
-  padding: 4px 8px;
-  font-size: 0.8em;
+  padding: 4px 9px;
+  font-size: 0.9em;
   vertical-align: middle;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+  text-shadow: 0 -1px 1px rgba(0,0,0,0.4);
+  font-weight: 700;
 }
+
 a.badge-calculator:hover {
-  background-color: rgba(197, 249, 70, 0.25);
-  border-color: rgba(197, 249, 70, 0.5);
+  background: linear-gradient(145deg, #5a5a5a, #3c3c3c);
+  border-color: #777;
   color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
 }
+
 .dessert-emoji {
   margin-left: 6px;
   vertical-align: middle;
