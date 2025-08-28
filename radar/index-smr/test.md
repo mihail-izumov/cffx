@@ -38,14 +38,14 @@ next: false
 
 ### ↑ 17–26% выручки [Вашей Кофейни] за 30 дней
 
-Индекс показывают проблему. <br>
-Симулятор показывает решение. <br>
-Результат — рост, который увидят все. <br>
+**Индекс** – показывают проблему. <br>
+**Симулятор** – показывает решение. <br>
+**Результат** — рост, который увидят все. <br>
 
 **Подключитесь к коллективному разуму кофейной индустрии. Без паушальных взносов и роялти. Полный контроль и вся прибыль — ваши.**
 
 <div class="start-button-container">
-  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Подключиться к BREW →</a>
+  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer"><strong>Подключиться к BREW →</strong></a>
 </div>
 
 <style>
