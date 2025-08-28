@@ -30,7 +30,7 @@
     <!-- КАРТОЧКА 2: КАЛЬКУЛЯТОР -->
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title card-title--insider">КАЛЬКУЛЯТОР</h3>
-      <p class="card-subtitle">Потенциал роста 3–6 мес.</p>
+      <p class="card-subtitle">Сколько забрать у конкурентов через дорогу</p>
       <div class="card-image-wrapper">
         <!-- Я оставил старое изображение, но возможно, вы захотите его поменять на что-то связанное с калькулятором -->
         <img
@@ -43,7 +43,7 @@
         <strong>Ваша Кофейня</strong>
         <div class="payment-type">Отзывы → Потенциал → Выручка</div>
       </div>
-      <p class="includes-all">Что показывает Индекс Роста:</p>
+      <p class="includes-all">Потенциал роста 3–6 мес.:</p>
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>↑ Выручка ₽/год</span></li>
         <li class="feature-item"><CheckIcon /><span>Время на захват X/мес.</span></li>
