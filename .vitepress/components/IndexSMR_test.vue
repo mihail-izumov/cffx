@@ -112,7 +112,6 @@ export default {
         detail: { establishment: shopName.toLowerCase() } 
       }))
     }
-
     return {
       openReviewsModal
     }
@@ -313,7 +312,6 @@ export default {
   border-collapse: separate;
   table-layout: fixed;
 }
-/* Заголовки */
 .index-smr-table th {
   position: sticky;
   top: 0;
@@ -357,7 +355,6 @@ export default {
   50% { transform: scale(1.1); text-shadow: 0 0 10px rgba(255, 193, 7, 0.7); }
   100% { transform: scale(1); text-shadow: 0 0 5px rgba(255, 255, 0, 0); }
 }
-/* Ячейки */
 .index-smr-table td {
   padding: 10px 8px;
   border-bottom: 1px solid var(--vp-c-divider, #333);
@@ -372,7 +369,6 @@ export default {
   cursor: pointer;
   transition: box-shadow 0.2s ease-in-out, background 0.2s;
 }
-/* Выделение активной строки */
 .active-row {
   box-shadow: inset 0 2px 0 #c5f946, inset 0 -2px 0 #c5f946;
 }
@@ -398,8 +394,6 @@ export default {
 .supplier-cell { line-height: 1.6; }
 .scale-text { font-size: 0.9em; color: #888; }
 .stagnation-dot { font-weight: 900; font-size: 1.5em; line-height: 1; vertical-align: middle; color: #888; padding-left: 4px; }
-
-/* Стили для кликабельного "Корж" */
 .coffee-name-clickable {
   color: var(--vp-c-brand-1, #646cff);
   text-decoration: underline;
@@ -410,13 +404,11 @@ export default {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-
 .coffee-name-clickable:hover {
   color: var(--vp-c-brand-2, #4f46e5);
   text-decoration-style: solid;
   text-decoration-thickness: 2px;
 }
-
 .badge {
   display: inline-block;
   border-radius: 6px;
@@ -452,7 +444,6 @@ export default {
 .param-mature { background: rgba(156, 163, 175, 0.15); color: rgba(156, 163, 175, 1); border-color: rgba(156, 163, 175, 0.25); }
 .param-startup { background: rgba(168, 85, 247, 0.1); color: rgba(192, 132, 252, 0.9); border-color: rgba(168, 85, 247, 0.2); }
 .param-default { background: rgba(107, 114, 128, 0.1); color: rgba(107, 114, 128, 0.9); border-color: rgba(107, 114, 128, 0.2); }
-/* Новые стили для кнопки (v3) */
 a.badge-calculator {
   margin-left: 6px;
   background: #2b2b2b;
