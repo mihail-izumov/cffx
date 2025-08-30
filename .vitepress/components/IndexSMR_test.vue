@@ -34,9 +34,11 @@
           <td class="cell-center index-column">{{ coffee.index }}</td>
           <td class="cell-left nowrap">
             <span 
+              v-if="coffee.name === 'Корж'" 
               @click.stop="openReviewsModal(coffee.name)"
               class="coffee-name-clickable"
             >{{ coffee.name }}</span>
+            <span v-else>{{ coffee.name }}</span>
             <span v-if="getDessertEmoji(coffee.name)" class="dessert-emoji">
               {{ getDessertEmoji(coffee.name) }}
             </span>
@@ -425,7 +427,7 @@ export default {
 .scale-text { font-size: 0.9em; color: #888; }
 .stagnation-dot { font-weight: 900; font-size: 1.5em; line-height: 1; vertical-align: middle; color: #888; padding-left: 4px; }
 
-/* Стили для кликабельных названий кофеен */
+/* Стили для кликабельного "Корж" */
 .coffee-name-clickable {
   color: var(--vp-c-brand-1, #646cff);
   text-decoration: underline;
@@ -456,7 +458,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 40px 20px 20px 20px;
   box-sizing: border-box;
 }
 
@@ -465,7 +467,7 @@ export default {
   border-radius: 20px;
   max-width: 800px;
   width: 100%;
-  max-height: calc(100vh - 40px);
+  max-height: calc(100vh - 80px);
   position: relative;
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
   display: flex;
@@ -474,7 +476,7 @@ export default {
 }
 
 .reviews-widget-wrapper {
-  max-height: calc(100vh - 120px);
+  max-height: calc(100vh - 160px);
   overflow-y: auto;
   padding: 20px;
   scrollbar-width: thin;
@@ -589,30 +591,36 @@ a.badge-calculator:hover {
 
 @media (max-width: 768px) {
   .reviews-modal-backdrop { 
-    padding: 10px; 
+    padding: 60px 15px 15px 15px; 
   }
   .reviews-modal-container {
-    max-height: calc(100vh - 20px);
+    max-height: calc(100vh - 120px);
     border-radius: 15px;
   }
   .reviews-widget-wrapper {
-    max-height: calc(100vh - 80px);
+    max-height: calc(100vh - 200px);
     padding: 15px;
   }
 }
 
 @media (max-width: 640px) {
   .reviews-modal-backdrop { 
-    padding: 0; 
+    padding: 80px 10px 10px 10px; 
   }
   .reviews-modal-container {
-    border-radius: 0;
-    max-height: 100vh;
-    height: 100vh;
+    border-radius: 12px;
+    max-height: calc(100vh - 160px);
   }
   .reviews-widget-wrapper {
-    max-height: calc(100vh - 60px);
+    max-height: calc(100vh - 240px);
     padding: 15px;
+  }
+  .reviews-close-btn {
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
   }
 }
 </style>
