@@ -168,7 +168,7 @@ const goToReviews = (branch) => {
   flex-shrink: 0;
 }
 .internal-close-btn:hover {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: linear-gradient(135deg, #991b1b, #ef4444); /* ИЗМЕНЕНИЕ: Стильный красный градиент */
   border-color: #ef4444;
   color: white;
   transform: rotate(90deg);
