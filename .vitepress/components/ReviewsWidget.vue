@@ -221,36 +221,40 @@ const goToReviews = (branch) => {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 16px;
 }
+
 .stat-card {
   position: relative;
-  padding: 2px; /* Толщина рамки */
-  border-radius: 22px; /* Чуть больше, чем у контента */
+  border-radius: 22px;
+  padding: 2px;
   background: transparent;
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
+
 .stat-card::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 22px;
-  padding: 2px; /* Толщина рамки */
+  padding: 2px;
   background: var(--gradient-border);
-  -webkit-mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   transition: all 0.3s ease;
 }
+
 .stat-card:hover::before {
   transform: scale(1.02);
   filter: brightness(1.2);
 }
+
 .branches-card { --gradient-border: linear-gradient(135deg, #00A86B, #00d4aa); }
 .index-card { --gradient-border: linear-gradient(135deg, #00FF88, #00d4aa); }
 .reviews-card { --gradient-border: linear-gradient(135deg, #FFD700, #ffed4e); }
 
-.stat-content-wrapper {
+.stat-content {
   background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%), var(--vp-c-bg-soft);
   border-radius: 20px;
   padding: 20px;
@@ -260,10 +264,12 @@ const goToReviews = (branch) => {
   justify-content: space-between;
   height: 100%;
 }
+
 .stat-icon {
   font-size: 24px;
   opacity: 0.7;
 }
+
 .stat-value {
   font-family: 'Inter', sans-serif;
   font-size: 3.5rem;
@@ -273,6 +279,7 @@ const goToReviews = (branch) => {
   color: #fff;
   text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
+
 .stat-label {
   font-size: 11px;
   font-weight: 500;
@@ -329,17 +336,18 @@ const goToReviews = (branch) => {
     padding: 1px;
     border-radius: 18px;
   }
-  .stat-content-wrapper {
+  .stat-content {
     padding: 12px;
     flex-direction: column;
     border-radius: 16px;
+    min-height: 120px;
   }
   .stat-icon {
     font-size: 24px;
   }
   .stat-value {
     font-size: 2.5rem;
-    margin: 4px 0;
+    margin: 8px 0;
   }
   .stat-label {
     font-size: 10px;
