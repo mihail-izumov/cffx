@@ -38,7 +38,7 @@
               @click.stop="openReviewsModal(coffee.name)"
               class="coffee-name-clickable"
             >{{ coffee.name }}</span>
-            <span v-else>{{ coffee.name }}</span>
+            <span v-else class="coffee-name-regular">{{ coffee.name }}</span>
             <span v-if="getDessertEmoji(coffee.name)" class="dessert-emoji">
               {{ getDessertEmoji(coffee.name) }}
             </span>
@@ -106,8 +106,69 @@
   <Teleport to="body">
     <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
       <div class="reviews-modal-container" @click.stop>
+        <button @click="closeReviewsModal" class="reviews-close-btn">×</button>
         <div class="reviews-widget-wrapper">
-          <ReviewsWidget @close="closeReviewsModal" />
+          <!-- Заголовок виджета -->
+          <div class="widget-header">
+            <h2>🏆 Помогите составить честный рейтинг</h2>
+            <p class="subtitle">Выберите кофейню и оставьте свой отзыв</p>
+          </div>
+          
+          <!-- Карточка заведения -->
+          <div class="establishment-card">
+            <div class="card-header">
+              <h3>{{ selectedEstablishment?.name }}</h3>
+              <div class="status-badge">{{ selectedEstablishment?.status }}</div>
+            </div>
+            
+            <div class="card-stats">
+              <div class="stat">
+                <span class="stat-label">Индекс роста:</span>
+                <span class="stat-value index">{{ selectedEstablishment?.index }}</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Отзывов:</span>
+                <span class="stat-value reviews">{{ selectedEstablishment?.totalReviews }}</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Филиалов:</span>
+                <span class="stat-value branches">{{ selectedEstablishment?.branches?.length }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Список филиалов -->
+          <div class="modal-content">
+            <p class="modal-subtitle">Выберите филиал, чтобы оставить отзыв:</p>
+            
+            <div class="branches-list">
+              <button
+                v-for="(branch, index) in selectedEstablishment?.branches"
+                :key="index"
+                @click="goToReviews(branch)"
+                class="branch-item"
+              >
+                <div class="branch-info">
+                  <div class="branch-number">{{ index + 1 }}</div>
+                  <div class="branch-address">
+                    <span class="address-text">{{ branch.address }}</span>
+                  </div>
+                </div>
+                <div class="branch-action">
+                  <span class="action-text">Оставить отзыв</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m9 18 6-6-6-6"/>
+                  </svg>
+                </div>
+              </button>
+            </div>
+            
+            <div class="modal-footer">
+              <p class="ab-info">
+                <small>💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</small>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -115,14 +176,10 @@
 </template>
 
 <script>
-import ReviewsWidget from './ReviewsWidget.vue'
 import { ref } from 'vue'
 
 export default {
   name: 'IndexSMR',
-  components: {
-    ReviewsWidget
-  },
   setup() {
     const showReviewsModal = ref(false)
     const selectedCoffeeShop = ref(null)
@@ -162,6 +219,25 @@ export default {
       ],
       dessertLeaders: ['Корж', 'Этажи', 'Muwa', 'Конфитюр', 'Coffee Bean', 'Shu Authentic Coffee'],
       otherDesserts: ['Булка нетто', 'Lumos barista lab', 'Комод', 'Хюггешная', 'Кофейная поляна', 'Дринкит'],
+      establishments: {
+        'Корж': {
+          name: 'Корж',
+          totalReviews: '4,520',
+          branches: [
+            { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/' },
+            { address: 'Революционная, 101В, к1', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858/' },
+            { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618', yandexUrl: 'https://yandex.ru/maps/51/samara/house/9_ya_proseka_5_ya_malaya_liniya_3b/YUkYdw5hQUAAQFtpfX52dXVgZw==/' },
+            { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/' },
+            { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/' },
+            { address: 'Дачная, 2к2', gisUrl: 'https://2gis.ru/samara/firm/70000001045453045', yandexUrl: 'https://yandex.ru/maps/51/samara/house/dachnaya_ulitsa_2k2/YUkYdwNhSEcOQFtpfX5xcHpkZQ==/' },
+            { address: 'Ульяновская, 19', gisUrl: 'https://2gis.ru/samara/firm/70000001033411071', yandexUrl: 'https://yandex.ru/maps/51/samara/chain/korz/23062014558/' },
+            { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/' }
+          ],
+          status: 'Лидер 👑',
+          index: 98,
+          type: 'Независимая сеть'
+        }
+      },
       coffeeData: [
         { index:98,  name:'Корж', reviews:'4,520', points:8,  scale:'~12+', status:'Лидер 👑', supplier:'Berry Coffee (Тольятти)', beanType:'Свой бренд 🏷️', type:'Независимая', potential:'Высокий', stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Очень высокий' },
         { index:96,  name:'Skuratov Coffee', reviews:'3,129', points:6,  scale:'~10+', status:'Лидер 👑', supplier:'Skuratov Coffee Roasters', beanType:'Свой бренд 🏷️', type:'Сеть', potential:'Высокий', stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Высокий' },
@@ -230,6 +306,9 @@ export default {
         }
         return b.index - a.index;
       });
+    },
+    selectedEstablishment() {
+      return this.establishments[this.selectedCoffeeShop];
     }
   },
   methods: {
@@ -323,6 +402,22 @@ export default {
         }
         return cleaned;
       });
+    },
+    getRandomService() {
+      return Math.random() < 0.5 ? 'gis' : 'yandex'
+    },
+    goToReviews(branch) {
+      const service = this.getRandomService()
+      const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
+      if (window.gtag) {
+        window.gtag('event', 'review_redirect', {
+          establishment: this.selectedEstablishment.name,
+          address: branch.address,
+          service: service === 'gis' ? '2ГИС' : 'Яндекс.Карты'
+        })
+      }
+      window.open(url, '_blank')
+      this.closeReviewsModal()
     }
   }
 }
@@ -426,11 +521,28 @@ export default {
 .scale-text { font-size: 0.9em; color: #888; }
 .stagnation-dot { font-weight: 900; font-size: 1.5em; line-height: 1; vertical-align: middle; color: #888; padding-left: 4px; }
 
-/* Сбрасываем стили, чтобы использовать глобальные */
+/* Стили для кликабельного "Корж" - использует глобальные стили ссылок */
 .coffee-name-clickable {
-  all: unset;
+  color: var(--vp-c-brand-2, #C5F946); /* зеленый цвет как глобальные ссылки */
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: 600; /* только вес шрифта оставляем */
+  transition: all 0.3s ease;
+}
+
+.coffee-name-clickable:hover {
+  color: var(--vp-c-brand-1, #347b6c); /* темно-зеленый при hover */
+  border-bottom-color: var(--vp-c-brand-1, #347b6c);
+}
+
+/* Стили для обычных названий кофеен */
+.coffee-name-regular {
+  color: inherit;
+  font-weight: 600;
+  cursor: default;
+  text-decoration: none;
+  border: none;
 }
 
 /* Стили для модального окна */
@@ -488,6 +600,192 @@ export default {
   background: var(--vp-c-brand-2);
 }
 
+.reviews-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: var(--vp-c-bg-mute);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--vp-c-text-2);
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.reviews-close-btn:hover {
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+  transform: rotate(90deg);
+}
+
+/* Стили виджета отзывов */
+.widget-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 32px 32px 0;
+}
+.widget-header h2 {
+  margin: 0 0 8px 0;
+  color: var(--vp-c-brand-1);
+  font-size: 28px;
+  font-weight: 700;
+}
+.subtitle {
+  margin: 0;
+  color: var(--vp-c-text-2);
+  font-size: 16px;
+}
+.establishment-card {
+  background: var(--vp-c-bg-soft);
+  border: 2px solid var(--vp-c-border);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 0 24px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.establishment-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--vp-c-brand-2), var(--vp-c-brand-1));
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.card-header h3 {
+  margin: 0;
+  color: var(--vp-c-brand-1);
+  font-size: 22px;
+  font-weight: 600;
+}
+.status-badge {
+  background: linear-gradient(135deg, var(--vp-c-brand-2), var(--vp-c-brand-1));
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.card-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.stat {
+  text-align: center;
+}
+.stat-label {
+  display: block;
+  font-size: 12px;
+  color: var(--vp-c-text-3);
+  margin-bottom: 4px;
+}
+.stat-value {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+}
+.stat-value.index {
+  color: var(--vp-c-brand-1);
+}
+.stat-value.reviews {
+  color: var(--vp-c-green-1);
+}
+.stat-value.branches {
+  color: var(--vp-c-blue-1);
+}
+.modal-content {
+  flex-grow: 1;
+}
+.modal-subtitle {
+  margin: 0;
+  padding: 20px 28px 12px;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+}
+.branches-list {
+  padding: 0 16px;
+}
+.branch-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px;
+  margin: 8px 0;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+.branch-item:hover {
+  background: var(--vp-c-brand-soft);
+  border-color: var(--vp-c-brand-1);
+  transform: translateX(8px);
+}
+.branch-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+.branch-number {
+  background: var(--vp-c-brand-1);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.address-text {
+  font-weight: 500;
+  color: var(--vp-c-text-1);
+  font-size: 15px;
+}
+.branch-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--vp-c-brand-1);
+  font-size: 14px;
+  font-weight: 600;
+}
+.modal-footer {
+  padding: 16px 28px;
+  border-top: 1px solid var(--vp-c-border);
+  background: var(--vp-c-bg-soft);
+  flex-shrink: 0;
+  text-align: center;
+}
+.ab-info {
+  margin: 0;
+  color: var(--vp-c-text-3);
+  font-size: 13px;
+}
+
 .badge {
   display: inline-block;
   border-radius: 6px;
@@ -523,7 +821,6 @@ export default {
 .param-mature { background: rgba(156, 163, 175, 0.15); color: rgba(156, 163, 175, 1); border-color: rgba(156, 163, 175, 0.25); }
 .param-startup { background: rgba(168, 85, 247, 0.1); color: rgba(192, 132, 252, 0.9); border-color: rgba(168, 85, 247, 0.2); }
 .param-default { background: rgba(107, 114, 128, 0.1); color: rgba(107, 114, 128, 0.9); border-color: rgba(107, 114, 128, 0.2); }
-/* Новые стили для кнопки (v3) */
 a.badge-calculator {
   margin-left: 6px;
   background: #2b2b2b;
@@ -561,6 +858,10 @@ a.badge-calculator:hover {
   }
   .reviews-widget-wrapper {
     max-height: calc(100vh - 110px);
+  }
+  .card-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
 
