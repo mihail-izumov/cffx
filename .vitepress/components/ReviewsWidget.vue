@@ -223,8 +223,8 @@ const goToReviews = (branch) => {
 }
 .stat-card {
   position: relative;
-  padding: 2px; /* Толщина рамки */
-  border-radius: 22px; /* Чуть больше, чем у контента */
+  padding: 2px;
+  border-radius: 22px;
   background: transparent;
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -236,7 +236,7 @@ const goToReviews = (branch) => {
   position: absolute;
   inset: 0;
   border-radius: 22px;
-  padding: 2px; /* Толщина рамки */
+  padding: 2px;
   background: var(--gradient-border);
   -webkit-mask: 
      linear-gradient(#fff 0 0) content-box, 
@@ -244,10 +244,9 @@ const goToReviews = (branch) => {
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   transition: all 0.3s ease;
-  z-index: 1;
+  z-index: 0;
 }
 .stat-card:hover::before {
-  transform: scale(1.02);
   filter: brightness(1.3);
 }
 .branches-card { --gradient-border: linear-gradient(135deg, #00A86B, #00d4aa); }
@@ -266,6 +265,8 @@ const goToReviews = (branch) => {
   text-align: center;
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
   transition: box-shadow 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 .stat-card:hover .stat-content {
   box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
