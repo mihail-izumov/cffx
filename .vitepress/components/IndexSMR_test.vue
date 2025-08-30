@@ -102,7 +102,6 @@
     </table>
   </div>
 
-  <!-- Модальное окно с ReviewsWidget -->
   <Teleport to="body">
     <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
       <div class="reviews-modal-container" @click.stop>
@@ -464,6 +463,8 @@ export default {
   position: relative;
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Badge стили */
