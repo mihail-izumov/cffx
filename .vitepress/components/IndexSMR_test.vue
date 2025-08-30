@@ -1,6 +1,5 @@
 <template>
   <div class="index-smr-table-container">
-    <!-- Таблица остается без изменений -->
     <table class="index-smr-table">
       <thead>
         <tr>
@@ -39,7 +38,7 @@
               @click.stop="openReviewsModal(coffee.name)"
               class="coffee-name-clickable"
             >{{ coffee.name }}</span>
-            <span v-else>{{ coffee.name }}</span>
+            <span v-else class="coffee-name-regular">{{ coffee.name }}</span>
             <span v-if="getDessertEmoji(coffee.name)" class="dessert-emoji">
               {{ getDessertEmoji(coffee.name) }}
             </span>
@@ -103,7 +102,7 @@
     </table>
   </div>
 
-  <!-- ИСПРАВЛЕННОЕ модальное окно с ReviewsWidget -->
+  <!-- Модальное окно с ReviewsWidget -->
   <Teleport to="body">
     <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
       <div class="reviews-modal-container" @click.stop>
@@ -147,11 +146,7 @@ export default {
     return {
       activeRowIndex: null,
       statusOrder: [
-        'Лидер 👑',
-        'Сильный 💪', 
-        'Растущий 📈',
-        'Стабильный 🎯',
-        'Вне игры 🚫'
+        'Лидер 👑', 'Сильный 💪', 'Растущий 📈', 'Стабильный 🎯', 'Вне игры 🚫'
       ],
       calculatorShops: [
         'Balance coffee', 'Bonfix', 'Булка нетто', 'Coffee Bean', 'Cup-cup',
@@ -328,7 +323,7 @@ export default {
 </script>
 
 <style scoped>
-/* Стили таблицы остаются без изменений */
+/* Стили таблицы */
 .index-smr-table-container {
   width: 100%;
   overflow-x: auto;
@@ -422,23 +417,29 @@ export default {
 .supplier-cell { line-height: 1.6; }
 .scale-text { font-size: 0.9em; color: #888; }
 .stagnation-dot { font-weight: 900; font-size: 1.5em; line-height: 1; vertical-align: middle; color: #888; padding-left: 4px; }
+
+/* НОВЫЕ СТИЛИ ДЛЯ НАЗВАНИЙ */
 .coffee-name-clickable {
-  color: var(--vp-c-brand-1, #646cff);
-  text-decoration: underline;
-  text-decoration-style: dashed;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
+  color: var(--vp-c-brand-2, #C5F946); /* зеленый цвет бренда */
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 .coffee-name-clickable:hover {
-  color: var(--vp-c-brand-2, #4f46e5);
-  text-decoration-style: solid;
-  text-decoration-thickness: 2px;
+  color: var(--vp-c-brand-1, #347b6c); /* темно-зеленый при hover */
+  border-bottom-color: var(--vp-c-brand-1, #347b6c);
+}
+.coffee-name-regular {
+  color: inherit;
+  font-weight: 600;
+  cursor: default;
+  text-decoration: none;
+  border: none;
 }
 
-/* Стили модального окна - УПРОЩЕННЫЕ */
+/* Стили модального окна */
 .reviews-modal-backdrop {
   position: fixed;
   top: 0;
@@ -454,7 +455,6 @@ export default {
   padding: 20px;
   box-sizing: border-box;
 }
-
 .reviews-modal-container {
   background: var(--vp-c-bg);
   border-radius: 20px;
@@ -466,7 +466,7 @@ export default {
   overflow: hidden;
 }
 
-/* Badge стили остаются прежними */
+/* Badge стили */
 .badge {
   display: inline-block;
   border-radius: 6px;
