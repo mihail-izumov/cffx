@@ -1,381 +1,597 @@
-<script setup>
-import { ref, defineEmits } from 'vue'
+<template>
+  <div class="index-smr-table-container">
+    <table class="index-smr-table">
+      <thead>
+        <tr>
+          <th class="index-column">
+            <span class="animated-icon">⚡</span>
+          </th>
+          <th>Кофейня</th>
+          <th class="points-column">Точки</th>
+          <th>Отзывы</th>
+          <th>Статус</th>
+          <th>Потенциал</th>
+          <th><a class="header-link" href="/radar/index-smr/test#зерно-→-выручка">Тип зерна</a></th>
+          <th><a class="header-link" href="/radar/index-smr/test#зерно-→-выручка">Поставщик</a></th>
+          <th>Тип</th>
+          <th>Стадия</th>
+          <th>Инновации</th>
+          <th>Влияние</th>
+          <th>Рост</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(coffee, idx) in sortedCoffeeData"
+          :key="`${coffee.name}-${coffee.index}`"
+          @click="setActiveRow(idx)"
+          :class="{ 
+            'golden-row': idx < 6,
+            'out-of-game-separator': isFirstOutOfGame(coffee, idx),
+            'active-row': activeRowIndex === idx
+          }"
+        >
+          <td class="cell-center index-column">{{ coffee.index }}</td>
+          <td class="cell-left nowrap">
+            <span 
+              v-if="coffee.name === 'Корж'" 
+              @click.stop="openReviewsModal(coffee.name)"
+              class="coffee-name-clickable"
+            >{{ coffee.name }}</span>
+            <span v-else>{{ coffee.name }}</span>
+            <span v-if="getDessertEmoji(coffee.name)" class="dessert-emoji">
+              {{ getDessertEmoji(coffee.name) }}
+            </span>
+            <a v-if="isInCalculator(coffee.name)" href="/radar/index-smr/calc" class="badge badge-calculator" title="Рассчитать потенциал роста">
+              <strong>+₽↑</strong>
+            </a>
+          </td>
+          <td class="cell-left points-column">
+            {{ coffee.points }}
+            <span v-if="coffee.scale !== '·'" class="scale-text"> ({{ coffee.scale }})</span>
+            <span v-else class="stagnation-dot">·</span>
+          </td>
+          <td class="cell-left">{{ coffee.reviews }}</td>
+          <td class="cell-nowrap">
+            <span class="badge" :class="statusClass(coffee.status)">
+              {{ coffee.status }}
+            </span>
+          </td>
+          <td class="cell-left">
+            <span class="badge" :class="potentialClass(coffee.potential)">
+              {{ coffee.potential }} {{ potentialEmoji(coffee.potential) }}
+            </span>
+          </td>
+          <td class="cell-left">
+            <span class="badge" :class="beanTypeClass(coffee.beanType)">
+              {{ coffee.beanType }}
+            </span>
+          </td>
+          <td class="cell-left supplier-cell">
+            <span v-for="name in getCleanedSuppliers(coffee.supplier)" :key="name" class="badge badge-supplier">
+              {{ name }}
+            </span>
+          </td>
+          <td class="cell-left">
+            <span class="badge" :class="typeClass(coffee.type)">
+              {{ coffee.type }}
+            </span>
+          </td>
+          <td class="cell-left">
+            <span class="badge" :class="stageClass(coffee.stage)">
+              {{ coffee.stage }}
+            </span>
+          </td>
+          <td class="cell-left">
+            <span class="badge" :class="innovationClass(coffee.innovation)">
+              {{ coffee.innovation }}
+            </span>
+          </td>
+          <td class="cell-left">
+            <span class="badge" :class="influenceClass(coffee.influence)">
+              {{ coffee.influence }}
+            </span>
+          </td>
+          <td class="cell-left">
+            <span class="badge" :class="growthClass(coffee.growth)">
+              {{ coffee.growth }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-const establishment = {
-  name: 'Корж',
-  totalReviews: '4,520',
-  branches: [
-    { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/' },
-    { address: 'Революционная, 101В, к1', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858/' },
-    { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618', yandexUrl: 'https://yandex.ru/maps/51/samara/house/9_ya_proseka_5_ya_malaya_liniya_3b/YUkYdw5hQUAAQFtpfX52dXVgZw==/' },
-    { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/' },
-    { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/' },
-    { address: 'Дачная, 2к2', gisUrl: 'https://2gis.ru/samara/firm/70000001045453045', yandexUrl: 'https://yandex.ru/maps/51/samara/house/dachnaya_ulitsa_2k2/YUkYdwNhSEcOQFtpfX5xcHpkZQ==/' },
-    { address: 'Ульяновская, 19', gisUrl: 'https://2gis.ru/samara/firm/70000001033411071', yandexUrl: 'https://yandex.ru/maps/51/samara/chain/korz/23062014558/' },
-    { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/' }
-  ],
-  status: 'Лидер 👑',
-  index: 98,
-}
+  <!-- Модальное окно с отзывами -->
+  <Teleport to="body">
+    <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
+      <div class="reviews-modal-container" @click.stop>
+        <div class="reviews-widget-wrapper">
+          <ReviewsWidget @close="closeReviewsModal" />
+        </div>
+      </div>
+    </div>
+  </Teleport>
+</template>
 
-const showBranchList = ref(false)
-const emit = defineEmits(['close'])
+<script>
+import ReviewsWidget from './ReviewsWidget.vue'
+import { ref } from 'vue'
 
-const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
+export default {
+  name: 'IndexSMR',
+  components: {
+    ReviewsWidget
+  },
+  setup() {
+    const showReviewsModal = ref(false)
+    const selectedCoffeeShop = ref(null)
 
-const goToReviews = (branch) => {
-  const service = getRandomService()
-  const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
-  window.open(url, '_blank')
+    const openReviewsModal = (shopName) => {
+      selectedCoffeeShop.value = shopName
+      showReviewsModal.value = true
+    }
+
+    const closeReviewsModal = () => {
+      showReviewsModal.value = false
+      selectedCoffeeShop.value = null
+    }
+
+    return {
+      showReviewsModal,
+      selectedCoffeeShop,
+      openReviewsModal,
+      closeReviewsModal
+    }
+  },
+  data() {
+    return {
+      activeRowIndex: null,
+      statusOrder: [
+        'Лидер 👑',
+        'Сильный 💪', 
+        'Растущий 📈',
+        'Стабильный 🎯',
+        'Вне игры 🚫'
+      ],
+      calculatorShops: [
+        'Balance coffee', 'Bonfix', 'Булка нетто', 'Coffee Bean', 'Cup-cup',
+        'Дринкит', 'Кофеваркин', 'Корж', 'Lumos barista lab', 'MB Cafe',
+        'Mosaic coffee&tea', 'Skuratov Coffee', 'Surf Coffee', 'Uco Coffee Roaster',
+        'Vandal coffee', 'White Cup', 'Хюггешная', 'Юни'
+      ],
+      dessertLeaders: ['Корж', 'Этажи', 'Muwa', 'Конфитюр', 'Coffee Bean', 'Shu Authentic Coffee'],
+      otherDesserts: ['Булка нетто', 'Lumos barista lab', 'Комод', 'Хюггешная', 'Кофейная поляна', 'Дринкит'],
+      coffeeData: [
+        { index:98,  name:'Корж', reviews:'4,520', points:8,  scale:'~12+', status:'Лидер 👑', supplier:'Berry Coffee (Тольятти)', beanType:'Свой бренд 🏷️', type:'Независимая', potential:'Высокий', stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Очень высокий' },
+        { index:96,  name:'Skuratov Coffee', reviews:'3,129', points:6,  scale:'~10+', status:'Лидер 👑', supplier:'Skuratov Coffee Roasters', beanType:'Свой бренд 🏷️', type:'Сеть', potential:'Высокий', stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Высокий' },
+        { index:93,  name:'Surf Coffee', reviews:'925', points:3,  scale:'~8+', status:'Лидер 👑', supplier:'Surf Coffee Roasters (Иваново)', beanType:'Свой бренд 🏷️', type:'Франшиза', potential:'Высокий', stage:'Экспансия', innovation:'Средняя', influence:'Высокое', growth:'Высокий' },
+        { index:91,  name:'Mosaic coffee&tea', reviews:'2,231', points:14,  scale:'~19+', status:'Лидер 👑', supplier:'Собственная обжарка', beanType:'Свой бренд 🏷️', type:'Независимая', potential:'Высокий', stage:'Экспансия', innovation:'Высокая', influence:'Высокое', growth:'Высокий' },
+        { index:83,  name:'Stars Coffee', reviews:'405', points:3,  scale:'~8+', status:'Лидер 👑', supplier:'Stars Coffee Roasters', beanType:'Свой бренд 🏷️', type:'Франшиза', potential:'Высокий', stage:'Экспансия', innovation:'Средняя', influence:'Высокое', growth:'Высокий' },
+        { index:81,  name:'Дринкит', reviews:'763', points:2,  scale:'~8+', status:'Лидер 👑', supplier:'Tasty Coffee', beanType:'Коммерция 📦', type:'Франшиза', potential:'Высокий', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Высокий' },
+        { index:78,  name:'Uco Coffee Roaster', reviews:'209', points:2,  scale:'~4+', status:'Сильный 💪', supplier:'Собственная обжарка', beanType:'Спешелти ⭐', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Высокий' },
+        { index:75,  name:'White Cup', reviews:'646', points:2,  scale:'~3+', status:'Сильный 💪', supplier:'Собственная обжарка', beanType:'Спешелти ⭐', type:'Локальная', potential:'Средний', stage:'Зрелость', innovation:'Средняя', influence:'Среднее', growth:'Средний' },
+        { index:67,  name:'8 Атомов', reviews:'34', points:1,  scale:'~2+', status:'Сильный 💪', supplier:'UCO, Soldiers, Сварщица Екатерина', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Высокий' },
+        { index:65,  name:'Vandal coffee', reviews:'273', points:3,  scale:'~5+', status:'Сильный 💪', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Низкое', growth:'Высокий' },
+        { index:63,  name:'Lumos barista lab', reviews:'303', points:2,  scale:'~4+', status:'Сильный 💪', supplier:'Собственная обжарка', beanType:'Спешелти ⭐', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Низкое', growth:'Средний' },
+        { index:57,  name:'Cofix', reviews:'253', points:5,  scale:'~7+', status:'Растущий 📈', supplier:'Cofix (контрактная обжарка)', beanType:'Свой бренд 🏷️', type:'Франшиза', potential:'Средний', stage:'Рост', innovation:'Низкая', influence:'Низкое', growth:'Средний' },
+        { index:55,  name:'Green Stag Roasters', reviews:'119', points:1,  scale:'~3+', status:'Растущий 📈', supplier:'Собственная обжарка', beanType:'Спешелти ⭐', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Высокий' },
+        { index:55,  name:'Shu Authentic Coffee', reviews:'151', points:1, scale:'~2+', status:'Растущий 📈', supplier:'Собственная обжарка', beanType:'Спешелти ⭐', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Высокий' },
+        { index:53,  name:'Cup-cup', reviews:'1,505', points:20,  scale:'~27+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Независимая', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Среднее', growth:'Средний' },
+        { index:52,  name:'Хюггешная', reviews:'885', points:6,  scale:'~6+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Среднее', growth:'Средний' },
+        { index:50,  name:'Булка нетто', reviews:'771', points:3,  scale:'~5+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:45,  name:'Coffee Bean', reviews:'1,703', points:1,  scale:'~2+', status:'Растущий 📈', supplier:'LEON (Coffee Bean)', beanType:'Коммерция 📦', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
+        { index:45,  name:'MB Cafe', reviews:'199', points:2,  scale:'~3+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
+        { index:45,  name:'Bonfix', reviews:'143', points:2,  scale:'~3+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
+        { index:45,  name:'Coffetino', reviews:'186', points:2,  scale:'~3+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
+        { index:45,  name:'Кофейный лис', reviews:'47', points:2,  scale:'~3+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Низкий' },
+        { index:41,  name:'Юни', reviews:'376', points:3,  scale:'~5+', status:'Растущий 📈', supplier:'Tasty Coffee', beanType:'Коммерция 📦', type:'Локальная', potential:'Низкий', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Balance coffee', reviews:'147', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Стартап', innovation:'Средняя', influence:'Низкое', growth:'Высокий' },
+        { index:40,  name:'Days Coffee', reviews:'15', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Ягоза', reviews:'437', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Тепло', reviews:'789', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Комод', reviews:'1,783', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Конфитюр', reviews:'946', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Алеф Трейд', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'КоЗа', reviews:'215', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Komkofe', reviews:'465', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Tasty Coffee', beanType:'Коммерция 📦', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Сойка', reviews:'292', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Black milk', reviews:'153', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'One Price Coffee', reviews:'42', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Art Coffee', reviews:'57', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Coffee cake', reviews:'947', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Этажи', reviews:'904', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Кофейная поляна', reviews:'629', points:3,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:40,  name:'Pluma', reviews:'93', points:1,  scale:'1+', status:'Растущий 📈', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' },
+        { index:39,  name:'Coffee Like', reviews:'170', points:3,  scale:'~6+', status:'Стабильный 🎯', supplier:'Coffee Like (контрактная обжарка)', beanType:'Свой бренд 🏷️', type:'Локальная', potential:'Низкий', stage:'Экспансия', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { index:30,  name:'Толстой', reviews:'398', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Tasty Coffee', beanType:'Коммерция 📦', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { index:30,  name:'Coffee time', reviews:'70', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { index:30,  name:'Точка притяжения', reviews:'122', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { index:30,  name:'Капуч', reviews:'65', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { index:30,  name:'Кофеваркин', reviews:'185', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Собственная обжарка', beanType:'Спешелти ⭐', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { index:30,  name:'Белый кот', reviews:'50', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { index:30,  name:'Cup to cup', reviews:'342', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { index:30,  name:'Котель', reviews:'158', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { index:30,  name:'Coffee inn', reviews:'138', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { index:30,  name:'Coffee Cup', reviews:'114', points:2,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { index:30,  name:'Cappuccino cup', reviews:'132', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Зрелость', innovation:'Низкая', influence:'Низкое', growth:'Низкий' },
+        { index:25,  name:'New coffee', reviews:'203', points:1,  scale:'·', status:'Стабильный 🎯', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Низкий', stage:'Стартап', innovation:'Низкая', influence:'Низкое', growth:'Средний' },
+        { index:58,  name:'Muwa', reviews:'672', points:1,  scale:'~2+', status:'Вне игры 🚫', supplier:'Экспериментальные', beanType:'Эксперимент 🧪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Высокая', influence:'Среднее', growth:'Средний' },
+        { index:40,  name:'Twinz', reviews:'115', points:1,  scale:'1+', status:'Вне игры 🚫', supplier:'Разное', beanType:'Без бренда ⚪', type:'Локальная', potential:'Средний', stage:'Рост', innovation:'Средняя', influence:'Низкое', growth:'Средний' }
+      ]
+    }
+  },
+  computed: {
+    sortedCoffeeData() {
+      return [...this.coffeeData].sort((a, b) => {
+        const statusOrderA = this.statusOrder.indexOf(a.status);
+        const statusOrderB = this.statusOrder.indexOf(b.status);
+        if (statusOrderA !== statusOrderB) {
+          return statusOrderA - statusOrderB;
+        }
+        return b.index - a.index;
+      });
+    }
+  },
+  methods: {
+    setActiveRow(index) {
+      if (this.activeRowIndex === index) {
+        this.activeRowIndex = null; 
+      } else {
+        this.activeRowIndex = index;
+      }
+    },
+    isInCalculator(name) {
+      return this.calculatorShops.includes(name);
+    },
+    getDessertEmoji(name) {
+      if (this.dessertLeaders.includes(name)) return '🥐🥐';
+      if (this.otherDesserts.includes(name)) return '🥐';
+      return '';
+    },
+    statusClass(status) {
+      if (status === 'Лидер 👑') return 'status-leader';
+      if (status === 'Сильный 💪') return 'status-strong';
+      if (status === 'Растущий 📈') return 'status-growing';
+      if (status === 'Стабильный 🎯') return 'status-stable';
+      if (status === 'Вне игры 🚫') return 'status-out';
+      return '';
+    },
+    beanTypeClass(beanType) {
+      if (beanType === 'Свой бренд 🏷️') return 'bean-own-brand';
+      if (beanType === 'Коммерция 📦') return 'bean-commercial';
+      if (beanType === 'Спешелти ⭐') return 'bean-specialty';
+      if (beanType === 'Без бренда ⚪') return 'bean-no-brand';
+      if (beanType === 'Эксперимент 🧪') return 'bean-experiment';
+      return 'bean-default';
+    },
+    typeClass(type) {
+      if (type === 'Независимая') return 'param-independent';
+      if (type === 'Сеть') return 'param-network';
+      if (type === 'Франшиза') return 'param-franchise';
+      if (type === 'Локальная') return 'param-local';
+      return 'param-default';
+    },
+    potentialClass(potential) {
+      if (potential === 'Высокий') return 'param-high';
+      if (potential === 'Средний') return 'param-medium';
+      if (potential === 'Низкий') return 'param-low';
+      return 'param-default';
+    },
+    stageClass(stage) {
+      if (stage === 'Экспансия') return 'param-expansion';
+      if (stage === 'Рост') return 'param-growth';
+      if (stage === 'Зрелость') return 'param-mature';
+      if (stage === 'Стартап') return 'param-startup';
+      return 'param-default';
+    },
+    innovationClass(innovation) {
+      if (innovation === 'Высокая') return 'param-high';
+      if (innovation === 'Средняя') return 'param-medium';
+      if (innovation === 'Низкая') return 'param-low';
+      return 'param-default';
+    },
+    influenceClass(influence) {
+      if (influence === 'Высокое') return 'param-high';
+      if (influence === 'Среднее') return 'param-medium';
+      if (influence === 'Низкое') return 'param-low';
+      return 'param-default';
+    },
+    growthClass(growth) {
+      if (growth === 'Очень высокий') return 'param-very-high';
+      if (growth === 'Высокий') return 'param-high';
+      if (growth === 'Средний') return 'param-medium';
+      if (growth === 'Низкий') return 'param-low';
+      return 'param-default';
+    },
+    isFirstOutOfGame(coffee, index) {
+      return coffee.status === 'Вне игры 🚫' && 
+             (index === 0 || this.sortedCoffeeData[index - 1].status !== 'Вне игры 🚫');
+    },
+    potentialEmoji(potential) {
+      if (potential === 'Высокий') return '🚀';
+      if (potential === 'Низкий') return '🌱';
+      if (potential === 'Средний') return '✨';
+      return '';
+    },
+    getCleanedSuppliers(supplier) {
+      const names = supplier.split(/, |,/g);
+      return names.map(name => {
+        let cleaned = name.replace(/\(контрактная обжарка\)/gi, '').trim();
+        cleaned = cleaned.replace(/\s*\([^\)]*\)/gi, '').trim();
+        if (cleaned === 'Собственная обжарка') {
+          return 'Своя обжарка';
+        }
+        return cleaned;
+      });
+    }
+  }
 }
 </script>
 
-<template>
-  <div class="reviews-widget-content">
-    <!-- Первый экран -->
-    <div v-if="!showBranchList">
-      <div class="widget-header">
-        <div>
-          <h2 class="header-title">Сделайте Индекс Роста еще точнее</h2>
-          <p class="header-subtitle">Выберите кофейню и оставьте честный отзыв</p>
-        </div>
-        <button @click="$emit('close')" class="internal-close-btn" aria-label="Закрыть окно">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6L6 18"/><path d="M6 6L18 18"/>
-          </svg>
-        </button>
-      </div>
-
-      <div class="main-card">
-        <div class="establishment-header">
-          <h3 class="cafe-name">{{ establishment.name }}</h3>
-          <div class="status-badge">{{ establishment.status }}</div>
-        </div>
-        
-        <div class="stats-grid">
-          <div class="stat-card branches-card">
-            <div class="stat-content">
-              <div class="stat-icon">☕</div>
-              <div class="stat-value">{{ establishment.branches.length }}</div>
-              <div class="stat-label">Точки</div>
-            </div>
-          </div>
-          
-          <div class="stat-card index-card">
-            <div class="stat-content">
-              <div class="stat-icon">⚡</div>
-              <div class="stat-value">{{ establishment.index }}</div>
-              <div class="stat-label">Индекс роста</div>
-            </div>
-          </div>
-          
-          <div class="stat-card reviews-card">
-            <div class="stat-content">
-              <div class="stat-icon">🏆</div>
-              <div class="stat-value">{{ establishment.totalReviews }}</div>
-              <div class="stat-label">Отзывы</div>
-            </div>
-          </div>
-        </div>
-        
-        <button @click="showBranchList = true" class="review-button">
-          <span class="button-text">Оставить отзыв</span>
-          <svg class="button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m9 18 6-6-6-6"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Второй экран -->
-    <div v-else>
-      <div class="branches-header">
-        <h2 class="branches-title">{{ establishment.name }}</h2>
-        <button @click="$emit('close')" class="internal-close-btn" aria-label="Закрыть окно">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6L6 18"/><path d="M6 6L18 18"/>
-          </svg>
-        </button>
-      </div>
-      <div class="branches-content">
-        <p class="branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
-        <div class="branches-list">
-          <button v-for="(branch, index) in establishment.branches" :key="index" @click="goToReviews(branch)" class="branch-item">
-            <div class="branch-info">
-              <div class="branch-number">{{ index + 1 }}</div>
-              <div class="branch-address">{{ branch.address }}</div>
-            </div>
-            <div class="branch-action">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m9 18 6-6-6-6"/>
-              </svg>
-            </div>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <style scoped>
-/* ОБЩИЕ СТИЛИ КОНТЕЙНЕРА */
-.reviews-widget-content {
-  padding: 32px;
+.index-smr-table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
-
-/* ЗАГОЛОВОК ПЕРВОГО ЭКРАНА */
-.widget-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 24px;
+.index-smr-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
+  table-layout: fixed;
 }
-.header-title {
-  margin: 0;
-  color: white;
-  font-size: 26px;
+/* Заголовки */
+.index-smr-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--vp-c-bg-soft, #222);
+  text-transform: uppercase;
+  font-size: 13px;
   font-weight: 700;
-  line-height: 1.2;
+  letter-spacing: 1px;
+  color: var(--vp-c-text-2, #888);
+  border-bottom: 1px solid var(--vp-c-divider, #333);
+  padding: 12px 10px;
+  white-space: nowrap;
+  vertical-align: middle;
 }
-.header-subtitle {
-  margin-top: 8px;
+.header-link {
+  color: inherit; 
+  text-decoration: underline; 
+  text-decoration-style: dashed;
+  text-decoration-thickness: 1px; 
+  text-underline-offset: 3px; 
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+.header-link:hover { 
+  color: var(--vp-c-brand-1, #646cff); 
+  text-decoration-style: solid; 
+}
+.header-link:visited { color: inherit; }
+.index-column { width: 60px; text-align: center; }
+.points-column { white-space: nowrap; font-weight: 600; width: 100px; }
+.nowrap { white-space: nowrap !important; }
+.animated-icon {
+  display: inline-block;
+  font-size: 1.2em;
+  animation: pulse 2.5s infinite;
+  transition: transform 0.3s ease;
+}
+@keyframes pulse {
+  0% { transform: scale(1); text-shadow: 0 0 5px rgba(255, 255, 0, 0); }
+  50% { transform: scale(1.1); text-shadow: 0 0 10px rgba(255, 193, 7, 0.7); }
+  100% { transform: scale(1); text-shadow: 0 0 5px rgba(255, 255, 0, 0); }
+}
+/* Ячейки */
+.index-smr-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--vp-c-divider, #333);
   font-size: 15px;
-  color: var(--vp-c-text-2);
+  background: none;
+  transition: background 0.14s;
+  color: var(--vp-c-text-1, #e6e6e6);
+  vertical-align: middle;
+}
+.index-smr-table td:nth-child(2) { font-weight: 600; }
+.index-smr-table tbody tr {
+  cursor: pointer;
+  transition: box-shadow 0.2s ease-in-out, background 0.2s;
+}
+/* Выделение активной строки */
+.active-row {
+  box-shadow: inset 0 2px 0 #c5f946, inset 0 -2px 0 #c5f946;
+}
+.active-row td {
+  background: rgba(197, 249, 70, 0.08) !important;
+}
+.index-smr-table tbody tr:hover td {
+  background: rgba(120,120,120,0.12);
+}
+.active-row:hover td {
+  background: rgba(197, 249, 70, 0.12) !important;
+}
+.golden-row {
+  background: linear-gradient(90deg,rgba(255,230,90,0.05) 0%,rgba(255,226,120,0.0) 100%);
+}
+.active-row.golden-row td {
+  background: linear-gradient(90deg, rgba(255,230,90,0.1) 0%, rgba(197, 249, 70, 0.05) 100%) !important;
+}
+.out-of-game-separator td { border-top: 4px solid #ff6b6b !important; padding-top: 14px; }
+.cell-center { text-align: center; }
+.cell-left { text-align: left; }
+.cell-nowrap { white-space: nowrap; }
+.supplier-cell { line-height: 1.6; }
+.scale-text { font-size: 0.9em; color: #888; }
+.stagnation-dot { font-weight: 900; font-size: 1.5em; line-height: 1; vertical-align: middle; color: #888; padding-left: 4px; }
+
+/* Стили для кликабельного "Корж" */
+/* Стили для кликабельного "Корж" */
+.coffee-name-clickable {
+  color: var(--vp-c-brand-1, #4f46e5); /* синий цвет ссылки по умолчанию */
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* ЗАГОЛОВОК СПИСКА ФИЛИАЛОВ (ВТОРОЙ ЭКРАН) */
-.branches-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 20px;
-  border-bottom: 2px solid var(--vp-c-border);
-  margin-bottom: 20px;
-}
-.branches-title {
-  margin: 0;
-  color: #00ff88;
-  font-size: 26px;
-  font-weight: 700;
-  text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+.coffee-name-clickable:hover {
+  color: var(--vp-c-brand-2, #646cff); /* более темный синий при наведении */
+  text-decoration-thickness: 2px; /* более толстое сплошное подчеркивание */
 }
 
-/* СТИЛЬ ДЛЯ ВНУТРЕННЕЙ КНОПКИ ЗАКРЫТИЯ */
-.internal-close-btn {
-  background: var(--vp-c-bg-mute);
-  border: 2px solid var(--vp-c-border);
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
+/* Стили для модального окна */
+.reviews-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  color: var(--vp-c-text-2);
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-}
-.internal-close-btn:hover {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  border-color: #ef4444;
-  color: white;
-  transform: rotate(90deg);
-}
-
-/* КАРТОЧКА НА ПЕРВОМ ЭКРАНЕ */
-.main-card {
-  background: var(--vp-c-bg-soft);
-  border-radius: 20px;
-  padding: 24px;
-}
-
-.establishment-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
-.cafe-name {
-  margin: 0;
-  color: #00ff88;
-  font-size: 24px;
-  font-weight: 700;
-  text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-}
-.status-badge {
-  background: linear-gradient(135deg, #00d4aa, #00ff88);
-  color: #001a1a;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* СТАТИСТИЧЕСКИЕ КАРТОЧКИ В СТИЛЕ ASTON MARTIN / TESLA */
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 16px;
-}
-.stat-card {
-  position: relative;
-  padding: 2px; /* Толщина рамки */
-  border-radius: 22px; /* Чуть больше, чем у контента */
-  background: transparent;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.stat-card:hover {
-  transform: translateY(-8px);
-}
-.stat-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 22px;
-  padding: 2px; /* Толщина рамки */
-  background: var(--gradient-border);
-  -webkit-mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  transition: all 0.3s ease;
-  z-index: 1;
-}
-.stat-card:hover::before {
-  transform: scale(1.02);
-  filter: brightness(1.3);
-}
-.branches-card { --gradient-border: linear-gradient(135deg, #00A86B, #00d4aa); }
-.index-card { --gradient-border: linear-gradient(135deg, #00FF88, #00d4aa); }
-.reviews-card { --gradient-border: linear-gradient(135deg, #FFD700, #ffed4e); }
-
-.stat-content {
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%), var(--vp-c-bg-soft);
-  border-radius: 20px;
   padding: 20px;
+  box-sizing: border-box;
+}
+
+.reviews-modal-container {
+  background: var(--vp-c-bg);
+  border-radius: 20px;
+  max-width: 800px;
+  width: 100%;
+  max-height: calc(100vh - 40px);
+  position: relative;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-  text-align: center;
-  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
-  transition: box-shadow 0.3s ease;
+  overflow: hidden;
 }
-.stat-card:hover .stat-content {
-  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+
+.reviews-widget-wrapper {
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--vp-c-brand-1) transparent;
 }
-.stat-icon {
-  font-size: 28px;
-  opacity: 0.8;
-  height: 32px;
-  transition: transform 0.3s ease;
+
+.reviews-widget-wrapper::-webkit-scrollbar {
+  width: 6px;
 }
-.stat-card:hover .stat-icon {
-  transform: scale(1.1);
+
+.reviews-widget-wrapper::-webkit-scrollbar-track {
+  background: transparent;
 }
-.stat-value {
-  font-family: 'Inter', sans-serif;
-  font-size: 3.2rem;
+
+.reviews-widget-wrapper::-webkit-scrollbar-thumb {
+  background: var(--vp-c-brand-1);
+  border-radius: 3px;
+}
+
+.reviews-widget-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--vp-c-brand-2);
+}
+
+.badge {
+  display: inline-block;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.85em;
+  white-space: nowrap;
+  vertical-align: baseline;
+  margin: 2px;
   font-weight: 500;
-  line-height: 1;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+}
+.status-leader { background: rgba(197, 249, 70, 0.15); color: #c5f946; border-color: rgba(197, 249, 70, 0.3); }
+.status-strong { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3); }
+.status-growing { background: rgba(34, 197, 94, 0.15); color: #4ade80; border-color: rgba(34, 197, 94, 0.3); }
+.status-stable { background: rgba(156, 163, 175, 0.15); color: #9ca3af; border-color: rgba(156, 163, 175, 0.3); }
+.status-out { background: rgba(255, 107, 107, 0.15); color: #ff6b6b; border-color: rgba(255, 107, 107, 0.3); }
+.bean-own-brand { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3); }
+.bean-commercial { background: rgba(99, 102, 241, 0.15); color: #818cf8; border-color: rgba(99, 102, 241, 0.3); }
+.bean-specialty { background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3); }
+.bean-no-brand { background: rgba(107, 114, 128, 0.15); color: #9ca3af; border-color: rgba(107, 114, 128, 0.3); }
+.bean-experiment { background: rgba(236, 72, 153, 0.15); color: #f472b6; border-color: rgba(236, 72, 153, 0.3); }
+.badge-supplier { background: rgba(107, 114, 128, 0.1); color: #a0a0a0; border-color: rgba(107, 114, 128, 0.2); }
+.param-independent { background: rgba(197, 249, 70, 0.1); color: rgba(197, 249, 70, 0.9); border-color: rgba(197, 249, 70, 0.2); }
+.param-network { background: rgba(59, 130, 246, 0.1); color: rgba(96, 165, 250, 0.9); border-color: rgba(59, 130, 246, 0.2); }
+.param-franchise { background: rgba(168, 85, 247, 0.15); color: rgba(192, 132, 252, 1); border-color: rgba(168, 85, 247, 0.3); }
+.param-local { background: rgba(107, 114, 128, 0.15); color: rgba(156, 163, 175, 1); border-color: rgba(107, 114, 128, 0.25); }
+.param-very-high, .param-high, .badge.param-high { background: rgba(34, 197, 94, 0.15); color: rgba(52, 211, 153, 1); border-color: rgba(34, 197, 94, 0.3); }
+.param-medium, .badge.param-medium { background: rgba(234, 179, 8, 0.15); color: rgba(252, 211, 77, 1); border-color: rgba(234, 179, 8, 0.3); }
+.param-low, .badge.param-low { background: rgba(239, 68, 68, 0.15); color: rgba(248, 113, 113, 1); border-color: rgba(239, 68, 68, 0.3); }
+.param-expansion { background: rgba(59, 130, 246, 0.1); color: rgba(96, 165, 250, 0.9); border-color: rgba(59, 130, 246, 0.2); }
+.param-growth { background: rgba(34, 197, 94, 0.1); color: rgba(52, 211, 153, 0.9); border-color: rgba(34, 197, 94, 0.2); }
+.param-mature { background: rgba(156, 163, 175, 0.15); color: rgba(156, 163, 175, 1); border-color: rgba(156, 163, 175, 0.25); }
+.param-startup { background: rgba(168, 85, 247, 0.1); color: rgba(192, 132, 252, 0.9); border-color: rgba(168, 85, 247, 0.2); }
+.param-default { background: rgba(107, 114, 128, 0.1); color: rgba(107, 114, 128, 0.9); border-color: rgba(107, 114, 128, 0.2); }
+/* Новые стили для кнопки (v3) */
+a.badge-calculator {
+  margin-left: 6px;
+  background: #2b2b2b;
+  color: #777;
+  border: 1px solid #444;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  padding: 2px 7px;
+  font-size: 0.8em;
+  vertical-align: middle;
+  border-radius: 5px;
+  font-weight: 600;
+  box-shadow: none;
+  text-shadow: none;
+}
+a.badge-calculator:hover {
+  background: #3c3c3c;
+  border-color: #777;
   color: #fff;
-  margin: 12px 0;
-  text-shadow: 0 0 18px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
-.stat-label {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--vp-c-text-2);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+.dessert-emoji {
+  margin-left: 6px;
+  vertical-align: middle;
+  font-size: 1.1em;
 }
 
-/* ОСНОВНАЯ КНОПКА CTA */
-.review-button { 
-  width: 100%; 
-  background: linear-gradient(135deg, #00d4aa, #00ff88); 
-  border: none; 
-  border-radius: 16px; 
-  padding: 18px 24px; 
-  margin-top: 24px;
-  cursor: pointer; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  gap: 12px; 
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-  box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3); 
-}
-.review-button:hover { 
-  transform: translateY(-4px) scale(1.02); 
-  box-shadow: 0 14px 35px rgba(0, 212, 170, 0.4); 
-}
-.button-text { color: #001a1a; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-.button-icon { color: #001a1a; transition: transform 0.3s ease; }
-.review-button:hover .button-icon { transform: translateX(4px); }
-
-/* СПИСОК ФИЛИАЛОВ */
-.branches-content { flex-grow: 1; }
-.branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
-.branches-list { padding: 0; }
-.branch-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px; margin-bottom: 12px; background: var(--vp-c-bg-soft); border: 2px solid var(--vp-c-border); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
-.branch-item:hover { background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), var(--vp-c-bg-soft)); border-color: #00d4aa; box-shadow: 0 8px 20px rgba(0, 212, 170, 0.2); }
-.branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
-.branch-number { background: linear-gradient(135deg, #00d4aa, #00ff88); color: #001a1a; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3); }
-.branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.branch-action { color: #00d4aa; transition: transform 0.3s ease; margin-left: 12px; }
-.branch-item:hover .branch-action { transform: translateX(4px); }
-
-/* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
-  .reviews-widget-content { padding: 24px; }
-  .main-card { padding: 16px; }
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
+  .reviews-modal-backdrop { 
+    padding: 10px 15px; 
   }
-  .stat-card {
-    padding: 2px;
-    border-radius: 18px;
+  .reviews-modal-container {
+    max-height: calc(100vh - 30px);
+    border-radius: 15px;
   }
-  .stat-content {
-    padding: 12px;
-    border-radius: 16px;
-    min-height: auto;
+  .reviews-widget-wrapper {
+    max-height: calc(100vh - 110px);
   }
-  .stat-icon {
-    font-size: 24px;
-    height: 28px;
+}
+
+@media (max-width: 640px) {
+  .reviews-modal-backdrop { 
+    padding: 5px; 
   }
-  .stat-value {
-    font-size: 2.8rem;
-    margin: 8px 0;
+  .reviews-modal-container {
+    border-radius: 12px;
+    max-height: calc(100vh - 10px);
   }
-  .stat-label {
-    font-size: 10px;
+  .reviews-widget-wrapper {
+    max-height: calc(100vh - 90px);
   }
-  .review-button {
-    padding: 20px 24px;
-    margin-top: 20px;
-    border-radius: 18px;
-  }
-  .button-text {
+  .reviews-close-btn {
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
     font-size: 20px;
   }
-}
-@media (max-width: 480px) {
-  .reviews-widget-content { padding: 20px; }
-  .header-title { font-size: 22px; }
-  .header-subtitle { font-size: 14px; }
-  .branches-title { font-size: 22px; }
-  .branches-subtitle { font-size: 14px; }
-  .cafe-name { font-size: 20px; }
-  .status-badge { padding: 4px 12px; font-size: 10px; }
 }
 </style>
