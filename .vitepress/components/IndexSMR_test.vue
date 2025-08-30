@@ -458,7 +458,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px 20px 20px;
+  padding: 20px;
   box-sizing: border-box;
 }
 
@@ -591,28 +591,28 @@ a.badge-calculator:hover {
 
 @media (max-width: 768px) {
   .reviews-modal-backdrop { 
-    padding: 60px 15px 15px 15px; 
+    padding: 20px 15px; 
   }
   .reviews-modal-container {
-    max-height: calc(100vh - 120px);
+    max-height: calc(100vh - 40px);
     border-radius: 15px;
   }
   .reviews-widget-wrapper {
-    max-height: calc(100vh - 200px);
+    max-height: calc(100vh - 120px);
     padding: 15px;
   }
 }
 
 @media (max-width: 640px) {
   .reviews-modal-backdrop { 
-    padding: 80px 10px 10px 10px; 
+    padding: 10px; 
   }
   .reviews-modal-container {
     border-radius: 12px;
-    max-height: calc(100vh - 160px);
+    max-height: calc(100vh - 20px);
   }
   .reviews-widget-wrapper {
-    max-height: calc(100vh - 240px);
+    max-height: calc(100vh - 100px);
     padding: 15px;
   }
   .reviews-close-btn {
