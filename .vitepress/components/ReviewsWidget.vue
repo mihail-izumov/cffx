@@ -112,16 +112,16 @@ const goToReviews = (branch) => {
 </template>
 
 <style scoped>
-/* ОБЩИЙ КОНТЕЙНЕР С СИММЕТРИЧНЫМИ ОТСТУПАМИ */
+/* ОБЩИЙ КОНТЕЙНЕР */
 .reviews-widget-content {
   padding: 32px;
 }
 
 /* ЗАГОЛОВОК СЛЕВА */
-.widget-header {
+.widget-header, .branches-header {
   text-align: left;
   margin-bottom: 24px;
-  /* ДОБАВЛЯЕМ ОТСТУП СПРАВА, ЧТОБЫ НЕ НАЕЗЖАТЬ НА КРЕСТИК */
+  /* Отступ справа, чтобы не наезжать на крестик */
   padding-right: 50px; 
 }
 .header-title {
@@ -312,14 +312,12 @@ const goToReviews = (branch) => {
 
 /* ЭКРАН ФИЛИАЛОВ */
 .branches-header {
-  padding-bottom: 20px;
   border-bottom: 2px solid var(--vp-c-border);
   margin-bottom: 20px;
-  /* ОТСТУП ДЛЯ КРЕСТИКА */
-  padding-right: 50px;
 }
 .branches-title {
   margin: 0;
+  padding-bottom: 20px;
   color: #00ff88;
   font-size: 26px;
   font-weight: 700;
@@ -332,7 +330,12 @@ const goToReviews = (branch) => {
   font-size: 14px;
   font-weight: 500;
 }
-.branches-list { padding: 0; }
+
+/* ГЛАВНЫЙ ФИКС ДЛЯ МОБИЛЬНОЙ ВЕРСИИ */
+.branches-list { 
+  padding: 0;
+}
+
 .branch-item {
   display: flex;
   align-items: center;
@@ -357,6 +360,8 @@ const goToReviews = (branch) => {
   align-items: center;
   gap: 16px;
   flex: 1;
+  /* Запрещаем тексту выходить за рамки */
+  overflow: hidden; 
 }
 .branch-number {
   background: linear-gradient(135deg, #00d4aa, #00ff88);
@@ -376,10 +381,14 @@ const goToReviews = (branch) => {
   font-weight: 600;
   color: var(--vp-c-text-1);
   font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .branch-action {
   color: #00d4aa;
   transition: transform 0.3s ease;
+  margin-left: 12px; /* Добавляем отступ от адреса */
 }
 .branch-item:hover .branch-action { transform: translateX(4px); }
 
