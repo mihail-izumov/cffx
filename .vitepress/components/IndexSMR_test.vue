@@ -35,7 +35,7 @@
           <td class="cell-left nowrap">
             <span 
               v-if="coffee.name === 'Корж'" 
-              @click.stop="openReviewsModal(coffee.name)"
+              @click.stop="openReviewsModal('korzh')"
               class="coffee-name-clickable"
             >{{ coffee.name }}</span>
             <span v-else>{{ coffee.name }}</span>
@@ -101,48 +101,20 @@
       </tbody>
     </table>
   </div>
-
-  <!-- Модальное окно с отзывами -->
-  <Teleport to="body">
-    <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
-      <div class="reviews-modal-container" @click.stop>
-        <button @click="closeReviewsModal" class="reviews-close-btn">×</button>
-        <div class="reviews-widget-wrapper">
-          <ReviewsWidget />
-        </div>
-      </div>
-    </div>
-  </Teleport>
 </template>
 
 <script>
-import ReviewsWidget from './ReviewsWidget.vue'
-import { ref } from 'vue'
-
 export default {
   name: 'IndexSMR',
-  components: {
-    ReviewsWidget
-  },
   setup() {
-    const showReviewsModal = ref(false)
-    const selectedCoffeeShop = ref(null)
-
     const openReviewsModal = (shopName) => {
-      selectedCoffeeShop.value = shopName
-      showReviewsModal.value = true
-    }
-
-    const closeReviewsModal = () => {
-      showReviewsModal.value = false
-      selectedCoffeeShop.value = null
+      window.dispatchEvent(new CustomEvent('open-review-modal', { 
+        detail: { establishment: shopName.toLowerCase() } 
+      }))
     }
 
     return {
-      showReviewsModal,
-      selectedCoffeeShop,
-      openReviewsModal,
-      closeReviewsModal
+      openReviewsModal
     }
   },
   data() {
@@ -445,87 +417,6 @@ export default {
   text-decoration-thickness: 2px;
 }
 
-/* Стили для модального окна */
-.reviews-modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.reviews-modal-container {
-  background: var(--vp-c-bg);
-  border-radius: 20px;
-  max-width: 800px;
-  width: 100%;
-  max-height: calc(100vh - 40px);
-  position: relative;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.reviews-widget-wrapper {
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
-  padding: 0;
-  scrollbar-width: thin;
-  scrollbar-color: var(--vp-c-brand-1) transparent;
-}
-
-.reviews-widget-wrapper::-webkit-scrollbar {
-  width: 6px;
-}
-
-.reviews-widget-wrapper::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.reviews-widget-wrapper::-webkit-scrollbar-thumb {
-  background: var(--vp-c-brand-1);
-  border-radius: 3px;
-}
-
-.reviews-widget-wrapper::-webkit-scrollbar-thumb:hover {
-  background: var(--vp-c-brand-2);
-}
-
-.reviews-close-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: var(--vp-c-bg-mute);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  cursor: pointer;
-  color: var(--vp-c-text-2);
-  transition: all 0.3s ease;
-  z-index: 10;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.reviews-close-btn:hover {
-  background: var(--vp-c-brand-soft);
-  color: var(--vp-c-brand-1);
-  transform: rotate(90deg);
-}
-
 .badge {
   display: inline-block;
   border-radius: 6px;
@@ -587,38 +478,5 @@ a.badge-calculator:hover {
   margin-left: 6px;
   vertical-align: middle;
   font-size: 1.1em;
-}
-
-@media (max-width: 768px) {
-  .reviews-modal-backdrop { 
-    padding: 10px 15px; 
-  }
-  .reviews-modal-container {
-    max-height: calc(100vh - 30px);
-    border-radius: 15px;
-  }
-  .reviews-widget-wrapper {
-    max-height: calc(100vh - 110px);
-  }
-}
-
-@media (max-width: 640px) {
-  .reviews-modal-backdrop { 
-    padding: 5px; 
-  }
-  .reviews-modal-container {
-    border-radius: 12px;
-    max-height: calc(100vh - 10px);
-  }
-  .reviews-widget-wrapper {
-    max-height: calc(100vh - 90px);
-  }
-  .reviews-close-btn {
-    top: 15px;
-    right: 15px;
-    width: 36px;
-    height: 36px;
-    font-size: 20px;
-  }
 }
 </style>
