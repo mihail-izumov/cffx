@@ -35,7 +35,15 @@ const goToReviews = (branch) => {
     <!-- Первый экран -->
     <div v-if="!showBranchList">
       <div class="widget-header">
-        <h2 class="header-title">Сделайте Индекс Роста еще точнее</h2>
+        <div>
+          <h2 class="header-title">Сделайте Индекс Роста еще точнее</h2>
+          <p class="header-subtitle">Выберите кофейню и оставьте честный отзыв</p>
+        </div>
+        <button @click="$emit('close')" class="internal-close-btn" aria-label="Закрыть окно">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18"/><path d="M6 6L18 18"/>
+          </svg>
+        </button>
       </div>
 
       <div class="main-card">
@@ -45,29 +53,9 @@ const goToReviews = (branch) => {
         </div>
         
         <div class="stats-grid">
-          <div class="stat-card branches-card">
-            <div class="stat-icon">☕</div>
-            <div class="stat-content">
-              <div class="stat-value">{{ establishment.branches.length }}</div>
-              <div class="stat-label">Точки</div>
-            </div>
-          </div>
-          
-          <div class="stat-card index-card">
-            <div class="stat-icon">⚡</div>
-            <div class="stat-content">
-              <div class="stat-value">{{ establishment.index }}</div>
-              <div class="stat-label">Индекс роста</div>
-            </div>
-          </div>
-          
-          <div class="stat-card reviews-card">
-            <div class="stat-icon">🏆</div>
-            <div class="stat-content">
-              <div class="stat-value">{{ establishment.totalReviews }}</div>
-              <div class="stat-label">Отзывы</div>
-            </div>
-          </div>
+          <div class="stat-card branches-card"><div class="stat-icon">☕</div><div class="stat-content"><div class="stat-value">{{ establishment.branches.length }}</div><div class="stat-label">Точки</div></div></div>
+          <div class="stat-card index-card"><div class="stat-icon">⚡</div><div class="stat-content"><div class="stat-value">{{ establishment.index }}</div><div class="stat-label">Индекс роста</div></div></div>
+          <div class="stat-card reviews-card"><div class="stat-icon">🏆</div><div class="stat-content"><div class="stat-value">{{ establishment.totalReviews }}</div><div class="stat-label">Отзывы</div></div></div>
         </div>
         
         <button @click="showBranchList = true" class="review-button">
@@ -85,29 +73,16 @@ const goToReviews = (branch) => {
         <h2 class="branches-title">{{ establishment.name }}</h2>
         <button @click="$emit('close')" class="internal-close-btn" aria-label="Закрыть окно">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6L6 18"/>
-            <path d="M6 6L18 18"/>
+            <path d="M18 6L6 18"/><path d="M6 6L18 18"/>
           </svg>
         </button>
       </div>
       <div class="branches-content">
         <p class="branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
         <div class="branches-list">
-          <button
-            v-for="(branch, index) in establishment.branches"
-            :key="index"
-            @click="goToReviews(branch)"
-            class="branch-item"
-          >
-            <div class="branch-info">
-              <div class="branch-number">{{ index + 1 }}</div>
-              <div class="branch-address">{{ branch.address }}</div>
-            </div>
-            <div class="branch-action">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m9 18 6-6-6-6"/>
-              </svg>
-            </div>
+          <button v-for="(branch, index) in establishment.branches" :key="index" @click="goToReviews(branch)" class="branch-item">
+            <div class="branch-info"><div class="branch-number">{{ index + 1 }}</div><div class="branch-address">{{ branch.address }}</div></div>
+            <div class="branch-action"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
           </button>
         </div>
       </div>
@@ -123,7 +98,9 @@ const goToReviews = (branch) => {
 
 /* ЗАГОЛОВОК ПЕРВОГО ЭКРАНА */
 .widget-header {
-  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   margin-bottom: 24px;
 }
 .header-title {
@@ -131,6 +108,12 @@ const goToReviews = (branch) => {
   color: white;
   font-size: 26px;
   font-weight: 700;
+  line-height: 1.2;
+}
+.header-subtitle {
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--vp-c-text-2);
 }
 
 /* ЗАГОЛОВОК СПИСКА ФИЛИАЛОВ (ВТОРОЙ ЭКРАН) */
@@ -195,12 +178,8 @@ const goToReviews = (branch) => {
   transform-origin: left;
   transition: transform 0.4s ease;
 }
-.main-card:hover::before {
-  transform: scaleX(1);
-}
-.main-card:hover {
-  border-color: #00d4aa;
-}
+.main-card:hover::before { transform: scaleX(1); }
+.main-card:hover { border-color: #00d4aa; }
 
 .establishment-header {
   display: flex;
@@ -229,191 +208,49 @@ const goToReviews = (branch) => {
 }
 
 /* СТАТИСТИЧЕСКИЕ КАРТОЧКИ */
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-.stat-card {
-  background: var(--vp-c-bg-mute);
-  border: 3px solid var(--vp-c-border);
-  border-radius: 20px;
-  padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-.stat-card:hover {
-  transform: translateY(-8px) rotateX(5deg);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-}
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  transition: transform 0.3s ease;
-}
-.stat-card::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transform: rotate(45deg);
-  transition: all 0.6s;
-  opacity: 0;
-}
-.stat-card:hover::after {
-  animation: shimmer 1.5s ease-in-out;
-}
-@keyframes shimmer {
-  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
-}
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.stat-card { background: var(--vp-c-bg-mute); border: 3px solid var(--vp-c-border); border-radius: 20px; padding: 20px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); }
+.stat-card:hover { transform: translateY(-8px) rotateX(5deg); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); }
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; transition: transform 0.3s ease; }
+.stat-card::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent); transform: rotate(45deg); transition: all 0.6s; opacity: 0; }
+.stat-card:hover::after { animation: shimmer 1.5s ease-in-out; }
+@keyframes shimmer { 0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; } }
 .branches-card::before { background: linear-gradient(90deg, #00a86b, #00d4aa); }
 .index-card::before { background: linear-gradient(90deg, #00ff88, #00d4aa); }
 .reviews-card::before { background: linear-gradient(90deg, #ffd700, #ffed4e); }
 .stat-card:hover::before { transform: scaleX(1); }
-.stat-icon {
-  font-size: 36px;
-  margin-bottom: 10px;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-  transition: transform 0.3s ease;
-}
+.stat-icon { font-size: 36px; margin-bottom: 10px; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)); transition: transform 0.3s ease; }
 .stat-card:hover .stat-icon { transform: scale(1.1); }
 .stat-content { text-align: center; }
-.stat-value {
-  font-size: 22px;
-  font-weight: 800;
-  margin-bottom: 6px;
-  line-height: 1;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
+.stat-value { font-size: 22px; font-weight: 800; margin-bottom: 6px; line-height: 1; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; }
 .stat-card:hover .stat-value { transform: scale(1.05); }
 .branches-card .stat-value { color: #00a86b; }
 .index-card .stat-value { color: #00ff88; }
 .reviews-card .stat-value { color: #ffd700; }
-.stat-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--vp-c-text-3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+.stat-label { font-size: 11px; font-weight: 600; color: var(--vp-c-text-3); text-transform: uppercase; letter-spacing: 0.5px; }
 
 /* КНОПКА */
-.review-button {
-  width: 100%;
-  background: linear-gradient(135deg, #00d4aa, #00ff88);
-  border: none;
-  border-radius: 16px;
-  padding: 18px 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3);
-}
-.review-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(0, 212, 170, 0.4);
-}
-.button-text {
-  color: #001a1a;
-  font-size: 18px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.button-icon {
-  color: #001a1a;
-  transition: transform 0.3s ease;
-}
+.review-button { width: 100%; background: linear-gradient(135deg, #00d4aa, #00ff88); border: none; border-radius: 16px; padding: 18px 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3); }
+.review-button:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 212, 170, 0.4); }
+.button-text { color: #001a1a; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.button-icon { color: #001a1a; transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
 
 /* СПИСОК ФИЛИАЛОВ */
 .branches-content { flex-grow: 1; }
-.branches-subtitle {
-  margin: 0 0 16px 0;
-  color: var(--vp-c-text-3);
-  font-size: 14px;
-  font-weight: 500;
-}
-.branches-list { 
-  padding: 0;
-}
-.branch-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 18px;
-  margin-bottom: 12px;
-  background: var(--vp-c-bg-soft);
-  border: 2px solid var(--vp-c-border);
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: left;
-}
-.branch-item:hover {
-  background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), var(--vp-c-bg-soft));
-  border-color: #00d4aa;
-  box-shadow: 0 8px 20px rgba(0, 212, 170, 0.2);
-}
-.branch-info {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex: 1;
-  overflow: hidden; 
-}
-.branch-number {
-  background: linear-gradient(135deg, #00d4aa, #00ff88);
-  color: #001a1a;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
-}
-.branch-address {
-  font-weight: 600;
-  color: var(--vp-c-text-1);
-  font-size: 16px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.branch-action {
-  color: #00d4aa;
-  transition: transform 0.3s ease;
-  margin-left: 12px;
-}
+.branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
+.branches-list { padding: 0; }
+.branch-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px; margin-bottom: 12px; background: var(--vp-c-bg-soft); border: 2px solid var(--vp-c-border); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
+.branch-item:hover { background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), var(--vp-c-bg-soft)); border-color: #00d4aa; box-shadow: 0 8px 20px rgba(0, 212, 170, 0.2); }
+.branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
+.branch-number { background: linear-gradient(135deg, #00d4aa, #00ff88); color: #001a1a; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3); }
+.branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.branch-action { color: #00d4aa; transition: transform 0.3s ease; margin-left: 12px; }
 .branch-item:hover .branch-action { transform: translateX(4px); }
 
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
+  .reviews-widget-content { padding: 24px; }
   .stats-grid { grid-template-columns: 1fr; gap: 12px; }
   .stat-card { flex-direction: row; padding: 16px; text-align: left; }
   .stat-icon { font-size: 32px; margin-right: 16px; margin-bottom: 0; }
@@ -424,9 +261,11 @@ const goToReviews = (branch) => {
   .button-text { font-size: 16px; }
 }
 @media (max-width: 480px) {
-  .reviews-widget-content {
-    padding: 20px;
-  }
+  .reviews-widget-content { padding: 20px; }
+  .header-title { font-size: 22px; }
+  .header-subtitle { font-size: 14px; }
+  .branches-title { font-size: 22px; }
+  .branches-subtitle { font-size: 14px; }
   .cafe-name { font-size: 20px; }
   .status-badge { padding: 4px 12px; font-size: 10px; }
   .stat-icon { font-size: 28px; margin-right: 12px; }
