@@ -1,5 +1,6 @@
 <template>
   <div class="index-smr-table-container">
+    <!-- ... таблица остается без изменений ... -->
     <table class="index-smr-table">
       <thead>
         <tr>
@@ -38,7 +39,7 @@
               @click.stop="openReviewsModal(coffee.name)"
               class="coffee-name-clickable"
             >{{ coffee.name }}</span>
-            <span v-else class="coffee-name-regular">{{ coffee.name }}</span>
+            <span v-else>{{ coffee.name }}</span>
             <span v-if="getDessertEmoji(coffee.name)" class="dessert-emoji">
               {{ getDessertEmoji(coffee.name) }}
             </span>
@@ -102,7 +103,7 @@
     </table>
   </div>
 
-  <!-- Модальное окно с отзывами -->
+  <!-- ИСПРАВЛЕННОЕ модальное окно -->
   <Teleport to="body">
     <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
       <div class="reviews-modal-container" @click.stop>
@@ -219,6 +220,7 @@ export default {
       ],
       dessertLeaders: ['Корж', 'Этажи', 'Muwa', 'Конфитюр', 'Coffee Bean', 'Shu Authentic Coffee'],
       otherDesserts: ['Булка нетто', 'Lumos barista lab', 'Комод', 'Хюггешная', 'Кофейная поляна', 'Дринкит'],
+      // ДОБАВЛЕНЫ данные заведений
       establishments: {
         'Корж': {
           name: 'Корж',
@@ -307,6 +309,7 @@ export default {
         return b.index - a.index;
       });
     },
+    // ДОБАВЛЕНО свойство для получения данных заведения
     selectedEstablishment() {
       return this.establishments[this.selectedCoffeeShop];
     }
@@ -403,6 +406,7 @@ export default {
         return cleaned;
       });
     },
+    // ДОБАВЛЕНЫ методы для работы с отзывами
     getRandomService() {
       return Math.random() < 0.5 ? 'gis' : 'yandex'
     },
@@ -424,6 +428,7 @@ export default {
 </script>
 
 <style scoped>
+/* Все прежние стили таблицы остаются без изменений */
 .index-smr-table-container {
   width: 100%;
   overflow-x: auto;
@@ -435,7 +440,6 @@ export default {
   border-collapse: separate;
   table-layout: fixed;
 }
-/* Заголовки */
 .index-smr-table th {
   position: sticky;
   top: 0;
@@ -479,7 +483,6 @@ export default {
   50% { transform: scale(1.1); text-shadow: 0 0 10px rgba(255, 193, 7, 0.7); }
   100% { transform: scale(1); text-shadow: 0 0 5px rgba(255, 255, 0, 0); }
 }
-/* Ячейки */
 .index-smr-table td {
   padding: 10px 8px;
   border-bottom: 1px solid var(--vp-c-divider, #333);
@@ -494,7 +497,6 @@ export default {
   cursor: pointer;
   transition: box-shadow 0.2s ease-in-out, background 0.2s;
 }
-/* Выделение активной строки */
 .active-row {
   box-shadow: inset 0 2px 0 #c5f946, inset 0 -2px 0 #c5f946;
 }
@@ -520,32 +522,23 @@ export default {
 .supplier-cell { line-height: 1.6; }
 .scale-text { font-size: 0.9em; color: #888; }
 .stagnation-dot { font-weight: 900; font-size: 1.5em; line-height: 1; vertical-align: middle; color: #888; padding-left: 4px; }
-
-/* Стили для кликабельного "Корж" - использует глобальные стили ссылок */
 .coffee-name-clickable {
-  color: var(--vp-c-brand-2, #C5F946); /* зеленый цвет как глобальные ссылки */
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
+  color: var(--vp-c-brand-1, #646cff);
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
-
 .coffee-name-clickable:hover {
-  color: var(--vp-c-brand-1, #347b6c); /* темно-зеленый при hover */
-  border-bottom-color: var(--vp-c-brand-1, #347b6c);
+  color: var(--vp-c-brand-2, #4f46e5);
+  text-decoration-style: solid;
+  text-decoration-thickness: 2px;
 }
 
-/* Стили для обычных названий кофеен */
-.coffee-name-regular {
-  color: inherit;
-  font-weight: 600;
-  cursor: default;
-  text-decoration: none;
-  border: none;
-}
-
-/* Стили для модального окна */
+/* ИСПРАВЛЕННЫЕ стили модального окна */
 .reviews-modal-backdrop {
   position: fixed;
   top: 0;
@@ -626,7 +619,7 @@ export default {
   transform: rotate(90deg);
 }
 
-/* Стили виджета отзывов */
+/* ДОБАВЛЕННЫЕ стили виджета отзывов */
 .widget-header {
   text-align: center;
   margin-bottom: 32px;
@@ -786,6 +779,7 @@ export default {
   font-size: 13px;
 }
 
+/* Badge стили остаются прежними */
 .badge {
   display: inline-block;
   border-radius: 6px;
