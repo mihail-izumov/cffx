@@ -349,6 +349,7 @@ const goToReviews = (branch) => {
 .branch-item:hover { background: linear-gradient(135deg, rgba(197, 249, 70, 0.05), var(--vp-c-bg-soft)); border-color: #C5F946; box-shadow: 0 8px 20px rgba(197, 249, 70, 0.1); }
 .branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
 .branch-number { 
+  position: relative;
   background: linear-gradient(135deg, #a3e635, #C5F946); 
   color: #1d2c00; 
   width: 32px; 
@@ -360,15 +361,32 @@ const goToReviews = (branch) => {
   font-size: 14px; 
   font-weight: 700; 
   flex-shrink: 0; 
-  transition: all 0.3s ease; /* Добавил transition для плавности */
+  z-index: 1;
+  transition: transform 0.3s ease;
 }
-
-/* Свечение теперь применяется к РОДИТЕЛЬСКОМУ элементу при наведении */
+.branch-number::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #C5F946;
+  border-radius: 50%;
+  filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
 .branch-item:hover .branch-number {
-  filter: drop-shadow(0 0 8px rgba(197, 249, 70, 0.5));
-  transform: scale(1.1); /* Добавил легкое увеличение для динамики */
+  transform: scale(1.1);
 }
-
+.branch-item:hover .branch-number::before {
+  opacity: 0.7;
+}
+.branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.branch-action { color: #C5F946; transition: transform 0.3s ease; margin-left: 12px; }
+.branch-item:hover .branch-action { transform: translateX(4px); }
 
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
