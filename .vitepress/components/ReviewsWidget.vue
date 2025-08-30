@@ -54,7 +54,7 @@ const goToReviews = (branch) => {
             <div class="stat-content">
               <div class="stat-icon">☕</div>
               <div class="stat-value">{{ establishment.branches.length }}</div>
-              <div class="stat-label">Точки</div>
+              <div class="stat-label">Кофейни</div>
             </div>
           </div>
           
@@ -148,8 +148,8 @@ const goToReviews = (branch) => {
   margin-bottom: 20px;
 }
 .branches-title {
-  color: #00ff88;
-  text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+  color: #C5F946;
+  text-shadow: 0 0 20px rgba(197, 249, 70, 0.4);
 }
 
 /* КНОПКА ЗАКРЫТИЯ */
@@ -188,20 +188,20 @@ const goToReviews = (branch) => {
 }
 .cafe-name {
   margin: 0;
-  color: #00ff88;
+  color: #C5F946;
   font-size: 24px;
   font-weight: 700;
-  text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+  text-shadow: 0 0 20px rgba(197, 249, 70, 0.3);
 }
 .status-badge {
-  background: linear-gradient(135deg, #00d4aa, #00ff88);
-  color: #001a1a;
+  background: linear-gradient(135deg, #A2CC37, #C5F946);
+  color: #1d2c00;
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+  box-shadow: 0 4px 12px rgba(197, 249, 70, 0.2);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -243,19 +243,19 @@ const goToReviews = (branch) => {
 
 /* ЦВЕТА ДЛЯ КАРТОЧЕК */
 .branches-card { 
-  --border-gradient: linear-gradient(135deg, #004d26, #00d4aa, #90ffd9);
-  --glow-color: rgba(0, 212, 170, 0.25);
-  --glow-hover-color: rgba(0, 212, 170, 0.6);
+  --border-gradient: linear-gradient(135deg, #1e3a8a, #60a5fa, #bfdbfe);
+  --glow-color: rgba(96, 165, 250, 0.25);
+  --glow-hover-color: rgba(96, 165, 250, 0.6);
 }
 .index-card { 
-  --border-gradient: linear-gradient(135deg, #004d2a, #00ff88, #c5f946);
-  --glow-color: rgba(0, 255, 136, 0.25);
-  --glow-hover-color: rgba(0, 255, 136, 0.6);
+  --border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946);
+  --glow-color: rgba(197, 249, 70, 0.25);
+  --glow-hover-color: rgba(197, 249, 70, 0.6);
 }
 .reviews-card { 
-  --border-gradient: linear-gradient(135deg, #4d3d00, #ffd700, #fff5cc);
-  --glow-color: rgba(255, 215, 0, 0.25);
-  --glow-hover-color: rgba(255, 215, 0, 0.6);
+  --border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d);
+  --glow-color: rgba(245, 158, 11, 0.25);
+  --glow-hover-color: rgba(245, 158, 11, 0.6);
 }
 
 .stat-content {
@@ -277,7 +277,6 @@ const goToReviews = (branch) => {
   background: radial-gradient(circle at 50% 0%, var(--glow-hover-color) 0%, transparent 70%);
   box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
-
 .stat-icon, .stat-value, .stat-label {
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -309,7 +308,7 @@ const goToReviews = (branch) => {
 .stat-label {
   font-size: 11px;
   font-weight: 500;
-  color: var(--vp-c-text-2);
+  color: rgba(255, 255, 255, 0.7); /* ИЗМЕНЕНИЕ: Белый с прозрачностью */
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -320,7 +319,7 @@ const goToReviews = (branch) => {
 /* КНОПКА CTA */
 .review-button { 
   width: 100%; 
-  background: linear-gradient(135deg, #00d4aa, #00ff88); 
+  background: linear-gradient(135deg, #a3e635, #C5F946); 
   border: none; 
   border-radius: 16px; 
   padding: 18px 24px; 
@@ -331,14 +330,14 @@ const goToReviews = (branch) => {
   justify-content: center; 
   gap: 12px; 
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-  box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3); 
+  box-shadow: 0 8px 24px rgba(197, 249, 70, 0.25); 
 }
 .review-button:hover { 
   transform: translateY(-4px) scale(1.02); 
-  box-shadow: 0 14px 35px rgba(0, 212, 170, 0.4); 
+  box-shadow: 0 14px 35px rgba(197, 249, 70, 0.35); 
 }
-.button-text { color: #001a1a; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-.button-icon { color: #001a1a; transition: transform 0.3s ease; }
+.button-text { color: #1d2c00; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.button-icon { color: #1d2c00; transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
 
 /* СПИСОК ФИЛИАЛОВ */
@@ -346,11 +345,11 @@ const goToReviews = (branch) => {
 .branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
 .branches-list { padding: 0; }
 .branch-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px; margin-bottom: 12px; background: var(--vp-c-bg-soft); border: 2px solid var(--vp-c-border); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
-.branch-item:hover { background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), var(--vp-c-bg-soft)); border-color: #00d4aa; box-shadow: 0 8px 20px rgba(0, 212, 170, 0.2); }
+.branch-item:hover { background: linear-gradient(135deg, rgba(197, 249, 70, 0.05), var(--vp-c-bg-soft)); border-color: #C5F946; box-shadow: 0 8px 20px rgba(197, 249, 70, 0.1); }
 .branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
-.branch-number { background: linear-gradient(135deg, #00d4aa, #00ff88); color: #001a1a; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3); }
+.branch-number { background: linear-gradient(135deg, #a3e635, #C5F946); color: #1d2c00; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; box-shadow: 0 4px 12px rgba(197, 249, 70, 0.3); }
 .branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.branch-action { color: #00d4aa; transition: transform 0.3s ease; margin-left: 12px; }
+.branch-action { color: #C5F946; transition: transform 0.3s ease; margin-left: 12px; }
 .branch-item:hover .branch-action { transform: translateX(4px); }
 
 /* АДАПТИВНОСТЬ */
