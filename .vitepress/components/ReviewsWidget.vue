@@ -19,14 +19,14 @@ const establishment = {
 }
 
 const showBranchList = ref(false)
-const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
 const emit = defineEmits(['close'])
+
+const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
 
 const goToReviews = (branch) => {
   const service = getRandomService()
   const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
   window.open(url, '_blank')
-  emit('close')
 }
 </script>
 
@@ -36,7 +36,6 @@ const goToReviews = (branch) => {
     <div v-if="!showBranchList">
       <div class="widget-header">
         <h2 class="header-title">Сделайте Индекс Роста еще точнее</h2>
-        <p class="header-subtitle">Выберите кофейню и оставьте честный отзыв</p>
       </div>
 
       <div class="main-card">
@@ -84,10 +83,16 @@ const goToReviews = (branch) => {
     <div v-else>
       <div class="branches-header">
         <h2 class="branches-title">{{ establishment.name }}</h2>
+        <!-- КНОПКА ЗАКРЫТИЯ ТЕПЕРЬ ЗДЕСЬ -->
+        <button @click="$emit('close')" class="internal-close-btn" aria-label="Закрыть окно">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18"/>
+            <path d="M6 6L18 18"/>
+          </svg>
+        </button>
       </div>
       <div class="branches-content">
         <p class="branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
-        
         <div class="branches-list">
           <button
             v-for="(branch, index) in establishment.branches"
@@ -112,31 +117,63 @@ const goToReviews = (branch) => {
 </template>
 
 <style scoped>
-/* ОБЩИЙ КОНТЕЙНЕР */
+/* ОБЩИЕ СТИЛИ КОНТЕЙНЕРА */
 .reviews-widget-content {
-  padding: 32px;
+  /* Отступы теперь контролируются родительским контейнером */
 }
 
-/* ЗАГОЛОВОК СЛЕВА */
-.widget-header, .branches-header {
+/* ЗАГОЛОВОК ПЕРВОГО ЭКРАНА */
+.widget-header {
   text-align: left;
   margin-bottom: 24px;
-  /* Отступ справа, чтобы не наезжать на крестик */
-  padding-right: 50px; 
 }
 .header-title {
-  margin: 0 0 8px 0;
+  margin: 0;
   color: white;
   font-size: 26px;
   font-weight: 700;
 }
-.header-subtitle {
+
+/* ЗАГОЛОВОК СПИСКА ФИЛИАЛОВ (ВТОРОЙ ЭКРАН) */
+.branches-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--vp-c-border);
+  margin-bottom: 20px;
+}
+.branches-title {
   margin: 0;
-  color: var(--vp-c-text-2);
-  font-size: 15px;
+  color: #00ff88;
+  font-size: 26px;
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
 }
 
-/* КАРТОЧКА */
+/* СТИЛЬ ДЛЯ ВНУТРЕННЕЙ КНОПКИ ЗАКРЫТИЯ */
+.internal-close-btn {
+  background: var(--vp-c-bg-mute);
+  border: 2px solid var(--vp-c-border);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--vp-c-text-2);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+.internal-close-btn:hover {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-color: #ef4444;
+  color: white;
+  transform: rotate(90deg);
+}
+
+/* КАРТОЧКА НА ПЕРВОМ ЭКРАНЕ */
 .main-card {
   background: linear-gradient(145deg, var(--vp-c-bg-soft), var(--vp-c-bg));
   border: 2px solid var(--vp-c-border);
@@ -192,7 +229,7 @@ const goToReviews = (branch) => {
   letter-spacing: 0.5px;
 }
 
-/* СТАТИСТИЧЕСКИЕ КАРТОЧКИ (ВСЕ ЭФФЕКТЫ НА МЕСТЕ) */
+/* СТАТИСТИЧЕСКИЕ КАРТОЧКИ */
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -310,19 +347,7 @@ const goToReviews = (branch) => {
 }
 .review-button:hover .button-icon { transform: translateX(4px); }
 
-/* ЭКРАН ФИЛИАЛОВ */
-.branches-header {
-  border-bottom: 2px solid var(--vp-c-border);
-  margin-bottom: 20px;
-}
-.branches-title {
-  margin: 0;
-  padding-bottom: 20px;
-  color: #00ff88;
-  font-size: 26px;
-  font-weight: 700;
-  text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-}
+/* СПИСОК ФИЛИАЛОВ */
 .branches-content { flex-grow: 1; }
 .branches-subtitle {
   margin: 0 0 16px 0;
@@ -330,12 +355,9 @@ const goToReviews = (branch) => {
   font-size: 14px;
   font-weight: 500;
 }
-
-/* ГЛАВНЫЙ ФИКС ДЛЯ МОБИЛЬНОЙ ВЕРСИИ */
 .branches-list { 
   padding: 0;
 }
-
 .branch-item {
   display: flex;
   align-items: center;
@@ -360,7 +382,6 @@ const goToReviews = (branch) => {
   align-items: center;
   gap: 16px;
   flex: 1;
-  /* Запрещаем тексту выходить за рамки */
   overflow: hidden; 
 }
 .branch-number {
@@ -388,16 +409,15 @@ const goToReviews = (branch) => {
 .branch-action {
   color: #00d4aa;
   transition: transform 0.3s ease;
-  margin-left: 12px; /* Добавляем отступ от адреса */
+  margin-left: 12px;
 }
 .branch-item:hover .branch-action { transform: translateX(4px); }
 
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
-  .reviews-widget-content { padding: 24px; }
-  .widget-header, .branches-header { padding-right: 40px; }
-  .main-card { margin: 0; }
-  .header-title { font-size: 22px; }
+  .widget-header, .branches-header {
+    /* На мобильных заголовок тоже получает отступ */
+  }
   .stats-grid { grid-template-columns: 1fr; gap: 12px; }
   .stat-card { flex-direction: row; padding: 16px; text-align: left; }
   .stat-icon { font-size: 32px; margin-right: 16px; margin-bottom: 0; }
@@ -407,11 +427,7 @@ const goToReviews = (branch) => {
   .review-button { padding: 16px 24px; }
   .button-text { font-size: 16px; }
 }
-
 @media (max-width: 480px) {
-  .reviews-widget-content { padding: 20px; }
-  .widget-header, .branches-header { padding-right: 30px; }
-  .main-card { padding: 16px; }
   .cafe-name { font-size: 20px; }
   .status-badge { padding: 4px 12px; font-size: 10px; }
   .stat-icon { font-size: 28px; margin-right: 12px; }
