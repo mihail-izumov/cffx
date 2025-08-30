@@ -53,9 +53,29 @@ const goToReviews = (branch) => {
         </div>
         
         <div class="stats-grid">
-          <div class="stat-card branches-card"><div class="stat-icon">☕</div><div class="stat-content"><div class="stat-value">{{ establishment.branches.length }}</div><div class="stat-label">Точки</div></div></div>
-          <div class="stat-card index-card"><div class="stat-icon">⚡</div><div class="stat-content"><div class="stat-value">{{ establishment.index }}</div><div class="stat-label">Индекс роста</div></div></div>
-          <div class="stat-card reviews-card"><div class="stat-icon">🏆</div><div class="stat-content"><div class="stat-value">{{ establishment.totalReviews }}</div><div class="stat-label">Отзывы</div></div></div>
+          <div class="stat-card branches-card">
+            <div class="stat-icon">☕</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ establishment.branches.length }}</div>
+              <div class="stat-label">Точки</div>
+            </div>
+          </div>
+          
+          <div class="stat-card index-card">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ establishment.index }}</div>
+              <div class="stat-label">Индекс роста</div>
+            </div>
+          </div>
+          
+          <div class="stat-card reviews-card">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ establishment.totalReviews }}</div>
+              <div class="stat-label">Отзывы</div>
+            </div>
+          </div>
         </div>
         
         <button @click="showBranchList = true" class="review-button">
@@ -81,8 +101,15 @@ const goToReviews = (branch) => {
         <p class="branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
         <div class="branches-list">
           <button v-for="(branch, index) in establishment.branches" :key="index" @click="goToReviews(branch)" class="branch-item">
-            <div class="branch-info"><div class="branch-number">{{ index + 1 }}</div><div class="branch-address">{{ branch.address }}</div></div>
-            <div class="branch-action"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
+            <div class="branch-info">
+              <div class="branch-number">{{ index + 1 }}</div>
+              <div class="branch-address">{{ branch.address }}</div>
+            </div>
+            <div class="branch-action">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6"/>
+              </svg>
+            </div>
           </button>
         </div>
       </div>
@@ -207,27 +234,87 @@ const goToReviews = (branch) => {
   letter-spacing: 0.5px;
 }
 
-/* СТАТИСТИЧЕСКИЕ КАРТОЧКИ */
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-.stat-card { background: var(--vp-c-bg-mute); border: 3px solid var(--vp-c-border); border-radius: 20px; padding: 20px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); }
-.stat-card:hover { transform: translateY(-8px) rotateX(5deg); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); }
-.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; transition: transform 0.3s ease; }
-.stat-card::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent); transform: rotate(45deg); transition: all 0.6s; opacity: 0; }
-.stat-card:hover::after { animation: shimmer 1.5s ease-in-out; }
-@keyframes shimmer { 0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; } }
-.branches-card::before { background: linear-gradient(90deg, #00a86b, #00d4aa); }
-.index-card::before { background: linear-gradient(90deg, #00ff88, #00d4aa); }
-.reviews-card::before { background: linear-gradient(90deg, #ffd700, #ffed4e); }
-.stat-card:hover::before { transform: scaleX(1); }
-.stat-icon { font-size: 36px; margin-bottom: 10px; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)); transition: transform 0.3s ease; }
-.stat-card:hover .stat-icon { transform: scale(1.1); }
-.stat-content { text-align: center; }
-.stat-value { font-size: 22px; font-weight: 800; margin-bottom: 6px; line-height: 1; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; }
-.stat-card:hover .stat-value { transform: scale(1.05); }
-.branches-card .stat-value { color: #00a86b; }
-.index-card .stat-value { color: #00ff88; }
-.reviews-card .stat-value { color: #ffd700; }
-.stat-label { font-size: 11px; font-weight: 600; color: var(--vp-c-text-3); text-transform: uppercase; letter-spacing: 0.5px; }
+/* СТАТИСТИЧЕСКИЕ КАРТОЧКИ В СТИЛЕ ASTON MARTIN / TESLA */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.stat-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.5);
+}
+.branches-card {
+  --glow-color: rgba(0, 168, 107, 0.5);
+  background: radial-gradient(circle at 50% 0%, rgba(0, 168, 107, 0.15) 0%, rgba(0,0,0,0) 70%);
+  border-image: linear-gradient(to bottom, #00A86B, #00d4aa40) 1;
+  box-shadow: 0 0 20px -5px var(--glow-color);
+}
+.branches-card:hover { box-shadow: 0 0 35px -5px var(--glow-color); }
+.index-card {
+  --glow-color: rgba(0, 255, 136, 0.5);
+  background: radial-gradient(circle at 50% 0%, rgba(0, 255, 136, 0.15) 0%, rgba(0,0,0,0) 70%);
+  border-image: linear-gradient(to bottom, #00FF88, #00d4aa40) 1;
+  box-shadow: 0 0 20px -5px var(--glow-color);
+}
+.index-card:hover { box-shadow: 0 0 35px -5px var(--glow-color); }
+.reviews-card {
+  --glow-color: rgba(255, 215, 0, 0.5);
+  background: radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.15) 0%, rgba(0,0,0,0) 70%);
+  border-image: linear-gradient(to bottom, #FFD700, #ffed4e40) 1;
+  box-shadow: 0 0 20px -5px var(--glow-color);
+}
+.reviews-card:hover { box-shadow: 0 0 35px -5px var(--glow-color); }
+.stat-icon {
+  font-size: 24px;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+.stat-card:hover .stat-icon {
+  opacity: 1;
+  transform: scale(1.1);
+}
+.stat-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 4rem;
+  font-weight: 600;
+  line-height: 1;
+  margin: 8px 0;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+.stat-card:hover .stat-value {
+  transform: scale(1.05);
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+}
+.stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+}
+.stat-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 /* КНОПКА */
 .review-button { width: 100%; background: linear-gradient(135deg, #00d4aa, #00ff88); border: none; border-radius: 16px; padding: 18px 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3); }
@@ -251,12 +338,32 @@ const goToReviews = (branch) => {
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 24px; }
-  .stats-grid { grid-template-columns: 1fr; gap: 12px; }
-  .stat-card { flex-direction: row; padding: 16px; text-align: left; }
-  .stat-icon { font-size: 32px; margin-right: 16px; margin-bottom: 0; }
-  .stat-content { align-items: flex-start; }
-  .stat-value { font-size: 24px; }
-  .stat-label { text-align: left; }
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .stat-card {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 16px 20px;
+    gap: 16px;
+  }
+  .stat-icon {
+    font-size: 28px;
+    margin: 0;
+    opacity: 0.8;
+  }
+  .stat-content {
+    text-align: right;
+    align-items: flex-end;
+  }
+  .stat-value {
+    font-size: 2.8rem;
+    margin: 0;
+  }
+  .stat-label {
+    font-size: 10px;
+  }
   .review-button { padding: 16px 24px; }
   .button-text { font-size: 16px; }
 }
@@ -268,8 +375,6 @@ const goToReviews = (branch) => {
   .branches-subtitle { font-size: 14px; }
   .cafe-name { font-size: 20px; }
   .status-badge { padding: 4px 12px; font-size: 10px; }
-  .stat-icon { font-size: 28px; margin-right: 12px; }
-  .stat-value { font-size: 20px; }
   .review-button { padding: 14px 20px; }
   .button-text { font-size: 14px; }
 }
