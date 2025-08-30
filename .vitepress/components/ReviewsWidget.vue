@@ -1,6 +1,7 @@
 <script setup>
 import { ref, defineEmits } from 'vue'
 
+// --- ДАННЫЕ КОМПОНЕНТА ---
 const establishment = {
   name: 'Корж',
   totalReviews: '4,520',
@@ -26,12 +27,22 @@ const goToReviews = (branch) => {
   const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
   window.open(url, '_blank')
 }
+
+// --- ЛОГИКА ДЛЯ ЭФФЕКТА СВЕЧЕНИЯ ---
+const handleMouseMove = (event) => {
+  const card = event.currentTarget
+  const { left, top } = card.getBoundingClientRect()
+  const x = event.clientX - left
+  const y = event.clientY - top
+  card.style.setProperty('--mouse-x', `${x}px`)
+  card.style.setProperty('--mouse-y', `${y}px`)
+}
 </script>
 
 <template>
   <div class="reviews-widget-content">
+    <!-- Первый экран -->
     <div v-if="!showBranchList">
-      <!-- Первый экран -->
       <div class="widget-header">
         <div>
           <h2 class="header-title">Сделайте Индекс Роста еще точнее</h2>
@@ -50,7 +61,7 @@ const goToReviews = (branch) => {
         </div>
         
         <div class="stats-grid">
-          <div class="stat-card branches-card">
+          <div class="stat-card branches-card" @mousemove="handleMouseMove">
             <div class="stat-content">
               <div class="stat-icon">☕</div>
               <div class="stat-value">{{ establishment.branches.length }}</div>
@@ -58,7 +69,7 @@ const goToReviews = (branch) => {
             </div>
           </div>
           
-          <div class="stat-card index-card">
+          <div class="stat-card index-card" @mousemove="handleMouseMove">
             <div class="stat-content">
               <div class="stat-icon">⚡</div>
               <div class="stat-value">{{ establishment.index }}</div>
@@ -66,7 +77,7 @@ const goToReviews = (branch) => {
             </div>
           </div>
           
-          <div class="stat-card reviews-card">
+          <div class="stat-card reviews-card" @mousemove="handleMouseMove">
             <div class="stat-content">
               <div class="stat-icon">🏆</div>
               <div class="stat-value">{{ establishment.totalReviews }}</div>
@@ -84,8 +95,8 @@ const goToReviews = (branch) => {
       </div>
     </div>
     
+    <!-- Второй экран -->
     <div v-else>
-      <!-- Второй экран -->
       <div class="branches-header">
         <h2 class="branches-title">{{ establishment.name }}</h2>
         <button @click="$emit('close')" class="internal-close-btn" aria-label="Закрыть окно">
@@ -118,9 +129,10 @@ const goToReviews = (branch) => {
 /* ОБЩИЕ СТИЛИ КОНТЕЙНЕРА */
 .reviews-widget-content {
   padding: 32px;
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
+  max-height: calc(100vh - 80px); /* Ограничиваем высоту */
+  overflow-y: auto; /* Включаем скролл, если контент не помещается */
 }
+
 /* ЗАГОЛОВОК ПЕРВОГО ЭКРАНА */
 .widget-header {
   display: flex;
@@ -140,6 +152,7 @@ const goToReviews = (branch) => {
   font-size: 15px;
   color: var(--vp-c-text-2);
 }
+
 /* ЗАГОЛОВОК СПИСКА ФИЛИАЛОВ (ВТОРОЙ ЭКРАН) */
 .branches-header {
   display: flex;
@@ -156,6 +169,7 @@ const goToReviews = (branch) => {
   font-weight: 700;
   text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
 }
+
 /* СТИЛЬ ДЛЯ ВНУТРЕННЕЙ КНОПКИ ЗАКРЫТИЯ */
 .internal-close-btn {
   background: var(--vp-c-bg-mute);
@@ -177,6 +191,7 @@ const goToReviews = (branch) => {
   color: white;
   transform: rotate(90deg);
 }
+
 /* КАРТОЧКА НА ПЕРВОМ ЭКРАНЕ */
 .main-card {
   background: var(--vp-c-bg-soft);
@@ -208,7 +223,8 @@ const goToReviews = (branch) => {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-/* СТАТИСТИЧЕСКИЕ КАРТОЧКИ В СТИЛЕ ASTON MARTIN / TESLA */
+
+/* СТАТИСТИЧЕСКИЕ КАРТОЧКИ */
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -220,6 +236,7 @@ const goToReviews = (branch) => {
   border-radius: 22px;
   background: transparent;
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden; /* Важно! */
 }
 .stat-card:hover {
   transform: translateY(-8px);
@@ -243,9 +260,40 @@ const goToReviews = (branch) => {
   transform: scale(1.02);
   filter: brightness(1.3);
 }
-.branches-card { --gradient-border: linear-gradient(135deg, #00A86B, #00d4aa); }
-.index-card { --gradient-border: linear-gradient(135deg, #00FF88, #00d4aa); }
-.reviews-card { --gradient-border: linear-gradient(135deg, #FFD700, #ffed4e); }
+
+/* ЭФФЕКТ СВЕЧЕНИЯ */
+.stat-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at var(--mouse-x) var(--mouse-y),
+    var(--glow-color) 0%,
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+  z-index: 0;
+}
+.stat-card:hover::after {
+  opacity: 0.5;
+}
+
+.branches-card { 
+  --gradient-border: linear-gradient(135deg, #00A86B, #00d4aa);
+  --glow-color: #00d4aa;
+}
+.index-card { 
+  --gradient-border: linear-gradient(135deg, #00FF88, #00d4aa);
+  --glow-color: #00FF88;
+}
+.reviews-card { 
+  --gradient-border: linear-gradient(135deg, #FFD700, #ffed4e);
+  --glow-color: #FFD700;
+}
 .stat-content {
   background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%), var(--vp-c-bg-soft);
   border-radius: 20px;
@@ -258,6 +306,8 @@ const goToReviews = (branch) => {
   text-align: center;
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
   transition: box-shadow 0.3s ease;
+  position: relative;
+  z-index: 2;
 }
 .stat-card:hover .stat-content {
   box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
@@ -287,6 +337,7 @@ const goToReviews = (branch) => {
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
+
 /* ОСНОВНАЯ КНОПКА CTA */
 .review-button { 
   width: 100%; 
@@ -310,6 +361,7 @@ const goToReviews = (branch) => {
 .button-text { color: #001a1a; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 .button-icon { color: #001a1a; transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
+
 /* СПИСОК ФИЛИАЛОВ */
 .branches-content { 
   flex-grow: 1; 
@@ -378,11 +430,12 @@ const goToReviews = (branch) => {
 .branch-item:hover .branch-action { 
   transform: translateX(4px); 
 }
+
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
   .reviews-widget-content { 
     padding: 24px; 
-    max-height: calc(100vh - 100px);
+    max-height: calc(100vh - 60px);
   }
   .main-card { padding: 16px; }
   .stats-grid {
@@ -418,10 +471,11 @@ const goToReviews = (branch) => {
     font-size: 20px;
   }
 }
+
 @media (max-width: 480px) {
   .reviews-widget-content { 
     padding: 20px; 
-    max-height: calc(100vh - 80px);
+    max-height: calc(100vh - 40px);
   }
   .header-title { font-size: 22px; }
   .header-subtitle { font-size: 14px; }
