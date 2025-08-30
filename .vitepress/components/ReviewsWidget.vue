@@ -19,9 +19,7 @@ const establishment = {
 }
 
 const showBranchList = ref(false)
-
 const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
-
 const emit = defineEmits(['close'])
 
 const goToReviews = (branch) => {
@@ -33,14 +31,16 @@ const goToReviews = (branch) => {
 </script>
 
 <template>
-  <div class="reviews-widget-container">
+  <div class="reviews-widget-content">
     <!-- Первый экран: главная информация -->
-    <div v-if="!showBranchList" class="screen-main">
+    <div v-if="!showBranchList">
+      <!-- ЗАГОЛОВОК СЛЕВА -->
       <div class="widget-header">
         <h2 class="header-title">Сделайте Индекс Роста еще точнее</h2>
         <p class="header-subtitle">Выберите кофейню и оставьте честный отзыв</p>
       </div>
 
+      <!-- КАРТОЧКА С ОТСТУПАМИ И ВСЕМИ ЭФФЕКТАМИ -->
       <div class="main-card">
         <div class="establishment-header">
           <h3 class="cafe-name">{{ establishment.name }}</h3>
@@ -50,107 +50,108 @@ const goToReviews = (branch) => {
         <div class="stats-grid">
           <div class="stat-card branches-card">
             <div class="stat-icon">☕</div>
-            <div class="stat-value">{{ establishment.branches.length }}</div>
-            <div class="stat-label">Точки</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ establishment.branches.length }}</div>
+              <div class="stat-label">Точки</div>
+            </div>
           </div>
           
           <div class="stat-card index-card">
             <div class="stat-icon">⚡</div>
-            <div class="stat-value">{{ establishment.index }}</div>
-            <div class="stat-label">Индекс роста</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ establishment.index }}</div>
+              <div class="stat-label">Индекс роста</div>
+            </div>
           </div>
           
           <div class="stat-card reviews-card">
             <div class="stat-icon">🏆</div>
-            <div class="stat-value">{{ establishment.totalReviews }}</div>
-            <div class="stat-label">Отзывы</div>
+            <div class="stat-content">
+              <div class="stat-value">{{ establishment.totalReviews }}</div>
+              <div class="stat-label">Отзывы</div>
+            </div>
           </div>
         </div>
         
         <button @click="showBranchList = true" class="review-button">
-          <span class="button-text">ОСТАВИТЬ ОТЗЫВ</span>
-          <svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m9 18 6-6-6-6"/>
+          <span class="button-text">Оставить отзыв</span>
+          <svg class="button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8L22 12L18 16"/>
+            <path d="M2 12H22"/>
           </svg>
         </button>
       </div>
     </div>
 
     <!-- Второй экран: список филиалов -->
-    <div v-else class="screen-branches">
-       <div class="branches-header">
-          <h2 class="branches-title">{{ establishment.name }}</h2>
-       </div>
-        <div class="branches-content">
-          <p class="branches-subtitle">Выберите филиал для оставления отзыва:</p>
-          
-          <div class="branches-list">
-            <button
-              v-for="(branch, index) in establishment.branches"
-              :key="index"
-              @click="goToReviews(branch)"
-              class="branch-item"
-            >
-              <div class="branch-info">
-                <div class="branch-number">{{ index + 1 }}</div>
-                <div class="branch-address">{{ branch.address }}</div>
-              </div>
-              <div class="branch-action">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                   <path d="m9 18 6-6-6-6"/>
-                </svg>
-              </div>
-            </button>
-          </div>
-          
-          <div class="branches-footer">
-            <p class="redirect-info">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
-          </div>
+    <div v-else>
+      <div class="branches-header">
+        <h2 class="branches-title">{{ establishment.name }}</h2>
+      </div>
+      <div class="branches-content">
+        <!-- ОБЫЧНЫЙ СТИЛЬ БЕЗ НЕОНА -->
+        <p class="branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
+        
+        <div class="branches-list">
+          <button
+            v-for="(branch, index) in establishment.branches"
+            :key="index"
+            @click="goToReviews(branch)"
+            class="branch-item"
+          >
+            <div class="branch-info">
+              <div class="branch-number">{{ index + 1 }}</div>
+              <div class="branch-address">{{ branch.address }}</div>
+            </div>
+            <div class="branch-action">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8L22 12L18 16"/>
+                <path d="M2 12H22"/>
+              </svg>
+            </div>
+          </button>
         </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-/* ОБЩИЙ КОНТЕЙНЕР ДЛЯ ОТСТУПОВ */
-.reviews-widget-container {
-  padding: 40px 32px 32px; /* Увеличен отступ сверху */
+/* ОТСТУПЫ */
+.reviews-widget-content {
+  padding: 32px; /* ОТСТУП СВЕРХУ И ПО БОКАМ */
 }
 
 /* ЗАГОЛОВОК СЛЕВА */
 .widget-header {
-  text-align: left; /* ВЫРАВНИВАНИЕ СЛЕВА */
-  margin-bottom: 24px;
+  text-align: left; /* СЛЕВА ВМЕСТО ЦЕНТРА */
+  margin-bottom: 32px;
 }
 .header-title {
-  color: white;
-  font-size: 24px;
+  margin: 0 0 8px 0;
+  color: white; /* БЕЛЫЙ ЦВЕТ */
+  font-size: 28px;
   font-weight: 700;
-  line-height: 1.3;
-  margin: 0 0 10px 0;
 }
 .header-subtitle {
-  color: var(--vp-c-text-2);
-  font-size: 15px;
   margin: 0;
+  color: var(--vp-c-text-2);
+  font-size: 16px;
 }
 
-/* ГЛАВНАЯ КАРТОЧКА С ОТСТУПАМИ */
+/* КАРТОЧКА С ОТСТУПАМИ И ЭФФЕКТАМИ */
 .main-card {
-  background: var(--vp-c-bg-soft);
+  background: linear-gradient(145deg, var(--vp-c-bg-soft), var(--vp-c-bg));
   border: 2px solid var(--vp-c-border);
-  border-radius: 24px;
-  padding: 24px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  padding: 28px;
+  margin: 0 16px; /* ОТСТУПЫ ПО БОКАМ */
   position: relative;
   overflow: hidden;
-  margin: 0 16px; /* ОТСТУПЫ СЛЕВА И СПРАВА */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }
-/* ВОССТАНОВЛЕНА ОБВОДКА ВСЕГО БЛОКА */
-.main-card:hover {
-  border-color: #00d4aa;
-}
+/* ЭФФЕКТ ЗАЛИВКИ СВЕРХУ */
 .main-card::before {
   content: '';
   position: absolute;
@@ -166,6 +167,9 @@ const goToReviews = (branch) => {
 .main-card:hover::before {
   transform: scaleX(1);
 }
+.main-card:hover {
+  border-color: #00d4aa;
+}
 
 .establishment-header {
   display: flex;
@@ -176,34 +180,35 @@ const goToReviews = (branch) => {
 .cafe-name {
   margin: 0;
   color: #00ff88;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
-  text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+  text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
 }
 .status-badge {
   background: linear-gradient(135deg, #00d4aa, #00ff88);
   color: #001a1a;
-  padding: 8px 18px;
-  border-radius: 25px;
+  padding: 6px 16px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 15px rgba(0, 212, 170, 0.4);
+  letter-spacing: 0.5px;
 }
 
-/* СТАТИСТИКА С ОБЪЕМОМ И ОБВОДКОЙ */
+/* ВОССТАНОВЛЕННЫЕ СТАТИСТИЧЕСКИЕ КАРТОЧКИ */
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 .stat-card {
   background: var(--vp-c-bg-mute);
   border: 3px solid var(--vp-c-border);
   border-radius: 20px;
-  padding: 20px 16px;
+  padding: 24px 16px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -213,95 +218,159 @@ const goToReviews = (branch) => {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
-/* ВОССТАНОВЛЕН ЭФФЕКТ ОБЪЕМА */
 .stat-card:hover {
   transform: translateY(-8px) rotateX(5deg);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
-.stat-card::after { /* ВОССТАНОВЛЕНА ПОЛОСА СВЕРХУ */
+/* ЦВЕТНЫЕ ПОЛОСЫ СВЕРХУ */
+.stat-card::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 4px;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s ease;
+  transition: transform 0.3s ease;
 }
-.branches-card::after { background: linear-gradient(90deg, #00a86b, #00d4aa); }
-.index-card::after { background: linear-gradient(90deg, #00ff88, #00d4aa); }
-.reviews-card::after { background: linear-gradient(90deg, #ffd700, #ffed4e); }
+/* SHIMMER ЭФФЕКТ */
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: rotate(45deg);
+  transition: all 0.6s;
+  opacity: 0;
+}
 .stat-card:hover::after {
+  animation: shimmer 1.5s ease-in-out;
+}
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+    opacity: 0;
+  }
+}
+/* ЦВЕТА ПОЛОС */
+.branches-card::before {
+  background: linear-gradient(90deg, #00a86b, #00d4aa);
+}
+.index-card::before {
+  background: linear-gradient(90deg, #00ff88, #00d4aa);
+}
+.reviews-card::before {
+  background: linear-gradient(90deg, #ffd700, #ffed4e);
+}
+.stat-card:hover::before {
   transform: scaleX(1);
 }
 
+/* ИКОНКИ С ЭФФЕКТОМ ЗУМА */
 .stat-icon {
   font-size: 36px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-  transition: transform 0.3s ease; /* ВОССТАНОВЛЕНА АНИМАЦИЯ ЗУМА */
+  transition: transform 0.3s ease;
 }
-.stat-card:hover .stat-icon { /* ВОССТАНОВЛЕНА АНИМАЦИЯ ЗУМА */
-  transform: scale(1.15);
+.stat-card:hover .stat-icon {
+  transform: scale(1.1); /* ВОССТАНОВЛЕН ЗУМА НА ЭМОДЗИ */
 }
 
+.stat-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .stat-value {
   font-size: 22px;
   font-weight: 800;
   margin-bottom: 6px;
   line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
-.branches-card .stat-value { color: #00a86b; }
-.index-card .stat-value { color: #00ff88; }
-.reviews-card .stat-value { color: #ffd700; }
+.stat-card:hover .stat-value {
+  transform: scale(1.05);
+}
+.branches-card .stat-value {
+  color: #00a86b;
+}
+.index-card .stat-value {
+  color: #00ff88;
+}
+.reviews-card .stat-value {
+  color: #ffd700;
+}
 .stat-label {
   font-size: 11px;
   font-weight: 600;
   color: var(--vp-c-text-3);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  text-align: center;
 }
 
-/* БОЛЬШАЯ КНОПКА */
+/* КНОПКА */
 .review-button {
   width: 100%;
   background: linear-gradient(135deg, #00d4aa, #00ff88);
   border: none;
-  border-radius: 18px;
-  padding: 22px;
+  border-radius: 16px;
+  padding: 20px 28px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 12px 32px rgba(0, 212, 170, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3);
+}
+.review-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+.review-button:hover::before {
+  left: 100%;
 }
 .review-button:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(0, 212, 170, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 212, 170, 0.4);
 }
 .button-text {
   color: #001a1a;
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
 }
 .button-icon {
   color: #001a1a;
   transition: transform 0.3s ease;
 }
 .review-button:hover .button-icon {
-  transform: translateX(5px);
+  transform: translateX(4px);
 }
 
 /* ЭКРАН ФИЛИАЛОВ */
 .branches-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding-bottom: 20px;
   border-bottom: 2px solid var(--vp-c-border);
   margin-bottom: 20px;
@@ -309,7 +378,7 @@ const goToReviews = (branch) => {
 .branches-title {
   margin: 0;
   color: #00ff88;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
 }
@@ -317,23 +386,23 @@ const goToReviews = (branch) => {
   overflow-y: auto;
   flex-grow: 1;
 }
+/* ОБЫЧНЫЙ СТИЛЬ ДЛЯ ТЕКСТА */
 .branches-subtitle {
-  margin: 0 0 20px 0;
-  color: var(--vp-c-text-2); /* ВОССТАНОВЛЕН СТАРЫЙ ЦВЕТ */
-  font-size: 15px;
-  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: var(--vp-c-text-3); /* ОБЫЧНЫЙ ЦВЕТ */
+  font-size: 13px; /* ОБЫЧНЫЙ РАЗМЕР */
+  font-weight: 500; /* ОБЫЧНЫЙ ВЕС */
 }
 .branches-list {
-  padding: 0;
-  margin: 0;
-  list-style: none;
+  padding: 0 20px;
 }
 .branch-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
-  padding: 16px;
-  margin-bottom: 12px;
+  padding: 20px;
+  margin: 12px 0;
   background: var(--vp-c-bg-soft);
   border: 2px solid var(--vp-c-border);
   border-radius: 16px;
@@ -344,7 +413,7 @@ const goToReviews = (branch) => {
 .branch-item:hover {
   background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), var(--vp-c-bg-soft));
   border-color: #00d4aa;
-  transform: translateX(8px);
+  transform: translateX(4px); /* УМЕНЬШЕН СДВИГ */
   box-shadow: 0 8px 20px rgba(0, 212, 170, 0.2);
 }
 .branch-info {
@@ -362,7 +431,7 @@ const goToReviews = (branch) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
@@ -370,40 +439,55 @@ const goToReviews = (branch) => {
 .branch-address {
   font-weight: 600;
   color: var(--vp-c-text-1);
-  font-size: 15px;
+  font-size: 16px;
 }
 .branch-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #00d4aa;
   transition: transform 0.3s ease;
 }
 .branch-item:hover .branch-action {
   transform: translateX(4px);
 }
-.redirect-info { /* СТИЛЬ ДЛЯ НИЖНЕЙ НАДПИСИ */
-  font-size: 13px;
-  color: var(--vp-c-text-3);
-}
 
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
-  .reviews-widget-container { padding: 24px; }
+  .reviews-widget-content { padding: 24px; }
   .main-card { margin: 0; }
-  .header-title { font-size: 22px; }
-  .stats-grid { grid-template-columns: 1fr; gap: 12px; }
-  .stat-card { flex-direction: row; padding: 16px; text-align: left; min-height: 70px; }
-  .stat-icon { font-size: 36px; margin: 0 16px 0 0; }
-  .stat-value { font-size: 24px; margin-bottom: 2px; }
-  .stat-label { text-align: left; font-size: 12px; }
-  .review-button { padding: 20px; }
+  .header-title { font-size: 24px; }
+  .stats-grid { grid-template-columns: 1fr; gap: 16px; }
+  .stat-card { 
+    padding: 20px;
+    flex-direction: row;
+    text-align: left;
+  }
+  .stat-icon { 
+    font-size: 32px;
+    margin-bottom: 0;
+    margin-right: 16px;
+  }
+  .stat-content {
+    text-align: left;
+    align-items: flex-start;
+  }
+  .stat-value { font-size: 24px; }
+  .stat-label { text-align: left; }
+  .review-button { padding: 16px 24px; }
   .button-text { font-size: 16px; }
 }
+
 @media (max-width: 480px) {
-  .reviews-widget-container { padding: 20px; }
-  .cafe-name { font-size: 22px; }
-  .status-badge { padding: 6px 14px; font-size: 11px; }
-  .stat-icon { font-size: 32px; margin-right: 14px; }
-  .stat-value { font-size: 22px; }
-  .review-button { padding: 18px; }
-  .button-text { font-size: 15px; }
+  .reviews-widget-content { padding: 20px; }
+  .header-title { font-size: 22px; }
+  .main-card { padding: 16px; }
+  .cafe-name { font-size: 18px; }
+  .status-badge { padding: 4px 12px; font-size: 10px; }
+  .stat-card { padding: 16px; }
+  .stat-icon { font-size: 28px; margin-right: 12px; }
+  .stat-value { font-size: 20px; }
+  .review-button { padding: 14px 20px; }
+  .button-text { font-size: 14px; }
 }
 </style>
