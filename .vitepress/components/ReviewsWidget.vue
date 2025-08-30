@@ -184,7 +184,7 @@ onMounted(() => {
             <h2 class="modal-cafe-name">{{ currentEstablishment?.name }}</h2>
           </div>
           <button @click="closeModal" class="close-button" aria-label="Закрыть окно">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M18 6L6 18"/>
               <path d="M6 6L18 18"/>
             </svg>
@@ -208,7 +208,7 @@ onMounted(() => {
                 </div>
               </div>
               <div class="branch-action">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M18 8L22 12L18 16"/>
                   <path d="M2 12H22"/>
                 </svg>
@@ -231,20 +231,21 @@ onMounted(() => {
 <style scoped>
 .widget-header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+  padding-top: 0;
 }
 
 .widget-header h2 {
   margin: 0 0 8px 0;
   color: var(--vp-c-brand-1);
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
 }
 
 .subtitle {
   margin: 0;
   color: var(--vp-c-text-2);
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .establishments-grid {
@@ -557,13 +558,13 @@ onMounted(() => {
 
 .close-button {
   position: absolute;
-  top: 28px;
-  right: 28px;
+  top: 20px;
+  right: 20px;
   background: var(--vp-c-bg-mute);
   border: 2px solid var(--vp-c-border);
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -691,6 +692,20 @@ onMounted(() => {
 }
 
 /* Улучшенная адаптивность */
+@media (min-width: 1200px) {
+  .widget-header {
+    margin-bottom: 32px;
+  }
+  
+  .widget-header h2 {
+    font-size: 28px;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+  }
+}
+
 @media (max-width: 1024px) {
   .establishments-grid {
     grid-template-columns: 1fr;
@@ -700,8 +715,12 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
+  .widget-header {
+    margin-bottom: 20px;
+  }
+  
   .widget-header h2 {
-    font-size: 24px;
+    font-size: 22px;
   }
   
   .subtitle {
@@ -758,7 +777,8 @@ onMounted(() => {
 
 @media (max-width: 480px) {
   .widget-header h2 {
-    font-size: 22px;
+    font-size: 20px;
+    line-height: 1.3;
   }
   
   .establishment-card {
@@ -803,16 +823,15 @@ onMounted(() => {
   }
 }
 
-/* Улучшения для модального окна на мобильном */
+/* ВАЖНО: Улучшения для модального окна на мобильном */
 @media (max-width: 640px) {
   .modal-mask { 
-    padding: 0;
+    padding: 10px;
   }
   
   .modal-container {
-    border-radius: 0;
-    max-height: 100vh;
-    height: 100vh;
+    border-radius: 16px;
+    max-height: 95vh;
   }
   
   .modal-header {
@@ -820,14 +839,14 @@ onMounted(() => {
   }
   
   .modal-cafe-name {
-    font-size: 22px;
+    font-size: 20px;
   }
   
   .close-button {
-    width: 40px;
-    height: 40px;
-    top: 20px;
-    right: 20px;
+    width: 36px;
+    height: 36px;
+    top: 16px;
+    right: 16px;
   }
   
   .modal-subtitle {
@@ -859,14 +878,13 @@ onMounted(() => {
   }
 }
 
-/* Очень маленькие экраны */
 @media (max-width: 360px) {
   .widget-header {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
   
   .widget-header h2 {
-    font-size: 20px;
+    font-size: 18px;
   }
   
   .establishment-card {
@@ -883,6 +901,10 @@ onMounted(() => {
   
   .main-action-button {
     padding: 12px 16px;
+  }
+  
+  .modal-container {
+    border-radius: 12px;
   }
 }
 </style>
