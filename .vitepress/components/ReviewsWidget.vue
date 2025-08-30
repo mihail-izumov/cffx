@@ -192,16 +192,16 @@ const goToReviews = (branch) => {
   font-weight: 600;
 }
 .status-badge {
-  background: linear-gradient(135deg, var(--vp-c-bg-mute), var(--vp-c-bg-soft));
-  color: rgba(255, 255, 255, 0.6);
-  border: 1px solid var(--vp-c-divider);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
   box-shadow: 
-    inset 0 1px 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1),
     0 2px 4px rgba(0, 0, 0, 0.3);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -360,8 +360,11 @@ const goToReviews = (branch) => {
   font-size: 14px; 
   font-weight: 700; 
   flex-shrink: 0; 
-  /* ИСПРАВЛЕНИЕ: Используем filter вместо box-shadow для идеального круглого свечения */
-  filter: drop-shadow(0 4px 8px rgba(197, 249, 70, 0.3));
+  transition: filter 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(197, 249, 70, 0.2));
+}
+.branch-item:hover .branch-number {
+  filter: drop-shadow(0 4px 12px rgba(197, 249, 70, 0.4));
 }
 .branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .branch-action { color: #C5F946; transition: transform 0.3s ease; margin-left: 12px; }
