@@ -192,15 +192,17 @@ const goToReviews = (branch) => {
   font-weight: 600;
 }
 .status-badge {
-  background: rgba(197, 249, 70, 0.15);
-  color: #C5F946;
-  border: 1px solid rgba(197, 249, 70, 0.2);
+  background: linear-gradient(135deg, var(--vp-c-bg-mute), var(--vp-c-bg-soft));
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--vp-c-divider);
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
-  box-shadow: none;
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.05),
+    0 2px 4px rgba(0, 0, 0, 0.3);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -346,7 +348,21 @@ const goToReviews = (branch) => {
 .branch-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px; margin-bottom: 12px; background: var(--vp-c-bg-soft); border: 2px solid var(--vp-c-border); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
 .branch-item:hover { background: linear-gradient(135deg, rgba(197, 249, 70, 0.05), var(--vp-c-bg-soft)); border-color: #C5F946; box-shadow: 0 8px 20px rgba(197, 249, 70, 0.1); }
 .branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
-.branch-number { background: linear-gradient(135deg, #a3e635, #C5F946); color: #1d2c00; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; box-shadow: 0 4px 12px rgba(197, 249, 70, 0.3); }
+.branch-number { 
+  background: linear-gradient(135deg, #a3e635, #C5F946); 
+  color: #1d2c00; 
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 14px; 
+  font-weight: 700; 
+  flex-shrink: 0; 
+  /* ИСПРАВЛЕНИЕ: Используем filter вместо box-shadow для идеального круглого свечения */
+  filter: drop-shadow(0 4px 8px rgba(197, 249, 70, 0.3));
+}
 .branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .branch-action { color: #C5F946; transition: transform 0.3s ease; margin-left: 12px; }
 .branch-item:hover .branch-action { transform: translateX(4px); }
