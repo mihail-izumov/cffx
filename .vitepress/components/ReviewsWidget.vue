@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted, defineEmits } from 'vue'
+import { ref, defineEmits } from 'vue'
 
 const establishment = {
   name: 'Корж',
@@ -26,19 +26,11 @@ const goToReviews = (branch) => {
   const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
   window.open(url, '_blank')
 }
-
-// Блокировка скролла на body при монтировании и снятие при размонтировании
-onMounted(() => {
-  document.body.style.overflow = 'hidden'
-})
-onUnmounted(() => {
-  document.body.style.overflow = ''
-})
 </script>
 
 <template>
   <div class="reviews-widget-content">
-    <div v-if="!showBranchList" class="screen-content">
+    <div v-if="!showBranchList">
       <!-- Первый экран -->
       <div class="widget-header">
         <div>
@@ -92,7 +84,7 @@ onUnmounted(() => {
       </div>
     </div>
     
-    <div v-else class="screen-content screen-branches">
+    <div v-else>
       <!-- Второй экран -->
       <div class="branches-header">
         <h2 class="branches-title">{{ establishment.name }}</h2>
@@ -123,24 +115,13 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/* ОБЩИЕ СТИЛИ КОНТЕЙНЕРА */
 .reviews-widget-content {
-  height: 100%;
-}
-.screen-content {
-  display: flex;
-  flex-direction: column;
   padding: 32px;
-  height: 100%;
-}
-.screen-branches {
-  padding: 32px;
-}
-.branches-content {
-  flex-grow: 1;
+  max-height: calc(100vh - 120px);
   overflow-y: auto;
-  margin-right: -16px;
-  padding-right: 16px;
 }
+/* ЗАГОЛОВОК ПЕРВОГО ЭКРАНА */
 .widget-header {
   display: flex;
   justify-content: space-between;
@@ -159,6 +140,7 @@ onUnmounted(() => {
   font-size: 15px;
   color: var(--vp-c-text-2);
 }
+/* ЗАГОЛОВОК СПИСКА ФИЛИАЛОВ (ВТОРОЙ ЭКРАН) */
 .branches-header {
   display: flex;
   justify-content: space-between;
@@ -166,7 +148,6 @@ onUnmounted(() => {
   padding-bottom: 20px;
   border-bottom: 2px solid var(--vp-c-border);
   margin-bottom: 20px;
-  flex-shrink: 0;
 }
 .branches-title {
   margin: 0;
@@ -175,6 +156,7 @@ onUnmounted(() => {
   font-weight: 700;
   text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
 }
+/* СТИЛЬ ДЛЯ ВНУТРЕННЕЙ КНОПКИ ЗАКРЫТИЯ */
 .internal-close-btn {
   background: var(--vp-c-bg-mute);
   border: 2px solid var(--vp-c-border);
@@ -195,6 +177,7 @@ onUnmounted(() => {
   color: white;
   transform: rotate(90deg);
 }
+/* КАРТОЧКА НА ПЕРВОМ ЭКРАНЕ */
 .main-card {
   background: var(--vp-c-bg-soft);
   border-radius: 20px;
@@ -225,6 +208,7 @@ onUnmounted(() => {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+/* СТАТИСТИЧЕСКИЕ КАРТОЧКИ В СТИЛЕ ASTON MARTIN / TESLA */
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -303,6 +287,7 @@ onUnmounted(() => {
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
+/* ОСНОВНАЯ КНОПКА CTA */
 .review-button { 
   width: 100%; 
   background: linear-gradient(135deg, #00d4aa, #00ff88); 
@@ -325,17 +310,80 @@ onUnmounted(() => {
 .button-text { color: #001a1a; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 .button-icon { color: #001a1a; transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
-.branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
-.branches-list { padding: 0; }
-.branch-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px; margin-bottom: 12px; background: var(--vp-c-bg-soft); border: 2px solid var(--vp-c-border); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
-.branch-item:hover { background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), var(--vp-c-bg-soft)); border-color: #00d4aa; box-shadow: 0 8px 20px rgba(0, 212, 170, 0.2); }
-.branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
-.branch-number { background: linear-gradient(135deg, #00d4aa, #00ff88); color: #001a1a; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3); }
-.branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.branch-action { color: #00d4aa; transition: transform 0.3s ease; margin-left: 12px; }
-.branch-item:hover .branch-action { transform: translateX(4px); }
+/* СПИСОК ФИЛИАЛОВ */
+.branches-content { 
+  flex-grow: 1; 
+}
+.branches-subtitle { 
+  margin: 0 0 16px 0; 
+  font-size: 16px; 
+  color: var(--vp-c-text-2); 
+}
+.branches-list { 
+  padding: 0; 
+}
+.branch-item { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  width: 100%; 
+  padding: 18px; 
+  margin-bottom: 12px; 
+  background: var(--vp-c-bg-soft); 
+  border: 2px solid var(--vp-c-border); 
+  border-radius: 16px; 
+  cursor: pointer; 
+  transition: all 0.3s ease; 
+  text-align: left; 
+}
+.branch-item:hover { 
+  background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), var(--vp-c-bg-soft)); 
+  border-color: #00d4aa; 
+  box-shadow: 0 8px 20px rgba(0, 212, 170, 0.2); 
+}
+.branch-info { 
+  display: flex; 
+  align-items: center; 
+  gap: 16px; 
+  flex: 1; 
+  overflow: hidden; 
+}
+.branch-number { 
+  background: linear-gradient(135deg, #00d4aa, #00ff88); 
+  color: #001a1a; 
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 14px; 
+  font-weight: 700; 
+  flex-shrink: 0; 
+  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3); 
+}
+.branch-address { 
+  font-weight: 600; 
+  font-size: 16px; 
+  color: var(--vp-c-text-1); 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+}
+.branch-action { 
+  color: #00d4aa; 
+  transition: transform 0.3s ease; 
+  margin-left: 12px; 
+}
+.branch-item:hover .branch-action { 
+  transform: translateX(4px); 
+}
+/* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
-  .screen-content { padding: 24px; }
+  .reviews-widget-content { 
+    padding: 24px; 
+    max-height: calc(100vh - 100px);
+  }
   .main-card { padding: 16px; }
   .stats-grid {
     grid-template-columns: 1fr;
@@ -371,7 +419,10 @@ onUnmounted(() => {
   }
 }
 @media (max-width: 480px) {
-  .screen-content { padding: 20px; }
+  .reviews-widget-content { 
+    padding: 20px; 
+    max-height: calc(100vh - 80px);
+  }
   .header-title { font-size: 22px; }
   .header-subtitle { font-size: 14px; }
   .branches-title { font-size: 22px; }
