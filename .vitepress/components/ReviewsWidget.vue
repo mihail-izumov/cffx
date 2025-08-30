@@ -54,21 +54,27 @@ const goToReviews = (branch) => {
         
         <div class="stats-grid">
           <div class="stat-card branches-card">
-            <div class="stat-icon">☕</div>
-            <div class="stat-value">{{ establishment.branches.length }}</div>
-            <div class="stat-label">Точки</div>
+            <div class="stat-content">
+              <div class="stat-icon">☕</div>
+              <div class="stat-value">{{ establishment.branches.length }}</div>
+              <div class="stat-label">Точки</div>
+            </div>
           </div>
           
           <div class="stat-card index-card">
-            <div class="stat-icon">⚡</div>
-            <div class="stat-value">{{ establishment.index }}</div>
-            <div class="stat-label">Индекс роста</div>
+            <div class="stat-content">
+              <div class="stat-icon">⚡</div>
+              <div class="stat-value">{{ establishment.index }}</div>
+              <div class="stat-label">Индекс роста</div>
+            </div>
           </div>
           
           <div class="stat-card reviews-card">
-            <div class="stat-icon">🏆</div>
-            <div class="stat-value">{{ establishment.totalReviews }}</div>
-            <div class="stat-label">Отзывы</div>
+            <div class="stat-content">
+              <div class="stat-icon">🏆</div>
+              <div class="stat-value">{{ establishment.totalReviews }}</div>
+              <div class="stat-label">Отзывы</div>
+            </div>
           </div>
         </div>
         
@@ -215,35 +221,64 @@ const goToReviews = (branch) => {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 16px;
 }
-
 .stat-card {
-  background: var(--vp-c-bg-mute);
+  position: relative;
+  padding: 2px; /* Толщина рамки */
+  border-radius: 22px; /* Чуть больше, чем у контента */
+  background: transparent;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.stat-card:hover {
+  transform: translateY(-8px);
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  padding: 2px; /* Толщина рамки */
+  background: var(--gradient-border);
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+.stat-card:hover::before {
+  transform: scale(1.02);
+  filter: brightness(1.3);
+}
+.branches-card { --gradient-border: linear-gradient(135deg, #00A86B, #00d4aa); }
+.index-card { --gradient-border: linear-gradient(135deg, #00FF88, #00d4aa); }
+.reviews-card { --gradient-border: linear-gradient(135deg, #FFD700, #ffed4e); }
+
+.stat-content {
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%), var(--vp-c-bg-soft);
   border-radius: 20px;
   padding: 20px;
-  border: 2px solid;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  height: 100%;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
+  transition: box-shadow 0.3s ease;
 }
-
-.branches-card { border-color: #00A86B; }
-.index-card { border-color: #00FF88; }
-.reviews-card { border-color: #FFD700; }
-
-.stat-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 30px -10px rgba(0,0,0,0.4);
+.stat-card:hover .stat-content {
+  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
 }
-
 .stat-icon {
   font-size: 28px;
   opacity: 0.8;
   height: 32px;
+  transition: transform 0.3s ease;
 }
-
+.stat-card:hover .stat-icon {
+  transform: scale(1.1);
+}
 .stat-value {
   font-family: 'Inter', sans-serif;
   font-size: 3.2rem;
@@ -251,8 +286,8 @@ const goToReviews = (branch) => {
   line-height: 1;
   color: #fff;
   margin: 12px 0;
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.3);
 }
-
 .stat-label {
   font-size: 11px;
   font-weight: 500;
@@ -306,7 +341,12 @@ const goToReviews = (branch) => {
     gap: 12px;
   }
   .stat-card {
-    padding: 16px;
+    padding: 2px;
+    border-radius: 18px;
+  }
+  .stat-content {
+    padding: 12px;
+    border-radius: 16px;
     min-height: auto;
   }
   .stat-icon {
