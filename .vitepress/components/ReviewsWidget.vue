@@ -148,8 +148,7 @@ const goToReviews = (branch) => {
   margin-bottom: 20px;
 }
 .branches-title {
-  color: #C5F946;
-  text-shadow: 0 0 20px rgba(197, 249, 70, 0.4);
+  color: #FFFFFF;
 }
 
 /* КНОПКА ЗАКРЫТИЯ */
@@ -168,7 +167,7 @@ const goToReviews = (branch) => {
   flex-shrink: 0;
 }
 .internal-close-btn:hover {
-  background: linear-gradient(135deg, #991b1b, #ef4444); /* ИЗМЕНЕНИЕ: Стильный красный градиент */
+  background: linear-gradient(135deg, #991b1b, #ef4444);
   border-color: #ef4444;
   color: white;
   transform: rotate(90deg);
@@ -188,20 +187,20 @@ const goToReviews = (branch) => {
 }
 .cafe-name {
   margin: 0;
-  color: #C5F946;
+  color: #FFFFFF;
   font-size: 24px;
-  font-weight: 700;
-  text-shadow: 0 0 20px rgba(197, 249, 70, 0.3);
+  font-weight: 600;
 }
 .status-badge {
-  background: linear-gradient(135deg, #A2CC37, #C5F946);
-  color: #1d2c00;
+  background: rgba(197, 249, 70, 0.15);
+  color: #C5F946;
+  border: 1px solid rgba(197, 249, 70, 0.2);
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(197, 249, 70, 0.2);
+  box-shadow: none;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
