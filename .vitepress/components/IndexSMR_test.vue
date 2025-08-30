@@ -467,7 +467,7 @@ export default {
   border-radius: 20px;
   max-width: 800px;
   width: 100%;
-  max-height: calc(100vh - 80px);
+  max-height: calc(100vh - 40px);
   position: relative;
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
   display: flex;
@@ -476,9 +476,9 @@ export default {
 }
 
 .reviews-widget-wrapper {
-  max-height: calc(100vh - 160px);
+  max-height: calc(100vh - 120px);
   overflow-y: auto;
-  padding: 20px;
+  padding: 0;
   scrollbar-width: thin;
   scrollbar-color: var(--vp-c-brand-1) transparent;
 }
@@ -591,29 +591,27 @@ a.badge-calculator:hover {
 
 @media (max-width: 768px) {
   .reviews-modal-backdrop { 
-    padding: 20px 15px; 
+    padding: 10px 15px; 
   }
   .reviews-modal-container {
-    max-height: calc(100vh - 40px);
+    max-height: calc(100vh - 30px);
     border-radius: 15px;
   }
   .reviews-widget-wrapper {
-    max-height: calc(100vh - 120px);
-    padding: 15px;
+    max-height: calc(100vh - 110px);
   }
 }
 
 @media (max-width: 640px) {
   .reviews-modal-backdrop { 
-    padding: 10px; 
+    padding: 5px; 
   }
   .reviews-modal-container {
     border-radius: 12px;
-    max-height: calc(100vh - 20px);
+    max-height: calc(100vh - 10px);
   }
   .reviews-widget-wrapper {
-    max-height: calc(100vh - 100px);
-    padding: 15px;
+    max-height: calc(100vh - 90px);
   }
   .reviews-close-btn {
     top: 15px;
