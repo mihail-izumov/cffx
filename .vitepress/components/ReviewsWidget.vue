@@ -7,42 +7,42 @@ const establishments = {
     name: 'Корж',
     totalReviews: '4,520',
     branches: [
-      { 
+      {
         address: 'Куйбышева, 103',
         gisUrl: 'https://2gis.ru/samara/firm/70000001100403006',
         yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/'
       },
-      { 
+      {
         address: 'Революционная, 101В, к1',
         gisUrl: 'https://2gis.ru/samara/firm/70000001079219341',
         yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858/'
       },
-      { 
+      {
         address: '9 просека 5-я малая линия, 3б',
         gisUrl: 'https://2gis.ru/samara/firm/70000001074923618',
         yandexUrl: 'https://yandex.ru/maps/51/samara/house/9_ya_proseka_5_ya_malaya_liniya_3b/YUkYdw5hQUAAQFtpfX52dXVgZw==/'
       },
-      { 
+      {
         address: 'Льва Толстого, 30Б',
         gisUrl: 'https://2gis.ru/samara/firm/70000001052357057',
         yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/'
       },
-      { 
+      {
         address: 'Самарская, 270',
         gisUrl: 'https://2gis.ru/samara/firm/70000001043471927',
         yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/'
       },
-      { 
+      {
         address: 'Дачная, 2к2',
         gisUrl: 'https://2gis.ru/samara/firm/70000001045453045',
         yandexUrl: 'https://yandex.ru/maps/51/samara/house/dachnaya_ulitsa_2k2/YUkYdwNhSEcOQFtpfX5xcHpkZQ==/'
       },
-      { 
+      {
         address: 'Ульяновская, 19',
         gisUrl: 'https://2gis.ru/samara/firm/70000001033411071',
         yandexUrl: 'https://yandex.ru/maps/51/samara/chain/korz/23062014558/'
       },
-      { 
+      {
         address: 'Ново-Садовая, 106б',
         gisUrl: 'https://2gis.ru/samara/firm/70000001027391770',
         yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/'
@@ -78,10 +78,10 @@ const closeModal = () => {
 const checkUrlParams = () => {
   const urlParams = new URLSearchParams(window.location.search)
   const openEstablishment = urlParams.get('open')
-  
+
   if (openEstablishment && establishments[openEstablishment]) {
     openModal(establishments[openEstablishment])
-    
+
     // Убираем параметр из URL после открытия
     const url = new URL(window.location)
     url.searchParams.delete('open')
@@ -93,7 +93,7 @@ const checkUrlParams = () => {
 const goToReviews = (branch) => {
   const service = getRandomService()
   const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
-  
+
   // Опционально: отправка события в систему аналитики
   if (window.gtag) {
     window.gtag('event', 'review_redirect', {
@@ -102,7 +102,7 @@ const goToReviews = (branch) => {
       service: service === 'gis' ? '2ГИС' : 'Яндекс.Карты'
     })
   }
-  
+
   window.open(url, '_blank')
   closeModal()
 }
@@ -122,27 +122,27 @@ onMounted(() => {
 
 <!-- Сетка с карточками заведений -->
 <div class="establishments-grid">
-  <div 
-    v-for="(establishment, key) in establishments" 
+  <div
+    v-for="(establishment, key) in establishments"
     :key="key"
     class="establishment-card"
   >
     <!-- Заголовок с названием и статусом -->
     <div class="card-header">
-      <h3 class="cafe-name">{{ establishment.name }}</h3>
+      <div class="cafe-name">{{ establishment.name }}</div>
       <div class="status-badge">{{ establishment.status }}</div>
     </div>
-    
+
     <!-- Статистика в виде отдельных карточек -->
     <div class="card-stats">
       <div class="stat-card branches-card">
-        <div class="stat-icon">🏢</div>
+        <div class="stat-icon">☕</div>
         <div class="stat-content">
           <div class="stat-value">{{ establishment.branches.length }}</div>
           <div class="stat-label">Точки</div>
         </div>
       </div>
-      
+
       <div class="stat-card index-card">
         <div class="stat-icon">⚡</div>
         <div class="stat-content">
@@ -150,7 +150,7 @@ onMounted(() => {
           <div class="stat-label">Индекс роста</div>
         </div>
       </div>
-      
+
       <div class="stat-card reviews-card">
         <div class="stat-icon">⭐</div>
         <div class="stat-content">
@@ -159,9 +159,9 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    
+
     <!-- Большая кнопка действия -->
-    <button 
+    <button
       @click="openModal(establishment)"
       class="main-action-button"
     >
@@ -177,19 +177,15 @@ onMounted(() => {
     <div v-if="showModal" class="modal-mask" @click="closeModal">
       <div class="modal-container" @click.stop>
         <div class="modal-header">
-          <div class="modal-title-block">
-            <h2 class="modal-cafe-name">{{ currentEstablishment?.name }}</h2>
-            <div class="modal-badges">
-              <span class="badge status">{{ currentEstablishment?.status }}</span>
-              <span class="badge type">{{ currentEstablishment?.type }}</span>
-            </div>
-          </div>
-          <button @click="closeModal" class="close-button" aria-label="Закрыть окно">×</button>
+          <div class="modal-cafe-name">{{ currentEstablishment?.name }}</div>
+          <button @click="closeModal" class="close-button" aria-label="Закрыть окно">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
         </div>
-        
+
         <div class="modal-content">
           <p class="modal-subtitle">Выберите филиал для оставления отзыва:</p>
-          
+
           <div class="branches-list">
             <button
               v-for="(branch, index) in currentEstablishment?.branches"
@@ -204,13 +200,11 @@ onMounted(() => {
                 </div>
               </div>
               <div class="branch-action">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m9 18 6-6-6-6"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
               </div>
             </button>
           </div>
-          
+
           <div class="modal-footer">
             <p class="ab-info">
               <small>💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</small>
@@ -224,6 +218,15 @@ onMounted(() => {
 </template>
 
 <style scoped>
+:root {
+  --neon-green: #39ff14;
+  --aston-lime: #84cc16;
+  --gold: #ffc700;
+  --dark-bg: #1a1a1a;
+  --soft-bg: #242424;
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
 .widget-header {
   text-align: center;
   margin-bottom: 32px;
@@ -250,35 +253,18 @@ onMounted(() => {
 }
 
 .establishment-card {
-  background: linear-gradient(145deg, var(--vp-c-bg-soft), var(--vp-c-bg));
-  border: 2px solid var(--vp-c-border);
+  background: linear-gradient(145deg, var(--soft-bg), var(--dark-bg));
+  border: 1px solid var(--border-color);
   border-radius: 20px;
   padding: 28px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-}
-
-.establishment-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--vp-c-brand-2), var(--vp-c-brand-1));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s ease;
-}
-
-.establishment-card:hover::before {
-  transform: scaleX(1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transition: border-color 0.3s ease;
 }
 
 .establishment-card:hover {
-  border-color: var(--vp-c-brand-1);
+  border-color: var(--neon-green);
 }
 
 .card-header {
@@ -289,46 +275,25 @@ onMounted(() => {
 }
 
 .cafe-name {
-  margin: 0;
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 25px;
-  font-size: 22px;
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
-  border: none;
-  display: inline-block;
-}
-
-.modal-cafe-name {
-  margin: 0 40px 16px 0;
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 25px;
-  font-size: 24px;
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
-  display: inline-block;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--neon-green);
+  text-shadow: 0 0 10px var(--neon-green), 0 0 20px rgba(57, 255, 20, 0.5);
 }
 
 .status-badge {
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: white;
+  background: rgba(57, 255, 20, 0.1);
+  border: 1px solid rgba(57, 255, 20, 0.3);
+  color: var(--neon-green);
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-/* Статистические карточки в стиле F1 Clash - объемные как игровые предметы */
 .card-stats {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -337,8 +302,8 @@ onMounted(() => {
 }
 
 .stat-card {
-  background: var(--vp-c-bg-mute);
-  border: 3px solid var(--vp-c-border);
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  border: 1px solid var(--border-color);
   border-radius: 20px;
   padding: 24px 16px 20px;
   display: flex;
@@ -347,13 +312,13 @@ onMounted(() => {
   justify-content: center;
   position: relative;
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.4), 0 4px 6px rgba(0,0,0,0.2);
 }
 
 .stat-card:hover {
-  transform: translateY(-8px) rotateX(5deg);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.4), 0 12px 24px rgba(0,0,0,0.3);
 }
 
 .stat-card::before {
@@ -362,66 +327,22 @@ onMounted(() => {
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  transition: transform 0.3s ease;
+  height: 3px;
+  opacity: 0.8;
 }
 
-.stat-card::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transform: rotate(45deg);
-  transition: all 0.6s;
-  opacity: 0;
-}
-
-.stat-card:hover::after {
-  animation: shimmer 1.5s ease-in-out;
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) translateY(-100%) rotate(45deg);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(100%) translateY(100%) rotate(45deg);
-    opacity: 0;
-  }
-}
-
-.branches-card::before {
-  background: linear-gradient(90deg, #f97316, #ea580c);
-}
-
-.index-card::before {
-  background: linear-gradient(90deg, #eab308, #ca8a04);
-}
-
-.reviews-card::before {
-  background: linear-gradient(90deg, #10b981, #059669);
-}
-
-.stat-card:hover::before {
-  transform: scaleX(1);
-}
+.branches-card::before { background: var(--aston-lime); }
+.index-card::before { background: var(--neon-green); }
+.reviews-card::before { background: var(--gold); }
 
 .stat-icon {
   font-size: 36px;
   margin-bottom: 12px;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
   transition: transform 0.3s ease;
 }
 
 .stat-card:hover .stat-icon {
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
 .stat-content {
@@ -436,25 +357,11 @@ onMounted(() => {
   font-weight: 800;
   margin-bottom: 6px;
   line-height: 1;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
 }
 
-.stat-card:hover .stat-value {
-  transform: scale(1.05);
-}
-
-.branches-card .stat-value {
-  color: #ea580c;
-}
-
-.index-card .stat-value {
-  color: #ca8a04;
-}
-
-.reviews-card .stat-value {
-  color: #059669;
-}
+.branches-card .stat-value { color: var(--aston-lime); }
+.index-card .stat-value { color: var(--neon-green); }
+.reviews-card .stat-value { color: var(--gold); }
 
 .stat-label {
   font-size: 11px;
@@ -465,58 +372,38 @@ onMounted(() => {
   text-align: center;
 }
 
-/* Большая кнопка действия */
 .main-action-button {
   width: 100%;
-  background: linear-gradient(135deg, var(--vp-c-brand-1), var(--vp-c-brand-2));
+  background: linear-gradient(135deg, var(--neon-green), var(--aston-lime));
   border: none;
   border-radius: 16px;
   padding: 20px 28px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 12px;
   position: relative;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 24px rgba(var(--vp-c-brand-1), 0.3);
-}
-
-.main-action-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.main-action-button:hover::before {
-  left: 100%;
+  box-shadow: 0 8px 24px rgba(132, 204, 22, 0.3);
 }
 
 .main-action-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(var(--vp-c-brand-1), 0.4);
-}
-
-.main-action-button:active {
-  transform: translateY(0);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(132, 204, 22, 0.4);
 }
 
 .action-text {
-  color: white;
+  color: #1a1a1a;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .action-icon {
-  color: white;
+  color: #1a1a1a;
   font-size: 24px;
   font-weight: bold;
   transition: transform 0.3s ease;
@@ -526,7 +413,6 @@ onMounted(() => {
   transform: translateX(4px);
 }
 
-/* Модальное окно */
 .modal-mask {
   position: fixed;
   top: 0;
@@ -543,7 +429,7 @@ onMounted(() => {
 }
 
 .modal-container {
-  background: var(--vp-c-bg);
+  background: var(--dark-bg);
   border-radius: 24px;
   max-width: 600px;
   width: 100%;
@@ -552,64 +438,42 @@ onMounted(() => {
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
-  border: 2px solid var(--vp-c-border);
+  border: 1px solid var(--border-color);
 }
 
 .modal-header {
   position: relative;
-  padding: 32px 32px 24px;
-  border-bottom: 2px solid var(--vp-c-border);
+  padding: 32px;
+  border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
-  background: linear-gradient(145deg, var(--vp-c-bg-soft), var(--vp-c-bg));
-}
-
-.modal-badges {
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.badge {
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.badge.status {
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: white;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
-
-.badge.type {
-  background: var(--vp-c-bg-mute);
-  border: 2px solid var(--vp-c-border);
-  color: var(--vp-c-text-2);
+.modal-cafe-name {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--neon-green);
+  text-shadow: 0 0 10px var(--neon-green), 0 0 20px rgba(57, 255, 20, 0.5);
 }
 
 .close-button {
-  position: absolute;
-  top: 28px;
-  right: 28px;
-  background: var(--vp-c-bg-mute);
-  border: 2px solid var(--vp-c-border);
+  background: var(--soft-bg);
+  border: 1px solid var(--border-color);
   border-radius: 50%;
   width: 44px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
   cursor: pointer;
   color: var(--vp-c-text-2);
   transition: all 0.3s ease;
 }
 
 .close-button:hover {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: #ef4444;
   border-color: #ef4444;
   color: white;
   transform: rotate(90deg);
@@ -639,8 +503,8 @@ onMounted(() => {
   width: 100%;
   padding: 20px;
   margin: 12px 0;
-  background: var(--vp-c-bg-soft);
-  border: 2px solid var(--vp-c-border);
+  background: var(--soft-bg);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -648,10 +512,8 @@ onMounted(() => {
 }
 
 .branch-item:hover {
-  background: linear-gradient(135deg, var(--vp-c-brand-soft), var(--vp-c-bg-soft));
-  border-color: var(--vp-c-brand-1);
-  transform: translateX(8px);
-  box-shadow: 0 8px 20px rgba(var(--vp-c-brand-1), 0.2);
+  background: rgba(57, 255, 20, 0.1);
+  border-color: var(--neon-green);
 }
 
 .branch-info {
@@ -662,8 +524,8 @@ onMounted(() => {
 }
 
 .branch-number {
-  background: linear-gradient(135deg, var(--vp-c-brand-1), var(--vp-c-brand-2));
-  color: white;
+  background: var(--neon-green);
+  color: var(--dark-bg);
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -671,9 +533,8 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(var(--vp-c-brand-1), 0.3);
 }
 
 .address-text {
@@ -686,18 +547,18 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--vp-c-brand-1);
+  color: var(--neon-green);
   transition: transform 0.3s ease;
 }
 
 .branch-item:hover .branch-action {
-  transform: translateX(4px);
+  transform: scale(1.2);
 }
 
 .modal-footer {
   padding: 20px 32px;
-  border-top: 2px solid var(--vp-c-border);
-  background: var(--vp-c-bg-soft);
+  border-top: 1px solid var(--border-color);
+  background: var(--dark-bg);
   flex-shrink: 0;
   text-align: center;
 }
@@ -709,7 +570,6 @@ onMounted(() => {
   font-weight: 500;
 }
 
-/* Анимации */
 .modal-enter-active, .modal-leave-active {
   transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -726,64 +586,36 @@ onMounted(() => {
   opacity: 0;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
   .establishments-grid {
     grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 0 auto 40px auto;
   }
-  
+}
+
+@media (max-width: 480px) {
+  .widget-header h2 {
+    font-size: 22px;
+  }
   .establishment-card {
-    padding: 24px;
+    padding: 20px;
   }
-  
+  .cafe-name {
+    font-size: 22px;
+  }
   .card-stats {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  
   .stat-card {
-    padding: 20px 16px 16px;
-  }
-  
-  .main-action-button {
-    padding: 18px 24px;
-  }
-  
-  .action-text {
-    font-size: 16px;
-  }
-  
-  .stat-icon {
-    font-size: 32px;
-  }
-  
-  .stat-value {
-    font-size: 20px;
-  }
-}
-
-@media (max-width: 640px) {
-  .modal-mask { 
-    padding: 0; 
-  }
-  
-  .modal-container {
-    border-radius: 0;
-    max-height: 100vh;
-    height: 100vh;
-  }
-  
-  .modal-header {
-    padding: 24px;
-  }
-  
-  .modal-cafe-name {
-    font-size: 20px;
-    margin: 0 40px 12px 0;
-  }
-  
-  .branch-item {
     padding: 16px;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+  .stat-content {
+    text-align: left;
+    align-items: flex-start;
   }
 }
 </style>
