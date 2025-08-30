@@ -426,22 +426,11 @@ export default {
 .scale-text { font-size: 0.9em; color: #888; }
 .stagnation-dot { font-weight: 900; font-size: 1.5em; line-height: 1; vertical-align: middle; color: #888; padding-left: 4px; }
 
-/* Стили для кликабельного "Корж" */
-/* Стили для кликабельного "Корж" */
+/* Сбрасываем стили, чтобы использовать глобальные */
 .coffee-name-clickable {
-  color: var(--vp-c-brand-1, #4f46e5); /* синий цвет ссылки по умолчанию */
-  text-decoration: underline;
-  text-decoration-style: solid;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  font-weight: 600;
+  all: unset;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.coffee-name-clickable:hover {
-  color: var(--vp-c-brand-2, #646cff); /* более темный синий при наведении */
-  text-decoration-thickness: 2px; /* более толстое сплошное подчеркивание */
+  font-weight: 600; /* только вес шрифта оставляем */
 }
 
 /* Стили для модального окна */
