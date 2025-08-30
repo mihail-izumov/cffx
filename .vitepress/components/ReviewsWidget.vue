@@ -32,7 +32,7 @@ const goToReviews = (branch) => {
 
 <template>
   <div class="reviews-widget-content">
-    <!-- Первый экран: главная информация -->
+    <!-- Первый экран -->
     <div v-if="!showBranchList">
       <div class="widget-header">
         <h2 class="header-title">Сделайте Индекс Роста еще точнее</h2>
@@ -79,11 +79,10 @@ const goToReviews = (branch) => {
       </div>
     </div>
 
-    <!-- Второй экран: список филиалов -->
+    <!-- Второй экран -->
     <div v-else>
       <div class="branches-header">
         <h2 class="branches-title">{{ establishment.name }}</h2>
-        <!-- КНОПКА ЗАКРЫТИЯ ТЕПЕРЬ ЗДЕСЬ -->
         <button @click="$emit('close')" class="internal-close-btn" aria-label="Закрыть окно">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 6L6 18"/>
@@ -119,7 +118,7 @@ const goToReviews = (branch) => {
 <style scoped>
 /* ОБЩИЕ СТИЛИ КОНТЕЙНЕРА */
 .reviews-widget-content {
-  /* Отступы теперь контролируются родительским контейнером */
+  padding: 32px;
 }
 
 /* ЗАГОЛОВОК ПЕРВОГО ЭКРАНА */
@@ -415,9 +414,6 @@ const goToReviews = (branch) => {
 
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
-  .widget-header, .branches-header {
-    /* На мобильных заголовок тоже получает отступ */
-  }
   .stats-grid { grid-template-columns: 1fr; gap: 12px; }
   .stat-card { flex-direction: row; padding: 16px; text-align: left; }
   .stat-icon { font-size: 32px; margin-right: 16px; margin-bottom: 0; }
@@ -428,6 +424,9 @@ const goToReviews = (branch) => {
   .button-text { font-size: 16px; }
 }
 @media (max-width: 480px) {
+  .reviews-widget-content {
+    padding: 20px;
+  }
   .cafe-name { font-size: 20px; }
   .status-badge { padding: 4px 12px; font-size: 10px; }
   .stat-icon { font-size: 28px; margin-right: 12px; }
