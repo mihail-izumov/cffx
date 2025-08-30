@@ -222,9 +222,7 @@ const goToReviews = (branch) => {
 .stat-card:hover {
   transform: translateY(-8px);
 }
-
-/* КОНТРАСТНАЯ ГРАДИЕНТНАЯ РАМКА */
-.stat-card::before {
+.stat-card::before { /* Градиентная рамка */
   content: '';
   position: absolute;
   inset: 0;
@@ -236,7 +234,7 @@ const goToReviews = (branch) => {
      linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  transition: filter 0.3s ease;
+  transition: filter 0.4s ease;
   z-index: 3;
 }
 .stat-card:hover::before {
@@ -245,27 +243,23 @@ const goToReviews = (branch) => {
 
 /* ЦВЕТА ДЛЯ КАРТОЧЕК */
 .branches-card { 
-  --border-gradient: linear-gradient(135deg, #001a0d, #00d4aa, #00ff88);
-  --glow-color: rgba(0, 212, 170, 0.3);
-  --glow-hover: rgba(0, 212, 170, 0.8);
+  --border-gradient: linear-gradient(135deg, #004d26, #00d4aa, #90ffd9);
+  --glow-color: rgba(0, 212, 170, 0.25);
+  --glow-hover-color: rgba(0, 212, 170, 0.6);
 }
 .index-card { 
-  --border-gradient: linear-gradient(135deg, #001a0f, #00ff88, #c5f946);
-  --glow-color: rgba(0, 255, 136, 0.3);
-  --glow-hover: rgba(0, 255, 136, 0.8);
+  --border-gradient: linear-gradient(135deg, #004d2a, #00ff88, #c5f946);
+  --glow-color: rgba(0, 255, 136, 0.25);
+  --glow-hover-color: rgba(0, 255, 136, 0.6);
 }
 .reviews-card { 
-  --border-gradient: linear-gradient(135deg, #1a1600, #ffd700, #ffed4e);
-  --glow-color: rgba(255, 215, 0, 0.3);
-  --glow-hover: rgba(255, 215, 0, 0.8);
+  --border-gradient: linear-gradient(135deg, #4d3d00, #ffd700, #fff5cc);
+  --glow-color: rgba(255, 215, 0, 0.25);
+  --glow-hover-color: rgba(255, 215, 0, 0.6);
 }
 
 .stat-content {
-  background: 
-    radial-gradient(ellipse at 50% 0%, var(--glow-color) 0%, transparent 60%),
-    var(--vp-c-bg-soft);
-  background-size: 100% 40%;
-  background-position: 50% 0%;
+  background: radial-gradient(circle at 50% 0%, var(--glow-color) 0%, transparent 70%);
   border-radius: 20px;
   padding: 20px;
   display: flex;
@@ -280,11 +274,7 @@ const goToReviews = (branch) => {
   z-index: 2;
 }
 .stat-card:hover .stat-content {
-  background: 
-    radial-gradient(ellipse at 50% 0%, var(--glow-hover) 0%, transparent 80%),
-    var(--vp-c-bg-soft);
-  background-size: 100% 90%;
-  background-position: 50% 0%;
+  background: radial-gradient(circle at 50% 0%, var(--glow-hover-color) 0%, transparent 70%);
   box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
 
@@ -306,19 +296,15 @@ const goToReviews = (branch) => {
   line-height: 1;
   color: #fff;
   margin: 12px 0;
-  /* МОЩНЫЕ ТЕНИ ДЛЯ ЦИФР */
   text-shadow: 
-    0 0 30px rgba(255, 255, 255, 0.6),
-    0 2px 8px rgba(0, 0, 0, 0.8),
-    0 0 10px rgba(0, 0, 0, 0.9);
+    0 0 20px rgba(0, 0, 0, 0.7),
+    0 0 10px rgba(0, 0, 0, 0.7);
 }
 .stat-card:hover .stat-value {
   transform: scale(1.15);
-  /* ЕЩЕ БОЛЬШЕ ТЕНИ ПРИ НАВЕДЕНИИ */
   text-shadow: 
-    0 0 40px rgba(255, 255, 255, 0.8),
-    0 4px 12px rgba(0, 0, 0, 0.9),
-    0 0 15px rgba(0, 0, 0, 1);
+    0 0 30px rgba(0, 0, 0, 0.8),
+    0 0 15px rgba(0, 0, 0, 0.8);
 }
 .stat-label {
   font-size: 11px;
@@ -326,11 +312,9 @@ const goToReviews = (branch) => {
   color: var(--vp-c-text-2);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 .stat-card:hover .stat-label {
   transform: scale(1.05);
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
 }
 
 /* КНОПКА CTA */
