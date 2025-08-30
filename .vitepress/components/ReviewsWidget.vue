@@ -115,22 +115,103 @@ const goToReviews = (branch) => {
 </template>
 
 <style scoped>
-/* ОБЩИЕ СТИЛИ */
-.reviews-widget-content { padding: 32px; max-height: calc(100vh - 80px); overflow-y: auto; }
-.widget-header, .branches-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
-.header-title, .branches-title { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; }
-.header-subtitle { margin-top: 8px; font-size: 15px; color: var(--vp-c-text-2); }
-.branches-header { align-items: center; padding-bottom: 20px; border-bottom: 2px solid var(--vp-c-border); margin-bottom: 20px; }
-.branches-title { color: #00ff88; text-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
-.internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
-.internal-close-btn:hover { background: linear-gradient(135deg, #ef4444, #dc2626); border-color: #ef4444; color: white; transform: rotate(90deg); }
-.main-card { background: var(--vp-c-bg-soft); border-radius: 20px; padding: 24px; }
-.establishment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.cafe-name { margin: 0; color: #00ff88; font-size: 24px; font-weight: 700; text-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
-.status-badge { background: linear-gradient(135deg, #00d4aa, #00ff88); color: #001a1a; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3); text-transform: uppercase; letter-spacing: 0.5px; }
+/* ОБЩИЕ СТИЛИ КОНТЕЙНЕРА */
+.reviews-widget-content {
+  padding: 32px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+/* ЗАГОЛОВКИ */
+.widget-header, .branches-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+.header-title, .branches-title {
+  margin: 0;
+  color: white;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.header-subtitle {
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--vp-c-text-2);
+}
+.branches-header {
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--vp-c-border);
+  margin-bottom: 20px;
+}
+.branches-title {
+  color: #00ff88;
+  text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
+/* КНОПКА ЗАКРЫТИЯ */
+.internal-close-btn {
+  background: var(--vp-c-bg-mute);
+  border: 2px solid var(--vp-c-border);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--vp-c-text-2);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+.internal-close-btn:hover {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-color: #ef4444;
+  color: white;
+  transform: rotate(90deg);
+}
+
+/* ГЛАВНАЯ КАРТОЧКА */
+.main-card {
+  background: var(--vp-c-bg-soft);
+  border-radius: 20px;
+  padding: 24px;
+}
+.establishment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.cafe-name {
+  margin: 0;
+  color: #00ff88;
+  font-size: 24px;
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+.status-badge {
+  background: linear-gradient(135deg, #00d4aa, #00ff88);
+  color: #001a1a;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
 /* СТАТИСТИЧЕСКИЕ КАРТОЧКИ */
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
 .stat-card {
   position: relative;
   border-radius: 22px;
@@ -138,31 +219,53 @@ const goToReviews = (branch) => {
   overflow: hidden;
   background: var(--vp-c-bg-soft);
 }
-.stat-card:hover { transform: translateY(-8px); }
-.stat-card::before { /* ГРАДИЕНТНАЯ РАМКА */
+.stat-card:hover {
+  transform: translateY(-8px);
+}
+
+/* КОНТРАСТНАЯ ГРАДИЕНТНАЯ РАМКА */
+.stat-card::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 22px;
   padding: 2px;
-  background: var(--gradient-border);
-  opacity: 0.8;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  background: var(--border-gradient);
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  transition: opacity 0.3s ease;
+  transition: filter 0.3s ease;
   z-index: 3;
 }
-.stat-card:hover::before { opacity: 1; }
+.stat-card:hover::before {
+  filter: brightness(2) saturate(1.5);
+}
 
-.branches-card { --gradient-border: linear-gradient(135deg, #004d40 0%, #00d4aa 100%); }
-.index-card { --gradient-border: linear-gradient(135deg, #004d33 0%, #00ff88 100%); }
-.reviews-card { --gradient-border: linear-gradient(135deg, #664f00 0%, #FFD700 100%); }
+/* ЦВЕТА ДЛЯ КАРТОЧЕК */
+.branches-card { 
+  --border-gradient: linear-gradient(135deg, #001a0d, #00d4aa, #00ff88);
+  --glow-color: rgba(0, 212, 170, 0.3);
+  --glow-hover: rgba(0, 212, 170, 0.8);
+}
+.index-card { 
+  --border-gradient: linear-gradient(135deg, #001a0f, #00ff88, #c5f946);
+  --glow-color: rgba(0, 255, 136, 0.3);
+  --glow-hover: rgba(0, 255, 136, 0.8);
+}
+.reviews-card { 
+  --border-gradient: linear-gradient(135deg, #1a1600, #ffd700, #ffed4e);
+  --glow-color: rgba(255, 215, 0, 0.3);
+  --glow-hover: rgba(255, 215, 0, 0.8);
+}
 
 .stat-content {
-  background: radial-gradient(circle at 50% 0%, var(--glow-color, #fff) 0%, transparent 70%);
-  background-size: 150% 150%;
-  background-position: 50% 150%;
+  background: 
+    radial-gradient(ellipse at 50% 0%, var(--glow-color) 0%, transparent 60%),
+    var(--vp-c-bg-soft);
+  background-size: 100% 40%;
+  background-position: 50% 0%;
   border-radius: 20px;
   padding: 20px;
   display: flex;
@@ -172,34 +275,84 @@ const goToReviews = (branch) => {
   height: 100%;
   text-align: center;
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
-  transition: all 0.4s ease;
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   position: relative;
   z-index: 2;
 }
 .stat-card:hover .stat-content {
-  background-position: 50% 100%;
-  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+  background: 
+    radial-gradient(ellipse at 50% 0%, var(--glow-hover) 0%, transparent 80%),
+    var(--vp-c-bg-soft);
+  background-size: 100% 90%;
+  background-position: 50% 0%;
+  box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
 
-.stat-icon, .stat-value, .stat-label { transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.stat-icon { font-size: 28px; opacity: 0.8; height: 32px; }
-.stat-card:hover .stat-icon { transform: scale(1.2); }
+.stat-icon, .stat-value, .stat-label {
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.stat-icon {
+  font-size: 28px;
+  opacity: 0.8;
+  height: 32px;
+}
+.stat-card:hover .stat-icon {
+  transform: scale(1.2);
+}
 .stat-value {
   font-family: 'Inter', sans-serif;
   font-size: 3.2rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1;
   color: #fff;
   margin: 12px 0;
-  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.8);
+  /* МОЩНЫЕ ТЕНИ ДЛЯ ЦИФР */
+  text-shadow: 
+    0 0 30px rgba(255, 255, 255, 0.6),
+    0 2px 8px rgba(0, 0, 0, 0.8),
+    0 0 10px rgba(0, 0, 0, 0.9);
 }
-.stat-card:hover .stat-value { transform: scale(1.1); }
-.stat-label { font-size: 11px; font-weight: 500; color: var(--vp-c-text-2); text-transform: uppercase; letter-spacing: 0.1em; }
-.stat-card:hover .stat-label { transform: scale(1.05); }
+.stat-card:hover .stat-value {
+  transform: scale(1.15);
+  /* ЕЩЕ БОЛЬШЕ ТЕНИ ПРИ НАВЕДЕНИИ */
+  text-shadow: 
+    0 0 40px rgba(255, 255, 255, 0.8),
+    0 4px 12px rgba(0, 0, 0, 0.9),
+    0 0 15px rgba(0, 0, 0, 1);
+}
+.stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.stat-card:hover .stat-label {
+  transform: scale(1.05);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
 
 /* КНОПКА CTA */
-.review-button { width: 100%; background: linear-gradient(135deg, #00d4aa, #00ff88); border: none; border-radius: 16px; padding: 18px 24px; margin-top: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3); }
-.review-button:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 14px 35px rgba(0, 212, 170, 0.4); }
+.review-button { 
+  width: 100%; 
+  background: linear-gradient(135deg, #00d4aa, #00ff88); 
+  border: none; 
+  border-radius: 16px; 
+  padding: 18px 24px; 
+  margin-top: 24px;
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 12px; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+  box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3); 
+}
+.review-button:hover { 
+  transform: translateY(-4px) scale(1.02); 
+  box-shadow: 0 14px 35px rgba(0, 212, 170, 0.4); 
+}
 .button-text { color: #001a1a; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 .button-icon { color: #001a1a; transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
@@ -221,7 +374,7 @@ const goToReviews = (branch) => {
   .reviews-widget-content { padding: 24px; max-height: calc(100vh - 60px); }
   .main-card { padding: 16px; }
   .stats-grid { grid-template-columns: 1fr; gap: 12px; }
-  .stat-card { padding: 2px; border-radius: 18px; }
+  .stat-card { border-radius: 18px; }
   .stat-content { padding: 12px; border-radius: 16px; min-height: auto; }
   .stat-icon { font-size: 24px; height: 28px; }
   .stat-value { font-size: 2.8rem; margin: 8px 0; }
