@@ -184,29 +184,10 @@ const goToReviews = (branch) => {
 
 /* КАРТОЧКА НА ПЕРВОМ ЭКРАНЕ */
 .main-card {
-  background: linear-gradient(145deg, var(--vp-c-bg-soft), var(--vp-c-bg));
-  border: 2px solid var(--vp-c-border);
+  background: var(--vp-c-bg-soft);
   border-radius: 20px;
   padding: 24px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
 }
-.main-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #00d4aa, #00ff88);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s ease;
-}
-.main-card:hover::before { transform: scaleX(1); }
-.main-card:hover { border-color: #00d4aa; }
 
 .establishment-header {
   display: flex;
@@ -239,86 +220,88 @@ const goToReviews = (branch) => {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 16px;
-  margin-bottom: 24px;
 }
 .stat-card {
+  position: relative;
+  padding: 2px; /* Толщина рамки */
+  border-radius: 22px; /* Чуть больше, чем у контента */
+  background: transparent;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  padding: 2px; /* Толщина рамки */
+  background: var(--gradient-border);
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: all 0.3s ease;
+}
+.stat-card:hover::before {
+  transform: scale(1.02);
+  filter: brightness(1.2);
+}
+.branches-card { --gradient-border: linear-gradient(135deg, #00A86B, #00d4aa); }
+.index-card { --gradient-border: linear-gradient(135deg, #00FF88, #00d4aa); }
+.reviews-card { --gradient-border: linear-gradient(135deg, #FFD700, #ffed4e); }
+
+.stat-content-wrapper {
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%), var(--vp-c-bg-soft);
   border-radius: 20px;
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  position: relative;
-  overflow: hidden;
-  border: 2px solid;
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  height: 100%;
 }
-.stat-card:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.5);
-}
-.branches-card {
-  --glow-color: rgba(0, 168, 107, 0.5);
-  background: radial-gradient(circle at 50% 0%, rgba(0, 168, 107, 0.15) 0%, rgba(0,0,0,0) 70%);
-  border-image: linear-gradient(to bottom, #00A86B, #00d4aa40) 1;
-  box-shadow: 0 0 20px -5px var(--glow-color);
-}
-.branches-card:hover { box-shadow: 0 0 35px -5px var(--glow-color); }
-.index-card {
-  --glow-color: rgba(0, 255, 136, 0.5);
-  background: radial-gradient(circle at 50% 0%, rgba(0, 255, 136, 0.15) 0%, rgba(0,0,0,0) 70%);
-  border-image: linear-gradient(to bottom, #00FF88, #00d4aa40) 1;
-  box-shadow: 0 0 20px -5px var(--glow-color);
-}
-.index-card:hover { box-shadow: 0 0 35px -5px var(--glow-color); }
-.reviews-card {
-  --glow-color: rgba(255, 215, 0, 0.5);
-  background: radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.15) 0%, rgba(0,0,0,0) 70%);
-  border-image: linear-gradient(to bottom, #FFD700, #ffed4e40) 1;
-  box-shadow: 0 0 20px -5px var(--glow-color);
-}
-.reviews-card:hover { box-shadow: 0 0 35px -5px var(--glow-color); }
 .stat-icon {
   font-size: 24px;
-  opacity: 0.6;
-  transition: all 0.3s ease;
-}
-.stat-card:hover .stat-icon {
-  opacity: 1;
-  transform: scale(1.1);
+  opacity: 0.7;
 }
 .stat-value {
   font-family: 'Inter', sans-serif;
-  font-size: 4rem;
-  font-weight: 600;
+  font-size: 3.5rem;
+  font-weight: 500;
   line-height: 1;
-  margin: 8px 0;
+  margin: 12px 0;
   color: #fff;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease;
-}
-.stat-card:hover .stat-value {
-  transform: scale(1.05);
-  text-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 .stat-label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   color: var(--vp-c-text-2);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   opacity: 0.8;
 }
-.stat-content {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-/* КНОПКА */
-.review-button { width: 100%; background: linear-gradient(135deg, #00d4aa, #00ff88); border: none; border-radius: 16px; padding: 18px 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3); }
-.review-button:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 212, 170, 0.4); }
+/* ОСНОВНАЯ КНОПКА CTA */
+.review-button { 
+  width: 100%; 
+  background: linear-gradient(135deg, #00d4aa, #00ff88); 
+  border: none; 
+  border-radius: 16px; 
+  padding: 18px 24px; 
+  margin-top: 24px;
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 12px; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+  box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3); 
+}
+.review-button:hover { 
+  transform: translateY(-4px) scale(1.02); 
+  box-shadow: 0 14px 35px rgba(0, 212, 170, 0.4); 
+}
 .button-text { color: #001a1a; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 .button-icon { color: #001a1a; transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
@@ -343,29 +326,32 @@ const goToReviews = (branch) => {
     gap: 12px;
   }
   .stat-card {
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 16px 20px;
-    gap: 16px;
+    padding: 1px;
+    border-radius: 18px;
+  }
+  .stat-content-wrapper {
+    padding: 12px;
+    flex-direction: column;
+    border-radius: 16px;
   }
   .stat-icon {
-    font-size: 28px;
-    margin: 0;
-    opacity: 0.8;
-  }
-  .stat-content {
-    text-align: right;
-    align-items: flex-end;
+    font-size: 24px;
   }
   .stat-value {
-    font-size: 2.8rem;
-    margin: 0;
+    font-size: 2.5rem;
+    margin: 4px 0;
   }
   .stat-label {
     font-size: 10px;
   }
-  .review-button { padding: 16px 24px; }
-  .button-text { font-size: 16px; }
+  .review-button {
+    padding: 20px 24px;
+    margin-top: 20px;
+    border-radius: 18px;
+  }
+  .button-text {
+    font-size: 20px;
+  }
 }
 @media (max-width: 480px) {
   .reviews-widget-content { padding: 20px; }
@@ -375,7 +361,5 @@ const goToReviews = (branch) => {
   .branches-subtitle { font-size: 14px; }
   .cafe-name { font-size: 20px; }
   .status-badge { padding: 4px 12px; font-size: 10px; }
-  .review-button { padding: 14px 20px; }
-  .button-text { font-size: 14px; }
 }
 </style>
