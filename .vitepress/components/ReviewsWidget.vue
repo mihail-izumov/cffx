@@ -243,9 +243,9 @@ const goToReviews = (branch) => {
 
 /* ЦВЕТА ДЛЯ КАРТОЧЕК */
 .branches-card { 
-  --border-gradient: linear-gradient(135deg, #1e3a8a, #60a5fa, #bfdbfe);
-  --glow-color: rgba(96, 165, 250, 0.25);
-  --glow-hover-color: rgba(96, 165, 250, 0.6);
+  --border-gradient: linear-gradient(135deg, #3730a3, #8b5cf6, #c4b5fd);
+  --glow-color: rgba(139, 92, 246, 0.25);
+  --glow-hover-color: rgba(139, 92, 246, 0.6);
 }
 .index-card { 
   --border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946);
@@ -308,7 +308,7 @@ const goToReviews = (branch) => {
 .stat-label {
   font-size: 11px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.7); /* ИЗМЕНЕНИЕ: Белый с прозрачностью */
+  color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
