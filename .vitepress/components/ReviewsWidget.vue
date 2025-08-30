@@ -360,15 +360,15 @@ const goToReviews = (branch) => {
   font-size: 14px; 
   font-weight: 700; 
   flex-shrink: 0; 
-  transition: filter 0.3s ease;
-  filter: drop-shadow(0 2px 4px rgba(197, 249, 70, 0.2));
+  transition: all 0.3s ease; /* Добавил transition для плавности */
 }
+
+/* Свечение теперь применяется к РОДИТЕЛЬСКОМУ элементу при наведении */
 .branch-item:hover .branch-number {
-  filter: drop-shadow(0 4px 12px rgba(197, 249, 70, 0.4));
+  filter: drop-shadow(0 0 8px rgba(197, 249, 70, 0.5));
+  transform: scale(1.1); /* Добавил легкое увеличение для динамики */
 }
-.branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.branch-action { color: #C5F946; transition: transform 0.3s ease; margin-left: 12px; }
-.branch-item:hover .branch-action { transform: translateX(4px); }
+
 
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
