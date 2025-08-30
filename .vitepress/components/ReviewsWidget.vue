@@ -232,6 +232,7 @@ onMounted(() => {
 .widget-header {
   text-align: center;
   margin-bottom: 24px;
+  margin-top: 40px; /* УВЕЛИЧЕННЫЙ отступ сверху */
   padding-top: 0;
 }
 
@@ -550,21 +551,31 @@ onMounted(() => {
 
 .modal-header {
   position: relative;
-  padding: 32px 32px 24px;
+  padding: 20px 32px;
   border-bottom: 2px solid var(--vp-c-border);
   flex-shrink: 0;
   background: linear-gradient(145deg, var(--vp-c-bg-soft), var(--vp-c-bg));
+  /* ИСПРАВЛЕННОЕ выравнивание заголовка */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 80px;
+}
+
+.modal-title-block {
+  flex: 1;
+  margin-right: 60px; /* Отступ от кнопки закрытия */
 }
 
 .close-button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  position: relative; /* ИЗМЕНЕНО с absolute на relative */
+  top: auto;
+  right: auto;
   background: var(--vp-c-bg-mute);
   border: 2px solid var(--vp-c-border);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -695,6 +706,7 @@ onMounted(() => {
 @media (min-width: 1200px) {
   .widget-header {
     margin-bottom: 32px;
+    margin-top: 50px; /* Еще больший отступ на десктопе */
   }
   
   .widget-header h2 {
@@ -717,10 +729,12 @@ onMounted(() => {
 @media (max-width: 768px) {
   .widget-header {
     margin-bottom: 20px;
+    margin-top: 30px; /* Увеличенный отступ на мобильных */
   }
   
   .widget-header h2 {
     font-size: 22px;
+    line-height: 1.3;
   }
   
   .subtitle {
@@ -735,35 +749,41 @@ onMounted(() => {
     font-size: 20px;
   }
   
-  /* КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: Карточки статистики вертикально на мобильном */
+  /* КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: Мобильные карточки как в играх */
   .card-stats {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 20px;
   }
   
   .stat-card {
-    padding: 20px;
+    padding: 24px 20px;
     flex-direction: row;
     text-align: left;
+    align-items: center;
+    min-height: 80px; /* Фиксированная высота */
   }
   
   .stat-icon {
-    font-size: 32px;
+    font-size: 48px; /* Увеличенные эмодзи */
     margin-bottom: 0;
-    margin-right: 16px;
+    margin-right: 20px;
+    flex-shrink: 0;
   }
   
   .stat-content {
     text-align: left;
     align-items: flex-start;
+    flex: 1;
   }
   
   .stat-value {
-    font-size: 24px;
+    font-size: 32px; /* Увеличенные числа */
+    margin-bottom: 4px;
   }
   
   .stat-label {
     text-align: left;
+    font-size: 14px; /* Увеличенный текст */
   }
   
   .main-action-button {
@@ -772,6 +792,21 @@ onMounted(() => {
   
   .action-text {
     font-size: 16px;
+  }
+  
+  /* ИСПРАВЛЕННОЕ модальное окно */
+  .modal-header {
+    padding: 16px 20px;
+    min-height: 70px;
+  }
+  
+  .modal-title-block {
+    margin-right: 50px;
+  }
+  
+  .close-button {
+    width: 40px;
+    height: 40px;
   }
 }
 
@@ -796,21 +831,25 @@ onMounted(() => {
   }
   
   .card-stats {
-    gap: 12px;
+    gap: 16px;
   }
   
   .stat-card {
-    padding: 16px;
-    border-radius: 16px;
+    padding: 28px 24px;
+    min-height: 90px;
   }
   
   .stat-icon {
-    font-size: 28px;
-    margin-right: 12px;
+    font-size: 52px; /* Еще больше на маленьких экранах */
+    margin-right: 24px;
   }
   
   .stat-value {
-    font-size: 20px;
+    font-size: 36px;
+  }
+  
+  .stat-label {
+    font-size: 15px;
   }
   
   .main-action-button {
@@ -834,19 +873,8 @@ onMounted(() => {
     max-height: 95vh;
   }
   
-  .modal-header {
-    padding: 20px;
-  }
-  
   .modal-cafe-name {
     font-size: 20px;
-  }
-  
-  .close-button {
-    width: 36px;
-    height: 36px;
-    top: 16px;
-    right: 16px;
   }
   
   .modal-subtitle {
@@ -881,6 +909,7 @@ onMounted(() => {
 @media (max-width: 360px) {
   .widget-header {
     margin-bottom: 16px;
+    margin-top: 20px;
   }
   
   .widget-header h2 {
@@ -892,11 +921,21 @@ onMounted(() => {
   }
   
   .card-stats {
-    gap: 10px;
+    gap: 12px;
   }
   
   .stat-card {
-    padding: 12px;
+    padding: 20px 16px;
+    min-height: 80px;
+  }
+  
+  .stat-icon {
+    font-size: 44px;
+    margin-right: 16px;
+  }
+  
+  .stat-value {
+    font-size: 28px;
   }
   
   .main-action-button {
