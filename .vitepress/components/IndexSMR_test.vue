@@ -34,7 +34,11 @@
           <td class="cell-center index-column">{{ coffee.index }}</td>
           <td class="cell-left nowrap">
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
-            <a v-if="coffee.name === 'Корж'" href="/radar/index-smr/test?open=korzh" class="korzh-link">{{ coffee.name }}</a>
+            <span 
+              v-if="coffee.name === 'Корж'" 
+              @click.stop="openReviewsModal(coffee.name)"
+              class="korzh-clickable"
+            >{{ coffee.name }}</span>
             <span v-else>{{ coffee.name }}</span>
             <span v-if="getDessertEmoji(coffee.name)" class="dessert-emoji">
               {{ getDessertEmoji(coffee.name) }}
@@ -98,11 +102,48 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Модальное окно с отзывами -->
+  <Teleport to="body">
+    <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
+      <div class="reviews-modal-container" @click.stop>
+        <button @click="closeReviewsModal" class="reviews-close-btn">×</button>
+        <ReviewsWidget />
+      </div>
+    </div>
+  </Teleport>
 </template>
 
 <script>
+import ReviewsWidget from './ReviewsWidget.vue'
+import { ref } from 'vue'
+
 export default {
   name: 'IndexSMR',
+  components: {
+    ReviewsWidget
+  },
+  setup() {
+    const showReviewsModal = ref(false)
+    const selectedCoffeeShop = ref(null)
+
+    const openReviewsModal = (shopName) => {
+      selectedCoffeeShop.value = shopName
+      showReviewsModal.value = true
+    }
+
+    const closeReviewsModal = () => {
+      showReviewsModal.value = false
+      selectedCoffeeShop.value = null
+    }
+
+    return {
+      showReviewsModal,
+      selectedCoffeeShop,
+      openReviewsModal,
+      closeReviewsModal
+    }
+  },
   data() {
     return {
       activeRowIndex: null,
@@ -394,25 +435,74 @@ export default {
 .icon-red { color: #dc2626; font-weight: bold; }
 .icon-green { color: #22c55e; font-weight: bold; }
 
-/* Стили для ссылки "Корж" */
-.korzh-link {
+/* Стили для кликабельного "Корж" */
+.korzh-clickable {
   color: var(--vp-c-brand-1, #646cff);
   text-decoration: underline;
   text-decoration-style: dashed;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
   font-weight: 600;
+  cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.korzh-link:hover {
+.korzh-clickable:hover {
   color: var(--vp-c-brand-2, #4f46e5);
   text-decoration-style: solid;
   text-decoration-thickness: 2px;
 }
 
-.korzh-link:visited {
-  color: var(--vp-c-brand-1, #646cff);
+/* Стили для модального окна */
+.reviews-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.reviews-modal-container {
+  background: var(--vp-c-bg);
+  border-radius: 20px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+}
+
+.reviews-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: var(--vp-c-bg-mute);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--vp-c-text-2);
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.reviews-close-btn:hover {
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+  transform: rotate(90deg);
 }
 
 .badge {
@@ -476,5 +566,16 @@ a.badge-calculator:hover {
   margin-left: 6px;
   vertical-align: middle;
   font-size: 1.1em;
+}
+
+@media (max-width: 640px) {
+  .reviews-modal-backdrop { 
+    padding: 0; 
+  }
+  .reviews-modal-container {
+    border-radius: 0;
+    max-height: 100vh;
+    height: 100vh;
+  }
 }
 </style>
