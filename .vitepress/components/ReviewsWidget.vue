@@ -1,7 +1,6 @@
 <script setup>
 import { ref, defineEmits } from 'vue'
 
-// --- ДАННЫЕ КОМПОНЕНТА ---
 const establishment = {
   name: 'Корж',
   totalReviews: '4,520',
@@ -27,16 +26,6 @@ const goToReviews = (branch) => {
   const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
   window.open(url, '_blank')
 }
-
-// --- ЛОГИКА ДЛЯ ЭФФЕКТА СВЕЧЕНИЯ ---
-const handleMouseMove = (event) => {
-  const card = event.currentTarget
-  const { left, top } = card.getBoundingClientRect()
-  const x = event.clientX - left
-  const y = event.clientY - top
-  card.style.setProperty('--mouse-x', `${x}px`)
-  card.style.setProperty('--mouse-y', `${y}px`)
-}
 </script>
 
 <template>
@@ -61,7 +50,7 @@ const handleMouseMove = (event) => {
         </div>
         
         <div class="stats-grid">
-          <div class="stat-card branches-card" @mousemove="handleMouseMove">
+          <div class="stat-card branches-card">
             <div class="stat-content">
               <div class="stat-icon">☕</div>
               <div class="stat-value">{{ establishment.branches.length }}</div>
@@ -69,7 +58,7 @@ const handleMouseMove = (event) => {
             </div>
           </div>
           
-          <div class="stat-card index-card" @mousemove="handleMouseMove">
+          <div class="stat-card index-card">
             <div class="stat-content">
               <div class="stat-icon">⚡</div>
               <div class="stat-value">{{ establishment.index }}</div>
@@ -77,7 +66,7 @@ const handleMouseMove = (event) => {
             </div>
           </div>
           
-          <div class="stat-card reviews-card" @mousemove="handleMouseMove">
+          <div class="stat-card reviews-card">
             <div class="stat-content">
               <div class="stat-icon">🏆</div>
               <div class="stat-value">{{ establishment.totalReviews }}</div>
@@ -228,6 +217,7 @@ const handleMouseMove = (event) => {
   border-radius: 22px;
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
+  background: var(--vp-c-bg-soft);
 }
 .stat-card:hover {
   transform: translateY(-8px);
@@ -244,31 +234,11 @@ const handleMouseMove = (event) => {
      linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  transition: all 0.3s ease;
+  transition: filter 0.3s ease;
   z-index: 3;
 }
 .stat-card:hover::before {
-  transform: scale(1.02);
-  filter: brightness(1.3);
-}
-.stat-card::after { /* Свечение от курсора */
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    circle at var(--mouse-x) var(--mouse-y),
-    var(--glow-color) 0%,
-    transparent 40%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease-out;
-  z-index: 1;
-}
-.stat-card:hover::after {
-  opacity: 0.5;
+  filter: brightness(1.5);
 }
 
 .branches-card { 
@@ -284,7 +254,9 @@ const handleMouseMove = (event) => {
   --glow-color: #FFD700;
 }
 .stat-content {
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%), var(--vp-c-bg-soft);
+  background: radial-gradient(circle at 50% -20%, var(--glow-color) 0%, transparent 50%);
+  background-size: 100% 200%;
+  background-position: 50% 100%;
   border-radius: 20px;
   padding: 20px;
   display: flex;
@@ -294,21 +266,25 @@ const handleMouseMove = (event) => {
   height: 100%;
   text-align: center;
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
-  transition: box-shadow 0.3s ease;
+  transition: all 0.4s ease;
   position: relative;
   z-index: 2;
 }
 .stat-card:hover .stat-content {
+  background-position: 50% 50%;
   box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+}
+
+.stat-icon, .stat-value, .stat-label {
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .stat-icon {
   font-size: 28px;
   opacity: 0.8;
   height: 32px;
-  transition: transform 0.3s ease;
 }
 .stat-card:hover .stat-icon {
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 .stat-value {
   font-family: 'Inter', sans-serif;
@@ -319,12 +295,18 @@ const handleMouseMove = (event) => {
   margin: 12px 0;
   text-shadow: 0 0 18px rgba(255, 255, 255, 0.3);
 }
+.stat-card:hover .stat-value {
+  transform: scale(1.1);
+}
 .stat-label {
   font-size: 11px;
   font-weight: 500;
   color: var(--vp-c-text-2);
   text-transform: uppercase;
   letter-spacing: 0.1em;
+}
+.stat-card:hover .stat-label {
+  transform: scale(1.05);
 }
 
 /* КНОПКА CTA */
