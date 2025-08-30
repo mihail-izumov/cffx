@@ -234,9 +234,9 @@ const handleMouseMove = (event) => {
   position: relative;
   padding: 2px;
   border-radius: 22px;
-  background: transparent;
+  background: var(--vp-c-bg-soft);
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  overflow: hidden; /* Важно! */
+  overflow: hidden;
 }
 .stat-card:hover {
   transform: translateY(-8px);
@@ -254,7 +254,7 @@ const handleMouseMove = (event) => {
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   transition: all 0.3s ease;
-  z-index: 1;
+  z-index: 2;
 }
 .stat-card:hover::before {
   transform: scale(1.02);
@@ -272,14 +272,14 @@ const handleMouseMove = (event) => {
   background: radial-gradient(
     circle at var(--mouse-x) var(--mouse-y),
     var(--glow-color) 0%,
-    transparent 40%
+    transparent 25%
   );
   opacity: 0;
   transition: opacity 0.4s ease-out;
-  z-index: 0;
+  z-index: 1;
 }
 .stat-card:hover::after {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .branches-card { 
@@ -295,7 +295,6 @@ const handleMouseMove = (event) => {
   --glow-color: #FFD700;
 }
 .stat-content {
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%), var(--vp-c-bg-soft);
   border-radius: 20px;
   padding: 20px;
   display: flex;
@@ -304,13 +303,9 @@ const handleMouseMove = (event) => {
   justify-content: space-between;
   height: 100%;
   text-align: center;
-  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
   transition: box-shadow 0.3s ease;
   position: relative;
-  z-index: 2;
-}
-.stat-card:hover .stat-content {
-  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+  z-index: 3;
 }
 .stat-icon {
   font-size: 28px;
