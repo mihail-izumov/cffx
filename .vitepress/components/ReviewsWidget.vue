@@ -17,19 +17,15 @@ const establishment = {
   status: 'Лидер 👑',
   index: 98,
 }
-
 const showBranchList = ref(false)
 const emit = defineEmits(['close'])
-
 const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
-
 const goToReviews = (branch) => {
   const service = getRandomService()
   const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
   window.open(url, '_blank')
 }
 </script>
-
 <template>
   <div class="reviews-widget-content">
     <!-- Первый экран -->
@@ -45,7 +41,6 @@ const goToReviews = (branch) => {
           </svg>
         </button>
       </div>
-
       <div class="main-card">
         <div class="establishment-header">
           <h3 class="cafe-name">{{ establishment.name }}</h3>
@@ -86,7 +81,6 @@ const goToReviews = (branch) => {
         </button>
       </div>
     </div>
-
     <!-- Второй экран -->
     <div v-else>
       <div class="branches-header">
@@ -116,13 +110,11 @@ const goToReviews = (branch) => {
     </div>
   </div>
 </template>
-
 <style scoped>
 /* ОБЩИЕ СТИЛИ КОНТЕЙНЕРА */
 .reviews-widget-content {
   padding: 32px;
 }
-
 /* ЗАГОЛОВОК ПЕРВОГО ЭКРАНА */
 .widget-header {
   display: flex;
@@ -142,7 +134,6 @@ const goToReviews = (branch) => {
   font-size: 15px;
   color: var(--vp-c-text-2);
 }
-
 /* ЗАГОЛОВОК СПИСКА ФИЛИАЛОВ (ВТОРОЙ ЭКРАН) */
 .branches-header {
   display: flex;
@@ -159,7 +150,6 @@ const goToReviews = (branch) => {
   font-weight: 700;
   text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
 }
-
 /* СТИЛЬ ДЛЯ ВНУТРЕННЕЙ КНОПКИ ЗАКРЫТИЯ */
 .internal-close-btn {
   background: var(--vp-c-bg-mute);
@@ -181,14 +171,12 @@ const goToReviews = (branch) => {
   color: white;
   transform: rotate(90deg);
 }
-
 /* КАРТОЧКА НА ПЕРВОМ ЭКРАНЕ */
 .main-card {
   background: var(--vp-c-bg-soft);
   border-radius: 20px;
   padding: 24px;
 }
-
 .establishment-header {
   display: flex;
   justify-content: space-between;
@@ -214,8 +202,7 @@ const goToReviews = (branch) => {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-
-/* СТАТИСТИЧЕСКИЕ КАРТОЧКИ В СТИЛЕ ASTON MARTIN / TESLA */
+/* СТАТИСТИЧЕСКИЕ КАРТОЧКИ С СУПЕР-ЭФФЕКТАМИ */
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -223,10 +210,11 @@ const goToReviews = (branch) => {
 }
 .stat-card {
   position: relative;
-  padding: 2px;
   border-radius: 22px;
+  padding: 2px;
   background: transparent;
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
 }
 .stat-card:hover {
   transform: translateY(-8px);
@@ -244,7 +232,7 @@ const goToReviews = (branch) => {
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   transition: all 0.3s ease;
-  z-index: 1;
+  z-index: 0;
 }
 .stat-card:hover::before {
   transform: scale(1.02);
@@ -255,7 +243,8 @@ const goToReviews = (branch) => {
 .reviews-card { --gradient-border: linear-gradient(135deg, #FFD700, #ffed4e); }
 
 .stat-content {
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%), var(--vp-c-bg-soft);
+  position: relative;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%), var(--vp-c-bg-mute);
   border-radius: 20px;
   padding: 20px;
   display: flex;
@@ -275,6 +264,7 @@ const goToReviews = (branch) => {
   opacity: 0.8;
   height: 32px;
   transition: transform 0.3s ease;
+  z-index: 1;
 }
 .stat-card:hover .stat-icon {
   transform: scale(1.1);
@@ -287,6 +277,7 @@ const goToReviews = (branch) => {
   color: #fff;
   margin: 12px 0;
   text-shadow: 0 0 18px rgba(255, 255, 255, 0.3);
+  z-index: 1;
 }
 .stat-label {
   font-size: 11px;
@@ -294,8 +285,8 @@ const goToReviews = (branch) => {
   color: var(--vp-c-text-2);
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  z-index: 1;
 }
-
 /* ОСНОВНАЯ КНОПКА CTA */
 .review-button { 
   width: 100%; 
@@ -319,7 +310,6 @@ const goToReviews = (branch) => {
 .button-text { color: #001a1a; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 .button-icon { color: #001a1a; transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
-
 /* СПИСОК ФИЛИАЛОВ */
 .branches-content { flex-grow: 1; }
 .branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
@@ -331,7 +321,6 @@ const goToReviews = (branch) => {
 .branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .branch-action { color: #00d4aa; transition: transform 0.3s ease; margin-left: 12px; }
 .branch-item:hover .branch-action { transform: translateX(4px); }
-
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 24px; }
