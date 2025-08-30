@@ -429,7 +429,7 @@ export default {
 /* Стили для кликабельного "Корж" */
 /* Стили для кликабельного "Корж" */
 .coffee-name-clickable {
-  color: var(--vp-c-brand-1, #646cff); /* синий цвет ссылки по умолчанию */
+  color: var(--vp-c-brand-1, #4f46e5); /* синий цвет ссылки по умолчанию */
   text-decoration: underline;
   text-decoration-style: solid;
   text-decoration-thickness: 1px;
@@ -440,7 +440,7 @@ export default {
 }
 
 .coffee-name-clickable:hover {
-  color: var(--vp-c-brand-2, #4f46e5); /* более темный синий при наведении */
+  color: var(--vp-c-brand-2, #646cff); /* более темный синий при наведении */
   text-decoration-thickness: 2px; /* более толстое сплошное подчеркивание */
 }
 
