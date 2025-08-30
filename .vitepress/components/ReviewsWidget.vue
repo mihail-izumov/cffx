@@ -55,26 +55,20 @@ const goToReviews = (branch) => {
         <div class="stats-grid">
           <div class="stat-card branches-card">
             <div class="stat-icon">☕</div>
-            <div class="stat-content">
-              <div class="stat-value">{{ establishment.branches.length }}</div>
-              <div class="stat-label">Точки</div>
-            </div>
+            <div class="stat-value">{{ establishment.branches.length }}</div>
+            <div class="stat-label">Точки</div>
           </div>
           
           <div class="stat-card index-card">
             <div class="stat-icon">⚡</div>
-            <div class="stat-content">
-              <div class="stat-value">{{ establishment.index }}</div>
-              <div class="stat-label">Индекс роста</div>
-            </div>
+            <div class="stat-value">{{ establishment.index }}</div>
+            <div class="stat-label">Индекс роста</div>
           </div>
           
           <div class="stat-card reviews-card">
             <div class="stat-icon">🏆</div>
-            <div class="stat-content">
-              <div class="stat-value">{{ establishment.totalReviews }}</div>
-              <div class="stat-label">Отзывы</div>
-            </div>
+            <div class="stat-value">{{ establishment.totalReviews }}</div>
+            <div class="stat-label">Отзывы</div>
           </div>
         </div>
         
@@ -223,61 +217,40 @@ const goToReviews = (branch) => {
 }
 
 .stat-card {
-  position: relative;
-  border-radius: 22px;
-  padding: 2px;
-  background: transparent;
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.stat-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 22px;
-  padding: 2px;
-  background: var(--gradient-border);
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  transition: all 0.3s ease;
-}
-
-.stat-card:hover::before {
-  transform: scale(1.02);
-  filter: brightness(1.2);
-}
-
-.branches-card { --gradient-border: linear-gradient(135deg, #00A86B, #00d4aa); }
-.index-card { --gradient-border: linear-gradient(135deg, #00FF88, #00d4aa); }
-.reviews-card { --gradient-border: linear-gradient(135deg, #FFD700, #ffed4e); }
-
-.stat-content {
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%), var(--vp-c-bg-soft);
+  background: var(--vp-c-bg-mute);
   border-radius: 20px;
   padding: 20px;
+  border: 2px solid;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.branches-card { border-color: #00A86B; }
+.index-card { border-color: #00FF88; }
+.reviews-card { border-color: #FFD700; }
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px -10px rgba(0,0,0,0.4);
 }
 
 .stat-icon {
-  font-size: 24px;
-  opacity: 0.7;
+  font-size: 28px;
+  opacity: 0.8;
+  height: 32px;
 }
 
 .stat-value {
   font-family: 'Inter', sans-serif;
-  font-size: 3.5rem;
+  font-size: 3.2rem;
   font-weight: 500;
   line-height: 1;
-  margin: 12px 0;
   color: #fff;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  margin: 12px 0;
 }
 
 .stat-label {
@@ -286,7 +259,6 @@ const goToReviews = (branch) => {
   color: var(--vp-c-text-2);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  opacity: 0.8;
 }
 
 /* ОСНОВНАЯ КНОПКА CTA */
@@ -328,25 +300,21 @@ const goToReviews = (branch) => {
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 24px; }
+  .main-card { padding: 16px; }
   .stats-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
   .stat-card {
-    padding: 1px;
-    border-radius: 18px;
-  }
-  .stat-content {
-    padding: 12px;
-    flex-direction: column;
-    border-radius: 16px;
-    min-height: 120px;
+    padding: 16px;
+    min-height: auto;
   }
   .stat-icon {
     font-size: 24px;
+    height: 28px;
   }
   .stat-value {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     margin: 8px 0;
   }
   .stat-label {
