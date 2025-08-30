@@ -106,7 +106,12 @@
   <Teleport to="body">
     <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
       <div class="reviews-modal-container" @click.stop>
-        <button @click="closeReviewsModal" class="reviews-close-btn">×</button>
+        <button @click="closeReviewsModal" class="reviews-close-btn" aria-label="Закрыть окно">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18"/>
+            <path d="M6 6L18 18"/>
+          </svg>
+        </button>
         <div class="reviews-widget-wrapper">
           <ReviewsWidget />
         </div>
@@ -502,27 +507,25 @@ export default {
 
 .reviews-close-btn {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 24px; /* Корректировка отступа */
+  right: 24px; /* Корректировка отступа */
   background: var(--vp-c-bg-mute);
-  border: none;
+  border: 2px solid var(--vp-c-border);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
   cursor: pointer;
   color: var(--vp-c-text-2);
   transition: all 0.3s ease;
   z-index: 10;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-
 .reviews-close-btn:hover {
-  background: var(--vp-c-brand-soft);
-  color: var(--vp-c-brand-1);
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-color: #ef4444;
+  color: white;
   transform: rotate(90deg);
 }
 
