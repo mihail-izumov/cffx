@@ -34,7 +34,8 @@
           <td class="cell-center index-column">{{ coffee.index }}</td>
           <td class="cell-left nowrap">
             <span :class="iconClass(coffee.icon)">{{ coffee.icon }}</span>
-            {{ coffee.name }}
+            <a v-if="coffee.name === 'Корж'" href="/radar/index-smr/test?open=korzh" class="korzh-link">{{ coffee.name }}</a>
+            <span v-else>{{ coffee.name }}</span>
             <span v-if="getDessertEmoji(coffee.name)" class="dessert-emoji">
               {{ getDessertEmoji(coffee.name) }}
             </span>
@@ -98,6 +99,7 @@
     </table>
   </div>
 </template>
+
 <script>
 export default {
   name: 'IndexSMR',
@@ -290,6 +292,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .index-smr-table-container {
   width: 100%;
@@ -390,6 +393,28 @@ export default {
 .icon-yellow { color: #fbbf24; font-weight: bold; }
 .icon-red { color: #dc2626; font-weight: bold; }
 .icon-green { color: #22c55e; font-weight: bold; }
+
+/* Стили для ссылки "Корж" */
+.korzh-link {
+  color: var(--vp-c-brand-1, #646cff);
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.korzh-link:hover {
+  color: var(--vp-c-brand-2, #4f46e5);
+  text-decoration-style: solid;
+  text-decoration-thickness: 2px;
+}
+
+.korzh-link:visited {
+  color: var(--vp-c-brand-1, #646cff);
+}
+
 .badge {
   display: inline-block;
   border-radius: 6px;
@@ -425,7 +450,6 @@ export default {
 .param-mature { background: rgba(156, 163, 175, 0.15); color: rgba(156, 163, 175, 1); border-color: rgba(156, 163, 175, 0.25); }
 .param-startup { background: rgba(168, 85, 247, 0.1); color: rgba(192, 132, 252, 0.9); border-color: rgba(168, 85, 247, 0.2); }
 .param-default { background: rgba(107, 114, 128, 0.1); color: rgba(107, 114, 128, 0.9); border-color: rgba(107, 114, 128, 0.2); }
-
 /* Новые стили для кнопки (v3) */
 a.badge-calculator {
   margin-left: 6px;
@@ -442,14 +466,12 @@ a.badge-calculator {
   box-shadow: none;
   text-shadow: none;
 }
-
 a.badge-calculator:hover {
   background: #3c3c3c;
   border-color: #777;
   color: #fff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
-
 .dessert-emoji {
   margin-left: 6px;
   vertical-align: middle;
