@@ -112,16 +112,17 @@ const goToReviews = (branch) => {
 </template>
 
 <style scoped>
-/* ОБЩИЙ КОНТЕЙНЕР ДЛЯ ОТСТУПОВ */
+/* ОБЩИЙ КОНТЕЙНЕР С СИММЕТРИЧНЫМИ ОТСТУПАМИ */
 .reviews-widget-content {
-  /* УВЕЛИЧЕННЫЕ ОТСТУПЫ СВЕРХУ И ПО БОКАМ + ОТСТУП СПРАВА ДЛЯ КРЕСТИКА */
-  padding: 32px 64px 32px 32px; 
+  padding: 32px;
 }
 
 /* ЗАГОЛОВОК СЛЕВА */
 .widget-header {
   text-align: left;
   margin-bottom: 24px;
+  /* ДОБАВЛЯЕМ ОТСТУП СПРАВА, ЧТОБЫ НЕ НАЕЗЖАТЬ НА КРЕСТИК */
+  padding-right: 50px; 
 }
 .header-title {
   margin: 0 0 8px 0;
@@ -135,7 +136,7 @@ const goToReviews = (branch) => {
   font-size: 15px;
 }
 
-/* КАРТОЧКА С ОТСТУПАМИ И ЭФФЕКТАМИ */
+/* КАРТОЧКА */
 .main-card {
   background: linear-gradient(145deg, var(--vp-c-bg-soft), var(--vp-c-bg));
   border: 2px solid var(--vp-c-border);
@@ -191,7 +192,7 @@ const goToReviews = (branch) => {
   letter-spacing: 0.5px;
 }
 
-/* СТАТИСТИЧЕСКИЕ КАРТОЧКИ */
+/* СТАТИСТИЧЕСКИЕ КАРТОЧКИ (ВСЕ ЭФФЕКТЫ НА МЕСТЕ) */
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -314,6 +315,8 @@ const goToReviews = (branch) => {
   padding-bottom: 20px;
   border-bottom: 2px solid var(--vp-c-border);
   margin-bottom: 20px;
+  /* ОТСТУП ДЛЯ КРЕСТИКА */
+  padding-right: 50px;
 }
 .branches-title {
   margin: 0;
@@ -347,7 +350,6 @@ const goToReviews = (branch) => {
 .branch-item:hover {
   background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), var(--vp-c-bg-soft));
   border-color: #00d4aa;
-  transform: translateX(0); /* УБИРАЕМ СДВИГ ПРИ НАВЕДЕНИИ */
   box-shadow: 0 8px 20px rgba(0, 212, 170, 0.2);
 }
 .branch-info {
@@ -383,7 +385,8 @@ const goToReviews = (branch) => {
 
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
-  .reviews-widget-content { padding: 24px 48px 24px 24px; }
+  .reviews-widget-content { padding: 24px; }
+  .widget-header, .branches-header { padding-right: 40px; }
   .main-card { margin: 0; }
   .header-title { font-size: 22px; }
   .stats-grid { grid-template-columns: 1fr; gap: 12px; }
@@ -397,7 +400,8 @@ const goToReviews = (branch) => {
 }
 
 @media (max-width: 480px) {
-  .reviews-widget-content { padding: 20px 40px 20px 20px; }
+  .reviews-widget-content { padding: 20px; }
+  .widget-header, .branches-header { padding-right: 30px; }
   .main-card { padding: 16px; }
   .cafe-name { font-size: 20px; }
   .status-badge { padding: 4px 12px; font-size: 10px; }
