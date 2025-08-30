@@ -1,7 +1,6 @@
 <script setup>
 import { ref, defineEmits } from 'vue'
 
-// Данные заведения (предполагаем, что они могут приходить как props в будущем)
 const establishment = {
   name: 'Корж',
   totalReviews: '4,520',
@@ -19,27 +18,24 @@ const establishment = {
   index: 98,
 }
 
-// Внутреннее состояние для переключения экранов
 const showBranchList = ref(false)
 
-// A/B тестирование для выбора сервиса
 const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
 
 const emit = defineEmits(['close'])
 
-// Переход к отзыву и закрытие модального окна
 const goToReviews = (branch) => {
   const service = getRandomService()
   const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
   window.open(url, '_blank')
-  emit('close') // Отправляем событие закрытия в родительский компонент
+  emit('close')
 }
 </script>
 
 <template>
-  <div class="reviews-widget-content">
+  <div class="reviews-widget-container">
     <!-- Первый экран: главная информация -->
-    <div v-if="!showBranchList">
+    <div v-if="!showBranchList" class="screen-main">
       <div class="widget-header">
         <h2 class="header-title">Сделайте Индекс Роста еще точнее</h2>
         <p class="header-subtitle">Выберите кофейню и оставьте честный отзыв</p>
@@ -81,12 +77,12 @@ const goToReviews = (branch) => {
     </div>
 
     <!-- Второй экран: список филиалов -->
-    <div v-else>
+    <div v-else class="screen-branches">
        <div class="branches-header">
           <h2 class="branches-title">{{ establishment.name }}</h2>
        </div>
         <div class="branches-content">
-          <p class="branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
+          <p class="branches-subtitle">Выберите филиал для оставления отзыва:</p>
           
           <div class="branches-list">
             <button
@@ -106,6 +102,10 @@ const goToReviews = (branch) => {
               </div>
             </button>
           </div>
+          
+          <div class="branches-footer">
+            <p class="redirect-info">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
+          </div>
         </div>
     </div>
   </div>
@@ -113,13 +113,13 @@ const goToReviews = (branch) => {
 
 <style scoped>
 /* ОБЩИЙ КОНТЕЙНЕР ДЛЯ ОТСТУПОВ */
-.reviews-widget-content {
-  padding: 32px; /* УВЕЛИЧЕННЫЕ ОТСТУПЫ СВЕРХУ И ПО БОКАМ */
+.reviews-widget-container {
+  padding: 40px 32px 32px; /* Увеличен отступ сверху */
 }
 
-/* ЗАГОЛОВОК */
+/* ЗАГОЛОВОК СЛЕВА */
 .widget-header {
-  text-align: center;
+  text-align: left; /* ВЫРАВНИВАНИЕ СЛЕВА */
   margin-bottom: 24px;
 }
 .header-title {
@@ -135,7 +135,7 @@ const goToReviews = (branch) => {
   margin: 0;
 }
 
-/* ГЛАВНАЯ КАРТОЧКА С ОТСТУПАМИ ПО БОКАМ */
+/* ГЛАВНАЯ КАРТОЧКА С ОТСТУПАМИ */
 .main-card {
   background: var(--vp-c-bg-soft);
   border: 2px solid var(--vp-c-border);
@@ -144,10 +144,13 @@ const goToReviews = (branch) => {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
-  /* ОТСТУПЫ ДЛЯ ДЕСКТОПА */
-  margin: 0 16px;
+  margin: 0 16px; /* ОТСТУПЫ СЛЕВА И СПРАВА */
+  transition: all 0.3s ease;
 }
-
+/* ВОССТАНОВЛЕНА ОБВОДКА ВСЕГО БЛОКА */
+.main-card:hover {
+  border-color: #00d4aa;
+}
 .main-card::before {
   content: '';
   position: absolute;
@@ -156,6 +159,12 @@ const goToReviews = (branch) => {
   right: 0;
   height: 4px;
   background: linear-gradient(90deg, #00d4aa, #00ff88);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.main-card:hover::before {
+  transform: scaleX(1);
 }
 
 .establishment-header {
@@ -204,17 +213,39 @@ const goToReviews = (branch) => {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
+/* ВОССТАНОВЛЕН ЭФФЕКТ ОБЪЕМА */
 .stat-card:hover {
   transform: translateY(-8px) rotateX(5deg);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-  border-color: #00d4aa;
+}
+.stat-card::after { /* ВОССТАНОВЛЕНА ПОЛОСА СВЕРХУ */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.branches-card::after { background: linear-gradient(90deg, #00a86b, #00d4aa); }
+.index-card::after { background: linear-gradient(90deg, #00ff88, #00d4aa); }
+.reviews-card::after { background: linear-gradient(90deg, #ffd700, #ffed4e); }
+.stat-card:hover::after {
+  transform: scaleX(1);
 }
 
 .stat-icon {
   font-size: 36px;
   margin-bottom: 10px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease; /* ВОССТАНОВЛЕНА АНИМАЦИЯ ЗУМА */
 }
+.stat-card:hover .stat-icon { /* ВОССТАНОВЛЕНА АНИМАЦИЯ ЗУМА */
+  transform: scale(1.15);
+}
+
 .stat-value {
   font-size: 22px;
   font-weight: 800;
@@ -266,7 +297,7 @@ const goToReviews = (branch) => {
   transform: translateX(5px);
 }
 
-/* ЭКРАН СПИСКА ФИЛИАЛОВ */
+/* ЭКРАН ФИЛИАЛОВ */
 .branches-header {
   display: flex;
   justify-content: space-between;
@@ -286,14 +317,11 @@ const goToReviews = (branch) => {
   overflow-y: auto;
   flex-grow: 1;
 }
-/* ЗАМЕНА ТЕКСТА */
 .branches-subtitle {
   margin: 0 0 20px 0;
-  color: #00ff88;
-  font-size: 16px;
-  font-weight: 700;
-  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-  line-height: 1.4;
+  color: var(--vp-c-text-2); /* ВОССТАНОВЛЕН СТАРЫЙ ЦВЕТ */
+  font-size: 15px;
+  font-weight: 600;
 }
 .branches-list {
   padding: 0;
@@ -351,11 +379,14 @@ const goToReviews = (branch) => {
 .branch-item:hover .branch-action {
   transform: translateX(4px);
 }
+.redirect-info { /* СТИЛЬ ДЛЯ НИЖНЕЙ НАДПИСИ */
+  font-size: 13px;
+  color: var(--vp-c-text-3);
+}
 
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
-  /* ОТСТУПЫ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ */
-  .reviews-widget-content { padding: 24px; }
+  .reviews-widget-container { padding: 24px; }
   .main-card { margin: 0; }
   .header-title { font-size: 22px; }
   .stats-grid { grid-template-columns: 1fr; gap: 12px; }
@@ -366,9 +397,8 @@ const goToReviews = (branch) => {
   .review-button { padding: 20px; }
   .button-text { font-size: 16px; }
 }
-
 @media (max-width: 480px) {
-  .reviews-widget-content { padding: 20px; }
+  .reviews-widget-container { padding: 20px; }
   .cafe-name { font-size: 22px; }
   .status-badge { padding: 6px 14px; font-size: 11px; }
   .stat-icon { font-size: 32px; margin-right: 14px; }
