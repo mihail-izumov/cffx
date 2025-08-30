@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-// Данные по кофейням
 const establishments = {
   korzh: {
     name: 'Корж',
@@ -9,46 +8,14 @@ const establishments = {
     reviews: '4,520',
     status: 'Лидер 👑',
     branches: [
-      { 
-        address: 'Куйбышева, 103',
-        gisUrl: 'https://2gis.ru/samara/firm/70000001100403006',
-        yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/'
-      },
-      { 
-        address: 'Революционная, 101В, к1',
-        gisUrl: 'https://2gis.ru/samara/firm/70000001079219341',
-        yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858/'
-      },
-      { 
-        address: '9 просека 5-я малая линия, 3б',
-        gisUrl: 'https://2gis.ru/samara/firm/70000001074923618',
-        yandexUrl: 'https://yandex.ru/maps/51/samara/house/9_ya_proseka_5_ya_malaya_liniya_3b/YUkYdw5hQUAAQFtpfX52dXVgZw==/'
-      },
-      { 
-        address: 'Льва Толстого, 30Б',
-        gisUrl: 'https://2gis.ru/samara/firm/70000001052357057',
-        yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/'
-      },
-      { 
-        address: 'Самарская, 270',
-        gisUrl: 'https://2gis.ru/samara/firm/70000001043471927',
-        yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/'
-      },
-      { 
-        address: 'Дачная, 2к2',
-        gisUrl: 'https://2gis.ru/samara/firm/70000001045453045',
-        yandexUrl: 'https://yandex.ru/maps/51/samara/house/dachnaya_ulitsa_2k2/YUkYdwNhSEcOQFtpfX5xcHpkZQ==/'
-      },
-      { 
-        address: 'Ульяновская, 19',
-        gisUrl: 'https://2gis.ru/samara/firm/70000001033411071',
-        yandexUrl: 'https://yandex.ru/maps/51/samara/chain/korz/23062014558/'
-      },
-      { 
-        address: 'Ново-Садовая, 106б',
-        gisUrl: 'https://2gis.ru/samara/firm/70000001027391770',
-        yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/'
-      }
+      { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/' },
+      { address: 'Революционная, 101В, к1', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858/' },
+      { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618', yandexUrl: 'https://yandex.ru/maps/51/samara/house/9_ya_proseka_5_ya_malaya_liniya_3b/YUkYdw5hQUAAQFtpfX52dXVgZw==/' },
+      { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/' },
+      { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/' },
+      { address: 'Дачная, 2к2', gisUrl: 'https://2gis.ru/samara/firm/70000001045453045', yandexUrl: 'https://yandex.ru/maps/51/samara/house/dachnaya_ulitsa_2k2/YUkYdwNhSEcOQFtpfX5xcHpkZQ==/' },
+      { address: 'Ульяновская, 19', gisUrl: 'https://2gis.ru/samara/firm/70000001033411071', yandexUrl: 'https://yandex.ru/maps/51/samara/chain/korz/23062014558/' },
+      { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/' }
     ]
   }
 }
@@ -56,7 +23,6 @@ const establishments = {
 const selectedEstablishment = ref(establishments.korzh)
 const showModal = ref(false)
 
-// A/B тестирование
 const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
 
 function openModal() {
@@ -82,25 +48,6 @@ function goToReviews(branch) {
   window.open(url, '_blank')
   closeModal()
 }
-
-// ГЛОБАЛЬНЫЙ слушатель для открытия из таблицы
-onMounted(() => {
-  window.addEventListener('open-review-modal', (event) => {
-    const establishmentName = event.detail?.establishment
-    if (establishmentName && establishments[establishmentName]) {
-      selectedEstablishment.value = establishments[establishmentName]
-      openModal()
-    }
-  })
-  
-  // Проверка URL параметров
-  const urlParams = new URLSearchParams(window.location.search)
-  const openParam = urlParams.get('open')
-  if (openParam && establishments[openParam]) {
-    selectedEstablishment.value = establishments[openParam]
-    openModal()
-  }
-})
 </script>
 
 <template>
@@ -118,7 +65,7 @@ onMounted(() => {
       <div class="status-badge">{{ selectedEstablishment.status }}</div>
     </div>
     
-    <!-- Статистические карточки -->
+    <!-- Статистические карточки с ВОССТАНОВЛЕННЫМИ эффектами -->
     <div class="stats-grid">
       <div class="stat-card branches-card">
         <div class="stat-icon">☕</div>
@@ -156,12 +103,7 @@ onMounted(() => {
         <div class="modal-container" @click.stop>
           <div class="modal-header">
             <h2 class="modal-title">{{ selectedEstablishment.name }}</h2>
-            <button @click="closeModal" class="modal-close-btn" aria-label="Закрыть окно">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 6L6 18"/>
-                <path d="M6 6L18 18"/>
-              </svg>
-            </button>
+            <button @click="closeModal" class="modal-close-btn">×</button>
           </div>
           
           <div class="modal-content">
@@ -199,7 +141,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Заголовок - БЕЛЫЙ цвет без эмодзи */
+/* Заголовок */
 .widget-header {
   text-align: center;
   margin: 60px 0 40px 0;
@@ -207,7 +149,7 @@ onMounted(() => {
 
 .header-title {
   margin: 0 0 12px 0;
-  color: white; /* БЕЛЫЙ цвет */
+  color: white; /* БЕЛЫЙ цвет без эмодзи */
   font-size: 26px;
   font-weight: 700;
   line-height: 1.2;
@@ -219,7 +161,7 @@ onMounted(() => {
   font-size: 16px;
 }
 
-/* Главная карточка с ОТСТУПАМИ */
+/* Главная карточка с отступами */
 .main-card {
   background: linear-gradient(145deg, var(--vp-c-bg-soft), var(--vp-c-bg));
   border: 2px solid var(--vp-c-border);
@@ -271,7 +213,7 @@ onMounted(() => {
   box-shadow: 0 4px 15px rgba(0, 212, 170, 0.4);
 }
 
-/* Сетка статистики */
+/* ВОССТАНОВЛЕННЫЕ объемные статистические карточки */
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -291,14 +233,17 @@ onMounted(() => {
   position: relative;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* ВОССТАНОВЛЕНА ТЕНЬ */
+  cursor: default;
 }
 
+/* ВОССТАНОВЛЕННЫЙ эффект наведения - подъем карточки */
 .stat-card:hover {
-  transform: translateY(-8px) rotateX(5deg);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px) rotateX(5deg); /* ВОССТАНОВЛЕН 3D ЭФФЕКТ */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); /* ВОССТАНОВЛЕНА УВЕЛИЧЕННАЯ ТЕНЬ */
 }
 
+/* ВОССТАНОВЛЕННАЯ цветная полоска сверху */
 .stat-card::before {
   content: '';
   position: absolute;
@@ -307,6 +252,7 @@ onMounted(() => {
   right: 0;
   height: 4px;
   transition: transform 0.3s ease;
+  transform: scaleX(0); /* СКРЫТА ПО УМОЛЧАНИЮ */
 }
 
 .branches-card::before {
@@ -321,14 +267,53 @@ onMounted(() => {
   background: linear-gradient(90deg, #ffd700, #ffed4e);
 }
 
+/* ВОССТАНОВЛЕН эффект появления полоски при наведении */
 .stat-card:hover::before {
-  transform: scaleX(1);
+  transform: scaleX(1); /* ПОЯВЛЯЕТСЯ ПРИ НАВЕДЕНИИ */
+}
+
+/* ВОССТАНОВЛЕН shimmer эффект */
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: rotate(45deg);
+  transition: all 0.6s;
+  opacity: 0;
+}
+
+.stat-card:hover::after {
+  animation: shimmer 1.5s ease-in-out;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+    opacity: 0;
+  }
 }
 
 .stat-icon {
   font-size: 42px;
   margin-bottom: 12px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+}
+
+/* ВОССТАНОВЛЕН эффект увеличения иконки при наведении */
+.stat-card:hover .stat-icon {
+  transform: scale(1.1);
 }
 
 .stat-value {
@@ -336,6 +321,13 @@ onMounted(() => {
   font-weight: 800;
   margin-bottom: 8px;
   line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+/* ВОССТАНОВЛЕН эффект увеличения значения при наведении */
+.stat-card:hover .stat-value {
+  transform: scale(1.05);
 }
 
 .branches-card .stat-value {
@@ -356,15 +348,16 @@ onMounted(() => {
   color: var(--vp-c-text-3);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  text-align: center;
 }
 
-/* УВЕЛИЧЕННАЯ кнопка */
+/* Увеличенная кнопка */
 .review-button {
   width: 100%;
   background: linear-gradient(135deg, #00d4aa, #00ff88);
   border: none;
   border-radius: 20px;
-  padding: 28px 32px; /* УВЕЛИЧЕННЫЙ размер */
+  padding: 28px 32px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -376,6 +369,21 @@ onMounted(() => {
   box-shadow: 0 12px 32px rgba(0, 212, 170, 0.4);
 }
 
+.review-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.review-button:hover::before {
+  left: 100%;
+}
+
 .review-button:hover {
   transform: translateY(-4px);
   box-shadow: 0 16px 40px rgba(0, 212, 170, 0.5);
@@ -383,7 +391,7 @@ onMounted(() => {
 
 .button-text {
   color: #001a1a;
-  font-size: 22px; /* УВЕЛИЧЕННЫЙ текст */
+  font-size: 22px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1.5px;
@@ -427,7 +435,6 @@ onMounted(() => {
   border: 2px solid var(--vp-c-border);
 }
 
-/* ИСПРАВЛЕННЫЙ заголовок модального окна */
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -458,6 +465,7 @@ onMounted(() => {
   cursor: pointer;
   color: var(--vp-c-text-2);
   transition: all 0.3s ease;
+  font-size: 18px;
 }
 
 .modal-close-btn:hover {
@@ -550,7 +558,6 @@ onMounted(() => {
   text-align: center;
 }
 
-/* УВЕЛИЧЕННАЯ информация о перенаправлении */
 .redirect-info {
   margin: 0;
   color: #00ff88;
@@ -560,15 +567,24 @@ onMounted(() => {
   line-height: 1.4;
 }
 
-/* Анимации */
+/* Анимации модального окна */
 .modal-enter-active, .modal-leave-active {
   transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .modal-enter-from, .modal-leave-to {
   opacity: 0;
 }
+.modal-enter-active .modal-container,
+.modal-leave-active .modal-container {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.modal-enter-from .modal-container,
+.modal-leave-to .modal-container {
+  transform: scale(0.9) translateY(-20px);
+  opacity: 0;
+}
 
-/* Адаптивность */
+/* Мобильная адаптивность */
 @media (max-width: 768px) {
   .widget-header {
     margin: 40px 0 30px 0;
@@ -579,7 +595,7 @@ onMounted(() => {
     padding: 24px;
   }
   
-  /* Мобильные карточки вертикально */
+  /* Мобильные карточки становятся горизонтальными */
   .stats-grid {
     grid-template-columns: 1fr;
     gap: 16px;
@@ -609,7 +625,6 @@ onMounted(() => {
     font-size: 14px;
   }
   
-  /* ОЧЕНЬ БОЛЬШАЯ кнопка на мобильных */
   .review-button {
     padding: 32px 28px;
   }
@@ -634,7 +649,6 @@ onMounted(() => {
     font-size: 28px;
   }
   
-  /* МАКСИМАЛЬНО БОЛЬШАЯ кнопка */
   .review-button {
     padding: 36px 24px;
   }
@@ -645,14 +659,6 @@ onMounted(() => {
   
   .modal-mask {
     padding: 10px;
-  }
-  
-  .modal-header {
-    padding: 20px;
-  }
-  
-  .redirect-info {
-    font-size: 16px;
   }
 }
 </style>
