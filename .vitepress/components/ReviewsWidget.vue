@@ -129,18 +129,18 @@ const handleMouseMove = (event) => {
 /* ОБЩИЕ СТИЛИ КОНТЕЙНЕРА */
 .reviews-widget-content {
   padding: 32px;
-  max-height: calc(100vh - 80px); /* Ограничиваем высоту */
-  overflow-y: auto; /* Включаем скролл, если контент не помещается */
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
 }
 
-/* ЗАГОЛОВОК ПЕРВОГО ЭКРАНА */
-.widget-header {
+/* ЗАГОЛОВКИ */
+.widget-header, .branches-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 24px;
 }
-.header-title {
+.header-title, .branches-title {
   margin: 0;
   color: white;
   font-size: 26px;
@@ -152,25 +152,18 @@ const handleMouseMove = (event) => {
   font-size: 15px;
   color: var(--vp-c-text-2);
 }
-
-/* ЗАГОЛОВОК СПИСКА ФИЛИАЛОВ (ВТОРОЙ ЭКРАН) */
 .branches-header {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   padding-bottom: 20px;
   border-bottom: 2px solid var(--vp-c-border);
   margin-bottom: 20px;
 }
 .branches-title {
-  margin: 0;
   color: #00ff88;
-  font-size: 26px;
-  font-weight: 700;
   text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
 }
 
-/* СТИЛЬ ДЛЯ ВНУТРЕННЕЙ КНОПКИ ЗАКРЫТИЯ */
+/* КНОПКА ЗАКРЫТИЯ */
 .internal-close-btn {
   background: var(--vp-c-bg-mute);
   border: 2px solid var(--vp-c-border);
@@ -192,7 +185,7 @@ const handleMouseMove = (event) => {
   transform: rotate(90deg);
 }
 
-/* КАРТОЧКА НА ПЕРВОМ ЭКРАНЕ */
+/* ГЛАВНАЯ КАРТОЧКА */
 .main-card {
   background: var(--vp-c-bg-soft);
   border-radius: 20px;
@@ -232,16 +225,14 @@ const handleMouseMove = (event) => {
 }
 .stat-card {
   position: relative;
-  padding: 2px;
   border-radius: 22px;
-  background: var(--vp-c-bg-soft);
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
 }
 .stat-card:hover {
   transform: translateY(-8px);
 }
-.stat-card::before {
+.stat-card::before { /* Градиентная рамка */
   content: '';
   position: absolute;
   inset: 0;
@@ -254,15 +245,13 @@ const handleMouseMove = (event) => {
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   transition: all 0.3s ease;
-  z-index: 2;
+  z-index: 3;
 }
 .stat-card:hover::before {
   transform: scale(1.02);
   filter: brightness(1.3);
 }
-
-/* ЭФФЕКТ СВЕЧЕНИЯ */
-.stat-card::after {
+.stat-card::after { /* Свечение от курсора */
   content: "";
   position: absolute;
   left: 0;
@@ -272,14 +261,14 @@ const handleMouseMove = (event) => {
   background: radial-gradient(
     circle at var(--mouse-x) var(--mouse-y),
     var(--glow-color) 0%,
-    transparent 25%
+    transparent 40%
   );
   opacity: 0;
   transition: opacity 0.4s ease-out;
   z-index: 1;
 }
 .stat-card:hover::after {
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .branches-card { 
@@ -295,6 +284,7 @@ const handleMouseMove = (event) => {
   --glow-color: #FFD700;
 }
 .stat-content {
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%), var(--vp-c-bg-soft);
   border-radius: 20px;
   padding: 20px;
   display: flex;
@@ -303,9 +293,13 @@ const handleMouseMove = (event) => {
   justify-content: space-between;
   height: 100%;
   text-align: center;
+  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
   transition: box-shadow 0.3s ease;
   position: relative;
-  z-index: 3;
+  z-index: 2;
+}
+.stat-card:hover .stat-content {
+  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
 }
 .stat-icon {
   font-size: 28px;
@@ -333,7 +327,7 @@ const handleMouseMove = (event) => {
   letter-spacing: 0.1em;
 }
 
-/* ОСНОВНАЯ КНОПКА CTA */
+/* КНОПКА CTA */
 .review-button { 
   width: 100%; 
   background: linear-gradient(135deg, #00d4aa, #00ff88); 
@@ -358,120 +352,32 @@ const handleMouseMove = (event) => {
 .review-button:hover .button-icon { transform: translateX(4px); }
 
 /* СПИСОК ФИЛИАЛОВ */
-.branches-content { 
-  flex-grow: 1; 
-}
-.branches-subtitle { 
-  margin: 0 0 16px 0; 
-  font-size: 16px; 
-  color: var(--vp-c-text-2); 
-}
-.branches-list { 
-  padding: 0; 
-}
-.branch-item { 
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  width: 100%; 
-  padding: 18px; 
-  margin-bottom: 12px; 
-  background: var(--vp-c-bg-soft); 
-  border: 2px solid var(--vp-c-border); 
-  border-radius: 16px; 
-  cursor: pointer; 
-  transition: all 0.3s ease; 
-  text-align: left; 
-}
-.branch-item:hover { 
-  background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), var(--vp-c-bg-soft)); 
-  border-color: #00d4aa; 
-  box-shadow: 0 8px 20px rgba(0, 212, 170, 0.2); 
-}
-.branch-info { 
-  display: flex; 
-  align-items: center; 
-  gap: 16px; 
-  flex: 1; 
-  overflow: hidden; 
-}
-.branch-number { 
-  background: linear-gradient(135deg, #00d4aa, #00ff88); 
-  color: #001a1a; 
-  width: 32px; 
-  height: 32px; 
-  border-radius: 50%; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  font-size: 14px; 
-  font-weight: 700; 
-  flex-shrink: 0; 
-  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3); 
-}
-.branch-address { 
-  font-weight: 600; 
-  font-size: 16px; 
-  color: var(--vp-c-text-1); 
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
-}
-.branch-action { 
-  color: #00d4aa; 
-  transition: transform 0.3s ease; 
-  margin-left: 12px; 
-}
-.branch-item:hover .branch-action { 
-  transform: translateX(4px); 
-}
+.branches-content { flex-grow: 1; }
+.branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
+.branches-list { padding: 0; }
+.branch-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px; margin-bottom: 12px; background: var(--vp-c-bg-soft); border: 2px solid var(--vp-c-border); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
+.branch-item:hover { background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), var(--vp-c-bg-soft)); border-color: #00d4aa; box-shadow: 0 8px 20px rgba(0, 212, 170, 0.2); }
+.branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
+.branch-number { background: linear-gradient(135deg, #00d4aa, #00ff88); color: #001a1a; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3); }
+.branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.branch-action { color: #00d4aa; transition: transform 0.3s ease; margin-left: 12px; }
+.branch-item:hover .branch-action { transform: translateX(4px); }
 
 /* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
-  .reviews-widget-content { 
-    padding: 24px; 
-    max-height: calc(100vh - 60px);
-  }
+  .reviews-widget-content { padding: 24px; max-height: calc(100vh - 60px); }
   .main-card { padding: 16px; }
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .stat-card {
-    padding: 2px;
-    border-radius: 18px;
-  }
-  .stat-content {
-    padding: 12px;
-    border-radius: 16px;
-    min-height: auto;
-  }
-  .stat-icon {
-    font-size: 24px;
-    height: 28px;
-  }
-  .stat-value {
-    font-size: 2.8rem;
-    margin: 8px 0;
-  }
-  .stat-label {
-    font-size: 10px;
-  }
-  .review-button {
-    padding: 20px 24px;
-    margin-top: 20px;
-    border-radius: 18px;
-  }
-  .button-text {
-    font-size: 20px;
-  }
+  .stats-grid { grid-template-columns: 1fr; gap: 12px; }
+  .stat-card { padding: 2px; border-radius: 18px; }
+  .stat-content { padding: 12px; border-radius: 16px; min-height: auto; }
+  .stat-icon { font-size: 24px; height: 28px; }
+  .stat-value { font-size: 2.8rem; margin: 8px 0; }
+  .stat-label { font-size: 10px; }
+  .review-button { padding: 20px 24px; margin-top: 20px; border-radius: 18px; }
+  .button-text { font-size: 20px; }
 }
-
 @media (max-width: 480px) {
-  .reviews-widget-content { 
-    padding: 20px; 
-    max-height: calc(100vh - 40px);
-  }
+  .reviews-widget-content { padding: 20px; max-height: calc(100vh - 40px); }
   .header-title { font-size: 22px; }
   .header-subtitle { font-size: 14px; }
   .branches-title { font-size: 22px; }
