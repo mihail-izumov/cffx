@@ -31,10 +31,13 @@ const goToReviews = (branch) => {
 
 const handleChoice = (choice) => {
   activeChoice.value = choice
-  if (choice === 'ticket') {
+}
+
+const proceedAction = () => {
+  if (activeChoice.value === 'ticket') {
     emit('close')
     window.location.href = '/brew/overview'
-  } else if (choice === 'review') {
+  } else if (activeChoice.value === 'review') {
     showBranchList.value = true
   }
 }
@@ -89,13 +92,14 @@ const handleChoice = (choice) => {
         
         <!-- ПЕРЕКЛЮЧАТЕЛЬ В СТИЛЕ TESLA -->
         <div class="toggle-container">
-          <div class="toggle-background">
-            <button @click="handleChoice('ticket')" :class="['toggle-button', { 'active': activeChoice === 'ticket' }]">
-              Отправить тикет
-            </button>
-            <button @click="handleChoice('review')" :class="['toggle-button', { 'active': activeChoice === 'review' }]">
-              Оставить отзыв
-            </button>
+          <div class="toggle-background" @click="proceedAction">
+            <div class="toggle-switch" :class="{ 'right': activeChoice === 'review' }">
+              {{ activeChoice === 'ticket' ? 'Отправить тикет' : 'Оставить отзыв' }}
+            </div>
+            <div class="toggle-options">
+              <div @click.stop="handleChoice('ticket')" class="option">Отправить тикет</div>
+              <div @click.stop="handleChoice('review')" class="option">Оставить отзыв</div>
+            </div>
           </div>
         </div>
 
@@ -133,47 +137,252 @@ const handleChoice = (choice) => {
 </template>
 
 <style scoped>
-/* ... (здесь все стили до кнопок, они не меняются) */
+/* Все стили до кнопок остаются неизменными */
 
-/* ПЕРЕКЛЮЧАТЕЛЬ TESLA-STYLE */
+.reviews-widget-content {
+  padding: 32px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.widget-header, .branches-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+.header-title, .branches-title {
+  margin: 0;
+  color: white;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.header-subtitle {
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--vp-c-text-2);
+}
+.branches-header {
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--vp-c-border);
+  margin-bottom: 20px;
+}
+.branches-title {
+  color: #FFFFFF;
+}
+
+.internal-close-btn {
+  background: var(--vp-c-bg-mute);
+  border: 2px solid var(--vp-c-border);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--vp-c-text-2);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+.internal-close-btn:hover {
+  background: linear-gradient(135deg, #991b1b, #ef4444);
+  border-color: #ef4444;
+  color: white;
+  transform: rotate(90deg);
+}
+
+.main-card {
+  background: var(--vp-c-bg-soft);
+  border-radius: 20px;
+  padding: 24px;
+}
+.establishment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.cafe-name {
+  margin: 0;
+  color: #FFFFFF;
+  font-size: 24px;
+  font-weight: 600;
+}
+.status-badge {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 
+    inset 0 1px 2px rgba(255, 255, 255, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+.stat-card {
+  position: relative;
+  border-radius: 22px;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
+  background: var(--vp-c-bg-soft);
+}
+.stat-card:hover {
+  transform: translateY(-8px);
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  padding: 2px;
+  background: var(--border-gradient);
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: filter 0.4s ease;
+  z-index: 3;
+}
+.stat-card:hover::before {
+  filter: brightness(2) saturate(1.5);
+}
+
+.branches-card { 
+  --border-gradient: linear-gradient(135deg, #3730a3, #8b5cf6, #c4b5fd);
+  --glow-color: rgba(139, 92, 246, 0.25);
+  --glow-hover-color: rgba(139, 92, 246, 0.6);
+}
+.index-card { 
+  --border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946);
+  --glow-color: rgba(197, 249, 70, 0.25);
+  --glow-hover-color: rgba(197, 249, 70, 0.6);
+}
+.reviews-card { 
+  --border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d);
+  --glow-color: rgba(245, 158, 11, 0.25);
+  --glow-hover-color: rgba(245, 158, 11, 0.6);
+}
+
+.stat-content {
+  background: radial-gradient(circle at 50% 0%, var(--glow-color) 0%, transparent 70%);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  text-align: center;
+  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  z-index: 2;
+}
+.stat-card:hover .stat-content {
+  background: radial-gradient(circle at 50% 0%, var(--glow-hover-color) 0%, transparent 70%);
+  box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
+}
+.stat-icon, .stat-value, .stat-label {
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.stat-icon {
+  font-size: 28px;
+  opacity: 0.8;
+  height: 32px;
+}
+.stat-card:hover .stat-icon {
+  transform: scale(1.2);
+}
+.stat-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 3.2rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+  margin: 12px 0;
+  text-shadow: 
+    0 0 20px rgba(0, 0, 0, 0.7),
+    0 0 10px rgba(0, 0, 0, 0.7);
+}
+.stat-card:hover .stat-value {
+  transform: scale(1.15);
+  text-shadow: 
+    0 0 30px rgba(0, 0, 0, 0.8),
+    0 0 15px rgba(0, 0, 0, 0.8);
+}
+.stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.stat-card:hover .stat-label {
+  transform: scale(1.05);
+}
+
+/* НОВЫЕ СТИЛИ ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ */
 .toggle-container {
   margin-top: 24px;
-  display: flex;
-  justify-content: center;
 }
 .toggle-background {
+  position: relative;
   display: flex;
   background-color: var(--vp-c-bg-mute);
   border-radius: 16px;
   padding: 6px;
   border: 1px solid var(--vp-c-divider);
-}
-.toggle-button {
-  flex: 1;
-  padding: 12px 24px;
-  border: none;
-  background-color: transparent;
-  color: var(--vp-c-text-2);
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
 }
-.toggle-button.active {
+.toggle-switch {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  height: calc(100% - 12px);
+  width: calc(50% - 6px);
   background: linear-gradient(135deg, #a3e635, #C5F946);
   color: #1d2c00;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
   box-shadow: 0 4px 12px rgba(197, 249, 70, 0.3);
-  transform: scale(1.05);
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
-.toggle-button:not(.active):hover {
-  background-color: var(--vp-c-bg-soft);
+.toggle-switch.right {
+  left: 50%;
+}
+.toggle-options {
+  display: flex;
+  width: 100%;
+}
+.option {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--vp-c-text-2);
+  z-index: 1;
+  transition: color 0.3s ease;
 }
 
-/* ... (здесь все стили после кнопок, они не меняются) */
-
-/* СТИЛИ СПИСКА ФИЛИАЛОВ (остаются без изменений) */
 .branches-content { flex-grow: 1; }
 .branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
 .branches-list { padding: 0; }
@@ -220,20 +429,19 @@ const handleChoice = (choice) => {
 .branch-action { color: #C5F946; transition: transform 0.3s ease; margin-left: 12px; }
 .branch-item:hover .branch-action { transform: translateX(4px); }
 
-/* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
-  .reviews-widget-content { padding: 24px; max-height: calc(100vh - 60px); }
+  .reviews-widget-content { padding: 24px; }
   .main-card { padding: 16px; }
   .stats-grid { grid-template-columns: 1fr; gap: 12px; }
   .stat-card { border-radius: 18px; }
-  .stat-content { padding: 12px; border-radius: 16px; min-height: auto; }
+  .stat-content { padding: 12px; border-radius: 16px; }
   .stat-icon { font-size: 24px; height: 28px; }
   .stat-value { font-size: 2.8rem; margin: 8px 0; }
   .stat-label { font-size: 10px; }
-  .toggle-button { padding: 10px 16px; font-size: 14px; }
+  .option, .toggle-switch { font-size: 14px; padding: 10px 0; }
 }
 @media (max-width: 480px) {
-  .reviews-widget-content { padding: 20px; max-height: calc(100vh - 40px); }
+  .reviews-widget-content { padding: 20px; }
   .header-title { font-size: 22px; }
   .header-subtitle { font-size: 14px; }
   .branches-title { font-size: 22px; }
@@ -241,5 +449,7 @@ const handleChoice = (choice) => {
   .cafe-name { font-size: 20px; }
   .status-badge { padding: 4px 12px; font-size: 10px; }
   .toggle-background { flex-direction: column; gap: 6px; }
+  .toggle-switch { width: 100%; }
+  .toggle-switch.right { left: 0; top: calc(50% + 3px); }
 }
 </style>
