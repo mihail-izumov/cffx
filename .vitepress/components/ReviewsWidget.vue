@@ -379,12 +379,11 @@ const goToReviews = (branch) => {
   font-weight: 700; 
   flex-shrink: 0; 
   transition: all 0.3s ease;
+  box-shadow: none; /* Убираем все тени */
 }
 .branch-item:hover .branch-number {
-  transform: scale(1.15);
-  background: #1d2c00;
-  color: #C5F946;
-  box-shadow: 0 0 12px rgba(197, 249, 70, 0.5);
+  transform: scale(1.1); /* Увеличиваем кружок */
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4); /* Добавляем внутреннюю тень */
 }
 .branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .branch-action { color: #C5F946; transition: transform 0.3s ease; margin-left: 12px; }
