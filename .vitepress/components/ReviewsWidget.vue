@@ -358,13 +358,12 @@ const goToReviews = (branch) => {
   cursor: pointer; 
   transition: all 0.3s ease; 
   text-align: left;
-  overflow: visible; /* Разрешаем свечению выходить за рамки */
 }
 .branch-item:hover { 
   background: linear-gradient(135deg, rgba(197, 249, 70, 0.05), var(--vp-c-bg-soft)); 
   border-color: #C5F946; 
   box-shadow: 0 8px 20px rgba(197, 249, 70, 0.1);
-  transform: translateX(-4px); /* Возвращаем сдвиг влево при наведении */
+  transform: translateX(4px);
 }
 .branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
 .branch-number { 
@@ -382,8 +381,10 @@ const goToReviews = (branch) => {
   transition: all 0.3s ease;
 }
 .branch-item:hover .branch-number {
-  transform: scale(1.1);
-  box-shadow: 0 0 12px rgba(197, 249, 70, 0.6); /* Простое и надежное свечение */
+  transform: scale(1.15);
+  background: #1d2c00;
+  color: #C5F946;
+  box-shadow: 0 0 12px rgba(197, 249, 70, 0.5);
 }
 .branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .branch-action { color: #C5F946; transition: transform 0.3s ease; margin-left: 12px; }
