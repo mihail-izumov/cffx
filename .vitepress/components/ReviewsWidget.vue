@@ -20,8 +20,6 @@ const establishment = {
 const showBranchList = ref(false)
 const emit = defineEmits(['close'])
 
-const activeChoice = ref('ticket') // 'ticket' или 'review'
-
 const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
 const goToReviews = (branch) => {
   const service = getRandomService()
@@ -29,17 +27,9 @@ const goToReviews = (branch) => {
   window.open(url, '_blank')
 }
 
-const handleChoice = (choice) => {
-  activeChoice.value = choice
-}
-
-const proceedAction = () => {
-  if (activeChoice.value === 'ticket') {
-    emit('close')
-    window.location.href = '/brew/overview'
-  } else if (activeChoice.value === 'review') {
-    showBranchList.value = true
-  }
+const createTicket = () => {
+  emit('close')
+  window.location.href = '/brew/overview'
 }
 </script>
 
@@ -90,17 +80,17 @@ const proceedAction = () => {
           </div>
         </div>
         
-        <!-- ПЕРЕКЛЮЧАТЕЛЬ В СТИЛЕ TESLA -->
-        <div class="toggle-container">
-          <div class="toggle-background" @click="proceedAction">
-            <div class="toggle-switch" :class="{ 'right': activeChoice === 'review' }">
-              {{ activeChoice === 'ticket' ? 'Отправить тикет' : 'Оставить отзыв' }}
-            </div>
-            <div class="toggle-options">
-              <div @click.stop="handleChoice('ticket')" class="option">Отправить тикет</div>
-              <div @click.stop="handleChoice('review')" class="option">Оставить отзыв</div>
-            </div>
-          </div>
+        <!-- БЛОК С ДВУМЯ КНОПКАМИ -->
+        <div class="button-container">
+          <button @click="createTicket" class="action-button ticket-button">
+            Отправить тикет
+          </button>
+          <button @click="showBranchList = true" class="action-button review-button">
+            Оставить отзыв
+            <svg class="button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </button>
         </div>
 
       </div>
@@ -139,296 +129,98 @@ const proceedAction = () => {
 <style scoped>
 /* Все стили до кнопок остаются неизменными */
 
-.reviews-widget-content {
-  padding: 32px;
-  max-height: calc(100vh - 80px);
-  overflow-y: auto;
-}
+.reviews-widget-content { padding: 32px; max-height: calc(100vh - 80px); overflow-y: auto; }
+.widget-header, .branches-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+.header-title, .branches-title { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; }
+.header-subtitle { margin-top: 8px; font-size: 15px; color: var(--vp-c-text-2); }
+.branches-header { align-items: center; padding-bottom: 20px; border-bottom: 2px solid var(--vp-c-border); margin-bottom: 20px; }
+.branches-title { color: #FFFFFF; }
+.internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
+.internal-close-btn:hover { background: linear-gradient(135deg, #991b1b, #ef4444); border-color: #ef4444; color: white; transform: rotate(90deg); }
+.main-card { background: var(--vp-c-bg-soft); border-radius: 20px; padding: 24px; }
+.establishment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.cafe-name { margin: 0; color: #FFFFFF; font-size: 24px; font-weight: 600; }
+.status-badge { background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1)); color: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3); text-transform: uppercase; letter-spacing: 0.5px; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.stat-card { position: relative; border-radius: 22px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background: var(--vp-c-bg-soft); }
+.stat-card:hover { transform: translateY(-8px); }
+.stat-card::before { content: ''; position: absolute; inset: 0; border-radius: 22px; padding: 2px; background: var(--border-gradient); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: filter 0.4s ease; z-index: 3; }
+.stat-card:hover::before { filter: brightness(2) saturate(1.5); }
+.branches-card { --border-gradient: linear-gradient(135deg, #3730a3, #8b5cf6, #c4b5fd); --glow-color: rgba(139, 92, 246, 0.25); --glow-hover-color: rgba(139, 92, 246, 0.6); }
+.index-card { --border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946); --glow-color: rgba(197, 249, 70, 0.25); --glow-hover-color: rgba(197, 249, 70, 0.6); }
+.reviews-card { --border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d); --glow-color: rgba(245, 158, 11, 0.25); --glow-hover-color: rgba(245, 158, 11, 0.6); }
+.stat-content { background: radial-gradient(circle at 50% 0%, var(--glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
+.stat-card:hover .stat-content { background: radial-gradient(circle at 50% 0%, var(--glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4); }
+.stat-icon, .stat-value, .stat-label { transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.stat-icon { font-size: 28px; opacity: 0.8; height: 32px; }
+.stat-card:hover .stat-icon { transform: scale(1.2); }
+.stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin: 12px 0; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); }
+.stat-card:hover .stat-value { transform: scale(1.15); text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); }
+.stat-label { font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; letter-spacing: 0.1em; }
+.stat-card:hover .stat-label { transform: scale(1.05); }
 
-.widget-header, .branches-header {
+/* НОВЫЕ СТИЛИ ДЛЯ КНОПОК */
+.button-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 24px;
-}
-.header-title, .branches-title {
-  margin: 0;
-  color: white;
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-.header-subtitle {
-  margin-top: 8px;
-  font-size: 15px;
-  color: var(--vp-c-text-2);
-}
-.branches-header {
-  align-items: center;
-  padding-bottom: 20px;
-  border-bottom: 2px solid var(--vp-c-border);
-  margin-bottom: 20px;
-}
-.branches-title {
-  color: #FFFFFF;
-}
-
-.internal-close-btn {
-  background: var(--vp-c-bg-mute);
-  border: 2px solid var(--vp-c-border);
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--vp-c-text-2);
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-}
-.internal-close-btn:hover {
-  background: linear-gradient(135deg, #991b1b, #ef4444);
-  border-color: #ef4444;
-  color: white;
-  transform: rotate(90deg);
-}
-
-.main-card {
-  background: var(--vp-c-bg-soft);
-  border-radius: 20px;
-  padding: 24px;
-}
-.establishment-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
-.cafe-name {
-  margin: 0;
-  color: #FFFFFF;
-  font-size: 24px;
-  font-weight: 600;
-}
-.status-badge {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
-  color: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  white-space: nowrap;
-  box-shadow: 
-    inset 0 1px 2px rgba(255, 255, 255, 0.1),
-    0 2px 4px rgba(0, 0, 0, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 16px;
-}
-.stat-card {
-  position: relative;
-  border-radius: 22px;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  overflow: hidden;
-  background: var(--vp-c-bg-soft);
-}
-.stat-card:hover {
-  transform: translateY(-8px);
-}
-.stat-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 22px;
-  padding: 2px;
-  background: var(--border-gradient);
-  -webkit-mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  transition: filter 0.4s ease;
-  z-index: 3;
-}
-.stat-card:hover::before {
-  filter: brightness(2) saturate(1.5);
-}
-
-.branches-card { 
-  --border-gradient: linear-gradient(135deg, #3730a3, #8b5cf6, #c4b5fd);
-  --glow-color: rgba(139, 92, 246, 0.25);
-  --glow-hover-color: rgba(139, 92, 246, 0.6);
-}
-.index-card { 
-  --border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946);
-  --glow-color: rgba(197, 249, 70, 0.25);
-  --glow-hover-color: rgba(197, 249, 70, 0.6);
-}
-.reviews-card { 
-  --border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d);
-  --glow-color: rgba(245, 158, 11, 0.25);
-  --glow-hover-color: rgba(245, 158, 11, 0.6);
-}
-
-.stat-content {
-  background: radial-gradient(circle at 50% 0%, var(--glow-color) 0%, transparent 70%);
-  border-radius: 20px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-  text-align: center;
-  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
-  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-  position: relative;
-  z-index: 2;
-}
-.stat-card:hover .stat-content {
-  background: radial-gradient(circle at 50% 0%, var(--glow-hover-color) 0%, transparent 70%);
-  box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
-}
-.stat-icon, .stat-value, .stat-label {
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.stat-icon {
-  font-size: 28px;
-  opacity: 0.8;
-  height: 32px;
-}
-.stat-card:hover .stat-icon {
-  transform: scale(1.2);
-}
-.stat-value {
-  font-family: 'Inter', sans-serif;
-  font-size: 3.2rem;
-  font-weight: 600;
-  line-height: 1;
-  color: #fff;
-  margin: 12px 0;
-  text-shadow: 
-    0 0 20px rgba(0, 0, 0, 0.7),
-    0 0 10px rgba(0, 0, 0, 0.7);
-}
-.stat-card:hover .stat-value {
-  transform: scale(1.15);
-  text-shadow: 
-    0 0 30px rgba(0, 0, 0, 0.8),
-    0 0 15px rgba(0, 0, 0, 0.8);
-}
-.stat-label {
-  font-size: 11px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-.stat-card:hover .stat-label {
-  transform: scale(1.05);
-}
-
-/* НОВЫЕ СТИЛИ ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ */
-.toggle-container {
+  gap: 12px;
   margin-top: 24px;
 }
-.toggle-background {
-  position: relative;
-  display: flex;
-  background-color: var(--vp-c-bg-mute);
+.action-button {
+  flex: 1;
+  padding: 16px 24px;
   border-radius: 16px;
-  padding: 6px;
-  border: 1px solid var(--vp-c-divider);
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
-}
-.toggle-switch {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  height: calc(100% - 12px);
-  width: calc(50% - 6px);
-  background: linear-gradient(135deg, #a3e635, #C5F946);
-  color: #1d2c00;
-  border-radius: 12px;
+  border: none;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(197, 249, 70, 0.3);
-  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
-.toggle-switch.right {
-  left: 50%;
+.action-button:hover {
+  transform: translateY(-4px);
 }
-.toggle-options {
-  display: flex;
-  width: 100%;
-}
-.option {
-  flex: 1;
-  text-align: center;
-  padding: 12px 0;
-  font-size: 16px;
-  font-weight: 700;
+.ticket-button {
+  background-color: var(--vp-c-bg-mute); /* Чуть ярче фона */
   color: var(--vp-c-text-2);
-  z-index: 1;
-  transition: color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
+.ticket-button:hover {
+  background-color: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+.review-button {
+  background: linear-gradient(135deg, #a3e635, #C5F946);
+  color: #1d2c00;
+  box-shadow: 0 8px 24px rgba(197, 249, 70, 0.25);
+}
+.review-button:hover {
+  box-shadow: 0 14px 35px rgba(197, 249, 70, 0.35);
+}
+.button-icon {
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+.review-button:hover .button-icon {
+  transform: translateX(4px);
+}
+
+
+/* Все стили после кнопок остаются неизменными */
 
 .branches-content { flex-grow: 1; }
 .branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
 .branches-list { padding: 0; }
-.branch-item { 
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  width: 100%; 
-  padding: 18px; 
-  margin-bottom: 12px; 
-  background: var(--vp-c-bg-soft); 
-  border: 2px solid var(--vp-c-border); 
-  border-radius: 16px; 
-  cursor: pointer; 
-  transition: all 0.3s ease; 
-  text-align: left;
-}
-.branch-item:hover { 
-  background: linear-gradient(135deg, rgba(197, 249, 70, 0.05), var(--vp-c-bg-soft)); 
-  border-color: #C5F946; 
-  box-shadow: 0 8px 20px rgba(197, 249, 70, 0.1);
-  transform: translateX(4px);
-}
+.branch-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px; margin-bottom: 12px; background: var(--vp-c-bg-soft); border: 2px solid var(--vp-c-border); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
+.branch-item:hover { background: linear-gradient(135deg, rgba(197, 249, 70, 0.05), var(--vp-c-bg-soft)); border-color: #C5F946; box-shadow: 0 8px 20px rgba(197, 249, 70, 0.1); transform: translateX(4px); }
 .branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
-.branch-number { 
-  background: linear-gradient(135deg, #a3e635, #C5F946); 
-  color: #1d2c00; 
-  width: 32px; 
-  height: 32px; 
-  border-radius: 50%; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  font-size: 14px; 
-  font-weight: 700; 
-  flex-shrink: 0; 
-  transition: all 0.3s ease;
-  box-shadow: none;
-}
-.branch-item:hover .branch-number {
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(197, 249, 70, 0.5);
-}
+.branch-number { background: linear-gradient(135deg, #a3e635, #C5F946); color: #1d2c00; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; transition: all 0.3s ease; box-shadow: none; }
+.branch-item:hover .branch-number { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(197, 249, 70, 0.5); }
 .branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .branch-action { color: #C5F946; transition: transform 0.3s ease; margin-left: 12px; }
 .branch-item:hover .branch-action { transform: translateX(4px); }
-
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 24px; }
   .main-card { padding: 16px; }
@@ -438,7 +230,7 @@ const proceedAction = () => {
   .stat-icon { font-size: 24px; height: 28px; }
   .stat-value { font-size: 2.8rem; margin: 8px 0; }
   .stat-label { font-size: 10px; }
-  .option, .toggle-switch { font-size: 14px; padding: 10px 0; }
+  .button-container { flex-direction: column; }
 }
 @media (max-width: 480px) {
   .reviews-widget-content { padding: 20px; }
@@ -448,8 +240,5 @@ const proceedAction = () => {
   .branches-subtitle { font-size: 14px; }
   .cafe-name { font-size: 20px; }
   .status-badge { padding: 4px 12px; font-size: 10px; }
-  .toggle-background { flex-direction: column; gap: 6px; }
-  .toggle-switch { width: 100%; }
-  .toggle-switch.right { left: 0; top: calc(50% + 3px); }
 }
 </style>
