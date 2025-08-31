@@ -216,8 +216,9 @@ watch(showBranchList, (newValue) => {
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 24px; }
   .main-card { padding: 16px; }
-  .stats-grid { grid-template-columns: 1fr; gap: 8px; }
-  .stat-card { display: flex; flex-direction: row; align-items: center; border-radius: 16px; }
+  .stats-grid { grid-template-columns: 1fr; gap: 12px; }
+  .stat-card { display: flex; flex-direction: row; align-items: center; border-radius: 16px; transition: none; }
+  .stat-card:hover { transform: none; }
   .stat-content { flex-direction: row; justify-content: space-between; align-items: center; padding: 12px 16px; width: 100%; background: none !important; box-shadow: none !important; }
   .stat-left-group { display: flex; align-items: center; gap: 16px; }
   .stat-icon { font-size: 28px; line-height: 1; display: flex; align-items: center; }
