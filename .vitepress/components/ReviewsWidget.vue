@@ -66,31 +66,31 @@ watch(showBranchList, (newValue) => {
         <div class="stats-grid">
           <div class="stat-card branches-card">
             <div class="stat-content">
-              <div class="stat-icon">☕</div>
-              <div class="stat-text-group">
+              <div class="stat-left-group">
+                <div class="stat-icon">☕</div>
                 <div class="stat-value">{{ establishment.branches.length }}</div>
-                <div class="stat-label">Кофейни</div>
               </div>
+              <div class="stat-label">Кофейни</div>
             </div>
           </div>
           
           <div class="stat-card index-card">
             <div class="stat-content">
-              <div class="stat-icon">⚡</div>
-              <div class="stat-text-group">
+              <div class="stat-left-group">
+                <div class="stat-icon">⚡</div>
                 <div class="stat-value">{{ establishment.index }}</div>
-                <div class="stat-label">Индекс роста</div>
               </div>
+              <div class="stat-label">Индекс роста</div>
             </div>
           </div>
           
           <div class="stat-card reviews-card">
             <div class="stat-content">
-              <div class="stat-icon">🏆</div>
-              <div class="stat-text-group">
+              <div class="stat-left-group">
+                <div class="stat-icon">🏆</div>
                 <div class="stat-value">{{ establishment.totalReviews }}</div>
-                <div class="stat-label">Отзывы</div>
               </div>
+              <div class="stat-label">Отзывы</div>
             </div>
           </div>
         </div>
@@ -218,12 +218,11 @@ watch(showBranchList, (newValue) => {
   .main-card { padding: 16px; }
   .stats-grid { grid-template-columns: 1fr; gap: 8px; }
   .stat-card { display: flex; flex-direction: row; align-items: center; border-radius: 16px; }
-  .stat-content { flex-direction: row; justify-content: space-between; align-items: center; padding: 12px 16px; width: 100%; background: none; box-shadow: none; }
-  .stat-card:hover .stat-content { background: none; box-shadow: none; }
-  .stat-icon { font-size: 24px; flex-shrink: 0; }
-  .stat-text-group { display: flex; flex-direction: column; align-items: flex-end; }
-  .stat-value { font-size: 1.8rem; font-weight: 600; margin: 0; order: 1; }
-  .stat-label { font-size: 14px; font-weight: 500; text-align: right; margin: 0; color: rgba(255, 255, 255, 0.85); text-transform: none; letter-spacing: normal; order: 2; }
+  .stat-content { flex-direction: row; justify-content: space-between; align-items: center; padding: 12px 16px; width: 100%; background: none !important; box-shadow: none !important; }
+  .stat-left-group { display: flex; align-items: center; gap: 12px; }
+  .stat-icon { font-size: 28px; flex-shrink: 0; line-height: 1; }
+  .stat-value { font-size: 2rem; font-weight: 600; margin: 0; }
+  .stat-label { font-size: 18px; font-weight: 500; text-align: right; margin: 0; color: rgba(255, 255, 255, 0.85); text-transform: none; letter-spacing: normal; }
   .button-container { flex-direction: column; gap: 8px; }
 }
 @media (max-width: 480px) {
