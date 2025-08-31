@@ -80,17 +80,27 @@ const createTicket = () => {
           </div>
         </div>
         
-        <!-- БЛОК С ДВУМЯ КНОПКАМИ -->
-        <div class="button-container">
-          <button @click="createTicket" class="action-button ticket-button">
-            Отправить тикет
-          </button>
-          <button @click="showBranchList = true" class="action-button review-button">
-            Оставить отзыв
-            <svg class="button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m9 18 6-6-6-6"/>
-            </svg>
-          </button>
+        <!-- ПУЛЬТ УПРАВЛЕНИЯ -->
+        <div class="control-panel">
+          <div class="control-panel-header">
+            <span>Ваше действие</span>
+            <a href="/brew/overview" target="_blank" class="info-link" aria-label="Подробнее о тикетах">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+              </svg>
+            </a>
+          </div>
+          <div class="button-container">
+            <button @click="createTicket" class="action-button ticket-button">
+              Отправить тикет
+            </button>
+            <button @click="showBranchList = true" class="action-button review-button">
+              Оставить отзыв
+              <svg class="button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
         </div>
 
       </div>
@@ -100,9 +110,10 @@ const createTicket = () => {
     <div v-else>
       <div class="branches-header">
         <h2 class="branches-title">{{ establishment.name }}</h2>
-        <button @click="$emit('close')" class="internal-close-btn" aria-label="Закрыть окно">
+        <!-- КНОПКА "НАЗАД" -->
+        <button @click="showBranchList = false" class="internal-close-btn" aria-label="Вернуться назад">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6L6 18"/><path d="M6 6L18 18"/>
+            <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
           </svg>
         </button>
       </div>
@@ -128,7 +139,6 @@ const createTicket = () => {
 
 <style scoped>
 /* Все стили до кнопок остаются неизменными */
-
 .reviews-widget-content { padding: 32px; max-height: calc(100vh - 80px); overflow-y: auto; }
 .widget-header, .branches-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
 .header-title, .branches-title { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; }
@@ -159,57 +169,76 @@ const createTicket = () => {
 .stat-label { font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; letter-spacing: 0.1em; }
 .stat-card:hover .stat-label { transform: scale(1.05); }
 
-/* НОВЫЕ СТИЛИ ДЛЯ КНОПОК */
+/* ПУЛЬТ УПРАВЛЕНИЯ */
+.control-panel {
+  margin-top: 24px;
+}
+.control-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+}
+.info-link {
+  color: var(--vp-c-text-3);
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+.info-link:hover {
+  color: var(--vp-c-text-1);
+}
 .button-container {
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 6px;
+  background-color: var(--vp-c-bg-mute);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 20px;
+  padding: 6px;
 }
 .action-button {
   flex: 1;
-  padding: 16px 24px;
+  padding: 14px 20px;
   border-radius: 16px;
+  border: none;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  border: none;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.action-button:hover {
-  transform: translateY(-4px);
+  gap: 8px;
 }
 .ticket-button {
-  background-color: var(--vp-c-bg-mute); /* Чуть ярче фона */
+  background: transparent;
   color: var(--vp-c-text-2);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 .ticket-button:hover {
-  background-color: var(--vp-c-bg-soft);
+  background: var(--vp-c-bg-soft);
   color: var(--vp-c-text-1);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 .review-button {
   background: linear-gradient(135deg, #a3e635, #C5F946);
   color: #1d2c00;
-  box-shadow: 0 8px 24px rgba(197, 249, 70, 0.25);
+  box-shadow: 0 4px 12px rgba(197, 249, 70, 0.2);
 }
 .review-button:hover {
-  box-shadow: 0 14px 35px rgba(197, 249, 70, 0.35);
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(197, 249, 70, 0.3);
 }
 .button-icon {
-  margin-left: 8px;
   transition: transform 0.3s ease;
 }
 .review-button:hover .button-icon {
   transform: translateX(4px);
 }
 
-
-/* Все стили после кнопок остаются неизменными */
-
+/* Стили списка филиалов */
 .branches-content { flex-grow: 1; }
 .branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
 .branches-list { padding: 0; }
@@ -221,6 +250,8 @@ const createTicket = () => {
 .branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .branch-action { color: #C5F946; transition: transform 0.3s ease; margin-left: 12px; }
 .branch-item:hover .branch-action { transform: translateX(4px); }
+
+/* Адаптивность */
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 24px; }
   .main-card { padding: 16px; }
