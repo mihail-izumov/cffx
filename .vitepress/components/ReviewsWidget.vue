@@ -115,7 +115,7 @@ const createTicket = () => {
           </svg>
         </button>
         <h2 class="branches-title">{{ establishment.name }}</h2>
-        <div style="width: 44px;"></div> <!-- Пустой div для выравнивания -->
+        <div style="width: 44px;"></div>
       </div>
       <div class="branches-content">
         <p class="branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
@@ -141,9 +141,10 @@ const createTicket = () => {
 /* Все стили до кнопок остаются неизменными */
 .reviews-widget-content { padding: 32px; max-height: calc(100vh - 80px); overflow-y: auto; }
 .widget-header, .branches-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.header-title, .branches-title { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; text-align: center; flex-grow: 1; }
+.header-title, .branches-title { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; text-align: left; flex-grow: 1; }
 .header-subtitle { margin-top: 8px; font-size: 15px; color: var(--vp-c-text-2); }
 .branches-header { padding-bottom: 20px; border-bottom: 2px solid var(--vp-c-border); }
+.branches-title { text-align: center; }
 .internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
 .close-btn:hover { background: linear-gradient(135deg, #991b1b, #ef4444); border-color: #ef4444; color: white; transform: rotate(90deg); }
 .back-btn:hover { background: var(--vp-c-bg-soft); border-color: var(--vp-c-text-2); color: white; }
@@ -174,7 +175,7 @@ const createTicket = () => {
 .control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; color: var(--vp-c-text-2); }
 .info-link { color: var(--vp-c-text-3); display: flex; align-items: center; transition: color 0.3s ease; }
 .info-link:hover { color: var(--vp-c-text-1); }
-.button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg-soft); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
+.button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
 .action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .ticket-button { background: transparent; color: var(--vp-c-text-2); }
 .ticket-button:hover { background: var(--vp-c-bg-mute); color: var(--vp-c-text-1); }
@@ -210,9 +211,9 @@ const createTicket = () => {
 }
 @media (max-width: 480px) {
   .reviews-widget-content { padding: 20px; }
-  .header-title { font-size: 22px; }
+  .header-title { font-size: 22px; text-align: left; }
   .header-subtitle { font-size: 14px; }
-  .branches-title { font-size: 22px; }
+  .branches-title { font-size: 22px; text-align: center;}
   .branches-subtitle { font-size: 14px; }
   .cafe-name { font-size: 20px; }
   .status-badge { padding: 4px 12px; font-size: 10px; }
