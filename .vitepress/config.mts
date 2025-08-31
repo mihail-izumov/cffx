@@ -164,7 +164,7 @@ export default defineConfig({
     .VPFooter .copyright{margin-top:2px!important}
     `]
   ],
-  base: '/',
+  base: '/cffx/',
   outDir: '.vitepress/dist',
   description: 'Находим то, что другие упускают.',
   themeConfig: {
