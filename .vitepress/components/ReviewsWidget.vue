@@ -193,9 +193,9 @@ watch(showBranchList, (newValue) => {
 .button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
 .action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
-.ticket-button:hover { background: rgba(85, 85, 85, 0.9); color: white; }
+.ticket-button:hover { background: rgba(85, 85, 85, 0.9); color: white; transform: translateY(-2px); }
 .review-button { background: linear-gradient(135deg, #f59e0b, #fcd34d); color: #422006; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
-.review-button:hover { transform: scale(1.03); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); }
+.review-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); }
 .button-icon { transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
 
@@ -222,8 +222,9 @@ watch(showBranchList, (newValue) => {
   .stat-left-group { display: flex; align-items: center; gap: 16px; }
   .stat-icon { font-size: 28px; line-height: 1; display: flex; align-items: center; }
   .stat-value { font-size: 2rem; font-weight: 600; margin: 0; }
-  .stat-label { font-size: 18px; font-weight: 500; color: rgba(255, 255, 255, 0.9); text-transform: none; letter-spacing: normal; }
+  .stat-label { font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 0.05em; }
   .button-container { flex-direction: column; gap: 8px; }
+  .action-button:hover { transform: none; } /* Убираем hover-эффект на мобильных */
 }
 @media (max-width: 480px) {
   .reviews-widget-content { padding: 20px; }
