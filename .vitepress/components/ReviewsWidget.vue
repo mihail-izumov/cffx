@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 
 const establishment = {
   name: 'Корж',
@@ -19,6 +19,7 @@ const establishment = {
 }
 const showBranchList = ref(false)
 const emit = defineEmits(['close'])
+const widgetContentRef = ref(null)
 
 const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
 const goToReviews = (branch) => {
@@ -31,10 +32,18 @@ const createTicket = () => {
   emit('close')
   window.location.href = '/brew/overview'
 }
+
+watch(showBranchList, (newValue) => {
+  if (newValue) {
+    nextTick(() => {
+      widgetContentRef.value.scrollTo({ top: 0, behavior: 'smooth' })
+    })
+  }
+})
 </script>
 
 <template>
-  <div class="reviews-widget-content">
+  <div class="reviews-widget-content" ref="widgetContentRef">
     <!-- Первый экран -->
     <div v-if="!showBranchList">
       <div class="widget-header">
@@ -139,7 +148,7 @@ const createTicket = () => {
 
 <style scoped>
 /* Все стили до кнопок остаются неизменными */
-.reviews-widget-content { padding: 32px; max-height: calc(100vh - 80px); overflow-y: auto; }
+.reviews-widget-content { padding: 32px; max-height: calc(100vh - 80px); overflow-y: auto; scroll-behavior: smooth; }
 .widget-header, .branches-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
 .header-title, .branches-title { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; text-align: left; flex-grow: 1; }
 .header-subtitle { margin-top: 8px; font-size: 15px; color: var(--vp-c-text-2); }
@@ -201,12 +210,13 @@ const createTicket = () => {
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 24px; }
   .main-card { padding: 16px; }
-  .stats-grid { grid-template-columns: 1fr; gap: 12px; }
-  .stat-card { border-radius: 18px; }
-  .stat-content { padding: 12px; border-radius: 16px; }
-  .stat-icon { font-size: 24px; height: 28px; }
-  .stat-value { font-size: 2.8rem; margin: 8px 0; }
-  .stat-label { font-size: 10px; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-card { display: flex; flex-direction: row; align-items: center; }
+  .stat-content { flex-direction: row; justify-content: flex-start; gap: 16px; padding: 12px; width: 100%; background: none; box-shadow: none; }
+  .stat-card:hover .stat-content { background: none; box-shadow: none; }
+  .stat-icon { font-size: 24px; }
+  .stat-value { font-size: 1.5rem; order: -1; }
+  .stat-label { font-size: 12px; text-align: left; }
   .button-container { flex-direction: column; }
 }
 @media (max-width: 480px) {
