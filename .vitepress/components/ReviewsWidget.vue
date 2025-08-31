@@ -42,7 +42,7 @@ const createTicket = () => {
           <h2 class="header-title">Сделайте Индекс Роста еще точнее</h2>
           <p class="header-subtitle">Выберите действие, чтобы продолжить</p>
         </div>
-        <button @click="$emit('close')" class="internal-close-btn" aria-label="Закрыть окно">
+        <button @click="$emit('close')" class="internal-close-btn close-btn" aria-label="Закрыть окно">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 6L6 18"/><path d="M6 6L18 18"/>
           </svg>
@@ -111,7 +111,7 @@ const createTicket = () => {
       <div class="branches-header">
         <h2 class="branches-title">{{ establishment.name }}</h2>
         <!-- КНОПКА "НАЗАД" -->
-        <button @click="showBranchList = false" class="internal-close-btn" aria-label="Вернуться назад">
+        <button @click="showBranchList = false" class="internal-close-btn back-btn" aria-label="Вернуться назад">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
           </svg>
@@ -146,7 +146,8 @@ const createTicket = () => {
 .branches-header { align-items: center; padding-bottom: 20px; border-bottom: 2px solid var(--vp-c-border); margin-bottom: 20px; }
 .branches-title { color: #FFFFFF; }
 .internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
-.internal-close-btn:hover { background: linear-gradient(135deg, #991b1b, #ef4444); border-color: #ef4444; color: white; transform: rotate(90deg); }
+.close-btn:hover { background: linear-gradient(135deg, #991b1b, #ef4444); border-color: #ef4444; color: white; transform: rotate(90deg); }
+.back-btn:hover { background: var(--vp-c-bg-soft); border-color: var(--vp-c-text-2); color: white; }
 .main-card { background: var(--vp-c-bg-soft); border-radius: 20px; padding: 24px; }
 .establishment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
 .cafe-name { margin: 0; color: #FFFFFF; font-size: 24px; font-weight: 600; }
@@ -170,85 +171,30 @@ const createTicket = () => {
 .stat-card:hover .stat-label { transform: scale(1.05); }
 
 /* ПУЛЬТ УПРАВЛЕНИЯ */
-.control-panel {
-  margin-top: 24px;
-}
-.control-panel-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  padding: 0 8px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--vp-c-text-2);
-}
-.info-link {
-  color: var(--vp-c-text-3);
-  display: flex;
-  align-items: center;
-  transition: color 0.3s ease;
-}
-.info-link:hover {
-  color: var(--vp-c-text-1);
-}
-.button-container {
-  display: flex;
-  gap: 6px;
-  background-color: var(--vp-c-bg-mute);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 20px;
-  padding: 6px;
-}
-.action-button {
-  flex: 1;
-  padding: 14px 20px;
-  border-radius: 16px;
-  border: none;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.ticket-button {
-  background: transparent;
-  color: var(--vp-c-text-2);
-}
-.ticket-button:hover {
-  background: var(--vp-c-bg-soft);
-  color: var(--vp-c-text-1);
-}
-.review-button {
-  background: linear-gradient(135deg, #a3e635, #C5F946);
-  color: #1d2c00;
-  box-shadow: 0 4px 12px rgba(197, 249, 70, 0.2);
-}
-.review-button:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 20px rgba(197, 249, 70, 0.3);
-}
-.button-icon {
-  transition: transform 0.3s ease;
-}
-.review-button:hover .button-icon {
-  transform: translateX(4px);
-}
+.control-panel { margin-top: 24px; }
+.control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; color: var(--vp-c-text-2); }
+.info-link { color: var(--vp-c-text-3); display: flex; align-items: center; transition: color 0.3s ease; }
+.info-link:hover { color: var(--vp-c-text-1); }
+.button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg-soft); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
+.action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.ticket-button { background: transparent; color: var(--vp-c-text-2); }
+.ticket-button:hover { background: var(--vp-c-bg-mute); color: var(--vp-c-text-1); }
+.review-button { background: linear-gradient(135deg, #e6c86e, #c7a435); color: #2c2000; box-shadow: 0 4px 12px rgba(230, 200, 110, 0.3); }
+.review-button:hover { transform: scale(1.03); box-shadow: 0 8px 20px rgba(230, 200, 110, 0.4); }
+.button-icon { transition: transform 0.3s ease; }
+.review-button:hover .button-icon { transform: translateX(4px); }
 
 /* Стили списка филиалов */
 .branches-content { flex-grow: 1; }
 .branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
 .branches-list { padding: 0; }
 .branch-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px; margin-bottom: 12px; background: var(--vp-c-bg-soft); border: 2px solid var(--vp-c-border); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
-.branch-item:hover { background: linear-gradient(135deg, rgba(197, 249, 70, 0.05), var(--vp-c-bg-soft)); border-color: #C5F946; box-shadow: 0 8px 20px rgba(197, 249, 70, 0.1); transform: translateX(4px); }
+.branch-item:hover { background: linear-gradient(135deg, rgba(230, 200, 110, 0.1), var(--vp-c-bg-soft)); border-color: #c7a435; box-shadow: 0 8px 20px rgba(230, 200, 110, 0.1); transform: translateX(4px); }
 .branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
-.branch-number { background: linear-gradient(135deg, #a3e635, #C5F946); color: #1d2c00; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; transition: all 0.3s ease; box-shadow: none; }
-.branch-item:hover .branch-number { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(197, 249, 70, 0.5); }
+.branch-number { background: linear-gradient(135deg, #e6c86e, #c7a435); color: #2c2000; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; transition: all 0.3s ease; box-shadow: none; }
+.branch-item:hover .branch-number { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(230, 200, 110, 0.5); }
 .branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.branch-action { color: #C5F946; transition: transform 0.3s ease; margin-left: 12px; }
+.branch-action { color: #c7a435; transition: transform 0.3s ease; margin-left: 12px; }
 .branch-item:hover .branch-action { transform: translateX(4px); }
 
 /* Адаптивность */
