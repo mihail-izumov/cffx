@@ -219,10 +219,10 @@ watch(showBranchList, (newValue) => {
   .stats-grid { grid-template-columns: 1fr; gap: 8px; }
   .stat-card { display: flex; flex-direction: row; align-items: center; border-radius: 16px; }
   .stat-content { flex-direction: row; justify-content: space-between; align-items: center; padding: 12px 16px; width: 100%; background: none !important; box-shadow: none !important; }
-  .stat-left-group { display: flex; align-items: center; gap: 12px; }
-  .stat-icon { font-size: 28px; flex-shrink: 0; line-height: 1; }
+  .stat-left-group { display: flex; align-items: center; gap: 16px; }
+  .stat-icon { font-size: 28px; line-height: 1; display: flex; align-items: center; }
   .stat-value { font-size: 2rem; font-weight: 600; margin: 0; }
-  .stat-label { font-size: 18px; font-weight: 500; text-align: right; margin: 0; color: rgba(255, 255, 255, 0.85); text-transform: none; letter-spacing: normal; }
+  .stat-label { font-size: 18px; font-weight: 500; color: rgba(255, 255, 255, 0.9); text-transform: none; letter-spacing: normal; }
   .button-container { flex-direction: column; gap: 8px; }
 }
 @media (max-width: 480px) {
