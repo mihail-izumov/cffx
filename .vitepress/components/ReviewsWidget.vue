@@ -80,8 +80,8 @@ watch(showBranchList, (newValue) => {
     <div v-if="!showBranchList">
       <div class="widget-header">
         <div>
-          <h2 class="header-title">Сделайте Индекс Роста еще точнее</h2>
-          <p class="header-subtitle">Выберите действие, чтобы продолжить</p>
+          <h2 class="header-title">Ваша Умная Кофейня Начинается Здесь</h2>
+          <p class="header-subtitle">Поделитесь и наблюдайте за ростом вашей любимой кофейни в реальном времени</p>
         </div>
         <button @click="$emit('close')" class="internal-close-btn close-btn" aria-label="Закрыть окно">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -119,7 +119,7 @@ watch(showBranchList, (newValue) => {
           <div class="stat-card reviews-card">
             <div class="stat-content">
               <div class="stat-left-group">
-                <div class="stat-icon">🏆</div>
+                <div class="stat-icon">💎</div>
                 <div class="stat-value">{{ establishment.totalReviews }}</div>
               </div>
               <div class="stat-label">Отзывы</div>
@@ -142,10 +142,10 @@ watch(showBranchList, (newValue) => {
           </div>
           <div class="button-container">
             <button @click="createTicket" class="action-button ticket-button">
-              Отправить тикет
+              Сообщить о проблеме
             </button>
             <button @click="showBranchList = true" class="action-button review-button">
-              Оставить отзыв
+              Мне понравилось
               <svg class="button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m9 18 6-6-6-6"/>
               </svg>
