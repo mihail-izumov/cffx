@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 
 const establishment = {
   name: 'Корж',
@@ -32,6 +32,26 @@ const createTicket = () => {
   emit('close')
   window.location.href = '/brew/overview'
 }
+
+const rotatingQuestions = [
+  "Что почувствовали в эту минуту?",
+  "Что вызвало улыбку или напряжение?",
+  "Какой момент хотелось бы изменить?",
+  "Что дало ощущение уюта/суеты?",
+  "Одно слово, которое осталось после визита?"
+]
+const currentQuestionIndex = ref(0)
+let intervalId = null
+
+onMounted(() => {
+  intervalId = setInterval(() => {
+    currentQuestionIndex.value = (currentQuestionIndex.value + 1) % rotatingQuestions.length
+  }, 3000)
+})
+
+onUnmounted(() => {
+  clearInterval(intervalId)
+})
 
 watch(showBranchList, (newValue) => {
   if (newValue) {
@@ -98,12 +118,12 @@ watch(showBranchList, (newValue) => {
         <!-- ПУЛЬТ УПРАВЛЕНИЯ -->
         <div class="control-panel">
           <div class="control-panel-header">
-            <span>Ваше действие</span>
-            <a href="/brew/overview" target="_blank" class="info-link" aria-label="Подробнее о тикетах">
+            <a href="/brew/overview" target="_blank" class="info-link" aria-label="Подробнее">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
               </svg>
             </a>
+            <span class="rotating-text">Поделитесь: {{ rotatingQuestions[currentQuestionIndex] }}</span>
           </div>
           <div class="button-container">
             <button @click="createTicket" class="action-button ticket-button">
@@ -190,6 +210,7 @@ watch(showBranchList, (newValue) => {
 .control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; color: var(--vp-c-text-2); }
 .info-link { color: var(--vp-c-text-3); display: flex; align-items: center; transition: color 0.3s ease; }
 .info-link:hover { color: var(--vp-c-text-1); }
+.rotating-text { flex-grow: 1; }
 .button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
 .action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
