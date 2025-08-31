@@ -119,7 +119,7 @@ watch(showBranchList, (newValue) => {
           <div class="stat-card reviews-card">
             <div class="stat-content">
               <div class="stat-left-group">
-                <div class="stat-icon">💎</div>
+                <div class="stat-icon">📡</div>
                 <div class="stat-value">{{ establishment.totalReviews }}</div>
               </div>
               <div class="stat-label">Отзывы</div>
