@@ -1,6 +1,11 @@
 <script setup>
 import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 
+// --- НАСТРОЙКИ АНИМАЦИИ ---
+const ROTATION_INTERVAL_MS = 7000 // Общее время цикла (показ + анимация)
+const FADE_DURATION_MS = 1000   // Длительность анимации (исчезновение/появление)
+// -------------------------
+
 const establishment = {
   name: 'Корж',
   totalReviews: '4,520',
@@ -34,11 +39,11 @@ const createTicket = () => {
 }
 
 const rotatingQuestions = [
-  "Что почувствовали в эту минуту?",
-  "Что вызвало улыбку или напряжение?",
-  "Какой момент хотелось бы изменить?",
-  "Что дало ощущение уюта/суеты?",
-  "Одно слово, которое осталось после визита?"
+  "\"Что почувствовали в эту минуту?\"",
+  "\"Что вызвало улыбку или напряжение?\"",
+  "\"Какой момент хотелось бы изменить?\"",
+  "\"Что дало ощущение уюта/суеты?\"",
+  "\"Одно слово, которое осталось после визита?\""
 ]
 const currentQuestionIndex = ref(0)
 const showText = ref(true)
@@ -49,11 +54,11 @@ const cycleText = () => {
   setTimeout(() => {
     currentQuestionIndex.value = (currentQuestionIndex.value + 1) % rotatingQuestions.length
     showText.value = true
-  }, 1000)
+  }, FADE_DURATION_MS)
 }
 
 onMounted(() => {
-  intervalId = setInterval(cycleText, 7000) // Увеличена пауза
+  intervalId = setInterval(cycleText, ROTATION_INTERVAL_MS)
 })
 
 onUnmounted(() => {
@@ -130,7 +135,7 @@ watch(showBranchList, (newValue) => {
                 <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
               </svg>
             </a>
-            <div class="badge-tag">Поделитесь:</div>
+            <span class="static-prompt">Поделитесь</span>
             <div class="rotating-text-container">
               <span :class="['rotating-text', { 'show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
             </div>
@@ -217,12 +222,12 @@ watch(showBranchList, (newValue) => {
 
 /* ПУЛЬТ УПРАВЛЕНИЯ */
 .control-panel { margin-top: 24px; }
-.control-panel-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; color: white; }
-.info-link { color: rgba(255, 255, 255, 0.5); display: flex; align-items: center; transition: color 0.3s ease; }
+.control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; }
+.info-link { color: rgba(255, 255, 255, 0.5); display: flex; align-items: center; transition: color 0.3s ease; flex-shrink: 0; }
 .info-link:hover { color: white; }
-.badge-tag { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.9); }
-.rotating-text-container { flex-grow: 1; text-align: left; color: rgba(255, 255, 255, 0.7); }
-.rotating-text { transition: opacity 0.5s ease-in-out; }
+.static-prompt { color: white; margin-right: 8px; flex-shrink: 0; }
+.rotating-text-container { flex-grow: 1; text-align: left; color: rgba(255, 255, 255, 0.7); min-height: 36px; display: flex; align-items: center;}
+.rotating-text { transition: opacity 0.5s ease-in-out; line-height: 1.2; }
 .rotating-text:not(.show) { opacity: 0; }
 .button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
 .action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
