@@ -342,9 +342,17 @@ const goToReviews = (branch) => {
 .review-button:hover .button-icon { transform: translateX(4px); }
 
 /* СПИСОК ФИЛИАЛОВ */
-.branches-content { flex-grow: 1; }
-.branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
-.branches-list { padding: 0; }
+.branches-content { 
+  flex-grow: 1; 
+}
+.branches-subtitle { 
+  margin: 0 0 16px 0; 
+  font-size: 16px; 
+  color: var(--vp-c-text-2); 
+}
+.branches-list { 
+  padding: 0; 
+}
 .branch-item { 
   display: flex; 
   align-items: center; 
@@ -357,15 +365,22 @@ const goToReviews = (branch) => {
   border-radius: 16px; 
   cursor: pointer; 
   transition: all 0.3s ease; 
-  text-align: left; 
-  overflow: visible;
+  text-align: left;
+  overflow: visible; /* ИСПРАВЛЕНИЕ: Разрешаем свечению быть видимым */
 }
 .branch-item:hover { 
   background: linear-gradient(135deg, rgba(197, 249, 70, 0.05), var(--vp-c-bg-soft)); 
   border-color: #C5F946; 
-  box-shadow: 0 8px 20px rgba(197, 249, 70, 0.1); 
+  box-shadow: 0 8px 20px rgba(197, 249, 70, 0.1);
+  transform: translateX(-4px); /* ВОССТАНОВЛЕНО: Сдвиг влево при наведении */
 }
-.branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
+.branch-info { 
+  display: flex; 
+  align-items: center; 
+  gap: 16px; 
+  flex: 1; 
+  overflow: hidden; 
+}
 .branch-number { 
   background: linear-gradient(135deg, #a3e635, #C5F946); 
   color: #1d2c00; 
@@ -382,9 +397,16 @@ const goToReviews = (branch) => {
 }
 .branch-item:hover .branch-number {
   transform: scale(1.1);
-  box-shadow: 0 0 12px rgba(197, 249, 70, 0.6);
+  filter: drop-shadow(0 0 10px rgba(197, 249, 70, 0.7)); /* ИСПРАВЛЕНИЕ: Правильное свечение */
 }
-.branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.branch-address { 
+  font-weight: 600; 
+  font-size: 16px; 
+  color: var(--vp-c-text-1); 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+}
 .branch-action { 
   color: #C5F946; 
   transition: transform 0.3s ease; 
