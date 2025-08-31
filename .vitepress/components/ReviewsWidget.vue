@@ -186,8 +186,8 @@ watch(showBranchList, (newValue) => {
 .info-link:hover { color: var(--vp-c-text-1); }
 .button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
 .action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
-.ticket-button { background: transparent; color: var(--vp-c-text-2); }
-.ticket-button:hover { background: var(--vp-c-bg-mute); color: var(--vp-c-text-1); }
+.ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
+.ticket-button:hover { background: rgba(85, 85, 85, 0.9); color: white; }
 .review-button { background: linear-gradient(135deg, #f59e0b, #fcd34d); color: #422006; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
 .review-button:hover { transform: scale(1.03); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); }
 .button-icon { transition: transform 0.3s ease; }
@@ -210,14 +210,14 @@ watch(showBranchList, (newValue) => {
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 24px; }
   .main-card { padding: 16px; }
-  .stats-grid { grid-template-columns: 1fr; }
-  .stat-card { display: flex; flex-direction: row; align-items: center; }
-  .stat-content { flex-direction: row; justify-content: flex-start; gap: 16px; padding: 12px; width: 100%; background: none; box-shadow: none; }
+  .stats-grid { grid-template-columns: 1fr; gap: 8px; }
+  .stat-card { display: flex; flex-direction: row; align-items: center; border-radius: 16px; }
+  .stat-content { flex-direction: row; justify-content: flex-start; align-items: center; gap: 12px; padding: 16px; width: 100%; background: none; box-shadow: none; }
   .stat-card:hover .stat-content { background: none; box-shadow: none; }
-  .stat-icon { font-size: 24px; }
-  .stat-value { font-size: 1.5rem; order: -1; }
-  .stat-label { font-size: 12px; text-align: left; }
-  .button-container { flex-direction: column; }
+  .stat-icon { font-size: 28px; flex-shrink: 0; }
+  .stat-value { font-size: 2rem; margin: 0; font-weight: 700; }
+  .stat-label { font-size: 16px; font-weight: 600; text-align: left; margin: 0; color: rgba(255, 255, 255, 0.85); text-transform: none; letter-spacing: normal; }
+  .button-container { flex-direction: column; gap: 8px; }
 }
 @media (max-width: 480px) {
   .reviews-widget-content { padding: 20px; }
