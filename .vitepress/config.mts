@@ -4,12 +4,12 @@ import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
 
 export default defineConfig({
-  title: 'Сигнал / Ваша Умная Кофейня',
+  title: 'Заряд / Ваша Умная Кофейня',
   appearance: 'force-dark',
   locales: {
     '/': {
       lang: 'ru-RU',
-      title: 'Сигнал / Ваша Умная Кофейня',
+      title: 'Заряд / Ваша Умная Кофейня',
       description: 'Где Начинается Ваша Кофейня',
     },
   },
@@ -166,7 +166,7 @@ export default defineConfig({
   description: 'Где Начинается Ваша Кофейня',
   themeConfig: {
     logo: '/favicon.svg',
-    siteTitle: "Сигнал",
+    siteTitle: "Заряд",
     sidebarMenuLabel: 'Меню',
     outlineTitle: 'На этой странице',
     returnToTopLabel: 'Наверх',
