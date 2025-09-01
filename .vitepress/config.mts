@@ -166,10 +166,10 @@ export default defineConfig({
   ],
   base: '/cffx/',
   outDir: '.vitepress/dist',
-  description: 'Находим то, что другие упускают.',
+  description: 'Где Начинается Ваша Кофейня',
   themeConfig: {
     logo: '/favicon.svg',
-    siteTitle: "Модуль Роста®",
+    siteTitle: "Умная Кофейня",
     sidebarMenuLabel: 'Меню',
     outlineTitle: 'На этой странице',
     returnToTopLabel: 'Наверх',
