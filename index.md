@@ -7,7 +7,7 @@ hero:
   text: "Начинается Здесь."
   tagline: "Получайте не отзывы, а энергию для роста. Управляйте лояльностью гостей на основе данных."
   image:
-    src: /runscale_main_ban.png
+    src: /main-ban.png
     alt: Модуль Роста®
   actions:
     - theme: brand
