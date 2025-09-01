@@ -241,14 +241,14 @@ export default defineConfig({
 
 function nav(): DefaultTheme.NavItem[] {
   return [
-{
+    { text: 'Поделитесь', link: '/charging' },
+    {
       text: 'Умные Кофейни',
       items: [
         { text: 'Самара', link: '/smr' },
         { text: 'Новосибирск', link: '/radar/signal/coffee-points-nsk-2025/launch.md' }
       ]
     },
-    { text: 'Зарядка', link: '/charging' },
     { text: 'Платформа', link: '/brew/run' },   
     {
       text: 'Технологии',
