@@ -26,9 +26,10 @@ export default defineConfig({
     (function() {
       function createFooterContent() {
         const links = [
-          { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
+          { text: 'Обновления', href: '/changelog' },
           { text: 'Поддержка', href: '/support' },
           { text: 'Условия использования', href: '/terms' },
+          { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
           { text: 'Контакт', href: '/about/contacts' }
         ];
         let html = '<hr style="border: 0; border-top: 1px solid var(--vp-c-divider); margin: 24px 0;">';
