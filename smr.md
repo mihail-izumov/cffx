@@ -7,6 +7,10 @@ aside: false
 # Поделитесь Зарядом
 ## Найдите Умные Кофейни в Самаре 🚀 рядом c вами.
 
+<div class="start-button-container">
+  <a href="/charging" class="btn btn-primary" rel="noopener noreferrer"><strong>Узнать Больше →</strong></a>
+</div>
+
 [Как считаем](/smr#как-считаем)
 
 <IndexSMRTest />
