@@ -3,18 +3,18 @@
 layout: home
 
 hero:
-  name: "Расти по своим правилам."
-  tagline: Находим то, что другие упускают.
+  name: "Ваша Умная Кофейня"
+  tagline: Начинается Здесь.
   image:
     src: /runscale_main_ban.png
     alt: Модуль Роста®
   actions:
     - theme: brand
-      text: Ваша Умная Кофейня
-      link: /brew/run
+      text: Подключиться
+      link: /brew/membership
 
 features:
-  - title: Радар
+  - title: Самара
     details: Видеть рынок как на ладони. Находить скрытые возможности на основе тысяч отзывов и данных конкурентов.
     link: /radar/signal/log
     linkText: Смотреть Сигналы
