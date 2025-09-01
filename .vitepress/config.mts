@@ -241,6 +241,7 @@ export default defineConfig({
 
 function nav(): DefaultTheme.NavItem[] {
   return [
+    { text: 'Платформа', link: '/brew/run' },
     {
       text: 'Умные Кофейни',
       items: [
@@ -251,12 +252,11 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Технологии',
       items: [
-        { text: 'Симулятор Роста', link: '/radar/signal/coffee-points-smr-2025/dashboard' },
+        { text: 'Индекс Роста', link: '/tech/index' },      
         { text: 'Потенциал Роста', link: '/radar/index-smr/calc' },
-        { text: 'Индекс Роста', link: '/tech/index' }
+        { text: 'Симулятор Роста', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
       ]
-    },
-    { text: 'Мета-франшиза', link: '/brew/run' }
+    }
   ]
 }
 
