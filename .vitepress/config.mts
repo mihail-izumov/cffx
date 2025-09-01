@@ -255,20 +255,6 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-function sidebarBrew(): DefaultTheme.SidebarItem[] {
-  return [
-    {
-      text: "B‑R‑E‑W",
-      collapsed: false,
-      items: [
-        { text: 'Платформа', link: '/brew/run' },
-        { text: 'Протокол', link: '/brew/protocol' },
-        { text: '→ Подключиться', link: '/brew/membership' }
-      ]
-    }
-  ]
-}
-
 function sidebarRadarSamara(): DefaultTheme.SidebarItem[] {
   return [
     {
