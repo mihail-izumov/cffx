@@ -249,7 +249,7 @@ function nav(): DefaultTheme.NavItem[] {
       ]
     },
     { text: 'Платформа', link: '/brew/run' },
-    { text: 'Индекс Роста', link: '/radar/overview' }
+    { text: 'Индекс Роста', link: '/tech/index' }
   ]
 }
 
