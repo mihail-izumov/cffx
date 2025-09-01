@@ -248,8 +248,15 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'Новосибирск', link: '/radar/signal/coffee-points-nsk-2025/launch.md' }
       ]
     },
-    { text: 'Платформа', link: '/brew/run' },
-    { text: 'Индекс Роста', link: '/tech/index' }
+    {
+      text: 'Технологии',
+      items: [
+        { text: 'Симулятор Роста', link: '/radar/signal/coffee-points-smr-2025/dashboard' },
+        { text: 'Потенциал Роста', link: '/radar/index-smr/calc' },
+        { text: 'Индекс Роста', link: '/tech/index' }
+      ]
+    },
+    { text: 'Мета-франшиза', link: '/brew/run' }
   ]
 }
 
