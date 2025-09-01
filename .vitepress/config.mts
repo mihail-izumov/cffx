@@ -185,8 +185,6 @@ export default defineConfig({
     
     // ВАЖНО: порядок от более специфичных к более общим!
     sidebar: {
-      // BREW
-      '/brew/': { items: sidebarBrew() },
       // Самара: обзор/метод
       '/radar/index-smr/': { items: sidebarRadarSamara() },
       // ИСПРАВЛЕНИЕ: Принудительная привязка страницы log к сайдбару России (ПЕРЕД /radar/signal/)
