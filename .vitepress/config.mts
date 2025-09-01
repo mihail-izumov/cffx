@@ -161,7 +161,7 @@ export default defineConfig({
     .VPFooter .copyright{margin-top:2px!important}
     `]
   ],
-  base: '/cffx/',
+  base: '/',
   outDir: '.vitepress/dist',
   description: 'Где Начинается Ваша Кофейня',
   themeConfig: {
