@@ -26,13 +26,10 @@ export default defineConfig({
     (function() {
       function createFooterContent() {
         const links = [
-          { text: 'Журнал', href: '/journal/contents/overview' },
           { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
           { text: 'Поддержка', href: '/support' },
           { text: 'Условия использования', href: '/terms' },
-          { text: 'Контакт', href: '/about/contacts' },
-          { text: 'Реквизиты', href: '/credits' },
-          { text: 'Orxaos', href: 'https://orxaos.sbs', target: '_blank' }
+          { text: 'Контакт', href: '/about/contacts' }
         ];
         let html = '<hr style="border: 0; border-top: 1px solid var(--vp-c-divider); margin: 24px 0;">';
         html += '<div class="custom-footer-links"><div class="footer-row">';
@@ -47,8 +44,8 @@ export default defineConfig({
         });
         html += '</div></div>';
         html += '<div style="margin-top: 24px; text-align: center;">';
-        html += '<div style="color: white; font-size: 14px;">Расти по своим правилам</div>';
-        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Модуль Роста® 2010 — 2025</div>';
+        html += '<div style="color: white; font-size: 14px;">Где Начинается Ваша Кофейня</div>';
+        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© 2025 Компания <a href="https://runscale.ru" target="_blank" style="color: inherit; text-decoration: underline;">Модуля Роста®</a></div>';
         return html;
       }
       function replaceFooter() {
