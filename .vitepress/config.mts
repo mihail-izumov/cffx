@@ -244,7 +244,7 @@ function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Поделитесь', link: '/charging' },
     {
-      text: 'Умные Кофейни',
+      text: 'Индекс Роста',
       items: [
         { text: 'Самара', link: '/smr' },
         { text: 'Новосибирск', link: '/radar/signal/coffee-points-nsk-2025/launch.md' }
