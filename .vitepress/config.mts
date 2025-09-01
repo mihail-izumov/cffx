@@ -4,13 +4,13 @@ import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
 
 export default defineConfig({
-  title: 'Модуль Роста®',
+  title: 'Умная Кофейня',
   appearance: 'force-dark',
   locales: {
     '/': {
       lang: 'ru-RU',
-      title: 'Модуль Роста®',
-      description: 'Находим то, что другие упускают.',
+      title: 'Умная Кофейня',
+      description: 'Где Начинается Ваша Кофейня',
     },
   },
   transformPageData(pageData) {
