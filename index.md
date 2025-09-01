@@ -11,7 +11,7 @@ hero:
     alt: Модуль Роста®
   actions:
     - theme: brand
-      text: Подключиться
+      text: Подключить Кофейню
       link: /brew/membership
 
 features:
