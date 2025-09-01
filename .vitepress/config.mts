@@ -244,7 +244,7 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Умные Кофейни',
       items: [
-        { text: 'Самара', link: '/radar/index-smr/overview' },
+        { text: 'Самара', link: '/smr' },
         { text: 'Новосибирск', link: '/radar/signal/coffee-points-nsk-2025/launch.md' }
       ]
     },
