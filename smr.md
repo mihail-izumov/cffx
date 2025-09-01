@@ -5,13 +5,11 @@ aside: false
 ---
 
 # Поделитесь Зарядом
-## Найдите Умные Кофейни в Самаре 🚀 рядом c вами.
+## Найдите Умные Кофейни в Самаре 🚀 рядом c вами
 
 <div class="start-button-container">
-  <a href="/charging" class="btn btn-primary" rel="noopener noreferrer"><strong>Узнать Больше →</strong></a>
+  <a href="/charging" class="btn btn-primary" rel="noopener noreferrer"><strong>Узнать Больше</strong></a>
 </div>
-
-[Как считаем](/smr#как-считаем)
 
 <IndexSMRTest />
 
@@ -20,11 +18,12 @@ aside: false
 **Актуальная версия:** [19-08-2025](/radar/index-smr/changelog/19-08-2025) <br>
 
 ## Как считаем
-<GrowthIndexMethod />
 
 <div class="start-button-container">
   <a href="/tech/index" class="btn btn-primary" rel="noopener noreferrer"><strong>Об Индексе Роста →</strong></a>
 </div>
+
+<GrowthIndexMethod />
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
