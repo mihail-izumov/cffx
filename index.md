@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "Заряд"
   tagline: Ваша Умная Кофейня.
-  description: "Начинается Здесь."
+  description: Начинается Здесь.
   image:
     src: /runscale_main_ban.png
     alt: Модуль Роста®
