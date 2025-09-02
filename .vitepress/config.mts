@@ -255,7 +255,8 @@ function nav(): DefaultTheme.NavItem[] {
       text: 'Платформа',
       items: [
         { text: 'Обзор', link: '/brew/run' },   
-        { text: 'Механика Индекса', link: '/tech/index' },     
+        { text: 'Механика Индекса', link: '/tech/index' },  
+        { text: 'Тикеты Кофеен', link: '/tech/index' },
         { text: 'Технология Радар', link: '/radar/scale_index' },
         { text: 'Калькулятор Потенциала', link: '/radar/index-smr/calc' },
         { text: 'Симулятор Роста', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
