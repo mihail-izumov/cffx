@@ -1,109 +1,77 @@
-/* Убираем все предыдущие фоны */
-.VPHome, .VPHero {
+/* --- Убираем все старые фоны --- */
+.VPHome, .VPHero, .VPHome::before, .VPHero::before {
   background: none !important;
+  display: block; /* Убеждаемся, что псевдо-элементы не скрыты */
 }
 
-.VPHome::before, .VPHero::before {
-  display: none !important;
-}
 
-/* УСИЛЕННОЕ свечение за изображением чашки */
+/* --- СВЕЧЕНИЕ ЗА ЧАШКОЙ --- */
+
+/* Контейнер изображения */
 .VPHero .VPImage {
   position: relative;
 }
 
+/* Явное позиционирование для самого изображения, чтобы поднять его НАД свечением */
+.VPHero .VPImage .image {
+  position: relative;
+  z-index: 2; /* Поднимаем чашку на передний план */
+}
+
+/* Создаем свечение ПОД чашкой */
 .VPHero .VPImage::before {
   content: '';
   position: absolute;
-  top: -40%;
-  left: -40%;
-  right: -40%;
-  bottom: -40%;
-  /* Более яркое и заметное свечение */
+  /* Увеличиваем размер области свечения, чтобы его было видно */
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
   background: 
-    radial-gradient(ellipse at center, rgba(34, 197, 94, 0.9) 0%, rgba(34, 197, 94, 0.4) 40%, transparent 70%),
-    radial-gradient(ellipse at 60% 30%, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.3) 50%, transparent 80%),
-    radial-gradient(ellipse at 30% 70%, rgba(22, 163, 74, 0.7) 0%, rgba(22, 163, 74, 0.2) 60%, transparent 90%);
-  filter: blur(60px);
-  z-index: -1;
-  animation: coffeeGlow 4s ease-in-out infinite alternate;
+    radial-gradient(ellipse at center, rgba(34, 197, 94, 0.7) 0%, transparent 50%);
+  /* Увеличиваем размытие для мягкости */
+  filter: blur(80px);
+  z-index: 1; /* Помещаем свечение между фоном и чашкой */
+  /* Плавная пульсация для эффекта энергии */
+  animation: subtleGlow 4s ease-in-out infinite alternate;
 }
 
-/* Дополнительное внутреннее свечение */
-.VPHero .VPImage::after {
-  content: '';
-  position: absolute;
-  top: -20%;
-  left: -20%;
-  right: -20%;
-  bottom: -20%;
-  background: 
-    radial-gradient(ellipse at center, rgba(34, 197, 94, 0.6) 0%, transparent 60%);
-  filter: blur(30px);
-  z-index: -1;
-  animation: innerGlow 3s ease-in-out infinite alternate-reverse;
-}
-
-/* Анимации для свечения */
-@keyframes coffeeGlow {
-  0% {
-    transform: scale(0.9);
+@keyframes subtleGlow {
+  from {
     opacity: 0.7;
+    transform: scale(0.95);
   }
-  100% {
-    transform: scale(1.2);
+  to {
     opacity: 1;
+    transform: scale(1.05);
   }
 }
 
-@keyframes innerGlow {
-  0% {
-    opacity: 0.4;
-    transform: scale(1.1);
-  }
-  100% {
-    opacity: 0.8;
-    transform: scale(1.3);
-  }
+
+/* --- КНОПКА С ПРАВИЛЬНЫМ ПОВЕДЕНИЕМ --- */
+
+/* Состояние по умолчанию: кнопка чуть приглушена */
+.VPButton.brand {
+  background: #166534 !important; /* Более темный зеленый */
+  color: rgba(255, 255, 255, 0.8) !important; /* Слегка прозрачный белый текст */
+  border: none !important;
+  box-shadow: none !important;
+  transition: all 0.3s ease !important; /* Плавный переход */
 }
 
-/* Заголовок в зеленом */
+/* Состояние при наведении: максимальная яркость и контраст */
+.VPButton.brand:hover {
+  background: #22c55e !important; /* Яркий, кислотный зеленый */
+  color: #052e16 !important; /* Максимально контрастный темный текст */
+  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.5) !important; /* Яркая тень */
+  transform: translateY(-2px); /* Эффект "поднятия" */
+}
+
+
+/* --- ЗАГОЛОВОК --- */
 .VPHero .name {
   background: linear-gradient(120deg, #22c55e 30%, #16a34a 70%) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  text-shadow: 0 0 20px rgba(34, 197, 94, 0.3) !important;
-}
-
-/* ИСПРАВЛЕННАЯ логика кнопки */
-.VPButton.brand {
-  background: linear-gradient(135deg, #22c55e, #16a34a) !important;
-  border: none !important;
-  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3) !important;
-  /* Текст в обычном состоянии - слегка приглушенный */
-  color: rgba(255, 255, 255, 0.85) !important;
-  transition: all 0.3s ease !important;
-}
-
-.VPButton.brand:hover {
-  background: linear-gradient(135deg, #16a34a, #15803d) !important;
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5) !important;
-  transform: translateY(-2px) !important;
-  /* Текст при ховере - максимально контрастный */
-  color: rgba(255, 255, 255, 1) !important;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
-}
-
-/* Адаптивность */
-@media (min-width: 640px) {
-  .VPHero .VPImage::before {
-    filter: blur(80px);
-  }
-}
-
-@media (min-width: 960px) {
-  .VPHero .VPImage::before {
-    filter: blur(100px);
-  }
 }
