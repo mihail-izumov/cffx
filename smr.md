@@ -8,7 +8,7 @@ aside: false
 ## Найдите Умные Кофейни в Самаре 🚀 рядом c вами
 
 <div class="start-button-container">
-  <a href="/charging" class="btn btn-primary" rel="noopener noreferrer"><strong>Узнать Больше</strong></a>
+  <a href="/signals" class="btn btn-primary" rel="noopener noreferrer"><strong>Как Работают Сигналы</strong></a>
 </div>
 
 <IndexSMRTest />
