@@ -13,17 +13,18 @@ aside: false
 
 <IndexSMRTest />
 
-**Обновляется каждую пятницу 15:00 мск** <br>
+## Обновляется каждую пятницу 15:00 мск
+
 **Источники данных:** 2ГИС, Яндекс.Карты, Соцсети, Местные новости и группы <br>
 **Актуальная версия:** [19-08-2025](/radar/index-smr/changelog/19-08-2025) <br>
 
-## Как считаем
+## Следить за Индексом 
+
+Узнайте первым о новых кофейнях рядом с вами, изменениях на кофейном рынке и обновлях Индекса.
 
 <div class="start-button-container">
-  <a href="/tech/index" class="btn btn-primary" rel="noopener noreferrer"><strong>Об Индексе Роста →</strong></a>
+  <a href="/changelog" class="btn btn-primary" rel="noopener noreferrer"><strong>Обновления Индекса →</strong></a>
 </div>
-
-<GrowthIndexMethod />
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
