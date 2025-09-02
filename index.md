@@ -7,7 +7,7 @@ hero:
   text: "Начинается Здесь."
   tagline: "Получайте не отзывы, а энергию для роста. Управляйте лояльностью гостей на основе данных."
   image:
-    src: /main-ban.png
+    src: /cffx-cup.png
     alt: Модуль Роста®
   actions:
     - theme: brand
