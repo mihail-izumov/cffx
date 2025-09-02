@@ -1,4 +1,4 @@
-# **Ваш Голос Создает Перемены**
+# **Ваш Сигнал Создает Перемены**
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
@@ -17,9 +17,11 @@
   />
 </div>
 
-## Забудьте об отзывах, которые никто не читает. Ваш Сигнал — это команда к действию для кофейни и видимый результат для вас.
+## Забудьте об отзывах, которые никто не читает
 
-В Умной Кофейне каждое ваше слово имеет вес. Здесь обратная связь — это не просто мнение или жалоба, а импульс к реальным улучшениям.
+**Ваш Сигнал — это команда к действию для кофейни и видимый результат для вас.**
+
+В Умной Кофейне каждое ваше слово имеет имеет значение. Здесь обратная связь — это не просто мнение или жалоба, а импульс к реальным улучшениям.
 
 ## Сила Сигнала
 
@@ -56,6 +58,8 @@
 
 Это единая система, где Вы — главный участник. Вы уже не просто гость, вы — партнер по росту бизнеса любимой кофейни.
 
+### Почувствуйте разницу между частным мнением и реальным результатом
+
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
 
   <div class="project-card">
@@ -63,8 +67,8 @@
       <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Для гостей</h3>
       <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Ваши отзывы становятся энергией роста любимых кофеен. Индекс Роста показывает реальный потенциал каждого места и ваше влияние на его развитие.</p>
     </div>
-    <a href="/brew/membership" class="project-button">
-      Начать Бесплатно →
+    <a href="/smr" class="project-button">
+      Отправить Сигнал →
     </a>
   </div>
 
@@ -74,61 +78,8 @@
       <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Индекс Роста — технология, которая анализирует отзывы гостей и превращает их в точные метрики потенциала развития вашей кофейни. Получайте не просто оценки, а понимание того, как именно расти.</p>
     </div>
     <a href="/brew/membership" class="project-button">
-      Стать Инсайдером →
+      Подключить Кофейню →
     </a>
   </div>
 
 </div>
-
-## Готовы действовать?
-
-**Почувствуйте разницу между частным мнением и реальным результатом**
-
-<div class="start-button-container">
-  <a href="/signals" class="btn btn-primary" rel="noopener noreferrer"><strong>Отправить Сигнал →</strong></a>
-</div>
-
-<style>
-/* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
-.btn {
-  display: inline-block;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 16px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: none;
-  margin: 10px 0;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  text-decoration: none !important;
-}
-
-/* --- СТИЛЬ ОСНОВНОЙ КНОПКИ (ЯРКАЯ) --- */
-.btn-primary {
-  background-color: #C5F946; /* Яркий лаймовый */
-  color: #000 !important;
-}
-
-.btn-primary:hover {
-  background-color: #347b6c; /* Темный при наведении */
-  color: white !important;
-}
-
-/* --- Контейнер для отдельной кнопки --- */
-.start-button-container {
-  margin: 20px 0;
-  text-align: left;
-}
-
-.start-button-container .btn {
-  display: inline-block;
-  margin: 0;
-}
-</style>
-
