@@ -16,6 +16,7 @@ aside: false
 <div class="button-group">
   <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Подключиться</a>
   <a href="https://www.perplexity.ai/page/meta-franshiza-b-r-e-w-Tl5xfN_GREy2qFe4qDqSSg" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">НЕ франшиза</a>
+</div>
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
@@ -32,7 +33,6 @@ aside: false
     onmouseover="this.style.transform='scale(1.02)'"
     onmouseout="this.style.transform='scale(1)'"
   />
-</div>
 </div>
 
 ## Видеть больше, угадывать меньше
