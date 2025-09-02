@@ -6,7 +6,7 @@
           <th class="index-column">
             <span class="animated-icon">⚡</span>
           </th>
-          <th>Кофейня</th>
+          <th>Сигналы</th>
           <th class="points-column">Точки</th>
           <th>Отзывы</th>
           <th>Статус</th>
