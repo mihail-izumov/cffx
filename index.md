@@ -28,3 +28,31 @@ features:
     link: /brew/run
     linkText: Пройти Чекап
 ---
+
+<style>
+.VPHome {
+  background-image: url('/main-ban.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Добавляем полупрозрачный оверлей для лучшей читаемости текста */
+.VPHome::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+/* Делаем контент поверх оверлея */
+.VPHome .VPHero {
+  position: relative;
+  z-index: 2;
+}
+</style>
