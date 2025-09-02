@@ -140,12 +140,8 @@ watch(showBranchList, (newValue) => {
 
         <!-- СТРОКА СТАТУСОВ ТИКЕТОВ -->
         <div class="ticket-status-bar">
-          <span class="ticket-label">Тикеты:</span>
+          <span class="ticket-label">Тикеты ({{ ticketStats.total }}):</span>
           <div class="ticket-stats">
-            <div class="ticket-stat">
-              <div class="ticket-bubble total"></div>
-              <span class="ticket-text">Всего: {{ ticketStats.total }}</span>
-            </div>
             <div class="ticket-stat">
               <div class="ticket-bubble active"></div>
               <span class="ticket-text">Актив: {{ ticketStats.active }}</span>
@@ -254,7 +250,7 @@ watch(showBranchList, (newValue) => {
   display: flex; 
   align-items: center; 
   justify-content: center; 
-  gap: 8px; 
+  gap: 12px; 
   margin: 20px 0 16px 0; 
   padding: 8px 16px; 
   background: rgba(255, 255, 255, 0.03); 
@@ -266,13 +262,13 @@ watch(showBranchList, (newValue) => {
   font-size: 12px; 
   font-weight: 600; 
   color: rgba(255, 255, 255, 0.6); 
-  margin-right: 4px;
+  margin-right: 8px;
 }
 
 .ticket-stats { 
   display: flex; 
   align-items: center; 
-  gap: 12px; 
+  gap: 16px; 
 }
 
 .ticket-stat { 
@@ -288,18 +284,13 @@ watch(showBranchList, (newValue) => {
   flex-shrink: 0;
 }
 
-.ticket-bubble.total { 
-  background: rgba(156, 163, 175, 0.6); 
-}
-
 .ticket-bubble.active { 
-  background: rgba(156, 163, 175, 0.8); 
+  background: rgba(251, 191, 36, 0.4); /* Очень тонкий желтый */
 }
 
 .ticket-bubble.success { 
-  background: rgba(156, 163, 175, 1); 
+  background: rgba(34, 197, 94, 0.4); /* Очень тонкий зеленый */
 }
-
 
 .ticket-text { 
   font-size: 11px; 
