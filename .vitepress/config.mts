@@ -250,6 +250,7 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'Новосибирск', link: '/radar/signal/coffee-points-nsk-2025/launch.md' }
       ]
     },
+    { text: 'Анна', link: '/anna' },
     {
       text: 'Платформа',
       items: [
