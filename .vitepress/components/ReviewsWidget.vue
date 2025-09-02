@@ -4,8 +4,8 @@ import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 // --- НАСТРОЙКИ АНИМАЦИИ ---
 const ROTATION_INTERVAL_MS = 7000 // Общее время цикла (показ + анимация)
 const FADE_DURATION_MS = 1000   // Длительность анимации (исчезновение/появление)
-// -------------------------
 
+// -------------------------
 const establishment = {
   name: 'Корж',
   totalReviews: '4,520',
@@ -22,11 +22,20 @@ const establishment = {
   status: 'Лидер 👑',
   index: 98,
 }
+
+// Статусы тикетов
+const ticketStats = {
+  total: 0,
+  active: 0,
+  success: 0
+}
+
 const showBranchList = ref(false)
 const emit = defineEmits(['close'])
 const widgetContentRef = ref(null)
 
 const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
+
 const goToReviews = (branch) => {
   const service = getRandomService()
   const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
@@ -45,6 +54,7 @@ const rotatingQuestions = [
   "\"Что дало ощущение уюта/суеты?\"",
   "\"Одно слово, которое осталось после визита?\""
 ]
+
 const currentQuestionIndex = ref(0)
 const showText = ref(true)
 let intervalId = null
@@ -89,6 +99,7 @@ watch(showBranchList, (newValue) => {
           </svg>
         </button>
       </div>
+      
       <div class="main-card">
         <div class="establishment-header">
           <h3 class="cafe-name">{{ establishment.name }}</h3>
@@ -126,6 +137,25 @@ watch(showBranchList, (newValue) => {
             </div>
           </div>
         </div>
+
+        <!-- СТРОКА СТАТУСОВ ТИКЕТОВ -->
+        <div class="ticket-status-bar">
+          <span class="ticket-label">Тикеты:</span>
+          <div class="ticket-stats">
+            <div class="ticket-stat">
+              <div class="ticket-bubble total"></div>
+              <span class="ticket-text">Всего: {{ ticketStats.total }}</span>
+            </div>
+            <div class="ticket-stat">
+              <div class="ticket-bubble active"></div>
+              <span class="ticket-text">Актив: {{ ticketStats.active }}</span>
+            </div>
+            <div class="ticket-stat">
+              <div class="ticket-bubble success"></div>
+              <span class="ticket-text">Успешно: {{ ticketStats.success }}</span>
+            </div>
+          </div>
+        </div>
         
         <!-- ПУЛЬТ УПРАВЛЕНИЯ -->
         <div class="control-panel">
@@ -152,7 +182,6 @@ watch(showBranchList, (newValue) => {
             </button>
           </div>
         </div>
-
       </div>
     </div>
     
@@ -220,6 +249,63 @@ watch(showBranchList, (newValue) => {
 .stat-label { font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; letter-spacing: 0.1em; }
 .stat-card:hover .stat-label { transform: scale(1.05); }
 
+/* СТАТУСЫ ТИКЕТОВ */
+.ticket-status-bar { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 8px; 
+  margin: 20px 0 16px 0; 
+  padding: 8px 16px; 
+  background: rgba(255, 255, 255, 0.03); 
+  border-radius: 12px; 
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ticket-label { 
+  font-size: 12px; 
+  font-weight: 600; 
+  color: rgba(255, 255, 255, 0.6); 
+  margin-right: 4px;
+}
+
+.ticket-stats { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+}
+
+.ticket-stat { 
+  display: flex; 
+  align-items: center; 
+  gap: 4px; 
+}
+
+.ticket-bubble { 
+  width: 8px; 
+  height: 8px; 
+  border-radius: 50%; 
+  flex-shrink: 0;
+}
+
+.ticket-bubble.total { 
+  background: rgba(156, 163, 175, 0.8); 
+}
+
+.ticket-bubble.active { 
+  background: rgba(59, 130, 246, 0.8); 
+}
+
+.ticket-bubble.success { 
+  background: rgba(34, 197, 94, 0.8); 
+}
+
+.ticket-text { 
+  font-size: 11px; 
+  font-weight: 500; 
+  color: rgba(255, 255, 255, 0.5); 
+}
+
 /* ПУЛЬТ УПРАВЛЕНИЯ */
 .control-panel { margin-top: 24px; }
 .control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; }
@@ -265,7 +351,23 @@ watch(showBranchList, (newValue) => {
   .stat-label { font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 0.05em; }
   .button-container { flex-direction: column; gap: 8px; }
   .action-button:hover { transform: none; } /* Убираем hover-эффект на мобильных */
+  
+  /* Адаптивность для статусов тикетов */
+  .ticket-status-bar { 
+    flex-direction: column; 
+    gap: 6px; 
+    padding: 10px 12px; 
+  }
+  
+  .ticket-stats { 
+    gap: 16px; 
+  }
+  
+  .ticket-text { 
+    font-size: 10px; 
+  }
 }
+
 @media (max-width: 480px) {
   .reviews-widget-content { padding: 20px; }
   .header-title { font-size: 22px; text-align: left; }
@@ -274,5 +376,19 @@ watch(showBranchList, (newValue) => {
   .branches-subtitle { font-size: 14px; }
   .cafe-name { font-size: 20px; }
   .status-badge { padding: 4px 12px; font-size: 10px; }
+  
+  /* Еще более компактные статусы тикетов для маленьких экранов */
+  .ticket-stats { 
+    gap: 10px; 
+  }
+  
+  .ticket-bubble { 
+    width: 6px; 
+    height: 6px; 
+  }
+  
+  .ticket-text { 
+    font-size: 9px; 
+  }
 }
 </style>
