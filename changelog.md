@@ -7,10 +7,3 @@
 ## Обновления
 
 [19 Августа, 2025](/index/smr/changelog/19-08-2025.md) <Badge type="warning" text="Самара" /> <Badge type="tip" text="public" /> <Badge type="info" text="v1.0.0" />
-
-
-
-[19 Августа, 2025](/index/smr/changelog/19-08-2025.md)
-
-## API методы <Badge type="warning" text="beta" />
-### Конфигурация <Badge type="tip" text="v2.0+" />
