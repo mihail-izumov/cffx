@@ -71,7 +71,7 @@ aside: false
   <div class="project-card">
     <div>
       <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Для гостей</h3>
-      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">**Ваши отзывы становятся энергией роста любимых кофеен.** <br><br> Индекс Роста показывает реальный потенциал каждого места и ваше влияние на его развитие.</p>
+      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);"><strong>Ваши отзывы становятся энергией роста любимых кофеен.<strong/> <br><br> Индекс Роста показывает реальный потенциал каждого места и ваше влияние на его развитие.</p>
     </div>
     <a href="/smr" class="project-button">
       Отправить Сигнал →
