@@ -1,3 +1,9 @@
+---
+prev: false
+next: false
+aside: false
+---
+
 # **Ваш Сигнал Создает Перемены**
 
 <div style="text-align: center; margin: 2rem 0;">
