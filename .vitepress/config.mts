@@ -253,9 +253,10 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Платформа',
       items: [
-        { text: 'Платформа', link: '/brew/run' },   
-        { text: 'Индекс Роста', link: '/tech/index' },      
-        { text: 'Потенциал Роста', link: '/radar/index-smr/calc' },
+        { text: 'Обзор', link: '/brew/run' },   
+        { text: 'Механика Индекса', link: '/tech/index' },     
+        { text: 'Технология Радар', link: '/radar/scale_index' },
+        { text: 'Калькулятор Потенциала', link: '/radar/index-smr/calc' },
         { text: 'Симулятор Роста', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
       ]
     }
