@@ -31,6 +31,7 @@ import IndexPlans from '../components/IndexPlans.vue'
 import TariffFeaturesCalc from '../components/TariffFeaturesCalc.vue'
 import BrewFirst30Days from '../components/BrewFirst30Days.vue'
 import ReviewsWidget from '../components/ReviewsWidget.vue'
+import SignalSteps from '../components/SignalSteps.vue'
 
 export default {
   extends: DefaultTheme,
@@ -68,5 +69,6 @@ export default {
     app.component('TariffFeaturesCalc', TariffFeaturesCalc)
     app.component('BrewFirst30Days', BrewFirst30Days)
     app.component('ReviewsWidget', ReviewsWidget)
+    app.component('SignalSteps', SignalSteps)
   }
 }
