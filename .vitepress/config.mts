@@ -243,22 +243,16 @@ export default defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Сигналы', link: '/signals' },
-    {
-      text: 'Индекс',
-      items: [
-        { text: 'Самара', link: '/smr' },
-        { text: 'Новосибирск', link: '/radar/signal/coffee-points-nsk-2025/launch.md' }
-      ]
-    },
+    { text: 'Кофейни', link: '/smr' },
     { text: 'Анна', link: '/anna' },
     {
-      text: 'Платформа',
+      text: 'Для Бизнеса',
       items: [
-        { text: 'Обзор', link: '/brew/run' },   
+        { text: 'Как это работает', link: '/brew/run' },   
         { text: 'Механика Индекса', link: '/tech/index' },  
-        { text: 'Тикеты Кофеен', link: '/brew/tickets' },
-        { text: 'Технология Радар', link: '/radar/scale_index' },
-        { text: 'Калькулятор Потенциала', link: '/radar/index-smr/calc' },
+        { text: 'Сигналы Гостей', link: '/brew/tickets' },
+        { text: 'Наш Мониторинг', link: '/radar/scale_index' },
+        { text: 'Прогноз Дохода', link: '/radar/index-smr/calc' },
         { text: 'Симулятор Роста', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
       ]
     }
