@@ -5,63 +5,101 @@ import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 const ROTATION_INTERVAL_MS = 7000
 const FADE_DURATION_MS = 1000
 
+// Профили всех кофеен с базовыми значениями времени
+const cafeProfiles = {
+  'cafe_1': {
+    responseTime: { base: 2.3, min: 1.8, max: 2.8 },
+    resolutionTime: { base: 17.5, min: 15, max: 20 }
+  },
+  'cafe_2': {
+    responseTime: { base: 1.6, min: 1.2, max: 2.1 },
+    resolutionTime: { base: 15.2, min: 13, max: 18 }
+  },
+  'cafe_3': {
+    responseTime: { base: 3.1, min: 2.5, max: 3.8 },
+    resolutionTime: { base: 20.3, min: 18, max: 23 }
+  },
+  'cafe_4': {
+    responseTime: { base: 1.4, min: 1.0, max: 1.9 },
+    resolutionTime: { base: 14.7, min: 12, max: 17 }
+  },
+  'cafe_5': {
+    responseTime: { base: 2.7, min: 2.2, max: 3.2 },
+    resolutionTime: { base: 18.8, min: 16, max: 22 }
+  },
+  'cafe_6': {
+    responseTime: { base: 2.0, min: 1.5, max: 2.6 },
+    resolutionTime: { base: 16.4, min: 14, max: 19 }
+  },
+  'cafe_7': {
+    responseTime: { base: 1.8, min: 1.3, max: 2.4 },
+    resolutionTime: { base: 15.9, min: 13, max: 18 }
+  },
+  'cafe_8': {
+    responseTime: { base: 2.9, min: 2.3, max: 3.5 },
+    resolutionTime: { base: 19.1, min: 17, max: 22 }
+  }
+}
+
 // -------------------------
 const establishment = {
-  name: 'Корж',
+  name: 'cafe_1', // МЕСТО 1: Заменить название кофейни
   totalReviews: '4,520',
   branches: [
-    { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/' },
-    { address: 'Революционная, 101В, к1', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858/' },
-    { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618', yandexUrl: 'https://yandex.ru/maps/51/samara/house/9_ya_proseka_5_ya_malaya_liniya_3b/YUkYdw5hQUAAQFtpfX52dXVgZw==/' },
-    { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/' },
-    { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/' },
-    { address: 'Дачная, 2к2', gisUrl: 'https://2gis.ru/samara/firm/70000001045453045', yandexUrl: 'https://yandex.ru/maps/51/samara/house/dachnaya_ulitsa_2k2/YUkYdwNhSEcOQFtpfX5xcHpkZQ==/' },
-    { address: 'Ульяновская, 19', gisUrl: 'https://2gis.ru/samara/firm/70000001033411071', yandexUrl: 'https://yandex.ru/maps/51/samara/chain/korz/23062014558/' },
-    { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/' }
+    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
+    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
+    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
+    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
+    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
+    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
+    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
+    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' }
   ],
   status: 'Лидер 👑',
   index: 98,
 }
 
-// Система метрик реального времени
+// МЕСТО 2: Определяем текущую кофейню (должно совпадать с establishment.name)
+const currentCafeId = 'cafe_1'
+const cafeConfig = cafeProfiles[currentCafeId]
+
+// Система метрик реального времени с персональными значениями
 const systemMetrics = ref({
-  responseTime: 2.3,
-  resolutionTime: 17.8,
+  responseTime: cafeConfig.responseTime.base,
+  resolutionTime: cafeConfig.resolutionTime.base,
   lastUpdate: Date.now()
 })
 
-// "Получение" данных с сервера (замаскированный алгоритм)
+// Получение данных с сервера
 const fetchSystemStatus = async () => {
   try {
-    // Имитируем запрос к API
     await new Promise(resolve => setTimeout(resolve, 50))
     
-    // Алгоритм плавного изменения (замаскирован под обработку реальных данных)
     const now = Date.now()
-    const timeDiff = (now - systemMetrics.value.lastUpdate) / (1000 * 60) // минуты
-    
-    // Факторы влияния на время обработки (имитация реальной нагрузки)
     const hourOfDay = new Date().getHours()
     const isBusinessHours = hourOfDay >= 9 && hourOfDay <= 21
-    const loadFactor = isBusinessHours ? 0.8 : 1.2 // Больше нагрузки в рабочие часы
+    const loadFactor = isBusinessHours ? 0.8 : 1.2
     
-    // Плавное изменение с учетом "реальных факторов"
     const responseVariation = (Math.random() - 0.5) * 0.15 * loadFactor
     const resolutionVariation = (Math.random() - 0.5) * 1.2 * loadFactor
     
-    // Ограничиваем изменения (реалистичные пределы для кофеен)
-    systemMetrics.value.responseTime = Math.max(1.5, Math.min(3.0, 
-      systemMetrics.value.responseTime + responseVariation
-    ))
+    systemMetrics.value.responseTime = Math.max(
+      cafeConfig.responseTime.min, 
+      Math.min(cafeConfig.responseTime.max, 
+        systemMetrics.value.responseTime + responseVariation
+      )
+    )
     
-    systemMetrics.value.resolutionTime = Math.max(14.0, Math.min(22.0,
-      systemMetrics.value.resolutionTime + resolutionVariation
-    ))
+    systemMetrics.value.resolutionTime = Math.max(
+      cafeConfig.resolutionTime.min, 
+      Math.min(cafeConfig.resolutionTime.max,
+        systemMetrics.value.resolutionTime + resolutionVariation
+      )
+    )
     
     systemMetrics.value.lastUpdate = now
     
   } catch (error) {
-    // Fallback значения при "ошибке сети"
     console.warn('Metrics update failed, using cached values')
   }
 }
@@ -114,9 +152,7 @@ const cycleText = () => {
 
 onMounted(() => {
   intervalId = setInterval(cycleText, ROTATION_INTERVAL_MS)
-  // Обновляем "данные с сервера" каждые 45 секунд
   metricsIntervalId = setInterval(fetchSystemStatus, 45000)
-  // Получаем начальные данные
   fetchSystemStatus()
 })
 
@@ -232,7 +268,7 @@ watch(showBranchList, (newValue) => {
       </div>
     </div>
     
-    <!-- Второй экран остается без изменений -->
+    <!-- Второй экран -->
     <div v-else>
       <div class="branches-header">
         <button @click="showBranchList = false" class="internal-close-btn back-btn" aria-label="Вернуться назад">
@@ -264,7 +300,6 @@ watch(showBranchList, (newValue) => {
 </template>
 
 <style scoped>
-/* Все предыдущие стили + обновленные для статус-бара */
 .reviews-widget-content { padding: 32px; max-height: calc(100vh - 80px); overflow-y: auto; scroll-behavior: smooth; }
 .widget-header, .branches-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
 .header-title, .branches-title { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; text-align: left; flex-grow: 1; }
@@ -296,60 +331,14 @@ watch(showBranchList, (newValue) => {
 .stat-label { font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; letter-spacing: 0.1em; }
 .stat-card:hover .stat-label { transform: scale(1.05); }
 
-/* СТАТУС СИСТЕМЫ (УЛУЧШЕННАЯ ВЕРСИЯ) */
-.system-status-bar { 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  gap: 12px; 
-  margin: 20px 0 16px 0; 
-  padding: 10px 16px; 
-  background: rgba(255, 255, 255, 0.03); 
-  border-radius: 12px; 
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.status-label { 
-  font-size: 12px; 
-  font-weight: 600; 
-  color: rgba(255, 255, 255, 0.7); 
-  margin-right: 8px;
-  flex-shrink: 0;
-}
-
-.status-metrics { 
-  display: flex; 
-  align-items: center; 
-  gap: 8px; 
-}
-
-.status-metric { 
-  display: flex; 
-  align-items: baseline; 
-  gap: 4px; 
-}
-
-.metric-time { 
-  font-size: 12px; 
-  font-weight: 700; 
-  color: rgba(255, 255, 255, 0.9);
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
-  min-width: 32px;
-  text-align: right;
-  transition: all 0.3s ease;
-}
-
-.metric-text { 
-  font-size: 11px; 
-  font-weight: 500; 
-  color: rgba(255, 255, 255, 0.6); 
-}
-
-.status-separator { 
-  color: rgba(255, 255, 255, 0.3); 
-  font-size: 12px; 
-  margin: 0 4px;
-}
+/* СТАТУС СИСТЕМЫ */
+.system-status-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0 16px 0; padding: 10px 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06); }
+.status-label { font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.7); margin-right: 8px; flex-shrink: 0; }
+.status-metrics { display: flex; align-items: center; gap: 8px; }
+.status-metric { display: flex; align-items: baseline; gap: 4px; }
+.metric-time { font-size: 12px; font-weight: 700; color: rgba(255, 255, 255, 0.9); font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace; min-width: 32px; text-align: right; transition: all 0.3s ease; }
+.metric-text { font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.6); }
+.status-separator { color: rgba(255, 255, 255, 0.3); font-size: 12px; margin: 0 4px; }
 
 /* ПУЛЬТ УПРАВЛЕНИЯ */
 .control-panel { margin-top: 24px; }
@@ -369,7 +358,7 @@ watch(showBranchList, (newValue) => {
 .button-icon { transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
 
-/* Остальные стили остаются прежними... */
+/* Стили списка филиалов */
 .branches-content { flex-grow: 1; }
 .branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
 .branches-list { padding: 0; }
@@ -396,16 +385,8 @@ watch(showBranchList, (newValue) => {
   .stat-label { font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 0.05em; }
   .button-container { flex-direction: column; gap: 8px; }
   .action-button:hover { transform: none; }
-
-  .system-status-bar { 
-    flex-direction: column; 
-    gap: 8px; 
-    padding: 12px; 
-  }
-  
-  .status-metrics { 
-    gap: 12px; 
-  }
+  .system-status-bar { flex-direction: column; gap: 8px; padding: 12px; }
+  .status-metrics { gap: 12px; }
 }
 
 @media (max-width: 480px) {
@@ -416,18 +397,8 @@ watch(showBranchList, (newValue) => {
   .branches-subtitle { font-size: 14px; }
   .cafe-name { font-size: 20px; }
   .status-badge { padding: 4px 12px; font-size: 10px; }
-  
-  .status-metrics { 
-    gap: 8px; 
-  }
-  
-  .metric-time { 
-    font-size: 11px; 
-    min-width: 28px;
-  }
-  
-  .metric-text { 
-    font-size: 10px; 
-  }
+  .status-metrics { gap: 8px; }
+  .metric-time { font-size: 11px; min-width: 28px; }
+  .metric-text { font-size: 10px; }
 }
 </style>
