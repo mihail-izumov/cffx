@@ -27,24 +27,10 @@ features:
 ---
 
 <style>
-:root {
-  --vp-home-hero-image-background-image: linear-gradient(
-    -45deg, 
-    rgba(0,0,0,0.4) 50%, 
-    rgba(0,0,0,0.4) 50%
-  ), url('/main-ban.jpg');
-  --vp-home-hero-image-filter: blur(44px);
-}
-
-@media (min-width: 640px) {
-  :root {
-    --vp-home-hero-image-filter: blur(56px);
-  }
-}
-
-@media (min-width: 960px) {
-  :root {
-    --vp-home-hero-image-filter: blur(68px);
-  }
+body {
+  background-image: url('/main-ban.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 </style>
