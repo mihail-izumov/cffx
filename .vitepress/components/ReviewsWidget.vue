@@ -7,35 +7,35 @@ const FADE_DURATION_MS = 1000
 
 // Профили всех кофеен с базовыми значениями времени
 const cafeProfiles = {
-  'cafe_1': {
+  'корж': {
     responseTime: { base: 2.3, min: 1.8, max: 2.8 },
     resolutionTime: { base: 17.5, min: 15, max: 20 }
   },
-  'cafe_2': {
+  'cafe_1': {
     responseTime: { base: 1.6, min: 1.2, max: 2.1 },
     resolutionTime: { base: 15.2, min: 13, max: 18 }
   },
-  'cafe_3': {
+  'cafe_2': {
     responseTime: { base: 3.1, min: 2.5, max: 3.8 },
     resolutionTime: { base: 20.3, min: 18, max: 23 }
   },
-  'cafe_4': {
+  'cafe_3': {
     responseTime: { base: 1.4, min: 1.0, max: 1.9 },
     resolutionTime: { base: 14.7, min: 12, max: 17 }
   },
-  'cafe_5': {
+  'cafe_4': {
     responseTime: { base: 2.7, min: 2.2, max: 3.2 },
     resolutionTime: { base: 18.8, min: 16, max: 22 }
   },
-  'cafe_6': {
+  'cafe_5': {
     responseTime: { base: 2.0, min: 1.5, max: 2.6 },
     resolutionTime: { base: 16.4, min: 14, max: 19 }
   },
-  'cafe_7': {
+  'cafe_6': {
     responseTime: { base: 1.8, min: 1.3, max: 2.4 },
     resolutionTime: { base: 15.9, min: 13, max: 18 }
   },
-  'cafe_8': {
+  'cafe_7': {
     responseTime: { base: 2.9, min: 2.3, max: 3.5 },
     resolutionTime: { base: 19.1, min: 17, max: 22 }
   }
@@ -43,25 +43,33 @@ const cafeProfiles = {
 
 // -------------------------
 const establishment = {
-  name: 'cafe_1', // МЕСТО 1: Заменить название кофейни
+  name: 'Корж', // МЕСТО 1: Заменить название кофейни
   totalReviews: '4,520',
   branches: [
-    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
-    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
-    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
-    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
-    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
-    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
-    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' },
-    { address: 'Адрес будет добавлен позже', gisUrl: '#', yandexUrl: '#' }
+    { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/' },
+    { address: 'Революционная, 101В, к1', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858/' },
+    { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618', yandexUrl: 'https://yandex.ru/maps/51/samara/house/9_ya_proseka_5_ya_malaya_liniya_3b/YUkYdw5hQUAAQFtpfX52dXVgZw==/' },
+    { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/' },
+    { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/' },
+    { address: 'Дачная, 2к2', gisUrl: 'https://2gis.ru/samara/firm/70000001045453045', yandexUrl: 'https://yandex.ru/maps/51/samara/house/dachnaya_ulitsa_2k2/YUkYdwNhSEcOQFtpfX5xcHpkZQ==/' },
+    { address: 'Ульяновская, 19', gisUrl: 'https://2gis.ru/samara/firm/70000001033411071', yandexUrl: 'https://yandex.ru/maps/51/samara/chain/korz/23062014558/' },
+    { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/' }
   ],
   status: 'Лидер 👑',
   index: 98,
 }
 
-// МЕСТО 2: Определяем текущую кофейню (должно совпадать с establishment.name)
-const currentCafeId = 'cafe_1'
-const cafeConfig = cafeProfiles[currentCafeId]
+// Функция получения конфига кофейни с фоллбэком
+const getCafeConfig = (cafeName) => {
+  const normalizedName = cafeName.toLowerCase()
+  return cafeProfiles[normalizedName] || {
+    responseTime: { base: 2.5, min: 2.0, max: 3.0 },
+    resolutionTime: { base: 18.0, min: 15, max: 21 }
+  }
+}
+
+// МЕСТО 2: Автоматически определяется из establishment.name
+const cafeConfig = getCafeConfig(establishment.name)
 
 // Система метрик реального времени с персональными значениями
 const systemMetrics = ref({
@@ -75,6 +83,9 @@ const fetchSystemStatus = async () => {
   try {
     await new Promise(resolve => setTimeout(resolve, 50))
     
+    // Получаем актуальный конфиг для текущей кофейни
+    const currentConfig = getCafeConfig(establishment.name)
+    
     const now = Date.now()
     const hourOfDay = new Date().getHours()
     const isBusinessHours = hourOfDay >= 9 && hourOfDay <= 21
@@ -84,15 +95,15 @@ const fetchSystemStatus = async () => {
     const resolutionVariation = (Math.random() - 0.5) * 1.2 * loadFactor
     
     systemMetrics.value.responseTime = Math.max(
-      cafeConfig.responseTime.min, 
-      Math.min(cafeConfig.responseTime.max, 
+      currentConfig.responseTime.min, 
+      Math.min(currentConfig.responseTime.max, 
         systemMetrics.value.responseTime + responseVariation
       )
     )
     
     systemMetrics.value.resolutionTime = Math.max(
-      cafeConfig.resolutionTime.min, 
-      Math.min(cafeConfig.resolutionTime.max,
+      currentConfig.resolutionTime.min, 
+      Math.min(currentConfig.resolutionTime.max,
         systemMetrics.value.resolutionTime + resolutionVariation
       )
     )
@@ -149,6 +160,14 @@ const cycleText = () => {
     showText.value = true
   }, FADE_DURATION_MS)
 }
+
+// Отслеживаем смену кофейни и сбрасываем метрики
+watch(() => establishment.name, (newName) => {
+  const newConfig = getCafeConfig(newName)
+  systemMetrics.value.responseTime = newConfig.responseTime.base
+  systemMetrics.value.resolutionTime = newConfig.resolutionTime.base
+  systemMetrics.value.lastUpdate = Date.now()
+})
 
 onMounted(() => {
   intervalId = setInterval(cycleText, ROTATION_INTERVAL_MS)
