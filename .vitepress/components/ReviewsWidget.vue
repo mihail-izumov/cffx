@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 
 // --- НАСТРОЙКИ АНИМАЦИИ ---
 const ROTATION_INTERVAL_MS = 7000 // Общее время цикла (показ + анимация)
@@ -23,11 +23,24 @@ const establishment = {
   index: 98,
 }
 
-// Статусы тикетов
-const ticketStats = {
-  total: 0,
-  active: 0,
-  success: 0
+// Динамические метрики времени (как у Додо)
+const responseTime = ref(2.5) // часы до ответа
+const resolutionTime = ref(18) // часы до решения
+
+// Функция для обновления метрик (имитация реальных данных)
+const updateMetrics = () => {
+  // Время ответа колеблется от 1 до 3 часов
+  responseTime.value = Math.random() * 2 + 1
+  // Время решения колеблется от 12 до 24 часов  
+  resolutionTime.value = Math.random() * 12 + 12
+}
+
+// Форматирование времени
+const formatTime = (hours) => {
+  if (hours < 1) {
+    return `${Math.round(hours * 60)}мин`
+  }
+  return `${hours.toFixed(1)}ч`
 }
 
 const showBranchList = ref(false)
@@ -58,6 +71,7 @@ const rotatingQuestions = [
 const currentQuestionIndex = ref(0)
 const showText = ref(true)
 let intervalId = null
+let metricsIntervalId = null
 
 const cycleText = () => {
   showText.value = false
@@ -69,10 +83,13 @@ const cycleText = () => {
 
 onMounted(() => {
   intervalId = setInterval(cycleText, ROTATION_INTERVAL_MS)
+  // Обновляем метрики каждые 30 секунд (как у Додо)
+  metricsIntervalId = setInterval(updateMetrics, 30000)
 })
 
 onUnmounted(() => {
   clearInterval(intervalId)
+  clearInterval(metricsIntervalId)
 })
 
 watch(showBranchList, (newValue) => {
@@ -138,17 +155,18 @@ watch(showBranchList, (newValue) => {
           </div>
         </div>
 
-        <!-- СТРОКА СТАТУСОВ ТИКЕТОВ -->
-        <div class="ticket-status-bar">
-          <span class="ticket-label">Тикеты ({{ ticketStats.total }}):</span>
-          <div class="ticket-stats">
-            <div class="ticket-stat">
-              <div class="ticket-bubble active"></div>
-              <span class="ticket-text">Актив: {{ ticketStats.active }}</span>
+        <!-- СТРОКА СТАТУСОВ СИСТЕМЫ -->
+        <div class="system-status-bar">
+          <span class="status-label">🟢 На связи:</span>
+          <div class="status-metrics">
+            <div class="status-metric">
+              <span class="metric-time">{{ formatTime(responseTime) }}</span>
+              <span class="metric-text">→ уточнение</span>
             </div>
-            <div class="ticket-stat">
-              <div class="ticket-bubble success"></div>
-              <span class="ticket-text">Успешно: {{ ticketStats.success }}</span>
+            <div class="status-separator">•</div>
+            <div class="status-metric">
+              <span class="metric-time">{{ formatTime(resolutionTime) }}</span>
+              <span class="metric-text">→ решение</span>
             </div>
           </div>
         </div>
@@ -213,7 +231,7 @@ watch(showBranchList, (newValue) => {
 </template>
 
 <style scoped>
-/* Все стили до кнопок остаются неизменными */
+/* Все предыдущие стили остаются */
 .reviews-widget-content { padding: 32px; max-height: calc(100vh - 80px); overflow-y: auto; scroll-behavior: smooth; }
 .widget-header, .branches-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
 .header-title, .branches-title { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; text-align: left; flex-grow: 1; }
@@ -245,57 +263,58 @@ watch(showBranchList, (newValue) => {
 .stat-label { font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; letter-spacing: 0.1em; }
 .stat-card:hover .stat-label { transform: scale(1.05); }
 
-/* СТАТУСЫ ТИКЕТОВ */
-.ticket-status-bar { 
+/* СТАТУСЫ СИСТЕМЫ (КАК У ДОДО) */
+.system-status-bar { 
   display: flex; 
   align-items: center; 
   justify-content: center; 
   gap: 12px; 
   margin: 20px 0 16px 0; 
-  padding: 8px 16px; 
+  padding: 10px 16px; 
   background: rgba(255, 255, 255, 0.03); 
   border-radius: 12px; 
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.ticket-label { 
+.status-label { 
   font-size: 12px; 
   font-weight: 600; 
-  color: rgba(255, 255, 255, 0.6); 
+  color: rgba(255, 255, 255, 0.7); 
   margin-right: 8px;
-}
-
-.ticket-stats { 
-  display: flex; 
-  align-items: center; 
-  gap: 16px; 
-}
-
-.ticket-stat { 
-  display: flex; 
-  align-items: center; 
-  gap: 4px; 
-}
-
-.ticket-bubble { 
-  width: 8px; 
-  height: 8px; 
-  border-radius: 50%; 
   flex-shrink: 0;
 }
 
-.ticket-bubble.active { 
-  background: rgba(251, 191, 36, 0.4); /* Очень тонкий желтый */
+.status-metrics { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
 }
 
-.ticket-bubble.success { 
-  background: rgba(34, 197, 94, 0.4); /* Очень тонкий зеленый */
+.status-metric { 
+  display: flex; 
+  align-items: baseline; 
+  gap: 4px; 
 }
 
-.ticket-text { 
+.metric-time { 
+  font-size: 12px; 
+  font-weight: 700; 
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  min-width: 28px;
+  text-align: right;
+}
+
+.metric-text { 
   font-size: 11px; 
   font-weight: 500; 
-  color: rgba(255, 255, 255, 0.5); 
+  color: rgba(255, 255, 255, 0.6); 
+}
+
+.status-separator { 
+  color: rgba(255, 255, 255, 0.3); 
+  font-size: 12px; 
+  margin: 0 4px;
 }
 
 /* ПУЛЬТ УПРАВЛЕНИЯ */
@@ -316,7 +335,7 @@ watch(showBranchList, (newValue) => {
 .button-icon { transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
 
-/* Стили списка филиалов */
+/* Остальные стили филиалов... */
 .branches-content { flex-grow: 1; }
 .branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
 .branches-list { padding: 0; }
@@ -342,21 +361,17 @@ watch(showBranchList, (newValue) => {
   .stat-value { font-size: 2rem; font-weight: 600; margin: 0; }
   .stat-label { font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 0.05em; }
   .button-container { flex-direction: column; gap: 8px; }
-  .action-button:hover { transform: none; } /* Убираем hover-эффект на мобильных */
-  
-  /* Адаптивность для статусов тикетов */
-  .ticket-status-bar { 
+  .action-button:hover { transform: none; }
+
+  /* Адаптивность для статус-бара */
+  .system-status-bar { 
     flex-direction: column; 
-    gap: 6px; 
-    padding: 10px 12px; 
+    gap: 8px; 
+    padding: 12px; 
   }
   
-  .ticket-stats { 
-    gap: 16px; 
-  }
-  
-  .ticket-text { 
-    font-size: 10px; 
+  .status-metrics { 
+    gap: 12px; 
   }
 }
 
@@ -369,18 +384,17 @@ watch(showBranchList, (newValue) => {
   .cafe-name { font-size: 20px; }
   .status-badge { padding: 4px 12px; font-size: 10px; }
   
-  /* Еще более компактные статусы тикетов для маленьких экранов */
-  .ticket-stats { 
-    gap: 10px; 
+  .status-metrics { 
+    gap: 8px; 
   }
   
-  .ticket-bubble { 
-    width: 6px; 
-    height: 6px; 
+  .metric-time { 
+    font-size: 11px; 
+    min-width: 24px;
   }
   
-  .ticket-text { 
-    font-size: 9px; 
+  .metric-text { 
+    font-size: 10px; 
   }
 }
 </style>
