@@ -7,7 +7,7 @@
   display: none !important;
 }
 
-/* Точечное свечение только за изображением чашки */
+/* УСИЛЕННОЕ свечение за изображением чашки */
 .VPHero .VPImage {
   position: relative;
 }
@@ -15,80 +15,59 @@
 .VPHero .VPImage::before {
   content: '';
   position: absolute;
+  top: -40%;
+  left: -40%;
+  right: -40%;
+  bottom: -40%;
+  /* Более яркое и заметное свечение */
+  background: 
+    radial-gradient(ellipse at center, rgba(34, 197, 94, 0.9) 0%, rgba(34, 197, 94, 0.4) 40%, transparent 70%),
+    radial-gradient(ellipse at 60% 30%, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.3) 50%, transparent 80%),
+    radial-gradient(ellipse at 30% 70%, rgba(22, 163, 74, 0.7) 0%, rgba(22, 163, 74, 0.2) 60%, transparent 90%);
+  filter: blur(60px);
+  z-index: -1;
+  animation: coffeeGlow 4s ease-in-out infinite alternate;
+}
+
+/* Дополнительное внутреннее свечение */
+.VPHero .VPImage::after {
+  content: '';
+  position: absolute;
   top: -20%;
   left: -20%;
   right: -20%;
   bottom: -20%;
-  /* Форма чашки с молнией - используем clip-path */
   background: 
-    radial-gradient(ellipse at center, rgba(34, 197, 94, 0.8) 0%, transparent 70%),
-    radial-gradient(ellipse at 60% 40%, rgba(22, 163, 74, 0.6) 0%, transparent 50%),
-    radial-gradient(ellipse at 30% 80%, rgba(21, 128, 61, 0.4) 0%, transparent 60%);
-  filter: blur(40px);
+    radial-gradient(ellipse at center, rgba(34, 197, 94, 0.6) 0%, transparent 60%);
+  filter: blur(30px);
   z-index: -1;
-  /* Анимация пульсации для эффекта энергии */
-  animation: coffeeGlow 3s ease-in-out infinite alternate;
+  animation: innerGlow 3s ease-in-out infinite alternate-reverse;
 }
 
-/* Дополнительное свечение в форме молнии */
-.VPHero .VPImage::after {
-  content: '';
-  position: absolute;
-  top: -10%;
-  left: 10%;
-  width: 80%;
-  height: 120%;
-  background: linear-gradient(
-    45deg,
-    transparent 45%,
-    rgba(34, 197, 94, 0.6) 47%,
-    rgba(34, 197, 94, 0.8) 48%,
-    rgba(34, 197, 94, 0.6) 49%,
-    transparent 51%
-  );
-  /* Форма молнии через clip-path */
-  clip-path: polygon(
-    50% 0%, 
-    60% 35%, 
-    98% 35%, 
-    68% 57%, 
-    79% 91%, 
-    50% 70%, 
-    21% 91%, 
-    32% 57%, 
-    2% 35%, 
-    40% 35%
-  );
-  filter: blur(15px);
-  opacity: 0.7;
-  z-index: -1;
-  animation: lightningGlow 2s ease-in-out infinite alternate;
-}
-
-/* Анимации */
+/* Анимации для свечения */
 @keyframes coffeeGlow {
   0% {
-    transform: scale(1);
-    opacity: 0.6;
+    transform: scale(0.9);
+    opacity: 0.7;
   }
   100% {
-    transform: scale(1.1);
-    opacity: 0.9;
+    transform: scale(1.2);
+    opacity: 1;
   }
 }
 
-@keyframes lightningGlow {
+@keyframes innerGlow {
   0% {
     opacity: 0.4;
-    transform: rotate(-2deg);
+    transform: scale(1.1);
   }
   100% {
     opacity: 0.8;
-    transform: rotate(2deg);
+    transform: scale(1.3);
   }
 }
 
-/* Улучшаем заголовок */
+/* Заголовок в зеленом */
 .VPHero .name {
   background: linear-gradient(120deg, #22c55e 30%, #16a34a 70%) !important;
   -webkit-background-clip: text !important;
@@ -97,28 +76,34 @@
   text-shadow: 0 0 20px rgba(34, 197, 94, 0.3) !important;
 }
 
-/* Кнопка в зеленом стиле */
+/* ИСПРАВЛЕННАЯ логика кнопки */
 .VPButton.brand {
   background: linear-gradient(135deg, #22c55e, #16a34a) !important;
   border: none !important;
   box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3) !important;
+  /* Текст в обычном состоянии - слегка приглушенный */
+  color: rgba(255, 255, 255, 0.85) !important;
+  transition: all 0.3s ease !important;
 }
 
 .VPButton.brand:hover {
   background: linear-gradient(135deg, #16a34a, #15803d) !important;
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4) !important;
-  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5) !important;
+  transform: translateY(-2px) !important;
+  /* Текст при ховере - максимально контрастный */
+  color: rgba(255, 255, 255, 1) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Медиазапросы для адаптивности */
+/* Адаптивность */
 @media (min-width: 640px) {
   .VPHero .VPImage::before {
-    filter: blur(50px);
+    filter: blur(80px);
   }
 }
 
 @media (min-width: 960px) {
   .VPHero .VPImage::before {
-    filter: blur(60px);
+    filter: blur(100px);
   }
 }
