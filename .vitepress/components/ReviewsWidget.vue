@@ -289,16 +289,17 @@ watch(showBranchList, (newValue) => {
 }
 
 .ticket-bubble.total { 
-  background: rgba(156, 163, 175, 0.8); 
+  background: rgba(156, 163, 175, 0.6); 
 }
 
 .ticket-bubble.active { 
-  background: rgba(59, 130, 246, 0.8); 
+  background: rgba(156, 163, 175, 0.8); 
 }
 
 .ticket-bubble.success { 
-  background: rgba(34, 197, 94, 0.8); 
+  background: rgba(156, 163, 175, 1); 
 }
+
 
 .ticket-text { 
   font-size: 11px; 
