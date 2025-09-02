@@ -80,7 +80,7 @@ watch(showBranchList, (newValue) => {
     <div v-if="!showBranchList">
       <div class="widget-header">
         <div>
-          <h2 class="header-title">Поделитесь Зарядом</h2>
+          <h2 class="header-title">Поделитесь Сигналом</h2>
           <p class="header-subtitle">Каждая чашка кофе делает Вашу любимую кофейню еще лучше.</p>
         </div>
         <button @click="$emit('close')" class="internal-close-btn close-btn" aria-label="Закрыть окно">
