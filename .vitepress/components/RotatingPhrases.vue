@@ -44,26 +44,26 @@ onUnmounted(() => {
   в стиле интерфейсов Perplexity/ChatGPT.
 */
 .rotating-phrase-container {
-  background-color: var(--vp-c-bg-soft); /* Чуть более светлый фон */
-  border: 1px solid var(--vp-c-border);   /* Тонкая рамка */
-  border-radius: 12px;                    /* Скругленные углы */
-  padding: 1rem 1.5rem;                   /* Внутренние отступы */
-  margin: 1rem 0;                         /* Внешние отступы для отделения от другого контента */
-  min-height: 100px;                      /* Высота, чтобы блок не "прыгал" */
+  background-color: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
+  border-radius: 12px;
+  padding: 0 1.5rem;                      /* Убираем вертикальный padding, чтобы управлять высотой через min-height */
+  margin: 1rem 0;
+  min-height: 70px;                       /* Уменьшенная высота блока */
   display: flex;
-  align-items: center;                    /* Вертикальное выравнивание по центру */
-  text-align: left;                       /* Выравнивание текста по левому краю */
+  align-items: center;
+  text-align: left;
 }
 
 /* Стили для самого текста фразы */
 .rotating-phrase {
-  font-size: 1rem;                      /* Уменьшенный размер шрифта (стандартно 16px) */
-  font-weight: 500;
-  color: var(--vp-c-text-2);            /* Слегка приглушенный цвет текста */
-  line-height: 1.6;
+  font-size: 0.9rem;                      /* Уменьшенный размер шрифта */
+  font-weight: 600;                       /* Увеличенная жирность (полужирный) */
+  color: var(--vp-c-text-2);
+  line-height: 1.5;                       /* Слегка уменьшенная высота строки для компактности */
   margin: 0;
   padding: 0;
-  width: 100%;                          /* Занимает всю ширину контейнера */
+  width: 100%;
 }
 
 /* Анимация затухания */
@@ -79,7 +79,6 @@ onUnmounted(() => {
 
 .fade-leave-active {
   position: absolute;
-  /* Убираем 'left' и 'right' и задаем 'width', чтобы избежать проблем с выравниванием */
-  width: calc(100% - 3rem); /* Ширина контейнера минус паддинги */
+  width: calc(100% - 3rem);
 }
 </style>
