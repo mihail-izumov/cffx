@@ -9,7 +9,7 @@ hero:
     alt: Умная Кофейня
   actions:
     - theme: brand
-      text: Отправить Сигнал
+      text: Отправить ⚡ Сигнал
       link: /smr
 features:
   - title: Самара
