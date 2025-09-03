@@ -124,13 +124,11 @@ export default defineConfig({
     :root{--vp-c-brand-1:#347b6c;--vp-c-brand-2:#C5F946;--vp-c-brand-3:#347b6c;--vp-c-brand-soft:rgba(52,123,108,.14)}
     .VPNavBarTitle .logo{height:32px!important;width:auto!important}
     
-    /* Исправление навигации и цветов */
-    .VPNavBarMenuGroup .VPNavBarMenuLink:hover{color:var(--vp-c-brand-2)!important}
-    .VPNavBarMenuGroup .VPNavBarMenuLink.active{color:var(--vp-c-brand-2)!important}
-    .VPNavBarMenuGroup .VPFlyout .VPMenuGroup .title{color:var(--vp-c-brand-2)!important}
-    .VPNavBarMenuGroup .VPFlyout .VPMenuItem .text{color:var(--vp-c-text-1)!important}
-    .VPNavBarMenuGroup .VPFlyout .VPMenuItem:hover .text{color:var(--vp-c-brand-2)!important}
-    .VPFlyout{background-color:var(--vp-c-bg-alt)!important;border:1px solid var(--vp-c-divider)!important}
+    /* Исправление навигации - убираем агрессивные стили */
+    .VPNavBarMenuLink:hover{color:var(--vp-c-brand-2)!important}
+    .VPNavBarMenuLink.active{color:var(--vp-c-brand-2)!important}
+    .VPMenuGroup .title{color:var(--vp-c-brand-2)!important}
+    .VPMenuItem:hover .text{color:var(--vp-c-brand-2)!important}
     
     /* Телеграм иконка */
     .VPSocialLinks .VPSocialLink:first-child svg{fill:var(--vp-c-brand-2)!important}
@@ -139,13 +137,13 @@ export default defineConfig({
     @media (min-width:961px){
       .VPNavBar .content{gap:0!important}
       .VPNavBarMenu{margin-right:0!important}
-      .VPNavBarSocialLinks{min-width:auto!important;justify-content:flex-end!important;gap:16px!important;margin-left:0!important;flex-shrink:0!important;display:flex!important}
+      .VPNavBarSocialLinks{min-width:auto!important;justify-content:flex-end!important;gap:16px!important;margin-left:0!important;flex-shrink:0!important}
       .VPSocialLink:not(:last-child){margin-right:4px!important}
     }
     @media (max-width:960px) and (min-width:769px){
       .VPNavBar .content{gap:0!important}
       .VPNavBarMenu{margin-right:0!important}
-      .VPNavBarSocialLinks{margin-left:4px!important;gap:12px!important;flex-shrink:0!important;display:flex!important}
+      .VPNavBarSocialLinks{margin-left:4px!important;gap:12px!important;flex-shrink:0!important}
       .VPSocialLink:not(:last-child){margin-right:2px!important}
     }
     @media (max-width:768px){
@@ -163,9 +161,9 @@ export default defineConfig({
       .dot-separator{display:none!important}
     }
     
-    /* Исправленные стили для кнопок */
+    /* Стили кнопок - упрощенные */
     .VPSocialLink .vpi-social-github{display:none!important}
-    .VPSocialLink{width:auto!important;height:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;text-decoration:none!important}
+    .VPSocialLink{width:auto!important;height:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important}
     .VPSocialLink[aria-label="login-link"]::after{content:"Войти";font-size:14px;color:var(--vp-c-text-2);padding:6px 12px;border:1px solid var(--vp-c-divider);border-radius:6px;background:transparent;transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0}
     .VPSocialLink[aria-label="login-link"]:hover::after{background:var(--vp-c-bg-soft);border-color:var(--vp-c-brand-2);color:var(--vp-c-text-1)}
     .VPSocialLink[aria-label="signal-link"]::after{content:"⚡ Отправить Сигнал";font-size:14px;color:white;padding:8px 16px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:var(--vp-c-brand-1);transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0;font-weight:600}
@@ -413,6 +411,7 @@ function sidebarClients(): DefaultTheme.SidebarItem[] {
         { text: 'Milimon', link: '/clients/milimon.md' },
         { text: 'SM Live', link: '/clients/sm-live' },
         { text: 'SMSTRETCHING', link: '/clients/smstretching' },
+        { text: 'СУПЕРЛЕНД', link: '/clients/superland' },
         { text: 'WOODLED', link: '/clients/woodled' },
         { text: 'World Plastics Summit 2022', link: '/clients/world-plastics-summit-2022' },
       ]
