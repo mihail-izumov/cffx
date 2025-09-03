@@ -285,10 +285,11 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Для Бизнеса',
       items: [
-        { text: 'Умная Кофейня', link: '/brew/run' },   
+        { text: 'Возможности', link: '/brew/run' },  
+        { text: 'Подключиться', link: '/brew/membership' },
         { text: 'Механика Индекса', link: '/brew/index-specs' },  
         { text: 'Сигналы Гостей', link: '/brew/tickets' },
-        { text: 'Наш Мониторинг', link: '/radar/scale_index' },
+        { text: 'Анализ конкурентов', link: '/radar/scale_index' },
         { text: 'Прогноз Дохода', link: '/brew/calc' },
         { text: 'Симулятор Роста', link: '/brew/sim' }
       ]
