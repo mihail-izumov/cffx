@@ -287,10 +287,11 @@ function nav(): DefaultTheme.NavItem[] {
       text: 'Для Бизнеса',
       items: [
         { text: 'Умная Кофейня', link: '/brew/run' },   
-        { text: 'Механика Индекса', link: '/tech/index' },  
+        { text: 'Механика Индекса', link: '/brew/index' },  
         { text: 'Сигналы Гостей', link: '/brew/tickets' },
         { text: 'Наш Мониторинг', link: '/radar/scale_index' },
         { text: 'Прогноз Дохода', link: '/radar/index-smr/calc' },
+        { text: 'Компании в фокусе', link: '/brew/focus' },
         { text: 'Симулятор Роста', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
       ]
     }
