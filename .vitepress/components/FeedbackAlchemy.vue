@@ -1,15 +1,19 @@
 <template>
   <div class="form-container">
-    <!-- Сообщение об успешной отправке -->
+    <!-- Обновленное сообщение об успешной отправке -->
     <div v-if="formSubmitted" class="success-message">
-      <h3>Сигнал принят!</h3>
-      <p>Спасибо, что помогаете стать лучше. Ассистент Анна изучит ваш отзыв и свяжется с вами в Telegram по итогам.</p>
+      <div class="success-icon">
+        <span>✓</span>
+      </div>
+      <div class="success-text">
+        <h3>Сигнал принят!</h3>
+        <p>Спасибо, что помогаете стать лучше. Ассистент Анна изучит ваш отзыв и свяжется с вами в Telegram по итогам.</p>
+      </div>
     </div>
 
     <!-- Основная форма, скрывается после отправки -->
     <form v-else @submit.prevent="submitForm">
       <div class="header">
-        <!-- Заголовок убран, как вы и просили -->
         <p>Ваш честный отзыв поможет этому месту стать еще лучше для всех гостей.</p>
       </div>
 
@@ -144,16 +148,22 @@ async function submitForm() {
 /* Основной контейнер и шрифты */
 .form-container {
   max-width: 520px;
-  margin: 20px auto;
-  background-color: #1A1A1A; /* Темный фон */
+  background-color: #1A1A1A;
   border-radius: 16px;
   padding: 24px;
   border: 1px solid #2a2a2a;
-  color: #E0E0E0; /* Светлый текст */
+  color: #E0E0E0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 20px auto; /* Центрирование по умолчанию для мобильных */
 }
 
-/* Заголовок */
+/* Выравнивание по левому краю для десктопной версии */
+@media (min-width: 768px) {
+  .form-container {
+    margin: 20px 0;
+  }
+}
+
 .header {
   text-align: center;
   margin-bottom: 24px;
@@ -164,13 +174,12 @@ async function submitForm() {
   line-height: 1.5;
 }
 
-/* Блоки с вопросами */
 .question-block {
   margin-bottom: 20px;
   padding: 16px;
   background: #252525;
   border-radius: 10px;
-  border-left: 3px solid #3DDC84; /* Акцентный зеленый */
+  border-left: 3px solid #3DDC84;
 }
 .question-label {
   display: block;
@@ -186,7 +195,6 @@ async function submitForm() {
   line-height: 1.4;
 }
 
-/* Поля ввода */
 textarea,
 input[type="tel"] {
   width: 100%;
@@ -207,7 +215,6 @@ input[type="tel"]:focus {
   box-shadow: 0 0 0 3px rgba(61, 220, 132, 0.2);
 }
 
-/* Рейтинг */
 .rating-stars {
   display: flex;
   gap: 4px;
@@ -217,7 +224,7 @@ input[type="tel"]:focus {
   font-size: 28px;
   color: #444;
   transition: color 0.2s, transform 0.2s;
-  user-select: none; /* Убирает выделение текста звезд */
+  user-select: none;
 }
 .star:hover {
   transform: scale(1.1);
@@ -226,7 +233,6 @@ input[type="tel"]:focus {
   color: #FFD700;
 }
 
-/* Чекбокс */
 .checkbox-group {
   display: flex;
   align-items: flex-start;
@@ -254,7 +260,6 @@ input[type="tel"]:focus {
   text-decoration: underline;
 }
 
-/* Кнопка отправки */
 .submit-btn {
   background-color: #3DDC84;
   color: #1A1A1A;
@@ -275,21 +280,59 @@ input[type="tel"]:focus {
   cursor: not-allowed;
 }
 
-/* Сообщение об успехе */
+/* Улучшенное сообщение об успехе */
 .success-message {
-  text-align: center;
-  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
   background-color: #252525;
   border-radius: 12px;
+  padding: 24px;
+  animation: fadeIn 0.5s ease-out;
 }
-.success-message h3 {
+.success-icon {
+  flex-shrink: 0;
+}
+.success-icon span {
+  display: inline-block;
+  font-size: 22px;
   color: #3DDC84;
-  margin: 0 0 8px 0;
+  line-height: 1.2;
+  font-weight: bold;
+  animation: popIn 0.5s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) backwards;
 }
-.success-message p {
-  color: #ccc;
+.success-text h3 {
+  color: #3DDC84;
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+.success-text p {
+  color: #aaa;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 0;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 </style>
