@@ -1,4 +1,4 @@
-# Тикет-система Сигнала
+# Тикет-система
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
