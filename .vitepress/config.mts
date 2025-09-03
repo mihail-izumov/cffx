@@ -133,19 +133,25 @@ export default defineConfig({
       --vp-c-bg-soft:rgba(52,123,108,.1);
       --vp-c-divider:rgba(52,123,108,.2);
       --vp-c-gutter:rgba(52,123,108,.1);
+      /* Переопределяем цвета текста для единообразия */
+      --vp-c-text-2:#b3b3b3;
     }
     
     .VPNavBarTitle .logo{height:32px!important;width:auto!important}
     
-    /* Исправление навигации */
-    .VPNavBarMenuLink:hover{color:var(--vp-c-brand-2)!important}
-    .VPNavBarMenuLink.active{color:var(--vp-c-brand-2)!important}
+    /* Исправление навигации - принудительно белые цвета */
+    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink{color:white!important}
+    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink:hover{color:var(--vp-c-brand-2)!important}
+    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink.active{color:var(--vp-c-brand-2)!important}
+    
+    /* Выпадающее меню */
     .VPMenuGroup .title{color:var(--vp-c-brand-2)!important}
+    .VPMenuItem .text{color:white!important}
     .VPMenuItem:hover .text{color:var(--vp-c-brand-2)!important}
     
-    /* Телеграм иконка */
-    .VPSocialLinks .VPSocialLink:first-child svg{fill:var(--vp-c-brand-2)!important}
-    .VPSocialLinks .VPSocialLink:first-child:hover svg{fill:var(--vp-c-brand-1)!important}
+    /* Телеграм иконка - принудительно белая */
+    .VPSocialLinks .VPSocialLink:first-child svg{fill:white!important}
+    .VPSocialLinks .VPSocialLink:first-child:hover svg{fill:var(--vp-c-brand-2)!important}
     
     @media (min-width:961px){
       .VPNavBar .content{gap:0!important}
@@ -174,11 +180,11 @@ export default defineConfig({
       .dot-separator{display:none!important}
     }
     
-    /* Стили кнопок */
+    /* Стили кнопок - исправлены цвета */
     .VPSocialLink .vpi-social-github{display:none!important}
     .VPSocialLink{width:auto!important;height:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important}
-    .VPSocialLink[aria-label="login-link"]::after{content:"Войти";font-size:14px;color:var(--vp-c-text-2);padding:6px 12px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:transparent;transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0}
-    .VPSocialLink[aria-label="login-link"]:hover::after{background:var(--vp-c-bg-soft);border-color:var(--vp-c-brand-2);color:var(--vp-c-text-1)}
+    .VPSocialLink[aria-label="login-link"]::after{content:"Войти";font-size:14px;color:white!important;padding:6px 12px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:transparent;transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0}
+    .VPSocialLink[aria-label="login-link"]:hover::after{background:var(--vp-c-bg-soft);border-color:var(--vp-c-brand-2);color:var(--vp-c-brand-2)!important}
     .VPSocialLink[aria-label="signal-link"]::after{content:"⚡ Отправить Сигнал";font-size:14px;color:white;padding:8px 16px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:var(--vp-c-brand-1);transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0;font-weight:600}
     .VPSocialLink[aria-label="signal-link"]:hover::after{background:var(--vp-c-brand-2);border-color:var(--vp-c-brand-2);color:#000}
     
@@ -266,7 +272,6 @@ export default defineConfig({
   }
 })
 
-// [Остальные функции остаются без изменений...]
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Сигналы', link: '/signals' },
