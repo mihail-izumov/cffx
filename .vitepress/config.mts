@@ -7,7 +7,7 @@ export default defineConfig({
   locales: {
     '/': {
       lang: 'ru-RU',
-      title: 'Умная Кофейня',
+      title: 'Сигнал',
       description: 'Где Начинается Ваша Кофейня',
     },
   },
@@ -139,44 +139,24 @@ export default defineConfig({
     
     .VPNavBarTitle .logo{height:32px!important;width:auto!important}
     
-    /* МАКСИМАЛЬНО КОНКРЕТНЫЕ СЕЛЕКТОРЫ ДЛЯ НАВИГАЦИИ */
-    
-    /* Все ссылки в навигации - белые */
-    .VPNavBar .VPNavBarMenu a{color:white!important}
+    /* Исправление навигации - принудительно белые цвета */
     .VPNavBar .VPNavBarMenu .VPNavBarMenuLink{color:white!important}
-    .VPNavBar .VPNavBarMenu .VPNavBarMenuGroup .VPNavBarMenuLink{color:white!important}
-    .VPNavBarMenu .VPNavBarMenuLink{color:white!important}
+    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink:hover{color:var(--vp-c-brand-2)!important}
+    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink.active{color:var(--vp-c-brand-2)!important}
+    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink.has-dropdown{color:white!important}
+    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink.has-dropdown:hover{color:var(--vp-c-brand-2)!important}
     
-    /* Ховер для всех навигационных ссылок - светло-зеленый */
-    .VPNavBar .VPNavBarMenu a:hover{color:#C5F946!important}
-    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink:hover{color:#C5F946!important}
-    .VPNavBar .VPNavBarMenu .VPNavBarMenuGroup .VPNavBarMenuLink:hover{color:#C5F946!important}
-    .VPNavBarMenu .VPNavBarMenuLink:hover{color:#C5F946!important}
+    /* Выпадающее меню - исправленные цвета ховера */
+    .VPMenuGroup .title{color:var(--vp-c-brand-2)!important}
+    .VPMenuItem .text{color:white!important}
+    .VPMenuItem:hover .text{color:var(--vp-c-brand-2)!important}
+    .VPMenuItem:hover{background-color:rgba(197,249,70,.1)!important}
     
-    /* Активные элементы навигации */
-    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink.active{color:#C5F946!important}
-    .VPNavBarMenu .VPNavBarMenuLink.active{color:#C5F946!important}
-    
-    /* Выпадающее меню - радикальный подход */
-    .VPFlyout{background-color:#1a1a1a!important;border:1px solid rgba(52,123,108,.2)!important}
-    .VPFlyout .VPMenuGroup{background:transparent!important}
-    .VPFlyout .VPMenuGroup .title{color:#C5F946!important;font-weight:600!important}
-    .VPFlyout .VPMenuItem{background:transparent!important}
-    .VPFlyout .VPMenuItem .text{color:white!important}
-    .VPFlyout .VPMenuItem:hover{background-color:rgba(197,249,70,.1)!important}
-    .VPFlyout .VPMenuItem:hover .text{color:#C5F946!important}
-    
-    /* Телеграм иконка - все возможные селекторы */
-    .VPNavBarSocialLinks svg{fill:white!important}
-    .VPNavBarSocialLinks svg:hover{fill:#C5F946!important}
-    .VPNavBarSocialLinks .VPSocialLink svg{fill:white!important}
-    .VPNavBarSocialLinks .VPSocialLink:hover svg{fill:#C5F946!important}
-    .VPSocialLinks svg{fill:white!important}
-    .VPSocialLinks svg:hover{fill:#C5F946!important}
+    /* Телеграм иконка - принудительно белая (это действительно github иконка в конфиге) */
     .VPSocialLinks .VPSocialLink svg{fill:white!important}
-    .VPSocialLinks .VPSocialLink:hover svg{fill:#C5F946!important}
-    svg[viewBox="0 0 24 24"]{fill:white!important}
-    svg[viewBox="0 0 24 24"]:hover{fill:#C5F946!important}
+    .VPSocialLinks .VPSocialLink:hover svg{fill:var(--vp-c-brand-2)!important}
+    .VPSocialLinks .VPSocialLink:first-child svg{fill:white!important}
+    .VPSocialLinks .VPSocialLink:first-child:hover svg{fill:var(--vp-c-brand-2)!important}
     
     @media (min-width:961px){
       .VPNavBar .content{gap:0!important}
@@ -205,7 +185,7 @@ export default defineConfig({
       .dot-separator{display:none!important}
     }
     
-    /* Стили кнопок */
+    /* Стили кнопок - исправлены цвета + молния между слов */
     .VPSocialLink .vpi-social-github{display:none!important}
     .VPSocialLink{width:auto!important;height:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important}
     .VPSocialLink[aria-label="login-link"]::after{content:"Войти";font-size:14px;color:white!important;padding:6px 12px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:transparent;transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0}
@@ -226,7 +206,7 @@ export default defineConfig({
   description: 'Где Начинается Ваша Кофейня',
   themeConfig: {
     logo: '/favicon.svg',
-    siteTitle: "Умная Кофейня",
+    siteTitle: "Сигнал",
     sidebarMenuLabel: 'Меню',
     outlineTitle: 'На этой странице',
     returnToTopLabel: 'Наверх',
@@ -279,7 +259,7 @@ export default defineConfig({
     socialLinks: [
       { 
         icon: { 
-          svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Telegram</title><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.30.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" fill="currentColor"/></svg>' 
+          svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Telegram</title><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" fill="currentColor"/></svg>' 
         }, 
         link: 'https://t.me/runscale' 
       },
@@ -297,16 +277,16 @@ export default defineConfig({
   }
 })
 
-// [Остальные функции остаются такими же - добавляю только для полноты...]
+// [Остальные функции остаются такими же...]
 function nav(): DefaultTheme.NavItem[] {
   return [
-    { text: 'Сигналы', link: '/signals' },
+    { text: 'Как работает', link: '/signals' },
     { text: 'Кофейни', link: '/smr' },
     { text: 'Анна', link: '/anna' },
     {
       text: 'Для Бизнеса',
       items: [
-        { text: 'Как это работает', link: '/brew/run' },   
+        { text: 'Умная Кофейня', link: '/brew/run' },   
         { text: 'Механика Индекса', link: '/tech/index' },  
         { text: 'Сигналы Гостей', link: '/brew/tickets' },
         { text: 'Наш Мониторинг', link: '/radar/scale_index' },
@@ -317,137 +297,158 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-// [Остальные функции sidebarRadarSamara, sidebarRadarRussia и т.д. остаются такими же...]
 function sidebarRadarSamara(): DefaultTheme.SidebarItem[] {
-  return [{
-    text: 'Индекс Роста // Самара',
-    collapsed: false,
-    items: [
-      { text: 'Рейтинг', link: '/radar/index-smr/overview' },
-      { text: 'Калькулятор', link: '/radar/index-smr/calc' },
-      { text: 'Симулятор', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
-    ]
-  }]
+  return [
+    {
+      text: 'Индекс Роста // Самара',
+      collapsed: false,
+      items: [
+        { text: 'Рейтинг', link: '/radar/index-smr/overview' },
+        { text: 'Калькулятор', link: '/radar/index-smr/calc' },
+        { text: 'Симулятор', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
+      ]
+    }
+  ]
 }
 
 function sidebarRadarRussia(): DefaultTheme.SidebarItem[] {
-  return [{
-    text: 'Индекс Роста // Россия',
-    collapsed: false,
-    items: [
-      { text: 'Обзор рынка', link: '/radar/overview' },
-      { text: 'Скрытый потенциал', link: '/radar/scale_index' },
-      { text: 'Кто Анна', link: '/radar/who-is-anna' },
-      { text: 'Радар', link: '/radar/signal/log' }
-    ]
-  }]
+  return [
+    {
+      text: 'Индекс Роста // Россия',
+      collapsed: false,
+      items: [
+        { text: 'Обзор рынка', link: '/radar/overview' },
+        { text: 'Скрытый потенциал', link: '/radar/scale_index' },
+        { text: 'Кто Анна', link: '/radar/who-is-anna' },
+        { text: 'Радар', link: '/radar/signal/log' }
+      ]
+    }
+  ]
 }
 
 function sidebarCheckup(): DefaultTheme.SidebarItem[] {
-  return [{ 
-    text: 'Чекап', 
-    collapsed: false, 
-    items: [
-      { text: 'Обзор', link: '/checkup/overview' },
-      { text: '→ Пройти Чекап', link: '/apply' },
-      { text: 'Подготовка к чекапу', link: '/checkup/prep/overview' },
-      { text: 'Детали чекапа', link: '/checkup/specs' },
-      { text: 'Глубокий чекап', link: '/checkup/deep' },
-      { text: 'Платите за движение', link: '/checkup/pay-as-you-go' },
-      { text: 'Чек-лист готовности', link: '/checkup/checklist' },
-      { text: 'Фильтр потенциала', link: '/radar/filter' },
-      { text: 'Программа рекомендаций', link: '/radar/invite' }
-    ]
-  }]
+  return [
+    { 
+      text: 'Чекап', 
+      collapsed: false, 
+      items: [
+        { text: 'Обзор', link: '/checkup/overview' },
+        { text: '→ Пройти Чекап', link: '/apply' },
+        { text: 'Подготовка к чекапу', link: '/checkup/prep/overview' },
+        { text: 'Детали чекапа', link: '/checkup/specs' },
+        { text: 'Глубокий чекап', link: '/checkup/deep' },
+        { text: 'Платите за движение', link: '/checkup/pay-as-you-go' },
+        { text: 'Чек-лист готовности', link: '/checkup/checklist' },
+        { text: 'Фильтр потенциала', link: '/radar/filter' },
+        { text: 'Программа рекомендаций', link: '/radar/invite' }
+      ]
+    }
+  ]
 }
 
 function sidebarCheckupPrep(): DefaultTheme.SidebarItem[] {
-  return [{ 
-    text: 'Подготовка к чекапу', 
-    collapsed: false, 
-    items: [
-      { text: 'Обзор', link: '/checkup/prep/overview' },        
-      { text: '1 - Скрытые проблемы, которые блокируют рост', link: '/checkup/prep/01-hidden-problems-blocking-growth' },
-      { text: '2 - Почему мы запрашиваем готовые отчёты, а не доступы к системам', link: '/checkup/prep/02-why-we-request-ready-reports-not-system-access' },
-      { text: '3 - Почему важно смотреть на весь бизнес, а не на «локальные проблемы»', link: '/checkup/prep/03-system-diagnostics-vs-one-time-solutions' },
-      { text: '4 - Чекап как первый шаг к фрейм-менеджменту', link: '/checkup/prep/04-checkup-for-data-driven-decisions' },
-      { text: '5 - ИИ-аналитика в модели RAG: как живая база знаний меняет подход', link: '/checkup/prep/05-ai-analytics-rag-management' },
-      { text: '6 - 10 разделов аналитики: анатомия вашего бизнеса', link: '/checkup/prep/06-10-diagnostic-sections' },
-      { text: '7 - Три принципа здоровой аналитики на практике', link: '/checkup/prep/07-three-reliable-analytics-principles' },
-      { text: '8 - Как превратить аналитику в ресурс роста – Итоги серии', link: '/checkup/prep/08-analytics-transparent-management' }
-    ]
-  }]
+  return [
+    { 
+      text: 'Подготовка к чекапу', 
+      collapsed: false, 
+      items: [
+        { text: 'Обзор', link: '/checkup/prep/overview' },        
+        { text: '1 - Скрытые проблемы, которые блокируют рост', link: '/checkup/prep/01-hidden-problems-blocking-growth' },
+        { text: '2 - Почему мы запрашиваем готовые отчёты, а не доступы к системам', link: '/checkup/prep/02-why-we-request-ready-reports-not-system-access' },
+        { text: '3 - Почему важно смотреть на весь бизнес, а не на «локальные проблемы»', link: '/checkup/prep/03-system-diagnostics-vs-one-time-solutions' },
+        { text: '4 - Чекап как первый шаг к фрейм-менеджменту', link: '/checkup/prep/04-checkup-for-data-driven-decisions' },
+        { text: '5 - ИИ-аналитика в модели RAG: как живая база знаний меняет подход', link: '/checkup/prep/05-ai-analytics-rag-management' },
+        { text: '6 - 10 разделов аналитики: анатомия вашего бизнеса', link: '/checkup/prep/06-10-diagnostic-sections' },
+        { text: '7 - Три принципа здоровой аналитики на практике', link: '/checkup/prep/07-three-reliable-analytics-principles' },
+        { text: '8 - Как превратить аналитику в ресурс роста – Итоги серии', link: '/checkup/prep/08-analytics-transparent-management' }
+      ]
+    }
+  ]
 }
 
 function sidebarAbout(): DefaultTheme.SidebarItem[] {
-  return [{ text: 'Компания', collapsed: false, items: [
-    { text: 'Кто мы', link: '/about/company' },
-    { text: 'Мы, Растем', link: '/about/mission' },
-    { text: 'Не только цифры, но и эмоции', link: '/about/balance' },
-    { text: 'Контакт', link: '/about/contacts' }
-  ]}]
+  return [{
+      text: 'Компания', collapsed: false, items: [
+        { text: 'Кто мы', link: '/about/company' },
+        { text: 'Мы, Растем', link: '/about/mission' },
+        { text: 'Не только цифры, но и эмоции', link: '/about/balance' },
+        { text: 'Контакт', link: '/about/contacts' }
+      ]
+    }]
 }
 
 function sidebarMethod(): DefaultTheme.SidebarItem[] {
-  return [{ text: 'Метод', collapsed: false, items: [
-    { text: 'Обзор', link: '/method/overview' },
-    { text: '3 принципа здоровой аналитики', link: '/method/the-three-principles' },
-    { text: 'Метод эффективной трансформации', link: '/method/transform' },
-    { text: 'Фрейм-менеджмент', link: '/method/frames' },
-    { text: 'Рост – это не гонка, а приключение', link: '/method/not-a-race' },
-    { text: 'Сравнить', link: '/method/pro-et-contra' }
-  ]}]
+  return [{
+      text: 'Метод', collapsed: false, items: [
+        { text: 'Обзор', link: '/method/overview' },
+        { text: '3 принципа здоровой аналитики', link: '/method/the-three-principles' },
+        { text: 'Метод эффективной трансформации', link: '/method/transform' },
+        { text: 'Фрейм-менеджмент', link: '/method/frames' },
+        { text: 'Рост – это не гонка, а приключение', link: '/method/not-a-race' },
+        { text: 'Сравнить', link: '/method/pro-et-contra' }
+      ]
+    }]
 }
 
 function sidebarTechnology(): DefaultTheme.SidebarItem[] {
-  return [{ text: 'Технологии', collapsed: false, items: [
-    { text: 'Обзор', link: '/technology/overview' },
-    { text: 'Живая база знаний', link: '/technology/datahub' },
-    { text: 'Аналитика 360°', link: '/technology/analytics-360' },
-    { text: 'ИИ-ассистент продаж', link: '/technology/anna' },
-    { text: 'Речевая аналитика', link: '/technology/wordpower' },
-    { text: 'Дистанционные стратегические сессии', link: '/technology/vision-now' },
-    { text: 'Живые Стандарты', link: '/technology/live-standarts' },
-  ]}]
+  return [{
+      text: 'Технологии', collapsed: false, items: [
+        { text: 'Обзор', link: '/technology/overview' },
+        { text: 'Живая база знаний', link: '/technology/datahub' },
+        { text: 'Аналитика 360°', link: '/technology/analytics-360' },
+        { text: 'ИИ-ассистент продаж', link: '/technology/anna' },
+        { text: 'Речевая аналитика', link: '/technology/wordpower' },
+        { text: 'Дистанционные стратегические сессии', link: '/technology/vision-now' },
+        { text: 'Живые Стандарты', link: '/technology/live-standarts' },
+      ]
+    }]
 }
 
 function sidebarSystem(): DefaultTheme.SidebarItem[] {
-  return [{ text: 'Система роста бизнеса', collapsed: false, items: [
-    { text: 'Обзор', link: '/system/overview' },
-    { text: '12-нед. интенсив', link: '/system/12-weeks' }
-  ]}]
+  return [{
+      text: 'Система роста бизнеса', collapsed: false, items: [
+        { text: 'Обзор', link: '/system/overview' },
+        { text: '12-нед. интенсив', link: '/system/12-weeks' }
+      ]
+    }]
 }
 
 function sidebarJournal(): DefaultTheme.SidebarItem[] {
-  return [{ text: 'Журнал', collapsed: false, items: [
-    { text: 'Содержание', link: '/journal/contents/overview' },        
-    { text: 'Кейсы', link: '/journal/contents/cases' },
-    { text: 'Статьи', link: '/journal/contents/articles' }
-  ]}]
+  return [{
+      text: 'Журнал', collapsed: false, items: [
+        { text: 'Содержание', link: '/journal/contents/overview' },        
+        { text: 'Кейсы', link: '/journal/contents/cases' },
+        { text: 'Статьи', link: '/journal/contents/articles' }
+      ]
+    }]
 }
 
 function sidebarClients(): DefaultTheme.SidebarItem[] {
-  return [{ text: 'Клиенты', collapsed: false, items: [
-    { text: 'Обзор', link: '/clients/list' },
-    { text: 'Конкордия-Авто', link: '/clients/konkordiya-auto' },
-    { text: 'Блумкидс', link: '/clients/bloomkids' },
-    { text: 'Чишминский Молочный Завод', link: '/clients/chishminskiy' },
-    { text: 'Ермолаевъ', link: '/clients/ermolaev' },
-    { text: 'FIZ Культура', link: '/clients/fiz-kultura.md' },
-    { text: 'Фонд им. Дмитрия Хворостовского', link: '/clients/hvorostovsky-foundation' },
-    { text: 'Milimon', link: '/clients/milimon.md' },
-    { text: 'SM Live', link: '/clients/sm-live' },
-    { text: 'SMSTRETCHING', link: '/clients/smstretching' },
-    { text: 'СУПЕРЛЕНД', link: '/clients/superland' },
-    { text: 'WOODLED', link: '/clients/woodled' },
-    { text: 'World Plastics Summit 2022', link: '/clients/world-plastics-summit-2022' },
-  ]}]
+  return [{
+      text: 'Клиенты', collapsed: false, items: [
+        { text: 'Обзор', link: '/clients/list' },
+        { text: 'Конкордия-Авто', link: '/clients/konkordiya-auto' },
+        { text: 'Блумкидс', link: '/clients/bloomkids' },
+        { text: 'Чишминский Молочный Завод', link: '/clients/chishminskiy' },
+        { text: 'Ермолаевъ', link: '/clients/ermolaev' },
+        { text: 'FIZ Культура', link: '/clients/fiz-kultura.md' },
+        { text: 'Фонд им. Дмитрия Хворостовского', link: '/clients/hvorostovsky-foundation' },
+        { text: 'Milimon', link: '/clients/milimon.md' },
+        { text: 'SM Live', link: '/clients/sm-live' },
+        { text: 'SMSTRETCHING', link: '/clients/smstretching' },
+        { text: 'СУПЕРЛЕНД', link: '/clients/superland' },
+        { text: 'WOODLED', link: '/clients/woodled' },
+        { text: 'World Plastics Summit 2022', link: '/clients/world-plastics-summit-2022' },
+      ]
+    }]
 }
 
 function sidebarTerms(): DefaultTheme.SidebarItem[] {
-  return [{ text: 'Условия использования', collapsed: false, items: [
-    { text: 'Соглашения', link: '/terms' },
-    { text: 'Политика конфиденциальности', link: '/terms/policy' },
-    { text: 'Согласие на обработку данных', link: '/terms/privacy' }
-  ]}]
+  return [{
+      text: 'Условия использования', collapsed: false, items: [
+        { text: 'Соглашения', link: '/terms' },
+        { text: 'Политика конфиденциальности', link: '/terms/policy' },
+        { text: 'Согласие на обработку данных', link: '/terms/privacy' }
+      ]
+    }]
 }
