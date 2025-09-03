@@ -1,7 +1,6 @@
 ---
 prev: false
 next: false
-aside: false
 title: Прогноз дохода кофейни | Сигнал
 ---
 
