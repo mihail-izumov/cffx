@@ -2,7 +2,7 @@ import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
 
-// Импортируем каждый компонент с уникальным именем
+// Все ваши компоненты (без изменений)
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
 import FeaturesGrid from '../components/FeaturesGrid.vue'
@@ -40,7 +40,7 @@ export default {
     return h(DefaultTheme.Layout, null, {})
   },
   enhanceApp({ app, router, isServer }) {
-    // Регистрируем каждый компонент с уникальным тегом
+    // Регистрируем все компоненты (без изменений)
     app.component('SimulatorCards', SimulatorCards)
     app.component('BrandCards', BrandCards)
     app.component('FeaturesGrid', FeaturesGrid)
@@ -72,24 +72,19 @@ export default {
     app.component('ReviewsWidget', ReviewsWidget)
     app.component('SignalSteps', SignalSteps)
 
-    // ИСПРАВЛЕННАЯ логика для активной страницы в dropdown - только на клиенте
-    if (!isServer && router) {
-      router.onAfterRouteChanged = (to) => {
+    // Только минимальная логика для активной страницы (только на клиенте)
+    if (!isServer && typeof window !== 'undefined') {
+      router?.onAfterRouteChanged?.(to => {
         setTimeout(() => {
-          // Проверяем что мы на клиенте и document существует
-          if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-            // Активная страница в dropdown
-            document.querySelectorAll('.VPFlyout .VPMenuItem').forEach(item => {
-              item.classList.remove('active')
-            })
-            
-            const currentItem = document.querySelector(`.VPFlyout .VPMenuItem[href="${to}"]`)
-            if (currentItem) {
-              currentItem.classList.add('active')
+          document.querySelectorAll?.('.VPFlyout .VPMenuItem')?.forEach?.(item => {
+            if (item.getAttribute?.('href') === to) {
+              item.classList?.add?.('active')
+            } else {
+              item.classList?.remove?.('active')
             }
-          }
+          })
         }, 100)
-      }
+      })
     }
   }
 }
