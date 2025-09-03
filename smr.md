@@ -6,7 +6,7 @@ aside: false
 
 # Ваш голос меняет кофейни, которые вы любите
 
-Отправьте Сигнал → Мы уточняем детали → Решение проблемы
+### Отправьте Сигнал → Уточняем детали → Решение проблемы
 
 <div class="start-button-container">
   <a href="/signals" class="btn btn-primary" rel="noopener noreferrer"><strong>Как Работает Сигнал</strong></a>
