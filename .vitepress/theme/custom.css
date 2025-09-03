@@ -25,6 +25,7 @@
     filter: blur(70px);
   }
 }
+
 /* --- КНОПКА --- */
 .VPButton.brand {
   background: #166534 !important;
@@ -38,6 +39,7 @@
   box-shadow: 0 8px 25px rgba(34, 197, 94, 0.5) !important;
   transform: translateY(-2px);
 }
+
 /* --- ЗАГОЛОВОК --- */
 .VPHero .name {
   background: linear-gradient(120deg, #22c55e 30%, #16a34a 70%) !important;
@@ -46,10 +48,10 @@
   -webkit-text-fill-color: transparent !important;
 }
 
-/* ======= ИСПРАВЛЕНИЯ ДЛЯ DROPDOWN МЕНЮ ======= */
+/* ======= ИСПРАВЛЕНИЯ ДЛЯ DROPDOWN МЕНЮ "ДЛЯ БИЗНЕСА" ======= */
 
-/* Убираем все границы и разделители в dropdown меню "Для бизнеса" */
-.VPNavBarMenuGroup .VPNavBarMenuLink {
+/* Убираем границы в dropdown меню */
+.VPFlyout .VPMenuGroup .VPMenuItem {
   border: none !important;
   border-right: none !important;
   border-left: none !important;
@@ -57,29 +59,28 @@
   border-bottom: none !important;
 }
 
-/* Убираем псевдоэлементы которые могут создавать линии */
-.VPNavBarMenuGroup .VPNavBarMenuLink::before,
-.VPNavBarMenuGroup .VPNavBarMenuLink::after {
+/* Убираем псевдоэлементы */
+.VPFlyout .VPMenuGroup .VPMenuItem::before,
+.VPFlyout .VPMenuGroup .VPMenuItem::after {
   display: none !important;
 }
 
 /* Убираем разделители между элементами */
-.VPNavBarMenuGroup .VPNavBarMenuLink + .VPNavBarMenuLink {
+.VPFlyout .VPMenuGroup .VPMenuItem + .VPMenuItem {
   border-top: none !important;
 }
 
 /* Индикатор активной страницы в dropdown */
-.VPNavBarMenuGroup .VPNavBarMenuLink.router-link-active,
-.VPNavBarMenuGroup .VPNavBarMenuLink.active {
-  background-color: var(--vp-c-brand-soft) !important;
-  color: var(--vp-c-brand-1) !important;
-  font-weight: 600;
+.VPFlyout .VPMenuGroup .VPMenuItem.router-link-active,
+.VPFlyout .VPMenuGroup .VPMenuItem.active {
+  background-color: rgba(197, 249, 70, 0.1) !important;
+  color: #C5F946 !important;
   position: relative;
 }
 
 /* Добавляем точку для активной страницы */
-.VPNavBarMenuGroup .VPNavBarMenuLink.router-link-active::after,
-.VPNavBarMenuGroup .VPNavBarMenuLink.active::after {
+.VPFlyout .VPMenuGroup .VPMenuItem.router-link-active::after,
+.VPFlyout .VPMenuGroup .VPMenuItem.active::after {
   content: '';
   position: absolute;
   right: 12px;
@@ -88,63 +89,72 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--vp-c-brand-1);
+  background-color: #C5F946;
 }
 
-/* Улучшенный вид dropdown меню */
-.VPNavBarMenuGroup {
-  background: var(--vp-c-bg-elv);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  border: 1px solid var(--vp-c-divider);
+/* Исправляем стили dropdown меню */
+.VPFlyout {
+  background-color: #1a1a1a !important;
+  border: 1px solid rgba(52, 123, 108, 0.2) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
 
-.VPNavBarMenuGroup .VPNavBarMenuLink {
-  padding: 12px 16px;
-  transition: all 0.2s ease;
-  display: block;
-  text-decoration: none;
+.VPFlyout .VPMenuGroup {
+  background: transparent !important;
 }
 
-.VPNavBarMenuGroup .VPNavBarMenuLink:hover {
-  background-color: var(--vp-c-default-soft);
+.VPFlyout .VPMenuGroup .title {
+  color: #C5F946 !important;
+  font-weight: 600 !important;
 }
 
-/* Убираем все возможные разделители */
-.VPNavBarMenuGroup .VPNavBarMenuLink:not(:last-child) {
-  border-bottom: none !important;
+.VPFlyout .VPMenuItem {
+  background: transparent !important;
+  padding: 12px 16px !important;
+  transition: all 0.2s ease !important;
+  display: block !important;
 }
 
-/* Для тёмной темы */
-.dark .VPNavBarMenuGroup .VPNavBarMenuLink.router-link-active,
-.dark .VPNavBarMenuGroup .VPNavBarMenuLink.active {
-  background-color: var(--vp-c-brand-dim) !important;
+.VPFlyout .VPMenuItem .text {
+  color: white !important;
+}
+
+.VPFlyout .VPMenuItem:hover {
+  background-color: rgba(197, 249, 70, 0.1) !important;
+}
+
+.VPFlyout .VPMenuItem:hover .text {
+  color: #C5F946 !important;
 }
 
 /* ======= ИСПРАВЛЕНИЯ ДЛЯ КАРТОЧЕК ======= */
 
-/* Исправляем цвет текста в карточках на зелёном фоне */
+/* Основные стили карточек */
 .VPFeature {
   background: rgba(255, 255, 255, 0.08) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   border-radius: 12px !important;
-  padding: 24px !important;
+  padding: 20px !important; /* Уменьшили отступы */
   transition: all 0.3s ease !important;
+  height: auto !important;
+  min-height: auto !important;
 }
 
-/* Заголовки карточек - делаем их белыми и контрастными */
+/* Заголовки карточек */
 .VPFeature .title {
   color: #ffffff !important;
   font-weight: 600 !important;
-  margin-bottom: 12px !important;
+  margin-bottom: 8px !important; /* Уменьшили отступ */
+  line-height: 1.4 !important;
 }
 
-/* Описание карточек - делаем светло-серым для читаемости */
+/* Описание карточек */
 .VPFeature .details {
   color: rgba(255, 255, 255, 0.85) !important;
-  line-height: 1.6 !important;
-  margin-bottom: 16px !important;
+  line-height: 1.5 !important; /* Уменьшили межстрочный интервал */
+  margin-bottom: 12px !important; /* Уменьшили отступ */
 }
 
 /* Ссылки в карточках */
@@ -156,14 +166,14 @@
   border-bottom: 1px solid transparent !important;
 }
 
-/* Hover эффект для ссылок - используем фирменный зелёный цвет */
+/* Hover для ссылок */
 .VPFeature .link:hover {
-  color: var(--vp-c-brand-light) !important;
-  border-bottom-color: var(--vp-c-brand-light) !important;
+  color: #4ade80 !important;
+  border-bottom-color: #4ade80 !important;
   transform: translateY(-1px) !important;
 }
 
-/* Альтернативный селектор для ссылок */
+/* Альтернативные селекторы для ссылок */
 .VPFeature a {
   color: rgba(255, 255, 255, 0.75) !important;
   text-decoration: none !important;
@@ -172,24 +182,33 @@
 }
 
 .VPFeature a:hover {
-  color: var(--vp-c-brand-light) !important;
-  border-bottom-color: var(--vp-c-brand-light) !important;
+  color: #4ade80 !important;
+  border-bottom-color: #4ade80 !important;
 }
 
-/* Hover эффект для всей карточки */
+/* Hover для карточки */
 .VPFeature:hover {
   background: rgba(255, 255, 255, 0.12) !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
   transform: translateY(-2px) !important;
 }
 
-/* Иконки в карточках (если есть) */
-.VPFeature .icon {
-  color: var(--vp-c-brand-light) !important;
-  margin-bottom: 16px !important;
+/* Контейнер карточек - уменьшаем расстояния */
+.VPFeatures {
+  padding: 48px 24px !important; /* Уменьшили верхний/нижний отступ */
+  gap: 16px !important;
 }
 
-/* Дополнительные селекторы для совместимости с VitePress */
+.VPFeatures .container {
+  max-width: 1152px !important;
+  margin: 0 auto !important;
+}
+
+.VPFeatures .items {
+  gap: 16px !important; /* Уменьшили расстояние между карточками */
+}
+
+/* Дополнительные селекторы для совместимости */
 .VPFeatures .VPFeature .title,
 .VPFeatures .VPFeature h3 {
   color: #ffffff !important;
@@ -208,17 +227,13 @@
 
 .VPFeatures .VPFeature .link-text:hover,
 .VPFeatures .VPFeature .link-text-value:hover {
-  color: var(--vp-c-brand-light) !important;
+  color: #4ade80 !important;
 }
 
-/* Принудительные стили для преодоления сопротивления VitePress */
+/* Принудительные стили */
 .VPFeatures .VPFeature {
   background: rgba(255, 255, 255, 0.08) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
-}
-
-.VPFeatures .VPFeature * {
-  color: inherit !important;
 }
 
 .VPFeatures .VPFeature .title,
@@ -233,7 +248,7 @@
   color: rgba(255, 255, 255, 0.85) !important;
 }
 
-/* Специфичные селекторы для ссылок с стрелками */
+/* Специальные селекторы для ссылок */
 .VPFeatures .VPFeature a[href*="→"],
 .VPFeatures .VPFeature a[href]:not([href^="http"]):not([href^="mailto"]) {
   color: rgba(255, 255, 255, 0.75) !important;
@@ -244,11 +259,11 @@
 
 .VPFeatures .VPFeature a[href*="→"]:hover,
 .VPFeatures .VPFeature a[href]:not([href^="http"]):not([href^="mailto"]):hover {
-  color: var(--vp-c-brand-light) !important;
-  border-bottom-color: var(--vp-c-brand-light) !important;
+  color: #4ade80 !important;
+  border-bottom-color: #4ade80 !important;
 }
 
-/* Дополнительная специфичность для особо упрямых элементов */
+/* Layout селекторы */
 .home .VPFeatures .VPFeature,
 .layout-home .VPFeatures .VPFeature {
   background: rgba(255, 255, 255, 0.08) !important;
@@ -272,19 +287,16 @@
 
 .home .VPFeatures .VPFeature a:hover,
 .layout-home .VPFeatures .VPFeature a:hover {
-  color: var(--vp-c-brand-light) !important;
+  color: #4ade80 !important;
 }
 
-/* ======= ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ ======= */
-
-/* Переменные для согласованности цветов */
+/* ======= ПЕРЕМЕННЫЕ ДЛЯ ЦВЕТОВ ======= */
 :root {
   --vp-c-brand-light: #4ade80;
   --vp-c-brand-soft: rgba(74, 222, 128, 0.16);
   --vp-c-brand-dim: rgba(74, 222, 128, 0.24);
 }
 
-/* Тёмная тема */
 .dark {
   --vp-c-brand-light: #4ade80;
   --vp-c-brand-soft: rgba(74, 222, 128, 0.16);
