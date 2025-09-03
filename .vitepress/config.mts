@@ -1,15 +1,13 @@
 import { defineConfig, DefaultTheme } from 'vitepress'
 import pkg from '../package.json' assert { type: 'json' }
-
 const { version } = pkg
-
 export default defineConfig({
-  title: 'Сигнал',
+  title: 'Умная Кофейня',
   appearance: 'force-dark',
   locales: {
     '/': {
       lang: 'ru-RU',
-      title: 'Сигнал',
+      title: 'Умная Кофейня',
       description: 'Где Начинается Ваша Кофейня',
     },
   },
@@ -46,7 +44,7 @@ export default defineConfig({
         html += '</div></div>';
         html += '<div style="margin-top: 24px; text-align: center;">';
         html += '<div style="color: white; font-size: 14px;">Где Начинается Ваша Кофейня</div>';
-        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Сигнал 2025 Компания <a href="https://runscale.ru" target="_blank" style="color: inherit; text-decoration: underline;">Модуля Роста®</a></div>';
+        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© 2025 Компания <a href="https://runscale.ru" target="_blank" style="color: inherit; text-decoration: underline;">Модуля Роста®</a></div>';
         return html;
       }
       function replaceFooter() {
@@ -125,16 +123,29 @@ export default defineConfig({
     html:not(.dark) a.VPFeature.link:hover{background-color:#2f2f2f!important;border-color:#555!important}
     :root{--vp-c-brand-1:#347b6c;--vp-c-brand-2:#C5F946;--vp-c-brand-3:#347b6c;--vp-c-brand-soft:rgba(52,123,108,.14)}
     .VPNavBarTitle .logo{height:32px!important;width:auto!important}
+    
+    /* Исправление навигации и цветов */
+    .VPNavBarMenuGroup .VPNavBarMenuLink:hover{color:var(--vp-c-brand-2)!important}
+    .VPNavBarMenuGroup .VPNavBarMenuLink.active{color:var(--vp-c-brand-2)!important}
+    .VPNavBarMenuGroup .VPFlyout .VPMenuGroup .title{color:var(--vp-c-brand-2)!important}
+    .VPNavBarMenuGroup .VPFlyout .VPMenuItem .text{color:var(--vp-c-text-1)!important}
+    .VPNavBarMenuGroup .VPFlyout .VPMenuItem:hover .text{color:var(--vp-c-brand-2)!important}
+    .VPFlyout{background-color:var(--vp-c-bg-alt)!important;border:1px solid var(--vp-c-divider)!important}
+    
+    /* Телеграм иконка */
+    .VPSocialLinks .VPSocialLink:first-child svg{fill:var(--vp-c-brand-2)!important}
+    .VPSocialLinks .VPSocialLink:first-child:hover svg{fill:var(--vp-c-brand-1)!important}
+    
     @media (min-width:961px){
       .VPNavBar .content{gap:0!important}
       .VPNavBarMenu{margin-right:0!important}
-      .VPNavBarSocialLinks{min-width:auto!important;justify-content:flex-end!important;gap:16px!important;margin-left:0!important;flex-shrink:0!important}
+      .VPNavBarSocialLinks{min-width:auto!important;justify-content:flex-end!important;gap:16px!important;margin-left:0!important;flex-shrink:0!important;display:flex!important}
       .VPSocialLink:not(:last-child){margin-right:4px!important}
     }
     @media (max-width:960px) and (min-width:769px){
       .VPNavBar .content{gap:0!important}
       .VPNavBarMenu{margin-right:0!important}
-      .VPNavBarSocialLinks{margin-left:4px!important;gap:12px!important;flex-shrink:0!important}
+      .VPNavBarSocialLinks{margin-left:4px!important;gap:12px!important;flex-shrink:0!important;display:flex!important}
       .VPSocialLink:not(:last-child){margin-right:2px!important}
     }
     @media (max-width:768px){
@@ -146,14 +157,20 @@ export default defineConfig({
       .VPNavScreen .VPNavScreenSocialLinks{display:flex!important;flex-direction:column!important;gap:12px!important}
       .VPNavScreen .VPSocialLink{display:flex!important;align-items:center!important;justify-content:center!important;padding:12px!important;background:var(--vp-c-bg)!important;border-radius:6px!important;border:1px solid var(--vp-c-divider)!important;transition:all .3s ease!important;text-decoration:none!important}
       .VPNavScreen .VPSocialLink:hover{background:var(--vp-c-bg-mute)!important;border-color:var(--vp-c-brand)!important}
-      .VPNavScreen .VPSocialLink[aria-label="login-link"]::after{content:"Подключить"!important;font-size:16px!important;font-weight:600!important;color:var(--vp-c-text-1)!important}
+      .VPNavScreen .VPSocialLink[aria-label="login-link"]::after{content:"Войти"!important;font-size:16px!important;font-weight:600!important;color:var(--vp-c-text-1)!important}
+      .VPNavScreen .VPSocialLink[aria-label="signal-link"]::after{content:"⚡ Отправить Сигнал"!important;font-size:16px!important;font-weight:600!important;color:white!important;background:var(--vp-c-brand-1)!important;border-radius:6px!important;padding:6px 12px!important}
       .footer-row{flex-direction:column!important;gap:8px!important}
       .dot-separator{display:none!important}
     }
+    
+    /* Исправленные стили для кнопок */
     .VPSocialLink .vpi-social-github{display:none!important}
-    .VPSocialLink{width:auto!important;height:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important}
-    .VPSocialLink[aria-label="login-link"]::after{content:"Подключить";font-size:14px;color:var(--vp-c-text-1);padding:6px 12px;border:1px solid var(--vp-c-divider);border-radius:6px;background:transparent;transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0}
-    .VPSocialLink[aria-label="login-link"]:hover::after{background:var(--vp-c-bg-soft);border-color:var(--vp-c-brand)}
+    .VPSocialLink{width:auto!important;height:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;text-decoration:none!important}
+    .VPSocialLink[aria-label="login-link"]::after{content:"Войти";font-size:14px;color:var(--vp-c-text-2);padding:6px 12px;border:1px solid var(--vp-c-divider);border-radius:6px;background:transparent;transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0}
+    .VPSocialLink[aria-label="login-link"]:hover::after{background:var(--vp-c-bg-soft);border-color:var(--vp-c-brand-2);color:var(--vp-c-text-1)}
+    .VPSocialLink[aria-label="signal-link"]::after{content:"⚡ Отправить Сигнал";font-size:14px;color:white;padding:8px 16px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:var(--vp-c-brand-1);transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0;font-weight:600}
+    .VPSocialLink[aria-label="signal-link"]:hover::after{background:var(--vp-c-brand-2);border-color:var(--vp-c-brand-2);color:#000}
+    
     .custom-footer-links{display:flex;flex-direction:column;gap:3px;align-items:center}
     .footer-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
     .footer-row a{color:var(--vp-c-text-2);text-decoration:none;transition:color .3s ease}
@@ -167,7 +184,7 @@ export default defineConfig({
   description: 'Где Начинается Ваша Кофейня',
   themeConfig: {
     logo: '/favicon.svg',
-    siteTitle: "Сигнал",
+    siteTitle: "Умная Кофейня",
     sidebarMenuLabel: 'Меню',
     outlineTitle: 'На этой странице',
     returnToTopLabel: 'Наверх',
@@ -176,33 +193,22 @@ export default defineConfig({
       next: 'Следующая страница'
     },
     
-    // --- ДОБАВЛЕННЫЙ БЛОК ДЛЯ СТРАНИЦЫ 404 ---
     notFound: {
       title: 'СТРАНИЦА НЕ НАЙДЕНА',
       quote: 'Но если вы не измените направление, и если вы продолжите искать, вы можете в конечном итоге оказаться там, куда вы направляетесь.',
       linkText: 'Вернуться домой'
     },
-    // --- КОНЕЦ ДОБАВЛЕННОГО БЛОКА ---
     
-    // ВАЖНО: порядок от более специфичных к более общим!
     sidebar: {
-      // Самара: обзор/метод
       '/radar/index-smr/': { items: sidebarRadarSamara() },
-      // ИСПРАВЛЕНИЕ: Принудительная привязка страницы log к сайдбару России (ПЕРЕД /radar/signal/)
       '/radar/signal/log': { items: sidebarRadarRussia() },
-      // Новосибирск — без сайдбара
       '/radar/signal/coffee-points-nsk-2025/': { items: [] },
-      // Самара: весь остальной блок signal
       '/radar/signal/': { items: sidebarRadarSamara() },
-      // Фильтр и Программа рекомендаций — привязка к Чекапу
       '/radar/filter': { items: sidebarCheckup() },
       '/radar/invite': { items: sidebarCheckup() },
-      // Чекап
       '/checkup/': { items: sidebarCheckup() },
       '/checkup/prep/': { items: sidebarCheckupPrep() },
-      // Общий Радар (Россия)
       '/radar/': { items: sidebarRadarRussia() },
-      // Остальные разделы
       '/about/': { items: sidebarAbout() },
       '/method/': { items: sidebarMethod() },
       '/technology/': { items: sidebarTechnology() },
@@ -235,20 +241,29 @@ export default defineConfig({
         }, 
         link: 'https://t.me/runscale' 
       },
-      { icon: 'github', link: '/brew/membership', ariaLabel: 'login-link' }
+      { 
+        icon: { svg: '' }, 
+        link: 'https://app.mplan.sbs', 
+        ariaLabel: 'login-link' 
+      },
+      { 
+        icon: { svg: '' }, 
+        link: '/smr', 
+        ariaLabel: 'signal-link' 
+      }
     ],
   }
 })
 
 function nav(): DefaultTheme.NavItem[] {
   return [
-    { text: 'Как работает', link: '/signals' },
+    { text: 'Сигналы', link: '/signals' },
     { text: 'Кофейни', link: '/smr' },
     { text: 'Анна', link: '/anna' },
     {
       text: 'Для Бизнеса',
       items: [
-        { text: 'Платформа', link: '/brew/run' },   
+        { text: 'Как это работает', link: '/brew/run' },   
         { text: 'Механика Индекса', link: '/tech/index' },  
         { text: 'Сигналы Гостей', link: '/brew/tickets' },
         { text: 'Наш Мониторинг', link: '/radar/scale_index' },
@@ -262,7 +277,7 @@ function nav(): DefaultTheme.NavItem[] {
 function sidebarRadarSamara(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: 'Индекс Роста // Самара', // <--- Заголовок для сайдбара
+      text: 'Индекс Роста // Самара',
       collapsed: false,
       items: [
         { text: 'Рейтинг', link: '/radar/index-smr/overview' },
@@ -276,7 +291,7 @@ function sidebarRadarSamara(): DefaultTheme.SidebarItem[] {
 function sidebarRadarRussia(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: 'Индекс Роста // Россия', // <--- Заголовок для сайдбара
+      text: 'Индекс Роста // Россия',
       collapsed: false,
       items: [
         { text: 'Обзор рынка', link: '/radar/overview' },
@@ -398,7 +413,6 @@ function sidebarClients(): DefaultTheme.SidebarItem[] {
         { text: 'Milimon', link: '/clients/milimon.md' },
         { text: 'SM Live', link: '/clients/sm-live' },
         { text: 'SMSTRETCHING', link: '/clients/smstretching' },
-        { text: 'СУПЕРЛЕНД', link: '/clients/superland' },
         { text: 'WOODLED', link: '/clients/woodled' },
         { text: 'World Plastics Summit 2022', link: '/clients/world-plastics-summit-2022' },
       ]
