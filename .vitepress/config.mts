@@ -288,9 +288,9 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'Возможности', link: '/brew/run' },  
         { text: 'Подключиться', link: '/brew/membership' },
         { text: 'Механика Индекса', link: '/brew/index-specs' },  
-        { text: 'Сигналы Гостей', link: '/brew/tickets' },
+        { text: 'Тикет-система', link: '/brew/tickets' },
         { text: 'Анализ конкурентов', link: '/radar/scale_index' },
-        { text: 'Прогноз Дохода', link: '/brew/calc' },
+        { text: 'Прогноз дохода', link: '/brew/calc' },
         { text: 'Диалоги с данными', link: '/brew/sim' }
       ]
     }
