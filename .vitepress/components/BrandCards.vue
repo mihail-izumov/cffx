@@ -22,7 +22,7 @@
     </div>
     <div class="brand-card">
       <h3>Вашей кофейни здесь нет?</h3>
-      <p class="description-goals"><a href="/radar/overview">Рассчитать Индекс Роста →</a></p>
+      <p class="description-goals"><a href="/brew/membership">Рассчитать Индекс Роста →</a></p>
     </div>
   </div>
 </template>
