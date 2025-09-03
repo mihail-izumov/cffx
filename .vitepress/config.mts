@@ -67,7 +67,15 @@ export default defineConfig({
           footer.style.paddingBottom = '30px';
         }
       }
-      function updateApplyLinkTarget() {
+      function updateSocialLinkTargets() {
+        // --- Correction for the "signal-link" button ---
+        const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
+        signalLinks.forEach(signalLink => {
+          signalLink.setAttribute('target', '_self');
+          signalLink.removeAttribute('rel');
+        });
+
+        // --- Original functionality for "apply-link" ---
         const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="apply-link"]');
         applyLinks.forEach(applyLink => {
           applyLink.href = '/apply';
@@ -87,17 +95,17 @@ export default defineConfig({
         });
       }
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => { replaceFooter(); updateApplyLinkTarget(); });
-      } else { replaceFooter(); updateApplyLinkTarget(); }
-      window.addEventListener('load', () => { replaceFooter(); updateApplyLinkTarget(); });
-      setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 1000);
-      setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 2000);
+        document.addEventListener('DOMContentLoaded', () => { replaceFooter(); updateSocialLinkTargets(); });
+      } else { replaceFooter(); updateSocialLinkTargets(); }
+      window.addEventListener('load', () => { replaceFooter(); updateSocialLinkTargets(); });
+      setTimeout(() => { replaceFooter(); updateSocialLinkTargets(); }, 1000);
+      setTimeout(() => { replaceFooter(); updateSocialLinkTargets(); }, 2000);
       let lastUrl = location.href;
       new MutationObserver(() => {
         const url = location.href;
         if (url !== lastUrl) {
           lastUrl = url;
-          setTimeout(() => { replaceFooter(); updateApplyLinkTarget(); }, 100);
+          setTimeout(() => { replaceFooter(); updateSocialLinkTargets(); }, 100);
         }
       }).observe(document, { subtree: true, childList: true });
     })();
