@@ -2,7 +2,7 @@ import { defineConfig, DefaultTheme } from 'vitepress'
 import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
 export default defineConfig({
-  title: 'Умная Кофейня',
+  title: 'Сигнал',
   appearance: 'force-dark',
   locales: {
     '/': {
@@ -44,7 +44,7 @@ export default defineConfig({
         html += '</div></div>';
         html += '<div style="margin-top: 24px; text-align: center;">';
         html += '<div style="color: white; font-size: 14px;">Где Начинается Ваша Кофейня</div>';
-        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© 2025 Компания <a href="https://runscale.ru" target="_blank" style="color: inherit; text-decoration: underline;">Модуля Роста®</a></div>';
+        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Сигнал 2025 • Компания <a href="https://runscale.ru" target="_blank" style="color: inherit; text-decoration: underline;">Модуля Роста®</a></div>';
         return html;
       }
       function replaceFooter() {
@@ -199,55 +199,6 @@ export default defineConfig({
     .footer-row a:hover{color:var(--vp-c-brand)}
     .dot-separator{color:var(--vp-c-text-3);font-weight:bold}
     .VPFooter .copyright{margin-top:2px!important}
-    
-    /* НОВЫЕ СТИЛИ ДЛЯ КАРТОЧЕК - улучшение читаемости и цветовой схемы */
-    /* Карточки на главной странице */
-    .VPHomeFeatures .VPFeature .details,
-    .VPFeature .details,
-    .vp-doc p,
-    .vp-doc li {
-      color: #e0e6ed !important;
-    }
-    
-    /* Ссылки в карточках и документах */
-    .VPFeature a,
-    .vp-doc a:not(.header-anchor),
-    .VPHomeFeatures a {
-      color: #a8d8ea !important;
-      transition: color 0.3s ease !important;
-    }
-    
-    .VPFeature a:hover,
-    .vp-doc a:not(.header-anchor):hover,
-    .VPHomeFeatures a:hover {
-      color: var(--vp-c-brand-2) !important;
-    }
-    
-    /* Заголовки карточек остаются как есть */
-    .VPFeature .title {
-      color: var(--vp-c-brand-2) !important;
-    }
-    
-    /* Текст в карточках Value Cards и других кастомных компонентах */
-    .value-card .description,
-    .feature-card .description,
-    .info-card .description {
-      color: #e0e6ed !important;
-    }
-    
-    /* Ссылки в кастомных компонентах */
-    .value-card a,
-    .feature-card a,
-    .info-card a {
-      color: #a8d8ea !important;
-      transition: color 0.3s ease !important;
-    }
-    
-    .value-card a:hover,
-    .feature-card a:hover,
-    .info-card a:hover {
-      color: var(--vp-c-brand-2) !important;
-    }
     `]
   ],
   base: '/',
@@ -326,6 +277,7 @@ export default defineConfig({
   }
 })
 
+// [Остальные функции остаются такими же...]
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Как работает', link: '/signals' },
