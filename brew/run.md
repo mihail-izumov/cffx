@@ -2,7 +2,6 @@
 outline: false
 prev: false
 next: false
-aside: false
 title: Умная Кофейня | Сигнал
 ---
 
