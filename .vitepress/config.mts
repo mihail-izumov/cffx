@@ -4,12 +4,12 @@ import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
 
 export default defineConfig({
-  title: 'Умная Кофейня',
+  title: 'Сигнал',
   appearance: 'force-dark',
   locales: {
     '/': {
       lang: 'ru-RU',
-      title: 'Умная Кофейня',
+      title: 'Сигнал',
       description: 'Где Начинается Ваша Кофейня',
     },
   },
@@ -46,7 +46,7 @@ export default defineConfig({
         html += '</div></div>';
         html += '<div style="margin-top: 24px; text-align: center;">';
         html += '<div style="color: white; font-size: 14px;">Где Начинается Ваша Кофейня</div>';
-        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© 2025 Компания <a href="https://runscale.ru" target="_blank" style="color: inherit; text-decoration: underline;">Модуля Роста®</a></div>';
+        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Сигнал 2025 Компания <a href="https://runscale.ru" target="_blank" style="color: inherit; text-decoration: underline;">Модуля Роста®</a></div>';
         return html;
       }
       function replaceFooter() {
@@ -167,7 +167,7 @@ export default defineConfig({
   description: 'Где Начинается Ваша Кофейня',
   themeConfig: {
     logo: '/favicon.svg',
-    siteTitle: "Умная Кофейня",
+    siteTitle: "Сигнал",
     sidebarMenuLabel: 'Меню',
     outlineTitle: 'На этой странице',
     returnToTopLabel: 'Наверх',
@@ -242,13 +242,13 @@ export default defineConfig({
 
 function nav(): DefaultTheme.NavItem[] {
   return [
-    { text: 'Сигналы', link: '/signals' },
+    { text: 'Как работает', link: '/signals' },
     { text: 'Кофейни', link: '/smr' },
     { text: 'Анна', link: '/anna' },
     {
       text: 'Для Бизнеса',
       items: [
-        { text: 'Как это работает', link: '/brew/run' },   
+        { text: 'Платформа', link: '/brew/run' },   
         { text: 'Механика Индекса', link: '/tech/index' },  
         { text: 'Сигналы Гостей', link: '/brew/tickets' },
         { text: 'Наш Мониторинг', link: '/radar/scale_index' },
