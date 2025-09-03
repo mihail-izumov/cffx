@@ -39,7 +39,7 @@ export default {
   Layout() {
     return h(DefaultTheme.Layout, null, {})
   },
-  enhanceApp({ app, router }) {
+  enhanceApp({ app, router, isServer }) {
     // Регистрируем каждый компонент с уникальным тегом
     app.component('SimulatorCards', SimulatorCards)
     app.component('BrandCards', BrandCards)
@@ -72,19 +72,24 @@ export default {
     app.component('ReviewsWidget', ReviewsWidget)
     app.component('SignalSteps', SignalSteps)
 
-    // ДОБАВЛЯЕМ логику для активной страницы в dropdown
-    router.onAfterRouteChanged = (to) => {
-      setTimeout(() => {
-        // Активная страница в dropdown
-        document.querySelectorAll('.VPFlyout .VPMenuItem').forEach(item => {
-          item.classList.remove('active')
-        })
-        
-        const currentItem = document.querySelector(`.VPFlyout .VPMenuItem[href="${to}"]`)
-        if (currentItem) {
-          currentItem.classList.add('active')
-        }
-      }, 100)
+    // ИСПРАВЛЕННАЯ логика для активной страницы в dropdown - только на клиенте
+    if (!isServer && router) {
+      router.onAfterRouteChanged = (to) => {
+        setTimeout(() => {
+          // Проверяем что мы на клиенте и document существует
+          if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+            // Активная страница в dropdown
+            document.querySelectorAll('.VPFlyout .VPMenuItem').forEach(item => {
+              item.classList.remove('active')
+            })
+            
+            const currentItem = document.querySelector(`.VPFlyout .VPMenuItem[href="${to}"]`)
+            if (currentItem) {
+              currentItem.classList.add('active')
+            }
+          }
+        }, 100)
+      }
     }
   }
 }
