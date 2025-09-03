@@ -1,6 +1,7 @@
 import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
-import './custom.css' // ← ДОБАВЬТЕ ЭТУ СТРОКУ
+import './custom.css'
+
 // Импортируем каждый компонент с уникальным именем
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
@@ -38,7 +39,7 @@ export default {
   Layout() {
     return h(DefaultTheme.Layout, null, {})
   },
-  enhanceApp({ app }) {
+  enhanceApp({ app, router }) {
     // Регистрируем каждый компонент с уникальным тегом
     app.component('SimulatorCards', SimulatorCards)
     app.component('BrandCards', BrandCards)
@@ -70,5 +71,20 @@ export default {
     app.component('BrewFirst30Days', BrewFirst30Days)
     app.component('ReviewsWidget', ReviewsWidget)
     app.component('SignalSteps', SignalSteps)
+
+    // ДОБАВЛЯЕМ логику для активной страницы в dropdown
+    router.onAfterRouteChanged = (to) => {
+      setTimeout(() => {
+        // Активная страница в dropdown
+        document.querySelectorAll('.VPFlyout .VPMenuItem').forEach(item => {
+          item.classList.remove('active')
+        })
+        
+        const currentItem = document.querySelector(`.VPFlyout .VPMenuItem[href="${to}"]`)
+        if (currentItem) {
+          currentItem.classList.add('active')
+        }
+      }, 100)
+    }
   }
 }
