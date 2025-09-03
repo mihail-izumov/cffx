@@ -291,7 +291,7 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'Сигналы Гостей', link: '/brew/tickets' },
         { text: 'Анализ конкурентов', link: '/radar/scale_index' },
         { text: 'Прогноз Дохода', link: '/brew/calc' },
-        { text: 'Симулятор Роста', link: '/brew/sim' }
+        { text: 'Диалоги с данными', link: '/brew/sim' }
       ]
     }
   ]
