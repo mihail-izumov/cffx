@@ -1,8 +1,7 @@
 import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
-import './custom.css'
-
-// Все ваши компоненты (без изменений)
+import './custom.css' // ← ДОБАВЬТЕ ЭТУ СТРОКУ
+// Импортируем каждый компонент с уникальным именем
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
 import FeaturesGrid from '../components/FeaturesGrid.vue'
@@ -39,8 +38,8 @@ export default {
   Layout() {
     return h(DefaultTheme.Layout, null, {})
   },
-  enhanceApp({ app, router, isServer }) {
-    // Регистрируем все компоненты (без изменений)
+  enhanceApp({ app }) {
+    // Регистрируем каждый компонент с уникальным тегом
     app.component('SimulatorCards', SimulatorCards)
     app.component('BrandCards', BrandCards)
     app.component('FeaturesGrid', FeaturesGrid)
@@ -71,20 +70,5 @@ export default {
     app.component('BrewFirst30Days', BrewFirst30Days)
     app.component('ReviewsWidget', ReviewsWidget)
     app.component('SignalSteps', SignalSteps)
-
-    // Только минимальная логика для активной страницы (только на клиенте)
-    if (!isServer && typeof window !== 'undefined') {
-      router?.onAfterRouteChanged?.(to => {
-        setTimeout(() => {
-          document.querySelectorAll?.('.VPFlyout .VPMenuItem')?.forEach?.(item => {
-            if (item.getAttribute?.('href') === to) {
-              item.classList?.add?.('active')
-            } else {
-              item.classList?.remove?.('active')
-            }
-          })
-        }, 100)
-      })
-    }
   }
 }
