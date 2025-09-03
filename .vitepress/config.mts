@@ -222,21 +222,8 @@ export default defineConfig({
     },
     
     sidebar: {
-      '/radar/index-smr/': { items: sidebarRadarSamara() },
-      '/radar/signal/log': { items: sidebarRadarRussia() },
+      '/brew/': { items: sidebarBrew() },
       '/radar/signal/coffee-points-nsk-2025/': { items: [] },
-      '/radar/signal/': { items: sidebarRadarSamara() },
-      '/radar/filter': { items: sidebarCheckup() },
-      '/radar/invite': { items: sidebarCheckup() },
-      '/checkup/': { items: sidebarCheckup() },
-      '/checkup/prep/': { items: sidebarCheckupPrep() },
-      '/radar/': { items: sidebarRadarRussia() },
-      '/about/': { items: sidebarAbout() },
-      '/method/': { items: sidebarMethod() },
-      '/technology/': { items: sidebarTechnology() },
-      '/system/': { items: sidebarSystem() },
-      '/journal/': { items: sidebarJournal() },
-      '/clients/': { items: sidebarClients() },
       '/terms/': { items: sidebarTerms() }
     },
     search: {
@@ -277,7 +264,6 @@ export default defineConfig({
   }
 })
 
-// [Остальные функции остаются такими же...]
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Как работает', link: '/signals' },
@@ -297,150 +283,22 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-function sidebarRadarSamara(): DefaultTheme.SidebarItem[] {
+function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: 'Индекс Роста // Самара',
+      text: 'Для Бизнеса',
       collapsed: false,
       items: [
-        { text: 'Рейтинг', link: '/radar/index-smr/overview' },
-        { text: 'Калькулятор', link: '/radar/index-smr/calc' },
-        { text: 'Симулятор', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
+        { text: 'Возможности', link: '/brew/run' },  
+        { text: '→ Подключиться', link: '/brew/membership' },
+        { text: 'Механика Индекса', link: '/brew/index-specs' },  
+        { text: 'Тикет-система', link: '/brew/tickets' },
+        { text: 'Анализ конкурентов', link: '/brew/reports' },
+        { text: 'Прогноз дохода', link: '/brew/calc' },
+        { text: 'Диалоги с данными', link: '/brew/sim' }
       ]
     }
   ]
-}
-
-function sidebarRadarRussia(): DefaultTheme.SidebarItem[] {
-  return [
-    {
-      text: 'Индекс Роста // Россия',
-      collapsed: false,
-      items: [
-        { text: 'Обзор рынка', link: '/radar/overview' },
-        { text: 'Скрытый потенциал', link: '/radar/scale_index' },
-        { text: 'Кто Анна', link: '/radar/who-is-anna' },
-        { text: 'Радар', link: '/radar/signal/log' }
-      ]
-    }
-  ]
-}
-
-function sidebarCheckup(): DefaultTheme.SidebarItem[] {
-  return [
-    { 
-      text: 'Чекап', 
-      collapsed: false, 
-      items: [
-        { text: 'Обзор', link: '/checkup/overview' },
-        { text: '→ Пройти Чекап', link: '/apply' },
-        { text: 'Подготовка к чекапу', link: '/checkup/prep/overview' },
-        { text: 'Детали чекапа', link: '/checkup/specs' },
-        { text: 'Глубокий чекап', link: '/checkup/deep' },
-        { text: 'Платите за движение', link: '/checkup/pay-as-you-go' },
-        { text: 'Чек-лист готовности', link: '/checkup/checklist' },
-        { text: 'Фильтр потенциала', link: '/radar/filter' },
-        { text: 'Программа рекомендаций', link: '/radar/invite' }
-      ]
-    }
-  ]
-}
-
-function sidebarCheckupPrep(): DefaultTheme.SidebarItem[] {
-  return [
-    { 
-      text: 'Подготовка к чекапу', 
-      collapsed: false, 
-      items: [
-        { text: 'Обзор', link: '/checkup/prep/overview' },        
-        { text: '1 - Скрытые проблемы, которые блокируют рост', link: '/checkup/prep/01-hidden-problems-blocking-growth' },
-        { text: '2 - Почему мы запрашиваем готовые отчёты, а не доступы к системам', link: '/checkup/prep/02-why-we-request-ready-reports-not-system-access' },
-        { text: '3 - Почему важно смотреть на весь бизнес, а не на «локальные проблемы»', link: '/checkup/prep/03-system-diagnostics-vs-one-time-solutions' },
-        { text: '4 - Чекап как первый шаг к фрейм-менеджменту', link: '/checkup/prep/04-checkup-for-data-driven-decisions' },
-        { text: '5 - ИИ-аналитика в модели RAG: как живая база знаний меняет подход', link: '/checkup/prep/05-ai-analytics-rag-management' },
-        { text: '6 - 10 разделов аналитики: анатомия вашего бизнеса', link: '/checkup/prep/06-10-diagnostic-sections' },
-        { text: '7 - Три принципа здоровой аналитики на практике', link: '/checkup/prep/07-three-reliable-analytics-principles' },
-        { text: '8 - Как превратить аналитику в ресурс роста – Итоги серии', link: '/checkup/prep/08-analytics-transparent-management' }
-      ]
-    }
-  ]
-}
-
-function sidebarAbout(): DefaultTheme.SidebarItem[] {
-  return [{
-      text: 'Компания', collapsed: false, items: [
-        { text: 'Кто мы', link: '/about/company' },
-        { text: 'Мы, Растем', link: '/about/mission' },
-        { text: 'Не только цифры, но и эмоции', link: '/about/balance' },
-        { text: 'Контакт', link: '/about/contacts' }
-      ]
-    }]
-}
-
-function sidebarMethod(): DefaultTheme.SidebarItem[] {
-  return [{
-      text: 'Метод', collapsed: false, items: [
-        { text: 'Обзор', link: '/method/overview' },
-        { text: '3 принципа здоровой аналитики', link: '/method/the-three-principles' },
-        { text: 'Метод эффективной трансформации', link: '/method/transform' },
-        { text: 'Фрейм-менеджмент', link: '/method/frames' },
-        { text: 'Рост – это не гонка, а приключение', link: '/method/not-a-race' },
-        { text: 'Сравнить', link: '/method/pro-et-contra' }
-      ]
-    }]
-}
-
-function sidebarTechnology(): DefaultTheme.SidebarItem[] {
-  return [{
-      text: 'Технологии', collapsed: false, items: [
-        { text: 'Обзор', link: '/technology/overview' },
-        { text: 'Живая база знаний', link: '/technology/datahub' },
-        { text: 'Аналитика 360°', link: '/technology/analytics-360' },
-        { text: 'ИИ-ассистент продаж', link: '/technology/anna' },
-        { text: 'Речевая аналитика', link: '/technology/wordpower' },
-        { text: 'Дистанционные стратегические сессии', link: '/technology/vision-now' },
-        { text: 'Живые Стандарты', link: '/technology/live-standarts' },
-      ]
-    }]
-}
-
-function sidebarSystem(): DefaultTheme.SidebarItem[] {
-  return [{
-      text: 'Система роста бизнеса', collapsed: false, items: [
-        { text: 'Обзор', link: '/system/overview' },
-        { text: '12-нед. интенсив', link: '/system/12-weeks' }
-      ]
-    }]
-}
-
-function sidebarJournal(): DefaultTheme.SidebarItem[] {
-  return [{
-      text: 'Журнал', collapsed: false, items: [
-        { text: 'Содержание', link: '/journal/contents/overview' },        
-        { text: 'Кейсы', link: '/journal/contents/cases' },
-        { text: 'Статьи', link: '/journal/contents/articles' }
-      ]
-    }]
-}
-
-function sidebarClients(): DefaultTheme.SidebarItem[] {
-  return [{
-      text: 'Клиенты', collapsed: false, items: [
-        { text: 'Обзор', link: '/clients/list' },
-        { text: 'Конкордия-Авто', link: '/clients/konkordiya-auto' },
-        { text: 'Блумкидс', link: '/clients/bloomkids' },
-        { text: 'Чишминский Молочный Завод', link: '/clients/chishminskiy' },
-        { text: 'Ермолаевъ', link: '/clients/ermolaev' },
-        { text: 'FIZ Культура', link: '/clients/fiz-kultura.md' },
-        { text: 'Фонд им. Дмитрия Хворостовского', link: '/clients/hvorostovsky-foundation' },
-        { text: 'Milimon', link: '/clients/milimon.md' },
-        { text: 'SM Live', link: '/clients/sm-live' },
-        { text: 'SMSTRETCHING', link: '/clients/smstretching' },
-        { text: 'СУПЕРЛЕНД', link: '/clients/superland' },
-        { text: 'WOODLED', link: '/clients/woodled' },
-        { text: 'World Plastics Summit 2022', link: '/clients/world-plastics-summit-2022' },
-      ]
-    }]
 }
 
 function sidebarTerms(): DefaultTheme.SidebarItem[] {
