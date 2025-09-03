@@ -8,8 +8,8 @@
           Открытая база знаний, содержащая коллективный опыт сотен кофеен. От выбора зерна до найма бариста — все, что нужно для создания бизнеса, который любят клиенты и боятся конкуренты.
         </p>
       </div>
-      <a href="/brew/protocol" rel="noopener noreferrer" class="card-button">
-        Изучить Протокол
+      <a href="/brew/sim" rel="noopener noreferrer" class="card-button">
+        Диалоги с данными
       </a>
     </div>
     <!-- Карточка 2: Индекс Роста -->
@@ -20,7 +20,7 @@
           Единственная в отрасли система оценки, которая измеряет не размер, а потенциал роста компании. Попасть в Индекс — значит стать видимым для инвесторов, поставщиков и лучших талантов рынка.
         </p>
       </div>
-      <a href="/radar/index-smr/overview" rel="noopener noreferrer" class="card-button">
+      <a href="/smr" rel="noopener noreferrer" class="card-button">
         Индекс // Самара
       </a>
     </div>
