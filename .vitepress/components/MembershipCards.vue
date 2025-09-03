@@ -2,7 +2,7 @@
   <div class="pricing-grid">
     <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) -->
     <div class="pricing-card">
-      <h3 class="card-title card-title--simulator">СИМУЛЯТОР</h3>
+      <h3 class="card-title card-title--simulator">БЕСПЛАТНО</h3>
       <p class="card-subtitle">Избежать 3 самых дорогих ошибок новичков</p>
       <div class="card-image-wrapper">
         <img
@@ -21,7 +21,7 @@
         <li class="feature-item"><CheckIcon /><span><a href="/radar/who-is-anna" target="_blank" class="feature-link">ИИ-ассистент Анна</a></span></li>
       </ul>
       <a href="/brew/join/free" class="card-button card-button--secondary">
-        Начать с Симулятора
+        Начать бесплатно
       </a>
     </div>
     <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) -->
@@ -36,11 +36,12 @@
         />
       </div>
       <div class="card-price">
-        <strong>₽12,500</strong>
+        <strong>₽18,500</strong>
         <div class="payment-type">Ежемесячная оплата</div>
       </div>
       <p class="includes-all">Все, что в Симуляторе, плюс:</p>
       <ul class="feature-list">
+        <li class="feature-item"><CheckIcon /><span>Тикет-система Сигнала</span></li>
         <li class="feature-item"><CheckIcon /><span>Ваша кофейня VS Рынок в реальном времени</span></li>
         <li class="feature-item"><CheckIcon /><span><a href="/radar/index-smr/overview" target="_blank" class="feature-link">Индекс Роста</a>: сигналы изменений</span></li>
       </ul>
