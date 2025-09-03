@@ -12,9 +12,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 
 // --- НАСТРОЙКИ АНИМАЦИИ ---
-// Интервал смены фразы в миллисекундах
 const ROTATION_INTERVAL_MS = 7000;
-// Длительность анимации затухания и появления в миллисекундах
 const FADE_DURATION_MS = 1000;
 
 // Фразы для ротации
@@ -27,44 +25,48 @@ const phrases = ref([
 const currentPhraseIndex = ref(0);
 let intervalId = null;
 
-// Функция для смены фразы
 const cyclePhrases = () => {
   currentPhraseIndex.value = (currentPhraseIndex.value + 1) % phrases.value.length;
 };
 
-// Запускаем интервал при монтировании компонента
 onMounted(() => {
   intervalId = setInterval(cyclePhrases, ROTATION_INTERVAL_MS);
 });
 
-// Очищаем интервал при размонтировании, чтобы избежать утечек памяти
 onUnmounted(() => {
   clearInterval(intervalId);
 });
 </script>
 
 <style scoped>
-.rotating-phrase-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 80px; /* Задайте высоту, чтобы контейнер не "прыгал" при смене фраз */
-  text-align: center;
-}
-
-.rotating-phrase {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--vp-c-text-2);
-  margin: 0;
-  padding: 0 1rem;
-  line-height: 1.6;
-}
-
 /* 
-  Анимация перехода с использованием <transition>
-  Длительность соответствует FADE_DURATION_MS
+  Контейнер, который теперь является блоком 
+  в стиле интерфейсов Perplexity/ChatGPT.
 */
+.rotating-phrase-container {
+  background-color: var(--vp-c-bg-soft); /* Чуть более светлый фон */
+  border: 1px solid var(--vp-c-border);   /* Тонкая рамка */
+  border-radius: 12px;                    /* Скругленные углы */
+  padding: 1rem 1.5rem;                   /* Внутренние отступы */
+  margin: 1rem 0;                         /* Внешние отступы для отделения от другого контента */
+  min-height: 100px;                      /* Высота, чтобы блок не "прыгал" */
+  display: flex;
+  align-items: center;                    /* Вертикальное выравнивание по центру */
+  text-align: left;                       /* Выравнивание текста по левому краю */
+}
+
+/* Стили для самого текста фразы */
+.rotating-phrase {
+  font-size: 1rem;                      /* Уменьшенный размер шрифта (стандартно 16px) */
+  font-weight: 500;
+  color: var(--vp-c-text-2);            /* Слегка приглушенный цвет текста */
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  width: 100%;                          /* Занимает всю ширину контейнера */
+}
+
+/* Анимация затухания */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity v-bind("`${FADE_DURATION_MS / 1000}s`") ease-in-out;
@@ -76,6 +78,8 @@ onUnmounted(() => {
 }
 
 .fade-leave-active {
-  position: absolute; /* Предотвращает "прыжок" текста при смене */
+  position: absolute;
+  /* Убираем 'left' и 'right' и задаем 'width', чтобы избежать проблем с выравниванием */
+  width: calc(100% - 3rem); /* Ширина контейнера минус паддинги */
 }
 </style>
