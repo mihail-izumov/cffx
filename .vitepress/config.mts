@@ -1,7 +1,6 @@
 import { defineConfig, DefaultTheme } from 'vitepress'
 import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
-
 export default defineConfig({
   title: 'Умная Кофейня',
   appearance: 'force-dark',
@@ -69,13 +68,6 @@ export default defineConfig({
         }
       }
       function updateApplyLinkTarget() {
-        // Убираем target="_blank" у кнопки "Отправить ⚡ Сигнал"
-        const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
-        signalLinks.forEach(signalLink => {
-          signalLink.setAttribute('target', '_self');
-          signalLink.removeAttribute('rel');
-        });
-        
         const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="apply-link"]');
         applyLinks.forEach(applyLink => {
           applyLink.href = '/apply';
@@ -298,13 +290,14 @@ export default defineConfig({
       },
       { 
         icon: { svg: '' }, 
-        link: '/smr',  // УБРАН target: '_blank'
+        link: '/smr', 
         ariaLabel: 'signal-link' 
       }
     ],
   }
 })
 
+// [Остальные функции остаются такими же - добавляю только для полноты...]
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Сигналы', link: '/signals' },
@@ -324,7 +317,7 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-// [Все остальные функции остаются без изменений]
+// [Остальные функции sidebarRadarSamara, sidebarRadarRussia и т.д. остаются такими же...]
 function sidebarRadarSamara(): DefaultTheme.SidebarItem[] {
   return [{
     text: 'Индекс Роста // Самара',
