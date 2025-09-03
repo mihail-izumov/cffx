@@ -45,14 +45,14 @@ aside: false
 
 Вы больше не просто гость. Вы — часть её истории успеха.
 
-### Почувствуйте разницу между частным мнением и реальным результатом
+### Почувствуйте силу настоящих перемен
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
 
   <div class="project-card">
     <div>
       <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Для Гостя</h3>
-      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);"><strong>Ваши отзывы становятся энергией роста любимых кофеен.</strong> <br><br> Индекс Роста показывает реальный потенциал каждого места и ваше влияние на его развитие.</p>
+      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);"><strong>Ваши отзывы меняют всё.</strong> <br><br> Каждый Сигнал помогает любимым кофейням стать уже сегодня.</p>
     </div>
     <a href="/smr" class="project-button">
       Отправить Сигнал →
@@ -62,7 +62,7 @@ aside: false
   <div class="project-card">
     <div>
       <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Для Кофейни</h3>
-      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);"><strong>Индекс Роста — технология, которая анализирует отзывы гостей и превращает их в точные метрики потенциала развития вашей кофейни.</strong> <br><br> Получайте не просто оценки, а понимание того, как именно расти.</p>
+      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);"><strong>Настоящая аналитика для роста.</strong> <br><br> Получайте не просто оценки, а понимание того, как именно расти.</p>
     </div>
     <a href="/brew/membership" class="project-button">
       Подключить Кофейню →
