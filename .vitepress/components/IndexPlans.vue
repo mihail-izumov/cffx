@@ -22,7 +22,7 @@
         <li class="feature-item"><CheckIcon /><span>Мгновенный доступ к инсайтам</span></li>
         <li class="feature-item"><CheckIcon /><span>ИИ-ассистент Анна</span></li>
       </ul>
-      <a href="/radar/signal/coffee-points-smr-2025/dashboard" class="card-button card-button--secondary">
+      <a href="/brew/sim" class="card-button card-button--secondary">
         Получить Ответ
       </a>
     </div>
@@ -50,7 +50,7 @@
         <li class="feature-item"><CheckIcon /><span>Целевые конкуренты</span></li>
       </ul>
       <!-- Я обновил ссылку, чтобы она соответствовала новому названию -->
-      <a href="/radar/index-smr/calc" class="card-button">Рассчитать</a>
+      <a href="/brew/calc" class="card-button">Рассчитать</a>
     </div>
   </div>
 </template>
