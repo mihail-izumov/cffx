@@ -2,80 +2,75 @@
   <div class="form-container">
     <!-- Сообщение об успешной отправке -->
     <div v-if="formSubmitted" class="success-message">
-      <h3>Спасибо! Ваш отзыв принят.</h3>
-      <p>Мы ценим ваше время и обязательно используем эту информацию для улучшений.</p>
+      <h3>Сигнал принят!</h3>
+      <p>Спасибо, что помогаете стать лучше. Ассистент Анна изучит ваш отзыв и свяжется с вами в Telegram по итогам.</p>
     </div>
 
     <!-- Основная форма, скрывается после отправки -->
     <form v-else @submit.prevent="submitForm">
       <div class="header">
-        <h1>🌱 Сделаем лучше вместе</h1>
-        <p>Ваш честный отзыв поможет этому месту стать еще лучше для всех гостей. Мы превратим каждое замечание в конкретное улучшение.</p>
+        <!-- Заголовок убран, как вы и просили -->
+        <p>Ваш честный отзыв поможет этому месту стать еще лучше для всех гостей.</p>
       </div>
 
       <!-- Блок 1: Эмоции -->
       <div class="question-block">
         <label class="question-label">1. Что вас расстроило сегодня?</label>
-        <p class="question-help">Опишите свои эмоции и впечатления. Мы понимаем — это важно выговориться.</p>
-        <textarea v-model="form.emotionalRelease" rows="4" placeholder="Расскажите, что именно вас расстроило или разочаровало..." required></textarea>
+        <p class="question-help">Опишите свои эмоции и впечатления.</p>
+        <textarea v-model="form.emotionalRelease" rows="3" placeholder="Расскажите, что именно вас расстроило..." required></textarea>
       </div>
 
       <!-- Блок 2: Факты -->
       <div class="question-block">
         <label class="question-label">2. Что конкретно пошло не так?</label>
-        <p class="question-help">Давайте разберем ситуацию по фактам — что, когда, где произошло.</p>
-        <textarea v-model="form.factualAnalysis" rows="4" placeholder="Например: 'Ждал заказ 20 минут', 'Кофе был холодный', 'Персонал не обратил внимания'..." required></textarea>
+        <p class="question-help">Опишите факты — что, когда и где произошло.</p>
+        <textarea v-model="form.factualAnalysis" rows="3" placeholder="Например: 'Ждал заказ 20 минут'..." required></textarea>
       </div>
 
       <!-- Блок 3: Предложения -->
       <div class="question-block">
         <label class="question-label">3. Как бы вы это исправили?</label>
-        <p class="question-help">Представьте: вы — владелец этого места. Что бы вы изменили завтра?</p>
-        <textarea v-model="form.constructiveSuggestions" rows="4" placeholder="Например: 'Добавить таймер для контроля времени приготовления', 'Обучить персонал быстрее реагировать'..." required></textarea>
-      </div>
-      
-      <!-- Блок 4: Ожидаемая польза -->
-      <div class="question-block">
-        <label class="question-label">4. Как эти изменения улучшат ваш опыт?</label>
-        <p class="question-help">Помогите нам понять, почему эти изменения важны именно для вас.</p>
-        <textarea v-model="form.expectedBenefits" rows="3" placeholder="Это поможет мне экономить время / получать больше удовольствия / чувствовать заботу..."></textarea>
+        <p class="question-help">Ваше видение — наш план действий.</p>
+        <textarea v-model="form.constructiveSuggestions" rows="3" placeholder="Например: 'Добавить таймер для контроля времени'..." required></textarea>
       </div>
 
-      <!-- Блок 5: Оценка важности -->
+      <!-- Блок 4: Оценка важности -->
       <div class="question-block">
-        <label class="question-label">5. Насколько это важно для вас?</label>
-        <p class="question-help">Поможет нам расставить приоритеты при внедрении изменений.</p>
+        <label class="question-label">4. Насколько это важно для вас?</label>
+        <p class="question-help">Это поможет нам верно расставить приоритеты.</p>
         <div class="rating-stars">
-          <span v-for="star in 5" :key="star" class="star" :class="{ active: star <= form.importanceRating }" @click="setRating(star)">⭐</span>
+          <span
+            v-for="star in 5"
+            :key="star"
+            class="star"
+            :class="{ 'active': star <= form.importanceRating }"
+            @click="form.importanceRating = star"
+            @mouseover="hoverRating = star"
+            @mouseleave="hoverRating = 0"
+          >
+            {{ (hoverRating || form.importanceRating) >= star ? '★' : '☆' }}
+          </span>
         </div>
       </div>
       
-      <!-- Новые поля для контактов -->
+      <!-- Блок 5: Контактный телефон для Telegram -->
       <div class="question-block">
-        <label for="name" class="question-label">Ваше имя</label>
-        <p class="question-help">Чтобы мы знали, как к вам обращаться.</p>
-        <input type="text" id="name" v-model="form.name" placeholder="Иван" required>
-      </div>
-      
-      <div class="question-block">
-        <label for="contact" class="question-label">Телефон или Email для связи</label>
-        <p class="question-help">Если хотите узнать о результатах или получить персональную обратную связь.</p>
-        <input type="text" id="contact" v-model="form.contact" placeholder="+7 (999) 000-00-00 или example@mail.com" required>
+        <label for="telegramPhone" class="question-label">5. Ваш контакт в Telegram</label>
+        <p class="question-help">На этот номер телефона, привязанный к Telegram, наш ИИ-ассистент Анна пришлёт результат разбора вашего отзыва.</p>
+        <input type="tel" id="telegramPhone" v-model="form.telegramPhone" placeholder="+7 (999) 000-00-00" required>
       </div>
 
       <!-- Блок согласия -->
-       <div class="checkbox-group">
+      <div class="checkbox-group">
         <input type="checkbox" id="consent" v-model="form.consent" required>
         <label for="consent">
-          Нажимая кнопку, вы соглашаетесь с 
-          <a href="/terms/policy" target="_blank" class="policy-link">политикой конфиденциальности</a> и 
-          <a href="/terms/privacy" target="_blank" class="policy-link">обработкой данных</a>.
+          Я согласен с <a href="/terms/policy" target="_blank" class="policy-link">политикой конфиденциальности</a> и <a href="/terms/privacy" target="_blank" class="policy-link">обработкой данных</a>.
         </label>
       </div>
 
       <!-- Кнопка отправки -->
       <button type="submit" class="submit-btn" :disabled="!isFormValid || isSubmitting">
-        {{ isSubmitting ? 'Отправляем...' : 'Отправить предложения по улучшению' }}
+        {{ isSubmitting ? 'Отправка...' : 'Отправить Сигнал' }}
       </button>
     </form>
   </div>
@@ -84,246 +79,217 @@
 <script setup>
 import { reactive, ref, computed } from 'vue';
 
-// Реактивное состояние для данных формы
 const form = reactive({
   emotionalRelease: '',
   factualAnalysis: '',
   constructiveSuggestions: '',
-  expectedBenefits: '',
   importanceRating: 0,
-  name: '',
-  contact: '',
+  telegramPhone: '',
   consent: false
 });
 
-// Состояние процесса отправки и успешной отправки
+const hoverRating = ref(0);
 const isSubmitting = ref(false);
 const formSubmitted = ref(false);
 
-// Компьютед-свойство для валидации формы в реальном времени
 const isFormValid = computed(() => {
-  return form.emotionalRelease.trim() !== '' &&
-         form.factualAnalysis.trim() !== '' &&
-         form.constructiveSuggestions.trim() !== '' &&
+  return form.emotionalRelease.trim() &&
+         form.factualAnalysis.trim() &&
+         form.constructiveSuggestions.trim() &&
          form.importanceRating > 0 &&
-         form.name.trim() !== '' &&
-         form.contact.trim() !== '' &&
+         form.telegramPhone.trim() &&
          form.consent;
 });
 
-// Функция для установки рейтинга
-function setRating(star) {
-  form.importanceRating = star;
-}
-
-// Асинхронная функция отправки формы
 async function submitForm() {
   if (!isFormValid.value) return;
 
   isSubmitting.value = true;
 
-  // Формируем единое сообщение из всех полей для удобства
   const fullMessage = `
-    Оценка важности: ${'⭐'.repeat(form.importanceRating)} (${form.importanceRating}/5)
-    
-    1. Эмоции и впечатления:
-    ${form.emotionalRelease}
-    
-    2. Фактический разбор ситуации:
-    ${form.factualAnalysis}
-    
-    3. Конструктивные предложения:
-    ${form.constructiveSuggestions}
-    
-    4. Ожидаемая польза от изменений:
-    ${form.expectedBenefits || 'Не указано'}
+    Новый сигнал с сайта.
+    Важность: ${'★'.repeat(form.importanceRating)} (${form.importanceRating}/5)
+    ---------------------------------
+    1. Эмоции: ${form.emotionalRelease}
+    2. Факты: ${form.factualAnalysis}
+    3. Предложения: ${form.constructiveSuggestions}
+    ---------------------------------
+    Контакт для ответа в Telegram: ${form.telegramPhone}
   `;
 
   const formData = {
-    name: form.name,
-    contact: form.contact,
+    _subject: `Новый Сигнал (Важность: ${form.importanceRating}/5)`,
     message: fullMessage,
-    _subject: `Новый отзыв с сайта от ${form.name}`
+    telegram: form.telegramPhone
   };
 
   try {
-    const response = await fetch('https://formspree.io/f/mdkzjopz', {
+    const response = await fetch('https://formspree.io/f/mdkzjopz', { // Ваш URL Formspree
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
     });
-
-    if (!response.ok) {
-      throw new Error('Ошибка при отправке на сервер');
-    }
-    
-    // Показываем сообщение об успехе
+    if (!response.ok) throw new Error('Server error');
     formSubmitted.value = true;
-    
   } catch (error) {
     console.error('Ошибка отправки формы:', error);
-    // Резервный вариант: отправка через почтовый клиент
-    const mailtoBody = `Имя: ${formData.name}%0AКонтакт: ${formData.contact}%0AСообщение: ${encodeURIComponent(formData.message)}`;
-    window.location.href = `mailto:theorchestramanco@gmail.com?subject=${encodeURIComponent(formData._subject)}&body=${mailtoBody}`;
-    
+    alert('Не удалось отправить отзыв. Попробуйте позже.');
   } finally {
     isSubmitting.value = false;
-    // Очистку формы можно не делать, так как она скрывается
   }
 }
-
 </script>
 
 <style scoped>
-/* Основные стили контейнера и шрифтов */
+/* Основной контейнер и шрифты */
 .form-container {
-  max-width: 600px;
-  margin: 40px auto;
-  background: white;
+  max-width: 520px;
+  margin: 20px auto;
+  background-color: #1A1A1A; /* Темный фон */
   border-radius: 16px;
-  padding: 40px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  font-family: 'SF Pro Display', -apple-system, sans-serif;
+  padding: 24px;
+  border: 1px solid #2a2a2a;
+  color: #E0E0E0; /* Светлый текст */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Стили заголовка */
+/* Заголовок */
 .header {
   text-align: center;
-  margin-bottom: 40px;
-}
-.header h1 {
-  color: #1e3c72;
-  margin-bottom: 10px;
-  font-size: 28px;
+  margin-bottom: 24px;
 }
 .header p {
-  color: #666;
-  font-size: 16px;
+  color: #999;
+  font-size: 15px;
   line-height: 1.5;
 }
 
-/* Стили блоков с вопросами */
+/* Блоки с вопросами */
 .question-block {
-  margin-bottom: 32px;
-  padding: 24px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  border-left: 4px solid #4caf50;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #252525;
+  border-radius: 10px;
+  border-left: 3px solid #3DDC84; /* Акцентный зеленый */
 }
 .question-label {
-  display: block; /* Улучшает компоновку */
+  display: block;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 12px;
-  font-size: 18px;
+  color: #f0f0f0;
+  margin-bottom: 8px;
+  font-size: 16px;
 }
 .question-help {
-  font-size: 14px;
-  color: #777;
-  margin-bottom: 16px;
-  font-style: italic;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 12px;
+  line-height: 1.4;
 }
 
-/* Стили полей ввода */
+/* Поля ввода */
 textarea,
-input[type="text"] {
+input[type="tel"] {
   width: 100%;
-  padding: 16px;
-  border: 2px solid #e1e5e9;
+  padding: 12px;
+  border: 1px solid #3a3a3a;
+  background-color: #1A1A1A;
+  color: #E0E0E0;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   box-sizing: border-box;
-  transition: border-color 0.3s;
-  font-family: inherit; /* Наследование шрифта */
+  transition: border-color 0.3s, box-shadow 0.3s;
+  resize: vertical;
 }
 textarea:focus,
-input[type="text"]:focus {
+input[type="tel"]:focus {
   outline: none;
-  border-color: #4caf50;
+  border-color: #3DDC84;
+  box-shadow: 0 0 0 3px rgba(61, 220, 132, 0.2);
 }
 
-/* Стили рейтинга */
+/* Рейтинг */
 .rating-stars {
   display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 4px;
   cursor: pointer;
 }
 .star {
-  font-size: 32px;
-  color: #ddd;
-  transition: color 0.2s;
+  font-size: 28px;
+  color: #444;
+  transition: color 0.2s, transform 0.2s;
+  user-select: none; /* Убирает выделение текста звезд */
+}
+.star:hover {
+  transform: scale(1.1);
 }
 .star.active {
-  color: #ffd700;
+  color: #FFD700;
 }
 
-/* Стили группы с чекбоксом (взяты из второго примера и адаптированы) */
+/* Чекбокс */
 .checkbox-group {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 30px;
-  padding: 0 10px;
+  gap: 10px;
+  margin: 24px 0;
+  padding: 4px;
 }
 .checkbox-group input {
   margin-top: 3px;
-  width: 1.2em;
-  height: 1.2em;
+  width: 1.1em;
+  height: 1.1em;
   cursor: pointer;
+  accent-color: #3DDC84;
 }
 .checkbox-group label {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.4;
-  color: #666;
+  color: #999;
 }
 .policy-link {
-  color: #4caf50;
+  color: #3DDC84;
   text-decoration: none;
 }
 .policy-link:hover {
   text-decoration: underline;
 }
 
-
-/* Стили кнопки отправки */
+/* Кнопка отправки */
 .submit-btn {
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-  color: white;
-  padding: 16px 32px;
+  background-color: #3DDC84;
+  color: #1A1A1A;
+  padding: 14px;
   border: none;
   border-radius: 8px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   width: 100%;
-  transition: transform 0.2s, opacity 0.3s;
+  transition: background-color 0.2s, opacity 0.3s;
 }
-.submit-btn:hover {
-  transform: translateY(-2px);
+.submit-btn:hover:not(:disabled) {
+  background-color: #45ef94;
 }
 .submit-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
-  transform: translateY(0);
 }
 
-/* Стили сообщения об успехе (адаптированы) */
+/* Сообщение об успехе */
 .success-message {
   text-align: center;
-  padding: 30px;
-  background-color: #f0fff4;
-  border-left: 5px solid #4caf50;
-  border-radius: 8px;
+  padding: 20px;
+  background-color: #252525;
+  border-radius: 12px;
 }
 .success-message h3 {
-  color: #1e3c72;
-  margin-top: 0;
+  color: #3DDC84;
+  margin: 0 0 8px 0;
 }
 .success-message p {
-  color: #333;
+  color: #ccc;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
 }
 </style>
