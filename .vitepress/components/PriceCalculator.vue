@@ -33,7 +33,7 @@
           <p><strong>На каждую точку ({{ result.points }}):</strong>&nbsp;<span class="highlight">{{ format(result.perPoint) }} ₽/год</span></p>
           <p>
             <strong>Захват ({{ result.months }} мес.):</strong>&nbsp;
-            <a href="/brew/membership" class="link-membership">30 000 ₽/мес.</a> с BREW
+            <a href="/brew/membership" class="link-membership">30 000 ₽/мес.</a> с Сигналом
           </p>
         </div>
         <!-- Блок 2: Анализ конкуренции -->
