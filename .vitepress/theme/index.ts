@@ -33,6 +33,8 @@ import BrewFirst30Days from '../components/BrewFirst30Days.vue'
 import ReviewsWidget from '../components/ReviewsWidget.vue'
 import SignalSteps from '../components/SignalSteps.vue'
 import RotatingPhrases from '../components/RotatingPhrases.vue'
+import FeedbackAlchemy from '../components/FeedbackAlchemy.vue'
+
 
 export default {
   extends: DefaultTheme,
@@ -72,5 +74,6 @@ export default {
     app.component('ReviewsWidget', ReviewsWidget)
     app.component('SignalSteps', SignalSteps)
     app.component('RotatingPhrases', RotatingPhrases)
+    app.component('FeedbackAlchemy', FeedbackAlchemy)
   }
 }
