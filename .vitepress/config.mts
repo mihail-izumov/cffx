@@ -2,12 +2,12 @@ import { defineConfig, DefaultTheme } from 'vitepress'
 import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
 export default defineConfig({
-  title: 'Умая Кофейня',
+  title: 'Умная Кофейня',
   appearance: 'force-dark',
   locales: {
     '/': {
       lang: 'ru-RU',
-      title: 'Умная Кофейня',
+      title: 'Сигнал',
       description: 'Где Начинается Ваша Кофейня',
     },
   },
@@ -143,13 +143,18 @@ export default defineConfig({
     .VPNavBar .VPNavBarMenu .VPNavBarMenuLink{color:white!important}
     .VPNavBar .VPNavBarMenu .VPNavBarMenuLink:hover{color:var(--vp-c-brand-2)!important}
     .VPNavBar .VPNavBarMenu .VPNavBarMenuLink.active{color:var(--vp-c-brand-2)!important}
+    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink.has-dropdown{color:white!important}
+    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink.has-dropdown:hover{color:var(--vp-c-brand-2)!important}
     
-    /* Выпадающее меню */
+    /* Выпадающее меню - исправленные цвета ховера */
     .VPMenuGroup .title{color:var(--vp-c-brand-2)!important}
     .VPMenuItem .text{color:white!important}
     .VPMenuItem:hover .text{color:var(--vp-c-brand-2)!important}
+    .VPMenuItem:hover{background-color:rgba(197,249,70,.1)!important}
     
-    /* Телеграм иконка - принудительно белая */
+    /* Телеграм иконка - принудительно белая (это действительно github иконка в конфиге) */
+    .VPSocialLinks .VPSocialLink svg{fill:white!important}
+    .VPSocialLinks .VPSocialLink:hover svg{fill:var(--vp-c-brand-2)!important}
     .VPSocialLinks .VPSocialLink:first-child svg{fill:white!important}
     .VPSocialLinks .VPSocialLink:first-child:hover svg{fill:var(--vp-c-brand-2)!important}
     
@@ -175,17 +180,17 @@ export default defineConfig({
       .VPNavScreen .VPSocialLink{display:flex!important;align-items:center!important;justify-content:center!important;padding:12px!important;background:var(--vp-c-bg)!important;border-radius:6px!important;border:1px solid var(--vp-c-divider)!important;transition:all .3s ease!important;text-decoration:none!important}
       .VPNavScreen .VPSocialLink:hover{background:var(--vp-c-bg-mute)!important;border-color:var(--vp-c-brand)!important}
       .VPNavScreen .VPSocialLink[aria-label="login-link"]::after{content:"Войти"!important;font-size:16px!important;font-weight:600!important;color:var(--vp-c-text-1)!important}
-      .VPNavScreen .VPSocialLink[aria-label="signal-link"]::after{content:"⚡ Отправить Сигнал"!important;font-size:16px!important;font-weight:600!important;color:white!important;background:var(--vp-c-brand-1)!important;border-radius:6px!important;padding:6px 12px!important}
+      .VPNavScreen .VPSocialLink[aria-label="signal-link"]::after{content:"Отправить ⚡ Сигнал"!important;font-size:16px!important;font-weight:600!important;color:white!important;background:var(--vp-c-brand-1)!important;border-radius:6px!important;padding:6px 12px!important}
       .footer-row{flex-direction:column!important;gap:8px!important}
       .dot-separator{display:none!important}
     }
     
-    /* Стили кнопок - исправлены цвета */
+    /* Стили кнопок - исправлены цвета + молния между слов */
     .VPSocialLink .vpi-social-github{display:none!important}
     .VPSocialLink{width:auto!important;height:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important}
     .VPSocialLink[aria-label="login-link"]::after{content:"Войти";font-size:14px;color:white!important;padding:6px 12px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:transparent;transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0}
     .VPSocialLink[aria-label="login-link"]:hover::after{background:var(--vp-c-bg-soft);border-color:var(--vp-c-brand-2);color:var(--vp-c-brand-2)!important}
-    .VPSocialLink[aria-label="signal-link"]::after{content:"⚡ Отправить Сигнал";font-size:14px;color:white;padding:8px 16px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:var(--vp-c-brand-1);transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0;font-weight:600}
+    .VPSocialLink[aria-label="signal-link"]::after{content:"Отправить ⚡ Сигнал";font-size:14px;color:white;padding:8px 16px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:var(--vp-c-brand-1);transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0;font-weight:600}
     .VPSocialLink[aria-label="signal-link"]:hover::after{background:var(--vp-c-brand-2);border-color:var(--vp-c-brand-2);color:#000}
     
     .custom-footer-links{display:flex;flex-direction:column;gap:3px;align-items:center}
@@ -201,7 +206,7 @@ export default defineConfig({
   description: 'Где Начинается Ваша Кофейня',
   themeConfig: {
     logo: '/favicon.svg',
-    siteTitle: "Умная Кофейня",
+    siteTitle: "Сигнал",
     sidebarMenuLabel: 'Меню',
     outlineTitle: 'На этой странице',
     returnToTopLabel: 'Наверх',
@@ -272,15 +277,16 @@ export default defineConfig({
   }
 })
 
+// [Остальные функции остаются такими же...]
 function nav(): DefaultTheme.NavItem[] {
   return [
-    { text: 'Сигналы', link: '/signals' },
+    { text: 'Как работает', link: '/signals' },
     { text: 'Кофейни', link: '/smr' },
     { text: 'Анна', link: '/anna' },
     {
       text: 'Для Бизнеса',
       items: [
-        { text: 'Как это работает', link: '/brew/run' },   
+        { text: 'Умная Кофейня', link: '/brew/run' },   
         { text: 'Механика Индекса', link: '/tech/index' },  
         { text: 'Сигналы Гостей', link: '/brew/tickets' },
         { text: 'Наш Мониторинг', link: '/radar/scale_index' },
