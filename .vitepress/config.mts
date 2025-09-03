@@ -289,8 +289,8 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'Механика Индекса', link: '/brew/index-specs' },  
         { text: 'Сигналы Гостей', link: '/brew/tickets' },
         { text: 'Наш Мониторинг', link: '/radar/scale_index' },
-        { text: 'Прогноз Дохода', link: '/radar/index-smr/calc' },
-        { text: 'Симулятор Роста', link: '/radar/signal/coffee-points-smr-2025/dashboard' }
+        { text: 'Прогноз Дохода', link: '/brew/calc' },
+        { text: 'Симулятор Роста', link: '/brew/sim' }
       ]
     }
   ]
