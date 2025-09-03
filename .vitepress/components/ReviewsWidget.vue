@@ -137,7 +137,7 @@ const goToReviews = (branch) => {
 
 const createTicket = () => {
   emit('close')
-  window.location.href = '/brew/overview'
+  window.location.href = '/signal/new'
 }
 
 const rotatingQuestions = [
