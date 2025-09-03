@@ -130,6 +130,12 @@ export default defineConfig({
     .VPMenuGroup .title{color:var(--vp-c-brand-2)!important}
     .VPMenuItem:hover .text{color:var(--vp-c-brand-2)!important}
     
+    /* Замена серого цвета на лёгкий зелёный */
+    .VPFlyout{background-color:#1c4838!important;border:1px solid rgba(52,123,108,.3)!important;backdrop-filter:blur(10px)!important}
+    .VPFlyout .VPMenuItem .text{color:#e0f2e0!important}
+    .VPFlyout .VPMenuItem:hover .text{color:var(--vp-c-brand-2)!important}
+    .VPFlyout .VPMenuItem:hover{background-color:rgba(52,123,108,.1)!important}
+    
     /* Телеграм иконка */
     .VPSocialLinks .VPSocialLink:first-child svg{fill:var(--vp-c-brand-2)!important}
     .VPSocialLinks .VPSocialLink:first-child:hover svg{fill:var(--vp-c-brand-1)!important}
