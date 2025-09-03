@@ -1,9 +1,11 @@
 ---
 prev: false
 next: false
+aside: false
+title: Прогноз дохода кофейни| Сигнал
 ---
 
-# Потенциал Роста Вашей Кофейни
+# Прогноз Дохода Вашей Кофейни
 
 ## Сколько забрать у конкурентов через дорогу
 
@@ -26,7 +28,7 @@ next: false
 <TariffFeaturesCalc />
 
 <div class="start-button-container">
-  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Подключиться к BREW →</a>
+  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Подключиться →</a>
 </div>
 
 <br>
