@@ -3,7 +3,7 @@ outline: false
 prev: false
 next: false
 aside: false
-title: Мой кастомный заголовок страницы
+title: Умная Кофейня | Сигнал
 ---
 
 # Ваша Умная Кофейня. Начинается Здесь.
