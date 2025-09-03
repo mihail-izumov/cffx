@@ -1,4 +1,6 @@
-/* --- ФОНОВОЕ СВЕЧЕНИЕ ТОЛЬКО ЗА HERO СЕКЦИЕЙ --- */
+/* --- ВАШ ОРИГИНАЛЬНЫЙ КОД БЕЗ ИЗМЕНЕНИЙ --- */
+
+/* ФОНОВОЕ СВЕЧЕНИЕ ТОЛЬКО ЗА HERO СЕКЦИЕЙ */
 .VPHero {
   position: relative;
 }
@@ -26,7 +28,7 @@
   }
 }
 
-/* --- КНОПКА --- */
+/* КНОПКА */
 .VPButton.brand {
   background: #166534 !important;
   color: rgba(255, 255, 255, 0.8) !important;
@@ -40,7 +42,7 @@
   transform: translateY(-2px);
 }
 
-/* --- ЗАГОЛОВОК --- */
+/* ЗАГОЛОВОК */
 .VPHero .name {
   background: linear-gradient(120deg, #22c55e 30%, #16a34a 70%) !important;
   -webkit-background-clip: text !important;
@@ -48,44 +50,17 @@
   -webkit-text-fill-color: transparent !important;
 }
 
-/* ======= МИНИМАЛЬНЫЕ ИСПРАВЛЕНИЯ ======= */
+/* --- ТОЛЬКО ИСПРАВЛЕНИЕ КАРТОЧЕК НА ГЛАВНОЙ СТРАНИЦЕ --- */
 
-/* Убираем границы в dropdown меню "Для бизнеса" */
-.VPFlyout .VPMenuItem {
-  border: none !important;
-}
-
-/* Показываем активную страницу в dropdown с зеленой точкой */
-.VPFlyout .VPMenuItem.active::after {
-  content: '';
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: #C5F946;
-}
-
-/* Исправляем цвет текста в карточках на зеленом фоне */
-.VPFeature .title {
+/* Исправляем цвета только на главной в карточках */
+.layout-home .VPFeature .title {
   color: #ffffff !important;
 }
 
-.VPFeature .details {
+.layout-home .VPFeature .details {
   color: rgba(255, 255, 255, 0.85) !important;
 }
 
-.VPFeature a:hover {
+.layout-home .VPFeature a:hover {
   color: #4ade80 !important;
-}
-
-/* Немного уменьшаем отступы карточек */
-.VPFeature {
-  padding: 20px !important;
-}
-
-.VPFeatures {
-  padding: 48px 24px !important;
 }
