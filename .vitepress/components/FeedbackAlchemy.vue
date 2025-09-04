@@ -1,6 +1,6 @@
 <template>
   <div class="form-wrapper">
-    <!-- Сообщение об усспехе -->
+    <!-- Сообщение об успехе -->
     <div v-if="formSubmitted" class="success-message">
       <div class="success-icon">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -18,10 +18,10 @@
     <!-- Основная форма -->
     <form v-else @submit.prevent="submitForm">
       
-      <!-- Заголовок с номером сигнала -->
+      <!-- НОВЫЙ заголовок с номером сигнала -->
       <div class="form-header">
         <h2 class="form-title">Новый Сигнал</h2>
-        <div class="ticket-display">#{{ formattedTicketNumber }}</div>
+        <p class="ticket-display">#{{ formattedTicketNumber }}</p>
       </div>
 
       <!-- Секция с вопросами -->
@@ -77,12 +77,19 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed, h, onMounted, onUnmounted, watch, Transition } from 'vue';
+import { defineComponent, reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue';
 
-const FADE_DURATION_MS = 800;
-
-const RotatingPhrases = {
+// --- Компонент анимированных подсказок (вынесен отдельно для надежности) ---
+const RotatingPhrases = defineComponent({
+  name: 'RotatingPhrases',
   props: { phrases: Array, isActive: Boolean, rotationIntervalMs: { type: Number, default: 4500 } },
+  template: `
+    <div class="rotating-phrase-container">
+      <transition name="fade" mode="out-in">
+        <p :key="currentPhraseIndex" class="rotating-phrase">{{ phrases[currentPhraseIndex] }}</p>
+      </transition>
+    </div>
+  `,
   setup(props) {
     const currentPhraseIndex = ref(0);
     let intervalId = null;
@@ -95,9 +102,11 @@ const RotatingPhrases = {
     const stopRotation = () => clearInterval(intervalId);
     watch(() => props.isActive, (newValue) => { if (newValue) startRotation(); else stopRotation(); }, { immediate: true });
     onUnmounted(stopRotation);
-    return () => h('div', { class: 'rotating-phrase-container' }, [ h(Transition, { name: 'fade', mode: 'out-in' }, { default: () => h('p', { key: currentPhraseIndex.value, class: 'rotating-phrase' }, props.phrases[currentPhraseIndex.value]) }) ]);
+    return { currentPhraseIndex };
   }
-};
+});
+
+const FADE_DURATION_S = 0.8;
 
 const phrasesForQuestion1 = ['Что вы почувствовали в первую очередь?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
 const phrasesForQuestion2 = ['Что именно произошло? Опишите ситуацию.', 'Кто-то из персонала был вовлечен?', 'Это связано с продуктом, сервисом или атмосферой?'];
@@ -136,13 +145,12 @@ async function submitForm() {
 :root { --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
 .form-wrapper { font-family: var(--font-family); max-width: 640px; margin: 40px auto; background-color: #1E1E20; border-radius: 24px; padding: 2rem; color: #f0f0f0; border: 1px solid #2c2c2f; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); }
 
-.form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.form-header { text-align: center; margin-bottom: 2rem; }
 .form-title { font-size: 1.5rem; font-weight: 600; color: #fff; margin: 0; }
-.ticket-display { background-color: #2a2a2e; color: #C5F946; font-family: 'monospace'; font-weight: 700; padding: 0.5rem 1rem; border-radius: 12px; font-size: 1rem; letter-spacing: 1px; }
+.ticket-display { color: #888; font-family: 'monospace'; font-weight: 700; font-size: 1rem; margin-top: 0.5rem; letter-spacing: 1px; }
 
 .form-section { display: flex; flex-direction: column; gap: 1.5rem; }
 .personal-data-section { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
 .question-block { background-color: #2a2a2e; border-radius: 16px; padding: 1.25rem; border: 1px solid #3a3a3e; border-left: 4px solid var(--accent-color, #444); }
 .question-block.compact { padding: 1rem; border-left-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
 .direction-label { font-weight: 600; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; display: block; }
@@ -151,7 +159,7 @@ async function submitForm() {
 
 .rotating-phrase-container { min-height: 20px; margin-bottom: 0.75rem; position: relative; }
 .rotating-phrase { font-size: 0.9rem; color: #999; margin: 0; font-style: italic; }
-.fade-enter-active, .fade-leave-active { transition: opacity v-bind("`${FADE_DURATION_MS / 1000}s`") ease-in-out; }
+.fade-enter-active, .fade-leave-active { transition: opacity v-bind("`${FADE_DURATION_S}s`") ease-in-out; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
 .fade-leave-active { position: absolute; }
 
