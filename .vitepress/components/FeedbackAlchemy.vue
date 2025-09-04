@@ -74,13 +74,13 @@ import { reactive, ref, computed, h, onUnmounted, watch, Transition } from 'vue'
 
 // --- Компонент анимированных подсказок ---
 const RotatingPhrases = {
-  props: { phrases: Array, isActive: Boolean, rotationIntervalMs: { type: Number, default: 4000 } },
+  props: { phrases: Array, isActive: Boolean, rotationIntervalMs: { type: Number, default: 5000 } },
   setup(props) {
     const currentPhraseIndex = ref(0);
     let intervalId = null;
 
     const startRotation = () => {
-      stopRotation(); // Очищаем на всякий случай
+      stopRotation();
       if (props.phrases && props.phrases.length > 1) {
         intervalId = setInterval(() => {
           currentPhraseIndex.value = (currentPhraseIndex.value + 1) % props.phrases.length;
@@ -96,7 +96,7 @@ const RotatingPhrases = {
     onUnmounted(stopRotation);
 
     return () => h('div', { class: 'rotating-phrase-container' }, [
-      h(Transition, { name: 'fade-up', mode: 'out-in' }, {
+      h(Transition, { name: 'fade', mode: 'out-in' }, {
         default: () => h('p', { key: currentPhraseIndex.value, class: 'rotating-phrase' }, props.phrases[currentPhraseIndex.value])
       })
     ]);
@@ -107,7 +107,7 @@ const phrasesForQuestion1 = ['Что вы почувствовали в перв
 const phrasesForQuestion2 = ['Что именно произошло? Опишите ситуацию.', 'Кто-то из персонала был вовлечен?', 'Это связано с продуктом, сервисом или атмосферой?'];
 const phrasesForQuestion3 = ['Что могло бы предотвратить эту ситуацию?', 'Как бы вы поступили на месте менеджера?', 'Какое одно изменение сделало бы ваш опыт идеальным?'];
 
-const activeRotator = ref(0); // 0 - ни один не активен
+const activeRotator = ref(0);
 const form = reactive({ emotionalRelease: '', factualAnalysis: '', constructiveSuggestions: '', name: '', telegramPhone: '', consent: false });
 const isSubmitting = ref(false);
 const formSubmitted = ref(false);
@@ -143,10 +143,10 @@ async function submitForm() {
 
 .rotating-phrase-container { min-height: 20px; margin-bottom: 0.75rem; position: relative; }
 .rotating-phrase { font-size: 0.9rem; color: #999; margin: 0; font-style: italic; }
-.fade-up-enter-active, .fade-up-leave-active { transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; }
-.fade-up-enter-from { opacity: 0; transform: translateY(10px); }
-.fade-up-leave-to { opacity: 0; transform: translateY(-10px); }
-.fade-up-leave-active { position: absolute; width: 100%; }
+/* Плавная анимация затухания */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.8s ease-in-out; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+.fade-leave-active { position: absolute; }
 
 textarea, input { width: 100%; background-color: #242426; border: 1px solid #444; border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.95rem; color: #f0f0f0; transition: all 0.3s ease; font-family: var(--font-family); }
 textarea:focus, input:focus { outline: none; border-color: var(--accent-color); background-color: #2a2a2e; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); }
@@ -165,7 +165,7 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 .checkbox-group label { font-size: 0.8rem; color: #999; line-height: 1.3; }
 .policy-link { color: #b0b0b0; text-decoration: none; } .policy-link:hover { text-decoration: underline; }
 
-.submit-btn { background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%); color: #fff; font-weight: 600; font-size: 1rem; border: none; border-radius: 12px; padding: 0.8rem 2rem; cursor: pointer; transition: all 0.4s ease-out; background-size: 200% 200%; background-position: 25% 50%; }
+.submit-btn { background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%); color: #fff; font-weight: 600; font-size: 1rem; border: none; border-radius: 12px; padding: 0.8rem 2rem; cursor: pointer; transition: all 0.4s ease-out; background-size: 200% auto; background-position: 25% 50%; }
 .submit-btn:hover:not(:disabled) { background-position: 75% 50%; transform: scale(1.03); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
