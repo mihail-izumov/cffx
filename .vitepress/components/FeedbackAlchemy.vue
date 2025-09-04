@@ -11,7 +11,7 @@
         <div class="ticket-code-container">
           <span class="ticket-code">{{ formattedTicketNumber }}</span>
         </div>
-        <a :href="'https://t.me/YourBotUsername'" target="_blank" class="telegram-button">Перейти в диалог с Анной</a>
+        <a :href="`https://t.me/Anna_runScale?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="telegram-button">Перейти в диалог с Анной</a>
       </div>
     </div>
 
@@ -23,7 +23,7 @@
         <div class="form-title">Новый Сигнал</div>
         <div class="tech-info">
           <span class="info-item">{{ currentDate }}</span>
-          <span class="info-item ticket-display">#{{ formattedTicketNumber }}</span>
+          <span class="info-item ticket-display">{{ formattedTicketNumber }}</span>
         </div>
       </div>
 
@@ -134,7 +134,7 @@ const isFormValid = computed(() => form.emotionalRelease.trim() && form.factualA
 async function submitForm() {
   if (!isFormValid.value) return;
   isSubmitting.value = true;
-  const formData = { _subject: `Новый Сигнал #${rawTicketNumber.value} от ${form.name}`, "Код тикета": rawTicketNumber.value, "Дата": currentDate.value, "Имя": form.name, "1. Эмоции": form.emotionalRelease, "2. Детали": form.factualAnalysis, "3. Решение": form.constructiveSuggestions, "Контакт в Telegram": form.telegramPhone };
+  const formData = { _subject: `Новый Сигнал ${formattedTicketNumber.value} от ${form.name}`, "Код тикета": rawTicketNumber.value, "Дата": currentDate.value, "Имя": form.name, "1. Эмоции": form.emotionalRelease, "2. Детали": form.factualAnalysis, "3. Решение": form.constructiveSuggestions, "Контакт в Telegram": form.telegramPhone };
   try {
     const response = await fetch('https://formspree.io/f/mdkzjopz', { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
     if (!response.ok) throw new Error('Ошибка сервера');
@@ -203,17 +203,4 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
 @media (max-width: 768px) { .form-wrapper { padding: 1.5rem; } .personal-data-section { grid-template-columns: 1fr; } .form-footer { flex-direction: column; align-items: stretch; gap: 1rem; } .submit-btn { width: 100%; } .form-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; } }
-
-/* Стили для исправленной анимации */
-.fade-questions-enter-active, 
-.fade-questions-leave-active {
-  transition: opacity 0.8s ease-in-out;
-}
-.fade-questions-enter-from,
-.fade-questions-leave-to {
-  opacity: 0;
-}
-.fade-questions-leave-active {
-  position: absolute;
-}
 </style>
