@@ -110,34 +110,38 @@ async function submitForm() {
 
   isSubmitting.value = true;
 
-  const fullMessage = `
-    Новый сигнал с сайта.
-    Важность: ${'★'.repeat(form.importanceRating)} (${form.importanceRating}/5)
-    ---------------------------------
-    1. Эмоции: ${form.emotionalRelease}
-    2. Факты: ${form.factualAnalysis}
-    3. Предложения: ${form.constructiveSuggestions}
-    ---------------------------------
-    Контакт для ответа в Telegram: ${form.telegramPhone}
-  `;
-
+  // Формируем данные в "плоской" структуре, как ожидает Formspree
   const formData = {
     _subject: `Новый Сигнал (Важность: ${form.importanceRating}/5)`,
-    message: fullMessage,
-    telegram: form.telegramPhone
+    "1. Эмоции и впечатления": form.emotionalRelease,
+    "2. Факты (что пошло не так)": form.factualAnalysis,
+    "3. Предложения по исправлению": form.constructiveSuggestions,
+    "Оценка важности": `${'★'.repeat(form.importanceRating)} (${form.importanceRating}/5)`,
+    "Контакт в Telegram для ответа": form.telegramPhone,
+    "Согласие на обработку данных": form.consent ? "Да" : "Нет"
   };
 
   try {
     const response = await fetch('https://formspree.io/f/mdkzjopz', { // Ваш URL Formspree
       method: 'POST',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      headers: { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json' 
+      },
       body: JSON.stringify(formData)
     });
-    if (!response.ok) throw new Error('Server error');
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: 'Не удалось прочитать ответ сервера' }));
+      throw new Error(errorData.error || 'Server error');
+    }
+    
     formSubmitted.value = true;
+
   } catch (error) {
     console.error('Ошибка отправки формы:', error);
-    alert('Не удалось отправить отзыв. Попробуйте позже.');
+    alert(`Не удалось отправить отзыв. Ошибка: ${error.message}`);
+
   } finally {
     isSubmitting.value = false;
   }
