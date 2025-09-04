@@ -88,8 +88,8 @@ const RotatingPhrases = defineComponent({
   props: { phrases: Array, isActive: Boolean, rotationIntervalMs: { type: Number, default: 4500 } },
   template: `
     <div class="rotating-phrase-container">
-      <transition name="fade" mode="out-in">
-        <p :key="currentPhraseIndex" class="rotating-phrase">{{ phrases[currentPhraseIndex] }}</p>
+      <transition name="fade-questions" mode="out-in">
+        <p :key="currentPhraseIndex" class="question-label">{{ phrases[currentPhraseIndex] }}</p>
       </transition>
     </div>
   `,
@@ -108,8 +108,6 @@ const RotatingPhrases = defineComponent({
     return { currentPhraseIndex };
   }
 });
-
-const FADE_DURATION_S = 0.8;
 
 const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
 const phrasesForQuestion2 = ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'];
@@ -149,12 +147,12 @@ async function submitForm() {
 </script>
 
 <style scoped>
-:root { --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
-.form-wrapper { font-family: var(--font-family); max-width: 640px; margin: 40px auto; background-color: #1E1E20; border-radius: 24px; padding: 2rem; color: #f0f0f0; border: 1px solid #2c2c2f; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); }
+:root { --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; --font-mono: 'SF Mono', 'Fira Code', 'Menlo', 'monospace'; }
+.form-wrapper { font-family: var(--font-sans); max-width: 640px; margin: 40px auto; background-color: #1E1E20; border-radius: 24px; padding: 2rem; color: #f0f0f0; border: 1px solid #2c2c2f; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); }
 
 .form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #2c2c2f; }
 .form-title { font-size: 1.5rem; font-weight: 600; color: #fff; margin: 0; }
-.tech-info { display: flex; align-items: center; gap: 1rem; font-family: 'monospace'; font-size: 0.9rem; color: #888; }
+.tech-info { display: flex; align-items: center; gap: 1rem; font-family: var(--font-mono); font-size: 0.9rem; color: #888; }
 .ticket-display { background-color: #2a2a2e; color: #C5F946; font-weight: 700; padding: 0.5rem 1rem; border-radius: 12px; letter-spacing: 1px; }
 
 .form-section { display: flex; flex-direction: column; gap: 1.5rem; }
@@ -163,18 +161,15 @@ async function submitForm() {
 .question-block { background-color: #2a2a2e; border-radius: 16px; padding: 1.25rem; border: 1px solid #3a3a3e; border-left: 4px solid var(--accent-color, #444); }
 .question-block.compact { padding: 1rem; border-left-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
 .direction-label { font-weight: 600; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; display: block; }
-.question-label { font-weight: 500; font-size: 1rem; margin-bottom: 0.75rem; display: block; color: #f0f0f0; }
 .question-help { font-size: 0.8rem; color: #888; margin-bottom: 0.75rem; line-height: 1.4; }
 
 .rotating-phrase-container { min-height: 22px; margin-bottom: 0.75rem; position: relative; }
-.rotating-phrase { font-size: 1rem; color: #f0f0f0; margin: 0; font-weight: 500; }
-/* Исправленная анимация */
-.fade-enter-active, .fade-leave-active { transition: opacity v-bind("`${FADE_DURATION_S}s`") ease-in-out; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
-.fade-leave-active { position: absolute; }
+.question-label { font-weight: 500; font-size: 1rem; margin: 0; color: #f0f0f0; }
+.fade-questions-enter-active, .fade-questions-leave-active { transition: opacity 0.8s ease-in-out; }
+.fade-questions-enter-from, .fade-questions-leave-to { opacity: 0; }
+.fade-questions-leave-active { position: absolute; }
 
-
-textarea, input { width: 100%; background-color: #242426; border: 1px solid #444; border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.95rem; color: #f0f0f0; transition: all 0.3s ease; font-family: var(--font-family); }
+textarea, input { width: 100%; background-color: #242426; border: 1px solid #444; border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.95rem; color: #f0f0f0; transition: all 0.3s ease; font-family: var(--font-sans); }
 textarea:focus, input:focus { outline: none; border-color: var(--accent-color); background-color: #2a2a2e; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); }
 ::placeholder { color: #666; }
 
@@ -201,11 +196,24 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 .success-text h3 { font-size: 1.5rem; font-weight: 600; color: #fff; margin: 0 0 0.5rem 0; }
 .success-text p { color: #b0b0b0; line-height: 1.6; margin: 0; }
 .ticket-code-container { background-color: #2a2a2e; border: 1px solid #444; border-radius: 12px; padding: 1rem; margin: 1.5rem auto; max-width: 250px; }
-.ticket-code { font-family: 'monospace'; font-size: 1.25rem; font-weight: 700; color: #C5F946; letter-spacing: 2px; }
+.ticket-code { font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; color: #C5F946; letter-spacing: 2px; }
 .telegram-button { display: inline-block; background-color: #0088cc; color: white; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 600; margin-top: 1rem; transition: background-color 0.3s, transform 0.3s; }
 .telegram-button:hover { background-color: #0099e6; transform: scale(1.05); }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
 @media (max-width: 768px) { .form-wrapper { padding: 1.5rem; } .personal-data-section { grid-template-columns: 1fr; } .form-footer { flex-direction: column; align-items: stretch; gap: 1rem; } .submit-btn { width: 100%; } .form-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; } }
+
+/* Стили для исправленной анимации */
+.fade-questions-enter-active, 
+.fade-questions-leave-active {
+  transition: opacity 0.8s ease-in-out;
+}
+.fade-questions-enter-from,
+.fade-questions-leave-to {
+  opacity: 0;
+}
+.fade-questions-leave-active {
+  position: absolute;
+}
 </style>
