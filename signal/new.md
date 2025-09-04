@@ -1,3 +1,1 @@
-# Новый Сигнал
-
 <FeedbackAlchemy />
