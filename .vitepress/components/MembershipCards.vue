@@ -2,7 +2,7 @@
   <div class="pricing-grid">
     <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) -->
     <div class="pricing-card">
-      <h3 class="card-title card-title--simulator">БЕСПЛАТНО</h3>
+      <h3 class="card-title card-title--simulator">СТАРТ</h3>
       <p class="card-subtitle">Избежать 3 самых дорогих ошибок новичков</p>
       <div class="card-image-wrapper">
         <img
@@ -16,8 +16,8 @@
         <div class="payment-type">Регистрация</div>
       </div>
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Анализ рынка и <a href="/brew/sim" target="_blank" class="feature-link">Симулятор Самары</a></span></li>
-        <li class="feature-item"><CheckIcon /><span>Готовые инсайты для быстрого старта</span></li>
+        <li class="feature-item"><CheckIcon /><span><a href="/brew/sim" target="_blank" class="feature-link">Диалоги с данным</a></span></li>
+        <li class="feature-item"><CheckIcon /><span><a href="/brew/calc" target="_blank" class="feature-link">Прогноз дохода</a></span></li>
         <li class="feature-item"><CheckIcon /><span><a href="/brew/run" target="_blank" class="feature-link">ИИ-ассистент Анна</a></span></li>
       </ul>
       <a href="/brew/join/free" class="card-button card-button--secondary">
@@ -39,9 +39,9 @@
         <strong>₽18,500</strong>
         <div class="payment-type">Ежемесячная оплата</div>
       </div>
-      <p class="includes-all">Все, что в Симуляторе, плюс:</p>
+      <p class="includes-all">Все, что в Старте, плюс:</p>
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Тикет-система Сигнала</span></li>
+        <li class="feature-item"><CheckIcon /><span>Тикет-система "Сигнал"</span></li>
         <li class="feature-item"><CheckIcon /><span>Ваша кофейня VS Рынок в реальном времени</span></li>
         <li class="feature-item"><CheckIcon /><span><a href="/smr" target="_blank" class="feature-link">Индекс Роста</a>: сигналы изменений</span></li>
       </ul>
