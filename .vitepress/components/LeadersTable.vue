@@ -9,7 +9,7 @@
       <div class="cell subtitle-check"></div>
       
       <div class="cell feature">
-        <div class="feature-title">Персональные сессии с аналитиком BREW</div>
+        <div class="feature-title">Персональные сессии с аналитиком Сигнала</div>
         <div class="feature-description">Отслеживайте прогресс на 90 мин./мес. стратегических сессиях</div>
         <div class="feature-details">Оценка метрик, точки роста, сигналы коррекции</div>
       </div>
@@ -23,7 +23,7 @@
       <div class="cell check">✓</div>
       
       <div class="cell feature">
-        <div class="feature-title">-20% на <a href="/checkup/overview" target="_blank" rel="noopener">Чекап</a> Модуля Роста®</div>
+        <div class="feature-title">-20% на <a href="https://runscale.ru/checkup/overview" target="_blank" rel="noopener">Чекап</a> Модуля Роста®</div>
         <div class="feature-description">Найти скрытые разрывы в процессах, которые тормозят рост</div>
         <div class="feature-details">3 конкретных улучшения за 30 дней</div>
       </div>
