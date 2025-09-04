@@ -31,7 +31,7 @@ next: false
 
 **Первая и единственная платформа, которая нужна для роста.**
 
-<TariffFeatures />
+<TariffFeaturesLeader />
 
 ## Преимущества участия
 
