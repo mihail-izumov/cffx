@@ -42,8 +42,8 @@
       <p class="includes-all">Все, что в Старте, плюс:</p>
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span><a href="/brew/tickets" target="_blank" class="feature-link">Тикет-система "Сигнал"</a></span></li>
-        <li class="feature-item"><CheckIcon /><span><a href="/brew/reports" target="_blank" class="feature-link">Анализ конкурентов</span></li>
-        <li class="feature-item"><CheckIcon /><span><a href="/smr" target="_blank" class="feature-link">Индекс Роста</a>: сигналы изменений</span></li>
+        <li class="feature-item"><CheckIcon /><span><a href="/brew/reports" target="_blank" class="feature-link">Анализ конкурентов</a></span></li>
+        <li class="feature-item"><CheckIcon /><span>Индекс Роста: <a href="/smr" target="_blank" class="feature-link">сигналы изменений</a></span></li>
       </ul>
       <a href="/brew/join/insider" class="card-button">Стать Инсайдером</a>
     </div>
