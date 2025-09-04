@@ -5,7 +5,7 @@
       <div class="cell header">Преимущества</div>
       <div class="cell header price">₽180000/6 мес.</div>
       <!-- Данные -->
-      <div class="cell subtitle">Все, что в Симуляторе и Инсайдере, плюс:</div>
+      <div class="cell subtitle">Все, что в Старте и Инсайдере, плюс:</div>
       <div class="cell subtitle-check"></div>
       
       <div class="cell feature">
