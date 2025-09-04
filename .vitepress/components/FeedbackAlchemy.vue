@@ -17,23 +17,23 @@
       <!-- СЕКЦИЯ 1: ОСНОВНЫЕ ВОПРОСЫ -->
       <div class="form-section">
         <div class="question-block" style="--accent-color: #A972FF;">
-          <label class="question-label">1. Что вас расстроило сегодня?</label>
-          <RotatingPhrases :phrases="phrasesForQuestion1" />
-          <textarea v-model="form.emotionalRelease" rows="3" placeholder="Опишите свои чувства и впечатления..." required></textarea>
+          <label class="direction-label">Эмоции и чувства</label>
+          <RotatingPhrases :phrases="phrasesForQuestion1" :is-active="activeRotator === 1" />
+          <textarea v-model="form.emotionalRelease" @focus="activeRotator = 1" rows="3" placeholder="Опишите свои чувства и впечатления..." required></textarea>
           <p class="example-hint" v-html="'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»'"></p>
         </div>
 
         <div class="question-block" style="--accent-color: #3DDC84;">
-          <label class="question-label">2. Что конкретно пошло не так?</label>
-          <RotatingPhrases :phrases="phrasesForQuestion2" />
-          <textarea v-model="form.factualAnalysis" rows="3" placeholder="Опишите факты: что, когда и где произошло..." required></textarea>
+          <label class="direction-label">Детали проблемы</label>
+          <RotatingPhrases :phrases="phrasesForQuestion2" :is-active="activeRotator === 2" />
+          <textarea v-model="form.factualAnalysis" @focus="activeRotator = 2" rows="3" placeholder="Опишите факты: что, когда и где произошло..." required></textarea>
           <p class="example-hint" v-html="'Пример: «Заказ на два капучино <b>ждал 22 минуты</b>, хотя в кафе был почти один»'"></p>
         </div>
 
         <div class="question-block" style="--accent-color: #FFB800;">
-          <label class="question-label">3. Как бы вы это исправили?</label>
-          <RotatingPhrases :phrases="phrasesForQuestion3" />
-          <textarea v-model="form.constructiveSuggestions" rows="3" placeholder="Предложите решение..." required></textarea>
+          <label class="direction-label">Предложение решения</label>
+          <RotatingPhrases :phrases="phrasesForQuestion3" :is-active="activeRotator === 3" />
+          <textarea v-model="form.constructiveSuggestions" @focus="activeRotator = 3" rows="3" placeholder="Предложите, как это можно исправить..." required></textarea>
           <p class="example-hint" v-html="'Пример: «Добавить на кассу <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
         </div>
       </div>
@@ -43,15 +43,15 @@
       <!-- СЕКЦИЯ 2: ЛИЧНЫЕ ДАННЫЕ -->
       <div class="form-section personal-data-section">
         <div class="question-block compact">
-          <label for="name" class="question-label">Ваше имя</label>
+          <label class="question-label">Ваше имя</label>
           <p class="question-help">Для персонального общения с ИИ-ассистентом Анной.</p>
-          <input type="text" id="name" v-model="form.name" placeholder="Как к вам обращаться?" required>
+          <input type="text" id="name" v-model="form.name" @focus="activeRotator = 0" placeholder="Как к вам обращаться?" required>
         </div>
         
         <div class="question-block compact">
-          <label for="telegramPhone" class="question-label">Ваш контакт в Telegram</label>
+          <label class="question-label">Ваш контакт в Telegram</label>
           <p class="question-help">Чтобы получать обновления и видеть результат.</p>
-          <input type="tel" id="telegramPhone" v-model="form.telegramPhone" placeholder="+7 (___) ___-__-__" required>
+          <input type="tel" id="telegramPhone" v-model="form.telegramPhone" @focus="activeRotator = 0" placeholder="+7 (___) ___-__-__" required>
         </div>
       </div>
 
@@ -70,18 +70,31 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed, h, onMounted, onUnmounted, Transition } from 'vue';
+import { reactive, ref, computed, h, onUnmounted, watch, Transition } from 'vue';
 
-// --- Компонент анимированных подсказок (исправленная версия) ---
+// --- Компонент анимированных подсказок ---
 const RotatingPhrases = {
-  props: { phrases: Array, rotationIntervalMs: { type: Number, default: 4000 } },
+  props: { phrases: Array, isActive: Boolean, rotationIntervalMs: { type: Number, default: 4000 } },
   setup(props) {
     const currentPhraseIndex = ref(0);
     let intervalId = null;
-    const cyclePhrases = () => { currentPhraseIndex.value = (currentPhraseIndex.value + 1) % props.phrases.length; };
-    onMounted(() => { if (props.phrases && props.phrases.length > 1) { intervalId = setInterval(cyclePhrases, props.rotationIntervalMs); } });
-    onUnmounted(() => { clearInterval(intervalId); });
-    // Используем слоты в render-функции h() - это самый надежный способ для Transitions
+
+    const startRotation = () => {
+      stopRotation(); // Очищаем на всякий случай
+      if (props.phrases && props.phrases.length > 1) {
+        intervalId = setInterval(() => {
+          currentPhraseIndex.value = (currentPhraseIndex.value + 1) % props.phrases.length;
+        }, props.rotationIntervalMs);
+      }
+    };
+    const stopRotation = () => clearInterval(intervalId);
+
+    watch(() => props.isActive, (newValue) => {
+      if (newValue) { startRotation(); } else { stopRotation(); }
+    }, { immediate: true });
+
+    onUnmounted(stopRotation);
+
     return () => h('div', { class: 'rotating-phrase-container' }, [
       h(Transition, { name: 'fade-up', mode: 'out-in' }, {
         default: () => h('p', { key: currentPhraseIndex.value, class: 'rotating-phrase' }, props.phrases[currentPhraseIndex.value])
@@ -94,6 +107,7 @@ const phrasesForQuestion1 = ['Что вы почувствовали в перв
 const phrasesForQuestion2 = ['Что именно произошло? Опишите ситуацию.', 'Кто-то из персонала был вовлечен?', 'Это связано с продуктом, сервисом или атмосферой?'];
 const phrasesForQuestion3 = ['Что могло бы предотвратить эту ситуацию?', 'Как бы вы поступили на месте менеджера?', 'Какое одно изменение сделало бы ваш опыт идеальным?'];
 
+const activeRotator = ref(0); // 0 - ни один не активен
 const form = reactive({ emotionalRelease: '', factualAnalysis: '', constructiveSuggestions: '', name: '', telegramPhone: '', consent: false });
 const isSubmitting = ref(false);
 const formSubmitted = ref(false);
@@ -103,7 +117,7 @@ const isFormValid = computed(() => form.emotionalRelease.trim() && form.factualA
 async function submitForm() {
   if (!isFormValid.value) return;
   isSubmitting.value = true;
-  const formData = { _subject: `Новый Сигнал от ${form.name}`, "Имя": form.name, "1. Эмоции": form.emotionalRelease, "2. Факты": form.factualAnalysis, "3. Предложения": form.constructiveSuggestions, "Контакт в Telegram": form.telegramPhone };
+  const formData = { _subject: `Новый Сигнал от ${form.name}`, "Имя": form.name, "Эмоции": form.emotionalRelease, "Детали": form.factualAnalysis, "Решение": form.constructiveSuggestions, "Контакт в Telegram": form.telegramPhone };
   try {
     const response = await fetch('https://formspree.io/f/mdkzjopz', { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
     if (!response.ok) throw new Error('Ошибка сервера');
@@ -123,6 +137,7 @@ async function submitForm() {
 
 .question-block { background-color: #2a2a2e; border-radius: 16px; padding: 1.25rem; border: 1px solid #3a3a3e; border-left: 4px solid var(--accent-color, #444); }
 .question-block.compact { padding: 1rem; border-left-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
+.direction-label { font-weight: 600; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; display: block; }
 .question-label { font-weight: 600; font-size: 1rem; margin-bottom: 0.5rem; display: block; }
 .question-help { font-size: 0.8rem; color: #888; margin-bottom: 0.75rem; line-height: 1.4; }
 
@@ -150,7 +165,6 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 .checkbox-group label { font-size: 0.8rem; color: #999; line-height: 1.3; }
 .policy-link { color: #b0b0b0; text-decoration: none; } .policy-link:hover { text-decoration: underline; }
 
-/* Улучшенная анимация кнопки "Вжух!" */
 .submit-btn { background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%); color: #fff; font-weight: 600; font-size: 1rem; border: none; border-radius: 12px; padding: 0.8rem 2rem; cursor: pointer; transition: all 0.4s ease-out; background-size: 200% 200%; background-position: 25% 50%; }
 .submit-btn:hover:not(:disabled) { background-position: 75% 50%; transform: scale(1.03); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
