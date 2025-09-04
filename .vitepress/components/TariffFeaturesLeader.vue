@@ -40,7 +40,7 @@
     
     <div class="brand-card insider-card">
       <div class="tariff-badge insider">Инсайдер</div>
-      <h3><a href="/radar/overview" target="_blank">Индекс Роста</a>: сигналы изменений</h3>
+      <h3>Индекс Роста: <a href="/smr" target="_blank"></a>сигналы изменений</h3>
       <p class="description-main">Получайте уведомления о движениях рынка</p>
       <p class="description-goals">Тренды, сдвиги в поведении гостей, новые возможности</p>
     </div>
@@ -70,7 +70,7 @@
     
     <div class="brand-card simulator-card">
       <div class="tariff-badge simulator">Старт</div>
-      <h3>ИИ-ассистент <a href="/radar/who-is-anna" target="_blank">Анна</a></h3>
+      <h3>ИИ-ассистент Анна</a></h3>
       <p class="description-main">Персональный навигатор по платформе</p>
       <p class="description-goals">Базовые рекомендации для работы с Сигналом</p>
     </div>
