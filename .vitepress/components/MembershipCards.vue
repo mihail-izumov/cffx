@@ -18,7 +18,7 @@
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span><a href="/brew/sim" target="_blank" class="feature-link">Диалоги с данным</a></span></li>
         <li class="feature-item"><CheckIcon /><span><a href="/brew/calc" target="_blank" class="feature-link">Прогноз дохода</a></span></li>
-        <li class="feature-item"><CheckIcon /><span><a href="/brew/run" target="_blank" class="feature-link">ИИ-ассистент Анна</a></span></li>
+        <li class="feature-item"><CheckIcon /><span>ИИ-ассистент Анна</span></li>
       </ul>
       <a href="/brew/join/free" class="card-button card-button--secondary">
         Начать бесплатно
@@ -36,13 +36,13 @@
         />
       </div>
       <div class="card-price">
-        <strong>₽18,500</strong>
+        <strong>₽18,500/кафе</strong>
         <div class="payment-type">Ежемесячная оплата</div>
       </div>
       <p class="includes-all">Все, что в Старте, плюс:</p>
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Тикет-система "Сигнал"</span></li>
-        <li class="feature-item"><CheckIcon /><span>Ваша кофейня VS Рынок в реальном времени</span></li>
+        <li class="feature-item"><CheckIcon /><span><a href="/brew/tickets" target="_blank" class="feature-link">Тикет-система "Сигнал"</a></span></li>
+        <li class="feature-item"><CheckIcon /><span><a href="/brew/reports" target="_blank" class="feature-link">Анализ конкурентов</span></li>
         <li class="feature-item"><CheckIcon /><span><a href="/smr" target="_blank" class="feature-link">Индекс Роста</a>: сигналы изменений</span></li>
       </ul>
       <a href="/brew/join/insider" class="card-button">Стать Инсайдером</a>
