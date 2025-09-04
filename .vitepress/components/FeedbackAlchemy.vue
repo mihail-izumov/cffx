@@ -1,20 +1,22 @@
 <template>
   <div class="form-wrapper">
-    <!-- Успешное сообщение -->
+    <!-- НОВОЕ сообщение об успешной отправке с номером тикета -->
     <div v-if="formSubmitted" class="success-message">
       <div class="success-icon">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="success-text">
-        <h3>Сигнал принят!</h3>
-        <p>Спасибо, что помогаете стать лучше. Ассистент Анна изучит ваш отзыв и свяжется с вами в Telegram по итогам.</p>
+        <h3>Ваш Сигнал запущен в работу</h3>
+        <p>Чтобы активировать ваш Сигнал, откройте диалог с ассистентом Анной в Telegram и отправьте ей ваш уникальный код:</p>
+        <div class="ticket-code-container">
+          <span class="ticket-code">{{ ticketNumber }}</span>
+        </div>
+        <a :href="'https://t.me/YourBotUsername'" target="_blank" class="telegram-button">Перейти в диалог с Анной</a>
       </div>
     </div>
 
     <!-- Основная форма -->
     <form v-else @submit.prevent="submitForm">
-      
-      <!-- СЕКЦИЯ 1: ОСНОВНЫЕ ВОПРОСЫ -->
       <div class="form-section">
         <div class="question-block" style="--accent-color: #A972FF;">
           <label class="direction-label">Эмоции и чувства</label>
@@ -22,14 +24,12 @@
           <textarea v-model="form.emotionalRelease" @focus="activeRotator = 1" rows="3" placeholder="Опишите свои чувства и впечатления..." required></textarea>
           <p class="example-hint" v-html="'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»'"></p>
         </div>
-
         <div class="question-block" style="--accent-color: #3DDC84;">
           <label class="direction-label">Детали проблемы</label>
           <RotatingPhrases :phrases="phrasesForQuestion2" :is-active="activeRotator === 2" />
           <textarea v-model="form.factualAnalysis" @focus="activeRotator = 2" rows="3" placeholder="Опишите факты: что, когда и где произошло..." required></textarea>
           <p class="example-hint" v-html="'Пример: «Заказ на два капучино <b>ждал 22 минуты</b>, хотя в кафе был почти один»'"></p>
         </div>
-
         <div class="question-block" style="--accent-color: #FFB800;">
           <label class="direction-label">Предложение решения</label>
           <RotatingPhrases :phrases="phrasesForQuestion3" :is-active="activeRotator === 3" />
@@ -37,25 +37,19 @@
           <p class="example-hint" v-html="'Пример: «Добавить на кассу <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
         </div>
       </div>
-      
       <div class="section-divider"><span>Останемся на связи?</span></div>
-
-      <!-- СЕКЦИЯ 2: ЛИЧНЫЕ ДАННЫЕ -->
       <div class="form-section personal-data-section">
         <div class="question-block compact">
           <label class="question-label">Ваше имя</label>
           <p class="question-help">Для персонального общения с ИИ-ассистентом Анной.</p>
           <input type="text" id="name" v-model="form.name" @focus="activeRotator = 0" placeholder="Как к вам обращаться?" required>
         </div>
-        
         <div class="question-block compact">
           <label class="question-label">Ваш контакт в Telegram</label>
           <p class="question-help">Чтобы получать обновления и видеть результат.</p>
           <input type="tel" id="telegramPhone" v-model="form.telegramPhone" @focus="activeRotator = 0" placeholder="+7 (___) ___-__-__" required>
         </div>
       </div>
-
-      <!-- ФУТЕР -->
       <div class="form-footer">
         <div class="checkbox-group">
           <input type="checkbox" id="consent" v-model="form.consent" required>
@@ -72,34 +66,24 @@
 <script setup>
 import { reactive, ref, computed, h, onUnmounted, watch, Transition } from 'vue';
 
-// --- Компонент анимированных подсказок ---
+const FADE_DURATION_MS = 800; // Длительность анимации затухания
+
+// --- Компонент анимированных подсказок (исправленная и упрощенная версия) ---
 const RotatingPhrases = {
-  props: { phrases: Array, isActive: Boolean, rotationIntervalMs: { type: Number, default: 5000 } },
+  props: { phrases: Array, isActive: Boolean, rotationIntervalMs: { type: Number, default: 4500 } },
   setup(props) {
     const currentPhraseIndex = ref(0);
     let intervalId = null;
-
     const startRotation = () => {
       stopRotation();
       if (props.phrases && props.phrases.length > 1) {
-        intervalId = setInterval(() => {
-          currentPhraseIndex.value = (currentPhraseIndex.value + 1) % props.phrases.length;
-        }, props.rotationIntervalMs);
+        intervalId = setInterval(() => { currentPhraseIndex.value = (currentPhraseIndex.value + 1) % props.phrases.length; }, props.rotationIntervalMs);
       }
     };
     const stopRotation = () => clearInterval(intervalId);
-
-    watch(() => props.isActive, (newValue) => {
-      if (newValue) { startRotation(); } else { stopRotation(); }
-    }, { immediate: true });
-
+    watch(() => props.isActive, (newValue) => { if (newValue) startRotation(); else stopRotation(); }, { immediate: true });
     onUnmounted(stopRotation);
-
-    return () => h('div', { class: 'rotating-phrase-container' }, [
-      h(Transition, { name: 'fade', mode: 'out-in' }, {
-        default: () => h('p', { key: currentPhraseIndex.value, class: 'rotating-phrase' }, props.phrases[currentPhraseIndex.value])
-      })
-    ]);
+    return () => h('div', { class: 'rotating-phrase-container' }, [ h(Transition, { name: 'fade', mode: 'out-in' }, { default: () => h('p', { key: currentPhraseIndex.value, class: 'rotating-phrase' }, props.phrases[currentPhraseIndex.value]) }) ]);
   }
 };
 
@@ -111,13 +95,17 @@ const activeRotator = ref(0);
 const form = reactive({ emotionalRelease: '', factualAnalysis: '', constructiveSuggestions: '', name: '', telegramPhone: '', consent: false });
 const isSubmitting = ref(false);
 const formSubmitted = ref(false);
+const ticketNumber = ref(null); // Новая переменная для номера тикета
 
 const isFormValid = computed(() => form.emotionalRelease.trim() && form.factualAnalysis.trim() && form.constructiveSuggestions.trim() && form.name.trim() && form.telegramPhone.trim() && form.consent);
 
 async function submitForm() {
   if (!isFormValid.value) return;
   isSubmitting.value = true;
-  const formData = { _subject: `Новый Сигнал от ${form.name}`, "Имя": form.name, "Эмоции": form.emotionalRelease, "Детали": form.factualAnalysis, "Решение": form.constructiveSuggestions, "Контакт в Telegram": form.telegramPhone };
+  
+  ticketNumber.value = 'S-' + Date.now(); // Генерация уникального номера тикета
+
+  const formData = { _subject: `Новый Сигнал от ${form.name} (${ticketNumber.value})`, "Номер тикета": ticketNumber.value, "Имя": form.name, "1. Эмоции": form.emotionalRelease, "2. Детали": form.factualAnalysis, "3. Решение": form.constructiveSuggestions, "Контакт в Telegram": form.telegramPhone };
   try {
     const response = await fetch('https://formspree.io/f/mdkzjopz', { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
     if (!response.ok) throw new Error('Ошибка сервера');
@@ -143,8 +131,8 @@ async function submitForm() {
 
 .rotating-phrase-container { min-height: 20px; margin-bottom: 0.75rem; position: relative; }
 .rotating-phrase { font-size: 0.9rem; color: #999; margin: 0; font-style: italic; }
-/* Плавная анимация затухания */
-.fade-enter-active, .fade-leave-active { transition: opacity 0.8s ease-in-out; }
+/* Простая и надежная анимация затухания */
+.fade-enter-active, .fade-leave-active { transition: opacity v-bind("`${FADE_DURATION_MS / 1000}s`") ease-in-out; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
 .fade-leave-active { position: absolute; }
 
@@ -169,11 +157,17 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 .submit-btn:hover:not(:disabled) { background-position: 75% 50%; transform: scale(1.03); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* --- Стили для сообщения об успехе и тикета --- */
 .success-message { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2rem; animation: fadeIn 0.5s ease-out; }
 .success-icon { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(90deg, #A972FF, #00C2FF, #FFB800); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; animation: popIn 0.5s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) backwards; }
 .success-icon svg { width: 32px; height: 32px; color: white; }
 .success-text h3 { font-size: 1.5rem; font-weight: 600; color: #fff; margin: 0 0 0.5rem 0; }
 .success-text p { color: #b0b0b0; line-height: 1.6; margin: 0; }
+.ticket-code-container { background-color: #2a2a2e; border: 1px solid #444; border-radius: 12px; padding: 1rem; margin: 1.5rem auto; max-width: 250px; }
+.ticket-code { font-family: 'monospace'; font-size: 1.25rem; font-weight: 700; color: #C5F946; letter-spacing: 2px; }
+.telegram-button { display: inline-block; background-color: #0088cc; color: white; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 600; margin-top: 1rem; transition: background-color 0.3s, transform 0.3s; }
+.telegram-button:hover { background-color: #0099e6; transform: scale(1.05); }
+
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
 @media (max-width: 768px) { .form-wrapper { padding: 1.5rem; } .personal-data-section { grid-template-columns: 1fr; } .form-footer { flex-direction: column; align-items: stretch; gap: 1rem; } .submit-btn { width: 100%; } }
