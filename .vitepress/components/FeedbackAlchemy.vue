@@ -18,7 +18,7 @@
     <!-- Основная форма -->
     <form v-else @submit.prevent="submitForm">
       
-      <!-- НОВЫЙ заголовок с технической информацией -->
+      <!-- Заголовок с технической информацией -->
       <div class="form-header">
         <div class="form-title">Новый Сигнал</div>
         <div class="tech-info">
@@ -82,13 +82,13 @@
 <script setup>
 import { defineComponent, reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue';
 
-// --- Компонент анимированных подсказок (вынесен отдельно для надежности) ---
+// --- Исправленный компонент анимированных подсказок ---
 const RotatingPhrases = defineComponent({
   name: 'RotatingPhrases',
   props: { phrases: Array, isActive: Boolean, rotationIntervalMs: { type: Number, default: 4500 } },
   template: `
     <div class="rotating-phrase-container">
-      <transition name="fade-questions" mode="out-in">
+      <transition name="fade" mode="out-in">
         <p :key="currentPhraseIndex" class="question-label">{{ phrases[currentPhraseIndex] }}</p>
       </transition>
     </div>
@@ -147,13 +147,13 @@ async function submitForm() {
 </script>
 
 <style scoped>
-:root { --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; --font-mono: 'SF Mono', 'Fira Code', 'Menlo', 'monospace'; }
+:root { --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace; }
 .form-wrapper { font-family: var(--font-sans); max-width: 640px; margin: 40px auto; background-color: #1E1E20; border-radius: 24px; padding: 2rem; color: #f0f0f0; border: 1px solid #2c2c2f; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); }
 
 .form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #2c2c2f; }
 .form-title { font-size: 1.5rem; font-weight: 600; color: #fff; margin: 0; }
 .tech-info { display: flex; align-items: center; gap: 1rem; font-family: var(--font-mono); font-size: 0.9rem; color: #888; }
-.ticket-display { background-color: #2a2a2e; color: #C5F946; font-weight: 700; padding: 0.5rem 1rem; border-radius: 12px; letter-spacing: 1px; }
+.ticket-display { background-color: #2a2a2e; color: #C5F946; font-weight: 700; padding: 0.5rem 1rem; border-radius: 12px; letter-spacing: 1px; font-family: var(--font-mono); }
 
 .form-section { display: flex; flex-direction: column; gap: 1.5rem; }
 .personal-data-section { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -163,11 +163,15 @@ async function submitForm() {
 .direction-label { font-weight: 600; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; display: block; }
 .question-help { font-size: 0.8rem; color: #888; margin-bottom: 0.75rem; line-height: 1.4; }
 
-.rotating-phrase-container { min-height: 22px; margin-bottom: 0.75rem; position: relative; }
+/* ИСПРАВЛЕННЫЕ стили для анимации подсказок */
+.rotating-phrase-container { min-height: 26px; margin-bottom: 0.75rem; }
 .question-label { font-weight: 500; font-size: 1rem; margin: 0; color: #f0f0f0; }
-.fade-questions-enter-active, .fade-questions-leave-active { transition: opacity 0.8s ease-in-out; }
-.fade-questions-enter-from, .fade-questions-leave-to { opacity: 0; }
-.fade-questions-leave-active { position: absolute; }
+
+/* Исправленная анимация без position: absolute */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out; }
+.fade-enter-from { opacity: 0; transform: translateY(8px); }
+.fade-leave-to { opacity: 0; transform: translateY(-8px); }
+.fade-enter-to, .fade-leave-from { opacity: 1; transform: translateY(0); }
 
 textarea, input { width: 100%; background-color: #242426; border: 1px solid #444; border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.95rem; color: #f0f0f0; transition: all 0.3s ease; font-family: var(--font-sans); }
 textarea:focus, input:focus { outline: none; border-color: var(--accent-color); background-color: #2a2a2e; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); }
