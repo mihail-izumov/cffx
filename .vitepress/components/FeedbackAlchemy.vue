@@ -38,18 +38,20 @@
         </div>
       </div>
       
-      <div class="section-divider"><span>Личные данные</span></div>
+      <div class="section-divider"><span>Останемся на связи?</span></div>
 
       <!-- СЕКЦИЯ 2: ЛИЧНЫЕ ДАННЫЕ -->
       <div class="form-section personal-data-section">
         <div class="question-block compact">
           <label for="name" class="question-label">Ваше имя</label>
-          <input type="text" id="name" v-model="form.name" placeholder="Чтобы мы знали, как к вам обращаться" required>
+          <p class="question-help">Для персонального общения с ИИ-ассистентом Анной.</p>
+          <input type="text" id="name" v-model="form.name" placeholder="Как к вам обращаться?" required>
         </div>
         
         <div class="question-block compact">
           <label for="telegramPhone" class="question-label">Ваш контакт в Telegram</label>
-          <input type="tel" id="telegramPhone" v-model="form.telegramPhone" placeholder="Сюда ИИ-ассистент пришлёт результат" required>
+          <p class="question-help">Чтобы получать обновления и видеть результат.</p>
+          <input type="tel" id="telegramPhone" v-model="form.telegramPhone" placeholder="+7 (___) ___-__-__" required>
         </div>
       </div>
 
@@ -68,9 +70,9 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed, h, onMounted, onUnmounted } from 'vue';
+import { reactive, ref, computed, h, onMounted, onUnmounted, Transition } from 'vue';
 
-// --- Компонент анимированных подсказок ---
+// --- Компонент анимированных подсказок (исправленная версия) ---
 const RotatingPhrases = {
   props: { phrases: Array, rotationIntervalMs: { type: Number, default: 4000 } },
   setup(props) {
@@ -79,16 +81,19 @@ const RotatingPhrases = {
     const cyclePhrases = () => { currentPhraseIndex.value = (currentPhraseIndex.value + 1) % props.phrases.length; };
     onMounted(() => { if (props.phrases && props.phrases.length > 1) { intervalId = setInterval(cyclePhrases, props.rotationIntervalMs); } });
     onUnmounted(() => { clearInterval(intervalId); });
-    return () => h('div', { class: 'rotating-phrase-container' }, [ h('transition', { name: 'fade-up', mode: 'out-in' }, () => h('p', { key: currentPhraseIndex.value, class: 'rotating-phrase' }, props.phrases[currentPhraseIndex.value])) ]);
+    // Используем слоты в render-функции h() - это самый надежный способ для Transitions
+    return () => h('div', { class: 'rotating-phrase-container' }, [
+      h(Transition, { name: 'fade-up', mode: 'out-in' }, {
+        default: () => h('p', { key: currentPhraseIndex.value, class: 'rotating-phrase' }, props.phrases[currentPhraseIndex.value])
+      })
+    ]);
   }
 };
 
-// --- Фразы-подсказки для каждого вопроса ---
 const phrasesForQuestion1 = ['Что вы почувствовали в первую очередь?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
 const phrasesForQuestion2 = ['Что именно произошло? Опишите ситуацию.', 'Кто-то из персонала был вовлечен?', 'Это связано с продуктом, сервисом или атмосферой?'];
 const phrasesForQuestion3 = ['Что могло бы предотвратить эту ситуацию?', 'Как бы вы поступили на месте менеджера?', 'Какое одно изменение сделало бы ваш опыт идеальным?'];
 
-// --- Логика основной формы ---
 const form = reactive({ emotionalRelease: '', factualAnalysis: '', constructiveSuggestions: '', name: '', telegramPhone: '', consent: false });
 const isSubmitting = ref(false);
 const formSubmitted = ref(false);
@@ -98,9 +103,7 @@ const isFormValid = computed(() => form.emotionalRelease.trim() && form.factualA
 async function submitForm() {
   if (!isFormValid.value) return;
   isSubmitting.value = true;
-  const formData = {
-    _subject: `Новый Сигнал от ${form.name}`, "Имя": form.name, "1. Эмоции": form.emotionalRelease, "2. Факты": form.factualAnalysis, "3. Предложения": form.constructiveSuggestions, "Контакт в Telegram": form.telegramPhone,
-  };
+  const formData = { _subject: `Новый Сигнал от ${form.name}`, "Имя": form.name, "1. Эмоции": form.emotionalRelease, "2. Факты": form.factualAnalysis, "3. Предложения": form.constructiveSuggestions, "Контакт в Telegram": form.telegramPhone };
   try {
     const response = await fetch('https://formspree.io/f/mdkzjopz', { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
     if (!response.ok) throw new Error('Ошибка сервера');
@@ -113,50 +116,45 @@ async function submitForm() {
 </script>
 
 <style scoped>
-/* Используем системный шрифт вместо моноширинного */
-:root { --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+:root { --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
 .form-wrapper { font-family: var(--font-family); max-width: 640px; margin: 40px auto; background-color: #1E1E20; border-radius: 24px; padding: 2rem; color: #f0f0f0; border: 1px solid #2c2c2f; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); }
 .form-section { display: flex; flex-direction: column; gap: 1.5rem; }
 .personal-data-section { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-/* --- Иерархия: Вопрос -> Подсказка -> Поле -> Пример --- */
 .question-block { background-color: #2a2a2e; border-radius: 16px; padding: 1.25rem; border: 1px solid #3a3a3e; border-left: 4px solid var(--accent-color, #444); }
-.question-block.compact { padding: 1rem; border-left-width: 0; }
+.question-block.compact { padding: 1rem; border-left-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
 .question-label { font-weight: 600; font-size: 1rem; margin-bottom: 0.5rem; display: block; }
+.question-help { font-size: 0.8rem; color: #888; margin-bottom: 0.75rem; line-height: 1.4; }
 
-/* 1. Анимированная подсказка (без обводки) */
 .rotating-phrase-container { min-height: 20px; margin-bottom: 0.75rem; position: relative; }
 .rotating-phrase { font-size: 0.9rem; color: #999; margin: 0; font-style: italic; }
-.fade-up-enter-active, .fade-up-leave-active { transition: opacity 0.5s, transform 0.5s; }
+.fade-up-enter-active, .fade-up-leave-active { transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; }
 .fade-up-enter-from { opacity: 0; transform: translateY(10px); }
 .fade-up-leave-to { opacity: 0; transform: translateY(-10px); }
 .fade-up-leave-active { position: absolute; width: 100%; }
 
-/* 2. Поле для ввода (главный элемент) */
 textarea, input { width: 100%; background-color: #242426; border: 1px solid #444; border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.95rem; color: #f0f0f0; transition: all 0.3s ease; font-family: var(--font-family); }
 textarea:focus, input:focus { outline: none; border-color: var(--accent-color); background-color: #2a2a2e; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); }
 ::placeholder { color: #666; }
 
-/* 3. Пример (под полем) */
 .example-hint { font-size: 0.8rem; color: #777; margin: 0.5rem 0 0 0.25rem; }
 .example-hint b { color: #aaa; font-weight: 600; }
 
-/* --- Разделитель и футер --- */
-.section-divider { margin: 2.5rem 0; text-align: center; position: relative; color: #777; font-weight: 500; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
-.section-divider::before, .section-divider::after { content: ''; position: absolute; top: 50%; width: calc(50% - 70px); height: 1px; background: #2c2c2f; }
+.section-divider { margin: 2.5rem 0; text-align: center; position: relative; color: #888; font-weight: 500; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
+.section-divider::before, .section-divider::after { content: ''; position: absolute; top: 50%; width: calc(50% - 90px); height: 1px; background: #2c2c2f; }
 .section-divider::before { left: 0; } .section-divider::after { right: 0; }
+
 .form-footer { margin-top: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
 .checkbox-group { display: flex; align-items: center; gap: 0.5rem; }
-.checkbox-group input { accent-color: #00C2FF; }
-.checkbox-group label { font-size: 0.8rem; color: #999; }
+.checkbox-group input { accent-color: #00C2FF; flex-shrink: 0; }
+.checkbox-group label { font-size: 0.8rem; color: #999; line-height: 1.3; }
 .policy-link { color: #b0b0b0; text-decoration: none; } .policy-link:hover { text-decoration: underline; }
 
-/* Новая кнопка с градиентом */
-.submit-btn { background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%); color: #fff; font-weight: 600; font-size: 1rem; border: none; border-radius: 12px; padding: 0.8rem 2rem; cursor: pointer; transition: all 0.3s ease; background-size: 200% auto; }
-.submit-btn:hover:not(:disabled) { background-position: right center; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+/* Улучшенная анимация кнопки "Вжух!" */
+.submit-btn { background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%); color: #fff; font-weight: 600; font-size: 1rem; border: none; border-radius: 12px; padding: 0.8rem 2rem; cursor: pointer; transition: all 0.4s ease-out; background-size: 200% 200%; background-position: 25% 50%; }
+.submit-btn:hover:not(:disabled) { background-position: 75% 50%; transform: scale(1.03); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* --- Успешное сообщение --- */
 .success-message { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2rem; animation: fadeIn 0.5s ease-out; }
 .success-icon { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(90deg, #A972FF, #00C2FF, #FFB800); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; animation: popIn 0.5s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) backwards; }
 .success-icon svg { width: 32px; height: 32px; color: white; }
@@ -164,5 +162,5 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 .success-text p { color: #b0b0b0; line-height: 1.6; margin: 0; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
-@media (max-width: 768px) { .form-wrapper { padding: 1.5rem; } .personal-data-section { grid-template-columns: 1fr; } .form-footer { flex-direction: column; align-items: stretch; } .submit-btn { width: 100%; } }
+@media (max-width: 768px) { .form-wrapper { padding: 1.5rem; } .personal-data-section { grid-template-columns: 1fr; } .form-footer { flex-direction: column; align-items: stretch; gap: 1rem; } .submit-btn { width: 100%; } }
 </style>
