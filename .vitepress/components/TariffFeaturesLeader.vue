@@ -18,7 +18,7 @@
     
     <div class="brand-card leader-card">
       <div class="tariff-badge leader">Новый Лидер</div>
-      <h3>-20% на <a href="/checkup/overview" target="_blank">Чекап</a> Модуля Роста®</h3>
+      <h3>-20% на <a href="https://runscale.ru/checkup/overview" target="_blank">Чекап</a> Модуля Роста®</h3>
       <p class="description-main">Найти скрытые разрывы в процессах, которые тормозят рост</p>
       <p class="description-goals">3 конкретных улучшения за 30 дней</p>
     </div>
