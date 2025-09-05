@@ -265,7 +265,7 @@ export default defineConfig({
       },
       { 
         icon: { svg: '' }, 
-        link: '/smr', 
+        link: '/signal/new', 
         ariaLabel: 'signal-link' 
       }
     ],
