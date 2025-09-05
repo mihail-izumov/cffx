@@ -6,7 +6,7 @@
         <h3>Все готово!</h3>
         <p>Нажмите на кнопку ниже, чтобы отправить ваш уникальный код ассистенту Анне и активировать ваш запрос.</p>
         <a :href="`https://t.me/Anna_runScale?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="telegram-button">Активировать Сигнал в Telegram</a>
-        <a href="/signals#знакомьтесь-–-анна" target="_blank" class="secondary-link">Кто Анна и как работает</a>
+        <a href="/signals#знакомьтесь-–-анна" target="_blank" class="secondary-link">Кто такая Анна и как она работает?</a>
       </div>
     </div>
 
@@ -38,6 +38,9 @@
           </select>
         </div>
       </div>
+
+      <!-- Разделительная линия между адресом и вопросами -->
+      <div class="separator-line"></div>
 
       <!-- Секция с вопросами -->
       <div class="form-section">
@@ -227,6 +230,9 @@ async function submitForm() {
 .address-select:focus { outline: none; border-color: #C5F946; background-color: #2a2a2e; box-shadow: 0 0 0 3px rgba(197, 249, 70, 0.2); }
 .address-select option { background-color: #2a2a2e; color: #f0f0f0; }
 .address-select option:disabled { color: #666; }
+
+/* Разделительная линия между адресом и вопросами */
+.separator-line { height: 1px; background: linear-gradient(90deg, transparent, #2c2c2f 20%, #2c2c2f 80%, transparent); margin: 2rem 0 1.5rem 0; }
 
 textarea, input { width: 100%; background-color: #242426; border: 1px solid #444; border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.95rem; color: #f0f0f0; transition: all 0.3s ease; font-family: var(--font-sans); }
 textarea:focus, input:focus { outline: none; border-color: var(--accent-color); background-color: #2a2a2e; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); }
