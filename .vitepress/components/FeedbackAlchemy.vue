@@ -1,13 +1,12 @@
 <template>
   <div class="form-wrapper">
-    <!-- Экран успешной отправки БЕЗ чекмарка -->
+    <!-- Экран успешной отправки -->
     <div v-if="formSubmitted" class="success-message">
       <div class="success-text">
         <h3>Все готово!</h3>
         <p>Нажмите на кнопку ниже, чтобы отправить ваш уникальный код ассистенту Анне и активировать ваш запрос.</p>
         <a :href="`https://t.me/Anna_runScale?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="telegram-button">Активировать Сигнал в Telegram</a>
-        <!-- Дополнительная ссылка для сомневающихся -->
-        <a href="/signals#знакомьтесь-–-анна" target="_blank" class="secondary-link">Кто Анна и как работает</a>
+        <a href="/signals#знакомьтесь-–-анна" target="_blank" class="secondary-link">Кто такая Анна и как она работает?</a>
       </div>
     </div>
 
@@ -20,6 +19,27 @@
           <span class="info-item ticket-display">{{ formattedTicketNumber }}</span>
         </div>
       </div>
+
+      <!-- Секция выбора кофейни -->
+      <div class="form-section">
+        <div class="question-block compact">
+          <label class="question-label">Ваша кофейня "Корж"</label>
+          <p class="question-help">Выберите адрес, где произошла ситуация</p>
+          <select v-model="form.coffeeShopAddress" class="address-select" required>
+            <option value="">Выберите адрес</option>
+            <option value="Куйбышева, 103">Куйбышева, 103</option>
+            <option value="Революционная, 101В" disabled>Революционная, 101В</option>
+            <option value="9 просека 5-я малая линия,3б" disabled>9 просека 5-я малая линия, 3б</option>
+            <option value="Льва Толстого, 30Б" disabled>Льва Толстого, 30Б</option>
+            <option value="Самарская, 270" disabled>Самарская, 270</option>
+            <option value="Дачная, 2к2" disabled>Дачная, 2к2</option>
+            <option value="Ульяновская, 19" disabled>Ульяновская, 19</option>
+            <option value="Ново-Садовая, 106Б" disabled>Ново-Садовая, 106Б</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Секция с вопросами -->
       <div class="form-section">
         <div class="question-block" style="--accent-color: #A972FF;">
           <p class="direction-label">Эмоции и чувства</p>
@@ -84,7 +104,15 @@
 <script setup>
 import { reactive, ref, computed, onMounted, onUnmounted } from 'vue';
 
-const form = reactive({ emotionalRelease: '', factualAnalysis: '', constructiveSuggestions: '', name: '', telegramPhone: '', consent: false });
+const form = reactive({ 
+  coffeeShopAddress: '',
+  emotionalRelease: '', 
+  factualAnalysis: '', 
+  constructiveSuggestions: '', 
+  name: '', 
+  telegramPhone: '', 
+  consent: false 
+});
 const isSubmitting = ref(false);
 const formSubmitted = ref(false);
 const rawTicketNumber = ref(null);
@@ -140,12 +168,32 @@ onUnmounted(() => {
   stopRotation();
 });
 
-const isFormValid = computed(() => form.emotionalRelease.trim() && form.factualAnalysis.trim() && form.constructiveSuggestions.trim() && form.name.trim() && form.telegramPhone.trim() && form.consent);
+const isFormValid = computed(() => 
+  form.coffeeShopAddress.trim() && 
+  form.emotionalRelease.trim() && 
+  form.factualAnalysis.trim() && 
+  form.constructiveSuggestions.trim() && 
+  form.name.trim() && 
+  form.telegramPhone.trim() && 
+  form.consent
+);
 
 async function submitForm() {
   if (!isFormValid.value) return;
   isSubmitting.value = true;
-  const formData = { _subject: `Новый Сигнал ${formattedTicketNumber.value} от ${form.name}`, "Код тикета": rawTicketNumber.value, "Дата": currentDate.value, "Имя": form.name, "1. Эмоции": form.emotionalRelease, "2. Детали": form.factualAnalysis, "3. Решение": form.constructiveSuggestions, "Контакт в Telegram": form.telegramPhone };
+  
+  const formData = { 
+    _subject: `Новый Сигнал ${formattedTicketNumber.value} от ${form.name} (Корж, ${form.coffeeShopAddress})`, 
+    "Код тикета": rawTicketNumber.value, 
+    "Дата": currentDate.value, 
+    "Кофейня": `Корж, ${form.coffeeShopAddress}`,
+    "Имя": form.name, 
+    "1. Эмоции": form.emotionalRelease, 
+    "2. Детали": form.factualAnalysis, 
+    "3. Решение": form.constructiveSuggestions, 
+    "Контакт в Telegram": form.telegramPhone 
+  };
+  
   try {
     const response = await fetch('https://formspree.io/f/mdkzjopz', { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
     if (!response.ok) throw new Error('Ошибка сервера');
@@ -174,6 +222,12 @@ async function submitForm() {
 .question-label { font-weight: 500; font-size: 1rem; margin: 0; color: #f0f0f0; }
 .fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
+.address-select { width: 100%; background-color: #242426; border: 1px solid #444; border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.95rem; color: #f0f0f0; transition: all 0.3s ease; font-family: var(--font-sans); }
+.address-select:focus { outline: none; border-color: #C5F946; background-color: #2a2a2e; box-shadow: 0 0 0 3px rgba(197, 249, 70, 0.2); }
+.address-select option { background-color: #2a2a2e; color: #f0f0f0; }
+.address-select option:disabled { color: #666; }
+
 textarea, input { width: 100%; background-color: #242426; border: 1px solid #444; border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.95rem; color: #f0f0f0; transition: all 0.3s ease; font-family: var(--font-sans); }
 textarea:focus, input:focus { outline: none; border-color: var(--accent-color); background-color: #2a2a2e; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); }
 ::placeholder { color: #666; }
@@ -190,19 +244,13 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 .submit-btn { background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%); color: #fff; font-weight: 600; font-size: 1rem; border: none; border-radius: 12px; padding: 0.8rem 2rem; cursor: pointer; transition: all 0.4s ease-out; background-size: 200% auto; background-position: 25% 50%; }
 .submit-btn:hover:not(:disabled) { background-position: 75% 50%; transform: scale(1.03); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-/* Стили для экрана успешной отправки - БЕЗ чекмарка */
 .success-message { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 4rem 2rem 2rem 2rem; animation: fadeIn 0.5s ease-out; }
 .success-text h3 { font-size: 1.5rem; font-weight: 600; color: #fff; margin: 0 0 0.5rem 0; }
 .success-text p { color: #b0b0b0; line-height: 1.6; margin: 0; }
 .telegram-button { display: inline-block; background-color: #C5F946; color: #000000; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 600; margin-top: 1.5rem; transition: background-color 0.3s, transform 0.3s; }
 .telegram-button:hover { background-color: #d6ff6a; transform: scale(1.05); }
-
-/* ИСПРАВЛЕННЫЕ стили для дополнительной ссылки - убираем двойную черту */
 .secondary-link { display: block; margin-top: 1.5rem; font-size: 0.85rem; color: #888; text-decoration: none; border-bottom: none !important; transition: color 0.3s; }
 .secondary-link:hover { color: #C5F946; text-decoration: underline !important; border-bottom: none !important; }
-
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
 @media (max-width: 768px) { .form-wrapper { padding: 1.5rem; } .personal-data-section { grid-template-columns: 1fr; } .form-footer { flex-direction: column; align-items: stretch; gap: 1rem; } .submit-btn { width: 100%; } .form-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; } }
 </style>
