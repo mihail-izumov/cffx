@@ -6,7 +6,7 @@
         <h3>Все готово!</h3>
         <p>Нажмите на кнопку ниже, чтобы отправить ваш уникальный код ассистенту Анне и активировать ваш запрос.</p>
         <a :href="`https://t.me/Anna_runScale?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="telegram-button">Активировать Сигнал в Telegram</a>
-        <a href="/signals#знакомьтесь-–-анна" target="_blank" class="secondary-link">Кто такая Анна и как она работает?</a>
+        <a href="/signals#знакомьтесь-–-анна" target="_blank" class="secondary-link">Кто Анна и как работает</a>
       </div>
     </div>
 
@@ -94,7 +94,7 @@
       <div class="form-footer">
         <div class="checkbox-group">
           <input type="checkbox" id="consent" v-model="form.consent" required>
-          <label for="consent">Согласен с <a href="/terms/policy" target="_blank" class="policy-link">политикой конфиденциальности</a>.</label>
+          <label for="consent">Согласен/на с <a href="/terms" target="_blank" class="policy-link">Условиями использования</a>.</label>
         </div>
         <button type="submit" class="submit-btn" :disabled="!isFormValid || isSubmitting">
           {{ isSubmitting ? 'Отправка...' : 'Отправить Сигнал' }}
