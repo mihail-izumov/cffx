@@ -31,20 +31,37 @@
       <div class="form-section">
         <div class="question-block" style="--accent-color: #A972FF;">
           <p class="direction-label">Эмоции и чувства</p>
-          <RotatingPhrases :phrases="phrasesForQuestion1" :is-active="activeRotator === 1" />
-          <textarea v-model="form.emotionalRelease" @focus="activeRotator = 1" rows="3" placeholder="Опишите свои чувства и впечатления..." required></textarea>
+          <div class="rotating-phrase-container">
+            <transition name="fade" mode="out-in">
+              <p :key="currentQuestion1" class="question-label" v-if="activeRotator === 1">{{ currentQuestion1 }}</p>
+              <p v-else class="question-label">Что вас расстроило сегодня?</p>
+            </transition>
+          </div>
+          <textarea v-model="form.emotionalRelease" @focus="startRotation(1)" rows="3" placeholder="Опишите свои чувства и впечатления..." required></textarea>
           <p class="example-hint" v-html="'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»'"></p>
         </div>
+        
         <div class="question-block" style="--accent-color: #3DDC84;">
           <p class="direction-label">Детали проблемы</p>
-          <RotatingPhrases :phrases="phrasesForQuestion2" :is-active="activeRotator === 2" />
-          <textarea v-model="form.factualAnalysis" @focus="activeRotator = 2" rows="3" placeholder="Опишите факты: что, когда и где произошло..." required></textarea>
+          <div class="rotating-phrase-container">
+            <transition name="fade" mode="out-in">
+              <p :key="currentQuestion2" class="question-label" v-if="activeRotator === 2">{{ currentQuestion2 }}</p>
+              <p v-else class="question-label">Что конкретно пошло не так?</p>
+            </transition>
+          </div>
+          <textarea v-model="form.factualAnalysis" @focus="startRotation(2)" rows="3" placeholder="Опишите факты: что, когда и где произошло..." required></textarea>
           <p class="example-hint" v-html="'Пример: «Заказ на два капучино <b>ждал 22 минуты</b>, хотя в кафе был почти один»'"></p>
         </div>
+        
         <div class="question-block" style="--accent-color: #FFB800;">
           <p class="direction-label">Предложение решения</p>
-          <RotatingPhrases :phrases="phrasesForQuestion3" :is-active="activeRotator === 3" />
-          <textarea v-model="form.constructiveSuggestions" @focus="activeRotator = 3" rows="3" placeholder="Предложите, как это можно исправить..." required></textarea>
+          <div class="rotating-phrase-container">
+            <transition name="fade" mode="out-in">
+              <p :key="currentQuestion3" class="question-label" v-if="activeRotator === 3">{{ currentQuestion3 }}</p>
+              <p v-else class="question-label">Как бы вы это исправили?</p>
+            </transition>
+          </div>
+          <textarea v-model="form.constructiveSuggestions" @focus="startRotation(3)" rows="3" placeholder="Предложите, как это можно исправить..." required></textarea>
           <p class="example-hint" v-html="'Пример: «Добавить на кассу <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
         </div>
       </div>
@@ -56,12 +73,12 @@
         <div class="question-block compact">
           <label class="question-label">Ваше имя</label>
           <p class="question-help">Для персонального общения с ИИ-ассистентом Анной.</p>
-          <input type="text" id="name" v-model="form.name" @focus="activeRotator = 0" placeholder="Как к вам обращаться?" required>
+          <input type="text" id="name" v-model="form.name" @focus="stopRotation()" placeholder="Как к вам обращаться?" required>
         </div>
         <div class="question-block compact">
           <label class="question-label">Ваш контакт в Telegram</label>
           <p class="question-help">Чтобы получать обновления и видеть результат.</p>
-          <input type="tel" id="telegramPhone" v-model="form.telegramPhone" @focus="activeRotator = 0" placeholder="+7 (___) ___-__-__" required>
+          <input type="tel" id="telegramPhone" v-model="form.telegramPhone" @focus="stopRotation()" placeholder="+7 (___) ___-__-__" required>
         </div>
       </div>
 
@@ -80,46 +97,51 @@
 </template>
 
 <script setup>
-import { defineComponent, reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { reactive, ref, computed, onMounted, onUnmounted } from 'vue';
 
-// --- Исправленный компонент анимированных подсказок ---
-const RotatingPhrases = defineComponent({
-  name: 'RotatingPhrases',
-  props: { phrases: Array, isActive: Boolean, rotationIntervalMs: { type: Number, default: 4500 } },
-  template: `
-    <div class="rotating-phrase-container">
-      <transition name="fade" mode="out-in">
-        <p :key="currentPhraseIndex" class="question-label">{{ phrases[currentPhraseIndex] }}</p>
-      </transition>
-    </div>
-  `,
-  setup(props) {
-    const currentPhraseIndex = ref(0);
-    let intervalId = null;
-    const startRotation = () => {
-      stopRotation();
-      if (props.phrases && props.phrases.length > 1) {
-        intervalId = setInterval(() => { currentPhraseIndex.value = (currentPhraseIndex.value + 1) % props.phrases.length; }, props.rotationIntervalMs);
-      }
-    };
-    const stopRotation = () => clearInterval(intervalId);
-    watch(() => props.isActive, (newValue) => { if (newValue) startRotation(); else stopRotation(); }, { immediate: true });
-    onUnmounted(stopRotation);
-    return { currentPhraseIndex };
-  }
-});
-
-const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
-const phrasesForQuestion2 = ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'];
-const phrasesForQuestion3 = ['Как бы вы это исправили?', 'Что могло бы предотвратить эту ситуацию?', 'Какое одно изменение сделало бы ваш опыт идеальным?'];
-
-const activeRotator = ref(0);
 const form = reactive({ emotionalRelease: '', factualAnalysis: '', constructiveSuggestions: '', name: '', telegramPhone: '', consent: false });
 const isSubmitting = ref(false);
 const formSubmitted = ref(false);
 const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
 const currentDate = ref('');
+const activeRotator = ref(0);
+
+const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
+const phrasesForQuestion2 = ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'];
+const phrasesForQuestion3 = ['Как бы вы это исправили?', 'Что могло бы предотвратить эту ситуацию?', 'Какое одно изменение сделало бы ваш опыт идеальным?'];
+
+const currentQuestion1 = ref(phrasesForQuestion1[0]);
+const currentQuestion2 = ref(phrasesForQuestion2[0]);
+const currentQuestion3 = ref(phrasesForQuestion3[0]);
+
+let rotationInterval = null;
+let currentQuestionIndex1 = 0;
+let currentQuestionIndex2 = 0;
+let currentQuestionIndex3 = 0;
+
+function startRotation(questionNum) {
+  stopRotation();
+  activeRotator.value = questionNum;
+  
+  rotationInterval = setInterval(() => {
+    if (questionNum === 1) {
+      currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length;
+      currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1];
+    } else if (questionNum === 2) {
+      currentQuestionIndex2 = (currentQuestionIndex2 + 1) % phrasesForQuestion2.length;
+      currentQuestion2.value = phrasesForQuestion2[currentQuestionIndex2];
+    } else if (questionNum === 3) {
+      currentQuestionIndex3 = (currentQuestionIndex3 + 1) % phrasesForQuestion3.length;
+      currentQuestion3.value = phrasesForQuestion3[currentQuestionIndex3];
+    }
+  }, 3000);
+}
+
+function stopRotation() {
+  clearInterval(rotationInterval);
+  activeRotator.value = 0;
+}
 
 onMounted(() => {
   rawTicketNumber.value = String(Date.now()).slice(-6);
@@ -127,6 +149,10 @@ onMounted(() => {
   const now = new Date();
   const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
   currentDate.value = now.toLocaleString('ru-RU', options).replace(',', '');
+});
+
+onUnmounted(() => {
+  stopRotation();
 });
 
 const isFormValid = computed(() => form.emotionalRelease.trim() && form.factualAnalysis.trim() && form.constructiveSuggestions.trim() && form.name.trim() && form.telegramPhone.trim() && form.consent);
@@ -147,7 +173,7 @@ async function submitForm() {
 </script>
 
 <style scoped>
-:root { --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace; }
+:root { --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace; }
 .form-wrapper { font-family: var(--font-sans); max-width: 640px; margin: 40px auto; background-color: #1E1E20; border-radius: 24px; padding: 2rem; color: #f0f0f0; border: 1px solid #2c2c2f; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); }
 
 .form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #2c2c2f; }
@@ -163,15 +189,12 @@ async function submitForm() {
 .direction-label { font-weight: 600; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; display: block; }
 .question-help { font-size: 0.8rem; color: #888; margin-bottom: 0.75rem; line-height: 1.4; }
 
-/* ИСПРАВЛЕННЫЕ стили для анимации подсказок */
 .rotating-phrase-container { min-height: 26px; margin-bottom: 0.75rem; }
 .question-label { font-weight: 500; font-size: 1rem; margin: 0; color: #f0f0f0; }
 
-/* Исправленная анимация без position: absolute */
-.fade-enter-active, .fade-leave-active { transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out; }
-.fade-enter-from { opacity: 0; transform: translateY(8px); }
-.fade-leave-to { opacity: 0; transform: translateY(-8px); }
-.fade-enter-to, .fade-leave-from { opacity: 1; transform: translateY(0); }
+/* Простая рабочая анимация fade */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.8s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
 
 textarea, input { width: 100%; background-color: #242426; border: 1px solid #444; border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.95rem; color: #f0f0f0; transition: all 0.3s ease; font-family: var(--font-sans); }
 textarea:focus, input:focus { outline: none; border-color: var(--accent-color); background-color: #2a2a2e; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); }
