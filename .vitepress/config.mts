@@ -7,7 +7,7 @@ export default defineConfig({
   locales: {
     '/': {
       lang: 'ru-RU',
-      title: 'Сигнал',
+      title: 'Просто скажите, что не так и мы поможем | Сигнал',
       description: 'Где Начинается Ваша Кофейня',
     },
   },
