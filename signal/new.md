@@ -1,7 +1,7 @@
 ---
 prev: false
 next: false
-title: Новый Сигнал
+title: Новый Сигнал | Корж, Mosaic
 ---
 
 <FeedbackAlchemy />
