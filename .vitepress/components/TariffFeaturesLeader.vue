@@ -1,6 +1,6 @@
 <template>
   <div class="brands-container">
-    <!-- ФУНКЦИИ ТАРИФА: Новый Лидер -->
+    <!-- ФУНКЦИИ ТАРИФА: Новый Ллидер -->
     
     <div class="brand-card leader-card">
       <div class="tariff-badge leader">Новый Лидер</div>
