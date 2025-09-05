@@ -1,1 +1,1 @@
-<ReviewsWidget />
+<KorzhWidget />
