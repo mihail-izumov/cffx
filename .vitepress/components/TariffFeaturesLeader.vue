@@ -70,7 +70,7 @@
     
     <div class="brand-card simulator-card">
       <div class="tariff-badge simulator">Старт</div>
-      <h3>ИИ-ассистент Анна</a></h3>
+      <h3>ИИ-ассистент Анна</h3>
       <p class="description-main">Персональный навигатор по платформе</p>
       <p class="description-goals">Базовые рекомендации для работы с Сигналом</p>
     </div>
