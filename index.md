@@ -11,7 +11,7 @@ hero:
   actions:
     - theme: brand
       text: Отправить ⚡ Сигнал
-      link: /smr
+      link: /signal/new
 
 features:
   - title: Быстро, бесплатно и без регистрации
