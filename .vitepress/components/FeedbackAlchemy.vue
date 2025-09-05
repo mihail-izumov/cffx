@@ -1,6 +1,6 @@
 <template>
   <div class="form-wrapper">
-    <!-- ИСПРАВЛЕННЫЙ экран успешной отправки с ОДИНАРНЫМ чекмарком -->
+    <!-- ИСПРАВЛЕННЫЙ экран успешной отправки - только один чекмарк -->
     <div v-if="formSubmitted" class="success-message">
       <div class="success-icon">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -194,11 +194,15 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 .submit-btn:hover:not(:disabled) { background-position: 75% 50%; transform: scale(1.03); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* ИСПРАВЛЕННЫЕ стили для экрана успешной отправки - гарантированно ОДИН чекмарк */
+/* ПОЛНОСТЬЮ ПЕРЕПИСАННЫЕ стили для экрана успешной отправки */
 .success-message { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2rem; animation: fadeIn 0.5s ease-out; }
-.success-icon { width: 64px; height: 64px; border-radius: 50%; background-color: #4CAF50; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; animation: popIn 0.5s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) backwards; position: relative; }
-.success-icon svg { width: 32px; height: 32px; color: white; }
-.success-icon::before, .success-icon::after { display: none !important; }
+
+/* КРИТИЧЕСКИ ВАЖНО: убираем ВСЕ псевдоэлементы */
+.success-icon, .success-icon *, .success-icon *::before, .success-icon *::after { content: none !important; }
+.success-icon::before, .success-icon::after { content: none !important; display: none !important; visibility: hidden !important; }
+
+.success-icon { width: 64px; height: 64px; border-radius: 50%; background-color: #4CAF50; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; animation: popIn 0.5s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) backwards; position: relative; overflow: hidden; }
+.success-icon svg { width: 32px; height: 32px; color: white; position: relative; z-index: 2; }
 .success-text h3 { font-size: 1.5rem; font-weight: 600; color: #fff; margin: 0 0 0.5rem 0; }
 .success-text p { color: #b0b0b0; line-height: 1.6; margin: 0; }
 .telegram-button { display: inline-block; background-color: #C5F946; color: #000000; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 600; margin-top: 1.5rem; transition: background-color 0.3s, transform 0.3s; }
