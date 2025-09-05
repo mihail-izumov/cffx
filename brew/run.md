@@ -526,7 +526,7 @@ html.dark .button-group .btn-secondary:hover {
       </div>
       <div class="spec-item">
         <span class="spec-value">
-          <a href="/signals.html#знакомьтесь-–-анна">Анна</a>
+          <a href="/signals">Анна</a>
           </span>
         <p class="spec-label">ИИ-ассистент</p>
       </div>
