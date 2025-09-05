@@ -306,20 +306,20 @@ const activeTab = ref('problem')
 
 ## Вопросы и Ответы
 
-::: details Что такое B-R-E-W?
-Это мета-франшиза — открытая платформа и бизнес-симулятор для владельцев кофеен. Она дает вам инструменты и данные, чтобы строить и масштабировать бизнес по своим правилам – расти быстрее конкурентов.
+::: details Что такое Сигнал?
+Это открытая платформа и бизнес-симулятор для владельцев кофеен. Она дает вам инструменты и данные, чтобы строить и масштабировать бизнес по своим правилам – расти быстрее конкурентов.
 :::
 
-::: details Как работает Симулятор?
+::: details Как работают Диалоги с данными?
 Вы получаете доступ к глубокому анализу рынков разных городов (доступна Самара). Через **Диалоги с Анной** вы можете «проиграть» разные сценарии: как бы ваша модель работала там? Что нужно усилить? Это репетиция вашего роста на чужом опыте.
 :::
 
 ::: details Что такое Кофейный Протокол?
-Это технологическое ядро B-R-E-W. Открытая, постоянно обновляемая база знаний о кофейном рынке РФ, с которой можно вести диалог. Это ваш «центр правды», который питает все Симуляции.
+Это технологическое ядро Сигнала. Открытая, постоянно обновляемая база знаний о кофейном рынке РФ, с которой можно вести диалог. Это ваш «центр правды», который питает все Диалоги.
 :::
 
 ::: details Это бесплатно?
-Платформа B-R-E-W открыта для всех. Это наш вклад в развитие кофейного рынка. Персональный стратегический разбор и доступ к закрытым данным — это следующий шаг для тех, кто готов к партнерству с Модулем Роста®.
+Сигнал открыт для всех. Это наш вклад в развитие кофейного рынка. Персональный стратегический разбор и доступ к закрытым данным — это следующий шаг для тех, кто готов к партнерству с Сигналом Модуля Роста®.
 :::
 
 <br><br>
@@ -489,9 +489,9 @@ html.dark .button-group .btn-secondary:hover {
     </div>
   </div>
 
-  <!-- Платформа B-R-E-W -->
+  <!-- Платформа Сигнал -->
   <div class="specs-section">
-    <h2 class="section-title">Платформа BREW</h2>
+    <h2 class="section-title">Платформа Сигнал</h2>
     <div class="specs-grid four-cols">
       <div class="spec-item">
         <span class="spec-value">Мета-франшиза</span>
@@ -528,7 +528,7 @@ html.dark .button-group .btn-secondary:hover {
       </div>
       <div class="spec-item">
         <span class="spec-value">
-          <a href="/radar/who-is-anna">Анна</a>
+          <a href="/signals.#знакомьтесь-–-анна">Анна</a>
           </span>
         <p class="spec-label">ИИ-ассистент</p>
       </div>
@@ -545,7 +545,7 @@ html.dark .button-group .btn-secondary:hover {
     <div class="specs-grid four-cols">
         <div class="spec-item">
             <span class="spec-value">
-            <a href="/radar/signal/log">Сигналы Радара</a>
+            <a href="https://runscale.ru/radar/signal/log">Сигналы Радара</a>
             </span>
             <p class="spec-label">Инструмент</p>
         </div>
@@ -555,7 +555,7 @@ html.dark .button-group .btn-secondary:hover {
         </div>
         <div class="spec-item">
             <span class="spec-value">Самара // Фокус на «Корж»</span>
-            <p class="spec-label">Доступные сигналы</p>
+            <p class="spec-label">Доступные Диалоги</p>
         </div>
         <div class="spec-item">
             <span class="spec-value">Новосибирск, Москва +</span>
@@ -589,14 +589,14 @@ html.dark .button-group .btn-secondary:hover {
     <div class="specs-grid three-cols">
       <div class="spec-item">
         <span class="spec-value">
-          <a href="/about/company">Модуль Роста®</a>
+          <a href="https://runscale.ru/about/company">Модуль Роста®</a>
           </span>
         <p class="spec-label">Система-партнер</p>
       </div>
       <div class="spec-item">
         <span class="spec-value">
-          <a href="/checkup/overview">Чекап</a>, 
-          <a href="/system/overview">Система Роста Бизнеса</a>
+          <a href="https://runscale.ru/checkup/overview">Чекап</a>, 
+          <a href="https://runscale.ru/system/overview">Система Роста Бизнеса</a>
         </span>
         <p class="spec-label">Доступные услуги</p>
       </div>
