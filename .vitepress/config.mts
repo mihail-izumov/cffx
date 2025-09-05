@@ -314,7 +314,8 @@ function sidebarTerms(): DefaultTheme.SidebarItem[] {
       text: 'Условия использования', collapsed: false, items: [
         { text: 'Соглашения', link: '/terms' },
         { text: 'Политика конфиденциальности', link: '/terms/policy' },
-        { text: 'Согласие на обработку данных', link: '/terms/privacy' }
+        { text: 'Согласие на обработку данных', link: '/terms/privacy' },
+        { text: 'Оферта', link: '/terms/oferta' }
       ]
     }]
 }
