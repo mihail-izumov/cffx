@@ -1,6 +1,6 @@
 <template>
   <div class="form-wrapper">
-    <!-- ИСПРАВЛЕННЫЙ экран успешной отправки -->
+    <!-- ИСПРАВЛЕННЫЙ экран успешной отправки БЕЗ двойного чекмарка -->
     <div v-if="formSubmitted" class="success-message">
       <div class="success-icon">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <!-- Основная форма из рабочего примера -->
+    <!-- Основная форма -->
     <form v-else @submit.prevent="submitForm">
       <div class="form-header">
         <div class="form-title">Новый Сигнал</div>
@@ -191,6 +191,8 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 .submit-btn { background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%); color: #fff; font-weight: 600; font-size: 1rem; border: none; border-radius: 12px; padding: 0.8rem 2rem; cursor: pointer; transition: all 0.4s ease-out; background-size: 200% auto; background-position: 25% 50%; }
 .submit-btn:hover:not(:disabled) { background-position: 75% 50%; transform: scale(1.03); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ИСПРАВЛЕННЫЕ стили для экрана успешной отправки - БЕЗ двойного чекмарка */
 .success-message { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2rem; animation: fadeIn 0.5s ease-out; }
 .success-icon { width: 64px; height: 64px; border-radius: 50%; background-color: #4CAF50; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; animation: popIn 0.5s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) backwards; }
 .success-icon svg { width: 32px; height: 32px; color: white; }
@@ -198,6 +200,7 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 .success-text p { color: #b0b0b0; line-height: 1.6; margin: 0; }
 .telegram-button { display: inline-block; background-color: #C5F946; color: #000000; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 600; margin-top: 1.5rem; transition: background-color 0.3s, transform 0.3s; }
 .telegram-button:hover { background-color: #d6ff6a; transform: scale(1.05); }
+
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
 @media (max-width: 768px) { .form-wrapper { padding: 1.5rem; } .personal-data-section { grid-template-columns: 1fr; } .form-footer { flex-direction: column; align-items: stretch; gap: 1rem; } .submit-btn { width: 100%; } .form-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; } }
