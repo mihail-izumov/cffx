@@ -464,14 +464,14 @@ html.dark .button-group .btn-secondary:hover {
 
 <div class="brew-specs-container">
 
-  <h1 class="main-specs-title">Характеристики <br> BREW</h1>
+  <h1 class="main-specs-title">Характеристики <br> Сигнала</h1>
 
   <!-- Ключевые показатели -->
   <div class="specs-section">
     <h2 class="section-title">Ключевые показатели</h2>
     <div class="specs-grid four-cols">
       <div class="spec-item">
-        <span class="spec-value">3,000 – 50,000</span>
+        <span class="spec-value">25,000 – 50,000</span>
         <p class="spec-label">Отзывов в базе (зависит от города)</p>
       </div>
       <div class="spec-item">
@@ -498,9 +498,7 @@ html.dark .button-group .btn-secondary:hover {
         <p class="spec-label">Тип</p>
       </div>
       <div class="spec-item">
-        <span class="spec-value">
-          <a href="/brew/protocol">Открытая</a>
-          </span>
+        <span class="spec-value">Открытая</span>
         <p class="spec-label">Модель доступа</p>
       </div>
       <div class="spec-item">
@@ -528,7 +526,7 @@ html.dark .button-group .btn-secondary:hover {
       </div>
       <div class="spec-item">
         <span class="spec-value">
-          <a href="/signals.#знакомьтесь-–-анна">Анна</a>
+          <a href="/signal#знакомьтесь-–-анна">Анна</a>
           </span>
         <p class="spec-label">ИИ-ассистент</p>
       </div>
