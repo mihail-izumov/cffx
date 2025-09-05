@@ -1,24 +1,20 @@
 <template>
   <div class="form-wrapper">
-    <!-- Сообщение об успехе -->
+    <!-- ФИНАЛЬНАЯ ВЕРСИЯ экрана успешной отправки -->
     <div v-if="formSubmitted" class="success-message">
       <div class="success-icon">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="success-text">
-        <h3>Ваш Сигнал запущен в работу</h3>
-        <p>Чтобы активировать ваш Сигнал, откройте диалог с ассистентом Анной в Telegram и отправьте ей ваш уникальный код:</p>
-        <div class="ticket-code-container">
-          <span class="ticket-code">{{ formattedTicketNumber }}</span>
-        </div>
-        <a :href="`https://t.me/Anna_runScale?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="telegram-button">Перейти в диалог с Анной</a>
+        <h3>Все готово!</h3>
+        <p>Нажмите на кнопку ниже, чтобы отправить ваш уникальный код ассистенту Анне и активировать ваш запрос.</p>
+        <a :href="`https://t.me/Anna_runScale?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="telegram-button">Активировать Сигнал в Telegram</a>
       </div>
     </div>
 
     <!-- Основная форма -->
     <form v-else @submit.prevent="submitForm">
       
-      <!-- Заголовок с технической информацией -->
       <div class="form-header">
         <div class="form-title">Новый Сигнал</div>
         <div class="tech-info">
@@ -27,40 +23,24 @@
         </div>
       </div>
 
-      <!-- Секция с вопросами -->
       <div class="form-section">
         <div class="question-block" style="--accent-color: #A972FF;">
           <p class="direction-label">Эмоции и чувства</p>
-          <div class="rotating-phrase-container">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion1" class="question-label" v-if="activeRotator === 1">{{ currentQuestion1 }}</p>
-              <p v-else class="question-label">Что вас расстроило сегодня?</p>
-            </transition>
-          </div>
+          <RotatingPhrases :phrases="phrasesForQuestion1" :is-active="activeRotator === 1" />
           <textarea v-model="form.emotionalRelease" @focus="startRotation(1)" rows="3" placeholder="Опишите свои чувства и впечатления..." required></textarea>
           <p class="example-hint" v-html="'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»'"></p>
         </div>
         
         <div class="question-block" style="--accent-color: #3DDC84;">
           <p class="direction-label">Детали проблемы</p>
-          <div class="rotating-phrase-container">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion2" class="question-label" v-if="activeRotator === 2">{{ currentQuestion2 }}</p>
-              <p v-else class="question-label">Что конкретно пошло не так?</p>
-            </transition>
-          </div>
+          <RotatingPhrases :phrases="phrasesForQuestion2" :is-active="activeRotator === 2" />
           <textarea v-model="form.factualAnalysis" @focus="startRotation(2)" rows="3" placeholder="Опишите факты: что, когда и где произошло..." required></textarea>
           <p class="example-hint" v-html="'Пример: «Заказ на два капучино <b>ждал 22 минуты</b>, хотя в кафе был почти один»'"></p>
         </div>
         
         <div class="question-block" style="--accent-color: #FFB800;">
           <p class="direction-label">Предложение решения</p>
-          <div class="rotating-phrase-container">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion3" class="question-label" v-if="activeRotator === 3">{{ currentQuestion3 }}</p>
-              <p v-else class="question-label">Как бы вы это исправили?</p>
-            </transition>
-          </div>
+          <RotatingPhrases :phrases="phrasesForQuestion3" :is-active="activeRotator === 3" />
           <textarea v-model="form.constructiveSuggestions" @focus="startRotation(3)" rows="3" placeholder="Предложите, как это можно исправить..." required></textarea>
           <p class="example-hint" v-html="'Пример: «Добавить на кассу <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
         </div>
@@ -68,7 +48,6 @@
       
       <div class="section-divider"><span>Останемся на связи?</span></div>
 
-      <!-- Секция с личными данными -->
       <div class="form-section personal-data-section">
         <div class="question-block compact">
           <label class="question-label">Ваше имя</label>
@@ -82,7 +61,6 @@
         </div>
       </div>
 
-      <!-- Футер -->
       <div class="form-footer">
         <div class="checkbox-group">
           <input type="checkbox" id="consent" v-model="form.consent" required>
@@ -97,7 +75,44 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed, onMounted, onUnmounted } from 'vue';
+import { defineComponent, reactive, ref, computed, onMounted, onUnmounted } from 'vue';
+
+const RotatingPhrases = defineComponent({
+  name: 'RotatingPhrases',
+  props: { phrases: Array, isActive: Boolean },
+  template: `
+    <div class="rotating-phrase-container">
+      <transition name="fade" mode="out-in">
+        <p :key="currentPhraseIndex" class="question-label">{{ phrases[currentPhraseIndex] }}</p>
+      </transition>
+    </div>
+  `,
+  setup(props) {
+    const currentPhraseIndex = ref(0);
+    let intervalId = null;
+    const startRotation = () => {
+      stopRotation();
+      intervalId = setInterval(() => {
+        currentPhraseIndex.value = (currentPhraseIndex.value + 1) % props.phrases.length;
+      }, 3000);
+    };
+    const stopRotation = () => clearInterval(intervalId);
+    
+    onMounted(() => { if (props.isActive) startRotation(); });
+    onUnmounted(stopRotation);
+    
+    // Watch for changes in isActive prop
+    watch(() => props.isActive, (newValue) => {
+      if (newValue) {
+        startRotation();
+      } else {
+        stopRotation();
+      }
+    });
+
+    return { currentPhraseIndex };
+  }
+});
 
 const form = reactive({ emotionalRelease: '', factualAnalysis: '', constructiveSuggestions: '', name: '', telegramPhone: '', consent: false });
 const isSubmitting = ref(false);
@@ -107,41 +122,19 @@ const formattedTicketNumber = ref(null);
 const currentDate = ref('');
 const activeRotator = ref(0);
 
+let rotationIntervals = {};
 const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
 const phrasesForQuestion2 = ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'];
 const phrasesForQuestion3 = ['Как бы вы это исправили?', 'Что могло бы предотвратить эту ситуацию?', 'Какое одно изменение сделало бы ваш опыт идеальным?'];
 
-const currentQuestion1 = ref(phrasesForQuestion1[0]);
-const currentQuestion2 = ref(phrasesForQuestion2[0]);
-const currentQuestion3 = ref(phrasesForQuestion3[0]);
-
-let rotationInterval = null;
-let currentQuestionIndex1 = 0;
-let currentQuestionIndex2 = 0;
-let currentQuestionIndex3 = 0;
-
-function startRotation(questionNum) {
-  stopRotation();
-  activeRotator.value = questionNum;
-  
-  rotationInterval = setInterval(() => {
-    if (questionNum === 1) {
-      currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length;
-      currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1];
-    } else if (questionNum === 2) {
-      currentQuestionIndex2 = (currentQuestionIndex2 + 1) % phrasesForQuestion2.length;
-      currentQuestion2.value = phrasesForQuestion2[currentQuestionIndex2];
-    } else if (questionNum === 3) {
-      currentQuestionIndex3 = (currentQuestionIndex3 + 1) % phrasesForQuestion3.length;
-      currentQuestion3.value = phrasesForQuestion3[currentQuestionIndex3];
-    }
-  }, 3000);
-}
-
-function stopRotation() {
-  clearInterval(rotationInterval);
+const stopRotation = () => {
+  Object.values(rotationIntervals).forEach(clearInterval);
   activeRotator.value = 0;
-}
+};
+const startRotation = (num) => {
+  stopRotation();
+  activeRotator.value = num;
+};
 
 onMounted(() => {
   rawTicketNumber.value = String(Date.now()).slice(-6);
@@ -149,10 +142,6 @@ onMounted(() => {
   const now = new Date();
   const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
   currentDate.value = now.toLocaleString('ru-RU', options).replace(',', '');
-});
-
-onUnmounted(() => {
-  stopRotation();
 });
 
 const isFormValid = computed(() => form.emotionalRelease.trim() && form.factualAnalysis.trim() && form.constructiveSuggestions.trim() && form.name.trim() && form.telegramPhone.trim() && form.consent);
@@ -217,15 +206,14 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 .submit-btn:hover:not(:disabled) { background-position: 75% 50%; transform: scale(1.03); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* НОВЫЕ стили для экрана успешной отправки */
 .success-message { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2rem; animation: fadeIn 0.5s ease-out; }
-.success-icon { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(90deg, #A972FF, #00C2FF, #FFB800); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; animation: popIn 0.5s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) backwards; }
+.success-icon { width: 64px; height: 64px; border-radius: 50%; background-color: #4CAF50; /* Чистый зеленый */ display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; animation: popIn 0.5s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) backwards; }
 .success-icon svg { width: 32px; height: 32px; color: white; }
 .success-text h3 { font-size: 1.5rem; font-weight: 600; color: #fff; margin: 0 0 0.5rem 0; }
 .success-text p { color: #b0b0b0; line-height: 1.6; margin: 0; }
-.ticket-code-container { background-color: #2a2a2e; border: 1px solid #444; border-radius: 12px; padding: 1rem; margin: 1.5rem auto; max-width: 250px; }
-.ticket-code { font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; color: #C5F946; letter-spacing: 2px; }
-.telegram-button { display: inline-block; background-color: #0088cc; color: white; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 600; margin-top: 1rem; transition: background-color 0.3s, transform 0.3s; }
-.telegram-button:hover { background-color: #0099e6; transform: scale(1.05); }
+.telegram-button { display: inline-block; background-color: #C5F946; /* Лаймовый */ color: #000000; /* Черный текст */ text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 600; margin-top: 1.5rem; transition: background-color 0.3s, transform 0.3s; }
+.telegram-button:hover { background-color: #d6ff6a; transform: scale(1.05); }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
