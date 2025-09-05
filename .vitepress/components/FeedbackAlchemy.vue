@@ -94,7 +94,7 @@
       <div class="form-footer">
         <div class="checkbox-group">
           <input type="checkbox" id="consent" v-model="form.consent" required>
-          <label for="consent">Согласен/на с <a href="/terms" target="_blank" class="policy-link">Условиями использования</a>.</label>
+          <label for="consent">С<a href="/terms" target="_blank" class="policy-link">Условиями использования</a> согласен/на</label>
         </div>
         <button type="submit" class="submit-btn" :disabled="!isFormValid || isSubmitting">
           {{ isSubmitting ? 'Отправка...' : 'Отправить Сигнал' }}
