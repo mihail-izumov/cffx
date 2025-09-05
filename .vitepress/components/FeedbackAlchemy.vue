@@ -1,9 +1,9 @@
 <template>
   <div class="form-wrapper">
-    <!-- ИСПРАВЛЕННЫЙ экран успешной отправки с дополнительной ссылкой -->
+    <!-- Экран успешной отправки БЕЗ чекмарка -->
     <div v-if="formSubmitted" class="success-message">
       <div class="success-text">
-        <h3 style="margin-top: 2rem;">Все готово!</h3>
+        <h3>Все готово!</h3>
         <p>Нажмите на кнопку ниже, чтобы отправить ваш уникальный код ассистенту Анне и активировать ваш запрос.</p>
         <a :href="`https://t.me/Anna_runScale?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="telegram-button">Активировать Сигнал в Telegram</a>
         <!-- Дополнительная ссылка для сомневающихся -->
@@ -191,16 +191,16 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 .submit-btn:hover:not(:disabled) { background-position: 75% 50%; transform: scale(1.03); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* Стили для экрана успешной отправки */
-.success-message { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2rem; animation: fadeIn 0.5s ease-out; }
-.success-text h3 { font-size: 1.5rem; font-weight: 600; color: #fff; margin: 2rem 0 0.5rem 0; }
+/* Стили для экрана успешной отправки - БЕЗ чекмарка */
+.success-message { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 4rem 2rem 2rem 2rem; animation: fadeIn 0.5s ease-out; }
+.success-text h3 { font-size: 1.5rem; font-weight: 600; color: #fff; margin: 0 0 0.5rem 0; }
 .success-text p { color: #b0b0b0; line-height: 1.6; margin: 0; }
 .telegram-button { display: inline-block; background-color: #C5F946; color: #000000; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 600; margin-top: 1.5rem; transition: background-color 0.3s, transform 0.3s; }
 .telegram-button:hover { background-color: #d6ff6a; transform: scale(1.05); }
 
-/* Стили для дополнительной ссылки */
-.secondary-link { display: block; margin-top: 1.5rem; font-size: 0.85rem; color: #888; text-decoration: none; transition: color 0.3s; }
-.secondary-link:hover { color: #C5F946; text-decoration: underline; }
+/* ИСПРАВЛЕННЫЕ стили для дополнительной ссылки - убираем двойную черту */
+.secondary-link { display: block; margin-top: 1.5rem; font-size: 0.85rem; color: #888; text-decoration: none; border-bottom: none !important; transition: color 0.3s; }
+.secondary-link:hover { color: #C5F946; text-decoration: underline !important; border-bottom: none !important; }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
