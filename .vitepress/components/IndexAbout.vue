@@ -104,8 +104,10 @@ onUnmounted(() => {
               </svg>
               <div class="stat-title">Индекс</div>
             </div>
-            <div class="stat-value">{{ establishment.index }}</div>
-            <div class="stat-caption">score всего бизнеса</div>
+            <div class="stat-value-section">
+              <div class="stat-value">{{ establishment.index }}</div>
+              <div class="stat-description">Score всего бизнеса</div>
+            </div>
           </div>
         </div>
 
@@ -119,12 +121,14 @@ onUnmounted(() => {
               </svg>
               <div class="stat-title">Потенциал</div>
             </div>
-            <div class="stat-value range">
-              <span class="from">{{ establishment.currentPoints }}</span>
-              <span class="arrow">→</span>
-              <span class="to">{{ establishment.targetPoints }}</span>
+            <div class="stat-value-section">
+              <div class="stat-value range">
+                <span class="from">{{ establishment.currentPoints }}</span>
+                <span class="arrow">→</span>
+                <span class="to">{{ establishment.targetPoints }}</span>
+              </div>
+              <div class="stat-description">Точек сейчас и целевой масштаб сети</div>
             </div>
-            <div class="stat-caption">точек сейчас и целевой масштаб сети</div>
           </div>
         </div>
 
@@ -132,19 +136,18 @@ onUnmounted(() => {
         <div class="stat-card">
           <div class="stat-content">
             <div class="stat-header">
-              <!-- Lucide Globe icon -->
+              <!-- Lucide Activity icon - более подходящий для "влияния" -->
               <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="m9 12 2 2 4-4"/>
-                <path d="M21 12c0 1.3-.6 2.5-1.5 3.3"/>
-                <path d="M3 12c0-1.3.6-2.5 1.5-3.3"/>
-                <path d="M12 3c1.3 0 2.5.6 3.3 1.5"/>
-                <path d="M12 21c-1.3 0-2.5-.6-3.3-1.5"/>
+                <path d="m22 12-4-4-4 4"/>
+                <path d="M16 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v7z"/>
+                <path d="M22 12h-6"/>
               </svg>
               <div class="stat-title">Влияние</div>
             </div>
-            <div class="stat-badge">{{ establishment.influenceLevel }}</div>
-            <div class="stat-caption">сила эффекта на рынок</div>
+            <div class="stat-value-section">
+              <div class="stat-metric-badge">{{ establishment.influenceLevel }}</div>
+              <div class="stat-description">Сила эффекта на рынок</div>
+            </div>
           </div>
         </div>
       </div>
@@ -276,7 +279,7 @@ onUnmounted(() => {
   transform: translateY(0);
 }
 
-/* ОБНОВЛЁННЫЕ карточки - унифицированный лаймовый дизайн */
+/* УЛУЧШЕННЫЕ карточки */
 .stats-grid { 
   display: grid; 
   grid-template-columns: 1fr 1fr 1fr; 
@@ -289,7 +292,6 @@ onUnmounted(() => {
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
   background: var(--vp-c-bg-soft);
-  /* Унифицированная лаймовая обводка */
   border: 2px solid transparent;
   background-clip: padding-box;
 }
@@ -316,7 +318,6 @@ onUnmounted(() => {
   filter: brightness(1.5) saturate(1.3);
 }
 
-/* ИСПРАВЛЕННАЯ структура контента - равномерное выравнивание */
 .stat-content {
   background: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.15) 0%, transparent 70%);
   border-radius: 20px;
@@ -324,8 +325,7 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  /* ФИКСИРОВАННАЯ высота для равномерного выравнивания */
+  justify-content: flex-start;
   min-height: 280px;
   text-align: center;
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
@@ -345,9 +345,7 @@ onUnmounted(() => {
   flex-direction: column; 
   align-items: center; 
   gap: 8px;
-  /* ФИКСИРОВАННАЯ высота */
-  height: 70px;
-  justify-content: flex-start;
+  margin-bottom: 16px;
 }
 
 .stat-icon { 
@@ -375,7 +373,16 @@ onUnmounted(() => {
   color: #A3E635;
 }
 
-/* УБРАНЫ черные плашки - прямое размещение значений */
+/* НОВАЯ структура - значение + описание в одном блоке */
+.stat-value-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  justify-content: center;
+}
+
 .stat-value {
   font-family: 'Inter', sans-serif;
   font-size: clamp(2.8rem, 5vw, 4rem);
@@ -384,13 +391,6 @@ onUnmounted(() => {
   color: #fff;
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  /* ФИКСИРОВАННАЯ высота для выравнивания */
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  max-width: 100%;
 }
 
 .stat-card:hover .stat-value {
@@ -399,7 +399,6 @@ onUnmounted(() => {
   color: #A3E635;
 }
 
-/* ИСПРАВЛЕННОЕ масштабирование диапазона */
 .stat-value.range {
   display: flex;
   align-items: center;
@@ -421,51 +420,47 @@ onUnmounted(() => {
   padding: 0 clamp(2px, 0.5vw, 4px);
 }
 
-/* ИСПРАВЛЕННЫЙ бейдж */
-.stat-badge {
+/* УЛУЧШЕННЫЙ бейдж-метрика */
+.stat-metric-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 20px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #A3E635, #C5F946);
-  color: #1a2e05;
-  font-weight: 800;
-  letter-spacing: 0.3px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: rgba(163, 230, 53, 0.15);
+  border: 1px solid rgba(163, 230, 53, 0.3);
+  color: #A3E635;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   font-size: clamp(16px, 3vw, 20px);
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3);
+  box-shadow: 0 2px 8px rgba(163, 230, 53, 0.1);
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  height: 80px;
+  text-transform: uppercase;
 }
 
-.stat-card:hover .stat-badge {
-  transform: scale(1.1);
-  box-shadow: 0 8px 20px rgba(163, 230, 53, 0.5);
-  background: linear-gradient(135deg, #C5F946, #A3E635);
-}
-
-/* ИСПРАВЛЕННЫЕ подписи */
-.stat-caption {
-  font-size: 11px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
-  /* СТРОЧНЫЕ БУКВЫ вместо заглавных */
-  text-transform: none;
-  letter-spacing: 0.05em;
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  /* УМЕНЬШЕННЫЙ line-height */
-  line-height: 1.2;
-  /* ФИКСИРОВАННАЯ высота */
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.stat-card:hover .stat-caption { 
+.stat-card:hover .stat-metric-badge {
   transform: scale(1.05);
+  background: rgba(163, 230, 53, 0.25);
+  border-color: rgba(163, 230, 53, 0.5);
+  box-shadow: 0 4px 16px rgba(163, 230, 53, 0.2);
+  color: #C5F946;
+}
+
+/* УЛУЧШЕННЫЕ описания */
+.stat-description {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.3;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  letter-spacing: 0.02em;
+  max-width: 180px;
+}
+
+.stat-card:hover .stat-description { 
+  transform: scale(1.02);
   color: rgba(163, 230, 53, 0.9);
 }
 
@@ -484,8 +479,6 @@ onUnmounted(() => {
 .action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
 .ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
 .ticket-button:hover { background: rgba(85, 85, 85, 0.9); color: white; transform: translateY(-2px); }
-
-/* ЛАЙМОВАЯ кнопка вместо желтой */
 .review-button { 
   background: linear-gradient(135deg, #A3E635, #C5F946); 
   color: #1a2e05; 
@@ -536,7 +529,6 @@ onUnmounted(() => {
   }
   .stat-card:hover { transform: none; }
   
-  /* Компактные горизонтальные карточки на мобильных */
   .stat-content { 
     flex-direction: row; 
     justify-content: space-between; 
@@ -550,36 +542,45 @@ onUnmounted(() => {
     flex-direction: column; 
     align-items: flex-start; 
     gap: 4px; 
-    height: auto;
-    min-width: 80px;
+    margin-bottom: 0;
+    min-width: 70px;
     flex-shrink: 0;
   }
   
   .stat-icon { width: 20px; height: 20px; }
   .stat-title { font-size: 11px; }
   
-  .stat-value { 
-    font-size: 1.4rem; 
-    height: auto;
-    flex: none;
-    min-width: 60px;
-    margin: 0 8px;
-  }
-  .stat-value.range .from, .stat-value.range .to { font-size: 1.2rem; }
-  .stat-value.range .arrow { font-size: 1rem; padding: 0 2px; }
-  .stat-badge { 
-    font-size: 11px; 
-    padding: 6px 10px; 
-    height: auto;
-    flex: none;
+  .stat-value-section {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    justify-content: space-between;
   }
   
-  .stat-caption { 
-    font-size: 9px; 
+  /* УМЕНЬШЕННЫЕ размеры для мобильных */
+  .stat-value { 
+    font-size: 1.8rem; 
+    margin: 0;
+    flex-shrink: 0;
+  }
+  .stat-value.range .from, .stat-value.range .to { font-size: 1.6rem; }
+  .stat-value.range .arrow { font-size: 1.2rem; padding: 0 2px; }
+  
+  .stat-metric-badge { 
+    font-size: 11px; 
+    padding: 4px 8px; 
+    flex-shrink: 0;
+  }
+  
+  /* УЛУЧШЕННЫЕ описания на мобильных */
+  .stat-description { 
+    font-size: 11px; 
     text-align: right;
     flex: 1;
-    height: auto;
-    line-height: 1.1;
+    line-height: 1.2;
+    max-width: none;
+    margin-left: 8px;
   }
   
   .button-container { flex-direction: column; gap: 8px; }
@@ -595,7 +596,7 @@ onUnmounted(() => {
     padding: 14px 16px;
     min-height: 70px; 
   }
-  .stat-value { font-size: 1.2rem; }
-  .stat-caption { font-size: 8px; }
+  .stat-value { font-size: 1.6rem; }
+  .stat-description { font-size: 10px; }
 }
 </style>
