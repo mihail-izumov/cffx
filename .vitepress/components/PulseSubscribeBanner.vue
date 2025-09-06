@@ -44,7 +44,7 @@ const props = defineProps({
   },
   buttonText: {
     type: String,
-    default: 'Get started'
+    default: 'Подписаться на Пульс'
   },
   buttonLink: {
     type: String,
