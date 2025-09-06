@@ -98,14 +98,13 @@ onUnmounted(() => {
         <div class="stat-card">
           <div class="stat-content">
             <div class="stat-header">
-              <!-- Lucide Zap icon -->
               <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
               </svg>
               <div class="stat-title">Индекс</div>
             </div>
             <div class="stat-value-section">
-              <div class="stat-value">{{ establishment.index }}</div>
+              <div class="stat-value main-value">{{ establishment.index }}</div>
               <div class="stat-description">Score всего бизнеса</div>
             </div>
           </div>
@@ -115,17 +114,15 @@ onUnmounted(() => {
         <div class="stat-card">
           <div class="stat-content">
             <div class="stat-header">
-              <!-- Lucide Puzzle icon -->
               <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"/>
               </svg>
               <div class="stat-title">Потенциал</div>
             </div>
             <div class="stat-value-section">
-              <div class="stat-value range">
-                <span class="from">{{ establishment.currentPoints }}</span>
-                <span class="arrow">→</span>
-                <span class="to">{{ establishment.targetPoints }}</span>
+              <div class="stat-value potential-value">
+                <span class="current">{{ establishment.currentPoints }}</span>
+                <span class="potential">({{ establishment.targetPoints }}+)</span>
               </div>
               <div class="stat-description">Точек сейчас и целевой масштаб сети</div>
             </div>
@@ -136,7 +133,6 @@ onUnmounted(() => {
         <div class="stat-card">
           <div class="stat-content">
             <div class="stat-header">
-              <!-- Lucide Globe icon -->
               <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
@@ -279,7 +275,7 @@ onUnmounted(() => {
   transform: translateY(0);
 }
 
-/* Карточки с лаймовым дизайном */
+/* УЛУЧШЕННЫЕ карточки с идеальными пропорциями */
 .stats-grid { 
   display: grid; 
   grid-template-columns: 1fr 1fr 1fr; 
@@ -318,14 +314,14 @@ onUnmounted(() => {
   filter: brightness(1.5) saturate(1.3);
 }
 
+/* ИДЕАЛЬНЫЕ пропорции контента */
 .stat-content {
   background: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.15) 0%, transparent 70%);
   border-radius: 20px;
-  padding: 24px 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   min-height: 280px;
   text-align: center;
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
@@ -339,13 +335,14 @@ onUnmounted(() => {
   box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
 
-/* Верхний блок - иконка и заголовок */
+/* Верхний блок - фиксированная высота */
 .stat-header { 
   display: flex; 
   flex-direction: column; 
   align-items: center; 
   gap: 8px;
-  margin-bottom: 16px;
+  height: 60px;
+  justify-content: flex-start;
 }
 
 .stat-icon { 
@@ -373,20 +370,19 @@ onUnmounted(() => {
   color: #A3E635;
 }
 
-/* Структура значения + описание */
+/* Центральный блок - значения и описания */
 .stat-value-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   flex: 1;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
-/* УНИФИЦИРОВАННЫЕ размеры значений */
+/* УНИФИЦИРОВАННЫЕ основные значения */
 .stat-value {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(2.8rem, 5vw, 4rem);
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -394,39 +390,41 @@ onUnmounted(() => {
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+.main-value {
+  font-size: clamp(3rem, 6vw, 4.5rem);
+}
+
+/* НОВЫЙ формат потенциала 8 (12+) */
+.potential-value {
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.potential-value .current {
+  font-size: clamp(3rem, 6vw, 4.5rem);
+}
+
+.potential-value .potential {
+  font-size: clamp(2rem, 4vw, 3rem);
+  opacity: 0.6;
+  font-weight: 500;
+  margin-left: 2px;
+}
+
 .stat-card:hover .stat-value {
-  transform: scale(1.1);
+  transform: scale(1.05);
   text-shadow: 0 0 30px rgba(163, 230, 53, 0.5);
   color: #A3E635;
 }
 
-.stat-value.range {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(4px, 1vw, 8px);
-  flex-wrap: nowrap;
-}
-
-.stat-value.range .from,
-.stat-value.range .to {
-  font-size: clamp(2.4rem, 4.5vw, 3.2rem);
-  flex-shrink: 0;
-}
-
-.stat-value.range .arrow { 
-  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-  opacity: 0.8;
-  flex-shrink: 0;
-  padding: 0 clamp(2px, 0.5vw, 4px);
-}
-
-/* ИСПРАВЛЕННЫЙ белый бейдж */
+/* Бейдж для влияния */
 .stat-metric-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 16px;
+  padding: 12px 20px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -447,7 +445,7 @@ onUnmounted(() => {
   box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
 }
 
-/* Описания с выравниванием по верху */
+/* УЛУЧШЕННЫЕ описания */
 .stat-description {
   font-size: 13px;
   font-weight: 500;
@@ -504,7 +502,7 @@ onUnmounted(() => {
 .modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 8px 12px; cursor: pointer; }
 .modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
-/* ИСПРАВЛЕННАЯ мобильная адаптация */
+/* ИДЕАЛЬНАЯ мобильная адаптация */
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 0; }
   .main-card { padding: 20px; border-radius: 12px; }
@@ -532,7 +530,7 @@ onUnmounted(() => {
   .stat-content { 
     flex-direction: row; 
     justify-content: space-between; 
-    align-items: flex-start;
+    align-items: center; 
     padding: 16px 18px;
     min-height: 80px;
     background: radial-gradient(circle at 20% 50%, rgba(163, 230, 53, 0.15) 0%, transparent 70%) !important;
@@ -542,7 +540,7 @@ onUnmounted(() => {
     flex-direction: column; 
     align-items: flex-start; 
     gap: 4px; 
-    margin-bottom: 0;
+    height: auto;
     min-width: 70px;
     flex-shrink: 0;
   }
@@ -552,29 +550,36 @@ onUnmounted(() => {
   
   .stat-value-section {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     gap: 8px;
     flex: 1;
     justify-content: space-between;
   }
   
-  /* УНИФИЦИРОВАННЫЕ размеры для мобильных */
-  .stat-value { 
+  /* МОБИЛЬНЫЕ размеры */
+  .main-value {
     font-size: 1.8rem;
     margin: 0;
     flex-shrink: 0;
   }
-  .stat-value.range .from, .stat-value.range .to { 
+  
+  .potential-value {
+    font-size: 1.8rem;
+    margin: 0;
+    flex-shrink: 0;
+  }
+  
+  .potential-value .current {
     font-size: 1.8rem;
   }
-  .stat-value.range .arrow { 
-    font-size: 1.4rem; 
-    padding: 0 2px; 
+  
+  .potential-value .potential {
+    font-size: 1.2rem;
   }
   
   .stat-metric-badge { 
-    font-size: 14px;
-    padding: 6px 12px; 
+    font-size: 12px;
+    padding: 6px 10px; 
     flex-shrink: 0;
     color: #fff;
     background: rgba(255, 255, 255, 0.15);
@@ -587,7 +592,6 @@ onUnmounted(() => {
     line-height: 1.2;
     max-width: none;
     margin-left: 8px;
-    margin-top: 2px;
   }
   
   .button-container { flex-direction: column; gap: 8px; }
@@ -603,9 +607,12 @@ onUnmounted(() => {
     padding: 14px 16px;
     min-height: 70px; 
   }
-  .stat-value { font-size: 1.6rem; }
-  .stat-value.range .from, .stat-value.range .to { font-size: 1.6rem; }
-  .stat-metric-badge { font-size: 12px; }
+  
+  .main-value { font-size: 1.6rem; }
+  .potential-value { font-size: 1.6rem; }
+  .potential-value .current { font-size: 1.6rem; }
+  .potential-value .potential { font-size: 1.1rem; }
+  .stat-metric-badge { font-size: 11px; }
   .stat-description { font-size: 10px; }
 }
 </style>
