@@ -28,7 +28,7 @@ import { defineProps, defineEmits } from 'vue'
 const props = defineProps({
   imageSrc: {
     type: String,
-    default: '/brew_intro_ban.jpg'
+    default: '/brew_outro_ban.jpg'
   },
   imageAlt: {
     type: String,
