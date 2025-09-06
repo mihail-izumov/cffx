@@ -65,13 +65,10 @@ onUnmounted(() => {
 
 <template>
   <div class="reviews-widget-content">
-    <!-- УБРАН блок widget-header -->
-    
     <div class="main-card">
       <div class="establishment-header">
         <div>
           <h3 class="cafe-name">{{ establishment.name }}</h3>
-          <!-- ДОБАВЛЕН подзаголовок под название -->
           <p class="cafe-subtitle">Данные лидера рынка: сеть «Корж».</p>
         </div>
         
@@ -98,48 +95,56 @@ onUnmounted(() => {
 
       <div class="stats-grid">
         <!-- ⚡ Индекс -->
-        <div class="stat-card index-card">
+        <div class="stat-card">
           <div class="stat-content">
-            <div class="stat-top">
-              <div class="stat-emoji">⚡</div>
+            <div class="stat-header">
+              <!-- Lucide Zap icon -->
+              <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+              </svg>
               <div class="stat-title">Индекс</div>
             </div>
-            <div class="value-slab">
-              <div class="stat-value">{{ establishment.index }}</div>
-            </div>
-            <div class="stat-caption">Score всего бизнеса</div>
+            <div class="stat-value">{{ establishment.index }}</div>
+            <div class="stat-caption">score всего бизнеса</div>
           </div>
         </div>
 
         <!-- 🧩 Потенциал -->
-        <div class="stat-card branches-card">
+        <div class="stat-card">
           <div class="stat-content">
-            <div class="stat-top">
-              <div class="stat-emoji">🧩</div>
+            <div class="stat-header">
+              <!-- Lucide Puzzle icon -->
+              <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"/>
+              </svg>
               <div class="stat-title">Потенциал</div>
             </div>
-            <div class="value-slab">
-              <div class="stat-value range">
-                <span class="from">{{ establishment.currentPoints }}</span>
-                <span class="arrow">→</span>
-                <span class="to">{{ establishment.targetPoints }}</span>
-              </div>
+            <div class="stat-value range">
+              <span class="from">{{ establishment.currentPoints }}</span>
+              <span class="arrow">→</span>
+              <span class="to">{{ establishment.targetPoints }}</span>
             </div>
-            <div class="stat-caption">Точек сейчас и целевой масштаб сети</div>
+            <div class="stat-caption">точек сейчас и целевой масштаб сети</div>
           </div>
         </div>
 
         <!-- 🌐 Влияние -->
-        <div class="stat-card reviews-card">
+        <div class="stat-card">
           <div class="stat-content">
-            <div class="stat-top">
-              <div class="stat-emoji">🌐</div>
+            <div class="stat-header">
+              <!-- Lucide Globe icon -->
+              <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m9 12 2 2 4-4"/>
+                <path d="M21 12c0 1.3-.6 2.5-1.5 3.3"/>
+                <path d="M3 12c0-1.3.6-2.5 1.5-3.3"/>
+                <path d="M12 3c1.3 0 2.5.6 3.3 1.5"/>
+                <path d="M12 21c-1.3 0-2.5-.6-3.3-1.5"/>
+              </svg>
               <div class="stat-title">Влияние</div>
             </div>
-            <div class="value-slab">
-              <span class="stat-badge">{{ establishment.influenceLevel }}</span>
-            </div>
-            <div class="stat-caption">Сила эффекта на рынок</div>
+            <div class="stat-badge">{{ establishment.influenceLevel }}</div>
+            <div class="stat-caption">сила эффекта на рынок</div>
           </div>
         </div>
       </div>
@@ -194,7 +199,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* ИСПРАВЛЕНО: убран скролл и max-height, полная ширина */
 .reviews-widget-content { 
   padding: 0; 
   width: 100%; 
@@ -203,7 +207,7 @@ onUnmounted(() => {
 
 .main-card { 
   background: var(--vp-c-bg-soft); 
-  border-radius: 12px; /* Как у других виджетов на странице */
+  border-radius: 12px;
   padding: 24px;
   width: 100%;
   box-sizing: border-box;
@@ -212,7 +216,7 @@ onUnmounted(() => {
 .establishment-header { 
   display: flex; 
   justify-content: space-between; 
-  align-items: flex-start; /* ИСПРАВЛЕНО для подзаголовка */
+  align-items: flex-start;
   margin-bottom: 24px; 
 }
 
@@ -223,16 +227,14 @@ onUnmounted(() => {
   font-weight: 600; 
 }
 
-/* ДОБАВЛЕН стиль подзаголовка */
 .cafe-subtitle { 
   margin: 6px 0 0 0; 
   font-size: 14px; 
   color: var(--vp-c-text-2); 
-  line-height: 1.4; 
+  line-height: 1.3;
   font-weight: 400;
 }
 
-/* Бейдж актуальности */
 .status-badge-wrapper { position: relative; display: flex; align-items: center; }
 .status-badge {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
@@ -274,18 +276,22 @@ onUnmounted(() => {
   transform: translateY(0);
 }
 
-/* Стильные карточки */
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+/* ОБНОВЛЁННЫЕ карточки - унифицированный лаймовый дизайн */
+.stats-grid { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr 1fr; 
+  gap: 16px; 
+}
+
 .stat-card {
   position: relative;
   border-radius: 22px;
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
   background: var(--vp-c-bg-soft);
-}
-
-.stat-card:hover {
-  transform: translateY(-8px);
+  /* Унифицированная лаймовая обводка */
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 .stat-card::before {
@@ -294,45 +300,33 @@ onUnmounted(() => {
   inset: 0;
   border-radius: 22px;
   padding: 2px;
-  background: var(--border-gradient);
+  background: linear-gradient(135deg, #4d7c0f, #A3E635, #C5F946);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   transition: filter 0.4s ease;
-  z-index: 3;
+  z-index: 1;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
 }
 
 .stat-card:hover::before {
-  filter: brightness(2) saturate(1.5);
+  filter: brightness(1.5) saturate(1.3);
 }
 
-.branches-card {
-  --border-gradient: linear-gradient(135deg, #3730a3, #8b5cf6, #c4b5fd);
-  --glow-color: rgba(139, 92, 246, 0.25);
-  --glow-hover-color: rgba(139, 92, 246, 0.6);
-}
-
-.index-card {
-  --border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946);
-  --glow-color: rgba(197, 249, 70, 0.25);
-  --glow-hover-color: rgba(197, 249, 70, 0.6);
-}
-
-.reviews-card {
-  --border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d);
-  --glow-color: rgba(245, 158, 11, 0.25);
-  --glow-hover-color: rgba(245, 158, 11, 0.6);
-}
-
+/* ИСПРАВЛЕННАЯ структура контента - равномерное выравнивание */
 .stat-content {
-  background: radial-gradient(circle at 50% 0%, var(--glow-color) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.15) 0%, transparent 70%);
   border-radius: 20px;
-  padding: 20px;
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
+  /* ФИКСИРОВАННАЯ высота для равномерного выравнивания */
+  min-height: 280px;
   text-align: center;
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
   transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -341,18 +335,31 @@ onUnmounted(() => {
 }
 
 .stat-card:hover .stat-content {
-  background: radial-gradient(circle at 50% 0%, var(--glow-hover-color) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.3) 0%, transparent 70%);
   box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
 
-.stat-top { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.stat-emoji { 
-  font-size: 28px; 
-  opacity: 0.8; 
-  height: 32px;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+/* Верхний блок - иконка и заголовок */
+.stat-header { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 8px;
+  /* ФИКСИРОВАННАЯ высота */
+  height: 70px;
+  justify-content: flex-start;
 }
-.stat-card:hover .stat-emoji { transform: scale(1.2); }
+
+.stat-icon { 
+  color: #A3E635;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  flex-shrink: 0;
+}
+
+.stat-card:hover .stat-icon { 
+  transform: scale(1.2);
+  color: #C5F946;
+}
 
 .stat-title { 
   font-size: 14px; 
@@ -360,65 +367,107 @@ onUnmounted(() => {
   color: rgba(255,255,255,0.9); 
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.value-slab {
-  width: 100%;
-  background: rgba(0,0,0,0.55);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 14px;
-  padding: 16px 12px;
+.stat-card:hover .stat-title { 
+  transform: scale(1.05);
+  color: #A3E635;
+}
+
+/* УБРАНЫ черные плашки - прямое размещение значений */
+.stat-value {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2.8rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* ФИКСИРОВАННАЯ высота для выравнивания */
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 12px 0;
-}
-
-.stat-value {
-  font-family: 'Inter', sans-serif;
-  font-size: 3.2rem;
-  font-weight: 600;
-  line-height: 1;
-  color: #fff;
-  text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7);
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  flex: 1;
+  max-width: 100%;
 }
 
 .stat-card:hover .stat-value {
-  transform: scale(1.15);
-  text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+  text-shadow: 0 0 30px rgba(163, 230, 53, 0.5);
+  color: #A3E635;
+}
+
+/* ИСПРАВЛЕННОЕ масштабирование диапазона */
+.stat-value.range {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 1vw, 8px);
+  flex-wrap: nowrap;
+}
+
+.stat-value.range .from,
+.stat-value.range .to {
+  font-size: clamp(2.4rem, 4.5vw, 3.2rem);
+  flex-shrink: 0;
 }
 
 .stat-value.range .arrow { 
-  display: inline-block; 
-  padding: 0 8px; 
-  font-size: 2.4rem; 
-  opacity: 0.9; 
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  opacity: 0.8;
+  flex-shrink: 0;
+  padding: 0 clamp(2px, 0.5vw, 4px);
 }
 
+/* ИСПРАВЛЕННЫЙ бейдж */
 .stat-badge {
-  display: inline-block;
-  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
-  border: 1px solid rgba(255,255,255,0.18);
-  color: #fff;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  font-size: 18px;
+  background: linear-gradient(135deg, #A3E635, #C5F946);
+  color: #1a2e05;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  font-size: clamp(16px, 3vw, 20px);
   white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3);
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  height: 80px;
 }
 
+.stat-card:hover .stat-badge {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(163, 230, 53, 0.5);
+  background: linear-gradient(135deg, #C5F946, #A3E635);
+}
+
+/* ИСПРАВЛЕННЫЕ подписи */
 .stat-caption {
   font-size: 11px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.7);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* СТРОЧНЫЕ БУКВЫ вместо заглавных */
+  text-transform: none;
+  letter-spacing: 0.05em;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* УМЕНЬШЕННЫЙ line-height */
+  line-height: 1.2;
+  /* ФИКСИРОВАННАЯ высота */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.stat-card:hover .stat-caption { transform: scale(1.05); }
+.stat-card:hover .stat-caption { 
+  transform: scale(1.05);
+  color: rgba(163, 230, 53, 0.9);
+}
 
 /* Пульт управления */
 .control-panel { margin-top: 24px; }
@@ -435,8 +484,18 @@ onUnmounted(() => {
 .action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
 .ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
 .ticket-button:hover { background: rgba(85, 85, 85, 0.9); color: white; transform: translateY(-2px); }
-.review-button { background: linear-gradient(135deg, #f59e0b, #fcd34d); color: #422006; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
-.review-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); }
+
+/* ЛАЙМОВАЯ кнопка вместо желтой */
+.review-button { 
+  background: linear-gradient(135deg, #A3E635, #C5F946); 
+  color: #1a2e05; 
+  box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3); 
+}
+.review-button:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 8px 20px rgba(163, 230, 53, 0.5); 
+  background: linear-gradient(135deg, #C5F946, #A3E635);
+}
 .button-icon { transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
 
@@ -474,61 +533,52 @@ onUnmounted(() => {
   .stat-card { 
     border-radius: 16px; 
     transition: none;
-    min-height: auto;
   }
   .stat-card:hover { transform: none; }
   
-  /* КОМПАКТНЫЕ горизонтальные карточки */
+  /* Компактные горизонтальные карточки на мобильных */
   .stat-content { 
     flex-direction: row; 
     justify-content: space-between; 
     align-items: center; 
     padding: 16px 18px;
-    min-height: 80px; /* Намного компактнее */
-    background: radial-gradient(circle at 20% 50%, var(--glow-color) 0%, transparent 70%) !important;
-    box-shadow: 0 8px 20px -8px rgba(0,0,0,0.3) !important;
+    min-height: 80px;
+    background: radial-gradient(circle at 20% 50%, rgba(163, 230, 53, 0.15) 0%, transparent 70%) !important;
   }
   
-  .stat-top { 
+  .stat-header { 
     flex-direction: column; 
     align-items: flex-start; 
-    gap: 2px; 
+    gap: 4px; 
+    height: auto;
     min-width: 80px;
     flex-shrink: 0;
   }
-  .stat-emoji { 
-    font-size: 24px; 
-    line-height: 1; 
-  }
-  .stat-title { 
-    font-size: 12px; 
-    font-weight: 700;
-    color: rgba(255,255,255,0.9);
-  }
   
-  .value-slab {
-    min-width: 60px;
-    padding: 8px;
-    margin: 0 8px;
-    flex-shrink: 0;
-    border-radius: 8px;
-  }
+  .stat-icon { width: 20px; height: 20px; }
+  .stat-title { font-size: 11px; }
   
   .stat-value { 
-    font-size: 1.6rem; 
-    font-weight: 700; 
+    font-size: 1.4rem; 
+    height: auto;
+    flex: none;
+    min-width: 60px;
+    margin: 0 8px;
   }
-  .stat-value.range .arrow { font-size: 1.2rem; padding: 0 3px; }
+  .stat-value.range .from, .stat-value.range .to { font-size: 1.2rem; }
+  .stat-value.range .arrow { font-size: 1rem; padding: 0 2px; }
   .stat-badge { 
-    font-size: 12px; 
-    padding: 4px 8px; 
+    font-size: 11px; 
+    padding: 6px 10px; 
+    height: auto;
+    flex: none;
   }
   
   .stat-caption { 
-    font-size: 10px; 
+    font-size: 9px; 
     text-align: right;
     flex: 1;
-    color: rgba(255, 255, 255, 0.8);
+    height: auto;
     line-height: 1.1;
   }
   
@@ -537,7 +587,6 @@ onUnmounted(() => {
 }
 
 @media (max-width: 480px) {
-  .reviews-widget-content { padding: 0; }
   .main-card { padding: 16px; }
   .cafe-name { font-size: 20px; }
   .cafe-subtitle { font-size: 13px; }
@@ -546,17 +595,7 @@ onUnmounted(() => {
     padding: 14px 16px;
     min-height: 70px; 
   }
-  .value-slab { 
-    min-width: 50px; 
-    padding: 6px; 
-  }
-  .stat-value { font-size: 1.4rem; }
-  .stat-caption { font-size: 9px; }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .stats-grid { gap: 14px; }
-  .stat-content { padding: 18px 16px; }
-  .stat-value { font-size: 2.8rem; }
+  .stat-value { font-size: 1.2rem; }
+  .stat-caption { font-size: 8px; }
 }
 </style>
