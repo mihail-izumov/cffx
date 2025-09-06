@@ -35,6 +35,7 @@ import SignalSteps from '../components/SignalSteps.vue'
 import RotatingPhrases from '../components/RotatingPhrases.vue'
 import FeedbackAlchemy from '../components/FeedbackAlchemy.vue'
 import KorzhWidget from '../components/KorzhWidget.vue'
+import PulseSubscribeBanner from '../components/PulseSubscribeBanner.vue'
 
 export default {
   extends: DefaultTheme,
@@ -76,5 +77,6 @@ export default {
     app.component('RotatingPhrases', RotatingPhrases)
     app.component('FeedbackAlchemy', FeedbackAlchemy)
     app.component('KorzhWidget', KorzhWidget)
+    app.component('PulseSubscribeBanner', PulseSubscribeBanner)
   }
 }
