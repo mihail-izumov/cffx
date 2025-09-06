@@ -8,7 +8,7 @@
       />
       <div class="banner-overlay">
         <div class="banner-text">
-          <h2 class="banner-title">{{ title }}</h2>
+          <div class="banner-title">{{ title }}</div>
           <p v-if="subtitle" class="banner-subtitle">{{ subtitle }}</p>
         </div>
         <button 
@@ -109,19 +109,19 @@ const handleButtonClick = () => {
 }
 
 .banner-title {
-  font-size: clamp(1.5rem, 4vw, 3rem);
-  font-weight: bold;
+  font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+  font-weight: 500;
   color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   margin: 0 0 1rem 0;
-  line-height: 1.2;
+  line-height: 1.3;
   max-width: 600px;
 }
 
 .banner-subtitle {
-  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  font-size: clamp(0.85rem, 1.8vw, 1.1rem);
   color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   margin: 0;
   max-width: 500px;
 }
@@ -132,7 +132,7 @@ const handleButtonClick = () => {
   border: none;
   padding: 0.75rem 2rem;
   border-radius: 25px;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -162,7 +162,6 @@ const handleButtonClick = () => {
   
   .banner-button {
     padding: 0.6rem 1.5rem;
-    font-size: 0.9rem;
   }
 }
 </style>
