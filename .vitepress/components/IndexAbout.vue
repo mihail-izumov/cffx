@@ -5,7 +5,7 @@ const ROTATION_INTERVAL_MS = 7000
 const FADE_DURATION_MS = 1000
 
 const establishment = {
-  name: 'Не просто ретинг',
+  name: 'Не просто рейтинг',
   index: 98,
   currentPoints: 8,
   targetPoints: 12,
@@ -65,17 +65,15 @@ onUnmounted(() => {
 
 <template>
   <div class="reviews-widget-content">
-    <!-- ИСПРАВЛЕННЫЙ заголовок и подзаголовок -->
-    <div class="widget-header">
-      <div>
-        <div class="header-title">Индекс Роста</div>
-        <p class="header-subtitle">Данные лидера рынка: сеть «Корж».</p>
-      </div>
-    </div>
-
+    <!-- УБРАН блок widget-header -->
+    
     <div class="main-card">
       <div class="establishment-header">
-        <h3 class="cafe-name">{{ establishment.name }}</h3>
+        <div>
+          <h3 class="cafe-name">{{ establishment.name }}</h3>
+          <!-- ДОБАВЛЕН подзаголовок под название -->
+          <p class="cafe-subtitle">Данные лидера рынка: сеть «Корж».</p>
+        </div>
         
         <div class="status-badge-wrapper">
           <button
@@ -196,13 +194,43 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.reviews-widget-content { padding: 32px; max-height: calc(100vh - 80px); overflow-y: auto; scroll-behavior: smooth; }
-.widget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.header-title { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; text-align: left; flex-grow: 1; }
-.header-subtitle { margin-top: 8px; font-size: 15px; color: var(--vp-c-text-2); }
-.main-card { background: var(--vp-c-bg-soft); border-radius: 20px; padding: 24px; }
-.establishment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.cafe-name { margin: 0; color: #FFFFFF; font-size: 24px; font-weight: 600; }
+/* ИСПРАВЛЕНО: убран скролл и max-height, полная ширина */
+.reviews-widget-content { 
+  padding: 0; 
+  width: 100%; 
+  box-sizing: border-box;
+}
+
+.main-card { 
+  background: var(--vp-c-bg-soft); 
+  border-radius: 12px; /* Как у других виджетов на странице */
+  padding: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.establishment-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-start; /* ИСПРАВЛЕНО для подзаголовка */
+  margin-bottom: 24px; 
+}
+
+.cafe-name { 
+  margin: 0; 
+  color: #FFFFFF; 
+  font-size: 24px; 
+  font-weight: 600; 
+}
+
+/* ДОБАВЛЕН стиль подзаголовка */
+.cafe-subtitle { 
+  margin: 6px 0 0 0; 
+  font-size: 14px; 
+  color: var(--vp-c-text-2); 
+  line-height: 1.4; 
+  font-weight: 400;
+}
 
 /* Бейдж актуальности */
 .status-badge-wrapper { position: relative; display: flex; align-items: center; }
@@ -424,10 +452,20 @@ onUnmounted(() => {
 .modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 8px 12px; cursor: pointer; }
 .modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
-/* ИСПРАВЛЕННАЯ адаптивная версия */
+/* ИСПРАВЛЕННАЯ мобильная адаптация */
 @media (max-width: 768px) {
-  .reviews-widget-content { padding: 24px; }
-  .main-card { padding: 16px; }
+  .reviews-widget-content { padding: 0; }
+  .main-card { padding: 20px; border-radius: 12px; }
+  
+  .establishment-header { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 12px; 
+    margin-bottom: 20px; 
+  }
+  
+  .status-badge-wrapper { align-self: flex-end; }
+  
   .stats-grid { 
     grid-template-columns: 1fr; 
     gap: 12px; 
@@ -440,12 +478,13 @@ onUnmounted(() => {
   }
   .stat-card:hover { transform: none; }
   
+  /* КОМПАКТНЫЕ горизонтальные карточки */
   .stat-content { 
     flex-direction: row; 
     justify-content: space-between; 
     align-items: center; 
     padding: 16px 18px;
-    min-height: 120px;
+    min-height: 80px; /* Намного компактнее */
     background: radial-gradient(circle at 20% 50%, var(--glow-color) 0%, transparent 70%) !important;
     box-shadow: 0 8px 20px -8px rgba(0,0,0,0.3) !important;
   }
@@ -453,7 +492,8 @@ onUnmounted(() => {
   .stat-top { 
     flex-direction: column; 
     align-items: flex-start; 
-    gap: 4px; 
+    gap: 2px; 
+    min-width: 80px;
     flex-shrink: 0;
   }
   .stat-emoji { 
@@ -467,29 +507,29 @@ onUnmounted(() => {
   }
   
   .value-slab {
-    min-width: 80px;
-    padding: 12px 10px;
+    min-width: 60px;
+    padding: 8px;
     margin: 0 8px;
     flex-shrink: 0;
-    border-radius: 10px;
+    border-radius: 8px;
   }
   
   .stat-value { 
-    font-size: 2rem; 
+    font-size: 1.6rem; 
     font-weight: 700; 
   }
-  .stat-value.range .arrow { font-size: 1.4rem; padding: 0 4px; }
+  .stat-value.range .arrow { font-size: 1.2rem; padding: 0 3px; }
   .stat-badge { 
-    font-size: 14px; 
-    padding: 6px 10px; 
+    font-size: 12px; 
+    padding: 4px 8px; 
   }
   
   .stat-caption { 
-    font-size: 11px; 
+    font-size: 10px; 
     text-align: right;
     flex: 1;
     color: rgba(255, 255, 255, 0.8);
-    line-height: 1.2;
+    line-height: 1.1;
   }
   
   .button-container { flex-direction: column; gap: 8px; }
@@ -497,20 +537,21 @@ onUnmounted(() => {
 }
 
 @media (max-width: 480px) {
-  .reviews-widget-content { padding: 20px; }
-  .header-title { font-size: 22px; }
+  .reviews-widget-content { padding: 0; }
+  .main-card { padding: 16px; }
   .cafe-name { font-size: 20px; }
+  .cafe-subtitle { font-size: 13px; }
   
   .stat-content { 
     padding: 14px 16px;
-    min-height: 100px; 
+    min-height: 70px; 
   }
   .value-slab { 
-    min-width: 70px; 
-    padding: 10px 8px; 
+    min-width: 50px; 
+    padding: 6px; 
   }
-  .stat-value { font-size: 1.8rem; }
-  .stat-caption { font-size: 10px; }
+  .stat-value { font-size: 1.4rem; }
+  .stat-caption { font-size: 9px; }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
