@@ -52,7 +52,7 @@ aside: false
   <div class="project-card">
     <div>
       <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Для Гостя</h3>
-      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);"><strong>Ваши отзывы меняют всё.</strong> <br><br> Каждый Сигнал помогает любимым кофейням стать уже сегодня.</p>
+      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);"><strong>Ваши отзывы меняют всё.</strong> <br><br> Каждый Сигнал помогает любимым кофейням стать лучше уже сегодня.</p>
     </div>
     <a href="/smr" class="project-button">
       Отправить Сигнал →
