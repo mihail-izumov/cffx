@@ -48,7 +48,7 @@ const props = defineProps({
   },
   buttonLink: {
     type: String,
-    default: '/brew/run'
+    default: 'https://t.me/runScale'
   }
 })
 
