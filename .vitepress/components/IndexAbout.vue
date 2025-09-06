@@ -1,11 +1,9 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-// --- НАСТРОЙКИ ---
 const ROTATION_INTERVAL_MS = 7000
 const FADE_DURATION_MS = 1000
 
-// --- ДАННЫЕ ВИТРИНЫ ---
 const establishment = {
   name: 'Не просто ретинг',
   index: 98,
@@ -14,8 +12,6 @@ const establishment = {
   influenceLevel: 'Высокое'
 }
 
-// --- ТЕКСТЫ ДЛЯ РОТАТОРА ---
-// Актуальный список сообщений
 const rotatingMessages = [
   'Смотреть Индекс — полный срез рынка.',
   'Получать Пульс — еженедельные изменения и возможности.',
@@ -34,9 +30,6 @@ const cycleRotatorText = () => {
   }, FADE_DURATION_MS)
 }
 
-// --- ЛОГИКА ИНТЕРАКТИВНОСТИ ---
-
-// Подсказка для бейджа (hover + long-press)
 const showTooltip = ref(false)
 let longPressTimer = null
 
@@ -51,7 +44,6 @@ const onBadgeTouchEnd = () => {
   setTimeout(() => { showTooltip.value = false }, 150)
 }
 
-// Мини-модал для иконки (i)
 const showInfoModal = ref(false)
 const onKeydown = (e) => {
   if (e.key === 'Escape') {
@@ -59,7 +51,6 @@ const onKeydown = (e) => {
   }
 }
 
-// --- ЖИЗНЕННЫЙ ЦИКЛ КОМПОНЕНТА ---
 onMounted(() => {
   rotatorInterval = setInterval(cycleRotatorText, ROTATION_INTERVAL_MS)
   window.addEventListener('keydown', onKeydown)
@@ -74,6 +65,7 @@ onUnmounted(() => {
 
 <template>
   <div class="reviews-widget-content">
+    <!-- ВОССТАНОВЛЕН подзаголовок -->
     <div class="widget-header">
       <div>
         <div class="header-title">Отправьте Сигнал</div>
@@ -84,8 +76,7 @@ onUnmounted(() => {
     <div class="main-card">
       <div class="establishment-header">
         <h3 class="cafe-name">{{ establishment.name }}</h3>
-
-        <!-- Бейдж актуальности с подсказкой -->
+        
         <div class="status-badge-wrapper">
           <button
             type="button"
@@ -112,7 +103,7 @@ onUnmounted(() => {
         <div class="stat-card index-card">
           <div class="stat-content">
             <div class="stat-top">
-              <div class="stat-emoji" aria-hidden="true">⚡</div>
+              <div class="stat-emoji">⚡</div>
               <div class="stat-title">Индекс</div>
             </div>
             <div class="value-slab">
@@ -126,13 +117,13 @@ onUnmounted(() => {
         <div class="stat-card branches-card">
           <div class="stat-content">
             <div class="stat-top">
-              <div class="stat-emoji" aria-hidden="true">🧩</div>
+              <div class="stat-emoji">🧩</div>
               <div class="stat-title">Потенциал</div>
             </div>
             <div class="value-slab">
               <div class="stat-value range">
                 <span class="from">{{ establishment.currentPoints }}</span>
-                <span class="arrow" aria-hidden="true">→</span>
+                <span class="arrow">→</span>
                 <span class="to">{{ establishment.targetPoints }}</span>
               </div>
             </div>
@@ -144,7 +135,7 @@ onUnmounted(() => {
         <div class="stat-card reviews-card">
           <div class="stat-content">
             <div class="stat-top">
-              <div class="stat-emoji" aria-hidden="true">🌐</div>
+              <div class="stat-emoji">🌐</div>
               <div class="stat-title">Влияние</div>
             </div>
             <div class="value-slab">
@@ -155,7 +146,6 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- Пульт управления с ротатором -->
       <div class="control-panel">
         <div class="control-panel-header">
           <button
@@ -170,7 +160,6 @@ onUnmounted(() => {
               <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
             </svg>
           </button>
-
           <span class="static-prompt">Поделитесь:</span>
           <div class="rotating-text-container">
             <span :class="['rotating-text', { 'show': showText }]">
@@ -191,7 +180,6 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Мини‑модал по (i) -->
     <div v-if="showInfoModal" class="modal-overlay" @click.self="showInfoModal = false">
       <div class="modal" role="dialog" aria-modal="true" id="index-dialog" aria-label="Что такое Индекс Роста">
         <div class="modal-header">
@@ -215,29 +203,202 @@ onUnmounted(() => {
 .main-card { background: var(--vp-c-bg-soft); border-radius: 20px; padding: 24px; }
 .establishment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
 .cafe-name { margin: 0; color: #FFFFFF; font-size: 24px; font-weight: 600; }
+
+/* Бейдж актуальности */
 .status-badge-wrapper { position: relative; display: flex; align-items: center; }
-.status-badge { background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1)); color: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3); text-transform: uppercase; letter-spacing: 0.5px; border: none; cursor: help; }
-.tooltip { position: absolute; top: calc(100% + 8px); right: 0; background: rgba(0, 0, 0, 0.85); color: #fff; border-radius: 8px; padding: 8px 10px; font-size: 12px; line-height: 1.2; max-width: 280px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); opacity: 0; visibility: hidden; transform: translateY(-2px); transition: opacity .15s ease, transform .15s ease, visibility .15s ease; z-index: 10; }
-.status-badge:hover + .tooltip, .status-badge:focus + .tooltip, .tooltip.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.status-badge {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: help;
+}
+.tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.2;
+  max-width: 280px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-2px);
+  transition: opacity .15s ease, transform .15s ease, visibility .15s ease;
+  z-index: 10;
+}
+.status-badge:hover + .tooltip,
+.status-badge:focus + .tooltip,
+.tooltip.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
 
-/* Карточки: чистая иерархия и контролируемая типографика */
+/* ВОССТАНОВЛЕННЫЕ стильные карточки */
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-.stat-card { position: relative; border-radius: 22px; overflow: hidden; background: var(--vp-c-bg-soft); }
-.stat-card::before { content: ''; position: absolute; inset: 0; border-radius: 22px; padding: 2px; background: var(--border-gradient); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
-.index-card { --border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946); }
-.branches-card { --border-gradient: linear-gradient(135deg, #3730a3, #8b5cf6, #c4b5fd); }
-.reviews-card { --border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d); }
-.stat-content { position: relative; z-index: 1; padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: flex-start; min-height: 280px; }
-.stat-top { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.stat-emoji { font-size: clamp(20px, 3.2vw, 28px); line-height: 1; }
-.stat-title { font-weight: 700; font-size: clamp(14px, 2vw, 18px); text-wrap: balance; color: rgba(255,255,255,0.95); }
-.value-slab { width: 100%; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 18px 14px; display: flex; align-items: center; justify-content: center; min-height: 96px; box-shadow: inset 0 6px 18px rgba(0,0,0,0.35); }
-.stat-value { font-weight: 800; line-height: 1; color: #fff; text-shadow: 0 6px 24px rgba(0,0,0,0.4); font-size: clamp(28px, 6.8vw, 64px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.stat-value.range .arrow { display: inline-block; padding: 0 8px; font-size: clamp(20px, 4.5vw, 36px); opacity: 0.9; }
-.stat-badge { display: inline-block; padding: 8px 12px; border-radius: 999px; background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04)); border: 1px solid rgba(255,255,255,0.18); color: #fff; font-weight: 800; letter-spacing: 0.3px; font-size: clamp(14px, 3.4vw, 22px); white-space: nowrap; }
-.stat-caption { color: rgba(255,255,255,0.75); font-size: clamp(12px, 1.8vw, 14px); text-align: center; text-wrap: balance; }
+.stat-card {
+  position: relative;
+  border-radius: 22px;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); /* ВОССТАНОВЛЕН */
+  overflow: hidden;
+  background: var(--vp-c-bg-soft);
+}
 
-/* Пульт управления */
+/* ВОССТАНОВЛЕН hover эффект */
+.stat-card:hover {
+  transform: translateY(-8px);
+}
+
+/* ВОССТАНОВЛЕНЫ градиентные borders */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  padding: 2px;
+  background: var(--border-gradient);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: filter 0.4s ease;
+  z-index: 3;
+}
+
+.stat-card:hover::before {
+  filter: brightness(2) saturate(1.5);
+}
+
+/* ВОССТАНОВЛЕНЫ цветовые схемы */
+.branches-card {
+  --border-gradient: linear-gradient(135deg, #3730a3, #8b5cf6, #c4b5fd);
+  --glow-color: rgba(139, 92, 246, 0.25);
+  --glow-hover-color: rgba(139, 92, 246, 0.6);
+}
+
+.index-card {
+  --border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946);
+  --glow-color: rgba(197, 249, 70, 0.25);
+  --glow-hover-color: rgba(197, 249, 70, 0.6);
+}
+
+.reviews-card {
+  --border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d);
+  --glow-color: rgba(245, 158, 11, 0.25);
+  --glow-hover-color: rgba(245, 158, 11, 0.6);
+}
+
+/* ВОССТАНОВЛЕН glow эффект в content */
+.stat-content {
+  background: radial-gradient(circle at 50% 0%, var(--glow-color) 0%, transparent 70%);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  text-align: center;
+  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  z-index: 2;
+}
+
+.stat-card:hover .stat-content {
+  background: radial-gradient(circle at 50% 0%, var(--glow-hover-color) 0%, transparent 70%);
+  box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
+}
+
+/* Структура карточки */
+.stat-top { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.stat-emoji { 
+  font-size: 28px; 
+  opacity: 0.8; 
+  height: 32px;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.stat-card:hover .stat-emoji { transform: scale(1.2); }
+
+.stat-title { 
+  font-size: 14px; 
+  font-weight: 700; 
+  color: rgba(255,255,255,0.9); 
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Черная плашка для значений */
+.value-slab {
+  width: 100%;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 16px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+.stat-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 3.2rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.stat-card:hover .stat-value {
+  transform: scale(1.15);
+  text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8);
+}
+
+.stat-value.range .arrow { 
+  display: inline-block; 
+  padding: 0 8px; 
+  font-size: 2.4rem; 
+  opacity: 0.9; 
+}
+
+.stat-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.stat-caption {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.stat-card:hover .stat-caption { transform: scale(1.05); }
+
+/* Остальные стили */
 .control-panel { margin-top: 24px; }
 .control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; }
 .info-link { color: rgba(255, 255, 255, 0.5); display: flex; align-items: center; transition: color 0.3s ease; flex-shrink: 0; }
@@ -247,6 +408,7 @@ onUnmounted(() => {
 .rotating-text-container { flex-grow: 1; text-align: left; color: rgba(255, 255, 255, 0.7); min-height: 36px; display: flex; align-items: center;}
 .rotating-text { transition: opacity 0.5s ease-in-out; line-height: 1.2; }
 .rotating-text:not(.show) { opacity: 0; }
+
 .button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
 .action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
 .ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
@@ -256,7 +418,7 @@ onUnmounted(() => {
 .button-icon { transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
 
-/* Мини-модал */
+/* Модал */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
 .modal { background: var(--vp-c-bg, #111); color: var(--vp-c-text-1, #fff); border: 1px solid var(--vp-c-border, rgba(255,255,255,0.12)); border-radius: 12px; width: min(520px, 96vw); box-shadow: 0 20px 60px rgba(0,0,0,0.4); padding: 16px; }
 .modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -268,15 +430,18 @@ onUnmounted(() => {
 .modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 8px 12px; cursor: pointer; }
 .modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
-/* Адаптивность */
+/* Адаптив */
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 24px; }
   .main-card { padding: 16px; }
   .stats-grid { grid-template-columns: 1fr; gap: 12px; }
-  .stat-content { min-height: 220px; }
-  .value-slab { min-height: 88px; }
+  .stat-card { display: flex; flex-direction: row; align-items: center; border-radius: 16px; transition: none; }
+  .stat-card:hover { transform: none; }
+  .stat-content { flex-direction: row; justify-content: space-between; align-items: center; padding: 12px 16px; width: 100%; background: none !important; box-shadow: none !important; }
   .button-container { flex-direction: column; gap: 8px; }
+  .action-button:hover { transform: none; }
 }
+
 @media (max-width: 480px) {
   .reviews-widget-content { padding: 20px; }
   .header-title { font-size: 22px; }
