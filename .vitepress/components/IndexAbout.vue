@@ -136,11 +136,11 @@ onUnmounted(() => {
         <div class="stat-card">
           <div class="stat-content">
             <div class="stat-header">
-              <!-- Lucide Activity icon - более подходящий для "влияния" -->
+              <!-- Lucide Globe icon -->
               <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m22 12-4-4-4 4"/>
-                <path d="M16 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v7z"/>
-                <path d="M22 12h-6"/>
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                <path d="M2 12h20"/>
               </svg>
               <div class="stat-title">Влияние</div>
             </div>
@@ -279,7 +279,7 @@ onUnmounted(() => {
   transform: translateY(0);
 }
 
-/* УЛУЧШЕННЫЕ карточки */
+/* Карточки с лаймовым дизайном */
 .stats-grid { 
   display: grid; 
   grid-template-columns: 1fr 1fr 1fr; 
@@ -373,16 +373,17 @@ onUnmounted(() => {
   color: #A3E635;
 }
 
-/* НОВАЯ структура - значение + описание в одном блоке */
+/* Структура значения + описание */
 .stat-value-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
   flex: 1;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
+/* УНИФИЦИРОВАННЫЕ размеры значений */
 .stat-value {
   font-family: 'Inter', sans-serif;
   font-size: clamp(2.8rem, 5vw, 4rem);
@@ -420,34 +421,33 @@ onUnmounted(() => {
   padding: 0 clamp(2px, 0.5vw, 4px);
 }
 
-/* УЛУЧШЕННЫЙ бейдж-метрика */
+/* ИСПРАВЛЕННЫЙ белый бейдж */
 .stat-metric-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
   border-radius: 12px;
-  background: rgba(163, 230, 53, 0.15);
-  border: 1px solid rgba(163, 230, 53, 0.3);
-  color: #A3E635;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
   font-weight: 700;
   letter-spacing: 0.1em;
   font-size: clamp(16px, 3vw, 20px);
   white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(163, 230, 53, 0.1);
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   text-transform: uppercase;
 }
 
 .stat-card:hover .stat-metric-badge {
   transform: scale(1.05);
-  background: rgba(163, 230, 53, 0.25);
-  border-color: rgba(163, 230, 53, 0.5);
-  box-shadow: 0 4px 16px rgba(163, 230, 53, 0.2);
-  color: #C5F946;
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
 }
 
-/* УЛУЧШЕННЫЕ описания */
+/* Описания с выравниванием по верху */
 .stat-description {
   font-size: 13px;
   font-weight: 500;
@@ -532,7 +532,7 @@ onUnmounted(() => {
   .stat-content { 
     flex-direction: row; 
     justify-content: space-between; 
-    align-items: center; 
+    align-items: flex-start;
     padding: 16px 18px;
     min-height: 80px;
     background: radial-gradient(circle at 20% 50%, rgba(163, 230, 53, 0.15) 0%, transparent 70%) !important;
@@ -552,28 +552,34 @@ onUnmounted(() => {
   
   .stat-value-section {
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     gap: 8px;
     flex: 1;
     justify-content: space-between;
   }
   
-  /* УМЕНЬШЕННЫЕ размеры для мобильных */
+  /* УНИФИЦИРОВАННЫЕ размеры для мобильных */
   .stat-value { 
-    font-size: 1.8rem; 
+    font-size: 1.8rem;
     margin: 0;
     flex-shrink: 0;
   }
-  .stat-value.range .from, .stat-value.range .to { font-size: 1.6rem; }
-  .stat-value.range .arrow { font-size: 1.2rem; padding: 0 2px; }
-  
-  .stat-metric-badge { 
-    font-size: 11px; 
-    padding: 4px 8px; 
-    flex-shrink: 0;
+  .stat-value.range .from, .stat-value.range .to { 
+    font-size: 1.8rem;
+  }
+  .stat-value.range .arrow { 
+    font-size: 1.4rem; 
+    padding: 0 2px; 
   }
   
-  /* УЛУЧШЕННЫЕ описания на мобильных */
+  .stat-metric-badge { 
+    font-size: 14px;
+    padding: 6px 12px; 
+    flex-shrink: 0;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
   .stat-description { 
     font-size: 11px; 
     text-align: right;
@@ -581,6 +587,7 @@ onUnmounted(() => {
     line-height: 1.2;
     max-width: none;
     margin-left: 8px;
+    margin-top: 2px;
   }
   
   .button-container { flex-direction: column; gap: 8px; }
@@ -597,6 +604,8 @@ onUnmounted(() => {
     min-height: 70px; 
   }
   .stat-value { font-size: 1.6rem; }
+  .stat-value.range .from, .stat-value.range .to { font-size: 1.6rem; }
+  .stat-metric-badge { font-size: 12px; }
   .stat-description { font-size: 10px; }
 }
 </style>
