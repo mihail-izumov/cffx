@@ -65,11 +65,11 @@ onUnmounted(() => {
 
 <template>
   <div class="reviews-widget-content">
-    <!-- ВОССТАНОВЛЕН подзаголовок -->
+    <!-- ИСПРАВЛЕННЫЙ заголовок и подзаголовок -->
     <div class="widget-header">
       <div>
-        <div class="header-title">Отправьте Сигнал</div>
-        <p class="header-subtitle">Каждая чашка кофе делает Вашу любимую кофейню еще лучше.</p>
+        <div class="header-title">Индекс Роста</div>
+        <p class="header-subtitle">Данные лидера рынка: сеть «Корж».</p>
       </div>
     </div>
 
@@ -246,22 +246,20 @@ onUnmounted(() => {
   transform: translateY(0);
 }
 
-/* ВОССТАНОВЛЕННЫЕ стильные карточки */
+/* Стильные карточки */
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 .stat-card {
   position: relative;
   border-radius: 22px;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); /* ВОССТАНОВЛЕН */
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
   background: var(--vp-c-bg-soft);
 }
 
-/* ВОССТАНОВЛЕН hover эффект */
 .stat-card:hover {
   transform: translateY(-8px);
 }
 
-/* ВОССТАНОВЛЕНЫ градиентные borders */
 .stat-card::before {
   content: '';
   position: absolute;
@@ -280,7 +278,6 @@ onUnmounted(() => {
   filter: brightness(2) saturate(1.5);
 }
 
-/* ВОССТАНОВЛЕНЫ цветовые схемы */
 .branches-card {
   --border-gradient: linear-gradient(135deg, #3730a3, #8b5cf6, #c4b5fd);
   --glow-color: rgba(139, 92, 246, 0.25);
@@ -299,7 +296,6 @@ onUnmounted(() => {
   --glow-hover-color: rgba(245, 158, 11, 0.6);
 }
 
-/* ВОССТАНОВЛЕН glow эффект в content */
 .stat-content {
   background: radial-gradient(circle at 50% 0%, var(--glow-color) 0%, transparent 70%);
   border-radius: 20px;
@@ -321,7 +317,6 @@ onUnmounted(() => {
   box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
 
-/* Структура карточки */
 .stat-top { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .stat-emoji { 
   font-size: 28px; 
@@ -339,7 +334,6 @@ onUnmounted(() => {
   letter-spacing: 0.5px;
 }
 
-/* Черная плашка для значений */
 .value-slab {
   width: 100%;
   background: rgba(0,0,0,0.55);
@@ -398,7 +392,7 @@ onUnmounted(() => {
 
 .stat-card:hover .stat-caption { transform: scale(1.05); }
 
-/* Остальные стили */
+/* Пульт управления */
 .control-panel { margin-top: 24px; }
 .control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; }
 .info-link { color: rgba(255, 255, 255, 0.5); display: flex; align-items: center; transition: color 0.3s ease; flex-shrink: 0; }
@@ -430,14 +424,74 @@ onUnmounted(() => {
 .modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 8px 12px; cursor: pointer; }
 .modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
-/* Адаптив */
+/* ИСПРАВЛЕННАЯ адаптивная версия */
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 24px; }
   .main-card { padding: 16px; }
-  .stats-grid { grid-template-columns: 1fr; gap: 12px; }
-  .stat-card { display: flex; flex-direction: row; align-items: center; border-radius: 16px; transition: none; }
+  .stats-grid { 
+    grid-template-columns: 1fr; 
+    gap: 12px; 
+  }
+  
+  .stat-card { 
+    border-radius: 16px; 
+    transition: none;
+    min-height: auto;
+  }
   .stat-card:hover { transform: none; }
-  .stat-content { flex-direction: row; justify-content: space-between; align-items: center; padding: 12px 16px; width: 100%; background: none !important; box-shadow: none !important; }
+  
+  .stat-content { 
+    flex-direction: row; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 16px 18px;
+    min-height: 120px;
+    background: radial-gradient(circle at 20% 50%, var(--glow-color) 0%, transparent 70%) !important;
+    box-shadow: 0 8px 20px -8px rgba(0,0,0,0.3) !important;
+  }
+  
+  .stat-top { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 4px; 
+    flex-shrink: 0;
+  }
+  .stat-emoji { 
+    font-size: 24px; 
+    line-height: 1; 
+  }
+  .stat-title { 
+    font-size: 12px; 
+    font-weight: 700;
+    color: rgba(255,255,255,0.9);
+  }
+  
+  .value-slab {
+    min-width: 80px;
+    padding: 12px 10px;
+    margin: 0 8px;
+    flex-shrink: 0;
+    border-radius: 10px;
+  }
+  
+  .stat-value { 
+    font-size: 2rem; 
+    font-weight: 700; 
+  }
+  .stat-value.range .arrow { font-size: 1.4rem; padding: 0 4px; }
+  .stat-badge { 
+    font-size: 14px; 
+    padding: 6px 10px; 
+  }
+  
+  .stat-caption { 
+    font-size: 11px; 
+    text-align: right;
+    flex: 1;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.2;
+  }
+  
   .button-container { flex-direction: column; gap: 8px; }
   .action-button:hover { transform: none; }
 }
@@ -446,5 +500,22 @@ onUnmounted(() => {
   .reviews-widget-content { padding: 20px; }
   .header-title { font-size: 22px; }
   .cafe-name { font-size: 20px; }
+  
+  .stat-content { 
+    padding: 14px 16px;
+    min-height: 100px; 
+  }
+  .value-slab { 
+    min-width: 70px; 
+    padding: 10px 8px; 
+  }
+  .stat-value { font-size: 1.8rem; }
+  .stat-caption { font-size: 10px; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .stats-grid { gap: 14px; }
+  .stat-content { padding: 18px 16px; }
+  .stat-value { font-size: 2.8rem; }
 }
 </style>
