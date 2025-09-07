@@ -5,7 +5,7 @@ const ROTATION_INTERVAL_MS = 7000
 const FADE_DURATION_MS = 1000
 
 const establishment = {
-  name: 'Лидерство Коржа подтверждают конкретные цифры',
+  name: 'Корж – лидер индекса сегодня',
   index: 98,
   currentPoints: 8,
   targetPoints: 12,
@@ -69,7 +69,7 @@ onUnmounted(() => {
       <div class="establishment-header">
         <div>
           <h3 class="cafe-name">{{ establishment.name }}</h3>
-          <p class="cafe-subtitle">Индекс 98, потенциал 8(12+), высокое влияние. Карточки демонстрируют текущий расклад сил. Полный рейтинг раскроет динамику и возможности для роста.</p>
+          <p class="cafe-subtitle">3 параметра демонстрируют текущий расклад сил. Полный рейтинг раскроет динамику и возможности для роста.</p>
         </div>
         
         <div class="status-badge-wrapper">
