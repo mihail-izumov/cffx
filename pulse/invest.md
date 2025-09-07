@@ -27,10 +27,6 @@ title: Пульс — поток данных Сигнала для инвест
 
 <IndexAbout />
 
-## Мгновенный доступ к инсайтам
-
-<IndexPlans />
-
 ## Ваш личный инвестиционный ассистент
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
@@ -109,6 +105,10 @@ title: Пульс — поток данных Сигнала для инвест
   }
 }
 </style>
+
+## Мгновенный доступ к инсайтам
+
+<IndexPlans />
 
 ## Вопросы и Ответы
 
