@@ -110,13 +110,13 @@ const handleButtonClick = () => {
 }
 
 .banner-intro {
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
-  font-weight: 600;
+  font-size: clamp(0.55rem, 1vw, 0.7rem);
+  font-weight: 400;
   color: #b5f240;
   text-transform: uppercase;
   letter-spacing: 0.25em;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  margin: 0 0 1rem 0;
+  margin: -1rem 0 1rem 0;
 }
 
 .banner-title {
