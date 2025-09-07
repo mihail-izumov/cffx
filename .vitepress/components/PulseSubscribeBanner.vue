@@ -37,7 +37,7 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: 'Сигналы кофейного рынка в реальном времени'
+    default: 'Сигналы рынка в реальном времени'
   },
   subtitle: {
     type: String,
