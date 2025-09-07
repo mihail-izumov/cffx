@@ -275,7 +275,7 @@ onUnmounted(() => {
   transform: translateY(0);
 }
 
-/* Desktop карточки */
+/* ИСПРАВЛЕННЫЕ Desktop карточки с точным выравниванием */
 .stats-grid { 
   display: grid; 
   grid-template-columns: 1fr 1fr 1fr; 
@@ -314,13 +314,19 @@ onUnmounted(() => {
   filter: brightness(1.5) saturate(1.3);
 }
 
+/* ИДЕАЛЬНАЯ структура контента для выравнивания по синим линиям */
 .stat-content {
   background: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.15) 0%, transparent 70%);
   border-radius: 20px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  padding: 24px 20px;
+  /* CSS GRID для точного выравнивания */
+  display: grid;
+  grid-template-rows: 60px 1fr auto;
+  grid-template-areas: 
+    "header"
+    "value" 
+    "description";
+  gap: 20px;
   min-height: 280px;
   text-align: center;
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
@@ -334,19 +340,25 @@ onUnmounted(() => {
   box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
 
+/* ВЫРАВНИВАНИЕ заголовков по baseline между карточками */
 .stat-header { 
+  grid-area: header;
   display: flex; 
   flex-direction: column; 
   align-items: center; 
-  gap: 8px;
-  height: 60px;
   justify-content: flex-start;
+  gap: 8px;
+  /* ФИКСИРОВАННАЯ высота для выравнивания синих линий */
+  height: 60px;
+  min-height: 60px;
 }
 
 .stat-icon { 
   color: #A3E635;
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   flex-shrink: 0;
+  /* БАЗОВОЕ выравнивание иконок */
+  margin-bottom: 0;
 }
 
 .stat-card:hover .stat-icon { 
@@ -361,6 +373,10 @@ onUnmounted(() => {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  margin: 0;
+  line-height: 1;
+  /* БАЗОВОЕ выравнивание заголовков */
+  align-self: center;
 }
 
 .stat-card:hover .stat-title { 
@@ -368,13 +384,16 @@ onUnmounted(() => {
   color: #A3E635;
 }
 
+/* ЦЕНТРАЛЬНОЕ выравнивание значений */
 .stat-value-section {
+  grid-area: value;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  flex: 1;
   justify-content: center;
+  gap: 0;
+  /* ТОЧНОЕ центрирование */
+  text-align: center;
 }
 
 .stat-value {
@@ -384,6 +403,9 @@ onUnmounted(() => {
   color: #fff;
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  margin: 0;
+  /* ЦЕНТРИРОВАНИЕ значений по горизонтали */
+  text-align: center;
 }
 
 .main-value {
@@ -395,6 +417,7 @@ onUnmounted(() => {
   display: flex;
   align-items: baseline;
   gap: 4px;
+  justify-content: center;
 }
 
 .potential-value .current {
@@ -430,6 +453,7 @@ onUnmounted(() => {
   box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   text-transform: uppercase;
+  margin: 0;
 }
 
 .stat-card:hover .stat-metric-badge {
@@ -439,7 +463,9 @@ onUnmounted(() => {
   box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
 }
 
+/* ВЫРАВНИВАНИЕ описаний по базовой линии */
 .stat-description {
+  grid-area: description;
   font-size: 13px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.8);
@@ -447,6 +473,11 @@ onUnmounted(() => {
   text-align: center;
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   letter-spacing: 0.02em;
+  margin: 0;
+  padding: 0;
+  /* ВЫРАВНИВАНИЕ по верхнему краю для синих линий */
+  align-self: flex-start;
+  justify-self: center;
   max-width: 180px;
 }
 
@@ -495,7 +526,7 @@ onUnmounted(() => {
 .modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 8px 12px; cursor: pointer; }
 .modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
-/* ИДЕАЛЬНО ИСПРАВЛЕННАЯ мобильная версия */
+/* МОБИЛЬНАЯ версия остается без изменений */
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 0; }
   .main-card { padding: 20px; border-radius: 12px; }
@@ -520,15 +551,17 @@ onUnmounted(() => {
   }
   .stat-card:hover { transform: none; }
   
-  /* ИСПРАВЛЕННЫЕ отступы и структура */
   .stat-content { 
+    display: flex;
     flex-direction: column; 
     justify-content: flex-start; 
     align-items: flex-start; 
-    padding: 20px 18px 20px 18px; /* РАВНОМЕРНЫЕ отступы сверху и снизу */
+    padding: 20px 18px 20px 18px;
     min-height: auto;
     background: radial-gradient(circle at 20% 50%, rgba(163, 230, 53, 0.15) 0%, transparent 70%) !important;
-    gap: 16px; /* Воздушность между элементами */
+    gap: 16px;
+    grid-template-rows: none;
+    grid-template-areas: none;
   }
   
   .stat-header { 
@@ -538,28 +571,21 @@ onUnmounted(() => {
     height: auto;
     width: 100%;
     justify-content: flex-start;
+    min-height: auto;
   }
   
   .stat-icon { width: 20px; height: 20px; }
   .stat-title { font-size: 11px; margin: 0; }
   
-  /* ГЛАВНАЯ линия - цифры и бейдж на одной базовой линии */
   .stat-value-section {
     width: 100%;
     gap: 12px;
+    grid-area: none;
   }
   
-  .stat-values-line {
-    display: flex;
-    align-items: baseline; /* ВСЕ элементы на одной базовой линии */
-    gap: 16px;
-    width: 100%;
-  }
-  
-  /* УМЕНЬШЕННЫЕ цифры со средней жирностью */
   .main-value {
-    font-size: 2rem !important; /* Сильно уменьшено */
-    font-weight: 500 !important; /* Средняя жирность */
+    font-size: 2rem !important;
+    font-weight: 500 !important;
     margin: 0;
     line-height: 1;
   }
@@ -574,7 +600,7 @@ onUnmounted(() => {
   
   .potential-value .current {
     font-size: 2rem !important;
-    font-weight: 500 !important; /* Средняя жирность */
+    font-weight: 500 !important;
     line-height: 1;
   }
   
@@ -585,10 +611,9 @@ onUnmounted(() => {
     margin-left: 2px;
   }
   
-  /* "Высокое" на той же базовой линии с hover эффектом */
   .stat-metric-badge { 
     font-size: 2rem !important;
-    font-weight: 500 !important; /* Средняя жирность */
+    font-weight: 500 !important;
     padding: 8px 14px; 
     color: #fff;
     background: rgba(255, 255, 255, 0.15);
@@ -597,37 +622,28 @@ onUnmounted(() => {
     transition: color 0.3s ease, background-color 0.3s ease;
   }
   
-  /* ЗЕЛЕНЫЙ при наведении */
   .stat-metric-badge:hover {
     color: #A3E635 !important;
     background: rgba(163, 230, 53, 0.1);
   }
   
-  /* Описания выровнены по верхнему краю на единой линии */
   .stat-description { 
-    font-size: 14px !important; /* Крупнее для читаемости */
+    font-size: 14px !important;
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.3;
     text-align: left;
     margin: 0;
     width: 100%;
     display: flex;
-    align-items: flex-start; /* Выравнивание по верхнему краю */
+    align-items: flex-start;
+    grid-area: none;
+    align-self: flex-start;
+    justify-self: flex-start;
+    max-width: none;
   }
   
   .button-container { flex-direction: column; gap: 8px; }
   .action-button:hover { transform: none; }
-}
-
-/* Дополнительная структура для мобильных */
-@media (max-width: 768px) {
-  .stat-value-section {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    width: 100%;
-  }
 }
 
 @media (max-width: 480px) {
@@ -636,7 +652,7 @@ onUnmounted(() => {
   .cafe-subtitle { font-size: 13px; }
   
   .stat-content { 
-    padding: 18px 16px 18px 16px; /* Пропорциональные отступы */
+    padding: 18px 16px 18px 16px;
     gap: 14px;
   }
   
