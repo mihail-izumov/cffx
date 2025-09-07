@@ -36,7 +36,7 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: 'Join a new generation of investors'
+    default: 'Пульс в Телеграм: данные и сигналы в реальном времени'
   },
   subtitle: {
     type: String,
@@ -44,7 +44,7 @@ const props = defineProps({
   },
   buttonText: {
     type: String,
-    default: 'Подписаться на Пульс'
+    default: 'Подписаться'
   },
   buttonLink: {
     type: String,
