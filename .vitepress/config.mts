@@ -307,7 +307,7 @@ function sidebarPulse(): DefaultTheme.SidebarItem[] {
       text: 'Пульс',
       collapsed: false,
       items: [
-        { text: 'Инструменты', link: '/pulse/why-samara' },
+        { text: 'Инвестиции', link: '/pulse/invest' },
         { text: 'Прогноз дохода', link: '/pulse/calc' },
         { text: 'Диалоги с данными', link: '/pulse/sim' }
       ]
