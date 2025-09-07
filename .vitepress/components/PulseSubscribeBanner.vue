@@ -106,17 +106,17 @@ const handleButtonClick = () => {
 
 .banner-text {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .banner-intro {
-  font-size: clamp(0.75rem, 1.5vw, 1rem);
-  font-weight: 700;
-  color: #c3f53c;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 600;
+  color: #b5f240;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.25em;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 1rem 0;
 }
 
 .banner-title {
@@ -138,27 +138,27 @@ const handleButtonClick = () => {
 }
 
 .banner-button {
-  background: linear-gradient(135deg, #c3f53c 0%, #a8e632 100%);
+  background: linear-gradient(135deg, #b5f240 0%, #95d428 100%);
   color: #2d3748;
   border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 25px;
-  font-size: clamp(0.9rem, 1.8vw, 1rem);
-  font-weight: 600;
+  padding: 0.75rem 3rem;
+  border-radius: 12px;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(195, 245, 60, 0.3);
+  box-shadow: 0 4px 12px rgba(181, 242, 64, 0.3);
 }
 
 .banner-button:hover {
-  background: linear-gradient(135deg, #a8e632 0%, #95d428 100%);
+  background: linear-gradient(135deg, #95d428 0%, #85c41f 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(195, 245, 60, 0.4);
+  box-shadow: 0 6px 16px rgba(181, 242, 64, 0.4);
 }
 
 .banner-button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(195, 245, 60, 0.3);
+  box-shadow: 0 2px 8px rgba(181, 242, 64, 0.3);
 }
 
 /* Адаптивность для мобильных устройств */
@@ -168,11 +168,11 @@ const handleButtonClick = () => {
   }
   
   .banner-text {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
   }
   
   .banner-button {
-    padding: 0.6rem 1.5rem;
+    padding: 0.6rem 1.8rem;
   }
 }
 </style>
