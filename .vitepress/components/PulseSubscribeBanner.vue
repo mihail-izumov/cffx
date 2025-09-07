@@ -36,7 +36,7 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: 'Пульс в Телеграм: данные и сигналы в реальном времени'
+    default: 'Пульс в Телеграм: инсайты и сигналы рынка в реальном времени'
   },
   subtitle: {
     type: String,
@@ -109,7 +109,7 @@ const handleButtonClick = () => {
 }
 
 .banner-title {
-  font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+  font-size: clamp(0.9rem, 2vw, 1.5rem);
   font-weight: 500;
   color: white;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
