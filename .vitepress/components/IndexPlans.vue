@@ -2,7 +2,7 @@
   <div class="pricing-grid">
     <!-- КАРТОЧКА 1: СИМУЛЯТОР -->
     <div class="pricing-card">
-      <h3 class="card-title card-title--simulator">ДИАЛОГИ С ДАННЫМИ</h3>
+      <h3 class="card-title card-title--simulator">ДИАЛОГИ С АННОЙ</h3>
       <p class="card-subtitle">Где конкуренты зарабатывают ваши деньги</p>
       <div class="card-image-wrapper">
         <!-- Убедитесь, что путь к изображению верный -->
