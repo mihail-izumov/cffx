@@ -378,10 +378,10 @@ onUnmounted(() => {
   justify-content: center;
 }
 
-/* УВЕЛИЧЕННЫЕ размеры для пропорциональности */
+/* ИСПРАВЛЕННЫЕ размеры для пропорциональности */
 .stat-value {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(3.5rem, 7vw, 5rem);
+  font-size: clamp(3rem, 6vw, 4rem);
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -394,7 +394,7 @@ onUnmounted(() => {
   align-items: baseline;
   gap: 4px;
   justify-content: center;
-  font-size: clamp(3.5rem, 7vw, 5rem);
+  font-size: clamp(3rem, 6vw, 4rem);
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -403,11 +403,11 @@ onUnmounted(() => {
 }
 
 .potential-value .current {
-  font-size: clamp(3.5rem, 7vw, 5rem);
+  font-size: clamp(3rem, 6vw, 4rem);
 }
 
 .potential-value .potential {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(2rem, 4vw, 2.8rem);
   opacity: 0.6;
   font-weight: 500;
   margin-left: 2px;
@@ -431,7 +431,7 @@ onUnmounted(() => {
   color: #fff;
   font-weight: 700;
   letter-spacing: 0.1em;
-  font-size: clamp(18px, 4vw, 24px);
+  font-size: clamp(16px, 3vw, 20px);
   white-space: nowrap;
   box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -508,7 +508,7 @@ onUnmounted(() => {
 .modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 8px 12px; cursor: pointer; }
 .modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
-/* МОБИЛЬНАЯ версия остается как есть */
+/* МОБИЛЬНАЯ версия с исправленными размерами */
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 0; }
   .main-card { padding: 20px; border-radius: 12px; }
@@ -561,16 +561,16 @@ onUnmounted(() => {
     flex: none;
   }
   
-  /* УВЕЛИЧЕННЫЕ размеры для мобильных */
+  /* ИСПРАВЛЕННЫЕ размеры для мобильных */
   .stat-value {
-    font-size: 2.5rem !important;
+    font-size: 2.2rem !important;
     font-weight: 500 !important;
     margin: 0;
     line-height: 1;
   }
   
   .potential-value {
-    font-size: 2.5rem !important;
+    font-size: 2.2rem !important;
     margin: 0;
     display: flex;
     align-items: baseline;
@@ -578,22 +578,23 @@ onUnmounted(() => {
   }
   
   .potential-value .current {
-    font-size: 2.5rem !important;
+    font-size: 2.2rem !important;
     font-weight: 500 !important;
     line-height: 1;
   }
   
   .potential-value .potential {
-    font-size: 1.8rem !important;
+    font-size: 1.6rem !important;
     opacity: 0.6;
     font-weight: 400;
     margin-left: 2px;
   }
   
+  /* УМЕНЬШЕННЫЙ бейдж для мобильных */
   .stat-metric-badge { 
-    font-size: 2.5rem !important;
+    font-size: 1.4rem !important;
     font-weight: 500 !important;
-    padding: 8px 14px; 
+    padding: 6px 12px !important;
     color: #fff;
     background: rgba(255, 255, 255, 0.15);
     border-radius: 8px;
@@ -632,11 +633,11 @@ onUnmounted(() => {
     gap: 14px;
   }
   
-  .stat-value { font-size: 2.2rem !important; }
-  .potential-value { font-size: 2.2rem !important; }
-  .potential-value .current { font-size: 2.2rem !important; }
-  .potential-value .potential { font-size: 1.6rem !important; }
-  .stat-metric-badge { font-size: 2.2rem !important; }
+  .stat-value { font-size: 2rem !important; }
+  .potential-value { font-size: 2rem !important; }
+  .potential-value .current { font-size: 2rem !important; }
+  .potential-value .potential { font-size: 1.4rem !important; }
+  .stat-metric-badge { font-size: 1.2rem !important; }
   .stat-description { font-size: 13px !important; }
 }
 </style>
