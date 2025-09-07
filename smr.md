@@ -4,12 +4,13 @@ next: false
 aside: false
 ---
 
-# Ваш голос меняет кофейни, которые вы любите
+# Все забыли, что такое настоящий рост.
 
-### Сигнал → Уточняем детали → Решение проблемы
+Они измеряют рейтинг на 2ГИС и Яндекс. Мы находим в отзывах гостей то, что не видят другие. <br>
+Наш Индекс показывает не размер бизнеса сегодня, а возможностей, которые он может реализовать завтра.
 
 <div class="start-button-container">
-  <a href="/signals" class="btn btn-primary" rel="noopener noreferrer"><strong>Как Работает Сигнал</strong></a>
+  <a href="/signals" class="btn btn-primary" rel="noopener noreferrer"><strong>Больше</strong></a>
 </div>
 
 ## Индекс Роста
@@ -28,6 +29,15 @@ aside: false
 <div class="start-button-container">
   <a href="/changelog" class="btn btn-primary" rel="noopener noreferrer"><strong>Обновления Индекса →</strong></a>
 </div>
+
+## Как считаем
+<GrowthIndexMethod />
+
+## Как пользоваться
+<IndexGuide />
+
+## Зерно → Выручка
+<CoffeeGlossaryTabs />
 
 <br>
 
