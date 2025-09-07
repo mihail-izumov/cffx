@@ -275,7 +275,7 @@ export default defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Как работает', link: '/signals' },
-    { text: 'Индекс', link: '/smr' },
+    { text: 'Кофейни', link: '/smr' },
     {
       text: 'Для Бизнеса',
       items: [
