@@ -2,7 +2,7 @@
   <div class="pricing-grid">
     <!-- КАРТОЧКА 1: СИМУЛЯТОР -->
     <div class="pricing-card">
-      <h3 class="card-title card-title--simulator">ДИАЛОГИ С АННОЙ</h3>
+      <h3 class="card-title card-title--simulator">СИМУЛЯТОР</h3>
       <p class="card-subtitle">Где конкуренты зарабатывают ваши деньги</p>
       <div class="card-image-wrapper">
         <!-- Убедитесь, что путь к изображению верный -->
@@ -123,7 +123,7 @@ const CheckIcon = () =>
 }
 
 .card-title--insider { font-size: 1.625rem; } /* Оставил этот класс для заголовка "КАЛЬКУЛЯТОР", чтобы сохранить размер шрифта */
-.card-title--simulator { font-size: 1.375rem; }
+.card-title--simulator { font-size: 1.625rem; }
 
 /* ПОДЗАГОЛОВОК ------------------------------------------------------------ */
 .card-subtitle {
