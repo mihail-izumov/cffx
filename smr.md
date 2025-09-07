@@ -12,7 +12,9 @@ aside: false
   <a href="/signals" class="btn btn-primary" rel="noopener noreferrer"><strong>Больше</strong></a>
 </div>
 
-## Индекс Роста // Самара
+## Индекс Роста 
+
+### Кофейни // Самара
 
 <IndexSMRTest />
 
