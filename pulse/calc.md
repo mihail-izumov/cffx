@@ -24,7 +24,7 @@ title: Прогноз дохода кофейни | Сигнал
 
 **Все, что нужно для победы в локальной конкурентной борьбе:**
 
-<TariffFeaturesCalc />
+<TariffFeaturesLeader />
 
 <div class="start-button-container">
   <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Подключиться →</a>
