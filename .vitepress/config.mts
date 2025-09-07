@@ -275,7 +275,7 @@ export default defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Как работает', link: '/signals' },
-    { text: 'Кофейни', link: '/smr' },
+    { text: 'Индекс', link: '/smr' },
     {
       text: 'Для Бизнеса',
       items: [
@@ -297,8 +297,7 @@ function sidebarBrew(): DefaultTheme.SidebarItem[] {
       collapsed: false,
       items: [
         { text: 'Возможности', link: '/brew/run' },  
-        { text: '→ Подключиться', link: '/brew/membership' },
-        { text: 'Механика Индекса', link: '/brew/index-specs' },  
+        { text: '→ Подключиться', link: '/brew/membership' },  
         { text: 'Тикет-система', link: '/brew/tickets' },
         { text: 'Анализ конкурентов', link: '/brew/reports' },
         { text: 'Прогноз дохода', link: '/brew/calc' },
