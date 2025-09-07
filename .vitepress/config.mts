@@ -306,9 +306,9 @@ function sidebarPulse(): DefaultTheme.SidebarItem[] {
       text: 'Пульс',
       collapsed: false,
       items: [
-        { text: 'Инструменты', link: '/pulse/123' },
-        { text: 'Прогноз дохода', link: '/brew/calc' },
-        { text: 'Диалоги с данными', link: '/brew/sim' }
+        { text: 'Инструменты', link: '/pulse/why-samara' },
+        { text: 'Прогноз дохода', link: '/pulse/calc' },
+        { text: 'Диалоги с данными', link: '/pulse/sim' }
       ]
     }
   ]
