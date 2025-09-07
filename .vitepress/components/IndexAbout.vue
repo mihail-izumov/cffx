@@ -103,10 +103,10 @@ onUnmounted(() => {
               </svg>
               <div class="stat-title">Индекс</div>
             </div>
-            <div class="stat-value-section">
-              <div class="stat-value main-value">{{ establishment.index }}</div>
-              <div class="stat-description">Score всего бизнеса</div>
+            <div class="stat-main">
+              <div class="stat-value">{{ establishment.index }}</div>
             </div>
+            <div class="stat-description">Score всего бизнеса</div>
           </div>
         </div>
 
@@ -119,13 +119,13 @@ onUnmounted(() => {
               </svg>
               <div class="stat-title">Потенциал</div>
             </div>
-            <div class="stat-value-section">
+            <div class="stat-main">
               <div class="stat-value potential-value">
                 <span class="current">{{ establishment.currentPoints }}</span>
                 <span class="potential">({{ establishment.targetPoints }}+)</span>
               </div>
-              <div class="stat-description">Точек сейчас и целевой масштаб сети</div>
             </div>
+            <div class="stat-description">Точек сейчас и целевой масштаб сети</div>
           </div>
         </div>
 
@@ -140,10 +140,10 @@ onUnmounted(() => {
               </svg>
               <div class="stat-title">Влияние</div>
             </div>
-            <div class="stat-value-section">
+            <div class="stat-main">
               <div class="stat-metric-badge">{{ establishment.influenceLevel }}</div>
-              <div class="stat-description">Сила эффекта на рынок</div>
             </div>
+            <div class="stat-description">Сила эффекта на рынок</div>
           </div>
         </div>
       </div>
@@ -275,7 +275,7 @@ onUnmounted(() => {
   transform: translateY(0);
 }
 
-/* ИСПРАВЛЕННЫЕ Desktop карточки */
+/* ПРОСТАЯ И РАБОЧАЯ структура карточек */
 .stats-grid { 
   display: grid; 
   grid-template-columns: 1fr 1fr 1fr; 
@@ -314,7 +314,7 @@ onUnmounted(() => {
   filter: brightness(1.5) saturate(1.3);
 }
 
-/* ПРОСТАЯ структура контента без сложного grid */
+/* УПРОЩЕННАЯ структура: 3 блока вертикально */
 .stat-content {
   background: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.15) 0%, transparent 70%);
   border-radius: 20px;
@@ -335,12 +335,14 @@ onUnmounted(() => {
   box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
 
+/* Блок 1: Заголовок (фиксированная высота) */
 .stat-header { 
   display: flex; 
   flex-direction: column; 
   align-items: center; 
   gap: 8px;
-  margin-bottom: 16px;
+  height: 60px;
+  justify-content: flex-start;
 }
 
 .stat-icon { 
@@ -368,17 +370,18 @@ onUnmounted(() => {
   color: #A3E635;
 }
 
-.stat-value-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
+/* Блок 2: Основное значение (центр) */
+.stat-main {
   flex: 1;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
+/* УВЕЛИЧЕННЫЕ размеры для пропорциональности */
 .stat-value {
   font-family: 'Inter', sans-serif;
+  font-size: clamp(3.5rem, 7vw, 5rem);
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -386,24 +389,25 @@ onUnmounted(() => {
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.main-value {
-  font-size: clamp(3rem, 6vw, 4.5rem);
-}
-
 .potential-value {
-  font-size: clamp(3rem, 6vw, 4.5rem);
   display: flex;
   align-items: baseline;
   gap: 4px;
   justify-content: center;
+  font-size: clamp(3.5rem, 7vw, 5rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .potential-value .current {
-  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-size: clamp(3.5rem, 7vw, 5rem);
 }
 
 .potential-value .potential {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
   opacity: 0.6;
   font-weight: 500;
   margin-left: 2px;
@@ -415,6 +419,7 @@ onUnmounted(() => {
   color: #A3E635;
 }
 
+/* ИСПРАВЛЕННЫЙ бейдж с green hover */
 .stat-metric-badge {
   display: inline-flex;
   align-items: center;
@@ -426,21 +431,27 @@ onUnmounted(() => {
   color: #fff;
   font-weight: 700;
   letter-spacing: 0.1em;
-  font-size: clamp(16px, 3vw, 20px);
+  font-size: clamp(18px, 4vw, 24px);
   white-space: nowrap;
   box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   text-transform: uppercase;
 }
 
+/* ЗЕЛЕНЫЙ hover эффект */
 .stat-card:hover .stat-metric-badge {
-  transform: scale(1.05);
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
+  background: #A3E635;
+  color: #1a2e05;
+  border-color: #A3E635;
+  box-shadow: 0 4px 16px rgba(163, 230, 53, 0.4);
 }
 
+/* Блок 3: Описание (фиксированная высота) */
 .stat-description {
+  height: 40px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   font-size: 13px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.8);
@@ -449,6 +460,7 @@ onUnmounted(() => {
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   letter-spacing: 0.02em;
   max-width: 180px;
+  margin: 0 auto;
 }
 
 .stat-card:hover .stat-description { 
@@ -496,7 +508,7 @@ onUnmounted(() => {
 .modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 8px 12px; cursor: pointer; }
 .modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
-/* МОБИЛЬНАЯ версия без изменений */
+/* МОБИЛЬНАЯ версия остается как есть */
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 0; }
   .main-card { padding: 20px; border-radius: 12px; }
@@ -538,26 +550,27 @@ onUnmounted(() => {
     gap: 8px; 
     width: 100%;
     justify-content: flex-start;
-    margin-bottom: 0;
+    height: auto;
   }
   
   .stat-icon { width: 20px; height: 20px; }
   .stat-title { font-size: 11px; margin: 0; }
   
-  .stat-value-section {
+  .stat-main {
     width: 100%;
-    gap: 12px;
+    flex: none;
   }
   
-  .main-value {
-    font-size: 2rem !important;
+  /* УВЕЛИЧЕННЫЕ размеры для мобильных */
+  .stat-value {
+    font-size: 2.5rem !important;
     font-weight: 500 !important;
     margin: 0;
     line-height: 1;
   }
   
   .potential-value {
-    font-size: 2rem !important;
+    font-size: 2.5rem !important;
     margin: 0;
     display: flex;
     align-items: baseline;
@@ -565,20 +578,20 @@ onUnmounted(() => {
   }
   
   .potential-value .current {
-    font-size: 2rem !important;
+    font-size: 2.5rem !important;
     font-weight: 500 !important;
     line-height: 1;
   }
   
   .potential-value .potential {
-    font-size: 1.4rem !important;
+    font-size: 1.8rem !important;
     opacity: 0.6;
     font-weight: 400;
     margin-left: 2px;
   }
   
   .stat-metric-badge { 
-    font-size: 2rem !important;
+    font-size: 2.5rem !important;
     font-weight: 500 !important;
     padding: 8px 14px; 
     color: #fff;
@@ -600,8 +613,9 @@ onUnmounted(() => {
     text-align: left;
     margin: 0;
     width: 100%;
-    display: flex;
+    height: auto;
     align-items: flex-start;
+    justify-content: flex-start;
   }
   
   .button-container { flex-direction: column; gap: 8px; }
@@ -618,11 +632,11 @@ onUnmounted(() => {
     gap: 14px;
   }
   
-  .main-value { font-size: 1.8rem !important; }
-  .potential-value { font-size: 1.8rem !important; }
-  .potential-value .current { font-size: 1.8rem !important; }
-  .potential-value .potential { font-size: 1.2rem !important; }
-  .stat-metric-badge { font-size: 1.8rem !important; }
+  .stat-value { font-size: 2.2rem !important; }
+  .potential-value { font-size: 2.2rem !important; }
+  .potential-value .current { font-size: 2.2rem !important; }
+  .potential-value .potential { font-size: 1.6rem !important; }
+  .stat-metric-badge { font-size: 2.2rem !important; }
   .stat-description { font-size: 13px !important; }
 }
 </style>
