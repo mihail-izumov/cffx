@@ -8,6 +8,7 @@
       />
       <div class="banner-overlay">
         <div class="banner-text">
+          <div class="banner-intro">ПУЛЬС В ТЕЛЕГРАМ</div>
           <div class="banner-title">{{ title }}</div>
           <p v-if="subtitle" class="banner-subtitle">{{ subtitle }}</p>
         </div>
@@ -36,7 +37,7 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: 'Пульс в Телеграм: инсайты и сигналы рынка в реальном времени'
+    default: 'Сигналы кофейного рынка в реальном времени'
   },
   subtitle: {
     type: String,
@@ -106,6 +107,16 @@ const handleButtonClick = () => {
 .banner-text {
   text-align: center;
   margin-bottom: 2rem;
+}
+
+.banner-intro {
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
+  font-weight: 700;
+  color: #c3f53c;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 0 0 0.5rem 0;
 }
 
 .banner-title {
