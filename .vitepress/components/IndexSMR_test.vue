@@ -42,7 +42,7 @@
             <span v-if="getDessertEmoji(coffee.name)" class="dessert-emoji">
               {{ getDessertEmoji(coffee.name) }}
             </span>
-            <a v-if="isInCalculator(coffee.name)" href="/radar/index-smr/calc" class="badge badge-calculator" title="Рассчитать потенциал роста">
+            <a v-if="isInCalculator(coffee.name)" href="/pulse/calc" class="badge badge-calculator" title="Рассчитать потенциал роста">
               <strong>+₽↑</strong>
             </a>
           </td>
