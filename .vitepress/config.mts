@@ -74,7 +74,6 @@ export default defineConfig({
           signalLink.setAttribute('target', '_self');
           signalLink.removeAttribute('rel');
         });
-
         // --- Original functionality for "apply-link" ---
         const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="apply-link"]');
         applyLinks.forEach(applyLink => {
@@ -231,6 +230,7 @@ export default defineConfig({
     
     sidebar: {
       '/brew/': { items: sidebarBrew() },
+      '/pulse/': { items: sidebarPulse() },
       '/radar/signal/coffee-points-nsk-2025/': { items: [] },
       '/terms/': { items: sidebarTerms() }
     },
@@ -271,7 +271,6 @@ export default defineConfig({
     ],
   }
 })
-
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Как работает', link: '/signals' },
@@ -282,14 +281,11 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'Возможности', link: '/brew/run' },  
         { text: '→ Подключиться', link: '/brew/membership' }, 
         { text: 'Тикет-система', link: '/brew/tickets' },
-        { text: 'Анализ конкурентов', link: '/brew/reports' },
-        { text: 'Прогноз дохода', link: '/brew/calc' },
-        { text: 'Диалоги с данными', link: '/brew/sim' }
+        { text: 'Анализ конкурентов', link: '/brew/reports' }
       ]
     }
   ]
 }
-
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -299,14 +295,24 @@ function sidebarBrew(): DefaultTheme.SidebarItem[] {
         { text: 'Возможности', link: '/brew/run' },  
         { text: '→ Подключиться', link: '/brew/membership' },  
         { text: 'Тикет-система', link: '/brew/tickets' },
-        { text: 'Анализ конкурентов', link: '/brew/reports' },
+        { text: 'Анализ конкурентов', link: '/brew/reports' }
+      ]
+    }
+  ]
+}
+function sidebarPulse(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: 'Пульс',
+      collapsed: false,
+      items: [
+        { text: 'Инструменты', link: '/pulse/123' },
         { text: 'Прогноз дохода', link: '/brew/calc' },
         { text: 'Диалоги с данными', link: '/brew/sim' }
       ]
     }
   ]
 }
-
 function sidebarTerms(): DefaultTheme.SidebarItem[] {
   return [{
       text: 'Условия использования', collapsed: false, items: [
