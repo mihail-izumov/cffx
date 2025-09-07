@@ -2,7 +2,7 @@
   <div class="pricing-grid">
     <!-- КАРТОЧКА 1: СИМУЛЯТОР -->
     <div class="pricing-card">
-      <h3 class="card-title card-title--simulator">СИМУЛЯТОР</h3>
+      <h3 class="card-title card-title--simulator">ДИАЛОГИ С ДАННЫМИ</h3>
       <p class="card-subtitle">Где конкуренты зарабатывают ваши деньги</p>
       <div class="card-image-wrapper">
         <!-- Убедитесь, что путь к изображению верный -->
@@ -22,7 +22,7 @@
         <li class="feature-item"><CheckIcon /><span>Мгновенный доступ к инсайтам</span></li>
         <li class="feature-item"><CheckIcon /><span>ИИ-ассистент Анна</span></li>
       </ul>
-      <a href="/brew/sim" class="card-button card-button--secondary">
+      <a href="/pulse/sim" class="card-button card-button--secondary">
         Получить Ответ
       </a>
     </div>
@@ -50,7 +50,7 @@
         <li class="feature-item"><CheckIcon /><span>Целевые конкуренты</span></li>
       </ul>
       <!-- Я обновил ссылку, чтобы она соответствовала новому названию -->
-      <a href="/brew/calc" class="card-button">Рассчитать</a>
+      <a href="/pulse/calc" class="card-button">Рассчитать</a>
     </div>
   </div>
 </template>
