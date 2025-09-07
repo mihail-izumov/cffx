@@ -280,8 +280,7 @@ function nav(): DefaultTheme.NavItem[] {
       text: 'Для Бизнеса',
       items: [
         { text: 'Возможности', link: '/brew/run' },  
-        { text: '→ Подключиться', link: '/brew/membership' },
-        { text: 'Механика Индекса', link: '/brew/index-specs' },  
+        { text: '→ Подключиться', link: '/brew/membership' }, 
         { text: 'Тикет-система', link: '/brew/tickets' },
         { text: 'Анализ конкурентов', link: '/brew/reports' },
         { text: 'Прогноз дохода', link: '/brew/calc' },
