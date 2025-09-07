@@ -275,7 +275,7 @@ onUnmounted(() => {
   transform: translateY(0);
 }
 
-/* УЛУЧШЕННЫЕ карточки с идеальными пропорциями */
+/* Desktop карточки */
 .stats-grid { 
   display: grid; 
   grid-template-columns: 1fr 1fr 1fr; 
@@ -314,7 +314,6 @@ onUnmounted(() => {
   filter: brightness(1.5) saturate(1.3);
 }
 
-/* ИДЕАЛЬНЫЕ пропорции контента */
 .stat-content {
   background: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.15) 0%, transparent 70%);
   border-radius: 20px;
@@ -335,7 +334,6 @@ onUnmounted(() => {
   box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
 
-/* Верхний блок - фиксированная высота */
 .stat-header { 
   display: flex; 
   flex-direction: column; 
@@ -370,7 +368,6 @@ onUnmounted(() => {
   color: #A3E635;
 }
 
-/* Центральный блок - значения и описания */
 .stat-value-section {
   display: flex;
   flex-direction: column;
@@ -380,7 +377,6 @@ onUnmounted(() => {
   justify-content: center;
 }
 
-/* УНИФИЦИРОВАННЫЕ основные значения */
 .stat-value {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
@@ -394,7 +390,6 @@ onUnmounted(() => {
   font-size: clamp(3rem, 6vw, 4.5rem);
 }
 
-/* НОВЫЙ формат потенциала 8 (12+) */
 .potential-value {
   font-size: clamp(3rem, 6vw, 4.5rem);
   display: flex;
@@ -419,7 +414,6 @@ onUnmounted(() => {
   color: #A3E635;
 }
 
-/* Бейдж для влияния */
 .stat-metric-badge {
   display: inline-flex;
   align-items: center;
@@ -445,7 +439,6 @@ onUnmounted(() => {
   box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
 }
 
-/* УЛУЧШЕННЫЕ описания */
 .stat-description {
   font-size: 13px;
   font-weight: 500;
@@ -502,7 +495,7 @@ onUnmounted(() => {
 .modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 8px 12px; cursor: pointer; }
 .modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
-/* ИДЕАЛЬНАЯ мобильная адаптация */
+/* ИДЕАЛЬНО ИСПРАВЛЕННАЯ мобильная версия */
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 0; }
   .main-card { padding: 20px; border-radius: 12px; }
@@ -527,75 +520,114 @@ onUnmounted(() => {
   }
   .stat-card:hover { transform: none; }
   
+  /* ИСПРАВЛЕННЫЕ отступы и структура */
   .stat-content { 
-    flex-direction: row; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 16px 18px;
-    min-height: 80px;
+    flex-direction: column; 
+    justify-content: flex-start; 
+    align-items: flex-start; 
+    padding: 20px 18px 20px 18px; /* РАВНОМЕРНЫЕ отступы сверху и снизу */
+    min-height: auto;
     background: radial-gradient(circle at 20% 50%, rgba(163, 230, 53, 0.15) 0%, transparent 70%) !important;
+    gap: 16px; /* Воздушность между элементами */
   }
   
   .stat-header { 
-    flex-direction: column; 
-    align-items: flex-start; 
-    gap: 4px; 
+    flex-direction: row; 
+    align-items: center; 
+    gap: 8px; 
     height: auto;
-    min-width: 70px;
-    flex-shrink: 0;
+    width: 100%;
+    justify-content: flex-start;
   }
   
   .stat-icon { width: 20px; height: 20px; }
-  .stat-title { font-size: 11px; }
+  .stat-title { font-size: 11px; margin: 0; }
   
+  /* ГЛАВНАЯ линия - цифры и бейдж на одной базовой линии */
   .stat-value-section {
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-    justify-content: space-between;
+    width: 100%;
+    gap: 12px;
   }
   
-  /* МОБИЛЬНЫЕ размеры */
+  .stat-values-line {
+    display: flex;
+    align-items: baseline; /* ВСЕ элементы на одной базовой линии */
+    gap: 16px;
+    width: 100%;
+  }
+  
+  /* УМЕНЬШЕННЫЕ цифры со средней жирностью */
   .main-value {
-    font-size: 1.8rem;
+    font-size: 2rem !important; /* Сильно уменьшено */
+    font-weight: 500 !important; /* Средняя жирность */
     margin: 0;
-    flex-shrink: 0;
+    line-height: 1;
   }
   
   .potential-value {
-    font-size: 1.8rem;
+    font-size: 2rem !important;
     margin: 0;
-    flex-shrink: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
   }
   
   .potential-value .current {
-    font-size: 1.8rem;
+    font-size: 2rem !important;
+    font-weight: 500 !important; /* Средняя жирность */
+    line-height: 1;
   }
   
   .potential-value .potential {
-    font-size: 1.2rem;
+    font-size: 1.4rem !important;
+    opacity: 0.6;
+    font-weight: 400;
+    margin-left: 2px;
   }
   
+  /* "Высокое" на той же базовой линии с hover эффектом */
   .stat-metric-badge { 
-    font-size: 12px;
-    padding: 6px 10px; 
-    flex-shrink: 0;
+    font-size: 2rem !important;
+    font-weight: 500 !important; /* Средняя жирность */
+    padding: 8px 14px; 
     color: #fff;
     background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    line-height: 1;
+    transition: color 0.3s ease, background-color 0.3s ease;
   }
   
+  /* ЗЕЛЕНЫЙ при наведении */
+  .stat-metric-badge:hover {
+    color: #A3E635 !important;
+    background: rgba(163, 230, 53, 0.1);
+  }
+  
+  /* Описания выровнены по верхнему краю на единой линии */
   .stat-description { 
-    font-size: 11px; 
-    text-align: right;
-    flex: 1;
-    line-height: 1.2;
-    max-width: none;
-    margin-left: 8px;
+    font-size: 14px !important; /* Крупнее для читаемости */
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.3;
+    text-align: left;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    align-items: flex-start; /* Выравнивание по верхнему краю */
   }
   
   .button-container { flex-direction: column; gap: 8px; }
   .action-button:hover { transform: none; }
+}
+
+/* Дополнительная структура для мобильных */
+@media (max-width: 768px) {
+  .stat-value-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -604,15 +636,15 @@ onUnmounted(() => {
   .cafe-subtitle { font-size: 13px; }
   
   .stat-content { 
-    padding: 14px 16px;
-    min-height: 70px; 
+    padding: 18px 16px 18px 16px; /* Пропорциональные отступы */
+    gap: 14px;
   }
   
-  .main-value { font-size: 1.6rem; }
-  .potential-value { font-size: 1.6rem; }
-  .potential-value .current { font-size: 1.6rem; }
-  .potential-value .potential { font-size: 1.1rem; }
-  .stat-metric-badge { font-size: 11px; }
-  .stat-description { font-size: 10px; }
+  .main-value { font-size: 1.8rem !important; }
+  .potential-value { font-size: 1.8rem !important; }
+  .potential-value .current { font-size: 1.8rem !important; }
+  .potential-value .potential { font-size: 1.2rem !important; }
+  .stat-metric-badge { font-size: 1.8rem !important; }
+  .stat-description { font-size: 13px !important; }
 }
 </style>
