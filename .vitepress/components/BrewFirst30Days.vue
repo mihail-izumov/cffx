@@ -3,7 +3,6 @@ import { ref } from 'vue'
 // Устанавливаем первую вкладку активной по умолчанию
 const activeTab = ref('day-1')
 </script>
-
 <template>
   <div class="tabs-mr">
     <button :class="{ active: activeTab === 'day-1' }" @click="activeTab = 'day-1'">
@@ -47,7 +46,6 @@ const activeTab = ref('day-1')
         <p><strong>Результат –</strong> Вместо интуиции — <strong>точные данные</strong> о том, где вы находитесь</p>
       </div>
     </div>
-
     <!-- Вкладка: ДЕНЬ 7 -->
     <div v-show="activeTab === 'day-7'" class="content-mr">
       <h3>ДЕНЬ 7 – Получите карту битвы</h3>
@@ -63,7 +61,6 @@ const activeTab = ref('day-1')
         <p><strong>Результат –</strong> У вас на руках <strong>точный план по захвату 15% клиентов</strong> у конкурентов в течение месяца</p>
       </div>
     </div>
-
     <!-- Вкладка: ДЕНЬ 14 -->
     <div v-show="activeTab === 'day-14'" class="content-mr">
       <h3>ДЕНЬ 14 – Превратите данные в стратегию</h3>
@@ -79,7 +76,6 @@ const activeTab = ref('day-1')
         <p><strong>Результат –</strong> Вы переходите от хаоса данных к <strong>четкому плану действий</strong> с задачами и приоритетами</p>
       </div>
     </div>
-
     <!-- Вкладка: ДЕНЬ 21 -->
     <div v-show="activeTab === 'day-21'" class="content-mr">
       <h3>ДЕНЬ 21 – Запустите систему роста</h3>
@@ -95,7 +91,6 @@ const activeTab = ref('day-1')
         <p><strong>Результат –</strong> Вы внедряете <strong>конкретные изменения, которые клиенты заметят</strong> уже на этой неделе</p>
       </div>
     </div>
-
     <!-- Вкладка: ДЕНЬ 30+ -->
     <div v-show="activeTab === 'day-30'" class="content-mr">
       <h3>ДЕНЬ 30+ Зафиксируйте и масштабируйте</h3>
@@ -111,7 +106,6 @@ const activeTab = ref('day-1')
         <p><strong>Результат –</strong> Вы создаете <strong>устойчивую систему роста</strong>, которая работает быстрее и точнее конкурентов</p>
       </div>
     </div>
-
     <!-- Вкладка: Результат -->
     <div v-show="activeTab === 'result'" class="content-mr">
         <h3>↑ 17–26% выручки [Вашей Кофейни] за 30 дней</h3>
@@ -130,10 +124,14 @@ const activeTab = ref('day-1')
             <span class="arrow">→</span>
             <p><strong>Имеете –</strong> решения, основанные на данных реальных клиентов для каждого шага</p>
         </div>
+        
+        <div class="result-block">
+            <p><strong>Сколько забрать у конкурентов через дорогу?</strong></p>
+            <a href="/invest/calc" class="calc-button">Прогноз дохода</a>
+        </div>
     </div>
   </div>
 </template>
-
 <style scoped>
 .tabs-mr {
   display: flex;
@@ -252,6 +250,22 @@ const activeTab = ref('day-1')
 .result-block p {
     margin: 0;
     line-height: 1.5;
+}
+.calc-button {
+    display: inline-block;
+    background: #c8ff5a;
+    color: #0a0a0a;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 8px;
+    transition: all .2s ease;
+}
+.calc-button:hover {
+    background: #b8ef4a;
+    transform: translateY(-1px);
 }
 .transformation-item {
     display: grid;
