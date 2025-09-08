@@ -3,7 +3,7 @@
     <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) -->
     <div class="pricing-card">
       <h3 class="card-title card-title--simulator">ИНСАЙДЕР</h3>
-      <p class="card-subtitle">Отследить, где конкуренты зарабатывают ваши деньги</p>
+      <p class="card-subtitle">Расти быстрее конкурентов через дорогу</p>
       <div class="card-image-wrapper">
         <img
           src="/simulator-ban.svg"
@@ -29,7 +29,7 @@
     <!-- КАРТОЧКА: ИНСАЙДЕР (ПЛАТНО) -->
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title card-title--insider">НОВЫЙ ЛИДЕР</h3>
-      <p class="card-subtitle">Расти быстрее конкурентов через дорогу</p>
+      <p class="card-subtitle">Не просто используете платформу — вы ее формируете</p>
       <div class="card-image-wrapper">
         <img
           src="/insider-ban.svg"
