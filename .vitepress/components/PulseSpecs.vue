@@ -1,6 +1,6 @@
 <template>
   <div class="brew-specs-container">
-    <h1 class="main-specs-title">Характеристики <br> Сигнала</h1>
+    <h1 class="main-specs-title">Характеристики <br> Пульс Сигнала</h1>
     
     <!-- Ключевые показатели -->
     <div class="specs-section">
@@ -27,7 +27,7 @@
     
     <!-- Платформа Сигнал -->
     <div class="specs-section">
-      <h2 class="section-title">Платформа Сигнал</h2>
+      <h2 class="section-title">Платформа</h2>
       <div class="specs-grid four-cols">
         <div class="spec-item">
           <span class="spec-value">Мета-франшиза</span>
@@ -50,10 +50,10 @@
     
     <!-- Аналитическое ядро: Кофейный Протокол -->
     <div class="specs-section">
-      <h2 class="section-title">Аналитическое ядро: Кофейный Протокол</h2>
+      <h2 class="section-title">Аналитическое ядро</h2>
       <div class="specs-grid three-cols">
         <div class="spec-item">
-          <span class="spec-value">Отзывы реальных клиентов</span>
+          <span class="spec-value">Отзывы гостей 2ГИС/Яндекс</span>
           <p class="spec-label">Источник данных</p>
         </div>
         <div class="spec-item">
