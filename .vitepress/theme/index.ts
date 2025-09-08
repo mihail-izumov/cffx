@@ -10,6 +10,7 @@ import InfoCardsPro from '../components/InfoCardsPro.vue'
 import ValueCards from '../components/ValueCards.vue'
 import PricingTable from '../components/PricingTable.vue'
 import MembershipCards from '../components/MembershipCards.vue'
+import MembershipCards2 from '../components/MembershipCards2.vue'
 import TariffFeatures from '../components/TariffFeatures.vue'
 import TariffFeaturesFree from '../components/TariffFeaturesFree.vue'
 import TariffFeaturesInsider from '../components/TariffFeaturesInsider.vue'
@@ -55,6 +56,7 @@ export default {
     app.component('ValueCards', ValueCards)
     app.component('PricingTable', PricingTable)
     app.component('MembershipCards', MembershipCards)
+    app.component('MembershipCards2', MembershipCards2)
     app.component('TariffFeatures', TariffFeatures)
     app.component('TariffFeaturesFree', TariffFeaturesFree)
     app.component('TariffFeaturesInsider', TariffFeaturesInsider)
