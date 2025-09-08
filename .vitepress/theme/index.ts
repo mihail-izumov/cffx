@@ -41,6 +41,7 @@ import IndexAbout from '../components/IndexAbout.vue'
 import Pulse3Cards from '../components/Pulse3Cards.vue'
 import PulseSpecs from '../components/PulseSpecs.vue'
 import RegularVSSmart from '../components/RegularVSSmart.vue'
+import FestTerms from '../components/FestTerms.vue'
 
 export default {
   extends: DefaultTheme,
@@ -88,5 +89,6 @@ export default {
     app.component('Pulse3Cards', Pulse3Cards)
     app.component('PulseSpecs', PulseSpecs)
     app.component('RegularVSSmart', RegularVSSmart)
+    app.component('FestTerms', FestTerms)
   }
 }
