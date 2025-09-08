@@ -4,12 +4,12 @@
 
 <template>
   <div class="comparison-table">
-    <div class="table-header">
-      <div class="header-cell usual">Как обычно</div>
-      <div class="header-cell smart">Умная Кофейня</div>
-    </div>
-    
     <div class="table-content">
+      <div class="table-header">
+        <div class="header-cell usual">Как обычно</div>
+        <div class="header-cell smart">Умная Кофейня</div>
+      </div>
+      
       <div class="table-row">
         <div class="cell usual-cell">
           <p>Нечеткое понимание проблем и возможностей</p>
@@ -68,36 +68,39 @@
   width: 100%;
 }
 
-.table-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.header-cell {
-  padding: 12px 20px;
-  font-weight: 600;
-  font-size: 14px;
-  text-align: center;
-  border-radius: 12px;
-}
-
-.header-cell.usual {
-  background: rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.7);
-}
-
-.header-cell.smart {
-  background: rgba(200,255,90,0.12);
-  color: #c8ff5a;
-}
-
 .table-content {
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
   background: rgba(255,255,255,0.03);
   overflow: hidden;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.header-cell {
+  padding: 12px 18px;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.header-cell:last-child {
+  border-right: none;
+}
+
+.header-cell.usual {
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.7);
+}
+
+.header-cell.smart {
+  background: rgba(200,255,90,0.08);
+  color: #c8ff5a;
 }
 
 .table-row {
@@ -111,17 +114,24 @@
 }
 
 .cell {
-  padding: 16px 18px;
+  padding: 12px 18px;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 1.3;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.cell:last-child {
+  border-right: none;
 }
 
 .usual-cell {
   color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.01);
 }
 
 .smart-cell {
   color: rgba(255,255,255,0.88);
+  background: rgba(200,255,90,0.04);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -151,7 +161,7 @@
   
   .table-row {
     grid-template-columns: 1fr;
-    padding: 16px;
+    padding: 14px 18px;
     gap: 8px;
   }
   
@@ -161,6 +171,8 @@
   
   .cell {
     padding: 0;
+    border-right: none;
+    background: transparent !important;
   }
   
   .usual-cell {
