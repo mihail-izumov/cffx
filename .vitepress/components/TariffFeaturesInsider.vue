@@ -3,52 +3,53 @@
     <!-- ФУНКЦИИ ТАРИФА: Инсайдер -->
     <div class="brand-card insider-card">
       <div class="tariff-badge insider">Инсайдер</div>
-      <h3>Ваша кофейня VS Рынок в реальном времени</h3>
+      <h3>Тикет-система "Сигнал"</h3>
+      <p class="description-main">Перехватите негатив до того, как он попадёт в 2ГИС или Яндекс</p>
+      <p class="description-goals">Ваш гость жалуется → Мы решаем → Выручка возвращается</p>
+    </div>
+    
+    <div class="brand-card insider-card">
+      <div class="tariff-badge insider">Инсайдер</div>
+      <h3>Анализ конкурентов в реальном времени</h3>
       <p class="description-main">Отследить, где конкуренты зарабатывают ваши деньги</p>
       <p class="description-goals">1 раз/мес. анализ отзывов и сравнение с конкурентами</p>
     </div>
     
     <div class="brand-card insider-card">
       <div class="tariff-badge insider">Инсайдер</div>
-      <h3><a href="/radar/overview" target="_blank">Индекс Роста</a>: сигналы изменений</h3>
+      <h3>Индекс Роста: <a href="/smr" target="_blank"></a>сигналы изменений</h3>
       <p class="description-main">Получайте уведомления о движениях рынка</p>
       <p class="description-goals">Тренды, сдвиги в поведении гостей, новые возможности</p>
     </div>
     
-    <div class="brand-card insider-card">
-      <div class="tariff-badge insider">Инсайдер</div>
-      <h3>Ранний доступ к новым городам</h3>
-      <p class="description-main">На месяц раньше всех остальных</p>
-      <p class="description-goals">Новые города, локации, обновления аналитики</p>
-    </div>
 
-    <!-- ФУНКЦИИ ТАРИФА: Симулятор -->
+    <!-- ФУНКЦИИ ТАРИФА: Старт -->
     <div class="brand-card simulator-card">
-      <div class="tariff-badge simulator">Симулятор</div>
-      <h3>Анализ и симулятор</h3>
-      <p class="description-main">Используйте опыт тысяч кофеен для роста без потерь</p>
+      <div class="tariff-badge simulator">Старт</div>
+      <h3>Прогноз дохода</h3>
+      <p class="description-main">Сколько забрать у конкурентов через дорогу</p>
+      <p class="description-goals">Фокусируемся на вас, используем отзывы 2ГИС/Яндекс</p>
+    </div>
+    
+    <div class="brand-card simulator-card">
+      <div class="tariff-badge simulator">Старт</div>
+      <h3>Диалоги с данными</h3>
+      <p class="description-main">Спросите Анну о любом конкуренте и получите готовую стратегию роста</p>
       <p class="description-goals">Цифровая копия ТОП-10 кофейных рынков РФ</p>
     </div>
     
     <div class="brand-card simulator-card">
-      <div class="tariff-badge simulator">Симулятор</div>
+      <div class="tariff-badge simulator">Старт</div>
       <h3>Готовые диалоги для быстрого старта</h3>
       <p class="description-main">Начинайте работу с проверенными сценариями</p>
-      <p class="description-goals">Базовые диалоги для анализа конкретных задач</p>
+      <p class="description-goals">Готовые разборы бизнес-задач на самарском рынке</p>
     </div>
     
     <div class="brand-card simulator-card">
-      <div class="tariff-badge simulator">Симулятор</div>
-      <h3>Клонировать успех лидеров рынка</h3>
-      <p class="description-main">Применяйте лучший опыт для своего роста</p>
-      <p class="description-goals">Формулы успеха: культ бренда, ценовое доминирование</p>
-    </div>
-    
-    <div class="brand-card simulator-card">
-      <div class="tariff-badge simulator">Симулятор</div>
-      <h3>ИИ-ассистент <a href="/radar/who-is-anna" target="_blank">Анна</a></h3>
+      <div class="tariff-badge simulator">Старт</div>
+      <h3>ИИ-ассистент Анна</h3>
       <p class="description-main">Персональный навигатор по платформе</p>
-      <p class="description-goals">Базовые рекомендации для работы с BREW</p>
+      <p class="description-goals">Базовые рекомендации для работы с Сигналом</p>
     </div>
   </div>
 </template>
