@@ -307,9 +307,9 @@ function sidebarPulse(): DefaultTheme.SidebarItem[] {
       text: 'Инвестиции',
       collapsed: false,
       items: [
-        { text: 'Пульс', link: '/pulse/invest' },
-        { text: 'Прогноз дохода', link: '/pulse/calc' },
-        { text: 'Симулятор Самары', link: '/pulse/sim' }
+        { text: 'Пульс', link: '/invest/pulse' },
+        { text: 'Прогноз дохода', link: '/invest/calc' },
+        { text: 'Симулятор Самары', link: '/invest/sim' }
       ]
     }
   ]
