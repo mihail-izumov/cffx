@@ -43,6 +43,7 @@ import PulseSpecs from '../components/PulseSpecs.vue'
 import RegularVSSmart from '../components/RegularVSSmart.vue'
 import FestTerms from '../components/FestTerms.vue'
 import FestCards from '../components/FestCards.vue'
+import FestActivities from '../components/FestActivities.vue'
 
 export default {
   extends: DefaultTheme,
@@ -92,5 +93,6 @@ export default {
     app.component('RegularVSSmart', RegularVSSmart)
     app.component('FestTerms', FestTerms)
     app.component('FestCards', FestCards)
+    app.component('FestActivities', FestActivities)
   }
 }
