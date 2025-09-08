@@ -42,8 +42,8 @@
       </div>
       <p class="includes-all">Все, что в Инсайдере, плюс:</p>
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Персональные сессии с аналитиком Сигнала></span></li>
-        <li class="feature-item"><CheckIcon /><span><Индекс Роста: Темный Режим</span></li>
+        <li class="feature-item"><CheckIcon /><span>Персональные сессии с аналитиком Сигнала</span></li>
+        <li class="feature-item"><CheckIcon /><span>Индекс Роста: Темный Режим</span></li>
         <li class="feature-item"><CheckIcon /><span>-20% на Чекап Модуля Роста®</span></li>
       </ul>
       <a href="/brew/join/leader" class="card-button">Стать Лидером</a>
