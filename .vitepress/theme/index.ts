@@ -40,6 +40,7 @@ import PulseSubscribeBanner from '../components/PulseSubscribeBanner.vue'
 import IndexAbout from '../components/IndexAbout.vue'
 import Pulse3Cards from '../components/Pulse3Cards.vue'
 import PulseSpecs from '../components/PulseSpecs.vue'
+import RegularVSSmart from '../components/RegularVSSmart.vue'
 
 export default {
   extends: DefaultTheme,
@@ -86,5 +87,6 @@ export default {
     app.component('IndexAbout', IndexAbout)
     app.component('Pulse3Cards', Pulse3Cards)
     app.component('PulseSpecs', PulseSpecs)
+    app.component('RegularVSSmart', RegularVSSmart)
   }
 }
