@@ -19,131 +19,179 @@
 <!-- Контент для вкладок -->
 <div class="tab-content">
   <!-- Вкладка 1: Дегустации -->
-  <div v-show="activeTab === 'tastings'">
-    <p><strong>Погрузитесь в мир вкусов через профессиональные дегустации</strong></p>
-    <table class="custom-table">
-      <thead>
-        <tr>
-          <th>Формат дегустации</th>
-          <th>Что развиваете</th>
-          <th>Участники из Самары</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Профессиональный каппинг</strong></td>
-          <td>Учитесь оценивать кофе по международным стандартам SCA.</td>
-          <td>Ведущие Q-грейдеры от Skuratov и Coffee Balance проведут сессии.</td>
-        </tr>
-        <tr>
-          <td><strong>Слепые дегустации</strong></td>
-          <td>Развиваете чувствительность вкусовых рецепторов без предрассудков.</td>
-          <td>Тестирование кофе от 8 самарских обжарщиков в формате "угадай происхождение".</td>
-        </tr>
-        <tr>
-          <td><strong>Треугольные тесты</strong></td>
-          <td>Тренируете способность различать тонкие нюансы в похожих образцах.</td>
-          <td>Сравнение одного зерна из разных партий и способов обработки.</td>
-        </tr>
-      </tbody>
-    </table>
-    <p><strong>Результат:</strong> Развитие профессионального вкуса и понимание качества кофе.</p>
+  <div v-show="activeTab === 'tastings'" class="content-section">
+    <h3>Погрузитесь в мир вкусов через профессиональные дегустации</h3>
+    
+    <div class="experience-grid">
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Профессиональный каппинг</h4>
+          <span class="card-badge">SCA стандарты</span>
+        </div>
+        <p class="card-description">Учитесь оценивать кофе по международным стандартам. Развивайте навыки Q-грейдера и понимание качественных характеристик зерна.</p>
+        <div class="card-highlight">
+          <strong>Ведут:</strong> Q-грейдеры от Skuratov и Coffee Balance
+        </div>
+      </div>
+
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Слепые дегустации</h4>
+          <span class="card-badge">Без предрассудков</span>
+        </div>
+        <p class="card-description">Развивайте чувствительность вкусовых рецепторов, учитесь определять происхождение и способ обработки зерна без визуальных подсказок.</p>
+        <div class="card-highlight">
+          <strong>Формат:</strong> 8 самарских обжарщиков • "Угадай происхождение"
+        </div>
+      </div>
+
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Треугольные тесты</h4>
+          <span class="card-badge">Точность восприятия</span>
+        </div>
+        <p class="card-description">Тренируйте способность различать тонкие нюансы в похожих образцах. Профессиональный инструмент контроля качества.</p>
+        <div class="card-highlight">
+          <strong>Задача:</strong> Найти отличия в одном зерне из разных партий
+        </div>
+      </div>
+    </div>
+
+    <div class="result-block">
+      <strong>Результат:</strong> Развитие профессионального вкуса и понимание качества кофе
+    </div>
   </div>
 
   <!-- Вкладка 2: Пейринги -->
-  <div v-show="activeTab === 'pairings'">
-    <p><strong>Откройте гармонию вкусов через уникальные сочетания</strong></p>
-    <table class="custom-table">
-      <thead>
-        <tr>
-          <th>Тип пейринга</th>
-          <th>Что изучаете</th>
-          <th>Локальные партнеры</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Wine & Coffee</strong></td>
-          <td>Изучаете принципы сочетания кислотности, сладости и танинов.</td>
-          <td>Винотека "Градус" и обжарщики White Cup создают авторские пары.</td>
-        </tr>
-        <tr>
-          <td><strong>Кофе и десерты</strong></td>
-          <td>Понимаете, как текстуры и вкусы усиливают друг друга.</td>
-          <td>Кондитеры "Коржа" специально готовят сочетания под разные сорта кофе.</td>
-        </tr>
-        <tr>
-          <td><strong>Coffee & Craft Beer</strong></td>
-          <td>Исследуете неожиданные комбинации горечи, фруктовости и солодовости.</td>
-          <td>Пивоварня "Жигулевское" и Cold Brew Bar представляют крафтовые эксперименты.</td>
-        </tr>
-      </tbody>
-    </table>
-    <p><strong>Результат:</strong> Новый уровень понимания комплементарных вкусов и их взаимодействия.</p>
+  <div v-show="activeTab === 'pairings'" class="content-section">
+    <h3>Откройте гармонию вкусов через уникальные сочетания</h3>
+    
+    <div class="experience-grid">
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Wine & Coffee</h4>
+          <span class="card-badge">Авторские пары</span>
+        </div>
+        <p class="card-description">Изучайте принципы сочетания кислотности, сладости и танинов. Понимайте, как вино и кофе могут дополнять друг друга.</p>
+        <div class="card-highlight">
+          <strong>Партнеры:</strong> Винотека "Градус" × White Cup
+        </div>
+      </div>
+
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Кофе и десерты</h4>
+          <span class="card-badge">Гастрономия</span>
+        </div>
+        <p class="card-description">Понимайте, как текстуры и вкусы усиливают друг друга. Секреты создания идеальных сочетаний от профессиональных кондитеров.</p>
+        <div class="card-highlight">
+          <strong>Специально:</strong> Кондитеры "Коржа" под разные сорта кофе
+        </div>
+      </div>
+
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Coffee & Craft Beer</h4>
+          <span class="card-badge">Эксперименты</span>
+        </div>
+        <p class="card-description">Исследуйте неожиданные комбинации горечи, фруктовости и солодовости. Новая граница гастрономических открытий.</p>
+        <div class="card-highlight">
+          <strong>Крафт:</strong> "Жигулевское" × Cold Brew Bar
+        </div>
+      </div>
+    </div>
+
+    <div class="result-block">
+      <strong>Результат:</strong> Новый уровень понимания комплементарных вкусов и их взаимодействия
+    </div>
   </div>
 
   <!-- Вкладка 3: Мастер-классы -->
-  <div v-show="activeTab === 'masterclasses'">
-    <p><strong>Получите практические навыки от профессионалов индустрии</strong></p>
-    <table class="custom-table">
-      <thead>
-        <tr>
-          <th>Мастер-класс</th>
-          <th>Навыки</th>
-          <th>Мастер</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Латте-арт для начинающих</strong></td>
-          <td>Основы работы с молочной пеной, базовые рисунки: сердце, тюльпан.</td>
-          <td>Чемпион Поволжья по латте-арту из Surf Coffee.</td>
-        </tr>
-        <tr>
-          <td><strong>Альтернативные способы заваривания</strong></td>
-          <td>V60, Chemex, AeroPress — как выбрать метод под зерно и настроение.</td>
-          <td>Бариста-тренеры сети Green House с 10+ летним опытом.</td>
-        </tr>
-        <tr>
-          <td><strong>Обжарка в домашних условиях</strong></td>
-          <td>Понимание профилей обжарки, работа с домашним ростером.</td>
-          <td>Основатели микро-обжарщика "Самарские зерна".</td>
-        </tr>
-      </tbody>
-    </table>
-    <p><strong>Результат:</strong> Практические навыки для улучшения кофе дома и понимания ремесла.</p>
+  <div v-show="activeTab === 'masterclasses'" class="content-section">
+    <h3>Получите практические навыки от профессионалов индустрии</h3>
+    
+    <div class="experience-grid">
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Латте-арт для начинающих</h4>
+          <span class="card-badge">Hands-on</span>
+        </div>
+        <p class="card-description">Основы работы с молочной пеной, создание базовых рисунков. От простого сердца до сложного тюльпана.</p>
+        <div class="card-highlight">
+          <strong>Мастер:</strong> Чемпион Поволжья из Surf Coffee
+        </div>
+      </div>
+
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Альтернативные способы</h4>
+          <span class="card-badge">V60 • Chemex • AeroPress</span>
+        </div>
+        <p class="card-description">Как выбрать метод заваривания под конкретное зерно и настроение. Секреты извлечения максимума вкуса.</p>
+        <div class="card-highlight">
+          <strong>Опыт:</strong> Бариста-тренеры Green House • 10+ лет
+        </div>
+      </div>
+
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Домашняя обжарка</h4>
+          <span class="card-badge">От зерна до чашки</span>
+        </div>
+        <p class="card-description">Понимание профилей обжарки, работа с домашним оборудованием. Создавайте уникальные вкусы самостоятельно.</p>
+        <div class="card-highlight">
+          <strong>Ведут:</strong> Основатели "Самарские зерна"
+        </div>
+      </div>
+    </div>
+
+    <div class="result-block">
+      <strong>Результат:</strong> Практические навыки для улучшения кофе дома и понимание ремесла
+    </div>
   </div>
 
   <!-- Вкладка 4: Лекции и обучение -->
-  <div v-show="activeTab === 'lectures'">
-    <p><strong>Расширьте кофейные горизонты через экспертные знания</strong></p>
-    <table class="custom-table">
-      <thead>
-        <tr>
-          <th>Тема лекции</th>
-          <th>Что узнаете</th>
-          <th>Спикер</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Развитие вкусового словаря</strong></td>
-          <td>Научитесь описывать сложные букеты, используя дескрипторы flavor wheel.</td>
-          <td>Сертифицированный Q-грейдер и судья российских чемпионатов.</td>
-        </tr>
-        <tr>
-          <td><strong>География кофе</strong></td>
-          <td>Как терруар влияет на вкус: от Эфиопии до Колумбии через призму климата.</td>
-          <td>Импортер зеленого кофе с 15-летним опытом прямых закупок.</td>
-        </tr>
-        <tr>
-          <td><strong>Наука о кофе</strong></td>
-          <td>Химические процессы экстракции, влияние температуры и времени на вкус.</td>
-          <td>Технолог производства и исследователь кофейной индустрии.</td>
-        </tr>
-      </tbody>
-    </table>
-    <p><strong>Результат:</strong> Глубокое понимание кофе как продукта и способность профессионально его оценивать.</p>
+  <div v-show="activeTab === 'lectures'" class="content-section">
+    <h3>Расширьте кофейные горизонты через экспертные знания</h3>
+    
+    <div class="experience-grid">
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Развитие вкусового словаря</h4>
+          <span class="card-badge">Flavor Wheel</span>
+        </div>
+        <p class="card-description">Научитесь описывать сложные букеты, используя профессиональные дескрипторы. Язык кофейных экспертов станет вашим языком.</p>
+        <div class="card-highlight">
+          <strong>Спикер:</strong> Q-грейдер • Судья российских чемпионатов
+        </div>
+      </div>
+
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>География кофе</h4>
+          <span class="card-badge">Терруар</span>
+        </div>
+        <p class="card-description">Как климат, почва и высота влияют на вкус. Путешествие от эфиопских плато до колумбийских склонов через призму чашки.</p>
+        <div class="card-highlight">
+          <strong>Опыт:</strong> 15 лет прямых закупок • Импортер зеленого кофе
+        </div>
+      </div>
+
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Наука о кофе</h4>
+          <span class="card-badge">Химия вкуса</span>
+        </div>
+        <p class="card-description">Химические процессы экстракции, влияние температуры и времени на вкус. Научный подход к идеальной чашке.</p>
+        <div class="card-highlight">
+          <strong>Эксперт:</strong> Технолог производства • Исследователь индустрии
+        </div>
+      </div>
+    </div>
+
+    <div class="result-block">
+      <strong>Результат:</strong> Глубокое понимание кофе как продукта и способность профессионально его оценивать
+    </div>
   </div>
 </div>
 </div>
@@ -162,85 +210,164 @@ const activeTab = ref('tastings')
 .tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--vp-c-divider);
+  gap: 0;
+  margin-bottom: 2rem;
+  background: #2a2a2a;
+  border-radius: 12px;
+  padding: 4px;
 }
 
 .tabs button {
-  padding: 0.75rem 1rem;
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 16px;
   border: none;
-  background: var(--vp-c-bg-soft);
-  color: var(--vp-c-text-2);
+  background: transparent;
+  color: #9ca3af;
   cursor: pointer;
-  border-radius: 6px 6px 0 0;
+  border-radius: 8px;
   font-weight: 500;
-  transition: all 0.2s ease;
-  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  text-align: center;
 }
 
 .tabs button:hover {
-  background: var(--vp-c-bg-mute);
-  color: var(--vp-c-text-1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
 }
 
 .tabs button.active {
-  background: var(--vp-c-brand);
-  color: var(--vp-c-bg);
+  background: #84cc16;
+  color: #000000;
+  font-weight: 600;
+  transform: scale(1.02);
+}
+
+.content-section {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.content-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--vp-c-text-1);
   font-weight: 600;
 }
 
-.tab-content {
-  padding: 1.5rem 0;
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.custom-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1rem 0;
-  font-size: 0.9rem;
-}
-
-.custom-table th,
-.custom-table td {
-  padding: 0.875rem;
-  text-align: left;
-  border: 1px solid var(--vp-c-divider);
-  vertical-align: top;
-}
-
-.custom-table th {
+.experience-card {
   background: var(--vp-c-bg-soft);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid var(--vp-c-divider);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.experience-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: var(--vp-c-brand);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.card-header h4 {
+  margin: 0;
+  font-size: 1.2rem;
   font-weight: 600;
+  color: var(--vp-c-text-1);
+  line-height: 1.3;
+}
+
+.card-badge {
+  background: var(--vp-c-brand);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.card-description {
+  color: var(--vp-c-text-2);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.card-highlight {
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--vp-c-text-2);
+}
+
+.card-highlight strong {
   color: var(--vp-c-text-1);
 }
 
-.custom-table td {
-  background: var(--vp-c-bg);
-}
-
-.custom-table tr:hover td {
-  background: var(--vp-c-bg-soft);
+.result-block {
+  background: linear-gradient(135deg, var(--vp-c-brand-light), var(--vp-c-brand));
+  color: white;
+  padding: 1.25rem 1.5rem;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  text-align: center;
+  font-weight: 500;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
   .tabs {
     flex-direction: column;
+    gap: 4px;
   }
   
   .tabs button {
-    border-radius: 6px;
-    margin-bottom: 0.25rem;
+    min-width: unset;
+    flex: none;
   }
   
-  .custom-table {
-    font-size: 0.8rem;
+  .experience-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
   
-  .custom-table th,
-  .custom-table td {
-    padding: 0.5rem;
+  .experience-card {
+    padding: 1rem;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .card-badge {
+    align-self: flex-start;
   }
 }
 </style>
