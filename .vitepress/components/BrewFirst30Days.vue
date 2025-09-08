@@ -276,7 +276,7 @@ const activeTab = ref('day-1')
     padding-bottom: 12px;
     margin-bottom: 12px;
 }
-.transformation-item:nth-child(3) {
+.transformation-item:last-child {
     border-bottom: none;
     margin-bottom: 20px;
     padding-bottom: 0;
