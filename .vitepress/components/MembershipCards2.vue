@@ -20,7 +20,6 @@
         <li class="feature-item"><CheckIcon /><span>Анализ конкурентов</span></li>
         <li class="feature-item"><CheckIcon /><span>Индекс Роста: сигналы изменений</span></li>
         <li class="feature-item"><CheckIcon /><span>Симулятор Самары</span></li>
-        <li class="feature-item"><CheckIcon /><span>ИИ-ассистент Анна</span></li>
       </ul>
       <a href="/brew/join/insider" class="card-button card-button--secondary">
         Начать с Инсайдера
