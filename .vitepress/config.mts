@@ -304,7 +304,7 @@ function sidebarBrew(): DefaultTheme.SidebarItem[] {
 function sidebarPulse(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: 'Пульс',
+      text: 'Инвестиции',
       collapsed: false,
       items: [
         { text: 'Пульс', link: '/pulse/invest' },
