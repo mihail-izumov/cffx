@@ -1,4 +1,5 @@
 ---
+outline: false
 prev: false
 next: false
 title: Диалоги с данными | Сигнал
