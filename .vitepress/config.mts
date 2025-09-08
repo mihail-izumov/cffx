@@ -275,7 +275,7 @@ function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Как работает', link: '/signals' },
     { text: 'Кофейни', link: '/smr' },
-    { text: 'Инвестиции', link: '/pulse/invest' },
+    { text: 'Инвестиции', link: '/invest/pulse' },
     {
       text: 'Для Бизнеса',
       items: [
