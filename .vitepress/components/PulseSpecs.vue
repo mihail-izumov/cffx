@@ -1,6 +1,6 @@
 <template>
   <div class="brew-specs-container">
-    <h1 class="main-specs-title">Характеристики <br> Сигнала</h1>
+    <h1 class="main-specs-title">Характеристики <br> Пульс Сигнала</h1>
     
     <!-- Ключевые показатели -->
     <div class="specs-section">
@@ -229,16 +229,16 @@
   word-break: break-word;
 }
 
-/* Стили для ссылок */
+/* Стили для ссылок - лаймовый по умолчанию, темно-зеленый при ховере */
 .spec-value a {
-  color: #fff;
-  text-decoration: underline;
-  text-decoration-color: rgba(255, 255, 255, 0.3);
-  transition: text-decoration-color 0.2s ease;
+  color: #32d74b; /* лаймовый цвет */
+  text-decoration: none; /* убираем подчеркивание по умолчанию */
+  transition: all 0.2s ease;
 }
 
 .spec-value a:hover {
-  text-decoration-color: rgba(255, 255, 255, 0.8);
+  color: #228b22; /* темно-зеленый при ховере */
+  text-decoration: underline; /* добавляем подчеркивание при ховере */
 }
 
 /* Адаптивность */
