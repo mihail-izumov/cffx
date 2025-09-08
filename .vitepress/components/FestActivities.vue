@@ -56,10 +56,6 @@
         </div>
       </div>
     </div>
-
-    <div class="result-block">
-      <strong>Результат:</strong> Развитие профессионального вкуса и понимание качества кофе
-    </div>
   </div>
 
   <!-- Вкладка 2: Пейринги -->
@@ -99,10 +95,6 @@
           <strong>Крафт:</strong> "Жигулевское" × Cold Brew Bar
         </div>
       </div>
-    </div>
-
-    <div class="result-block">
-      <strong>Результат:</strong> Новый уровень понимания комплементарных вкусов и их взаимодействия
     </div>
   </div>
 
@@ -144,10 +136,6 @@
         </div>
       </div>
     </div>
-
-    <div class="result-block">
-      <strong>Результат:</strong> Практические навыки для улучшения кофе дома и понимание ремесла
-    </div>
   </div>
 
   <!-- Вкладка 4: Лекции и обучение -->
@@ -188,10 +176,6 @@
         </div>
       </div>
     </div>
-
-    <div class="result-block">
-      <strong>Результат:</strong> Глубокое понимание кофе как продукта и способность профессионально его оценивать
-    </div>
   </div>
 </div>
 </div>
@@ -204,32 +188,29 @@ const activeTab = ref('tastings')
 
 <style scoped>
 .festival-experience {
-  margin: 2rem 0;
+  margin: 1.5rem 0;
 }
 
 .tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  margin-bottom: 2rem;
+  display: inline-flex;
+  gap: 4px;
+  margin-bottom: 1.5rem;
   background: #2a2a2a;
-  border-radius: 12px;
+  border-radius: 10px;
   padding: 4px;
 }
 
 .tabs button {
-  flex: 1;
-  min-width: 200px;
-  padding: 12px 16px;
+  padding: 8px 12px;
   border: none;
   background: transparent;
   color: #9ca3af;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 500;
-  transition: all 0.3s ease;
-  font-size: 0.95rem;
-  text-align: center;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .tabs button:hover {
@@ -241,44 +222,41 @@ const activeTab = ref('tastings')
   background: #84cc16;
   color: #000000;
   font-weight: 600;
-  transform: scale(1.02);
 }
 
 .content-section {
-  animation: fadeIn 0.4s ease-in-out;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .content-section h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
   color: var(--vp-c-text-1);
   font-weight: 600;
 }
 
 .experience-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
 }
 
 .experience-card {
   background: var(--vp-c-bg-soft);
-  border-radius: 12px;
-  padding: 1.5rem;
+  border-radius: 10px;
+  padding: 1rem;
   border: 1px solid var(--vp-c-divider);
-  transition: all 0.3s ease;
-  position: relative;
+  transition: all 0.2s ease;
 }
 
 .experience-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   border-color: var(--vp-c-brand);
 }
 
@@ -286,42 +264,47 @@ const activeTab = ref('tastings')
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
-  gap: 1rem;
+  margin-bottom: 0.75rem;
+  gap: 0.75rem;
 }
 
 .card-header h4 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: var(--vp-c-text-1);
   line-height: 1.3;
+  flex: 1;
+  min-width: 0;
 }
 
 .card-badge {
-  background: var(--vp-c-brand);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 500;
+  background: #4ade80;
+  color: #000000;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
   white-space: nowrap;
   flex-shrink: 0;
+  max-width: 120px;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .card-description {
   color: var(--vp-c-text-2);
-  line-height: 1.6;
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
 }
 
 .card-highlight {
   background: var(--vp-c-bg);
   border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
-  padding: 0.75rem;
-  font-size: 0.9rem;
+  border-radius: 6px;
+  padding: 0.6rem;
+  font-size: 0.85rem;
   color: var(--vp-c-text-2);
 }
 
@@ -329,35 +312,20 @@ const activeTab = ref('tastings')
   color: var(--vp-c-text-1);
 }
 
-.result-block {
-  background: linear-gradient(135deg, var(--vp-c-brand-light), var(--vp-c-brand));
-  color: white;
-  padding: 1.25rem 1.5rem;
-  border-radius: 10px;
-  font-size: 1.05rem;
-  text-align: center;
-  font-weight: 500;
-}
-
 /* Адаптивность */
 @media (max-width: 768px) {
   .tabs {
-    flex-direction: column;
-    gap: 4px;
-  }
-  
-  .tabs button {
-    min-width: unset;
-    flex: none;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .experience-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.8rem;
   }
   
   .experience-card {
-    padding: 1rem;
+    padding: 0.8rem;
   }
   
   .card-header {
@@ -368,6 +336,7 @@ const activeTab = ref('tastings')
   
   .card-badge {
     align-self: flex-start;
+    max-width: none;
   }
 }
 </style>
