@@ -279,7 +279,6 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Для Бизнеса',
       items: [
-        { text: 'Возможности', link: '/brew/run' },  
         { text: '→ Подключиться', link: '/brew/membership' }, 
         { text: 'Тикет-система', link: '/brew/tickets' },
         { text: 'Анализ конкурентов', link: '/brew/reports' }
@@ -293,7 +292,6 @@ function sidebarBrew(): DefaultTheme.SidebarItem[] {
       text: 'Для Бизнеса',
       collapsed: false,
       items: [
-        { text: 'Возможности', link: '/brew/run' },  
         { text: '→ Подключиться', link: '/brew/membership' },  
         { text: 'Тикет-система', link: '/brew/tickets' },
         { text: 'Анализ конкурентов', link: '/brew/reports' }
