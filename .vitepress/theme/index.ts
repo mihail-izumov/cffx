@@ -1,7 +1,7 @@
 import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
-// Импортируем каждый компонент с уникальным именем
+// Импортируем каждый компонент с уникальным именемм
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
 import FeaturesGrid from '../components/FeaturesGrid.vue'
