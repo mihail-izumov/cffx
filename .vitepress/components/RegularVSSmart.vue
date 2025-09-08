@@ -82,7 +82,7 @@
 }
 
 .header-cell {
-  padding: 12px 18px;
+  padding: 10px 16px;
   font-weight: 600;
   font-size: 14px;
   text-align: center;
@@ -114,9 +114,9 @@
 }
 
 .cell {
-  padding: 12px 18px;
+  padding: 8px 16px;
   font-size: 14px;
-  line-height: 1.3;
+  line-height: 1.2;
   border-right: 1px solid rgba(255,255,255,0.08);
 }
 
@@ -134,7 +134,7 @@
   background: rgba(200,255,90,0.04);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .cell p {
@@ -161,30 +161,69 @@
   
   .table-row {
     grid-template-columns: 1fr;
-    padding: 14px 18px;
-    gap: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 0;
   }
   
   .table-row:not(:last-child) {
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 12px;
+  }
+  
+  .table-row:last-child {
+    border-bottom: none;
   }
   
   .cell {
-    padding: 0;
     border-right: none;
-    background: transparent !important;
+    padding: 12px 16px;
   }
   
   .usual-cell {
-    margin-bottom: 8px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+  }
+  
+  .usual-cell::before {
+    content: "Как обычно";
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
   }
   
   .smart-cell {
+    background: rgba(200,255,90,0.06);
     gap: 8px;
+    position: relative;
+    flex-direction: column;
+    align-items: flex-start;
   }
   
-  .arrow {
+  .smart-cell::before {
+    content: "Умная Кофейня";
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #c8ff5a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    align-self: stretch;
+  }
+  
+  .smart-cell .arrow {
+    position: absolute;
+    top: 12px;
+    right: 16px;
     font-size: 14px;
+  }
+  
+  .smart-cell p {
+    padding-right: 24px;
   }
 }
 </style>
