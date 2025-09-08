@@ -1,6 +1,6 @@
 <template>
   <div class="brew-specs-container">
-    <h1 class="main-specs-title">Характеристики <br> Пульс Сигнала</h1>
+    <h1 class="main-specs-title">Характеристики <br> Сигнала</h1>
     
     <!-- Ключевые показатели -->
     <div class="specs-section">
@@ -229,15 +229,15 @@
   word-break: break-word;
 }
 
-/* Стили для ссылок - лаймовый по умолчанию, темно-зеленый при ховере */
+/* Стили для ссылок - используем цвета из VitePress конфига */
 .spec-value a {
-  color: #32d74b; /* лаймовый цвет */
+  color: #C5F946; /* --vp-c-brand-2 из конфига */
   text-decoration: none; /* убираем подчеркивание по умолчанию */
   transition: all 0.2s ease;
 }
 
 .spec-value a:hover {
-  color: #228b22; /* темно-зеленый при ховере */
+  color: #347b6c; /* --vp-c-brand-1 из конфига */
   text-decoration: underline; /* добавляем подчеркивание при ховере */
 }
 
