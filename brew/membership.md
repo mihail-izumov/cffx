@@ -41,23 +41,6 @@ title: Подключение | Сигнал
   <a href="https://www.perplexity.ai/page/meta-franshiza-b-r-e-w-Tl5xfN_GREy2qFe4qDqSSg" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">НЕ франшиза</a>
 </div>
 
-<div style="text-align: center; margin: 2rem 0;">
-  <img 
-    src="/brew_intro_ban.svg" 
-    alt="BREW intro"
-    style="
-      width: 100%;
-      max-width: 800px;
-      height: auto;
-      border-radius: max(12px, min(24px, 3vw));
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-    "
-    onmouseover="this.style.transform='scale(1.02)'"
-    onmouseout="this.style.transform='scale(1)'"
-  />
-</div>
-
 ### Видеть больше, угадывать меньше
 
 <script setup>
@@ -234,11 +217,20 @@ const activeTab = ref('problem')
 
 </div>
 
-## В чем уникальность Сигнала
 
-Кофейный Протокол превращает разрозненный опыт тысяч кофеен в готовые решения для любой ситуации. Индекс Роста создает объективную систему измерения успеха, которая делает ваши достижения видимыми для всего рынка.
+## Вопросы и Ответы
 
-<InstrumentsGrid />
+
+
+<br><br>
+
+
+
+
+
+## Преимущества участия
+
+<InfoCardsPro />
 
 ## Вопросы и Ответы
 
@@ -257,18 +249,6 @@ const activeTab = ref('problem')
 ::: details Это бесплатно?
 Сигнал открыт для всех. Это наш вклад в развитие кофейного рынка. Персональный стратегический разбор и доступ к закрытым данным — это следующий шаг для тех, кто готов к партнерству с Сигналом Модуля Роста®.
 :::
-
-<br><br>
-
-
-
-
-
-## Преимущества участия
-
-<InfoCardsPro />
-
-## Вопросы и Ответы
 
 ::: details В чем ключевое отличие от покупки франшизы?
 Франшиза продает готовый шаблон и забирает вашу свободу и часть прибыли в виде роялти. Сигнал дает инструменты для создания вашего уникального, более сильного и прибыльного бизнеса, оставляя 100% контроля и прибыли вам.
