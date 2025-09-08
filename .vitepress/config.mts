@@ -275,7 +275,7 @@ function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Как работает', link: '/signals' },
     { text: 'Кофейни', link: '/smr' },
-    { text: 'Пульс', link: '/pulse/invest' },
+    { text: 'Инвестиции', link: '/pulse/invest' },
     {
       text: 'Для Бизнеса',
       items: [
@@ -307,7 +307,7 @@ function sidebarPulse(): DefaultTheme.SidebarItem[] {
       text: 'Пульс',
       collapsed: false,
       items: [
-        { text: 'Инвестиции', link: '/pulse/invest' },
+        { text: 'Пульс', link: '/pulse/invest' },
         { text: 'Прогноз дохода', link: '/pulse/calc' },
         { text: 'Симулятор Самары', link: '/pulse/sim' }
       ]
