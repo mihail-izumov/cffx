@@ -82,9 +82,9 @@
 }
 
 .header-cell {
-  padding: 10px 16px;
+  padding: 8px 14px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   text-align: center;
   border-right: 1px solid rgba(255,255,255,0.08);
 }
@@ -114,9 +114,9 @@
 }
 
 .cell {
-  padding: 8px 16px;
-  font-size: 14px;
-  line-height: 1.2;
+  padding: 6px 14px;
+  font-size: 13px;
+  line-height: 1.1;
   border-right: 1px solid rgba(255,255,255,0.08);
 }
 
@@ -134,7 +134,7 @@
   background: rgba(200,255,90,0.04);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .cell p {
@@ -148,7 +148,7 @@
 
 .arrow {
   color: #c8ff5a;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   flex-shrink: 0;
 }
@@ -165,65 +165,31 @@
     padding: 0;
   }
   
-  .table-row:not(:last-child) {
-    margin-bottom: 12px;
-  }
-  
   .table-row:last-child {
     border-bottom: none;
   }
   
   .cell {
     border-right: none;
-    padding: 12px 16px;
+    padding: 6px 14px;
+    font-size: 12px;
+    line-height: 1.2;
   }
   
   .usual-cell {
     background: rgba(255,255,255,0.04);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    position: relative;
-  }
-  
-  .usual-cell::before {
-    content: "Как обычно";
-    display: block;
-    font-size: 11px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.5);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 4px;
   }
   
   .smart-cell {
     background: rgba(200,255,90,0.06);
-    gap: 8px;
-    position: relative;
-    flex-direction: column;
-    align-items: flex-start;
+    padding-top: 4px;
+    gap: 6px;
   }
   
-  .smart-cell::before {
-    content: "Умная Кофейня";
-    display: block;
-    font-size: 11px;
-    font-weight: 600;
-    color: #c8ff5a;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
-    align-self: stretch;
-  }
-  
-  .smart-cell .arrow {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    font-size: 14px;
-  }
-  
-  .smart-cell p {
-    padding-right: 24px;
+  .arrow {
+    font-size: 12px;
   }
 }
 </style>
