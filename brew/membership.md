@@ -34,15 +34,6 @@ title: Подключение | Сигнал
 
 ## Требуйте больше от вашей кофейни
 
-### Получите премущество на рынке и растите быстрее конкурентов вместе с Сигналом.
-
-Кофейни по-прежнему стоят в очереди за гостями и возникает вопрос: ожидания выросли или кофейни не изменились?
-
-<div class="button-group">
-  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Подключиться</a>
-  <a href="https://www.perplexity.ai/page/meta-franshiza-b-r-e-w-Tl5xfN_GREy2qFe4qDqSSg" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">НЕ франшиза</a>
-</div>
-
 ### Видеть больше, угадывать меньше
 
 <script setup>
@@ -198,13 +189,13 @@ const activeTab = ref('problem')
   </div>
 </div>
 
-## Клонируйте успех
+### Клонируйте успех
 
 Применяйте лучший опыт рынка, чтобы расти по своим правилам.
 
 <BrandCards />
 
-## Отслеживайте прогресс
+### Отслеживайте прогресс
 Оценивайте достижение ключевых результатов. Мы даем вам инструмент, чтобы вы сами увидели свой прогресс.
 
 <div class="comparison-table">
@@ -219,8 +210,12 @@ const activeTab = ref('problem')
 
 </div>
 
+## Получите премущество на рынке и растите быстрее конкурентов вместе с Сигналом
 
-
+<div class="button-group">
+  <a href="/brew/membership#ваша-умная-кофеиня-начинается-здесь" class="btn btn-primary" rel="noopener noreferrer">Подключиться</a>
+  <a href="https://www.perplexity.ai/page/meta-franshiza-b-r-e-w-Tl5xfN_GREy2qFe4qDqSSg" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">НЕ франшиза</a>
+</div>
 
 ## Вопросы и Ответы
 
