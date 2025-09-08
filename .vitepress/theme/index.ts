@@ -37,6 +37,7 @@ import FeedbackAlchemy from '../components/FeedbackAlchemy.vue'
 import KorzhWidget from '../components/KorzhWidget.vue'
 import PulseSubscribeBanner from '../components/PulseSubscribeBanner.vue'
 import IndexAbout from '../components/IndexAbout.vue'
+import Pulse3Cards.vue from '../components/Pulse3Cards.vue'
 
 export default {
   extends: DefaultTheme,
@@ -80,5 +81,6 @@ export default {
     app.component('KorzhWidget', KorzhWidget)
     app.component('PulseSubscribeBanner', PulseSubscribeBanner)
     app.component('IndexAbout', IndexAbout)
+    app.component('Pulse3Cards', Pulse3Cards)
   }
 }
