@@ -1,4 +1,4 @@
-Расчет и предоставление Индекса Роста кофейни<template>
+<template>
   <div class="form-wrapper">
     <!-- Экран успешной отправки -->
     <div v-if="formSubmitted" class="success-message">
@@ -9,7 +9,6 @@
         <a href="/signals#знакомьтесь-–-анна" target="_blank" class="secondary-link">Кто Анна и как работает</a>
       </div>
     </div>
-
     <!-- Основная форма -->
     <form v-else @submit.prevent="submitForm">
       <div class="form-header">
@@ -19,7 +18,6 @@
           <span class="info-item ticket-display">{{ formattedTicketNumber }}</span>
         </div>
       </div>
-
       <!-- Секция выбора кофейни -->
       <div class="form-section">
         <div class="question-block compact">
@@ -38,10 +36,8 @@
           </select>
         </div>
       </div>
-
       <!-- Разделительная линия между адресом и вопросами -->
       <div class="separator-line"></div>
-
       <!-- Секция с вопросами -->
       <div class="form-section">
         <div class="question-block" style="--accent-color: #A972FF;">
@@ -116,6 +112,7 @@ const form = reactive({
   telegramPhone: '', 
   consent: false 
 });
+
 const isSubmitting = ref(false);
 const formSubmitted = ref(false);
 const rawTicketNumber = ref(null);
@@ -139,7 +136,6 @@ let currentQuestionIndex3 = 0;
 function startRotation(questionNum) {
   stopRotation();
   activeRotator.value = questionNum;
-  
   rotationInterval = setInterval(() => {
     if (questionNum === 1) {
       currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length;
@@ -184,7 +180,6 @@ const isFormValid = computed(() =>
 async function submitForm() {
   if (!isFormValid.value) return;
   isSubmitting.value = true;
-  
   const formData = { 
     _subject: `Новый Сигнал ${formattedTicketNumber.value} от ${form.name} (Корж, ${form.coffeeShopAddress})`, 
     "Код тикета": rawTicketNumber.value, 
@@ -196,7 +191,6 @@ async function submitForm() {
     "3. Решение": form.constructiveSuggestions, 
     "Контакт в Telegram": form.telegramPhone 
   };
-  
   try {
     const response = await fetch('https://formspree.io/f/mdkzjopz', { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
     if (!response.ok) throw new Error('Ошибка сервера');
@@ -221,19 +215,33 @@ async function submitForm() {
 .question-block.compact { padding: 1rem; border-left-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
 .direction-label { font-weight: 600; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; display: block; }
 .question-help { font-size: 0.8rem; color: #888; margin-bottom: 0.75rem; line-height: 1.4; }
-.rotating-phrase-container { min-height: 26px; margin-bottom: 0.75rem; }
-.question-label { font-weight: 500; font-size: 1rem; margin: 0; color: #f0f0f0; }
+
+/* Исправленные стили для ротатора */
+.rotating-phrase-container { 
+  height: 52px; /* Фиксированная высота для двух строк */
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: flex-start; /* Выравнивание по верху */
+  overflow: hidden; /* Скрытие переполнения */
+}
+
+.question-label { 
+  font-weight: 500; 
+  font-size: 1rem; 
+  margin: 0; 
+  color: #f0f0f0;
+  line-height: 1.3; /* Фиксированная высота строки */
+  width: 100%;
+}
+
 .fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
-
 .address-select { width: 100%; background-color: #242426; border: 1px solid #444; border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.95rem; color: #f0f0f0; transition: all 0.3s ease; font-family: var(--font-sans); }
 .address-select:focus { outline: none; border-color: #C5F946; background-color: #2a2a2e; box-shadow: 0 0 0 3px rgba(197, 249, 70, 0.2); }
 .address-select option { background-color: #2a2a2e; color: #f0f0f0; }
 .address-select option:disabled { color: #666; }
-
 /* Разделительная линия между адресом и вопросами */
 .separator-line { height: 1px; background: linear-gradient(90deg, transparent, #2c2c2f 20%, #2c2c2f 80%, transparent); margin: 2rem 0 1.5rem 0; }
-
 textarea, input { width: 100%; background-color: #242426; border: 1px solid #444; border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.95rem; color: #f0f0f0; transition: all 0.3s ease; font-family: var(--font-sans); }
 textarea:focus, input:focus { outline: none; border-color: var(--accent-color); background-color: #2a2a2e; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); }
 ::placeholder { color: #666; }
@@ -258,5 +266,21 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent-color); 
 .secondary-link { display: block; margin-top: 1.5rem; font-size: 0.85rem; color: #888; text-decoration: none; border-bottom: none !important; transition: color 0.3s; }
 .secondary-link:hover { color: #C5F946; text-decoration: underline !important; border-bottom: none !important; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-@media (max-width: 768px) { .form-wrapper { padding: 1.5rem; } .personal-data-section { grid-template-columns: 1fr; } .form-footer { flex-direction: column; align-items: stretch; gap: 1rem; } .submit-btn { width: 100%; } .form-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; } }
+
+@media (max-width: 768px) { 
+  .form-wrapper { padding: 1.5rem; } 
+  .personal-data-section { grid-template-columns: 1fr; } 
+  .form-footer { flex-direction: column; align-items: stretch; gap: 1rem; } 
+  .submit-btn { width: 100%; } 
+  .form-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  
+  /* Адаптивность для ротатора на мобильных */
+  .rotating-phrase-container {
+    height: 65px; /* Больше места для мобильных */
+  }
+  
+  .question-label {
+    font-size: 0.95rem; /* Немного меньше шрифт */
+  }
+}
 </style>
