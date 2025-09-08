@@ -82,9 +82,9 @@
 }
 
 .header-cell {
-  padding: 8px 14px;
+  padding: 10px 16px;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   text-align: center;
   border-right: 1px solid rgba(255,255,255,0.08);
 }
@@ -114,9 +114,9 @@
 }
 
 .cell {
-  padding: 6px 14px;
-  font-size: 13px;
-  line-height: 1.1;
+  padding: 8px 16px;
+  font-size: 14px;
+  line-height: 1.05;
   border-right: 1px solid rgba(255,255,255,0.08);
 }
 
@@ -134,7 +134,7 @@
   background: rgba(200,255,90,0.04);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .cell p {
@@ -148,7 +148,7 @@
 
 .arrow {
   color: #c8ff5a;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   flex-shrink: 0;
 }
