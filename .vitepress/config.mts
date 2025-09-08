@@ -230,8 +230,7 @@ export default defineConfig({
     
     sidebar: {
       '/brew/': { items: sidebarBrew() },
-      '/pulse/': { items: sidebarPulse() },
-      '/radar/signal/coffee-points-nsk-2025/': { items: [] },
+      '/invest/': { items: sidebarPulse() },
       '/terms/': { items: sidebarTerms() }
     },
     search: {
