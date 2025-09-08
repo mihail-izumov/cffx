@@ -248,7 +248,7 @@ const activeTab = ref('day-1')
     margin-top: 20px;
 }
 .result-block p {
-    margin: 0;
+    margin: 0 0 12px 0;
     line-height: 1.5;
 }
 .calc-button {
@@ -260,7 +260,7 @@ const activeTab = ref('day-1')
     text-decoration: none;
     font-size: 13px;
     font-weight: 600;
-    margin-top: 8px;
+    margin-top: 0;
     transition: all .2s ease;
 }
 .calc-button:hover {
@@ -278,7 +278,7 @@ const activeTab = ref('day-1')
 }
 .transformation-item:last-child {
     border-bottom: none;
-    margin-bottom: 0;
+    margin-bottom: 20px;
     padding-bottom: 0;
 }
 .transformation-item p {
