@@ -2,7 +2,7 @@
 outline: false
 prev: false
 next: false
-title: Подключение | Сигнал
+title: Подключиться к Сигналу
 ---
 
 # Ваша Умная Кофейня Начинается Здесь
