@@ -119,3 +119,7 @@ title: Пульс | Поток данных Сигнала для инвести
 :::
 
 <PulseSubscribeBanner />
+
+<br>
+
+<PulseSpecs />
