@@ -1,6 +1,6 @@
 import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
-import './custom.css' // ← ДОБАВЬТЕ ЭТУ СТРОКУ
+import './custom.css'
 // Импортируем каждый компонент с уникальным именем
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
@@ -38,6 +38,7 @@ import KorzhWidget from '../components/KorzhWidget.vue'
 import PulseSubscribeBanner from '../components/PulseSubscribeBanner.vue'
 import IndexAbout from '../components/IndexAbout.vue'
 import Pulse3Cards from '../components/Pulse3Cards.vue'
+import PulseSpecs from '../components/PulseSpecs.vue'
 
 export default {
   extends: DefaultTheme,
@@ -82,5 +83,6 @@ export default {
     app.component('PulseSubscribeBanner', PulseSubscribeBanner)
     app.component('IndexAbout', IndexAbout)
     app.component('Pulse3Cards', Pulse3Cards)
+    app.component('PulseSpecs', PulseSpecs)
   }
 }
