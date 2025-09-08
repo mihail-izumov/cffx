@@ -108,7 +108,7 @@ const activeTab = ref('day-1')
     </div>
     <!-- Вкладка: Результат -->
     <div v-show="activeTab === 'result'" class="content-mr">
-        <h3>↑ 17–26% выручки Вашей Кофейни за 30 дней</h3>
+        <h3>↑ 17–26% выручки [Вашей Кофейни] за 30 дней</h3>
         <div class="transformation-item">
             <p>Думали, что проблема в кофе</p>
             <span class="arrow">→</span>
@@ -276,7 +276,7 @@ const activeTab = ref('day-1')
     padding-bottom: 12px;
     margin-bottom: 12px;
 }
-.transformation-item:last-child {
+.transformation-item:nth-child(3) {
     border-bottom: none;
     margin-bottom: 20px;
     padding-bottom: 0;
