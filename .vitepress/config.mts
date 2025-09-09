@@ -273,12 +273,12 @@ export default defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Как работает', link: '/signals' },
-    { text: 'Кофейни', link: '/smr' },
+    { text: 'Индекс', link: '/smr' },
     { text: 'Инвестиции', link: '/invest/pulse' },
     {
       text: 'Умная Кофейня',
       items: [
-        { text: '→ Подключиться', link: '/brew/membership' }, 
+        { text: '→ Начать', link: '/brew/membership' }, 
         { text: 'Тикет-система', link: '/brew/tickets' },
         { text: 'Анализ конкурентов', link: '/brew/reports' }
       ]
