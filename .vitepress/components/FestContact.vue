@@ -25,10 +25,10 @@
 }
 
 .organizer-card {
-  background: var(--vp-c-bg-soft);
+  background: rgba(52, 123, 108, 0.1) !important;
   border-radius: 12px;
   padding: 1.5rem;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid rgba(52, 123, 108, 0.2) !important;
   width: 100%;
   max-width: none;
 }
@@ -40,7 +40,7 @@
 
 .organizer-subtitle {
   font-size: 0.9rem;
-  color: var(--vp-c-text-2);
+  color: #b3b3b3 !important;
   font-weight: 500;
   margin-bottom: 0.75rem;
   letter-spacing: 0.5px;
@@ -49,7 +49,7 @@
 .organizer-name {
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--vp-c-text-1);
+  color: #ffffff !important;
 }
 
 .contact-actions {
@@ -73,28 +73,28 @@
 }
 
 .contact-button.primary {
-  background: #347b6c;
-  color: white;
-  border: 1px solid #347b6c;
+  background: #347b6c !important;
+  color: white !important;
+  border: 1px solid #347b6c !important;
 }
 
 .contact-button.primary:hover {
-  background: #C5F946;
-  border-color: #C5F946;
-  color: #000000;
+  background: #C5F946 !important;
+  border-color: #C5F946 !important;
+  color: #000000 !important;
   transform: translateY(-2px);
 }
 
 .contact-button.secondary {
-  background: var(--vp-c-bg);
-  color: var(--vp-c-text-1);
-  border: 1px solid var(--vp-c-divider);
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(52, 123, 108, 0.3) !important;
 }
 
 .contact-button.secondary:hover {
-  background: var(--vp-c-bg-mute);
-  border-color: #347b6c;
-  color: #347b6c;
+  background: rgba(52, 123, 108, 0.15) !important;
+  border-color: #347b6c !important;
+  color: #347b6c !important;
 }
 
 /* Адаптивность */
