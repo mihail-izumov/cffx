@@ -288,10 +288,10 @@ function nav(): DefaultTheme.NavItem[] {
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: 'Для Бизнеса',
+      text: 'Умная Кофейня',
       collapsed: false,
       items: [
-        { text: '→ Подключиться', link: '/brew/membership' },  
+        { text: '→ Начать', link: '/brew/membership' },  
         { text: 'Тикет-система', link: '/brew/tickets' },
         { text: 'Анализ конкурентов', link: '/brew/reports' }
       ]
