@@ -149,7 +149,7 @@ title: Индекс Роста, Кофейни // Россия | Сигнал
       </tr>
       <tr>
         <td><a href="https://korzhcoffee.ru/" target="_blank" rel="noopener noreferrer">Корж</a></td>
-        <td>~10+</td>
+        <td>~12+</td>
         <td class="highlight-signal-cell"><span class="signal-active-symbol">⚡</span> <a href="/invest/sim">Симулятор</a></td>
         <td>Масштабировать уют без потери магии бренда</td>
         <td>Создать культ бренда, Доминировать по цене</td>
