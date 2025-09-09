@@ -17,7 +17,5 @@
 
 ## Присоединяйтесь к главному кофейному событию года
 <FestPossibilities />
-<br>
 <FestTerms />
-<br>
 <FestContact />
