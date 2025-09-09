@@ -22,7 +22,6 @@
 .organizer-section {
   margin: 2rem 0;
   padding: 1.5rem 0;
-  border-top: 1px solid var(--vp-c-divider);
 }
 
 .organizer-card {
