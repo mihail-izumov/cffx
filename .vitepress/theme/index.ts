@@ -46,6 +46,7 @@ import FestCards from '../components/FestCards.vue'
 import FestActivities from '../components/FestActivities.vue'
 import FestPossibilities from '../components/FestPossibilities.vue'
 import FestContact from '../components/FestContact.vue'
+import FestBrands from '../components/FestBrands.vue'
 
 export default {
   extends: DefaultTheme,
@@ -98,5 +99,6 @@ export default {
     app.component('FestActivities', FestActivities)
     app.component('FestPossibilities', FestPossibilities)
     app.component('FestContact', FestContact)
+    app.component('FestBrands', FestBrands)
   }
 }
