@@ -127,12 +127,12 @@
 
       <div class="experience-card">
         <div class="card-header">
-          <h4>Обучающий контент</h4>
-          <span class="card-badge">Экспертные знания</span>
+          <h4>Круглый стол индустрии</h4>
+          <span class="card-badge">Нетворкинг</span>
         </div>
-        <p class="card-description">Возможность провести мини-лекцию или мастер-класс прямо у своего стенда. Покажите экспертность и привлеките внимание.</p>
+        <p class="card-description">Эксклюзивная дискуссия для представителей кофейной индустрии. Обмен опытом, обсуждение трендов, поиск партнеров.</p>
         <div class="card-highlight">
-          <strong>Форматы:</strong> 5-минутные презентации • Демонстрации • Q&A сессии
+          <strong>Участники:</strong> Обжарщики • Импортеры • Владельцы кофеен • Поставщики
         </div>
       </div>
     </div>
@@ -175,6 +175,17 @@
           <strong>Партнеры:</strong> Винотека "Градус" • Шоколатье • Craft Beer Bar
         </div>
       </div>
+
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Энтузиасты кофейной культуры</h4>
+          <span class="card-badge">Открыты для всех</span>
+        </div>
+        <p class="card-description">Все неравнодушные к развитию культуры кофе могут принять участие. Домашние обжарщики, блогеры, кофейные активисты.</p>
+        <div class="card-highlight">
+          <strong>Возможности:</strong> Мини-стенды • Презентации проектов • Обмен опытом
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -189,6 +200,14 @@ const activeTab = ref('expo')
 <style scoped>
 .participants-section {
   margin: 1.5rem 0;
+}
+
+.participants-section h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  color: var(--vp-c-text-1);
+  font-weight: 700;
+  text-align: center;
 }
 
 .tabs {
@@ -317,6 +336,10 @@ const activeTab = ref('expo')
   
   .experience-card {
     padding: 0.8rem;
+  }
+  
+  .participants-section h2 {
+    font-size: 1.4rem;
   }
 }
 </style>
