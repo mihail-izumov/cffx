@@ -1,6 +1,6 @@
-<template>
+=<template>
   <div class="brands-container">
-    <!-- ФУНКЦИИ ТАРИФА: Новый Ллидер -->
+    <!-- ФУНКЦИИ ТАРИФА: Новый Лидер -->
     
     <div class="brand-card leader-card">
       <div class="tariff-badge leader">Новый Лидер</div>
@@ -22,7 +22,7 @@
       <p class="description-main">Найти скрытые разрывы в процессах, которые тормозят рост</p>
       <p class="description-goals">3 конкретных улучшения за 30 дней</p>
     </div>
-
+    
     <!-- ФУНКЦИИ ТАРИФА: Инсайдер -->
     <div class="brand-card insider-card">
       <div class="tariff-badge insider">Инсайдер</div>
@@ -40,12 +40,11 @@
     
     <div class="brand-card insider-card">
       <div class="tariff-badge insider">Инсайдер</div>
-      <h3>Индекс Роста: <a href="/smr" target="_blank"></a>сигналы изменений</h3>
+      <h3>Индекс Роста: <a href="/smr" target="_blank">сигналы изменений</a></h3>
       <p class="description-main">Получайте уведомления о движениях рынка</p>
       <p class="description-goals">Тренды, сдвиги в поведении гостей, новые возможности</p>
     </div>
     
-
     <!-- ФУНКЦИИ ТАРИФА: Старт -->
     <div class="brand-card simulator-card">
       <div class="tariff-badge simulator">Старт</div>
@@ -180,10 +179,6 @@
   font-weight: 700;
   border: none;
   padding: 0;
-}
-
-/* СВЕТЛАЯ ТЕМА - текст темный */
-.brand-card h3 {
   color: #2c3e2c !important;
 }
 
@@ -235,5 +230,87 @@
 
 .dark .leader-card .description-goals {
   color: #95a9bd !important;
+}
+</style>
+
+<style>
+/* Глобальные стили для переопределения VitePress */
+.vp-doc .brands-container .brand-card,
+.vp-content .brands-container .brand-card {
+  background-color: var(--vp-c-bg-soft) !important;
+  border: 1px solid var(--vp-c-border) !important;
+}
+
+/* Принудительное применение фонов для каждого типа карточек */
+.vp-doc .brands-container .insider-card,
+.vp-content .brands-container .insider-card {
+  background-color: #f8f9f8 !important;
+  border-color: #e0e5e0 !important;
+  border-top: 4px solid #60A994 !important;
+}
+
+.vp-doc .brands-container .simulator-card,
+.vp-content .brands-container .simulator-card {
+  background-color: #f9f8f6 !important;
+  border-color: #e5e2dd !important;
+  border-top: 4px solid #A98E60 !important;
+}
+
+.vp-doc .brands-container .leader-card,
+.vp-content .brands-container .leader-card {
+  background-color: #f6f8fa !important;
+  border-color: #dde3e8 !important;
+  border-top: 4px solid #4A72A0 !important;
+}
+
+/* Темная тема */
+.dark .vp-doc .brands-container .insider-card,
+.dark .vp-content .brands-container .insider-card {
+  background-color: #272B2A !important;
+  border-color: #333836 !important;
+  border-top: 4px solid #60A994 !important;
+}
+
+.dark .vp-doc .brands-container .simulator-card,
+.dark .vp-content .brands-container .simulator-card {
+  background-color: #2B2A27 !important;
+  border-color: #383633 !important;
+  border-top: 4px solid #A98E60 !important;
+}
+
+.dark .vp-doc .brands-container .leader-card,
+.dark .vp-content .brands-container .leader-card {
+  background-color: #252830 !important;
+  border-color: #323544 !important;
+  border-top: 4px solid #4A72A0 !important;
+}
+
+/* Дополнительная защита от переопределения фонов */
+.brands-container .brand-card {
+  background-color: var(--vp-c-bg-soft) !important;
+}
+
+.brands-container .insider-card {
+  background-color: #f8f9f8 !important;
+}
+
+.brands-container .simulator-card {
+  background-color: #f9f8f6 !important;
+}
+
+.brands-container .leader-card {
+  background-color: #f6f8fa !important;
+}
+
+.dark .brands-container .insider-card {
+  background-color: #272B2A !important;
+}
+
+.dark .brands-container .simulator-card {
+  background-color: #2B2A27 !important;
+}
+
+.dark .brands-container .leader-card {
+  background-color: #252830 !important;
 }
 </style>
