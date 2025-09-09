@@ -5,7 +5,7 @@ const ROTATION_INTERVAL_MS = 7000
 const FADE_DURATION_MS = 1000
 
 const establishment = {
-  name: 'Корж – лидер Индекса сегодня',
+  name: 'Корж – лидер Индекса в Самаре',
   index: 98,
   currentPoints: 8,
   targetPoints: 12,
