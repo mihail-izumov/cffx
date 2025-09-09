@@ -2,7 +2,7 @@ import { defineConfig, DefaultTheme } from 'vitepress'
 import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
 export default defineConfig({
-  title: 'Отзывы, Тикет-система, Индекс Роста | Сигнал',
+  title: 'Сигнал',
   appearance: 'force-dark',
   locales: {
     '/': {
