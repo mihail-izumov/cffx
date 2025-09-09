@@ -261,34 +261,25 @@ const activeTab = ref('tastings')
 }
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   margin-bottom: 0.75rem;
-  gap: 0.75rem;
 }
 
 .card-header h4 {
-  margin: 0;
+  margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--vp-c-text-1);
   line-height: 1.3;
-  flex: 1;
-  min-width: 0;
 }
 
 .card-badge {
+  display: inline-block;
   background: #4ade80;
   color: #000000;
-  padding: 3px 6px;
+  padding: 3px 8px;
   border-radius: 4px;
   font-size: 0.7rem;
   font-weight: 600;
-  white-space: nowrap;
-  flex-shrink: 0;
-  max-width: 120px;
-  text-align: center;
   line-height: 1.2;
 }
 
@@ -326,17 +317,6 @@ const activeTab = ref('tastings')
   
   .experience-card {
     padding: 0.8rem;
-  }
-  
-  .card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  
-  .card-badge {
-    align-self: flex-start;
-    max-width: none;
   }
 }
 </style>
