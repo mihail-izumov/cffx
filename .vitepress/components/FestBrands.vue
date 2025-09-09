@@ -1,6 +1,14 @@
 <template>
   <div class="brands-container">
     <div class="brand-card">
+      <h3>Корж</h3>
+      <p class="description-main">Покорители сердец всей Самары — превратили город в одну большую кофейную семью.</p>
+    </div>
+<div class="brand-card">
+      <h3>Mosaic</h3>
+      <p class="description-main">Складывают кофейную мозаику из лучших зерен планеты — каждая чашка как маленький шедевр Гауди.</p>
+    </div>
+    <div class="brand-card">
       <h3>Surf Coffee</h3>
       <p class="description-main">Ловят волны вкуса и подают их с пенкой — серферы от кофе, которые знают толк в правильном чиле на Волге.</p>
     </div>
@@ -9,16 +17,12 @@
       <p class="description-main">Айтишники кофейного мира с приложением мечты и сырной пенкой, от которой все теряют голову (буквально).</p>
     </div>
     <div class="brand-card">
-      <h3>Мува</h3>
-      <p class="description-main">Кофейное движение молодых и дерзких — тут даже бабушки становятся хипстерами после первого глотка.</p>
+      <h3>White Cup</h3>
+      <p class="description-main">Минималисты-максималисты — доказывают, что белая чашка может вместить целую вселенную вкуса.</p>
     </div>
     <div class="brand-card">
       <h3>Толстой</h3>
       <p class="description-main">Винтажная машина времени с пластинками и завтраками — Лев Николаевич бы точно стал завсегдатаем.</p>
-    </div>
-    <div class="brand-card">
-      <h3>Mosaic</h3>
-      <p class="description-main">Складывают кофейную мозаику из лучших зерен планеты — каждая чашка как маленький шедевр Гауди.</p>
     </div>
     <div class="brand-card">
       <h3>На краю земли</h3>
@@ -31,10 +35,6 @@
     <div class="brand-card">
       <h3>Эспрессо бар</h3>
       <p class="description-main">Итальянские корни в российской почве — делают кофе быстрее АвтоВАЗа и вкуснее пиццы в Риме.</p>
-    </div>
-    <div class="brand-card">
-      <h3>Корж</h3>
-      <p class="description-main">Покорители сердец всей Самары — превратили город в одну большую кофейную семью.</p>
     </div>
     <div class="brand-card">
       <h3>Элитория</h3>
@@ -53,12 +53,12 @@
       <p class="description-main">Близнецы кофейного счастья — двойная доза уюта и безграничной любви к капучино.</p>
     </div>
     <div class="brand-card">
-      <h3>White Cup</h3>
-      <p class="description-main">Минималисты-максималисты — доказывают, что белая чашка может вместить целую вселенную вкуса.</p>
+      <h3>Мува</h3>
+      <p class="description-main">Кофейное движение молодых и дерзких — тут даже бабушки становятся хипстерами после первого глотка.</p>
     </div>
     <div class="brand-card">
       <h3>Участвуете в фестивале?</h3>
-      <p class="description-main"><a href="/brew/membership">Подать заявку на участие →</a></p>
+      <p class="description-main"><a href="/fest2025#организатор">Подать заявку на участие →</a></p>
     </div>
   </div>
 </template>
