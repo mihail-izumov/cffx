@@ -19,7 +19,5 @@
 <FestPossibilities />
 <br>
 <FestTerms />
-
-## Организация
-
+<br>
 <FestContact />
