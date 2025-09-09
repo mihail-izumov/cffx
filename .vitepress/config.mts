@@ -276,7 +276,7 @@ function nav(): DefaultTheme.NavItem[] {
     { text: 'Кофейни', link: '/smr' },
     { text: 'Инвестиции', link: '/invest/pulse' },
     {
-      text: 'Для Бизнеса',
+      text: 'Умная Кофейня',
       items: [
         { text: '→ Подключиться', link: '/brew/membership' }, 
         { text: 'Тикет-система', link: '/brew/tickets' },
