@@ -131,7 +131,7 @@ title: Индекс Роста, Кофейни // Россия | Сигнал
     <thead>
       <tr>
         <th>Компания</th>
-        <th><a href="/invest/vision">Потенциал</a></th>
+        <th><a href="/invest/vision#как-мы-оцениваем-потенциал-компании">Потенциал</a></th>
         <th><a href="/invest/vision">Сигнал</a></th>
         <th>Поиск</th>
         <th>Цели</th>
