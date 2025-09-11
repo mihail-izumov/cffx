@@ -56,7 +56,8 @@
 
 <style scoped>
 .consultation-section {
-  padding: 30px 0;
+  background: #0a0a0a;
+  padding: 60px 0;
   min-height: auto;
 }
 
@@ -80,20 +81,19 @@
   background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
   border: 1px solid #333;
   border-radius: 8px;
-  padding: 20px;
+  padding: 40px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   width: 100%;
 }
 
 .form-row {
   display: flex;
-  gap: 15px;
-  margin-bottom: 12px;
+  gap: 20px;
+  margin-bottom: 15px;
 }
 
 .form-group {
   flex: 1;
-  position: relative;
 }
 
 .form-group.checkbox-group {
@@ -104,7 +104,7 @@
 .form-input,
 .form-select {
   width: 100%;
-  padding: 12px 15px;
+  padding: 14px 16px;
   box-sizing: border-box;
   border: 1px solid #333;
   border-radius: 6px;
@@ -158,28 +158,26 @@
 
 .investment-hint {
   margin-top: 8px;
+  margin-bottom: 15px;
   font-size: 12px;
   color: #ffffff;
   min-height: 15px;
   opacity: 0.9;
   transition: opacity 0.3s ease;
   line-height: 1.3;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
 }
 
 .investment-hint:empty {
   opacity: 0;
+  margin-bottom: 0;
 }
 
 .checkbox-group {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  margin-bottom: 15px;
-  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 
 .checkbox-group input[type="checkbox"] {
@@ -210,11 +208,11 @@
 .submit-btn {
   background: linear-gradient(135deg, #347b6c 0%, #C5F946 100%);
   color: #000000;
-  padding: 12px 20px;
+  padding: 16px 24px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   width: 100%;
   transition: opacity 0.3s ease, transform 0.2s ease;
@@ -233,14 +231,14 @@
 }
 
 .success-message {
-  margin-top: 15px;
+  margin-top: 20px;
   color: #347b6c;
   font-weight: 500;
   font-size: 14px;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px;
+  padding: 16px;
   background: rgba(52, 123, 108, 0.1);
   border: 1px solid rgba(52, 123, 108, 0.3);
   border-radius: 6px;
@@ -255,7 +253,7 @@
 
 @media (max-width: 768px) {
   .consultation-section {
-    padding: 20px 0;
+    padding: 40px 0;
   }
   
   .consultation-container {
@@ -268,23 +266,22 @@
   }
   
   .consultation-form {
-    padding: 15px;
+    padding: 20px;
   }
   
   .form-row {
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
   }
   
   .investment-hint {
-    position: static;
-    margin-top: 4px;
+    margin-bottom: 10px;
   }
   
   .checkbox-group {
     flex-direction: column;
     gap: 6px;
-    margin-top: 15px;
+    margin-top: 8px;
   }
   
   .checkbox-group input[type="checkbox"] {
