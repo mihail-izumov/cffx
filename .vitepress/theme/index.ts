@@ -48,6 +48,7 @@ import FestPossibilities from '../components/FestPossibilities.vue'
 import FestContact from '../components/FestContact.vue'
 import FestBrands from '../components/FestBrands.vue'
 import GrowthPotentialMethod from '../components/GrowthPotentialMethod.vue'
+import IndexApproach from '../components/IndexApproach.vue'
 
 export default {
   extends: DefaultTheme,
@@ -102,5 +103,6 @@ export default {
     app.component('FestContact', FestContact)
     app.component('FestBrands', FestBrands)
     app.component('GrowthPotentialMethod', GrowthPotentialMethod)
+    app.component('IndexApproach', IndexApproach)
   }
 }
