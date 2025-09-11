@@ -5,7 +5,7 @@
       <div class="anna-tariff-badge anna-character">ХАРАКТЕР</div>
       <h3 class="anna-title">Понимает с полуслова</h3>
       <p class="anna-description-main">Не судит и не критикует. Скажите «здесь паршиво» — она поймёт, что именно вас беспокоит</p>
-      <p class="anna-description-goals anna-character-goals">Не требует развёрнутых объяснений</p>
+      <p class="anna-description-goals anna-character-goals">Не требует больших объяснений</p>
     </div>
     
     <!-- НАВЫКИ -->
@@ -13,7 +13,7 @@
       <div class="anna-tariff-badge anna-skills">НАВЫКИ</div>
       <h3 class="anna-title">Говорит языком решений</h3>
       <p class="anna-description-main">Ваше «бесит медленное обслуживание» Анна переводит в «оптимизировать время подачи заказов»</p>
-      <p class="anna-description-goals anna-skills-goals">Убирает негатив и добавляет конструктив — кофейни её слушают</p>
+      <p class="anna-description-goals anna-skills-goals">Кофейни слушают Анну</p>
     </div>
     
     <!-- СВЯЗИ -->
@@ -21,7 +21,7 @@
       <div class="anna-tariff-badge anna-connections">СВЯЗИ</div>
       <h3 class="anna-title">Знает, к кому обратиться</h3>
       <p class="anna-description-main">Доставляет ваш Сигнал именно тому, кто может всё изменить</p>
-      <p class="anna-description-goals anna-connections-goals">Прямая линия к каждому менеджеру</p>
+      <p class="anna-description-goals anna-connections-goals">Прямая линия с каждым управляющим</p>
     </div>
     
     <!-- ПАМЯТЬ -->
