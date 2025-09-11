@@ -46,7 +46,7 @@ outline: false
 
 <AnnaSpecsSignal />
 
-## Каждый Сигнал делает Вашу любимую кофейню еще лучше
+## Решение за 24 часа
 
 <AnnaWhatYouGet />
 
