@@ -1,60 +1,94 @@
 <template>
   <div class="brands-container">
-    <div class="brand-card">
-      <h3>Mosaic</h3>
-      <p class="description-main">Складывают кофейную мозаику из лучших зерен планеты — каждая чашка как маленький шедевр Гауди.</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>Корж</h3>
+        <p class="description-main">Покорители сердец всей Самары — превратили город в одну большую кофейную семью.</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>Surf Coffee</h3>
-      <p class="description-main">Ловят волны вкуса и подают их с пенкой — серферы от кофе, которые знают толк в правильном чиле на Волге.</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>Mosaic</h3>
+        <p class="description-main">Складывают кофейную мозаику из лучших зерен планеты — каждая чашка как маленький шедевр Гауди.</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>Дринкит</h3>
-      <p class="description-main">Айтишники кофейного мира с приложением мечты и сырной пенкой, от которой все теряют голову.</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>Surf Coffee</h3>
+        <p class="description-main">Ловят волны вкуса и подают их с пенкой — серферы от кофе, которые знают толк в правильном чиле на Волге.</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>White Cup</h3>
-      <p class="description-main">Минималисты-максималисты — доказывают, что белая чашка может вместить целую вселенную вкуса.</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>Дринкит</h3>
+        <p class="description-main">Айтишники кофейного мира с приложением мечты и сырной пенкой, от которой все теряют голову.</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>Толстой</h3>
-      <p class="description-main">Винтажная машина времени с пластинками и завтраками — Лев Николаевич бы точно стал завсегдатаем.</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>White Cup</h3>
+        <p class="description-main">Минималисты-максималисты — доказывают, что белая чашка может вместить целую вселенную вкуса.</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>На краю земли</h3>
-      <p class="description-main">Романтики, которые нашли край земли прямо в Самаре (и там оказался восхитительный кофе!).</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>Толстой</h3>
+        <p class="description-main">Винтажная машина времени с пластинками и завтраками — Лев Николаевич бы точно стал завсегдатаем.</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>Юни</h3>
-      <p class="description-main">Молодежная тусовка с лофтом и завтраками — место, где даже понедельник кажется пятницей.</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>На краю земли</h3>
+        <p class="description-main">Романтики, которые нашли край земли прямо в Самаре (и там оказался восхитительный кофе!).</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>Эспрессо бар</h3>
-      <p class="description-main">Итальянские корни в российской почве — делают кофе быстрее АвтоВАЗа и вкуснее пиццы в Риме.</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>Юни</h3>
+        <p class="description-main">Молодежная тусовка с лофтом и завтраками — место, где даже понедельник кажется пятницей.</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>Элитория</h3>
-      <p class="description-main">Кофейная аристократия с 15-летним стажем — здесь даже сахар чувствует себя VIP-персоной.</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>Эспрессо бар</h3>
+        <p class="description-main">Итальянские корни в российской почве — делают кофе быстрее АвтоВАЗа и вкуснее пиццы в Риме.</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>Аромэ</h3>
-      <p class="description-main">Создатели кофейных духов — их зерна пахнут так, что соседи завидуют еще до дегустации.</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>Элитория</h3>
+        <p class="description-main">Кофейная аристократия с 15-летним стажем — здесь даже сахар чувствует себя VIP-персоной.</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>Кофеваркин</h3>
-      <p class="description-main">Семейное кофейное хозяйство, где каждое зернышко получает персональную заботу и ласку.</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>Аромэ</h3>
+        <p class="description-main">Создатели кофейных духов — их зерна пахнут так, что соседи завидуют еще до дегустации.</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>Твинс</h3>
-      <p class="description-main">Близнецы кофейного счастья — двойная доза уюта и безграничной любви к капучино.</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>Кофеваркин</h3>
+        <p class="description-main">Семейное кофейное хозяйство, где каждое зернышко получает персональную заботу и ласку.</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>Мува</h3>
-      <p class="description-main">Кофейное движение молодых и дерзких — тут даже бабушки становятся хипстерами после первого глотка.</p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>Твинс</h3>
+        <p class="description-main">Близнецы кофейного счастья — двойная доза уюта и безграничной любви к капучино.</p>
+      </div>
     </div>
-    <div class="brand-card special-card">
-      <h3>Участвуете в фестивале?</h3>
-      <p class="description-main"><a href="/fest2025#организатор">Подать заявку на участие →</a></p>
+    <div class="brand-card coffee-brand-card">
+      <div class="brand-content">
+        <h3>Мува</h3>
+        <p class="description-main">Кофейное движение молодых и дерзких — тут даже бабушки становятся хипстерами после первого глотка.</p>
+      </div>
+    </div>
+    <div class="brand-card special-brand-card">
+      <div class="brand-content">
+        <h3>Участвуете в фестивале?</h3>
+        <p class="description-main"><a href="/fest2025#организатор">Подать заявку на участие →</a></p>
+      </div>
     </div>
   </div>
 </template>
@@ -62,7 +96,7 @@
 <style scoped>
 /* Стиль для ссылки в состоянии покоя */
 .brand-card .description-main a {
-  color: #059669 !important; /* Зеленый цвет для ссылки */
+  color: #f59e0b !important;
   text-decoration: none;
   font-weight: 600 !important;
   transition: color 0.3s ease;
@@ -70,7 +104,7 @@
 
 /* Стиль для ссылки при наведении курсора */
 .brand-card .description-main a:hover {
-  color: #047857 !important; /* Более темный зеленый при наведении */
+  color: #fcd34d !important;
 }
 </style>
 
@@ -94,81 +128,130 @@
   border-radius: 3px;
 }
 
-/* --- СТИЛИ КАРТОЧКИ (ВЫВОРОТКА) --- */
+/* --- ОСНОВНЫЕ СТИЛИ КАРТОЧЕК (из виджета отзывов) --- */
 .brand-card {
   flex: 0 0 260px;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important; /* Светлый градиент */
-  border-radius: 12px !important;
-  padding: 20px 16px !important;
-  border: 2px solid #10b981 !important; /* Яркая зеленая рамка */
-  transition: all 0.3s ease !important;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15) !important; /* Зеленоватая тень */
-  position: relative !important;
-  overflow: hidden !important;
+  position: relative;
+  border-radius: 22px !important;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  overflow: hidden;
+  background: var(--vp-c-bg-soft) !important;
 }
 
-/* Декоративный элемент */
+.brand-card:hover {
+  transform: translateY(-8px) !important;
+}
+
+/* Градиентные границы для разных типов карточек */
 .brand-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, #10b981, #059669, #047857) !important;
+  inset: 0;
+  border-radius: 22px;
+  padding: 2px;
+  background: var(--border-gradient);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: filter 0.4s ease;
+  z-index: 3;
 }
 
-/* Эффект hover для карточек */
-.brand-card:hover {
-  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
-  border-color: #059669 !important;
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.25) !important;
+.brand-card:hover::before {
+  filter: brightness(2) saturate(1.5);
 }
 
-/* Специальная карточка для призыва к действию */
-.special-card {
-  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%) !important;
-  border-color: #059669 !important;
-  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2) !important;
+/* Стили для обычных кофейных карточек */
+.coffee-brand-card {
+  --border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d);
+  --glow-color: rgba(245, 158, 11, 0.25);
+  --glow-hover-color: rgba(245, 158, 11, 0.6);
 }
 
-.special-card:hover {
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
-  box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3) !important;
+/* Стили для специальной карточки */
+.special-brand-card {
+  --border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946);
+  --glow-color: rgba(197, 249, 70, 0.25);
+  --glow-hover-color: rgba(197, 249, 70, 0.6);
 }
 
-/* В темной теме делаем более контрастные светлые карточки */
-:root.dark .brand-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
-  border-color: #10b981 !important;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2) !important;
+/* Контент карточки */
+.brand-content {
+  background: radial-gradient(circle at 50% 0%, var(--glow-color) 0%, transparent 70%);
+  border-radius: 20px;
+  padding: 20px 16px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  text-align: left;
+  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  z-index: 2;
 }
 
-:root.dark .brand-card:hover {
-  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
-  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3) !important;
-}
-
-:root.dark .special-card {
-  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%) !important;
+.brand-card:hover .brand-content {
+  background: radial-gradient(circle at 50% 0%, var(--glow-hover-color) 0%, transparent 70%);
+  box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
 
 /* --- СТИЛИ ЗАГОЛОВКА --- */
 .brand-card h3 {
-  color: #1f2937 !important; /* Темный цвет для контраста на светлом фоне */
+  color: #ffffff !important;
   font-size: 16px !important;
   line-height: 1.4 !important;
   margin-top: 0 !important;
   margin-bottom: 8px !important;
   font-weight: 700 !important;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.brand-card:hover h3 {
+  transform: scale(1.05);
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
 }
 
 /* --- СТИЛИ ТЕКСТА --- */
 .description-main {
-  color: #374151 !important; /* Темно-серый для основного текста */
+  color: rgba(255, 255, 255, 0.9) !important;
   font-size: 14px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.brand-card:hover .description-main {
+  transform: scale(1.02);
+}
+
+/* В темной теме сохраняем тот же эффект */
+:root.dark .brand-card {
+  background: var(--vp-c-bg-soft) !important;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .brand-card {
+    transition: none !important;
+  }
+  
+  .brand-card:hover {
+    transform: none !important;
+  }
+  
+  .brand-content {
+    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.2) !important;
+  }
+  
+  .brand-card:hover .brand-content {
+    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.2) !important;
+  }
+  
+  .brand-card:hover h3,
+  .brand-card:hover .description-main {
+    transform: none !important;
+  }
 }
 </style>
