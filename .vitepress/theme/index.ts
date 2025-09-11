@@ -52,6 +52,7 @@ import IndexApproach from '../components/IndexApproach.vue'
 import AnnaSpecsSignal from '../components/AnnaSpecsSignal.vue'
 import InvestPulseForm from '../components/InvestPulseForm.vue'
 import InvestNewCafe from '../components/InvestNewCafe.vue'
+import SignalsYandexVSSignal from '../components/SignalsYandexVSSignal.vue'
 
 export default {
   extends: DefaultTheme,
@@ -110,5 +111,6 @@ export default {
     app.component('AnnaSpecsSignal', AnnaSpecsSignal)
     app.component('InvestPulseForm', InvestPulseForm)
     app.component('InvestNewCafe', InvestNewCafe)
+    app.component('SignalsYandexVSSignal', SignalsYandexVSSignal)
   }
 }
