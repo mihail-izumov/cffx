@@ -37,22 +37,27 @@
 <style scoped>
 /* ВСЕ СТИЛИ ПОЛНОСТЬЮ ИЗОЛИРОВАНЫ С УНИКАЛЬНЫМИ КЛАССАМИ */
 
+/* Контейнер для горизонтальной прокрутки */
 .steps-brands-container {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
+  display: flex !important;
+  overflow-x: auto !important;
   gap: 16px !important;
-  padding: 4px 0 12px 0 !important;
+  padding: 4px 0 12px 4px !important;
   margin: 24px 0 !important;
 }
 
-/* Мобильная адаптивность - на узких экранах делаем 1 колонку */
-@media (max-width: 768px) {
-  .steps-brands-container {
-    grid-template-columns: 1fr !important;
-  }
+/* Стилизация скроллбара */
+.steps-brands-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.steps-brands-container::-webkit-scrollbar-thumb {
+  background-color: var(--vp-c-divider);
+  border-radius: 3px;
 }
 
 .steps-brand-card {
+  flex: 0 0 300px !important; /* Фиксированная ширина для скролла */
   border-radius: 12px !important;
   padding: 20px 16px !important;
   display: flex !important;
@@ -61,6 +66,7 @@
   border-width: 1px !important;
   border-top-width: 4px !important;
   position: relative !important;
+  min-height: 180px !important;
 }
 
 /* СВЕТЛАЯ ТЕМА - карточки светлые */
