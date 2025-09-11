@@ -9,7 +9,7 @@ outline: false
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
-    src="/signals-ban.jpg.svg" 
+    src="/signals-ban.jpg" 
     alt="Сигнал"
     style="
       width: 100%;
