@@ -49,6 +49,7 @@ import FestContact from '../components/FestContact.vue'
 import FestBrands from '../components/FestBrands.vue'
 import GrowthPotentialMethod from '../components/GrowthPotentialMethod.vue'
 import IndexApproach from '../components/IndexApproach.vue'
+import AnnaSpecsSignal from '../components/AnnaSpecsSignal.vue'
 
 export default {
   extends: DefaultTheme,
@@ -104,5 +105,6 @@ export default {
     app.component('FestBrands', FestBrands)
     app.component('GrowthPotentialMethod', GrowthPotentialMethod)
     app.component('IndexApproach', IndexApproach)
+    app.component('AnnaSpecsSignal', AnnaSpecsSignal)
   }
 }
