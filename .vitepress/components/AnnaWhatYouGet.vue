@@ -20,16 +20,16 @@
     <div class="benefits-brand-card benefits-impact-card">
       <div class="benefits-emoji">👀</div>
       <h3 class="benefits-title">Видите влияние</h3>
-      <p class="benefits-description-main">В Индексе Роста отображается, как ваши слова меняют место к лучшему</p>
-      <p class="benefits-description-goals benefits-impact-goals">Публичная метрика в реальном времени</p>
+      <p class="benefits-description-main">Следите как ваши Сигналы меняют позицию кофейни в Индексе Роста</p>
+      <p class="benefits-description-goals benefits-impact-goals">Публичная метрика</p>
     </div>
     
     <!-- СТАНОВИТЕСЬ ПАРТНЁРОМ -->
     <div class="benefits-brand-card benefits-partner-card">
       <div class="benefits-emoji">🏆</div>
       <h3 class="benefits-title">Становитесь партнёром</h3>
-      <p class="benefits-description-main">Кофейни благодарят вас за помощь — вы больше не просто гость, а соавтор улучшений</p>
-      <p class="benefits-description-goals benefits-partner-goals">Совместное развитие благодаря Сигналу</p>
+      <p class="benefits-description-main">Кофейни благодарят вас за помощь — вы больше не просто гость</p>
+      <p class="benefits-description-goals benefits-partner-goals">Совместное развитие</p>
     </div>
   </div>
 </template>
