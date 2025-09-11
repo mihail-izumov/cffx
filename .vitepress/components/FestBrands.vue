@@ -1,10 +1,6 @@
 <template>
   <div class="brands-container">
     <div class="brand-card">
-      <h3>Корж</h3>
-      <p class="description-main">Покорители сердец всей Самары — превратили город в одну большую кофейную семью.</p>
-    </div>
-    <div class="brand-card">
       <h3>Mosaic</h3>
       <p class="description-main">Складывают кофейную мозаику из лучших зерен планеты — каждая чашка как маленький шедевр Гауди.</p>
     </div>
@@ -56,7 +52,7 @@
       <h3>Мува</h3>
       <p class="description-main">Кофейное движение молодых и дерзких — тут даже бабушки становятся хипстерами после первого глотка.</p>
     </div>
-    <div class="brand-card">
+    <div class="brand-card special-card">
       <h3>Участвуете в фестивале?</h3>
       <p class="description-main"><a href="/fest2025#организатор">Подать заявку на участие →</a></p>
     </div>
@@ -66,14 +62,15 @@
 <style scoped>
 /* Стиль для ссылки в состоянии покоя */
 .brand-card .description-main a {
-  color: #a0c4a7 !important; /* Светло-зеленый цвет для ссылки */
+  color: #059669 !important; /* Зеленый цвет для ссылки */
   text-decoration: none;
+  font-weight: 600 !important;
   transition: color 0.3s ease;
 }
 
 /* Стиль для ссылки при наведении курсора */
 .brand-card .description-main a:hover {
-  color: #7cb583 !important; /* Более яркий зеленый при наведении */
+  color: #047857 !important; /* Более темный зеленый при наведении */
 }
 </style>
 
@@ -97,37 +94,69 @@
   border-radius: 3px;
 }
 
-/* --- СТИЛИ КАРТОЧКИ --- */
+/* --- СТИЛИ КАРТОЧКИ (ВЫВОРОТКА) --- */
 .brand-card {
   flex: 0 0 260px;
-  background-color: #2d3748 !important; /* Темно-серый фон как у других блоков */
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important; /* Светлый градиент */
   border-radius: 12px !important;
   padding: 20px 16px !important;
-  border: 1px solid #4a5568 !important; /* Subtle border для определения границ */
+  border: 2px solid #10b981 !important; /* Яркая зеленая рамка */
   transition: all 0.3s ease !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15) !important; /* Зеленоватая тень */
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Декоративный элемент */
+.brand-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #10b981, #059669, #047857) !important;
 }
 
 /* Эффект hover для карточек */
 .brand-card:hover {
-  background-color: #374151 !important; /* Чуть светлее при наведении */
-  border-color: #6b7280 !important;
-  transform: translateY(-2px) !important;
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+  border-color: #059669 !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.25) !important;
 }
 
-/* В темной теме используем еще более темный фон */
+/* Специальная карточка для призыва к действию */
+.special-card {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%) !important;
+  border-color: #059669 !important;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2) !important;
+}
+
+.special-card:hover {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
+  box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3) !important;
+}
+
+/* В темной теме делаем более контрастные светлые карточки */
 :root.dark .brand-card {
-  background-color: #1a202c !important;
-  border-color: #2d3748 !important;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+  border-color: #10b981 !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2) !important;
 }
 
 :root.dark .brand-card:hover {
-  background-color: #2d3748 !important;
-  border-color: #4a5568 !important;
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3) !important;
+}
+
+:root.dark .special-card {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%) !important;
 }
 
 /* --- СТИЛИ ЗАГОЛОВКА --- */
 .brand-card h3 {
-  color: #e2e8f0 !important; /* Светло-серый для заголовков */
+  color: #1f2937 !important; /* Темный цвет для контраста на светлом фоне */
   font-size: 16px !important;
   line-height: 1.4 !important;
   margin-top: 0 !important;
@@ -137,7 +166,7 @@
 
 /* --- СТИЛИ ТЕКСТА --- */
 .description-main {
-  color: #cbd5e0 !important; /* Светло-серый для основного текста */
+  color: #374151 !important; /* Темно-серый для основного текста */
   font-size: 14px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
