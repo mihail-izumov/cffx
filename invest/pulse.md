@@ -9,6 +9,8 @@ title: Пульс | Поток данных Сигнала для инвести
 
 ## Живые данные кофейного рынка для умных инвестиций
 
+<Pulse3Cards />
+
 **Отслеживайте тренды. Находите возможности. Зарабатывайте больше.** <br>
 **Бесплатно и без регистрации.**
 
@@ -16,8 +18,6 @@ title: Пульс | Поток данных Сигнала для инвести
   <a href="/invest/vision" class="btn btn-primary" rel="noopener noreferrer">Россия</a>
   <a href="/smr" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Самара</a>
 </div>
-
-<Pulse3Cards />
 
 ## Индекс Роста
 
