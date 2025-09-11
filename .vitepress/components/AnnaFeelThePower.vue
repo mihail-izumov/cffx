@@ -10,7 +10,7 @@
           Каждый Сигнал помогает любимым кофейням стать лучше уже сегодня.
         </p>
       </div>
-      <a href="/smr" class="user-card-button">
+      <a href="/signal/new" class="user-card-button">
         <strong>Отправить Сигнал →</strong>
       </a>
     </div>
