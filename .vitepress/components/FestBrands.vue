@@ -1,8 +1,6 @@
 <template>
   <div class="festival-brands-container">
     <div class="festival-brand-card festival-coffee-brand">
-    </div>
-    <div class="festival-brand-card festival-coffee-brand">
       <div class="festival-brand-content">
         <h3>Mosaic</h3>
         <p class="festival-description-main">Складывают кофейную мозаику из лучших зерен планеты — каждая чашка как маленький шедевр Гауди.</p>
