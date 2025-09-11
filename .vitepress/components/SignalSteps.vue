@@ -4,32 +4,32 @@
     <div class="steps-brand-card steps-step1-card">
       <div class="steps-tariff-badge steps-step1">ШАГ 1</div>
       <h3 class="steps-title">Отправьте Сигнал</h3>
-      <p class="steps-description-main">Наша продуманная форма поможет вам четко изложить свои мысли и предложения.</p>
-      <p class="steps-description-goals steps-step1-goals">Ничего лишнего — только суть.</p>
+      <p class="steps-description-main">Наша умная форма поможет за 30 секунд изложить свои мысли и предложения</p>
+      <p class="steps-description-goals steps-step1-goals">Ничего лишнего — только суть</p>
     </div>
     
     <!-- ШАГ 2 -->
     <div class="steps-brand-card steps-step2-card">
       <div class="steps-tariff-badge steps-step2">ШАГ 2</div>
-      <h3 class="steps-title">Получите поддержку Анны</h3>
-      <p class="steps-description-main">ИИ-ассистент Анна поможет сформировать запрос, так чтобы он был гарантированно услышан кофейней.</p>
-      <p class="steps-description-goals steps-step2-goals">Точные действия – гарантия результата.</p>
+      <h3 class="steps-title">Получите поддержку</h3>
+      <p class="steps-description-main">ИИ-ассистент Анна поможет сформировать запрос, так чтобы он был гарантированно услышан кофейней</p>
+      <p class="steps-description-goals steps-step2-goals">Превращает ваши эмоции в действия</p>
     </div>
     
     <!-- ШАГ 3 -->
     <div class="steps-brand-card steps-step3-card">
       <div class="steps-tariff-badge steps-step3">ШАГ 3</div>
       <h3 class="steps-title">Запустите Процесс</h3>
-      <p class="steps-description-main">Ваш сигнал немедленно поступает в работу менеджеру нужной кофейни.</p>
-      <p class="steps-description-goals steps-step3-goals">Мы гарантируем, что вы получите ответ.</p>
+      <p class="steps-description-main">Ваш Сигнал немедленно поступает в работу менеджеру нужной кофейни</p>
+      <p class="steps-description-goals steps-step3-goals">Мы гарантируем, что вы получите ответ</p>
     </div>
     
     <!-- ШАГ 4 -->
     <div class="steps-brand-card steps-step4-card">
       <div class="steps-tariff-badge steps-step4">ШАГ 4</div>
       <h3 class="steps-title">Получите Результат</h3>
-      <p class="steps-description-main">Следите за статусом сигнала в реальном времени в Индексе Роста. Анна отправит вам результат, когда разбор будет закончен.</p>
-      <p class="steps-description-goals steps-step4-goals">Ваш вклад — нагляден и измерим.</p>
+      <p class="steps-description-main">Анна отправит вам результат в Телеграм-чат, когда разбор будет закончен</p>
+      <p class="steps-description-goals steps-step4-goals">Не просто ответ, а результат</p>
     </div>
   </div>
 </template>
