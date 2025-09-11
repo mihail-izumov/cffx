@@ -40,7 +40,7 @@ outline: false
 
 <AnnaSpecsSignal />
 
-## Решение за 24 часа
+## От Сигнала до реальных изменений – 24 часа
 
 <AnnaWhatYouGet />
 
