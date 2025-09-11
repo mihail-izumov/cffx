@@ -1,42 +1,41 @@
 <template>
   <div class="steps-brands-container">
     <!-- ШАГ 1 -->
-    <div class="steps-brand-card steps-simulator-card">
-      <div class="steps-tariff-badge steps-simulator">ШАГ 1</div>
+    <div class="steps-brand-card steps-step1-card">
+      <div class="steps-tariff-badge steps-step1">ШАГ 1</div>
       <h3 class="steps-title">Отправьте Сигнал</h3>
       <p class="steps-description-main">Наша продуманная форма поможет вам четко изложить свои мысли и предложения.</p>
-      <p class="steps-description-goals">Ничего лишнего — только суть.</p>
+      <p class="steps-description-goals steps-step1-goals">Ничего лишнего — только суть.</p>
     </div>
     
     <!-- ШАГ 2 -->
-    <div class="steps-brand-card steps-simulator-card">
-      <div class="steps-tariff-badge steps-simulator">ШАГ 2</div>
+    <div class="steps-brand-card steps-step2-card">
+      <div class="steps-tariff-badge steps-step2">ШАГ 2</div>
       <h3 class="steps-title">Получите поддержку Анны</h3>
       <p class="steps-description-main">ИИ-ассистент Анна поможет сформировать запрос, так чтобы он был гарантированно услышан кофейней.</p>
-      <p class="steps-description-goals">Точные действия – гарантия результата.</p>
+      <p class="steps-description-goals steps-step2-goals">Точные действия – гарантия результата.</p>
     </div>
     
     <!-- ШАГ 3 -->
-    <div class="steps-brand-card steps-simulator-card">
-      <div class="steps-tariff-badge steps-simulator">ШАГ 3</div>
+    <div class="steps-brand-card steps-step3-card">
+      <div class="steps-tariff-badge steps-step3">ШАГ 3</div>
       <h3 class="steps-title">Запустите Процесс</h3>
       <p class="steps-description-main">Ваш сигнал немедленно поступает в работу менеджеру нужной кофейни.</p>
-      <p class="steps-description-goals">Мы гарантируем, что вы получите ответ.</p>
+      <p class="steps-description-goals steps-step3-goals">Мы гарантируем, что вы получите ответ.</p>
     </div>
     
     <!-- ШАГ 4 -->
-    <div class="steps-brand-card steps-simulator-card">
-      <div class="steps-tariff-badge steps-simulator">ШАГ 4</div>
+    <div class="steps-brand-card steps-step4-card">
+      <div class="steps-tariff-badge steps-step4">ШАГ 4</div>
       <h3 class="steps-title">Получите Результат</h3>
       <p class="steps-description-main">Следите за статусом сигнала в реальном времени в Индексе Роста. Анна отправит вам результат, когда разбор будет закончен.</p>
-      <p class="steps-description-goals">Ваш вклад — нагляден и измерим.</p>
+      <p class="steps-description-goals steps-step4-goals">Ваш вклад — нагляден и измерим.</p>
     </div>
   </div>
 </template>
 
 <style scoped>
 /* ВСЕ СТИЛИ ПОЛНОСТЬЮ ИЗОЛИРОВАНЫ С УНИКАЛЬНЫМИ КЛАССАМИ */
-
 /* Контейнер для горизонтальной прокрутки */
 .steps-brands-container {
   display: flex !important;
@@ -70,20 +69,56 @@
 }
 
 /* СВЕТЛАЯ ТЕМА - карточки светлые */
-.steps-simulator-card {
+.steps-step1-card {
+  background-color: #f8f6f9 !important;
+  border-color: #e0dde5 !important;
+  border-top-color: #9A60A9 !important;
+}
+
+.steps-step2-card {
+  background-color: #f6f9f8 !important;
+  border-color: #dde5e0 !important;
+  border-top-color: #60A994 !important;
+}
+
+.steps-step3-card {
   background-color: #f9f8f6 !important;
   border-color: #e5e2dd !important;
-  border-top-color: #7fb842 !important; /* ЗЕЛЕНЫЙ вместо желтого */
+  border-top-color: #A98E60 !important;
+}
+
+.steps-step4-card {
+  background-color: #f6f8fa !important;
+  border-color: #dde3e8 !important;
+  border-top-color: #4A72A0 !important;
 }
 
 /* ТЕМНАЯ ТЕМА - карточки темные */
-:root.dark .steps-simulator-card {
-  background-color: #2B2A27 !important;
-  border-color: #383633 !important;
-  border-top-color: #c8ff5a !important; /* ЯРКО-ЗЕЛЕНЫЙ для темной темы */
+:root.dark .steps-step1-card {
+  background-color: #2B272B !important;
+  border-color: #383336 !important;
+  border-top-color: #9A60A9 !important;
 }
 
-/* Стили для бейджей тарифов */
+:root.dark .steps-step2-card {
+  background-color: #272B2A !important;
+  border-color: #333836 !important;
+  border-top-color: #60A994 !important;
+}
+
+:root.dark .steps-step3-card {
+  background-color: #2B2A27 !important;
+  border-color: #383633 !important;
+  border-top-color: #A98E60 !important;
+}
+
+:root.dark .steps-step4-card {
+  background-color: #252830 !important;
+  border-color: #323544 !important;
+  border-top-color: #4A72A0 !important;
+}
+
+/* Стили для бейджей */
 .steps-tariff-badge {
   display: inline-block !important;
   padding: 1px 6px !important;
@@ -97,14 +132,24 @@
   border: none !important;
 }
 
-.steps-simulator {
-  background-color: rgba(127, 184, 66, 0.25) !important; /* ЗЕЛЕНЫЙ фон */
-  color: #5a7c3a !important; /* ЗЕЛЕНЫЙ текст */
+.steps-step1 {
+  background-color: rgba(154, 96, 169, 0.25) !important;
+  color: #9A60A9 !important;
 }
 
-:root.dark .steps-simulator {
-  background-color: rgba(200, 255, 90, 0.15) !important;
-  color: #c8ff5a !important;
+.steps-step2 {
+  background-color: rgba(96, 169, 148, 0.25) !important;
+  color: #60A994 !important;
+}
+
+.steps-step3 {
+  background-color: rgba(169, 142, 96, 0.25) !important;
+  color: #8b7348 !important;
+}
+
+.steps-step4 {
+  background-color: rgba(74, 114, 160, 0.25) !important;
+  color: #4A72A0 !important;
 }
 
 /* Заголовки */
@@ -135,15 +180,53 @@
   color: #f0f0f0 !important;
 }
 
-.steps-description-goals {
-  color: #5a7c3a !important; /* ЗЕЛЕНЫЙ */
-  font-size: 14px !important; /* Увеличил с 12px до 14px */
-  font-weight: 500 !important; /* Добавил среднюю жирность */
+/* Цели с увеличенным размером и средней жирностью */
+.steps-step1-goals {
+  color: #7a5a9a !important;
+  font-size: 14px !important; /* Увеличен размер */
+  font-weight: 500 !important; /* Средняя жирность */
   line-height: 1.6 !important;
   margin: 0 !important;
 }
 
-:root.dark .steps-description-goals {
-  color: #a8d472 !important; /* ПРИГЛУШЕННЫЙ ЗЕЛЕНЫЙ */
+.steps-step2-goals {
+  color: #5a7a6a !important;
+  font-size: 14px !important; /* Увеличен размер */
+  font-weight: 500 !important; /* Средняя жирность */
+  line-height: 1.6 !important;
+  margin: 0 !important;
+}
+
+.steps-step3-goals {
+  color: #7a6e5a !important;
+  font-size: 14px !important; /* Увеличен размер */
+  font-weight: 500 !important; /* Средняя жирность */
+  line-height: 1.6 !important;
+  margin: 0 !important;
+}
+
+.steps-step4-goals {
+  color: #5a6a9a !important;
+  font-size: 14px !important; /* Увеличен размер */
+  font-weight: 500 !important; /* Средняя жирность */
+  line-height: 1.6 !important;
+  margin: 0 !important;
+}
+
+/* ТЕМНАЯ ТЕМА - цели */
+:root.dark .steps-step1-goals {
+  color: #BD95BD !important;
+}
+
+:root.dark .steps-step2-goals {
+  color: #95BDB3 !important;
+}
+
+:root.dark .steps-step3-goals {
+  color: #BDB095 !important;
+}
+
+:root.dark .steps-step4-goals {
+  color: #95a9bd !important;
 }
 </style>
