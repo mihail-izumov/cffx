@@ -11,7 +11,7 @@
         </p>
       </div>
       <a href="/signal/new" class="user-card-button">
-        <strong>Отправить Сигнал →</strong>
+        <strong>Отправить ⚡ Сигнал</strong>
       </a>
     </div>
     
@@ -26,7 +26,7 @@
         </p>
       </div>
       <a href="/brew/membership" class="user-card-button">
-        <strong>Подключить Кофейню →</strong>
+        <strong>Подключить Кофейню</strong>
       </a>
     </div>
   </div>
