@@ -1,110 +1,149 @@
 <template>
-  <div class="brands-container">
-    <div class="brand-card">
-      <h3>Skuratov</h3>
-      <p class="description-main">Формула «скорости» и пределы роста для «качества»</p>
-      <p class="description-goals">Формула успеха, Рост без потерь</p>
+  <div class="analysis-brands-container">
+    <div class="analysis-brand-card analysis-coffee-brand">
+      <div class="analysis-brand-content">
+        <h3>Skuratov</h3>
+        <p class="analysis-description-main">Формула «скорости» и пределы роста для «качества»</p>
+        <p class="analysis-description-goals">Формула успеха, Рост без потерь</p>
+      </div>
     </div>
-      <div class="brand-card">
-      <h3>Корж</h3>
-      <p class="description-main">Масштабировать уют без потери магии бренда</p>
-      <p class="description-goals">Создать культ бренда, Доминировать по цене</p>
+    <div class="analysis-brand-card analysis-coffee-brand">
+      <div class="analysis-brand-content">
+        <h3>Корж</h3>
+        <p class="analysis-description-main">Масштабировать уют без потери магии бренда</p>
+        <p class="analysis-description-goals">Создать культ бренда, Доминировать по цене</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>Surf Coffee</h3>
-      <p class="description-main">Масштабирование на формуле «атмосферы»</p>
-      <p class="description-goals">Ядро бренда, Рост без потерь</p>
+    <div class="analysis-brand-card analysis-coffee-brand">
+      <div class="analysis-brand-content">
+        <h3>Surf Coffee</h3>
+        <p class="analysis-description-main">Масштабирование на формуле «атмосферы»</p>
+        <p class="analysis-description-goals">Ядро бренда, Рост без потерь</p>
+      </div>
     </div>
-      <div class="brand-card">
-      <h3>Green House</h3>
-      <p class="description-main">Региональное доминирование и риски экспансии</p>
-      <p class="description-goals">Формула успеха, Ключевые элементы, Адаптация</p>
+    <div class="analysis-brand-card analysis-coffee-brand">
+      <div class="analysis-brand-content">
+        <h3>Green House</h3>
+        <p class="analysis-description-main">Региональное доминирование и риски экспансии</p>
+        <p class="analysis-description-goals">Формула успеха, Ключевые элементы, Адаптация</p>
+      </div>
     </div>
-    <div class="brand-card">
-      <h3>Вашей кофейни здесь нет?</h3>
-      <p class="description-goals"><a href="/brew/membership">Рассчитать Индекс Роста →</a></p>
+    <div class="analysis-brand-card analysis-special-brand">
+      <div class="analysis-brand-content">
+        <h3>Вашей кофейни здесь нет?</h3>
+        <p class="analysis-description-goals"><a href="/brew/membership">Рассчитать Индекс Роста →</a></p>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
 /* Стиль для ссылки в состоянии покоя */
-.brand-card .description-goals a {
-  color: #555555; /* Темно-серый цвет */
-  text-decoration: none; /* Убираем подчеркивание */
-  transition: color 0.3s ease; /* Плавный переход цвета */
+.analysis-brand-card .analysis-description-goals a {
+  color: #10b981 !important;
+  text-decoration: none;
+  font-weight: 600 !important;
+  transition: color 0.3s ease;
 }
 
 /* Стиль для ссылки при наведении курсора */
-.brand-card .description-goals a:hover {
-  color: #000000; /* Черный цвет */
+.analysis-brand-card .analysis-description-goals a:hover {
+  color: #34d399 !important;
 }
 </style>
 
-
 <style>
-/* Контейнер для горизонтальной прокрутки */
-.brands-container {
+/* Контейнер для горизонтальной прокрутки - УНИКАЛЬНЫЕ КЛАССЫ */
+.analysis-brands-container {
   display: flex !important;
   overflow-x: auto !important;
-  gap: 12px !important; /* Уменьшен отступ между карточками */
+  gap: 12px !important;
   padding: 4px 0 12px 4px !important;
-  margin: 24px 0 !important; /* Уменьшен вертикальный отступ всего блока */
+  margin: 24px 0 !important;
 }
 
 /* Стилизация скроллбара */
-.brands-container::-webkit-scrollbar {
+.analysis-brands-container::-webkit-scrollbar {
   height: 6px;
 }
-.brands-container::-webkit-scrollbar-thumb {
+
+.analysis-brands-container::-webkit-scrollbar-thumb {
   background-color: var(--vp-c-divider);
   border-radius: 3px;
 }
 
-/* --- СТИЛИ КАРТОЧКИ --- */
-.brand-card {
-  flex: 0 0 260px; /* Фиксированная ширина карточки */
-  background-color: #f5f5f7 !important;
-  border-radius: 12px !important;
-  padding: 20px 16px !important; /* Уменьшены внутренние отступы */
+/* КАРТОЧКА БЕЗ ВНУТРЕННИХ ОТСТУПОВ */
+.analysis-brand-card {
+  flex: 0 0 260px;
+  border-radius: 22px !important;
+  overflow: hidden;
+  padding: 0 !important;
   border: none !important;
+  background: transparent !important;
 }
 
-/* В тёмной теме фон карточки можно сделать чуть темнее для лучшей интеграции */
-:root.dark .brand-card {
-    background-color: #eaeaef !important;
+/* Цветовые схемы */
+.analysis-coffee-brand {
+  --analysis-glow-color: rgba(16, 185, 129, 0.25);
+}
+
+.analysis-special-brand {
+  --analysis-glow-color: rgba(197, 249, 70, 0.25);
+}
+
+/* ЗЕЛЕНОЕ ПОЛЕ НА ВСЮ КАРТОЧКУ */
+.analysis-brand-content {
+  background: radial-gradient(circle at 50% 0%, var(--analysis-glow-color) 0%, transparent 70%);
+  border-radius: 22px !important;
+  padding: 20px 16px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 160px;
+  text-align: left;
+  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
+  position: relative;
+  box-sizing: border-box !important;
 }
 
 /* --- СТИЛИ ЗАГОЛОВКА --- */
-.brand-card h3 {
-  color: #1a1a1a !important;
+.analysis-brand-card h3 {
+  color: #ffffff !important;
   font-size: 16px !important;
   line-height: 1.4 !important;
   margin-top: 0 !important;
-  margin-bottom: 8px !important; /* Уменьшен отступ под заголовком */
+  margin-bottom: 8px !important;
   font-weight: 700 !important;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 /* --- СТИЛИ ТЕКСТА --- */
-/* Первая строка описания - чёрная */
-.description-main {
-  color: #1a1a1a !important;
+/* Первая строка описания - белая */
+.analysis-description-main {
+  color: rgba(255, 255, 255, 0.9) !important;
   font-size: 14px !important;
   line-height: 1.6 !important;
-  margin: 0 0 4px 0 !important; /* Уменьшен отступ ~ в полстроки */
+  margin: 0 0 4px 0 !important;
 }
 
-/* Текст с целями - серый */
-.description-goals {
-  color: #6b7280 !important;
+/* Текст с целями - приглушенный белый */
+.analysis-description-goals {
+  color: rgba(255, 255, 255, 0.7) !important;
   font-size: 13px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
 }
 
-/* Стиль для слова "Цели" */
-.description-goals strong {
+/* Стиль для выделенного текста */
+.analysis-description-goals strong {
   font-weight: 600;
-  color: inherit !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* В темной теме сохраняем тот же эффект */
+:root.dark .analysis-brand-card {
+  background: transparent !important;
 }
 </style>
