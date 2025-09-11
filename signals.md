@@ -29,7 +29,7 @@ outline: false
 <SignalSteps />
 
 <div class="start-button-container">
-  <a href="/changelog" class="btn btn-primary" rel="noopener noreferrer"><strong>Обновления Индекса →</strong></a>
+  <a href="/signal/new" class="btn btn-primary" rel="noopener noreferrer"><strong>Отправить ⚡ Сигнал</strong></a>
 </div>
 
 ## Знакомьтесь – 🦸‍♀️ Анна 
