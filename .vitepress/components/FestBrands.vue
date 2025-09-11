@@ -129,7 +129,7 @@
   border-radius: 3px;
 }
 
-/* --- ОСНОВНЫЕ СТИЛИ КАРТОЧЕК --- */
+/* --- ОСНОВНЫЕ СТИЛИ КАРТОЧЕК (БЕЗ РАМКИ) --- */
 .brand-card {
   flex: 0 0 260px;
   position: relative;
@@ -137,41 +137,20 @@
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
   overflow: hidden;
   background: var(--vp-c-bg-soft) !important;
-  border: 2px solid transparent !important;
 }
 
 .brand-card:hover {
   transform: translateY(-8px) !important;
 }
 
-/* Рамка точно по периметру карточки */
-.brand-card::before {
-  content: '';
-  position: absolute;
-  inset: -2px; /* Убираем padding, делаем рамку точно по границе */
-  border-radius: 22px;
-  background: var(--border-gradient);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  transition: filter 0.4s ease;
-  z-index: 1;
-}
-
-.brand-card:hover::before {
-  filter: brightness(2) saturate(1.5);
-}
-
 /* Стили для обычных кофейных карточек - ЗЕЛЕНАЯ ГАММА */
 .coffee-brand-card {
-  --border-gradient: linear-gradient(135deg, #059669, #10b981, #34d399);
   --glow-color: rgba(16, 185, 129, 0.25);
   --glow-hover-color: rgba(16, 185, 129, 0.6);
 }
 
 /* Стили для специальной карточки - ЯРКИЙ ЗЕЛЕНЫЙ */
 .special-brand-card {
-  --border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946);
   --glow-color: rgba(197, 249, 70, 0.25);
   --glow-hover-color: rgba(197, 249, 70, 0.6);
 }
