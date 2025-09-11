@@ -50,6 +50,7 @@ import FestBrands from '../components/FestBrands.vue'
 import GrowthPotentialMethod from '../components/GrowthPotentialMethod.vue'
 import IndexApproach from '../components/IndexApproach.vue'
 import AnnaSpecsSignal from '../components/AnnaSpecsSignal.vue'
+import InvestPulseForm from '../components/InvestPulseForm.vue.vue'
 
 export default {
   extends: DefaultTheme,
@@ -106,5 +107,6 @@ export default {
     app.component('GrowthPotentialMethod', GrowthPotentialMethod)
     app.component('IndexApproach', IndexApproach)
     app.component('AnnaSpecsSignal', AnnaSpecsSignal)
+    app.component('InvestPulseForm', InvestPulseForm)
   }
 }
