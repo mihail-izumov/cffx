@@ -50,7 +50,7 @@ import FestBrands from '../components/FestBrands.vue'
 import GrowthPotentialMethod from '../components/GrowthPotentialMethod.vue'
 import IndexApproach from '../components/IndexApproach.vue'
 import AnnaSpecsSignal from '../components/AnnaSpecsSignal.vue'
-import InvestPulseForm from '../components/InvestPulseForm.vue.vue'
+import InvestPulseForm from '../components/InvestPulseForm.vue'
 
 export default {
   extends: DefaultTheme,
