@@ -1,10 +1,6 @@
 <template>
   <div class="festival-brands-container">
     <div class="festival-brand-card festival-coffee-brand">
-      <div class="festival-brand-content">
-        <h3>Корж</h3>
-        <p class="festival-description-main">Покорители сердец всей Самары — превратили город в одну большую кофейную семью.</p>
-      </div>
     </div>
     <div class="festival-brand-card festival-coffee-brand">
       <div class="festival-brand-content">
@@ -87,7 +83,7 @@
     <div class="festival-brand-card festival-special-brand">
       <div class="festival-brand-content">
         <h3>Участвуете в фестивале?</h3>
-        <p class="festival-description-main"><a href="/fest2025#организатор">Подать заявку на участие →</a></p>
+        <p class="festival-description-main"><a href="/fest#организатор">Подать заявку на участие →</a></p>
       </div>
     </div>
   </div>
