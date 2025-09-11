@@ -94,7 +94,6 @@
 </template>
 
 <style scoped>
-/* Стиль для ссылки - только изменение цвета */
 .brand-card .description-main a {
   color: #10b981 !important;
   text-decoration: none;
@@ -108,7 +107,6 @@
 </style>
 
 <style>
-/* Контейнер для горизонтальной прокрутки */
 .brands-container {
   display: flex !important;
   overflow-x: auto !important;
@@ -117,7 +115,6 @@
   margin: 24px 0 !important;
 }
 
-/* Стилизация скроллбара */
 .brands-container::-webkit-scrollbar {
   height: 6px;
 }
@@ -127,46 +124,41 @@
   border-radius: 3px;
 }
 
-/* --- КАРТОЧКИ БЕЗ РАМОК --- */
+/* КАРТОЧКА БЕЗ ВНУТРЕННИХ ОТСТУПОВ */
 .brand-card {
   flex: 0 0 260px;
-  position: relative;
   border-radius: 22px !important;
   overflow: hidden;
-  background: var(--vp-c-bg-soft) !important;
+  padding: 0 !important; /* Убираем все отступы */
   border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
+  background: transparent !important; /* Убираем фон карточки */
 }
 
-/* Стили для обычных кофейных карточек - ЗЕЛЕНАЯ ГАММА */
 .coffee-brand-card {
   --glow-color: rgba(16, 185, 129, 0.25);
 }
 
-/* Стили для специальной карточки - ЯРКИЙ ЗЕЛЕНЫЙ */
 .special-brand-card {
   --glow-color: rgba(197, 249, 70, 0.25);
 }
 
-/* Контент карточки */
+/* ЗЕЛЕНОЕ ПОЛЕ НА ВСЮ КАРТОЧКУ */
 .brand-content {
   background: radial-gradient(circle at 50% 0%, var(--glow-color) 0%, transparent 70%);
-  border-radius: 20px;
+  border-radius: 22px !important; /* Такой же радиус как у карточки */
   padding: 20px 16px !important;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 160px; /* Минимальная высота */
   text-align: left;
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
   position: relative;
-  z-index: 2;
-  border: none !important;
-  outline: none !important;
+  box-sizing: border-box !important;
 }
 
-/* --- СТИЛИ ЗАГОЛОВКА --- */
 .brand-card h3 {
   color: #ffffff !important;
   font-size: 16px !important;
@@ -177,7 +169,6 @@
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-/* --- СТИЛИ ТЕКСТА --- */
 .description-main {
   color: rgba(255, 255, 255, 0.9) !important;
   font-size: 14px !important;
@@ -185,8 +176,7 @@
   margin: 0 !important;
 }
 
-/* В темной теме сохраняем тот же эффект */
 :root.dark .brand-card {
-  background: var(--vp-c-bg-soft) !important;
+  background: transparent !important;
 }
 </style>
