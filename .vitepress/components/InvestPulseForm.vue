@@ -57,7 +57,7 @@
 <style scoped>
 .consultation-section {
   background: #0a0a0a;
-  padding: 60px 0;
+  padding: 30px 0;
   min-height: auto;
 }
 
@@ -65,14 +65,14 @@
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 15px;
 }
 
 .consultation-description {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   color: #ffffff;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   line-height: 1.2;
   text-align: left;
 }
@@ -80,16 +80,16 @@
 .consultation-form {
   background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
   border: 1px solid #333;
-  border-radius: 8px;
-  padding: 40px;
+  border-radius: 6px;
+  padding: 20px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   width: 100%;
 }
 
 .form-row {
   display: flex;
-  gap: 20px;
-  margin-bottom: 15px;
+  gap: 12px;
+  margin-bottom: 10px;
 }
 
 .form-group {
@@ -104,11 +104,11 @@
 .form-input,
 .form-select {
   width: 100%;
-  padding: 14px 16px;
+  padding: 10px 12px;
   box-sizing: border-box;
   border: 1px solid #333;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 13px;
   background: #000000;
   color: #ffffff;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -128,9 +128,9 @@
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 14px;
-  padding-right: 35px;
+  background-position: right 10px center;
+  background-size: 12px;
+  padding-right: 30px;
   color: #666666;
 }
 
@@ -142,7 +142,7 @@
 .form-select option {
   background: #000000;
   color: #ffffff;
-  padding: 8px;
+  padding: 6px;
 }
 
 .form-select option:first-child {
@@ -157,14 +157,14 @@
 }
 
 .investment-hint {
-  margin-top: 8px;
-  margin-bottom: 15px;
-  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  font-size: 11px;
   color: #ffffff;
-  min-height: 15px;
+  min-height: 13px;
   opacity: 0.9;
   transition: opacity 0.3s ease;
-  line-height: 1.3;
+  line-height: 1.2;
 }
 
 .investment-hint:empty {
@@ -174,25 +174,26 @@
 
 .checkbox-group {
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  margin-bottom: 20px;
-  margin-top: 10px;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  margin-top: 6px;
 }
 
 .checkbox-group input[type="checkbox"] {
-  margin-top: 2px;
   width: auto;
   min-width: 14px;
   height: 14px;
   accent-color: #347b6c;
+  margin: 0;
+  flex-shrink: 0;
 }
 
 .checkbox-group label {
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 11px;
+  line-height: 1.3;
   color: #cccccc;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .policy-link {
@@ -208,11 +209,11 @@
 .submit-btn {
   background: linear-gradient(135deg, #347b6c 0%, #C5F946 100%);
   color: #000000;
-  padding: 16px 24px;
+  padding: 12px 20px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   width: 100%;
   transition: opacity 0.3s ease, transform 0.2s ease;
@@ -231,14 +232,14 @@
 }
 
 .success-message {
-  margin-top: 20px;
+  margin-top: 15px;
   color: #347b6c;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 16px;
+  padding: 12px;
   background: rgba(52, 123, 108, 0.1);
   border: 1px solid rgba(52, 123, 108, 0.3);
   border-radius: 6px;
@@ -247,45 +248,49 @@
 .success-message::before {
   content: "✓";
   color: #347b6c;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
 }
 
 @media (max-width: 768px) {
   .consultation-section {
-    padding: 40px 0;
+    padding: 20px 0;
   }
   
   .consultation-container {
-    padding: 0 15px;
+    padding: 0 10px;
   }
   
   .consultation-description {
-    font-size: 16px;
-    margin-bottom: 15px;
+    font-size: 15px;
+    margin-bottom: 12px;
   }
   
   .consultation-form {
-    padding: 20px;
+    padding: 15px;
   }
   
   .form-row {
     flex-direction: column;
-    gap: 15px;
+    gap: 8px;
+    margin-bottom: 8px;
   }
   
   .investment-hint {
-    margin-bottom: 10px;
+    margin-bottom: 4px;
   }
   
   .checkbox-group {
-    flex-direction: column;
+    flex-direction: row;
     gap: 6px;
-    margin-top: 8px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    align-items: center;
   }
   
   .checkbox-group input[type="checkbox"] {
-    margin-top: 0;
+    margin: 0;
+    margin-right: 2px;
   }
 }
 </style>
