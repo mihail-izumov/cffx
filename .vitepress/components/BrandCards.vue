@@ -115,30 +115,35 @@
   margin: 0 0 4px 0 !important;
 }
 
-/* Текст с целями - приглушенный белый */
+/* ПРИГЛУШЕННЫЙ ЗЕЛЕНЫЙ ТЕКСТ - БОЛЕЕ ЗАМЕТНЫЙ */
 .analysis-description-goals {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: #a7f3d0 !important; /* Светло-зеленый приглушенный */
   font-size: 13px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
+  font-weight: 500 !important; /* Чуть жирнее для заметности */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important; /* Subtle тень */
+  letter-spacing: 0.02em !important; /* Немного разреженный текст */
 }
 
 /* Стиль для выделенного текста */
 .analysis-description-goals strong {
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: #86efac !important; /* Более яркий зеленый для акцентов */
 }
 
 /* Стиль для ссылки в состоянии покоя */
 .analysis-brand-card .analysis-description-goals a {
-  color: #10b981 !important;
+  color: #6ee7b7 !important; /* Ярче для ссылок */
   text-decoration: none;
   font-weight: 600 !important;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* Стиль для ссылки при наведении курсора */
 .analysis-brand-card .analysis-description-goals a:hover {
   color: #34d399 !important;
+  text-shadow: 0 0 8px rgba(52, 211, 153, 0.4) !important; /* Зеленое свечение при hover */
 }
 </style>
