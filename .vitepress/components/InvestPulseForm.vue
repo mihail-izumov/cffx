@@ -1,7 +1,7 @@
 <template>
   <div class="consultation-section">
     <div class="consultation-container">
-      <p class="consultation-description">Получить персональную консультацию</p>
+      <p class="consultation-description">Начните инвестировать в кофейный рынок прямо сейчас</p>
       
       <form id="consultationForm" class="consultation-form">
         <div class="form-row">
@@ -29,10 +29,9 @@
               <option value="5-10m">5-10 млн ₽</option>
               <option value="10-20m">10-20 млн ₽</option>
             </select>
+            <div id="investmentHint" class="investment-hint"></div>
           </div>
         </div>
-        
-        <div id="investmentHint" class="investment-hint"></div>
         
         <div class="form-group checkbox-group">
           <input type="checkbox" id="consent" name="consent" required>
@@ -57,15 +56,15 @@
 
 <style scoped>
 .consultation-section {
-  background: #0a0a0a;
-  padding: 30px 20px;
+  padding: 30px 0;
   min-height: auto;
 }
 
 .consultation-container {
   max-width: 1200px;
   width: 100%;
-  margin: 0;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .consultation-description {
@@ -83,7 +82,7 @@
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  max-width: 600px;
+  width: 100%;
 }
 
 .form-row {
@@ -94,6 +93,7 @@
 
 .form-group {
   flex: 1;
+  position: relative;
 }
 
 .form-group.checkbox-group {
@@ -152,19 +152,22 @@
 .form-input:focus,
 .form-select:focus {
   outline: none;
-  border-color: #4CAF50;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+  border-color: #347b6c;
+  box-shadow: 0 0 0 2px rgba(52, 123, 108, 0.2);
 }
 
 .investment-hint {
-  margin-bottom: 12px;
+  margin-top: 8px;
   font-size: 12px;
-  color: #666666;
-  font-style: italic;
+  color: #ffffff;
   min-height: 15px;
-  opacity: 0.8;
+  opacity: 0.9;
   transition: opacity 0.3s ease;
   line-height: 1.3;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
 }
 
 .investment-hint:empty {
@@ -176,6 +179,7 @@
   align-items: flex-start;
   gap: 8px;
   margin-bottom: 15px;
+  margin-top: 20px;
 }
 
 .checkbox-group input[type="checkbox"] {
@@ -183,7 +187,7 @@
   width: auto;
   min-width: 14px;
   height: 14px;
-  accent-color: #4CAF50;
+  accent-color: #347b6c;
 }
 
 .checkbox-group label {
@@ -194,17 +198,17 @@
 }
 
 .policy-link {
-  color: #4CAF50;
+  color: #347b6c;
   text-decoration: underline;
   transition: color 0.3s ease;
 }
 
 .policy-link:hover {
-  color: #66BB6A;
+  color: #C5F946;
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+  background: linear-gradient(135deg, #347b6c 0%, #C5F946 100%);
   color: #000000;
   padding: 12px 20px;
   border: none;
@@ -230,29 +234,32 @@
 
 .success-message {
   margin-top: 15px;
-  color: #4CAF50;
+  color: #347b6c;
   font-weight: 500;
   font-size: 14px;
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 12px;
-  background: rgba(76, 175, 80, 0.1);
-  border: 1px solid rgba(76, 175, 80, 0.3);
+  background: rgba(52, 123, 108, 0.1);
+  border: 1px solid rgba(52, 123, 108, 0.3);
   border-radius: 6px;
-  max-width: 600px;
 }
 
 .success-message::before {
   content: "✓";
-  color: #4CAF50;
+  color: #347b6c;
   font-size: 16px;
   font-weight: bold;
 }
 
 @media (max-width: 768px) {
   .consultation-section {
-    padding: 20px 15px;
+    padding: 20px 0;
+  }
+  
+  .consultation-container {
+    padding: 0 15px;
   }
   
   .consultation-description {
@@ -269,9 +276,15 @@
     gap: 12px;
   }
   
+  .investment-hint {
+    position: static;
+    margin-top: 4px;
+  }
+  
   .checkbox-group {
     flex-direction: column;
     gap: 6px;
+    margin-top: 15px;
   }
   
   .checkbox-group input[type="checkbox"] {
