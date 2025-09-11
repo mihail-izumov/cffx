@@ -57,29 +57,37 @@
   border-radius: 3px;
 }
 
-/* КАРТОЧКА БЕЗ ВНУТРЕННИХ ОТСТУПОВ */
+/* КАРТОЧКА С ВИДИМОЙ ЗЕЛЕНОЙ ОБВОДКОЙ */
 .analysis-brand-card {
   flex: 0 0 260px;
   border-radius: 22px !important;
   overflow: hidden;
   padding: 0 !important;
-  border: none !important;
-  background: var(--vp-c-bg-soft) !important; /* ВОССТАНОВЛЕН ФОН */
+  background: var(--vp-c-bg-soft) !important;
+  /* ВИДИМАЯ ЗЕЛЕНАЯ ОБВОДКА */
+  border: 2px solid rgba(16, 185, 129, 0.6) !important;
+  box-shadow: 0 0 8px 1px rgba(16, 185, 129, 0.3) !important;
 }
 
 /* Цветовые схемы */
 .analysis-coffee-brand {
   --analysis-glow-color: rgba(16, 185, 129, 0.25);
+  --analysis-border-color: rgba(16, 185, 129, 0.6);
+  --analysis-shadow-color: rgba(16, 185, 129, 0.3);
 }
 
 .analysis-special-brand {
   --analysis-glow-color: rgba(197, 249, 70, 0.25);
+  --analysis-border-color: rgba(197, 249, 70, 0.7);
+  --analysis-shadow-color: rgba(197, 249, 70, 0.4);
+  border-color: var(--analysis-border-color) !important;
+  box-shadow: 0 0 8px 1px var(--analysis-shadow-color) !important;
 }
 
-/* ЗЕЛЕНОЕ ПОЛЕ НА ВСЮ КАРТОЧКУ С ВОССТАНОВЛЕННЫМИ ЭФФЕКТАМИ */
+/* ЗЕЛЕНОЕ ПОЛЕ НА ВСЮ КАРТОЧКУ */
 .analysis-brand-content {
   background: radial-gradient(circle at 50% 0%, var(--analysis-glow-color) 0%, transparent 70%);
-  border-radius: 20px !important; /* ВНУТРЕННИЙ РАДИУС */
+  border-radius: 20px !important;
   padding: 20px 16px !important;
   display: flex;
   flex-direction: column;
@@ -88,9 +96,9 @@
   height: 100% !important;
   min-height: 160px;
   text-align: left;
-  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3) !important; /* ВОССТАНОВЛЕНА ТЕНЬ */
+  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3) !important;
   position: relative;
-  z-index: 2; /* ВОССТАНОВЛЕН Z-INDEX */
+  z-index: 2;
   box-sizing: border-box !important;
 }
 
@@ -106,7 +114,6 @@
 }
 
 /* --- СТИЛИ ТЕКСТА --- */
-/* Первая строка описания - белая */
 .analysis-description-main {
   color: rgba(255, 255, 255, 0.9) !important;
   font-size: 14px !important;
@@ -114,39 +121,37 @@
   margin: 0 0 4px 0 !important;
 }
 
-/* ПРИГЛУШЕННЫЙ ЗЕЛЕНЫЙ ТЕКСТ - БОЛЕЕ ЗАМЕТНЫЙ */
+/* ПРИГЛУШЕННЫЙ ЗЕЛЕНЫЙ ТЕКСТ */
 .analysis-description-goals {
-  color: #a7f3d0 !important; /* Светло-зеленый приглушенный */
+  color: #a7f3d0 !important;
   font-size: 13px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
-  font-weight: 500 !important; /* Чуть жирнее для заметности */
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important; /* Subtle тень */
-  letter-spacing: 0.02em !important; /* Немного разреженный текст */
+  font-weight: 500 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  letter-spacing: 0.02em !important;
 }
 
-/* Стиль для выделенного текста */
 .analysis-description-goals strong {
   font-weight: 600;
-  color: #86efac !important; /* Более яркий зеленый для акцентов */
+  color: #86efac !important;
 }
 
-/* Стиль для ссылки в состоянии покоя */
+/* Стиль для ссылки */
 .analysis-brand-card .analysis-description-goals a {
-  color: #6ee7b7 !important; /* Ярче для ссылок */
+  color: #6ee7b7 !important;
   text-decoration: none;
   font-weight: 600 !important;
   transition: all 0.3s ease;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* Стиль для ссылки при наведении курсора */
 .analysis-brand-card .analysis-description-goals a:hover {
   color: #34d399 !important;
-  text-shadow: 0 0 8px rgba(52, 211, 153, 0.4) !important; /* Зеленое свечение при hover */
+  text-shadow: 0 0 8px rgba(52, 211, 153, 0.4) !important;
 }
 
-/* В темной теме сохраняем тот же эффект */
+/* В темной теме */
 :root.dark .analysis-brand-card {
   background: var(--vp-c-bg-soft) !important;
 }
