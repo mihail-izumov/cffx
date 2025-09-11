@@ -51,6 +51,7 @@ import GrowthPotentialMethod from '../components/GrowthPotentialMethod.vue'
 import IndexApproach from '../components/IndexApproach.vue'
 import AnnaSpecsSignal from '../components/AnnaSpecsSignal.vue'
 import InvestPulseForm from '../components/InvestPulseForm.vue'
+import InvestNewCafe from '../components/InvestNewCafe.vue'
 
 export default {
   extends: DefaultTheme,
@@ -108,5 +109,6 @@ export default {
     app.component('IndexApproach', IndexApproach)
     app.component('AnnaSpecsSignal', AnnaSpecsSignal)
     app.component('InvestPulseForm', InvestPulseForm)
+    app.component('InvestNewCafe', InvestNewCafe)
   }
 }
