@@ -94,18 +94,16 @@
 </template>
 
 <style scoped>
-/* Стиль для ссылки в состоянии покоя */
+/* Стиль для ссылки - только изменение цвета */
 .brand-card .description-main a {
   color: #10b981 !important;
   text-decoration: none;
   font-weight: 600 !important;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
 }
 
-/* Стиль для ссылки при наведении курсора */
 .brand-card .description-main a:hover {
   color: #34d399 !important;
-  text-shadow: 0 0 10px rgba(52, 211, 153, 0.5);
 }
 </style>
 
@@ -129,33 +127,26 @@
   border-radius: 3px;
 }
 
-/* --- ОСНОВНЫЕ СТИЛИ КАРТОЧЕК (БЕЗ РАМКИ) --- */
+/* --- СТАТИЧНЫЕ КАРТОЧКИ БЕЗ АНИМАЦИИ --- */
 .brand-card {
   flex: 0 0 260px;
   position: relative;
   border-radius: 22px !important;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
   overflow: hidden;
   background: var(--vp-c-bg-soft) !important;
-}
-
-.brand-card:hover {
-  transform: translateY(-8px) !important;
 }
 
 /* Стили для обычных кофейных карточек - ЗЕЛЕНАЯ ГАММА */
 .coffee-brand-card {
   --glow-color: rgba(16, 185, 129, 0.25);
-  --glow-hover-color: rgba(16, 185, 129, 0.6);
 }
 
 /* Стили для специальной карточки - ЯРКИЙ ЗЕЛЕНЫЙ */
 .special-brand-card {
   --glow-color: rgba(197, 249, 70, 0.25);
-  --glow-hover-color: rgba(197, 249, 70, 0.6);
 }
 
-/* Контент карточки */
+/* Контент карточки - БЕЗ ИЗМЕНЕНИЙ ПРИ HOVER */
 .brand-content {
   background: radial-gradient(circle at 50% 0%, var(--glow-color) 0%, transparent 70%);
   border-radius: 20px;
@@ -166,14 +157,8 @@
   height: 100%;
   text-align: left;
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
-  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   position: relative;
   z-index: 2;
-}
-
-.brand-card:hover .brand-content {
-  background: radial-gradient(circle at 50% 0%, var(--glow-hover-color) 0%, transparent 70%);
-  box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
 
 /* --- СТИЛИ ЗАГОЛОВКА --- */
@@ -185,12 +170,6 @@
   margin-bottom: 8px !important;
   font-weight: 700 !important;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.brand-card:hover h3 {
-  transform: scale(1.05);
-  text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
 }
 
 /* --- СТИЛИ ТЕКСТА --- */
@@ -199,39 +178,10 @@
   font-size: 14px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.brand-card:hover .description-main {
-  transform: scale(1.02);
 }
 
 /* В темной теме сохраняем тот же эффект */
 :root.dark .brand-card {
   background: var(--vp-c-bg-soft) !important;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-  .brand-card {
-    transition: none !important;
-  }
-  
-  .brand-card:hover {
-    transform: none !important;
-  }
-  
-  .brand-content {
-    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.2) !important;
-  }
-  
-  .brand-card:hover .brand-content {
-    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.2) !important;
-  }
-  
-  .brand-card:hover h3,
-  .brand-card:hover .description-main {
-    transform: none !important;
-  }
 }
 </style>
