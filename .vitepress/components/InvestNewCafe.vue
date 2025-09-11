@@ -44,7 +44,7 @@
   background: var(--vp-c-bg-soft);
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
-  padding: 24px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -64,35 +64,35 @@
 
 .card-title {
   color: #c5f946 !important;
-  margin: 0 0 1rem 0;
-  font-size: 1.25rem;
+  margin: 0 0 1.2rem 0;
+  font-size: 1.4rem;
   font-weight: 600;
   line-height: 1.3;
 }
 
 .card-description {
-  margin: 0 0 1rem 0;
+  margin: 0 0 1.2rem 0;
   line-height: 1.6;
   color: var(--vp-c-text-1);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .card-highlight {
   margin: 0;
   line-height: 1.6;
   color: var(--vp-c-text-1);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .card-button {
   background: #c5f946;
   color: #1a1a1a !important;
-  padding: 12px 24px;
+  padding: 16px 32px;
   border-radius: 8px;
   text-decoration: none;
   text-align: center;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   transition: all 0.3s ease;
   border: none;
   cursor: pointer;
@@ -137,21 +137,22 @@
   }
   
   .coffee-plan-card {
-    padding: 20px;
+    padding: 24px;
   }
   
   .card-title {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
   }
   
   .card-description,
   .card-highlight {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
   
   .card-button {
-    padding: 14px 20px;
-    font-size: 0.95rem;
+    padding: 16px 24px;
+    font-size: 1rem;
   }
 }
 
@@ -161,7 +162,21 @@
   }
   
   .coffee-plan-card {
-    padding: 16px;
+    padding: 20px;
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+  }
+  
+  .card-description,
+  .card-highlight {
+    font-size: 0.95rem;
+  }
+  
+  .card-button {
+    padding: 14px 20px;
+    font-size: 0.95rem;
   }
 }
 </style>
