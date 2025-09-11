@@ -127,13 +127,16 @@
   border-radius: 3px;
 }
 
-/* --- СТАТИЧНЫЕ КАРТОЧКИ БЕЗ АНИМАЦИИ --- */
+/* --- КАРТОЧКИ БЕЗ РАМОК --- */
 .brand-card {
   flex: 0 0 260px;
   position: relative;
   border-radius: 22px !important;
   overflow: hidden;
   background: var(--vp-c-bg-soft) !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* Стили для обычных кофейных карточек - ЗЕЛЕНАЯ ГАММА */
@@ -146,7 +149,7 @@
   --glow-color: rgba(197, 249, 70, 0.25);
 }
 
-/* Контент карточки - БЕЗ ИЗМЕНЕНИЙ ПРИ HOVER */
+/* Контент карточки */
 .brand-content {
   background: radial-gradient(circle at 50% 0%, var(--glow-color) 0%, transparent 70%);
   border-radius: 20px;
@@ -159,6 +162,8 @@
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
   position: relative;
   z-index: 2;
+  border: none !important;
+  outline: none !important;
 }
 
 /* --- СТИЛИ ЗАГОЛОВКА --- */
