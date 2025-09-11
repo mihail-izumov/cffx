@@ -59,6 +59,7 @@
   background: #0a0a0a;
   padding: 20px 0;
   min-height: auto;
+  border-radius: 12px;
 }
 
 .consultation-container {
@@ -255,7 +256,7 @@
 
 @media (max-width: 768px) {
   .consultation-section {
-    padding: 15px 0;
+    padding: 15px 0 40px 0;
   }
   
   .consultation-container {
@@ -274,8 +275,8 @@
   
   .form-row {
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 6px;
+    gap: 4px;
+    margin-bottom: 4px;
   }
   
   .investment-hint {
