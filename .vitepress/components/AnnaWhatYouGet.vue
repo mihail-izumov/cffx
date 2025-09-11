@@ -4,7 +4,7 @@
     <div class="benefits-brand-card benefits-diplomatic-card">
       <div class="benefits-emoji">💬</div>
       <h3 class="benefits-title">Никаких конфликтов</h3>
-      <p class="benefits-description-main">Анна общается с кофейнями дипломатично — только факты и решения</p>
+      <p class="benefits-description-main">Общается с кофейнями дипломатично — только факты и решения</p>
       <p class="benefits-description-goals benefits-diplomatic-goals">Переводит эмоции в конструктивные предложения</p>
     </div>
     
@@ -71,9 +71,9 @@
 
 /* СВЕТЛАЯ ТЕМА - приглушенные цвета в стиле страницы */
 .benefits-diplomatic-card {
-  background-color: #f6f8fa !important; /* Приглушенный серо-голубой */
-  border-color: #dde3e8 !important;
-  border-top-color: #6b7280 !important; /* Серый */
+  background-color: #f0f9ff !important; /* Голубой фон */
+  border-color: #dbeafe !important;
+  border-top-color: #3b82f6 !important; /* Синий */
 }
 
 .benefits-speed-card {
@@ -96,9 +96,9 @@
 
 /* ТЕМНАЯ ТЕМА - карточки темные */
 :root.dark .benefits-diplomatic-card {
-  background-color: #252830 !important;
-  border-color: #323544 !important;
-  border-top-color: #9ca3af !important;
+  background-color: #1e293b !important; /* Темно-голубой */
+  border-color: #334155 !important;
+  border-top-color: #60a5fa !important; /* Светло-синий */
 }
 
 :root.dark .benefits-speed-card {
@@ -156,7 +156,7 @@
 
 /* Цветные подписи - приглушенные цвета */
 .benefits-diplomatic-goals {
-  color: #4b5563 !important; /* Приглушенный серый */
+  color: #1d4ed8 !important; /* Синий */
   font-size: 14px !important;
   font-weight: 500 !important;
   line-height: 1.6 !important;
@@ -189,7 +189,7 @@
 
 /* ТЕМНАЯ ТЕМА - цветные подписи */
 :root.dark .benefits-diplomatic-goals {
-  color: #d1d5db !important; /* Светло-серый */
+  color: #93c5fd !important; /* Светло-синий */
 }
 
 :root.dark .benefits-speed-goals {
