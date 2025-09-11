@@ -57,9 +57,12 @@
 <style scoped>
 .consultation-section {
   background: #0a0a0a;
-  padding: 20px 0;
+  padding: 30px 0;
   min-height: auto;
   border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .consultation-container {
@@ -73,10 +76,10 @@
   font-size: 16px;
   font-weight: 500;
   color: #ffffff;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   line-height: 1.2;
-  text-align: left;
-  padding-left: 4px;
+  text-align: center;
+  padding-left: 0;
 }
 
 .consultation-form {
@@ -178,7 +181,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 8px;
+  margin-bottom: 15px;
   margin-top: 4px;
 }
 
@@ -256,7 +259,7 @@
 
 @media (max-width: 768px) {
   .consultation-section {
-    padding: 15px 0 40px 0;
+    padding: 25px 0 50px 0;
   }
   
   .consultation-container {
@@ -264,40 +267,68 @@
   }
   
   .consultation-description {
-    font-size: 15px;
-    margin-bottom: 8px;
-    padding-left: 2px;
+    font-size: 18px;
+    margin-bottom: 25px;
+    padding-left: 0;
+    text-align: center;
   }
   
   .consultation-form {
-    padding: 12px;
+    padding: 20px;
   }
   
   .form-row {
     flex-direction: column;
-    gap: 4px;
-    margin-bottom: 4px;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .form-input,
+  .form-select {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+  
+  .form-select {
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
   }
   
   .investment-hint {
-    margin-bottom: 2px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    min-height: 16px;
   }
   
   .checkbox-group {
     flex-direction: row;
-    gap: 6px;
-    margin-top: 4px;
-    margin-bottom: 8px;
+    gap: 8px;
+    margin-top: 8px;
+    margin-bottom: 20px;
     align-items: center;
   }
   
   .checkbox-group input[type="checkbox"] {
     margin: 0;
-    margin-right: 2px;
+    margin-right: 4px;
+    min-width: 16px;
+    height: 16px;
+  }
+  
+  .checkbox-group label {
+    font-size: 13px;
+    line-height: 1.4;
   }
   
   .submit-btn {
-    padding: 10px 16px;
+    padding: 16px 20px;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .success-message {
+    margin-bottom: 20px;
   }
 }
 </style>
