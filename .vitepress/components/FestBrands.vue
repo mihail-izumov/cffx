@@ -96,15 +96,16 @@
 <style scoped>
 /* Стиль для ссылки в состоянии покоя */
 .brand-card .description-main a {
-  color: #f59e0b !important;
+  color: #10b981 !important;
   text-decoration: none;
   font-weight: 600 !important;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 /* Стиль для ссылки при наведении курсора */
 .brand-card .description-main a:hover {
-  color: #fcd34d !important;
+  color: #34d399 !important;
+  text-shadow: 0 0 10px rgba(52, 211, 153, 0.5);
 }
 </style>
 
@@ -128,7 +129,7 @@
   border-radius: 3px;
 }
 
-/* --- ОСНОВНЫЕ СТИЛИ КАРТОЧЕК (из виджета отзывов) --- */
+/* --- ОСНОВНЫЕ СТИЛИ КАРТОЧЕК --- */
 .brand-card {
   flex: 0 0 260px;
   position: relative;
@@ -136,39 +137,39 @@
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
   overflow: hidden;
   background: var(--vp-c-bg-soft) !important;
+  border: 2px solid transparent !important;
 }
 
 .brand-card:hover {
   transform: translateY(-8px) !important;
 }
 
-/* Градиентные границы для разных типов карточек */
+/* Рамка точно по периметру карточки */
 .brand-card::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -2px; /* Убираем padding, делаем рамку точно по границе */
   border-radius: 22px;
-  padding: 2px;
   background: var(--border-gradient);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   transition: filter 0.4s ease;
-  z-index: 3;
+  z-index: 1;
 }
 
 .brand-card:hover::before {
   filter: brightness(2) saturate(1.5);
 }
 
-/* Стили для обычных кофейных карточек */
+/* Стили для обычных кофейных карточек - ЗЕЛЕНАЯ ГАММА */
 .coffee-brand-card {
-  --border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d);
-  --glow-color: rgba(245, 158, 11, 0.25);
-  --glow-hover-color: rgba(245, 158, 11, 0.6);
+  --border-gradient: linear-gradient(135deg, #059669, #10b981, #34d399);
+  --glow-color: rgba(16, 185, 129, 0.25);
+  --glow-hover-color: rgba(16, 185, 129, 0.6);
 }
 
-/* Стили для специальной карточки */
+/* Стили для специальной карточки - ЯРКИЙ ЗЕЛЕНЫЙ */
 .special-brand-card {
   --border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946);
   --glow-color: rgba(197, 249, 70, 0.25);
