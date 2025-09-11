@@ -53,6 +53,8 @@ import AnnaSpecsSignal from '../components/AnnaSpecsSignal.vue'
 import InvestPulseForm from '../components/InvestPulseForm.vue'
 import InvestNewCafe from '../components/InvestNewCafe.vue'
 import SignalsYandexVSSignal from '../components/SignalsYandexVSSignal.vue'
+import AnnaWhatYouGet from '../components/AnnaWhatYouGet.vue'
+import AnnaWithYou from '../components/AnnaWithYou.vue'
 
 export default {
   extends: DefaultTheme,
@@ -112,5 +114,8 @@ export default {
     app.component('InvestPulseForm', InvestPulseForm)
     app.component('InvestNewCafe', InvestNewCafe)
     app.component('SignalsYandexVSSignal', SignalsYandexVSSignal)
+    app.component('AnnaWhatYouGet', AnnaWhatYouGet)
+    app.component('AnnaWithYou', AnnaWithYou)
+
   }
 }
