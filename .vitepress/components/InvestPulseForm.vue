@@ -166,15 +166,16 @@
   margin-bottom: 4px;
   font-size: 11px;
   color: #ffffff;
-  min-height: 12px;
+  height: 28px;
   opacity: 0.9;
   transition: opacity 0.3s ease;
   line-height: 1.2;
+  display: flex;
+  align-items: flex-start;
 }
 
 .investment-hint:empty {
   opacity: 0;
-  margin-bottom: 0;
 }
 
 .checkbox-group {
@@ -298,7 +299,7 @@
   .investment-hint {
     margin-bottom: 6px;
     font-size: 13px;
-    min-height: 16px;
+    height: 40px;
   }
   
   .checkbox-group {
