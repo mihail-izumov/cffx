@@ -4,16 +4,16 @@
     <div class="benefits-brand-card benefits-diplomatic-card">
       <div class="benefits-emoji">💬</div>
       <h3 class="benefits-title">Никаких конфликтов</h3>
-      <p class="benefits-description-main">Общается с кофейнями дипломатично — только факты и решения</p>
-      <p class="benefits-description-goals benefits-diplomatic-goals">Переводит эмоции в конструктивные предложения</p>
+      <p class="benefits-description-main">Переводит эмоции в конструктивные предложения</p>
+      <p class="benefits-description-goals benefits-diplomatic-goals">Только факты и решения</p>
     </div>
     
     <!-- БЫСТРЫЙ РЕЗУЛЬТАТ -->
     <div class="benefits-brand-card benefits-speed-card">
       <div class="benefits-emoji">⚡</div>
       <h3 class="benefits-title">Быстрый результат</h3>
-      <p class="benefits-description-main">24 часа от разговора с Анной до реальных изменений</p>
-      <p class="benefits-description-goals benefits-speed-goals">Прямая линия к ответственным менеджерам</p>
+      <p class="benefits-description-main">24 часа от Сигнала до реальных изменений</p>
+      <p class="benefits-description-goals benefits-speed-goals">Прямая линия с ответственным менеджерам</p>
     </div>
     
     <!-- ВИДИТЕ ВЛИЯНИЕ -->
@@ -21,7 +21,7 @@
       <div class="benefits-emoji">👀</div>
       <h3 class="benefits-title">Видите влияние</h3>
       <p class="benefits-description-main">В Индексе Роста отображается, как ваши слова меняют место к лучшему</p>
-      <p class="benefits-description-goals benefits-impact-goals">Публичная метрика изменений в реальном времени</p>
+      <p class="benefits-description-goals benefits-impact-goals">Публичная метрика в реальном времени</p>
     </div>
     
     <!-- СТАНОВИТЕСЬ ПАРТНЁРОМ -->
@@ -29,7 +29,7 @@
       <div class="benefits-emoji">🏆</div>
       <h3 class="benefits-title">Становитесь партнёром</h3>
       <p class="benefits-description-main">Кофейни благодарят вас за помощь — вы больше не просто гость, а соавтор улучшений</p>
-      <p class="benefits-description-goals benefits-partner-goals">Превращение критики в совместное развитие</p>
+      <p class="benefits-description-goals benefits-partner-goals">Совместное развитие благодаря Сигналу</p>
     </div>
   </div>
 </template>
