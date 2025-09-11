@@ -41,12 +41,14 @@
   padding: 4px 0 12px 0;
   margin: 24px 0;
 }
+
 /* Мобильная адаптивность - на узких экранах делаем 1 колонку */
 @media (max-width: 768px) {
   .brands-container {
     grid-template-columns: 1fr;
   }
 }
+
 .brand-card {
   border-radius: 12px;
   padding: 20px 16px;
@@ -57,19 +59,22 @@
   border-top-width: 4px;
   position: relative;
 }
-/* СВЕТЛАЯ ТЕМА - карточки светлые */
-.simulator-card {
-  background-color: #f9f8f6 !important;
-  border-color: #e5e2dd !important;
-  border-top-color: #7fb842 !important; /* ЗЕЛЕНЫЙ */
+
+/* ТОЛЬКО для этого компонента - переопределяем цвет верхней полоски */
+.brands-container .simulator-card {
+  background-color: #f9f8f6;
+  border-color: #e5e2dd;
+  border-top-color: #7fb842; /* ЗЕЛЕНЫЙ вместо желтого */
 }
-/* ТЕМНАЯ ТЕМА - карточки темные */
-.dark .simulator-card {
-  background-color: #2B2A27 !important;
-  border-color: #383633 !important;
-  border-top-color: #c8ff5a !important; /* ЯРКО-ЗЕЛЕНЫЙ */
+
+/* ТЕМНАЯ ТЕМА - только для этого компонента */
+:global(.dark) .brands-container .simulator-card {
+  background-color: #2B2A27;
+  border-color: #383633;
+  border-top-color: #c8ff5a; /* ЯРКО-ЗЕЛЕНЫЙ вместо желтого */
 }
-/* Стили для бейджей тарифов */
+
+/* Стили для бейджей тарифов - только в этом компоненте */
 .tariff-badge {
   display: inline-block;
   padding: 1px 6px;
@@ -82,15 +87,17 @@
   width: fit-content;
   border: none;
 }
-.tariff-badge.simulator {
-  background-color: rgba(127, 184, 66, 0.25) !important; /* ЗЕЛЕНЫЙ ФОН */
-  color: #5a7c3a !important; /* ЗЕЛЕНЫЙ ТЕКСТ */
+
+.brands-container .tariff-badge.simulator {
+  background-color: rgba(127, 184, 66, 0.25); /* ЗЕЛЕНЫЙ ФОН */
+  color: #5a7c3a; /* ЗЕЛЕНЫЙ ТЕКСТ */
 }
 
-.dark .tariff-badge.simulator {
-  background-color: rgba(200, 255, 90, 0.15) !important;
-  color: #c8ff5a !important;
+:global(.dark) .brands-container .tariff-badge.simulator {
+  background-color: rgba(200, 255, 90, 0.15);
+  color: #c8ff5a;
 }
+
 /* Заголовки */
 .brand-card h3 {
   font-size: 15px;
@@ -101,31 +108,37 @@
   border: none;
   padding: 0;
 }
+
 /* СВЕТЛАЯ ТЕМА - текст темный */
 .brand-card h3 {
-  color: #2c3e2c !important;
+  color: #2c3e2c;
 }
+
 .description-main {
-  color: #4a5a4a !important;
-  font-size: 15px !important;
+  color: #4a5a4a;
+  font-size: 15px;
   line-height: 1.6;
   margin: 0 0 4px 0;
   flex-grow: 1;
 }
-.simulator-card .description-goals {
-  color: #5a7c3a !important; /* ЗЕЛЕНЫЙ */
+
+.brands-container .simulator-card .description-goals {
+  color: #5a7c3a; /* ЗЕЛЕНЫЙ текст целей */
   font-size: 12px;
   line-height: 1.6;
   margin: 0;
 }
+
 /* ТЕМНАЯ ТЕМА - текст светлый */
-.dark .brand-card h3 {
-  color: #ffffff !important;
+:global(.dark) .brand-card h3 {
+  color: #ffffff;
 }
-.dark .description-main {
-  color: #f0f0f0 !important;
+
+:global(.dark) .description-main {
+  color: #f0f0f0;
 }
-.dark .simulator-card .description-goals {
-  color: #a8d472 !important; /* ПРИГЛУШЕННЫЙ ЗЕЛЕНЫЙ */
+
+:global(.dark) .brands-container .simulator-card .description-goals {
+  color: #a8d472; /* ПРИГЛУШЕННЫЙ ЗЕЛЕНЫЙ */
 }
 </style>
