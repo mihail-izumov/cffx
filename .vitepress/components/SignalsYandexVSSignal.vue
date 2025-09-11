@@ -11,9 +11,11 @@
       
       <div class="table-row">
         <div class="cell usual-cell">
+          <span class="mobile-label">Яндекс/2ГИС:</span>
           <p>Теряется в потоке</p>
         </div>
         <div class="cell smart-cell">
+          <span class="mobile-label">Сигнал:</span>
           <span class="arrow">→</span>
           <p><strong>Поступает в работу</strong> немедленно</p>
         </div>
@@ -21,9 +23,11 @@
       
       <div class="table-row">
         <div class="cell usual-cell">
+          <span class="mobile-label">Яндекс/2ГИС:</span>
           <p>Ответ не гарантирован</p>
         </div>
         <div class="cell smart-cell">
+          <span class="mobile-label">Сигнал:</span>
           <span class="arrow">→</span>
           <p><strong>Ответ обязателен</strong></p>
         </div>
@@ -31,9 +35,11 @@
       
       <div class="table-row">
         <div class="cell usual-cell">
+          <span class="mobile-label">Яндекс/2ГИС:</span>
           <p>Влияние неочевидно</p>
         </div>
         <div class="cell smart-cell">
+          <span class="mobile-label">Сигнал:</span>
           <span class="arrow">→</span>
           <p><strong>Результат виден всем</strong> в Индексе Роста</p>
         </div>
@@ -115,6 +121,9 @@
   font-weight: bold;
   flex-shrink: 0;
 }
+.mobile-label {
+  display: none;
+}
 /* Мобильная версия */
 @media (max-width: 768px) {
   .table-header {
@@ -146,6 +155,19 @@
   }
   .arrow {
     font-size: 12px;
+  }
+  .mobile-label {
+    display: inline;
+    font-size: 10px;
+    font-weight: 600;
+    opacity: 0.7;
+    margin-right: 4px;
+  }
+  .usual-cell .mobile-label {
+    color: rgba(255,255,255,0.6);
+  }
+  .smart-cell .mobile-label {
+    color: #c8ff5a;
   }
 }
 </style>
