@@ -137,7 +137,8 @@
 
 .steps-description-goals {
   color: #5a7c3a !important; /* ЗЕЛЕНЫЙ */
-  font-size: 12px !important;
+  font-size: 14px !important; /* Увеличил с 12px до 14px */
+  font-weight: 500 !important; /* Добавил среднюю жирность */
   line-height: 1.6 !important;
   margin: 0 !important;
 }
