@@ -3,8 +3,8 @@
     <!-- ХАРАКТЕР -->
     <div class="anna-brand-card anna-character-card">
       <div class="anna-tariff-badge anna-character">ХАРАКТЕР</div>
-      <h3 class="anna-title">Понимает вас с полуслова</h3>
-      <p class="anna-description-main">Анна не судит и не критикует. Скажите «здесь паршиво» — она поймёт, что именно вас беспокоит</p>
+      <h3 class="anna-title">Понимает с полуслова</h3>
+      <p class="anna-description-main">Не судит и не критикует. Скажите «здесь паршиво» — она поймёт, что именно вас беспокоит</p>
       <p class="anna-description-goals anna-character-goals">Не требует развёрнутых объяснений</p>
     </div>
     
@@ -20,16 +20,16 @@
     <div class="anna-brand-card anna-connections-card">
       <div class="anna-tariff-badge anna-connections">СВЯЗИ</div>
       <h3 class="anna-title">Знает, к кому обратиться</h3>
-      <p class="anna-description-main">У Анны прямая линия к каждому менеджеру. Она знает, кто отвечает за что</p>
-      <p class="anna-description-goals anna-connections-goals">Доставляет ваши слова именно тому человеку, который может всё изменить</p>
+      <p class="anna-description-main">Доставляет ваш Сигнал именно тому, кто может всё изменить</p>
+      <p class="anna-description-goals anna-connections-goals">Прямая линия к каждому менеджеру</p>
     </div>
     
     <!-- ПАМЯТЬ -->
     <div class="anna-brand-card anna-memory-card">
       <div class="anna-tariff-badge anna-memory">ПАМЯТЬ</div>
       <h3 class="anna-title">Следит за результатом</h3>
-      <p class="anna-description-main">Анна помнит каждый ваш сигнал и отслеживает, что с ним происходит</p>
-      <p class="anna-description-goals anna-memory-goals">Присылает уведомления, когда всё готово, и показывает результат в Индексе Роста</p>
+      <p class="anna-description-main">Помнит каждый ваш сигнал и отслеживает, что с ним происходит</p>
+      <p class="anna-description-goals anna-memory-goals">Присылает уведомления, когда всё готово</p>
     </div>
   </div>
 </template>
