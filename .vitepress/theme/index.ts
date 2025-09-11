@@ -55,6 +55,7 @@ import InvestNewCafe from '../components/InvestNewCafe.vue'
 import SignalsYandexVSSignal from '../components/SignalsYandexVSSignal.vue'
 import AnnaWhatYouGet from '../components/AnnaWhatYouGet.vue'
 import AnnaWithYou from '../components/AnnaWithYou.vue'
+import AnnaFeelThePower from '../components/AnnaFeelThePower.vue'
 
 export default {
   extends: DefaultTheme,
@@ -116,6 +117,7 @@ export default {
     app.component('SignalsYandexVSSignal', SignalsYandexVSSignal)
     app.component('AnnaWhatYouGet', AnnaWhatYouGet)
     app.component('AnnaWithYou', AnnaWithYou)
+    app.component('AnnaFeelThePower', AnnaFeelThePower)
 
   }
 }
