@@ -9,21 +9,18 @@ title: Пульс | Поток данных Сигнала для инвести
 
 ## Живые данные кофейного рынка для умных инвестиций
 
-### Начните инвестировать в кофейный рынок прямо сейчас
-<br>
-
 <InvestPulseForm />
 
 ### Отслеживайте тренды. Находите возможности. Зарабатывайте больше.
 
 <Pulse3Cards />
 
+### 98% точность прогнозов. Доказано в Самаре.
+
 <div class="button-group">
   <a href="/invest/vision" class="btn btn-primary" rel="noopener noreferrer">Россия</a>
   <a href="/smr" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Самара</a>
 </div>
-
-_98% точность прогнозов. Доказано в Самаре._
 
 ## Индекс Роста
 
