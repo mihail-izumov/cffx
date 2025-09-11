@@ -1,19 +1,11 @@
 <template>
-  <div class="benefits-brands-container">
-    <!-- ВАС ПОНИМАЮТ -->
-    <div class="benefits-brand-card benefits-understanding-card">
-      <div class="benefits-emoji">🎯</div>
-      <h3 class="benefits-title">Вас понимают</h3>
-      <p class="benefits-description-main">Не нужно объяснять очевидные вещи — Анна схватывает с полуслова</p>
-      <p class="benefits-description-goals benefits-understanding-goals">Схватывает с полуслова</p>
-    </div>
-    
+  <div class="benefits-brands-container">    
     <!-- НИКАКИХ КОНФЛИКТОВ -->
     <div class="benefits-brand-card benefits-diplomatic-card">
       <div class="benefits-emoji">💬</div>
       <h3 class="benefits-title">Никаких конфликтов</h3>
       <p class="benefits-description-main">Анна общается с кофейнями дипломатично — только факты и решения</p>
-      <p class="benefits-description-goals benefits-diplomatic-goals">Только факты и решения</p>
+      <p class="benefits-description-goals benefits-diplomatic-goals">Переводит эмоции в конструктивные предложения</p>
     </div>
     
     <!-- БЫСТРЫЙ РЕЗУЛЬТАТ -->
@@ -21,7 +13,7 @@
       <div class="benefits-emoji">⚡</div>
       <h3 class="benefits-title">Быстрый результат</h3>
       <p class="benefits-description-main">24 часа от разговора с Анной до реальных изменений</p>
-      <p class="benefits-description-goals benefits-speed-goals">24 часа до изменений</p>
+      <p class="benefits-description-goals benefits-speed-goals">Прямая линия к ответственным менеджерам</p>
     </div>
     
     <!-- ВИДИТЕ ВЛИЯНИЕ -->
@@ -29,7 +21,7 @@
       <div class="benefits-emoji">👀</div>
       <h3 class="benefits-title">Видите влияние</h3>
       <p class="benefits-description-main">В Индексе Роста отображается, как ваши слова меняют место к лучшему</p>
-      <p class="benefits-description-goals benefits-impact-goals">Ваши слова меняют место</p>
+      <p class="benefits-description-goals benefits-impact-goals">Публичная метрика изменений в реальном времени</p>
     </div>
     
     <!-- СТАНОВИТЕСЬ ПАРТНЁРОМ -->
@@ -37,7 +29,7 @@
       <div class="benefits-emoji">🏆</div>
       <h3 class="benefits-title">Становитесь партнёром</h3>
       <p class="benefits-description-main">Кофейни благодарят вас за помощь — вы больше не просто гость, а соавтор улучшений</p>
-      <p class="benefits-description-goals benefits-partner-goals">Вы больше не просто гость</p>
+      <p class="benefits-description-goals benefits-partner-goals">Превращение критики в совместное развитие</p>
     </div>
   </div>
 </template>
@@ -77,66 +69,54 @@
   min-height: 180px !important;
 }
 
-/* СВЕТЛАЯ ТЕМА - карточки с новыми цветами */
-.benefits-understanding-card {
-  background-color: #fdf7f0 !important; /* Оранжевый фон */
-  border-color: #f4e6d7 !important;
-  border-top-color: #f97316 !important; /* Оранжевый */
-}
-
+/* СВЕТЛАЯ ТЕМА - приглушенные цвета в стиле страницы */
 .benefits-diplomatic-card {
-  background-color: #f0f9ff !important; /* Голубой фон */
-  border-color: #e0f2fe !important;
-  border-top-color: #0ea5e9 !important; /* Голубой */
+  background-color: #f6f8fa !important; /* Приглушенный серо-голубой */
+  border-color: #dde3e8 !important;
+  border-top-color: #6b7280 !important; /* Серый */
 }
 
 .benefits-speed-card {
-  background-color: #fefce8 !important; /* Желтый фон */
-  border-color: #fef3c7 !important;
-  border-top-color: #eab308 !important; /* Желтый */
+  background-color: #f9f8f6 !important; /* Приглушенный бежевый */
+  border-color: #e5e2dd !important;
+  border-top-color: #92400e !important; /* Приглушенный коричневый */
 }
 
 .benefits-impact-card {
-  background-color: #fdf2f8 !important; /* Розовый фон */
-  border-color: #fce7f3 !important;
-  border-top-color: #ec4899 !important; /* Розовый */
+  background-color: #f8f6f9 !important; /* Приглушенный сиреневый */
+  border-color: #e0dde5 !important;
+  border-top-color: #7c3aed !important; /* Приглушенный фиолетовый */
 }
 
 .benefits-partner-card {
-  background-color: #fffbeb !important; /* Золотой фон */
-  border-color: #fef3c7 !important;
-  border-top-color: #f59e0b !important; /* Золотой */
+  background-color: #f6f9f8 !important; /* Приглушенный зеленоватый */
+  border-color: #dde5e0 !important;
+  border-top-color: #059669 !important; /* Приглушенный зеленый */
 }
 
 /* ТЕМНАЯ ТЕМА - карточки темные */
-:root.dark .benefits-understanding-card {
-  background-color: #2c1810 !important;
-  border-color: #3c2415 !important;
-  border-top-color: #f97316 !important;
-}
-
 :root.dark .benefits-diplomatic-card {
-  background-color: #0c1629 !important;
-  border-color: #1e293b !important;
-  border-top-color: #0ea5e9 !important;
+  background-color: #252830 !important;
+  border-color: #323544 !important;
+  border-top-color: #9ca3af !important;
 }
 
 :root.dark .benefits-speed-card {
-  background-color: #2a2817 !important;
-  border-color: #3f3f1e !important;
-  border-top-color: #eab308 !important;
+  background-color: #2B2A27 !important;
+  border-color: #383633 !important;
+  border-top-color: #d97706 !important;
 }
 
 :root.dark .benefits-impact-card {
-  background-color: #2d1b2e !important;
-  border-color: #3f2844 !important;
-  border-top-color: #ec4899 !important;
+  background-color: #2B272B !important;
+  border-color: #383336 !important;
+  border-top-color: #a78bfa !important;
 }
 
 :root.dark .benefits-partner-card {
-  background-color: #2c2312 !important;
-  border-color: #3c321a !important;
-  border-top-color: #f59e0b !important;
+  background-color: #272B2A !important;
+  border-color: #333836 !important;
+  border-top-color: #10b981 !important;
 }
 
 /* Стили для эмодзи вместо бейджей */
@@ -174,17 +154,9 @@
   color: #f0f0f0 !important;
 }
 
-/* Цветные подписи с увеличенным размером и средней жирностью */
-.benefits-understanding-goals {
-  color: #c2410c !important; /* Темно-оранжевый */
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  line-height: 1.6 !important;
-  margin: 0 !important;
-}
-
+/* Цветные подписи - приглушенные цвета */
 .benefits-diplomatic-goals {
-  color: #0369a1 !important; /* Темно-голубой */
+  color: #4b5563 !important; /* Приглушенный серый */
   font-size: 14px !important;
   font-weight: 500 !important;
   line-height: 1.6 !important;
@@ -192,7 +164,7 @@
 }
 
 .benefits-speed-goals {
-  color: #a16207 !important; /* Темно-желтый */
+  color: #92400e !important; /* Приглушенный коричневый */
   font-size: 14px !important;
   font-weight: 500 !important;
   line-height: 1.6 !important;
@@ -200,7 +172,7 @@
 }
 
 .benefits-impact-goals {
-  color: #be185d !important; /* Темно-розовый */
+  color: #6d28d9 !important; /* Приглушенный фиолетовый */
   font-size: 14px !important;
   font-weight: 500 !important;
   line-height: 1.6 !important;
@@ -208,7 +180,7 @@
 }
 
 .benefits-partner-goals {
-  color: #d97706 !important; /* Темно-золотой */
+  color: #047857 !important; /* Приглушенный зеленый */
   font-size: 14px !important;
   font-weight: 500 !important;
   line-height: 1.6 !important;
@@ -216,23 +188,19 @@
 }
 
 /* ТЕМНАЯ ТЕМА - цветные подписи */
-:root.dark .benefits-understanding-goals {
-  color: #fb923c !important; /* Светло-оранжевый */
-}
-
 :root.dark .benefits-diplomatic-goals {
-  color: #38bdf8 !important; /* Светло-голубой */
+  color: #d1d5db !important; /* Светло-серый */
 }
 
 :root.dark .benefits-speed-goals {
-  color: #facc15 !important; /* Светло-желтый */
+  color: #fbbf24 !important; /* Светло-коричневый */
 }
 
 :root.dark .benefits-impact-goals {
-  color: #f472b6 !important; /* Светло-розовый */
+  color: #c4b5fd !important; /* Светло-фиолетовый */
 }
 
 :root.dark .benefits-partner-goals {
-  color: #fbbf24 !important; /* Светло-золотой */
+  color: #6ee7b7 !important; /* Светло-зеленый */
 }
 </style>
