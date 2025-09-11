@@ -162,7 +162,7 @@
 }
 
 .investment-hint {
-  margin-top: 2px;
+  margin-top: 8px;
   margin-bottom: 4px;
   font-size: 11px;
   color: #ffffff;
@@ -297,6 +297,7 @@
   }
   
   .investment-hint {
+    margin-top: 12px;
     margin-bottom: 6px;
     font-size: 13px;
     height: 40px;
