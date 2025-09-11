@@ -8,14 +8,6 @@
       <p class="benefits-description-goals benefits-diplomatic-goals">Только факты и решения</p>
     </div>
     
-    <!-- БЫСТРЫЙ РЕЗУЛЬТАТ -->
-    <div class="benefits-brand-card benefits-speed-card">
-      <div class="benefits-emoji">⚡</div>
-      <h3 class="benefits-title">Быстрый результат</h3>
-      <p class="benefits-description-main">24 часа от Сигнала до реальных изменений</p>
-      <p class="benefits-description-goals benefits-speed-goals">Прямая линия с ответственным менеджерам</p>
-    </div>
-    
     <!-- ВИДИТЕ ВЛИЯНИЕ -->
     <div class="benefits-brand-card benefits-impact-card">
       <div class="benefits-emoji">👀</div>
