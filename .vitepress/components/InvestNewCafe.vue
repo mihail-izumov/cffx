@@ -42,7 +42,7 @@
 
 .coffee-plan-card {
   background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
+  border: 2px solid transparent;
   border-radius: 12px;
   padding: 28px;
   display: flex;
@@ -52,8 +52,7 @@
 }
 
 .coffee-plan-card:hover {
-  border: 2px solid #c5f946;
-  padding: 27px; /* Компенсация увеличенной границы */
+  border-color: #c5f946;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(197, 249, 70, 0.15);
 }
@@ -113,12 +112,11 @@
 /* Светлая тема */
 :root:not(.dark) .coffee-plan-card {
   background: #f6f6f7;
-  border: 1px solid #e2e2e3;
+  border: 2px solid transparent;
 }
 
 :root:not(.dark) .coffee-plan-card:hover {
-  border: 2px solid #c5f946;
-  padding: 27px;
+  border-color: #c5f946;
 }
 
 :root:not(.dark) .card-title {
@@ -146,10 +144,6 @@
     padding: 24px;
   }
   
-  .coffee-plan-card:hover {
-    padding: 23px;
-  }
-  
   .card-title {
     font-size: 1.25rem;
     margin-bottom: 1rem;
@@ -173,10 +167,6 @@
   
   .coffee-plan-card {
     padding: 20px;
-  }
-  
-  .coffee-plan-card:hover {
-    padding: 19px;
   }
   
   .card-title {
