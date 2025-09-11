@@ -26,43 +26,56 @@ const activeTab = ref('data-collection')
   <div class="panel-mr">
     <!-- Вкладка: Сбор данных -->
     <div v-show="activeTab === 'data-collection'" class="content-mr">
-      <h3>Этап 1: Сбор данных</h3>
-      <p>Мы агрегируем сотни источников для получения полной картины о компании.</p>
+      <h3>Агрегируем сотни источников для полной картины компании</h3>
       
-      <h4>Финансовые данные</h4>
-      <ul>
-        <li>Финансовые отчеты и показатели</li>
-        <li>Динамика выручки и прибыли</li>
-        <li>Инвестиционные раунды</li>
-        <li>Структура затрат</li>
-      </ul>
-      
-      <h4>Коммуникации руководства</h4>
-      <ul>
-        <li>Интервью с руководством</li>
-        <li>Публичные выступления CEO</li>
-        <li>Стратегические заявления</li>
-        <li>Видение и миссия компании</li>
-      </ul>
-      
-      <h4>Обратная связь пользователей</h4>
-      <ul>
-        <li>Глубинные пласты отзывов клиентов</li>
-        <li>Отзывы сотрудников на HR-платформах</li>
-        <li>Социальные сети и форумы</li>
-        <li>Рейтинги и оценки в приложениях</li>
-      </ul>
-      
-      <h4>Профессиональные сообщества</h4>
-      <ul>
-        <li>Анализ динамики в отраслевых сообществах</li>
-        <li>Упоминания в специализированных медиа</li>
-        <li>Активность на профессиональных платформах</li>
-        <li>Экспертные мнения и аналитика</li>
-      </ul>
+      <div class="experience-grid">
+        <div class="experience-card">
+          <div class="card-header">
+            <h4>Финансовые данные</h4>
+            <span class="card-badge">Объективные показатели</span>
+          </div>
+          <p class="card-description">Анализируем финансовые отчеты, динамику выручки и прибыли, инвестиционные раунды и структуру затрат для понимания экономической модели.</p>
+          <div class="card-highlight">
+            <strong>Источники:</strong> Отчетность • СПАРК • Инвестиционные раунды
+          </div>
+        </div>
+        
+        <div class="experience-card">
+          <div class="card-header">
+            <h4>Коммуникации руководства</h4>
+            <span class="card-badge">Видение и стратегия</span>
+          </div>
+          <p class="card-description">Собираем интервью с руководством, публичные выступления CEO, стратегические заявления и анализируем последовательность видения компании.</p>
+          <div class="card-highlight">
+            <strong>Формат:</strong> Интервью • Конференции • Медиа • Соцсети CEO
+          </div>
+        </div>
+        
+        <div class="experience-card">
+          <div class="card-header">
+            <h4>Обратная связь пользователей</h4>
+            <span class="card-badge">Глубинный анализ</span>
+          </div>
+          <p class="card-description">Изучаем отзывы клиентов и сотрудников на HR-платформах, социальные сети, форумы и рейтинги для выявления реального восприятия бренда.</p>
+          <div class="card-highlight">
+            <strong>Платформы:</strong> HeadHunter • Хабр • App Store • Отзовик
+          </div>
+        </div>
+        
+        <div class="experience-card">
+          <div class="card-header">
+            <h4>Профессиональные сообщества</h4>
+            <span class="card-badge">Экспертное мнение</span>
+          </div>
+          <p class="card-description">Отслеживаем динамику упоминаний в отраслевых сообществах, специализированных медиа и активность на профессиональных платформах.</p>
+          <div class="card-highlight">
+            <strong>Охват:</strong> Отраслевые медиа • LinkedIn • Telegram • Конференции
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Вкладка: Семантический анализ -->
+    <!-- Остальные вкладки без изменений -->
     <div v-show="activeTab === 'semantic-analysis'" class="content-mr">
       <h3>Этап 2: Семантический анализ</h3>
       <p>Система оценивает не только <strong>что</strong> говорится о компании, но и <strong>как</strong> — выявляя глубинные паттерны в коммуникации.</p>
@@ -96,7 +109,6 @@ const activeTab = ref('data-collection')
       <p>Анализируем языковые особенности коммуникации руководства и команды.</p>
     </div>
 
-    <!-- Вкладка: Расчет по критериям -->
     <div v-show="activeTab === 'calculation'" class="content-mr">
       <h3>Этап 3: Расчет по 4 группам критериев</h3>
       <p>Каждая группа имеет свой вес в итоговой формуле для объективной оценки потенциала роста.</p>
@@ -125,7 +137,6 @@ const activeTab = ref('data-collection')
       <p>Такие компании становятся приоритетными кандидатами для работы с Модулем Роста®.</p>
     </div>
 
-    <!-- Вкладка: Человеческая верификация -->
     <div v-show="activeTab === 'verification'" class="content-mr">
       <h3>Этап 4: Человеческая верификация</h3>
       <p>Финальный вердикт выносится не искусственным интеллектом, а опытными аналитиками Модуля Роста®.</p>
@@ -156,7 +167,6 @@ const activeTab = ref('data-collection')
       <p>Такой подход гарантирует, что мы работаем только с теми компаниями, которым действительно можем помочь достичь кратного роста.</p>
     </div>
 
-    <!-- Вкладка: Методология -->
     <div v-show="activeTab === 'methodology'" class="content-mr">
       <h3>Методология расчета индекса</h3>
       
@@ -231,6 +241,12 @@ const activeTab = ref('data-collection')
   color: rgba(255,255,255,0.92);
   font-size: 13px;
   line-height: 1.46;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .content-mr p:not(:last-child) {
@@ -259,7 +275,7 @@ const activeTab = ref('data-collection')
 }
 
 .content-mr h3 {
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.01em;
@@ -304,5 +320,83 @@ const activeTab = ref('data-collection')
   position: absolute;
   left: 0;
   color: rgba(255,255,255,0.5);
+}
+
+/* Стили для карточек */
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 16px;
+}
+
+.experience-card {
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.2s ease;
+}
+
+.experience-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border-color: #c8ff5a;
+  background: rgba(255,255,255,0.05);
+}
+
+.card-header {
+  margin-bottom: 0.75rem;
+}
+
+.card-header h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.3;
+}
+
+.card-badge {
+  display: inline-block;
+  background: #c8ff5a;
+  color: #0a0a0a;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.card-description {
+  color: rgba(255,255,255,0.75);
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+  font-size: 13px;
+}
+
+.card-highlight {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  padding: 0.6rem;
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+}
+
+.card-highlight strong {
+  color: rgba(255,255,255,0.9);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .experience-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+  
+  .experience-card {
+    padding: 0.8rem;
+  }
 }
 </style>
