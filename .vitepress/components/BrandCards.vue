@@ -38,22 +38,9 @@
 </template>
 
 <style scoped>
-/* Стиль для ссылки в состоянии покоя */
-.analysis-brand-card .analysis-description-goals a {
-  color: #10b981 !important;
-  text-decoration: none;
-  font-weight: 600 !important;
-  transition: color 0.3s ease;
-}
+/* ВСЕ СТИЛИ В SCOPED - НЕ ВЛИЯЮТ НА ДРУГИЕ КОМПОНЕНТЫ */
 
-/* Стиль для ссылки при наведении курсора */
-.analysis-brand-card .analysis-description-goals a:hover {
-  color: #34d399 !important;
-}
-</style>
-
-<style>
-/* Контейнер для горизонтальной прокрутки - УНИКАЛЬНЫЕ КЛАССЫ */
+/* Контейнер для горизонтальной прокрутки */
 .analysis-brands-container {
   display: flex !important;
   overflow-x: auto !important;
@@ -142,8 +129,16 @@
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* В темной теме сохраняем тот же эффект */
-:root.dark .analysis-brand-card {
-  background: transparent !important;
+/* Стиль для ссылки в состоянии покоя */
+.analysis-brand-card .analysis-description-goals a {
+  color: #10b981 !important;
+  text-decoration: none;
+  font-weight: 600 !important;
+  transition: color 0.3s ease;
+}
+
+/* Стиль для ссылки при наведении курсора */
+.analysis-brand-card .analysis-description-goals a:hover {
+  color: #34d399 !important;
 }
 </style>
