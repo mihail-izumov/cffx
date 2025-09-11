@@ -140,7 +140,7 @@ title: Пульс | Поток данных Сигнала для инвести
   display: flex;
   align-items: center;
   gap: 20px;
-  margin: 24px 0;
+  margin: 16px 0;
 }
 
 /* === БАЗОВЫЕ СТИЛИ КНОПОК === */
@@ -155,7 +155,7 @@ title: Пульс | Поток данных Сигнала для инвести
   transition: all 0.3s ease;
   cursor: pointer;
   border: none;
-  margin: 10px 0;
+  margin: 0;
 }
 
 .btn:hover {
