@@ -57,56 +57,56 @@
 <style scoped>
 .consultation-section {
   background: #0a0a0a;
-  padding: 60px 20px;
-  min-height: 600px;
+  padding: 30px 20px;
+  min-height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .consultation-container {
-  max-width: 600px;
+  max-width: 400px;
   width: 100%;
   margin: 0 auto;
 }
 
 .consultation-title {
-  font-size: 32px;
+  font-size: 20px;
   font-weight: 600;
   color: #ffffff;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   line-height: 1.2;
 }
 
 .consultation-form {
   background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
   border: 1px solid #333;
-  border-radius: 12px;
-  padding: 40px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .form-group label {
   display: block;
   color: #ffffff;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .form-input,
 .form-select {
   width: 100%;
-  padding: 14px 16px;
+  padding: 8px 12px;
   box-sizing: border-box;
   border: 1px solid #333;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 6px;
+  font-size: 14px;
   background: #000000;
   color: #ffffff;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -117,15 +117,15 @@
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
-  padding-right: 40px;
+  background-position: right 8px center;
+  background-size: 14px;
+  padding-right: 30px;
 }
 
 .form-select option {
   background: #000000;
   color: #ffffff;
-  padding: 8px;
+  padding: 6px;
 }
 
 .form-input:focus,
@@ -140,13 +140,14 @@
 }
 
 .investment-hint {
-  margin-top: 8px;
-  font-size: 14px;
+  margin-top: 4px;
+  font-size: 12px;
   color: #666666;
   font-style: italic;
-  min-height: 20px;
+  min-height: 15px;
   opacity: 0.8;
   transition: opacity 0.3s ease;
+  line-height: 1.3;
 }
 
 .investment-hint:empty {
@@ -156,21 +157,21 @@
 .checkbox-group {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 30px;
+  gap: 8px;
+  margin-bottom: 15px;
 }
 
 .checkbox-group input[type="checkbox"] {
-  margin-top: 4px;
+  margin-top: 2px;
   width: auto;
-  min-width: 16px;
-  height: 16px;
+  min-width: 14px;
+  height: 14px;
   accent-color: #4CAF50;
 }
 
 .checkbox-group label {
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 12px;
+  line-height: 1.4;
   color: #cccccc;
   margin-bottom: 0;
 }
@@ -188,11 +189,11 @@
 .submit-btn {
   background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
   color: #000000;
-  padding: 16px 24px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   width: 100%;
   transition: opacity 0.3s ease, transform 0.2s ease;
@@ -211,43 +212,43 @@
 }
 
 .success-message {
-  margin-top: 20px;
+  margin-top: 15px;
   color: #4CAF50;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 16px;
+  gap: 8px;
+  padding: 12px;
   background: rgba(76, 175, 80, 0.1);
   border: 1px solid rgba(76, 175, 80, 0.3);
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .success-message::before {
   content: "✓";
   color: #4CAF50;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
 }
 
 @media (max-width: 768px) {
   .consultation-section {
-    padding: 40px 15px;
+    padding: 20px 15px;
   }
   
   .consultation-title {
-    font-size: 24px;
-    margin-bottom: 30px;
+    font-size: 18px;
+    margin-bottom: 15px;
   }
   
   .consultation-form {
-    padding: 30px 20px;
+    padding: 15px;
   }
   
   .checkbox-group {
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
   
   .checkbox-group input[type="checkbox"] {
@@ -277,13 +278,13 @@ export default {
       const investmentSelect = document.getElementById('investment');
       const investmentHint = document.getElementById('investmentHint');
       
-      // Словарь подсказок для размеров инвестиций
+      // Обновленный словарь подсказок для размеров инвестиций
       const investmentHints = {
         '300-500k': 'Поможем выбрать идеальную локацию и избежать ошибок новичков',
-        '500k-1m': 'Поможем выбрать идеальную локацию и избежать ошибок новичков',
+        '500k-1m': 'Обеспечим быструю окупаемость и стабильный рост прибыли',
         '1-3m': 'Покажем, как превратить одну успешную кофейню в прибыльную сеть',
-        '3-5m': 'Покажем, как превратить одну успешную кофейню в прибыльную сеть',
-        '5-10m': 'Обеспечим доминирование в вашем регионе через данные',
+        '3-5m': 'Построим систему масштабирования и захвата городского рынка',
+        '5-10m': 'Обеспечим доминирование в вашем регионе через данные и аналитику',
         '10-20m': 'Станете федеральным игроком с нашими аналитическими инструментами'
       };
       
