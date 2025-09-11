@@ -12,6 +12,11 @@ title: Пульс | Поток данных Сигнала для инвести
 **Отслеживайте тренды. Находите возможности. Зарабатывайте больше.** <br>
 **Бесплатно и без регистрации.**
 
+<div class="button-group">
+  <a href="/invest/vision" class="btn btn-primary" rel="noopener noreferrer">Россия</a>
+  <a href="/smr" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Самара</a>
+</div>
+
 <Pulse3Cards />
 
 ## Индекс Роста
@@ -123,3 +128,74 @@ title: Пульс | Поток данных Сигнала для инвести
 <br>
 
 <PulseSpecs />
+
+<style>
+/* === КОНТЕЙНЕР ДЛЯ ГРУППЫ КНОПОК === */
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 24px 0;
+}
+
+/* === БАЗОВЫЕ СТИЛИ КНОПОК === */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  margin: 10px 0;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  text-decoration: none !important;
+}
+
+/* === ОСНОВНАЯ КНОПКА === */
+.btn-primary {
+  background-color: #C5F946 !important;
+  color: #000 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.btn-primary:hover {
+  background-color: #347b6c !important;
+  color: white !important;
+}
+
+/* === ВТОРИЧНАЯ КНОПКА - СВЕТЛАЯ ТЕМА === */
+.button-group .btn-secondary {
+  background-color: #f6f6f7 !important;
+  color: #666 !important;
+  border: 1px solid #e5e5e5 !important;
+  box-shadow: none !important;
+}
+
+.button-group .btn-secondary:hover {
+  background-color: #eaeaeb !important;
+  border-color: #ddd !important;
+  color: #333 !important;
+}
+
+/* === ВТОРИЧНАЯ КНОПКА - ТЕМНАЯ ТЕМА === */
+html.dark .button-group .btn-secondary {
+  background-color: #2f2f32 !important;
+  color: #a1a1aa !important;
+  border: 1px solid #434349 !important;
+  box-shadow: none !important;
+}
+
+html.dark .button-group .btn-secondary:hover {
+  background-color: #434349 !important;
+  border-color: #555 !important;
+  color: #e0e0e0 !important;
+}
+</style>
