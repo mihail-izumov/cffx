@@ -4,7 +4,7 @@
       <h3>Корж</h3>
       <p class="description-main">Покорители сердец всей Самары — превратили город в одну большую кофейную семью.</p>
     </div>
-<div class="brand-card">
+    <div class="brand-card">
       <h3>Mosaic</h3>
       <p class="description-main">Складывают кофейную мозаику из лучших зерен планеты — каждая чашка как маленький шедевр Гауди.</p>
     </div>
@@ -66,13 +66,14 @@
 <style scoped>
 /* Стиль для ссылки в состоянии покоя */
 .brand-card .description-main a {
-  color: #555555; /* Темно-серый цвет */
-  text-decoration: none; /* Убираем подчеркивание */
-  transition: color 0.3s ease; /* Плавный переход цвета */
+  color: #a0c4a7 !important; /* Светло-зеленый цвет для ссылки */
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
+
 /* Стиль для ссылки при наведении курсора */
 .brand-card .description-main a:hover {
-  color: #000000; /* Черный цвет */
+  color: #7cb583 !important; /* Более яркий зеленый при наведении */
 }
 </style>
 
@@ -81,15 +82,16 @@
 .brands-container {
   display: flex !important;
   overflow-x: auto !important;
-  gap: 12px !important; /* Уменьшен отступ между карточками */
+  gap: 12px !important;
   padding: 4px 0 12px 4px !important;
-  margin: 24px 0 !important; /* Уменьшен вертикальный отступ всего блока */
+  margin: 24px 0 !important;
 }
 
 /* Стилизация скроллбара */
 .brands-container::-webkit-scrollbar {
   height: 6px;
 }
+
 .brands-container::-webkit-scrollbar-thumb {
   background-color: var(--vp-c-divider);
   border-radius: 3px;
@@ -97,32 +99,45 @@
 
 /* --- СТИЛИ КАРТОЧКИ --- */
 .brand-card {
-  flex: 0 0 260px; /* Фиксированная ширина карточки */
-  background-color: #f5f5f7 !important;
+  flex: 0 0 260px;
+  background-color: #2d3748 !important; /* Темно-серый фон как у других блоков */
   border-radius: 12px !important;
-  padding: 20px 16px !important; /* Уменьшены внутренние отступы */
-  border: none !important;
+  padding: 20px 16px !important;
+  border: 1px solid #4a5568 !important; /* Subtle border для определения границ */
+  transition: all 0.3s ease !important;
 }
 
-/* В тёмной теме фон карточки можно сделать чуть темнее для лучшей интеграции */
+/* Эффект hover для карточек */
+.brand-card:hover {
+  background-color: #374151 !important; /* Чуть светлее при наведении */
+  border-color: #6b7280 !important;
+  transform: translateY(-2px) !important;
+}
+
+/* В темной теме используем еще более темный фон */
 :root.dark .brand-card {
-    background-color: #eaeaef !important;
+  background-color: #1a202c !important;
+  border-color: #2d3748 !important;
+}
+
+:root.dark .brand-card:hover {
+  background-color: #2d3748 !important;
+  border-color: #4a5568 !important;
 }
 
 /* --- СТИЛИ ЗАГОЛОВКА --- */
 .brand-card h3 {
-  color: #1a1a1a !important;
+  color: #e2e8f0 !important; /* Светло-серый для заголовков */
   font-size: 16px !important;
   line-height: 1.4 !important;
   margin-top: 0 !important;
-  margin-bottom: 8px !important; /* Уменьшен отступ под заголовком */
+  margin-bottom: 8px !important;
   font-weight: 700 !important;
 }
 
 /* --- СТИЛИ ТЕКСТА --- */
-/* Описание - чёрный */
 .description-main {
-  color: #1a1a1a !important;
+  color: #cbd5e0 !important; /* Светло-серый для основного текста */
   font-size: 14px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
