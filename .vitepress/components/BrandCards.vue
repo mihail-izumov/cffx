@@ -38,8 +38,6 @@
 </template>
 
 <style scoped>
-/* ВСЕ СТИЛИ В SCOPED - НЕ ВЛИЯЮТ НА ДРУГИЕ КОМПОНЕНТЫ */
-
 /* Контейнер для горизонтальной прокрутки */
 .analysis-brands-container {
   display: flex !important;
@@ -66,7 +64,7 @@
   overflow: hidden;
   padding: 0 !important;
   border: none !important;
-  background: transparent !important;
+  background: var(--vp-c-bg-soft) !important; /* ВОССТАНОВЛЕН ФОН */
 }
 
 /* Цветовые схемы */
@@ -78,10 +76,10 @@
   --analysis-glow-color: rgba(197, 249, 70, 0.25);
 }
 
-/* ЗЕЛЕНОЕ ПОЛЕ НА ВСЮ КАРТОЧКУ */
+/* ЗЕЛЕНОЕ ПОЛЕ НА ВСЮ КАРТОЧКУ С ВОССТАНОВЛЕННЫМИ ЭФФЕКТАМИ */
 .analysis-brand-content {
   background: radial-gradient(circle at 50% 0%, var(--analysis-glow-color) 0%, transparent 70%);
-  border-radius: 22px !important;
+  border-radius: 20px !important; /* ВНУТРЕННИЙ РАДИУС */
   padding: 20px 16px !important;
   display: flex;
   flex-direction: column;
@@ -90,8 +88,9 @@
   height: 100% !important;
   min-height: 160px;
   text-align: left;
-  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3) !important; /* ВОССТАНОВЛЕНА ТЕНЬ */
   position: relative;
+  z-index: 2; /* ВОССТАНОВЛЕН Z-INDEX */
   box-sizing: border-box !important;
 }
 
@@ -145,5 +144,10 @@
 .analysis-brand-card .analysis-description-goals a:hover {
   color: #34d399 !important;
   text-shadow: 0 0 8px rgba(52, 211, 153, 0.4) !important; /* Зеленое свечение при hover */
+}
+
+/* В темной теме сохраняем тот же эффект */
+:root.dark .analysis-brand-card {
+  background: var(--vp-c-bg-soft) !important;
 }
 </style>
