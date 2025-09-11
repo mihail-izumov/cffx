@@ -1,37 +1,38 @@
 <template>
   <div class="consultation-section">
     <div class="consultation-container">
-      <h2 class="consultation-title">Получить персональную консультацию</h2>
+      <p class="consultation-description">Получить персональную консультацию</p>
       
       <form id="consultationForm" class="consultation-form">
-        <div class="form-group">
-          <label for="name">Имя:</label>
-          <input type="text" id="name" name="name" class="form-input" required>
+        <div class="form-row">
+          <div class="form-group">
+            <input type="text" id="name" name="name" class="form-input" placeholder="Имя" required>
+          </div>
+          
+          <div class="form-group">
+            <input type="tel" id="phone" name="phone" class="form-input" placeholder="Телефон" required>
+          </div>
         </div>
         
-        <div class="form-group">
-          <label for="phone">Телефон:</label>
-          <input type="tel" id="phone" name="phone" class="form-input" required>
+        <div class="form-row">
+          <div class="form-group">
+            <input type="email" id="email" name="email" class="form-input" placeholder="Email" required>
+          </div>
+          
+          <div class="form-group">
+            <select id="investment" name="investment_size" class="form-select" required>
+              <option value="">Размер инвестиций</option>
+              <option value="300-500k">300-500 тыс ₽</option>
+              <option value="500k-1m">500 тыс - 1 млн ₽</option>
+              <option value="1-3m">1-3 млн ₽</option>
+              <option value="3-5m">3-5 млн ₽</option>
+              <option value="5-10m">5-10 млн ₽</option>
+              <option value="10-20m">10-20 млн ₽</option>
+            </select>
+          </div>
         </div>
         
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" class="form-input" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="investment">Размер инвестиций:</label>
-          <select id="investment" name="investment_size" class="form-select" required>
-            <option value="">Выберите размер инвестиций</option>
-            <option value="300-500k">300-500 тыс ₽</option>
-            <option value="500k-1m">500 тыс - 1 млн ₽</option>
-            <option value="1-3m">1-3 млн ₽</option>
-            <option value="3-5m">3-5 млн ₽</option>
-            <option value="5-10m">5-10 млн ₽</option>
-            <option value="10-20m">10-20 млн ₽</option>
-          </select>
-          <div id="investmentHint" class="investment-hint"></div>
-        </div>
+        <div id="investmentHint" class="investment-hint"></div>
         
         <div class="form-group checkbox-group">
           <input type="checkbox" id="consent" name="consent" required>
@@ -59,24 +60,21 @@
   background: #0a0a0a;
   padding: 30px 20px;
   min-height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .consultation-container {
-  max-width: 400px;
+  max-width: 1200px;
   width: 100%;
-  margin: 0 auto;
+  margin: 0;
 }
 
-.consultation-title {
-  font-size: 20px;
-  font-weight: 600;
+.consultation-description {
+  font-size: 18px;
+  font-weight: 500;
   color: #ffffff;
-  text-align: center;
   margin-bottom: 20px;
   line-height: 1.2;
+  text-align: left;
 }
 
 .consultation-form {
@@ -85,24 +83,28 @@
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
 }
 
-.form-group {
+.form-row {
+  display: flex;
+  gap: 15px;
   margin-bottom: 12px;
 }
 
-.form-group label {
-  display: block;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 4px;
+.form-group {
+  flex: 1;
+}
+
+.form-group.checkbox-group {
+  flex: none;
+  width: 100%;
 }
 
 .form-input,
 .form-select {
   width: 100%;
-  padding: 8px 12px;
+  padding: 12px 15px;
   box-sizing: border-box;
   border: 1px solid #333;
   border-radius: 6px;
@@ -112,20 +114,39 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.form-input::placeholder {
+  color: #666666;
+  opacity: 1;
+}
+
+.form-input:focus::placeholder {
+  opacity: 0;
+}
+
 .form-select {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 8px center;
+  background-position: right 12px center;
   background-size: 14px;
-  padding-right: 30px;
+  padding-right: 35px;
+  color: #666666;
+}
+
+.form-select:focus,
+.form-select:valid {
+  color: #ffffff;
 }
 
 .form-select option {
   background: #000000;
   color: #ffffff;
-  padding: 6px;
+  padding: 8px;
+}
+
+.form-select option:first-child {
+  color: #666666;
 }
 
 .form-input:focus,
@@ -135,12 +156,8 @@
   box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
 }
 
-.form-input::placeholder {
-  color: #666;
-}
-
 .investment-hint {
-  margin-top: 4px;
+  margin-bottom: 12px;
   font-size: 12px;
   color: #666666;
   font-style: italic;
@@ -189,7 +206,7 @@
 .submit-btn {
   background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
   color: #000000;
-  padding: 10px 16px;
+  padding: 12px 20px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -223,6 +240,7 @@
   background: rgba(76, 175, 80, 0.1);
   border: 1px solid rgba(76, 175, 80, 0.3);
   border-radius: 6px;
+  max-width: 600px;
 }
 
 .success-message::before {
@@ -237,13 +255,18 @@
     padding: 20px 15px;
   }
   
-  .consultation-title {
-    font-size: 18px;
+  .consultation-description {
+    font-size: 16px;
     margin-bottom: 15px;
   }
   
   .consultation-form {
     padding: 15px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 12px;
   }
   
   .checkbox-group {
