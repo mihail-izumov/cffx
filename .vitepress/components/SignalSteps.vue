@@ -40,7 +40,6 @@
   gap: 16px;
   padding: 4px 0 12px 0;
   margin: 24px 0;
-  overflow: hidden; /* Предотвращаем выход за пределы */
 }
 /* Мобильная адаптивность - на узких экранах делаем 1 колонку */
 @media (max-width: 768px) {
@@ -57,29 +56,20 @@
   border-width: 1px;
   border-top-width: 4px;
   position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Плавные переходы */
-  will-change: transform; /* Оптимизация для анимации */
-}
-
-/* Предотвращаем выход за пределы при hover */
-.brand-card:hover {
-  transform: translateY(-2px) scale(1.02);
-  transform-origin: center;
-  box-shadow: 0 4px 12px rgba(200, 255, 90, 0.15);
-  z-index: 1;
+  /* Убрали все анимации и hover эффекты */
 }
 
 /* СВЕТЛАЯ ТЕМА - карточки светлые */
 .simulator-card {
   background-color: #f9f8f6 !important;
   border-color: #e5e2dd !important;
-  border-top-color: #7fb842 !important; /* Зеленый вместо коричневого */
+  border-top-color: #7fb842 !important; /* Зеленый вместо желтого */
 }
 /* ТЕМНАЯ ТЕМА - карточки темные */
 .dark .simulator-card {
   background-color: #2B2A27 !important;
   border-color: #383633 !important;
-  border-top-color: #c8ff5a !important; /* Яркий зеленый */
+  border-top-color: #c8ff5a !important; /* Ярко-зеленый вместо желтого */
 }
 /* Стили для бейджей тарифов */
 .tariff-badge {
