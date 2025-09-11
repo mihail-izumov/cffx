@@ -33,6 +33,7 @@
     </div>
   </div>
 </template>
+
 <style scoped>
 .brands-container {
   display: grid;
@@ -60,21 +61,20 @@
   position: relative;
 }
 
-/* ТОЛЬКО для этого компонента - переопределяем цвет верхней полоски */
-.brands-container .simulator-card {
+/* Переопределяем только цвет верхней границы для этого компонента */
+.simulator-card {
   background-color: #f9f8f6;
   border-color: #e5e2dd;
   border-top-color: #7fb842; /* ЗЕЛЕНЫЙ вместо желтого */
 }
 
-/* ТЕМНАЯ ТЕМА - только для этого компонента */
-:global(.dark) .brands-container .simulator-card {
+:global(.dark) .simulator-card {
   background-color: #2B2A27;
   border-color: #383633;
-  border-top-color: #c8ff5a; /* ЯРКО-ЗЕЛЕНЫЙ вместо желтого */
+  border-top-color: #c8ff5a; /* ЯРКО-ЗЕЛЕНЫЙ для темной темы */
 }
 
-/* Стили для бейджей тарифов - только в этом компоненте */
+/* Стили для бейджей тарифов */
 .tariff-badge {
   display: inline-block;
   padding: 1px 6px;
@@ -88,12 +88,12 @@
   border: none;
 }
 
-.brands-container .tariff-badge.simulator {
-  background-color: rgba(127, 184, 66, 0.25); /* ЗЕЛЕНЫЙ ФОН */
-  color: #5a7c3a; /* ЗЕЛЕНЫЙ ТЕКСТ */
+.tariff-badge.simulator {
+  background-color: rgba(127, 184, 66, 0.25); /* ЗЕЛЕНЫЙ фон */
+  color: #5a7c3a; /* ЗЕЛЕНЫЙ текст */
 }
 
-:global(.dark) .brands-container .tariff-badge.simulator {
+:global(.dark) .tariff-badge.simulator {
   background-color: rgba(200, 255, 90, 0.15);
   color: #c8ff5a;
 }
@@ -122,8 +122,8 @@
   flex-grow: 1;
 }
 
-.brands-container .simulator-card .description-goals {
-  color: #5a7c3a; /* ЗЕЛЕНЫЙ текст целей */
+.simulator-card .description-goals {
+  color: #5a7c3a; /* ЗЕЛЕНЫЙ */
   font-size: 12px;
   line-height: 1.6;
   margin: 0;
@@ -138,7 +138,7 @@
   color: #f0f0f0;
 }
 
-:global(.dark) .brands-container .simulator-card .description-goals {
+:global(.dark) .simulator-card .description-goals {
   color: #a8d472; /* ПРИГЛУШЕННЫЙ ЗЕЛЕНЫЙ */
 }
 </style>
