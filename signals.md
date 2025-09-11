@@ -2,6 +2,7 @@
 prev: false
 next: false
 aside: false
+outline: false
 ---
 
 # **Ваш Сигнал Создает Перемены**
