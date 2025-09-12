@@ -23,7 +23,7 @@ const shouldShowBanner = computed(() =>
   frontmatter.value?.notification === 'brew' || frontmatter.value?.notification === 'general'
 )
 
-// Динамически измеряем высоту баннера и обновляем CSS переменную
+// Динамически измеряем высоту баннера
 const updateBannerHeight = async () => {
   if (typeof document !== 'undefined') {
     await nextTick()
@@ -55,42 +55,47 @@ watch(shouldShowBanner, async (newVal) => {
   --banner-height: 0px;
 }
 
-/* Баннер всегда поверх всего */
+/* Баннер поверх всего */
 .notification-banner {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 10000; /* Увеличиваем для поиска */
+  z-index: 9999;
 }
 
-/* Сдвигаем навигацию на высоту баннера */
+/* Минимальные изменения - только сдвигаем на высоту баннера */
 body.has-banner .VPNav {
   top: var(--banner-height);
   z-index: 1100;
 }
 
-/* Поисковое окно должно быть выше баннера */
+/* Поисковое окно выше баннера */
 body.has-banner .VPLocalSearchBox {
   z-index: 10001 !important;
 }
 
-/* Контент получает отступ */
+/* Контент получает отступ равный высоте баннера */
 body.has-banner .VPDoc {
   margin-top: var(--banner-height);
 }
 
-/* Сайдбар правильно позиционируется */
+/* Сайдбар НЕ ТРОГАЕМ - оставляем стандартное позиционирование */
+/* Только добавляем высоту баннера к стандартному top */
 body.has-banner .VPSidebar {
-  top: calc(var(--vp-nav-height) + var(--banner-height));
-  max-height: calc(100vh - var(--vp-nav-height) - var(--banner-height));
-  z-index: 1000;
+  top: calc(var(--vp-nav-height, 60px) + var(--banner-height));
+  max-height: calc(100vh - var(--vp-nav-height, 60px) - var(--banner-height));
 }
 
-/* Мобильная версия */
+/* Мобильная версия - убираем лишние отступы */
 @media (max-width: 768px) {
+  body.has-banner .VPDoc {
+    margin-top: var(--banner-height);
+    padding-top: 0; /* Убираем лишний padding */
+  }
+  
   body.has-banner .VPNavScreen {
-    top: calc(var(--vp-nav-height) + var(--banner-height));
+    top: calc(var(--vp-nav-height, 60px) + var(--banner-height));
   }
 }
 </style>
