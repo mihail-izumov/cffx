@@ -305,7 +305,7 @@ function sidebarPulse(): DefaultTheme.SidebarItem[] {
       collapsed: false,
       items: [
         { text: 'Пульс', link: '/invest/pulse' },
-        { text: 'Прогноз дохода', link: '/invest/calc' },
+        { text: 'Прогноз Выручки', link: '/invest/calc' },
         { text: 'Симулятор Самары', link: '/invest/sim' },
         { text: 'Кофейни // Россия', link: '/invest/vision' }
       ]
