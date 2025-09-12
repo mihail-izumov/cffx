@@ -33,7 +33,7 @@
           <p><strong>На каждую точку ({{ result.points }}):</strong>&nbsp;<span class="highlight">{{ format(result.perPoint) }} ₽</span> в год</p>
           <p>
             <strong>Захват ({{ result.months }} мес.):</strong>&nbsp;
-            <a href="/brew/membership" class="link-membership">{{ membershipFee }}</a> ₽/мес. с Сигналом
+            <a href="/brew/membership" class="link-membership">{{ membershipFee }}</a> ₽ в мес. на 1 точку (4%) с Сигналом
           </p>
         </div>
         <!-- Блок 2: Анализ конкуренции -->
