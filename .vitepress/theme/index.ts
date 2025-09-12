@@ -1,7 +1,9 @@
 import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
+import { useData } from 'vitepress'
 import './custom.css'
-// Импортируем каждый компонент с уникальным именемм
+
+import NotificationSlider from './NotificationSlider.vue'
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
 import FeaturesGrid from '../components/FeaturesGrid.vue'
@@ -59,11 +61,24 @@ import AnnaFeelThePower from '../components/AnnaFeelThePower.vue'
 
 export default {
   extends: DefaultTheme,
-  Layout() {
-    return h(DefaultTheme.Layout, null, {})
+
+  // 2. Модифицируем Layout для добавления условной логики
+  Layout: () => {
+    const props = {}
+    // Получаем данные текущей страницы
+    const { route } = useData()
+
+    // Проверяем, начинается ли путь страницы с '/brew/'
+    const showSlider = route.path.startsWith('/brew/')
+
+    return h(DefaultTheme.Layout, props, {
+      // Рендерим слайдер в слоте 'layout-top' только если условие выполняется
+      'layout-top': () => (showSlider ? h(NotificationSlider) : null),
+    })
   },
+
   enhanceApp({ app }) {
-    // Регистрируем каждый компонент с уникальным тегом
+    // Регистрируем все ваши компоненты
     app.component('SimulatorCards', SimulatorCards)
     app.component('BrandCards', BrandCards)
     app.component('FeaturesGrid', FeaturesGrid)
@@ -118,6 +133,5 @@ export default {
     app.component('AnnaWhatYouGet', AnnaWhatYouGet)
     app.component('AnnaWithYou', AnnaWithYou)
     app.component('AnnaFeelThePower', AnnaFeelThePower)
-
-  }
+  },
 }
