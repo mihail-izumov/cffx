@@ -1,6 +1,5 @@
 <!-- .vitepress/theme/CustomLayout.vue -->
 <script setup>
-import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import { useData } from 'vitepress'
 import NotificationSlider from './NotificationSlider.vue'
@@ -13,11 +12,8 @@ const { route } = useData()
 <template>
   <Layout>
     <template #layout-top>
-      <!-- 
-        ИЗМЕНЕНИЕ ЗДЕСЬ: Добавлен '?' для безопасной проверки.
-        Это предотвратит ошибку, если 'route' будет временнно 'undefined'.
-      -->
-      <NotificationSlider v-if="route?.path.startsWith('/brew/')" />
+      <!-- ИЗМЕНЕНИЕ: Используем .includes() вместо .startsWith() для надежности -->
+      <NotificationSlider v-if="route?.path.includes('/brew/')" />
       <GeneralNotification v-else />
     </template>
   </Layout>
