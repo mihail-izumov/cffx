@@ -1,10 +1,9 @@
-<!-- .vitepress/theme/GeneralNotification.vue -->
 <script setup>
 </script>
 
 <template>
   <div class="general-notification">
-    <!-- ... остальное содержимое template ... -->
+    <p>Добро пожаловать на наш основной сайт! 🚀</p>
   </div>
 </template>
 
@@ -20,6 +19,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* z-index: 20; <-- УБИРАЕМ */
 }
 </style>
