@@ -5,25 +5,34 @@
     <GeneralNotification v-else />
   </div>
   
-  <!-- 2. Стандартный Layout VitePress -->
-  <div class="vp-layout-wrapper" :class="{ 'has-banner': shouldShowBanner }">
-    <DefaultLayout />
-  </div>
+  <!-- 2. Стандартный Layout VitePress БЕЗ обёртки -->
+  <DefaultLayout />
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
 
 const DefaultLayout = DefaultTheme.Layout
-const { frontmatter } = useData()
+const { frontmatter, route } = useData()
 
 const shouldShowBanner = computed(() => 
   frontmatter.value.notification === 'brew' || frontmatter.value.notification === 'general'
 )
+
+// Добавляем/убираем класс на body для условного CSS
+watch(shouldShowBanner, (newValue) => {
+  if (typeof document !== 'undefined') {
+    if (newValue) {
+      document.body.classList.add('has-notification-banner')
+    } else {
+      document.body.classList.remove('has-notification-banner')
+    }
+  }
+}, { immediate: true })
 </script>
 
 <style>
@@ -36,21 +45,27 @@ const shouldShowBanner = computed(() =>
   height: 44px;
 }
 
-/* Сдвигаем всю структуру VitePress вниз */
-.vp-layout-wrapper.has-banner {
-  margin-top: 44px;
+/* Сдвигаем только главный контейнер VitePress */
+body.has-notification-banner .VPApp {
+  padding-top: 44px;
 }
 
-/* Дополнительные исправления для навигации */
-.has-banner .VPNav {
+/* Исправляем навигацию - она должна быть sticky от начала VPApp */
+body.has-notification-banner .VPNav {
   position: sticky;
-  top: 0; /* Теперь прилипает к верху обёртки, а не к верху окна */
+  top: 0; /* Относительно VPApp, который уже сдвинут */
 }
 
-/* Исправление для мобильной версии */
+/* Исправляем сайдбар */
+body.has-notification-banner .VPSidebar {
+  top: var(--vp-nav-height); /* Под навигацией */
+  max-height: calc(100vh - var(--vp-nav-height) - 44px);
+}
+
+/* Мобильная версия */
 @media (max-width: 768px) {
-  .has-banner .VPNavScreen {
-    top: 0; /* Мобильное меню также должно быть относительно обёртки */
+  body.has-notification-banner .VPNavScreen {
+    top: var(--vp-nav-height);
   }
 }
 </style>
