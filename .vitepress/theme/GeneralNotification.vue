@@ -19,8 +19,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  margin-bottom: 24px; /* Добавляем отступ снизу */
 }
 </style>
