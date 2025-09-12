@@ -31,9 +31,6 @@ onUnmounted(() => { clearInterval(timer) })
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  position: sticky;
-  top: 0;
-  z-index: 30;
 }
 .brew-notification-content, .brew-notification-text {
   margin: 0;
