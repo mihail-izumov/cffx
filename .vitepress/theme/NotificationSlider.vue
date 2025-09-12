@@ -1,6 +1,4 @@
-<!-- .vitepress/theme/NotificationSlider.vue -->
 <script setup>
-// ... <script> остается без изменений ...
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const notifications = [
@@ -19,7 +17,6 @@ onUnmounted(() => { clearInterval(timer) })
 </script>
 
 <template>
-  <!-- <template> остается без изменений -->
   <div class="brew-notification-slider">
     <div class="brew-notification-content">
       <transition name="brew-slide-up" mode="out-in">
@@ -32,19 +29,19 @@ onUnmounted(() => { clearInterval(timer) })
 </template>
 
 <style scoped>
-/* ИЗМЕНЕНИЕ: Убираем sticky позиционирование */
 .brew-notification-slider {
   background-color: #f0e6d2;
   color: #171a20;
   width: 100%;
-  height: 44px;
+  height: var(--notification-height); /* Используем CSS переменную */
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
-
-/* Остальные стили без изменений */
 .brew-notification-content {
   position: relative;
   height: 100%;
