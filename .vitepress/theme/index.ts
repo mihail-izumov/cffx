@@ -1,6 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
-import CustomLayout from './CustomLayout.vue' // 1. Импортируем наш новый Layout
+import Layout from './Layout.vue'
 
 // Импортируем все ваши существующие компоненты
 import SimulatorCards from '../components/SimulatorCards.vue'
@@ -62,7 +62,7 @@ export default {
   extends: DefaultTheme,
 
   // 2. Указываем наш новый CustomLayout в качестве основного
-  Layout: CustomLayout,
+  Layout: Layout,
 
   enhanceApp({ app }) {
     // Регистрация ваших компонентов остается без изменений
