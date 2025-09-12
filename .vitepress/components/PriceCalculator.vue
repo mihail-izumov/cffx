@@ -33,7 +33,7 @@
           <p><strong>На каждую точку ({{ result.points }}):</strong>&nbsp;<span class="highlight">{{ format(result.perPoint) }} ₽/год</span></p>
           <p>
             <strong>Захват ({{ result.months }} мес.):</strong>&nbsp;
-            <a href="/brew/membership" class="link-membership">30 000 ₽/мес.</a> с Сигналом
+            <a href="/brew/membership" class="link-membership">{{ membershipFee }} ₽/мес.</a> с Сигналом
           </p>
         </div>
         <!-- Блок 2: Анализ конкуренции -->
@@ -54,7 +54,6 @@
             <span>{{ result.keyQuestion.suffix }}</span>
           </p>
         </div>
-
         <!-- Надежный выпадающий блок -->
         <div class="why-section">
           <button
@@ -86,7 +85,6 @@
 import { ref, computed } from 'vue'
 
 const isWhyOpen = ref(false)
-
 const cafes = ref([
   { id: 1, name: 'Balance coffee', index: 40, points: 1, reviews: 147, potential: 14, stage: 15, innovation: 14, influence: 11, type: 5, K: 3.0, scaleFactor: 5.7, reasoning: 'Стартап с низким индексом — огромный потенциал базовых улучшений', signal: '1 точка и индекс 40 — разрыв между достижениями и признанием', solution: 'Системное усиление всех параметров индекса', keyQuestion: { prefix: 'Почему, имея 147+ отзывов, вы не достигли статуса', status: 'Растущий 📈', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' },
   { id: 2, name: 'Bonfix', index: 45, points: 2, reviews: 143, potential: 15, stage: 15, innovation: 14, influence: 10, type: 5, K: 3.0, scaleFactor: 5.7, reasoning: 'Малая сеть может быстро масштабировать лучшие практики', signal: '2 точки и индекс 45 — разрыв между возможностями и признанием', solution: 'Системное усиление всех параметров индекса', keyQuestion: { prefix: 'Почему, имея 143+ отзывов, вы не достигли статуса', status: 'Сильный 💪', suffix: '?' }, competitors: 'Корж, Skuratov Coffee, Mosaic coffee&tea +' },
@@ -111,33 +109,47 @@ const selectedCafeId = ref('')
 const revenueStr = ref('')
 const resultShown = ref(false)
 const result = ref({})
+
 function onRevenueInput(e) {
   const digits = e.target.value.replace(/\D/g, '')
   revenueStr.value = digits ? Number(digits).toLocaleString('ru-RU') : ''
   resultShown.value = false
 }
+
 const revenueNum = computed(() => Number(revenueStr.value.replace(/\s|,/g, '')))
 const W = { potential: 0.25, stage: 0.2, innovation: 0.25, influence: 0.2, type: 0.1 }
 const canCalculate = computed(() => selectedCafeId.value && revenueNum.value >= 100000)
+
+const membershipFee = computed(() => {
+  const fee = revenueNum.value * 0.04
+  return format(fee)
+})
+
 function calcIQ(c) {
   return W.potential * c.potential / 25 + W.stage * c.stage / 20 + W.innovation * c.innovation / 25 + W.influence * c.influence / 20 + W.type * c.type / 10
 }
+
 function priceOfInaction(w, cafe) {
   const base = w * calcIQ(cafe) * cafe.K * 0.25 * cafe.points
   return Math.round(base * cafe.scaleFactor)
 }
+
 function timeToCapture(iq, K) {
   const months = 6 * (1 - Math.min(iq * (K / 10), 0.9))
   return Math.max(1, Math.round(months))
 }
+
 const format = (n) => new Intl.NumberFormat('ru-RU').format(Math.round(n))
+
 function calculate() {
   const cafe = cafes.value.find(c => c.id === Number(selectedCafeId.value))
   if (!cafe) return
+
   const iq = calcIQ(cafe)
   const total = priceOfInaction(revenueNum.value, cafe)
   const perPoint = total / cafe.points
   const percent = Math.round((total / (revenueNum.value * cafe.points * 12)) * 100)
+
   result.value = {
     ...cafe,
     total,
@@ -192,14 +204,12 @@ select option { background: #141414 !important; color: #ffffff !important; }
   text-decoration: underline;
 }
 .badge-status { display: inline-block; background: #347b6c !important; color: #d0f0d0 !important; border-radius: 50px; padding: 2px 8px; font-size: 0.85em; white-space: nowrap; vertical-align: baseline; margin: 0 2px; }
-
 /* ---------- УПРОЩЕННЫЙ БЛОК "ПОЧЕМУ ВСЁ ПОЛУЧИТСЯ" ---------- */
 .why-section {
   overflow: hidden;
   border-radius: 8px;
   background: #347b6c;
 }
-
 .why-summary {
   width: 100%;
   padding: 14px 16px;
@@ -214,7 +224,6 @@ select option { background: #141414 !important; color: #ffffff !important; }
   position: relative;
   -webkit-tap-highlight-color: transparent;
 }
-
 .why-summary::before {
   content: '';
   position: absolute;
@@ -228,22 +237,18 @@ select option { background: #141414 !important; color: #ffffff !important; }
   border-top: 8px solid #ffffff;
   transition: transform 0.3s ease;
 }
-
 .why-summary.is-open::before {
   transform: translateY(-50%) rotate(180deg);
 }
-
 .why-content {
   padding: 8px 16px 18px;
   background: #347b6c;
 }
-
 .why-list {
   list-style-type: none;
   padding: 0;
   margin: 0 0 12px 0;
 }
-
 .why-list li {
   position: relative;
   /* padding-left: 18px; */
@@ -251,11 +256,9 @@ select option { background: #141414 !important; color: #ffffff !important; }
   font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #ffffff;
 }
-
 .why-list li::before {
   content: '';
 }
-
 .why-total {
   margin: 0;
   padding: 8px 0 0;
@@ -263,12 +266,10 @@ select option { background: #141414 !important; color: #ffffff !important; }
   color: #ffffff;
   text-align: left;
 }
-
 /* ---------- АНИМАЦИИ ---------- */
 .fade-enter-active, .fade-leave-active { transition: opacity 0.35s, transform 0.35s; }
 .fade-enter-from { opacity: 0; transform: translateY(12px); }
 .fade-leave-to { opacity: 0; transform: translateY(-12px); }
-
 .slide-fade-enter-active { transition: all 0.3s ease-out; }
 .slide-fade-leave-active { transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1); }
 .slide-fade-enter-from,
@@ -276,7 +277,6 @@ select option { background: #141414 !important; color: #ffffff !important; }
   transform: translateY(-10px);
   opacity: 0;
 }
-
 /* ---------- МОБИЛЬНЫЙ ---------- */
 @media(max-width:768px){
   .calculator-card{padding:16px 18px;margin-bottom:24px}
