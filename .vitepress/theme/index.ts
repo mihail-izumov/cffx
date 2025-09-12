@@ -1,7 +1,7 @@
+import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
-
-import CustomLayout from './CustomLayout.vue'
+// Импортируем каждый компонент с уникальным именемм
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
 import FeaturesGrid from '../components/FeaturesGrid.vue'
@@ -59,12 +59,11 @@ import AnnaFeelThePower from '../components/AnnaFeelThePower.vue'
 
 export default {
   extends: DefaultTheme,
-
-  // 2. Указываем наш новый CustomLayout в качестве основного
-  Layout: CustomLayout,
-
+  Layout() {
+    return h(DefaultTheme.Layout, null, {})
+  },
   enhanceApp({ app }) {
-    // Регистрация ваших компонентов остается без изменений
+    // Регистрируем каждый компонент с уникальным тегом
     app.component('SimulatorCards', SimulatorCards)
     app.component('BrandCards', BrandCards)
     app.component('FeaturesGrid', FeaturesGrid)
@@ -119,5 +118,6 @@ export default {
     app.component('AnnaWhatYouGet', AnnaWhatYouGet)
     app.component('AnnaWithYou', AnnaWithYou)
     app.component('AnnaFeelThePower', AnnaFeelThePower)
-  },
+
+  }
 }
