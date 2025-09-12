@@ -1,17 +1,11 @@
 <script setup>
+// Скрипт остается без изменений
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-
-const notifications = [
-  'Анализируйте рынок кофеен Самары с BREW',
-  'Получите доступ к эксклюзивным данным и инсайтам',
-  'Присоединяйтесь к платформе и опережайте конкурентов'
-]
+const notifications = ['Анализируйте рынок кофеен Самары с BREW', 'Получите доступ к эксклюзивным данным и инсайтам', 'Присоединяйтесь к платформе и опережайте конкурентов']
 const currentIndex = ref(0)
 let timer = null
 const currentNotification = computed(() => notifications[currentIndex.value])
-const nextNotification = () => {
-  currentIndex.value = (currentIndex.value + 1) % notifications.length
-}
+const nextNotification = () => { currentIndex.value = (currentIndex.value + 1) % notifications.length }
 onMounted(() => { timer = setInterval(nextNotification, 5000) })
 onUnmounted(() => { clearInterval(timer) })
 </script>
@@ -38,8 +32,12 @@ onUnmounted(() => { clearInterval(timer) })
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin-bottom: 24px; /* Добавляем отступ снизу */
+  /* Возвращаем sticky */
+  position: sticky;
+  top: 0;
+  z-index: 20; 
 }
+/* Остальные стили без изменений */
 .brew-notification-content {
   position: relative;
   height: 100%;
