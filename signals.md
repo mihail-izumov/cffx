@@ -7,6 +7,12 @@ outline: false
 
 # Просто скажите, что не так
 
+## Поможем решить любую проблему за 24 часа
+
+<div class="start-button-container">
+  <a href="/signal/new" class="btn btn-primary" rel="noopener noreferrer"><strong>Отправить ⚡ Сигнал</strong></a>
+</div>
+
 <div style="text-align: center; margin: 2rem 0;">
   <img 
     src="/signals-ban.jpg" 
@@ -24,13 +30,7 @@ outline: false
   />
 </div>
 
-## Поможем решить любую проблему за 24 часа
-
-<div class="start-button-container">
-  <a href="/signal/new" class="btn btn-primary" rel="noopener noreferrer"><strong>Отправить ⚡ Сигнал</strong></a>
-</div>
-
-### Ваш Сигнал — это команда к действию для кофейни и видимый результат для вас
+## Ваш Сигнал — это команда к действию для кофейни и видимый результат для вас
 
 <SignalSteps />
 
