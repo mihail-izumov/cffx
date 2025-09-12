@@ -8,7 +8,7 @@ import GeneralNotification from './GeneralNotification.vue'
 const { Layout } = DefaultTheme
 const { frontmatter, route } = useData()
 
-// Ref для элемента баннера, чтобы получить его высоту
+// Ref для элемента-обертки баннера
 const notificationRef = ref(null)
 
 // Функция для обновления отступа
@@ -30,7 +30,6 @@ watch(() => route.path, updatePadding)
   <Layout>
     <template #layout-top>
       <div ref="notificationRef">
-        <!-- Оборачиваем баннеры в div с ref -->
         <NotificationSlider v-if="frontmatter.notification === 'brew'" />
         <GeneralNotification v-else-if="frontmatter.notification === 'general'" />
       </div>
