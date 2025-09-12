@@ -32,30 +32,15 @@ const updateBannerHeight = async () => {
     if (banner) {
       const height = banner.offsetHeight
       document.documentElement.style.setProperty('--banner-height', `${height}px`)
-      
-      // Принудительно обновляем стили сайдбара
-      forceSidebarUpdate()
     } else {
       document.documentElement.style.setProperty('--banner-height', '0px')
     }
   }
 }
 
-// Принудительное обновление позиции сайдбара
-const forceSidebarUpdate = () => {
-  const sidebar = document.querySelector('.VPSidebar')
-  if (sidebar) {
-    // Сбрасываем позицию и восстанавливаем
-    sidebar.style.position = 'static'
-    requestAnimationFrame(() => {
-      sidebar.style.position = 'sticky'
-    })
-  }
-}
-
 // Обработчик изменения размера окна
 const handleResize = () => {
-  setTimeout(updateBannerHeight, 100) // Небольшая задержка для корректного измерения
+  setTimeout(updateBannerHeight, 100)
 }
 
 // Наблюдение за изменением баннера
@@ -71,10 +56,9 @@ watch(shouldShowBanner, async (newVal) => {
   }
 }, { immediate: true })
 
-// Слушатели событий для resize
+// Слушатели событий
 onMounted(() => {
   window.addEventListener('resize', handleResize)
-  // Дополнительное обновление через небольшое время для инициализации
   setTimeout(updateBannerHeight, 500)
 })
 
@@ -97,7 +81,7 @@ onBeforeUnmount(() => {
   z-index: 9999;
 }
 
-/* Навигация */
+/* Навигация - ТОЛЬКО сдвигаем на высоту баннера */
 body.has-banner .VPNav {
   top: var(--banner-height) !important;
   z-index: 1100;
@@ -108,37 +92,14 @@ body.has-banner .VPLocalSearchBox {
   z-index: 10001 !important;
 }
 
-/* Контент */
+/* Контент - ТОЛЬКО добавляем отступ сверху */
 body.has-banner .VPDoc {
   margin-top: var(--banner-height);
 }
 
-/* АГРЕССИВНЫЕ СТИЛИ ДЛЯ САЙДБАРА */
-.VPSidebar {
-  position: sticky !important;
-  top: var(--vp-nav-height, 60px) !important;
-  z-index: 1000 !important;
-}
-
-body.has-banner .VPSidebar {
-  position: sticky !important;
-  top: calc(var(--vp-nav-height, 60px) + var(--banner-height)) !important;
-  max-height: calc(100vh - var(--vp-nav-height, 60px) - var(--banner-height)) !important;
-  z-index: 1000 !important;
-  overflow-y: auto !important;
-}
-
-/* Убираем возможные overflow: hidden на родителях сайдбара */
-.VPLayout, .VPAside {
-  overflow: visible !important;
-}
-
-/* Принудительно исправляем контейнер сайдбара */
-.VPAside {
-  position: relative !important;
-  overflow: visible !important;
-  height: auto !important;
-}
+/* УБИРАЕМ ВСЕ АГРЕССИВНЫЕ СТИЛИ ДЛЯ САЙДБАРА */
+/* Сайдбар остается в стандартном состоянии VitePress */
+/* НЕ трогаем: .VPSidebar, .VPLayout, .VPAside */
 
 /* Мобильная версия */
 @media (max-width: 768px) {
