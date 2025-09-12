@@ -19,5 +19,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Возвращаем sticky */
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 </style>
