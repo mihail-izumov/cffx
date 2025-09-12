@@ -6,15 +6,16 @@ import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
 
 const { Layout } = DefaultTheme
-const { route } = useData()
+// Теперь используем frontmatter вместо route
+const { frontmatter } = useData()
 </script>
 
 <template>
   <Layout>
     <template #layout-top>
-      <!-- ИЗМЕНЕНИЕ: Используем .includes() вместо .startsWith() для надежности -->
-      <NotificationSlider v-if="route?.path.includes('/brew/')" />
-      <GeneralNotification v-else />
+      <!-- Проверяем флаг из frontmatter -->
+      <NotificationSlider v-if="frontmatter.notification === 'brew'" />
+      <GeneralNotification v-else-if="frontmatter.notification === 'general'" />
     </template>
   </Layout>
 </template>
