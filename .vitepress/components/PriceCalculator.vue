@@ -30,10 +30,10 @@
         <!-- Блок 1: Основные показатели -->
         <div class="result-block">
           <p><strong>Потенциал роста:</strong>&nbsp;<span class="highlight">{{ format(result.total) }} ₽</span> в год (+{{ result.percent }}%)</p>
-          <p><strong>На каждую точку ({{ result.points }}):</strong>&nbsp;<span class="highlight">{{ format(result.perPoint) }} ₽/год</span></p>
+          <p><strong>На каждую точку ({{ result.points }}):</strong>&nbsp;<span class="highlight">{{ format(result.perPoint) }} ₽</span> в год</p>
           <p>
             <strong>Захват ({{ result.months }} мес.):</strong>&nbsp;
-            <a href="/brew/membership" class="link-membership">{{ membershipFee }} ₽/мес.</a> с Сигналом
+            <a href="/brew/membership" class="link-membership">{{ membershipFee }}</a> ₽/мес. с Сигналом
           </p>
         </div>
         <!-- Блок 2: Анализ конкуренции -->
