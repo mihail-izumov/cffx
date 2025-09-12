@@ -65,8 +65,8 @@ onUnmounted(() => {
 
 <style scoped>
 .brew-notification-slider {
-  background-color: #f0e6d2;
-  color: #171a20;
+  background: linear-gradient(90deg, #ab916b 0%, #f5dfb1 100%);
+  color: #2c2c2c;
   width: 100%;
   height: 44px;
   display: flex;
@@ -88,33 +88,34 @@ onUnmounted(() => {
   padding: 0 1rem;
   font-size: 14px;
   text-align: center;
+  font-weight: 500;
 }
 
 /* Индикаторы */
 .brew-indicators {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   margin-right: 1rem;
   align-items: center;
 }
 
 .brew-indicator {
-  width: 6px;
-  height: 6px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   border: none;
-  background-color: rgba(23, 26, 32, 0.4);
+  background-color: rgba(44, 44, 44, 0.3);
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0;
 }
 
 .brew-indicator:hover {
-  background-color: rgba(23, 26, 32, 0.6);
+  background-color: rgba(44, 44, 44, 0.5);
 }
 
 .brew-indicator.active {
-  background-color: #171a20;
+  background-color: #2c2c2c;
 }
 
 /* Fade анимация */
