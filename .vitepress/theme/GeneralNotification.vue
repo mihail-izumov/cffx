@@ -3,7 +3,7 @@
 
 <template>
   <div class="general-notification">
-    <p>Добро пожаловать на наш основной сайт! 🚀</p>
+    <p>Добро пожаловать на фестиваль!</p>
   </div>
 </template>
 
@@ -19,9 +19,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Возвращаем sticky */
-  position: sticky;
-  top: 0;
-  z-index: 20;
 }
 </style>
