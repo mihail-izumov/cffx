@@ -4,7 +4,7 @@ import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import { useData } from 'vitepress'
 import NotificationSlider from './NotificationSlider.vue'
-import GeneralNotification from './GeneralNotification.vue' // Предполагается, что этот файл создан
+import GeneralNotification from './GeneralNotification.vue'
 
 const { Layout } = DefaultTheme
 const { route } = useData()
@@ -13,9 +13,11 @@ const { route } = useData()
 <template>
   <Layout>
     <template #layout-top>
-      <!-- Если путь начинается с /brew/, показываем слайдер для BREW -->
-      <NotificationSlider v-if="route.path.startsWith('/brew/')" />
-      <!-- Для всех остальных страниц показываем общее уведомление -->
+      <!-- 
+        ИЗМЕНЕНИЕ ЗДЕСЬ: Добавлен '?' для безопасной проверки.
+        Это предотвратит ошибку, если 'route' будет временнно 'undefined'.
+      -->
+      <NotificationSlider v-if="route?.path.startsWith('/brew/')" />
       <GeneralNotification v-else />
     </template>
   </Layout>
