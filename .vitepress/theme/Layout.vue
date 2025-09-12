@@ -46,34 +46,51 @@ watch(shouldShowBanner, (newValue) => {
   height: 44px;
 }
 
-/* Исправленные стили */
+/* Десктопные стили */
 body.has-banner .VPNav {
   top: 44px;
   z-index: 1100;
 }
 
-/* Используем margin вместо padding */
 body.has-banner .VPDoc {
   margin-top: 44px;
 }
 
-/* Более точное позиционирование сайдбара */
 body.has-banner .VPSidebar {
   top: calc(var(--vp-nav-height) + 44px);
   max-height: calc(100vh - var(--vp-nav-height) - 44px);
   z-index: 1000;
 }
 
-/* Мобильная версия */
+/* Мобильная версия - исправленные стили */
 @media (max-width: 768px) {
+  /* Баннер остается на месте */
+  .notification-banner {
+    z-index: 10000; /* Увеличиваем z-index для мобильных */
+  }
+  
+  /* Навигация сдвигается под баннер */
   body.has-banner .VPNav {
     top: 44px;
+    z-index: 1100;
   }
+  
+  /* Контент получает минимальный отступ - как на обычных страницах */
+  body.has-banner .VPDoc {
+    margin-top: 44px; /* Только высота баннера, без добавления высоты меню */
+    padding-top: 0; /* Убираем дополнительный padding */
+  }
+  
+  /* Сайдбар (если есть) правильно позиционируется */
   body.has-banner .VPSidebar {
     top: calc(var(--vp-nav-height) + 44px);
+    height: calc(100vh - var(--vp-nav-height) - 44px);
+    overflow-y: auto;
   }
-  body.has-banner .VPDoc {
-    margin-top: calc(var(--vp-nav-height) + 44px);
+  
+  /* Мобильное меню */
+  body.has-banner .VPNavScreen {
+    top: calc(var(--vp-nav-height) + 44px);
   }
 }
 </style>
