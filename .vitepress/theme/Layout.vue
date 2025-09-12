@@ -6,7 +6,9 @@
   </div>
   
   <!-- 2. Стандартный Layout VitePress -->
-  <DefaultLayout />
+  <div class="vp-layout-wrapper" :class="{ 'has-banner': shouldShowBanner }">
+    <DefaultLayout />
+  </div>
 </template>
 
 <script setup>
@@ -30,12 +32,25 @@ const shouldShowBanner = computed(() =>
   top: 0;
   left: 0;
   right: 0;
-  z-index: 60;
+  z-index: 1000;
   height: 44px;
 }
 
-/* Сдвигаем весь VitePress вниз когда есть баннер */
-body:has(.notification-banner) .VPApp {
+/* Сдвигаем всю структуру VitePress вниз */
+.vp-layout-wrapper.has-banner {
   margin-top: 44px;
+}
+
+/* Дополнительные исправления для навигации */
+.has-banner .VPNav {
+  position: sticky;
+  top: 0; /* Теперь прилипает к верху обёртки, а не к верху окна */
+}
+
+/* Исправление для мобильной версии */
+@media (max-width: 768px) {
+  .has-banner .VPNavScreen {
+    top: 0; /* Мобильное меню также должно быть относительно обёртки */
+  }
 }
 </style>
