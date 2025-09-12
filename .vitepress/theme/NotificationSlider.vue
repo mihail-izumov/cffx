@@ -65,7 +65,7 @@ onUnmounted(() => {
 
 <style scoped>
 .brew-notification-slider {
-  background: linear-gradient(90deg, #ab916b 0%, #f5dfb1 100%);
+  background: linear-gradient(90deg, #c4a373 0%, #f5dfb1 50%, #c4a373 100%);
   color: #2c2c2c;
   width: 100%;
   height: 44px;
@@ -94,24 +94,24 @@ onUnmounted(() => {
 /* Индикаторы */
 .brew-indicators {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   margin-right: 1rem;
   align-items: center;
 }
 
 .brew-indicator {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   border: none;
-  background-color: rgba(44, 44, 44, 0.3);
+  background-color: rgba(44, 44, 44, 0.4);
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0;
 }
 
 .brew-indicator:hover {
-  background-color: rgba(44, 44, 44, 0.5);
+  background-color: rgba(44, 44, 44, 0.6);
 }
 
 .brew-indicator.active {
@@ -127,5 +127,28 @@ onUnmounted(() => {
 .brew-fade-enter-from, 
 .brew-fade-leave-to { 
   opacity: 0; 
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+  .brew-notification-slider {
+    flex-direction: column;
+    height: auto;
+    padding: 12px 0 8px 0;
+  }
+  
+  .brew-notification-content {
+    margin-bottom: 8px;
+  }
+  
+  .brew-notification-text {
+    padding: 0 1rem;
+    font-size: 13px;
+  }
+  
+  .brew-indicators {
+    margin-right: 0;
+    justify-content: center;
+  }
 }
 </style>
