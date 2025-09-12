@@ -1,4 +1,3 @@
-<!-- .vitepress/theme/GeneralNotification.vue -->
 <script setup>
 </script>
 
@@ -9,13 +8,19 @@
 </template>
 
 <style scoped>
-/* ИЗМЕНЕНИЕ: Убираем sticky позиционирование */
 .general-notification {
   background-color: #007aff;
   color: white;
   text-align: center;
-  padding: 12px;
+  padding: 12px 0;
   font-weight: 500;
   font-size: 14px;
+  height: var(--notification-height); /* Используем CSS переменную */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 </style>
