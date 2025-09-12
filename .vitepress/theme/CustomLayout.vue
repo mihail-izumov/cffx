@@ -1,38 +1,17 @@
 <script setup>
-import { computed, watch, onMounted } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import { useData } from 'vitepress'
 import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
 
 const { Layout } = DefaultTheme
-const { frontmatter, route } = useData()
-
-// Вычисляемое свойство, чтобы определить, нужно ли показывать баннер
-const shouldShowBanner = computed(() => {
-  return frontmatter.value.notification === 'brew' || frontmatter.value.notification === 'general'
-})
-
-// Функция для обновления класса на <html>
-const updateHtmlClass = () => {
-  if (typeof window !== 'undefined') {
-    if (shouldShowBanner.value) {
-      document.documentElement.classList.add('has-notification-banner')
-    } else {
-      document.documentElement.classList.remove('has-notification-banner')
-    }
-  }
-}
-
-// Вызываем функцию при монтировании и при каждой смене страницы
-onMounted(updateHtmlClass)
-watch(() => route.path, updateHtmlClass)
+const { frontmatter } = useData()
 </script>
 
 <template>
   <Layout>
-    <template #layout-top>
-      <!-- Условный рендеринг баннеров на основе frontmatter -->
+    <template #doc-before>
+      <!-- Рендерим нужный баннер на основе frontmatter -->
       <NotificationSlider v-if="frontmatter.notification === 'brew'" />
       <GeneralNotification v-else-if="frontmatter.notification === 'general'" />
     </template>
