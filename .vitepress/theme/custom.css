@@ -57,30 +57,3 @@
 .layout-home .VPFeature a:hover {
   color: #4ade80 !important;
 }
-
-/* --- НОВЫЙ КОД ДЛЯ СДВИГА КОНТЕНТА --- */
-/* Сдвигаем навигационную панель вниз */
-:root {
-  --notification-height: 44px; /* Высота баннера */
-}
-
-.VPNav {
-  position: sticky;
-  top: var(--notification-height);
-}
-
-/* Сдвигаем основной контент, чтобы он не залезал под навигацию */
-.VPDoc {
-    padding-top: calc(var(--vp-nav-height-desktop) + var(--notification-height));
-}
-
-@media (max-width: 768px) {
-  .VPDoc {
-    padding-top: calc(var(--vp-nav-height-mobile) + var(--notification-height));
-  }
-}
-
-/* Сдвигаем экран мобильного меню */
-.VPNav.is-screen-open .VPNavScreen {
-    margin-top: var(--notification-height);
-}
