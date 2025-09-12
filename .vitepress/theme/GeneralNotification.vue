@@ -3,7 +3,7 @@
 
 <template>
   <div class="general-notification">
-    <p>Добро пожаловать на наш основной сайт! 🚀</p>
+    <p>Добро пожаловать на Фестиваль!</p>
   </div>
 </template>
 
@@ -18,8 +18,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: sticky;
-  top: 0;
-  z-index: 30;
 }
 </style>
