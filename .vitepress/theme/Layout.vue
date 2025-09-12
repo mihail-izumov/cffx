@@ -17,10 +17,10 @@ import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
 
 const DefaultLayout = DefaultTheme.Layout
-const { frontmatter, route } = useData()
+const { frontmatter } = useData()
 
 const shouldShowBanner = computed(() => 
-  frontmatter.value.notification === 'brew' || frontmatter.value.notification === 'general'
+  frontmatter.value?.notification === 'brew' || frontmatter.value?.notification === 'general'
 )
 
 // Добавляем класс на body для условного CSS
@@ -46,19 +46,34 @@ watch(shouldShowBanner, (newValue) => {
   height: 44px;
 }
 
-/* Навигация сдвигается под баннер */
+/* Исправленные стили */
 body.has-banner .VPNav {
   top: 44px;
+  z-index: 1100;
 }
 
-/* Основной контент получает отступ сверху */
+/* Используем margin вместо padding */
 body.has-banner .VPDoc {
-  padding-top: 44px;
+  margin-top: 44px;
 }
 
-/* Сайдбар корректно позиционируется */
+/* Более точное позиционирование сайдбара */
 body.has-banner .VPSidebar {
   top: calc(var(--vp-nav-height) + 44px);
   max-height: calc(100vh - var(--vp-nav-height) - 44px);
+  z-index: 1000;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+  body.has-banner .VPNav {
+    top: 44px;
+  }
+  body.has-banner .VPSidebar {
+    top: calc(var(--vp-nav-height) + 44px);
+  }
+  body.has-banner .VPDoc {
+    margin-top: calc(var(--vp-nav-height) + 44px);
+  }
 }
 </style>
