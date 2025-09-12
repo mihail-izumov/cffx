@@ -1,5 +1,4 @@
 <script setup>
-// Скрипт остается без изменений
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 const notifications = ['Анализируйте рынок кофеен Самары с BREW', 'Получите доступ к эксклюзивным данным и инсайтам', 'Присоединяйтесь к платформе и опережайте конкурентов']
 const currentIndex = ref(0)
@@ -32,34 +31,15 @@ onUnmounted(() => { clearInterval(timer) })
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  /* Возвращаем sticky */
   position: sticky;
   top: 0;
-  z-index: 20; 
+  z-index: 30;
 }
-/* Остальные стили без изменений */
-.brew-notification-content {
-  position: relative;
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-.brew-notification-text {
+.brew-notification-content, .brew-notification-text {
   margin: 0;
-  font-size: 14px;
-  font-weight: 500;
   padding: 0 1rem;
 }
-.brew-slide-up-enter-active,
-.brew-slide-up-leave-active {
-  transition: all 0.4s ease;
-}
-.brew-slide-up-enter-from {
-  opacity: 0;
-  transform: translateY(20px);
-}
-.brew-slide-up-leave-to {
-  opacity: 0;
-  transform: translateY(-20px);
-}
+.brew-slide-up-enter-active, .brew-slide-up-leave-active { transition: all 0.4s ease; }
+.brew-slide-up-enter-from { opacity: 0; transform: translateY(20px); }
+.brew-slide-up-leave-to { opacity: 0; transform: translateY(-20px); }
 </style>
