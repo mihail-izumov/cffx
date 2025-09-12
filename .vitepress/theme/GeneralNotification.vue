@@ -12,16 +12,14 @@
   background-color: #007aff;
   color: white;
   text-align: center;
-  padding: 12px 0;
   font-weight: 500;
   font-size: 14px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Возвращаем sticky */
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 30;
 }
 </style>
