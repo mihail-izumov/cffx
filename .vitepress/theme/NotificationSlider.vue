@@ -18,7 +18,6 @@ const nextNotification = () => {
 
 const goToSlide = (index) => {
   currentIndex.value = index
-  // Перезапускаем таймер после ручного переключения
   restartTimer()
 }
 
@@ -43,7 +42,7 @@ onUnmounted(() => {
 <template>
   <div class="brew-notification-slider">
     <div class="brew-notification-content">
-      <transition name="brew-slide-up" mode="out-in">
+      <transition name="brew-fade" mode="out-in">
         <p class="brew-notification-text" :key="currentIndex">
           {{ currentNotification }}
         </p>
@@ -87,69 +86,45 @@ onUnmounted(() => {
 .brew-notification-text {
   margin: 0;
   padding: 0 1rem;
+  font-size: 14px;
   text-align: center;
 }
 
 /* Индикаторы */
 .brew-indicators {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   margin-right: 1rem;
   align-items: center;
 }
 
 .brew-indicator {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   border: none;
-  background-color: rgba(23, 26, 32, 0.3);
+  background-color: rgba(23, 26, 32, 0.4);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   padding: 0;
 }
 
 .brew-indicator:hover {
-  background-color: rgba(23, 26, 32, 0.5);
-  transform: scale(1.2);
+  background-color: rgba(23, 26, 32, 0.6);
 }
 
 .brew-indicator.active {
   background-color: #171a20;
-  transform: scale(1.1);
 }
 
-/* Анимации */
-.brew-slide-up-enter-active, 
-.brew-slide-up-leave-active { 
-  transition: all 0.4s ease; 
+/* Fade анимация */
+.brew-fade-enter-active, 
+.brew-fade-leave-active { 
+  transition: opacity 0.4s ease; 
 }
 
-.brew-slide-up-enter-from { 
+.brew-fade-enter-from, 
+.brew-fade-leave-to { 
   opacity: 0; 
-  transform: translateY(20px); 
-}
-
-.brew-slide-up-leave-to { 
-  opacity: 0; 
-  transform: translateY(-20px); 
-}
-
-/* Адаптивность для мобильных устройств */
-@media (max-width: 768px) {
-  .brew-notification-text {
-    padding: 0 0.5rem;
-    font-size: 14px;
-  }
-  
-  .brew-indicators {
-    margin-right: 0.5rem;
-    gap: 6px;
-  }
-  
-  .brew-indicator {
-    width: 6px;
-    height: 6px;
-  }
 }
 </style>
