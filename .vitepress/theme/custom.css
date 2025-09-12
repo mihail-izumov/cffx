@@ -1,5 +1,4 @@
 /* --- ВАШ ОРИГИНАЛЬНЫЙ КОД БЕЗ ИЗМЕНЕНИЙ --- */
-
 /* ФОНОВОЕ СВЕЧЕНИЕ ТОЛЬКО ЗА HERO СЕКЦИЕЙ */
 .VPHero {
   position: relative;
@@ -27,7 +26,6 @@
     filter: blur(70px);
   }
 }
-
 /* КНОПКА */
 .VPButton.brand {
   background: #166534 !important;
@@ -41,7 +39,6 @@
   box-shadow: 0 8px 25px rgba(34, 197, 94, 0.5) !important;
   transform: translateY(-2px);
 }
-
 /* ЗАГОЛОВОК */
 .VPHero .name {
   background: linear-gradient(120deg, #22c55e 30%, #16a34a 70%) !important;
@@ -49,18 +46,41 @@
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
 }
-
 /* --- ТОЛЬКО ИСПРАВЛЕНИЕ КАРТОЧЕК НА ГЛАВНОЙ СТРАНИЦЕ --- */
-
 /* Исправляем цвета только на главной в карточках */
 .layout-home .VPFeature .title {
   color: #ffffff !important;
 }
-
 .layout-home .VPFeature .details {
   color: rgba(255, 255, 255, 0.85) !important;
 }
-
 .layout-home .VPFeature a:hover {
   color: #4ade80 !important;
+}
+
+/* --- НОВЫЙ КОД ДЛЯ СДВИГА КОНТЕНТА --- */
+/* Сдвигаем навигационную панель вниз */
+:root {
+  --notification-height: 44px; /* Высота баннера */
+}
+
+.VPNav {
+  position: sticky;
+  top: var(--notification-height);
+}
+
+/* Сдвигаем основной контент, чтобы он не залезал под навигацию */
+.VPDoc {
+    padding-top: calc(var(--vp-nav-height-desktop) + var(--notification-height));
+}
+
+@media (max-width: 768px) {
+  .VPDoc {
+    padding-top: calc(var(--vp-nav-height-mobile) + var(--notification-height));
+  }
+}
+
+/* Сдвигаем экран мобильного меню */
+.VPNav.is-screen-open .VPNavScreen {
+    margin-top: var(--notification-height);
 }
