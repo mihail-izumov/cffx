@@ -3,6 +3,7 @@ outline: false
 prev: false
 next: false
 title: Подключиться к Сигналу
+notification: brew
 ---
 
 # Ваша Умная Кофейня Начинается Здесь
