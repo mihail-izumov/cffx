@@ -33,14 +33,11 @@ onUnmounted(() => { clearInterval(timer) })
   background-color: #f0e6d2;
   color: #171a20;
   width: 100%;
-  height: var(--notification-height); /* Используем CSS переменную */
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  position: sticky;
-  top: 0;
-  z-index: 20;
 }
 .brew-notification-content {
   position: relative;
