@@ -1,5 +1,5 @@
 <script setup>
-import { computed, watch, onMounted } from 'vue'
+import { computed, watch } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import { useData } from 'vitepress'
 import NotificationSlider from './NotificationSlider.vue'
@@ -15,7 +15,7 @@ const shouldShowBanner = computed(() => {
 
 // Функция для обновления класса на <html>
 const updateHtmlClass = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof document !== 'undefined') {
     if (shouldShowBanner.value) {
       document.documentElement.classList.add('has-notification-banner')
     } else {
@@ -24,15 +24,15 @@ const updateHtmlClass = () => {
   }
 }
 
-// Вызываем функцию при монтировании и при каждой смене страницы
-onMounted(updateHtmlClass)
-watch(() => route.path, updateHtmlClass)
+// Следим за изменением пути и немедленно вызываем функцию.
+// { immediate: true } гарантирует, что класс будет установлен/удален при первой же загрузке компонента,
+// решая проблему "дырки" при навигации.
+watch(() => route.path, updateHtmlClass, { immediate: true })
 </script>
 
 <template>
   <Layout>
     <template #layout-top>
-      <!-- Условный рендеринг баннеров на основе frontmatter -->
       <NotificationSlider v-if="frontmatter.notification === 'brew'" />
       <GeneralNotification v-else-if="frontmatter.notification === 'general'" />
     </template>
