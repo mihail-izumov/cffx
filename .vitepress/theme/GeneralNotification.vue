@@ -1,9 +1,10 @@
+<!-- .vitepress/theme/GeneralNotification.vue -->
 <script setup>
 </script>
 
 <template>
   <div class="general-notification">
-    <p>Добро пожаловать на наш основной сайт! 🚀</p>
+    <!-- ... остальное содержимое template ... -->
   </div>
 </template>
 
@@ -15,12 +16,10 @@
   padding: 12px 0;
   font-weight: 500;
   font-size: 14px;
-  height: var(--notification-height); /* Используем CSS переменную */
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  /* z-index: 20; <-- УБИРАЕМ */
 }
 </style>
