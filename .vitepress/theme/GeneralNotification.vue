@@ -1,6 +1,6 @@
 <!-- .vitepress/theme/GeneralNotification.vue -->
 <script setup>
-// Здесь может быть своя логика, если потребуется
+
 </script>
 
 <template>
