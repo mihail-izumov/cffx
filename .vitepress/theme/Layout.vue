@@ -1,16 +1,16 @@
 <template>
-  <!-- 1. Баннер поверх всего -->
+  <!-- Баннер с уведомлениями -->
   <div v-if="shouldShowBanner" class="notification-banner">
     <NotificationSlider v-if="frontmatter.notification === 'brew'" />
     <GeneralNotification v-else />
   </div>
-  
-  <!-- 2. Стандартный Layout без изменений -->
+
+  <!-- Стандартный layout VitePress -->
   <DefaultLayout />
 </template>
 
 <script setup>
-import { computed, watch } from 'vue'
+import { computed, watch, nextTick } from 'vue'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import NotificationSlider from './NotificationSlider.vue'
@@ -23,74 +23,74 @@ const shouldShowBanner = computed(() =>
   frontmatter.value?.notification === 'brew' || frontmatter.value?.notification === 'general'
 )
 
-// Добавляем класс на body для условного CSS
-watch(shouldShowBanner, (newValue) => {
+// Динамически измеряем высоту баннера и обновляем CSS переменную
+const updateBannerHeight = async () => {
   if (typeof document !== 'undefined') {
-    if (newValue) {
+    await nextTick()
+    const banner = document.querySelector('.notification-banner')
+    if (banner) {
+      const height = banner.offsetHeight
+      document.documentElement.style.setProperty('--banner-height', `${height}px`)
+    } else {
+      document.documentElement.style.setProperty('--banner-height', '0px')
+    }
+  }
+}
+
+watch(shouldShowBanner, async (newVal) => {
+  if (typeof document !== 'undefined') {
+    if (newVal) {
       document.body.classList.add('has-banner')
+      await updateBannerHeight()
     } else {
       document.body.classList.remove('has-banner')
+      document.documentElement.style.setProperty('--banner-height', '0px')
     }
   }
 }, { immediate: true })
 </script>
 
 <style>
+:root {
+  --banner-height: 0px;
+}
+
 /* Баннер всегда поверх всего */
 .notification-banner {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9999;
-  height: 44px;
+  z-index: 10000; /* Увеличиваем для поиска */
 }
 
-/* Десктопные стили */
+/* Сдвигаем навигацию на высоту баннера */
 body.has-banner .VPNav {
-  top: 44px;
+  top: var(--banner-height);
   z-index: 1100;
 }
 
-body.has-banner .VPDoc {
-  margin-top: 44px;
+/* Поисковое окно должно быть выше баннера */
+body.has-banner .VPLocalSearchBox {
+  z-index: 10001 !important;
 }
 
+/* Контент получает отступ */
+body.has-banner .VPDoc {
+  margin-top: var(--banner-height);
+}
+
+/* Сайдбар правильно позиционируется */
 body.has-banner .VPSidebar {
-  top: calc(var(--vp-nav-height) + 44px);
-  max-height: calc(100vh - var(--vp-nav-height) - 44px);
+  top: calc(var(--vp-nav-height) + var(--banner-height));
+  max-height: calc(100vh - var(--vp-nav-height) - var(--banner-height));
   z-index: 1000;
 }
 
-/* Мобильная версия - исправленные стили */
+/* Мобильная версия */
 @media (max-width: 768px) {
-  /* Баннер остается на месте */
-  .notification-banner {
-    z-index: 10000; /* Увеличиваем z-index для мобильных */
-  }
-  
-  /* Навигация сдвигается под баннер */
-  body.has-banner .VPNav {
-    top: 44px;
-    z-index: 1100;
-  }
-  
-  /* Контент получает минимальный отступ - как на обычных страницах */
-  body.has-banner .VPDoc {
-    margin-top: 44px; /* Только высота баннера, без добавления высоты меню */
-    padding-top: 0; /* Убираем дополнительный padding */
-  }
-  
-  /* Сайдбар (если есть) правильно позиционируется */
-  body.has-banner .VPSidebar {
-    top: calc(var(--vp-nav-height) + 44px);
-    height: calc(100vh - var(--vp-nav-height) - 44px);
-    overflow-y: auto;
-  }
-  
-  /* Мобильное меню */
   body.has-banner .VPNavScreen {
-    top: calc(var(--vp-nav-height) + 44px);
+    top: calc(var(--vp-nav-height) + var(--banner-height));
   }
 }
 </style>
