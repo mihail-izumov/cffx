@@ -17,7 +17,7 @@ import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
 
 const DefaultLayout = DefaultTheme.Layout
-const { frontmatter } = useData()
+const { frontmatter, route } = useData()
 const bannerRef = ref(null)
 
 const shouldShowBanner = computed(() => 
@@ -28,7 +28,7 @@ const shouldShowBanner = computed(() =>
 const updateBannerHeight = async () => {
   if (typeof document !== 'undefined') {
     await nextTick()
-    const banner = bannerRef.value || document.querySelector('.notification-banner')
+    const banner = bannerRef.value
     if (banner) {
       const height = banner.offsetHeight
       document.documentElement.style.setProperty('--banner-height', `${height}px`)
@@ -44,22 +44,23 @@ const handleResize = () => {
 }
 
 // Наблюдение за изменением баннера
-watch(shouldShowBanner, async (newVal) => {
+watch(() => [shouldShowBanner.value, route.path], async ([newVal]) => {
   if (typeof document !== 'undefined') {
     if (newVal) {
       document.body.classList.add('has-banner')
-      await updateBannerHeight()
     } else {
       document.body.classList.remove('has-banner')
-      document.documentElement.style.setProperty('--banner-height', '0px')
     }
+    // Обновляем высоту на каждой смене страницы
+    await updateBannerHeight()
   }
-}, { immediate: true })
+}, { immediate: true, deep: true })
 
 // Слушатели событий
 onMounted(() => {
   window.addEventListener('resize', handleResize)
-  setTimeout(updateBannerHeight, 500)
+  // Дополнительная проверка через небольшое время
+  setTimeout(updateBannerHeight, 300)
 })
 
 onBeforeUnmount(() => {
@@ -72,46 +73,44 @@ onBeforeUnmount(() => {
   --banner-height: 0px;
 }
 
-/* Баннер поверх всего */
+/* --- Баннер --- */
 .notification-banner {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 100; /* Выше всего */
 }
 
-/* Навигация сдвигается на высоту баннера */
+/* --- Навигация --- */
 body.has-banner .VPNav {
-  top: var(--banner-height) !important;
-  z-index: 1100;
+  position: sticky;
+  top: var(--banner-height);
 }
 
-/* Поисковое окно */
+/* --- Поиск --- */
 body.has-banner .VPLocalSearchBox {
-  z-index: 10001 !important;
+  z-index: 101 !important; /* Чуть выше навигации */
 }
 
-/* Контент получает отступ сверху */
-body.has-banner .VPDoc {
-  margin-top: var(--banner-height);
-}
-
-/* САЙДБАР: ТОЛЬКО добавляем высоту баннера к стандартному top */
+/* --- Сайдбар (самое важное!) --- */
 body.has-banner .VPSidebar {
-  top: calc(var(--vp-nav-height, 60px) + var(--banner-height)) !important;
+  /* Говорим сайдбару прилипать ниже навигации, которая уже сдвинута */
+  top: calc(var(--vp-nav-height) + var(--banner-height)) !important;
+  /* Уменьшаем его максимальную высоту на высоту баннера */
+  max-height: calc(100vh - var(--vp-nav-height) - var(--banner-height));
 }
 
-/* Мобильная версия - НЕ трогаем стандартные механизмы VitePress */
+/* --- Мобильная версия --- */
 @media (max-width: 768px) {
-  body.has-banner .VPDoc {
-    margin-top: var(--banner-height);
-    padding-top: 0;
+  /* Восстанавливаем кнопку меню */
+  body.has-banner .VPNavBarHamburger {
+    z-index: 102;
   }
   
-  /* Мобильное меню при открытии */
+  /* Сдвигаем открытое мобильное меню */
   body.has-banner .VPNavScreen {
-    top: calc(var(--vp-nav-height, 60px) + var(--banner-height));
+    top: calc(var(--vp-nav-height) + var(--banner-height));
   }
 }
 </style>
