@@ -110,26 +110,26 @@ onUnmounted(() => {
 .brew-notification-wrapper {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .brew-notification-text {
   margin: 0;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 400;
 }
 
 .brew-button {
   background-color: #000;
   color: #fff;
   border: none;
-  padding: 4px 10px;
-  border-radius: 3px;
-  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-size: 11px;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-  height: 24px;
+  height: 20px;
   line-height: 1;
 }
 
@@ -191,7 +191,7 @@ onUnmounted(() => {
   }
   
   .brew-notification-text {
-    font-size: 13px;
+    font-size: 12px;
   }
   
   .brew-indicators {
