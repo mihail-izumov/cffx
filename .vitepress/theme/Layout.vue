@@ -42,7 +42,7 @@ watch(shouldShowBanner, (newVal) => {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin: 8px 0 24px 0; /* Ближе к меню, больше воздуха до заголовка */
+  margin: 8px 0 24px 0; /* Ближе к меню, больше во-здуха до заголовка */
 }
 
 /* Баннер точно такой же ширины, как основной контент */
