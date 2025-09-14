@@ -237,14 +237,12 @@ onUnmounted(() => {
   }
   .iso-brew-slider__link-mobile {
     display: inline !important;
-    /* ИЗМЕНЕНИЕ: Убираем стандартное подчеркивание и добавляем свое */
+    /* ИСПРАВЛЕНИЕ: Убираем text-decoration и используем только border-bottom */
     text-decoration: none !important;
     border-bottom: 1px solid #171a20 !important;
     font-weight: 500 !important;
     margin-left: 4px !important;
     color: #171a20 !important;
-    /* Небольшой отступ снизу, чтобы линия не прилипала к тексту */
-    padding-bottom: 1px;
   }
   .iso-brew-slider__indicators {
     display: flex !important;
