@@ -55,11 +55,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="brew-notification-slider">
-    <div class="brew-notification-content">
-      <transition name="brew-fade" mode="out-in">
-        <div class="brew-notification-wrapper" :key="currentIndex">
-          <p class="brew-notification-text">
+  <div class="iso-brew-slider">
+    <div class="iso-brew-slider__content">
+      <transition name="iso-brew-fade" mode="out-in">
+        <div class="iso-brew-slider__wrapper" :key="currentIndex">
+          <p class="iso-brew-slider__text">
             {{ currentNotification.text }}
             <!-- Ссылка для мобильной версии -->
             <a 
@@ -67,7 +67,7 @@ onUnmounted(() => {
               :href="currentNotification.buttonUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="brew-link-mobile"
+              class="iso-brew-slider__link-mobile"
             >
               {{ currentNotification.buttonText }}
             </a>
@@ -76,7 +76,7 @@ onUnmounted(() => {
           <button 
             v-if="currentNotification.hasButton" 
             @click="openLink(currentNotification.buttonUrl)"
-            class="brew-button"
+            class="iso-brew-slider__button"
           >
             {{ currentNotification.buttonText }}
           </button>
@@ -84,11 +84,11 @@ onUnmounted(() => {
       </transition>
     </div>
     
-    <div class="brew-indicators">
+    <div class="iso-brew-slider__indicators">
       <button
         v-for="(_, index) in notifications"
         :key="index"
-        class="brew-indicator"
+        class="iso-brew-slider__indicator"
         :class="{ 'active': currentIndex === index }"
         @click="goToSlide(index)"
         :aria-label="`Переключиться на уведомление ${index + 1}`"
@@ -98,144 +98,153 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.brew-notification-slider {
-  /* Темный базовый фон */
-  background-color: #1a2e29;
-  /* Радиальный градиент поверх фона для эффекта свечения */
-  background-image: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.35) 0%, transparent 70%);
-  color: #fff;
-  width: 100%;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
+/* ВСЕ СТИЛИ ПОЛНОСТЬЮ ИЗОЛИРОВАНЫ С УНИКАЛЬНЫМИ КЛАССАМИ И !important */
+
+.iso-brew-slider {
+  background-color: #1a2e29 !important;
+  background-image: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.35) 0%, transparent 70%) !important;
+  color: #fff !important;
+  width: 100% !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
 }
 
-.brew-notification-content {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 1rem;
+.iso-brew-slider__content {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 1rem !important;
 }
 
-.brew-notification-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+.iso-brew-slider__wrapper {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
 }
 
-.brew-notification-text {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 500;
-  color: #fff;
+.iso-brew-slider__text {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #fff !important;
+  line-height: 1.3 !important;
 }
 
 /* Кнопка для десктопа */
-.brew-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #10b981;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 0 14px;
-  border-radius: 4px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  height: 28px;
-  transition: background-color 0.2s ease;
+.iso-brew-slider__button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  /* Темный фон в тон основного */
+  background-color: #145d42 !important; 
+  color: #fff !important;
+  /* Убрана обводка */
+  border: none !important; 
+  padding: 0 14px !important;
+  margin: 0 !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  height: 28px !important;
+  transition: none !important; /* Убран переход */
 }
 
-.brew-button:hover {
-  background-color: #13cf92;
+/* Убран ховер */
+.iso-brew-slider__button:hover {
+  background-color: #145d42 !important;
 }
 
 
 /* Ссылка для мобильных (по умолчанию скрыта) */
-.brew-link-mobile {
-  display: none;
+.iso-brew-slider__link-mobile {
+  display: none !important;
 }
 
 /* Индикаторы */
-.brew-indicators {
-  display: flex;
-  gap: 6px;
-  margin-right: 1rem;
-  align-items: center;
+.iso-brew-slider__indicators {
+  display: flex !important;
+  gap: 6px !important;
+  margin-right: 1rem !important;
+  align-items: center !important;
 }
 
-.brew-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: none;
-  background-color: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 0;
+.iso-brew-slider__indicator {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  background-color: rgba(255, 255, 255, 0.4) !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  padding: 0 !important;
 }
 
-.brew-indicator:hover {
-  background-color: rgba(255, 255, 255, 0.6);
+.iso-brew-slider__indicator:hover {
+  background-color: rgba(255, 255, 255, 0.6) !important;
 }
 
-.brew-indicator.active {
-  background-color: #fff;
+.iso-brew-slider__indicator.active {
+  background-color: #fff !important;
 }
 
 /* Fade анимация */
-.brew-fade-enter-active, 
-.brew-fade-leave-active { 
-  transition: opacity 0.4s ease; 
+.iso-brew-fade-enter-active, 
+.iso-brew-fade-leave-active { 
+  transition: opacity 0.4s ease !important; 
 }
 
-.brew-fade-enter-from, 
-.brew-fade-leave-to { 
-  opacity: 0; 
+.iso-brew-fade-enter-from, 
+.iso-brew-fade-leave-to { 
+  opacity: 0 !important; 
 }
 
 /* Мобильная версия */
 @media (max-width: 768px) {
-  .brew-notification-slider {
-    flex-direction: column;
-    height: auto;
-    padding: 12px 0 8px 0;
+  .iso-brew-slider {
+    flex-direction: column !important;
+    height: auto !important;
+    padding: 12px 0 8px 0 !important;
   }
   
-  .brew-notification-content {
-    margin-bottom: 8px;
+  .iso-brew-slider__content {
+    margin-bottom: 8px !important;
   }
   
-  .brew-notification-wrapper {
-    text-align: center;
+  .iso-brew-slider__wrapper {
+    text-align: center !important;
   }
   
-  .brew-notification-text {
-    font-size: 13px;
+  .iso-brew-slider__text {
+    font-size: 13px !important;
   }
   
-  .brew-button {
-    display: none;
+  .iso-brew-slider__button {
+    display: none !important;
   }
   
-  .brew-link-mobile {
-    display: inline;
-    text-decoration: underline;
-    font-weight: 500;
-    margin-left: 4px;
-    color: #fff;
+  .iso-brew-slider__link-mobile {
+    display: inline !important;
+    text-decoration: underline !important;
+    font-weight: 500 !important;
+    margin-left: 4px !important;
+    color: #fff !important;
   }
   
-  .brew-indicators {
-    display: flex;
-    margin-right: 0;
-    justify-content: center;
+  .iso-brew-slider__indicators {
+    display: flex !important;
+    margin-right: 0 !important;
+    justify-content: center !important;
   }
 }
 </style>
