@@ -61,7 +61,18 @@ onUnmounted(() => {
         <div class="brew-notification-wrapper" :key="currentIndex">
           <p class="brew-notification-text">
             {{ currentNotification.text }}
+            <!-- Ссылка для мобильной версии -->
+            <a 
+              v-if="currentNotification.hasButton"
+              :href="currentNotification.buttonUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="brew-link-mobile"
+            >
+              {{ currentNotification.buttonText }}
+            </a>
           </p>
+          <!-- Кнопка для десктопной версии -->
           <button 
             v-if="currentNotification.hasButton" 
             @click="openLink(currentNotification.buttonUrl)"
@@ -73,7 +84,6 @@ onUnmounted(() => {
       </transition>
     </div>
     
-    <!-- Индикаторы переключения -->
     <div class="brew-indicators">
       <button
         v-for="(_, index) in notifications"
@@ -121,6 +131,7 @@ onUnmounted(() => {
   color: #171a20;
 }
 
+/* Кнопка для десктопа */
 .brew-button {
   display: flex;
   align-items: center;
@@ -135,6 +146,11 @@ onUnmounted(() => {
   cursor: pointer;
   white-space: nowrap;
   height: 28px;
+}
+
+/* Ссылка для мобильных (по умолчанию скрыта) */
+.brew-link-mobile {
+  display: none;
 }
 
 /* Индикаторы */
@@ -178,19 +194,42 @@ onUnmounted(() => {
 /* Мобильная версия */
 @media (max-width: 768px) {
   .brew-notification-slider {
+    flex-direction: column;
     height: auto;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding: 12px 0 8px 0;
+  }
+  
+  .brew-notification-content {
+    margin-bottom: 8px;
   }
   
   .brew-notification-wrapper {
-    flex-direction: column;
-    gap: 10px;
     text-align: center;
   }
-
+  
+  .brew-notification-text {
+    font-size: 13px;
+  }
+  
+  /* Скрываем десктопную кнопку */
+  .brew-button {
+    display: none;
+  }
+  
+  /* Показываем мобильную ссылку */
+  .brew-link-mobile {
+    display: inline;
+    text-decoration: underline;
+    font-weight: 500;
+    margin-left: 4px;
+    color: #171a20;
+  }
+  
+  /* Возвращаем индикаторы */
   .brew-indicators {
-    display: none; /* Скрываем индикаторы на мобильной версии для чистоты */
+    display: flex;
+    margin-right: 0;
+    justify-content: center;
   }
 }
 </style>
