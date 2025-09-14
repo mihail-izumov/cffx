@@ -9,7 +9,7 @@ const notifications = [
     buttonUrl: '/brew/membership'
   },
   { 
-    text: 'Получите доступ к эксклюзивным данным и инсайтам', 
+    text: 'Получите доступ эксклюзивным данным и инсайтам', 
     hasButton: false 
   },
   { 
