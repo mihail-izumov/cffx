@@ -1,6 +1,6 @@
 <template>
   <DefaultLayout>
-    <template #doc-top>
+    <template #doc-before>
       <div v-if="shouldShowBanner" class="content-notification-banner">
         <NotificationSlider v-if="frontmatter.notification === 'brew'" />
         <GeneralNotification v-else />
@@ -35,24 +35,17 @@ watch(shouldShowBanner, (newVal) => {
 </script>
 
 <style>
-/* УБИРАЕМ ВСЕ ПОПЫТКИ ИЗМЕНИТЬ МЕНЮ И САЙДБАР */
-/* Никаких изменений VPNav, VPSidebar - оставляем как есть */
-
 /* Баннер ограниченной ширины, как у основного контента */
 .content-notification-banner {
-  max-width: 720px; /* Ширина основного контента VitePress */
+  max-width: 720px;
   width: 100%;
-  margin: 0 auto 24px auto; /* Центрируем и добавляем отступ снизу */
+  margin: 0 auto 24px auto;
   border-radius: 5px;
   padding: 12px 24px;
   box-sizing: border-box;
-  /* Выравнивается по тому же принципу, что и текст/блоки */
 }
 
-/* Отступ сверху для контента */
-body.has-banner .VPDoc {
-  padding-top: 16px; /* Небольшой отступ от баннера */
-}
+/* НЕ ТРОГАЕМ меню и сайдбар - убираем все попытки их изменить */
 
 /* Скругляем основные контейнеры */
 .VPDoc,
@@ -64,21 +57,9 @@ body.has-banner .VPDoc {
 @media (max-width: 768px) {
   .content-notification-banner {
     max-width: 100%;
-    margin: 0 16px 16px 16px; /* Отступы от краев на мобильных */
+    margin: 0 16px 16px 16px;
     border-radius: 8px;
     padding: 12px 16px;
-  }
-  
-  body.has-banner .VPDoc {
-    padding-top: 12px;
-  }
-}
-
-/* Планшеты */
-@media (max-width: 960px) and (min-width: 769px) {
-  .content-notification-banner {
-    max-width: calc(100% - 48px); /* Учитываем отступы на планшетах */
-    margin: 0 24px 20px 24px;
   }
 }
 </style>
