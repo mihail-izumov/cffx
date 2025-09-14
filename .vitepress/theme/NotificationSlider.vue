@@ -90,7 +90,7 @@ onUnmounted(() => {
 <style scoped>
 .brew-notification-slider {
   background: linear-gradient(90deg, #c4a373 0%, #f5dfb1 50%, #c4a373 100%);
-  color: #2c2c2c;
+  color: #171a20;
   width: 100%;
   height: 44px;
   display: flex;
@@ -105,32 +105,36 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 1rem;
 }
 
 .brew-notification-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
 }
 
 .brew-notification-text {
   margin: 0;
-  font-size: 13px;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 500;
+  color: #171a20;
 }
 
 .brew-button {
-  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #171a20;
   color: #fff;
   border: none;
-  padding: 3px 8px;
-  border-radius: 2px;
-  font-size: 11px;
+  padding: 0 14px;
+  border-radius: 4px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-  height: 20px;
-  line-height: 1;
+  height: 28px;
 }
 
 /* Индикаторы */
@@ -146,18 +150,18 @@ onUnmounted(() => {
   height: 8px;
   border-radius: 50%;
   border: none;
-  background-color: rgba(44, 44, 44, 0.4);
+  background-color: rgba(23, 26, 32, 0.4);
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0;
 }
 
 .brew-indicator:hover {
-  background-color: rgba(44, 44, 44, 0.6);
+  background-color: rgba(23, 26, 32, 0.6);
 }
 
 .brew-indicator.active {
-  background-color: #2c2c2c;
+  background-color: #171a20;
 }
 
 /* Fade анимация */
@@ -174,29 +178,19 @@ onUnmounted(() => {
 /* Мобильная версия */
 @media (max-width: 768px) {
   .brew-notification-slider {
-    flex-direction: column;
     height: auto;
-    padding: 12px 0 8px 0;
-  }
-  
-  .brew-notification-content {
-    margin-bottom: 8px;
-    padding: 0 1rem;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
   
   .brew-notification-wrapper {
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     text-align: center;
   }
-  
-  .brew-notification-text {
-    font-size: 12px;
-  }
-  
+
   .brew-indicators {
-    margin-right: 0;
-    justify-content: center;
+    display: none; /* Скрываем индикаторы на мобильной версии для чистоты */
   }
 }
 </style>
