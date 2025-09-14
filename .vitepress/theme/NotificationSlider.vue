@@ -43,7 +43,6 @@ onUnmounted(() => {
   clearInterval(timer)
 })
 </script>
-
 <template>
   <div class="iso-brew-slider">
     <div class="iso-brew-slider__content">
@@ -87,7 +86,6 @@ onUnmounted(() => {
     </div>
   </div>
 </template>
-
 <style scoped>
 /* ВСЕ СТИЛИ ПОЛНОСТЬЮ ИЗОЛИРОВАНЫ С УНИКАЛЬНЫМИ КЛАССАМИ И !important */
 .iso-brew-slider {
@@ -223,7 +221,9 @@ onUnmounted(() => {
   }
   .iso-brew-slider__link-mobile {
     display: inline !important;
-    text-decoration: underline !important;
+    /* ИСПРАВЛЕНИЕ: Замена text-decoration на border-bottom */
+    text-decoration: none !important;
+    border-bottom: 1px solid #fff !important;
     font-weight: 500 !important;
     margin-left: 4px !important;
     color: #fff !important;
