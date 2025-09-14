@@ -123,12 +123,14 @@ onUnmounted(() => {
   background-color: #000;
   color: #fff;
   border: none;
-  padding: 6px 16px;
-  border-radius: 4px;
-  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
+  height: 24px;
+  line-height: 1;
 }
 
 /* Индикаторы */
