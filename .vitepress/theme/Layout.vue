@@ -12,11 +12,10 @@
 <script setup>
 import { computed, watch } from 'vue'
 import { useData } from 'vitepress'
-import DefaultTheme from 'vitepress/theme'
+import { Layout } from 'vitepress/theme'
 import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
 
-const { Layout } = DefaultTheme
 const { frontmatter } = useData()
 
 const shouldShowBanner = computed(() => 
@@ -36,40 +35,45 @@ watch(shouldShowBanner, (newVal) => {
 </script>
 
 <style>
-/* Баннер липкий ВНУТРИ области контента */
+/* Простой баннер сверху контента - НЕ sticky, НЕ fixed */
 .content-notification-banner {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  margin: -24px -24px 16px -24px; /* Компенсируем отступы контента */
+  margin: -24px -24px 24px -24px; /* Убираем отступы контента и добавляем снизу */
+  border-radius: 5px;
+  overflow: hidden;
 }
 
-/* ИСПРАВЛЕНИЕ ЗАЗОРОВ - растягиваем элементы на полную ширину */
+/* ИСПРАВЛЕНИЕ ДЫРКИ В МЕНЮ - растягиваем на всю ширину */
 body.has-banner .VPNav {
-  width: 100% !important;
-  margin: 0 !important;
-  left: 0;
-  right: 0;
-  box-sizing: border-box;
+  width: 100vw !important;
+  margin-left: calc(-50vw + 50%) !important;
+  margin-right: calc(-50vw + 50%) !important;
+  border-radius: 5px;
 }
 
 body.has-banner .VPSidebar {
-  margin: 0 !important;
-  box-sizing: border-box;
+  border-radius: 5px;
 }
 
-/* На мобильных устройствах корректируем отступы и используем 100vw */
+/* Скругляем все контейнеры */
+.VPDoc,
+.VPContent, 
+.content,
+.vp-doc {
+  border-radius: 5px;
+}
+
+/* Мобильная версия */
 @media (max-width: 768px) {
   .content-notification-banner {
-    margin: -16px -16px 12px -16px;
+    margin: -16px -16px 16px -16px;
+    border-radius: 0; /* На мобильных без скругления */
   }
   
-  /* На мобильных используем 100vw для навигации */
   body.has-banner .VPNav {
     width: 100vw !important;
-    margin: 0 !important;
-    padding-left: 0;
-    padding-right: 0;
+    margin-left: calc(-50vw + 50%) !important;
+    margin-right: calc(-50vw + 50%) !important;
+    border-radius: 0;
   }
 }
 </style>
