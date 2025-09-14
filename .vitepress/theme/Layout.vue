@@ -1,21 +1,22 @@
 <template>
-  <Layout>
+  <DefaultLayout>
     <template #doc-top>
       <div v-if="shouldShowBanner" class="content-notification-banner">
         <NotificationSlider v-if="frontmatter.notification === 'brew'" />
         <GeneralNotification v-else />
       </div>
     </template>
-  </Layout>
+  </DefaultLayout>
 </template>
 
 <script setup>
 import { computed, watch } from 'vue'
 import { useData } from 'vitepress'
-import { Layout } from 'vitepress/theme'
+import DefaultTheme from 'vitepress/theme'
 import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
 
+const DefaultLayout = DefaultTheme.Layout
 const { frontmatter } = useData()
 
 const shouldShowBanner = computed(() => 
@@ -35,7 +36,7 @@ watch(shouldShowBanner, (newVal) => {
 </script>
 
 <style>
-/* Простой баннер сверху контента - НЕ sticky, НЕ fixed */
+/* Простой баннер сверху контента - уходит под меню при скролле */
 .content-notification-banner {
   margin: -24px -24px 24px -24px; /* Убираем отступы контента и добавляем снизу */
   border-radius: 5px;
