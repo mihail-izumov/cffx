@@ -9,8 +9,10 @@ const notifications = [
     buttonUrl: '/fest#организатор'
   },
   { 
-    text: 'Открывайте новые грани вкуса', 
-    hasButton: false 
+    text: 'Поможем решить любую проблему в Вашей кофейне.', 
+    hasButton: true,
+    buttonText: 'Отправить ⚡ Сигнал',
+    buttonUrl: '/signal/new'
   },
   { 
     text: 'Присоединяйтесь к главному кофейному событию года', 
