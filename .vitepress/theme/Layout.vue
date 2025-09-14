@@ -1,143 +1,73 @@
 <template>
-  <!-- Баннер зафиксирован поверх всего -->
-  <div v-if="shouldShowBanner" class="notification-banner" ref="bannerRef">
-    <NotificationSlider v-if="frontmatter.notification === 'brew'" />
-    <GeneralNotification v-else />
-  </div>
-  
-  <!-- Стандартный Layout VitePress -->
-  <DefaultLayout />
+  <Layout>
+    <template #doc-top>
+      <div v-if="shouldShowBanner" class="content-notification-banner">
+        <NotificationSlider v-if="frontmatter.notification === 'brew'" />
+        <GeneralNotification v-else />
+      </div>
+    </template>
+  </Layout>
 </template>
 
 <script setup>
-import { computed, watch, nextTick, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, watch } from 'vue'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
 
-const DefaultLayout = DefaultTheme.Layout
+const { Layout } = DefaultTheme
 const { frontmatter } = useData()
-const bannerRef = ref(null)
 
 const shouldShowBanner = computed(() => 
   frontmatter.value?.notification === 'brew' || frontmatter.value?.notification === 'general'
 )
 
-// Динамически измеряем высоту баннера
-const updateBannerHeight = async () => {
-  if (typeof document !== 'undefined') {
-    await nextTick()
-    const banner = bannerRef.value || document.querySelector('.notification-banner')
-    if (banner) {
-      const height = banner.offsetHeight
-      document.documentElement.style.setProperty('--banner-height', `${height}px`)
-    } else {
-      document.documentElement.style.setProperty('--banner-height', '0px')
-    }
-  }
-}
-
-// Обработчик изменения размера окна
-const handleResize = () => {
-  setTimeout(updateBannerHeight, 100)
-}
-
-// Наблюдение за изменением баннера
-watch(shouldShowBanner, async (newVal) => {
+// Добавляем класс для управления стилями
+watch(shouldShowBanner, (newVal) => {
   if (typeof document !== 'undefined') {
     if (newVal) {
       document.body.classList.add('has-banner')
-      await updateBannerHeight()
     } else {
       document.body.classList.remove('has-banner')
-      document.documentElement.style.setProperty('--banner-height', '0px')
     }
   }
 }, { immediate: true })
-
-// Слушатели событий
-onMounted(() => {
-  window.addEventListener('resize', handleResize)
-  setTimeout(updateBannerHeight, 500)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', handleResize)
-})
 </script>
 
 <style>
-:root {
-  --banner-height: 0px;
-}
-
-/* Баннер зафиксирован поверх всего */
-.notification-banner {
-  position: fixed;
+/* Баннер липкий ВНУТРИ области контента */
+.content-notification-banner {
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9999;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  z-index: 10;
+  margin: -24px -24px 16px -24px; /* Компенсируем отступы контента */
 }
 
-/* Навигация прилипает под баннером */
+/* ИСПРАВЛЕНИЕ ЗАЗОРОВ - растягиваем элементы на полную ширину */
 body.has-banner .VPNav {
-  position: sticky;
-  top: var(--banner-height);
-  z-index: 1100;
-  margin: 0;
-  width: 100%;
+  width: 100% !important;
+  margin: 0 !important;
   left: 0;
   right: 0;
-}
-
-/* Сайдбар правильно позиционируется */
-body.has-banner .VPSidebar {
-  position: sticky;
-  top: calc(var(--vp-nav-height, 60px) + var(--banner-height));
-  max-height: calc(100vh - var(--vp-nav-height, 60px) - var(--banner-height));
-  z-index: 1000;
-}
-
-/* Контент получает отступ сверху равный высоте баннера */
-body.has-banner .VPDoc {
-  margin-top: var(--banner-height);
-  padding-top: 0;
-}
-
-/* Поисковое окно */
-body.has-banner .VPLocalSearchBox {
-  z-index: 10001 !important;
-}
-
-/* Убираем дырки - растягиваем элементы на полную ширину */
-body.has-banner .VPNav,
-body.has-banner .VPSidebar {
   box-sizing: border-box;
-  margin-left: 0;
-  margin-right: 0;
 }
 
-/* Мобильная версия */
+body.has-banner .VPSidebar {
+  margin: 0 !important;
+  box-sizing: border-box;
+}
+
+/* На мобильных устройствах корректируем отступы и используем 100vw */
 @media (max-width: 768px) {
-  body.has-banner .VPDoc {
-    margin-top: var(--banner-height);
-    padding-top: 0;
+  .content-notification-banner {
+    margin: -16px -16px 12px -16px;
   }
   
-  body.has-banner .VPNavScreen {
-    top: calc(var(--vp-nav-height, 60px) + var(--banner-height));
-  }
-  
-  /* На мобильных убираем любые отступы, которые могут создавать щели */
+  /* На мобильных используем 100vw для навигации */
   body.has-banner .VPNav {
-    width: 100vw;
-    margin: 0;
+    width: 100vw !important;
+    margin: 0 !important;
     padding-left: 0;
     padding-right: 0;
   }
