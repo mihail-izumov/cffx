@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
-// Данные из вашего первого компонента
 const notifications = [
   { 
     text: 'Участвуете в фестивале?', 
@@ -33,7 +32,6 @@ const goToSlide = (index) => {
 }
 
 const openLink = (url) => {
-  // Открываем в новой вкладке, как в вашем первом примере
   window.open(url, '_blank', 'noopener,noreferrer')
 }
 
@@ -56,14 +54,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <!-- Классы обновлены до новой структуры "iso-brew-" -->
   <div class="iso-brew-slider">
     <div class="iso-brew-slider__content">
       <transition name="iso-brew-fade" mode="out-in">
         <div class="iso-brew-slider__wrapper" :key="currentIndex">
           <p class="iso-brew-slider__text">
             {{ currentNotification.text }}
-            <!-- Ссылка для мобильной версии -->
             <a 
               v-if="currentNotification.hasButton"
               :href="currentNotification.buttonUrl"
@@ -74,7 +70,6 @@ onUnmounted(() => {
               {{ currentNotification.buttonText }}
             </a>
           </p>
-          <!-- Кнопка для десктопной версии -->
           <button 
             v-if="currentNotification.hasButton" 
             @click="openLink(currentNotification.buttonUrl)"
@@ -102,9 +97,7 @@ onUnmounted(() => {
 <style scoped>
 /* Новые изолированные стили с вашим золотым фоном и темным текстом */
 .iso-brew-slider {
-  /* СОХРАНЕН ЗОЛОТОЙ ГРАДИЕНТ */
   background: linear-gradient(90deg, #c4a373 0%, #f5dfb1 50%, #c4a373 100%) !important;
-  /* СОХРАНЕН ТЕМНЫЙ ЦВЕТ ТЕКСТА */
   color: #171a20 !important;
   width: 100% !important;
   height: 44px !important;
@@ -143,7 +136,6 @@ onUnmounted(() => {
   padding: 0 !important;
   font-size: 14px !important;
   font-weight: 500 !important;
-  /* ЯВНО УКАЗАН ТЕМНЫЙ ЦВЕТ, чтобы переопределить */
   color: #171a20 !important;
   line-height: 1.3 !important;
   white-space: nowrap;
@@ -156,7 +148,6 @@ onUnmounted(() => {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  /* СОХРАНЕН СТИЛЬ КНОПКИ */
   background-color: #171a20 !important; 
   color: #fff !important;
   border: none !important; 
@@ -164,7 +155,7 @@ onUnmounted(() => {
   margin: 0 !important;
   border-radius: 4px !important;
   font-size: 13px !important;
-  font-weight: 600 !important; /* Немного увеличена жирность для читаемости */
+  font-weight: 600 !important;
   cursor: pointer !important;
   white-space: nowrap !important;
   height: 28px !important;
@@ -173,7 +164,6 @@ onUnmounted(() => {
 }
 
 .iso-brew-slider__button:hover {
-  /* Небольшое осветление при наведении для обратной связи */
   background-color: #333 !important;
 }
 
@@ -196,7 +186,6 @@ onUnmounted(() => {
   height: 8px !important;
   border-radius: 50% !important;
   border: none !important;
-  /* СОХРАНЕН СТИЛЬ ИНДИКАТОРОВ */
   background-color: rgba(23, 26, 32, 0.4) !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
@@ -248,11 +237,14 @@ onUnmounted(() => {
   }
   .iso-brew-slider__link-mobile {
     display: inline !important;
-    text-decoration: underline !important;
+    /* ИЗМЕНЕНИЕ: Убираем стандартное подчеркивание и добавляем свое */
+    text-decoration: none !important;
+    border-bottom: 1px solid #171a20 !important;
     font-weight: 500 !important;
     margin-left: 4px !important;
-    /* СОХРАНЕН ЦВЕТ МОБИЛЬНОЙ ССЫЛКИ */
     color: #171a20 !important;
+    /* Небольшой отступ снизу, чтобы линия не прилипала к тексту */
+    padding-bottom: 1px;
   }
   .iso-brew-slider__indicators {
     display: flex !important;
