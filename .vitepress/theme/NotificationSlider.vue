@@ -99,9 +99,11 @@ onUnmounted(() => {
 
 <style scoped>
 .brew-notification-slider {
-  /* Зеленый градиент из примера */
-  background: linear-gradient(90deg, #10b981 0%, #1c9d72 100%);
-  color: #fff; /* Белый цвет текста для контраста */
+  /* Темный базовый фон */
+  background-color: #1a2e29;
+  /* Радиальный градиент поверх фона для эффекта свечения */
+  background-image: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.35) 0%, transparent 70%);
+  color: #fff;
   width: 100%;
   height: 44px;
   display: flex;
@@ -129,7 +131,7 @@ onUnmounted(() => {
   margin: 0;
   font-size: 14px;
   font-weight: 500;
-  color: #fff; /* Белый цвет текста */
+  color: #fff;
 }
 
 /* Кнопка для десктопа */
@@ -137,21 +139,21 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fff; /* Белый фон кнопки */
-  color: #10b981; /* Зеленый цвет текста */
-  border: none;
+  background-color: #10b981;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 0 14px;
   border-radius: 4px;
   font-size: 13px;
-  font-weight: 600; /* Более жирный для контраста */
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   height: 28px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .brew-button:hover {
-  background-color: #f0fdf4; /* Слегка зеленый фон при наведении */
+  background-color: #13cf92;
 }
 
 
@@ -173,7 +175,7 @@ onUnmounted(() => {
   height: 8px;
   border-radius: 50%;
   border: none;
-  background-color: rgba(255, 255, 255, 0.4); /* Светлые индикаторы */
+  background-color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0;
@@ -184,7 +186,7 @@ onUnmounted(() => {
 }
 
 .brew-indicator.active {
-  background-color: #fff; /* Белый активный индикатор */
+  background-color: #fff;
 }
 
 /* Fade анимация */
@@ -218,21 +220,18 @@ onUnmounted(() => {
     font-size: 13px;
   }
   
-  /* Скрываем десктопную кнопку */
   .brew-button {
     display: none;
   }
   
-  /* Показываем мобильную ссылку */
   .brew-link-mobile {
     display: inline;
     text-decoration: underline;
     font-weight: 500;
     margin-left: 4px;
-    color: #fff; /* Белый цвет ссылки */
+    color: #fff;
   }
   
-  /* Возвращаем индикаторы */
   .brew-indicators {
     display: flex;
     margin-right: 0;
