@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
+// Данные из вашего первого компонента
 const notifications = [
   { 
     text: 'Участвуете в фестивале?', 
@@ -20,7 +21,6 @@ const notifications = [
 
 const currentIndex = ref(0)
 let timer = null
-
 const currentNotification = computed(() => notifications[currentIndex.value])
 
 const nextNotification = () => {
@@ -33,6 +33,7 @@ const goToSlide = (index) => {
 }
 
 const openLink = (url) => {
+  // Открываем в новой вкладке, как в вашем первом примере
   window.open(url, '_blank', 'noopener,noreferrer')
 }
 
@@ -55,11 +56,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="brew-notification-slider">
-    <div class="brew-notification-content">
-      <transition name="brew-fade" mode="out-in">
-        <div class="brew-notification-wrapper" :key="currentIndex">
-          <p class="brew-notification-text">
+  <!-- Классы обновлены до новой структуры "iso-brew-" -->
+  <div class="iso-brew-slider">
+    <div class="iso-brew-slider__content">
+      <transition name="iso-brew-fade" mode="out-in">
+        <div class="iso-brew-slider__wrapper" :key="currentIndex">
+          <p class="iso-brew-slider__text">
             {{ currentNotification.text }}
             <!-- Ссылка для мобильной версии -->
             <a 
@@ -67,7 +69,7 @@ onUnmounted(() => {
               :href="currentNotification.buttonUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="brew-link-mobile"
+              class="iso-brew-slider__link-mobile"
             >
               {{ currentNotification.buttonText }}
             </a>
@@ -76,7 +78,7 @@ onUnmounted(() => {
           <button 
             v-if="currentNotification.hasButton" 
             @click="openLink(currentNotification.buttonUrl)"
-            class="brew-button"
+            class="iso-brew-slider__button"
           >
             {{ currentNotification.buttonText }}
           </button>
@@ -84,11 +86,11 @@ onUnmounted(() => {
       </transition>
     </div>
     
-    <div class="brew-indicators">
+    <div class="iso-brew-slider__indicators">
       <button
         v-for="(_, index) in notifications"
-        :key="index"
-        class="brew-indicator"
+        :key="`indicator-${index}`"
+        class="iso-brew-slider__indicator"
         :class="{ 'active': currentIndex === index }"
         @click="goToSlide(index)"
         :aria-label="`Переключиться на уведомление ${index + 1}`"
@@ -98,138 +100,164 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.brew-notification-slider {
-  background: linear-gradient(90deg, #c4a373 0%, #f5dfb1 50%, #c4a373 100%);
-  color: #171a20;
+/* Новые изолированные стили с вашим золотым фоном и темным текстом */
+.iso-brew-slider {
+  /* СОХРАНЕН ЗОЛОТОЙ ГРАДИЕНТ */
+  background: linear-gradient(90deg, #c4a373 0%, #f5dfb1 50%, #c4a373 100%) !important;
+  /* СОХРАНЕН ТЕМНЫЙ ЦВЕТ ТЕКСТА */
+  color: #171a20 !important;
+  width: 100% !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  min-height: 44px !important;
+}
+
+.iso-brew-slider__content {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 1rem !important;
+  min-width: 0;
+}
+
+.iso-brew-slider__wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center;
+  gap: 16px !important;
   width: 100%;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+}
+
+.iso-brew-slider__text {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  /* ЯВНО УКАЗАН ТЕМНЫЙ ЦВЕТ, чтобы переопределить */
+  color: #171a20 !important;
+  line-height: 1.3 !important;
+  white-space: nowrap;
   overflow: hidden;
-}
-
-.brew-notification-content {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 1rem;
-}
-
-.brew-notification-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.brew-notification-text {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 500;
-  color: #171a20;
+  text-overflow: ellipsis;
 }
 
 /* Кнопка для десктопа */
-.brew-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #171a20;
-  color: #fff;
-  border: none;
-  padding: 0 14px;
-  border-radius: 4px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  white-space: nowrap;
-  height: 28px;
+.iso-brew-slider__button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  /* СОХРАНЕН СТИЛЬ КНОПКИ */
+  background-color: #171a20 !important; 
+  color: #fff !important;
+  border: none !important; 
+  padding: 0 14px !important;
+  margin: 0 !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important; /* Немного увеличена жирность для читаемости */
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  height: 28px !important;
+  transition: background-color 0.2s ease !important;
+  flex-shrink: 0;
+}
+
+.iso-brew-slider__button:hover {
+  /* Небольшое осветление при наведении для обратной связи */
+  background-color: #333 !important;
 }
 
 /* Ссылка для мобильных (по умолчанию скрыта) */
-.brew-link-mobile {
-  display: none;
+.iso-brew-slider__link-mobile {
+  display: none !important;
 }
 
 /* Индикаторы */
-.brew-indicators {
-  display: flex;
-  gap: 6px;
-  margin-right: 1rem;
-  align-items: center;
+.iso-brew-slider__indicators {
+  display: flex !important;
+  gap: 6px !important;
+  margin-right: 1rem !important;
+  align-items: center !important;
+  flex-shrink: 0;
 }
 
-.brew-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: none;
-  background-color: rgba(23, 26, 32, 0.4);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 0;
+.iso-brew-slider__indicator {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  /* СОХРАНЕН СТИЛЬ ИНДИКАТОРОВ */
+  background-color: rgba(23, 26, 32, 0.4) !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  padding: 0 !important;
 }
 
-.brew-indicator:hover {
-  background-color: rgba(23, 26, 32, 0.6);
+.iso-brew-slider__indicator:hover {
+  background-color: rgba(23, 26, 32, 0.6) !important;
 }
 
-.brew-indicator.active {
-  background-color: #171a20;
+.iso-brew-slider__indicator.active {
+  background-color: #171a20 !important;
 }
 
 /* Fade анимация */
-.brew-fade-enter-active, 
-.brew-fade-leave-active { 
-  transition: opacity 0.4s ease; 
+.iso-brew-fade-enter-active, 
+.iso-brew-fade-leave-active { 
+  transition: opacity 0.6s ease !important; 
 }
 
-.brew-fade-enter-from, 
-.brew-fade-leave-to { 
-  opacity: 0; 
+.iso-brew-fade-enter-from, 
+.iso-brew-fade-leave-to { 
+  opacity: 0 !important; 
 }
 
 /* Мобильная версия */
 @media (max-width: 768px) {
-  .brew-notification-slider {
-    flex-direction: column;
-    height: auto;
-    padding: 12px 0 8px 0;
+  .iso-brew-slider {
+    flex-direction: column !important;
+    height: auto !important;
+    padding: 12px 1rem 8px 1rem !important;
+    border-radius: 8px !important;
+    min-height: 60px !important;
   }
-  
-  .brew-notification-content {
-    margin-bottom: 8px;
+  .iso-brew-slider__content {
+    margin-bottom: 8px !important;
+    width: 100%;
   }
-  
-  .brew-notification-wrapper {
+  .iso-brew-slider__wrapper {
+    text-align: center !important;
+  }
+  .iso-brew-slider__text {
+    font-size: 13px !important;
+    white-space: normal;
     text-align: center;
   }
-  
-  .brew-notification-text {
-    font-size: 13px;
+  .iso-brew-slider__button {
+    display: none !important;
   }
-  
-  /* Скрываем десктопную кнопку */
-  .brew-button {
-    display: none;
+  .iso-brew-slider__link-mobile {
+    display: inline !important;
+    text-decoration: underline !important;
+    font-weight: 500 !important;
+    margin-left: 4px !important;
+    /* СОХРАНЕН ЦВЕТ МОБИЛЬНОЙ ССЫЛКИ */
+    color: #171a20 !important;
   }
-  
-  /* Показываем мобильную ссылку */
-  .brew-link-mobile {
-    display: inline;
-    text-decoration: underline;
-    font-weight: 500;
-    margin-left: 4px;
-    color: #171a20;
-  }
-  
-  /* Возвращаем индикаторы */
-  .brew-indicators {
-    display: flex;
-    margin-right: 0;
-    justify-content: center;
+  .iso-brew-slider__indicators {
+    display: flex !important;
+    margin-right: 0 !important;
+    justify-content: center !important;
   }
 }
 </style>
