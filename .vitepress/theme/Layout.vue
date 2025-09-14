@@ -1,11 +1,9 @@
 <template>
   <DefaultLayout>
     <template #doc-before>
-      <div v-if="shouldShowBanner" class="notification-wrapper">
-        <div class="content-notification-banner">
-          <NotificationSlider v-if="frontmatter.notification === 'brew'" />
-          <GeneralNotification v-else />
-        </div>
+      <div v-if="shouldShowBanner" class="notification-container">
+        <NotificationSlider v-if="frontmatter.notification === 'brew'" />
+        <GeneralNotification v-else />
       </div>
     </template>
   </DefaultLayout>
@@ -37,64 +35,41 @@ watch(shouldShowBanner, (newVal) => {
 </script>
 
 <style>
-/* Обертка для правильного позиционирования */
-.notification-wrapper {
-  display: flex;
-  justify-content: center;
+/* ТОЛЬКО ПОЗИЦИОНИРОВАНИЕ И ШИРИНА */
+.notification-container {
+  /* Точная ширина как у блоков "ИНСАЙДЕР" и "НОВЫЙ ЛИДЕР" */
+  max-width: 688px;
   width: 100%;
-  margin: 8px 0 24px 0; /* Ближе к меню, больше во-здуха до заголовка */
-}
-
-/* Баннер точно такой же ширины, как основной контент */
-.content-notification-banner {
-  max-width: 688px; /* Точная ширина VitePress контента */
-  width: 100%;
-  padding: 10px 20px;
-  border-radius: 5px;
+  margin: 8px auto 32px auto; /* Центрируем и задаем отступы */
+  padding: 0;
   box-sizing: border-box;
-  min-height: 44px; /* Фиксированная высота предотвращает прыжки */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease; /* Плавные изменения высоты */
 }
 
-/* Убираем отступы, баннер сам создает нужное расстояние */
+/* Убираем лишние отступы */
 body.has-banner .VPDoc {
   margin-top: 0;
   padding-top: 0;
 }
 
-/* Скругления для основных контейнеров */
+/* Скругления только для основных контейнеров VitePress */
 .VPDoc,
-.VPContent,
-.content-notification-banner {
+.VPContent {
   border-radius: 5px;
 }
 
 /* Мобильная версия */
 @media (max-width: 768px) {
-  .notification-wrapper {
-    margin: 4px 16px 20px 16px; /* Отступы от краев */
-  }
-  
-  .content-notification-banner {
+  .notification-container {
     max-width: 100%;
-    padding: 8px 16px;
-    border-radius: 8px;
-    min-height: 40px;
+    margin: 4px 16px 24px 16px; /* Отступы от краев */
   }
 }
 
 /* Планшеты */
 @media (max-width: 960px) and (min-width: 769px) {
-  .notification-wrapper {
-    margin: 6px 24px 22px 24px;
-  }
-  
-  .content-notification-banner {
+  .notification-container {
     max-width: calc(100% - 48px);
-    padding: 9px 18px;
+    margin: 6px 24px 28px 24px;
   }
 }
 </style>
