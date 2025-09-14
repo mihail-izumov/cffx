@@ -2,13 +2,13 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 const notifications = [
   { 
-    text: 'Перехватите негатив до того, как он попадёт в 2ГИС/Яндекс', 
+    text: 'Перехватите негатив до того, как он попадёт в 2ГИС/Яндекс.', 
     hasButton: true,
     buttonText: 'Узнать Больше',
     buttonUrl: '/brew/tickets'
   },
   { 
-    text: 'Находим в отзывах то, что не видят другие', 
+    text: 'Находим в отзывах то, что не видят другие.', 
     hasButton: true,
     buttonText: 'Индекс Роста',
     buttonUrl: '/smr'
