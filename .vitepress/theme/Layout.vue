@@ -81,7 +81,7 @@ onBeforeUnmount(() => {
   z-index: 9999;
 }
 
-/* Навигация - ТОЛЬКО сдвигаем на высоту баннера */
+/* Навигация сдвигается на высоту баннера */
 body.has-banner .VPNav {
   top: var(--banner-height) !important;
   z-index: 1100;
@@ -92,24 +92,34 @@ body.has-banner .VPLocalSearchBox {
   z-index: 10001 !important;
 }
 
-/* Контент - ТОЛЬКО добавляем отступ сверху */
+/* Контент получает отступ сверху */
 body.has-banner .VPDoc {
   margin-top: var(--banner-height);
 }
 
-/* УБИРАЕМ ВСЕ АГРЕССИВНЫЕ СТИЛИ ДЛЯ САЙДБАРА */
-/* Сайдбар остается в стандартном состоянии VitePress */
-/* НЕ трогаем: .VPSidebar, .VPLayout, .VPAside */
+/* ИСПРАВЛЕНИЕ САЙДБАРА - добавляем небольшой отступ от навигации */
+body.has-banner .VPSidebar {
+  top: calc(var(--vp-nav-height, 60px) + var(--banner-height) + 16px) !important;
+  max-height: calc(100vh - var(--vp-nav-height, 60px) - var(--banner-height) - 16px) !important;
+  position: sticky !important;
+  z-index: 1000 !important;
+}
 
-/* Мобильная версия */
+/* Мобильная версия - восстанавливаем стандартное поведение */
 @media (max-width: 768px) {
   body.has-banner .VPDoc {
     margin-top: var(--banner-height);
     padding-top: 0;
   }
   
+  /* Мобильное меню (гамбургер) */
   body.has-banner .VPNavScreen {
-    top: calc(var(--vp-nav-height, 60px) + var(--banner-height));
+    top: calc(var(--vp-nav-height, 60px) + var(--banner-height)) !important;
+  }
+  
+  /* Мобильный сайдбар (когда открыт) */
+  body.has-banner .VPNavScreenMenuGroup {
+    margin-top: 0 !important;
   }
 }
 </style>
