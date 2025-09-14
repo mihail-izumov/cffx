@@ -1,11 +1,11 @@
 <template>
-  <!-- Баннер с уведомлениями -->
+  <!-- 1. Баннер поверх всего -->
   <div v-if="shouldShowBanner" class="notification-banner" ref="bannerRef">
     <NotificationSlider v-if="frontmatter.notification === 'brew'" />
     <GeneralNotification v-else />
   </div>
-
-  <!-- Стандартный layout VitePress -->
+  
+  <!-- 2. Стандартный Layout без изменений -->
   <DefaultLayout />
 </template>
 
@@ -24,7 +24,7 @@ const shouldShowBanner = computed(() =>
   frontmatter.value?.notification === 'brew' || frontmatter.value?.notification === 'general'
 )
 
-// Функция обновления высоты баннера
+// Динамически измеряем высоту баннера
 const updateBannerHeight = async () => {
   if (typeof document !== 'undefined') {
     await nextTick()
@@ -97,29 +97,16 @@ body.has-banner .VPDoc {
   margin-top: var(--banner-height);
 }
 
-/* ИСПРАВЛЕНИЕ САЙДБАРА - добавляем небольшой отступ от навигации */
-body.has-banner .VPSidebar {
-  top: calc(var(--vp-nav-height, 60px) + var(--banner-height) + 16px) !important;
-  max-height: calc(100vh - var(--vp-nav-height, 60px) - var(--banner-height) - 16px) !important;
-  position: sticky !important;
-  z-index: 1000 !important;
-}
+/* НЕ трогаем сайдбар - оставляем стандартное поведение VitePress */
 
-/* Мобильная версия - восстанавливаем стандартное поведение */
+/* Мобильная версия */
 @media (max-width: 768px) {
   body.has-banner .VPDoc {
     margin-top: var(--banner-height);
     padding-top: 0;
   }
-  
-  /* Мобильное меню (гамбургер) */
   body.has-banner .VPNavScreen {
-    top: calc(var(--vp-nav-height, 60px) + var(--banner-height)) !important;
-  }
-  
-  /* Мобильный сайдбар (когда открыт) */
-  body.has-banner .VPNavScreenMenuGroup {
-    margin-top: 0 !important;
+    top: calc(var(--vp-nav-height, 60px) + var(--banner-height));
   }
 }
 </style>
