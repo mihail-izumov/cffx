@@ -103,7 +103,7 @@ onUnmounted(() => {
   margin: 0 !important;
   border: none !important;
   /* ДОБАВЛЯЕМ СКРУГЛЕНИЯ В САМ КОМПОНЕНТ */
-  border-radius: 5px !important;
+  border-radius: 8px !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
   min-height: 44px !important; /* Предотвращает прыжки */
 }
