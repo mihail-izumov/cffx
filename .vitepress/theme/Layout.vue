@@ -39,15 +39,15 @@ watch(shouldShowBanner, (newVal) => {
 .notification-container {
   max-width: 688px;
   width: 100%;
-  margin: 16px auto 32px auto; /* Отступ от меню и до заголовка */
+  margin: 16px auto 48px auto; /* УВЕЛИЧЕН отступ до заголовка: было 32px, стало 48px */
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Простой отступ до заголовка для правильной UX иерархии */
+/* УВЕЛИЧЕН отступ до заголовка для правильной UX иерархии */
 body.has-banner .VPDoc {
   margin-top: 0;
-  padding-top: 8px; /* Небольшой отступ для визуального разделения */
+  padding-top: 16px; /* УВЕЛИЧЕН: было 8px, стало 16px */
 }
 
 /* Скругления для VitePress контейнеров */
@@ -59,13 +59,13 @@ body.has-banner .VPDoc {
 /* Мобильная версия - баннер остается в рамках контента */
 @media (max-width: 768px) {
   .notification-container {
-    max-width: 100%; /* Не выходим за рамки основного контента */
-    margin: 12px 0 24px 0; /* Простые отступы */
+    max-width: 100%;
+    margin: 12px 0 36px 0; /* УВЕЛИЧЕН: было 24px, стало 36px */
     padding: 0;
   }
   
   body.has-banner .VPDoc {
-    padding-top: 6px; /* Меньше отступ на мобильных */
+    padding-top: 20px; /* УВЕЛИЧЕН: было 6px, стало 20px */
   }
 }
 
@@ -73,11 +73,11 @@ body.has-banner .VPDoc {
 @media (max-width: 960px) and (min-width: 769px) {
   .notification-container {
     max-width: calc(100% - 24px);
-    margin: 14px 12px 28px 12px;
+    margin: 14px 12px 42px 12px; /* УВЕЛИЧЕН: было 28px, стало 42px */
   }
   
   body.has-banner .VPDoc {
-    padding-top: 7px;
+    padding-top: 18px; /* УВЕЛИЧЕН: было 7px, стало 18px */
   }
 }
 </style>
