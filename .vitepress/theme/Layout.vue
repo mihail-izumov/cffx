@@ -23,7 +23,6 @@ const shouldShowBanner = computed(() =>
   frontmatter.value?.notification === 'brew' || frontmatter.value?.notification === 'general'
 )
 
-// Добавляем класс для управления стилями
 watch(shouldShowBanner, (newVal) => {
   if (typeof document !== 'undefined') {
     if (newVal) {
@@ -36,45 +35,50 @@ watch(shouldShowBanner, (newVal) => {
 </script>
 
 <style>
-/* Простой баннер сверху контента - уходит под меню при скролле */
+/* УБИРАЕМ ВСЕ ПОПЫТКИ ИЗМЕНИТЬ МЕНЮ И САЙДБАР */
+/* Никаких изменений VPNav, VPSidebar - оставляем как есть */
+
+/* Баннер ограниченной ширины, как у основного контента */
 .content-notification-banner {
-  margin: -24px -24px 24px -24px; /* Убираем отступы контента и добавляем снизу */
+  max-width: 720px; /* Ширина основного контента VitePress */
+  width: 100%;
+  margin: 0 auto 24px auto; /* Центрируем и добавляем отступ снизу */
   border-radius: 5px;
-  overflow: hidden;
+  padding: 12px 24px;
+  box-sizing: border-box;
+  /* Выравнивается по тому же принципу, что и текст/блоки */
 }
 
-/* ИСПРАВЛЕНИЕ ДЫРКИ В МЕНЮ - растягиваем на всю ширину */
-body.has-banner .VPNav {
-  width: 100vw !important;
-  margin-left: calc(-50vw + 50%) !important;
-  margin-right: calc(-50vw + 50%) !important;
-  border-radius: 5px;
+/* Отступ сверху для контента */
+body.has-banner .VPDoc {
+  padding-top: 16px; /* Небольшой отступ от баннера */
 }
 
-body.has-banner .VPSidebar {
-  border-radius: 5px;
-}
-
-/* Скругляем все контейнеры */
+/* Скругляем основные контейнеры */
 .VPDoc,
-.VPContent, 
-.content,
-.vp-doc {
+.VPContent {
   border-radius: 5px;
 }
 
 /* Мобильная версия */
 @media (max-width: 768px) {
   .content-notification-banner {
-    margin: -16px -16px 16px -16px;
-    border-radius: 0; /* На мобильных без скругления */
+    max-width: 100%;
+    margin: 0 16px 16px 16px; /* Отступы от краев на мобильных */
+    border-radius: 8px;
+    padding: 12px 16px;
   }
   
-  body.has-banner .VPNav {
-    width: 100vw !important;
-    margin-left: calc(-50vw + 50%) !important;
-    margin-right: calc(-50vw + 50%) !important;
-    border-radius: 0;
+  body.has-banner .VPDoc {
+    padding-top: 12px;
+  }
+}
+
+/* Планшеты */
+@media (max-width: 960px) and (min-width: 769px) {
+  .content-notification-banner {
+    max-width: calc(100% - 48px); /* Учитываем отступы на планшетах */
+    margin: 0 24px 20px 24px;
   }
 }
 </style>
