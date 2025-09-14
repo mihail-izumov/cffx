@@ -2,9 +2,20 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const notifications = [
-  'Анализируйте рынок кофеен Самары с BREW', 
-  'Получите доступ к эксклюзивным данным и инсайтам', 
-  'Присоединяйтесь к платформе и опережайте конкурентов'
+  { 
+    text: 'Анализируйте рынок кофеен Самары с BREW', 
+    hasLink: true,
+    linkText: 'Подробнее',
+    linkUrl: '/brew/membership'
+  },
+  { 
+    text: 'Получите доступ к эксклюзивным данным и инсайтам', 
+    hasLink: false 
+  },
+  { 
+    text: 'Присоединяйтесь к платформе и опережайте конкурентов', 
+    hasLink: false 
+  }
 ]
 
 const currentIndex = ref(0)
@@ -44,7 +55,16 @@ onUnmounted(() => {
     <div class="brew-notification-content">
       <transition name="brew-fade" mode="out-in">
         <p class="brew-notification-text" :key="currentIndex">
-          {{ currentNotification }}
+          {{ currentNotification.text }}
+          <a 
+            v-if="currentNotification.hasLink" 
+            :href="currentNotification.linkUrl" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="brew-link"
+          >
+            {{ currentNotification.linkText }}
+          </a>
         </p>
       </transition>
     </div>
@@ -89,6 +109,18 @@ onUnmounted(() => {
   font-size: 14px;
   text-align: center;
   font-weight: 500;
+}
+
+.brew-link {
+  color: #2c2c2c;
+  text-decoration: underline;
+  margin-left: 4px;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.brew-link:hover {
+  opacity: 0.8;
 }
 
 /* Индикаторы */
