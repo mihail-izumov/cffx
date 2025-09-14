@@ -97,14 +97,19 @@ body.has-banner .VPDoc {
   margin-top: var(--banner-height);
 }
 
-/* НЕ трогаем сайдбар - оставляем стандартное поведение VitePress */
+/* САЙДБАР: ТОЛЬКО добавляем высоту баннера к стандартному top */
+body.has-banner .VPSidebar {
+  top: calc(var(--vp-nav-height, 60px) + var(--banner-height)) !important;
+}
 
-/* Мобильная версия */
+/* Мобильная версия - НЕ трогаем стандартные механизмы VitePress */
 @media (max-width: 768px) {
   body.has-banner .VPDoc {
     margin-top: var(--banner-height);
     padding-top: 0;
   }
+  
+  /* Мобильное меню при открытии */
   body.has-banner .VPNavScreen {
     top: calc(var(--vp-nav-height, 60px) + var(--banner-height));
   }
