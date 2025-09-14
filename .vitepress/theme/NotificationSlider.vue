@@ -99,8 +99,9 @@ onUnmounted(() => {
 
 <style scoped>
 .brew-notification-slider {
-  background: linear-gradient(90deg, #c4a373 0%, #f5dfb1 50%, #c4a373 100%);
-  color: #171a20;
+  /* Зеленый градиент из примера */
+  background: linear-gradient(90deg, #10b981 0%, #1c9d72 100%);
+  color: #fff; /* Белый цвет текста для контраста */
   width: 100%;
   height: 44px;
   display: flex;
@@ -128,7 +129,7 @@ onUnmounted(() => {
   margin: 0;
   font-size: 14px;
   font-weight: 500;
-  color: #171a20;
+  color: #fff; /* Белый цвет текста */
 }
 
 /* Кнопка для десктопа */
@@ -136,17 +137,23 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #171a20;
-  color: #fff;
+  background-color: #fff; /* Белый фон кнопки */
+  color: #10b981; /* Зеленый цвет текста */
   border: none;
   padding: 0 14px;
   border-radius: 4px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600; /* Более жирный для контраста */
   cursor: pointer;
   white-space: nowrap;
   height: 28px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
+
+.brew-button:hover {
+  background-color: #f0fdf4; /* Слегка зеленый фон при наведении */
+}
+
 
 /* Ссылка для мобильных (по умолчанию скрыта) */
 .brew-link-mobile {
@@ -166,18 +173,18 @@ onUnmounted(() => {
   height: 8px;
   border-radius: 50%;
   border: none;
-  background-color: rgba(23, 26, 32, 0.4);
+  background-color: rgba(255, 255, 255, 0.4); /* Светлые индикаторы */
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0;
 }
 
 .brew-indicator:hover {
-  background-color: rgba(23, 26, 32, 0.6);
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .brew-indicator.active {
-  background-color: #171a20;
+  background-color: #fff; /* Белый активный индикатор */
 }
 
 /* Fade анимация */
@@ -222,7 +229,7 @@ onUnmounted(() => {
     text-decoration: underline;
     font-weight: 500;
     margin-left: 4px;
-    color: #171a20;
+    color: #fff; /* Белый цвет ссылки */
   }
   
   /* Возвращаем индикаторы */
