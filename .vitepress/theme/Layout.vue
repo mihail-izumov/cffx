@@ -35,41 +35,49 @@ watch(shouldShowBanner, (newVal) => {
 </script>
 
 <style>
-/* Контейнер баннера: ограниченная ширина и центрирование */
+/* ФИКСИРОВАННАЯ ВЫСОТА - ключ к решению проблемы прыжков */
 .notification-container {
   max-width: 688px;
   width: 100%;
-  margin: 16px auto 32px auto; /* Отступы от меню и до заголовка */
+  margin: 16px auto 48px auto;
+  padding: 0;
   box-sizing: border-box;
   
-  /* РЕШЕНИЕ ПРОБЛЕМЫ С ПРЫЖКАМИ: */
-  /* Обертка для баннера, которая будет занимать место в потоке */
-  min-height: 44px; /* Минимальная высота, равная высоте самого низкого слайда */
-  transition: min-height 0.3s ease; /* Плавное изменение высоты, если нужно */
+  /* ФИКСИРОВАННАЯ ВЫСОТА равная максимальной высоте всех слайдов */
+  height: 44px; /* Фиксированная высота вместо min-height */
+  overflow: hidden; /* Скрываем переполнение */
 }
 
-/* Отступ до заголовка для правильной иерархии */
+/* Контейнер внутри баннера тоже с фиксированной высотой */
+.notification-container > * {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Отступ до заголовка */
 body.has-banner .VPDoc {
   margin-top: 0;
   padding-top: 16px;
 }
 
-/* Скругления для контейнеров */
+/* Скругления */
 .VPDoc,
 .VPContent {
   border-radius: 5px;
 }
 
-/* Мобильная версия - баннер остается в рамках контента */
+/* Мобильная версия - большая фиксированная высота */
 @media (max-width: 768px) {
   .notification-container {
     max-width: 100%;
-    margin: 12px 0 24px 0;
-    min-height: 60px; /* Минимальная высота для мобильных */
+    margin: 12px 0 36px 0;
+    height: 72px; /* Больше высота для мобильных слайдов */
   }
   
   body.has-banner .VPDoc {
-    padding-top: 12px;
+    padding-top: 20px;
   }
 }
 
@@ -77,11 +85,12 @@ body.has-banner .VPDoc {
 @media (max-width: 960px) and (min-width: 769px) {
   .notification-container {
     max-width: calc(100% - 24px);
-    margin: 14px 12px 28px 12px;
+    margin: 14px 12px 42px 12px;
+    height: 58px; /* Промежуточная высота */
   }
   
   body.has-banner .VPDoc {
-    padding-top: 14px;
+    padding-top: 18px;
   }
 }
 </style>
