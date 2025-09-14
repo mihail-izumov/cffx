@@ -4,17 +4,17 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 const notifications = [
   { 
     text: 'Анализируйте рынок кофеен Самары с BREW', 
-    hasLink: true,
-    linkText: 'Подробнее',
-    linkUrl: '/brew/membership'
+    hasButton: true,
+    buttonText: 'Подробнее',
+    buttonUrl: '/brew/membership'
   },
   { 
     text: 'Получите доступ к эксклюзивным данным и инсайтам', 
-    hasLink: false 
+    hasButton: false 
   },
   { 
     text: 'Присоединяйтесь к платформе и опережайте конкурентов', 
-    hasLink: false 
+    hasButton: false 
   }
 ]
 
@@ -30,6 +30,10 @@ const nextNotification = () => {
 const goToSlide = (index) => {
   currentIndex.value = index
   restartTimer()
+}
+
+const openLink = (url) => {
+  window.open(url, '_blank', 'noopener,noreferrer')
 }
 
 const startTimer = () => {
@@ -54,18 +58,18 @@ onUnmounted(() => {
   <div class="brew-notification-slider">
     <div class="brew-notification-content">
       <transition name="brew-fade" mode="out-in">
-        <p class="brew-notification-text" :key="currentIndex">
-          {{ currentNotification.text }}
-          <a 
-            v-if="currentNotification.hasLink" 
-            :href="currentNotification.linkUrl" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="brew-link"
+        <div class="brew-notification-wrapper" :key="currentIndex">
+          <p class="brew-notification-text">
+            {{ currentNotification.text }}
+          </p>
+          <button 
+            v-if="currentNotification.hasButton" 
+            @click="openLink(currentNotification.buttonUrl)"
+            class="brew-button"
           >
-            {{ currentNotification.linkText }}
-          </a>
-        </p>
+            {{ currentNotification.buttonText }}
+          </button>
+        </div>
       </transition>
     </div>
     
@@ -103,24 +107,28 @@ onUnmounted(() => {
   justify-content: center;
 }
 
+.brew-notification-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .brew-notification-text {
   margin: 0;
-  padding: 0 1rem;
   font-size: 14px;
-  text-align: center;
   font-weight: 500;
 }
 
-.brew-link {
-  color: #2c2c2c;
-  text-decoration: underline;
-  margin-left: 4px;
+.brew-button {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 13px;
   font-weight: 500;
-  transition: opacity 0.2s ease;
-}
-
-.brew-link:hover {
-  opacity: 0.8;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 /* Индикаторы */
@@ -171,10 +179,16 @@ onUnmounted(() => {
   
   .brew-notification-content {
     margin-bottom: 8px;
+    padding: 0 1rem;
+  }
+  
+  .brew-notification-wrapper {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
   }
   
   .brew-notification-text {
-    padding: 0 1rem;
     font-size: 13px;
   }
   
