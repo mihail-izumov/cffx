@@ -9,7 +9,7 @@ const notifications = [
     buttonUrl: '/brew/membership'
   },
   { 
-    text: 'Получите доступ эксклюзивным данным и инсайтам', 
+    text: 'Получите доступ к эксклюзивным данным и инсайтам', 
     hasButton: false 
   },
   { 
@@ -29,7 +29,9 @@ const nextNotification = () => {
 
 const goToSlide = (index) => {
   currentIndex.value = index
-  restartTimer()
+  // Перезапуск таймера, чтобы избежать немедленного переключения
+  clearInterval(timer)
+  startTimer()
 }
 
 const openLink = (url) => {
@@ -38,11 +40,6 @@ const openLink = (url) => {
 
 const startTimer = () => {
   timer = setInterval(nextNotification, 5000)
-}
-
-const restartTimer = () => {
-  clearInterval(timer)
-  startTimer()
 }
 
 onMounted(() => {
@@ -57,37 +54,37 @@ onUnmounted(() => {
 <template>
   <div class="iso-brew-slider">
     <div class="iso-brew-slider__content">
-      <transition name="iso-brew-fade" mode="out-in">
-        <div class="iso-brew-slider__wrapper" :key="currentIndex">
-          <p class="iso-brew-slider__text">
-            {{ currentNotification.text }}
-            <!-- Ссылка для мобильной версии -->
-            <a 
-              v-if="currentNotification.hasButton"
-              :href="currentNotification.buttonUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="iso-brew-slider__link-mobile"
-            >
-              {{ currentNotification.buttonText }}
-            </a>
-          </p>
-          <!-- Кнопка для десктопной версии -->
-          <button 
-            v-if="currentNotification.hasButton" 
-            @click="openLink(currentNotification.buttonUrl)"
-            class="iso-brew-slider__button"
+      <div class="iso-brew-slider__wrapper">
+        <p class="iso-brew-slider__text">
+          <transition name="iso-brew-fade" mode="out-in">
+            <span :key="currentIndex">{{ currentNotification.text }}</span>
+          </transition>
+          <!-- Ссылка для мобильной версии -->
+          <a 
+            v-if="currentNotification.hasButton"
+            :href="currentNotification.buttonUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="iso-brew-slider__link-mobile"
           >
             {{ currentNotification.buttonText }}
-          </button>
-        </div>
-      </transition>
+          </a>
+        </p>
+        <!-- Кнопка для десктопной версии -->
+        <button 
+          v-if="currentNotification.hasButton" 
+          @click="openLink(currentNotification.buttonUrl)"
+          class="iso-brew-slider__button"
+        >
+          {{ currentNotification.buttonText }}
+        </button>
+      </div>
     </div>
     
     <div class="iso-brew-slider__indicators">
       <button
         v-for="(_, index) in notifications"
-        :key="index"
+        :key="`indicator-${index}`"
         class="iso-brew-slider__indicator"
         :class="{ 'active': currentIndex === index }"
         @click="goToSlide(index)"
@@ -122,12 +119,15 @@ onUnmounted(() => {
   align-items: center !important;
   justify-content: center !important;
   padding: 0 1rem !important;
+  min-width: 0;
 }
 
 .iso-brew-slider__wrapper {
   display: flex !important;
   align-items: center !important;
+  justify-content: center;
   gap: 16px !important;
+  width: 100%;
 }
 
 .iso-brew-slider__text {
@@ -137,6 +137,9 @@ onUnmounted(() => {
   font-weight: 500 !important;
   color: #fff !important;
   line-height: 1.3 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Кнопка для десктопа */
@@ -144,10 +147,9 @@ onUnmounted(() => {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  /* Темный фон в тон основного */
-  background-color: #145d42 !important; 
+  /* Контрастный черный фон */
+  background-color: #000 !important; 
   color: #fff !important;
-  /* Убрана обводка */
   border: none !important; 
   padding: 0 14px !important;
   margin: 0 !important;
@@ -157,12 +159,13 @@ onUnmounted(() => {
   cursor: pointer !important;
   white-space: nowrap !important;
   height: 28px !important;
-  transition: none !important; /* Убран переход */
+  transition: none !important;
+  flex-shrink: 0; /* Предотвращает сжатие кнопки */
 }
 
 /* Убран ховер */
 .iso-brew-slider__button:hover {
-  background-color: #145d42 !important;
+  background-color: #000 !important;
 }
 
 
@@ -177,6 +180,7 @@ onUnmounted(() => {
   gap: 6px !important;
   margin-right: 1rem !important;
   align-items: center !important;
+  flex-shrink: 0;
 }
 
 .iso-brew-slider__indicator {
@@ -201,7 +205,7 @@ onUnmounted(() => {
 /* Fade анимация */
 .iso-brew-fade-enter-active, 
 .iso-brew-fade-leave-active { 
-  transition: opacity 0.4s ease !important; 
+  transition: opacity 0.3s ease !important; 
 }
 
 .iso-brew-fade-enter-from, 
@@ -214,11 +218,12 @@ onUnmounted(() => {
   .iso-brew-slider {
     flex-direction: column !important;
     height: auto !important;
-    padding: 12px 0 8px 0 !important;
+    padding: 12px 1rem 8px 1rem !important;
   }
   
   .iso-brew-slider__content {
     margin-bottom: 8px !important;
+    width: 100%;
   }
   
   .iso-brew-slider__wrapper {
@@ -227,6 +232,8 @@ onUnmounted(() => {
   
   .iso-brew-slider__text {
     font-size: 13px !important;
+    white-space: normal;
+    text-align: center;
   }
   
   .iso-brew-slider__button {
