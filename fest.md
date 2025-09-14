@@ -12,7 +12,7 @@ notification: general
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
-    src="/fest2025_smr_ban_1.png" 
+    src="/fest2025_smr_ban_1.jpg" 
     alt="BREW intro"
     style="
       width: 100%;
@@ -51,7 +51,7 @@ notification: general
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
-    src="/fest2025_smr_ban_2.png" 
+    src="/fest2025_smr_ban_2.jpg" 
     alt="BREW intro"
     style="
       width: 100%;
