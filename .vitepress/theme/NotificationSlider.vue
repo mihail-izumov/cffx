@@ -2,17 +2,19 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 const notifications = [
   { 
-    text: 'Анализируйте рынок кофеен Самары с BREW', 
+    text: 'Перехватите негатив до того, как он попадёт в 2ГИС/Яндекс', 
     hasButton: true,
-    buttonText: 'Подробнее',
-    buttonUrl: '/brew/membership'
+    buttonText: 'Узнать Больше',
+    buttonUrl: '/brew/tickets'
   },
   { 
-    text: 'Получите доступ к эксклюзивным данным и инсайтам', 
-    hasButton: false 
+    text: 'Находим в отзывах то, что не видят другие', 
+    hasButton: true,
+    buttonText: 'Индекс Роста',
+    buttonUrl: '/smr'
   },
   { 
-    text: 'Присоединяйтесь к платформе и опережайте конкурентов', 
+    text: 'Новый способ масштабировать кофейный бизнес', 
     hasButton: false 
   }
 ]
