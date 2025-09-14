@@ -1,54 +1,43 @@
 <template>
-  <!-- Баннер поверх всего -->
-  <div v-if="shouldShowBanner" class="notification-banner">
-    <NotificationSlider v-if="frontmatter.notification === 'brew'" />
-    <GeneralNotification v-else />
-  </div>
-  
-  <!-- Стандартный Layout VitePress -->
-  <DefaultLayout />
+  <Layout>
+    <!-- Размещаем баннер в слоте doc-top -->
+    <template #doc-top>
+      <div v-if="shouldShowBanner" class="content-notification-banner">
+        <NotificationSlider v-if="frontmatter.notification === 'brew'" />
+        <GeneralNotification v-else />
+      </div>
+    </template>
+  </Layout>
 </template>
 
 <script setup>
-import { computed, watch } from 'vue'
+import { computed } from 'vue'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
 
-const DefaultLayout = DefaultTheme.Layout
+const { Layout } = DefaultTheme
 const { frontmatter } = useData()
 
 const shouldShowBanner = computed(() => 
   frontmatter.value?.notification === 'brew' || frontmatter.value?.notification === 'general'
 )
-
-watch(shouldShowBanner, (newVal) => {
-  if (typeof document !== 'undefined') {
-    if (newVal) {
-      document.body.classList.add('has-banner')
-    } else {
-      document.body.classList.remove('has-banner')
-    }
-  }
-}, { immediate: true })
 </script>
 
 <style>
-/* Единственное изменение - фиксированный баннер */
-.notification-banner {
-  position: fixed;
+/* Баннер внутри контента - липкий к верху области контента */
+.content-notification-banner {
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10000;
-  height: 44px;
+  z-index: 10;
+  margin: -24px -24px 16px -24px; /* Компенсируем отступы контента */
 }
 
-/* Минимальный сдвиг контента */
-body.has-banner .VPDoc {
-  margin-top: 44px;
+/* На мобильных устройствах убираем отрицательные отступы */
+@media (max-width: 768px) {
+  .content-notification-banner {
+    margin: -16px -16px 12px -16px;
+  }
 }
-
-/* НЕ трогаем навигацию и сайдбар - пусть работают как задумано в VitePress */
 </style>
