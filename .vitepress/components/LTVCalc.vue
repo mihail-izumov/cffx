@@ -243,7 +243,7 @@ const constants = {
   marginPercentage: 0.40               // маржинальность 40%
 }
 
-// Обновленные тултипы без эмодзи с формулами
+// Тултипы с исправленным расчетом выручки
 const tooltips = {
   guestsInput: {
     title: 'Количество гостей в месяц',
@@ -278,12 +278,13 @@ const tooltips = {
   },
   revenue: {
     title: 'Дополнительная выручка каждый месяц',
-    formula: `230 × 7 × 500 = ₽805.000<br>420 × 3 × 500 = ₽630.000<br>₽805.000 + ₽630.000 = ₽1.435.000`,
-    description: `<strong>Расчет:</strong> (Прирост лояльных) × (Частота с системой) × (Средний чек)<br>
-                  230 гостей × 7 раз/мес × ₽500 = ₽805.000<br><br>
-                  <strong>ПЛЮС</strong> повышенная частота у существующих лояльных:<br>
-                  420 гостей × (7-4) раз/мес × ₽500 = ₽630.000<br><br>
-                  <strong>Итого:</strong> ₽1.435.000 дополнительной выручки в месяц`
+    formula: `420 × 4 × 500 = ₽840.000<br>650 × 7 × 500 = ₽2.275.000<br>₽2.275.000 - ₽840.000 = ₽1.435.000`,
+    description: `<strong>Выручка без системы:</strong><br>
+                  420 лояльных × 4 раза/мес × ₽500 = ₽840.000<br><br>
+                  <strong>Выручка с системой:</strong><br>
+                  650 лояльных × 7 раз/мес × ₽500 = ₽2.275.000<br><br>
+                  <strong>Прирост выручки:</strong> ₽1.435.000/мес<br><br>
+                  Это разница между текущим состоянием и ожидаемым результатом при внедрении системы Сигналов.`
   },
   payback: {
     title: 'Мгновенная окупаемость системы',
@@ -352,20 +353,21 @@ const formatNumber = (n) => new Intl.NumberFormat('ru-RU', {
   maximumFractionDigits: 0
 }).format(Math.round(n)).replace(/\s/g, '.')
 
+// Исправленная функция расчета по новому методу
 function calculateROI(monthlyGuests, averageCheck) {
   // Базовые показатели
   const loyalWithout = monthlyGuests * constants.loyaltyRateWithoutSystem
   const loyalWith = monthlyGuests * constants.loyaltyRateWithSystem
   const loyalIncrease = loyalWith - loyalWithout
   
+  // Выручка по состояниям (ИСПРАВЛЕНО)
+  const revenueWithout = loyalWithout * constants.frequencyWithoutSystem * averageCheck
+  const revenueWith = loyalWith * constants.frequencyWithSystem * averageCheck
+  const additionalRevenue = revenueWith - revenueWithout
+  
   // LTV расчеты
   const ltvWithout = averageCheck * constants.frequencyWithoutSystem * constants.loyaltyPeriod
   const ltvWith = averageCheck * constants.frequencyWithSystem * constants.loyaltyPeriod
-  
-  // Дополнительная выручка
-  const additionalRevenueMonthly = 
-    (loyalIncrease * constants.frequencyWithSystem * averageCheck) + 
-    (loyalWithout * (constants.frequencyWithSystem - constants.frequencyWithoutSystem) * averageCheck)
   
   // Окупаемость  
   const paybackSignals = Math.ceil(constants.systemCostMonthly / constants.avgPreventedLoss)
@@ -379,7 +381,7 @@ function calculateROI(monthlyGuests, averageCheck) {
     ltvWithout: ltvWithout,
     ltvWith: ltvWith,
     ltvGrowth: ltvWith - ltvWithout,
-    additionalMonthlyRevenue: Math.round(additionalRevenueMonthly),
+    additionalMonthlyRevenue: Math.round(additionalRevenue),
     paybackSignals: `${paybackSignals-1}-${paybackSignals} сигнала`
   }
 }
