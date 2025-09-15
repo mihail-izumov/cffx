@@ -1,11 +1,13 @@
 <template>
-  <div class="roi-calculator-card">
+  <div class="roi-calc-container">
     <!-- Поля ввода в одну строку -->
-    <div class="input-row">
-      <div class="input-group">
-        <label for="guestsInput">
+    <div class="roi-calc-input-row">
+      <div class="roi-calc-input-group">
+        <label for="guestsInput" class="roi-calc-label">
           Кол-во гостей (сред. в мес.):
-          <span class="info-icon" @click="showTooltip('guestsInput')" title="Подробнее">ℹ️</span>
+          <span class="roi-calc-info-icon" @click="showTooltip('guestsInput')" @mouseenter="hoverIcon = 'guestsInput'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'guestsInput' }">
+            <span class="roi-calc-info-text">i</span>
+          </span>
         </label>
         <input
           id="guestsInput"
@@ -13,14 +15,16 @@
           :value="guestsStr"
           placeholder="например, 1,000"
           @input="onGuestsInput"
-          :class="{ 'error': guestsError }"
+          :class="['roi-calc-input', { 'roi-calc-error': guestsError }]"
         />
-        <div v-if="guestsError" class="error-message">{{ guestsError }}</div>
+        <div v-if="guestsError" class="roi-calc-error-message">{{ guestsError }}</div>
       </div>
-      <div class="input-group">
-        <label for="averageCheckInput">
+      <div class="roi-calc-input-group">
+        <label for="averageCheckInput" class="roi-calc-label">
           Средний чек (₽):
-          <span class="info-icon" @click="showTooltip('averageCheckInput')" title="Подробнее">ℹ️</span>
+          <span class="roi-calc-info-icon" @click="showTooltip('averageCheckInput')" @mouseenter="hoverIcon = 'averageCheckInput'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'averageCheckInput' }">
+            <span class="roi-calc-info-text">i</span>
+          </span>
         </label>
         <input
           id="averageCheckInput"
@@ -28,190 +32,212 @@
           :value="averageCheckStr"
           placeholder="например, 500"
           @input="onAverageCheckInput"
-          :class="{ 'error': checkError }"
+          :class="['roi-calc-input', { 'roi-calc-error': checkError }]"
         />
-        <div v-if="checkError" class="error-message">{{ checkError }}</div>
+        <div v-if="checkError" class="roi-calc-error-message">{{ checkError }}</div>
       </div>
     </div>
     
-    <button class="btn-calc" :disabled="!canCalculate" @click="calculate">
+    <button class="roi-calc-btn" :disabled="!canCalculate" @click="calculate">
       РАССЧИТАТЬ ROI
     </button>
     
-    <!-- Блок результата с таблицей -->
-    <transition name="fade">
-      <div v-if="resultShown" class="result">
-        <h3 class="result-title">ROI тикет-системы для кофейни</h3>
-        
-        <div class="result-table-wrapper">
-          <table class="result-table">
-            <thead>
-              <tr>
-                <th>Показатель</th>
-                <th>Без системы</th>
-                <th>С системой</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td 
-                  class="metric-name" 
-                  @click="showTooltip('loyalGuests')"
-                  :class="{ active: activeTooltip === 'loyalGuests' }"
-                >
-                  Лояльные гости/мес. (чел.) ℹ️
-                </td>
-                <td>{{ result.loyalWithout }}</td>
-                <td class="highlight">
-                  {{ result.loyalWith }} 
-                  <span class="growth-secondary">(+{{ result.loyaltyGrowth }}%)</span>
-                </td>
-              </tr>
-              <tr>
-                <td 
-                  class="metric-name" 
-                  @click="showTooltip('frequency')"
-                  :class="{ active: activeTooltip === 'frequency' }"
-                >
-                  Частота посещений ℹ️
-                </td>
-                <td>{{ result.frequencyWithout }} раз/мес</td>
-                <td class="highlight">
-                  {{ result.frequencyWith }} раз/мес 
-                  <span class="growth-secondary">(+{{ Math.round(((result.frequencyWith - result.frequencyWithout) / result.frequencyWithout) * 100) }}%)</span>
-                </td>
-              </tr>
-              <tr>
-                <td 
-                  class="metric-name" 
-                  @click="showTooltip('ltv')"
-                  :class="{ active: activeTooltip === 'ltv' }"
-                >
-                  LTV одного гостя (₽) ℹ️
-                </td>
-                <td>{{ formatNumber(result.ltvWithout) }} ₽</td>
-                <td class="highlight">
-                  {{ formatNumber(result.ltvWith) }} ₽ 
-                  <span class="growth-secondary">(+{{ formatNumber(result.ltvGrowth) }} ₽)</span>
-                </td>
-              </tr>
-              <tr>
-                <td 
-                  class="metric-name" 
-                  @click="showTooltip('revenue')"
-                  :class="{ active: activeTooltip === 'revenue' }"
-                >
-                  Доп. выручка/мес. (₽) ℹ️
-                </td>
-                <td>—</td>
-                <td class="highlight">{{ formatNumber(result.additionalMonthlyRevenue) }} ₽</td>
-              </tr>
-              <tr>
-                <td 
-                  class="metric-name" 
-                  @click="showTooltip('profit')"
-                  :class="{ active: activeTooltip === 'profit' }"
-                >
-                  Доп. прибыль/год (₽) ℹ️
-                </td>
-                <td>—</td>
-                <td class="highlight">{{ formatNumber(result.totalAdditionalProfit) }} ₽</td>
-              </tr>
-              <tr>
-                <td 
-                  class="metric-name" 
-                  @click="showTooltip('roi')"
-                  :class="{ active: activeTooltip === 'roi' }"
-                >
-                  ROI системы (%) ℹ️
-                </td>
-                <td>—</td>
-                <td class="roi-value">{{ result.roiRange }}%</td>
-              </tr>
-              <tr>
-                <td 
-                  class="metric-name" 
-                  @click="showTooltip('payback')"
-                  :class="{ active: activeTooltip === 'payback' }"
-                >
-                  Окупаемость (мес.) ℹ️
-                </td>
-                <td>—</td>
-                <td class="highlight">{{ result.paybackMonths }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <!-- Тултипы -->
-        <transition name="tooltip">
-          <div v-if="activeTooltip" class="tooltip-popup" @click="closeTooltip">
-            <div class="tooltip-content" @click.stop>
-              <h4>{{ tooltips[activeTooltip].title }}</h4>
-              <p>{{ tooltips[activeTooltip].description }}</p>
-            </div>
-          </div>
-        </transition>
-        
-        <!-- Ключевые факторы успеха -->
-        <div class="success-factors">
-          <h4>🎯 Ключевые факторы успеха:</h4>
-          <ul>
-            <li>✓ Время ответа на жалобу &lt; 30 минут</li>
-            <li>✓ Компенсация при проблемах (новый напиток)</li>
-            <li>✓ Персонализация предложений</li>
-            <li>✓ Мониторинг качества сервиса</li>
-          </ul>
-        </div>
-        
-        <!-- Предупреждение -->
-        <div class="warning-block">
-          <p>⚠️ <strong>Важно:</strong> Результаты достигаются только при качественном внедрении системы и обучении персонала. Показаны консервативные оценки на основе анализа 500+ кофеен.</p>
-        </div>
-        
-        <!-- Дополнительная информация -->
-        <div class="info-block">
-          <p class="info-text">
-            💡 <strong>Как работает расчет:</strong> Тикет-система помогает быстро решать проблемы гостей, 
-            превращая потенциальные жалобы в возможности для повышения лояльности. 
-            Довольные клиенты посещают кофейню чаще и приводят друзей.
-          </p>
-          <p class="info-text">
-            📊 <strong>Основа расчетов:</strong> Данные основаны на исследованиях SQM Group, Zendesk 
-            и анализе 500+ кофеен. В расчет включены затраты на систему (150 000 ₽/год).
-          </p>
-        </div>
+    <!-- Блок результата с таблицей (всегда показан) -->
+    <div class="roi-calc-result">
+      <h3 class="roi-calc-title">ROI Диалогов с Сигналами для кофейни</h3>
+      
+      <div class="roi-calc-table-wrapper">
+        <table class="roi-calc-table">
+          <thead>
+            <tr>
+              <th class="roi-calc-th">Показатель</th>
+              <th class="roi-calc-th">Без Сигнала</th>
+              <th class="roi-calc-th">С ⚡️ Сигналом</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td 
+                class="roi-calc-metric-name" 
+                @click="showTooltip('loyalGuests')"
+                :class="{ 'roi-calc-active': activeTooltip === 'loyalGuests' }"
+              >
+                Лояльные гости/мес. (чел.) 
+                <span class="roi-calc-info-icon" @mouseenter="hoverIcon = 'loyalGuests'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'loyalGuests' }">
+                  <span class="roi-calc-info-text">i</span>
+                </span>
+              </td>
+              <td class="roi-calc-td">{{ displayResult.loyalWithout }}</td>
+              <td class="roi-calc-td roi-calc-highlight">
+                {{ displayResult.loyalWith }} 
+                <span class="roi-calc-growth-secondary">({{ displayResult.loyaltyGrowthDisplay }})</span>
+              </td>
+            </tr>
+            <tr>
+              <td 
+                class="roi-calc-metric-name" 
+                @click="showTooltip('frequency')"
+                :class="{ 'roi-calc-active': activeTooltip === 'frequency' }"
+              >
+                Частота посещений 
+                <span class="roi-calc-info-icon" @mouseenter="hoverIcon = 'frequency'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'frequency' }">
+                  <span class="roi-calc-info-text">i</span>
+                </span>
+              </td>
+              <td class="roi-calc-td">{{ displayResult.frequencyWithout }} раз/мес</td>
+              <td class="roi-calc-td roi-calc-highlight">
+                {{ displayResult.frequencyWith }} раз/мес 
+                <span class="roi-calc-growth-secondary">({{ displayResult.frequencyGrowthDisplay }})</span>
+              </td>
+            </tr>
+            <tr>
+              <td 
+                class="roi-calc-metric-name" 
+                @click="showTooltip('ltv')"
+                :class="{ 'roi-calc-active': activeTooltip === 'ltv' }"
+              >
+                LTV одного гостя (₽) 
+                <span class="roi-calc-info-icon" @mouseenter="hoverIcon = 'ltv'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'ltv' }">
+                  <span class="roi-calc-info-text">i</span>
+                </span>
+              </td>
+              <td class="roi-calc-td">{{ displayResult.ltvWithoutFormatted }} ₽</td>
+              <td class="roi-calc-td roi-calc-highlight">
+                {{ displayResult.ltvWithFormatted }} ₽ 
+                <span class="roi-calc-growth-secondary">(+{{ displayResult.ltvGrowthFormatted }} ₽)</span>
+              </td>
+            </tr>
+            <tr>
+              <td 
+                class="roi-calc-metric-name" 
+                @click="showTooltip('revenue')"
+                :class="{ 'roi-calc-active': activeTooltip === 'revenue' }"
+              >
+                Доп. выручка/мес. (₽) 
+                <span class="roi-calc-info-icon" @mouseenter="hoverIcon = 'revenue'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'revenue' }">
+                  <span class="roi-calc-info-text">i</span>
+                </span>
+              </td>
+              <td class="roi-calc-td">—</td>
+              <td class="roi-calc-td roi-calc-highlight">{{ displayResult.additionalMonthlyRevenueFormatted }} ₽</td>
+            </tr>
+            <tr>
+              <td 
+                class="roi-calc-metric-name" 
+                @click="showTooltip('profit')"
+                :class="{ 'roi-calc-active': activeTooltip === 'profit' }"
+              >
+                Доп. выручка/год (₽) 
+                <span class="roi-calc-info-icon" @mouseenter="hoverIcon = 'profit'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'profit' }">
+                  <span class="roi-calc-info-text">i</span>
+                </span>
+              </td>
+              <td class="roi-calc-td">—</td>
+              <td class="roi-calc-td roi-calc-highlight">{{ displayResult.totalAdditionalProfitFormatted }} ₽</td>
+            </tr>
+            <tr>
+              <td 
+                class="roi-calc-metric-name" 
+                @click="showTooltip('roi')"
+                :class="{ 'roi-calc-active': activeTooltip === 'roi' }"
+              >
+                ROI Сигнала (%) 
+                <span class="roi-calc-info-icon" @mouseenter="hoverIcon = 'roi'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'roi' }">
+                  <span class="roi-calc-info-text">i</span>
+                </span>
+              </td>
+              <td class="roi-calc-td">—</td>
+              <td class="roi-calc-td roi-calc-roi-value">{{ displayResult.roiRange }}%</td>
+            </tr>
+            <tr>
+              <td 
+                class="roi-calc-metric-name" 
+                @click="showTooltip('payback')"
+                :class="{ 'roi-calc-active': activeTooltip === 'payback' }"
+              >
+                Окупаемость (мес.) 
+                <span class="roi-calc-info-icon" @mouseenter="hoverIcon = 'payback'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'payback' }">
+                  <span class="roi-calc-info-text">i</span>
+                </span>
+              </td>
+              <td class="roi-calc-td">—</td>
+              <td class="roi-calc-td roi-calc-highlight">{{ displayResult.paybackMonths }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </transition>
+      
+      <!-- Тултипы -->
+      <transition name="roi-calc-tooltip">
+        <div v-if="activeTooltip" class="roi-calc-tooltip-popup" @click="closeTooltip">
+          <div class="roi-calc-tooltip-content" @click.stop>
+            <h4 class="roi-calc-tooltip-title">{{ tooltips[activeTooltip].title }}</h4>
+            <div v-if="activeTooltip === 'ltv' && calculatedResult.ltvWith" class="roi-calc-ltv-formula">
+              {{ formatNumber(calculatedResult.ltvWith) }} ₽ = {{ formatNumber(calculatedResult.ltvDirectPart) }} ₽ + {{ formatNumber(calculatedResult.ltvReferralPart) }} ₽
+            </div>
+            <p class="roi-calc-tooltip-desc">{{ tooltips[activeTooltip].description }}</p>
+          </div>
+        </div>
+      </transition>
+      
+      <!-- Ключевые факторы успеха -->
+      <div class="roi-calc-success-factors">
+        <h4 class="roi-calc-success-title">🎯 Ключевые факторы успеха:</h4>
+        <ul class="roi-calc-success-list">
+          <li>✓ Время ответа на жалобу &lt; 30 минут</li>
+          <li>✓ Компенсация при проблемах (новый напиток)</li>
+          <li>✓ Персонализация предложений</li>
+          <li>✓ Мониторинг качества сервиса</li>
+        </ul>
+      </div>
+      
+      <!-- Предупреждение -->
+      <div class="roi-calc-warning-block">
+        <p class="roi-calc-warning-text">⚠️ <strong>Важно:</strong> Результаты достигаются только при качественном внедрении Диалогов с Сигналами и обучении персонала. Показаны консервативные оценки на основе анализа 100+ кофеен.</p>
+      </div>
+      
+      <!-- Дополнительная информация -->
+      <div class="roi-calc-info-block">
+        <p class="roi-calc-info-text">
+          💡 <strong>Как работает расчет:</strong> Диалоги с Сигналами помогают быстро решать проблемы гостей, 
+          превращая потенциальные жалобы в возможности для повышения лояльности. 
+          Довольные клиенты посещают кофейню чаще и приводят друзей.
+        </p>
+        <p class="roi-calc-info-text">
+          📊 <strong>Основа расчетов:</strong> Данные основаны на анализе 100+ кофеен. В расчет включены затраты на Диалоги с Сигналами (150 000 ₽/год). Консервативные оценки гарантируют реалистичность прогнозов.
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 
-const guestsStr = ref('')
-const averageCheckStr = ref('')
-const resultShown = ref(false)
+const guestsStr = ref('1000')
+const averageCheckStr = ref('500')
 const activeTooltip = ref(null)
+const hoverIcon = ref(null)
 const guestsError = ref('')
 const checkError = ref('')
-const result = ref({})
+const calculatedResult = ref({})
+const hasCalculated = ref(false)
 
-// Константы из ТЗ (исправленные)
+// Константы из ТЗ
 const constants = {
-  loyaltyRateWithoutSystem: 0.20,      // 20% естественная лояльность
-  loyaltyRateWithSystem: 0.35,         // 35% лояльность с тикет-системой
-  frequencyWithoutSystem: 2,           // 2 посещения/месяц без системы
-  frequencyWithSystem: 3,              // 3 посещения/месяц с системой
-  loyaltyPeriodWithout: 8,             // 8 месяцев без системы
-  loyaltyPeriodWith: 12,               // 12 месяцев с системой
-  referralRateWithout: 0.2,            // 0.2 рекомендации без системы
-  referralRateWith: 0.5,               // 0.5 рекомендации с системой
-  systemCostAnnual: 150000,            // стоимость системы в год (₽)
-  marginPercentage: 0.40               // маржинальность 40%
+  loyaltyRateWithoutSystem: 0.20,
+  loyaltyRateWithSystem: 0.35,
+  frequencyWithoutSystem: 2,
+  frequencyWithSystem: 3,
+  loyaltyPeriodWithout: 8,
+  loyaltyPeriodWith: 12,
+  referralRateWithout: 0.2,
+  referralRateWith: 0.5,
+  systemCostAnnual: 150000,
+  marginPercentage: 0.40
 }
 
-// Тултипы из ТЗ (расширенные)
+// Тултипы
 const tooltips = {
   guestsInput: {
     title: 'Количество гостей в месяц',
@@ -223,11 +249,11 @@ const tooltips = {
   },
   loyalGuests: {
     title: 'Лояльные гости',
-    description: 'Количество постоянных клиентов. Без системы естественная лояльность составляет ~20%, с качественной тикет-системой повышается до 35% за счет быстрого решения проблем.'
+    description: 'Количество постоянных клиентов. Без Сигнала естественная лояльность составляет ~20%, с Диалогами с Сигналами повышается до 35% за счет быстрого решения проблем.'
   },
   frequency: {
     title: 'Частота посещений',
-    description: 'Среднее количество визитов лояльного клиента в месяц. Довольные сервисом гости увеличивают частоту посещений с 2 до 3 раз в месяц.'
+    description: 'Среднее количество визитов лояльного клиента в месяц. Довольные сервисом гости увеличивают частоту посещений с 2 до 3 раз в месяц (+50%).'
   },
   ltv: {
     title: 'LTV одного лояльного гостя',
@@ -238,16 +264,16 @@ const tooltips = {
     description: 'Прирост месячной выручки за счет увеличения количества лояльных клиентов (с 20% до 35%) и частоты их визитов (с 2 до 3 раз в месяц).'
   },
   profit: {
-    title: 'Дополнительная прибыль в год',
-    description: 'Чистая дополнительная прибыль от внедрения системы с учетом маржинальности 40%. Уже включены затраты на тикет-систему (150,000 ₽/год).'
+    title: 'Дополнительная выручка в год',
+    description: 'Чистая дополнительная выручка от внедрения Диалогов с Сигналами с учетом маржинальности 40%. Уже включены затраты на систему (150,000 ₽/год).'
   },
   roi: {
-    title: 'ROI системы',
-    description: 'Возврат инвестиций в тикет-систему после вычета всех затрат. Показан диапазон для учета различных факторов внедрения. Достигается при качественном обучении персонала.'
+    title: 'ROI Сигнала',
+    description: 'Возврат инвестиций в Диалоги с Сигналами после вычета всех затрат. Показан диапазон для учета различных факторов внедрения. Достигается при качественном обучении персонала.'
   },
   payback: {
     title: 'Срок окупаемости',
-    description: 'Количество месяцев, через которое дополнительная прибыль полностью покроет затраты на внедрение и обслуживание тикет-системы.'
+    description: 'Количество месяцев, через которое дополнительная выручка полностью покроет затраты на внедрение и обслуживание Диалогов с Сигналами.'
   }
 }
 
@@ -268,7 +294,6 @@ function onGuestsInput(e) {
   const num = Number(digits)
   guestsStr.value = digits ? num.toLocaleString('ru-RU') : ''
   guestsError.value = digits ? validateGuests(num) : ''
-  resultShown.value = false
   activeTooltip.value = null
 }
 
@@ -277,7 +302,6 @@ function onAverageCheckInput(e) {
   const num = Number(digits)
   averageCheckStr.value = digits ? num.toLocaleString('ru-RU') : ''
   checkError.value = digits ? validateCheck(num) : ''
-  resultShown.value = false
   activeTooltip.value = null
 }
 
@@ -301,7 +325,10 @@ const canCalculate = computed(() =>
   !checkError.value
 )
 
-const formatNumber = (n) => new Intl.NumberFormat('ru-RU').format(Math.round(n))
+const formatNumber = (n) => new Intl.NumberFormat('ru-RU', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0
+}).format(Math.round(n))
 
 function calculateROI(monthlyGuests, averageCheck) {
   // Без системы
@@ -322,16 +349,17 @@ function calculateROI(monthlyGuests, averageCheck) {
   
   // LTV расчеты
   const ltvWithout = averageCheck * constants.frequencyWithoutSystem * constants.loyaltyPeriodWithout
-  const ltvWith = (averageCheck * constants.frequencyWithSystem * constants.loyaltyPeriodWith) + 
-                  (averageCheck * constants.frequencyWithSystem * constants.loyaltyPeriodWith / 2 * constants.referralRateWith)
+  const ltvDirectPart = averageCheck * constants.frequencyWithSystem * constants.loyaltyPeriodWith
+  const ltvReferralPart = averageCheck * constants.frequencyWithSystem * constants.loyaltyPeriodWith / 2 * constants.referralRateWith
+  const ltvWith = ltvDirectPart + ltvReferralPart
   
   // ROI и окупаемость
   const roiPercentage = (netProfit / constants.systemCostAnnual) * 100
   const paybackMonths = constants.systemCostAnnual / (additionalProfit / 12)
   
-  // Диапазон ROI для большей честности
-  const roiMin = Math.round(roiPercentage * 0.7)  // -30% от расчетного
-  const roiMax = Math.round(roiPercentage * 1.3)  // +30% от расчетного
+  // Диапазон ROI
+  const roiMin = Math.round(roiPercentage * 0.7)
+  const roiMax = Math.round(roiPercentage * 1.3)
   
   return {
     loyalWithout: Math.round(loyalWithout),
@@ -341,26 +369,68 @@ function calculateROI(monthlyGuests, averageCheck) {
     frequencyWith: constants.frequencyWithSystem,
     ltvWithout: ltvWithout,
     ltvWith: ltvWith,
+    ltvDirectPart: ltvDirectPart,
+    ltvReferralPart: ltvReferralPart,
     ltvGrowth: ltvWith - ltvWithout,
     additionalMonthlyRevenue: Math.round(additionalRevenue),
     totalAdditionalProfit: Math.round(netProfit),
     roiPercentage: Math.round(roiPercentage),
     roiRange: `${roiMin}-${roiMax}`,
-    paybackMonths: Math.max(1, Math.round(paybackMonths))
+    paybackMonths: Math.max(1, Math.round(paybackMonths)) === 1 ? '1-2 мес.' : `${Math.round(paybackMonths)}`
   }
 }
+
+// Дефолтные значения для отображения
+const defaultResult = {
+  loyalWithout: '–',
+  loyalWith: '–',
+  loyaltyGrowthDisplay: '–',
+  frequencyWithout: '–',
+  frequencyWith: '–',
+  frequencyGrowthDisplay: '–',
+  ltvWithoutFormatted: '–',
+  ltvWithFormatted: '–',
+  ltvGrowthFormatted: '–',
+  additionalMonthlyRevenueFormatted: '–',
+  totalAdditionalProfitFormatted: '–',
+  roiRange: '–',
+  paybackMonths: '–'
+}
+
+const displayResult = computed(() => {
+  if (!hasCalculated.value) {
+    return defaultResult
+  }
+  
+  const result = calculatedResult.value
+  return {
+    loyalWithout: result.loyalWithout,
+    loyalWith: result.loyalWith,
+    loyaltyGrowthDisplay: `+${result.loyaltyGrowth}%`,
+    frequencyWithout: result.frequencyWithout,
+    frequencyWith: result.frequencyWith,
+    frequencyGrowthDisplay: `+${Math.round(((result.frequencyWith - result.frequencyWithout) / result.frequencyWithout) * 100)}%`,
+    ltvWithoutFormatted: formatNumber(result.ltvWithout),
+    ltvWithFormatted: formatNumber(result.ltvWith),
+    ltvGrowthFormatted: formatNumber(result.ltvGrowth),
+    additionalMonthlyRevenueFormatted: formatNumber(result.additionalMonthlyRevenue),
+    totalAdditionalProfitFormatted: formatNumber(result.totalAdditionalProfit),
+    roiRange: result.roiRange,
+    paybackMonths: result.paybackMonths
+  }
+})
 
 function calculate() {
   if (!canCalculate.value) return
   
-  result.value = calculateROI(guestsNum.value, averageCheckNum.value)
-  resultShown.value = true
+  calculatedResult.value = calculateROI(guestsNum.value, averageCheckNum.value)
+  hasCalculated.value = true
   activeTooltip.value = null
 }
 </script>
 
 <style scoped>
-.roi-calculator-card { 
+.roi-calc-container { 
   width: 100%; 
   margin: 0 auto 32px; 
   padding: 24px; 
@@ -373,18 +443,18 @@ function calculate() {
   position: relative;
 }
 
-.input-row {
+.roi-calc-input-row {
   display: flex;
   gap: 20px;
   margin-bottom: 16px;
 }
 
-.input-group { 
+.roi-calc-input-group { 
   flex: 1;
   position: relative;
 }
 
-label { 
+.roi-calc-label { 
   display: flex;
   align-items: center;
   gap: 8px;
@@ -393,18 +463,32 @@ label {
   color: #ffffff !important; 
 }
 
-.info-icon {
+.roi-calc-info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background: #666666;
+  border-radius: 50%;
   cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-  font-size: 12px;
+  transition: background-color 0.2s ease;
+  font-size: 10px;
+  font-weight: 600;
 }
 
-.info-icon:hover {
-  opacity: 1;
+.roi-calc-info-icon.hover {
+  background: #ffffff;
 }
 
-input { 
+.roi-calc-info-text {
+  color: #000000;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.roi-calc-input { 
   width: 100%; 
   height: 44px; 
   padding: 0 14px; 
@@ -417,20 +501,20 @@ input {
   box-sizing: border-box;
 }
 
-input:focus { 
+.roi-calc-input:focus { 
   border-color: #c5f946 !important; 
   outline: 0; 
 }
 
-input.error {
+.roi-calc-input.roi-calc-error {
   border-color: #ef4444 !important;
 }
 
-input::placeholder { 
+.roi-calc-input::placeholder { 
   color: #888888 !important; 
 }
 
-.error-message {
+.roi-calc-error-message {
   position: absolute;
   top: 100%;
   left: 0;
@@ -439,7 +523,7 @@ input::placeholder {
   color: #ef4444 !important;
 }
 
-.btn-calc {
+.roi-calc-btn {
   width: 100%;
   height: 44px;
   margin-top: 12px;
@@ -453,36 +537,36 @@ input::placeholder {
   transition: background 0.2s, transform 0.2s;
 }
 
-.btn-calc:disabled { 
+.roi-calc-btn:disabled { 
   background: #555555 !important; 
   color: #cccccc !important; 
   cursor: not-allowed; 
 }
 
-.btn-calc:not(:disabled):hover { 
+.roi-calc-btn:not(:disabled):hover { 
   background: #347b6c !important; 
   color: #ffffff !important; 
   transform: translateY(-2px); 
 }
 
-.result { 
+.roi-calc-result { 
   margin-top: 24px; 
 }
 
-.result-title {
+.roi-calc-title {
   margin: 0 0 20px;
   font: 600 18px/1.3 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   text-align: center;
   color: #c5f946 !important;
 }
 
-.result-table-wrapper {
+.roi-calc-table-wrapper {
   overflow-x: auto;
   margin-bottom: 20px;
   width: 100%;
 }
 
-.result-table {
+.roi-calc-table {
   width: 100%;
   border-collapse: collapse;
   background: #141414 !important;
@@ -492,7 +576,7 @@ input::placeholder {
   table-layout: fixed;
 }
 
-.result-table th {
+.roi-calc-th {
   padding: 12px 16px;
   font: 600 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #c5f946 !important;
@@ -501,94 +585,57 @@ input::placeholder {
   border-bottom: 1px solid #2b2b2b !important;
 }
 
-.result-table th:nth-child(1) { width: 40%; }
-.result-table th:nth-child(2) { width: 30%; }
-.result-table th:nth-child(3) { width: 30%; }
+.roi-calc-th:nth-child(1) { width: 40%; }
+.roi-calc-th:nth-child(2) { width: 30%; }
+.roi-calc-th:nth-child(3) { width: 30%; }
 
-.result-table td {
+.roi-calc-td {
   padding: 10px 16px;
   font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #ffffff !important;
   border-bottom: 1px solid #2b2b2b !important;
 }
 
-.result-table tr:last-child td {
+.roi-calc-table tr:last-child .roi-calc-td {
   border-bottom: none;
 }
 
-.metric-name {
+.roi-calc-metric-name {
   cursor: pointer;
   transition: background-color 0.2s ease;
   user-select: none;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.metric-name:hover {
+.roi-calc-metric-name:hover {
   background-color: rgba(197, 249, 70, 0.1);
 }
 
-.metric-name.active {
+.roi-calc-metric-name.roi-calc-active {
   background-color: rgba(197, 249, 70, 0.2);
 }
 
-.highlight {
+.roi-calc-highlight {
   color: #22c55e !important;
   font-weight: 600;
 }
 
-.growth-secondary {
+.roi-calc-growth-secondary {
   color: #888888 !important;
   font-weight: 400;
   font-size: 0.9em;
 }
 
-.roi-value {
+.roi-calc-roi-value {
   color: #c5f946 !important;
   font-weight: 700;
   font-size: 16px;
 }
 
-.success-factors {
-  margin: 16px 0;
-  padding: 16px;
-  background: #0f2a1e !important;
-  border: 1px solid #1e4a32 !important;
-  border-radius: 8px;
-}
-
-.success-factors h4 {
-  margin: 0 0 12px;
-  font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #22c55e !important;
-}
-
-.success-factors ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.success-factors li {
-  margin: 8px 0;
-  font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #ffffff !important;
-}
-
-.warning-block {
-  margin: 16px 0;
-  padding: 16px;
-  background: #2a1f0f !important;
-  border: 1px solid #4a3c1e !important;
-  border-radius: 8px;
-}
-
-.warning-block p {
-  margin: 0;
-  font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #fbbf24 !important;
-}
-
-.tooltip-popup {
+.roi-calc-tooltip-popup {
   position: fixed;
   top: 0;
   left: 0;
@@ -602,7 +649,7 @@ input::placeholder {
   cursor: pointer;
 }
 
-.tooltip-content {
+.roi-calc-tooltip-content {
   max-width: 400px;
   padding: 20px;
   background: #2a2a2a !important;
@@ -612,121 +659,159 @@ input::placeholder {
   cursor: default;
 }
 
-.tooltip-content h4 {
+.roi-calc-tooltip-title {
   margin: 0 0 12px 0;
   font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #c5f946 !important;
 }
 
-.tooltip-content p {
+.roi-calc-ltv-formula {
+  margin: 0 0 12px 0;
+  padding: 8px 12px;
+  background: #1a1a1a !important;
+  border: 1px solid #333333 !important;
+  border-radius: 6px;
+  font: 500 14px/1.4 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  color: #22c55e !important;
+  text-align: center;
+  letter-spacing: 0.025em;
+}
+
+.roi-calc-tooltip-desc {
   margin: 0;
   font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #cccccc !important;
 }
 
-.info-block {
+.roi-calc-success-factors {
+  margin: 16px 0;
+  padding: 16px;
+  background: #0f2a1e !important;
+  border: 1px solid #1e4a32 !important;
+  border-radius: 8px;
+}
+
+.roi-calc-success-title {
+  margin: 0 0 12px;
+  font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #22c55e !important;
+}
+
+.roi-calc-success-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roi-calc-success-list li {
+  margin: 8px 0;
+  font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #ffffff !important;
+}
+
+.roi-calc-warning-block {
+  margin: 16px 0;
+  padding: 16px;
+  background: #2a1f0f !important;
+  border: 1px solid #4a3c1e !important;
+  border-radius: 8px;
+}
+
+.roi-calc-warning-text {
+  margin: 0;
+  font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #fbbf24 !important;
+}
+
+.roi-calc-info-block {
   padding: 16px;
   background: #141414 !important;
   border: 1px solid #2b2b2b !important;
   border-radius: 8px;
 }
 
-.info-text {
+.roi-calc-info-text {
   margin: 0 0 12px 0;
   font: 400 13px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #cccccc !important;
 }
 
-.info-text:last-child {
+.roi-calc-info-text:last-child {
   margin-bottom: 0;
 }
 
 /* Анимации */
-.fade-enter-active, .fade-leave-active { 
-  transition: opacity 0.35s, transform 0.35s; 
-}
-
-.fade-enter-from { 
-  opacity: 0; 
-  transform: translateY(12px); 
-}
-
-.fade-leave-to { 
-  opacity: 0; 
-  transform: translateY(-12px); 
-}
-
-.tooltip-enter-active, .tooltip-leave-active {
+.roi-calc-tooltip-enter-active, .roi-calc-tooltip-leave-active {
   transition: opacity 0.25s;
 }
 
-.tooltip-enter-from, .tooltip-leave-to {
+.roi-calc-tooltip-enter-from, .roi-calc-tooltip-leave-to {
   opacity: 0;
 }
 
 /* Мобильные устройства */
 @media(max-width: 768px) {
-  .roi-calculator-card {
+  .roi-calc-container {
     padding: 20px;
   }
   
-  .input-row {
+  .roi-calc-input-row {
     flex-direction: column;
     gap: 16px;
   }
   
-  input {
+  .roi-calc-input {
     height: 40px;
     font-size: 14px;
     line-height: 40px;
   }
   
-  .btn-calc {
+  .roi-calc-btn {
     height: 42px;
     font-size: 15px;
     line-height: 42px;
   }
   
-  .result-title {
+  .roi-calc-title {
     font-size: 16px;
   }
   
-  .result-table th,
-  .result-table td {
+  .roi-calc-th,
+  .roi-calc-td {
     padding: 8px 12px;
     font-size: 13px;
   }
   
-  .tooltip-content {
+  .roi-calc-tooltip-content {
     max-width: calc(100vw - 40px);
     margin: 20px;
   }
   
-  .success-factors,
-  .warning-block,
-  .info-block {
+  .roi-calc-success-factors,
+  .roi-calc-warning-block,
+  .roi-calc-info-block {
     padding: 12px;
   }
   
-  .success-factors h4 {
+  .roi-calc-success-title {
     font-size: 14px;
   }
   
-  .success-factors li,
-  .warning-block p,
-  .info-text {
+  .roi-calc-success-list li,
+  .roi-calc-warning-text,
+  .roi-calc-info-text {
     font-size: 12px;
   }
 }
 
 @media(max-width: 480px) {
-  .result-table th,
-  .result-table td {
+  .roi-calc-th,
+  .roi-calc-td {
     padding: 6px 8px;
     font-size: 12px;
   }
   
-  .roi-value {
+  .roi-calc-roi-value {
     font-size: 14px;
   }
 }
