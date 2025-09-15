@@ -96,7 +96,7 @@
                 @click="showTooltip('ltv')"
                 :class="{ 'roi-calc-active': activeTooltip === 'ltv' }"
               >
-                LTV одного гостя (₽) 
+                LTV одного гостя за 10 мес. (₽) 
                 <span class="roi-calc-info-icon" @mouseenter="hoverIcon = 'ltv'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'ltv' }">
                   <span class="roi-calc-info-text">i</span>
                 </span>
@@ -118,7 +118,7 @@
                   <span class="roi-calc-info-text">i</span>
                 </span>
               </td>
-              <td class="roi-calc-td">—</td>
+              <td class="roi-calc-td">↗️</td>
               <td class="roi-calc-td roi-calc-highlight">{{ displayResult.additionalMonthlyRevenueFormatted }} ₽</td>
             </tr>
             <tr>
@@ -132,8 +132,8 @@
                   <span class="roi-calc-info-text">i</span>
                 </span>
               </td>
-              <td class="roi-calc-td">—</td>
-              <td class="roi-calc-td roi-calc-highlight">{{ displayResult.totalAdditionalProfitFormatted }} ₽</td>
+              <td class="roi-calc-td">↗️</td>
+              <td class="roi-calc-td roi-calc-annual-revenue">{{ displayResult.totalAdditionalProfitFormatted }} ₽</td>
             </tr>
             <tr>
               <td 
@@ -146,7 +146,7 @@
                   <span class="roi-calc-info-text">i</span>
                 </span>
               </td>
-              <td class="roi-calc-td">—</td>
+              <td class="roi-calc-td">↗️</td>
               <td class="roi-calc-td roi-calc-roi-value">{{ displayResult.roiRange }}%</td>
             </tr>
             <tr>
@@ -155,16 +155,39 @@
                 @click="showTooltip('payback')"
                 :class="{ 'roi-calc-active': activeTooltip === 'payback' }"
               >
-                Окупаемость (мес.) 
+                Окупаемость 
                 <span class="roi-calc-info-icon" @mouseenter="hoverIcon = 'payback'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'payback' }">
                   <span class="roi-calc-info-text">i</span>
                 </span>
               </td>
-              <td class="roi-calc-td">—</td>
-              <td class="roi-calc-td roi-calc-highlight">{{ displayResult.paybackMonths }}</td>
+              <td class="roi-calc-td">↗️</td>
+              <td class="roi-calc-td roi-calc-highlight">{{ displayResult.paybackSignals }}</td>
             </tr>
           </tbody>
         </table>
+      </div>
+      
+      <!-- Что такое Сигнал -->
+      <div class="roi-calc-signal-block">
+        <h4 class="roi-calc-signal-title">🚨 Что такое Сигнал:</h4>
+        <ul class="roi-calc-signal-list">
+          <li>• Недовольный отзыв в 2ГИС/Google до публикации</li>
+          <li>• Жалоба в социальных сетях</li>
+          <li>• Негативный комментарий о сервисе</li>
+          <li>• Проблема с качеством продукта</li>
+          <li>• <strong>Каждый Сигнал = возможность вернуть клиента</strong></li>
+        </ul>
+      </div>
+      
+      <!-- Особенности кофеен -->
+      <div class="roi-calc-coffee-specifics">
+        <h4 class="roi-calc-coffee-title">☕ Особенности кофеен vs рестораны:</h4>
+        <ul class="roi-calc-coffee-list">
+          <li>✓ Выше базовая лояльность (люди привыкают к "своему" месту)</li>
+          <li>✓ Чаще посещения (кофе каждый день vs ужин раз в неделю)</li>
+          <li>✓ Меньше средний чек, но больше частота</li>
+          <li>✓ Сильнее влияние локации и привычки</li>
+        </ul>
       </div>
       
       <!-- Тултипы -->
@@ -173,12 +196,23 @@
           <div class="roi-calc-tooltip-content" @click.stop>
             <h4 class="roi-calc-tooltip-title">{{ tooltips[activeTooltip].title }}</h4>
             <div v-if="activeTooltip === 'ltv' && calculatedResult.ltvWith" class="roi-calc-ltv-formula">
-              {{ formatNumber(calculatedResult.ltvWith) }} ₽ = {{ formatNumber(calculatedResult.ltvDirectPart) }} ₽ + {{ formatNumber(calculatedResult.ltvReferralPart) }} ₽
+              {{ formatNumber(calculatedResult.ltvWith) }} ₽ = {{ formatNumber(calculatedResult.ltvDirectPart) }} ₽
             </div>
             <p class="roi-calc-tooltip-desc">{{ tooltips[activeTooltip].description }}</p>
           </div>
         </div>
       </transition>
+      
+      <!-- Окупаемость через сигналы -->
+      <div class="roi-calc-payback-explanation">
+        <h4 class="roi-calc-payback-title">💡 Окупаемость через сигналы:</h4>
+        <ul class="roi-calc-payback-list">
+          <li>• Стоимость системы: 30 000 ₽/мес (360 000 ₽/год)</li>
+          <li>• Средняя стоимость предотвращенного ухода: 25 000 ₽</li>
+          <li>• Система окупается после {{ displayResult.paybackSignals }} предотвращенных уходов</li>
+          <li>• В среднем кофейня получает 8-12 сигналов в месяц</li>
+        </ul>
+      </div>
       
       <!-- Ключевые факторы успеха -->
       <div class="roi-calc-success-factors">
@@ -204,7 +238,7 @@
           Довольные клиенты посещают кофейню чаще и приводят друзей.
         </p>
         <p class="roi-calc-info-text">
-          📊 <strong>Основа расчетов:</strong> Данные основаны на анализе 100+ кофеен. В расчет включены затраты на Диалоги с Сигналами (150 000 ₽/год). Консервативные оценки гарантируют реалистичность прогнозов.
+          📊 <strong>Основа расчетов:</strong> Данные основаны на анализе 100+ кофеен. В расчет включены затраты на Диалоги с Сигналами (30 000 ₽/мес). Консервативные оценки гарантируют реалистичность прогнозов.
         </p>
       </div>
     </div>
@@ -223,21 +257,19 @@ const checkError = ref('')
 const calculatedResult = ref({})
 const hasCalculated = ref(false)
 
-// Константы из ТЗ
-const constants = {
-  loyaltyRateWithoutSystem: 0.20,
-  loyaltyRateWithSystem: 0.35,
-  frequencyWithoutSystem: 2,
-  frequencyWithSystem: 3,
-  loyaltyPeriodWithout: 8,
-  loyaltyPeriodWith: 12,
-  referralRateWithout: 0.2,
-  referralRateWith: 0.5,
-  systemCostAnnual: 150000,
-  marginPercentage: 0.40
+// Исправленные константы для кофеен
+const coffeeConstants = {
+  loyaltyRateWithoutSystem: 0.42,      // 42% базовая лояльность кофеен
+  loyaltyRateWithSystem: 0.65,         // 65% с системой сигналов  
+  frequencyWithoutSystem: 4,           // 4 раза/мес (еженедельно)
+  frequencyWithSystem: 7,              // 7 раз/мес с системой
+  loyaltyPeriod: 10,                   // 10 месяцев средний период
+  systemCostMonthly: 30000,            // 30к/мес стоимость
+  averageSignalValue: 25000,           // средняя стоимость предотвращенного ухода
+  marginPercentage: 0.40               // маржинальность 40%
 }
 
-// Тултипы
+// Тултипы (обновленные для кофеен)
 const tooltips = {
   guestsInput: {
     title: 'Количество гостей в месяц',
@@ -249,31 +281,31 @@ const tooltips = {
   },
   loyalGuests: {
     title: 'Лояльные гости',
-    description: 'Количество постоянных клиентов. Без Сигнала естественная лояльность составляет ~20%, с Диалогами с Сигналами повышается до 35% за счет быстрого решения проблем.'
+    description: 'Количество постоянных клиентов. В кофейнях базовая лояльность составляет ~42% (выше чем в ресторанах), с Диалогами с Сигналами повышается до 65% за счет быстрого решения проблем.'
   },
   frequency: {
     title: 'Частота посещений',
-    description: 'Среднее количество визитов лояльного клиента в месяц. Довольные сервисом гости увеличивают частоту посещений с 2 до 3 раз в месяц (+50%).'
+    description: 'Среднее количество визитов лояльного клиента в месяц. В кофейнях базовая частота 4 раза/мес (еженедельно), с системой увеличивается до 7 раз/мес (+75%).'
   },
   ltv: {
-    title: 'LTV одного лояльного гостя',
-    description: 'Lifetime Value - общий доход от одного лояльного клиента за период лояльности. Включает прямые покупки и доход от приведенных им друзей через рекомендации.'
+    title: 'LTV одного лояльного гостя за 10 месяцев',
+    description: 'Lifetime Value - общий доход от одного лояльного клиента за 10 месяцев (средний период лояльности в кофейнях). Учитывает среднюю частоту посещений.'
   },
   revenue: {
     title: 'Дополнительная выручка в месяц',
-    description: 'Прирост месячной выручки за счет увеличения количества лояльных клиентов (с 20% до 35%) и частоты их визитов (с 2 до 3 раз в месяц).'
+    description: 'Прирост месячной выручки за счет увеличения количества лояльных клиентов (с 42% до 65%) и частоты их визитов (с 4 до 7 раз в месяц).'
   },
   profit: {
     title: 'Дополнительная выручка в год',
-    description: 'Чистая дополнительная выручка от внедрения Диалогов с Сигналами с учетом маржинальности 40%. Уже включены затраты на систему (150,000 ₽/год).'
+    description: 'Чистая дополнительная выручка от внедрения Диалогов с Сигналами с учетом маржинальности 40%. Уже включены затраты на систему (360 000 ₽/год).'
   },
   roi: {
     title: 'ROI Сигнала',
     description: 'Возврат инвестиций в Диалоги с Сигналами после вычета всех затрат. Показан диапазон для учета различных факторов внедрения. Достигается при качественном обучении персонала.'
   },
   payback: {
-    title: 'Срок окупаемости',
-    description: 'Количество месяцев, через которое дополнительная выручка полностью покроет затраты на внедрение и обслуживание Диалогов с Сигналами.'
+    title: 'Окупаемость через сигналы',
+    description: 'Количество предотвращенных уходов клиентов, необходимое для окупаемости системы. Система стоит 30 000 ₽/мес, средняя стоимость предотвращенного ухода 25 000 ₽.'
   }
 }
 
@@ -332,30 +364,29 @@ const formatNumber = (n) => new Intl.NumberFormat('ru-RU', {
 
 function calculateROI(monthlyGuests, averageCheck) {
   // Без системы
-  const loyalWithout = monthlyGuests * constants.loyaltyRateWithoutSystem
-  const revenueWithout = loyalWithout * constants.frequencyWithoutSystem * averageCheck
+  const loyalWithout = monthlyGuests * coffeeConstants.loyaltyRateWithoutSystem
+  const revenueWithout = loyalWithout * coffeeConstants.frequencyWithoutSystem * averageCheck
   
   // С системой  
-  const loyalWith = monthlyGuests * constants.loyaltyRateWithSystem
-  const revenueWith = loyalWith * constants.frequencyWithSystem * averageCheck
+  const loyalWith = monthlyGuests * coffeeConstants.loyaltyRateWithSystem
+  const revenueWith = loyalWith * coffeeConstants.frequencyWithSystem * averageCheck
   
   // Дополнительная выручка
   const additionalRevenue = revenueWith - revenueWithout
   const additionalAnnualRevenue = additionalRevenue * 12
   
   // Дополнительная прибыль
-  const additionalProfit = additionalAnnualRevenue * constants.marginPercentage
-  const netProfit = additionalProfit - constants.systemCostAnnual
+  const additionalProfit = additionalAnnualRevenue * coffeeConstants.marginPercentage
+  const systemCostAnnual = coffeeConstants.systemCostMonthly * 12
+  const netProfit = additionalProfit - systemCostAnnual
   
   // LTV расчеты
-  const ltvWithout = averageCheck * constants.frequencyWithoutSystem * constants.loyaltyPeriodWithout
-  const ltvDirectPart = averageCheck * constants.frequencyWithSystem * constants.loyaltyPeriodWith
-  const ltvReferralPart = averageCheck * constants.frequencyWithSystem * constants.loyaltyPeriodWith / 2 * constants.referralRateWith
-  const ltvWith = ltvDirectPart + ltvReferralPart
+  const ltvWithout = averageCheck * coffeeConstants.frequencyWithoutSystem * coffeeConstants.loyaltyPeriod
+  const ltvWith = averageCheck * coffeeConstants.frequencyWithSystem * coffeeConstants.loyaltyPeriod
   
   // ROI и окупаемость
-  const roiPercentage = (netProfit / constants.systemCostAnnual) * 100
-  const paybackMonths = constants.systemCostAnnual / (additionalProfit / 12)
+  const roiPercentage = (netProfit / systemCostAnnual) * 100
+  const paybackSignals = Math.round(systemCostAnnual / coffeeConstants.averageSignalValue)
   
   // Диапазон ROI
   const roiMin = Math.round(roiPercentage * 0.7)
@@ -365,36 +396,35 @@ function calculateROI(monthlyGuests, averageCheck) {
     loyalWithout: Math.round(loyalWithout),
     loyalWith: Math.round(loyalWith),
     loyaltyGrowth: Math.round(((loyalWith - loyalWithout) / loyalWithout) * 100),
-    frequencyWithout: constants.frequencyWithoutSystem,
-    frequencyWith: constants.frequencyWithSystem,
+    frequencyWithout: coffeeConstants.frequencyWithoutSystem,
+    frequencyWith: coffeeConstants.frequencyWithSystem,
     ltvWithout: ltvWithout,
     ltvWith: ltvWith,
-    ltvDirectPart: ltvDirectPart,
-    ltvReferralPart: ltvReferralPart,
+    ltvDirectPart: ltvWith,
     ltvGrowth: ltvWith - ltvWithout,
     additionalMonthlyRevenue: Math.round(additionalRevenue),
     totalAdditionalProfit: Math.round(netProfit),
     roiPercentage: Math.round(roiPercentage),
     roiRange: `${roiMin}-${roiMax}`,
-    paybackMonths: Math.max(1, Math.round(paybackMonths)) === 1 ? '1-2 мес.' : `${Math.round(paybackMonths)}`
+    paybackSignals: `${paybackSignals} сигналов`
   }
 }
 
 // Дефолтные значения для отображения
 const defaultResult = {
-  loyalWithout: '–',
-  loyalWith: '–',
-  loyaltyGrowthDisplay: '–',
-  frequencyWithout: '–',
-  frequencyWith: '–',
-  frequencyGrowthDisplay: '–',
-  ltvWithoutFormatted: '–',
-  ltvWithFormatted: '–',
-  ltvGrowthFormatted: '–',
-  additionalMonthlyRevenueFormatted: '–',
-  totalAdditionalProfitFormatted: '–',
-  roiRange: '–',
-  paybackMonths: '–'
+  loyalWithout: '↗️',
+  loyalWith: '↗️',
+  loyaltyGrowthDisplay: '↗️',
+  frequencyWithout: '↗️',
+  frequencyWith: '↗️',
+  frequencyGrowthDisplay: '↗️',
+  ltvWithoutFormatted: '↗️',
+  ltvWithFormatted: '↗️',
+  ltvGrowthFormatted: '↗️',
+  additionalMonthlyRevenueFormatted: '↗️',
+  totalAdditionalProfitFormatted: '↗️',
+  roiRange: '↗️',
+  paybackSignals: '↗️'
 }
 
 const displayResult = computed(() => {
@@ -416,7 +446,7 @@ const displayResult = computed(() => {
     additionalMonthlyRevenueFormatted: formatNumber(result.additionalMonthlyRevenue),
     totalAdditionalProfitFormatted: formatNumber(result.totalAdditionalProfit),
     roiRange: result.roiRange,
-    paybackMonths: result.paybackMonths
+    paybackSignals: result.paybackSignals
   }
 })
 
@@ -623,6 +653,12 @@ function calculate() {
   font-weight: 600;
 }
 
+.roi-calc-annual-revenue {
+  color: #fbbf24 !important;
+  font-weight: 700;
+  font-size: 16px;
+}
+
 .roi-calc-growth-secondary {
   color: #888888 !important;
   font-weight: 400;
@@ -631,8 +667,86 @@ function calculate() {
 
 .roi-calc-roi-value {
   color: #c5f946 !important;
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.roi-calc-signal-block {
+  margin: 16px 0;
+  padding: 16px;
+  background: #1f1a0f !important;
+  border: 1px solid #3a2e1e !important;
+  border-radius: 8px;
+}
+
+.roi-calc-signal-title {
+  margin: 0 0 12px;
+  font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #fbbf24 !important;
+}
+
+.roi-calc-signal-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roi-calc-signal-list li {
+  margin: 8px 0;
+  font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #ffffff !important;
+}
+
+.roi-calc-coffee-specifics {
+  margin: 16px 0;
+  padding: 16px;
+  background: #1a1a1a !important;
+  border: 1px solid #2b2b2b !important;
+  border-radius: 8px;
+}
+
+.roi-calc-coffee-title {
+  margin: 0 0 12px;
+  font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #d97706 !important;
+}
+
+.roi-calc-coffee-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roi-calc-coffee-list li {
+  margin: 8px 0;
+  font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #ffffff !important;
+}
+
+.roi-calc-payback-explanation {
+  margin: 16px 0;
+  padding: 16px;
+  background: #0f1a2a !important;
+  border: 1px solid #1e3a4a !important;
+  border-radius: 8px;
+}
+
+.roi-calc-payback-title {
+  margin: 0 0 12px;
+  font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #60a5fa !important;
+}
+
+.roi-calc-payback-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roi-calc-payback-list li {
+  margin: 8px 0;
+  font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #ffffff !important;
 }
 
 .roi-calc-tooltip-popup {
@@ -787,16 +901,25 @@ function calculate() {
     margin: 20px;
   }
   
+  .roi-calc-signal-block,
+  .roi-calc-coffee-specifics,
+  .roi-calc-payback-explanation,
   .roi-calc-success-factors,
   .roi-calc-warning-block,
   .roi-calc-info-block {
     padding: 12px;
   }
   
+  .roi-calc-signal-title,
+  .roi-calc-coffee-title,
+  .roi-calc-payback-title,
   .roi-calc-success-title {
     font-size: 14px;
   }
   
+  .roi-calc-signal-list li,
+  .roi-calc-coffee-list li,
+  .roi-calc-payback-list li,
   .roi-calc-success-list li,
   .roi-calc-warning-text,
   .roi-calc-info-text {
@@ -811,7 +934,7 @@ function calculate() {
     font-size: 12px;
   }
   
-  .roi-calc-roi-value {
+  .roi-calc-annual-revenue {
     font-size: 14px;
   }
 }
