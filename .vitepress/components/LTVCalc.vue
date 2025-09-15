@@ -41,8 +41,10 @@
     <button class="roi-calc-btn" :disabled="!canCalculate" @click="calculate">
       РАССЧИТАТЬ LTV
     </button>
-    
-    <!-- Заголовок -->
+  </div>
+
+  <!-- Заголовок вынесен из блока -->
+  <div class="roi-calc-header">
     <h3 class="roi-calc-title">
       <span class="roi-calc-title-desktop">Рост LTV с системой Сигналов</span>
       <span class="roi-calc-title-mobile">Эффект Сигналов</span>
@@ -69,7 +71,7 @@
             >
               Лояльные гости/мес.
             </span>
-            <span class="roi-calc-info-icon" @click.stop="showTooltip('loyalGuests')" @mouseenter="hoverIcon = 'loyalGuests'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'loyalGuests' }">
+            <span class="roi-calc-info-icon roi-calc-info-icon-table" @click.stop="showTooltip('loyalGuests')" @mouseenter="hoverIcon = 'loyalGuests'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'loyalGuests' }">
               i
             </span>
           </td>
@@ -88,7 +90,7 @@
             >
               Частота посещений
             </span>
-            <span class="roi-calc-info-icon" @click.stop="showTooltip('frequency')" @mouseenter="hoverIcon = 'frequency'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'frequency' }">
+            <span class="roi-calc-info-icon roi-calc-info-icon-table" @click.stop="showTooltip('frequency')" @mouseenter="hoverIcon = 'frequency'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'frequency' }">
               i
             </span>
           </td>
@@ -107,7 +109,7 @@
             >
               LTV одного гостя за 10 мес.
             </span>
-            <span class="roi-calc-info-icon" @click.stop="showTooltip('ltv')" @mouseenter="hoverIcon = 'ltv'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'ltv' }">
+            <span class="roi-calc-info-icon roi-calc-info-icon-table" @click.stop="showTooltip('ltv')" @mouseenter="hoverIcon = 'ltv'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'ltv' }">
               i
             </span>
           </td>
@@ -126,7 +128,7 @@
             >
               Доп. выручка/мес.
             </span>
-            <span class="roi-calc-info-icon" @click.stop="showTooltip('revenue')" @mouseenter="hoverIcon = 'revenue'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'revenue' }">
+            <span class="roi-calc-info-icon roi-calc-info-icon-table" @click.stop="showTooltip('revenue')" @mouseenter="hoverIcon = 'revenue'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'revenue' }">
               i
             </span>
           </td>
@@ -142,7 +144,7 @@
             >
               Окупаемость
             </span>
-            <span class="roi-calc-info-icon" @click.stop="showTooltip('payback')" @mouseenter="hoverIcon = 'payback'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'payback' }">
+            <span class="roi-calc-info-icon roi-calc-info-icon-table" @click.stop="showTooltip('payback')" @mouseenter="hoverIcon = 'payback'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'payback' }">
               i
             </span>
           </td>
@@ -266,11 +268,14 @@ const dynamicRevenueMillion = computed(() => {
   return (revenue / 1000000).toFixed(1)
 })
 
+// Динамическая стоимость предотвращенного ухода
 const dynamicPreventedLoss = computed(() => {
   if (!hasCalculated.value) return '25.000'
   
   const ltvWith = calculatedResult.value.ltvWith || 35000
-  return formatNumber(Math.round(ltvWith * 0.7)) // примерно 70% от LTV
+  // Стоимость предотвращенного ухода = 70% от LTV с системой
+  const preventedLoss = Math.round(ltvWith * 0.7)
+  return formatNumber(preventedLoss)
 })
 
 // Функция для генерации динамических тултипов
@@ -286,6 +291,9 @@ const generateDynamicTooltips = (guests, check) => {
   const revenue_without = loyal_without * constants.frequencyWithoutSystem * check
   const revenue_with = loyal_with * constants.frequencyWithSystem * check
   const additional_revenue = revenue_with - revenue_without
+  
+  // Динамическая стоимость предотвращенного ухода
+  const prevented_loss = Math.round(ltv_with * 0.7)
   
   const formatNum = (n) => new Intl.NumberFormat('ru-RU', {
     minimumFractionDigits: 0,
@@ -336,11 +344,11 @@ const generateDynamicTooltips = (guests, check) => {
     },
     payback: {
       title: 'Мгновенная окупаемость системы',
-      formula: `₽30.000 ÷ ₽${formatNum(ltv_with * 0.7)} = 1.2<br>Округляем: 1-2 сигнала`,
+      formula: `₽30.000 ÷ ₽${formatNum(prevented_loss)} = ${(30000/prevented_loss).toFixed(1)}<br>Округляем: 1-2 сигнала`,
       description: `<strong>Стоимость системы:</strong> от ₽30.000/мес<br>
-                    <strong>Средние потери от ухода клиента:</strong> от ₽${formatNum(ltv_with * 0.7)}<br><br>
-                    <strong>Окупаемость:</strong> ₽30.000 ÷ ₽${formatNum(ltv_with * 0.7)} = 1.2 сигнала<br><br>
-                    <strong>Что входит в потери ₽${formatNum(ltv_with * 0.7)}:</strong><br>
+                    <strong>Средние потери от ухода клиента:</strong> от ₽${formatNum(prevented_loss)}<br><br>
+                    <strong>Окупаемость:</strong> ₽30.000 ÷ ₽${formatNum(prevented_loss)} = ${(30000/prevented_loss).toFixed(1)} сигнала<br><br>
+                    <strong>Что входит в потери ₽${formatNum(prevented_loss)}:</strong><br>
                     ✓ LTV ушедшего клиента: ₽${formatNum(ltv_with)} за 10 мес<br>
                     ✓ Негативные отзывы отпугивают 2-3 новых клиентов<br>
                     ✓ Потеря сарафанного радио и рекомендаций<br><br>
@@ -489,9 +497,9 @@ function calculate() {
 </script>
 
 <style scoped>
+/* БАЗОВЫЕ СТИЛИ КОМПОНЕНТА - остальное в custom.css */
 .roi-calc-container { 
-  width: 100%; 
-  margin: 0 auto 32px; 
+  margin: 0 auto 20px; 
   padding: 24px; 
   background: #1e1e1e !important; 
   border: 1px solid #2b2b2b !important; 
@@ -543,6 +551,8 @@ function calculate() {
   font-weight: 600;
   color: #ffffff;
   flex-shrink: 0;
+  border: none !important;
+  outline: none !important;
 }
 
 .roi-calc-info-icon.hover {
@@ -610,8 +620,15 @@ function calculate() {
   transform: translateY(-2px); 
 }
 
+/* ЗАГОЛОВОК */
+.roi-calc-header {
+  margin: 0 0 20px 0;
+  padding: 0;
+}
+
 .roi-calc-title {
-  margin: 20px 0;
+  margin: 0;
+  padding: 16px 0;
   font: 600 18px/1.3 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   text-align: center;
   color: #c5f946 !important;
@@ -621,13 +638,10 @@ function calculate() {
   display: none;
 }
 
-/* ТАБЛИЦА ВЫНЕСЕНА ИЗ ОСНОВНОГО БЛОКА */
+/* ТАБЛИЦА */
 .roi-calc-table-container {
-  width: 100%;
-  max-width: none;
   margin: 0 0 20px 0;
   padding: 0;
-  overflow: hidden;
   border-radius: 8px;
   border: 1px solid #2b2b2b;
 }
@@ -636,10 +650,10 @@ function calculate() {
   width: 100%;
   margin: 0;
   padding: 0;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   background: #141414 !important;
   border: none !important;
-  border-spacing: 0;
 }
 
 .roi-calc-th {
@@ -648,10 +662,8 @@ function calculate() {
   color: #c5f946 !important;
   background: #1a1a1a !important;
   text-align: left;
+  border: none !important;
   border-bottom: 1px solid #2b2b2b !important;
-  border-left: none !important;
-  border-right: none !important;
-  border-top: none !important;
   white-space: nowrap;
 }
 
@@ -663,26 +675,22 @@ function calculate() {
   padding: 12px 16px;
   font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #ffffff !important;
+  border: none !important;
   border-bottom: 1px solid #2b2b2b !important;
-  border-left: none !important;
-  border-right: none !important;
-  border-top: none !important;
   white-space: nowrap;
 }
 
-.roi-calc-table tr:last-child .roi-calc-td {
+.roi-calc-table tr:last-child .roi-calc-td,
+.roi-calc-table tr:last-child .roi-calc-metric-cell {
   border-bottom: none !important;
 }
 
-/* ИСПРАВЛЕНИЕ ОБВОДКИ В СТОЛБЦЕ ПОКАЗАТЕЛЬ */
 .roi-calc-metric-cell {
   padding: 12px 16px;
   font: 500 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #ffffff !important;
+  border: none !important;
   border-bottom: 1px solid #2b2b2b !important;
-  border-left: none !important;
-  border-right: none !important;
-  border-top: none !important;
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -720,6 +728,7 @@ function calculate() {
   font-size: 0.9em;
 }
 
+/* БЛОКИ КОНТЕНТА */
 .roi-calc-signal-block {
   margin: 16px 0;
   padding: 16px;
@@ -866,6 +875,7 @@ function calculate() {
   color: #fbbf24 !important;
 }
 
+/* ТУЛТИПЫ */
 .roi-calc-tooltip-popup {
   position: fixed;
   top: 0;
@@ -931,7 +941,7 @@ function calculate() {
   margin-bottom: 0;
 }
 
-/* Анимации */
+/* АНИМАЦИИ */
 .roi-calc-tooltip-enter-active, .roi-calc-tooltip-leave-active {
   transition: opacity 0.25s;
 }
@@ -940,152 +950,27 @@ function calculate() {
   opacity: 0;
 }
 
-/* МОБИЛЬНЫЕ УСТРОЙСТВА - УЛУЧШЕННАЯ ВЕРСИЯ */
+/* АДАПТИВНОСТЬ - базовые правила, остальное в custom.css */
 @media(max-width: 768px) {
   .roi-calc-container {
     padding: 16px;
-    margin-bottom: 16px;
   }
   
   .roi-calc-input-row {
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
   }
   
-  .roi-calc-input {
-    height: 44px;
-    font-size: 16px;
-    line-height: 44px;
-  }
-  
-  .roi-calc-btn {
-    height: 48px;
-    font-size: 16px;
-    line-height: 48px;
-  }
-  
-  /* Разные заголовки для мобильной и десктоп версии */
   .roi-calc-title-desktop {
     display: none;
   }
   
   .roi-calc-title-mobile {
     display: block;
-    font-size: 18px;
-  }
-  
-  .roi-calc-title {
-    font-size: 18px;
-    margin: 16px 0;
-  }
-  
-  .roi-calc-table-container {
-    margin-bottom: 16px;
-    border-radius: 6px;
-  }
-  
-  .roi-calc-th,
-  .roi-calc-td {
-    padding: 8px 12px;
-    font-size: 13px;
-    line-height: 1.3;
-    white-space: normal;
-  }
-  
-  .roi-calc-th:nth-child(1) { width: 50%; }
-  .roi-calc-th:nth-child(2) { width: 25%; }
-  .roi-calc-th:nth-child(3) { width: 25%; }
-  
-  .roi-calc-metric-cell {
-    padding: 8px 12px;
-    font-size: 13px;
-    line-height: 1.3;
-    gap: 4px;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .roi-calc-metric-text {
-    font-size: 13px;
-    line-height: 1.3;
-    margin-bottom: 4px;
-  }
-  
-  .roi-calc-info-icon {
-    width: 16px;
-    height: 16px;
-    font-size: 10px;
-    align-self: flex-end;
-    margin-top: -20px;
-  }
-  
-  .roi-calc-tooltip-content {
-    max-width: calc(100vw - 32px);
-    margin: 16px;
-    padding: 16px;
-  }
-  
-  .roi-calc-signal-block,
-  .roi-calc-coffee-specifics,
-  .roi-calc-payback-explanation,
-  .roi-calc-success-factors,
-  .roi-calc-cta-block,
-  .roi-calc-warning-block,
-  .roi-calc-info-block {
-    padding: 12px;
-    margin: 12px 0;
-  }
-  
-  .roi-calc-signal-title,
-  .roi-calc-coffee-title,
-  .roi-calc-payback-title,
-  .roi-calc-success-title {
-    font-size: 14px;
-    margin-bottom: 8px;
-  }
-  
-  .roi-calc-signal-list li,
-  .roi-calc-coffee-list li,
-  .roi-calc-payback-list li,
-  .roi-calc-success-list li {
-    margin: 6px 0;
-    font-size: 12px;
-    line-height: 1.4;
-  }
-  
-  .roi-calc-cta-text,
-  .roi-calc-warning-text,
-  .roi-calc-info-text {
-    font-size: 12px;
-    line-height: 1.4;
-  }
-}
-
-@media(max-width: 480px) {
-  .roi-calc-container {
-    padding: 12px;
-  }
-  
-  .roi-calc-th,
-  .roi-calc-td {
-    padding: 6px 8px;
-    font-size: 11px;
-  }
-  
-  .roi-calc-metric-cell {
-    padding: 6px 8px;
-  }
-  
-  .roi-calc-metric-text {
-    font-size: 11px;
-  }
-  
-  .roi-calc-title {
     font-size: 16px;
   }
 }
 
-/* Десктопная версия - скрываем мобильный заголовок */
 @media(min-width: 769px) {
   .roi-calc-title-mobile {
     display: none;
