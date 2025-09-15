@@ -4,11 +4,14 @@ outline: false
 
 # Диалоги с Анной
 
-## Перехватите негатив в 2ГИС/Яндекс до того, как он стал публичным. 
+## 7 дней бесплатно. От ₽30.000/мес по подписке.
 
 <RotatingPhrases />
 
+Перехватите негатив в 2ГИС/Яндекс до того, как он стал публичным. <br>
 И решайте проблемы с гостями в два клика.
+
+### Отправим стикер и подключим в Телеграм за 15 минут.
 
 <div class="start-button-container">
   <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer"><strong>Получить QR-код</strong></a>
@@ -35,17 +38,6 @@ outline: false
 | Дашборд                       | Живая статистика тикетов      |
 | SLA                           | Уточнение ≤3 ч, решение ≤24 ч |
 
-## Стоимость
-
-**7 дней бесплатно** <br>
-Далее – 30 000 ₽/мес по подписке
-
-<div class="start-button-container">
-  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer"><strong>Получить QR-код</strong></a>
-</div>
-
-**Начните перехватывать негатив сегодня.** <br>
-Отправим стикер и подключим в Телеграм за 15 минут.
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
