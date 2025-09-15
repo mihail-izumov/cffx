@@ -1,164 +1,181 @@
 <template>
-  <div class="roi-calculator-wrapper">
-    <!-- Блок ввода -->
-    <div class="roi-calc-container">
-      <div class="roi-calc-input-row">
-        <div class="roi-calc-input-group">
-          <label for="guestsInput" class="roi-calc-label">
-            Кол-во гостей (сред. в мес.):
-            <span class="roi-calc-info-icon" @click="showTooltip('guestsInput')" @mouseenter="hoverIcon = 'guestsInput'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'guestsInput' }">i</span>
-          </label>
-          <input
-            id="guestsInput"
-            type="text"
-            :value="guestsStr"
-            placeholder="например, 1,000"
-            @input="onGuestsInput"
-            :class="['roi-calc-input', { 'roi-calc-error': guestsError }]"
-          />
-          <div v-if="guestsError" class="roi-calc-error-message">{{ guestsError }}</div>
-        </div>
-        <div class="roi-calc-input-group">
-          <label for="averageCheckInput" class="roi-calc-label">
-            Средний чек (₽):
-            <span class="roi-calc-info-icon" @click="showTooltip('averageCheckInput')" @mouseenter="hoverIcon = 'averageCheckInput'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'averageCheckInput' }">i</span>
-          </label>
-          <input
-            id="averageCheckInput"
-            type="text"
-            :value="averageCheckStr"
-            placeholder="например, 500"
-            @input="onAverageCheckInput"
-            :class="['roi-calc-input', { 'roi-calc-error': checkError }]"
-          />
-          <div v-if="checkError" class="roi-calc-error-message">{{ checkError }}</div>
-        </div>
+  <div class="roi-calc-container">
+    <!-- Поля ввода в одну строку -->
+    <div class="roi-calc-input-row">
+      <div class="roi-calc-input-group">
+        <label for="guestsInput" class="roi-calc-label">
+          Кол-во гостей (сред. в мес.):
+          <span class="roi-calc-info-icon" @click="showTooltip('guestsInput')" @mouseenter="hoverIcon = 'guestsInput'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'guestsInput' }">
+            i
+          </span>
+        </label>
+        <input
+          id="guestsInput"
+          type="text"
+          :value="guestsStr"
+          placeholder="например, 1,000"
+          @input="onGuestsInput"
+          :class="['roi-calc-input', { 'roi-calc-error': guestsError }]"
+        />
+        <div v-if="guestsError" class="roi-calc-error-message">{{ guestsError }}</div>
       </div>
-      <button class="roi-calc-btn" :disabled="!canCalculate" @click="calculate">РАССЧИТАТЬ LTV</button>
-    </div>
-
-    <!-- Заголовок -->
-    <div class="roi-calc-header">
-      <h3 class="roi-calc-title">
-        <span class="roi-calc-title-desktop">Рост LTV с системой Сигналов</span>
-        <span class="roi-calc-title-mobile">Эффект Сигналов</span>
-      </h3>
-    </div>
-
-    <!-- Таблица -->
-    <div class="roi-calc-table-container">
-      <table class="roi-calc-table">
-        <thead>
-          <tr>
-            <th class="roi-calc-th">Показатель</th>
-            <th class="roi-calc-th">Без Сигнала</th>
-            <th class="roi-calc-th">С ⚡ Сигналом</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="roi-calc-metric-cell">
-              <span class="roi-calc-metric-text" @click="showTooltip('loyalGuests')">Лояльные гости/мес.</span>
-              <span class="roi-calc-info-icon" @click.stop="showTooltip('loyalGuests')">i</span>
-            </td>
-            <td class="roi-calc-td">{{ displayResult.loyalWithout }} гостей</td>
-            <td class="roi-calc-td roi-calc-highlight">
-              {{ displayResult.loyalIncrease }} 
-              <span class="roi-calc-growth-secondary">({{ displayResult.loyaltyGrowthDisplay }})</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="roi-calc-metric-cell">
-              <span class="roi-calc-metric-text" @click="showTooltip('frequency')">Частота посещений</span>
-              <span class="roi-calc-info-icon" @click.stop="showTooltip('frequency')">i</span>
-            </td>
-            <td class="roi-calc-td">{{ displayResult.frequencyWithout }} раз/мес</td>
-            <td class="roi-calc-td roi-calc-highlight">
-              {{ displayResult.frequencyWith }} 
-              <span class="roi-calc-growth-secondary">({{ displayResult.frequencyGrowthDisplay }})</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="roi-calc-metric-cell">
-              <span class="roi-calc-metric-text" @click="showTooltip('ltv')">LTV одного гостя за 10 мес.</span>
-               <span class="roi-calc-info-icon" @click.stop="showTooltip('ltv')">i</span>
-            </td>
-            <td class="roi-calc-td">₽{{ displayResult.ltvWithoutFormatted }}</td>
-            <td class="roi-calc-td roi-calc-highlight">
-              ₽{{ displayResult.ltvWithFormatted }} 
-              <span class="roi-calc-growth-secondary">(+₽{{ displayResult.ltvGrowthFormatted }})</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="roi-calc-metric-cell">
-              <span class="roi-calc-metric-text" @click="showTooltip('revenue')">Доп. выручка/мес.</span>
-               <span class="roi-calc-info-icon" @click.stop="showTooltip('revenue')">i</span>
-            </td>
-            <td class="roi-calc-td">—</td>
-            <td class="roi-calc-td roi-calc-highlight">₽{{ displayResult.additionalMonthlyRevenueFormatted }}</td>
-          </tr>
-          <tr>
-            <td class="roi-calc-metric-cell">
-              <span class="roi-calc-metric-text" @click="showTooltip('payback')">Окупаемость</span>
-               <span class="roi-calc-info-icon" @click.stop="showTooltip('payback')">i</span>
-            </td>
-            <td class="roi-calc-td">—</td>
-            <td class="roi-calc-td roi-calc-highlight">{{ displayResult.paybackSignals }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Контентные блоки -->
-    <div class="roi-calc-container roi-calc-content">
-      <div class="roi-calc-signal-block">
-        <h4 class="roi-calc-signal-title">Каждый Сигнал = возможность вернуть клиента:</h4>
-        <ul class="roi-calc-signal-list">
-          <li>✓ Недовольный отзыв в 2ГИС/Google до публикации</li>
-          <li>✓ Жалоба в социальных сетях</li>
-          <li>✓ Негативный комментарий о сервисе</li>
-          <li>✓ Проблема с качеством продукта</li>
-        </ul>
-      </div>
-      <div class="roi-calc-coffee-specifics">
-        <h4 class="roi-calc-coffee-title">Почему кофейни особенные:</h4>
-        <ul class="roi-calc-coffee-list">
-          <li>✓ Выше базовая лояльность — люди привыкают к "своему" месту</li>
-          <li>✓ Чаще посещения — кофе нужен каждый день</li>
-          <li>✓ Сильнее влияние привычки и удобного расположения</li>
-          <li>✓ Быстрее распространение сарафанного радио среди друзей</li>
-        </ul>
-      </div>
-      <div class="roi-calc-payback-explanation">
-        <h4 class="roi-calc-payback-title">Все сигналы после 2-го = чистая прибыль:</h4>
-        <ul class="roi-calc-payback-list">
-          <li>✓ Стоимость системы: от ₽30.000/мес</li>
-          <li>✓ Средняя стоимость предотвращенного ухода: от ₽{{ dynamicPreventedLoss }}</li>
-          <li>✓ Система окупается после {{ displayResult.paybackSignals }}</li>
-        </ul>
-      </div>
-      <div class="roi-calc-success-factors">
-        <h4 class="roi-calc-success-title">Ключевые факторы успеха:</h4>
-        <ul class="roi-calc-success-list">
-          <li>✓ Время ответа на жалобу < 30 минут</li>
-          <li>✓ Нематериальная компенсация</li>
-          <li>✓ Персонализация предложений</li>
-          <li>✓ Мониторинг качества сервиса</li>
-        </ul>
-      </div>
-      <div class="roi-calc-cta-block">
-        <p class="roi-calc-cta-text"><strong>Главное:</strong> Система окупается мгновенно, а каждый месяц приносит стабильный рост выручки в ₽{{ dynamicRevenueMillion }}+ млн.</p>
-        <p class="roi-calc-cta-text">Следующий шаг → <a href="https://cffx.ru/brew/membership.html" class="roi-calc-cta-link">Получить QR-код</a></p>
-      </div>
-      <div class="roi-calc-warning-block">
-        <p class="roi-calc-warning-text"><strong>Важно:</strong> Результаты достигаются только при качественном внедрении Диалогов с Сигналами и обучении персонала. Показаны консервативные оценки на основе анализа 100+ кофеен.</p>
-      </div>
-      <div class="roi-calc-info-block">
-        <p class="roi-calc-info-text"><strong>Как работает расчет:</strong> Диалоги с Сигналами помогают быстро решать проблемы гостей, превращая потенциальные жалобы в возможности для повышения лояльности. Довольные клиенты посещают кофейню чаще и приводят друзей.</p>
-        <p class="roi-calc-info-text"><strong>Основа расчетов:</strong> Данные основаны на анализе 100+ кофеен. В расчет включены затраты на Диалоги с Сигналами (от ₽30.000/мес). Консервативные оценки гарантируют реалистичность прогнозов.</p>
+      <div class="roi-calc-input-group">
+        <label for="averageCheckInput" class="roi-calc-label">
+          Средний чек (₽):
+          <span class="roi-calc-info-icon" @click="showTooltip('averageCheckInput')" @mouseenter="hoverIcon = 'averageCheckInput'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'averageCheckInput' }">
+            i
+          </span>
+        </label>
+        <input
+          id="averageCheckInput"
+          type="text"
+          :value="averageCheckStr"
+          placeholder="например, 500"
+          @input="onAverageCheckInput"
+          :class="['roi-calc-input', { 'roi-calc-error': checkError }]"
+        />
+        <div v-if="checkError" class="roi-calc-error-message">{{ checkError }}</div>
       </div>
     </div>
-
+    
+    <button class="roi-calc-btn" :disabled="!canCalculate" @click="calculate">
+      РАССЧИТАТЬ LTV
+    </button>
+  </div>
+  <!-- Заголовок вынесен из блока -->
+  <div class="roi-calc-header">
+    <h3 class="roi-calc-title">
+      <span class="roi-calc-title-desktop">Рост LTV с системой Сигналов</span>
+      <span class="roi-calc-title-mobile">Эффект Сигналов</span>
+    </h3>
+  </div>
+  <!-- Таблица вынесена из основного блока -->
+  <div class="roi-calc-table-container">
+    <table class="roi-calc-table">
+      <thead>
+        <tr>
+          <th class="roi-calc-th">Показатель</th>
+          <th class="roi-calc-th">Без Сигнала</th>
+          <th class="roi-calc-th">С ⚡ Сигналом</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="roi-calc-metric-cell">
+            <span 
+              class="roi-calc-metric-text" 
+              @click="showTooltip('loyalGuests')"
+              :class="{ 'roi-calc-active': activeTooltip === 'loyalGuests' }"
+            >
+              Лояльные гости/мес.
+            </span>
+            <span class="roi-calc-info-icon roi-calc-info-icon-table" @click.stop="showTooltip('loyalGuests')" @mouseenter="hoverIcon = 'loyalGuests'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'loyalGuests' }">
+              i
+            </span>
+          </td>
+          <td class="roi-calc-td">{{ displayResult.loyalWithout }} гостей</td>
+          <td class="roi-calc-td roi-calc-highlight">
+            {{ displayResult.loyalIncrease }} 
+            <span class="roi-calc-growth-secondary">({{ displayResult.loyaltyGrowthDisplay }})</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="roi-calc-metric-cell">
+            <span 
+              class="roi-calc-metric-text" 
+              @click="showTooltip('frequency')"
+              :class="{ 'roi-calc-active': activeTooltip === 'frequency' }"
+            >
+              Частота посещений
+            </span>
+            <span class="roi-calc-info-icon roi-calc-info-icon-table" @click.stop="showTooltip('frequency')" @mouseenter="hoverIcon = 'frequency'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'frequency' }">
+              i
+            </span>
+          </td>
+          <td class="roi-calc-td">{{ displayResult.frequencyWithout }} раз/мес</td>
+          <td class="roi-calc-td roi-calc-highlight">
+            {{ displayResult.frequencyWith }} 
+            <span class="roi-calc-growth-secondary">({{ displayResult.frequencyGrowthDisplay }})</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="roi-calc-metric-cell">
+            <span 
+              class="roi-calc-metric-text" 
+              @click="showTooltip('ltv')"
+              :class="{ 'roi-calc-active': activeTooltip === 'ltv' }"
+            >
+              LTV одного гостя за 10 мес.
+            </span>
+            <span class="roi-calc-info-icon roi-calc-info-icon-table" @click.stop="showTooltip('ltv')" @mouseenter="hoverIcon = 'ltv'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'ltv' }">
+              i
+            </span>
+          </td>
+          <td class="roi-calc-td">₽{{ displayResult.ltvWithoutFormatted }}</td>
+          <td class="roi-calc-td roi-calc-highlight">
+            ₽{{ displayResult.ltvWithFormatted }} 
+            <span class="roi-calc-growth-secondary">(+₽{{ displayResult.ltvGrowthFormatted }})</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="roi-calc-metric-cell">
+            <span 
+              class="roi-calc-metric-text" 
+              @click="showTooltip('revenue')"
+              :class="{ 'roi-calc-active': activeTooltip === 'revenue' }"
+            >
+              Доп. выручка/мес.
+            </span>
+            <span class="roi-calc-info-icon roi-calc-info-icon-table" @click.stop="showTooltip('revenue')" @mouseenter="hoverIcon = 'revenue'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'revenue' }">
+              i
+            </span>
+          </td>
+          <td class="roi-calc-td">—</td>
+          <td class="roi-calc-td roi-calc-highlight">₽{{ displayResult.additionalMonthlyRevenueFormatted }}</td>
+        </tr>
+        <tr>
+          <td class="roi-calc-metric-cell">
+            <span 
+              class="roi-calc-metric-text" 
+              @click="showTooltip('payback')"
+              :class="{ 'roi-calc-active': activeTooltip === 'payback' }"
+            >
+              Окупаемость
+            </span>
+            <span class="roi-calc-info-icon roi-calc-info-icon-table" @click.stop="showTooltip('payback')" @mouseenter="hoverIcon = 'payback'" @mouseleave="hoverIcon = null" :class="{ hover: hoverIcon === 'payback' }">
+              i
+            </span>
+          </td>
+          <td class="roi-calc-td">—</td>
+          <td class="roi-calc-td roi-calc-highlight">{{ displayResult.paybackSignals }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Остальной контент -->
+  <div class="roi-calc-container roi-calc-content">
+    <!-- Каждый Сигнал = возможность вернуть клиента -->
+    <div class="roi-calc-signal-block">
+      <h4 class="roi-calc-signal-title">Каждый Сигнал = возможность вернуть клиента:</h4>
+      <ul class="roi-calc-signal-list">
+        <li>✓ Недовольный отзыв в 2ГИС/Google до публикации</li>
+        <li>✓ Жалоба в социальных сетях</li>
+        <li>✓ Негативный комментарий о сервисе</li>
+        <li>✓ Проблема с качеством продукта</li>
+      </ul>
+    </div>
+    
+    <!-- Почему кофейни особенные -->
+    <div class="roi-calc-coffee-specifics">
+      <h4 class="roi-calc-coffee-title">Почему кофейни особенные:</h4>
+      <ul class="roi-calc-coffee-list">
+        <li>✓ Выше базовая лояльность — люди привыкают к "своему" месту</li>
+        <li>✓ Чаще посещения — кофе нужен каждый день</li>
+        <li>✓ Сильнее влияние привычки и удобного расположения</li>
+        <li>✓ Быстрее распространение сарафанного радио среди друзей</li>
+      </ul>
+    </div>
+    
     <!-- Тултипы -->
     <transition name="roi-calc-tooltip">
       <div v-if="activeTooltip" class="roi-calc-tooltip-popup" @click="closeTooltip">
@@ -169,6 +186,50 @@
         </div>
       </div>
     </transition>
+    
+    <!-- Все сигналы после 2-го = чистая прибыль -->
+    <div class="roi-calc-payback-explanation">
+      <h4 class="roi-calc-payback-title">Все сигналы после 2-го = чистая прибыль:</h4>
+      <ul class="roi-calc-payback-list">
+        <li>✓ Стоимость системы: от ₽30.000/мес</li>
+        <li>✓ Средняя стоимость предотвращенного ухода: от ₽{{ dynamicPreventedLoss }}</li>
+        <li>✓ Система окупается после {{ displayResult.paybackSignals }}</li>
+      </ul>
+    </div>
+    
+    <!-- Ключевые факторы успеха -->
+    <div class="roi-calc-success-factors">
+      <h4 class="roi-calc-success-title">Ключевые факторы успеха:</h4>
+      <ul class="roi-calc-success-list">
+        <li>✓ Время ответа на жалобу < 30 минут</li>
+        <li>✓ Нематериальная компенсация</li>
+        <li>✓ Персонализация предложений</li>
+        <li>✓ Мониторинг качества сервиса</li>
+      </ul>
+    </div>
+    
+    <!-- Призыв к действию -->
+    <div class="roi-calc-cta-block">
+      <p class="roi-calc-cta-text"><strong>Главное:</strong> Система окупается мгновенно, а каждый месяц приносит стабильный рост выручки в ₽{{ dynamicRevenueMillion }}+ млн.</p>
+      <p class="roi-calc-cta-text">Следующий шаг → <a href="https://cffx.ru/brew/membership.html" class="roi-calc-cta-link">Получить QR-код</a></p>
+    </div>
+    
+    <!-- Предупреждение -->
+    <div class="roi-calc-warning-block">
+      <p class="roi-calc-warning-text"><strong>Важно:</strong> Результаты достигаются только при качественном внедрении Диалогов с Сигналами и обучении персонала. Показаны консервативные оценки на основе анализа 100+ кофеен.</p>
+    </div>
+    
+    <!-- Дополнительная информация -->
+    <div class="roi-calc-info-block">
+      <p class="roi-calc-info-text">
+        <strong>Как работает расчет:</strong> Диалоги с Сигналами помогают быстро решать проблемы гостей, 
+        превращая потенциальные жалобы в возможности для повышения лояльности. 
+        Довольные клиенты посещают кофейню чаще и приводят друзей.
+      </p>
+      <p class="roi-calc-info-text">
+        <strong>Основа расчетов:</strong> Данные основаны на анализе 100+ кофеен. В расчет включены затраты на Диалоги с Сигналами (от ₽30.000/мес). Консервативные оценки гарантируют реалистичность прогнозов.
+      </p>
+    </div>
   </div>
 </template>
 
@@ -327,7 +388,7 @@ function calculate() {
 
 <style scoped>
 .roi-calc-container { 
-  margin: 0 0 20px 0; 
+  margin: 0 auto 20px; 
   padding: 24px; 
   background: #1e1e1e; 
   border: 1px solid #2b2b2b; 
@@ -360,7 +421,7 @@ function calculate() {
 .roi-calc-signal-block { background: #1f1a0f; border: 1px solid #3a2e1e; }
 .roi-calc-coffee-specifics { background: #1a1a1a; border: 1px solid #2b2b2b; }
 .roi-calc-payback-explanation { background: #0f1a2a; border: 1px solid #1e3a4a; }
-.roi-calc-success-factors { background: #0f2a1e; border: 1px solid #1e4a32; }
+.roi-calc-success-factors { background: #0f2a1e; border: 1px solid #1e3a32; }
 .roi-calc-cta-block { border: 1px solid #c5f946; }
 .roi-calc-warning-block { background: #2a1f0f; border: 1px solid #4a3c1e; }
 .roi-calc-info-block { background: #141414; border: 1px solid #2b2b2b; }
