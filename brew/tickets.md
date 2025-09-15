@@ -2,7 +2,7 @@
 outline: false
 ---
 
-# Тикет-система
+# Диалоги
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
