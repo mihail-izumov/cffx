@@ -57,6 +57,7 @@ import SignalsYandexVSSignal from '../components/SignalsYandexVSSignal.vue'
 import AnnaWhatYouGet from '../components/AnnaWhatYouGet.vue'
 import AnnaWithYou from '../components/AnnaWithYou.vue'
 import AnnaFeelThePower from '../components/AnnaFeelThePower.vue'
+import LTVCalc from '../components/LTVCalc.vue'
 
 export default {
   extends: DefaultTheme,
@@ -120,5 +121,6 @@ export default {
     app.component('AnnaWhatYouGet', AnnaWhatYouGet)
     app.component('AnnaWithYou', AnnaWithYou)
     app.component('AnnaFeelThePower', AnnaFeelThePower)
+    app.component('LTVCalc', LTVCalc)
   },
 }
