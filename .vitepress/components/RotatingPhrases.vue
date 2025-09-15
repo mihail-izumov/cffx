@@ -12,7 +12,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 
 // --- НАСТРОЙКИ АНИМАЦИИ ---
-const ROTATION_INTERVAL_MS = 7000;
+const ROTATION_INTERVAL_MS = 4000;
 const FADE_DURATION_MS = 1000;
 
 // Фразы для ротации
