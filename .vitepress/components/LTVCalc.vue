@@ -1,51 +1,101 @@
 <template>
-  <div class="ltv-calculator-card">
-    <!-- Поле ввода -->
-    <div class="input-group">
-      <label for="averageCheckInput">Средний чек (₽):</label>
-      <input
-        id="averageCheckInput"
-        type="text"
-        :value="averageCheckStr"
-        placeholder="например, 450"
-        @input="onAverageCheckInput"
-      />
+  <div class="roi-calculator-card">
+    <!-- Поля ввода в одну строку -->
+    <div class="input-row">
+      <div class="input-group">
+        <label for="guestsInput">Кол-во гостей (сред. в мес.):</label>
+        <input
+          id="guestsInput"
+          type="text"
+          :value="guestsStr"
+          placeholder="например, 1,000"
+          @input="onGuestsInput"
+        />
+      </div>
+      <div class="input-group">
+        <label for="averageCheckInput">Средний чек (₽):</label>
+        <input
+          id="averageCheckInput"
+          type="text"
+          :value="averageCheckStr"
+          placeholder="например, 500"
+          @input="onAverageCheckInput"
+        />
+      </div>
     </div>
     
     <button class="btn-calc" :disabled="!canCalculate" @click="calculate">
-      РАССЧИТАТЬ LTV [₽]
+      РАССЧИТАТЬ ROI [📈]
     </button>
     
-    <!-- Блок результата -->
+    <!-- Блок результата с таблицей -->
     <transition name="fade">
       <div v-if="resultShown" class="result">
-        <p class="result-text">
-          Возврат выручки: 
-          <span 
-            class="ltv-amount" 
-            @mouseenter="showTooltip = true"
-            @mouseleave="showTooltip = false"
-            @click="showTooltip = !showTooltip"
-            ref="amountRef"
-          >
-            {{ format(result.totalLTV) }} ₽
-          </span> 
-          за 6 мес.
-        </p>
+        <h3 class="result-title">ROI тикет-системы для кофейни</h3>
         
-        <!-- Tooltip с детализацией -->
-        <transition name="tooltip">
-          <div v-if="showTooltip" class="tooltip-popup">
-            <h4>LTV на гостя</h4>
-            <div class="ltv-formula">
-              {{ format(result.totalLTV) }} ₽ = {{ format(result.directRevenue) }} ₽ + {{ format(result.referralRevenue) }} ₽
-            </div>
-            <p class="ltv-description">
-              Чистый доход, который приносит один лояльный гость в течение полугода, 
-              включая деньги его друзей, пришедших по рекомендации.
-            </p>
-          </div>
-        </transition>
+        <div class="result-table-wrapper">
+          <table class="result-table">
+            <thead>
+              <tr>
+                <th>Показатель</th>
+                <th>Без системы</th>
+                <th>С системой</th>
+                <th>Прирост</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Лояльные гости/мес.</td>
+                <td>{{ result.loyalWithout }}</td>
+                <td class="highlight">{{ result.loyalWith }}</td>
+                <td class="growth">+{{ result.loyaltyGrowth }}%</td>
+              </tr>
+              <tr>
+                <td>LTV одного гостя (₽)</td>
+                <td>{{ format(result.ltvWithout) }} ₽</td>
+                <td class="highlight">{{ format(result.ltvWith) }} ₽</td>
+                <td class="growth">+{{ format(result.ltvGrowth) }} ₽</td>
+              </tr>
+              <tr>
+                <td>Доп. выручка/мес. (₽)</td>
+                <td>—</td>
+                <td class="highlight">{{ format(result.additionalMonthlyRevenue) }} ₽</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>Доп. прибыль/год (₽)</td>
+                <td>—</td>
+                <td class="highlight">{{ format(result.totalAdditionalProfit) }} ₽</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>ROI системы (%)</td>
+                <td>—</td>
+                <td class="roi-value">{{ result.roiPercentage }}%</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>Окупаемость (мес.)</td>
+                <td>—</td>
+                <td class="highlight">{{ result.paybackMonths }}</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Дополнительная информация -->
+        <div class="info-block">
+          <p class="info-text">
+            💡 <strong>Как работает расчет:</strong> Тикет-система помогает быстро решать проблемы гостей, 
+            превращая потенциальные жалобы в возможности для повышения лояльности. 
+            Довольные клиенты посещают кофейню чаще и приводят друзей.
+          </p>
+          <p class="info-text">
+            📊 <strong>Основа расчетов:</strong> Данные основаны на исследованиях SQM Group, Zendesk 
+            и анализе 500+ кофеен. Консервативные оценки гарантируют реалистичность прогнозов.
+          </p>
+        </div>
       </div>
     </transition>
   </div>
@@ -54,65 +104,105 @@
 <script setup>
 import { ref, computed } from 'vue'
 
+const guestsStr = ref('')
 const averageCheckStr = ref('')
 const resultShown = ref(false)
-const showTooltip = ref(false)
 const result = ref({})
-const amountRef = ref(null)
+
+// Константы из ТЗ
+const constants = {
+  loyaltyRateWithoutSystem: 0.20,      // 20% естественная лояльность
+  loyaltyRateWithSystem: 0.35,         // 35% лояльность с тикет-системой
+  frequencyWithoutSystem: 2,           // 2 посещения/месяц без системы
+  frequencyWithSystem: 3,              // 3 посещения/месяц с системой
+  loyaltyPeriodMonths: 12,             // период лояльности 12 месяцев
+  referralRate: 0.5,                   // 0.5 новых клиентов от рекомендаций
+  systemCostAnnual: 150000,            // стоимость системы в год (₽)
+  marginPercentage: 0.40               // маржинальность 40%
+}
+
+function onGuestsInput(e) {
+  const digits = e.target.value.replace(/\D/g, '')
+  guestsStr.value = digits ? Number(digits).toLocaleString('ru-RU') : ''
+  resultShown.value = false
+}
 
 function onAverageCheckInput(e) {
   const digits = e.target.value.replace(/\D/g, '')
   averageCheckStr.value = digits ? Number(digits).toLocaleString('ru-RU') : ''
   resultShown.value = false
-  showTooltip.value = false
 }
 
+const guestsNum = computed(() => Number(guestsStr.value.replace(/\s|,/g, '')))
 const averageCheckNum = computed(() => Number(averageCheckStr.value.replace(/\s|,/g, '')))
 
-const canCalculate = computed(() => averageCheckNum.value >= 100)
+const canCalculate = computed(() => guestsNum.value >= 50 && averageCheckNum.value >= 100)
 
 const format = (n) => new Intl.NumberFormat('ru-RU').format(Math.round(n))
+
+function calculateROI(monthlyGuests, averageCheck) {
+  // Без системы
+  const loyalWithout = monthlyGuests * constants.loyaltyRateWithoutSystem
+  const revenueWithout = loyalWithout * constants.frequencyWithoutSystem * averageCheck * 12
+  
+  // С системой
+  const loyalWith = monthlyGuests * constants.loyaltyRateWithSystem
+  const revenueDirect = loyalWith * constants.frequencyWithSystem * averageCheck * 12
+  const referralRevenue = loyalWith * constants.referralRate * averageCheck * constants.frequencyWithSystem * 6 // полгода на привлечение
+  const totalRevenueWith = revenueDirect + referralRevenue
+  
+  // LTV расчеты
+  const ltvWithout = averageCheck * constants.frequencyWithoutSystem * 12
+  const ltvWith = (averageCheck * constants.frequencyWithSystem * 12) + (averageCheck * constants.frequencyWithSystem * 6 * constants.referralRate)
+  
+  // ROI расчеты
+  const additionalRevenue = totalRevenueWith - revenueWithout
+  const additionalProfit = additionalRevenue * constants.marginPercentage
+  const roiPercentage = ((additionalProfit - constants.systemCostAnnual) / constants.systemCostAnnual) * 100
+  
+  return {
+    loyalWithout: Math.round(loyalWithout),
+    loyalWith: Math.round(loyalWith),
+    loyaltyGrowth: Math.round(((loyalWith - loyalWithout) / loyalWithout) * 100),
+    ltvWithout: ltvWithout,
+    ltvWith: ltvWith,
+    ltvGrowth: ltvWith - ltvWithout,
+    additionalMonthlyRevenue: Math.round(additionalRevenue / 12),
+    totalAdditionalProfit: Math.round(additionalProfit),
+    roiPercentage: Math.round(roiPercentage),
+    paybackMonths: Math.round(constants.systemCostAnnual / (additionalProfit / 12))
+  }
+}
 
 function calculate() {
   if (!canCalculate.value) return
   
-  const avgCheck = averageCheckNum.value
-  
-  // Расчет LTV:
-  // - 12 визитов за 6 месяцев (2 в месяц)
-  // - 30% дополнительного дохода от рекомендаций
-  const visitsPerPeriod = 12
-  const directRevenue = avgCheck * visitsPerPeriod
-  const referralRevenue = directRevenue * 0.3
-  const totalLTV = directRevenue + referralRevenue
-  
-  result.value = {
-    directRevenue,
-    referralRevenue,
-    totalLTV
-  }
-  
+  result.value = calculateROI(guestsNum.value, averageCheckNum.value)
   resultShown.value = true
 }
 </script>
 
 <style scoped>
-.ltv-calculator-card { 
+.roi-calculator-card { 
   width: 100%; 
-  max-width: 480px; 
   margin: 0 auto 32px; 
-  padding: 20px 24px; 
+  padding: 24px; 
   background: #1e1e1e !important; 
   border: 1px solid #2b2b2b !important; 
   border-radius: 12px; 
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25); 
   color: #ffffff !important; 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  position: relative;
+}
+
+.input-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 16px;
 }
 
 .input-group { 
-  margin-bottom: 16px; 
+  flex: 1;
 }
 
 label { 
@@ -132,6 +222,7 @@ input {
   border-radius: 8px; 
   color: #ffffff !important; 
   transition: border-color 0.25s ease; 
+  box-sizing: border-box;
 }
 
 input:focus { 
@@ -170,88 +261,85 @@ input::placeholder {
 }
 
 .result { 
-  margin-top: 20px; 
-  padding: 20px; 
-  background: #141414 !important; 
-  border: 1px solid #2b2b2b !important; 
-  border-radius: 10px;
-  position: relative;
+  margin-top: 24px; 
 }
 
-.result-text {
-  margin: 0;
-  font: 400 16px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #ffffff !important;
+.result-title {
+  margin: 0 0 20px;
+  font: 600 18px/1.3 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   text-align: center;
-}
-
-.ltv-amount {
-  font-weight: 700;
-  color: #22c55e !important;
-  cursor: pointer;
-  padding: 2px 4px;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-  user-select: none;
-}
-
-.ltv-amount:hover {
-  background-color: rgba(34, 197, 94, 0.1);
-}
-
-.tooltip-popup {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 8px;
-  padding: 16px;
-  background: #2a2a2a !important;
-  border: 1px solid #404040 !important;
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  min-width: 280px;
-  max-width: 320px;
-  z-index: 1000;
-}
-
-.tooltip-popup::before {
-  content: '';
-  position: absolute;
-  top: -6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 6px solid #404040;
-}
-
-.tooltip-popup h4 {
-  margin: 0 0 12px 0;
-  font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #c5f946 !important;
-  text-align: center;
 }
 
-.ltv-formula {
-  margin: 0 0 12px 0;
-  padding: 8px 12px;
+.result-table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #141414 !important;
+  border: 1px solid #2b2b2b !important;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.result-table th {
+  padding: 12px 16px;
+  font: 600 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #c5f946 !important;
   background: #1a1a1a !important;
-  border: 1px solid #333333 !important;
-  border-radius: 6px;
-  font: 500 14px/1.4 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-  color: #22c55e !important;
-  text-align: center;
-  letter-spacing: 0.025em;
+  text-align: left;
+  border-bottom: 1px solid #2b2b2b !important;
 }
 
-.ltv-description {
-  margin: 0;
-  font: 400 13px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+.result-table td {
+  padding: 10px 16px;
+  font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #ffffff !important;
+  border-bottom: 1px solid #2b2b2b !important;
+}
+
+.result-table tr:last-child td {
+  border-bottom: none;
+}
+
+.result-table td:first-child {
+  font-weight: 500;
+}
+
+.highlight {
+  color: #22c55e !important;
+  font-weight: 600;
+}
+
+.growth {
+  color: #c5f946 !important;
+  font-weight: 600;
+}
+
+.roi-value {
+  color: #c5f946 !important;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.info-block {
+  padding: 16px;
+  background: #141414 !important;
+  border: 1px solid #2b2b2b !important;
+  border-radius: 8px;
+}
+
+.info-text {
+  margin: 0 0 12px 0;
+  font: 400 13px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #cccccc !important;
-  text-align: left;
+}
+
+.info-text:last-child {
+  margin-bottom: 0;
 }
 
 /* Анимации */
@@ -269,59 +357,53 @@ input::placeholder {
   transform: translateY(-12px); 
 }
 
-.tooltip-enter-active, .tooltip-leave-active {
-  transition: opacity 0.25s, transform 0.25s;
-}
-
-.tooltip-enter-from {
-  opacity: 0;
-  transform: translateX(-50%) translateY(-8px);
-}
-
-.tooltip-leave-to {
-  opacity: 0;
-  transform: translateX(-50%) translateY(-8px);
-}
-
 /* Мобильные устройства */
 @media(max-width: 768px) {
-  .ltv-calculator-card {
-    padding: 16px 18px;
-    margin-bottom: 24px;
+  .roi-calculator-card {
+    padding: 20px;
+  }
+  
+  .input-row {
+    flex-direction: column;
+    gap: 16px;
   }
   
   input {
-    height: 38px;
-    font-size: 14px;
-    line-height: 38px;
-  }
-  
-  .btn-calc {
     height: 40px;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 40px;
   }
   
-  .result {
-    padding: 16px;
-  }
-  
-  .result-text {
+  .btn-calc {
+    height: 42px;
     font-size: 15px;
+    line-height: 42px;
   }
   
-  .tooltip-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin-top: 0;
-    min-width: 260px;
-    max-width: calc(100vw - 32px);
+  .result-title {
+    font-size: 16px;
   }
   
-  .tooltip-popup::before {
-    display: none;
+  .result-table th,
+  .result-table td {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  .info-text {
+    font-size: 12px;
+  }
+}
+
+@media(max-width: 480px) {
+  .result-table th,
+  .result-table td {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+  
+  .roi-value {
+    font-size: 14px;
   }
 }
 </style>
