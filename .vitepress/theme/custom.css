@@ -12,7 +12,7 @@
 
 /* --- БЕЗОПАСНЫЕ ПРАВИЛА ТОЛЬКО ДЛЯ ROI КАЛЬКУЛЯТОРА --- */
 
-/* Основные контейнеры - локальные изменения */
+/* Основные контейнеры */
 .roi-calc-container,
 .roi-calc-header,
 .roi-calc-table-container {
@@ -22,11 +22,18 @@
   overflow-x: hidden;
 }
 
+/* Заголовок */
+.roi-calc-header {
+  margin: 0 0 20px 0;
+  padding: 16px 0;
+}
+
 /* Таблица - устранение дырок */
 .roi-calc-table-container {
   margin: 0 0 20px 0;
   border-radius: 8px;
   border: 1px solid #2b2b2b;
+  overflow: hidden;
 }
 
 .roi-calc-table-container .roi-calc-table {
@@ -34,6 +41,8 @@
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
+  margin: 0;
+  padding: 0;
 }
 
 /* Контентный блок - скругленные углы сверху */
@@ -49,8 +58,33 @@
   margin-top: 20px;
 }
 
-/* Мобильная версия */
+/* Устранение артефактов границ */
+.roi-calc-table-container .roi-calc-th,
+.roi-calc-table-container .roi-calc-td,
+.roi-calc-table-container .roi-calc-metric-cell {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  outline: none;
+  box-shadow: none;
+}
+
+/* Убираем артефакты от focus и hover */
+.roi-calc-table-container .roi-calc-metric-text:focus,
+.roi-calc-table-container .roi-calc-info-icon:focus,
+.roi-calc-table-container .roi-calc-metric-text:hover,
+.roi-calc-table-container .roi-calc-info-icon:hover {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+/* Мобильная версия - исправление наложения ячеек */
 @media (max-width: 768px) {
+  .roi-calc-table-container .roi-calc-table {
+    table-layout: fixed;
+  }
+  
   .roi-calc-table-container .roi-calc-th,
   .roi-calc-table-container .roi-calc-td,
   .roi-calc-table-container .roi-calc-metric-cell {
@@ -58,8 +92,10 @@
     font-size: 11px;
     line-height: 1.2;
     word-wrap: break-word;
+    overflow-wrap: break-word;
   }
   
+  /* Фиксированная ширина колонок */
   .roi-calc-table-container .roi-calc-th:nth-child(1),
   .roi-calc-table-container .roi-calc-td:nth-child(1),
   .roi-calc-table-container .roi-calc-metric-cell:nth-child(1) {
@@ -79,13 +115,18 @@
   }
 }
 
-/* Устранение артефактов границ */
-.roi-calc-table-container .roi-calc-th,
-.roi-calc-table-container .roi-calc-td,
-.roi-calc-table-container .roi-calc-metric-cell {
-  border-left: none;
-  border-right: none;
-  border-top: none;
-  outline: none;
-  box-shadow: none;
+@media (max-width: 480px) {
+  .roi-calc-table-container .roi-calc-th,
+  .roi-calc-table-container .roi-calc-td,
+  .roi-calc-table-container .roi-calc-metric-cell {
+    padding: 6px 4px;
+    font-size: 10px;
+  }
+}
+
+/* Box-sizing для всех элементов калькулятора */
+.roi-calc-container *,
+.roi-calc-header *,
+.roi-calc-table-container * {
+  box-sizing: border-box;
 }
