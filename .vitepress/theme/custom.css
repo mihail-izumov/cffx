@@ -45,12 +45,13 @@
   padding: 0;
 }
 
-/* Контентный блок - скругленные углы сверху */
+/* Контентный блок - скругленные углы сверху и цвет фона */
 .roi-calc-container.roi-calc-content {
   margin-top: 0;
   border-top: none;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
+  background-color: #1e1e1e;
 }
 
 /* Информационный блок - правильные отступы */
@@ -79,48 +80,99 @@
   box-shadow: none;
 }
 
-/* Мобильная версия - исправление наложения ячеек */
+/* ИСПРАВЛЕННАЯ МОБИЛЬНАЯ ВЕРСИЯ */
 @media (max-width: 768px) {
+  /* Уменьшенные отступы для предотвращения горизонтального скролла */
+  .roi-calc-container,
+  .roi-calc-header,
+  .roi-calc-table-container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* Таблица - компактная верстка */
   .roi-calc-table-container .roi-calc-table {
-    table-layout: fixed;
+    table-layout: fixed !important;
+    width: 100% !important;
   }
   
   .roi-calc-table-container .roi-calc-th,
   .roi-calc-table-container .roi-calc-td,
   .roi-calc-table-container .roi-calc-metric-cell {
-    padding: 8px 6px;
-    font-size: 11px;
-    line-height: 1.2;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    padding: 6px 4px !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
   }
   
-  /* Фиксированная ширина колонок */
+  /* Оптимизированная ширина колонок */
   .roi-calc-table-container .roi-calc-th:nth-child(1),
   .roi-calc-table-container .roi-calc-td:nth-child(1),
   .roi-calc-table-container .roi-calc-metric-cell:nth-child(1) {
-    width: 50%;
+    width: 40% !important;
+  }
+  
+  .roi-calc-table-container .roi-calc-th:nth-child(2),
+  .roi-calc-table-container .roi-calc-td:nth-child(2) {
+    width: 30% !important;
+  }
+  
+  .roi-calc-table-container .roi-calc-th:nth-child(3),
+  .roi-calc-table-container .roi-calc-td:nth-child(3) {
+    width: 30% !important;
+  }
+  
+  /* Скругления для первого блока "Каждый Сигнал..." */
+  .roi-calc-container.roi-calc-content .roi-calc-signal-block:first-child {
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+    margin-top: 0 !important;
+  }
+  
+  /* Фон контентного блока - скрыть дырку */
+  .roi-calc-container.roi-calc-content {
+    background-color: #1e1e1e !important;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  /* Заголовок мобильной версии */
+  .roi-calc-title-mobile {
+    font-size: 14px !important;
+  }
+}
+
+/* Супер мелкие экраны */
+@media (max-width: 480px) {
+  .roi-calc-container,
+  .roi-calc-header,
+  .roi-calc-table-container {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  
+  .roi-calc-table-container .roi-calc-th,
+  .roi-calc-table-container .roi-calc-td,
+  .roi-calc-table-container .roi-calc-metric-cell {
+    padding: 4px 2px !important;
+    font-size: 9px !important;
+  }
+  
+  /* Еще более компактное распределение ширины */
+  .roi-calc-table-container .roi-calc-th:nth-child(1),
+  .roi-calc-table-container .roi-calc-td:nth-child(1),
+  .roi-calc-table-container .roi-calc-metric-cell:nth-child(1) {
+    width: 38% !important;
   }
   
   .roi-calc-table-container .roi-calc-th:nth-child(2),
   .roi-calc-table-container .roi-calc-td:nth-child(2),
   .roi-calc-table-container .roi-calc-th:nth-child(3),
   .roi-calc-table-container .roi-calc-td:nth-child(3) {
-    width: 25%;
-  }
-  
-  .roi-calc-container.roi-calc-content {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .roi-calc-table-container .roi-calc-th,
-  .roi-calc-table-container .roi-calc-td,
-  .roi-calc-table-container .roi-calc-metric-cell {
-    padding: 6px 4px;
-    font-size: 10px;
+    width: 31% !important;
   }
 }
 
