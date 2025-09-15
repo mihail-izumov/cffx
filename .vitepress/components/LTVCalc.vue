@@ -268,7 +268,7 @@ const dynamicRevenueMillion = computed(() => {
   return (revenue / 1000000).toFixed(1)
 })
 
-// ИСПРАВЛЕНО: Динамическая стоимость предотвращенного ухода
+// Динамическая стоимость предотвращенного ухода
 const dynamicPreventedLoss = computed(() => {
   if (!hasCalculated.value) return '25.000'
   
@@ -497,25 +497,7 @@ function calculate() {
 </script>
 
 <style scoped>
-/* ГЛОБАЛЬНЫЕ ПРАВИЛА ДЛЯ УСТРАНЕНИЯ ДЫРКИ СПРАВА */
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100%;
-}
-
-.roi-calc-container, 
-.roi-calc-header,
-.roi-calc-table-container {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
+/* БАЗОВЫЕ СТИЛИ КОМПОНЕНТА - остальное в custom.css */
 .roi-calc-container { 
   margin: 0 auto 20px; 
   padding: 24px; 
@@ -569,19 +551,12 @@ html, body {
   font-weight: 600;
   color: #ffffff;
   flex-shrink: 0;
-  border: none;
-  outline: none;
+  border: none !important;
+  outline: none !important;
 }
 
 .roi-calc-info-icon.hover {
   background: #999999;
-}
-
-/* СПЕЦИАЛЬНЫЙ КЛАСС ДЛЯ ИКОНОК В ТАБЛИЦЕ */
-.roi-calc-info-icon-table {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
 }
 
 .roi-calc-input { 
@@ -645,13 +620,10 @@ html, body {
   transform: translateY(-2px); 
 }
 
-/* ЗАГОЛОВОК ВЫНЕСЕН ИЗ БЛОКА */
+/* ЗАГОЛОВОК */
 .roi-calc-header {
-  width: 100%;
-  max-width: 100%;
   margin: 0 0 20px 0;
   padding: 0;
-  overflow-x: hidden;
 }
 
 .roi-calc-title {
@@ -666,11 +638,10 @@ html, body {
   display: none;
 }
 
-/* ТАБЛИЦА С ИСПРАВЛЕННЫМИ АРТЕФАКТАМИ */
+/* ТАБЛИЦА */
 .roi-calc-table-container {
   margin: 0 0 20px 0;
   padding: 0;
-  overflow: hidden;
   border-radius: 8px;
   border: 1px solid #2b2b2b;
 }
@@ -714,7 +685,6 @@ html, body {
   border-bottom: none !important;
 }
 
-/* ИСПРАВЛЕНИЕ АРТЕФАКТОВ В СТОЛБЦЕ ПОКАЗАТЕЛЬ */
 .roi-calc-metric-cell {
   padding: 12px 16px;
   font: 500 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -727,8 +697,6 @@ html, body {
   justify-content: space-between;
   gap: 8px;
   background: transparent !important;
-  outline: none !important;
-  box-shadow: none !important;
 }
 
 .roi-calc-metric-text {
@@ -739,7 +707,6 @@ html, body {
   border: none !important;
   outline: none !important;
   background: transparent !important;
-  box-shadow: none !important;
 }
 
 .roi-calc-metric-text:hover {
@@ -761,6 +728,7 @@ html, body {
   font-size: 0.9em;
 }
 
+/* БЛОКИ КОНТЕНТА */
 .roi-calc-signal-block {
   margin: 16px 0;
   padding: 16px;
@@ -907,6 +875,7 @@ html, body {
   color: #fbbf24 !important;
 }
 
+/* ТУЛТИПЫ */
 .roi-calc-tooltip-popup {
   position: fixed;
   top: 0;
@@ -972,7 +941,7 @@ html, body {
   margin-bottom: 0;
 }
 
-/* Анимации */
+/* АНИМАЦИИ */
 .roi-calc-tooltip-enter-active, .roi-calc-tooltip-leave-active {
   transition: opacity 0.25s;
 }
@@ -981,78 +950,17 @@ html, body {
   opacity: 0;
 }
 
-/* АДАПТИВНОСТЬ ДЛЯ ВСЕХ РАЗРЕШЕНИЙ */
-
-/* Большие экраны */
-@media (min-width: 1200px) {
-  .roi-calc-container {
-    max-width: 1200px;
-    margin: 0 auto 20px;
-  }
-  
-  .roi-calc-table-container {
-    max-width: 1200px;
-    margin: 0 auto 20px;
-  }
-}
-
-/* Средние экраны */
-@media (min-width: 992px) and (max-width: 1199px) {
-  .roi-calc-container {
-    max-width: 100%;
-    padding: 20px;
-  }
-  
-  .roi-calc-table-container {
-    max-width: 100%;
-  }
-}
-
-/* Планшеты */
-@media (min-width: 769px) and (max-width: 991px) {
-  .roi-calc-container {
-    padding: 18px;
-  }
-  
-  .roi-calc-th,
-  .roi-calc-td {
-    padding: 10px 12px;
-    font-size: 13px;
-  }
-  
-  .roi-calc-metric-cell {
-    padding: 10px 12px;
-    font-size: 13px;
-  }
-}
-
-/* МОБИЛЬНЫЕ УСТРОЙСТВА - ИСПРАВЛЕНА ВЕРСТКА */
+/* АДАПТИВНОСТЬ - базовые правила, остальное в custom.css */
 @media(max-width: 768px) {
   .roi-calc-container {
     padding: 16px;
-    margin-bottom: 12px;
   }
   
   .roi-calc-input-row {
     flex-direction: column;
     gap: 12px;
-    margin-bottom: 12px;
   }
   
-  .roi-calc-input {
-    height: 44px;
-    font-size: 16px;
-    line-height: 44px;
-  }
-  
-  .roi-calc-btn {
-    height: 48px;
-    font-size: 16px;
-    line-height: 48px;
-    margin-top: 8px;
-  }
-  
-  /* Разные заголовки для мобильной и десктоп версии */
   .roi-calc-title-desktop {
     display: none;
   }
@@ -1061,124 +969,8 @@ html, body {
     display: block;
     font-size: 16px;
   }
-  
-  .roi-calc-title {
-    font-size: 16px;
-    margin: 0;
-    padding: 12px 0;
-  }
-  
-  .roi-calc-header {
-    margin: 0 0 12px 0;
-  }
-  
-  .roi-calc-table-container {
-    margin-bottom: 12px;
-    border-radius: 6px;
-  }
-  
-  .roi-calc-th,
-  .roi-calc-td {
-    padding: 8px 10px;
-    font-size: 12px;
-    line-height: 1.3;
-    white-space: normal;
-  }
-  
-  .roi-calc-th:nth-child(1) { width: 50%; }
-  .roi-calc-th:nth-child(2) { width: 25%; }
-  .roi-calc-th:nth-child(3) { width: 25%; }
-  
-  .roi-calc-metric-cell {
-    padding: 8px 10px;
-    font-size: 12px;
-    line-height: 1.3;
-    gap: 4px;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .roi-calc-metric-text {
-    font-size: 12px;
-    line-height: 1.3;
-    margin-bottom: 4px;
-  }
-  
-  .roi-calc-info-icon {
-    width: 16px;
-    height: 16px;
-    font-size: 10px;
-    align-self: flex-end;
-    margin-top: -20px;
-  }
-  
-  .roi-calc-tooltip-content {
-    max-width: calc(100vw - 32px);
-    margin: 16px;
-    padding: 16px;
-  }
-  
-  .roi-calc-signal-block,
-  .roi-calc-coffee-specifics,
-  .roi-calc-payback-explanation,
-  .roi-calc-success-factors,
-  .roi-calc-cta-block,
-  .roi-calc-warning-block,
-  .roi-calc-info-block {
-    padding: 12px;
-    margin: 10px 0;
-  }
-  
-  .roi-calc-signal-title,
-  .roi-calc-coffee-title,
-  .roi-calc-payback-title,
-  .roi-calc-success-title {
-    font-size: 14px;
-    margin-bottom: 8px;
-  }
-  
-  .roi-calc-signal-list li,
-  .roi-calc-coffee-list li,
-  .roi-calc-payback-list li,
-  .roi-calc-success-list li {
-    margin: 4px 0;
-    font-size: 12px;
-    line-height: 1.4;
-  }
-  
-  .roi-calc-cta-text,
-  .roi-calc-warning-text,
-  .roi-calc-info-text {
-    font-size: 12px;
-    line-height: 1.4;
-  }
 }
 
-@media(max-width: 480px) {
-  .roi-calc-container {
-    padding: 12px;
-  }
-  
-  .roi-calc-th,
-  .roi-calc-td {
-    padding: 6px 8px;
-    font-size: 11px;
-  }
-  
-  .roi-calc-metric-cell {
-    padding: 6px 8px;
-  }
-  
-  .roi-calc-metric-text {
-    font-size: 11px;
-  }
-  
-  .roi-calc-title {
-    font-size: 14px;
-  }
-}
-
-/* Десктопная версия - скрываем мобильный заголовок */
 @media(min-width: 769px) {
   .roi-calc-title-mobile {
     display: none;
@@ -1189,13 +981,3 @@ html, body {
   }
 }
 </style>
-
-## Все исправления выполнены:
-
-**✅ Убраны пустые строки в мобильной версии:** оптимизированы отступы и margins
-
-**✅ Устранена дырка справа для всех разрешений:** добавлены правила для всех экранов (1200px+, 992-1199px, 769-991px, до 768px)
-
-**✅ Устранены артефакты ячеек новым способом:** 
-- Использован `border-collapse: separate` с `border-spacing: 0`
-- Убраны все лишние границы через `border: none !
