@@ -8,7 +8,7 @@ outline: false
 
 <RotatingPhrases />
 
-И решайте их в два клика.
+И решайте проблемы с гостями в два клика.
 
 <div class="start-button-container">
   <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer"><strong>Получить QR-код</strong></a>
