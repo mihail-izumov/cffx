@@ -4,7 +4,7 @@
     <div class="anna-brand-card anna-character-card">
       <div class="anna-tariff-badge anna-character">РАДАР</div>
       <h3 class="anna-title">Перехватывает скрытое недовольство</h3>
-      <p class="anna-description-main">96% недовольных гостей кофейни уходят без жалоб, унося 27,000 ₽ LTV. QR-код на столе перехватывает недовольство за 30 секунд до ухода гостя.</p>
+      <p class="anna-description-main">96% недовольных гостей кофейни уходят без жалоб, унося 27,000 ₽ LTV. QR-код перехватывает недовольство за 30 секунд.</p>
       <p class="anna-description-goals anna-character-goals">Находит тех, кто молчит</p>
     </div>
     
