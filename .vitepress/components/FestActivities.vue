@@ -69,9 +69,6 @@
           <span class="card-badge">Авторские пары</span>
         </div>
         <p class="card-description">Изучайте принципы сочетания кислотности, сладости и танинов. Понимайте, как вино и кофе могут дополнять друг друга.</p>
-        <div class="card-highlight">
-          <strong>Партнеры:</strong> Винотека "Градус" × White Cup
-        </div>
       </div>
 
       <div class="experience-card">
@@ -110,7 +107,7 @@
         </div>
         <p class="card-description">Основы работы с молочной пеной, создание базовых рисунков. От простого сердца до сложного тюльпана.</p>
         <div class="card-highlight">
-          <strong>Мастер:</strong> Чемпион Поволжья из Surf Coffee
+          <strong>Мастер:</strong> Твинс
         </div>
       </div>
 
@@ -121,7 +118,7 @@
         </div>
         <p class="card-description">Как выбрать метод заваривания под конкретное зерно и настроение. Секреты извлечения максимума вкуса.</p>
         <div class="card-highlight">
-          <strong>Опыт:</strong> Бариста-тренеры Green House • 10+ лет
+          <strong>Опыт:</strong> Кофейня "На краю земли"
         </div>
       </div>
 
@@ -132,7 +129,7 @@
         </div>
         <p class="card-description">Понимание профилей обжарки, работа с домашним оборудованием. Создавайте уникальные вкусы самостоятельно.</p>
         <div class="card-highlight">
-          <strong>Ведут:</strong> Основатели "Самарские зерна"
+          <strong>Ведут:</strong> Основатели White Cup
         </div>
       </div>
     </div>
