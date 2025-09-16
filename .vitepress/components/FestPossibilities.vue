@@ -138,7 +138,7 @@
         </div>
         <p class="card-description">Владельцы заведений ищут поставщиков, оборудование, новые концепции. Прямые контакты с принимающими решения.</p>
         <div class="card-highlight">
-          <strong>Представлены:</strong> "Корж" • Surf Coffee • White Cup • Green House
+          <strong>Представлены:</strong> MOSAIC Coffee • Кофеваркин • White Cup • Толстой • Твинс • На краю земли • Хюгешная • Матча бар
         </div>
       </div>
 
