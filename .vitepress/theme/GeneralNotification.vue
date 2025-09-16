@@ -6,7 +6,7 @@ const notifications = [
     text: 'Участвуете в фестивале?', 
     hasButton: true,
     buttonText: 'Подать Заявку',
-    buttonUrl: '/fest#организатор'
+    buttonUrl: '/fest/join'
   },
   { 
     text: 'Где начинается Ваша Кофейня.', 
