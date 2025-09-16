@@ -82,16 +82,6 @@
         </div>
       </div>
 
-      <div class="experience-card">
-        <div class="card-header">
-          <h4>Coffee & Craft Beer</h4>
-          <span class="card-badge">Эксперименты</span>
-        </div>
-        <p class="card-description">Исследуйте неожиданные комбинации горечи, фруктовости и солодовости. Новая граница гастрономических открытий.</p>
-        <div class="card-highlight">
-          <strong>Крафт:</strong> "Жигулевское" × Cold Brew Bar
-        </div>
-      </div>
     </div>
   </div>
 
