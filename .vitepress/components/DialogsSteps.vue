@@ -11,9 +11,9 @@
     <!-- ЭТАП 2 -->
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">РЕШЕНИЕ</div>
-      <h3 class="anna-title">Поиск решения</h3>
-      <p class="anna-description-main">Анна принимает негатив, уточняет детали и формирует подготовленный тикет. Отправляет тикет в Телеграм менеджеру.</p>
-      <p class="anna-description-goals anna-step-goals">Лучшее решение вместо бонуса или подарка</p>
+      <h3 class="anna-title">Поиск лучшего решения</h3>
+      <p class="anna-description-main">Анна принимает негатив, уточняет детали, формирует подготовленный тикет и отправляет в Телеграм менеджеру.</p>
+      <p class="anna-description-goals anna-step-goals">Вместо бонуса или подарка</p>
     </div>
     
     <!-- ЭТАП 3 -->
@@ -56,7 +56,7 @@
 }
 
 .anna-brand-card {
-  flex: 0 0 300px !important; /* Исходная ширина */
+  flex: 0 0 300px !important;
   border-radius: 12px !important;
   padding: 20px 16px !important;
   display: flex !important;
@@ -65,7 +65,7 @@
   border-width: 1px !important;
   border-top-width: 4px !important;
   position: relative !important;
-  min-height: 180px !important; /* Исходная высота */
+  min-height: 180px !important;
 }
 
 /* СВЕТЛАЯ ТЕМА - все карточки одинаковые с лаймовым акцентом */
@@ -82,10 +82,10 @@
   border-top-color: #C5F946 !important;
 }
 
-/* Стили для бейджей */
+/* Стили для бейджей - КОНТРАСТНЫЕ */
 .anna-tariff-badge {
   display: inline-block !important;
-  padding: 1px 6px !important;
+  padding: 2px 8px !important;
   border-radius: 4px !important;
   font-size: 9px !important;
   font-weight: 600 !important;
@@ -97,8 +97,8 @@
 }
 
 .anna-step {
-  background-color: rgba(197, 249, 70, 0.25) !important;
-  color: #347b6c !important; /* Темно-зеленый текст для читаемости */
+  background-color: #347b6c !important; /* Темно-зеленый фон */
+  color: #FFFFFF !important; /* Белый текст */
 }
 
 /* Заголовки */
