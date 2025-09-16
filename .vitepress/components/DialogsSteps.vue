@@ -82,7 +82,7 @@
   border-top-color: #C5F946 !important;
 }
 
-/* Стили для бейджей - КОНТРАСТНЫЕ */
+/* Стили для бейджей - ЛАЙМОВЫЙ ФОН */
 .anna-tariff-badge {
   display: inline-block !important;
   padding: 2px 8px !important;
@@ -97,8 +97,8 @@
 }
 
 .anna-step {
-  background-color: #347b6c !important; /* Темно-зеленый фон */
-  color: #FFFFFF !important; /* Белый текст */
+  background-color: #C5F946 !important; /* Лаймовый фон */
+  color: #2d3d2d !important; /* Темно-зеленый текст */
 }
 
 /* Заголовки */
