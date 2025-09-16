@@ -3,7 +3,7 @@
     <!-- РАДАР -->
     <div class="anna-brand-card anna-character-card">
       <div class="anna-tariff-badge anna-character">РАДАР</div>
-      <h3 class="anna-title">Перехватывает 96% скрытого недовольства</h3>
+      <h3 class="anna-title">Перехватывает скрытое недовольство</h3>
       <p class="anna-description-main">96% недовольных гостей кофейни уходят без жалоб, унося 27,000 ₽ LTV. QR-код на столе перехватывает недовольство за 30 секунд до ухода гостя.</p>
       <p class="anna-description-goals anna-character-goals">Находит тех, кто молчит</p>
     </div>
@@ -18,18 +18,18 @@
     
     <!-- ДЕЖУРСТВО -->
     <div class="anna-brand-card anna-connections-card">
-      <div class="anna-tariff-badge anna-connections">ДЕЖУРСТВО</div>
+      <div class="anna-tariff-badge anna-connections">24/7</div>
       <h3 class="anna-title">Работает круглосуточно</h3>
       <p class="anna-description-main">95% гостей остаются лояльными при решении проблемы в первый час. Анна работает 24/7, уточняет детали за 3 часа, отправляет готовый тикет в Telegram.</p>
-      <p class="anna-description-goals anna-connections-goals">Не спит и не устает</p>
+      <p class="anna-description-goals anna-connections-goals">Работает пока вы спите</p>
     </div>
     
     <!-- АЛХИМИЯ -->
     <div class="anna-brand-card anna-memory-card">
-      <div class="anna-tariff-badge anna-memory">АЛХИМИЯ</div>
+      <div class="anna-tariff-badge anna-memory">ЛОЯЛЬНОСТЬ</div>
       <h3 class="anna-title">Превращает жалобы в лояльность</h3>
       <p class="anna-description-main">Гости с решенными проблемами становятся на 30% лояльнее обычных. Каждая решенная жалоба = LTV 35,100 ₽ вместо потерянных 27,000 ₽.</p>
-      <p class="anna-description-goals anna-memory-goals">Превращает врагов в друзей</p>
+      <p class="anna-description-goals anna-memory-goals">Следит за каждым отзывом</p>
     </div>
 
     <!-- ДЕТЕКТОР -->
