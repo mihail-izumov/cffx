@@ -15,8 +15,8 @@ outline: false
   <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer"><strong>Получить QR-код</strong></a>
 </div>
 
-<div style="background-color: #2d2d2d; border: 1px solid #404040; border-radius: 5px; padding: 6px 10px; font-size: 13px; color: #a8a8a8; margin: 8px 0; display: inline-block; font-weight: 500; line-height: 1.2;">
-Отправим стикер и подключим в Телеграм за 15 минут. <br>
+<div style="background-color: #2d2d2d; border: 1px solid #404040; border-radius: 8px; padding: 7px 10px; font-size: 13px; color: #a8a8a8; margin: 8px 0; display: inline-block; font-weight: 500; line-height: 1.2;">
+Отправим стикер и подключим в Телеграм за 15 минут. <br><br>
 <Badge type="tip" text="Требуется Сопровождение" />
 </div>
 
