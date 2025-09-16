@@ -15,7 +15,7 @@ outline: false
   <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer"><strong>Получить QR-код</strong></a>
 </div>
 
-_Отправим стикер и подключим в Телеграм за 15 минут._ <Badge type="tip" text="Требуется Сопровождение" /> <br>
+<div style="background-color: #000000; border: 1px solid #4a4a4a; border-radius: 5px; padding: 12px 16px; font-size: 13px; color: #ffffff; margin: 16px 0; display: inline-block;">Отправим стикер и подключим в Телеграм за 15 минут. <Badge type="tip" text="Требуется Сопровождение" /> </div> 
 
 ## Защищает выручку и репутацию кофейни
 
