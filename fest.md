@@ -35,8 +35,9 @@ notification: general
 **Приглашаем вас на фестиваль, где кофейная культура соединится с винной традицией, крафтовым пивоварением и гастрономическими открытиями.** <br>
 Событие приурочено к Международному Дню Кофе и станет настоящим праздником для всех ценителей качественных напитков.
 
-<div class="start-button-container">
+<div class="button-group">
   <a href="https://kultura-kofe-event.timepad.ru/event/3575231" class="btn btn-primary" target="_blank" rel="noopener noreferrer"><strong>Купить билет</strong></a>
+  <a href="/fest/join" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Участвовать</a>
 </div>
 
 ### Участники
@@ -46,13 +47,6 @@ notification: general
 ## ПРОГРАММА ФЕСТИВАЛЯ
 
 <FestActivities />
-
-## ДЛЯ УЧАСТНИКОВ И ПАРТНЕРОВ
-<FestPossibilities />
-<FestTerms />
-
-## Организатор
-<FestContact />
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
