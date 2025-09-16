@@ -1,34 +1,38 @@
 <template>
   <div class="anna-brands-container">
-    <!-- ЭТАП 1 -->
+    <!-- ШАГ 1 -->
     <div class="anna-brand-card anna-step-card">
-      <div class="anna-tariff-badge anna-step">ЖАЛОБА</div>
+      <div class="anna-tariff-badge anna-step">ШАГ 1</div>
       <h3 class="anna-title">Гость жалуется</h3>
-      <p class="anna-description-main">Гость сканирует QR-код. Умная форма «Опишите проблему» → Анна уточняет детали.</p>
+      <p class="anna-description-main">Гость сканирует QR-код</p>
+      <p class="anna-description-secondary">Умная форма «Опишите проблему» → Анна уточняет детали</p>
       <p class="anna-description-goals anna-step-goals">Чёткая причина жалобы</p>
     </div>
     
-    <!-- ЭТАП 2 -->
+    <!-- ШАГ 2 -->
     <div class="anna-brand-card anna-step-card">
-      <div class="anna-tariff-badge anna-step">РЕШЕНИЕ</div>
+      <div class="anna-tariff-badge anna-step">ШАГ 2</div>
       <h3 class="anna-title">Поиск лучшего решения</h3>
-      <p class="anna-description-main">Анна принимает негатив, уточняет детали, формирует подготовленный тикет и отправляет в Телеграм менеджеру.</p>
+      <p class="anna-description-main">Анна принимает негатив, уточняет детали</p>
+      <p class="anna-description-secondary">Формирует подготовленный тикет → Предлагает лучшее решение → Отправляет в Телеграм менеджеру → Получает ответ и возвращает результат гостю</p>
       <p class="anna-description-goals anna-step-goals">Вместо бонуса или подарка</p>
     </div>
     
-    <!-- ЭТАП 3 -->
+    <!-- ШАГ 3 -->
     <div class="anna-brand-card anna-step-card">
-      <div class="anna-tariff-badge anna-step">РЕЗУЛЬТАТ</div>
+      <div class="anna-tariff-badge anna-step">ШАГ 3</div>
       <h3 class="anna-title">Доставка результата</h3>
-      <p class="anna-description-main">Push-уведомление от Анны: «Проблема решена, получите результат, оцените пользу». Фиксирует контекст обратной связи, закрывает тикет.</p>
+      <p class="anna-description-main">«Проблема решена, получите результат, оцените пользу»</p>
+      <p class="anna-description-secondary">Фиксирует контекст обратной связи, закрывает тикет, ведет статистику</p>
       <p class="anna-description-goals anna-step-goals">Метрики Сигнала + NPS</p>
     </div>
     
-    <!-- ЭТАП 4 -->
+    <!-- ШАГ N -->
     <div class="anna-brand-card anna-step-card">
-      <div class="anna-tariff-badge anna-step">ВОЗВРАТ</div>
+      <div class="anna-tariff-badge anna-step">ШАГ N</div>
       <h3 class="anna-title">Гость возвращается</h3>
-      <p class="anna-description-main">Больше Сигналов каждый следующий визит. Предложения и конструктив вместо стандартного негатива.</p>
+      <p class="anna-description-main">Больше Сигналов каждый следующий визит</p>
+      <p class="anna-description-secondary">Предложения и конструктив вместо стандартного негатива</p>
       <p class="anna-description-goals anna-step-goals">Рост LTV и среднего чека</p>
     </div>
   </div>
@@ -56,7 +60,7 @@
 }
 
 .anna-brand-card {
-  flex: 0 0 300px !important;
+  flex: 0 0 300px !important; /* Фиксированная ширина для скролла */
   border-radius: 12px !important;
   padding: 20px 16px !important;
   display: flex !important;
@@ -82,10 +86,10 @@
   border-top-color: #C5F946 !important;
 }
 
-/* Стили для бейджей - ЛАЙМОВЫЙ ФОН */
+/* Стили для бейджей */
 .anna-tariff-badge {
   display: inline-block !important;
-  padding: 2px 8px !important;
+  padding: 1px 6px !important;
   border-radius: 4px !important;
   font-size: 9px !important;
   font-weight: 600 !important;
@@ -97,8 +101,8 @@
 }
 
 .anna-step {
-  background-color: #C5F946 !important; /* Лаймовый фон */
-  color: #2d3d2d !important; /* Темно-зеленый текст */
+  background-color: #506933 !important;
+  color: #B4D053 !important;
 }
 
 /* Заголовки */
@@ -117,16 +121,29 @@
   color: #ffffff !important;
 }
 
+/* Основной текст (белый) */
 .anna-description-main {
   color: #4a5a4a !important;
   font-size: 15px !important;
   line-height: 1.6 !important;
-  margin: 0 0 4px 0 !important;
-  flex-grow: 1 !important;
+  margin: 0 0 6px 0 !important;
 }
 
 :root.dark .anna-description-main {
   color: #f0f0f0 !important;
+}
+
+/* Дополнительный текст (серый, меньше) */
+.anna-description-secondary {
+  color: #888 !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  margin: 0 0 8px 0 !important;
+  flex-grow: 1 !important;
+}
+
+:root.dark .anna-description-secondary {
+  color: #aaa !important;
 }
 
 /* Цели с увеличенным размером и средней жирностью */
