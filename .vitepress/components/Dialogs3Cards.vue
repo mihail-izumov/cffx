@@ -1,0 +1,383 @@
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+
+const ROTATION_INTERVAL_MS = 7000
+const FADE_DURATION_MS = 1000
+
+const rotatingMessages = [
+  'Перехватывает негатив в 2ГИС/Яндекс до публикации',
+  'Помогает решить проблемы с гостями в два клика'
+]
+
+const currentMessageIndex = ref(0)
+const showText = ref(true)
+let rotatorInterval = null
+
+const cycleRotatorText = () => {
+  showText.value = false
+  setTimeout(() => {
+    currentMessageIndex.value = (currentMessageIndex.value + 1) % rotatingMessages.length
+    showText.value = true
+  }, FADE_DURATION_MS)
+}
+
+onMounted(() => {
+  rotatorInterval = setInterval(cycleRotatorText, ROTATION_INTERVAL_MS)
+})
+
+onUnmounted(() => {
+  clearInterval(rotatorInterval)
+})
+</script>
+
+<template>
+  <div class="reviews-widget-content">
+    <div class="main-card">
+      <div class="stats-grid">
+        <!-- Отправка Сигнала -->
+        <div class="stat-card">
+          <div class="stat-content">
+            <div class="stat-header">
+              <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+              </svg>
+              <div class="stat-title">отправка Сигнала</div>
+            </div>
+            <div class="stat-main">
+              <div class="stat-value">30 сек</div>
+            </div>
+            <div class="stat-description">Умная форма ускоряет процесс</div>
+          </div>
+        </div>
+
+        <!-- Уточняет детали -->
+        <div class="stat-card">
+          <div class="stat-content">
+            <div class="stat-header">
+              <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v6m0 6v6"/>
+                <path d="m15.5 3.5-1.5 1.5"/>
+                <path d="m10 12-1.5 1.5"/>
+                <path d="m15.5 20.5-1.5-1.5"/>
+                <path d="M4 12H2"/>
+                <path d="M10.5 8.5 9 7"/>
+                <path d="M10.5 15.5 9 17"/>
+                <path d="m20.5 8.5-1.5 1.5"/>
+                <path d="m20.5 15.5-1.5-1.5"/>
+                <path d="M22 12h-2"/>
+              </svg>
+              <div class="stat-title">уточняет детали</div>
+            </div>
+            <div class="stat-main">
+              <div class="stat-value">3 ч</div>
+            </div>
+            <div class="stat-description">обработка, персональное уточнение, формирование тикета</div>
+          </div>
+        </div>
+
+        <!-- Поиск решения -->
+        <div class="stat-card">
+          <div class="stat-content">
+            <div class="stat-header">
+              <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+              <div class="stat-title">поиск решения</div>
+            </div>
+            <div class="stat-main">
+              <div class="stat-value">24 ч</div>
+            </div>
+            <div class="stat-description">уточнение тикета, доставка результата, оценка NPS</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-panel">
+        <div class="control-panel-header">
+          <span class="static-prompt">24/7:</span>
+          <div class="rotating-text-container">
+            <span :class="['rotating-text', { 'show': showText }]">
+              {{ rotatingMessages[currentMessageIndex] }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.reviews-widget-content { 
+  padding: 0; 
+  width: 100%; 
+  box-sizing: border-box;
+}
+
+.main-card { 
+  background: var(--vp-c-bg-soft); 
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ПРОСТАЯ И РАБОЧАЯ структура карточек */
+.stats-grid { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr 1fr; 
+  gap: 16px; 
+}
+
+.stat-card {
+  position: relative;
+  border-radius: 22px;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
+  background: var(--vp-c-bg-soft);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  padding: 2px;
+  background: linear-gradient(135deg, #4d7c0f, #A3E635, #C5F946);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: filter 0.4s ease;
+  z-index: 1;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+}
+
+.stat-card:hover::before {
+  filter: brightness(1.5) saturate(1.3);
+}
+
+/* УПРОЩЕННАЯ структура: 3 блока вертикально */
+.stat-content {
+  background: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.15) 0%, transparent 70%);
+  border-radius: 20px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 280px;
+  text-align: center;
+  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  z-index: 2;
+}
+
+.stat-card:hover .stat-content {
+  background: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.3) 0%, transparent 70%);
+  box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
+}
+
+/* Блок 1: Заголовок (фиксированная высота) */
+.stat-header { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 8px;
+  height: 60px;
+  justify-content: flex-start;
+}
+
+.stat-icon { 
+  color: #A3E635;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  flex-shrink: 0;
+}
+
+.stat-card:hover .stat-icon { 
+  transform: scale(1.2);
+  color: #C5F946;
+}
+
+.stat-title { 
+  font-size: 14px; 
+  font-weight: 700; 
+  color: rgba(255,255,255,0.9); 
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.stat-card:hover .stat-title { 
+  transform: scale(1.05);
+  color: #A3E635;
+}
+
+/* Блок 2: Основное значение (центр) */
+.stat-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-value {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.stat-card:hover .stat-value {
+  transform: scale(1.05);
+  text-shadow: 0 0 30px rgba(163, 230, 53, 0.5);
+  color: #A3E635;
+}
+
+/* Блок 3: Описание (фиксированная высота) */
+.stat-description {
+  height: 60px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.3;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  letter-spacing: 0.02em;
+  max-width: 180px;
+  margin: 0 auto;
+}
+
+.stat-card:hover .stat-description { 
+  transform: scale(1.02);
+  color: rgba(163, 230, 53, 0.9);
+}
+
+/* Пульт управления */
+.control-panel { 
+  margin-top: 24px; 
+}
+
+.control-panel-header { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  margin-bottom: 12px; 
+  padding: 0 8px; 
+  font-size: 14px; 
+  font-weight: 600; 
+}
+
+.static-prompt { 
+  color: white; 
+  margin-right: 8px; 
+  flex-shrink: 0; 
+}
+
+.rotating-text-container { 
+  flex-grow: 1; 
+  text-align: left; 
+  color: rgba(255, 255, 255, 0.7); 
+  min-height: 36px; 
+  display: flex; 
+  align-items: center;
+}
+
+.rotating-text { 
+  transition: opacity 0.5s ease-in-out; 
+  line-height: 1.2; 
+}
+
+.rotating-text:not(.show) { 
+  opacity: 0; 
+}
+
+/* МОБИЛЬНАЯ версия с исправленными размерами */
+@media (max-width: 768px) {
+  .reviews-widget-content { padding: 0; }
+  .main-card { padding: 20px; border-radius: 12px; }
+  
+  .stats-grid { 
+    grid-template-columns: 1fr; 
+    gap: 12px; 
+  }
+  
+  .stat-card { 
+    border-radius: 16px; 
+    transition: none;
+  }
+  
+  .stat-card:hover { transform: none; }
+  
+  .stat-content { 
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-start; 
+    align-items: flex-start; 
+    padding: 20px 18px 20px 18px;
+    min-height: auto;
+    background: radial-gradient(circle at 20% 50%, rgba(163, 230, 53, 0.15) 0%, transparent 70%) !important;
+    gap: 16px;
+  }
+  
+  .stat-header { 
+    flex-direction: row; 
+    align-items: center; 
+    gap: 8px; 
+    width: 100%;
+    justify-content: flex-start;
+    height: auto;
+  }
+  
+  .stat-icon { width: 20px; height: 20px; }
+  .stat-title { font-size: 11px; margin: 0; }
+  
+  .stat-main {
+    width: 100%;
+    flex: none;
+  }
+  
+  .stat-value {
+    font-size: 2.2rem !important;
+    font-weight: 500 !important;
+    margin: 0;
+    line-height: 1;
+  }
+  
+  .stat-description { 
+    font-size: 14px !important;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.3;
+    text-align: left;
+    margin: 0;
+    width: 100%;
+    height: auto;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-card { padding: 16px; }
+  
+  .stat-content { 
+    padding: 18px 16px 18px 16px;
+    gap: 14px;
+  }
+  
+  .stat-value { font-size: 2rem !important; }
+  .stat-description { font-size: 13px !important; }
+}
+</style>
