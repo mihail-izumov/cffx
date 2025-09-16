@@ -29,9 +29,6 @@
           <span class="card-badge">SCA стандарты</span>
         </div>
         <p class="card-description">Учитесь оценивать кофе по международным стандартам. Развивайте навыки Q-грейдера и понимание качественных характеристик зерна.</p>
-        <div class="card-highlight">
-          <strong>Ведут:</strong> Q-грейдеры от Skuratov и Coffee Balance
-        </div>
       </div>
 
       <div class="experience-card">
@@ -40,9 +37,6 @@
           <span class="card-badge">Без предрассудков</span>
         </div>
         <p class="card-description">Развивайте чувствительность вкусовых рецепторов, учитесь определять происхождение и способ обработки зерна без визуальных подсказок.</p>
-        <div class="card-highlight">
-          <strong>Формат:</strong> 8 самарских обжарщиков • "Угадай происхождение"
-        </div>
       </div>
 
       <div class="experience-card">
@@ -116,7 +110,7 @@
         </div>
         <p class="card-description">Понимание профилей обжарки, работа с домашним оборудованием. Создавайте уникальные вкусы самостоятельно.</p>
         <div class="card-highlight">
-          <strong>Ведут:</strong> Основатели White Cup
+          <strong>Ведут:</strong> White Cup
         </div>
       </div>
     </div>
