@@ -39,6 +39,8 @@ notification: general
   <a href="https://kultura-kofe-event.timepad.ru/event/3575231" class="btn btn-primary" target="_blank" rel="noopener noreferrer"><strong>Купить билет</strong></a>
 </div>
 
+### Участники
+
 <FestBrands />
 
 ## Открывайте новые грани вкуса
