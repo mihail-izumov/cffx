@@ -279,8 +279,8 @@ function nav(): DefaultTheme.NavItem[] {
       text: 'Умная Кофейня',
       items: [
         { text: '→ Начать', link: '/brew/membership' }, 
-        { text: 'Тикет-система', link: '/brew/tickets' },
-        { text: 'Анализ конкурентов', link: '/brew/reports' }
+        { text: 'Диалоги', link: '/brew/tickets' },
+        { text: 'Радар', link: '/brew/reports' }
       ]
     }
   ]
