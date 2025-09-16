@@ -33,7 +33,6 @@
           <strong>Включено:</strong> Электричество • Мебель • Освещение • Брендинг
         </div>
       </div>
-
       <div class="experience-card">
         <div class="card-header">
           <h4>Зона дегустаций</h4>
@@ -62,7 +61,6 @@
           <strong>Сегменты:</strong> B2C покупатели • B2B партнеры • HoReCa сектор
         </div>
       </div>
-
       <div class="experience-card">
         <div class="card-header">
           <h4>Прямые контакты</h4>
@@ -73,7 +71,6 @@
           <strong>Результат:</strong> Базы контактов • Договоры • Дистрибьюторские соглашения
         </div>
       </div>
-
       <div class="experience-card">
         <div class="card-header">
           <h4>Медиа охват</h4>
@@ -90,7 +87,8 @@
   <!-- Вкладка 3: Интерактив -->
   <div v-show="activeTab === 'interactive'" class="content-section">
     <h3>Интерактивный маршрут с вовлечением гостей</h3>
-
+    
+    <div class="experience-grid">
       <div class="experience-card">
         <div class="card-header">
           <h4>Геймификация продаж</h4>
@@ -101,7 +99,6 @@
           <strong>Инструменты:</strong> Промокоды • Бонусные карты • Призовые акции
         </div>
       </div>
-
       <div class="experience-card">
         <div class="card-header">
           <h4>Круглый стол индустрии</h4>
@@ -130,7 +127,6 @@
           <strong>Из Самары:</strong> MOSAIC Coffee • Кофеваркин • White Cup
         </div>
       </div>
-
       <div class="experience-card">
         <div class="card-header">
           <h4>Гастропроекты и кофейни</h4>
@@ -141,7 +137,6 @@
           <strong>Представлены:</strong> MOSAIC Coffee • Кофеваркин • White Cup • Толстой • Твинс • На краю земли • Хюгешная • Матча бар
         </div>
       </div>
-
       <div class="experience-card">
         <div class="card-header">
           <h4>Винные и кондитерские проекты</h4>
@@ -152,7 +147,6 @@
           <strong>Партнеры:</strong> Vittoria Gourmet
         </div>
       </div>
-
       <div class="experience-card">
         <div class="card-header">
           <h4>Энтузиасты кофейной культуры</h4>
@@ -165,6 +159,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 </template>
 
