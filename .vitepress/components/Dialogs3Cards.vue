@@ -42,7 +42,7 @@ onUnmounted(() => {
                 <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
                 <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
               </svg>
-              <div class="rw-stat-title">отправка Сигнала</div>
+              <div class="rw-stat-title">отправка сигнала</div>
             </div>
             <div class="rw-stat-main">
               <div class="rw-stat-value">30 сек</div>
@@ -56,17 +56,9 @@ onUnmounted(() => {
           <div class="rw-stat-content">
             <div class="rw-stat-header">
               <svg class="rw-stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v6m0 6v6"/>
-                <path d="m15.5 3.5-1.5 1.5"/>
-                <path d="m10 12-1.5 1.5"/>
-                <path d="m15.5 20.5-1.5-1.5"/>
-                <path d="M4 12H2"/>
-                <path d="M10.5 8.5 9 7"/>
-                <path d="M10.5 15.5 9 17"/>
-                <path d="m20.5 8.5-1.5 1.5"/>
-                <path d="m20.5 15.5-1.5-1.5"/>
-                <path d="M22 12h-2"/>
+                <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9"/>
+                <path d="M12 12l-4 4 1.5 1.5L12 15l2.5 2.5L16 16l-4-4Z"/>
+                <path d="M12 8v4"/>
               </svg>
               <div class="rw-stat-title">уточняет детали</div>
             </div>
@@ -210,6 +202,7 @@ onUnmounted(() => {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  white-space: nowrap;
 }
 
 .rw-stat-card:hover .rw-stat-title { 
@@ -232,6 +225,7 @@ onUnmounted(() => {
   color: #fff;
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  white-space: nowrap;
 }
 
 .rw-stat-card:hover .rw-stat-value {
@@ -269,7 +263,6 @@ onUnmounted(() => {
   display: flex; 
   align-items: center; 
   gap: 8px; 
-  margin-bottom: 12px; 
   padding: 0 8px; 
   font-size: 14px; 
   font-weight: 600; 
