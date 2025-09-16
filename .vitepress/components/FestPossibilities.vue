@@ -36,17 +36,6 @@
 
       <div class="experience-card">
         <div class="card-header">
-          <h4>Предоставленное оборудование</h4>
-          <span class="card-badge">Готовое решение</span>
-        </div>
-        <p class="card-description">Профессиональное кофейное оборудование, посуда для дегустаций, мебель для демонстрации. Все готово к работе.</p>
-        <div class="card-highlight">
-          <strong>Оборудование:</strong> Эспрессо-машины • Альтернативное заваривание • Посуда
-        </div>
-      </div>
-
-      <div class="experience-card">
-        <div class="card-header">
           <h4>Зона дегустаций</h4>
           <span class="card-badge">Прямые продажи</span>
         </div>
@@ -101,18 +90,6 @@
   <!-- Вкладка 3: Интерактив -->
   <div v-show="activeTab === 'interactive'" class="content-section">
     <h3>Интерактивный маршрут с вовлечением гостей</h3>
-    
-    <div class="experience-grid">
-      <div class="experience-card">
-        <div class="card-header">
-          <h4>Квиз-маршрут</h4>
-          <span class="card-badge">Каждая зона участвует</span>
-        </div>
-        <p class="card-description">Гости проходят по всем стендам, выполняя задания квиза. Это гарантирует посещение вашей зоны каждым участником фестиваля.</p>
-        <div class="card-highlight">
-          <strong>Механика:</strong> QR-коды • Задания • Призы за прохождение
-        </div>
-      </div>
 
       <div class="experience-card">
         <div class="card-header">
@@ -150,7 +127,7 @@
         </div>
         <p class="card-description">Локальные и региональные обжарщики представляют свои уникальные сорта. Возможность B2B сотрудничества и обмена опытом.</p>
         <div class="card-highlight">
-          <strong>Из Самары:</strong> Skuratov • Coffee Balance • "Самарские зерна"
+          <strong>Из Самары:</strong> MOSAIC Coffee • Кофеваркин • White Cup
         </div>
       </div>
 
@@ -172,7 +149,7 @@
         </div>
         <p class="card-description">Расширение сети контактов в смежных областях. Возможность кросс-промоушена и совместных проектов.</p>
         <div class="card-highlight">
-          <strong>Партнеры:</strong> Винотека "Градус" • Шоколатье • Craft Beer Bar
+          <strong>Партнеры:</strong> Vittoria Gourmet
         </div>
       </div>
 
