@@ -3,7 +3,7 @@
     <!-- ШАГ 1 -->
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">ШАГ 1</div>
-      <h3 class="anna-title">Гость жалуется</h3>
+      <h3 class="anna-title">Ваш гость жалуется</h3>
       <p class="anna-description-main">Гость сканирует QR-код</p>
       <p class="anna-description-secondary">Умная форма «Опишите проблему» → Анна уточняет детали</p>
       <p class="anna-description-goals anna-step-goals">Чёткая причина жалобы</p>
