@@ -43,11 +43,11 @@ notification: general
 
 <FestBrands />
 
-## Открывайте новые грани вкуса
+## ПРОГРАММА ФЕСТИВАЛЯ
 
 <FestActivities />
 
-## Присоединяйтесь к главному кофейному событию года
+## ДЛЯ УЧАСТНИКОВ И ПАРТНЕРОВ
 <FestPossibilities />
 <FestTerms />
 
