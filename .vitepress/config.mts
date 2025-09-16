@@ -274,6 +274,7 @@ function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Как работает', link: '/signals' },
     { text: 'Индекс', link: '/smr' },
+    { text: 'Фестиваль', link: '/fest' },
     { text: 'Инвестиции', link: '/invest/pulse' },
     {
       text: 'Умная Кофейня',
@@ -292,8 +293,8 @@ function sidebarBrew(): DefaultTheme.SidebarItem[] {
       collapsed: false,
       items: [
         { text: '→ Начать', link: '/brew/membership' },  
-        { text: 'Тикет-система', link: '/brew/tickets' },
-        { text: 'Анализ конкурентов', link: '/brew/reports' }
+        { text: 'Диалоги', link: '/brew/tickets' },
+        { text: 'Радар', link: '/brew/reports' }
       ]
     }
   ]
