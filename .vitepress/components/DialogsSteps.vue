@@ -2,7 +2,7 @@
   <div class="anna-brands-container">
     <!-- ЭТАП 1 -->
     <div class="anna-brand-card anna-step-card">
-      <div class="anna-tariff-badge anna-step">ЭТАП 1</div>
+      <div class="anna-tariff-badge anna-step">ЖАЛОБА</div>
       <h3 class="anna-title">Гость жалуется</h3>
       <p class="anna-description-main">Гость сканирует QR-код. Умная форма «Опишите проблему» → Анна уточняет детали.</p>
       <p class="anna-description-goals anna-step-goals">Чёткая причина жалобы</p>
@@ -10,23 +10,23 @@
     
     <!-- ЭТАП 2 -->
     <div class="anna-brand-card anna-step-card">
-      <div class="anna-tariff-badge anna-step">ЭТАП 2</div>
+      <div class="anna-tariff-badge anna-step">РЕШЕНИЕ</div>
       <h3 class="anna-title">Поиск решения</h3>
-      <p class="anna-description-main">Анна принимает негатив, уточняет детали и формирует подготовленный тикет. На базе регламента предлагает лучшее решение → Отправляет тикет в Телеграм менеджеру.</p>
+      <p class="anna-description-main">Анна принимает негатив, уточняет детали и формирует подготовленный тикет. Отправляет тикет в Телеграм менеджеру.</p>
       <p class="anna-description-goals anna-step-goals">Лучшее решение вместо бонуса или подарка</p>
     </div>
     
     <!-- ЭТАП 3 -->
     <div class="anna-brand-card anna-step-card">
-      <div class="anna-tariff-badge anna-step">ЭТАП 3</div>
+      <div class="anna-tariff-badge anna-step">РЕЗУЛЬТАТ</div>
       <h3 class="anna-title">Доставка результата</h3>
-      <p class="anna-description-main">Push-уведомление от Анны: «Проблема решена, получите результат, оцените пользу». Фиксирует контекст обратной связи, закрывает тикет, ведет статистику.</p>
+      <p class="anna-description-main">Push-уведомление от Анны: «Проблема решена, получите результат, оцените пользу». Фиксирует контекст обратной связи, закрывает тикет.</p>
       <p class="anna-description-goals anna-step-goals">Метрики Сигнала + NPS</p>
     </div>
     
     <!-- ЭТАП 4 -->
     <div class="anna-brand-card anna-step-card">
-      <div class="anna-tariff-badge anna-step">ЭТАП 4</div>
+      <div class="anna-tariff-badge anna-step">ВОЗВРАТ</div>
       <h3 class="anna-title">Гость возвращается</h3>
       <p class="anna-description-main">Больше Сигналов каждый следующий визит. Предложения и конструктив вместо стандартного негатива.</p>
       <p class="anna-description-goals anna-step-goals">Рост LTV и среднего чека</p>
@@ -56,7 +56,7 @@
 }
 
 .anna-brand-card {
-  flex: 0 0 320px !important; /* Увеличена ширина для длинного текста */
+  flex: 0 0 300px !important; /* Исходная ширина */
   border-radius: 12px !important;
   padding: 20px 16px !important;
   display: flex !important;
@@ -65,7 +65,7 @@
   border-width: 1px !important;
   border-top-width: 4px !important;
   position: relative !important;
-  min-height: 200px !important; /* Увеличена высота */
+  min-height: 180px !important; /* Исходная высота */
 }
 
 /* СВЕТЛАЯ ТЕМА - все карточки одинаковые с лаймовым акцентом */
@@ -85,28 +85,28 @@
 /* Стили для бейджей */
 .anna-tariff-badge {
   display: inline-block !important;
-  padding: 2px 8px !important;
+  padding: 1px 6px !important;
   border-radius: 4px !important;
-  font-size: 10px !important;
+  font-size: 9px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.3px !important;
-  margin-bottom: 8px !important;
+  margin-bottom: 6px !important;
   width: fit-content !important;
   border: none !important;
 }
 
 .anna-step {
   background-color: rgba(197, 249, 70, 0.25) !important;
-  color: #347b6c !important;
+  color: #347b6c !important; /* Темно-зеленый текст для читаемости */
 }
 
 /* Заголовки */
 .anna-title {
-  font-size: 16px !important;
+  font-size: 15px !important;
   line-height: 1.4 !important;
   margin-top: 0 !important;
-  margin-bottom: 10px !important;
+  margin-bottom: 8px !important;
   font-weight: 700 !important;
   border: none !important;
   padding: 0 !important;
@@ -114,35 +114,32 @@
 }
 
 :root.dark .anna-title {
-  color: #C5F946 !important;
+  color: #ffffff !important;
 }
 
 .anna-description-main {
   color: #4a5a4a !important;
-  font-size: 14px !important;
+  font-size: 15px !important;
   line-height: 1.6 !important;
-  margin: 0 0 6px 0 !important;
+  margin: 0 0 4px 0 !important;
   flex-grow: 1 !important;
 }
 
 :root.dark .anna-description-main {
-  color: #e0e0e0 !important;
+  color: #f0f0f0 !important;
 }
 
-/* Цели с лаймовым акцентом */
+/* Цели с увеличенным размером и средней жирностью */
 .anna-step-goals {
   color: #347b6c !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
   line-height: 1.6 !important;
   margin: 0 !important;
-  padding-top: 4px !important;
-  border-top: 1px solid rgba(197, 249, 70, 0.3) !important;
 }
 
 /* ТЕМНАЯ ТЕМА - цели */
 :root.dark .anna-step-goals {
   color: #C5F946 !important;
-  border-top-color: rgba(197, 249, 70, 0.3) !important;
 }
 </style>
