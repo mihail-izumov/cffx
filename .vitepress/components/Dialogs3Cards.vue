@@ -59,7 +59,7 @@ onUnmounted(() => {
             <div class="rw-stat-main">
               <div class="rw-stat-value">30 сек</div>
             </div>
-            <div class="rw-stat-description">Умная форма ускоряет процесс</div>
+            <div class="rw-stat-description">Умная форма ускоряет процесс и делает его увлекательным</div>
           </div>
         </div>
 
@@ -76,7 +76,7 @@ onUnmounted(() => {
             <div class="rw-stat-main">
               <div class="rw-stat-value">3 ч</div>
             </div>
-            <div class="rw-stat-description">обработка, персональное уточнение, формирование тикета</div>
+            <div class="rw-stat-description">Принимает негатив, уточняет детали, формирует тикет</div>
           </div>
         </div>
 
@@ -93,7 +93,7 @@ onUnmounted(() => {
             <div class="rw-stat-main">
               <div class="rw-stat-value">24 ч</div>
             </div>
-            <div class="rw-stat-description">уточнение тикета, доставка результата, оценка NPS</div>
+            <div class="rw-stat-description">Доставляет результат, закрывает тикет, оценка NPS</div>
           </div>
         </div>
       </div>
