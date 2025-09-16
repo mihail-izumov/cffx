@@ -33,6 +33,18 @@ onUnmounted(() => {
 <template>
   <div class="rw-reviews-widget-content">
     <div class="rw-main-card">
+      <!-- Ротатор перенесен наверх -->
+      <div class="rw-control-panel">
+        <div class="rw-control-panel-header">
+          <span class="rw-static-prompt">24/7:</span>
+          <div class="rw-rotating-text-container">
+            <span :class="['rw-rotating-text', { 'rw-show': showText }]">
+              {{ rotatingMessages[currentMessageIndex] }}
+            </span>
+          </div>
+        </div>
+      </div>
+
       <div class="rw-stats-grid">
         <!-- Отправка Сигнала -->
         <div class="rw-stat-card">
@@ -85,17 +97,6 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-
-      <div class="rw-control-panel">
-        <div class="rw-control-panel-header">
-          <span class="rw-static-prompt">24/7:</span>
-          <div class="rw-rotating-text-container">
-            <span :class="['rw-rotating-text', { 'rw-show': showText }]">
-              {{ rotatingMessages[currentMessageIndex] }}
-            </span>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -113,6 +114,43 @@ onUnmounted(() => {
   padding: 24px;
   width: 100%;
   box-sizing: border-box;
+}
+
+.rw-control-panel { 
+  margin-bottom: 24px; 
+}
+
+.rw-control-panel-header { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  padding: 0 8px; 
+  font-size: 14px; 
+  font-weight: 600; 
+}
+
+.rw-static-prompt { 
+  color: white; 
+  margin-right: 8px; 
+  flex-shrink: 0; 
+}
+
+.rw-rotating-text-container { 
+  flex-grow: 1; 
+  text-align: left; 
+  color: rgba(255, 255, 255, 0.7); 
+  min-height: 36px; 
+  display: flex; 
+  align-items: center;
+}
+
+.rw-rotating-text { 
+  transition: opacity 0.5s ease-in-out; 
+  line-height: 1.2; 
+}
+
+.rw-rotating-text:not(.rw-show) { 
+  opacity: 0; 
 }
 
 .rw-stats-grid { 
@@ -253,43 +291,6 @@ onUnmounted(() => {
   color: rgba(163, 230, 53, 0.9);
 }
 
-.rw-control-panel { 
-  margin-top: 24px; 
-}
-
-.rw-control-panel-header { 
-  display: flex; 
-  align-items: center; 
-  gap: 8px; 
-  padding: 0 8px; 
-  font-size: 14px; 
-  font-weight: 600; 
-}
-
-.rw-static-prompt { 
-  color: white; 
-  margin-right: 8px; 
-  flex-shrink: 0; 
-}
-
-.rw-rotating-text-container { 
-  flex-grow: 1; 
-  text-align: left; 
-  color: rgba(255, 255, 255, 0.7); 
-  min-height: 36px; 
-  display: flex; 
-  align-items: center;
-}
-
-.rw-rotating-text { 
-  transition: opacity 0.5s ease-in-out; 
-  line-height: 1.2; 
-}
-
-.rw-rotating-text:not(.rw-show) { 
-  opacity: 0; 
-}
-
 /* Мобильная версия */
 @media (max-width: 768px) {
   .rw-reviews-widget-content { 
@@ -299,6 +300,10 @@ onUnmounted(() => {
   .rw-main-card { 
     padding: 20px; 
     border-radius: 12px; 
+  }
+
+  .rw-control-panel { 
+    margin-bottom: 20px; 
   }
   
   .rw-stats-grid { 
@@ -373,6 +378,10 @@ onUnmounted(() => {
 @media (max-width: 480px) {
   .rw-main-card { 
     padding: 16px; 
+  }
+  
+  .rw-control-panel { 
+    margin-bottom: 16px; 
   }
   
   .rw-stat-content { 
