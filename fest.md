@@ -4,7 +4,21 @@ prev: false
 next: false
 title: Культура Кофе | Фестиваль в Самаре – Сентябрь 28, 2025
 notification: general
+description: Главное кофейное событие Самары 2025. Присоединяйтесь к фестивалю кофейной культуры!
+head:
+  - - meta
+    - property: og:title
+      content: Культура Кофе | Фестиваль в Самаре – Сентябрь 28, 2025
+  - - meta
+    - property: og:description
+      content: Главное кофейное событие Самары 2025. Присоединяйтесь к фестивалю кофейной культуры!
+  - - meta
+    - property: og:image
+      content: https://cffx.ru/fest2025_smr_ban_1.jpg
+  - - meta
+    - property: og:url
 ---
+
 
 # Фестиваль "Культура Кофе"
 
