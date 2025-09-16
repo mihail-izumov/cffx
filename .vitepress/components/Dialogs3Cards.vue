@@ -33,12 +33,22 @@ onUnmounted(() => {
 <template>
   <div class="rw-reviews-widget-content">
     <div class="rw-main-card">
+      <!-- Ротатор перенесен наверх -->
+      <div class="rw-rotator-container">
+        <span class="rw-static-prompt">24/7:</span>
+        <div class="rw-rotating-text-container">
+          <span :class="['rw-rotating-text', { 'rw-show': showText }]">
+            {{ rotatingMessages[currentMessageIndex] }}
+          </span>
+        </div>
+      </div>
+
       <div class="rw-stats-grid">
         <!-- Отправка Сигнала -->
         <div class="rw-stat-card">
           <div class="rw-stat-content">
             <div class="rw-stat-header">
-              <svg class="rw-stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="rw-stat-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
                 <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
               </svg>
@@ -55,10 +65,9 @@ onUnmounted(() => {
         <div class="rw-stat-card">
           <div class="rw-stat-content">
             <div class="rw-stat-header">
-              <svg class="rw-stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9"/>
-                <path d="M12 12l-4 4 1.5 1.5L12 15l2.5 2.5L16 16l-4-4Z"/>
-                <path d="M12 8v4"/>
+              <svg class="rw-stat-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
               </svg>
               <div class="rw-stat-title">уточняет детали</div>
             </div>
@@ -73,7 +82,7 @@ onUnmounted(() => {
         <div class="rw-stat-card">
           <div class="rw-stat-content">
             <div class="rw-stat-header">
-              <svg class="rw-stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="rw-stat-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"/>
                 <path d="m21 21-4.35-4.35"/>
               </svg>
@@ -86,23 +95,11 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-
-      <div class="rw-control-panel">
-        <div class="rw-control-panel-header">
-          <span class="rw-static-prompt">24/7:</span>
-          <div class="rw-rotating-text-container">
-            <span :class="['rw-rotating-text', { 'rw-show': showText }]">
-              {{ rotatingMessages[currentMessageIndex] }}
-            </span>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-/* Полностью изолированные стили с уникальным префиксом rw- */
 .rw-reviews-widget-content { 
   padding: 0; 
   width: 100%; 
@@ -115,6 +112,41 @@ onUnmounted(() => {
   padding: 24px;
   width: 100%;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.rw-rotator-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  padding: 0 8px;
+}
+
+.rw-static-prompt {
+  flex-shrink: 0;
+}
+
+.rw-rotating-text-container {
+  flex-grow: 1;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.7);
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.rw-rotating-text {
+  transition: opacity 0.5s ease-in-out;
+  line-height: 1.2;
+}
+
+.rw-rotating-text:not(.rw-show) {
+  opacity: 0;
 }
 
 .rw-stats-grid { 
@@ -158,7 +190,7 @@ onUnmounted(() => {
 .rw-stat-content {
   background: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.15) 0%, transparent 70%);
   border-radius: 20px;
-  padding: 24px 20px;
+  padding: 28px 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -179,8 +211,8 @@ onUnmounted(() => {
   display: flex; 
   flex-direction: column; 
   align-items: center; 
-  gap: 8px;
-  height: 60px;
+  gap: 10px;
+  height: 56px;
   justify-content: flex-start;
 }
 
@@ -196,7 +228,7 @@ onUnmounted(() => {
 }
 
 .rw-stat-title { 
-  font-size: 14px; 
+  font-size: 13px;
   font-weight: 700; 
   color: rgba(255,255,255,0.9); 
   text-transform: uppercase;
@@ -219,7 +251,7 @@ onUnmounted(() => {
 
 .rw-stat-value {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(2rem, 4vw, 2.5rem);
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -235,18 +267,19 @@ onUnmounted(() => {
 }
 
 .rw-stat-description {
-  height: 60px;
+  height: auto;
+  min-height: 60px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.8);
-  line-height: 1.3;
+  line-height: 1.4;
   text-align: center;
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   letter-spacing: 0.02em;
-  max-width: 180px;
+  max-width: 220px;
   margin: 0 auto;
 }
 
@@ -255,57 +288,22 @@ onUnmounted(() => {
   color: rgba(163, 230, 53, 0.9);
 }
 
-.rw-control-panel { 
-  margin-top: 24px; 
-}
-
-.rw-control-panel-header { 
-  display: flex; 
-  align-items: center; 
-  gap: 8px; 
-  padding: 0 8px; 
-  font-size: 14px; 
-  font-weight: 600; 
-}
-
-.rw-static-prompt { 
-  color: white; 
-  margin-right: 8px; 
-  flex-shrink: 0; 
-}
-
-.rw-rotating-text-container { 
-  flex-grow: 1; 
-  text-align: left; 
-  color: rgba(255, 255, 255, 0.7); 
-  min-height: 36px; 
-  display: flex; 
-  align-items: center;
-}
-
-.rw-rotating-text { 
-  transition: opacity 0.5s ease-in-out; 
-  line-height: 1.2; 
-}
-
-.rw-rotating-text:not(.rw-show) { 
-  opacity: 0; 
-}
-
 /* Мобильная версия */
 @media (max-width: 768px) {
-  .rw-reviews-widget-content { 
-    padding: 0; 
-  }
-  
   .rw-main-card { 
     padding: 20px; 
     border-radius: 12px; 
+    gap: 20px;
+  }
+  
+  .rw-rotator-container {
+    font-size: 14px;
+    padding: 0 4px;
   }
   
   .rw-stats-grid { 
     grid-template-columns: 1fr; 
-    gap: 12px; 
+    gap: 16px; 
   }
   
   .rw-stat-card { 
@@ -318,33 +316,28 @@ onUnmounted(() => {
   }
   
   .rw-stat-content { 
-    display: flex;
-    flex-direction: column; 
-    justify-content: flex-start; 
-    align-items: flex-start; 
-    padding: 20px 18px 20px 18px;
+    padding: 24px 20px; 
     min-height: auto;
     background: radial-gradient(circle at 20% 50%, rgba(163, 230, 53, 0.15) 0%, transparent 70%) !important;
-    gap: 16px;
+    gap: 18px;
   }
   
   .rw-stat-header { 
+    height: auto;
     flex-direction: row; 
     align-items: center; 
-    gap: 8px; 
-    width: 100%;
+    gap: 10px;
     justify-content: flex-start;
-    height: auto;
   }
   
   .rw-stat-icon { 
-    width: 20px; 
-    height: 20px; 
+    width: 22px; 
+    height: 22px; 
   }
   
   .rw-stat-title { 
-    font-size: 11px; 
-    margin: 0; 
+    font-size: 12px; 
+    white-space: nowrap;
   }
   
   .rw-stat-main {
@@ -353,22 +346,16 @@ onUnmounted(() => {
   }
   
   .rw-stat-value {
-    font-size: 2.2rem !important;
-    font-weight: 500 !important;
-    margin: 0;
-    line-height: 1;
+    font-size: 1.8rem !important;
+    font-weight: 600 !important;
   }
   
-  .rw-stat-description { 
-    font-size: 14px !important;
-    color: rgba(255, 255, 255, 0.8);
+  .rw-stat-description {
+    font-size: 13px !important;
     line-height: 1.3;
     text-align: left;
+    max-width: 100%;
     margin: 0;
-    width: 100%;
-    height: auto;
-    align-items: flex-start;
-    justify-content: flex-start;
   }
 }
 
@@ -378,16 +365,16 @@ onUnmounted(() => {
   }
   
   .rw-stat-content { 
-    padding: 18px 16px 18px 16px;
-    gap: 14px;
+    padding: 20px 16px; 
+    gap: 16px;
   }
   
   .rw-stat-value { 
-    font-size: 2rem !important; 
+    font-size: 1.6rem !important; 
   }
   
   .rw-stat-description { 
-    font-size: 13px !important; 
+    font-size: 12px !important; 
   }
 }
 </style>
