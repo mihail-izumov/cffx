@@ -9,7 +9,7 @@ const notifications = [
     buttonUrl: '/fest/join'
   },
   { 
-    text: 'Где начинается Ваша Кофейня.', 
+    text: 'Где начинается Ваша Кофейня', 
     hasButton: true,
     buttonText: 'Отправить ⚡ Сигнал',
     buttonUrl: '/signal/new'
