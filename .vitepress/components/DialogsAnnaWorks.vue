@@ -59,7 +59,7 @@
     <!-- ИНВЕСТИЦИЯ -->
     <div class="anna-brand-card anna-memory-card">
       <div class="anna-tariff-badge anna-memory">ИНВЕСТИЦИЯ</div>
-      <h3 class="anna-title">Окупается с первых клиентов</h3>
+      <h3 class="anna-title">Окупается с первых Сигналов</h3>
       <p class="anna-description-main">ROI систем управления жалобами достигает 1000%. 30,000 ₽/мес за Диалоги с Анной = сохранение 1-2 гостей.</p>
       <p class="anna-description-goals anna-memory-goals">Превращает затраты в доходы</p>
     </div>
