@@ -60,6 +60,7 @@ import AnnaFeelThePower from '../components/AnnaFeelThePower.vue'
 import LTVCalc from '../components/LTVCalc.vue'
 import DialogsAnnaWorks from '../components/DialogsAnnaWorks.vue'
 import DialogsSteps from '../components/DialogsSteps.vue'
+import Dialogs3Cards from '../components/Dialogs3Cards.vue'
 
 export default {
   extends: DefaultTheme,
@@ -126,5 +127,6 @@ export default {
     app.component('LTVCalc', LTVCalc)
     app.component('DialogsAnnaWorks', DialogsAnnaWorks)
     app.component('DialogsSteps', DialogsSteps)
+    app.component('Dialogs3Cards', Dialogs3Cards)
   },
 }
