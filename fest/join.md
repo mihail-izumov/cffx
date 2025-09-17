@@ -9,7 +9,7 @@ notification: general
 # Фестиваль "Культура Кофе"
 
 <div class="button-group">
-  <a href="/fest" class="btn btn-primary" target="_blank" rel="noopener noreferrer"><strong>Программа</strong></a>
+  <a href="/fest" class="btn btn-primary" rel="noopener noreferrer"><strong>Программа</strong></a>
 </div>
 
 ## ДЛЯ УЧАСТНИКОВ И ПАРТНЕРОВ
