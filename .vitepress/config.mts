@@ -23,8 +23,6 @@ export default defineConfig({
     ['meta', { property: 'og:description', content: 'Платформа для кофейного бизнеса и инвестиций' }],
     ['meta', { property: 'og:image', content: 'https://cffx.ru/cffx_og_card.jpg' }],
     ['meta', { property: 'og:type', content: 'website' }],
-    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { name: 'twitter:image', content: 'https://cffx.ru/cffx_og_card.jpg' }],
     // Остальные мета-теги
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
