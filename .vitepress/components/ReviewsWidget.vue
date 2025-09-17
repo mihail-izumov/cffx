@@ -319,7 +319,7 @@ watch(showBranchList, (newValue) => {
         <div class="review2-modal-body">
           Ваш Сигнал — это команда к действию для кофейни и видимый результат для вас.
           <br><br>
-          <a href="/signals" class="review2-modal-link">Как работает</a>
+          <a href="/signals" target="_blank" class="review2-modal-link">Как работает</a>
         </div>
         <div class="review2-modal-footer">
           <button class="review2-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
