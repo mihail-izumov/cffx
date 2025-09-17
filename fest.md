@@ -38,7 +38,7 @@ head:
 <Badge type="warning" text="Сентябрь 28, 2025" /> <Badge type="tip" text="Станкозавод" /> <Badge type="info" text="3000 гостей" />
 <br>
 
-**Приглашаем вас на фестиваль, где кофейная культура соединится с винной традицией, крафтовым пивоварением и гастрономическими открытиями.** <br><br>
+**Приглашаем вас на фестиваль, где кофейная культура соединится с винной традицией и гастрономическими открытиями.** <br><br>
 Событие приурочено к Международному Дню Кофе и станет настоящим праздником для всех ценителей качественных напитков.
 
 <div class="button-group">
@@ -71,7 +71,6 @@ head:
   />
 </div>
 
-<style>
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
 .btn {
   display: inline-block;
@@ -86,7 +85,6 @@ head:
   border: none;
   margin: 10px 0;
 }
-
 .btn:hover {
   transform: translateY(-2px);
   text-decoration: none !important;
@@ -97,10 +95,33 @@ head:
   background-color: #C5F946; /* Яркий лаймовый */
   color: #000 !important;
 }
-
 .btn-primary:hover {
   background-color: #347b6c; /* Темный при наведении */
   color: white !important;
+}
+
+/* --- КОНТЕЙНЕР ДЛЯ ГРУППЫ КНОПОК --- */
+.button-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.button-group .btn {
+  margin: 0; /* Убираем margin, используем gap */
+}
+
+/* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
+@media (max-width: 768px) {
+  .button-group {
+    flex-direction: column;
+    align-items: stretch; /* Кнопки занимают всю ширину */
+    gap: 10px;
+  }
+  
+  .button-group .btn {
+    width: 100%; /* Кнопки на всю ширину на мобильных */
+  }
 }
 
 /* --- Контейнер для отдельной кнопки --- */
@@ -108,10 +129,7 @@ head:
   margin: 20px 0;
   text-align: left;
 }
-
 .start-button-container .btn {
   display: inline-block;
   margin: 0;
 }
-</style>
-
