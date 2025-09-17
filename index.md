@@ -1,5 +1,7 @@
 ---
 layout: home
+title: Отправить ⚡ Сигнал
+description: Где Начинается Ваша Кофейня
 
 hero:
   name: "Сигнал"
