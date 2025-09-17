@@ -145,6 +145,15 @@ const cycleText = () => {
     showText.value = true
   }, FADE_DURATION_MS)
 }
+
+// Модальное окно для инфо
+const showInfoModal = ref(false)
+const onKeydown = (e) => {
+  if (e.key === 'Escape') {
+    showInfoModal.value = false
+  }
+}
+
 // Отслеживаем смену кофейни и сбрасываем метрики
 watch(() => establishment.name, (newName) => {
   const newConfig = getCafeConfig(newName)
@@ -156,10 +165,12 @@ onMounted(() => {
   intervalId = setInterval(cycleText, ROTATION_INTERVAL_MS)
   metricsIntervalId = setInterval(fetchSystemStatus, 45000)
   fetchSystemStatus()
+  window.addEventListener('keydown', onKeydown)
 })
 onUnmounted(() => {
   clearInterval(intervalId)
   clearInterval(metricsIntervalId)
+  window.removeEventListener('keydown', onKeydown)
 })
 watch(showBranchList, (newValue) => {
   if (newValue) {
@@ -241,11 +252,18 @@ watch(showBranchList, (newValue) => {
         <!-- ПУЛЬТ УПРАВЛЕНИЯ -->
         <div class="review2-control-panel">
           <div class="review2-control-panel-header">
-            <a href="/brew/overview" target="_blank" class="review2-info-link" aria-label="Подробнее">
+            <button
+              type="button"
+              class="review2-info-link review2-info-button"
+              aria-haspopup="dialog"
+              aria-controls="review2-signal-dialog"
+              :aria-expanded="showInfoModal ? 'true' : 'false'"
+              @click="showInfoModal = true"
+            >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
               </svg>
-            </a>
+            </button>
             <span class="review2-static-prompt">Поделитесь:</span>
             <div class="review2-rotating-text-container">
               <span :class="['review2-rotating-text', { 'review2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
@@ -291,6 +309,19 @@ watch(showBranchList, (newValue) => {
               </svg>
             </div>
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальное окно -->
+    <div v-if="showInfoModal" class="review2-modal-overlay" @click.self="showInfoModal = false">
+      <div class="review2-modal" role="dialog" aria-modal="true" id="review2-signal-dialog" aria-label="Что такое Система Сигналов">
+        <div class="review2-modal-header">
+          <div class="review2-modal-title">Что такое Система Сигналов</div>
+        </div>
+        <div class="review2-modal-body">Автоматическая передача отзывов владельцу кофейни для быстрого реагирования на проблемы и улучшения сервиса.</div>
+        <div class="review2-modal-footer">
+          <button class="review2-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
         </div>
       </div>
     </div>
@@ -602,8 +633,15 @@ watch(showBranchList, (newValue) => {
   flex-shrink: 0; 
 }
 
-.review2-info-link:hover { 
+.review2-info-link:hover, 
+.review2-info-link:focus { 
   color: white; 
+}
+
+.review2-info-button { 
+  background: transparent; 
+  border: none; 
+  cursor: pointer; 
 }
 
 .review2-static-prompt { 
@@ -766,6 +804,65 @@ watch(showBranchList, (newValue) => {
 
 .review2-branch-item:hover .review2-branch-action { 
   transform: translateX(4px); 
+}
+
+/* Модальное окно */
+.review2-modal-overlay { 
+  position: fixed; 
+  inset: 0; 
+  background: rgba(0,0,0,0.6); 
+  backdrop-filter: blur(8px);
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  z-index: 1000; 
+}
+
+.review2-modal { 
+  background: var(--vp-c-bg, #111); 
+  color: var(--vp-c-text-1, #fff); 
+  border: 1px solid var(--vp-c-border, rgba(255,255,255,0.12)); 
+  border-radius: 12px; 
+  width: min(520px, 96vw); 
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4); 
+  padding: 16px; 
+}
+
+.review2-modal-header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-start; 
+  gap: 12px; 
+}
+
+.review2-modal-title { 
+  font-weight: 700; 
+  font-size: 16px; 
+}
+
+.review2-modal-body { 
+  margin-top: 8px; 
+  font-size: 14px; 
+  color: var(--vp-c-text-1); 
+}
+
+.review2-modal-footer { 
+  margin-top: 12px; 
+  display: flex; 
+  justify-content: flex-end; 
+}
+
+.review2-modal-ok { 
+  background: var(--vp-c-bg-mute, #222); 
+  border: 1px solid var(--vp-c-border); 
+  color: var(--vp-c-text-1); 
+  border-radius: 8px; 
+  padding: 8px 12px; 
+  cursor: pointer; 
+}
+
+.review2-modal-ok:hover { 
+  background: var(--vp-c-bg-soft, #333); 
 }
 
 /* Адаптивность */
