@@ -8,7 +8,7 @@ description: Где Начинается Ваша Кофейня
 head:
   - - meta
     - property: "og:image"
-      content: "https://cffx.ru/fest2025_smr_ban_1.jpg"
+      content: "https://cffx.ru/fest_tg_icon.jpg"
 ---
 
 
