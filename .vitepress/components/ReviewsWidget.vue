@@ -760,7 +760,7 @@ watch(showBranchList, (newValue) => {
   border-radius: 12px; 
   width: min(520px, 96vw); 
   box-shadow: 0 20px 60px rgba(0,0,0,0.4); 
-  padding: 16px; 
+  padding: 32px; 
 }
 .review2-modal-header { 
   display: flex; 
@@ -773,9 +773,10 @@ watch(showBranchList, (newValue) => {
   font-size: 16px; 
 }
 .review2-modal-body { 
-  margin-top: 8px; 
+  margin-top: 16px; 
   font-size: 14px; 
   color: var(--vp-c-text-1); 
+  line-height: 1.5; 
 }
 .review2-modal-link {
   color: #A3E635;
@@ -788,7 +789,7 @@ watch(showBranchList, (newValue) => {
   text-decoration: underline;
 }
 .review2-modal-footer { 
-  margin-top: 12px; 
+  margin-top: 24px; 
   display: flex; 
   justify-content: flex-end; 
 }
@@ -797,8 +798,9 @@ watch(showBranchList, (newValue) => {
   border: 1px solid var(--vp-c-border); 
   color: var(--vp-c-text-1); 
   border-radius: 8px; 
-  padding: 8px 12px; 
+  padding: 10px 16px; 
   cursor: pointer; 
+  font-weight: 500; 
 }
 .review2-modal-ok:hover { 
   background: var(--vp-c-bg-soft, #333); 
@@ -907,6 +909,15 @@ watch(showBranchList, (newValue) => {
   }
   .review2-metric-text { 
     font-size: 10px; 
+  }
+  .review2-modal { 
+    padding: 24px; 
+  }
+  .review2-modal-body { 
+    margin-top: 12px; 
+  }
+  .review2-modal-footer { 
+    margin-top: 20px; 
   }
 }
 </style>
