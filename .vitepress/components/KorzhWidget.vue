@@ -311,11 +311,11 @@ watch(showBranchList, (newValue) => {
 
     <!-- Модальное окно -->
     <div v-if="showInfoModal" class="signal-modal-overlay" @click.self="showInfoModal = false">
-      <div class="signal-modal" role="dialog" aria-modal="true" id="signal-dialog" aria-label="Что такое Система Сигналов">
+      <div class="signal-modal" role="dialog" aria-modal="true" id="signal-dialog" aria-label="Диалоги Сигналов">
         <div class="signal-modal-header">
-          <div class="signal-modal-title">Что такое Система Сигналов</div>
+          <div class="signal-modal-title">Диалоги Сигналов</div>
         </div>
-        <div class="signal-modal-body">Автоматическая передача отзывов владельцу кофейни для быстрого реагирования на проблемы и улучшения сервиса.</div>
+        <div class="signal-modal-body">Ваш Сигнал — это команда к действию для кофейни и видимый результат для вас.</div>
         <div class="signal-modal-footer">
           <button class="signal-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
         </div>
