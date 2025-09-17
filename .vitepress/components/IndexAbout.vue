@@ -1,27 +1,22 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-
 const ROTATION_INTERVAL_MS = 7000
 const FADE_DURATION_MS = 1000
-
 const establishment = {
-  name: 'Корж – лидер Индекса в Самаре',
+  name: 'Корж – лидер Индекса в Самаре',
   index: 98,
   currentPoints: 8,
   targetPoints: 12,
   influenceLevel: 'Высокое'
 }
-
 const rotatingMessages = [
   'Смотреть Индекс — полный срез рынка.',
   'Получать Пульс — еженедельные изменения и возможности.',
   'Это данные лидера сейчас. Хотите видеть свой прогресс — подпишитесь.'
 ]
-
 const currentMessageIndex = ref(0)
 const showText = ref(true)
 let rotatorInterval = null
-
 const cycleRotatorText = () => {
   showText.value = false
   setTimeout(() => {
@@ -29,10 +24,8 @@ const cycleRotatorText = () => {
     showText.value = true
   }, FADE_DURATION_MS)
 }
-
 const showTooltip = ref(false)
 let longPressTimer = null
-
 const onBadgeTouchStart = () => {
   longPressTimer = setTimeout(() => { showTooltip.value = true }, 500)
 }
@@ -43,26 +36,22 @@ const onBadgeTouchEnd = () => {
   }
   setTimeout(() => { showTooltip.value = false }, 150)
 }
-
 const showInfoModal = ref(false)
 const onKeydown = (e) => {
   if (e.key === 'Escape') {
     showInfoModal.value = false
   }
 }
-
 onMounted(() => {
   rotatorInterval = setInterval(cycleRotatorText, ROTATION_INTERVAL_MS)
   window.addEventListener('keydown', onKeydown)
 })
-
 onUnmounted(() => {
   clearInterval(rotatorInterval)
   if (longPressTimer) clearTimeout(longPressTimer)
   window.removeEventListener('keydown', onKeydown)
 })
 </script>
-
 <template>
   <div class="reviews-widget-content">
     <div class="main-card">
@@ -92,7 +81,6 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-
       <div class="stats-grid">
         <!-- ⚡ Индекс -->
         <div class="stat-card">
@@ -109,7 +97,6 @@ onUnmounted(() => {
             <div class="stat-description">Score всего бизнеса</div>
           </div>
         </div>
-
         <!-- 🧩 Потенциал -->
         <div class="stat-card">
           <div class="stat-content">
@@ -128,7 +115,6 @@ onUnmounted(() => {
             <div class="stat-description">Точек сейчас и целевой масштаб сети</div>
           </div>
         </div>
-
         <!-- 🌐 Влияние -->
         <div class="stat-card">
           <div class="stat-content">
@@ -147,7 +133,6 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-
       <div class="control-panel">
         <div class="control-panel-header">
           <button
@@ -169,7 +154,6 @@ onUnmounted(() => {
             </span>
           </div>
         </div>
-
         <div class="button-container">
           <a href="/smr" class="action-button ticket-button">Смотреть Индекс</a>
           <a href="https://t.me/runScale" class="action-button review-button">
@@ -181,12 +165,10 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
-
     <div v-if="showInfoModal" class="modal-overlay" @click.self="showInfoModal = false">
       <div class="modal" role="dialog" aria-modal="true" id="index-dialog" aria-label="Что такое Индекс Роста">
         <div class="modal-header">
           <div class="modal-title">Что такое Индекс Роста</div>
-          <button class="modal-close" type="button" @click="showInfoModal = false" aria-label="Закрыть">✕</button>
         </div>
         <div class="modal-body">Интегральный score по десяткам показателей.</div>
         <div class="modal-footer">
@@ -196,14 +178,12 @@ onUnmounted(() => {
     </div>
   </div>
 </template>
-
 <style scoped>
 .reviews-widget-content { 
   padding: 0; 
   width: 100%; 
   box-sizing: border-box;
 }
-
 .main-card { 
   background: var(--vp-c-bg-soft); 
   border-radius: 12px;
@@ -211,21 +191,18 @@ onUnmounted(() => {
   width: 100%;
   box-sizing: border-box;
 }
-
 .establishment-header { 
   display: flex; 
   justify-content: space-between; 
   align-items: flex-start;
   margin-bottom: 24px; 
 }
-
 .cafe-name { 
   margin: 0; 
   color: #FFFFFF; 
   font-size: 24px; 
   font-weight: 600; 
 }
-
 .cafe-subtitle { 
   margin: 6px 0 0 0; 
   font-size: 14px; 
@@ -233,7 +210,6 @@ onUnmounted(() => {
   line-height: 1.3;
   font-weight: 400;
 }
-
 .status-badge-wrapper { position: relative; display: flex; align-items: center; }
 .status-badge {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
@@ -274,14 +250,12 @@ onUnmounted(() => {
   visibility: visible;
   transform: translateY(0);
 }
-
 /* ПРОСТАЯ И РАБОЧАЯ структура карточек */
 .stats-grid { 
   display: grid; 
   grid-template-columns: 1fr 1fr 1fr; 
   gap: 16px; 
 }
-
 .stat-card {
   position: relative;
   border-radius: 22px;
@@ -291,7 +265,6 @@ onUnmounted(() => {
   border: 2px solid transparent;
   background-clip: padding-box;
 }
-
 .stat-card::before {
   content: '';
   position: absolute;
@@ -305,15 +278,12 @@ onUnmounted(() => {
   transition: filter 0.4s ease;
   z-index: 1;
 }
-
 .stat-card:hover {
   transform: translateY(-8px);
 }
-
 .stat-card:hover::before {
   filter: brightness(1.5) saturate(1.3);
 }
-
 /* УПРОЩЕННАЯ структура: 3 блока вертикально */
 .stat-content {
   background: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.15) 0%, transparent 70%);
@@ -329,12 +299,10 @@ onUnmounted(() => {
   position: relative;
   z-index: 2;
 }
-
 .stat-card:hover .stat-content {
   background: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.3) 0%, transparent 70%);
   box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
-
 /* Блок 1: Заголовок (фиксированная высота) */
 .stat-header { 
   display: flex; 
@@ -344,18 +312,15 @@ onUnmounted(() => {
   height: 60px;
   justify-content: flex-start;
 }
-
 .stat-icon { 
   color: #A3E635;
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   flex-shrink: 0;
 }
-
 .stat-card:hover .stat-icon { 
   transform: scale(1.2);
   color: #C5F946;
 }
-
 .stat-title { 
   font-size: 14px; 
   font-weight: 700; 
@@ -364,12 +329,10 @@ onUnmounted(() => {
   letter-spacing: 0.5px;
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-
 .stat-card:hover .stat-title { 
   transform: scale(1.05);
   color: #A3E635;
 }
-
 /* Блок 2: Основное значение (центр) */
 .stat-main {
   flex: 1;
@@ -377,7 +340,6 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
 }
-
 /* ИСПРАВЛЕННЫЕ размеры для пропорциональности */
 .stat-value {
   font-family: 'Inter', sans-serif;
@@ -388,7 +350,6 @@ onUnmounted(() => {
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-
 .potential-value {
   display: flex;
   align-items: baseline;
@@ -401,24 +362,20 @@ onUnmounted(() => {
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-
 .potential-value .current {
   font-size: clamp(3rem, 6vw, 4rem);
 }
-
 .potential-value .potential {
   font-size: clamp(2rem, 4vw, 2.8rem);
   opacity: 0.6;
   font-weight: 500;
   margin-left: 2px;
 }
-
 .stat-card:hover .stat-value {
   transform: scale(1.05);
   text-shadow: 0 0 30px rgba(163, 230, 53, 0.5);
   color: #A3E635;
 }
-
 /* ИСПРАВЛЕННЫЙ бейдж с green hover */
 .stat-metric-badge {
   display: inline-flex;
@@ -437,7 +394,6 @@ onUnmounted(() => {
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   text-transform: uppercase;
 }
-
 /* ЗЕЛЕНЫЙ hover эффект */
 .stat-card:hover .stat-metric-badge {
   background: #A3E635;
@@ -445,7 +401,6 @@ onUnmounted(() => {
   border-color: #A3E635;
   box-shadow: 0 4px 16px rgba(163, 230, 53, 0.4);
 }
-
 /* Блок 3: Описание (фиксированная высота) */
 .stat-description {
   height: 40px;
@@ -462,12 +417,10 @@ onUnmounted(() => {
   max-width: 180px;
   margin: 0 auto;
 }
-
 .stat-card:hover .stat-description { 
   transform: scale(1.02);
   color: rgba(163, 230, 53, 0.9);
 }
-
 /* Пульт управления */
 .control-panel { margin-top: 24px; }
 .control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; }
@@ -478,7 +431,6 @@ onUnmounted(() => {
 .rotating-text-container { flex-grow: 1; text-align: left; color: rgba(255, 255, 255, 0.7); min-height: 36px; display: flex; align-items: center;}
 .rotating-text { transition: opacity 0.5s ease-in-out; line-height: 1.2; }
 .rotating-text:not(.show) { opacity: 0; }
-
 .button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
 .action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
 .ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
@@ -495,44 +447,77 @@ onUnmounted(() => {
 }
 .button-icon { transition: transform 0.3s ease; }
 .review-button:hover .button-icon { transform: translateX(4px); }
-
 /* Модал */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-.modal { background: var(--vp-c-bg, #111); color: var(--vp-c-text-1, #fff); border: 1px solid var(--vp-c-border, rgba(255,255,255,0.12)); border-radius: 12px; width: min(520px, 96vw); box-shadow: 0 20px 60px rgba(0,0,0,0.4); padding: 16px; }
-.modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.modal-title { font-weight: 700; font-size: 16px; }
-.modal-close { background: transparent; border: 1px solid var(--vp-c-border); border-radius: 8px; color: var(--vp-c-text-2); padding: 6px 10px; cursor: pointer; }
-.modal-close:hover { color: white; border-color: white; }
-.modal-body { margin-top: 8px; font-size: 14px; color: var(--vp-c-text-1); }
-.modal-footer { margin-top: 12px; display: flex; justify-content: flex-end; }
-.modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 8px 12px; cursor: pointer; }
-.modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
-
+.modal-overlay { 
+  position: fixed; 
+  inset: 0; 
+  background: rgba(0,0,0,0.9); 
+  backdrop-filter: blur(8px);
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  z-index: 1000; 
+}
+.modal { 
+  background: var(--vp-c-bg, #111); 
+  color: var(--vp-c-text-1, #fff); 
+  border: 1px solid var(--vp-c-border, rgba(255,255,255,0.12)); 
+  border-radius: 12px; 
+  width: min(520px, 96vw); 
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4); 
+  padding: 16px; 
+}
+.modal-header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-start; 
+  gap: 12px; 
+}
+.modal-title { 
+  font-weight: 700; 
+  font-size: 16px; 
+}
+.modal-body { 
+  margin-top: 8px; 
+  font-size: 14px; 
+  color: var(--vp-c-text-1); 
+}
+.modal-footer { 
+  margin-top: 12px; 
+  display: flex; 
+  justify-content: flex-end; 
+}
+.modal-ok { 
+  background: var(--vp-c-bg-mute, #222); 
+  border: 1px solid var(--vp-c-border); 
+  color: var(--vp-c-text-1); 
+  border-radius: 8px; 
+  padding: 8px 12px; 
+  cursor: pointer; 
+}
+.modal-ok:hover { 
+  background: var(--vp-c-bg-soft, #333); 
+}
 /* МОБИЛЬНАЯ версия с исправленными размерами */
 @media (max-width: 768px) {
   .reviews-widget-content { padding: 0; }
   .main-card { padding: 20px; border-radius: 12px; }
-  
   .establishment-header { 
     flex-direction: column; 
     align-items: flex-start; 
     gap: 12px; 
     margin-bottom: 20px; 
   }
-  
   .status-badge-wrapper { align-self: flex-end; }
-  
   .stats-grid { 
     grid-template-columns: 1fr; 
     gap: 12px; 
   }
-  
   .stat-card { 
     border-radius: 16px; 
     transition: none;
   }
   .stat-card:hover { transform: none; }
-  
   .stat-content { 
     display: flex;
     flex-direction: column; 
@@ -543,7 +528,6 @@ onUnmounted(() => {
     background: radial-gradient(circle at 20% 50%, rgba(163, 230, 53, 0.15) 0%, transparent 70%) !important;
     gap: 16px;
   }
-  
   .stat-header { 
     flex-direction: row; 
     align-items: center; 
@@ -552,15 +536,12 @@ onUnmounted(() => {
     justify-content: flex-start;
     height: auto;
   }
-  
   .stat-icon { width: 20px; height: 20px; }
   .stat-title { font-size: 11px; margin: 0; }
-  
   .stat-main {
     width: 100%;
     flex: none;
   }
-  
   /* ИСПРАВЛЕННЫЕ размеры для мобильных */
   .stat-value {
     font-size: 2.2rem !important;
@@ -568,7 +549,6 @@ onUnmounted(() => {
     margin: 0;
     line-height: 1;
   }
-  
   .potential-value {
     font-size: 2.2rem !important;
     margin: 0;
@@ -576,20 +556,17 @@ onUnmounted(() => {
     align-items: baseline;
     gap: 4px;
   }
-  
   .potential-value .current {
     font-size: 2.2rem !important;
     font-weight: 500 !important;
     line-height: 1;
   }
-  
   .potential-value .potential {
     font-size: 1.6rem !important;
     opacity: 0.6;
     font-weight: 400;
     margin-left: 2px;
   }
-  
   /* УМЕНЬШЕННЫЙ бейдж для мобильных */
   .stat-metric-badge { 
     font-size: 1.4rem !important;
@@ -601,12 +578,10 @@ onUnmounted(() => {
     line-height: 1;
     transition: color 0.3s ease, background-color 0.3s ease;
   }
-  
   .stat-metric-badge:hover {
     color: #A3E635 !important;
     background: rgba(163, 230, 53, 0.1);
   }
-  
   .stat-description { 
     font-size: 14px !important;
     color: rgba(255, 255, 255, 0.8);
@@ -618,21 +593,17 @@ onUnmounted(() => {
     align-items: flex-start;
     justify-content: flex-start;
   }
-  
   .button-container { flex-direction: column; gap: 8px; }
   .action-button:hover { transform: none; }
 }
-
 @media (max-width: 480px) {
   .main-card { padding: 16px; }
   .cafe-name { font-size: 20px; }
   .cafe-subtitle { font-size: 13px; }
-  
   .stat-content { 
     padding: 18px 16px 18px 16px;
     gap: 14px;
   }
-  
   .stat-value { font-size: 2rem !important; }
   .potential-value { font-size: 2rem !important; }
   .potential-value .current { font-size: 2rem !important; }
