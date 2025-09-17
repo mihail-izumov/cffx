@@ -21,7 +21,7 @@
     <div class="experience-grid">
       <!-- Изображение в рамках карточки - ПЕРВОЕ -->
       <div class="experience-card image-card">
-        <img src="/fest2025_smr_ban_1.jpg" alt="Festival Banner" class="card-image" />
+        <img src="/tasting-ban.jpg" alt="Festival Banner" class="card-image" />
       </div>
       
       <div class="experience-card">
@@ -57,7 +57,7 @@
     <div class="experience-grid">
       <!-- Изображение в рамках карточки - ПЕРВОЕ -->
       <div class="experience-card image-card">
-        <img src="/fest2025_smr_ban_1.jpg" alt="Festival Banner" class="card-image" />
+        <img src="/peirings-ban.jpg" alt="Festival Banner" class="card-image" />
       </div>
       
       <div class="experience-card">
@@ -83,7 +83,7 @@
     <div class="experience-grid">
       <!-- Изображение в рамках карточки - ПЕРВОЕ -->
       <div class="experience-card image-card">
-        <img src="/fest2025_smr_ban_1.jpg" alt="Festival Banner" class="card-image" />
+        <img src="/master-ban.jpg" alt="Festival Banner" class="card-image" />
       </div>
       
       <div class="experience-card">
