@@ -71,6 +71,7 @@ head:
   />
 </div>
 
+<style>
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
 .btn {
   display: inline-block;
@@ -98,6 +99,17 @@ head:
 .btn-primary:hover {
   background-color: #347b6c; /* Темный при наведении */
   color: white !important;
+}
+
+/* --- СТИЛЬ ВТОРИЧНОЙ КНОПКИ --- */
+.btn-secondary {
+  background-color: #f8f9fa;
+  color: #333 !important;
+  border: 2px solid #dee2e6;
+}
+.btn-secondary:hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
 }
 
 /* --- КОНТЕЙНЕР ДЛЯ ГРУППЫ КНОПОК --- */
@@ -133,3 +145,4 @@ head:
   display: inline-block;
   margin: 0;
 }
+</style>
