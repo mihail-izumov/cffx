@@ -2,7 +2,7 @@
 outline: false
 prev: false
 next: false
-title: Участникам - Культура Кофе | Фестиваль в Самаре – Сентябрь 28, 2025
+title: Участника - Культура Кофе | Фестиваль в Самаре – Сентябрь 28, 2025
 notification: general
 ---
 
