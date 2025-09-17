@@ -19,6 +19,11 @@
     <h3>Погрузитесь в мир вкусов через профессиональные дегустации</h3>
     
     <div class="experience-grid">
+      <!-- Изображение в рамках карточки - ПЕРВОЕ -->
+      <div class="experience-card image-card">
+        <img src="/fest2025_smr_ban_1.jpg" alt="Festival Banner" class="card-image" />
+      </div>
+      
       <div class="experience-card">
         <div class="card-header">
           <h4>Профессиональный каппинг</h4>
@@ -43,10 +48,6 @@
           <strong>Задача:</strong> Найти отличия в одном зерне из разных партий
         </div>
       </div>
-      <!-- Изображение в рамках карточки -->
-      <div class="experience-card image-card">
-        <img src="/fest2025_smr_ban_1.jpg" alt="Festival Banner" class="card-image" />
-      </div>
     </div>
   </div>
   <!-- Вкладка 2: Пейринги -->
@@ -54,6 +55,11 @@
     <h3>Откройте гармонию вкусов через уникальные сочетания</h3>
     
     <div class="experience-grid">
+      <!-- Изображение в рамках карточки - ПЕРВОЕ -->
+      <div class="experience-card image-card">
+        <img src="/fest2025_smr_ban_1.jpg" alt="Festival Banner" class="card-image" />
+      </div>
+      
       <div class="experience-card">
         <div class="card-header">
           <h4>Wine & Coffee</h4>
@@ -68,10 +74,6 @@
         </div>
         <p class="card-description">Понимайте, как текстуры и вкусы усиливают друг друга. Секреты создания идеальных сочетаний от профессиональных кондитеров.</p>
       </div>
-      <!-- Изображение в рамках карточки -->
-      <div class="experience-card image-card">
-        <img src="/fest2025_smr_ban_1.jpg" alt="Festival Banner" class="card-image" />
-      </div>
     </div>
   </div>
   <!-- Вкладка 3: Мастер-классы -->
@@ -79,6 +81,11 @@
     <h3>Получите практические навыки от профессионалов индустрии</h3>
     
     <div class="experience-grid">
+      <!-- Изображение в рамках карточки - ПЕРВОЕ -->
+      <div class="experience-card image-card">
+        <img src="/fest2025_smr_ban_1.jpg" alt="Festival Banner" class="card-image" />
+      </div>
+      
       <div class="experience-card">
         <div class="card-header">
           <h4>Латте-арт для начинающих</h4>
@@ -108,10 +115,6 @@
         <div class="card-highlight">
           <strong>Ведут:</strong> White Cup
         </div>
-      </div>
-      <!-- Изображение в рамках карточки -->
-      <div class="experience-card image-card">
-        <img src="/fest2025_smr_ban_1.jpg" alt="Festival Banner" class="card-image" />
       </div>
     </div>
   </div>
