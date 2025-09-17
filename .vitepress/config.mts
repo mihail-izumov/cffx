@@ -19,8 +19,8 @@ export default defineConfig({
   },
   head: [
     // Мета-теги по умолчанию для всех страниц
-    ['meta', { property: 'og:title', content: 'Сигнал - Где Начинается Ваша Кофейня' }],
-    ['meta', { property: 'og:description', content: 'Платформа для кофейного бизнеса и инвестиций' }],
+    ['meta', { property: 'og:title', content: 'Сигнал' }],
+    ['meta', { property: 'og:description', content: 'Где Начинается Ваша Кофейня' }],
     ['meta', { property: 'og:image', content: 'https://cffx.ru/cffx_og_card.jpg' }],
     ['meta', { property: 'og:type', content: 'website' }],
     // Остальные мета-теги
