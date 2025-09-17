@@ -145,6 +145,15 @@ const cycleText = () => {
     showText.value = true
   }, FADE_DURATION_MS)
 }
+
+// Модальное окно для инфо
+const showInfoModal = ref(false)
+const onKeydown = (e) => {
+  if (e.key === 'Escape') {
+    showInfoModal.value = false
+  }
+}
+
 // Отслеживаем смену кофейни и сбрасываем метрики
 watch(() => establishment.name, (newName) => {
   const newConfig = getCafeConfig(newName)
@@ -156,10 +165,12 @@ onMounted(() => {
   intervalId = setInterval(cycleText, ROTATION_INTERVAL_MS)
   metricsIntervalId = setInterval(fetchSystemStatus, 45000)
   fetchSystemStatus()
+  window.addEventListener('keydown', onKeydown)
 })
 onUnmounted(() => {
   clearInterval(intervalId)
   clearInterval(metricsIntervalId)
+  window.removeEventListener('keydown', onKeydown)
 })
 watch(showBranchList, (newValue) => {
   if (newValue) {
@@ -170,90 +181,97 @@ watch(showBranchList, (newValue) => {
 })
 </script>
 <template>
-  <div class="reviews-widget-content" ref="widgetContentRef">
+  <div class="signal-widget-content" ref="widgetContentRef">
     <!-- Первый экран -->
     <div v-if="!showBranchList">
-      <div class="widget-header">
+      <div class="signal-widget-header">
         <div>
-          <div class="header-title">Отправьте Сигнал</div>
-          <p class="header-subtitle">Каждая чашка кофе делает Вашу любимую кофейню еще лучше.</p>
+          <div class="signal-header-title">Отправьте Сигнал</div>
+          <p class="signal-header-subtitle">Каждая чашка кофе делает Вашу любимую кофейню еще лучше.</p>
         </div>
         <!-- Кнопка закрытия удалена -->
       </div>
       
-      <div class="main-card">
-        <div class="establishment-header">
-          <h3 class="cafe-name">{{ establishment.name }}</h3>
-          <div class="status-badge">{{ establishment.status }}</div>
+      <div class="signal-main-card">
+        <div class="signal-establishment-header">
+          <h3 class="signal-cafe-name">{{ establishment.name }}</h3>
+          <div class="signal-status-badge">{{ establishment.status }}</div>
         </div>
         
-        <div class="stats-grid">
-          <div class="stat-card branches-card">
-            <div class="stat-content">
-              <div class="stat-left-group">
-                <div class="stat-icon">☕</div>
-                <div class="stat-value">{{ establishment.branches.length }}</div>
+        <div class="signal-stats-grid">
+          <div class="signal-stat-card signal-branches-card">
+            <div class="signal-stat-content">
+              <div class="signal-stat-left-group">
+                <div class="signal-stat-icon">☕</div>
+                <div class="signal-stat-value">{{ establishment.branches.length }}</div>
               </div>
-              <div class="stat-label">Кофейни</div>
+              <div class="signal-stat-label">Кофейни</div>
             </div>
           </div>
           
-          <div class="stat-card index-card">
-            <div class="stat-content">
-              <div class="stat-left-group">
-                <div class="stat-icon">⚡</div>
-                <div class="stat-value">{{ establishment.index }}</div>
+          <div class="signal-stat-card signal-index-card">
+            <div class="signal-stat-content">
+              <div class="signal-stat-left-group">
+                <div class="signal-stat-icon">⚡</div>
+                <div class="signal-stat-value">{{ establishment.index }}</div>
               </div>
-              <div class="stat-label">Индекс роста</div>
+              <div class="signal-stat-label">Индекс роста</div>
             </div>
           </div>
           
-          <div class="stat-card reviews-card">
-            <div class="stat-content">
-              <div class="stat-left-group">
-                <div class="stat-icon">📡</div>
-                <div class="stat-value">{{ establishment.totalReviews }}</div>
+          <div class="signal-stat-card signal-reviews-card">
+            <div class="signal-stat-content">
+              <div class="signal-stat-left-group">
+                <div class="signal-stat-icon">📡</div>
+                <div class="signal-stat-value">{{ establishment.totalReviews }}</div>
               </div>
-              <div class="stat-label">Отзывы</div>
+              <div class="signal-stat-label">Отзывы</div>
             </div>
           </div>
         </div>
         <!-- СТАТУС СИСТЕМЫ СИГНАЛОВ -->
-        <div class="system-status-bar">
-          <span class="status-label">🟢 На связи:</span>
-          <div class="status-metrics">
-            <div class="status-metric">
-              <span class="metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
-              <span class="metric-text">→ ответ</span>
+        <div class="signal-system-status-bar">
+          <span class="signal-status-label">🟢 На связи:</span>
+          <div class="signal-status-metrics">
+            <div class="signal-status-metric">
+              <span class="signal-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
+              <span class="signal-metric-text">→ ответ</span>
             </div>
-            <div class="status-separator">•</div>
-            <div class="status-metric">
-              <span class="metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
-              <span class="metric-text">→ решение</span>
+            <div class="signal-status-separator">•</div>
+            <div class="signal-status-metric">
+              <span class="signal-metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
+              <span class="signal-metric-text">→ решение</span>
             </div>
           </div>
         </div>
         
         <!-- ПУЛЬТ УПРАВЛЕНИЯ -->
-        <div class="control-panel">
-          <div class="control-panel-header">
-            <a href="/brew/overview" target="_blank" class="info-link" aria-label="Подробнее">
+        <div class="signal-control-panel">
+          <div class="signal-control-panel-header">
+            <button
+              type="button"
+              class="signal-info-link signal-info-button"
+              aria-haspopup="dialog"
+              aria-controls="signal-dialog"
+              :aria-expanded="showInfoModal ? 'true' : 'false'"
+              @click="showInfoModal = true"
+            >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
               </svg>
-            </a>
-            <span class="static-prompt">Поделитесь:</span>
-            <div class="rotating-text-container">
-              <span :class="['rotating-text', { 'show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
+            </button>
+            <span class="signal-static-prompt">Поделитесь:</span>
+            <div class="signal-rotating-text-container">
+              <span :class="['signal-rotating-text', { 'signal-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
             </div>
           </div>
-          <div class="button-container">
-            <button @click="createTicket" class="action-button ticket-button">
+          <div class="signal-button-container">
+            <button @click="createTicket" class="signal-action-button signal-ticket-button">
               Сообщить о проблеме
             </button>
-            <button @click="showBranchList = true" class="action-button review-button">
+            <button @click="showBranchList = true" class="signal-action-button signal-review-button">
               Мне понравилось
-              <svg class="button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="signal-button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m9 18 6-6-6-6"/>
               </svg>
             </button>
@@ -264,24 +282,24 @@ watch(showBranchList, (newValue) => {
     
     <!-- Второй экран -->
     <div v-else>
-      <div class="branches-header">
-        <button @click="showBranchList = false" class="internal-close-btn back-btn" aria-label="Вернуться назад">
+      <div class="signal-branches-header">
+        <button @click="showBranchList = false" class="signal-internal-close-btn signal-back-btn" aria-label="Вернуться назад">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
           </svg>
         </button>
-        <div class="branches-title">{{ establishment.name }}</div>
+        <div class="signal-branches-title">{{ establishment.name }}</div>
         <div style="width: 44px;"></div>
       </div>
-      <div class="branches-content">
-        <p class="branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
-        <div class="branches-list">
-          <button v-for="(branch, index) in establishment.branches" :key="index" @click="goToReviews(branch)" class="branch-item">
-            <div class="branch-info">
-              <div class="branch-number">{{ index + 1 }}</div>
-              <div class="branch-address">{{ branch.address }}</div>
+      <div class="signal-branches-content">
+        <p class="signal-branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
+        <div class="signal-branches-list">
+          <button v-for="(branch, index) in establishment.branches" :key="index" @click="goToReviews(branch)" class="signal-branch-item">
+            <div class="signal-branch-info">
+              <div class="signal-branch-number">{{ index + 1 }}</div>
+              <div class="signal-branch-address">{{ branch.address }}</div>
             </div>
-            <div class="branch-action">
+            <div class="signal-branch-action">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m9 18 6-6-6-6"/>
               </svg>
@@ -290,103 +308,686 @@ watch(showBranchList, (newValue) => {
         </div>
       </div>
     </div>
+
+    <!-- Модальное окно -->
+    <div v-if="showInfoModal" class="signal-modal-overlay" @click.self="showInfoModal = false">
+      <div class="signal-modal" role="dialog" aria-modal="true" id="signal-dialog" aria-label="Что такое Система Сигналов">
+        <div class="signal-modal-header">
+          <div class="signal-modal-title">Что такое Система Сигналов</div>
+        </div>
+        <div class="signal-modal-body">Автоматическая передача отзывов владельцу кофейни для быстрого реагирования на проблемы и улучшения сервиса.</div>
+        <div class="signal-modal-footer">
+          <button class="signal-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <style scoped>
-.reviews-widget-content { padding: 32px; max-height: calc(100vh - 80px); overflow-y: auto; scroll-behavior: smooth; }
-.widget-header, .branches-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.header-title, .branches-title { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; text-align: left; flex-grow: 1; }
-.header-subtitle { margin-top: 8px; font-size: 15px; color: var(--vp-c-text-2); }
-.branches-header { padding-bottom: 20px; border-bottom: 2px solid var(--vp-c-border); }
-.branches-title { text-align: center; }
-.internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
-.close-btn:hover { background: linear-gradient(135deg, #991b1b, #ef4444); border-color: #ef4444; color: white; transform: rotate(90deg); }
-.back-btn:hover { background: var(--vp-c-bg-soft); border-color: var(--vp-c-text-2); color: white; }
-.main-card { background: var(--vp-c-bg-soft); border-radius: 20px; padding: 24px; }
-.establishment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.cafe-name { margin: 0; color: #FFFFFF; font-size: 24px; font-weight: 600; }
-.status-badge { background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1)); color: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3); text-transform: uppercase; letter-spacing: 0.5px; }
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-.stat-card { position: relative; border-radius: 22px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background: var(--vp-c-bg-soft); }
-.stat-card:hover { transform: translateY(-8px); }
-.stat-card::before { content: ''; position: absolute; inset: 0; border-radius: 22px; padding: 2px; background: var(--border-gradient); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: filter 0.4s ease; z-index: 3; }
-.stat-card:hover::before { filter: brightness(2) saturate(1.5); }
-.branches-card { --border-gradient: linear-gradient(135deg, #3730a3, #8b5cf6, #c4b5fd); --glow-color: rgba(139, 92, 246, 0.25); --glow-hover-color: rgba(139, 92, 246, 0.6); }
-.index-card { --border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946); --glow-color: rgba(197, 249, 70, 0.25); --glow-hover-color: rgba(197, 249, 70, 0.6); }
-.reviews-card { --border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d); --glow-color: rgba(245, 158, 11, 0.25); --glow-hover-color: rgba(245, 158, 11, 0.6); }
-.stat-content { background: radial-gradient(circle at 50% 0%, var(--glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
-.stat-card:hover .stat-content { background: radial-gradient(circle at 50% 0%, var(--glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4); }
-.stat-icon, .stat-value, .stat-label { transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.stat-icon { font-size: 28px; opacity: 0.8; height: 32px; }
-.stat-card:hover .stat-icon { transform: scale(1.2); }
-.stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin: 12px 0; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); }
-.stat-card:hover .stat-value { transform: scale(1.15); text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); }
-.stat-label { font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; letter-spacing: 0.1em; }
-.stat-card:hover .stat-label { transform: scale(1.05); }
-/* СТАТУС СИСТЕМЫ */
-.system-status-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0 16px 0; padding: 10px 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06); }
-.status-label { font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.7); margin-right: 8px; flex-shrink: 0; }
-.status-metrics { display: flex; align-items: center; gap: 8px; }
-.status-metric { display: flex; align-items: baseline; gap: 4px; }
-.metric-time { font-size: 12px; font-weight: 700; color: rgba(255, 255, 255, 0.9); font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace; min-width: 32px; text-align: right; transition: all 0.3s ease; }
-.metric-text { font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.6); }
-.status-separator { color: rgba(255, 255, 255, 0.3); font-size: 12px; margin: 0 4px; }
-/* ПУЛЬТ УПРАВЛЕНИЯ */
-.control-panel { margin-top: 24px; }
-.control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; }
-.info-link { color: rgba(255, 255, 255, 0.5); display: flex; align-items: center; transition: color 0.3s ease; flex-shrink: 0; }
-.info-link:hover { color: white; }
-.static-prompt { color: white; margin-right: 8px; flex-shrink: 0; }
-.rotating-text-container { flex-grow: 1; text-align: left; color: rgba(255, 255, 255, 0.7); min-height: 36px; display: flex; align-items: center;}
-.rotating-text { transition: opacity 0.5s ease-in-out; line-height: 1.2; }
-.rotating-text:not(.show) { opacity: 0; }
-.button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
-.action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
-.ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
-.ticket-button:hover { background: rgba(85, 85, 85, 0.9); color: white; transform: translateY(-2px); }
-.review-button { background: linear-gradient(135deg, #f59e0b, #fcd34d); color: #422006; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
-.review-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); }
-.button-icon { transition: transform 0.3s ease; }
-.review-button:hover .button-icon { transform: translateX(4px); }
-/* Стили списка филиалов */
-.branches-content { flex-grow: 1; }
-.branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
-.branches-list { padding: 0; }
-.branch-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px; margin-bottom: 12px; background: var(--vp-c-bg-soft); border: 2px solid var(--vp-c-border); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
-.branch-item:hover { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), var(--vp-c-bg-soft)); border-color: #f59e0b; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.1); transform: translateX(4px); }
-.branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
-.branch-number { background: linear-gradient(135deg, #f59e0b, #fcd34d); color: #422006; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; transition: all 0.3s ease; box-shadow: none; }
-.branch-item:hover .branch-number { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(245, 158, 11, 0.5); }
-.branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.branch-action { color: #f59e0b; transition: transform 0.3s ease; margin-left: 12px; }
-.branch-item:hover .branch-action { transform: translateX(4px); }
+/* Основные контейнеры */
+.signal-widget-content { 
+  padding: 32px; 
+  max-height: calc(100vh - 80px); 
+  overflow-y: auto; 
+  scroll-behavior: smooth; 
+}
+
+.signal-widget-header, 
+.signal-branches-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 24px; 
+}
+
+.signal-header-title, 
+.signal-branches-title { 
+  margin: 0; 
+  color: white; 
+  font-size: 26px; 
+  font-weight: 700; 
+  line-height: 1.2; 
+  text-align: left; 
+  flex-grow: 1; 
+}
+
+.signal-header-subtitle { 
+  margin-top: 8px; 
+  font-size: 15px; 
+  color: var(--vp-c-text-2); 
+}
+
+.signal-branches-header { 
+  padding-bottom: 20px; 
+  border-bottom: 2px solid var(--vp-c-border); 
+}
+
+.signal-branches-title { 
+  text-align: center; 
+}
+
+/* Кнопки навигации */
+.signal-internal-close-btn { 
+  background: var(--vp-c-bg-mute); 
+  border: 2px solid var(--vp-c-border); 
+  border-radius: 50%; 
+  width: 44px; 
+  height: 44px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  cursor: pointer; 
+  color: var(--vp-c-text-2); 
+  transition: all 0.3s ease; 
+  flex-shrink: 0; 
+}
+
+.signal-close-btn:hover { 
+  background: linear-gradient(135deg, #991b1b, #ef4444); 
+  border-color: #ef4444; 
+  color: white; 
+  transform: rotate(90deg); 
+}
+
+.signal-back-btn:hover { 
+  background: var(--vp-c-bg-soft); 
+  border-color: var(--vp-c-text-2); 
+  color: white; 
+}
+
+/* Основная карточка */
+.signal-main-card { 
+  background: var(--vp-c-bg-soft); 
+  border-radius: 20px; 
+  padding: 24px; 
+}
+
+.signal-establishment-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 24px; 
+}
+
+.signal-cafe-name { 
+  margin: 0; 
+  color: #FFFFFF; 
+  font-size: 24px; 
+  font-weight: 600; 
+}
+
+.signal-status-badge { 
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1)); 
+  color: rgba(255, 255, 255, 0.7); 
+  border: 1px solid rgba(255, 255, 255, 0.1); 
+  padding: 6px 16px; 
+  border-radius: 20px; 
+  font-size: 12px; 
+  font-weight: 700; 
+  white-space: nowrap; 
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3); 
+  text-transform: uppercase; 
+  letter-spacing: 0.5px; 
+}
+
+/* Сетка статистики */
+.signal-stats-grid { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr 1fr; 
+  gap: 16px; 
+}
+
+.signal-stat-card { 
+  position: relative; 
+  border-radius: 22px; 
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
+  overflow: hidden; 
+  background: var(--vp-c-bg-soft); 
+}
+
+.signal-stat-card:hover { 
+  transform: translateY(-8px); 
+}
+
+.signal-stat-card::before { 
+  content: ''; 
+  position: absolute; 
+  inset: 0; 
+  border-radius: 22px; 
+  padding: 2px; 
+  background: var(--signal-border-gradient); 
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); 
+  -webkit-mask-composite: xor; 
+  mask-composite: exclude; 
+  transition: filter 0.4s ease; 
+  z-index: 3; 
+}
+
+.signal-stat-card:hover::before { 
+  filter: brightness(2) saturate(1.5); 
+}
+
+/* Цветовые схемы карточек */
+.signal-branches-card { 
+  --signal-border-gradient: linear-gradient(135deg, #3730a3, #8b5cf6, #c4b5fd); 
+  --signal-glow-color: rgba(139, 92, 246, 0.25); 
+  --signal-glow-hover-color: rgba(139, 92, 246, 0.6); 
+}
+
+.signal-index-card { 
+  --signal-border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946); 
+  --signal-glow-color: rgba(197, 249, 70, 0.25); 
+  --signal-glow-hover-color: rgba(197, 249, 70, 0.6); 
+}
+
+.signal-reviews-card { 
+  --signal-border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d); 
+  --signal-glow-color: rgba(245, 158, 11, 0.25); 
+  --signal-glow-hover-color: rgba(245, 158, 11, 0.6); 
+}
+
+/* Содержимое карточек */
+.signal-stat-content { 
+  background: radial-gradient(circle at 50% 0%, var(--signal-glow-color) 0%, transparent 70%); 
+  border-radius: 20px; 
+  padding: 20px; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: space-between; 
+  height: 100%; 
+  text-align: center; 
+  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3); 
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
+  position: relative; 
+  z-index: 2; 
+}
+
+.signal-stat-card:hover .signal-stat-content { 
+  background: radial-gradient(circle at 50% 0%, var(--signal-glow-hover-color) 0%, transparent 70%); 
+  box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4); 
+}
+
+.signal-stat-icon, 
+.signal-stat-value, 
+.signal-stat-label { 
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
+}
+
+.signal-stat-icon { 
+  font-size: 28px; 
+  opacity: 0.8; 
+  height: 32px; 
+}
+
+.signal-stat-card:hover .signal-stat-icon { 
+  transform: scale(1.2); 
+}
+
+.signal-stat-value { 
+  font-family: 'Inter', sans-serif; 
+  font-size: 3.2rem; 
+  font-weight: 600; 
+  line-height: 1; 
+  color: #fff; 
+  margin: 12px 0; 
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); 
+}
+
+.signal-stat-card:hover .signal-stat-value { 
+  transform: scale(1.15); 
+  text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); 
+}
+
+.signal-stat-label { 
+  font-size: 11px; 
+  font-weight: 500; 
+  color: rgba(255, 255, 255, 0.7); 
+  text-transform: uppercase; 
+  letter-spacing: 0.1em; 
+}
+
+.signal-stat-card:hover .signal-stat-label { 
+  transform: scale(1.05); 
+}
+
+/* Статус системы */
+.signal-system-status-bar { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 12px; 
+  margin: 20px 0 16px 0; 
+  padding: 10px 16px; 
+  background: rgba(255, 255, 255, 0.03); 
+  border-radius: 12px; 
+  border: 1px solid rgba(255, 255, 255, 0.06); 
+}
+
+.signal-status-label { 
+  font-size: 12px; 
+  font-weight: 600; 
+  color: rgba(255, 255, 255, 0.7); 
+  margin-right: 8px; 
+  flex-shrink: 0; 
+}
+
+.signal-status-metrics { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+
+.signal-status-metric { 
+  display: flex; 
+  align-items: baseline; 
+  gap: 4px; 
+}
+
+.signal-metric-time { 
+  font-size: 12px; 
+  font-weight: 700; 
+  color: rgba(255, 255, 255, 0.9); 
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace; 
+  min-width: 32px; 
+  text-align: right; 
+  transition: all 0.3s ease; 
+}
+
+.signal-metric-text { 
+  font-size: 11px; 
+  font-weight: 500; 
+  color: rgba(255, 255, 255, 0.6); 
+}
+
+.signal-status-separator { 
+  color: rgba(255, 255, 255, 0.3); 
+  font-size: 12px; 
+  margin: 0 4px; 
+}
+
+/* Пульт управления */
+.signal-control-panel { 
+  margin-top: 24px; 
+}
+
+.signal-control-panel-header { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  margin-bottom: 12px; 
+  padding: 0 8px; 
+  font-size: 14px; 
+  font-weight: 600; 
+}
+
+.signal-info-link { 
+  color: rgba(255, 255, 255, 0.5); 
+  display: flex; 
+  align-items: center; 
+  transition: color 0.3s ease; 
+  flex-shrink: 0; 
+}
+
+.signal-info-link:hover, 
+.signal-info-link:focus { 
+  color: white; 
+}
+
+.signal-info-button { 
+  background: transparent; 
+  border: none; 
+  cursor: pointer; 
+}
+
+.signal-static-prompt { 
+  color: white; 
+  margin-right: 8px; 
+  flex-shrink: 0; 
+}
+
+.signal-rotating-text-container { 
+  flex-grow: 1; 
+  text-align: left; 
+  color: rgba(255, 255, 255, 0.7); 
+  min-height: 36px; 
+  display: flex; 
+  align-items: center;
+}
+
+.signal-rotating-text { 
+  transition: opacity 0.5s ease-in-out; 
+  line-height: 1.2; 
+}
+
+.signal-rotating-text:not(.signal-show) { 
+  opacity: 0; 
+}
+
+.signal-button-container { 
+  display: flex; 
+  gap: 6px; 
+  background-color: var(--vp-c-bg); 
+  border: 1px solid var(--vp-c-divider); 
+  border-radius: 20px; 
+  padding: 6px; 
+}
+
+.signal-action-button { 
+  flex: 1; 
+  padding: 14px 20px; 
+  border-radius: 16px; 
+  border: none; 
+  font-size: 16px; 
+  font-weight: 700; 
+  cursor: pointer; 
+  transition: all 0.3s ease; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 8px; 
+}
+
+.signal-ticket-button { 
+  background: rgba(70, 70, 70, 0.8); 
+  color: rgba(255, 255, 255, 0.9); 
+}
+
+.signal-ticket-button:hover { 
+  background: rgba(85, 85, 85, 0.9); 
+  color: white; 
+  transform: translateY(-2px); 
+}
+
+.signal-review-button { 
+  background: linear-gradient(135deg, #f59e0b, #fcd34d); 
+  color: #422006; 
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); 
+}
+
+.signal-review-button:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); 
+}
+
+.signal-button-icon { 
+  transition: transform 0.3s ease; 
+}
+
+.signal-review-button:hover .signal-button-icon { 
+  transform: translateX(4px); 
+}
+
+/* Список филиалов */
+.signal-branches-content { 
+  flex-grow: 1; 
+}
+
+.signal-branches-subtitle { 
+  margin: 0 0 16px 0; 
+  font-size: 16px; 
+  color: var(--vp-c-text-2); 
+}
+
+.signal-branches-list { 
+  padding: 0; 
+}
+
+.signal-branch-item { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  width: 100%; 
+  padding: 18px; 
+  margin-bottom: 12px; 
+  background: var(--vp-c-bg-soft); 
+  border: 2px solid var(--vp-c-border); 
+  border-radius: 16px; 
+  cursor: pointer; 
+  transition: all 0.3s ease; 
+  text-align: left; 
+}
+
+.signal-branch-item:hover { 
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), var(--vp-c-bg-soft)); 
+  border-color: #f59e0b; 
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.1); 
+  transform: translateX(4px); 
+}
+
+.signal-branch-info { 
+  display: flex; 
+  align-items: center; 
+  gap: 16px; 
+  flex: 1; 
+  overflow: hidden; 
+}
+
+.signal-branch-number { 
+  background: linear-gradient(135deg, #f59e0b, #fcd34d); 
+  color: #422006; 
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 14px; 
+  font-weight: 700; 
+  flex-shrink: 0; 
+  transition: all 0.3s ease; 
+  box-shadow: none; 
+}
+
+.signal-branch-item:hover .signal-branch-number { 
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(245, 158, 11, 0.5); 
+}
+
+.signal-branch-address { 
+  font-weight: 600; 
+  font-size: 16px; 
+  color: var(--vp-c-text-1); 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+}
+
+.signal-branch-action { 
+  color: #f59e0b; 
+  transition: transform 0.3s ease; 
+  margin-left: 12px; 
+}
+
+.signal-branch-item:hover .signal-branch-action { 
+  transform: translateX(4px); 
+}
+
+/* Модальное окно */
+.signal-modal-overlay { 
+  position: fixed; 
+  inset: 0; 
+  background: rgba(0,0,0,0.6); 
+  backdrop-filter: blur(8px);
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  z-index: 1000; 
+}
+
+.signal-modal { 
+  background: var(--vp-c-bg, #111); 
+  color: var(--vp-c-text-1, #fff); 
+  border: 1px solid var(--vp-c-border, rgba(255,255,255,0.12)); 
+  border-radius: 12px; 
+  width: min(520px, 96vw); 
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4); 
+  padding: 16px; 
+}
+
+.signal-modal-header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-start; 
+  gap: 12px; 
+}
+
+.signal-modal-title { 
+  font-weight: 700; 
+  font-size: 16px; 
+}
+
+.signal-modal-body { 
+  margin-top: 8px; 
+  font-size: 14px; 
+  color: var(--vp-c-text-1); 
+}
+
+.signal-modal-footer { 
+  margin-top: 12px; 
+  display: flex; 
+  justify-content: flex-end; 
+}
+
+.signal-modal-ok { 
+  background: var(--vp-c-bg-mute, #222); 
+  border: 1px solid var(--vp-c-border); 
+  color: var(--vp-c-text-1); 
+  border-radius: 8px; 
+  padding: 8px 12px; 
+  cursor: pointer; 
+}
+
+.signal-modal-ok:hover { 
+  background: var(--vp-c-bg-soft, #333); 
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
-  .reviews-widget-content { padding: 24px; }
-  .main-card { padding: 16px; }
-  .stats-grid { grid-template-columns: 1fr; gap: 12px; }
-  .stat-card { display: flex; flex-direction: row; align-items: center; border-radius: 16px; transition: none; }
-  .stat-card:hover { transform: none; }
-  .stat-content { flex-direction: row; justify-content: space-between; align-items: center; padding: 12px 16px; width: 100%; background: none !important; box-shadow: none !important; }
-  .stat-left-group { display: flex; align-items: center; gap: 16px; }
-  .stat-icon { font-size: 28px; line-height: 1; display: flex; align-items: center; }
-  .stat-value { font-size: 2rem; font-weight: 600; margin: 0; }
-  .stat-label { font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 0.05em; }
-  .button-container { flex-direction: column; gap: 8px; }
-  .action-button:hover { transform: none; }
-  .system-status-bar { flex-direction: column; gap: 8px; padding: 12px; }
-  .status-metrics { gap: 12px; }
+  .signal-widget-content { 
+    padding: 24px; 
+  }
+  
+  .signal-main-card { 
+    padding: 16px; 
+  }
+  
+  .signal-stats-grid { 
+    grid-template-columns: 1fr; 
+    gap: 12px; 
+  }
+  
+  .signal-stat-card { 
+    display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+    border-radius: 16px; 
+    transition: none; 
+  }
+  
+  .signal-stat-card:hover { 
+    transform: none; 
+  }
+  
+  .signal-stat-content { 
+    flex-direction: row; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 12px 16px; 
+    width: 100%; 
+    background: none !important; 
+    box-shadow: none !important; 
+  }
+  
+  .signal-stat-left-group { 
+    display: flex; 
+    align-items: center; 
+    gap: 16px; 
+  }
+  
+  .signal-stat-icon { 
+    font-size: 28px; 
+    line-height: 1; 
+    display: flex; 
+    align-items: center; 
+  }
+  
+  .signal-stat-value { 
+    font-size: 2rem; 
+    font-weight: 600; 
+    margin: 0; 
+  }
+  
+  .signal-stat-label { 
+    font-size: 16px; 
+    font-weight: 500; 
+    color: rgba(255, 255, 255, 0.9); 
+    text-transform: uppercase; 
+    letter-spacing: 0.05em; 
+  }
+  
+  .signal-button-container { 
+    flex-direction: column; 
+    gap: 8px; 
+  }
+  
+  .signal-action-button:hover { 
+    transform: none; 
+  }
+  
+  .signal-system-status-bar { 
+    flex-direction: column; 
+    gap: 8px; 
+    padding: 12px; 
+  }
+  
+  .signal-status-metrics { 
+    gap: 12px; 
+  }
 }
+
 @media (max-width: 480px) {
-  .reviews-widget-content { padding: 20px; }
-  .header-title { font-size: 22px; text-align: left; }
-  .header-subtitle { font-size: 14px; }
-  .branches-title { font-size: 22px; text-align: center;}
-  .branches-subtitle { font-size: 14px; }
-  .cafe-name { font-size: 20px; }
-  .status-badge { padding: 4px 12px; font-size: 10px; }
-  .status-metrics { gap: 8px; }
-  .metric-time { font-size: 11px; min-width: 28px; }
-  .metric-text { font-size: 10px; }
+  .signal-widget-content { 
+    padding: 20px; 
+  }
+  
+  .signal-header-title { 
+    font-size: 22px; 
+    text-align: left; 
+  }
+  
+  .signal-header-subtitle { 
+    font-size: 14px; 
+  }
+  
+  .signal-branches-title { 
+    font-size: 22px; 
+    text-align: center;
+  }
+  
+  .signal-branches-subtitle { 
+    font-size: 14px; 
+  }
+  
+  .signal-cafe-name { 
+    font-size: 20px; 
+  }
+  
+  .signal-status-badge { 
+    padding: 4px 12px; 
+    font-size: 10px; 
+  }
+  
+  .signal-status-metrics { 
+    gap: 8px; 
+  }
+  
+  .signal-metric-time { 
+    font-size: 11px; 
+    min-width: 28px; 
+  }
+  
+  .signal-metric-text { 
+    font-size: 10px; 
+  }
 }
 </style>
