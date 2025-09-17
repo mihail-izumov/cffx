@@ -43,6 +43,10 @@
           <strong>Задача:</strong> Найти отличия в одном зерне из разных партий
         </div>
       </div>
+      <!-- Изображение в рамках карточки -->
+      <div class="experience-card image-card">
+        <img src="/fest2025_smr_ban_1.jpg" alt="Festival Banner" class="card-image" />
+      </div>
     </div>
   </div>
   <!-- Вкладка 2: Пейринги -->
@@ -63,6 +67,10 @@
           <span class="card-badge">Гастрономия</span>
         </div>
         <p class="card-description">Понимайте, как текстуры и вкусы усиливают друг друга. Секреты создания идеальных сочетаний от профессиональных кондитеров.</p>
+      </div>
+      <!-- Изображение в рамках карточки -->
+      <div class="experience-card image-card">
+        <img src="/fest2025_smr_ban_1.jpg" alt="Festival Banner" class="card-image" />
       </div>
     </div>
   </div>
@@ -101,17 +109,19 @@
           <strong>Ведут:</strong> White Cup
         </div>
       </div>
+      <!-- Изображение в рамках карточки -->
+      <div class="experience-card image-card">
+        <img src="/fest2025_smr_ban_1.jpg" alt="Festival Banner" class="card-image" />
+      </div>
     </div>
   </div>
 </div>
 </div>
 </template>
-
 <script setup>
 import { ref } from 'vue'
 const activeTab = ref('tastings')
 </script>
-
 <style scoped>
 .festival-experience {
   margin: 1.5rem 0;
@@ -212,6 +222,24 @@ const activeTab = ref('tastings')
 .card-highlight strong {
   color: var(--vp-c-text-1);
 }
+
+/* Стили для карточки с изображением */
+.image-card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
   .tabs {
@@ -224,6 +252,9 @@ const activeTab = ref('tastings')
   }
   .experience-card {
     padding: 0.8rem;
+  }
+  .image-card {
+    padding: 0;
   }
 }
 </style>
