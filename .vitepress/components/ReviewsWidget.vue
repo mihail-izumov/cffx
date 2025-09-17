@@ -315,11 +315,11 @@ watch(showBranchList, (newValue) => {
 
     <!-- Модальное окно -->
     <div v-if="showInfoModal" class="review2-modal-overlay" @click.self="showInfoModal = false">
-      <div class="review2-modal" role="dialog" aria-modal="true" id="review2-signal-dialog" aria-label="Что такое Система Сигналов">
+      <div class="review2-modal" role="dialog" aria-modal="true" id="review2-signal-dialog" aria-label="Диалоги Сигнала">
         <div class="review2-modal-header">
-          <div class="review2-modal-title">Что такое Система Сигналов</div>
+          <div class="review2-modal-title">Диалоги Сигнала</div>
         </div>
-        <div class="review2-modal-body">Автоматическая передача отзывов владельцу кофейни для быстрого реагирования на проблемы и улучшения сервиса.</div>
+        <div class="review2-modal-body">Ваш Сигнал — это команда к действию для кофейни и видимый результат для вас.</div>
         <div class="review2-modal-footer">
           <button class="review2-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
         </div>
