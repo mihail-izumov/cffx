@@ -31,7 +31,7 @@
     <div class="analysis-brand-card analysis-special-brand">
       <div class="analysis-brand-content">
         <h3>Вашей кофейни здесь нет?</h3>
-        <p class="analysis-description-goals"><a href="/brew/membership">Рассчитать Индекс Роста →</a></p>
+        <p class="analysis-description-goals"><a href="/smr">Смотреть Индекс Роста →</a></p>
       </div>
     </div>
   </div>
