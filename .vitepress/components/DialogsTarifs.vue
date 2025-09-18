@@ -36,7 +36,7 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
       <div class="grid-cell grid-header header-feature"></div>
       <div v-for="tariff in tariffs" :key="tariff.title" 
            class="grid-cell grid-header"
-           :class="{ 'highlighted-column': tariff.isHighlighted }">
+           :class="{ 'highlighted': tariff.isHighlighted }">
         <span class="tariff-title">{{ tariff.title }}</span>
         <span class="tariff-description">{{ tariff.description }}</span>
       </div>
@@ -46,7 +46,7 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
         <div class="grid-cell cell-feature" :class="{ 'price-separator-top': index === 0 }">{{ duration }}</div>
         <div v-for="tariff in tariffs" :key="tariff.title" 
              class="grid-cell cell-price"
-             :class="{ 'price-separator-top': index === 0, 'highlighted-column': tariff.isHighlighted }">
+             :class="{ 'price-separator-top': index === 0, 'highlighted': tariff.isHighlighted }">
           <span class="price-per-month">{{ tariff.prices[duration].perMonth }}</span>
           <span v-if="tariff.prices[duration].total" class="price-total">{{ tariff.prices[duration].total }}</span>
         </div>
@@ -60,7 +60,7 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
         <div class="grid-cell cell-feature" :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1 }">{{ feature }}</div>
         <div v-for="tariff in tariffs" :key="tariff.title" 
              class="grid-cell cell-value"
-             :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1, 'highlighted-column': tariff.isHighlighted }">
+             :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1, 'highlighted': tariff.isHighlighted }">
           <span>{{ tariff.features[feature] }}</span>
         </div>
       </template>
@@ -81,7 +81,7 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   align-items: stretch;
 }
 .grid-cell {
-  position: relative; /* Необходимо для псевдоэлемента */
+  position: relative;
   padding: 12px 16px;
   display: flex;
   flex-direction: column;
@@ -96,9 +96,8 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
   min-height: 90px;
-  /* ИСПРАВЛЕНИЕ ВЫРАВНИВАНИЯ */
-  justify-content: flex-start; /* Выравнивание по верху */
-  text-align: center; /* Центрирование текста внутри */
+  justify-content: flex-start;
+  text-align: center;
 }
 .header-feature {
   background-color: transparent;
@@ -108,14 +107,14 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   font-weight: 600;
   font-size: 1.1em;
   color: var(--vp-c-text-1);
-  width: 100%; /* Для корректного text-align */
+  width: 100%;
 }
 .tariff-description {
   margin-top: 6px;
   font-size: 0.9em;
   color: var(--vp-c-text-2);
   line-height: 1.3;
-  width: 100%; /* Для корректного text-align */
+  width: 100%;
 }
 .cell-feature {
   justify-content: center;
@@ -151,23 +150,19 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   border-bottom: none;
 }
 
-/* ИСПРАВЛЕНИЕ ПОДСВЕТКИ */
-.highlighted-column::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 2px solid var(--vp-c-brand-1);
-  z-index: 10;
-  pointer-events: none; /* Чтобы не мешать кликам */
+/* --- ИСПРАВЛЕННЫЕ СТИЛИ ПОДСВЕТКИ --- */
+.highlighted {
+  border-left: 2px solid var(--vp-c-brand-1);
+  border-right: 2px solid var(--vp-c-brand-1);
+  z-index: 1; /* Поднимаем слой ячеек */
 }
-.grid-header.highlighted-column::after {
+.grid-header.highlighted {
+  border-top: 2px solid var(--vp-c-brand-1);
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
 }
-.last-row-cell.highlighted-column::after {
+.last-row-cell.highlighted {
+  border-bottom: 2px solid var(--vp-c-brand-1);
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
 }
