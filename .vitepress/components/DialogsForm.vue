@@ -1,7 +1,7 @@
 <template>
   <div class="consultation-section">
     <div class="consultation-container">
-      <p class="consultation-description">Защитите выручку и репутацию кофейни сегодня</p>
+      <p class="consultation-description">Защитите выручку и репутацию кофейни</p>
       
       <form id="consultationForm" class="consultation-form">
         <div class="form-row">
