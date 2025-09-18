@@ -6,44 +6,30 @@
         <div class="cffx-roi-calc-input-group">
           <label for="guestsInput" class="cffx-roi-calc-label">
             Кол-во гостей (сред. в мес.):
-            <span
-              class="cffx-roi-calc-info-icon"
-              @click="showTooltip('guestsInput')"
-              @mouseenter="hoverIcon = 'guestsInput'"
-              @mouseleave="hoverIcon = null"
-              :class="{ hover: hoverIcon === 'guestsInput' }"
-            >i</span>
+            <span class="cffx-roi-calc-info-icon"
+                  @click="showTooltip('guestsInput')"
+                  @mouseenter="hoverIcon = 'guestsInput'"
+                  @mouseleave="hoverIcon = null"
+                  :class="{ hover: hoverIcon === 'guestsInput' }">i</span>
           </label>
-          <input
-            id="guestsInput"
-            type="text"
-            :value="guestsStr"
-            placeholder="например, 1,000"
-            @input="onGuestsInput"
-            :class="['cffx-roi-calc-input', { 'cffx-roi-calc-error': guestsError }]"
-          />
+          <input id="guestsInput" type="text" :value="guestsStr" placeholder="например, 1,000"
+                 @input="onGuestsInput"
+                 :class="['cffx-roi-calc-input', { 'cffx-roi-calc-error': guestsError }]" />
           <div v-if="guestsError" class="cffx-roi-calc-error-message">{{ guestsError }}</div>
         </div>
 
         <div class="cffx-roi-calc-input-group">
           <label for="averageCheckInput" class="cffx-roi-calc-label">
             Средний чек (₽):
-            <span
-              class="cffx-roi-calc-info-icon"
-              @click="showTooltip('averageCheckInput')"
-              @mouseenter="hoverIcon = 'averageCheckInput'"
-              @mouseleave="hoverIcon = null"
-              :class="{ hover: hoverIcon === 'averageCheckInput' }"
-            >i</span>
+            <span class="cffx-roi-calc-info-icon"
+                  @click="showTooltip('averageCheckInput')"
+                  @mouseenter="hoverIcon = 'averageCheckInput'"
+                  @mouseleave="hoverIcon = null"
+                  :class="{ hover: hoverIcon === 'averageCheckInput' }">i</span>
           </label>
-          <input
-            id="averageCheckInput"
-            type="text"
-            :value="averageCheckStr"
-            placeholder="например, 500"
-            @input="onAverageCheckInput"
-            :class="['cffx-roi-calc-input', { 'cffx-roi-calc-error': checkError }]"
-          />
+          <input id="averageCheckInput" type="text" :value="averageCheckStr" placeholder="например, 500"
+                 @input="onAverageCheckInput"
+                 :class="['cffx-roi-calc-input', { 'cffx-roi-calc-error': checkError }]" />
           <div v-if="checkError" class="cffx-roi-calc-error-message">{{ checkError }}</div>
         </div>
       </div>
@@ -74,18 +60,14 @@
         <tbody>
           <tr>
             <td class="cffx-roi-calc-metric-cell">
-              <span
-                class="cffx-roi-calc-metric-text"
-                @click="showTooltip('loyalGuests')"
-                :class="{ 'cffx-roi-calc-active': activeTooltip === 'loyalGuests' }"
-              >Лояльные гости/мес.</span>
-              <span
-                class="cffx-roi-calc-info-icon cffx-roi-calc-info-icon-table"
-                @click.stop="showTooltip('loyalGuests')"
-                @mouseenter="hoverIcon = 'loyalGuests'"
-                @mouseleave="hoverIcon = null"
-                :class="{ hover: hoverIcon === 'loyalGuests' }"
-              >i</span>
+              <span class="cffx-roi-calc-metric-text"
+                    @click="showTooltip('loyalGuests')"
+                    :class="{ 'cffx-roi-calc-active': activeTooltip === 'loyalGuests' }">Лояльные гости/мес.</span>
+              <span class="cffx-roi-calc-info-icon cffx-roi-calc-info-icon-table"
+                    @click.stop="showTooltip('loyalGuests')"
+                    @mouseenter="hoverIcon = 'loyalGuests'"
+                    @mouseleave="hoverIcon = null"
+                    :class="{ hover: hoverIcon === 'loyalGuests' }">i</span>
             </td>
             <td class="cffx-roi-calc-td">{{ displayResult.loyalWithout }} гостей</td>
             <td class="cffx-roi-calc-td cffx-roi-calc-highlight">
@@ -96,18 +78,14 @@
 
           <tr>
             <td class="cffx-roi-calc-metric-cell">
-              <span
-                class="cffx-roi-calc-metric-text"
-                @click="showTooltip('frequency')"
-                :class="{ 'cffx-roi-calc-active': activeTooltip === 'frequency' }"
-              >Частота посещений</span>
-              <span
-                class="cffx-roi-calc-info-icon cffx-roi-calc-info-icon-table"
-                @click.stop="showTooltip('frequency')"
-                @mouseenter="hoverIcon = 'frequency'"
-                @mouseleave="hoverIcon = null"
-                :class="{ hover: hoverIcon === 'frequency' }"
-              >i</span>
+              <span class="cffx-roi-calc-metric-text"
+                    @click="showTooltip('frequency')"
+                    :class="{ 'cffx-roi-calc-active': activeTooltip === 'frequency' }">Частота посещений</span>
+              <span class="cffx-roi-calc-info-icon cffx-roi-calc-info-icon-table"
+                    @click.stop="showTooltip('frequency')"
+                    @mouseenter="hoverIcon = 'frequency'"
+                    @mouseleave="hoverIcon = null"
+                    :class="{ hover: hoverIcon === 'frequency' }">i</span>
             </td>
             <td class="cffx-roi-calc-td">{{ displayResult.frequencyWithout }} раз/мес</td>
             <td class="cffx-roi-calc-td cffx-roi-calc-highlight">
@@ -118,18 +96,14 @@
 
           <tr>
             <td class="cffx-roi-calc-metric-cell">
-              <span
-                class="cffx-roi-calc-metric-text"
-                @click="showTooltip('ltv')"
-                :class="{ 'cffx-roi-calc-active': activeTooltip === 'ltv' }"
-              >LTV одного гостя за 10 мес.</span>
-              <span
-                class="cffx-roi-calc-info-icon cffx-roi-calc-info-icon-table"
-                @click.stop="showTooltip('ltv')"
-                @mouseenter="hoverIcon = 'ltv'"
-                @mouseleave="hoverIcon = null"
-                :class="{ hover: hoverIcon === 'ltv' }"
-              >i</span>
+              <span class="cffx-roi-calc-metric-text"
+                    @click="showTooltip('ltv')"
+                    :class="{ 'cffx-roi-calc-active': activeTooltip === 'ltv' }">LTV одного гостя за 10 мес.</span>
+              <span class="cffx-roi-calc-info-icon cffx-roi-calc-info-icon-table"
+                    @click.stop="showTooltip('ltv')"
+                    @mouseenter="hoverIcon = 'ltv'"
+                    @mouseleave="hoverIcon = null"
+                    :class="{ hover: hoverIcon === 'ltv' }">i</span>
             </td>
             <td class="cffx-roi-calc-td">₽{{ displayResult.ltvWithoutFormatted }}</td>
             <td class="cffx-roi-calc-td cffx-roi-calc-highlight">
@@ -140,18 +114,14 @@
 
           <tr>
             <td class="cffx-roi-calc-metric-cell">
-              <span
-                class="cffx-roi-calc-metric-text"
-                @click="showTooltip('revenue')"
-                :class="{ 'cffx-roi-calc-active': activeTooltip === 'revenue' }"
-              >Доп. выручка/мес.</span>
-              <span
-                class="cffx-roi-calc-info-icon cffx-roi-calc-info-icon-table"
-                @click.stop="showTooltip('revenue')"
-                @mouseenter="hoverIcon = 'revenue'"
-                @mouseleave="hoverIcon = null"
-                :class="{ hover: hoverIcon === 'revenue' }"
-              >i</span>
+              <span class="cffx-roi-calc-metric-text"
+                    @click="showTooltip('revenue')"
+                    :class="{ 'cffx-roi-calc-active': activeTooltip === 'revenue' }">Доп. выручка/мес.</span>
+              <span class="cffx-roi-calc-info-icon cffx-roi-calc-info-icon-table"
+                    @click.stop="showTooltip('revenue')"
+                    @mouseenter="hoverIcon = 'revenue'"
+                    @mouseleave="hoverIcon = null"
+                    :class="{ hover: hoverIcon === 'revenue' }">i</span>
             </td>
             <td class="cffx-roi-calc-td">—</td>
             <td class="cffx-roi-calc-td cffx-roi-calc-highlight">₽{{ displayResult.additionalMonthlyRevenueFormatted }}</td>
@@ -159,18 +129,14 @@
 
           <tr>
             <td class="cffx-roi-calc-metric-cell">
-              <span
-                class="cffx-roi-calc-metric-text"
-                @click="showTooltip('payback')"
-                :class="{ 'cffx-roi-calc-active': activeTooltip === 'payback' }"
-              >Окупаемость</span>
-              <span
-                class="cffx-roi-calc-info-icon cffx-roi-calc-info-icon-table"
-                @click.stop="showTooltip('payback')"
-                @mouseenter="hoverIcon = 'payback'"
-                @mouseleave="hoverIcon = null"
-                :class="{ hover: hoverIcon === 'payback' }"
-              >i</span>
+              <span class="cffx-roi-calc-metric-text"
+                    @click="showTooltip('payback')"
+                    :class="{ 'cffx-roi-calc-active': activeTooltip === 'payback' }">Окупаемость</span>
+              <span class="cffx-roi-calc-info-icon cffx-roi-calc-info-icon-table"
+                    @click.stop="showTooltip('payback')"
+                    @mouseenter="hoverIcon = 'payback'"
+                    @mouseleave="hoverIcon = null"
+                    :class="{ hover: hoverIcon === 'payback' }">i</span>
             </td>
             <td class="cffx-roi-calc-td">—</td>
             <td class="cffx-roi-calc-td cffx-roi-calc-highlight">{{ displayResult.paybackSignals }}</td>
@@ -180,26 +146,12 @@
     </div>
 
     <!-- Триггер раскрытия -->
-    <div
-      class="cffx-roi-calc-why-toggle"
-      :class="{ open: whyOpen }"
-      @click="toggleWhy"
-      :aria-expanded="whyOpen.toString()"
-      role="button"
-      tabindex="0"
-    >
+    <div class="cffx-roi-calc-why-toggle" :class="{ open: whyOpen }" @click="toggleWhy"
+         :aria-expanded="whyOpen.toString()" role="button" tabindex="0">
       <span class="cffx-roi-calc-why-text">Почему все получится</span>
       <span class="cffx-roi-calc-why-icon" aria-hidden="true">
-        <!-- Lucide chevron-down -->
-        <svg
-          class="cffx-roi-calc-why-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg class="cffx-roi-calc-why-icon-svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M6 9l6 6 6-6"></path>
         </svg>
       </span>
@@ -208,127 +160,64 @@
     <!-- Раскрывающийся контент -->
     <transition name="cffx-roi-calc-collapse">
       <div v-if="whyOpen" class="cffx-roi-calc-container cffx-roi-calc-content">
-        <!-- Сигналы: янтарные чипы -->
+        <!-- Янтарные -->
         <div class="cffx-roi-calc-signal-block">
           <h4 class="cffx-roi-calc-signal-title">Каждый Сигнал = возможность вернуть клиента:</h4>
           <div class="cffx-chip-grid">
             <div class="cffx-chip cffx-chip--amber">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
+              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
               <span>Недовольный отзыв в 2ГИС/Google до публикации</span>
             </div>
             <div class="cffx-chip cffx-chip--amber">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
+              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
               <span>Жалоба в социальных сетях</span>
             </div>
             <div class="cffx-chip cffx-chip--amber">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
+              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
               <span>Негативный комментарий о сервисе</span>
             </div>
             <div class="cffx-chip cffx-chip--amber">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
+              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
               <span>Проблема с качеством продукта</span>
             </div>
           </div>
         </div>
 
-        <!-- Специфика кофеен: тёмные чипы -->
+        <!-- Тёмные -->
         <div class="cffx-roi-calc-coffee-specifics">
           <h4 class="cffx-roi-calc-coffee-title">Почему кофейни особенные:</h4>
           <div class="cffx-chip-grid">
-            <div class="cffx-chip cffx-chip--slate">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
-              <span>Выше базовая лояльность — «своё» место</span>
-            </div>
-            <div class="cffx-chip cffx-chip--slate">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
-              <span>Чаще посещения — кофе нужен каждый день</span>
-            </div>
-            <div class="cffx-chip cffx-chip--slate">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
-              <span>Сила привычки и удобного расположения</span>
-            </div>
-            <div class="cffx-chip cffx-chip--slate">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
-              <span>Сарафанное радио работает быстрее</span>
-            </div>
+            <div class="cffx-chip cffx-chip--slate"><svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Выше базовая лояльность — «своё» место</span></div>
+            <div class="cffx-chip cffx-chip--slate"><svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Чаще посещения — кофе нужен каждый день</span></div>
+            <div class="cffx-chip cffx-chip--slate"><svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Сила привычки и удобного расположения</span></div>
+            <div class="cffx-chip cffx-chip--slate"><svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Сарафанное радио работает быстрее</span></div>
           </div>
         </div>
 
-        <!-- Окупаемость: синий блок, чипы -->
+        <!-- Синие -->
         <div class="cffx-roi-calc-payback-explanation">
           <h4 class="cffx-roi-calc-payback-title">Все сигналы после 2-го = чистая прибыль:</h4>
           <div class="cffx-chip-grid">
-            <div class="cffx-chip cffx-chip--blue">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
-              <span>Стоимость системы: от ₽30.000/мес</span>
-            </div>
-            <div class="cffx-chip cffx-chip--blue">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
-              <span>Средняя стоимость предотвращенного ухода: от ₽{{ dynamicPreventedLoss }}</span>
-            </div>
-            <div class="cffx-chip cffx-chip--blue">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
-              <span>Система окупается после {{ displayResult.paybackSignals }}</span>
-            </div>
+            <div class="cffx-chip cffx-chip--blue"><svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Стоимость системы: от ₽30.000/мес</span></div>
+            <div class="cffx-chip cffx-chip--blue"><svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Средняя стоимость предотвращенного ухода: от ₽{{ dynamicPreventedLoss }}</span></div>
+            <div class="cffx-chip cffx-chip--blue"><svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Система окупается после {{ displayResult.paybackSignals }}</span></div>
           </div>
         </div>
 
-        <!-- Успех: зелёные чипы -->
+        <!-- Зелёные -->
         <div class="cffx-roi-calc-success-factors">
           <h4 class="cffx-roi-calc-success-title">Ключевые факторы успеха:</h4>
           <div class="cffx-chip-grid">
-            <div class="cffx-chip cffx-chip--green">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
-              <span>Время ответа на жалобу < 30 минут</span>
-            </div>
-            <div class="cffx-chip cffx-chip--green">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
-              <span>Нематериальная компенсация</span>
-            </div>
-            <div class="cffx-chip cffx-chip--green">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
-              <span>Персонализация предложений</span>
-            </div>
-            <div class="cffx-chip cffx-chip--green">
-              <svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-              </svg>
-              <span>Мониторинг качества сервиса</span>
-            </div>
+            <div class="cffx-chip cffx-chip--green"><svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Время ответа на жалобу < 30 минут</span></div>
+            <div class="cffx-chip cffx-chip--green"><svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Нематериальная компенсация</span></div>
+            <div class="cffx-chip cffx-chip--green"><svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Персонализация предложений</span></div>
+            <div class="cffx-chip cffx-chip--green"><svg class="cffx-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Мониторинг качества сервиса</span></div>
           </div>
         </div>
 
         <!-- CTA / Info -->
         <div class="cffx-roi-calc-cta-block">
-          <p class="cffx-roi-calc-cta-text"><strong>Главное:</strong> Система окупается мгновенно, каждый месяц рост выручки в ₽{{ dynamicRevenueMillion }}+ млн.</p>
+          <p class="cffx-roi-calc-cta-text"><strong>Главное:</strong> Система окупается мгновенно, а каждый месяц приносит стабильный рост выручки в ₽{{ dynamicRevenueMillion }}+ млн.</p>
           <p class="cffx-roi-calc-cta-text">Следующий шаг → <a href="https://cffx.ru/brew/membership.html" class="cffx-roi-calc-cta-link">Получить QR-код</a></p>
         </div>
 
@@ -448,33 +337,23 @@ const generateDynamicTooltips = (guests, check) => {
   const formatNum = (n) => formatNumber(n)
 
   return {
-    guestsInput: { title: 'Количество гостей в месяц', description: 'Среднее количество уникальных посетителей вашей кофейни за месяц. Диапазон: 50-10,000 гостей/мес.' },
+    guestsInput: { title: 'Количество гостей в месяц', description: 'Среднее количество уникальных посетителей за месяц. Диапазон: 50-10,000 гостей/мес.' },
     averageCheckInput: { title: 'Средний чек', description: 'Средняя сумма одного заказа. Диапазон: 100-5,000 ₽.' },
-    loyalGuests: {
-      title: 'Прирост постоянных клиентов',
+    loyalGuests: { title: 'Прирост постоянных клиентов',
       formula: `${formatNum(guests)} × 42% = ${formatNum(loyal_without)}<br>${formatNum(guests)} × 65% = ${formatNum(loyal_with)}<br>${formatNum(loyal_with)} - ${formatNum(loyal_without)} = +${formatNum(loyal_increase)}`,
-      description: `Прирост: +${formatNum(loyal_increase)} (+${loyalty_percent}%).`
-    },
-    frequency: {
-      title: 'Как часто ходят лояльные гости',
+      description: `Прирост: +${formatNum(loyal_increase)} (+${loyalty_percent}%).` },
+    frequency: { title: 'Как часто ходят лояльные гости',
       formula: `4 раз/мес → 7 раз/мес<br>(3 ÷ 4) × 100% = +75%`,
-      description: `Позитивный опыт повышает частоту визитов.`
-    },
-    ltv: {
-      title: 'LTV одного гостя',
+      description: `Позитивный опыт повышает частоту визитов.` },
+    ltv: { title: 'LTV одного гостя',
       formula: `Без: ${check} × 4 × 10 = ₽${formatNum(ltv_without)}<br>С: ${check} × 7 × 10 = ₽${formatNum(ltv_with)}<br>Рост: +₽${formatNum(ltv_with - ltv_without)}`,
-      description: `Формула: Средний чек × Частота × Период.`
-    },
-    revenue: {
-      title: 'Доп. выручка/мес.',
+      description: `Формула: Средний чек × Частота × Период.` },
+    revenue: { title: 'Доп. выручка/мес.',
       formula: `₽${formatNum(revenue_with)} - ₽${formatNum(revenue_without)} = ₽${formatNum(additional_revenue)}`,
-      description: `Разница между состояниями без/с системой.`
-    },
-    payback: {
-      title: 'Окупаемость',
+      description: `Разница между состояниями без/с системой.` },
+    payback: { title: 'Окупаемость',
       formula: `₽30.000 ÷ ₽${formatNum(prevented_loss)} = ${(30000/prevented_loss).toFixed(1)} (≈1–2 сигнала)`,
-      description: `После 2-го предотвращённого ухода — чистая прибыль.`
-    }
+      description: `После 2-го предотвращённого ухода — чистая прибыль.` }
   }
 }
 
@@ -548,210 +427,131 @@ function calculate() {
 
 <style scoped>
 /* Wrapper */
-.cffx-roi-calc-wrapper {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #ffffff;
-}
+.cffx-roi-calc-wrapper{width:100%;max-width:1200px;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff}
 
 /* Box */
-.cffx-roi-calc-container {
-  margin: 0 0 20px;
-  padding: 24px;
-  background: #1e1e1e;
-  border: 1px solid #2b2b2b;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-}
-.cffx-roi-calc-container.cffx-roi-calc-content {
-  margin-top: 0;
-  border-top: none;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
+.cffx-roi-calc-container{margin:0 0 20px;padding:24px;background:#1e1e1e;border:1px solid #2b2b2b;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+.cffx-roi-calc-container.cffx-roi-calc-content{margin-top:0;border-top:none;border-top-left-radius:0;border-top-right-radius:0}
 
 /* Inputs */
-.cffx-roi-calc-input-row { display: flex; gap: 20px; margin-bottom: 16px; }
-.cffx-roi-calc-input-group { flex: 1; position: relative; }
-.cffx-roi-calc-label { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font: 600 14px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #fff; }
-.cffx-roi-calc-info-icon {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 18px; height: 18px; background: #666; border-radius: 50%;
-  cursor: pointer; transition: all 0.2s ease; font-size: 12px; font-weight: 600; color: #fff; flex-shrink: 0;
-}
-.cffx-roi-calc-info-icon.hover { background: #999; }
-.cffx-roi-calc-info-icon-table { border: none; }
-.cffx-roi-calc-input {
-  width: 100%; height: 44px; padding: 0 14px;
-  font: 500 15px/44px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #141414; border: 1px solid #333; border-radius: 8px; color: #fff;
-  transition: border-color 0.25s ease; box-sizing: border-box;
-}
-.cffx-roi-calc-input:focus { border-color: #c5f946; outline: 0; }
-.cffx-roi-calc-input.cffx-roi-calc-error { border-color: #ef4444; }
-.cffx-roi-calc-input::placeholder { color: #888; }
-.cffx-roi-calc-error-message { position: absolute; top: 100%; left: 0; margin-top: 4px; font-size: 12px; color: #ef4444; }
+.cffx-roi-calc-input-row{display:flex;gap:20px;margin-bottom:16px}
+.cffx-roi-calc-input-group{flex:1;position:relative}
+.cffx-roi-calc-label{display:flex;align-items:center;gap:8px;margin-bottom:6px;font:600 14px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff}
+.cffx-roi-calc-info-icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:#666;border-radius:50%;cursor:pointer;transition:all .2s;font-size:12px;font-weight:600;color:#fff;flex-shrink:0}
+.cffx-roi-calc-info-icon.hover{background:#999}
+.cffx-roi-calc-info-icon-table{border:none}
+.cffx-roi-calc-input{width:100%;height:44px;padding:0 14px;font:500 15px/44px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#141414;border:1px solid #333;border-radius:8px;color:#fff;transition:border-color .25s;box-sizing:border-box}
+.cffx-roi-calc-input:focus{border-color:#c5f946;outline:0}
+.cffx-roi-calc-input.cffx-roi-calc-error{border-color:#ef4444}
+.cffx-roi-calc-input::placeholder{color:#888}
+.cffx-roi-calc-error-message{position:absolute;top:100%;left:0;margin-top:4px;font-size:12px;color:#ef4444}
 
 /* Button */
-.cffx-roi-calc-btn {
-  width: 100%; height: 44px; margin-top: 12px;
-  font: 700 16px/44px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  text-transform: uppercase; color: #ffffff; background: #347b6c;
-  border: none; border-radius: 8px; cursor: pointer;
-  transition: background 0.2s, transform 0.2s, color 0.2s;
-}
-.cffx-roi-calc-btn:disabled { background: #555; color: #ccc; cursor: not-allowed; transform: none; }
-.cffx-roi-calc-btn:not(:disabled):hover { background: #c5f946; color: #000; transform: translateY(-2px); }
+.cffx-roi-calc-btn{width:100%;height:44px;margin-top:12px;font:700 16px/44px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;text-transform:uppercase;color:#fff;background:#347b6c;border:none;border-radius:8px;cursor:pointer;transition:background .2s,transform .2s,color .2s}
+.cffx-roi-calc-btn:disabled{background:#555;color:#ccc;cursor:not-allowed;transform:none}
+.cffx-roi-calc-btn:not(:disabled):hover{background:#c5f946;color:#000;transform:translateY(-2px)}
 
 /* Header */
-.cffx-roi-calc-header { margin: 0 0 20px 0; padding: 0; }
-.cffx-roi-calc-title { margin: 0; padding: 16px 0; font: 600 18px/1.3 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; text-align: center; color: #c5f946; }
-.cffx-roi-calc-title-mobile { display: none; }
+.cffx-roi-calc-header{margin:0 0 20px 0;padding:0}
+.cffx-roi-calc-title{margin:0;padding:16px 0;font:600 18px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;text-align:center;color:#c5f946}
+.cffx-roi-calc-title-mobile{display:none}
 
 /* Table container */
-.cffx-roi-calc-table-container {
-  margin: 0 0 20px 0;
-  overflow: hidden;
-  border-radius: 8px;
-  border: 1px solid #2b2b2b;
-}
+.cffx-roi-calc-table-container{margin:0 0 20px 0;overflow:hidden;border-radius:8px;border:1px solid #2b2b2b}
 
-/* Table: плотная и без внешней обводки столбца "Показатель" */
-.cffx-roi-calc-table {
-  width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0;
-  border-style: hidden; /* скрывает внешний контур таблицы при collapsed */
-  background: #141414;
-  table-layout: auto;
-  margin: 0;
-  padding: 0;
-}
-.cffx-roi-calc-th,
-.cffx-roi-calc-td {
-  border: 0;                    /* обнуляем всё, что может прийти с темой */
-  border-bottom: 1px solid #2b2b2b;
-  padding: 10px 16px;
-  line-height: 1.35;
-}
-.cffx-roi-calc-th {
-  font: 600 14px/1.35 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #c5f946; background: #1a1a1a; text-align: left; white-space: nowrap;
-}
-.cffx-roi-calc-th:nth-child(1) { width: 45%; }
-.cffx-roi-calc-th:nth-child(2) { width: 27.5%; }
-.cffx-roi-calc-th:nth-child(3) { width: 27.5%; }
+/* Table — модель separate + единый разделитель строки */
+.cffx-roi-calc-table{width:100%;border-collapse:separate;border-spacing:0;background:#141414;table-layout:auto;margin:0;padding:0}
+.cffx-roi-calc-table tr{position:relative}
+.cffx-roi-calc-table thead tr::after{content:none}
+.cffx-roi-calc-table tbody tr::after{content:"";position:absolute;left:16px;right:16px;bottom:0;height:1px;background:#2b2b2b;transform:translateZ(0)}
+.cffx-roi-calc-table tbody tr:last-child::after{display:none}
 
-.cffx-roi-calc-td { font: 400 14px/1.35 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #fff; white-space: nowrap; }
+.cffx-roi-calc-th,.cffx-roi-calc-td,.cffx-roi-calc-metric-cell{border:0;padding:10px 16px;vertical-align:middle;line-height:1.35}
+.cffx-roi-calc-th{font:600 14px/1.35 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#c5f946;background:#1a1a1a;text-align:left;white-space:nowrap}
+.cffx-roi-calc-th:nth-child(1){width:45%}
+.cffx-roi-calc-th:nth-child(2){width:27.5%}
+.cffx-roi-calc-th:nth-child(3){width:27.5%}
+.cffx-roi-calc-td{font:400 14px/1.35 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;white-space:nowrap}
+.cffx-roi-calc-metric-cell{display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:nowrap}
+.cffx-roi-calc-metric-text{cursor:pointer;transition:color .2s;user-select:none;flex:1}
+.cffx-roi-calc-metric-text:hover{color:rgba(197,249,70,.8)}
+.cffx-roi-calc-metric-text.cffx-roi-calc-active{color:#c5f946}
+.cffx-roi-calc-highlight{color:#c5f946;font-weight:600}
+.cffx-roi-calc-growth-secondary{color:#888;font-weight:400;font-size:.9em}
 
-.cffx-roi-calc-table tr:last-child .cffx-roi-calc-td,
-.cffx-roi-calc-table tr:last-child .cffx-roi-calc-metric-cell { border-bottom: none; }
+/* Toggle */
+.cffx-roi-calc-why-toggle{padding:14px 16px;margin:0;background:#1e1e1e;border:1px solid #2b2b2b;border-radius:8px;color:#fff;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:background .2s ease,border-color .2s ease}
+.cffx-roi-calc-why-toggle.open{border-bottom-left-radius:0;border-bottom-right-radius:0}
+.cffx-roi-calc-why-toggle:hover{background:#232323;border-color:#3a3a3a}
+.cffx-roi-calc-why-text{font:600 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.cffx-roi-calc-why-icon-svg{width:24px;height:24px;color:#9ca3af;transition:transform .2s ease,color .2s ease}
+.cffx-roi-calc-why-toggle:hover .cffx-roi-calc-why-icon-svg{color:#b0b7c3}
+.cffx-roi-calc-why-toggle.open .cffx-roi-calc-why-icon-svg{transform:rotate(180deg)}
 
-.cffx-roi-calc-metric-cell {
-  border: 0; border-bottom: 1px solid #2b2b2b;
-  padding: 10px 16px; font: 500 14px/1.35 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #fff;
-  white-space: nowrap; display: flex; align-items: center; justify-content: space-between; gap: 8px;
-}
-.cffx-roi-calc-metric-text { cursor: pointer; transition: color 0.2s ease; user-select: none; flex: 1; }
-.cffx-roi-calc-metric-text:hover { color: rgba(197, 249, 70, 0.8); }
-.cffx-roi-calc-metric-text.cffx-roi-calc-active { color: #c5f946; }
-.cffx-roi-calc-highlight { color: #c5f946; font-weight: 600; }
-.cffx-roi-calc-growth-secondary { color: #888; font-weight: 400; font-size: 0.9em; }
-
-/* Toggle (seamless) */
-.cffx-roi-calc-why-toggle {
-  padding: 14px 16px; margin: 0;
-  background: #1e1e1e; border: 1px solid #2b2b2b; border-radius: 8px; color: #fff;
-  display: flex; align-items: center; justify-content: space-between;
-  cursor: pointer; user-select: none; transition: background 0.2s ease, border-color 0.2s ease;
-}
-.cffx-roi-calc-why-toggle.open { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
-.cffx-roi-calc-why-toggle:hover { background: #232323; border-color: #3a3a3a; }
-.cffx-roi-calc-why-text { font: 600 15px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-.cffx-roi-calc-why-icon-svg { width: 24px; height: 24px; color: #9ca3af; transition: transform 0.2s ease, color 0.2s ease; }
-.cffx-roi-calc-why-toggle:hover .cffx-roi-calc-why-icon-svg { color: #b0b7c3; }
-.cffx-roi-calc-why-toggle.open .cffx-roi-calc-why-icon-svg { transform: rotate(180deg); }
-
-/* Color blocks + chips */
-.cffx-roi-calc-signal-block { margin: 16px 0; padding: 16px; background: #1f1a0f; border: 1px solid #3a2e1e; border-radius: 8px; }
-.cffx-roi-calc-coffee-specifics { margin: 16px 0; padding: 16px; background: #1a1a1a; border: 1px solid #2b2b2b; border-radius: 8px; }
-.cffx-roi-calc-payback-explanation { margin: 16px 0; padding: 16px; background: #0f1a2a; border: 1px solid #1e3a4a; border-radius: 8px; }
-.cffx-roi-calc-success-factors { margin: 16px 0; padding: 16px; background: #0f2a1e; border: 1px solid #1e4a32; border-radius: 8px; }
-.cffx-roi-calc-signal-title { margin: 0 0 12px; font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #fbbf24; }
-.cffx-roi-calc-coffee-title { margin: 0 0 12px; font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #d97706; }
-.cffx-roi-calc-payback-title { margin: 0 0 12px; font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #60a5fa; }
-.cffx-roi-calc-success-title { margin: 0 0 12px; font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #22c55e; }
+/* Color blocks */
+.cffx-roi-calc-signal-block{margin:16px 0;padding:16px;background:#1f1a0f;border:1px solid #3a2e1e;border-radius:8px}
+.cffx-roi-calc-coffee-specifics{margin:16px 0;padding:16px;background:#1a1a1a;border:1px solid #2b2b2b;border-radius:8px}
+.cffx-roi-calc-payback-explanation{margin:16px 0;padding:16px;background:#0f1a2a;border:1px solid #1e3a4a;border-radius:8px}
+.cffx-roi-calc-success-factors{margin:16px 0;padding:16px;background:#0f2a1e;border:1px solid #1e4a32;border-radius:8px}
+.cffx-roi-calc-signal-title{margin:0 0 12px;font:600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fbbf24}
+.cffx-roi-calc-coffee-title{margin:0 0 12px;font:600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#d97706}
+.cffx-roi-calc-payback-title{margin:0 0 12px;font:600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#60a5fa}
+.cffx-roi-calc-success-title{margin:0 0 12px;font:600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#22c55e}
 
 /* Chips */
-.cffx-chip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
-.cffx-chip {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 12px; border-radius: 10px; color: #fff; font: 500 14px/1.3 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  border: 1px solid transparent;
-}
-.cffx-chip-icon { width: 18px; height: 18px; opacity: 0.9; }
+.cffx-chip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.cffx-chip{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;color:#fff;font:500 14px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;border:1px solid transparent}
+.cffx-chip-icon{width:18px;height:18px;opacity:.9}
+.cffx-chip--amber{background:#2b220f;border-color:#3a2e1e}
+.cffx-chip--slate{background:#1f1f1f;border-color:#2b2b2b}
+.cffx-chip--blue{background:#0e2138;border-color:#1e3a4a}
+.cffx-chip--green{background:#0f271e;border-color:#1e4a32}
 
-/* Variants */
-.cffx-chip--amber { background: #2b220f; border-color: #3a2e1e; }
-.cffx-chip--slate { background: #1f1f1f; border-color: #2b2b2b; }
-.cffx-chip--blue  { background: #0e2138; border-color: #1e3a4a; }
-.cffx-chip--green { background: #0f271e; border-color: #1e4a32; }
-
-/* CTA / Info / Warning */
-.cffx-roi-calc-cta-block { margin: 16px 0; padding: 16px; background: #1e1e1e; border: 1px solid #c5f946; border-radius: 8px; }
-.cffx-roi-calc-cta-text { margin: 0 0 8px 0; font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #fff; }
-.cffx-roi-calc-cta-text:last-child { margin-bottom: 0; }
-.cffx-roi-calc-cta-link { color: #c5f946; text-decoration: none; font-weight: 600; }
-.cffx-roi-calc-cta-link:hover { text-decoration: underline; }
-.cffx-roi-calc-warning-block { margin: 16px 0; padding: 16px; background: #2a1f0f; border: 1px solid #4a3c1e; border-radius: 8px; }
-.cffx-roi-calc-warning-text { margin: 0; font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #fbbf24; }
-.cffx-roi-calc-info-block { margin: 16px 0; padding: 16px; background: #141414; border: 1px solid #2b2b2b; border-radius: 8px; }
-.cffx-roi-calc-info-text { margin: 0 0 12px 0; font: 400 13px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #ccc; }
-.cffx-roi-calc-info-text:last-child { margin-bottom: 0; }
+/* CTA/Info/Warning */
+.cffx-roi-calc-cta-block{margin:16px 0;padding:16px;background:#1e1e1e;border:1px solid #c5f946;border-radius:8px}
+.cffx-roi-calc-cta-text{margin:0 0 8px 0;font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff}
+.cffx-roi-calc-cta-text:last-child{margin-bottom:0}
+.cffx-roi-calc-cta-link{color:#c5f946;text-decoration:none;font-weight:600}
+.cffx-roi-calc-cta-link:hover{text-decoration:underline}
+.cffx-roi-calc-warning-block{margin:16px 0;padding:16px;background:#2a1f0f;border:1px solid #4a3c1e;border-radius:8px}
+.cffx-roi-calc-warning-text{margin:0;font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fbbf24}
+.cffx-roi-calc-info-block{margin:16px 0;padding:16px;background:#141414;border:1px solid #2b2b2b;border-radius:8px}
+.cffx-roi-calc-info-text{margin:0 0 12px 0;font:400 13px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#ccc}
+.cffx-roi-calc-info-text:last-child{margin-bottom:0}
 
 /* Tooltip & animations */
-.cffx-roi-calc-tooltip-popup { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,.8); display:flex; justify-content:center; align-items:center; z-index:1000; cursor:pointer; }
-.cffx-roi-calc-tooltip-content { max-width: 400px; padding: 20px; background: #2a2a2a; border: 1px solid #404040; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.4); cursor: default; }
-.cffx-roi-calc-tooltip-title { margin: 0 0 12px 0; font: 600 16px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #c5f946; }
-.cffx-roi-calc-formula { margin: 0 0 12px 0; padding: 8px 12px; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; font: 500 14px/1.4 'SF Mono','Monaco','Inconsolata','Roboto Mono', monospace; color: #22c55e; text-align: center; letter-spacing: .025em; }
-.cffx-roi-calc-tooltip-desc { margin: 0; font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #ccc; }
-
-.cffx-roi-calc-tooltip-anim-enter-active,
-.cffx-roi-calc-tooltip-anim-leave-active { transition: opacity .25s; }
-.cffx-roi-calc-tooltip-anim-enter-from,
-.cffx-roi-calc-tooltip-anim-leave-to { opacity: 0; }
-
-.cffx-roi-calc-collapse-enter-active,
-.cffx-roi-calc-collapse-leave-active { transition: all .3s ease-in-out; overflow: hidden; }
-.cffx-roi-calc-collapse-enter-from,
-.cffx-roi-calc-collapse-leave-to { max-height: 0; opacity: 0; }
-.cffx-roi-calc-collapse-enter-to,
-.cffx-roi-calc-collapse-leave-from { max-height: 2000px; opacity: 1; }
+.cffx-roi-calc-tooltip-popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:flex;justify-content:center;align-items:center;z-index:1000;cursor:pointer}
+.cffx-roi-calc-tooltip-content{max-width:400px;padding:20px;background:#2a2a2a;border:1px solid #404040;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.4);cursor:default}
+.cffx-roi-calc-tooltip-title{margin:0 0 12px 0;font:600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#c5f946}
+.cffx-roi-calc-formula{margin:0 0 12px 0;padding:8px 12px;background:#1a1a1a;border:1px solid #333;border-radius:6px;font:500 14px/1.4 'SF Mono','Monaco','Inconsolata','Roboto Mono',monospace;color:#22c55e;text-align:center;letter-spacing:.025em}
+.cffx-roi-calc-tooltip-desc{margin:0;font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#ccc}
+.cffx-roi-calc-tooltip-anim-enter-active,.cffx-roi-calc-tooltip-anim-leave-active{transition:opacity .25s}
+.cffx-roi-calc-tooltip-anim-enter-from,.cffx-roi-calc-tooltip-anim-leave-to{opacity:0}
+.cffx-roi-calc-collapse-enter-active,.cffx-roi-calc-collapse-leave-active{transition:all .3s ease-in-out;overflow:hidden}
+.cffx-roi-calc-collapse-enter-from,.cffx-roi-calc-collapse-leave-to{max-height:0;opacity:0}
+.cffx-roi-calc-collapse-enter-to,.cffx-roi-calc-collapse-leave-from{max-height:2000px;opacity:1}
 
 /* Responsive */
-@media (max-width: 768px) {
-  .cffx-roi-calc-container { padding: 16px; margin-bottom: 12px; }
-  .cffx-roi-calc-input-row { flex-direction: column; gap: 12px; margin-bottom: 12px; }
-  .cffx-roi-calc-btn { height: 48px; font-size: 16px; line-height: 48px; margin-top: 8px; }
-  .cffx-roi-calc-title-desktop { display: none; }
-  .cffx-roi-calc-title-mobile { display: block; font-size: 16px; }
-  .cffx-roi-calc-title { padding: 12px 0; }
-  .cffx-roi-calc-header { margin: 0 0 12px 0; }
-  .cffx-roi-calc-table-container { margin-bottom: 12px; border-radius: 6px; }
-  .cffx-roi-calc-th, .cffx-roi-calc-td { padding: 8px 10px; font-size: 12px; white-space: normal; }
-  .cffx-roi-calc-th:nth-child(1) { width: 50%; }
-  .cffx-roi-calc-th:nth-child(2), .cffx-roi-calc-th:nth-child(3) { width: 25%; }
-  .cffx-roi-calc-metric-cell { padding: 8px 10px; font-size: 12px; gap: 4px; flex-direction: column; align-items: stretch; }
-  .cffx-roi-calc-metric-text { margin-bottom: 4px; }
-  .cffx-roi-calc-info-icon { width: 16px; height: 16px; font-size: 10px; align-self: flex-end; margin-top: -20px; }
-  .cffx-roi-calc-tooltip-content { max-width: calc(100vw - 32px); margin: 16px; padding: 16px; }
-  .cffx-roi-calc-why-toggle { padding: 12px; }
-  .cffx-roi-calc-why-text { font-size: 14px; }
+@media (max-width:768px){
+  .cffx-roi-calc-container{padding:16px;margin-bottom:12px}
+  .cffx-roi-calc-input-row{flex-direction:column;gap:12px;margin-bottom:12px}
+  .cffx-roi-calc-btn{height:48px;font-size:16px;line-height:48px;margin-top:8px}
+  .cffx-roi-calc-title-desktop{display:none}
+  .cffx-roi-calc-title-mobile{display:block;font-size:16px}
+  .cffx-roi-calc-title{padding:12px 0}
+  .cffx-roi-calc-header{margin:0 0 12px 0}
+  .cffx-roi-calc-table-container{margin-bottom:12px;border-radius:6px}
+  .cffx-roi-calc-th,.cffx-roi-calc-td,.cffx-roi-calc-metric-cell{padding:8px 10px;white-space:normal}
+  .cffx-roi-calc-th:nth-child(1){width:50%}
+  .cffx-roi-calc-th:nth-child(2),.cffx-roi-calc-th:nth-child(3){width:25%}
+  .cffx-roi-calc-metric-cell{gap:6px;align-items:flex-start}
+  .cffx-roi-calc-info-icon{width:16px;height:16px;font-size:10px;margin-top:2px}
+  .cffx-roi-calc-table tbody tr::after{left:10px;right:10px}
+  .cffx-roi-calc-why-toggle{padding:12px}
+  .cffx-roi-calc-why-text{font-size:14px}
 }
-@media (min-width: 769px) {
-  .cffx-roi-calc-title-mobile { display: none; }
-  .cffx-roi-calc-title-desktop { display: block; }
+@media (min-width:769px){
+  .cffx-roi-calc-title-mobile{display:none}
+  .cffx-roi-calc-title-desktop{display:block}
 }
 </style>
