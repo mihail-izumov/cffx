@@ -133,7 +133,7 @@
   <!-- Вкладка: Аналитика (расширенная) -->
   <div v-show="activeTab === 'adv_analytics'" class="signal-product-tabs__panel">
     <h3>Переход от реакции на прошлое к управлению будущим</h3>
-    <p class="signal-product-tabs__subtitle"><em>Включает все функции предыдущих тарифов, плюс:</em></p>
+    <p class="signal-product-tabs__subtitle"><em>Включает все функции Статистики и базовой Аналитики, плюс:</em></p>
     <div class="signal-product-tabs__grid">
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Предиктивная аналитика оттока</h4><span class="signal-product-tabs__badge">Прогноз</span></div>
