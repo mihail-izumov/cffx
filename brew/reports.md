@@ -1,5 +1,9 @@
 ---
 outline: false
+prev: false
+next: false
+title: Радар
+notification: brew
 ---
 
 # Радар
@@ -9,6 +13,11 @@ outline: false
 Вы теряете клиентов из-за плохих отзывов.
 Мы превращаем отзывы в инструмент роста продаж.
 +20% к выручке за месяц.
+
+<div class="button-group">
+  <a href="/brew/reports" class="btn btn-primary" rel="noopener noreferrer"><strong>Подключиться</strong></a>
+  <a href="/invest/sim" class="btn btn-secondary" rel="noopener noreferrer">Тест-драйв</a>
+</div>
 
 ## Видеть больше, угадывать меньше
 
