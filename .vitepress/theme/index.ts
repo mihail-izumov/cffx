@@ -65,6 +65,7 @@ import DialogsFirst5Days from '../components/DialogsFirst5Days.vue'
 import DialogsFeatures from '../components/DialogsFeatures.vue'
 import DialogsTarifs from '../components/DialogsTarifs.vue'
 import DialogsForm from '../components/DialogsForm.vue'
+import RadarReport from '../components/RadarReport.vue'
 
 export default {
   extends: DefaultTheme,
@@ -136,7 +137,6 @@ export default {
     app.component('DialogsFeatures', DialogsFeatures)
     app.component('DialogsTarifs', DialogsTarifs)
     app.component('DialogsForm', DialogsForm)
-    
-    
+    app.component('RadarReport', RadarReport)    
   },
 }
