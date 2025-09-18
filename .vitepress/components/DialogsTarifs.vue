@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const tariffs = ref([
   {
@@ -58,14 +58,37 @@ const tariffs = ref([
   }
 ])
 
-const priceDurations = ['1 месяц', '3 месяца', '6 месяцев']
-const featureOrder = ['Перехват негатива', 'Виджет', 'Форма', 'Статистика', 'Аналитика', 'Поддержка']
+const durations = ['1 месяц', '3 месяца', '6 месяцев']
+const selected = ref('1 месяц')
+
+// Для подписи левой ячейки используем текущее значение
+const currentLabel = computed(() => selected.value)
+
+// Хелпер для aria
+const isActive = d => d === selected.value
 </script>
 
 <template>
   <div class="brp">
+    <!-- Переключатель -->
+    <div class="brp__switch" role="tablist" aria-label="Срок подписки">
+      <button
+        v-for="d in durations"
+        :key="d"
+        class="brp__switch-btn"
+        :class="{ 'is-active': isActive(d) }"
+        type="button"
+        role="tab"
+        :aria-selected="isActive(d)"
+        @click="selected = d"
+      >
+        {{ d }}
+      </button>
+    </div>
+
+    <!-- Таблица -->
     <div class="brp__grid">
-      <!-- Пустая ячейка в шапке -->
+      <!-- Пустая шапка -->
       <div class="brp__cell brp__cell--header brp__cell--header-placeholder"></div>
 
       <!-- Заголовки тарифов -->
@@ -86,40 +109,35 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
         </div>
       </div>
 
-      <!-- Цены -->
-      <template v-for="(duration, rowIndex) in priceDurations" :key="duration">
-        <div
-          class="brp__cell brp__cell--label brp--no-bg"
-          :class="{ 'brp--top-sep': rowIndex === 0 }"
-        >
-          {{ duration }}
-        </div>
-
-        <div
-          v-for="(tariff, colIndex) in tariffs"
-          :key="tariff.title + duration"
-          class="brp__cell brp__cell--price"
-          :class="{
-            'brp--top-sep': rowIndex === 0,
-            'brp--highlight': tariff.isHighlighted,
-            'brp--last-col': colIndex === tariffs.length - 1
-          }"
-        >
-          <span class="brp__price-main">{{ tariff.prices[duration].perMonth }}</span>
-          <span v-if="tariff.prices[duration].total" class="brp__price-sub">
-            {{ tariff.prices[duration].total }}
-          </span>
-        </div>
-      </template>
+      <!-- ОДНА строка цен по выбранному сроку -->
+      <div class="brp__cell brp__cell--label brp--no-bg brp--top-sep">
+        {{ currentLabel }}
+      </div>
+      <div
+        v-for="(tariff, colIndex) in tariffs"
+        :key="tariff.title + selected"
+        class="brp__cell brp__cell--price brp--top-sep"
+        :class="{
+          'brp--highlight': tariff.isHighlighted,
+          'brp--last-col': colIndex === tariffs.length - 1
+        }"
+      >
+        <span class="brp__price-main">
+          {{ tariff.prices[selected].perMonth }}
+        </span>
+        <span v-if="tariff.prices[selected].total" class="brp__price-sub">
+          {{ tariff.prices[selected].total }}
+        </span>
+      </div>
 
       <!-- Разделитель -->
       <div class="brp__row-sep"></div>
 
       <!-- Особенности -->
-      <template v-for="(feature, featureIndex) in featureOrder" :key="feature">
+      <template v-for="(feature, featureIndex) in ['Перехват негатива','Виджет','Форма','Статистика','Аналитика','Поддержка']" :key="feature">
         <div
           class="brp__cell brp__cell--label"
-          :class="{ 'brp__cell--last': featureIndex === featureOrder.length - 1 }"
+          :class="{ 'brp__cell--last': featureIndex === 5 }"
         >
           {{ feature }}
         </div>
@@ -129,7 +147,7 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
           :key="tariff.title + feature"
           class="brp__cell brp__cell--value"
           :class="{
-            'brp__cell--last': featureIndex === featureOrder.length - 1,
+            'brp__cell--last': featureIndex === 5,
             'brp--highlight': tariff.isHighlighted,
             'brp--last-col': colIndex === tariffs.length - 1
           }"
@@ -150,6 +168,34 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   margin: 24px 0;
 }
 
+/* Переключатель */
+.brp__switch {
+  display: inline-flex;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 10px;
+  background: var(--vp-c-bg-soft);
+  margin: 8px 8px 16px;
+}
+.brp__switch-btn {
+  appearance: none;
+  border: 1px solid var(--vp-c-divider);
+  background: transparent;
+  color: var(--vp-c-text-1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.brp__switch-btn:hover {
+  border-color: var(--vp-c-brand-1);
+}
+.brp__switch-btn.is-active {
+  background: color-mix(in oklab, var(--vp-c-brand-1) 18%, transparent);
+  border-color: var(--vp-c-brand-1);
+}
+
 /* Сетка */
 .brp__grid {
   display: grid;
@@ -157,7 +203,7 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   align-items: stretch;
 }
 
-/* Ячейка по умолчанию */
+/* Ячейки */
 .brp__cell {
   position: relative;
   border-bottom: 1px solid var(--vp-c-divider);
@@ -167,11 +213,7 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   flex-direction: column;
   padding: 0 16px;
 }
-
-/* Убираем правую границу только у последнего столбца (без nth-child) */
-.brp--last-col {
-  border-right: none;
-}
+.brp--last-col { border-right: none; }
 
 /* Шапка */
 .brp__cell--header {
@@ -181,41 +223,27 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   padding-top: 16px;
   padding-bottom: 16px;
 }
+.brp__cell--header-placeholder { background-color: transparent; }
 
-/* Пустая шапка слева — без фона */
-.brp__cell--header-placeholder {
-  background-color: transparent;
-}
-
-/* Две зоны контроля выравнивания */
+/* Выравнивание заголовков */
 .brp__title-wrap {
-  min-height: 56px;              /* зона для названия (центр) */
+  min-height: 56px;
   display: flex;
-  align-items: center;            /* по вертикали центр */
+  align-items: center;
   justify-content: center;
   text-align: center;
 }
 .brp__desc-wrap {
-  min-height: 46px;              /* зона для подписи (к верху) */
+  min-height: 46px;
   display: flex;
-  align-items: flex-start;        /* к верхнему краю */
+  align-items: flex-start;
   justify-content: center;
   text-align: center;
 }
+.brp__title { font-weight: 600; font-size: 1.12em; color: var(--vp-c-text-1); }
+.brp__desc { margin-top: 4px; font-size: 0.92em; color: var(--vp-c-text-2); line-height: 1.3; }
 
-.brp__title {
-  font-weight: 600;
-  font-size: 1.12em;
-  color: var(--vp-c-text-1);
-}
-.brp__desc {
-  margin-top: 4px;
-  font-size: 0.92em;
-  color: var(--vp-c-text-2);
-  line-height: 1.3;
-}
-
-/* Левая колонка-метки */
+/* Левая колонка */
 .brp__cell--label {
   padding: 12px 16px;
   justify-content: center;
@@ -224,11 +252,7 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   font-weight: 500;
   background-color: var(--vp-c-bg-soft);
 }
-
-/* Убираем фон у верхних левых ячеек (1/3/6 месяцев) */
-.brp--no-bg {
-  background-color: transparent;
-}
+.brp--no-bg { background-color: transparent; }
 
 /* Значения */
 .brp__cell--price,
@@ -238,32 +262,15 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   align-items: center;
   justify-content: center;
 }
+.brp__price-main { font-weight: 600; font-size: 1.05em; }
+.brp__price-sub { font-size: 0.85em; color: var(--vp-c-text-2); margin-top: 2px; }
 
-.brp__price-main {
-  font-weight: 600;
-  font-size: 1.05em;
-}
-.brp__price-sub {
-  font-size: 0.85em;
-  color: var(--vp-c-text-2);
-  margin-top: 2px;
-}
+/* Разделители */
+.brp--top-sep { border-top: 1px solid var(--vp-c-divider); }
+.brp__row-sep { height: 2px; background-color: var(--vp-c-divider); grid-column: 1 / -1; border: none; }
+.brp__cell--last { border-bottom: none; }
 
-/* Разделители строк */
-.brp--top-sep {
-  border-top: 1px solid var(--vp-c-divider);
-}
-.brp__row-sep {
-  height: 2px;
-  background-color: var(--vp-c-divider);
-  grid-column: 1 / -1;
-  border: none;
-}
-.brp__cell--last {
-  border-bottom: none;
-}
-
-/* Рамка второго тарифа: всегда поверх внутренних линий, без ломания перегородок */
+/* Аккуратная рамка второго тарифа */
 .brp--highlight {
   border-left: 2px solid var(--vp-c-brand-1);
   border-right: 2px solid var(--vp-c-brand-1);
