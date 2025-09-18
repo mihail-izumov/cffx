@@ -15,8 +15,9 @@ notification: brew
 **7 дней бесплатно. От ₽30.000/мес по подписке.** <br>
 ИИ-ассистент Анна теперь доступен. <a href="/signals.html#знакомьтесь-–-🦸%E2%80%8D♀%EF%B8%8F-анна" target="_blank">Как работает</a>
 
-<div class="start-button-container">
+<div class="button-group">
   <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer"><strong>Получить QR-код</strong></a>
+  <a href="/fest/join" class="btn btn-secondary" rel="noopener noreferrer">Тарифы</a>
 </div>
 
 <div style="background-color: #2d2d2d; border: 1px solid #404040; border-radius: 8px; padding: 7px 10px; font-size: 13px; color: #a8a8a8; margin: 8px 0; display: inline-block; font-weight: 500; line-height: 1.2;">
@@ -101,7 +102,6 @@ notification: brew
   border: none;
   margin: 10px 0;
 }
-
 .btn:hover {
   transform: translateY(-2px);
   text-decoration: none !important;
@@ -112,10 +112,44 @@ notification: brew
   background-color: #C5F946; /* Яркий лаймовый */
   color: #000 !important;
 }
-
 .btn-primary:hover {
   background-color: #347b6c; /* Темный при наведении */
   color: white !important;
+}
+
+/* --- СТИЛЬ ВТОРИЧНОЙ КНОПКИ --- */
+.btn-secondary {
+  background-color: #f8f9fa;
+  color: #333 !important;
+  border: 2px solid #dee2e6;
+}
+.btn-secondary:hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+}
+
+/* --- КОНТЕЙНЕР ДЛЯ ГРУППЫ КНОПОК --- */
+.button-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.button-group .btn {
+  margin: 0; /* Убираем margin, используем gap */
+}
+
+/* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
+@media (max-width: 768px) {
+  .button-group {
+    flex-direction: column;
+    align-items: stretch; /* Кнопки занимают всю ширину */
+    gap: 10px;
+  }
+  
+  .button-group .btn {
+    width: 100%; /* Кнопки на всю ширину на мобильных */
+  }
 }
 
 /* --- Контейнер для отдельной кнопки --- */
@@ -123,10 +157,8 @@ notification: brew
   margin: 20px 0;
   text-align: left;
 }
-
 .start-button-container .btn {
   display: inline-block;
   margin: 0;
 }
 </style>
-
