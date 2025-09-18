@@ -5,56 +5,23 @@ const tariffs = ref([
   {
     title: 'Базовый',
     description: 'Реакция на отзывы',
-    isHighlighted: false, // Добавлено для управления подсветкой
-    prices: {
-      '1 месяц': { perMonth: '₽30,000/мес', total: '' },
-      '3 месяца': { perMonth: '₽22,200/мес', total: '(₽66,600 итого)' },
-      '6 месяцев': { perMonth: '₽18,000/мес', total: '(₽108,000 итого)' }
-    },
-    features: {
-      'Перехват негатива': '24/5',
-      'Виджет': 'Базовый',
-      'Форма': 'Базовый',
-      'Статистика': 'Ежемесячно',
-      'Аналитика': 'Базовая',
-      'Поддержка': 'Стандартная'
-    }
+    isHighlighted: false,
+    prices: { '1 месяц': { perMonth: '₽30,000/мес', total: '' }, '3 месяца': { perMonth: '₽22,200/мес', total: '(₽66,600 итого)' }, '6 месяцев': { perMonth: '₽18,000/мес', total: '(₽108,000 итого)' } },
+    features: { 'Перехват негатива': '24/5', 'Виджет': 'Базовый', 'Форма': 'Базовый', 'Статистика': 'Ежемесячно', 'Аналитика': 'Базовая', 'Поддержка': 'Стандартная' }
   },
   {
     title: 'Продвинутый',
     description: 'Предвосхищение проблем',
-    isHighlighted: true, // Этот тариф будет подсвечен
-    prices: {
-      '1 месяц': { perMonth: '₽50,000/мес', total: '' },
-      '3 месяца': { perMonth: '₽45,000/мес', total: '(₽135,000 итого)' },
-      '6 месяцев': { perMonth: '₽40,000/мес', total: '(₽240,000 итого)' }
-    },
-    features: {
-      'Перехват негатива': '24/5',
-      'Виджет': 'Конструктор',
-      'Форма': 'Конструктор',
-      'Статистика': 'Ежемесячно',
-      'Аналитика': 'Базовая',
-      'Поддержка': 'Стандартная'
-    }
+    isHighlighted: true,
+    prices: { '1 месяц': { perMonth: '₽50,000/мес', total: '' }, '3 месяца': { perMonth: '₽45,000/мес', total: '(₽135,000 итого)' }, '6 месяцев': { perMonth: '₽40,000/мес', total: '(₽240,000 итого)' } },
+    features: { 'Перехват негатива': '24/5', 'Виджет': 'Конструктор', 'Форма': 'Конструктор', 'Статистика': 'Ежемесячно', 'Аналитика': 'Базовая', 'Поддержка': 'Стандартная' }
   },
   {
     title: 'Полный контроль',
     description: 'Стратегическое управление репутацией',
     isHighlighted: false,
-    prices: {
-      '1 месяц': { perMonth: '₽90,000/мес', total: '' },
-      '3 месяца': { perMonth: '₽66,600/мес', total: '(₽199,800 итого)' },
-      '6 месяцев': { perMonth: '₽54,000/мес', total: '(₽324,000 итого)' }
-    },
-    features: {
-      'Перехват негатива': '24/7',
-      'Виджет': 'Конструктор',
-      'Форма': 'Конструктор',
-      'Статистика': '1 раз/нед.',
-      'Аналитика': 'Расширенная',
-      'Поддержка': 'Приоритетная'
-    }
+    prices: { '1 месяц': { perMonth: '₽90,000/мес', total: '' }, '3 месяца': { perMonth: '₽66,600/мес', total: '(₽199,800 итого)' }, '6 месяцев': { perMonth: '₽54,000/мес', total: '(₽324,000 итого)' } },
+    features: { 'Перехват негатива': '24/7', 'Виджет': 'Конструктор', 'Форма': 'Конструктор', 'Статистика': '1 раз/нед.', 'Аналитика': 'Расширенная', 'Поддержка': 'Приоритетная' }
   }
 ])
 
@@ -65,41 +32,35 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
 <template>
   <div class="table-wrapper">
     <div class="pricing-grid">
-      <!-- Заголовки тарифов -->
+      <!-- Заголовки -->
       <div class="grid-cell grid-header header-feature"></div>
       <div v-for="tariff in tariffs" :key="tariff.title" 
            class="grid-cell grid-header"
-           :class="{ 'highlighted-cell': tariff.isHighlighted }">
+           :class="{ 'highlighted-column': tariff.isHighlighted }">
         <span class="tariff-title">{{ tariff.title }}</span>
         <span class="tariff-description">{{ tariff.description }}</span>
       </div>
 
       <!-- Цены -->
-      <template v-for="(duration, index) in priceDurations" :key="duration">
-        <div 
-          class="grid-cell cell-feature price-label"
-          :class="{ 'price-separator-top': index === 0 }">{{ duration }}</div>
-        <div 
-          v-for="tariff in tariffs" :key="tariff.title" 
-          class="grid-cell cell-price"
-          :class="{ 'price-separator-top': index === 0, 'highlighted-cell': tariff.isHighlighted }">
+      <template v-for="(duration, index) in priceDurations">
+        <div class="grid-cell cell-feature" :class="{ 'price-separator-top': index === 0 }">{{ duration }}</div>
+        <div v-for="tariff in tariffs" :key="tariff.title" 
+             class="grid-cell cell-price"
+             :class="{ 'price-separator-top': index === 0, 'highlighted-column': tariff.isHighlighted }">
           <span class="price-per-month">{{ tariff.prices[duration].perMonth }}</span>
           <span v-if="tariff.prices[duration].total" class="price-total">{{ tariff.prices[duration].total }}</span>
         </div>
       </template>
 
       <!-- Разделитель -->
-      <div class="grid-cell-separator" :style="{ 'grid-column': '1 / -1' }"></div>
+      <div class="grid-cell-separator"></div>
 
       <!-- Характеристики -->
-      <template v-for="(feature, featureIndex) in featureOrder" :key="feature">
-        <div 
-          class="grid-cell cell-feature"
-          :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1 }">{{ feature }}</div>
-        <div 
-          v-for="(tariff, checkIndex) in tariffs" :key="checkIndex" 
-          class="grid-cell cell-value"
-          :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1, 'highlighted-cell': tariff.isHighlighted }">
+      <template v-for="(feature, featureIndex) in featureOrder">
+        <div class="grid-cell cell-feature" :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1 }">{{ feature }}</div>
+        <div v-for="tariff in tariffs" :key="tariff.title" 
+             class="grid-cell cell-value"
+             :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1, 'highlighted-column': tariff.isHighlighted }">
           <span>{{ tariff.features[feature] }}</span>
         </div>
       </template>
@@ -120,10 +81,10 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   align-items: stretch;
 }
 .grid-cell {
+  position: relative; /* Необходимо для псевдоэлемента */
   padding: 12px 16px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   border-bottom: 1px solid var(--vp-c-divider);
   border-right: 1px solid var(--vp-c-divider);
   min-height: 50px;
@@ -134,10 +95,10 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
 .grid-header {
   border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
-  min-height: 80px;
-  /* ИЗМЕНЕНИЯ ДЛЯ ЦЕНТРИРОВАНИЯ */
-  text-align: center;
-  align-items: center;
+  min-height: 90px;
+  /* ИСПРАВЛЕНИЕ ВЫРАВНИВАНИЯ */
+  justify-content: flex-start; /* Выравнивание по верху */
+  text-align: center; /* Центрирование текста внутри */
 }
 .header-feature {
   background-color: transparent;
@@ -147,27 +108,26 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   font-weight: 600;
   font-size: 1.1em;
   color: var(--vp-c-text-1);
+  width: 100%; /* Для корректного text-align */
 }
 .tariff-description {
-  margin-top: 4px;
+  margin-top: 6px;
   font-size: 0.9em;
   color: var(--vp-c-text-2);
   line-height: 1.3;
+  width: 100%; /* Для корректного text-align */
 }
 .cell-feature {
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
   font-size: 0.95em;
   font-weight: 500;
   background-color: var(--vp-c-bg-soft);
 }
-.price-label {
-  background-color: transparent;
-}
-.cell-price {
+.cell-price, .cell-value {
   text-align: center;
   align-items: center;
-  white-space: nowrap;
+  justify-content: center;
 }
 .price-per-month {
   font-weight: 600;
@@ -177,11 +137,6 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   font-size: 0.85em;
   color: var(--vp-c-text-2);
   margin-top: 2px;
-}
-.cell-value {
-  text-align: center;
-  align-items: center;
-  font-size: 0.95em;
 }
 .price-separator-top {
   border-top: 1px solid var(--vp-c-divider);
@@ -196,18 +151,23 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   border-bottom: none;
 }
 
-/* СТИЛИ ДЛЯ ПОДСВЕТКИ */
-.highlighted-cell {
-  border-left: 2px solid var(--vp-c-brand-1);
-  border-right: 2px solid var(--vp-c-brand-1);
+/* ИСПРАВЛЕНИЕ ПОДСВЕТКИ */
+.highlighted-column::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid var(--vp-c-brand-1);
+  z-index: 10;
+  pointer-events: none; /* Чтобы не мешать кликам */
 }
-.grid-header.highlighted-cell {
-  border-top: 2px solid var(--vp-c-brand-1);
+.grid-header.highlighted-column::after {
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
 }
-.last-row-cell.highlighted-cell {
-  border-bottom: 2px solid var(--vp-c-brand-1);
+.last-row-cell.highlighted-column::after {
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
 }
