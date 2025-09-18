@@ -66,26 +66,30 @@ const isActive = d => d === selected.value
 
 <template>
   <div class="brp">
-    <!-- Переключатель сроков -->
-    <div class="brp__switch" role="tablist" aria-label="Срок подписки">
-      <button
-        v-for="d in durations"
-        :key="d"
-        class="brp__switch-btn"
-        :class="{ 'is-active': isActive(d) }"
-        type="button"
-        role="tab"
-        :aria-selected="isActive(d)"
-        @click="selected = d"
-      >
-        {{ d }}
-      </button>
+    <!-- Переключатели над таблицей -->
+    <div class="brp__header">
+      <div class="brp__switch" role="tablist" aria-label="Срок подписки">
+        <button
+          v-for="d in durations"
+          :key="d"
+          class="brp__switch-btn"
+          :class="{ 'is-active': isActive(d) }"
+          type="button"
+          role="tab"
+          :aria-selected="isActive(d)"
+          @click="selected = d"
+        >
+          {{ d }}
+        </button>
+      </div>
     </div>
 
     <!-- Таблица -->
     <div class="brp__grid">
+      <!-- Пустая шапка -->
       <div class="brp__cell brp__cell--header brp__cell--header-placeholder"></div>
 
+      <!-- Заголовки тарифов -->
       <div
         v-for="(tariff, colIndex) in tariffs"
         :key="tariff.title"
@@ -103,7 +107,7 @@ const isActive = d => d === selected.value
         </div>
       </div>
 
-      <!-- ОДНА строка цен по выбранному сроку -->
+      <!-- Одна строка цен (по выбранному сроку) -->
       <div class="brp__cell brp__cell--label brp--no-bg brp--top-sep">
         {{ currentLabel }}
       </div>
@@ -160,7 +164,14 @@ const isActive = d => d === selected.value
   margin: 24px 0;
 }
 
-/* Переключатель по центру, без плашки */
+/* Заголовочная зона над таблицей */
+.brp__header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+/* Переключатель по центру, без фоновой плашки */
 .brp__switch {
   display: flex;
   justify-content: center;
@@ -168,7 +179,7 @@ const isActive = d => d === selected.value
   padding: 0;
   border-radius: 0;
   background: transparent;
-  margin: 0 0 16px;
+  margin: 0;
 }
 .brp__switch-btn {
   appearance: none;
@@ -196,7 +207,7 @@ const isActive = d => d === selected.value
   align-items: stretch;
 }
 
-/* Ячейки */
+/* Базовые ячейки */
 .brp__cell {
   position: relative;
   border-bottom: 1px solid var(--vp-c-divider);
@@ -218,18 +229,18 @@ const isActive = d => d === selected.value
 }
 .brp__cell--header-placeholder { background-color: transparent; }
 
-/* Выравнивание заголовка и подписи */
+/* Выравнивание заголовков */
 .brp__title-wrap {
   min-height: 56px;
   display: flex;
-  align-items: center;      /* центр по вертикали */
-  justify-content: center;  /* центр по горизонтали */
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 .brp__desc-wrap {
   min-height: 46px;
   display: flex;
-  align-items: flex-start;  /* к верхнему краю */
+  align-items: flex-start;
   justify-content: center;
   text-align: center;
 }
@@ -260,7 +271,7 @@ const isActive = d => d === selected.value
 
 /* Разделители */
 .brp--top-sep { border-top: 1px solid var(--vp-c-divider); }
-.brp__row-sep { height: 2px; background-color: var(--vp-c-divider); grid-column: 1 / -1; border: none; }
+.brp__row-sep  { height: 2px; background-color: var(--vp-c-divider); grid-column: 1 / -1; border: none; }
 .brp__cell--last { border-bottom: none; }
 
 /* Рамка вокруг второго тарифа */
