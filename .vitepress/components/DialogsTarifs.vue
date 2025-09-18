@@ -63,63 +63,75 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
 </script>
 
 <template>
-  <div class="table-wrapper">
-    <div class="pricing-grid">
-      <!-- Заголовки -->
-      <div class="grid-cell grid-header header-feature"></div>
+  <div class="brp">
+    <div class="brp__grid">
+      <!-- Пустая ячейка в шапке -->
+      <div class="brp__cell brp__cell--header brp__cell--header-placeholder"></div>
+
+      <!-- Заголовки тарифов -->
       <div
         v-for="(tariff, colIndex) in tariffs"
         :key="tariff.title"
-        class="grid-cell grid-header"
+        class="brp__cell brp__cell--header"
         :class="{
-          highlighted: tariff.isHighlighted,
-          'is-last-col': colIndex === tariffs.length - 1
+          'brp--highlight': tariff.isHighlighted,
+          'brp--last-col': colIndex === tariffs.length - 1
         }"
       >
-        <div class="title-wrap">
-          <span class="tariff-title">{{ tariff.title }}</span>
+        <div class="brp__title-wrap">
+          <span class="brp__title">{{ tariff.title }}</span>
         </div>
-        <div class="desc-wrap">
-          <span class="tariff-description">{{ tariff.description }}</span>
+        <div class="brp__desc-wrap">
+          <span class="brp__desc">{{ tariff.description }}</span>
         </div>
       </div>
 
       <!-- Цены -->
       <template v-for="(duration, rowIndex) in priceDurations" :key="duration">
-        <div class="grid-cell cell-feature" :class="{ 'price-separator-top': rowIndex === 0 }">
+        <div
+          class="brp__cell brp__cell--label brp--no-bg"
+          :class="{ 'brp--top-sep': rowIndex === 0 }"
+        >
           {{ duration }}
         </div>
+
         <div
           v-for="(tariff, colIndex) in tariffs"
           :key="tariff.title + duration"
-          class="grid-cell cell-price"
+          class="brp__cell brp__cell--price"
           :class="{
-            'price-separator-top': rowIndex === 0,
-            highlighted: tariff.isHighlighted,
-            'is-last-col': colIndex === tariffs.length - 1
+            'brp--top-sep': rowIndex === 0,
+            'brp--highlight': tariff.isHighlighted,
+            'brp--last-col': colIndex === tariffs.length - 1
           }"
         >
-          <span class="price-per-month">{{ tariff.prices[duration].perMonth }}</span>
-          <span v-if="tariff.prices[duration].total" class="price-total">{{ tariff.prices[duration].total }}</span>
+          <span class="brp__price-main">{{ tariff.prices[duration].perMonth }}</span>
+          <span v-if="tariff.prices[duration].total" class="brp__price-sub">
+            {{ tariff.prices[duration].total }}
+          </span>
         </div>
       </template>
 
       <!-- Разделитель -->
-      <div class="grid-cell-separator"></div>
+      <div class="brp__row-sep"></div>
 
-      <!-- Характеристики -->
+      <!-- Особенности -->
       <template v-for="(feature, featureIndex) in featureOrder" :key="feature">
-        <div class="grid-cell cell-feature" :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1 }">
+        <div
+          class="brp__cell brp__cell--label"
+          :class="{ 'brp__cell--last': featureIndex === featureOrder.length - 1 }"
+        >
           {{ feature }}
         </div>
+
         <div
           v-for="(tariff, colIndex) in tariffs"
           :key="tariff.title + feature"
-          class="grid-cell cell-value"
+          class="brp__cell brp__cell--value"
           :class="{
-            'last-row-cell': featureIndex === featureOrder.length - 1,
-            highlighted: tariff.isHighlighted,
-            'is-last-col': colIndex === tariffs.length - 1
+            'brp__cell--last': featureIndex === featureOrder.length - 1,
+            'brp--highlight': tariff.isHighlighted,
+            'brp--last-col': colIndex === tariffs.length - 1
           }"
         >
           <span>{{ tariff.features[feature] }}</span>
@@ -130,20 +142,23 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
 </template>
 
 <style scoped>
-.table-wrapper {
+/* Контейнер */
+.brp {
   overflow-x: auto;
   border: 1px solid var(--vp-c-divider);
   border-radius: 8px;
   margin: 24px 0;
 }
-.pricing-grid {
+
+/* Сетка */
+.brp__grid {
   display: grid;
   grid-template-columns: 1fr repeat(3, 1fr);
   align-items: stretch;
 }
 
-/* Базовые ячейки */
-.grid-cell {
+/* Ячейка по умолчанию */
+.brp__cell {
   position: relative;
   border-bottom: 1px solid var(--vp-c-divider);
   border-right: 1px solid var(--vp-c-divider);
@@ -153,48 +168,55 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   padding: 0 16px;
 }
 
-/* СНИМАЕМ правую границу только у последнего столбца (без nth-child) */
-.grid-cell.is-last-col { border-right: none; }
+/* Убираем правую границу только у последнего столбца (без nth-child) */
+.brp--last-col {
+  border-right: none;
+}
 
-/* Заголовки: больше воздуха и точное выравнивание */
-.grid-header {
+/* Шапка */
+.brp__cell--header {
   border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
-  min-height: 120px;              /* больше воздуха */
-  padding-top: 14px;               /* верхний воздух */
-  padding-bottom: 14px;            /* нижний воздух */
+  min-height: 120px;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 
-/* Две зоны: название по центру строки, подпись к верхнему краю */
-.title-wrap {
-  min-height: 50px;                /* зона синей линии (центр) */
+/* Пустая шапка слева — без фона */
+.brp__cell--header-placeholder {
+  background-color: transparent;
+}
+
+/* Две зоны контроля выравнивания */
+.brp__title-wrap {
+  min-height: 56px;              /* зона для названия (центр) */
   display: flex;
-  align-items: center;              /* по центру по вертикали */
+  align-items: center;            /* по вертикали центр */
   justify-content: center;
   text-align: center;
 }
-.desc-wrap {
-  min-height: 44px;                /* зона под красной линией (верх) */
+.brp__desc-wrap {
+  min-height: 46px;              /* зона для подписи (к верху) */
   display: flex;
-  align-items: flex-start;          /* к верхнему краю */
+  align-items: flex-start;        /* к верхнему краю */
   justify-content: center;
   text-align: center;
 }
 
-.tariff-title {
+.brp__title {
   font-weight: 600;
   font-size: 1.12em;
   color: var(--vp-c-text-1);
 }
-.tariff-description {
+.brp__desc {
   margin-top: 4px;
   font-size: 0.92em;
   color: var(--vp-c-text-2);
   line-height: 1.3;
 }
 
-/* Левая колонка с названиями строк */
-.cell-feature {
+/* Левая колонка-метки */
+.brp__cell--label {
   padding: 12px 16px;
   justify-content: center;
   align-items: flex-start;
@@ -203,46 +225,55 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   background-color: var(--vp-c-bg-soft);
 }
 
-/* Данные */
-.cell-price, .cell-value {
+/* Убираем фон у верхних левых ячеек (1/3/6 месяцев) */
+.brp--no-bg {
+  background-color: transparent;
+}
+
+/* Значения */
+.brp__cell--price,
+.brp__cell--value {
   padding: 12px 16px;
   text-align: center;
   align-items: center;
   justify-content: center;
 }
-.price-per-month {
+
+.brp__price-main {
   font-weight: 600;
   font-size: 1.05em;
 }
-.price-total {
+.brp__price-sub {
   font-size: 0.85em;
   color: var(--vp-c-text-2);
   margin-top: 2px;
 }
 
 /* Разделители строк */
-.price-separator-top { border-top: 1px solid var(--vp-c-divider); }
-.grid-cell-separator {
+.brp--top-sep {
+  border-top: 1px solid var(--vp-c-divider);
+}
+.brp__row-sep {
   height: 2px;
   background-color: var(--vp-c-divider);
   grid-column: 1 / -1;
   border: none;
 }
-.last-row-cell { border-bottom: none; }
+.brp__cell--last {
+  border-bottom: none;
+}
 
-/* Аккуратная рамка второго тарифа без перекрытия перегородок */
-.highlighted {
-  position: relative;
-  z-index: 0;                       /* не ломаем внутренние линии */
+/* Рамка второго тарифа: всегда поверх внутренних линий, без ломания перегородок */
+.brp--highlight {
   border-left: 2px solid var(--vp-c-brand-1);
   border-right: 2px solid var(--vp-c-brand-1);
 }
-.grid-header.highlighted {
+.brp__cell--header.brp--highlight {
   border-top: 2px solid var(--vp-c-brand-1);
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
 }
-.last-row-cell.highlighted {
+.brp__cell--last.brp--highlight {
   border-bottom: 2px solid var(--vp-c-brand-1);
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
