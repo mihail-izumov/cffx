@@ -25,7 +25,7 @@
           Получайте не просто оценки, а понимание того, как именно расти.
         </p>
       </div>
-      <a href="/brew/membership" class="user-card-button">
+      <a href="/dialogs" class="user-card-button">
         <strong>Подключить Кофейню</strong>
       </a>
     </div>
