@@ -2,7 +2,7 @@
 outline: false
 prev: false
 next: false
-title: Подключитьс Диалоги
+title: Диалоги
 notification: brew
 ---
 
