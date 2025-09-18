@@ -23,7 +23,6 @@ notification: brew
 Отправим стикер и подключим за 5 дней. <Badge type="tip" text="Требуется Сопровождение" />
 </div>
 
-
 ## Защищает выручку и репутацию кофейни
 
 <Dialogs3Cards />
@@ -50,12 +49,20 @@ notification: brew
 
 **Разовый платеж за внедрение – ₽50,000**
 
+</div>
+
 <DialogsTarifs />
+
+<div align="center">
 
 ## Начать Сегодня
 
+</div>
+
 <DialogsForm />
 
+<div align="center">
+  
 ## Почему выгодно
 
 </div>
