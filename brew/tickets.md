@@ -32,6 +32,10 @@ outline: false
 
 <DialogsAnnaWorks />
 
+## Быстрый Старт
+
+<DialogsFirst5Days />
+
 ## Почему выгодно
 
 <LTVCalc />
