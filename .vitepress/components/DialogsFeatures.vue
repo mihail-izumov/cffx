@@ -171,7 +171,7 @@ const activeTab = ref('interception')
 /* Tab navigation */
 .signal-product-tabs__nav {
   display: flex;
-  flex-wrap: wrap; /* Enables wrapping of tabs */
+  flex-wrap: wrap;
   gap: 4px;
   margin-bottom: 1.5rem;
   background: #2a2a2a;
@@ -181,7 +181,7 @@ const activeTab = ref('interception')
 .signal-product-tabs__nav button {
   padding: 8px 14px;
   border: none;
-  background: transparent;
+  background: #3a3a3a; /* Default grey background */
   color: #9ca3af;
   cursor: pointer;
   border-radius: 6px;
@@ -190,14 +190,18 @@ const activeTab = ref('interception')
   font-size: 0.9rem;
   white-space: nowrap;
 }
-.signal-product-tabs__nav button:hover {
-  background: rgba(255, 255, 255, 0.05);
+.signal-product-tabs__nav button:not(.active):hover {
+  background: #4a4a4a; /* Lighter grey on hover for passive tabs */
   color: #ffffff;
 }
 .signal-product-tabs__nav button.active {
-  background: #a3e635; /* Lime green from the screenshot */
+  background: #a3e635; /* Lime green for active tab */
   color: #000000;
   font-weight: 600;
+}
+.signal-product-tabs__nav button.active:hover {
+  background: #a3e635; /* Keep lime green on hover for active tab */
+  color: #000000;
 }
 
 /* Tab content */
@@ -208,28 +212,25 @@ const activeTab = ref('interception')
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
 .signal-product-tabs__panel h3 {
   font-size: 1.4rem;
-  margin-bottom: 0.5rem; /* Reduced margin to bring subtitle closer */
+  margin-bottom: 0.5rem;
   color: var(--vp-c-text-1);
   font-weight: 600;
 }
 .signal-product-tabs__subtitle {
-  font-size: 0.95rem; /* Increased font size */
-  color: var(--vp-c-text-3); /* Darker text */
-  margin: 0.5rem 0 1.5rem 0; /* Increased top and bottom margin */
-  font-weight: 500; /* Medium font weight */
+  font-size: 0.95rem;
+  color: var(--vp-c-text-3);
+  margin: 0.5rem 0 1.5rem 0;
+  font-weight: 500;
 }
 
-/* Grid for cards */
+/* Grid and cards */
 .signal-product-tabs__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
 }
-
-/* Individual card styling */
 .signal-product-tabs__card {
   background: var(--vp-c-bg-soft);
   border-radius: 12px;
@@ -255,10 +256,10 @@ const activeTab = ref('interception')
   line-height: 1.3;
 }
 
-/* Badge styling to match the example */
+/* Badge styling */
 .signal-product-tabs__badge {
   display: inline-block;
-  background-color: #4ade80; /* Bright green from the initial example */
+  background-color: #4ade80;
   color: #000;
   padding: 3px 10px;
   border-radius: 6px;
