@@ -32,35 +32,36 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
 <template>
   <div class="table-wrapper">
     <div class="pricing-grid">
-      <!-- Заголовки -->
+      <!-- Overlay for Highlight -->
+      <div class="highlight-overlay"></div>
+
+      <!-- Headers -->
       <div class="grid-cell grid-header header-feature"></div>
-      <div v-for="tariff in tariffs" :key="tariff.title" 
-           class="grid-cell grid-header"
-           :class="{ 'highlighted': tariff.isHighlighted }">
-        <span class="tariff-title">{{ tariff.title }}</span>
-        <span class="tariff-description">{{ tariff.description }}</span>
+      <div v-for="tariff in tariffs" :key="tariff.title" class="grid-cell grid-header">
+        <div class="tariff-title-wrapper">
+          <span class="tariff-title">{{ tariff.title }}</span>
+        </div>
+        <div class="tariff-description-wrapper">
+          <span class="tariff-description">{{ tariff.description }}</span>
+        </div>
       </div>
 
-      <!-- Цены -->
+      <!-- Prices -->
       <template v-for="(duration, index) in priceDurations">
         <div class="grid-cell cell-feature" :class="{ 'price-separator-top': index === 0 }">{{ duration }}</div>
-        <div v-for="tariff in tariffs" :key="tariff.title" 
-             class="grid-cell cell-price"
-             :class="{ 'price-separator-top': index === 0, 'highlighted': tariff.isHighlighted }">
+        <div v-for="tariff in tariffs" :key="tariff.title" class="grid-cell cell-price" :class="{ 'price-separator-top': index === 0 }">
           <span class="price-per-month">{{ tariff.prices[duration].perMonth }}</span>
           <span v-if="tariff.prices[duration].total" class="price-total">{{ tariff.prices[duration].total }}</span>
         </div>
       </template>
 
-      <!-- Разделитель -->
+      <!-- Separator -->
       <div class="grid-cell-separator"></div>
 
-      <!-- Характеристики -->
+      <!-- Features -->
       <template v-for="(feature, featureIndex) in featureOrder">
         <div class="grid-cell cell-feature" :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1 }">{{ feature }}</div>
-        <div v-for="tariff in tariffs" :key="tariff.title" 
-             class="grid-cell cell-value"
-             :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1, 'highlighted': tariff.isHighlighted }">
+        <div v-for="tariff in tariffs" :key="tariff.title" class="grid-cell cell-value" :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1 }">
           <span>{{ tariff.features[feature] }}</span>
         </div>
       </template>
@@ -76,13 +77,13 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   margin: 24px 0;
 }
 .pricing-grid {
+  position: relative; /* Needed for the overlay */
   display: grid;
   grid-template-columns: 1fr repeat(3, 1fr); 
   align-items: stretch;
 }
 .grid-cell {
-  position: relative;
-  padding: 12px 16px;
+  padding: 0 16px; /* Padding will be handled by inner wrappers */
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--vp-c-divider);
@@ -96,27 +97,43 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
   min-height: 90px;
-  justify-content: flex-start;
-  text-align: center;
 }
 .header-feature {
   background-color: transparent;
   border-bottom: 2px solid var(--vp-c-divider);
 }
+
+/* --- СТИЛИ ВЫРАВНИВАНИЯ ЗАГОЛОВКОВ --- */
+.tariff-title-wrapper, .tariff-description-wrapper {
+  display: flex;
+  text-align: center;
+  width: 100%;
+}
+.tariff-title-wrapper {
+  flex: 1; /* Pushes description down */
+  align-items: center; /* Vertical center for title */
+  justify-content: center;
+}
+.tariff-description-wrapper {
+  flex: 1; /* Takes available space */
+  align-items: flex-start; /* Aligns description to the top */
+  justify-content: center;
+}
 .tariff-title {
   font-weight: 600;
   font-size: 1.1em;
   color: var(--vp-c-text-1);
-  width: 100%;
 }
 .tariff-description {
-  margin-top: 6px;
+  margin-top: 4px; /* Small space from the red line */
   font-size: 0.9em;
   color: var(--vp-c-text-2);
   line-height: 1.3;
-  width: 100%;
 }
+/* ------------------------------------- */
+
 .cell-feature {
+  padding: 12px 16px;
   justify-content: center;
   align-items: flex-start;
   font-size: 0.95em;
@@ -124,6 +141,7 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   background-color: var(--vp-c-bg-soft);
 }
 .cell-price, .cell-value {
+  padding: 12px 16px;
   text-align: center;
   align-items: center;
   justify-content: center;
@@ -150,20 +168,16 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
   border-bottom: none;
 }
 
-/* --- ИСПРАВЛЕННЫЕ СТИЛИ ПОДСВЕТКИ --- */
-.highlighted {
-  border-left: 2px solid var(--vp-c-brand-1);
-  border-right: 2px solid var(--vp-c-brand-1);
-  z-index: 1; /* Поднимаем слой ячеек */
-}
-.grid-header.highlighted {
-  border-top: 2px solid var(--vp-c-brand-1);
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-}
-.last-row-cell.highlighted {
-  border-bottom: 2px solid var(--vp-c-brand-1);
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+/* --- НАДЁЖНАЯ ОБВОДКА --- */
+.highlight-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  /* Position over the 3rd column (1st is feature, 2nd is basic, 3rd is advanced) */
+  grid-column: 3; 
+  border: 2px solid var(--vp-c-brand-1);
+  border-radius: 6px;
+  z-index: 5;
+  pointer-events: none; /* Make it non-interactive */
 }
 </style>
