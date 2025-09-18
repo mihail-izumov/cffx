@@ -1,5 +1,9 @@
 ---
 outline: false
+prev: false
+next: false
+title: Подключитьс Диалоги
+notification: brew
 ---
 
 # Диалоги
@@ -46,13 +50,15 @@ outline: false
 
 **Разовый платеж за внедрение – ₽50,000**
 
-</div>
-
 <DialogsTarifs />
+
+## Начать Сегодня
 
 <DialogsForm />
 
 ## Почему выгодно
+
+</div>
 
 <LTVCalc />
 
