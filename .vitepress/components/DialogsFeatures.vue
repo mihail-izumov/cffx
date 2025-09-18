@@ -174,7 +174,7 @@ const activeTab = ref('interception')
   flex-wrap: wrap;
   gap: 4px;
   margin-bottom: 1.5rem;
-  background: #2a2a2a;
+  background: #202020; /* Darker background */
   border-radius: 10px;
   padding: 4px;
 }
