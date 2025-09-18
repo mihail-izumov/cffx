@@ -5,7 +5,7 @@ const tariffs = ref([
   {
     title: 'Базовый',
     description: 'Реакция на отзывы',
-    isHighlighted: false,
+    isHighlighted: false, // Добавлено для управления подсветкой
     prices: {
       '1 месяц': { perMonth: '₽30,000/мес', total: '' },
       '3 месяца': { perMonth: '₽22,200/мес', total: '(₽66,600 итого)' },
@@ -23,7 +23,7 @@ const tariffs = ref([
   {
     title: 'Продвинутый',
     description: 'Предвосхищение проблем',
-    isHighlighted: true,
+    isHighlighted: true, // Этот тариф будет подсвечен
     prices: {
       '1 месяц': { perMonth: '₽50,000/мес', total: '' },
       '3 месяца': { perMonth: '₽45,000/мес', total: '(₽135,000 итого)' },
@@ -63,184 +63,152 @@ const featureOrder = ['Перехват негатива', 'Виджет', 'Фо
 </script>
 
 <template>
-  <div class="brew-pricing">
-    <div class="brew-pricing__grid-container">
-      <div class="brew-pricing__grid">
-        <!-- Headers -->
-        <div class="brew-pricing__cell brew-pricing__cell--feature"></div>
-        <div v-for="(tariff, index) in tariffs" :key="tariff.title"
-             class="brew-pricing__cell brew-pricing__cell--header"
-             :class="{ 'brew-pricing__cell--highlighted': tariff.isHighlighted }">
-          
-          <div v-if="tariff.isHighlighted" class="brew-pricing__badge">Популярный</div>
-          
-          <span class="brew-pricing__title">{{ tariff.title }}</span>
-          <span class="brew-pricing__description">{{ tariff.description }}</span>
-        </div>
-
-        <!-- Price Separator -->
-        <div class="brew-pricing__separator" style="grid-column: 1 / -1;"></div>
-
-        <!-- Prices -->
-        <template v-for="duration in priceDurations">
-          <div class="brew-pricing__cell brew-pricing__cell--feature">{{ duration }}</div>
-          <div v-for="tariff in tariffs" :key="tariff.title"
-               class="brew-pricing__cell brew-pricing__cell--price"
-               :class="{ 'brew-pricing__cell--highlighted': tariff.isHighlighted }">
-            <span class="brew-pricing__price-main">{{ tariff.prices[duration].perMonth }}</span>
-            <span v-if="tariff.prices[duration].total" class="brew-pricing__price-sub">{{ tariff.prices[duration].total }}</span>
-          </div>
-        </template>
-        
-        <!-- Feature Separator -->
-        <div class="brew-pricing__separator" style="grid-column: 1 / -1;"></div>
-
-        <!-- Features -->
-        <template v-for="feature in featureOrder">
-          <div class="brew-pricing__cell brew-pricing__cell--feature">{{ feature }}</div>
-          <div v-for="tariff in tariffs" :key="tariff.title"
-               class="brew-pricing__cell"
-               :class="{ 'brew-pricing__cell--highlighted': tariff.isHighlighted }">
-            <span>{{ tariff.features[feature] }}</span>
-          </div>
-        </template>
+  <div class="table-wrapper">
+    <div class="pricing-grid">
+      <!-- Заголовки тарифов -->
+      <div class="grid-cell grid-header header-feature"></div>
+      <div v-for="tariff in tariffs" :key="tariff.title" 
+           class="grid-cell grid-header"
+           :class="{ 'highlighted-cell': tariff.isHighlighted }">
+        <span class="tariff-title">{{ tariff.title }}</span>
+        <span class="tariff-description">{{ tariff.description }}</span>
       </div>
+
+      <!-- Цены -->
+      <template v-for="(duration, index) in priceDurations" :key="duration">
+        <div 
+          class="grid-cell cell-feature price-label"
+          :class="{ 'price-separator-top': index === 0 }">{{ duration }}</div>
+        <div 
+          v-for="tariff in tariffs" :key="tariff.title" 
+          class="grid-cell cell-price"
+          :class="{ 'price-separator-top': index === 0, 'highlighted-cell': tariff.isHighlighted }">
+          <span class="price-per-month">{{ tariff.prices[duration].perMonth }}</span>
+          <span v-if="tariff.prices[duration].total" class="price-total">{{ tariff.prices[duration].total }}</span>
+        </div>
+      </template>
+
+      <!-- Разделитель -->
+      <div class="grid-cell-separator" :style="{ 'grid-column': '1 / -1' }"></div>
+
+      <!-- Характеристики -->
+      <template v-for="(feature, featureIndex) in featureOrder" :key="feature">
+        <div 
+          class="grid-cell cell-feature"
+          :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1 }">{{ feature }}</div>
+        <div 
+          v-for="(tariff, checkIndex) in tariffs" :key="checkIndex" 
+          class="grid-cell cell-value"
+          :class="{ 'last-row-cell': featureIndex === featureOrder.length - 1, 'highlighted-cell': tariff.isHighlighted }">
+          <span>{{ tariff.features[feature] }}</span>
+        </div>
+      </template>
     </div>
   </div>
 </template>
 
 <style scoped>
-:root {
-  --brew-pricing-highlight-border: var(--vp-c-brand-1);
-  --brew-pricing-highlight-bg: var(--vp-c-bg-soft);
-  --brew-pricing-lift: -20px;
-}
-.dark {
-  --brew-pricing-highlight-bg: #242c37;
-}
-
-.brew-pricing {
-  margin-top: calc(24px - var(--brew-pricing-lift));
-  padding-top: calc(1px - var(--brew-pricing-lift));
+.table-wrapper {
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.brew-pricing__grid-container {
   border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
-  overflow: hidden;
-  min-width: 700px;
+  border-radius: 8px;
+  margin: 24px 0;
 }
-
-.brew-pricing__grid {
+.pricing-grid {
   display: grid;
-  grid-template-columns: auto repeat(3, 1fr);
+  grid-template-columns: 1fr repeat(3, 1fr); 
+  align-items: stretch;
 }
-
-.brew-pricing__cell {
-  position: relative;
-  padding: 14px 18px;
+.grid-cell {
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
   border-bottom: 1px solid var(--vp-c-divider);
-  transition: all 0.3s ease;
-}
-
-.brew-pricing__grid > .brew-pricing__cell:not(:nth-child(4n)) {
   border-right: 1px solid var(--vp-c-divider);
+  min-height: 50px;
 }
-/* Remove bottom border from last row */
-.brew-pricing__grid > .brew-pricing__cell:nth-last-child(-n+4) {
-  border-bottom: none;
+.pricing-grid > .grid-cell:nth-child(4n) {
+  border-right: none;
 }
-
-.brew-pricing__cell--feature {
-  align-items: flex-start;
-  text-align: left;
-  font-size: 0.95em;
-  font-weight: 500;
+.grid-header {
+  border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
+  min-height: 80px;
+  /* ИЗМЕНЕНИЯ ДЛЯ ЦЕНТРИРОВАНИЯ */
+  text-align: center;
+  align-items: center;
 }
-
-.brew-pricing__cell--header {
-  min-height: 100px;
+.header-feature {
+  background-color: transparent;
+  border-bottom: 2px solid var(--vp-c-divider);
 }
-
-.brew-pricing__cell--price {
-  white-space: nowrap;
-}
-
-.brew-pricing__title {
+.tariff-title {
   font-weight: 600;
-  font-size: 1.15em;
+  font-size: 1.1em;
+  color: var(--vp-c-text-1);
 }
-.brew-pricing__description {
-  margin-top: 6px;
+.tariff-description {
+  margin-top: 4px;
   font-size: 0.9em;
   color: var(--vp-c-text-2);
   line-height: 1.3;
 }
-.brew-pricing__price-main {
-  font-weight: 600;
-  font-size: 1.1em;
+.cell-feature {
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-size: 0.95em;
+  font-weight: 500;
+  background-color: var(--vp-c-bg-soft);
 }
-.brew-pricing__price-sub {
+.price-label {
+  background-color: transparent;
+}
+.cell-price {
+  text-align: center;
+  align-items: center;
+  white-space: nowrap;
+}
+.price-per-month {
+  font-weight: 600;
+  font-size: 1.05em;
+}
+.price-total {
   font-size: 0.85em;
   color: var(--vp-c-text-2);
-  margin-top: 4px;
+  margin-top: 2px;
 }
-
-.brew-pricing__separator {
+.cell-value {
+  text-align: center;
+  align-items: center;
+  font-size: 0.95em;
+}
+.price-separator-top {
+  border-top: 1px solid var(--vp-c-divider);
+}
+.grid-cell-separator {
   height: 2px;
   background-color: var(--vp-c-divider);
+  grid-column: 1 / -1;
   border: none;
 }
-
-/* Highlighted Column Styles */
-.brew-pricing__cell--highlighted {
-  background-color: var(--brew-pricing-highlight-bg);
+.last-row-cell {
+  border-bottom: none;
 }
 
-.brew-pricing__grid .brew-pricing__cell--highlighted {
-  transform: translateY(var(--brew-pricing-lift));
-  border-left-color: var(--brew-pricing-highlight-border);
-  border-right-color: var(--brew-pricing-highlight-border);
+/* СТИЛИ ДЛЯ ПОДСВЕТКИ */
+.highlighted-cell {
+  border-left: 2px solid var(--vp-c-brand-1);
+  border-right: 2px solid var(--vp-c-brand-1);
 }
-.brew-pricing__grid > .brew-pricing__cell.brew-pricing__cell--highlighted:first-of-type {
-  border-top: 2px solid var(--brew-pricing-highlight-border);
-  border-left: 2px solid var(--brew-pricing-highlight-border);
-  border-top-left-radius: 8px;
+.grid-header.highlighted-cell {
+  border-top: 2px solid var(--vp-c-brand-1);
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 }
-.brew-pricing__grid > .brew-pricing__cell.brew-pricing__cell--highlighted:nth-of-type(3) {
-  border-top: 2px solid var(--brew-pricing-highlight-border);
-  border-right: 2px solid var(--brew-pricing-highlight-border);
-  border-top-right-radius: 8px;
-}
-.brew-pricing__grid > .brew-pricing__cell.brew-pricing__cell--highlighted {
-    border-left: 2px solid var(--brew-pricing-highlight-border);
-    border-right: 2px solid var(--brew-pricing-highlight-border);
-}
-.brew-pricing__grid > .brew-pricing__cell--highlighted:nth-last-child(2) {
-    border-bottom: 2px solid var(--brew-pricing-highlight-border);
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-}
-
-.brew-pricing__badge {
-  position: absolute;
-  top: calc(var(--brew-pricing-lift) - 16px);
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--brew-pricing-highlight-border);
-  color: #fff;
-  padding: 5px 15px;
-  border-radius: 16px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  z-index: 20;
+.last-row-cell.highlighted-cell {
+  border-bottom: 2px solid var(--vp-c-brand-1);
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 </style>
