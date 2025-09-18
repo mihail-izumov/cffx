@@ -32,6 +32,10 @@ outline: false
 
 <DialogsAnnaWorks />
 
+## Автоматизация управления репутацией
+
+<DialogsFeatures />
+
 ## Быстрый Старт
 
 <DialogsFirst5Days />
@@ -40,6 +44,9 @@ outline: false
 
 <LTVCalc />
 
+## Тарифы
+
+**Разовый платеж за внедрение – ₽50,000**
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
