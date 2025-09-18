@@ -63,6 +63,7 @@ import DialogsSteps from '../components/DialogsSteps.vue'
 import Dialogs3Cards from '../components/Dialogs3Cards.vue'
 import DialogsFirst5Days from '../components/DialogsFirst5Days.vue'
 import DialogsFeatures from '../components/DialogsFeatures.vue'
+import DialogsTarifs from '../components/DialogsTarifs.vue'
 
 export default {
   extends: DefaultTheme,
@@ -132,6 +133,7 @@ export default {
     app.component('Dialogs3Cards', Dialogs3Cards)
     app.component('DialogsFirst5Days', DialogsFirst5Days) 
     app.component('DialogsFeatures', DialogsFeatures)
+    app.component('DialogsTarifs', DialogsTarifs)
     
   },
 }
