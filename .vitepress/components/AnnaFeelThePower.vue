@@ -26,7 +26,7 @@
         </p>
       </div>
       <a href="/dialogs" class="user-card-button">
-        <strong>Подключить Кофейню</strong>
+        <strong>Подключить Диалоги</strong>
       </a>
     </div>
   </div>
