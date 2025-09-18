@@ -40,9 +40,13 @@ outline: false
 
 <DialogsFirst5Days />
 
+<div align="center">
+
 ## Тарифы
 
 **Разовый платеж за внедрение – ₽50,000**
+
+</div>
 
 <DialogsTarifs />
 
