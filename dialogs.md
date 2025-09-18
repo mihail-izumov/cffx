@@ -18,12 +18,12 @@ notification: brew
 <br>
 
 <div class="button-group">
-  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer"><strong>Получить QR-код</strong></a>
-  <a href="/fest/join" class="btn btn-secondary" rel="noopener noreferrer">Тарифы</a>
+  <a href="/dialogs#начать-сегодня" class="btn btn-primary" rel="noopener noreferrer"><strong>Получить QR-код</strong></a>
+  <a href="/dialogs#тарифы" class="btn btn-secondary" rel="noopener noreferrer">Тарифы</a>
 </div>
 
 <div style="background-color: #2d2d2d; border: 0px solid #404040; border-radius: 8px; padding: 7px 10px; font-size: 13px; color: #a8a8a8; margin: 8px 0; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 500; line-height: 1.2;">
-  Отправим стикер и подключим за 5 дней. <Badge type="tip" text="Требуется Сопровождение" style="position: relative; top: 2px;" />
+  Отправим стикер и [подключим за 5 дней](/dialogs#быстрыи-старт) <Badge type="tip" text="Требуется Сопровождение" style="position: relative; top: 2px;" />
 </div>
 
 ## Защищает выручку и репутацию кофейни
