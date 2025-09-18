@@ -46,6 +46,8 @@ outline: false
 
 <DialogsTarifs />
 
+<DialogsForm />
+
 ## Почему выгодно
 
 <LTVCalc />
