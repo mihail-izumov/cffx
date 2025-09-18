@@ -61,6 +61,7 @@ import LTVCalc from '../components/LTVCalc.vue'
 import DialogsAnnaWorks from '../components/DialogsAnnaWorks.vue'
 import DialogsSteps from '../components/DialogsSteps.vue'
 import Dialogs3Cards from '../components/Dialogs3Cards.vue'
+import DialogsFirst5Days from '../components/DialogsFirst5Days.vue'
 
 export default {
   extends: DefaultTheme,
@@ -128,5 +129,6 @@ export default {
     app.component('DialogsAnnaWorks', DialogsAnnaWorks)
     app.component('DialogsSteps', DialogsSteps)
     app.component('Dialogs3Cards', Dialogs3Cards)
+    app.component('DialogsFirst5Days', DialogsFirst5Days) 
   },
 }
