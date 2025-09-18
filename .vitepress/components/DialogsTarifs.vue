@@ -66,7 +66,7 @@ const isActive = d => d === selected.value
 
 <template>
   <div class="brp">
-    <!-- Переключатели над таблицей -->
+    <!-- Переключатели над таблицей, вне бордюра -->
     <div class="brp__header">
       <div class="brp__switch" role="tablist" aria-label="Срок подписки">
         <button
@@ -84,87 +84,86 @@ const isActive = d => d === selected.value
       </div>
     </div>
 
-    <!-- Таблица -->
-    <div class="brp__grid">
-      <!-- Пустая шапка -->
-      <div class="brp__cell brp__cell--header brp__cell--header-placeholder"></div>
+    <!-- Отдельный контейнер с бордюром и скруглением только для таблицы -->
+    <div class="brp__table">
+      <div class="brp__grid">
+        <!-- Пустая шапка -->
+        <div class="brp__cell brp__cell--header brp__cell--header-placeholder"></div>
 
-      <!-- Заголовки тарифов -->
-      <div
-        v-for="(tariff, colIndex) in tariffs"
-        :key="tariff.title"
-        class="brp__cell brp__cell--header"
-        :class="{
-          'brp--highlight': tariff.isHighlighted,
-          'brp--last-col': colIndex === tariffs.length - 1
-        }"
-      >
-        <div class="brp__title-wrap">
-          <span class="brp__title">{{ tariff.title }}</span>
-        </div>
-        <div class="brp__desc-wrap">
-          <span class="brp__desc">{{ tariff.description }}</span>
-        </div>
-      </div>
-
-      <!-- Одна строка цен (по выбранному сроку) -->
-      <div class="brp__cell brp__cell--label brp--no-bg brp--top-sep">
-        {{ currentLabel }}
-      </div>
-      <div
-        v-for="(tariff, colIndex) in tariffs"
-        :key="tariff.title + selected"
-        class="brp__cell brp__cell--price brp--top-sep"
-        :class="{
-          'brp--highlight': tariff.isHighlighted,
-          'brp--last-col': colIndex === tariffs.length - 1
-        }"
-      >
-        <span class="brp__price-main">{{ tariff.prices[selected].perMonth }}</span>
-        <span v-if="tariff.prices[selected].total" class="brp__price-sub">
-          {{ tariff.prices[selected].total }}
-        </span>
-      </div>
-
-      <!-- Разделитель -->
-      <div class="brp__row-sep"></div>
-
-      <!-- Особенности -->
-      <template v-for="(feature, featureIndex) in ['Перехват негатива','Виджет','Форма','Статистика','Аналитика','Поддержка']" :key="feature">
-        <div
-          class="brp__cell brp__cell--label"
-          :class="{ 'brp__cell--last': featureIndex === 5 }"
-        >
-          {{ feature }}
-        </div>
-
+        <!-- Заголовки тарифов -->
         <div
           v-for="(tariff, colIndex) in tariffs"
-          :key="tariff.title + feature"
-          class="brp__cell brp__cell--value"
+          :key="tariff.title"
+          class="brp__cell brp__cell--header"
           :class="{
-            'brp__cell--last': featureIndex === 5,
             'brp--highlight': tariff.isHighlighted,
             'brp--last-col': colIndex === tariffs.length - 1
           }"
         >
-          <span>{{ tariff.features[feature] }}</span>
+          <div class="brp__title-wrap">
+            <span class="brp__title">{{ tariff.title }}</span>
+          </div>
+          <div class="brp__desc-wrap">
+            <span class="brp__desc">{{ tariff.description }}</span>
+          </div>
         </div>
-      </template>
+
+        <!-- Одна строка цен (по выбранному сроку) -->
+        <div class="brp__cell brp__cell--label brp--no-bg brp--top-sep">
+          {{ currentLabel }}
+        </div>
+        <div
+          v-for="(tariff, colIndex) in tariffs"
+          :key="tariff.title + selected"
+          class="brp__cell brp__cell--price brp--top-sep"
+          :class="{
+            'brp--highlight': tariff.isHighlighted,
+            'brp--last-col': colIndex === tariffs.length - 1
+          }"
+        >
+          <span class="brp__price-main">{{ tariff.prices[selected].perMonth }}</span>
+          <span v-if="tariff.prices[selected].total" class="brp__price-sub">
+            {{ tariff.prices[selected].total }}
+          </span>
+        </div>
+
+        <!-- Разделитель -->
+        <div class="brp__row-sep"></div>
+
+        <!-- Особенности -->
+        <template v-for="(feature, featureIndex) in ['Перехват негатива','Виджет','Форма','Статистика','Аналитика','Поддержка']" :key="feature">
+          <div
+            class="brp__cell brp__cell--label"
+            :class="{ 'brp__cell--last': featureIndex === 5 }"
+          >
+            {{ feature }}
+          </div>
+
+          <div
+            v-for="(tariff, colIndex) in tariffs"
+            :key="tariff.title + feature"
+            class="brp__cell brp__cell--value"
+            :class="{
+              'brp__cell--last': featureIndex === 5,
+              'brp--highlight': tariff.isHighlighted,
+              'brp--last-col': colIndex === tariffs.length - 1
+            }"
+          >
+            <span>{{ tariff.features[feature] }}</span>
+          </div>
+        </template>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-/* Контейнер */
+/* Внешний обёртчик без бордюра */
 .brp {
-  overflow-x: auto;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
   margin: 24px 0;
 }
 
-/* Заголовочная зона над таблицей */
+/* Хедер с переключателями над таблицей */
 .brp__header {
   display: flex;
   justify-content: center;
@@ -177,7 +176,6 @@ const isActive = d => d === selected.value
   justify-content: center;
   gap: 8px;
   padding: 0;
-  border-radius: 0;
   background: transparent;
   margin: 0;
 }
@@ -198,6 +196,14 @@ const isActive = d => d === selected.value
   background: color-mix(in oklab, var(--vp-c-brand-1) 14%, transparent);
   border-color: var(--vp-c-brand-1);
   font-weight: 700;
+}
+
+/* Контейнер таблицы с бордюром и прокруткой */
+.brp__table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
 }
 
 /* Сетка */
