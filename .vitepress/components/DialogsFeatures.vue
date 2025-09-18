@@ -87,7 +87,7 @@
 
   <!-- Вкладка: Статистика -->
   <div v-show="activeTab === 'stats'" class="signal-product-tabs__panel">
-    <h3>Ежемесячный отчет, оцифровывающий пульс вашего бизнеса</h3>
+    <h3>Ежемесячный отчет, который показывает пульс вашего бизнеса</h3>
     <div class="signal-product-tabs__grid">
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>NPS</h4><span class="signal-product-tabs__badge">Индекс лояльности</span></div>
@@ -171,6 +171,7 @@ const activeTab = ref('interception')
 /* Tab navigation */
 .signal-product-tabs__nav {
   display: flex;
+  flex-wrap: wrap; /* Enables wrapping of tabs */
   gap: 4px;
   margin-bottom: 1.5rem;
   background: #2a2a2a;
@@ -194,7 +195,7 @@ const activeTab = ref('interception')
   color: #ffffff;
 }
 .signal-product-tabs__nav button.active {
-  background: #84cc16; /* Light green from the initial version */
+  background: #a3e635; /* Lime green from the screenshot */
   color: #000000;
   font-weight: 600;
 }
@@ -210,14 +211,15 @@ const activeTab = ref('interception')
 
 .signal-product-tabs__panel h3 {
   font-size: 1.4rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.5rem; /* Reduced margin to bring subtitle closer */
   color: var(--vp-c-text-1);
   font-weight: 600;
 }
 .signal-product-tabs__subtitle {
-  font-size: 0.9rem;
-  color: var(--vp-c-text-2);
-  margin: -1rem 0 1.2rem 0;
+  font-size: 0.95rem; /* Increased font size */
+  color: var(--vp-c-text-3); /* Darker text */
+  margin: 0.5rem 0 1.5rem 0; /* Increased top and bottom margin */
+  font-weight: 500; /* Medium font weight */
 }
 
 /* Grid for cards */
@@ -256,8 +258,8 @@ const activeTab = ref('interception')
 /* Badge styling to match the example */
 .signal-product-tabs__badge {
   display: inline-block;
-  background-color: #4ade80; /* Bright green like in the screenshot */
-  color: #000; /* Dark text */
+  background-color: #4ade80; /* Bright green from the initial example */
+  color: #000;
   padding: 3px 10px;
   border-radius: 6px;
   font-size: 0.75rem;
@@ -284,19 +286,5 @@ const activeTab = ref('interception')
 .signal-product-tabs__card-highlight strong {
   color: var(--vp-c-text-1);
   font-weight: 600;
-}
-
-/* Responsive adjustments */
-@media (max-width: 960px) {
-  .signal-product-tabs__nav {
-    overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
-  }
-  .signal-product-tabs__nav::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
-  }
-  .signal-product-tabs__nav button {
-    flex-shrink: 0;
-  }
 }
 </style>
