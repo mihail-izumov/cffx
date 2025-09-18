@@ -40,13 +40,15 @@ outline: false
 
 <DialogsFirst5Days />
 
-## Почему выгодно
-
-<LTVCalc />
-
 ## Тарифы
 
 **Разовый платеж за внедрение – ₽50,000**
+
+<DialogsTarifs />
+
+## Почему выгодно
+
+<LTVCalc />
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
