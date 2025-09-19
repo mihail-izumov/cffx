@@ -68,7 +68,7 @@ import DialogsForm from '../components/DialogsForm.vue'
 import RadarReport from '../components/RadarReport.vue'
 import RadarStrategyTabs from '../components/RadarStrategyTabs.vue'
 import DialogsHowItWorks from '../components/DialogsHowItWorks.vue'
-import RadarForm.vue from '../components/RadarForm.vue'
+import RadarForm from '../components/RadarForm.vue'
 
 export default {
   extends: DefaultTheme,
