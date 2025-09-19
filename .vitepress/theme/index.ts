@@ -65,7 +65,6 @@ import DialogsFirst5Days from '../components/DialogsFirst5Days.vue'
 import DialogsFeatures from '../components/DialogsFeatures.vue'
 import DialogsTarifs from '../components/DialogsTarifs.vue'
 import DialogsForm from '../components/DialogsForm.vue'
-import RadarReport from '../components/RadarReport.vue'
 import RadarStrategyTabs from '../components/RadarStrategyTabs.vue'
 import DialogsHowItWorks from '../components/DialogsHowItWorks.vue'
 import RadarForm from '../components/RadarForm.vue'
@@ -139,8 +138,7 @@ export default {
     app.component('DialogsFirst5Days', DialogsFirst5Days) 
     app.component('DialogsFeatures', DialogsFeatures)
     app.component('DialogsTarifs', DialogsTarifs)
-    app.component('DialogsForm', DialogsForm)
-    app.component('RadarReport', RadarReport)    
+    app.component('DialogsForm', DialogsForm)   
     app.component('RadarStrategyTabs', RadarStrategyTabs)   
     app.component('DialogsHowItWorks', DialogsHowItWorks) 
     app.component('RadarForm', RadarForm) 
