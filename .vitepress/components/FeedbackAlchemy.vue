@@ -5,7 +5,7 @@
       <div class="success-text">
         <h3>Все готово!</h3>
         <p>Нажмите на кнопку ниже, чтобы отправить ваш уникальный код ассистенту Анне и активировать ваш запрос.</p>
-        <a :href="`https://t.me/Anna_runScale?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="telegram-button">Активировать Сигнал в Telegram</a>
+        <a :href="`https://t.me/Anna_Signal?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="telegram-button">Активировать Сигнал в Telegram</a>
         <a href="/signals#знакомьтесь-–-анна" target="_blank" class="secondary-link">Кто Анна и как работает</a>
       </div>
     </div>
