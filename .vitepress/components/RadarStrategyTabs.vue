@@ -5,7 +5,7 @@ const activeTab = ref('problem')
 
 <template>
   <div class="stz-root" data-stz="strategy-tabs">
-    <!-- Кнопки вкладок -->
+    <!-- Кнопки вкладоок -->
     <div class="stz-tabs-mr" role="tablist" aria-label="Режимы анализа">
       <button
         :class="{ active: activeTab === 'problem' }"
