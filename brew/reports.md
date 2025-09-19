@@ -25,6 +25,10 @@ notification: brew
 
 <RadarStrategyTabs />
 
+## Как работает
+
+<DialogsHowItWorks />
+
 ## Увидеть свой бизнес глазами клиентов
 
 ### Анализ конкурентов через отзывы 2ГИС/Яндекс
@@ -49,10 +53,6 @@ notification: brew
 <br>
 
 <BrewFirst30Days />
-
-## Как работает
-
-<DialogsHowItWorks />
 
 ## Требуйте больше от вашей кофейни
 
