@@ -67,6 +67,10 @@ notification: brew
 
 <DialogsHowItWorks />
 
+## Начать Сейчас
+
+<RadarForm />
+
 <style>
 /* --- СТИЛИ ДЛЯ ТАБЛИЦ --- */
 
