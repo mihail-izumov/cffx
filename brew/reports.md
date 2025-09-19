@@ -50,7 +50,11 @@ notification: brew
 
 <BrewFirst30Days />
 
-## Требуйте больше от вашей кофейни
+<div align="center">
+  
+## Увидеть свой бизнес глазами клиентов
+
+</div>
 
 <RadarForm />
 
