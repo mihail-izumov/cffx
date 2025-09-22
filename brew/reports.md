@@ -54,6 +54,10 @@ notification: brew
 
 <RadarFeatures />
 
+## Тарифы
+
+<RadarTarifs />
+
 <div align="center">
   
 ## От хаоса — к росту
