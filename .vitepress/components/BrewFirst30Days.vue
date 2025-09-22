@@ -43,7 +43,7 @@ const activeTab = ref('day-1')
         </li>
       </ul>
       <div class="result-block">
-        <p><strong>Результат –</strong> Вместо интуиции — <strong>точные данные</strong> о том, где вы находитесь</p>
+        <p><strong><span class="result-highlight">Результат</span> –</strong> Вместо интуиции — <strong>точные данные</strong> о том, где вы находитесь</p>
       </div>
     </div>
     <!-- Вкладка: ДЕНЬ 7 -->
@@ -58,7 +58,7 @@ const activeTab = ref('day-1')
         <li><strong>План Контратаки –</strong> 3 конкретных, выполнимых действия на ближайшую неделю</li>
       </ul>
       <div class="result-block">
-        <p><strong>Результат –</strong> У вас на руках <strong>точный план по захвату 15% клиентов</strong> у конкурентов в течение месяца</p>
+        <p><strong><span class="result-highlight">Результат</span> –</strong> У вас на руках <strong>точный план по захвату 15% клиентов</strong> у конкурентов в течение месяца</p>
       </div>
     </div>
     <!-- Вкладка: ДЕНЬ 14 -->
@@ -73,7 +73,7 @@ const activeTab = ref('day-1')
         <li><strong>Найти новые источники дохода</strong> без лишних трат</li>
       </ul>
       <div class="result-block">
-        <p><strong>Результат –</strong> Вы переходите от хаоса данных к <strong>четкому плану действий</strong> с задачами и приоритетами</p>
+        <p><strong><span class="result-highlight">Результат</span> –</strong> Вы переходите от хаоса данных к <strong>четкому плану действий</strong> с задачами и приоритетами</p>
       </div>
     </div>
     <!-- Вкладка: ДЕНЬ 21 -->
@@ -88,7 +88,7 @@ const activeTab = ref('day-1')
         <li><strong>Используйте голос клиента –</strong> Превратите цитаты из отзывов в готовый материал для рекламы, обучения персонала и исправления проблем</li>
       </ol>
       <div class="result-block">
-        <p><strong>Результат –</strong> Вы внедряете <strong>конкретные изменения, которые клиенты заметят</strong> уже на этой неделе</p>
+        <p><strong><span class="result-highlight">Результат</span> –</strong> Вы внедряете <strong>конкретные изменения, которые клиенты заметят</strong> уже на этой неделе</p>
       </div>
     </div>
     <!-- Вкладка: ДЕНЬ 30+ -->
@@ -103,7 +103,7 @@ const activeTab = ref('day-1')
         <li><strong>Следующая персональная сессия</strong> для планирования масштабирования</li>
       </ul>
       <div class="result-block">
-        <p><strong>Результат –</strong> Вы создаете <strong>устойчивую систему роста</strong>, которая работает быстрее и точнее конкурентов</p>
+        <p><strong><span class="result-highlight">Результат</span> –</strong> Вы создаете <strong>устойчивую систему роста</strong>, которая работает быстрее и точнее конкурентов</p>
       </div>
     </div>
     <!-- Вкладка: Результат -->
@@ -249,7 +249,11 @@ const activeTab = ref('day-1')
 }
 .result-block p {
     margin: 0 0 12px 0;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.46;
+}
+.result-highlight {
+    color: #c8ff5a;
 }
 .calc-button {
     display: inline-block;
