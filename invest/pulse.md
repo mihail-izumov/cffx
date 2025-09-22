@@ -19,7 +19,7 @@ title: Пульс | Поток данных Сигнала для инвести
 
 <div class="button-group">
   <a href="/invest/vision" class="btn btn-primary" rel="noopener noreferrer">Россия</a>
-  <a href="/smr" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Самара</a>
+  <a href="/invest/smr" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Самара</a>
 </div>
 
 ## Индекс Роста
