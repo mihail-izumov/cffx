@@ -279,9 +279,15 @@ export default defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Как работает', link: '/signals' },
-    { text: 'Индекс', link: '/smr' },
     { text: 'Фестиваль', link: '/fest' },
-    { text: 'Инвестиции', link: '/invest/pulse' },
+{
+      text: 'Умная Кофейня',
+      items: [
+        { text: '→ Начать', link: '/brew/membership' }, 
+        { text: 'Диалоги', link: '/brew/tickets' },
+        { text: 'Радар', link: '/brew/reports' }
+      ]
+    },
     {
       text: 'Умная Кофейня',
       items: [
@@ -312,6 +318,7 @@ function sidebarPulse(): DefaultTheme.SidebarItem[] {
       collapsed: false,
       items: [
         { text: 'Пульс', link: '/invest/pulse' },
+        { text: 'Индекс', link: '/smr' },
         { text: 'Прогноз Выручки', link: '/invest/calc' },
         { text: 'Симулятор Самары', link: '/invest/sim' },
         { text: 'Кофейни // Россия', link: '/invest/vision' }
