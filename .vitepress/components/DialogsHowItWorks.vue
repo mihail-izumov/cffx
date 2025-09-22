@@ -136,8 +136,8 @@ const activeTab = ref('step-1')
       </div>
       
       <div class="result-block">
-        <p><strong>Готовы обсудить пример для вашей сети?</strong></p>
-        <a href="/invest/calc" class="calc-button">Запросить демонстрацию</a>
+        <p><strong>Хотите увидеть свой бизнес глазами клиентов?</strong></p>
+        <a href="/invest/calc" class="calc-button">Тест-драйв</a>
       </div>
     </div>
   </div>
