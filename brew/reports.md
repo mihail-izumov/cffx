@@ -14,7 +14,7 @@ notification: brew
 
 <div class="button-group">
   <a href="/brew/reports" class="btn btn-primary" rel="noopener noreferrer"><strong>Подключиться</strong></a>
-  <a href="/invest/sim" class="btn btn-secondary" rel="noopener noreferrer">Тест-драйв</a>
+  <a href="/invest/sim" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Тест-драйв</a>
 </div>
 
 ## Видеть больше, угадывать меньше
