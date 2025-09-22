@@ -5,16 +5,16 @@ const notifications = [
     text: 'Перехватите негатив до того, как он попадёт в 2ГИС/Яндекс.', 
     hasButton: true,
     buttonText: 'Узнать Больше',
-    buttonUrl: '/brew/tickets'
+    buttonUrl: '/pro/dialogs'
   },
   { 
     text: 'Находим в отзывах то, что не видят другие.', 
     hasButton: true,
     buttonText: 'Индекс Роста',
-    buttonUrl: '/smr'
+    buttonUrl: '/invest/smr'
   },
   { 
-    text: 'Новый способ масштабировать кофейный бизнес', 
+    text: 'Где Начинается Ваша Кофейня', 
     hasButton: false 
   }
 ]
