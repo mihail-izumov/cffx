@@ -16,10 +16,10 @@
         <div class="payment-type">Окупается с первого Сигнала</div>
       </div>
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Тикет-система</span></li>
-        <li class="feature-item"><CheckIcon /><span>Анализ конкурентов</span></li>
-        <li class="feature-item"><CheckIcon /><span>Индекс Роста: сигналы изменений</span></li>
-        <li class="feature-item"><CheckIcon /><span>Симулятор Самары</span></li>
+        <li class="feature-item"><CheckIcon /><span>Перехват негатива</span></li>
+        <li class="feature-item"><CheckIcon /><span>Персональный виджет и форма</span></li>
+        <li class="feature-item"><CheckIcon /><span>Статистика и базовая аналитика</span></li>
+        <li class="feature-item"><CheckIcon /><span>Предиктивная аналитика оттока гостей</span></li>
       </ul>
       <a href="/brew/join/insider" class="card-button card-button--secondary">
         Начать с Диалогов
@@ -42,9 +42,9 @@
       </div>
       <p class="includes-all">Когда подключены Диалоги:</p>
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Персональные сессии с аналитиком Сигнала</span></li>
-        <li class="feature-item"><CheckIcon /><span>Индекс Роста: Темный Режим</span></li>
-        <li class="feature-item"><CheckIcon /><span>-20% на Чекап Модуля Роста®</span></li>
+        <li class="feature-item"><CheckIcon /><span>Анализ 2ГИС/Яндекс отзывов</span></li>
+        <li class="feature-item"><CheckIcon /><span>Сравнение с конкурентами: точки кратного роста</span></li>
+        <li class="feature-item"><CheckIcon /><span>Трекинг с аналитиками Сигнала</span></li>
       </ul>
       <a href="/brew/join/leader" class="card-button">Расти с Радаром</a>
     </div>
