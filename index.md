@@ -26,6 +26,6 @@ features:
     linkText: Инструменты
   - title: В каждой Умной Кофейне
     details: "Технологии сервиса, которые становятся новым стандартом для кофеен города."
-    link: /brew/membership
+    link: /pro
     linkText: Начать
 ---
