@@ -13,14 +13,6 @@ notification: brew
 
 <MembershipCards2 />
 
-## В каждой Умной Кофейне
-
-<TariffFeaturesLeader />
-
-## Расти по Своим Правилам
-
-<InfoCardsPro />
-
 ## Новый способ масштабировать кофейный бизнес 
 
 Получите премущество на рынке и растите быстрее конкурентов вместе с Сигналом.
@@ -32,6 +24,20 @@ notification: brew
   <a href="/brew/membership#ваша-умная-кофеиня-начинается-здесь" class="btn btn-primary" rel="noopener noreferrer">Начать</a>
   <a href="https://www.perplexity.ai/page/meta-franshiza-b-r-e-w-Tl5xfN_GREy2qFe4qDqSSg" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">НЕ франшиза</a>
 </div>
+
+## В каждой Умной Кофейне
+
+<TariffFeaturesLeader />
+
+## Расти по Своим Правилам
+
+<InfoCardsPro />
+
+## Клонируйте успех
+
+Применяйте лучший опыт рынка, чтобы расти по своим правилам.
+
+<BrandCards />
 
 ## Вопросы и Ответы
 
