@@ -50,7 +50,7 @@ outline: false
 ### Получите премущество на рынке и растите быстрее конкурентов вместе с Сигналом
 
 <div class="start-button-container">
-  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer"><strong>Начать →</strong></a>
+  <a href="/pro" class="btn btn-primary" rel="noopener noreferrer"><strong>Начать →</strong></a>
 </div>
 
 <br>
