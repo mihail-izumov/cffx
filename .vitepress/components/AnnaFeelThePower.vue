@@ -25,7 +25,7 @@
           Получайте не просто оценки, а понимание того, как именно расти.
         </p>
       </div>
-      <a href="/dialogs" class="user-card-button">
+      <a href="/pro/dialogs" class="user-card-button">
         <strong>Подключить Диалоги</strong>
       </a>
     </div>
