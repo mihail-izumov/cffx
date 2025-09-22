@@ -40,13 +40,13 @@
         <strong>от ₽26,700/мес</strong>
         <div class="payment-type">Видеть больше, угадывать меньше</div>
       </div>
-      <p class="includes-all">Все, что в Инсайдере, плюс:</p>
+      <p class="includes-all">Когда подключены Диалоги:</p>
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>Персональные сессии с аналитиком Сигнала</span></li>
         <li class="feature-item"><CheckIcon /><span>Индекс Роста: Темный Режим</span></li>
         <li class="feature-item"><CheckIcon /><span>-20% на Чекап Модуля Роста®</span></li>
       </ul>
-      <a href="/brew/join/leader" class="card-button">Стать Лидером</a>
+      <a href="/brew/join/leader" class="card-button">Расти с Радаром</a>
     </div>
   </div>
 </template>
