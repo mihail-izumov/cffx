@@ -26,7 +26,7 @@
 <div class="signal-product-tabs__content">
   <!-- Вкладка: Перехват негатива -->
   <div v-show="activeTab === 'interception'" class="signal-product-tabs__panel">
-    <h3>Переход от потери клиентов к их превращению в лояльных сторонников</h3>
+    <h3>От потери клиентов к лояльным сторонникам</h3>
     <div class="signal-product-tabs__grid">
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Диалоги с Анной</h4><span class="signal-product-tabs__badge">ИИ-ассистент</span></div>
@@ -109,7 +109,7 @@
   
   <!-- Вкладка: Аналитика (базовая) -->
   <div v-show="activeTab === 'base_analytics'" class="signal-product-tabs__panel">
-    <h3>Переход от знания «что происходит» к пониманию «почему»</h3>
+    <h3>От знания «что происходит» к пониманию реальных причин</h3>
     <p class="signal-product-tabs__subtitle"><em>Включает все функции Статистики, плюс:</em></p>
     <div class="signal-product-tabs__grid">
       <div class="signal-product-tabs__card">
@@ -132,7 +132,7 @@
 
   <!-- Вкладка: Аналитика (расширенная) -->
   <div v-show="activeTab === 'adv_analytics'" class="signal-product-tabs__panel">
-    <h3>Переход от реакции на прошлое к управлению будущим</h3>
+    <h3>От реакции на прошлое к управлению будущим</h3>
     <p class="signal-product-tabs__subtitle"><em>Включает все функции Статистики и базовой Аналитики, плюс:</em></p>
     <div class="signal-product-tabs__grid">
       <div class="signal-product-tabs__card">
