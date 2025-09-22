@@ -23,7 +23,7 @@ title: Симулятор Самары | Сигнал
 :::
 
 <div class="start-button-container">
-  <a href="/pro" class="btn btn-primary">Получить полный доступ →</a>
+  <a href="/pro/radar" class="btn btn-primary">Получить полный доступ →</a>
 </div>
 
 ## Диалоги с данными
