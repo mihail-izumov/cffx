@@ -21,7 +21,7 @@
         <li class="feature-item"><CheckIcon /><span>Статистика и базовая аналитика</span></li>
         <li class="feature-item"><CheckIcon /><span>Предиктивная аналитика оттока гостей</span></li>
       </ul>
-      <a href="/brew/join/insider" class="card-button card-button--secondary">
+      <a href="/pro/dialogs" class="card-button card-button--secondary">
         Начать с Диалогов
       </a>
     </div>
@@ -46,7 +46,7 @@
         <li class="feature-item"><CheckIcon /><span>Сравнение с конкурентами: точки кратного роста</span></li>
         <li class="feature-item"><CheckIcon /><span>Трекинг с аналитиками Сигнала</span></li>
       </ul>
-      <a href="/brew/join/leader" class="card-button">Расти с Радаром</a>
+      <a href="/pro/radar" class="card-button">Расти с Радаром</a>
     </div>
   </div>
 </template>
