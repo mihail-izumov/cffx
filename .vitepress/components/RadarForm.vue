@@ -1,7 +1,7 @@
 <template>
   <div class="consultation-section">
     <div class="consultation-container">
-      <p class="consultation-description">Начать Сегодня</p>
+      <p class="consultation-description">От хаоса — к росту</p>
       
       <form id="consultationForm" class="consultation-form">
         <div class="form-row">
