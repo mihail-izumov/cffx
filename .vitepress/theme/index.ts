@@ -69,6 +69,7 @@ import RadarStrategyTabs from '../components/RadarStrategyTabs.vue'
 import DialogsHowItWorks from '../components/DialogsHowItWorks.vue'
 import RadarForm from '../components/RadarForm.vue'
 import RadarFeatures from '../components/RadarFeatures.vue'
+import RadarTarifs from '../components/RadarTarifs.vue'
 
 export default {
   extends: DefaultTheme,
@@ -144,5 +145,6 @@ export default {
     app.component('DialogsHowItWorks', DialogsHowItWorks) 
     app.component('RadarForm', RadarForm) 
     app.component('RadarFeatures', RadarFeatures)
+    app.component('RadarTarifs', RadarTarifs)
   },
 }
