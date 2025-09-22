@@ -281,11 +281,13 @@ function nav(): DefaultTheme.NavItem[] {
     { text: 'Как работает', link: '/signals' },
     { text: 'Фестиваль', link: '/fest' },
 {
-      text: 'Умная Кофейня',
+      text: 'Инвестиции',
       items: [
-        { text: '→ Начать', link: '/brew/membership' }, 
-        { text: 'Диалоги', link: '/brew/tickets' },
-        { text: 'Радар', link: '/brew/reports' }
+        { text: 'Пульс', link: '/invest/pulse' },
+        { text: 'Индекс', link: '/smr' },
+        { text: 'Прогноз Выручки', link: '/invest/calc' },
+        { text: 'Симулятор Самары', link: '/invest/sim' },
+        { text: 'Кофейни // Россия', link: '/invest/vision' }
       ]
     },
     {
