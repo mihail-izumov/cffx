@@ -1,77 +1,77 @@
 <template>
   <div class="brands-container">
-    <!-- ФУНКЦИИ СИГНАЛА -->
-    <div class="brand-card signal-card">
-      <div class="tariff-badge signal">Сигнал</div>
+    <!-- ФУНКЦИИ ДИАЛОГОВ (изменен бейдж с Сигнал на Диалоги) -->
+    <div class="brand-card dialogi-card">
+      <div class="tariff-badge dialogi">Диалоги</div>
       <h3>Перехват негатива</h3>
       <p class="description-main">Система контроля качества сервиса под стандарты бизнеса. Мониторинг заявленным стандартам обслуживания</p>
       <p class="description-goals">Альтернативный источник отзывов</p>
     </div>
     
-    <div class="brand-card signal-card">
-      <div class="tariff-badge signal">Сигнал</div>
+    <div class="brand-card dialogi-card">
+      <div class="tariff-badge dialogi">Диалоги</div>
       <h3>Умная форма</h3>
       <p class="description-main">Минимальные барьеры для обратной связи. Быстрая трансформация негативных эмоций в действенные предложения</p>
       <p class="description-goals">Гарантированная обработка каждого обращения</p>
     </div>
     
-    <div class="brand-card signal-card">
-      <div class="tariff-badge signal">Сигнал</div>
+    <div class="brand-card dialogi-card">
+      <div class="tariff-badge dialogi">Диалоги</div>
       <h3>Диалоги с Анной</h3>
       <p class="description-main">Персональный ИИ-ассистент снимает первичный негатив и найходит реальные причины недовольства</p>
       <p class="description-goals">Общение без конфликтов</p>
     </div>
     
-    <div class="brand-card signal-card">
-      <div class="tariff-badge signal">Сигнал</div>
+    <div class="brand-card dialogi-card">
+      <div class="tariff-badge dialogi">Диалоги</div>
       <h3>Полный цикл 3 ч → 24 ч</h3>
       <p class="description-main">Быстрое, конкретное улучшение опыта — Немедленная работа над устранением проблемы</p>
       <p class="description-goals">Процесс, который нельзя остановить</p>
     </div>
     
-    <div class="brand-card signal-card">
-      <div class="tariff-badge signal">Сигнал</div>
+    <div class="brand-card dialogi-card">
+      <div class="tariff-badge dialogi">Диалоги</div>
       <h3>Дежурная команда Сигнала 24/7</h3>
       <p class="description-main">Круглосуточная поддержка клиентов без выходных: ИИ-ассистент Анна + живой аналитик Сигнала</p>
       <p class="description-goals">Персональная забота о каждом госте</p>
     </div>
     
-    <div class="brand-card signal-card">
-      <div class="tariff-badge signal">Сигнал</div>
+    <div class="brand-card dialogi-card">
+      <div class="tariff-badge dialogi">Диалоги</div>
       <h3>Персональный виджет</h3>
       <p class="description-main">Готовое к использованию решение для сбора обратной связи + персонализация под специфику бизнеса</p>
       <p class="description-goals">2ГИС/Яндекс в 2 клика</p>
     </div>
     
-    <div class="brand-card signal-card">
-      <div class="tariff-badge signal">Сигнал</div>
+    <div class="brand-card dialogi-card">
+      <div class="tariff-badge dialogi">Диалоги</div>
       <h3>Статистика</h3>
       <p class="description-main">Полный срез мнений клиентов и их финансовая ценность: NPS, динамика и структура лояльных гостей</p>
       <p class="description-goals">Ваша контрольная панель</p>
     </div>
     
-    <div class="brand-card signal-card">
-      <div class="tariff-badge signal">Сигнал</div>
+    <div class="brand-card dialogi-card">
+      <div class="tariff-badge dialogi">Диалоги</div>
       <h3>Рейтинги</h3>
       <p class="description-main">ТОП-5 болеей и предложений по улучшению вашего сервиса, которые чаще всего упоминались в Сигналах</p>
       <p class="description-goals">Предложения по улучшению</p>
     </div>
     
-    <div class="brand-card signal-card">
-      <div class="tariff-badge signal">Сигнал</div>
+    <div class="brand-card dialogi-card">
+      <div class="tariff-badge dialogi">Диалоги</div>
       <h3>Предиктивная аналитика оттока гостей</h3>
       <p class="description-main">Идентификация «скрытых критиков», которые ставят нейтральные оценки, но готовы уйти. Прогноз оттока на 30-60 дней</p>
       <p class="description-goals">Персональные сценарии удержания</p>
     </div>
     
-    <div class="brand-card signal-card">
-      <div class="tariff-badge signal">Сигнал</div>
+    <div class="brand-card dialogi-card">
+      <div class="tariff-badge dialogi">Диалоги</div>
       <h3>Аудитория</h3>
       <p class="description-main">RFM-сегменты, портреты гостей, мотивация: какие проблемы критичны, а что стимулирует лояльность</p>
       <p class="description-goals">Моделирование «Что, если?»</p>
     </div>
     
-    <!-- ФУНКЦИИ РАДАРА (без изменений) -->
+    <!-- ФУНКЦИИ РАДАРА (удалена карточка с чекапом) -->
     <div class="brand-card radar-card">
       <div class="tariff-badge radar">Радар</div>
       <h3>Голос клиента</h3>
@@ -120,13 +120,6 @@
       <p class="description-main">Получайте уведомления о движениях кофейного рынка Самары</p>
       <p class="description-goals">Тренды, сдвиги в поведении гостей, новые возможности</p>
     </div>
-    
-    <div class="brand-card radar-card">
-      <div class="tariff-badge radar">Радар</div>
-      <h3>-20% на <a href="https://runscale.ru/checkup/overview" target="_blank">Чекап</a> всего бизнеса</h3>
-      <p class="description-main">Найти скрытые разрывы в процессах, которые тормозят рост</p>
-      <p class="description-goals">3 конкретных улучшения за 30 дней</p>
-    </div>
   </div>
 </template>
 
@@ -158,7 +151,7 @@
 }
 
 /* СВЕТЛАЯ ТЕМА - карточки светлые */
-.signal-card {
+.dialogi-card {
   background-color: #f8f9f8 !important;
   border-color: #e0e5e0 !important;
   border-top-color: #60A994 !important;
@@ -171,7 +164,7 @@
 }
 
 /* ТЕМНАЯ ТЕМА - карточки темные */
-.dark .signal-card {
+.dark .dialogi-card {
   background-color: #272B2A !important;
   border-color: #333836 !important;
   border-top-color: #60A994 !important;
@@ -197,7 +190,7 @@
   border: none;
 }
 
-.tariff-badge.signal {
+.tariff-badge.dialogi {
   background-color: rgba(96, 169, 148, 0.25);
   color: #4a8367;
 }
@@ -227,7 +220,7 @@
   flex-grow: 1;
 }
 
-.signal-card .description-goals {
+.dialogi-card .description-goals {
   color: #5a7a6a !important;
   font-size: 12px;
   line-height: 1.6;
@@ -250,7 +243,7 @@
   color: #f0f0f0 !important;
 }
 
-.dark .signal-card .description-goals {
+.dark .dialogi-card .description-goals {
   color: #95BDB3 !important;
 }
 
@@ -259,7 +252,7 @@
 }
 
 /* Темная тема - бейджи */
-.dark .tariff-badge.signal {
+.dark .tariff-badge.dialogi {
   background-color: rgba(96, 169, 148, 0.3);
   color: #7bc4a8;
 }
@@ -279,8 +272,8 @@
 }
 
 /* Принудительное применение фонов для каждого типа карточек */
-.vp-doc .brands-container .signal-card,
-.vp-content .brands-container .signal-card {
+.vp-doc .brands-container .dialogi-card,
+.vp-content .brands-container .dialogi-card {
   background-color: #f8f9f8 !important;
   border-color: #e0e5e0 !important;
   border-top: 4px solid #60A994 !important;
@@ -294,8 +287,8 @@
 }
 
 /* Темная тема */
-.dark .vp-doc .brands-container .signal-card,
-.dark .vp-content .brands-container .signal-card {
+.dark .vp-doc .brands-container .dialogi-card,
+.dark .vp-content .brands-container .dialogi-card {
   background-color: #272B2A !important;
   border-color: #333836 !important;
   border-top: 4px solid #60A994 !important;
@@ -313,7 +306,7 @@
   background-color: var(--vp-c-bg-soft) !important;
 }
 
-.brands-container .signal-card {
+.brands-container .dialogi-card {
   background-color: #f8f9f8 !important;
 }
 
@@ -321,7 +314,7 @@
   background-color: #f9f8f6 !important;
 }
 
-.dark .brands-container .signal-card {
+.dark .brands-container .dialogi-card {
   background-color: #272B2A !important;
 }
 
