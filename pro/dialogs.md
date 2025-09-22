@@ -18,12 +18,12 @@ notification: brew
 ИИ-ассистент Анна теперь доступен. <a href="/signals.html#знакомьтесь-–-🦸%E2%80%8D♀%EF%B8%8F-анна" target="_blank">Как работает</a>
 
 <div class="button-group">
-  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer"><strong>Получить QR-код</strong></a>
-  <a href="/fest/join" class="btn btn-secondary" rel="noopener noreferrer">Тарифы</a>
+  <a href="/pro/dialogs#начать-сегодня" class="btn btn-primary" rel="noopener noreferrer"><strong>Получить QR-код</strong></a>
+  <a href="/pro/dialogs#тарифы" class="btn btn-secondary" rel="noopener noreferrer">Тарифы</a>
 </div>
 
 <div style="background-color: #2d2d2d; border: 0px solid #404040; border-radius: 8px; padding: 7px 10px; font-size: 13px; color: #a8a8a8; margin: 8px 0; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 500; line-height: 1.2;">
-  <span>Отправим стикер и <a href="/dialogs#быстрыи-старт" style="color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; text-decoration-skip-ink: auto; border-bottom: none; box-shadow: none; font-weight: 500;">подключим за 5 дней</a></span>
+  <span>Отправим стикер и <a href="/pro/dialogs#быстрыи-старт" style="color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; text-decoration-skip-ink: auto; border-bottom: none; box-shadow: none; font-weight: 500;">подключим за 5 дней</a></span>
   <Badge type="tip" text="Требуется Сопровождение" style="position: relative; top: 2px;" />
 </div>
 
