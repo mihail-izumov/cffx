@@ -10,6 +10,8 @@ notification: brew
 
 ## Анализ конкурентов в реальном времени
 
+### Видеть рынок → Находить возможности → Расти в выручке
+
 <div class="button-group">
   <a href="/brew/reports" class="btn btn-primary" rel="noopener noreferrer"><strong>Подключиться</strong></a>
   <a href="/invest/sim" class="btn btn-secondary" rel="noopener noreferrer">Тест-драйв</a>
