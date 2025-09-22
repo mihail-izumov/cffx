@@ -119,8 +119,8 @@ const activeTab = ref('day-1')
             <p><strong>Стало –</strong> ИИ-ассистент с алгоритмизированной коммуникацией и регулярной отчетностью.</p>
         </div>
         <div class="result-block">
-            <p><strong>Узнайте, как это сработает для вашего бизнеса</strong></p>
-            <a href="/invest/calc" class="calc-button">Запросить демонстрацию</a>
+            <p><strong>Как Анна помогает решить любую проблему гостя?</strong></p>
+            <a href="/signals" class="calc-button">Узнать Больше</a>
         </div>
     </div>
   </div>
