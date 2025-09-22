@@ -13,7 +13,7 @@ notification: brew
 ### Видеть рынок → Находить возможности → Расти в выручке
 
 <div class="button-group">
-  <a href="/brew/reports" class="btn btn-primary" rel="noopener noreferrer"><strong>Подключиться</strong></a>
+  <a href="/pro/radar.от-хаоса-—-к-росту" class="btn btn-primary" rel="noopener noreferrer"><strong>Подключить</strong></a>
   <a href="/invest/sim" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Тест-драйв</a>
 </div>
 
