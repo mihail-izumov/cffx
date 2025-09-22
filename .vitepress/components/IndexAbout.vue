@@ -155,7 +155,7 @@ onUnmounted(() => {
           </div>
         </div>
         <div class="button-container">
-          <a href="/smr" class="action-button ticket-button">Смотреть Индекс</a>
+          <a href="/invest/smr" class="action-button ticket-button">Смотреть Индекс</a>
           <a href="https://t.me/runScale" class="action-button review-button">
             Получать Пульс
             <svg class="button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
