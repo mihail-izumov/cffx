@@ -17,43 +17,43 @@
 <div class="signal-product-tabs__content">
   <!-- Вкладка: 2ГИС/Яндекс отзывы -->
   <div v-show="activeTab === 'reviews'" class="signal-product-tabs__panel">
-    <h3>Голос клиентов из геосервисов — ваша карта роста</h3>
+    <h3>Анализ отзывов с геосервисов</h3>
     <div class="signal-product-tabs__grid">
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Голос клиента</h4><span class="signal-product-tabs__badge">Анализ за месяц</span></div>
-        <p class="signal-product-tabs__card-description">Очищенная база отзывов из 2ГИС и Яндекс Карт показывает истинное мнение гостей о вас и конкурентах — от Skuratov Coffee до местных авторских кофеен.</p>
+        <p class="signal-product-tabs__card-description">Очищенная база отзывов показывает истинное мнение гостей о вас и конкурентах.</p>
         <div class="signal-product-tabs__card-highlight"><strong>Результат:</strong> Превращает хаос мнений в четкую карту действий</div>
       </div>
       <div class="signal-product-tabs__card">
-        <div class="signal-product-tabs__card-header"><h4>Реальная карта конкурентов</h4><span class="signal-product-tabs__badge">15 кофеен × 3 сегмента</span></div>
-        <p class="signal-product-tabs__card-description">Точно понимаете, с кем вас сравнивают гости при выборе: премиальные (White Cup, Mosaic Coffee), сетевые (Coffee Bean, Корж) и локальные игроки.</p>
-        <div class="signal-product-tabs__card-highlight"><strong>Позиционирование:</strong> От атмосферы и сервиса до скорости и качества</div>
+        <div class="signal-product-tabs__card-header"><h4>Реальная карта конкурентов</h4><span class="signal-product-tabs__badge">3 кофейни х3 сегмента</span></div>
+        <p class="signal-product-tabs__card-description">Точно понимаете, с кем вас сравнивают гости при выборе сегодня.</p>
+        <div class="signal-product-tabs__card-highlight"><strong>Позиционирование:</strong> Объективное позиционирование: от атмосферы и сервиса до скорости и качества</div>
       </div>
     </div>
   </div>
 
   <!-- Вкладка: Аналитика (базовая) -->
   <div v-show="activeTab === 'basic_analytics'" class="signal-product-tabs__panel">
-    <h3>От эмоций гостей к конкретным действиям</h3>
+    <h3>Базовая аналитика отзывов</h3>
     <div class="signal-product-tabs__grid">
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Ежемесячная диагностика</h4><span class="signal-product-tabs__badge">Комплексная оценка</span></div>
-        <p class="signal-product-tabs__card-description">Выделяем именно те 10 факторов, которые влияют на решение гостей прийти к вам или к конкуренту: от скорости обслуживания до уютности атмосферы.</p>
-        <div class="signal-product-tabs__card-highlight"><strong>Детали:</strong> О чем конкретно говорят ваши клиенты — 10 критериев с примерами</div>
+        <p class="signal-product-tabs__card-description">Выделяем именно те 10 факторов, которые влияют на их решение прийти к вам или к конкуренту.</p>
+        <div class="signal-product-tabs__card-highlight"><strong>Детали:</strong> О чем конкретно говорят ваши клиенты: 10 критериев с примерами</div>
       </div>
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Честные оценки</h4><span class="signal-product-tabs__badge">Факты из отзывов</span></div>
-        <p class="signal-product-tabs__card-description">Отчет показывает, где вы лидируете, где отстаете, и что нужно исправить в первую очередь для роста выручки и посещаемости.</p>
-        <div class="signal-product-tabs__card-highlight"><strong>Шкала:</strong> От 1 до 10 по каждому из 10 критериев</div>
+        <p class="signal-product-tabs__card-description">Отчет: где вы лидируете, где отстаете, и что нужно исправить в первую очередь.</p>
+        <div class="signal-product-tabs__card-highlight"><strong>Шкала:</strong> 1 до 10 по каждому из 10 критериев</div>
       </div>
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Жалобы</h4><span class="signal-product-tabs__badge">Возможности роста</span></div>
-        <p class="signal-product-tabs__card-description">Сравнение с конкурентами с примерами формулировок и привязкой к операционным действиям — что исправить завтра для результата через неделю.</p>
+        <p class="signal-product-tabs__card-description">Сравнение с конкурентами с примерами формулировок и привязкой к операционным действиям.</p>
         <div class="signal-product-tabs__card-highlight"><strong>Эффект:</strong> Точки кратного роста за счет слабостей конкурентов</div>
       </div>
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Сильные стороны</h4><span class="signal-product-tabs__badge">Приоритеты улучшений</span></div>
-        <p class="signal-product-tabs__card-description">Точное понимание ваших уникальных сильных сторон и план, как использовать их для роста выручки и привлечения новых гостей.</p>
+        <p class="signal-product-tabs__card-description">Точное понимание своих уникальных сильных сторон и план как использовать их для роста выручки.</p>
         <div class="signal-product-tabs__card-highlight"><strong>Стратегия:</strong> Профессиональные рекомендации по росту от аналитиков Сигнала</div>
       </div>
     </div>
@@ -61,31 +61,31 @@
 
   <!-- Вкладка: Аналитика (расширенная) -->
   <div v-show="activeTab === 'advanced_analytics'" class="signal-product-tabs__panel">
-    <h3>Глубинная аналитика для стратегических решений</h3>
+    <h3>Расширенная аналитика</h3>
     <div class="signal-product-tabs__grid">
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Персональные сессии</h4><span class="signal-product-tabs__badge">90 мин./мес.</span></div>
-        <p class="signal-product-tabs__card-description">Отслеживайте прогресс на стратегических сессиях с аналитиком Сигнала — разбираем каждую метрику и находим скрытые возможности роста.</p>
-        <div class="signal-product-tabs__card-highlight"><strong>Фокус:</strong> Оценка метрик • Точки роста • Сигналы коррекции</div>
+        <p class="signal-product-tabs__card-description">Отслеживайте прогресс на стратегических сессиях с аналитиком Сигнала.</p>
+        <div class="signal-product-tabs__card-highlight"><strong>Фокус:</strong> Оценка метрик, точки роста, сигналы коррекции</div>
       </div>
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Ретроспектива</h4><span class="signal-product-tabs__badge">90 дней</span></div>
-        <p class="signal-product-tabs__card-description">Сводный отчет с динамикой изменений ключевых параметров, важных для роста выручки — видите тренды и результаты ваших изменений.</p>
+        <p class="signal-product-tabs__card-description">Сводный отчет с динамикой изменений ключевых параметров, важных для роста выручки.</p>
         <div class="signal-product-tabs__card-highlight"><strong>Анализ:</strong> Сводная аналитика по каждому из 10 критериев</div>
       </div>
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Темный Режим</h4><span class="signal-product-tabs__badge">Глубокие инсайты</span></div>
-        <p class="signal-product-tabs__card-description">Скрытые срезы данных: паттерны и тренды, невидимые для рынка в контексте именно вашей кофейни — конкурентное преимущество в данных.</p>
+        <p class="signal-product-tabs__card-description">Скрытые срезы: паттерны и тренды, невидимые для рынка в контексте вашей кофейни.</p>
         <div class="signal-product-tabs__card-highlight"><strong>Преимущество:</strong> Находите то, что упускают 90% игроков</div>
       </div>
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Сигналы изменений</h4><span class="signal-product-tabs__badge">Индекс Роста</span></div>
-        <p class="signal-product-tabs__card-description">Получайте уведомления о движениях кофейного рынка Самары — от трендов в меню до изменений в потребительском поведении гостей.</p>
-        <div class="signal-product-tabs__card-highlight"><strong>Мониторинг:</strong> Тренды • Сдвиги в поведении гостей • Новые возможности</div>
+        <p class="signal-product-tabs__card-description">Получайте уведомления о движениях кофейного рынка Самары.</p>
+        <div class="signal-product-tabs__card-highlight"><strong>Мониторинг:</strong> Тренды, сдвиги в поведении гостей, новые возможности</div>
       </div>
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>-20% на Чекап всего бизнеса</h4><span class="signal-product-tabs__badge">Модуль Роста®</span></div>
-        <p class="signal-product-tabs__card-description">Найти скрытые разрывы в процессах, которые тормозят рост — от операций до маркетинга, интеграция с платформой Runscale для комплексного анализа.</p>
+        <p class="signal-product-tabs__card-description">Найти скрытые разрывы в процессах, которые тормозят рост.</p>
         <div class="signal-product-tabs__card-highlight"><strong>Гарантия:</strong> 3 конкретных улучшения за 30 дней</div>
       </div>
     </div>
@@ -112,14 +112,14 @@ const activeTab = ref('reviews')
   flex-wrap: wrap;
   gap: 4px;
   margin-bottom: 1.5rem;
-  background: #202020; /* Darker background */
+  background: #202020;
   border-radius: 10px;
   padding: 4px;
 }
 .signal-product-tabs__nav button {
   padding: 10px 16px;
   border: none;
-  background: #3a3a3a; /* Default grey background */
+  background: #3a3a3a;
   color: #9ca3af;
   cursor: pointer;
   border-radius: 6px;
@@ -129,16 +129,16 @@ const activeTab = ref('reviews')
   white-space: nowrap;
 }
 .signal-product-tabs__nav button:not(.active):hover {
-  background: #4a4a4a; /* Lighter grey on hover for passive tabs */
+  background: #4a4a4a;
   color: #ffffff;
 }
 .signal-product-tabs__nav button.active {
-  background: #a3e635; /* Lime green for active tab */
+  background: #a3e635;
   color: #000000;
   font-weight: 600;
 }
 .signal-product-tabs__nav button.active:hover {
-  background: #a3e635; /* Keep lime green on hover for active tab */
+  background: #a3e635;
   color: #000000;
 }
 
