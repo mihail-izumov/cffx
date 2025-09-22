@@ -1,9 +1,7 @@
-<!-- StrategyTabs.vue -->
 <script setup>
 import { ref } from 'vue'
 const activeTab = ref('competitors')
 </script>
-
 <template>
   <div class="stz-root" data-stz="strategy-tabs">
     <!-- Кнопки вкладок -->
@@ -41,7 +39,6 @@ const activeTab = ref('competitors')
         🚀 Найти рост
       </button>
     </div>
-
     <!-- Контент -->
     <div class="stz-content-mr">
       <!-- Вкладка 1: Изучить конкурентов -->
@@ -90,7 +87,6 @@ const activeTab = ref('competitors')
           </tbody>
         </table>
       </div>
-
       <!-- Вкладка 2: Исправить проблему -->
       <div v-show="activeTab === 'problem'" role="tabpanel">
         <p><strong>Превратите жалобы клиентов в точки кратного роста</strong></p>
@@ -120,8 +116,12 @@ const activeTab = ref('competitors')
             </tr>
           </tbody>
         </table>
+        
+        <!-- Новый блок результата -->
+        <div class="stz-result-block">
+          <strong>Результат:</strong> Мгновенная диагностика того, что забирает ваши деньги прямо сейчас.
+        </div>
       </div>
-
       <!-- Вкладка 3: Усилить преимущество -->
       <div v-show="activeTab === 'advantage'" role="tabpanel">
         <p><strong>Превратите магию в технологию</strong></p>
@@ -168,7 +168,6 @@ const activeTab = ref('competitors')
           </tbody>
         </table>
       </div>
-
       <!-- Вкладка 4: Найти рост -->
       <div v-show="activeTab === 'growth'" role="tabpanel">
         <p><strong>Обнаружить скрытые сокровища</strong></p>
@@ -202,13 +201,11 @@ const activeTab = ref('competitors')
     </div>
   </div>
 </template>
-
 <style scoped>
 /* Уникальный корень */
 .stz-root {
   /* без внешних отступов и фона — интегрируется в страницу */
 }
-
 /* Панель табов: стиль из примера (tabs-mr) */
 .stz-tabs-mr {
   display: flex;
@@ -216,7 +213,6 @@ const activeTab = ref('competitors')
   gap: 10px;
   margin-bottom: 16px;
 }
-
 .stz-tabs-mr button {
   appearance: none;
   border: 1px solid rgba(255,255,255,0.12);
@@ -229,19 +225,16 @@ const activeTab = ref('competitors')
   cursor: pointer;
   transition: all .2s ease;
 }
-
 .stz-tabs-mr button:hover {
   background: rgba(255,255,255,0.08);
   border-color: rgba(255,255,255,0.18);
 }
-
 .stz-tabs-mr button.active {
   color: #0a0a0a;
   background: #c8ff5a;
   border-color: #c8ff5a;
   box-shadow: 0 0 0 2px rgba(200,255,90,0.25) inset;
 }
-
 /* Контейнер контента: стиль из примера (tab-content-mr) */
 .stz-content-mr {
   background: rgba(255,255,255,0.03);
@@ -249,7 +242,6 @@ const activeTab = ref('competitors')
   border-radius: 12px;
   padding: 18px;
 }
-
 /* Таблица: стиль из примера (custom-table-mr) */
 .stz-table-mr {
   width: 100%;
@@ -257,13 +249,11 @@ const activeTab = ref('competitors')
   margin-top: 12px;
   font-size: 15px;
 }
-
 .stz-table-mr th,
 .stz-table-mr td {
   border: 1px solid rgba(255,255,255,0.08);
   padding: 10px 12px;
 }
-
 .stz-table-mr th {
   background: rgba(255,255,255,0.06);
   color: rgba(255,255,255,0.6);
@@ -272,24 +262,37 @@ const activeTab = ref('competitors')
   font-weight: 700;
   letter-spacing: 0.04em;
 }
-
 .stz-table-mr tbody td {
   color: rgba(255,255,255,0.88);
 }
-
 .stz-table-mr tbody td a {
   color: #c8ff5a;
   text-decoration: none;
   border-bottom: 1px dashed rgba(200,255,90,0.46);
   font-weight: 600;
 }
-
 .stz-table-mr tbody td a:hover {
   opacity: .9;
 }
-
 .stz-table-mr .col-result {
   color: #fff;
   font-weight: 600;
+}
+
+/* Новый стиль для блока результата */
+.stz-result-block {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  color: rgba(255,255,255,0.95);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.stz-result-block strong {
+  color: #c8ff5a;
+  font-weight: 700;
 }
 </style>
