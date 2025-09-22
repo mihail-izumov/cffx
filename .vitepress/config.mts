@@ -235,7 +235,7 @@ export default defineConfig({
     },
     
     sidebar: {
-      '/brew/': { items: sidebarBrew() },
+      '/pro/': { items: sidebarBrew() },
       '/invest/': { items: sidebarPulse() },
       '/terms/': { items: sidebarTerms() }
     },
