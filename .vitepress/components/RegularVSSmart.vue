@@ -12,21 +12,11 @@
       
       <div class="table-row">
         <div class="cell usual-cell">
-          <p>Нечеткое понимание проблем и возможностей</p>
-        </div>
-        <div class="cell smart-cell">
-          <span class="arrow">→</span>
-          <p><strong>Точки роста</strong> с задачами и приоритетами</p>
-        </div>
-      </div>
-      
-      <div class="table-row">
-        <div class="cell usual-cell">
           <p>Отсутствие системного плана развития</p>
         </div>
         <div class="cell smart-cell">
           <span class="arrow">→</span>
-          <p><strong>Точный план</strong> улучшений</p>
+          <p><strong>Точный план</strong> улучшений с задачами и приоритетами</p>
         </div>
       </div>
       
@@ -37,16 +27,6 @@
         <div class="cell smart-cell">
           <span class="arrow">→</span>
           <p><strong>Непрерывная оценка</strong> ключевых процессов</p>
-        </div>
-      </div>
-      
-      <div class="table-row">
-        <div class="cell usual-cell">
-          <p>Низкая вовлеченность команды</p>
-        </div>
-        <div class="cell smart-cell">
-          <span class="arrow">→</span>
-          <p><strong>Конкретные метрики</strong> роста вовлеченности</p>
         </div>
       </div>
       
