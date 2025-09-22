@@ -249,8 +249,8 @@ const activeTab = ref('day-1')
 }
 .result-block p {
     margin: 0 0 12px 0;
-    font-size: 13px;
-    line-height: 1.46;
+    font-size: 16px;
+    line-height: 1.5;
 }
 .result-highlight {
     color: #c8ff5a;
