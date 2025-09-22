@@ -17,7 +17,7 @@ title: Прогноз дохода кофейни | Сигнал
 Фокусируемся на вас, потому что нет одинаковых кофеен. Используем Сигналы и отзывы гостей 2ГИС/Яндекс, чтобы узнать, где конкуренты зарабатывают ваши деньги, и помогаем их забрать. 
 
 <div class="start-button-container">
-  <a href="/brew/membership" class="btn btn-primary" rel="noopener noreferrer">Начать →</a>
+  <a href="/pro/radar" class="btn btn-primary" rel="noopener noreferrer">Начать →</a>
 </div>
 
 <div style="text-align: center; margin: 2rem 0;">
