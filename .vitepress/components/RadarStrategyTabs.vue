@@ -86,7 +86,13 @@ const activeTab = ref('competitors')
             </tr>
           </tbody>
         </table>
+        
+        <!-- Блок результата для конкурентов -->
+        <div class="stz-result-block">
+          <strong>Результат:</strong> Четкая карта позиций всех игроков рынка без субъективных оценок — только факты из отзывов клиентов.
+        </div>
       </div>
+      
       <!-- Вкладка 2: Исправить проблему -->
       <div v-show="activeTab === 'problem'" role="tabpanel">
         <p><strong>Превратите жалобы клиентов в точки кратного роста</strong></p>
@@ -117,11 +123,12 @@ const activeTab = ref('competitors')
           </tbody>
         </table>
         
-        <!-- Новый блок результата -->
+        <!-- Блок результата для проблем -->
         <div class="stz-result-block">
           <strong>Результат:</strong> Мгновенная диагностика того, что забирает ваши деньги прямо сейчас.
         </div>
       </div>
+      
       <!-- Вкладка 3: Усилить преимущество -->
       <div v-show="activeTab === 'advantage'" role="tabpanel">
         <p><strong>Превратите магию в технологию</strong></p>
@@ -167,7 +174,13 @@ const activeTab = ref('competitors')
             </tr>
           </tbody>
         </table>
+        
+        <!-- Блок результата для преимуществ -->
+        <div class="stz-result-block">
+          <strong>Результат:</strong> Точное понимание своих уникальных сильных сторон и готовый план их масштабирования.
+        </div>
       </div>
+      
       <!-- Вкладка 4: Найти рост -->
       <div v-show="activeTab === 'growth'" role="tabpanel">
         <p><strong>Обнаружить скрытые сокровища</strong></p>
@@ -197,6 +210,11 @@ const activeTab = ref('competitors')
             </tr>
           </tbody>
         </table>
+        
+        <!-- Блок результата для роста -->
+        <div class="stz-result-block">
+          <strong>Результат:</strong> Конкретные возможности роста выручки, которые скрыты в существующих данных.
+        </div>
       </div>
     </div>
   </div>
@@ -279,7 +297,7 @@ const activeTab = ref('competitors')
   font-weight: 600;
 }
 
-/* Новый стиль для блока результата */
+/* Стиль для блока результата */
 .stz-result-block {
   margin-top: 16px;
   padding: 16px 20px;
