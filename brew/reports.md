@@ -52,7 +52,7 @@ notification: brew
 
 <div align="center">
   
-## Увидеть свой бизнес глазами клиентов
+## От хаоса — к росту
 
 </div>
 
