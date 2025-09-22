@@ -293,9 +293,9 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Умная Кофейня',
       items: [
-        { text: '→ Начать', link: '/brew/membership' }, 
-        { text: 'Диалоги', link: '/brew/tickets' },
-        { text: 'Радар', link: '/brew/reports' }
+        { text: '→ Начать', link: '/pro' },  
+        { text: 'Диалоги', link: '/pro/dialogs' },
+        { text: 'Радар', link: '/pro/radar' }
       ]
     }
   ]
@@ -306,9 +306,9 @@ function sidebarBrew(): DefaultTheme.SidebarItem[] {
       text: 'Умная Кофейня',
       collapsed: false,
       items: [
-        { text: '→ Начать', link: '/brew/membership' },  
-        { text: 'Диалоги', link: '/brew/tickets' },
-        { text: 'Радар', link: '/brew/reports' }
+        { text: '→ Начать', link: '/pro' },  
+        { text: 'Диалоги', link: '/pro/dialogs' },
+        { text: 'Радар', link: '/pro/radar' }
       ]
     }
   ]
