@@ -3,7 +3,6 @@ import { ref } from 'vue'
 // Устанавливаем первую вкладку активной по умолчанию
 const activeTab = ref('step-1')
 </script>
-
 <template>
   <div class="tabs-mr">
     <button :class="{ active: activeTab === 'step-1' }" @click="activeTab = 'step-1'">
@@ -25,7 +24,6 @@ const activeTab = ref('step-1')
       Результат
     </button>
   </div>
-
   <div class="panel-mr">
     <!-- Вкладка: ШАГ 1 -->
     <div v-show="activeTab === 'step-1'" class="content-mr">
@@ -34,10 +32,9 @@ const activeTab = ref('step-1')
         Забудьте о том, кого вы считаете конкурентами. Анализируем тысячи отзывов, чтобы выяснить, с кем <strong>реально сравнивают вас клиенты</strong> в момент выбора. Часто оказывается, что ваш главный конкурент — не тот, о ком вы думали, а заведение в другом районе или даже с другой концепцией.
       </p>
       <div class="result-block">
-        <p><strong>Результат:</strong> Вы получаете список из 3 кофеен, разделенных на три группы — лидеры, средний уровень и аутсайдеры. Это ваше реальное конкурентное поле.</p>
+        <p><strong><span class="result-highlight">Результат</span>:</strong> Вы получаете список из 3 кофеен, разделенных на три группы — лидеры, средний уровень и аутсайдеры. Это ваше реальное конкурентное поле.</p>
       </div>
     </div>
-
     <!-- Вкладка: ШАГ 2 -->
     <div v-show="activeTab === 'step-2'" class="content-mr">
       <h3>Изучаем «голос клиента»</h3>
@@ -45,10 +42,9 @@ const activeTab = ref('step-1')
         Собираем и изучаем все отзывы о вас и конкурентах с Яндекс.Карты и 2ГИС. Затем отсеиваем «мусор» — заказные отзывы, дубликаты, бессодержательные комментарии. Остается только чистая правда.
       </p>
       <div class="result-block">
-        <p><strong>Результат:</strong> База из сотен реальных, проверенных отзывов, которые показывают истинное мнение клиентов.</p>
+        <p><strong><span class="result-highlight">Результат</span>:</strong> База из сотен реальных, проверенных отзывов, которые показывают истинное мнение клиентов.</p>
       </div>
     </div>
-
     <!-- Вкладка: ШАГ 3 -->
     <div v-show="activeTab === 'step-3'" class="content-mr">
       <h3>Выделяем 10 критериев, по которым вас выбирают</h3>
@@ -56,10 +52,9 @@ const activeTab = ref('step-1')
         Не используем шаблонные критерии типа «цена/качество». Анализируем, о чем <strong>конкретно говорят ваши клиенты</strong>, и выделяем именно те 10 факторов, которые влияют на их решение прийти к вам или к конкуренту. Формулируются они словами самих клиентов: не «атмосфера», а «можно спокойно посидеть с ноутбуком, никто не торопит».
       </p>
       <div class="result-block">
-        <p><strong>Результат:</strong> 10 точных критериев с примерами того, что именно имеют в виду гости.</p>
+        <p><strong><span class="result-highlight">Результат</span>:</strong> 10 точных критериев с примерами того, что именно имеют в виду гости.</p>
       </div>
     </div>
-
     <!-- Вкладка: ШАГ 4 -->
     <div v-show="activeTab === 'step-4'" class="content-mr">
       <h3>Ставим честные оценки</h3>
@@ -67,10 +62,9 @@ const activeTab = ref('step-1')
         На основе анализа отзывов выставляем каждой кофейне (включая вашу) оценки от 1 до 10 по каждому из 10 критериев. Без приукрашивания, без политкорректности — только факты из отзывов клиентов.
       </p>
       <div class="result-block">
-        <p><strong>Результат:</strong> Отчет, где видно, где вы лидируете, где отстаете, и что нужно исправить в первую очередь.</p>
+        <p><strong><span class="result-highlight">Результат</span>:</strong> Отчет, где видно, где вы лидируете, где отстаете, и что нужно исправить в первую очередь.</p>
       </div>
     </div>
-
     <!-- Вкладка: Гарантия точности -->
     <div v-show="activeTab === 'guarantee'" class="content-mr">
       <h3>Проверка достоверности: как гарантируем точность</h3>
@@ -100,7 +94,6 @@ const activeTab = ref('step-1')
         </div>
       </div>
     </div>
-
     <!-- Вкладка: Результат -->
     <div v-show="activeTab === 'result'" class="content-mr">
       <h3>Что получите каждый месяц</h3>
@@ -149,7 +142,6 @@ const activeTab = ref('step-1')
     </div>
   </div>
 </template>
-
 <style scoped>
 .tabs-mr {
   display: flex;
@@ -157,7 +149,6 @@ const activeTab = ref('step-1')
   gap: 8px;
   margin-bottom: 14px;
 }
-
 .tabs-mr button {
   appearance: none;
   border: 1px solid rgba(255,255,255,0.12);
@@ -171,49 +162,41 @@ const activeTab = ref('step-1')
   cursor: pointer;
   transition: all .2s ease;
 }
-
 .tabs-mr button:hover {
   background: rgba(255,255,255,0.08);
   border-color: rgba(255,255,255,0.18);
 }
-
 .tabs-mr button.active {
   color: #0a0a0a;
   background: #c8ff5a;
   border-color: #c8ff5a;
   box-shadow: 0 0 0 2px rgba(200,255,90,0.25) inset;
 }
-
 .panel-mr {
   border: 1px solid rgba(255,255,255,0.08);
   background: rgba(255,255,255,0.03);
   border-radius: 12px;
   padding: 15px 16px;
 }
-
 .content-mr {
   color: rgba(255,255,255,0.92);
   font-size: 13px;
   line-height: 1.46;
 }
-
 .content-mr p {
   margin: 0;
   font-size: 13px;
   color: rgba(255,255,255,0.88);
   line-height: 1.46;
 }
-
 .content-mr p:not(.intro-p):not(:last-child) {
   margin-bottom: 12px;
 }
-
 .content-mr .intro-p {
   font-size: 16px;
   line-height: 1.5;
   margin-bottom: 14px;
 }
-
 .content-mr h3 {
   margin: 0 0 12px;
   font-size: 16px;
@@ -221,19 +204,16 @@ const activeTab = ref('step-1')
   letter-spacing: 0.01em;
   color: rgba(255,255,255,0.9);
 }
-
 .content-mr h4 {
   margin: 0 0 6px;
   font-size: 14px;
   color: rgba(255,255,255,0.9);
   font-weight: 600;
 }
-
 .content-mr strong {
   font-weight: 600;
   color: #fff;
 }
-
 .result-block {
   background-color: rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -241,12 +221,14 @@ const activeTab = ref('step-1')
   border-radius: 8px;
   margin-top: 20px;
 }
-
 .result-block p {
   margin: 0 0 12px 0;
+  font-size: 16px;
   line-height: 1.5;
 }
-
+.result-highlight {
+  color: #c8ff5a;
+}
 .calc-button {
   display: inline-block;
   background: #c8ff5a;
@@ -259,12 +241,10 @@ const activeTab = ref('step-1')
   margin-top: 0;
   transition: all .2s ease;
 }
-
 .calc-button:hover {
   background: #b8ef4a;
   transform: translateY(-1px);
 }
-
 /* Стили для карточек */
 .cards-grid {
   display: grid;
@@ -272,7 +252,6 @@ const activeTab = ref('step-1')
   gap: 12px;
   margin-top: 16px;
 }
-
 .guarantee-card, .result-card {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -282,7 +261,6 @@ const activeTab = ref('step-1')
   position: relative;
   overflow: hidden;
 }
-
 .guarantee-card::before, .result-card::before {
   content: '';
   position: absolute;
@@ -294,44 +272,37 @@ const activeTab = ref('step-1')
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
-
 .guarantee-card:hover::before, .result-card:hover::before {
   transform: scaleX(1);
 }
-
 .guarantee-card:hover, .result-card:hover {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.12);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
-
 .card-icon {
   font-size: 20px;
   margin-bottom: 8px;
   opacity: 0.8;
 }
-
 .guarantee-card h4, .result-card h4 {
   color: rgba(255, 255, 255, 0.95);
   font-size: 14px;
   font-weight: 600;
   margin: 0 0 8px 0;
 }
-
 .guarantee-card p, .result-card p {
   color: rgba(255, 255, 255, 0.75);
   font-size: 13px;
   line-height: 1.4;
   margin: 0;
 }
-
 @media (max-width: 768px) {
   .cards-grid {
     grid-template-columns: 1fr;
     gap: 10px;
   }
-  
   .guarantee-card, .result-card {
     padding: 12px;
   }
