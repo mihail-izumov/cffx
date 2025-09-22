@@ -38,8 +38,8 @@
     <div class="signal-product-tabs__grid">
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Ежемесячная диагностика</h4><span class="signal-product-tabs__badge">Комплексная оценка</span></div>
-        <p class="signal-product-tabs__card-description">Выделяем именно те 10 факторов, которые влияют на их решение прийти к вам или к конкуренту.</p>
-        <div class="signal-product-tabs__card-highlight"><strong>Детали:</strong> О чем конкретно говорят ваши клиенты: 10 критериев с примерами</div>
+        <p class="signal-product-tabs__card-description">Выделяем именно те 10 факторов, которые влияют на решение прийти к вам или к конкуренту.</p>
+        <div class="signal-product-tabs__card-highlight"><strong>Детали:</strong> О чем конкретно говорят: 10 критериев с примерами</div>
       </div>
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Честные оценки</h4><span class="signal-product-tabs__badge">Факты из отзывов</span></div>
