@@ -22,7 +22,7 @@ notification: brew
 
 ## В каждой Умной Кофейне
 
-<TariffFeaturesLeader />
+<AllFeatures />
 
 ## Расти по Своим Правилам
 
