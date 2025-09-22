@@ -284,7 +284,7 @@ function nav(): DefaultTheme.NavItem[] {
       text: 'Инвестиции',
       items: [
         { text: 'Пульс', link: '/invest/pulse' },
-        { text: 'Индекс', link: '/smr' },
+        { text: 'Индекс', link: '/invest/smr' },
         { text: 'Прогноз Выручки', link: '/invest/calc' },
         { text: 'Симулятор Самары', link: '/invest/sim' },
         { text: 'Кофейни // Россия', link: '/invest/vision' }
@@ -320,7 +320,7 @@ function sidebarPulse(): DefaultTheme.SidebarItem[] {
       collapsed: false,
       items: [
         { text: 'Пульс', link: '/invest/pulse' },
-        { text: 'Индекс', link: '/smr' },
+        { text: 'Индекс', link: '/invest/smr' },
         { text: 'Прогноз Выручки', link: '/invest/calc' },
         { text: 'Симулятор Самары', link: '/invest/sim' },
         { text: 'Кофейни // Россия', link: '/invest/vision' }
