@@ -1,63 +1,77 @@
 <template>
   <div class="brands-container">
-    <!-- ФУНКЦИИ СИГНАЛА (из Dialogi.md) -->
+    <!-- ФУНКЦИИ СИГНАЛА -->
     <div class="brand-card signal-card">
       <div class="tariff-badge signal">Сигнал</div>
       <h3>Перехват негатива</h3>
-      <p class="description-main">Переход от потери недовольных клиентов к их превращению в лояльных сторонников</p>
-      <p class="description-goals">Диалоги Сигнала перехватывают негативные эмоции до попадания в публичные отзывы</p>
+      <p class="description-main">Система контроля качества сервиса под стандарты бизнеса. Мониторинг заявленным стандартам обслуживания</p>
+      <p class="description-goals">Альтернативный источник отзывов</p>
     </div>
     
     <div class="brand-card signal-card">
       <div class="tariff-badge signal">Сигнал</div>
-      <h3>30 секунд: Эмоции → Конструктивные предложения</h3>
-      <p class="description-main">Быстрая трансформация негативных эмоций в actionable предложения по улучшению</p>
-      <p class="description-goals">Без регистрации</p>
+      <h3>Умная форма</h3>
+      <p class="description-main">Минимальные барьеры для обратной связи. Быстрая трансформация негативных эмоций в действенные предложения</p>
+      <p class="description-goals">Гарантированная обработка каждого обращения</p>
     </div>
     
     <div class="brand-card signal-card">
       <div class="tariff-badge signal">Сигнал</div>
-      <h3>Персональный ИИ-ассистент</h3>
-      <p class="description-main">Снятие первичного негатива и определение реальной причины недовольства</p>
+      <h3>Диалоги с Анной</h3>
+      <p class="description-main">Персональный ИИ-ассистент снимает первичный негатив и найходит реальные причины недовольства</p>
       <p class="description-goals">Общение без конфликтов</p>
     </div>
     
     <div class="brand-card signal-card">
       <div class="tariff-badge signal">Сигнал</div>
-      <h3>Полный цикл «3 ч → 24 ч»</h3>
-      <p class="description-main">Уточнение за 3 часа, решение за 24 часа</p>
+      <h3>Полный цикл 3 ч → 24 ч</h3>
+      <p class="description-main">Быстрое, конкретное улучшение опыта — Немедленная работа над устранением проблемы</p>
       <p class="description-goals">Процесс, который нельзя остановить</p>
     </div>
     
     <div class="brand-card signal-card">
       <div class="tariff-badge signal">Сигнал</div>
-      <h3>Обратная связь 24/7</h3>
-      <p class="description-main">Круглосуточная поддержка клиентов без выходных</p>
-      <p class="description-goals">Персональные точные диалоги</p>
+      <h3>Дежурная команда Сигнала 24/7</h3>
+      <p class="description-main">Круглосуточная поддержка клиентов без выходных: ИИ-ассистент Анна + живой аналитик Сигнала</p>
+      <p class="description-goals">Персональная забота о каждом госте</p>
     </div>
     
     <div class="brand-card signal-card">
       <div class="tariff-badge signal">Сигнал</div>
       <h3>Персональный виджет</h3>
-      <p class="description-main">Виджет адаптируется под ваш бренд и бизнес-процессы</p>
-      <p class="description-goals">Базовый + Конструктор</p>
+      <p class="description-main">Готовое к использованию решение для сбора обратной связи + персонализация под специфику бизнеса</p>
+      <p class="description-goals">2ГИС/Яндекс в 2 клика</p>
+    </div>
+    
+    <div class="brand-card signal-card">
+      <div class="tariff-badge signal">Сигнал</div>
+      <h3>Статистика</h3>
+      <p class="description-main">Полный срез мнений клиентов и их финансовая ценность: NPS, динамика и структура лояльных гостей</p>
+      <p class="description-goals">Ваша контрольная панель</p>
+    </div>
+    
+    <div class="brand-card signal-card">
+      <div class="tariff-badge signal">Сигнал</div>
+      <h3>Рейтинги</h3>
+      <p class="description-main">ТОП-5 болеей и предложений по улучшению вашего сервиса, которые чаще всего упоминались в Сигналах</p>
+      <p class="description-goals">Предложения по улучшению</p>
     </div>
     
     <div class="brand-card signal-card">
       <div class="tariff-badge signal">Сигнал</div>
       <h3>Предиктивная аналитика оттока гостей</h3>
-      <p class="description-main">Раннее выявление недовольных гостей</p>
-      <p class="description-goals">Прогноз оттока гостей</p>
+      <p class="description-main">Идентификация «скрытых критиков», которые ставят нейтральные оценки, но готовы уйти. Прогноз оттока на 30-60 дней</p>
+      <p class="description-goals">Персональные сценарии удержания</p>
     </div>
     
     <div class="brand-card signal-card">
       <div class="tariff-badge signal">Сигнал</div>
-      <h3>RFM-сегменты</h3>
-      <p class="description-main">Разделение базы клиентов на сегменты по их ценности («VIP», «Ценные», «Новички»)</p>
-      <p class="description-goals">Портреты гостей, мотивация</p>
+      <h3>Аудитория</h3>
+      <p class="description-main">RFM-сегменты, портреты гостей, мотивация: какие проблемы критичны, а что стимулирует лояльность</p>
+      <p class="description-goals">Моделирование «Что, если?»</p>
     </div>
     
-    <!-- ФУНКЦИИ РАДАРА (из Radar.md) -->
+    <!-- ФУНКЦИИ РАДАРА (без изменений) -->
     <div class="brand-card radar-card">
       <div class="tariff-badge radar">Радар</div>
       <h3>Голос клиента</h3>
