@@ -3,7 +3,7 @@
     <!-- КАРТОЧКА: СИМУЛЯТОР (БЕСПЛАТНО) -->
     <div class="pricing-card">
       <h3 class="card-title card-title--simulator">ДИАЛОГИ</h3>
-      <p class="card-subtitle">Забота о гостях 24/7</p>
+      <p class="card-subtitle">Автоматизация управления репутацией</p>
       <div class="card-image-wrapper">
         <img
           src="/simulator-ban.svg"
@@ -13,7 +13,7 @@
       </div>
       <div class="card-price">
         <strong>от ₽18,000/мес</strong>
-        <div class="payment-type">Окупается с первого решённого Сигнала</div>
+        <div class="payment-type">Окупается с первого Сигнала</div>
       </div>
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>Тикет-система</span></li>
