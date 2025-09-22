@@ -71,6 +71,7 @@ import RadarForm from '../components/RadarForm.vue'
 import RadarFeatures from '../components/RadarFeatures.vue'
 import RadarTarifs from '../components/RadarTarifs.vue'
 import Products from '../components/Products.vue'
+import AllFeatures from '../components/AllFeatures.vue'
 
 export default {
   extends: DefaultTheme,
@@ -148,5 +149,6 @@ export default {
     app.component('RadarFeatures', RadarFeatures)
     app.component('RadarTarifs', RadarTarifs)
     app.component('Products', Products) 
+    app.component('AllFeatures', AllFeatures) 
   },
 }
