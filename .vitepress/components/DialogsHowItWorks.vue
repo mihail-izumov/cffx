@@ -67,7 +67,7 @@ const activeTab = ref('step-1')
     </div>
     <!-- Вкладка: Гарантия точности -->
     <div v-show="activeTab === 'guarantee'" class="content-mr">
-      <h3>Проверка достоверности: как гарантируем точность</h3>
+      <h3>Проверка достоверности</h3>
       <div class="cards-grid">
         <div class="guarantee-card">
           <div class="card-icon">✓</div>
