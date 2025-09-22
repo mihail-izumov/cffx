@@ -51,6 +51,10 @@ notification: brew
 <BrewFirst30Days />
 
 <div align="center">
+
+## Где конкуренты зарабатывают ваши деньги
+
+<RadarFeatures />
   
 ## От хаоса — к росту
 
