@@ -125,7 +125,7 @@ const goToReviews = (branch) => {
 }
 const createTicket = () => {
   emit('close')
-  window.location.href = '/signal/new'
+  window.location.href = '/signal/korzh/new'
 }
 const rotatingQuestions = [
   "\"Что почувствовали в эту минуту?\"",
