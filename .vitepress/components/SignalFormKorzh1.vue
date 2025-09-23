@@ -173,7 +173,7 @@
         </div>
       </div>
       
-      <!-- РАДИКАЛЬНО ИСПРАВЛЕННЫЙ ПОДВАЛ С GRID ЛЕЙАУТОМ -->
+      <!-- ПОДВАЛ С ИСПРАВЛЕННЫМ СТИЛЕМ ССЫЛКИ -->
       <div class="signal-form-footer">
         <div class="signal-terms-section">
           <div class="signal-checkbox-group">
@@ -812,13 +812,50 @@ textarea:focus, input:focus {
   overflow-wrap: break-word;
 }
 
+/* ИСПРАВЛЕННЫЕ СТИЛИ ССЫЛКИ - УБРАНО ПОДЧЕРКИВАНИЕ */
 .signal-policy-link { 
   color: #b0b0b0; 
-  text-decoration: none; 
+  text-decoration: none !important; 
+  border-bottom: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 } 
 
 .signal-policy-link:hover { 
-  text-decoration: underline; 
+  text-decoration: underline !important; 
+  border-bottom: none !important;
+  color: #C5F946;
+}
+
+.signal-policy-link:focus {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.signal-policy-link:visited {
+  color: #b0b0b0;
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+.signal-policy-link:active {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+/* Дополнительное переопределение для VitePress */
+.signal-checkbox-group a {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.signal-checkbox-group a:hover {
+  text-decoration: underline !important;
+  border-bottom: none !important;
 }
 
 .signal-submit-btn { 
