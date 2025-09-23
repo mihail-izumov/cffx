@@ -68,6 +68,14 @@
             >
               {{ suggestion }}
             </div>
+            <!-- Кнопка возврата к начальным вариантам -->
+            <div 
+              v-if="!isInitialSuggestions('emotions')"
+              class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
+              @click="resetSuggestions('emotions')"
+            >
+              ← Ещё варианты
+            </div>
           </div>
           
           <p class="signal-example-hint" v-html="'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»'"></p>
@@ -97,6 +105,14 @@
               @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
             >
               {{ suggestion }}
+            </div>
+            <!-- Кнопка возврата к начальным вариантам -->
+            <div 
+              v-if="!isInitialSuggestions('facts')"
+              class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
+              @click="resetSuggestions('facts')"
+            >
+              ← Ещё варианты
             </div>
           </div>
           
@@ -128,6 +144,14 @@
             >
               {{ suggestion }}
             </div>
+            <!-- Кнопка возврата к начальным вариантам -->
+            <div 
+              v-if="!isInitialSuggestions('solutions')"
+              class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
+              @click="resetSuggestions('solutions')"
+            >
+              ← Ещё варианты
+            </div>
           </div>
           
           <p class="signal-example-hint" v-html="'Пример: «Добавить на кассу <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
@@ -149,14 +173,19 @@
         </div>
       </div>
       
+      <!-- ИСПРАВЛЕННЫЙ ПОДВАЛ -->
       <div class="signal-form-footer">
-        <div class="signal-checkbox-group">
-          <input type="checkbox" id="consent" v-model="form.consent" required>
-          <label for="consent">С <a href="/terms" target="_blank" class="signal-policy-link">Условиями использования</a> согласен/на</label>
+        <div class="signal-footer-left">
+          <div class="signal-checkbox-group">
+            <input type="checkbox" id="consent" v-model="form.consent" required>
+            <label for="consent">С <a href="/terms" target="_blank" class="signal-policy-link">Условиями использования</a> согласен/на</label>
+          </div>
         </div>
-        <button type="submit" class="signal-submit-btn" :disabled="!isFormValid || isSubmitting">
-          {{ isSubmitting ? 'Отправка...' : 'Отправить Сигнал' }}
-        </button>
+        <div class="signal-footer-right">
+          <button type="submit" class="signal-submit-btn" :disabled="!isFormValid || isSubmitting">
+            {{ isSubmitting ? 'Отправка...' : 'Отправить Сигнал' }}
+          </button>
+        </div>
       </div>
     </form>
   </div>
@@ -212,9 +241,9 @@ const suggestions = reactive({
 
 // Текущие подсказки для каждого поля
 const currentSuggestions = reactive({
-  emotions: suggestions.emotions.initial,
-  facts: suggestions.facts.initial,
-  solutions: suggestions.solutions.initial
+  emotions: [...suggestions.emotions.initial],
+  facts: [...suggestions.facts.initial],
+  solutions: [...suggestions.solutions.initial]
 });
 
 // Выбранные подсказки (для построения цепочек)
@@ -237,12 +266,23 @@ let currentQuestionIndex1 = 0;
 let currentQuestionIndex2 = 0;
 let currentQuestionIndex3 = 0;
 
+// Проверка, являются ли текущие подсказки начальными
+function isInitialSuggestions(suggestionType) {
+  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(suggestions[suggestionType].initial);
+}
+
+// Сброс подсказок к начальным вариантам
+function resetSuggestions(suggestionType) {
+  currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
+}
+
 // Функция выбора подсказки
 function selectSuggestion(fieldName, suggestion, suggestionType) {
   // Добавляем подсказку к тексту
   const currentText = form[fieldName].trim();
   if (currentText) {
-    form[fieldName] = currentText + ' ' + suggestion;
+    // Добавляем запятую перед новой фразой если текст не пустой
+    form[fieldName] = currentText + ', ' + suggestion;
   } else {
     form[fieldName] = suggestion;
   }
@@ -258,10 +298,10 @@ function selectSuggestion(fieldName, suggestion, suggestionType) {
 function updateSuggestions(suggestionType, selectedWord) {
   const nextSuggestions = suggestions[suggestionType][selectedWord];
   if (nextSuggestions && nextSuggestions.length > 0) {
-    currentSuggestions[suggestionType] = nextSuggestions;
+    currentSuggestions[suggestionType] = [...nextSuggestions];
   } else {
     // Если нет продолжения цепочки, показываем начальные подсказки
-    currentSuggestions[suggestionType] = suggestions[suggestionType].initial;
+    currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
   }
 }
 
@@ -567,6 +607,17 @@ textarea:focus, input:focus {
   transform: scale(1.05);
 }
 
+/* Кнопка сброса к начальным вариантам */
+.signal-reset-bubble {
+  font-weight: 600;
+  opacity: 0.8;
+  font-size: 0.75rem;
+}
+
+.signal-reset-bubble:hover {
+  opacity: 1;
+}
+
 .signal-example-hint { 
   font-size: 0.8rem; 
   color: #777; 
@@ -601,12 +652,23 @@ textarea:focus, input:focus {
 .signal-section-divider::before { left: 0; } 
 .signal-section-divider::after { right: 0; }
 
+/* ИСПРАВЛЕННЫЕ СТИЛИ ПОДВАЛА */
 .signal-form-footer { 
   margin-top: 1.5rem; 
   display: flex; 
   align-items: center; 
   justify-content: space-between; 
   gap: 1.5rem; 
+  flex-wrap: wrap;
+}
+
+.signal-footer-left {
+  flex: 1;
+  min-width: 200px;
+}
+
+.signal-footer-right {
+  flex-shrink: 0;
 }
 
 .signal-checkbox-group { 
@@ -647,6 +709,7 @@ textarea:focus, input:focus {
   transition: all 0.4s ease-out; 
   background-size: 200% auto; 
   background-position: 25% 50%; 
+  white-space: nowrap;
 }
 
 .signal-submit-btn:hover:not(:disabled) { 
@@ -735,11 +798,16 @@ textarea:focus, input:focus {
     grid-template-columns: 1fr; 
   } 
   
+  /* ИСПРАВЛЕННЫЙ АДАПТИВНЫЙ ПОДВАЛ */
   .signal-form-footer { 
     flex-direction: column; 
     align-items: stretch; 
     gap: 1rem; 
   } 
+  
+  .signal-footer-left {
+    min-width: auto;
+  }
   
   .signal-submit-btn { 
     width: 100%; 
