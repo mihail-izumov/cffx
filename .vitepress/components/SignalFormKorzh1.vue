@@ -173,15 +173,17 @@
         </div>
       </div>
       
-      <!-- ИСПРАВЛЕННЫЙ ПОДВАЛ -->
+      <!-- РАДИКАЛЬНО ИСПРАВЛЕННЫЙ ПОДВАЛ С GRID ЛЕЙАУТОМ -->
       <div class="signal-form-footer">
-        <div class="signal-footer-left">
+        <div class="signal-terms-section">
           <div class="signal-checkbox-group">
             <input type="checkbox" id="consent" v-model="form.consent" required>
-            <label for="consent">С <a href="/terms" target="_blank" class="signal-policy-link">Условиями использования</a> согласен/на</label>
+            <label for="consent">
+              С <a href="/terms" target="_blank" class="signal-policy-link">Условиями использования</a> согласен/на
+            </label>
           </div>
         </div>
-        <div class="signal-footer-right">
+        <div class="signal-button-section">
           <button type="submit" class="signal-submit-btn" :disabled="!isFormValid || isSubmitting">
             {{ isSubmitting ? 'Отправка...' : 'Отправить Сигнал' }}
           </button>
@@ -211,7 +213,7 @@ const formattedTicketNumber = ref(null);
 const currentDate = ref('');
 const activeRotator = ref(0);
 
-// Система подсказок на основе анализа документа
+// РАСШИРЕННАЯ 3-УРОВНЕВАЯ система подсказок
 const suggestions = reactive({
   emotions: {
     initial: ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'],
@@ -219,7 +221,15 @@ const suggestions = reactive({
     'разочарован': ['качеством', 'сервисом', 'ожиданиями', 'атмосферой', 'чистотой'],
     'недоволен': ['обслуживанием', 'очередью', 'ошибкой в заказе', 'температурой блюд', 'упаковкой'],
     'возмущён': ['антисанитарией', 'хамством', 'обманом', 'некачественной едой'],
-    'удивлён': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком']
+    'удивлён': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком'],
+    // УРОВЕНЬ 3 для эмоций
+    'долго ждал': ['20 минут', '30 минут', 'более часа', 'без объяснений', 'видя пустую кофейню'],
+    'грязная посуда': ['следы помады', 'остатки еды', 'жирные пятна', 'засохший кофе', 'странный запах'],
+    'холодный кофе': ['едва теплый', 'совсем остыл', 'подали холодным', 'остыл пока ждал', 'температура комнатная'],
+    'грубый персонал': ['не поздоровались', 'хамили', 'игнорировали', 'были раздражены', 'повысили голос'],
+    'качеством': ['хуже чем обычно', 'не соответствует цене', 'испортилось за месяц', 'как в фастфуде', 'совсем не то'],
+    'сервисом': ['медленный', 'невнимательный', 'равнодушный', 'непрофессиональный', 'хаотичный'],
+    'обслуживанием': ['долгое ожидание', 'путаница в заказах', 'невежливость', 'игнорирование', 'ошибки кассира']
   },
   facts: {
     initial: ['ожидание', 'ошибка в заказе', 'качество блюд', 'чистота', 'персонал'],
@@ -227,7 +237,14 @@ const suggestions = reactive({
     'ошибка в заказе': ['не тот напиток', 'не доложили позицию', 'неправильный соус', 'перепутали объём'],
     'качество блюд': ['холодный кофе', 'невкусная еда', 'недоваренный рис', 'комочки в матче', 'чёрствая выпечка'],
     'чистота': ['грязная посуда', 'волосы в еде', 'грязная уборная', 'насекомые', 'пластик в круассане'],
-    'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились']
+    'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились'],
+    // УРОВЕНЬ 3 для фактов
+    '20 минут': ['засекал по часам', 'спросил у соседнего стола', 'заказал в 14:30, получил в 14:50', 'долгое ожидание для простого заказа', 'других обслужили быстрее'],
+    '30 минут': ['полчаса точно', 'с 15:00 до 15:30', 'дважды подходил узнать', 'время на телефоне показало', 'успел прочитать новости'],
+    'холодный кофе': ['градусов 40-50', 'можно было пить сразу', 'не обжигал язык', 'как будто стоял долго', 'температура комнатная'],
+    'грязная посуда': ['на чашке помада', 'жирные разводы на тарелке', 'крошки от предыдущих гостей', 'капли кофе на блюдце', 'следы от губной помады'],
+    'не тот напиток': ['заказал латте, принесли капучино', 'просил без сахара, был сладкий', 'хотел большой, дали маленький', 'другой сироп', 'обычное молоко вместо овсяного'],
+    'грубость': ['не поздоровались', 'ответили резко', 'закатили глаза', 'проигнорировали вопрос', 'были явно недовольны']
   },
   solutions: {
     initial: ['таймер ожидания', 'обучение персонала', 'контроль качества', 'система проверки', 'стандарты'],
@@ -235,7 +252,14 @@ const suggestions = reactive({
     'обучение персонала': ['по сервису', 'по санитарии', 'по качеству', 'по коммуникации'],
     'контроль качества': ['проверка блюд', 'температурный контроль', 'свежесть продуктов', 'упаковка'],
     'система проверки': ['чек-лист качества', 'двойная проверка', 'контроль чистоты', 'стандарты подачи'],
-    'стандарты': ['чистоты', 'сервиса', 'времени подачи', 'качества продуктов']
+    'стандарты': ['чистоты', 'сервиса', 'времени подачи', 'качества продуктов'],
+    // УРОВЕНЬ 3 для решений
+    'на кассе': ['большой дисплей', 'видимый всем', 'с номерами заказов', 'обновляется в реальном времени', 'со звуковым сигналом'],
+    'видимый гостям': ['на стене', 'над барной стойкой', 'в мобильном приложении', 'на столике с номером', 'на чеке QR-код'],
+    'по сервису': ['тренинги вежливости', 'ролевые игры', 'работа с жалобами', 'стандарты общения', 'мотивация персонала'],
+    'по санитарии': ['мытье посуды', 'уборка столов', 'проверка чистоты', 'гигиена рук', 'контроль температуры'],
+    'проверка блюд': ['перед подачей', 'температура напитков', 'внешний вид', 'соответствие заказу', 'свежесть ингредиентов'],
+    'чек-лист качества': ['для каждого заказа', 'проверка температуры', 'чистота посуды', 'правильность состава', 'время подачи']
   }
 });
 
@@ -251,6 +275,13 @@ const selectedSuggestions = reactive({
   emotions: [],
   facts: [],
   solutions: []
+});
+
+// Счетчики веток для улучшенного разделения текста
+const branchCounters = reactive({
+  emotions: 0,
+  facts: 0,
+  solutions: 0
 });
 
 const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
@@ -276,15 +307,26 @@ function resetSuggestions(suggestionType) {
   currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
 }
 
-// Функция выбора подсказки
+// УЛУЧШЕННАЯ функция выбора подсказки с разделением веток
 function selectSuggestion(fieldName, suggestion, suggestionType) {
-  // Добавляем подсказку к тексту
   const currentText = form[fieldName].trim();
+  
+  // Определяем, начинается ли новая ветка
+  const isNewBranch = isInitialSuggestions(suggestionType);
+  
   if (currentText) {
-    // Добавляем запятую перед новой фразой если текст не пустой
-    form[fieldName] = currentText + ', ' + suggestion;
+    if (isNewBranch) {
+      // Новая ветка - добавляем с точкой и заглавной буквы
+      form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+      branchCounters[suggestionType]++;
+    } else {
+      // Продолжение ветки - добавляем через пробел
+      form[fieldName] = currentText + ' ' + suggestion;
+    }
   } else {
-    form[fieldName] = suggestion;
+    // Первый выбор
+    form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+    branchCounters[suggestionType] = 1;
   }
   
   // Сохраняем выбранную подсказку
@@ -612,6 +654,7 @@ textarea:focus, input:focus {
   font-weight: 600;
   opacity: 0.8;
   font-size: 0.75rem;
+  border-style: dashed !important;
 }
 
 .signal-reset-bubble:hover {
@@ -652,40 +695,51 @@ textarea:focus, input:focus {
 .signal-section-divider::before { left: 0; } 
 .signal-section-divider::after { right: 0; }
 
-/* ИСПРАВЛЕННЫЕ СТИЛИ ПОДВАЛА */
+/* ОКОНЧАТЕЛЬНО ИСПРАВЛЕННЫЙ ПОДВАЛ С GRID */
 .signal-form-footer { 
-  margin-top: 1.5rem; 
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  gap: 1.5rem; 
-  flex-wrap: wrap;
+  margin-top: 2rem; 
+  padding-top: 1.5rem;
+  border-top: 1px solid #2c2c2f;
+  display: grid;
+  grid-template-areas: 
+    "terms"
+    "button";
+  gap: 1.5rem;
+  width: 100%;
 }
 
-.signal-footer-left {
-  flex: 1;
-  min-width: 200px;
+.signal-terms-section {
+  grid-area: terms;
+  width: 100%;
 }
 
-.signal-footer-right {
-  flex-shrink: 0;
+.signal-button-section {
+  grid-area: button;
+  width: 100%;
 }
 
 .signal-checkbox-group { 
   display: flex; 
-  align-items: center; 
-  gap: 0.5rem; 
+  align-items: flex-start; 
+  gap: 0.75rem;
+  width: 100%;
 }
 
 .signal-checkbox-group input { 
   accent-color: #00C2FF; 
   flex-shrink: 0; 
+  margin-top: 0.15rem;
+  width: 18px;
+  height: 18px;
 }
 
 .signal-checkbox-group label { 
-  font-size: 0.8rem; 
+  font-size: 0.85rem; 
   color: #999; 
-  line-height: 1.3; 
+  line-height: 1.4; 
+  flex: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .signal-policy-link { 
@@ -704,17 +758,18 @@ textarea:focus, input:focus {
   font-size: 1rem; 
   border: none; 
   border-radius: 12px; 
-  padding: 0.8rem 2rem; 
+  padding: 0.9rem 2rem; 
   cursor: pointer; 
   transition: all 0.4s ease-out; 
   background-size: 200% auto; 
   background-position: 25% 50%; 
-  white-space: nowrap;
+  width: 100%;
+  display: block;
 }
 
 .signal-submit-btn:hover:not(:disabled) { 
   background-position: 75% 50%; 
-  transform: scale(1.03); 
+  transform: scale(1.02); 
   box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); 
 }
 
@@ -798,21 +853,6 @@ textarea:focus, input:focus {
     grid-template-columns: 1fr; 
   } 
   
-  /* ИСПРАВЛЕННЫЙ АДАПТИВНЫЙ ПОДВАЛ */
-  .signal-form-footer { 
-    flex-direction: column; 
-    align-items: stretch; 
-    gap: 1rem; 
-  } 
-  
-  .signal-footer-left {
-    min-width: auto;
-  }
-  
-  .signal-submit-btn { 
-    width: 100%; 
-  } 
-  
   .signal-form-header { 
     flex-direction: column; 
     align-items: flex-start; 
@@ -834,6 +874,20 @@ textarea:focus, input:focus {
   .signal-suggestion-bubble {
     font-size: 0.75rem;
     padding: 0.3rem 0.7rem;
+  }
+
+  /* Мобильный подвал остается таким же */
+  .signal-checkbox-group {
+    gap: 0.5rem;
+  }
+
+  .signal-checkbox-group input {
+    width: 16px;
+    height: 16px;
+  }
+
+  .signal-checkbox-group label {
+    font-size: 0.8rem;
   }
 }
 </style>
