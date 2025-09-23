@@ -11,4 +11,4 @@ title: Новый Сигнал | Корж, Mosaic
 
 </div>
 
-<FeedbackAlchemy />
+<SignalFormKorzh1 />
