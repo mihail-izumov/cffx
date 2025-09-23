@@ -1,919 +1,867 @@
-<script setup>
-import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
-// --- НАСТРОЙКИ АНИМАЦИИ ---
-const ROTATION_INTERVAL_MS = 7000
-const FADE_DURATION_MS = 1000
-// Профили всех кофеен с базовыми значениями времени
-const cafeProfiles = {
-  'корж': {
-    responseTime: { base: 2.3, min: 1.8, max: 2.8 },
-    resolutionTime: { base: 17.5, min: 15, max: 20 }
-  },
-  'cafe_1': {
-    responseTime: { base: 1.6, min: 1.2, max: 2.1 },
-    resolutionTime: { base: 15.2, min: 13, max: 18 }
-  },
-  'cafe_2': {
-    responseTime: { base: 3.1, min: 2.5, max: 3.8 },
-    resolutionTime: { base: 20.3, min: 18, max: 23 }
-  },
-  'cafe_3': {
-    responseTime: { base: 1.4, min: 1.0, max: 1.9 },
-    resolutionTime: { base: 14.7, min: 12, max: 17 }
-  },
-  'cafe_4': {
-    responseTime: { base: 2.7, min: 2.2, max: 3.2 },
-    resolutionTime: { base: 18.8, min: 16, max: 22 }
-  },
-  'cafe_5': {
-    responseTime: { base: 2.0, min: 1.5, max: 2.6 },
-    resolutionTime: { base: 16.4, min: 14, max: 19 }
-  },
-  'cafe_6': {
-    responseTime: { base: 1.8, min: 1.3, max: 2.4 },
-    resolutionTime: { base: 15.9, min: 13, max: 18 }
-  },
-  'cafe_7': {
-    responseTime: { base: 2.9, min: 2.3, max: 3.5 },
-    resolutionTime: { base: 19.1, min: 17, max: 22 }
-  }
-}
-// -------------------------
-const establishment = {
-  name: 'Корж', // МЕСТО 1: Заменить название кофейни
-  totalReviews: '4,520',
-  branches: [
-    { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/' },
-    { address: 'Революционная, 101В, к1', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858/' },
-    { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618', yandexUrl: 'https://yandex.ru/maps/51/samara/house/9_ya_proseka_5_ya_malaya_liniya_3b/YUkYdw5hQUAAQFtpfX52dXVgZw==/' },
-    { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/' },
-    { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/' },
-    { address: 'Дачная, 2к2', gisUrl: 'https://2gis.ru/samara/firm/70000001045453045', yandexUrl: 'https://yandex.ru/maps/51/samara/house/dachnaya_ulitsa_2k2/YUkYdwNhSEcOQFtpfX5xcHpkZQ==/' },
-    { address: 'Ульяновская, 19', gisUrl: 'https://2gis.ru/samara/firm/70000001033411071', yandexUrl: 'https://yandex.ru/maps/51/samara/chain/korz/23062014558/' },
-    { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/' }
-  ],
-  status: 'Лидер 👑',
-  index: 98,
-}
-// Функция получения конфига кофейни с фоллбэком
-const getCafeConfig = (cafeName) => {
-  const normalizedName = cafeName.toLowerCase()
-  return cafeProfiles[normalizedName] || {
-    responseTime: { base: 2.5, min: 2.0, max: 3.0 },
-    resolutionTime: { base: 18.0, min: 15, max: 21 }
-  }
-}
-// МЕСТО 2: Автоматически определяется из establishment.name
-const cafeConfig = getCafeConfig(establishment.name)
-// Система метрик реального времени с персональными значениями
-const systemMetrics = ref({
-  responseTime: cafeConfig.responseTime.base,
-  resolutionTime: cafeConfig.resolutionTime.base,
-  lastUpdate: Date.now()
-})
-// Получение данных с сервера
-const fetchSystemStatus = async () => {
-  try {
-    await new Promise(resolve => setTimeout(resolve, 50))
-    
-    // Получаем актуальный конфиг для текущей кофейни
-    const currentConfig = getCafeConfig(establishment.name)
-    
-    const now = Date.now()
-    const hourOfDay = new Date().getHours()
-    const isBusinessHours = hourOfDay >= 9 && hourOfDay <= 21
-    const loadFactor = isBusinessHours ? 0.8 : 1.2
-    
-    const responseVariation = (Math.random() - 0.5) * 0.15 * loadFactor
-    const resolutionVariation = (Math.random() - 0.5) * 1.2 * loadFactor
-    
-    systemMetrics.value.responseTime = Math.max(
-      currentConfig.responseTime.min, 
-      Math.min(currentConfig.responseTime.max, 
-        systemMetrics.value.responseTime + responseVariation
-      )
-    )
-    
-    systemMetrics.value.resolutionTime = Math.max(
-      currentConfig.resolutionTime.min, 
-      Math.min(currentConfig.resolutionTime.max,
-        systemMetrics.value.resolutionTime + resolutionVariation
-      )
-    )
-    
-    systemMetrics.value.lastUpdate = now
-    
-  } catch (error) {
-    console.warn('Metrics update failed, using cached values')
-  }
-}
-// Форматирование времени
-const formatTime = (hours) => {
-  if (hours < 1) {
-    return `${Math.round(hours * 60)}мин`
-  }
-  return `${hours.toFixed(1)}ч`
-}
-const showBranchList = ref(false)
-const emit = defineEmits(['close'])
-const widgetContentRef = ref(null)
-const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
-const goToReviews = (branch) => {
-  const service = getRandomService()
-  const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
-  window.open(url, '_blank')
-}
-const createTicket = () => {
-  emit('close')
-  window.location.href = '/signal/korzh/new'
-}
-const rotatingQuestions = [
-  "\"Что почувствовали в эту минуту?\"",
-  "\"Что вызвало улыбку или напряжение?\"",
-  "\"Какой момент хотелось бы изменить?\"",
-  "\"Что дало ощущение уюта/суеты?\"",
-  "\"Одно слово, которое осталось после визита?\""
-]
-const currentQuestionIndex = ref(0)
-const showText = ref(true)
-let intervalId = null
-let metricsIntervalId = null
-const cycleText = () => {
-  showText.value = false
-  setTimeout(() => {
-    currentQuestionIndex.value = (currentQuestionIndex.value + 1) % rotatingQuestions.length
-    showText.value = true
-  }, FADE_DURATION_MS)
-}
-// Модальное окно для инфо
-const showInfoModal = ref(false)
-const onKeydown = (e) => {
-  if (e.key === 'Escape') {
-    showInfoModal.value = false
-  }
-}
-// Отслеживаем смену кофейни и сбрасываем метрики
-watch(() => establishment.name, (newName) => {
-  const newConfig = getCafeConfig(newName)
-  systemMetrics.value.responseTime = newConfig.responseTime.base
-  systemMetrics.value.resolutionTime = newConfig.resolutionTime.base
-  systemMetrics.value.lastUpdate = Date.now()
-})
-onMounted(() => {
-  intervalId = setInterval(cycleText, ROTATION_INTERVAL_MS)
-  metricsIntervalId = setInterval(fetchSystemStatus, 45000)
-  fetchSystemStatus()
-  window.addEventListener('keydown', onKeydown)
-})
-onUnmounted(() => {
-  clearInterval(intervalId)
-  clearInterval(metricsIntervalId)
-  window.removeEventListener('keydown', onKeydown)
-})
-watch(showBranchList, (newValue) => {
-  if (newValue) {
-    nextTick(() => {
-      widgetContentRef.value.scrollTo({ top: 0, behavior: 'smooth' })
-    })
-  }
-})
-</script>
 <template>
-  <div class="signal-widget-content" ref="widgetContentRef">
-    <!-- Первый экран -->
-    <div v-if="!showBranchList">
-      <div class="signal-widget-header">
-        <div>
-          <div class="signal-header-title">Отправьте Сигнал</div>
-          <p class="signal-header-subtitle">Каждая чашка кофе делает Вашу любимую кофейню еще лучше.</p>
+  <div class="signal-form-wrapper">
+    <!-- Экран успешной отправки -->
+    <div v-if="formSubmitted" class="signal-success-message">
+      <div class="signal-success-text">
+        <h3>Все готово!</h3>
+        <p>Нажмите на кнопку ниже, чтобы отправить ваш уникальный код ассистенту Анне и активировать ваш запрос.</p>
+        <a :href="`https://t.me/Anna_Signal?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="signal-telegram-button">Активировать Сигнал в Telegram</a>
+        <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link">Кто Анна и как работает</a>
+      </div>
+    </div>
+
+    <!-- Основная форма -->
+    <form v-else @submit.prevent="submitForm">
+      <div class="signal-form-header">
+        <div class="signal-form-title">Новый Сигнал</div>
+        <div class="signal-tech-info">
+          <span class="signal-info-item">{{ currentDate }}</span>
+          <span class="signal-info-item signal-ticket-display">{{ formattedTicketNumber }}</span>
         </div>
-        <!-- Кнопка закрытия удалена -->
+      </div>
+
+      <!-- Секция выбора кофейни -->
+      <div class="signal-form-section">
+        <div class="signal-question-block signal-compact">
+          <label class="signal-question-label">Ваша кофейня "Корж"</label>
+          <p class="signal-question-help">Выберите адрес, где произошла ситуация</p>
+          <select v-model="form.coffeeShopAddress" class="signal-address-select" required>
+            <option value="">Выберите адрес</option>
+            <option value="Куйбышева, 103">Куйбышева, 103</option>
+            <option value="Революционная, 101В" disabled>Революционная, 101В</option>
+            <option value="9 просека 5-я малая линия,3б" disabled>9 просека 5-я малая линия, 3б</option>
+            <option value="Льва Толстого, 30Б" disabled>Льва Толстого, 30Б</option>
+            <option value="Самарская, 270" disabled>Самарская, 270</option>
+            <option value="Дачная, 2к2" disabled>Дачная, 2к2</option>
+            <option value="Ульяновская, 19" disabled>Ульяновская, 19</option>
+            <option value="Ново-Садовая, 106Б" disabled>Ново-Садовая, 106Б</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="signal-separator-line"></div>
+
+      <!-- Секция с вопросами и подсказками -->
+      <div class="signal-form-section">
+        <div class="signal-question-block" style="--accent-color: #A972FF;">
+          <p class="signal-direction-label">Эмоции и чувства</p>
+          <div class="signal-rotating-phrase-container">
+            <transition name="fade" mode="out-in">
+              <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
+            </transition>
+          </div>
+          <textarea 
+            v-model="form.emotionalRelease" 
+            @focus="startRotation(1)" 
+            rows="3" 
+            placeholder="Опишите свои чувства и впечатления..." 
+            required>
+          </textarea>
+          
+          <!-- Подсказки-баблы для эмоций -->
+          <div class="signal-suggestions-container">
+            <div 
+              v-for="suggestion in currentSuggestions.emotions" 
+              :key="suggestion"
+              class="signal-suggestion-bubble signal-emotion-bubble"
+              @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
+            >
+              {{ suggestion }}
+            </div>
+            <!-- Кнопка возврата к начальным вариантам -->
+            <div 
+              v-if="!isInitialSuggestions('emotions')"
+              class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
+              @click="resetSuggestions('emotions')"
+            >
+              ← Ещё варианты
+            </div>
+          </div>
+          
+          <p class="signal-example-hint" v-html="'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»'"></p>
+        </div>
+        
+        <div class="signal-question-block" style="--accent-color: #3DDC84;">
+          <p class="signal-direction-label">Детали проблемы</p>
+          <div class="signal-rotating-phrase-container">
+            <transition name="fade" mode="out-in">
+              <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
+            </transition>
+          </div>
+          <textarea 
+            v-model="form.factualAnalysis" 
+            @focus="startRotation(2)" 
+            rows="3" 
+            placeholder="Опишите факты: что, когда и где произошло..." 
+            required>
+          </textarea>
+          
+          <!-- Подсказки-баблы для деталей -->
+          <div class="signal-suggestions-container">
+            <div 
+              v-for="suggestion in currentSuggestions.facts" 
+              :key="suggestion"
+              class="signal-suggestion-bubble signal-fact-bubble"
+              @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
+            >
+              {{ suggestion }}
+            </div>
+            <!-- Кнопка возврата к начальным вариантам -->
+            <div 
+              v-if="!isInitialSuggestions('facts')"
+              class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
+              @click="resetSuggestions('facts')"
+            >
+              ← Ещё варианты
+            </div>
+          </div>
+          
+          <p class="signal-example-hint" v-html="'Пример: «Заказ на два капучино <b>ждал 22 минуты</b>, хотя в кафе был почти один»'"></p>
+        </div>
+        
+        <div class="signal-question-block" style="--accent-color: #FFB800;">
+          <p class="signal-direction-label">Предложение решения</p>
+          <div class="signal-rotating-phrase-container">
+            <transition name="fade" mode="out-in">
+              <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
+            </transition>
+          </div>
+          <textarea 
+            v-model="form.constructiveSuggestions" 
+            @focus="startRotation(3)" 
+            rows="3" 
+            placeholder="Предложите, как это можно исправить..." 
+            required>
+          </textarea>
+          
+          <!-- Подсказки-баблы для решений -->
+          <div class="signal-suggestions-container">
+            <div 
+              v-for="suggestion in currentSuggestions.solutions" 
+              :key="suggestion"
+              class="signal-suggestion-bubble signal-solution-bubble"
+              @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
+            >
+              {{ suggestion }}
+            </div>
+            <!-- Кнопка возврата к начальным вариантам -->
+            <div 
+              v-if="!isInitialSuggestions('solutions')"
+              class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
+              @click="resetSuggestions('solutions')"
+            >
+              ← Ещё варианты
+            </div>
+          </div>
+          
+          <p class="signal-example-hint" v-html="'Пример: «Добавить на кассу <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
+        </div>
       </div>
       
-      <div class="signal-main-card">
-        <div class="signal-establishment-header">
-          <h3 class="signal-cafe-name">{{ establishment.name }}</h3>
-          <div class="signal-status-badge">{{ establishment.status }}</div>
+      <div class="signal-section-divider"><span>Останемся на связи?</span></div>
+      
+      <div class="signal-form-section signal-personal-data-section">
+        <div class="signal-question-block signal-compact">
+          <label class="signal-question-label">Ваше имя</label>
+          <p class="signal-question-help">Для персонального общения с ИИ-ассистентом Анной.</p>
+          <input type="text" id="name" v-model="form.name" @focus="stopRotation()" placeholder="Как к вам обращаться?" required>
         </div>
-        
-        <div class="signal-stats-grid">
-          <div class="signal-stat-card signal-branches-card">
-            <div class="signal-stat-content">
-              <div class="signal-stat-left-group">
-                <div class="signal-stat-icon">☕</div>
-                <div class="signal-stat-value">{{ establishment.branches.length }}</div>
-              </div>
-              <div class="signal-stat-label">Кофейни</div>
-            </div>
-          </div>
-          
-          <div class="signal-stat-card signal-index-card">
-            <div class="signal-stat-content">
-              <div class="signal-stat-left-group">
-                <div class="signal-stat-icon">⚡</div>
-                <div class="signal-stat-value">{{ establishment.index }}</div>
-              </div>
-              <div class="signal-stat-label">Индекс роста</div>
-            </div>
-          </div>
-          
-          <div class="signal-stat-card signal-reviews-card">
-            <div class="signal-stat-content">
-              <div class="signal-stat-left-group">
-                <div class="signal-stat-icon">📡</div>
-                <div class="signal-stat-value">{{ establishment.totalReviews }}</div>
-              </div>
-              <div class="signal-stat-label">Отзывы</div>
-            </div>
-          </div>
-        </div>
-        <!-- СТАТУС СИСТЕМЫ СИГНАЛОВ -->
-        <div class="signal-system-status-bar">
-          <span class="signal-status-label">🟢 На связи:</span>
-          <div class="signal-status-metrics">
-            <div class="signal-status-metric">
-              <span class="signal-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
-              <span class="signal-metric-text">→ ответ</span>
-            </div>
-            <div class="signal-status-separator">•</div>
-            <div class="signal-status-metric">
-              <span class="signal-metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
-              <span class="signal-metric-text">→ решение</span>
-            </div>
-          </div>
-        </div>
-        
-        <!-- ПУЛЬТ УПРАВЛЕНИЯ -->
-        <div class="signal-control-panel">
-          <div class="signal-control-panel-header">
-            <button
-              type="button"
-              class="signal-info-link signal-info-button"
-              aria-haspopup="dialog"
-              aria-controls="signal-dialog"
-              :aria-expanded="showInfoModal ? 'true' : 'false'"
-              @click="showInfoModal = true"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
-              </svg>
-            </button>
-            <span class="signal-static-prompt">Поделитесь:</span>
-            <div class="signal-rotating-text-container">
-              <span :class="['signal-rotating-text', { 'signal-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
-            </div>
-          </div>
-          <div class="signal-button-container">
-            <button @click="createTicket" class="signal-action-button signal-ticket-button">
-              Сообщить о проблеме
-            </button>
-            <button @click="showBranchList = true" class="signal-action-button signal-review-button">
-              Мне понравилось
-              <svg class="signal-button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m9 18 6-6-6-6"/>
-              </svg>
-            </button>
-          </div>
+        <div class="signal-question-block signal-compact">
+          <label class="signal-question-label">Ваш контакт в Telegram</label>
+          <p class="signal-question-help">Чтобы получать обновления и видеть результат.</p>
+          <input type="tel" id="telegramPhone" v-model="form.telegramPhone" @focus="stopRotation()" placeholder="+7 (___) ___-__-__" required>
         </div>
       </div>
-    </div>
-    
-    <!-- Второй экран -->
-    <div v-else>
-      <div class="signal-branches-header">
-        <button @click="showBranchList = false" class="signal-internal-close-btn signal-back-btn" aria-label="Вернуться назад">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
-          </svg>
+      
+      <!-- ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЙ ПОДВАЛ -->
+      <div class="signal-form-footer">
+        <div class="signal-checkbox-wrapper">
+          <div class="signal-checkbox-group">
+            <input type="checkbox" id="consent" v-model="form.consent" required>
+            <label for="consent">
+              С <a href="/terms" target="_blank" class="signal-policy-link">Условиями использования</a> согласен/на
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="signal-submit-btn" :disabled="!isFormValid || isSubmitting">
+          {{ isSubmitting ? 'Отправка...' : 'Отправить Сигнал' }}
         </button>
-        <div class="signal-branches-title">{{ establishment.name }}</div>
-        <div style="width: 44px;"></div>
       </div>
-      <div class="signal-branches-content">
-        <p class="signal-branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
-        <div class="signal-branches-list">
-          <button v-for="(branch, index) in establishment.branches" :key="index" @click="goToReviews(branch)" class="signal-branch-item">
-            <div class="signal-branch-info">
-              <div class="signal-branch-number">{{ index + 1 }}</div>
-              <div class="signal-branch-address">{{ branch.address }}</div>
-            </div>
-            <div class="signal-branch-action">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m9 18 6-6-6-6"/>
-              </svg>
-            </div>
-          </button>
-        </div>
-      </div>
-    </div>
-    <!-- Модальное окно -->
-    <div v-if="showInfoModal" class="signal-modal-overlay" @click.self="showInfoModal = false">
-      <div class="signal-modal" role="dialog" aria-modal="true" id="signal-dialog" aria-label="Диалоги Сигнала">
-        <div class="signal-modal-header">
-          <div class="signal-modal-title">Диалоги Сигнала</div>
-        </div>
-        <div class="signal-modal-body">
-          Ваш Сигнал — это команда к действию для кофейни и видимый результат для вас.
-          <br><br>
-          <a href="/signals" target="_blank" class="signal-modal-link">Как работает</a>
-        </div>
-        <div class="signal-modal-footer">
-          <button class="signal-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
-        </div>
-      </div>
-    </div>
+    </form>
   </div>
 </template>
+
+<script setup>
+import { reactive, ref, computed, onMounted, onUnmounted } from 'vue';
+
+const form = reactive({ 
+  coffeeShopAddress: '',
+  emotionalRelease: '', 
+  factualAnalysis: '', 
+  constructiveSuggestions: '', 
+  name: '', 
+  telegramPhone: '', 
+  consent: false 
+});
+
+const isSubmitting = ref(false);
+const formSubmitted = ref(false);
+const rawTicketNumber = ref(null);
+const formattedTicketNumber = ref(null);
+const currentDate = ref('');
+const activeRotator = ref(0);
+
+// Система подсказок на основе анализа документа
+const suggestions = reactive({
+  emotions: {
+    initial: ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'],
+    'расстроен': ['долго ждал', 'грязная посуда', 'холодный кофе', 'грубый персонал', 'забыли заказ'],
+    'разочарован': ['качеством', 'сервисом', 'ожиданиями', 'атмосферой', 'чистотой'],
+    'недоволен': ['обслуживанием', 'очередью', 'ошибкой в заказе', 'температурой блюд', 'упаковкой'],
+    'возмущён': ['антисанитарией', 'хамством', 'обманом', 'некачественной едой'],
+    'удивлён': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком']
+  },
+  facts: {
+    initial: ['ожидание', 'ошибка в заказе', 'качество блюд', 'чистота', 'персонал'],
+    'ожидание': ['20 минут', '30 минут', 'более часа', 'забыли заказ', 'очередь не двигалась'],
+    'ошибка в заказе': ['не тот напиток', 'не доложили позицию', 'неправильный соус', 'перепутали объём'],
+    'качество блюд': ['холодный кофе', 'невкусная еда', 'недоваренный рис', 'комочки в матче', 'чёрствая выпечка'],
+    'чистота': ['грязная посуда', 'волосы в еде', 'грязная уборная', 'насекомые', 'пластик в круассане'],
+    'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились']
+  },
+  solutions: {
+    initial: ['таймер ожидания', 'обучение персонала', 'контроль качества', 'система проверки', 'стандарты'],
+    'таймер ожидания': ['на кассе', 'видимый гостям', 'с уведомлениями', 'контроль времени'],
+    'обучение персонала': ['по сервису', 'по санитарии', 'по качеству', 'по коммуникации'],
+    'контроль качества': ['проверка блюд', 'температурный контроль', 'свежесть продуктов', 'упаковка'],
+    'система проверки': ['чек-лист качества', 'двойная проверка', 'контроль чистоты', 'стандарты подачи'],
+    'стандарты': ['чистоты', 'сервиса', 'времени подачи', 'качества продуктов']
+  }
+});
+
+// Текущие подсказки для каждого поля
+const currentSuggestions = reactive({
+  emotions: [...suggestions.emotions.initial],
+  facts: [...suggestions.facts.initial],
+  solutions: [...suggestions.solutions.initial]
+});
+
+// Выбранные подсказки (для построения цепочек)
+const selectedSuggestions = reactive({
+  emotions: [],
+  facts: [],
+  solutions: []
+});
+
+// Счетчики веток для улучшенного разделения текста
+const branchCounters = reactive({
+  emotions: 0,
+  facts: 0,
+  solutions: 0
+});
+
+const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
+const phrasesForQuestion2 = ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'];
+const phrasesForQuestion3 = ['Как бы вы это исправили?', 'Что могло бы предотвратить эту ситуацию?', 'Какое одно изменение сделало бы ваш опыт идеальным?'];
+
+const currentQuestion1 = ref(phrasesForQuestion1[0]);
+const currentQuestion2 = ref(phrasesForQuestion2[0]);
+const currentQuestion3 = ref(phrasesForQuestion3[0]);
+
+let rotationInterval = null;
+let currentQuestionIndex1 = 0;
+let currentQuestionIndex2 = 0;
+let currentQuestionIndex3 = 0;
+
+// Проверка, являются ли текущие подсказки начальными
+function isInitialSuggestions(suggestionType) {
+  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(suggestions[suggestionType].initial);
+}
+
+// Сброс подсказок к начальным вариантам
+function resetSuggestions(suggestionType) {
+  currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
+}
+
+// УЛУЧШЕННАЯ функция выбора подсказки с разделением веток
+function selectSuggestion(fieldName, suggestion, suggestionType) {
+  const currentText = form[fieldName].trim();
+  
+  // Определяем, начинается ли новая ветка
+  const isNewBranch = isInitialSuggestions(suggestionType);
+  
+  if (currentText) {
+    if (isNewBranch) {
+      // Новая ветка - добавляем с точкой и заглавной буквы
+      form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+      branchCounters[suggestionType]++;
+    } else {
+      // Продолжение ветки - добавляем через пробел
+      form[fieldName] = currentText + ' ' + suggestion;
+    }
+  } else {
+    // Первый выбор
+    form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+    branchCounters[suggestionType] = 1;
+  }
+  
+  // Сохраняем выбранную подсказку
+  selectedSuggestions[suggestionType].push(suggestion);
+  
+  // Обновляем доступные подсказки на основе выбора
+  updateSuggestions(suggestionType, suggestion);
+}
+
+// Обновление подсказок на основе выбора
+function updateSuggestions(suggestionType, selectedWord) {
+  const nextSuggestions = suggestions[suggestionType][selectedWord];
+  if (nextSuggestions && nextSuggestions.length > 0) {
+    currentSuggestions[suggestionType] = [...nextSuggestions];
+  } else {
+    // Если нет продолжения цепочки, показываем начальные подсказки
+    currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
+  }
+}
+
+function startRotation(questionNum) {
+  stopRotation();
+  activeRotator.value = questionNum;
+  rotationInterval = setInterval(() => {
+    if (questionNum === 1) {
+      currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length;
+      currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1];
+    } else if (questionNum === 2) {
+      currentQuestionIndex2 = (currentQuestionIndex2 + 1) % phrasesForQuestion2.length;
+      currentQuestion2.value = phrasesForQuestion2[currentQuestionIndex2];
+    } else if (questionNum === 3) {
+      currentQuestionIndex3 = (currentQuestionIndex3 + 1) % phrasesForQuestion3.length;
+      currentQuestion3.value = phrasesForQuestion3[currentQuestionIndex3];
+    }
+  }, 3000);
+}
+
+function stopRotation() {
+  clearInterval(rotationInterval);
+  activeRotator.value = 0;
+}
+
+onMounted(() => {
+  rawTicketNumber.value = String(Date.now()).slice(-6);
+  formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
+  const now = new Date();
+  const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+  currentDate.value = now.toLocaleString('ru-RU', options).replace(',', '');
+});
+
+onUnmounted(() => {
+  stopRotation();
+});
+
+const isFormValid = computed(() => 
+  form.coffeeShopAddress.trim() && 
+  form.emotionalRelease.trim() && 
+  form.factualAnalysis.trim() && 
+  form.constructiveSuggestions.trim() && 
+  form.name.trim() && 
+  form.telegramPhone.trim() && 
+  form.consent
+);
+
+async function submitForm() {
+  if (!isFormValid.value) return;
+  isSubmitting.value = true;
+  const formData = { 
+    _subject: `Новый Сигнал ${formattedTicketNumber.value} от ${form.name} (Корж, ${form.coffeeShopAddress})`, 
+    "Код тикета": rawTicketNumber.value, 
+    "Дата": currentDate.value, 
+    "Кофейня": `Корж, ${form.coffeeShopAddress}`,
+    "Имя": form.name, 
+    "1. Эмоции": form.emotionalRelease, 
+    "2. Детали": form.factualAnalysis, 
+    "3. Решение": form.constructiveSuggestions, 
+    "Контакт в Telegram": form.telegramPhone 
+  };
+  try {
+    const response = await fetch('https://formspree.io/f/mdkzjopz', { 
+      method: 'POST', 
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, 
+      body: JSON.stringify(formData) 
+    });
+    if (!response.ok) throw new Error('Ошибка сервера');
+    formSubmitted.value = true;
+  } catch (error) {
+    console.error('Ошибка отправки:', error);
+    alert('Не удалось отправить отзыв. Попробуйте позже.');
+  } finally { 
+    isSubmitting.value = false; 
+  }
+}
+</script>
+
 <style scoped>
-/* Основные контейнеры */
-.signal-widget-content { 
-  padding: 32px; 
-  max-height: calc(100vh - 80px); 
-  overflow-y: auto; 
-  scroll-behavior: smooth; 
+:root { 
+  --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+  --signal-font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace; 
 }
-.signal-widget-header, 
-.signal-branches-header { 
+
+.signal-form-wrapper { 
+  font-family: var(--signal-font-sans); 
+  max-width: 640px; 
+  margin: 40px auto; 
+  background-color: #1E1E20; 
+  border-radius: 24px; 
+  padding: 2rem; 
+  color: #f0f0f0; 
+  border: 1px solid #2c2c2f; 
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); 
+}
+
+.signal-form-header { 
   display: flex; 
   justify-content: space-between; 
   align-items: center; 
-  margin-bottom: 24px; 
+  margin-bottom: 2rem; 
+  padding-bottom: 1rem; 
+  border-bottom: 1px solid #2c2c2f; 
 }
-.signal-header-title, 
-.signal-branches-title { 
-  margin: 0; 
-  color: white; 
-  font-size: 26px; 
-  font-weight: 700; 
-  line-height: 1.2; 
-  text-align: left; 
-  flex-grow: 1; 
-}
-.signal-header-subtitle { 
-  margin-top: 8px; 
-  font-size: 15px; 
-  color: var(--vp-c-text-2); 
-}
-.signal-branches-header { 
-  padding-bottom: 20px; 
-  border-bottom: 2px solid var(--vp-c-border); 
-}
-.signal-branches-title { 
-  text-align: center; 
-}
-/* Кнопки навигации */
-.signal-internal-close-btn { 
-  background: var(--vp-c-bg-mute); 
-  border: 2px solid var(--vp-c-border); 
-  border-radius: 50%; 
-  width: 44px; 
-  height: 44px; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  cursor: pointer; 
-  color: var(--vp-c-text-2); 
-  transition: all 0.3s ease; 
-  flex-shrink: 0; 
-}
-.signal-close-btn:hover { 
-  background: linear-gradient(135deg, #991b1b, #ef4444); 
-  border-color: #ef4444; 
-  color: white; 
-  transform: rotate(90deg); 
-}
-.signal-back-btn:hover { 
-  background: var(--vp-c-bg-soft); 
-  border-color: var(--vp-c-text-2); 
-  color: white; 
-}
-/* Основная карточка */
-.signal-main-card { 
-  background: var(--vp-c-bg-soft); 
-  border-radius: 20px; 
-  padding: 24px; 
-}
-.signal-establishment-header { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  margin-bottom: 24px; 
-}
-.signal-cafe-name { 
-  margin: 0; 
-  color: #FFFFFF; 
-  font-size: 24px; 
+
+.signal-form-title { 
+  font-size: 1.5rem; 
   font-weight: 600; 
+  color: #fff; 
+  margin: 0; 
 }
-.signal-status-badge { 
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1)); 
-  color: rgba(255, 255, 255, 0.7); 
-  border: 1px solid rgba(255, 255, 255, 0.1); 
-  padding: 6px 16px; 
-  border-radius: 20px; 
-  font-size: 12px; 
+
+.signal-tech-info { 
+  display: flex; 
+  align-items: center; 
+  gap: 1rem; 
+  font-family: var(--signal-font-mono); 
+  font-size: 0.9rem; 
+  color: #888; 
+}
+
+.signal-ticket-display { 
+  background-color: #2a2a2e; 
+  color: #C5F946; 
   font-weight: 700; 
-  white-space: nowrap; 
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3); 
-  text-transform: uppercase; 
-  letter-spacing: 0.5px; 
+  padding: 0.5rem 1rem; 
+  border-radius: 12px; 
+  letter-spacing: 1px; 
+  font-family: var(--signal-font-mono); 
 }
-/* Сетка статистики */
-.signal-stats-grid { 
-  display: grid; 
-  grid-template-columns: 1fr 1fr 1fr; 
-  gap: 16px; 
-}
-.signal-stat-card { 
-  position: relative; 
-  border-radius: 22px; 
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
-  overflow: hidden; 
-  background: var(--vp-c-bg-soft); 
-}
-.signal-stat-card:hover { 
-  transform: translateY(-8px); 
-}
-.signal-stat-card::before { 
-  content: ''; 
-  position: absolute; 
-  inset: 0; 
-  border-radius: 22px; 
-  padding: 2px; 
-  background: var(--signal-border-gradient); 
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); 
-  -webkit-mask-composite: xor; 
-  mask-composite: exclude; 
-  transition: filter 0.4s ease; 
-  z-index: 3; 
-}
-.signal-stat-card:hover::before { 
-  filter: brightness(2) saturate(1.5); 
-}
-/* Цветовые схемы карточек */
-.signal-branches-card { 
-  --signal-border-gradient: linear-gradient(135deg, #3730a3, #8b5cf6, #c4b5fd); 
-  --signal-glow-color: rgba(139, 92, 246, 0.25); 
-  --signal-glow-hover-color: rgba(139, 92, 246, 0.6); 
-}
-.signal-index-card { 
-  --signal-border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946); 
-  --signal-glow-color: rgba(197, 249, 70, 0.25); 
-  --signal-glow-hover-color: rgba(197, 249, 70, 0.6); 
-}
-.signal-reviews-card { 
-  --signal-border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d); 
-  --signal-glow-color: rgba(245, 158, 11, 0.25); 
-  --signal-glow-hover-color: rgba(245, 158, 11, 0.6); 
-}
-/* Содержимое карточек */
-.signal-stat-content { 
-  background: radial-gradient(circle at 50% 0%, var(--signal-glow-color) 0%, transparent 70%); 
-  border-radius: 20px; 
-  padding: 20px; 
+
+.signal-form-section { 
   display: flex; 
   flex-direction: column; 
-  align-items: center; 
+  gap: 1.5rem; 
+}
+
+.signal-personal-data-section { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 1rem; 
+}
+
+.signal-question-block { 
+  background-color: #2a2a2e; 
+  border-radius: 16px; 
+  padding: 1.25rem; 
+  border: 1px solid #3a3a3e; 
+  border-left: 4px solid var(--accent-color, #444); 
+}
+
+.signal-question-block.signal-compact { 
+  padding: 1rem; 
+  border-left-width: 0; 
+  display: flex; 
+  flex-direction: column; 
   justify-content: space-between; 
-  height: 100%; 
-  text-align: center; 
-  box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3); 
-  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
-  position: relative; 
-  z-index: 2; 
 }
-.signal-stat-card:hover .signal-stat-content { 
-  background: radial-gradient(circle at 50% 0%, var(--signal-glow-hover-color) 0%, transparent 70%); 
-  box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4); 
-}
-.signal-stat-icon, 
-.signal-stat-value, 
-.signal-stat-label { 
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
-}
-.signal-stat-icon { 
-  font-size: 28px; 
-  opacity: 0.8; 
-  height: 32px; 
-}
-.signal-stat-card:hover .signal-stat-icon { 
-  transform: scale(1.2); 
-}
-.signal-stat-value { 
-  font-family: 'Inter', sans-serif; 
-  font-size: 3.2rem; 
+
+.signal-direction-label { 
   font-weight: 600; 
-  line-height: 1; 
-  color: #fff; 
-  margin: 12px 0; 
-  text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); 
+  font-size: 0.75rem; 
+  color: #888; 
+  text-transform: uppercase; 
+  letter-spacing: 0.05em; 
+  margin-bottom: 0.5rem; 
+  display: block; 
 }
-.signal-stat-card:hover .signal-stat-value { 
-  transform: scale(1.15); 
-  text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); 
+
+.signal-question-help { 
+  font-size: 0.8rem; 
+  color: #888; 
+  margin-bottom: 0.75rem; 
+  line-height: 1.4; 
 }
-.signal-stat-label { 
-  font-size: 11px; 
+
+.signal-rotating-phrase-container { 
+  height: 52px; 
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: flex-start; 
+  overflow: hidden; 
+}
+
+.signal-question-label { 
   font-weight: 500; 
-  color: rgba(255, 255, 255, 0.7); 
+  font-size: 1rem; 
+  margin: 0; 
+  color: #f0f0f0;
+  line-height: 1.3; 
+  width: 100%;
+}
+
+.fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+
+.signal-address-select { 
+  width: 100%; 
+  background-color: #242426; 
+  border: 1px solid #444; 
+  border-radius: 10px; 
+  padding: 0.75rem 1rem; 
+  font-size: 0.95rem; 
+  color: #f0f0f0; 
+  transition: all 0.3s ease; 
+  font-family: var(--signal-font-sans); 
+}
+
+.signal-address-select:focus { 
+  outline: none; 
+  border-color: #C5F946; 
+  background-color: #2a2a2e; 
+  box-shadow: 0 0 0 3px rgba(197, 249, 70, 0.2); 
+}
+
+.signal-address-select option { 
+  background-color: #2a2a2e; 
+  color: #f0f0f0; 
+}
+
+.signal-address-select option:disabled { color: #666; }
+
+.signal-separator-line { 
+  height: 1px; 
+  background: linear-gradient(90deg, transparent, #2c2c2f 20%, #2c2c2f 80%, transparent); 
+  margin: 2rem 0 1.5rem 0; 
+}
+
+textarea, input { 
+  width: 100%; 
+  background-color: #242426; 
+  border: 1px solid #444; 
+  border-radius: 10px; 
+  padding: 0.75rem 1rem; 
+  font-size: 0.95rem; 
+  color: #f0f0f0; 
+  transition: all 0.3s ease; 
+  font-family: var(--signal-font-sans); 
+}
+
+textarea:focus, input:focus { 
+  outline: none; 
+  border-color: var(--accent-color); 
+  background-color: #2a2a2e; 
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); 
+}
+
+::placeholder { color: #666; }
+
+/* Стили для подсказок-баблов */
+.signal-suggestions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.signal-suggestion-bubble {
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  user-select: none;
+}
+
+.signal-emotion-bubble {
+  background: rgba(169, 114, 255, 0.1);
+  border-color: rgba(169, 114, 255, 0.3);
+  color: #A972FF;
+}
+
+.signal-emotion-bubble:hover {
+  background: #A972FF;
+  color: #000;
+  transform: scale(1.05);
+}
+
+.signal-fact-bubble {
+  background: rgba(61, 220, 132, 0.1);
+  border-color: rgba(61, 220, 132, 0.3);
+  color: #3DDC84;
+}
+
+.signal-fact-bubble:hover {
+  background: #3DDC84;
+  color: #000;
+  transform: scale(1.05);
+}
+
+.signal-solution-bubble {
+  background: rgba(255, 184, 0, 0.1);
+  border-color: rgba(255, 184, 0, 0.3);
+  color: #FFB800;
+}
+
+.signal-solution-bubble:hover {
+  background: #FFB800;
+  color: #000;
+  transform: scale(1.05);
+}
+
+/* Кнопка сброса к начальным вариантам */
+.signal-reset-bubble {
+  font-weight: 600;
+  opacity: 0.8;
+  font-size: 0.75rem;
+  border-style: dashed !important;
+}
+
+.signal-reset-bubble:hover {
+  opacity: 1;
+}
+
+.signal-example-hint { 
+  font-size: 0.8rem; 
+  color: #777; 
+  margin: 0.5rem 0 0 0.25rem; 
+}
+
+.signal-example-hint b { 
+  color: #aaa; 
+  font-weight: 600; 
+}
+
+.signal-section-divider { 
+  margin: 2.5rem 0; 
+  text-align: center; 
+  position: relative; 
+  color: #888; 
+  font-weight: 500; 
+  font-size: 0.8rem; 
   text-transform: uppercase; 
   letter-spacing: 0.1em; 
 }
-.signal-stat-card:hover .signal-stat-label { 
+
+.signal-section-divider::before, .signal-section-divider::after { 
+  content: ''; 
+  position: absolute; 
+  top: 50%; 
+  width: calc(50% - 90px); 
+  height: 1px; 
+  background: #2c2c2f; 
+}
+
+.signal-section-divider::before { left: 0; } 
+.signal-section-divider::after { right: 0; }
+
+/* ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЙ ПОДВАЛ БЕЗ НАЕЗДОВ */
+.signal-form-footer { 
+  margin-top: 2rem; 
+  padding-top: 1.5rem;
+  border-top: 1px solid #2c2c2f;
+  display: flex; 
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.signal-checkbox-wrapper {
+  width: 100%;
+}
+
+.signal-checkbox-group { 
+  display: flex; 
+  align-items: flex-start; 
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.signal-checkbox-group input { 
+  accent-color: #00C2FF; 
+  flex-shrink: 0; 
+  margin-top: 0.1rem;
+}
+
+.signal-checkbox-group label { 
+  font-size: 0.85rem; 
+  color: #999; 
+  line-height: 1.4; 
+  flex: 1;
+  min-width: 0;
+}
+
+.signal-policy-link { 
+  color: #b0b0b0; 
+  text-decoration: none; 
+} 
+
+.signal-policy-link:hover { 
+  text-decoration: underline; 
+}
+
+.signal-submit-btn { 
+  background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%); 
+  color: #fff; 
+  font-weight: 600; 
+  font-size: 1rem; 
+  border: none; 
+  border-radius: 12px; 
+  padding: 0.9rem 2rem; 
+  cursor: pointer; 
+  transition: all 0.4s ease-out; 
+  background-size: 200% auto; 
+  background-position: 25% 50%; 
+  width: 100%;
+  align-self: stretch;
+}
+
+.signal-submit-btn:hover:not(:disabled) { 
+  background-position: 75% 50%; 
+  transform: scale(1.02); 
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); 
+}
+
+.signal-submit-btn:disabled { 
+  opacity: 0.5; 
+  cursor: not-allowed; 
+}
+
+.signal-success-message { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  text-align: center; 
+  padding: 4rem 2rem 2rem 2rem; 
+  animation: fadeIn 0.5s ease-out; 
+}
+
+.signal-success-text h3 { 
+  font-size: 1.5rem; 
+  font-weight: 600; 
+  color: #fff; 
+  margin: 0 0 0.5rem 0; 
+}
+
+.signal-success-text p { 
+  color: #b0b0b0; 
+  line-height: 1.6; 
+  margin: 0; 
+}
+
+.signal-telegram-button { 
+  display: inline-block; 
+  background-color: #C5F946; 
+  color: #000000; 
+  text-decoration: none; 
+  padding: 0.8rem 1.5rem; 
+  border-radius: 12px; 
+  font-weight: 600; 
+  margin-top: 1.5rem; 
+  transition: background-color 0.3s, transform 0.3s; 
+}
+
+.signal-telegram-button:hover { 
+  background-color: #d6ff6a; 
   transform: scale(1.05); 
 }
-/* Статус системы */
-.signal-system-status-bar { 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  gap: 12px; 
-  margin: 20px 0 16px 0; 
-  padding: 10px 16px; 
-  background: rgba(255, 255, 255, 0.03); 
-  border-radius: 12px; 
-  border: 1px solid rgba(255, 255, 255, 0.06); 
+
+.signal-secondary-link { 
+  display: block; 
+  margin-top: 1.5rem; 
+  font-size: 0.85rem; 
+  color: #888; 
+  text-decoration: none; 
+  border-bottom: none !important; 
+  transition: color 0.3s; 
 }
-.signal-status-label { 
-  font-size: 12px; 
-  font-weight: 600; 
-  color: rgba(255, 255, 255, 0.7); 
-  margin-right: 8px; 
-  flex-shrink: 0; 
+
+.signal-secondary-link:hover { 
+  color: #C5F946; 
+  text-decoration: underline !important; 
+  border-bottom: none !important; 
 }
-.signal-status-metrics { 
-  display: flex; 
-  align-items: center; 
-  gap: 8px; 
+
+@keyframes fadeIn { 
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  } 
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  } 
 }
-.signal-status-metric { 
-  display: flex; 
-  align-items: baseline; 
-  gap: 4px; 
-}
-.signal-metric-time { 
-  font-size: 12px; 
-  font-weight: 700; 
-  color: rgba(255, 255, 255, 0.9); 
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace; 
-  min-width: 32px; 
-  text-align: right; 
-  transition: all 0.3s ease; 
-}
-.signal-metric-text { 
-  font-size: 11px; 
-  font-weight: 500; 
-  color: rgba(255, 255, 255, 0.6); 
-}
-.signal-status-separator { 
-  color: rgba(255, 255, 255, 0.3); 
-  font-size: 12px; 
-  margin: 0 4px; 
-}
-/* Пульт управления */
-.signal-control-panel { 
-  margin-top: 24px; 
-}
-.signal-control-panel-header { 
-  display: flex; 
-  align-items: center; 
-  gap: 8px; 
-  margin-bottom: 12px; 
-  padding: 0 8px; 
-  font-size: 14px; 
-  font-weight: 600; 
-}
-.signal-info-link { 
-  color: rgba(255, 255, 255, 0.5); 
-  display: flex; 
-  align-items: center; 
-  transition: color 0.3s ease; 
-  flex-shrink: 0; 
-}
-.signal-info-link:hover, 
-.signal-info-link:focus { 
-  color: white; 
-}
-.signal-info-button { 
-  background: transparent; 
-  border: none; 
-  cursor: pointer; 
-}
-.signal-static-prompt { 
-  color: white; 
-  margin-right: 8px; 
-  flex-shrink: 0; 
-}
-.signal-rotating-text-container { 
-  flex-grow: 1; 
-  text-align: left; 
-  color: rgba(255, 255, 255, 0.7); 
-  min-height: 36px; 
-  display: flex; 
-  align-items: center;
-}
-.signal-rotating-text { 
-  transition: opacity 0.5s ease-in-out; 
-  line-height: 1.2; 
-}
-.signal-rotating-text:not(.signal-show) { 
-  opacity: 0; 
-}
-.signal-button-container { 
-  display: flex; 
-  gap: 6px; 
-  background-color: var(--vp-c-bg); 
-  border: 1px solid var(--vp-c-divider); 
-  border-radius: 20px; 
-  padding: 6px; 
-}
-.signal-action-button { 
-  flex: 1; 
-  padding: 14px 20px; 
-  border-radius: 16px; 
-  border: none; 
-  font-size: 16px; 
-  font-weight: 700; 
-  cursor: pointer; 
-  transition: all 0.3s ease; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  gap: 8px; 
-}
-.signal-ticket-button { 
-  background: rgba(70, 70, 70, 0.8); 
-  color: rgba(255, 255, 255, 0.9); 
-}
-.signal-ticket-button:hover { 
-  background: rgba(85, 85, 85, 0.9); 
-  color: white; 
-  transform: translateY(-2px); 
-}
-.signal-review-button { 
-  background: linear-gradient(135deg, #f59e0b, #fcd34d); 
-  color: #422006; 
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); 
-}
-.signal-review-button:hover { 
-  transform: translateY(-2px); 
-  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); 
-}
-.signal-button-icon { 
-  transition: transform 0.3s ease; 
-}
-.signal-review-button:hover .signal-button-icon { 
-  transform: translateX(4px); 
-}
-/* Список филиалов */
-.signal-branches-content { 
-  flex-grow: 1; 
-}
-.signal-branches-subtitle { 
-  margin: 0 0 16px 0; 
-  font-size: 16px; 
-  color: var(--vp-c-text-2); 
-}
-.signal-branches-list { 
-  padding: 0; 
-}
-.signal-branch-item { 
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  width: 100%; 
-  padding: 18px; 
-  margin-bottom: 12px; 
-  background: var(--vp-c-bg-soft); 
-  border: 2px solid var(--vp-c-border); 
-  border-radius: 16px; 
-  cursor: pointer; 
-  transition: all 0.3s ease; 
-  text-align: left; 
-}
-.signal-branch-item:hover { 
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), var(--vp-c-bg-soft)); 
-  border-color: #f59e0b; 
-  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.1); 
-  transform: translateX(4px); 
-}
-.signal-branch-info { 
-  display: flex; 
-  align-items: center; 
-  gap: 16px; 
-  flex: 1; 
-  overflow: hidden; 
-}
-.signal-branch-number { 
-  background: linear-gradient(135deg, #f59e0b, #fcd34d); 
-  color: #422006; 
-  width: 32px; 
-  height: 32px; 
-  border-radius: 50%; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  font-size: 14px; 
-  font-weight: 700; 
-  flex-shrink: 0; 
-  transition: all 0.3s ease; 
-  box-shadow: none; 
-}
-.signal-branch-item:hover .signal-branch-number { 
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(245, 158, 11, 0.5); 
-}
-.signal-branch-address { 
-  font-weight: 600; 
-  font-size: 16px; 
-  color: var(--vp-c-text-1); 
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
-}
-.signal-branch-action { 
-  color: #f59e0b; 
-  transition: transform 0.3s ease; 
-  margin-left: 12px; 
-}
-.signal-branch-item:hover .signal-branch-action { 
-  transform: translateX(4px); 
-}
-/* Модальное окно */
-.signal-modal-overlay { 
-  position: fixed; 
-  inset: 0; 
-  background: rgba(0,0,0,0.6); 
-  backdrop-filter: blur(8px);
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  z-index: 1000; 
-}
-.signal-modal { 
-  background: var(--vp-c-bg, #111); 
-  color: var(--vp-c-text-1, #fff); 
-  border: 1px solid var(--vp-c-border, rgba(255,255,255,0.12)); 
-  border-radius: 12px; 
-  width: min(520px, 96vw); 
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4); 
-  padding: 32px; 
-}
-.signal-modal-header { 
-  display: flex; 
-  align-items: center; 
-  justify-content: flex-start; 
-  gap: 12px; 
-}
-.signal-modal-title { 
-  font-weight: 700; 
-  font-size: 16px; 
-}
-.signal-modal-body { 
-  margin-top: 16px; 
-  font-size: 14px; 
-  color: var(--vp-c-text-1); 
-  line-height: 1.5; 
-}
-.signal-modal-link {
-  color: #A3E635;
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.3s ease;
-}
-.signal-modal-link:hover {
-  color: #C5F946;
-  text-decoration: underline;
-}
-.signal-modal-footer { 
-  margin-top: 24px; 
-  display: flex; 
-  justify-content: flex-end; 
-}
-.signal-modal-ok { 
-  background: var(--vp-c-bg-mute, #222); 
-  border: 1px solid var(--vp-c-border); 
-  color: var(--vp-c-text-1); 
-  border-radius: 8px; 
-  padding: 10px 16px; 
-  cursor: pointer; 
-  font-weight: 500; 
-}
-.signal-modal-ok:hover { 
-  background: var(--vp-c-bg-soft, #333); 
-}
-/* Адаптивность */
-@media (max-width: 768px) {
-  .signal-widget-content { 
-    padding: 24px; 
-  }
-  .signal-main-card { 
-    padding: 16px; 
-  }
-  .signal-stats-grid { 
+
+@media (max-width: 768px) { 
+  .signal-form-wrapper { 
+    padding: 1.5rem; 
+  } 
+  
+  .signal-personal-data-section { 
     grid-template-columns: 1fr; 
-    gap: 12px; 
-  }
-  .signal-stat-card { 
-    display: flex; 
-    flex-direction: row; 
-    align-items: center; 
-    border-radius: 16px; 
-    transition: none; 
-  }
-  .signal-stat-card:hover { 
-    transform: none; 
-  }
-  .signal-stat-content { 
-    flex-direction: row; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 12px 16px; 
-    width: 100%; 
-    background: none !important; 
-    box-shadow: none !important; 
-  }
-  .signal-stat-left-group { 
-    display: flex; 
-    align-items: center; 
-    gap: 16px; 
-  }
-  .signal-stat-icon { 
-    font-size: 28px; 
-    line-height: 1; 
-    display: flex; 
-    align-items: center; 
-  }
-  .signal-stat-value { 
-    font-size: 2rem; 
-    font-weight: 600; 
-    margin: 0; 
-  }
-  .signal-stat-label { 
-    font-size: 16px; 
-    font-weight: 500; 
-    color: rgba(255, 255, 255, 0.9); 
-    text-transform: uppercase; 
-    letter-spacing: 0.05em; 
-  }
-  .signal-button-container { 
+  } 
+  
+  .signal-form-header { 
     flex-direction: column; 
-    gap: 8px; 
+    align-items: flex-start; 
+    gap: 0.5rem; 
   }
-  .signal-action-button:hover { 
-    transform: none; 
+  
+  .signal-rotating-phrase-container {
+    height: 65px; 
   }
-  .signal-system-status-bar { 
-    flex-direction: column; 
-    gap: 8px; 
-    padding: 12px; 
+  
+  .signal-question-label {
+    font-size: 0.95rem;
   }
-  .signal-status-metrics { 
-    gap: 12px; 
+
+  .signal-suggestions-container {
+    gap: 0.4rem;
+  }
+  
+  .signal-suggestion-bubble {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.7rem;
+  }
+
+  /* Мобильный подвал остается вертикальным */
+  .signal-form-footer {
+    gap: 1.25rem;
+  }
+
+  .signal-checkbox-group {
+    gap: 0.5rem;
+  }
+
+  .signal-checkbox-group label {
+    font-size: 0.8rem;
   }
 }
+
+/* Дополнительная адаптивность для очень узких экранов */
 @media (max-width: 480px) {
-  .signal-widget-content { 
-    padding: 20px; 
+  .signal-checkbox-group {
+    align-items: flex-start;
   }
-  .signal-header-title { 
-    font-size: 22px; 
-    text-align: left; 
-  }
-  .signal-header-subtitle { 
-    font-size: 14px; 
-  }
-  .signal-branches-title { 
-    font-size: 22px; 
-    text-align: center;
-  }
-  .signal-branches-subtitle { 
-    font-size: 14px; 
-  }
-  .signal-cafe-name { 
-    font-size: 20px; 
-  }
-  .signal-status-badge { 
-    padding: 4px 12px; 
-    font-size: 10px; 
-  }
-  .signal-status-metrics { 
-    gap: 8px; 
-  }
-  .signal-metric-time { 
-    font-size: 11px; 
-    min-width: 28px; 
-  }
-  .signal-metric-text { 
-    font-size: 10px; 
-  }
-  .signal-modal { 
-    padding: 24px; 
-  }
-  .signal-modal-body { 
-    margin-top: 12px; 
-  }
-  .signal-modal-footer { 
-    margin-top: 20px; 
+  
+  .signal-checkbox-group input {
+    margin-top: 0.2rem;
   }
 }
 </style>
