@@ -27,7 +27,7 @@ notification: brew
   <Badge type="tip" text="Требуется Сопровождение" style="position: relative; top: 2px;" />
 </div>
 
-## В 3 раза меньше эскалация конфликтов
+## Снижение эскалации конфликтов в 3 раза
 
 <Dialogs3Cards />
 
