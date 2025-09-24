@@ -31,6 +31,35 @@ notification: brew
 
 <Dialogs3Cards />
 
+## Система подсказок
+
+### Сигнал собирает гораздо более детализированную обратную связь от гостей кофеен, чем обычные формы отзывов
+
+- **Быстрое заполнение**: клик по баблам автоматически формирует связный текст
+- **Гибкость**: можно писать вручную или комбинировать с подсказками
+- **Структурированность**: получаются качественные данные для анализа
+
+Все данные из реальных инцидентов Регламента: проблемы с ожиданием, санитарные нарушения, конкретные случаи вроде «комочки в матче» и «трогали трубочку грязными руками».
+
+<br>
+
+<div style="text-align: center; margin: 2rem 0;">
+  <img 
+    src="/SignalVSReview.jpg" 
+    alt="BREW intro"
+    style="
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      border-radius: max(12px, min(24px, 3vw));
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    "
+    onmouseover="this.style.transform='scale(1.02)'"
+    onmouseout="this.style.transform='scale(1)'"
+  />
+</div>
+
 ## Полный цикл 3ч → 24ч
 
 <DialogsSteps />
