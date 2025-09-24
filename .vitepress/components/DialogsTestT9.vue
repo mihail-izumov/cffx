@@ -167,8 +167,9 @@ onUnmounted(() => {
 
 .signal-demo-wrapper { 
   font-family: var(--signal-font-sans); 
-  max-width: 640px; 
-  margin: 40px auto; 
+  width: 100%; 
+  max-width: none; 
+  margin: 0; 
   background-color: #1E1E20; 
   border-radius: 24px; 
   padding: 2rem; 
@@ -300,7 +301,6 @@ textarea:focus {
 @media (max-width: 768px) { 
   .signal-demo-wrapper { 
     padding: 1.5rem; 
-    margin: 20px auto;
   } 
   
   .signal-rotating-phrase-container {
