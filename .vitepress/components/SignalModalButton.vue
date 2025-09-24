@@ -38,28 +38,14 @@
         class="signal-modal-content"
         @click.stop
       >
-        <!-- Контейнер для изоляции компонента -->
-        <div class="signal-configurator-container">
-          <SignalT9Configurator />
-        </div>
-        
-        <!-- Кнопка закрытия -->
-        <button 
-          class="signal-modal-close"
-          @click="closeModal"
-          aria-label="Закрыть"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
+        <SignalT9Configurator />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import SignalT9Configurator from './SignalT9Configurator.vue'
 
 const isModalOpen = ref(false)
@@ -81,6 +67,8 @@ const handleKeydown = (event) => {
   }
 }
 
+import { onMounted, onUnmounted } from 'vue'
+
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
 })
@@ -91,12 +79,9 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Wrapper - изолированный контейнер */
+/* Wrapper */
 .signal-modal-wrapper {
   display: inline-block;
-  /* Сброс возможных наследуемых стилей */
-  all: initial;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 /* Стили кнопки - только для этого компонента */
@@ -115,7 +100,6 @@ onUnmounted(() => {
   transition: all 0.2s ease;
   min-width: 220px;
   gap: 12px;
-  box-sizing: border-box;
 }
 
 .signal-modal-button:hover {
@@ -131,7 +115,6 @@ onUnmounted(() => {
 .signal-modal-button-text {
   flex: 1;
   text-align: left;
-  font-family: inherit;
 }
 
 .signal-modal-icon-container {
@@ -144,13 +127,11 @@ onUnmounted(() => {
   justify-content: center;
   transition: all 0.2s ease;
   flex-shrink: 0;
-  box-sizing: border-box;
 }
 
 .signal-modal-text-cursor-icon {
   color: #6d6d70;
   transition: color 0.2s ease;
-  display: block;
 }
 
 .signal-modal-button:hover .signal-modal-text-cursor-icon {
@@ -172,71 +153,30 @@ onUnmounted(() => {
   z-index: 9999;
   padding: 20px;
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 .signal-modal-content {
   background: #1e1e20;
-  border-radius: 24px;
-  position: relative;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  /* Оптимальные размеры для компонента */
-  width: min(800px, 95vw);
-  height: min(700px, 90vh);
+  border-radius: 16px;
+  padding: 32px;
+  /* Фиксированные размеры */
+  width: 650px;
+  height: 680px;
   max-width: 95vw;
   max-height: 90vh;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-/* Контейнер для изоляции компонента SignalT9Configurator */
-.signal-configurator-container {
-  width: 100%;
-  height: 100%;
   overflow-y: auto;
-  padding: 0;
-  margin: 0;
-  /* Сброс всех возможных стилей */
-  border: none;
-  background: transparent;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  color: white;
   box-sizing: border-box;
-  /* Изоляция от родительских стилей */
-  all: revert;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-}
-
-/* Кнопка закрытия */
-.signal-modal-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  z-index: 10;
-  backdrop-filter: blur(10px);
-  box-sizing: border-box;
-}
-
-.signal-modal-close:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.9);
-  transform: scale(1.05);
 }
 
 /* Адаптивность только для модального окна */
-@media (max-width: 850px) {
+@media (max-width: 700px) {
   .signal-modal-content {
     width: 95vw;
-    height: 90vh;
+    height: 85vh;
+    padding: 24px;
   }
 }
 
@@ -258,25 +198,8 @@ onUnmounted(() => {
   }
   
   .signal-modal-content {
-    width: 95vw;
-    height: 85vh;
-    border-radius: 16px;
-  }
-  
-  .signal-modal-overlay {
-    padding: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .signal-modal-content {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-  }
-  
-  .signal-modal-overlay {
-    padding: 0;
+    padding: 20px;
+    height: 80vh;
   }
 }
 
@@ -306,24 +229,5 @@ onUnmounted(() => {
   .signal-modal-button:hover .signal-modal-text-cursor-icon {
     color: #ffffff;
   }
-}
-
-/* Стили прокрутки для контейнера компонента */
-.signal-configurator-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.signal-configurator-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-
-.signal-configurator-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-}
-
-.signal-configurator-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
 }
 </style>
