@@ -23,31 +23,33 @@
       <!-- Секция "Эмоции и чувства" -->
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #A972FF;">
-          <p class="signal-direction-label">Эмоции и чувства</p>
+          <!-- Заголовок секции с кнопкой копирования -->
+          <div class="signal-section-header">
+            <p class="signal-direction-label">Эмоции и чувства</p>
+            <button 
+              v-if="form.emotionalRelease.trim()"
+              class="signal-liquid-copy-btn signal-emotion-copy"
+              @click="copyToClipboard(form.emotionalRelease, 'emotions')"
+              :disabled="copyStatus.emotions === 'copying'"
+            >
+              <span class="signal-liquid-copy-text">
+                {{ copyStatus.emotions === 'copied' ? '✓' : copyStatus.emotions === 'copying' ? '...' : '📋' }}
+              </span>
+            </button>
+          </div>
+          
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
             </transition>
           </div>
-          
-          <!-- Контейнер для текстового поля и кнопки копирования -->
-          <div class="signal-textarea-container">
-            <textarea 
-              v-model="form.emotionalRelease" 
-              @focus="startRotation(1)" 
-              rows="3" 
-              placeholder="Разочарован ожиданиями..." 
-              required>
-            </textarea>
-            <button 
-              v-if="form.emotionalRelease.trim()"
-              class="signal-copy-btn signal-emotion-copy"
-              @click="copyToClipboard(form.emotionalRelease, 'emotions')"
-              :disabled="copyStatus.emotions === 'copying'"
-            >
-              {{ copyStatus.emotions === 'copied' ? '✓ Скопировано' : copyStatus.emotions === 'copying' ? 'Копирование...' : 'Скопировать' }}
-            </button>
-          </div>
+          <textarea 
+            v-model="form.emotionalRelease" 
+            @focus="startRotation(1)" 
+            rows="3" 
+            placeholder="Разочарован ожиданиями..." 
+            required>
+          </textarea>
           
           <!-- Подсказки-баблы для эмоций -->
           <div class="signal-suggestions-container">
@@ -76,31 +78,33 @@
       <!-- Секция "Детали проблемы" -->
       <div v-if="selectedSection === 'facts'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #3DDC84;">
-          <p class="signal-direction-label">Детали проблемы</p>
+          <!-- Заголовок секции с кнопкой копирования -->
+          <div class="signal-section-header">
+            <p class="signal-direction-label">Детали проблемы</p>
+            <button 
+              v-if="form.factualAnalysis.trim()"
+              class="signal-liquid-copy-btn signal-fact-copy"
+              @click="copyToClipboard(form.factualAnalysis, 'facts')"
+              :disabled="copyStatus.facts === 'copying'"
+            >
+              <span class="signal-liquid-copy-text">
+                {{ copyStatus.facts === 'copied' ? '✓' : copyStatus.facts === 'copying' ? '...' : '📋' }}
+              </span>
+            </button>
+          </div>
+          
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
             </transition>
           </div>
-          
-          <!-- Контейнер для текстового поля и кнопки копирования -->
-          <div class="signal-textarea-container">
-            <textarea 
-              v-model="form.factualAnalysis" 
-              @focus="startRotation(2)" 
-              rows="3" 
-              placeholder="Опишите факты: что, когда и где произошло..." 
-              required>
-            </textarea>
-            <button 
-              v-if="form.factualAnalysis.trim()"
-              class="signal-copy-btn signal-fact-copy"
-              @click="copyToClipboard(form.factualAnalysis, 'facts')"
-              :disabled="copyStatus.facts === 'copying'"
-            >
-              {{ copyStatus.facts === 'copied' ? '✓ Скопировано' : copyStatus.facts === 'copying' ? 'Копирование...' : 'Скопировать' }}
-            </button>
-          </div>
+          <textarea 
+            v-model="form.factualAnalysis" 
+            @focus="startRotation(2)" 
+            rows="3" 
+            placeholder="Опишите факты: что, когда и где произошло..." 
+            required>
+          </textarea>
           
           <!-- Подсказки-баблы для деталей -->
           <div class="signal-suggestions-container">
@@ -129,31 +133,33 @@
       <!-- Секция "Предложение решения" -->
       <div v-if="selectedSection === 'solutions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #FFB800;">
-          <p class="signal-direction-label">Предложение решения</p>
+          <!-- Заголовок секции с кнопкой копирования -->
+          <div class="signal-section-header">
+            <p class="signal-direction-label">Предложение решения</p>
+            <button 
+              v-if="form.constructiveSuggestions.trim()"
+              class="signal-liquid-copy-btn signal-solution-copy"
+              @click="copyToClipboard(form.constructiveSuggestions, 'solutions')"
+              :disabled="copyStatus.solutions === 'copying'"
+            >
+              <span class="signal-liquid-copy-text">
+                {{ copyStatus.solutions === 'copied' ? '✓' : copyStatus.solutions === 'copying' ? '...' : '📋' }}
+              </span>
+            </button>
+          </div>
+          
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
             </transition>
           </div>
-          
-          <!-- Контейнер для текстового поля и кнопки копирования -->
-          <div class="signal-textarea-container">
-            <textarea 
-              v-model="form.constructiveSuggestions" 
-              @focus="startRotation(3)" 
-              rows="3" 
-              placeholder="Предложите, как это можно исправить..." 
-              required>
-            </textarea>
-            <button 
-              v-if="form.constructiveSuggestions.trim()"
-              class="signal-copy-btn signal-solution-copy"
-              @click="copyToClipboard(form.constructiveSuggestions, 'solutions')"
-              :disabled="copyStatus.solutions === 'copying'"
-            >
-              {{ copyStatus.solutions === 'copied' ? '✓ Скопировано' : copyStatus.solutions === 'copying' ? 'Копирование...' : 'Скопировать' }}
-            </button>
-          </div>
+          <textarea 
+            v-model="form.constructiveSuggestions" 
+            @focus="startRotation(3)" 
+            rows="3" 
+            placeholder="Предложите, как это можно исправить..." 
+            required>
+          </textarea>
           
           <!-- Подсказки-баблы для решений -->
           <div class="signal-suggestions-container">
@@ -562,14 +568,160 @@ onUnmounted(() => {
   border-left: 4px solid var(--accent-color, #444);
 }
 
+/* Новые стили для заголовка секции с кнопкой */
+.signal-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
 .signal-direction-label {
   font-weight: 600;
   font-size: 0.75rem;
   color: #888;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 0.5rem;
+  margin: 0;
   display: block;
+}
+
+/* Liquid bubble кнопка копирования в стиле из примера */
+.signal-liquid-copy-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--signal-font-sans);
+  flex-shrink: 0;
+}
+
+.signal-liquid-copy-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 2px;
+  background: linear-gradient(135deg, var(--accent-color), rgba(255, 255, 255, 0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: filter 0.4s ease;
+  z-index: 1;
+}
+
+.signal-liquid-copy-btn::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 70%),
+              #2a2a2e;
+  z-index: 2;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.signal-liquid-copy-text {
+  position: relative;
+  z-index: 3;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+/* Цветовые вариации для разных секций */
+.signal-emotion-copy {
+  --accent-color: #A972FF;
+}
+
+.signal-emotion-copy .signal-liquid-copy-text {
+  color: #A972FF;
+}
+
+.signal-emotion-copy:hover::before {
+  filter: brightness(1.5) saturate(1.3);
+}
+
+.signal-emotion-copy:hover::after {
+  background: radial-gradient(circle at 30% 30%, rgba(169, 114, 255, 0.25) 0%, transparent 70%),
+              #2a2a2e;
+  transform: scale(0.95);
+}
+
+.signal-emotion-copy:hover .signal-liquid-copy-text {
+  color: rgba(169, 114, 255, 0.9);
+  transform: scale(1.1);
+}
+
+.signal-fact-copy {
+  --accent-color: #3DDC84;
+}
+
+.signal-fact-copy .signal-liquid-copy-text {
+  color: #3DDC84;
+}
+
+.signal-fact-copy:hover::before {
+  filter: brightness(1.5) saturate(1.3);
+}
+
+.signal-fact-copy:hover::after {
+  background: radial-gradient(circle at 30% 30%, rgba(61, 220, 132, 0.25) 0%, transparent 70%),
+              #2a2a2e;
+  transform: scale(0.95);
+}
+
+.signal-fact-copy:hover .signal-liquid-copy-text {
+  color: rgba(61, 220, 132, 0.9);
+  transform: scale(1.1);
+}
+
+.signal-solution-copy {
+  --accent-color: #FFB800;
+}
+
+.signal-solution-copy .signal-liquid-copy-text {
+  color: #FFB800;
+}
+
+.signal-solution-copy:hover::before {
+  filter: brightness(1.5) saturate(1.3);
+}
+
+.signal-solution-copy:hover::after {
+  background: radial-gradient(circle at 30% 30%, rgba(255, 184, 0, 0.25) 0%, transparent 70%),
+              #2a2a2e;
+  transform: scale(0.95);
+}
+
+.signal-solution-copy:hover .signal-liquid-copy-text {
+  color: rgba(255, 184, 0, 0.9);
+  transform: scale(1.1);
+}
+
+/* Состояние disabled */
+.signal-liquid-copy-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.signal-liquid-copy-btn:disabled::before {
+  filter: grayscale(1);
+}
+
+.signal-liquid-copy-btn:disabled:hover::after {
+  transform: none;
+}
+
+.signal-liquid-copy-btn:disabled:hover .signal-liquid-copy-text {
+  transform: none;
 }
 
 .signal-rotating-phrase-container {
@@ -592,14 +744,6 @@ onUnmounted(() => {
 .fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
 
-/* Контейнер для textarea и кнопки копирования */
-.signal-textarea-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
 textarea {
   width: 100%;
   background-color: #242426;
@@ -621,54 +765,6 @@ textarea:focus {
 }
 
 ::placeholder { color: #666; }
-
-/* Стили кнопок копирования */
-.signal-copy-btn {
-  align-self: flex-end;
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid;
-  background: transparent;
-  font-family: var(--signal-font-sans);
-  min-width: 100px;
-  text-align: center;
-}
-
-.signal-copy-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.signal-emotion-copy {
-  border-color: #A972FF;
-  color: #A972FF;
-}
-
-.signal-emotion-copy:hover:not(:disabled) {
-  background: rgba(169, 114, 255, 0.1);
-}
-
-.signal-fact-copy {
-  border-color: #3DDC84;
-  color: #3DDC84;
-}
-
-.signal-fact-copy:hover:not(:disabled) {
-  background: rgba(61, 220, 132, 0.1);
-}
-
-.signal-solution-copy {
-  border-color: #FFB800;
-  color: #FFB800;
-}
-
-.signal-solution-copy:hover:not(:disabled) {
-  background: rgba(255, 184, 0, 0.1);
-}
 
 .signal-suggestions-container {
   display: flex;
@@ -772,10 +868,23 @@ textarea:focus {
     font-size: 0.85em;
     padding: 6px 10px;
   }
-  .signal-copy-btn {
-    font-size: 0.75rem;
-    padding: 0.35rem 0.6rem;
-    min-width: 85px;
+  .signal-liquid-copy-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .signal-liquid-copy-text {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signal-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .signal-liquid-copy-btn {
+    align-self: flex-end;
   }
 }
 </style>
