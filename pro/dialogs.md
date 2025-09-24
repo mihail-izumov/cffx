@@ -53,7 +53,6 @@ notification: brew
     onmouseout="this.style.transform='scale(1)'"
   />
 </div>
-<br>
 
 ### Сигнал собирает детализированную обратную связь от гостей кофеен
 
