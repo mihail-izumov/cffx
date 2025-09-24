@@ -74,6 +74,7 @@ import Products from '../components/Products.vue'
 import AllFeatures from '../components/AllFeatures.vue'
 import SignalFormKorzh1 from '../components/SignalFormKorzh1.vue'
 import DialogsT9 from '../components/DialogsT9.vue'
+import DialogsTestT9 from '../components/DialogsTestT9.vue'
 
 export default {
   extends: DefaultTheme,
@@ -154,5 +155,6 @@ export default {
     app.component('AllFeatures', AllFeatures) 
     app.component('SignalFormKorzh1', SignalFormKorzh1) 
     app.component('DialogsT9', DialogsT9)
+    app.component('DialogsTestT9', DialogsTestT9)
   },
 }
