@@ -56,48 +56,7 @@ notification: brew
 
 ### Сигнал собирает детализированную обратную связь от гостей кофеен
 
-<div class="incident-info">
-  <p class="incident-text">
-    <span class="highlight-white">Все данные из реальных инцидентов Регламента:</span>
-    информация основана на реальных случаях и анализе происшествий
-  </p>
-</div>
-
-<style>
-.incident-info {
-  background-color: var(--vp-c-bg-soft);
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin: 1rem 0;
-  border-left: 4px solid var(--vp-c-brand-1);
-}
-
-.incident-text {
-  font-weight: 600;
-  color: var(--vp-c-text-2);
-  margin: 0;
-  line-height: 1.6;
-  font-size: 0.95rem;
-}
-
-.highlight-white {
-  color: var(--vp-c-text-1);
-  font-weight: 600;
-}
-
-/* Для темной темы */
-html.dark .incident-info {
-  background-color: #1a1a1a;
-}
-
-html.dark .incident-text {
-  color: #9ca3af;
-}
-
-html.dark .highlight-white {
-  color: #ffffff;
-}
-</style>
+**Все данные из реальных инцидентов Регламента:** информация основана на реальных случаях и анализе происшествий.
 
 <br>
 
