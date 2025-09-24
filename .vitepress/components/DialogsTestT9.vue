@@ -7,7 +7,7 @@
           v-for="section in sections"
           :key="section.id"
           class="signal-demo__switch-btn"
-          :class="{ 'is-active': isActive(section.id) }"
+          :class="[isActive(section.id) ? 'is-active' : '', section.id]"
           type="button"
           role="tab"
           :aria-selected="isActive(section.id)"
@@ -139,7 +139,8 @@
             </div>
           </div>
           
-          <p class="signal-example-hint" v-html="'Пример: «Добавить на кассе <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
+          <p class="signal-example-hint" v-html="'Пример: «Добавить на кассе <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'">
+          </p>
         </div>
       </div>
     </div>
@@ -147,7 +148,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed, onUnmounted } from 'vue';
+import { reactive, ref, onUnmounted } from 'vue';
 
 const form = reactive({ 
   emotionalRelease: '',
@@ -155,73 +156,53 @@ const form = reactive({
   constructiveSuggestions: ''
 });
 
-// Секции формы для переключателя
 const sections = [
-  { id: 'emotions', title: 'Эмоции и чувства' },
-  { id: 'facts', title: 'Детали проблемы' },
-  { id: 'solutions', title: 'Предложение решения' }
+  { id: 'emotions', title: 'Эмоции' },
+  { id: 'facts', title: 'Факты' },
+  { id: 'solutions', title: 'Решение' }
 ];
 
 const selectedSection = ref('emotions');
-const isActive = (sectionId) => sectionId === selectedSection.value;
+const isActive = (id) => id === selectedSection.value;
 
-// Полная 3-уровневая система подсказок для всех секций
 const suggestions = reactive({
   emotions: {
-    // УРОВЕНЬ 1: Основные эмоции
     initial: ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'],
-    
-    // УРОВЕНЬ 2: Причины эмоций
     'расстроен': ['долго ждал', 'грязная посуда', 'холодный кофе', 'грубый персонал', 'забыли заказ'],
     'разочарован': ['качеством', 'сервисом', 'ожиданиями', 'атмосферой', 'чистотой'],
     'недоволен': ['обслуживанием', 'очередью', 'ошибкой в заказе', 'температурой блюд', 'упаковкой'],
     'возмущён': ['антисанитарией', 'хамством', 'обманом', 'некачественной едой', 'инородными предметами'],
     'удивлён': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком', 'отношением'],
-    
-    // УРОВЕНЬ 3: Детали эмоциональных переживаний
     'долго ждал': ['20 минут', '30 минут', 'более часа', 'без объяснений', 'видя пустую кофейню'],
     'грязная посуда': ['следы помады', 'остатки еды', 'жирные пятна', 'засохший кофе', 'странный запах'],
     'холодный кофе': ['едва теплый', 'совсем остыл', 'подали холодным', 'остыл пока ждал', 'температура комнатная'],
     'грубый персонал': ['не поздоровались', 'хамили', 'игнорировали', 'были раздражены', 'повысили голос'],
-    'забыли заказ': ['через 40 минут', 'не записали', 'потеряли чек', 'не передали на кухню', 'сидел и ждал']
+    'забыли заказ': ['через 40 минут', 'не записали', 'потеряли чек', 'не передали на кухню', 'сидел и ждал'],
   },
-  
   facts: {
-    // УРОВЕНЬ 1: Основные категории проблем
     initial: ['ожидание', 'ошибка в заказе', 'качество блюд', 'чистота', 'персонал'],
-    
-    // УРОВЕНЬ 2: Детали проблем
     'ожидание': ['20 минут', '30 минут', 'более часа', 'забыли заказ', 'очередь не двигалась'],
     'ошибка в заказе': ['не тот напиток', 'не доложили позицию', 'неправильный соус', 'перепутали объём', 'другое молоко'],
     'качество блюд': ['холодный кофе', 'невкусная еда', 'недоваренный рис', 'комочки в матче', 'чёрствая выпечка'],
     'чистота': ['грязная посуда', 'волосы в еде', 'грязная уборная', 'насекомые', 'пластик в круассане'],
     'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились'],
-    
-    // УРОВЕНЬ 3: Конкретные детали инцидентов
     '20 минут': ['засекал по часам', 'спросил у соседнего стола', 'заказал в 14:30, получил в 14:50', 'долгое ожидание для простого заказа', 'других обслужили быстрее'],
     '30 минут': ['полчаса точно', 'с 15:00 до 15:30', 'дважды подходил узнать', 'время на телефоне показало', 'успел прочитать новости'],
-    'более часа': ['час и 10 минут', 'полтора часа ждал', 'с 12:00 до 13:15', 'весь обед потратил', 'опоздал на встречу']
+    'более часа': ['час и 10 минут', 'полтора часа ждал', 'с 12:00 до 13:15', 'весь обед потратил', 'опоздал на встречу'],
   },
-  
   solutions: {
-    // УРОВЕНЬ 1: Основные направления решений
     initial: ['таймер ожидания', 'обучение персонала', 'контроль качества', 'система проверки', 'стандарты сервиса'],
-    
-    // УРОВЕНЬ 2: Конкретные решения
     'таймер ожидания': ['на кассе', 'видимый гостям', 'с уведомлениями', 'контроль времени', 'цифровая очередь'],
     'обучение персонала': ['по сервису', 'по санитарии', 'по качеству', 'по коммуникации', 'регулярные тренинги'],
     'контроль качества': ['проверка блюд', 'температурный контроль', 'свежесть продуктов', 'упаковка', 'дегустация'],
     'система проверки': ['чек-лист качества', 'двойная проверка', 'контроль чистоты', 'стандарты подачи', 'фото блюд'],
     'стандарты сервиса': ['вежливость', 'скорость', 'точность', 'чистота', 'профессионализм'],
-    
-    // УРОВЕНЬ 3: Детальные технические решения
     'на кассе': ['большой дисплей', 'видимый всем', 'с номерами заказов', 'обновляется в реальном времени', 'со звуковым сигналом'],
     'видимый гостям': ['на стене', 'над барной стойкой', 'в мобильном приложении', 'на столике с номером', 'на чеке QR-код'],
-    'с уведомлениями': ['СМС о готовности', 'push в приложении', 'звонок менеджера', 'вибрация трекера', 'email уведомления']
+    'с уведомлениями': ['СМС о готовности', 'push в приложении', 'звонок менеджера', 'вибрация трекера', 'email уведомления'],
   }
 });
 
-// Текущие подсказки для каждого поля
 const currentSuggestions = reactive({
   emotions: [...suggestions.emotions.initial],
   facts: [...suggestions.facts.initial],
@@ -241,61 +222,48 @@ let currentQuestionIndex1 = 0;
 let currentQuestionIndex2 = 0;
 let currentQuestionIndex3 = 0;
 
-// Проверка, являются ли текущие подсказки начальными
-function isInitialSuggestions(suggestionType) {
-  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(suggestions[suggestionType].initial);
+function isInitialSuggestions(type) {
+  return JSON.stringify(currentSuggestions[type]) === JSON.stringify(suggestions[type].initial);
 }
 
-// Сброс подсказок к начальным вариантам
-function resetSuggestions(suggestionType) {
-  currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
+function resetSuggestions(type) {
+  currentSuggestions[type] = [...suggestions[type].initial];
 }
 
-// Функция выбора подсказки
-function selectSuggestion(fieldName, suggestion, suggestionType) {
+function selectSuggestion(fieldName, suggestion, type) {
   const currentText = form[fieldName].trim();
-  
-  // Определяем, начинается ли новая ветка
-  const isNewBranch = isInitialSuggestions(suggestionType);
-  
+  const isNewBranch = isInitialSuggestions(type);
   if (currentText) {
     if (isNewBranch) {
-      // Новая ветка - добавляем с точкой и заглавной буквы
       form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
     } else {
-      // Продолжение ветки - добавляем через пробел
       form[fieldName] = currentText + ' ' + suggestion;
     }
   } else {
-    // Первый выбор
     form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
   }
-  
-  // Обновляем доступные подсказки на основе выбора
-  updateSuggestions(suggestionType, suggestion);
+  updateSuggestions(type, suggestion);
 }
 
-// Обновление подсказок на основе выбора
-function updateSuggestions(suggestionType, selectedWord) {
-  const nextSuggestions = suggestions[suggestionType][selectedWord];
-  if (nextSuggestions && nextSuggestions.length > 0) {
-    currentSuggestions[suggestionType] = [...nextSuggestions];
+function updateSuggestions(type, selected) {
+  const next = suggestions[type][selected];
+  if (next && next.length > 0) {
+    currentSuggestions[type] = [...next];
   } else {
-    // Если нет продолжения цепочки, показываем начальные подсказки
-    currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
+    currentSuggestions[type] = [...suggestions[type].initial];
   }
 }
 
-function startRotation(questionNum) {
+function startRotation(num) {
   clearInterval(rotationInterval);
   rotationInterval = setInterval(() => {
-    if (questionNum === 1) {
+    if (num === 1) {
       currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length;
       currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1];
-    } else if (questionNum === 2) {
+    } else if (num === 2) {
       currentQuestionIndex2 = (currentQuestionIndex2 + 1) % phrasesForQuestion2.length;
       currentQuestion2.value = phrasesForQuestion2[currentQuestionIndex2];
-    } else if (questionNum === 3) {
+    } else if (num === 3) {
       currentQuestionIndex3 = (currentQuestionIndex3 + 1) % phrasesForQuestion3.length;
       currentQuestion3.value = phrasesForQuestion3[currentQuestionIndex3];
     }
@@ -308,29 +276,25 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-:root { 
-  --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+:root {
+  --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Внешний обёртчик */
 .signal-demo-wrapper {
-  font-family: var(--signal-font-sans); 
-  width: 100%; 
-  max-width: none; 
-  margin: 0; 
+  font-family: var(--signal-font-sans);
+  width: 100%;
+  max-width: none;
+  margin: 0;
 }
 
-/* Хедер с переключателями над формой */
 .signal-demo__header {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start; /* Выравнивание по левой стороне */
   margin-bottom: 16px;
 }
 
-/* Переключатель по центру */
 .signal-demo__switch {
   display: flex;
-  justify-content: center;
   gap: 8px;
   padding: 0;
   background: transparent;
@@ -347,96 +311,111 @@ onUnmounted(() => {
   font-size: 0.95em;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color .15s ease, border-color .15s ease, color .15s ease, font-weight .15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, font-weight 0.15s ease;
   font-family: var(--signal-font-sans);
+  text-transform: none;
 }
 
-.signal-demo__switch-btn:hover { 
-  border-color: #A972FF; 
-}
-
-.signal-demo__switch-btn.is-active {
+/* Цвета вкладок как цвета блоков внутри */
+.signal-demo__switch-btn.emotions.is-active {
   background: rgba(169, 114, 255, 0.14);
   border-color: #A972FF;
   font-weight: 700;
+  color: #A972FF;
 }
 
-/* Контейнер формы с бордюром */
+.signal-demo__switch-btn.facts.is-active {
+  background: rgba(61, 220, 132, 0.14);
+  border-color: #3DDC84;
+  font-weight: 700;
+  color: #3DDC84;
+}
+
+.signal-demo__switch-btn.solutions.is-active {
+  background: rgba(255, 184, 0, 0.14);
+  border-color: #FFB800;
+  font-weight: 700;
+  color: #FFB800;
+}
+
+.signal-demo__switch-btn:hover {
+  border-color: #A972FF;
+}
+
 .signal-demo__form-container {
-  background-color: #1E1E20; 
-  border-radius: 24px; 
-  padding: 2rem; 
-  color: #f0f0f0; 
-  border: 1px solid #2c2c2f; 
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); 
+  background-color: #1E1E20;
+  border-radius: 24px;
+  padding: 2rem;
+  color: #f0f0f0;
+  border: 1px solid #2c2c2f;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-.signal-form-section { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 1.5rem; 
+.signal-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.signal-question-block { 
-  background-color: #2a2a2e; 
-  border-radius: 16px; 
-  padding: 1.25rem; 
-  border: 1px solid #3a3a3e; 
-  border-left: 4px solid var(--accent-color, #444); 
+.signal-question-block {
+  background-color: #2a2a2e;
+  border-radius: 16px;
+  padding: 1.25rem;
+  border: 1px solid #3a3a3e;
+  border-left: 4px solid var(--accent-color, #444);
 }
 
-.signal-direction-label { 
-  font-weight: 600; 
-  font-size: 0.75rem; 
-  color: #888; 
-  text-transform: uppercase; 
-  letter-spacing: 0.05em; 
-  margin-bottom: 0.5rem; 
-  display: block; 
+.signal-direction-label {
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  display: block;
 }
 
-.signal-rotating-phrase-container { 
-  height: 52px; 
+.signal-rotating-phrase-container {
+  height: 52px;
   margin-bottom: 0.75rem;
   display: flex;
-  align-items: flex-start; 
-  overflow: hidden; 
+  align-items: flex-start;
+  overflow: hidden;
 }
 
-.signal-question-label { 
-  font-weight: 500; 
-  font-size: 1rem; 
-  margin: 0; 
+.signal-question-label {
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0;
   color: #f0f0f0;
-  line-height: 1.3; 
+  line-height: 1.3;
   width: 100%;
 }
 
 .fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
 
-textarea { 
-  width: 100%; 
-  background-color: #242426; 
-  border: 1px solid #444; 
-  border-radius: 10px; 
-  padding: 0.75rem 1rem; 
-  font-size: 0.95rem; 
-  color: #f0f0f0; 
-  transition: all 0.3s ease; 
-  font-family: var(--signal-font-sans); 
+textarea {
+  width: 100%;
+  background-color: #242426;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #f0f0f0;
+  transition: all 0.3s ease;
+  font-family: var(--signal-font-sans);
 }
 
-textarea:focus { 
-  outline: none; 
-  border-color: var(--accent-color); 
-  background-color: #2a2a2e; 
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); 
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background-color: #2a2a2e;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent);
 }
 
 ::placeholder { color: #666; }
 
-/* Стили для подсказок-баблов */
 .signal-suggestions-container {
   display: flex;
   flex-wrap: wrap;
@@ -492,7 +471,6 @@ textarea:focus {
   transform: scale(1.05);
 }
 
-/* Кнопка сброса к начальным вариантам */
 .signal-reset-bubble {
   font-weight: 600;
   opacity: 0.8;
@@ -504,44 +482,38 @@ textarea:focus {
   opacity: 1;
 }
 
-.signal-example-hint { 
-  font-size: 0.8rem; 
-  color: #777; 
-  margin: 0.5rem 0 0 0.25rem; 
+.signal-example-hint {
+  font-size: 0.8rem;
+  color: #777;
+  margin: 0.5rem 0 0 0.25rem;
 }
 
-.signal-example-hint b { 
-  color: #aaa; 
-  font-weight: 600; 
+.signal-example-hint b {
+  color: #aaa;
+  font-weight: 600;
 }
 
-@media (max-width: 768px) { 
-  .signal-demo__form-container { 
-    padding: 1.5rem; 
-  } 
-  
-  .signal-rotating-phrase-container {
-    height: 65px; 
+@media (max-width: 768px) {
+  .signal-demo__form-container {
+    padding: 1.5rem;
   }
-  
+  .signal-rotating-phrase-container {
+    height: 65px;
+  }
   .signal-question-label {
     font-size: 0.95rem;
   }
-
   .signal-suggestions-container {
     gap: 0.4rem;
   }
-  
   .signal-suggestion-bubble {
     font-size: 0.75rem;
     padding: 0.3rem 0.7rem;
   }
-
   .signal-demo__switch {
     flex-wrap: wrap;
     gap: 6px;
   }
-
   .signal-demo__switch-btn {
     font-size: 0.85em;
     padding: 6px 10px;
