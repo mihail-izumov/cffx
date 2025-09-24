@@ -52,12 +52,12 @@ const isModalOpen = ref(false)
 
 const openModal = () => {
   isModalOpen.value = true
-  document.body.style.overflow = 'hidden' // Блокируем прокрутку
+  document.body.style.overflow = 'hidden'
 }
 
 const closeModal = () => {
   isModalOpen.value = false
-  document.body.style.overflow = 'auto' // Восстанавливаем прокрутку
+  document.body.style.overflow = 'auto'
 }
 
 // Закрытие по Escape
@@ -67,7 +67,6 @@ const handleKeydown = (event) => {
   }
 }
 
-// Добавляем обработчик при монтировании
 import { onMounted, onUnmounted } from 'vue'
 
 onMounted(() => {
@@ -146,13 +145,12 @@ onUnmounted(() => {
 }
 
 .modal-content {
-  background: #2c2c2e;
+  background: #1e1e20;
   border-radius: 16px;
-  padding: 0;
-  /* Фиксированная ширина как на экране "Эмоции" */
-  width: 1280px;
+  padding: 32px;
+  /* Оптимальная ширина для десктопа */
+  width: 650px;
   max-width: 95vw;
-  min-height: 600px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
@@ -160,10 +158,47 @@ onUnmounted(() => {
   color: white;
 }
 
+/* Глобальные стили для контента внутри модального окна */
+.modal-content :deep(*) {
+  background: transparent !important;
+}
+
+/* Убираем разные фоны у внутренних элементов */
+.modal-content :deep(.container),
+.modal-content :deep(.content-area),
+.modal-content :deep(.form-section),
+.modal-content :deep(.tabs-container) {
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Увеличиваем отступы внутри контейнеров */
+.modal-content :deep(.inner-content) {
+  padding: 24px !important;
+}
+
+/* Исправляем отступы для переключателей */
+.modal-content :deep(.tab-buttons),
+.modal-content :deep(.button-group),
+.modal-content :deep(.tags-container) {
+  margin: 16px 0 !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+}
+
+/* Убеждаемся что кнопки не выходят за границы */
+.modal-content :deep(.tab-button),
+.modal-content :deep(.tag-button) {
+  margin: 4px !important;
+  white-space: nowrap !important;
+}
+
 /* Адаптивность */
-@media (max-width: 1320px) {
+@media (max-width: 700px) {
   .modal-content {
     width: 95vw;
+    padding: 24px;
   }
 }
 
@@ -185,9 +220,7 @@ onUnmounted(() => {
   }
   
   .modal-content {
-    width: 95vw;
-    margin: 10px;
-    min-height: 500px;
+    padding: 20px;
   }
 }
 
