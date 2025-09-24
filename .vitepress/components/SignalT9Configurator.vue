@@ -146,18 +146,23 @@
         </div>
       </div>
 
-      <!-- БОЛЬШАЯ КНОПКА КОПИРОВАНИЯ ВНИЗУ -->
+      <!-- БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ ВНИЗУ -->
       <div v-if="hasAnyText" class="signal-copy-button-container">
         <button 
-          class="signal-main-copy-btn"
+          class="signal-liquid-copy-btn signal-main-copy"
+          :class="[
+            selectedSection === 'emotions' ? 'signal-emotion-copy' : '',
+            selectedSection === 'facts' ? 'signal-fact-copy' : '',
+            selectedSection === 'solutions' ? 'signal-solution-copy' : ''
+          ]"
           @click="copyCurrentSectionText"
           :disabled="copyStatus.main === 'copying'"
         >
-          <span class="signal-main-copy-emoji">
+          <span class="signal-copy-emoji">
             {{ copyStatus.main === 'copied' ? '✓' : copyStatus.main === 'copying' ? '⏳' : '📋' }}
           </span>
-          <span class="signal-main-copy-text">
-            {{ copyStatus.main === 'copied' ? 'Скопировано!' : copyStatus.main === 'copying' ? 'Копирование...' : 'Скопировать текст' }}
+          <span class="signal-liquid-copy-text">
+            {{ copyStatus.main === 'copied' ? 'Скопировано' : copyStatus.main === 'copying' ? 'Копирование...' : 'Скопировать' }}
           </span>
         </button>
       </div>
@@ -638,7 +643,6 @@ textarea:focus {
 .signal-emotion-bubble:hover {
   background: #A972FF;
   color: #000;
-  transform: scale(1.05);
 }
 
 .signal-fact-bubble {
@@ -650,7 +654,6 @@ textarea:focus {
 .signal-fact-bubble:hover {
   background: #3DDC84;
   color: #000;
-  transform: scale(1.05);
 }
 
 .signal-solution-bubble {
@@ -662,7 +665,6 @@ textarea:focus {
 .signal-solution-bubble:hover {
   background: #FFB800;
   color: #000;
-  transform: scale(1.05);
 }
 
 .signal-reset-bubble {
@@ -687,83 +689,169 @@ textarea:focus {
   font-weight: 600;
 }
 
-/* БОЛЬШАЯ КНОПКА КОПИРОВАНИЯ ВНИЗУ */
+/* БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ ВНИЗУ */
 .signal-copy-button-container {
   margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #3a3a3e;
 }
 
-.signal-main-copy-btn {
+.signal-liquid-copy-btn.signal-main-copy {
+  position: relative;
   width: 100%;
   height: 56px;
-  border: none;
   border-radius: 20px;
-  background: linear-gradient(135deg, #6366f1, #06b6d4, #10b981);
-  color: rgba(255, 255, 255, 0.95);
-  font-size: 16px;
-  font-weight: 600;
-  font-family: var(--signal-font-sans);
+  border: none;
   cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+  font-family: var(--signal-font-sans);
+  white-space: nowrap;
 }
 
-.signal-main-copy-btn::before {
+.signal-liquid-copy-btn.signal-main-copy::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent, rgba(255, 255, 255, 0.1));
   border-radius: 20px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  padding: 2px;
+  background: linear-gradient(135deg, var(--accent-color), rgba(255, 255, 255, 0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: filter 0.4s ease;
+  z-index: 1;
 }
 
-.signal-main-copy-btn:hover::before {
-  opacity: 1;
+.signal-liquid-copy-btn.signal-main-copy::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 18px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 70%),
+              #2a2a2e;
+  z-index: 2;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.signal-main-copy-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
-}
-
-.signal-main-copy-btn:active {
-  transform: translateY(0);
-}
-
-.signal-main-copy-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.7;
-  transform: none;
-}
-
-.signal-main-copy-btn:disabled:hover {
-  transform: none;
-  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
-}
-
-.signal-main-copy-emoji {
+.signal-copy-emoji {
+  position: relative;
+  z-index: 3;
   font-size: 18px;
   transition: transform 0.3s ease;
   flex-shrink: 0;
 }
 
-.signal-main-copy-btn:hover .signal-main-copy-emoji {
+.signal-liquid-copy-text {
+  position: relative;
+  z-index: 3;
+  font-size: 16px;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Цветовые вариации для разных секций */
+.signal-emotion-copy {
+  --accent-color: #A972FF;
+}
+
+.signal-emotion-copy .signal-copy-emoji,
+.signal-emotion-copy .signal-liquid-copy-text {
+  color: #A972FF;
+}
+
+.signal-emotion-copy:hover::before {
+  filter: brightness(1.5) saturate(1.3);
+}
+
+.signal-emotion-copy:hover::after {
+  background: radial-gradient(circle at 30% 30%, rgba(169, 114, 255, 0.25) 0%, transparent 70%),
+              #2a2a2e;
+  transform: scale(0.98);
+}
+
+.signal-emotion-copy:hover .signal-copy-emoji {
   transform: scale(1.2);
 }
 
-.signal-main-copy-text {
-  font-size: 16px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  white-space: nowrap;
+.signal-emotion-copy:hover .signal-liquid-copy-text {
+  color: rgba(169, 114, 255, 0.9);
+}
+
+.signal-fact-copy {
+  --accent-color: #3DDC84;
+}
+
+.signal-fact-copy .signal-copy-emoji,
+.signal-fact-copy .signal-liquid-copy-text {
+  color: #3DDC84;
+}
+
+.signal-fact-copy:hover::before {
+  filter: brightness(1.5) saturate(1.3);
+}
+
+.signal-fact-copy:hover::after {
+  background: radial-gradient(circle at 30% 30%, rgba(61, 220, 132, 0.25) 0%, transparent 70%),
+              #2a2a2e;
+  transform: scale(0.98);
+}
+
+.signal-fact-copy:hover .signal-copy-emoji {
+  transform: scale(1.2);
+}
+
+.signal-fact-copy:hover .signal-liquid-copy-text {
+  color: rgba(61, 220, 132, 0.9);
+}
+
+.signal-solution-copy {
+  --accent-color: #FFB800;
+}
+
+.signal-solution-copy .signal-copy-emoji,
+.signal-solution-copy .signal-liquid-copy-text {
+  color: #FFB800;
+}
+
+.signal-solution-copy:hover::before {
+  filter: brightness(1.5) saturate(1.3);
+}
+
+.signal-solution-copy:hover::after {
+  background: radial-gradient(circle at 30% 30%, rgba(255, 184, 0, 0.25) 0%, transparent 70%),
+              #2a2a2e;
+  transform: scale(0.98);
+}
+
+.signal-solution-copy:hover .signal-copy-emoji {
+  transform: scale(1.2);
+}
+
+.signal-solution-copy:hover .signal-liquid-copy-text {
+  color: rgba(255, 184, 0, 0.9);
+}
+
+/* Состояние disabled */
+.signal-liquid-copy-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.signal-liquid-copy-btn:disabled::before {
+  filter: grayscale(1);
+}
+
+.signal-liquid-copy-btn:disabled:hover::after {
+  transform: none;
+}
+
+.signal-liquid-copy-btn:disabled:hover .signal-copy-emoji {
+  transform: none;
 }
 
 @media (max-width: 768px) {
@@ -793,31 +881,28 @@ textarea:focus {
   }
   .signal-copy-button-container {
     margin-top: 1.5rem;
-    padding-top: 1rem;
   }
-  .signal-main-copy-btn {
+  .signal-liquid-copy-btn.signal-main-copy {
     height: 52px;
-    font-size: 15px;
     gap: 10px;
   }
-  .signal-main-copy-emoji {
+  .signal-copy-emoji {
     font-size: 16px;
   }
-  .signal-main-copy-text {
+  .signal-liquid-copy-text {
     font-size: 15px;
   }
 }
 
 @media (max-width: 480px) {
-  .signal-main-copy-btn {
+  .signal-liquid-copy-btn.signal-main-copy {
     height: 48px;
-    font-size: 14px;
     gap: 8px;
   }
-  .signal-main-copy-emoji {
+  .signal-copy-emoji {
     font-size: 15px;
   }
-  .signal-main-copy-text {
+  .signal-liquid-copy-text {
     font-size: 14px;
   }
 }
