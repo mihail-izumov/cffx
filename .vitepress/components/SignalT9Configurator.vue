@@ -23,23 +23,7 @@
       <!-- Секция "Эмоции и чувства" -->
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #A972FF;">
-          <!-- Заголовок секции с кнопкой копирования -->
-          <div class="signal-section-header">
-            <p class="signal-direction-label">Эмоции и чувства</p>
-            <button 
-              v-if="form.emotionalRelease.trim()"
-              class="signal-liquid-copy-btn signal-emotion-copy"
-              @click="copyToClipboard(form.emotionalRelease, 'emotions')"
-              :disabled="copyStatus.emotions === 'copying'"
-            >
-              <span class="signal-copy-emoji">
-                {{ copyStatus.emotions === 'copied' ? '✓' : copyStatus.emotions === 'copying' ? '⏳' : '📋' }}
-              </span>
-              <span class="signal-liquid-copy-text">
-                {{ copyStatus.emotions === 'copied' ? 'Скопировано' : copyStatus.emotions === 'copying' ? 'Копирование...' : 'Скопировать' }}
-              </span>
-            </button>
-          </div>
+          <p class="signal-direction-label">Эмоции и чувства</p>
           
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
@@ -81,23 +65,7 @@
       <!-- Секция "Детали проблемы" -->
       <div v-if="selectedSection === 'facts'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #3DDC84;">
-          <!-- Заголовок секции с кнопкой копирования -->
-          <div class="signal-section-header">
-            <p class="signal-direction-label">Детали проблемы</p>
-            <button 
-              v-if="form.factualAnalysis.trim()"
-              class="signal-liquid-copy-btn signal-fact-copy"
-              @click="copyToClipboard(form.factualAnalysis, 'facts')"
-              :disabled="copyStatus.facts === 'copying'"
-            >
-              <span class="signal-copy-emoji">
-                {{ copyStatus.facts === 'copied' ? '✓' : copyStatus.facts === 'copying' ? '⏳' : '📋' }}
-              </span>
-              <span class="signal-liquid-copy-text">
-                {{ copyStatus.facts === 'copied' ? 'Скопировано' : copyStatus.facts === 'copying' ? 'Копирование...' : 'Скопировать' }}
-              </span>
-            </button>
-          </div>
+          <p class="signal-direction-label">Детали проблемы</p>
           
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
@@ -139,23 +107,7 @@
       <!-- Секция "Предложение решения" -->
       <div v-if="selectedSection === 'solutions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #FFB800;">
-          <!-- Заголовок секции с кнопкой копирования -->
-          <div class="signal-section-header">
-            <p class="signal-direction-label">Предложение решения</p>
-            <button 
-              v-if="form.constructiveSuggestions.trim()"
-              class="signal-liquid-copy-btn signal-solution-copy"
-              @click="copyToClipboard(form.constructiveSuggestions, 'solutions')"
-              :disabled="copyStatus.solutions === 'copying'"
-            >
-              <span class="signal-copy-emoji">
-                {{ copyStatus.solutions === 'copied' ? '✓' : copyStatus.solutions === 'copying' ? '⏳' : '📋' }}
-              </span>
-              <span class="signal-liquid-copy-text">
-                {{ copyStatus.solutions === 'copied' ? 'Скопировано' : copyStatus.solutions === 'copying' ? 'Копирование...' : 'Скопировать' }}
-              </span>
-            </button>
-          </div>
+          <p class="signal-direction-label">Предложение решения</p>
           
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
@@ -193,12 +145,28 @@
           <p class="signal-example-hint" v-html="'Пример: «Добавить на кассе <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
         </div>
       </div>
+
+      <!-- БОЛЬШАЯ КНОПКА КОПИРОВАНИЯ ВНИЗУ -->
+      <div v-if="hasAnyText" class="signal-copy-button-container">
+        <button 
+          class="signal-main-copy-btn"
+          @click="copyCurrentSectionText"
+          :disabled="copyStatus.main === 'copying'"
+        >
+          <span class="signal-main-copy-emoji">
+            {{ copyStatus.main === 'copied' ? '✓' : copyStatus.main === 'copying' ? '⏳' : '📋' }}
+          </span>
+          <span class="signal-main-copy-text">
+            {{ copyStatus.main === 'copied' ? 'Скопировано!' : copyStatus.main === 'copying' ? 'Копирование...' : 'Скопировать текст' }}
+          </span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref, onUnmounted } from 'vue';
+import { reactive, ref, onUnmounted, computed } from 'vue';
 
 const form = reactive({ 
   emotionalRelease: '',
@@ -208,9 +176,7 @@ const form = reactive({
 
 // Состояние кнопок копирования
 const copyStatus = reactive({
-  emotions: 'idle', // 'idle', 'copying', 'copied'
-  facts: 'idle',
-  solutions: 'idle'
+  main: 'idle', // 'idle', 'copying', 'copied'
 });
 
 const sections = [
@@ -222,28 +188,43 @@ const sections = [
 const selectedSection = ref('emotions');
 const isActive = (id) => id === selectedSection.value;
 
-// Функция копирования в буфер обмена
-const copyToClipboard = async (text, sectionType) => {
-  if (!text.trim()) return;
+// Проверяем, есть ли текст в текущей секции
+const hasAnyText = computed(() => {
+  return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
+});
+
+// Функция копирования текста текущей секции
+const copyCurrentSectionText = async () => {
+  let textToCopy = '';
   
-  copyStatus[sectionType] = 'copying';
+  if (selectedSection.value === 'emotions' && form.emotionalRelease.trim()) {
+    textToCopy = form.emotionalRelease.trim();
+  } else if (selectedSection.value === 'facts' && form.factualAnalysis.trim()) {
+    textToCopy = form.factualAnalysis.trim();
+  } else if (selectedSection.value === 'solutions' && form.constructiveSuggestions.trim()) {
+    textToCopy = form.constructiveSuggestions.trim();
+  }
+  
+  if (!textToCopy) return;
+  
+  copyStatus.main = 'copying';
   
   try {
-    await navigator.clipboard.writeText(text);
-    copyStatus[sectionType] = 'copied';
+    await navigator.clipboard.writeText(textToCopy);
+    copyStatus.main = 'copied';
     
     // Сброс статуса через 2 секунды
     setTimeout(() => {
-      copyStatus[sectionType] = 'idle';
+      copyStatus.main = 'idle';
     }, 2000);
   } catch (err) {
     console.error('Ошибка копирования:', err);
-    copyStatus[sectionType] = 'idle';
+    copyStatus.main = 'idle';
     
     // Fallback для старых браузеров
     try {
       const textArea = document.createElement('textarea');
-      textArea.value = text;
+      textArea.value = textToCopy;
       textArea.style.position = 'fixed';
       textArea.style.left = '-999999px';
       textArea.style.top = '-999999px';
@@ -253,9 +234,9 @@ const copyToClipboard = async (text, sectionType) => {
       document.execCommand('copy');
       textArea.remove();
       
-      copyStatus[sectionType] = 'copied';
+      copyStatus.main = 'copied';
       setTimeout(() => {
-        copyStatus[sectionType] = 'idle';
+        copyStatus.main = 'idle';
       }, 2000);
     } catch (fallbackError) {
       console.error('Fallback копирование не удалось:', fallbackError);
@@ -577,185 +558,14 @@ onUnmounted(() => {
   border-left: 4px solid var(--accent-color, #444);
 }
 
-/* Новые стили для заголовка секции с кнопкой */
-.signal-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
 .signal-direction-label {
   font-weight: 600;
   font-size: 0.75rem;
   color: #888;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin: 0;
+  margin-bottom: 0.5rem;
   display: block;
-}
-
-/* Liquid bubble кнопка копирования с эмодзи и текстом */
-.signal-liquid-copy-btn {
-  position: relative;
-  height: 32px;
-  padding: 0 16px;
-  border-radius: 16px;
-  border: none;
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-family: var(--signal-font-sans);
-  flex-shrink: 0;
-  min-width: fit-content;
-  white-space: nowrap;
-}
-
-.signal-liquid-copy-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  padding: 1px;
-  background: linear-gradient(135deg, var(--accent-color), rgba(255, 255, 255, 0.2));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  transition: filter 0.4s ease;
-  z-index: 1;
-}
-
-.signal-liquid-copy-btn::after {
-  content: '';
-  position: absolute;
-  inset: 1px;
-  border-radius: 15px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 70%),
-              #2a2a2e;
-  z-index: 2;
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.signal-copy-emoji {
-  position: relative;
-  z-index: 3;
-  font-size: 12px;
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
-}
-
-.signal-liquid-copy-text {
-  position: relative;
-  z-index: 3;
-  font-size: 11px;
-  font-weight: 600;
-  transition: color 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Цветовые вариации для разных секций */
-.signal-emotion-copy {
-  --accent-color: #A972FF;
-}
-
-.signal-emotion-copy .signal-copy-emoji,
-.signal-emotion-copy .signal-liquid-copy-text {
-  color: #A972FF;
-}
-
-.signal-emotion-copy:hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-emotion-copy:hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(169, 114, 255, 0.25) 0%, transparent 70%),
-              #2a2a2e;
-  transform: scale(0.98);
-}
-
-.signal-emotion-copy:hover .signal-copy-emoji {
-  transform: scale(1.2);
-}
-
-.signal-emotion-copy:hover .signal-liquid-copy-text {
-  color: rgba(169, 114, 255, 0.9);
-}
-
-.signal-fact-copy {
-  --accent-color: #3DDC84;
-}
-
-.signal-fact-copy .signal-copy-emoji,
-.signal-fact-copy .signal-liquid-copy-text {
-  color: #3DDC84;
-}
-
-.signal-fact-copy:hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-fact-copy:hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(61, 220, 132, 0.25) 0%, transparent 70%),
-              #2a2a2e;
-  transform: scale(0.98);
-}
-
-.signal-fact-copy:hover .signal-copy-emoji {
-  transform: scale(1.2);
-}
-
-.signal-fact-copy:hover .signal-liquid-copy-text {
-  color: rgba(61, 220, 132, 0.9);
-}
-
-.signal-solution-copy {
-  --accent-color: #FFB800;
-}
-
-.signal-solution-copy .signal-copy-emoji,
-.signal-solution-copy .signal-liquid-copy-text {
-  color: #FFB800;
-}
-
-.signal-solution-copy:hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-solution-copy:hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(255, 184, 0, 0.25) 0%, transparent 70%),
-              #2a2a2e;
-  transform: scale(0.98);
-}
-
-.signal-solution-copy:hover .signal-copy-emoji {
-  transform: scale(1.2);
-}
-
-.signal-solution-copy:hover .signal-liquid-copy-text {
-  color: rgba(255, 184, 0, 0.9);
-}
-
-/* Состояние disabled */
-.signal-liquid-copy-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.signal-liquid-copy-btn:disabled::before {
-  filter: grayscale(1);
-}
-
-.signal-liquid-copy-btn:disabled:hover::after {
-  transform: none;
-}
-
-.signal-liquid-copy-btn:disabled:hover .signal-copy-emoji {
-  transform: none;
 }
 
 .signal-rotating-phrase-container {
@@ -877,6 +687,85 @@ textarea:focus {
   font-weight: 600;
 }
 
+/* БОЛЬШАЯ КНОПКА КОПИРОВАНИЯ ВНИЗУ */
+.signal-copy-button-container {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #3a3a3e;
+}
+
+.signal-main-copy-btn {
+  width: 100%;
+  height: 56px;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #6366f1, #06b6d4, #10b981);
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--signal-font-sans);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+}
+
+.signal-main-copy-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent, rgba(255, 255, 255, 0.1));
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.signal-main-copy-btn:hover::before {
+  opacity: 1;
+}
+
+.signal-main-copy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+}
+
+.signal-main-copy-btn:active {
+  transform: translateY(0);
+}
+
+.signal-main-copy-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+}
+
+.signal-main-copy-btn:disabled:hover {
+  transform: none;
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+}
+
+.signal-main-copy-emoji {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.signal-main-copy-btn:hover .signal-main-copy-emoji {
+  transform: scale(1.2);
+}
+
+.signal-main-copy-text {
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
 @media (max-width: 768px) {
   .signal-demo__form-container {
     padding: 1.5rem;
@@ -902,36 +791,34 @@ textarea:focus {
     font-size: 0.85em;
     padding: 6px 10px;
   }
-  .signal-liquid-copy-btn {
-    height: 28px;
-    padding: 0 12px;
-    gap: 4px;
+  .signal-copy-button-container {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
   }
-  .signal-copy-emoji {
-    font-size: 11px;
+  .signal-main-copy-btn {
+    height: 52px;
+    font-size: 15px;
+    gap: 10px;
   }
-  .signal-liquid-copy-text {
-    font-size: 10px;
+  .signal-main-copy-emoji {
+    font-size: 16px;
+  }
+  .signal-main-copy-text {
+    font-size: 15px;
   }
 }
 
 @media (max-width: 480px) {
-  .signal-section-header {
-    flex-direction: column;
-    align-items: flex-start;
+  .signal-main-copy-btn {
+    height: 48px;
+    font-size: 14px;
     gap: 8px;
   }
-  .signal-liquid-copy-btn {
-    align-self: flex-end;
-    height: 26px;
-    padding: 0 10px;
-    gap: 3px;
+  .signal-main-copy-emoji {
+    font-size: 15px;
   }
-  .signal-copy-emoji {
-    font-size: 10px;
-  }
-  .signal-liquid-copy-text {
-    font-size: 9px;
+  .signal-main-copy-text {
+    font-size: 14px;
   }
 }
 </style>
