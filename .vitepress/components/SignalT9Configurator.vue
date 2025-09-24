@@ -158,9 +158,14 @@
           @click="copyCurrentSectionText"
           :disabled="copyStatus.main === 'copying'"
         >
-          <span class="signal-copy-emoji">
-            {{ copyStatus.main === 'copied' ? '✓' : copyStatus.main === 'copying' ? '⏳' : '📋' }}
-          </span>
+          <!-- SVG иконка буфера обмена -->
+          <svg class="signal-copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path v-if="copyStatus.main === 'copied'" d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path v-else-if="copyStatus.main === 'copying'" d="M12 6v6l4-4-4-4" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+          
           <span class="signal-liquid-copy-text">
             {{ copyStatus.main === 'copied' ? 'Скопировано' : copyStatus.main === 'copying' ? 'Копирование...' : 'Скопировать' }}
           </span>
@@ -346,7 +351,7 @@ const suggestions = reactive({
     'с уведомлениями': ['СМС о готовности', 'push в приложении', 'звонок менеджера', 'вибрация трекера', 'email уведомления'],
     'контроль времени': ['стандарт 10 минут', 'красная зона после 15 мин', 'автоматический сигнал', 'статистика по сменам', 'штрафы за превышение'],
     'цифровая очередь': ['номерки электронные', 'бронь времени', 'предзаказ', 'онлайн статус', 'мобильная очередь'],
-    'по сервису': ['тренинги вежливости', 'ролевые игры', 'работа с жалобами', 'стандарты общения', 'мотивация персонала'],
+  	'по сервису': ['тренинги вежливости', 'ролевые игры', 'работа с жалобами', 'стандарты общения', 'мотивация персонала'],
     'по санитарии': ['мытье посуды', 'уборка столов', 'проверка чистоты', 'гигиена рук', 'контроль температуры'],
     'по качеству': ['дегустация напитков', 'проверка ингредиентов', 'температура подачи', 'внешний вид блюд', 'сроки годности'],
     'по коммуникации': ['активное слушание', 'решение конфликтов', 'извинения и компенсации', 'позитивное общение', 'работа с негативом'],
@@ -502,7 +507,7 @@ onUnmounted(() => {
 
 .signal-demo__switch-btn {
   appearance: none;
-  border: 1px solid #2c2c2f;
+  border: 2px solid #2c2c2f; /* Увеличил толщину с 1px до 2px */
   background: transparent;
   color: #f0f0f0;
   padding: 8px 14px;
@@ -736,10 +741,9 @@ textarea:focus {
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.signal-copy-emoji {
+.signal-copy-icon {
   position: relative;
   z-index: 3;
-  font-size: 18px;
   transition: transform 0.3s ease;
   flex-shrink: 0;
 }
@@ -759,7 +763,7 @@ textarea:focus {
   --accent-color: #A972FF;
 }
 
-.signal-emotion-copy .signal-copy-emoji,
+.signal-emotion-copy .signal-copy-icon,
 .signal-emotion-copy .signal-liquid-copy-text {
   color: #A972FF;
 }
@@ -769,12 +773,11 @@ textarea:focus {
 }
 
 .signal-emotion-copy:hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(169, 114, 255, 0.25) 0%, transparent 70%),
+  background: radial-gradient(circle at 30% 30%, rgba(169, 114, 255, 0.2) 0%, rgba(169, 114, 255, 0.05) 100%),
               #2a2a2e;
-  transform: scale(0.98);
 }
 
-.signal-emotion-copy:hover .signal-copy-emoji {
+.signal-emotion-copy:hover .signal-copy-icon {
   transform: scale(1.2);
 }
 
@@ -786,7 +789,7 @@ textarea:focus {
   --accent-color: #3DDC84;
 }
 
-.signal-fact-copy .signal-copy-emoji,
+.signal-fact-copy .signal-copy-icon,
 .signal-fact-copy .signal-liquid-copy-text {
   color: #3DDC84;
 }
@@ -796,12 +799,11 @@ textarea:focus {
 }
 
 .signal-fact-copy:hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(61, 220, 132, 0.25) 0%, transparent 70%),
+  background: radial-gradient(circle at 30% 30%, rgba(61, 220, 132, 0.2) 0%, rgba(61, 220, 132, 0.05) 100%),
               #2a2a2e;
-  transform: scale(0.98);
 }
 
-.signal-fact-copy:hover .signal-copy-emoji {
+.signal-fact-copy:hover .signal-copy-icon {
   transform: scale(1.2);
 }
 
@@ -813,7 +815,7 @@ textarea:focus {
   --accent-color: #FFB800;
 }
 
-.signal-solution-copy .signal-copy-emoji,
+.signal-solution-copy .signal-copy-icon,
 .signal-solution-copy .signal-liquid-copy-text {
   color: #FFB800;
 }
@@ -823,12 +825,11 @@ textarea:focus {
 }
 
 .signal-solution-copy:hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(255, 184, 0, 0.25) 0%, transparent 70%),
+  background: radial-gradient(circle at 30% 30%, rgba(255, 184, 0, 0.2) 0%, rgba(255, 184, 0, 0.05) 100%),
               #2a2a2e;
-  transform: scale(0.98);
 }
 
-.signal-solution-copy:hover .signal-copy-emoji {
+.signal-solution-copy:hover .signal-copy-icon {
   transform: scale(1.2);
 }
 
@@ -847,10 +848,11 @@ textarea:focus {
 }
 
 .signal-liquid-copy-btn:disabled:hover::after {
-  transform: none;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 70%),
+              #2a2a2e;
 }
 
-.signal-liquid-copy-btn:disabled:hover .signal-copy-emoji {
+.signal-liquid-copy-btn:disabled:hover .signal-copy-icon {
   transform: none;
 }
 
@@ -886,8 +888,9 @@ textarea:focus {
     height: 52px;
     gap: 10px;
   }
-  .signal-copy-emoji {
-    font-size: 16px;
+  .signal-copy-icon {
+    width: 16px;
+    height: 16px;
   }
   .signal-liquid-copy-text {
     font-size: 15px;
@@ -899,8 +902,9 @@ textarea:focus {
     height: 48px;
     gap: 8px;
   }
-  .signal-copy-emoji {
-    font-size: 15px;
+  .signal-copy-icon {
+    width: 15px;
+    height: 15px;
   }
   .signal-liquid-copy-text {
     font-size: 14px;
