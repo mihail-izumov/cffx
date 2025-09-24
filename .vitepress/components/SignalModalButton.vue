@@ -5,9 +5,26 @@
       @click="openModal" 
       class="signal-button"
     >
-      <span>Compare iPhone cameras</span>
-      <div class="plus-icon">
-        <span>+</span>
+      <span>Собрать Мой Отзыв</span>
+      <div class="icon-container">
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="20" 
+          height="20" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          stroke-width="2" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"
+          class="text-cursor-icon"
+        >
+          <path d="M5 4h1a3 3 0 0 1 3 3 3 3 0 0 1 3-3h1"/>
+          <path d="M13 20h-1a3 3 0 0 1-3-3 3 3 0 0 1-3 3H5"/>
+          <path d="M5 16H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h1"/>
+          <path d="M13 8h7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-7"/>
+          <path d="M9 7v10"/>
+        </svg>
       </div>
     </button>
 
@@ -21,7 +38,6 @@
         class="modal-content"
         @click.stop
       >
-        <button @click="closeModal" class="close-button">×</button>
         <SignalT9Configurator />
       </div>
     </div>
@@ -78,7 +94,7 @@ onUnmounted(() => {
   color: #1d1d1f;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 200px;
+  min-width: 220px;
   gap: 12px;
 }
 
@@ -87,17 +103,30 @@ onUnmounted(() => {
   transform: translateY(-1px);
 }
 
-.plus-icon {
-  background: #007aff;
-  color: white;
+.signal-button:hover .icon-container {
+  background: #d1d1d6;
+  transform: scale(1.05);
+}
+
+.icon-container {
+  background: #e8e8ed;
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  font-weight: 300;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.text-cursor-icon {
+  color: #6d6d70;
+  transition: color 0.2s ease;
+}
+
+.signal-button:hover .text-cursor-icon {
+  color: #48484a;
 }
 
 /* Модальное окно */
@@ -117,57 +146,48 @@ onUnmounted(() => {
 }
 
 .modal-content {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  max-width: 90vw;
+  background: #2c2c2e;
+  border-radius: 16px;
+  padding: 0;
+  /* Фиксированная ширина как на экране "Эмоции" */
+  width: 1280px;
+  max-width: 95vw;
+  min-height: 600px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
-
-.close-button {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #666;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-}
-
-.close-button:hover {
-  background: #f0f0f0;
-  color: #333;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  color: white;
 }
 
 /* Адаптивность */
+@media (max-width: 1320px) {
+  .modal-content {
+    width: 95vw;
+  }
+}
+
 @media (max-width: 768px) {
   .signal-button {
-    min-width: 180px;
+    min-width: 200px;
     font-size: 14px;
     padding: 10px 16px;
   }
   
-  .plus-icon {
-    width: 24px;
-    height: 24px;
-    font-size: 16px;
+  .icon-container {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .text-cursor-icon {
+    width: 16px;
+    height: 16px;
   }
   
   .modal-content {
+    width: 95vw;
     margin: 10px;
-    padding: 20px;
-    max-width: calc(100vw - 20px);
+    min-height: 500px;
   }
 }
 
@@ -182,17 +202,20 @@ onUnmounted(() => {
     background: #3a3a3c;
   }
   
-  .modal-content {
-    background: #1c1c1e;
-    color: #ffffff;
-  }
-  
-  .close-button {
-    color: #ffffff;
-  }
-  
-  .close-button:hover {
+  .icon-container {
     background: #3a3a3c;
+  }
+  
+  .signal-button:hover .icon-container {
+    background: #48484a;
+  }
+  
+  .text-cursor-icon {
+    color: #98989d;
+  }
+  
+  .signal-button:hover .text-cursor-icon {
+    color: #ffffff;
   }
 }
 </style>
