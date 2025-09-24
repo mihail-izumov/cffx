@@ -138,7 +138,7 @@ onUnmounted(() => {
   color: #48484a;
 }
 
-/* Модальное окно - изолированные стили */
+/* Оверлей модального окна */
 .signal-modal-overlay {
   position: fixed;
   top: 0;
@@ -155,28 +155,26 @@ onUnmounted(() => {
   box-sizing: border-box;
 }
 
+/* Контейнер модального окна - минимальные стили */
 .signal-modal-content {
   background: #1e1e20;
   border-radius: 16px;
-  padding: 32px;
   /* Фиксированные размеры */
   width: 650px;
   height: 680px;
   max-width: 95vw;
   max-height: 90vh;
   overflow-y: auto;
-  position: relative;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  color: white;
   box-sizing: border-box;
+  /* НЕ добавляем padding, display, align-items или другие стили макета */
 }
 
-/* Адаптивность только для модального окна */
+/* Адаптивность только для размеров контейнера */
 @media (max-width: 700px) {
   .signal-modal-content {
     width: 95vw;
     height: 85vh;
-    padding: 24px;
   }
 }
 
@@ -198,7 +196,6 @@ onUnmounted(() => {
   }
   
   .signal-modal-content {
-    padding: 20px;
     height: 80vh;
   }
 }
