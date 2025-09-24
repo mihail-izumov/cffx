@@ -11,5 +11,8 @@ title: Новый Сигнал | Корж, Mosaic
 
 </div>
 
+<ReviewsWidget.vue />
+
+
 <SignalT9Configurator />
 
