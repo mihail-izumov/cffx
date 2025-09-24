@@ -1,56 +1,171 @@
 <template>
   <div class="signal-demo-wrapper">
-    <!-- Демо блок только для эмоций и чувств -->
-    <div class="signal-form-section">
-      <div class="signal-question-block" style="--accent-color: #A972FF;">
-        <p class="signal-direction-label">Эмоции и чувства</p>
-        <div class="signal-rotating-phrase-container">
-          <transition name="fade" mode="out-in">
-            <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
-          </transition>
-        </div>
-        <textarea 
-          v-model="form.emotionalRelease" 
-          @focus="startRotation(1)" 
-          rows="3" 
-          placeholder="Разочарован ожиданиями..." 
-          required>
-        </textarea>
-        
-        <!-- Подсказки-баблы для эмоций -->
-        <div class="signal-suggestions-container">
-          <div 
-            v-for="suggestion in currentSuggestions.emotions" 
-            :key="suggestion"
-            class="signal-suggestion-bubble signal-emotion-bubble"
-            @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
-          >
-            {{ suggestion }}
+    <!-- Переключатель секций над формой -->
+    <div class="signal-demo__header">
+      <div class="signal-demo__switch" role="tablist" aria-label="Секции формы">
+        <button
+          v-for="section in sections"
+          :key="section.id"
+          class="signal-demo__switch-btn"
+          :class="{ 'is-active': isActive(section.id) }"
+          type="button"
+          role="tab"
+          :aria-selected="isActive(section.id)"
+          @click="selectedSection = section.id"
+        >
+          {{ section.title }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Контейнер с формой -->
+    <div class="signal-demo__form-container">
+      <!-- Секция "Эмоции и чувства" -->
+      <div v-if="selectedSection === 'emotions'" class="signal-form-section">
+        <div class="signal-question-block" style="--accent-color: #A972FF;">
+          <p class="signal-direction-label">Эмоции и чувства</p>
+          <div class="signal-rotating-phrase-container">
+            <transition name="fade" mode="out-in">
+              <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
+            </transition>
           </div>
-          <!-- Кнопка возврата к начальным вариантам -->
-          <div 
-            v-if="!isInitialSuggestions('emotions')"
-            class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
-            @click="resetSuggestions('emotions')"
-          >
-            ← Ещё варианты
+          <textarea 
+            v-model="form.emotionalRelease" 
+            @focus="startRotation(1)" 
+            rows="3" 
+            placeholder="Разочарован ожиданиями..." 
+            required>
+          </textarea>
+          
+          <!-- Подсказки-баблы для эмоций -->
+          <div class="signal-suggestions-container">
+            <div 
+              v-for="suggestion in currentSuggestions.emotions" 
+              :key="suggestion"
+              class="signal-suggestion-bubble signal-emotion-bubble"
+              @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
+            >
+              {{ suggestion }}
+            </div>
+            <!-- Кнопка возврата к начальным вариантам -->
+            <div 
+              v-if="!isInitialSuggestions('emotions')"
+              class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
+              @click="resetSuggestions('emotions')"
+            >
+              ← Ещё варианты
+            </div>
           </div>
+          
+          <p class="signal-example-hint" v-html="'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»'"></p>
         </div>
-        
-        <p class="signal-example-hint" v-html="'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»'"></p>
+      </div>
+
+      <!-- Секция "Детали проблемы" -->
+      <div v-if="selectedSection === 'facts'" class="signal-form-section">
+        <div class="signal-question-block" style="--accent-color: #3DDC84;">
+          <p class="signal-direction-label">Детали проблемы</p>
+          <div class="signal-rotating-phrase-container">
+            <transition name="fade" mode="out-in">
+              <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
+            </transition>
+          </div>
+          <textarea 
+            v-model="form.factualAnalysis" 
+            @focus="startRotation(2)" 
+            rows="3" 
+            placeholder="Опишите факты: что, когда и где произошло..." 
+            required>
+          </textarea>
+          
+          <!-- Подсказки-баблы для деталей -->
+          <div class="signal-suggestions-container">
+            <div 
+              v-for="suggestion in currentSuggestions.facts" 
+              :key="suggestion"
+              class="signal-suggestion-bubble signal-fact-bubble"
+              @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
+            >
+              {{ suggestion }}
+            </div>
+            <!-- Кнопка возврата к начальным вариантам -->
+            <div 
+              v-if="!isInitialSuggestions('facts')"
+              class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
+              @click="resetSuggestions('facts')"
+            >
+              ← Ещё варианты
+            </div>
+          </div>
+          
+          <p class="signal-example-hint" v-html="'Пример: «Заказ на два капучино <b>ждал 22 минуты</b>, хотя в кафе был почти один»'"></p>
+        </div>
+      </div>
+
+      <!-- Секция "Предложение решения" -->
+      <div v-if="selectedSection === 'solutions'" class="signal-form-section">
+        <div class="signal-question-block" style="--accent-color: #FFB800;">
+          <p class="signal-direction-label">Предложение решения</p>
+          <div class="signal-rotating-phrase-container">
+            <transition name="fade" mode="out-in">
+              <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
+            </transition>
+          </div>
+          <textarea 
+            v-model="form.constructiveSuggestions" 
+            @focus="startRotation(3)" 
+            rows="3" 
+            placeholder="Предложите, как это можно исправить..." 
+            required>
+          </textarea>
+          
+          <!-- Подсказки-баблы для решений -->
+          <div class="signal-suggestions-container">
+            <div 
+              v-for="suggestion in currentSuggestions.solutions" 
+              :key="suggestion"
+              class="signal-suggestion-bubble signal-solution-bubble"
+              @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
+            >
+              {{ suggestion }}
+            </div>
+            <!-- Кнопка возврата к начальным вариантам -->
+            <div 
+              v-if="!isInitialSuggestions('solutions')"
+              class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
+              @click="resetSuggestions('solutions')"
+            >
+              ← Ещё варианты
+            </div>
+          </div>
+          
+          <p class="signal-example-hint" v-html="'Пример: «Добавить на кассе <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref, onUnmounted } from 'vue';
+import { reactive, ref, computed, onUnmounted } from 'vue';
 
 const form = reactive({ 
-  emotionalRelease: ''
+  emotionalRelease: '',
+  factualAnalysis: '',
+  constructiveSuggestions: ''
 });
 
-// Только подсказки для эмоций (полная 3-уровневая система)
+// Секции формы для переключателя
+const sections = [
+  { id: 'emotions', title: 'Эмоции и чувства' },
+  { id: 'facts', title: 'Детали проблемы' },
+  { id: 'solutions', title: 'Предложение решения' }
+];
+
+const selectedSection = ref('emotions');
+const isActive = (sectionId) => sectionId === selectedSection.value;
+
+// Полная 3-уровневая система подсказок для всех секций
 const suggestions = reactive({
   emotions: {
     // УРОВЕНЬ 1: Основные эмоции
@@ -68,40 +183,63 @@ const suggestions = reactive({
     'грязная посуда': ['следы помады', 'остатки еды', 'жирные пятна', 'засохший кофе', 'странный запах'],
     'холодный кофе': ['едва теплый', 'совсем остыл', 'подали холодным', 'остыл пока ждал', 'температура комнатная'],
     'грубый персонал': ['не поздоровались', 'хамили', 'игнорировали', 'были раздражены', 'повысили голос'],
-    'забыли заказ': ['через 40 минут', 'не записали', 'потеряли чек', 'не передали на кухню', 'сидел и ждал'],
-    'качеством': ['хуже чем обычно', 'не соответствует цене', 'испортилось за месяц', 'как в фастфуде', 'совсем не то'],
-    'сервисом': ['медленный', 'невнимательный', 'равнодушный', 'непрофессиональный', 'хаотичный'],
-    'ожиданиями': ['ждал большего', 'по отзывам лучше', 'раньше было вкуснее', 'не оправдал репутацию', 'переоценил место'],
-    'атмосферой': ['шумно и грязно', 'неуютно', 'холодно', 'плохая музыка', 'неприятные запахи'],
-    'чистотой': ['грязные столы', 'липкий пол', 'немытая посуда', 'пыль везде', 'антисанитария'],
-    'обслуживанием': ['долгое ожидание', 'путаница в заказах', 'невежливость', 'игнорирование', 'ошибки кассира'],
-    'очередью': ['не двигалась', 'час стоял', 'нет системы', 'хаос', 'всех пропускают'],
-    'ошибкой в заказе': ['не тот напиток', 'забыли позицию', 'неправильный размер', 'другой сироп', 'перепутали'],
-    'температурой блюд': ['холодные', 'остывшие', 'чуть теплые', 'не разогрели', 'ледяные'],
-    'упаковкой': ['протекающие крышки', 'слабые пакеты', 'разорвалась', 'неудобная', 'грязная'],
-    'антисанитарией': ['грязные руки', 'упал и подали', 'на полу готовят', 'мухи', 'тараканы'],
-    'хамством': ['нагрубили', 'оскорбили', 'накричали', 'показали характер', 'послали'],
-    'обманом': ['не тот объем', 'обвесили', 'скрыли стоимость', 'навязали', 'обсчитали'],
-    'некачественной едой': ['испорченная', 'несвежая', 'странный вкус', 'горькая', 'кислая'],
-    'инородными предметами': ['волосы в еде', 'пластик в круассане', 'проволока', 'нитки', 'жук'],
-    'таким сервисом': ['впервые такое', 'не ожидал', 'шокирован', 'не верю', 'ужасно'],
-    'проблемами': ['постоянные', 'одни и те же', 'системные', 'не решаются', 'игнорируются'],
-    'невниманием': ['не слушают', 'не реагируют', 'все равно', 'безразличие', 'не заботятся'],
-    'беспорядком': ['хаос', 'непорядок', 'бардак', 'неорганизованность', 'суета'],
-    'отношением': ['пренебрежение', 'высокомерие', 'равнодушие', 'неуважение', 'хамство']
+    'забыли заказ': ['через 40 минут', 'не записали', 'потеряли чек', 'не передали на кухню', 'сидел и ждал']
+  },
+  
+  facts: {
+    // УРОВЕНЬ 1: Основные категории проблем
+    initial: ['ожидание', 'ошибка в заказе', 'качество блюд', 'чистота', 'персонал'],
+    
+    // УРОВЕНЬ 2: Детали проблем
+    'ожидание': ['20 минут', '30 минут', 'более часа', 'забыли заказ', 'очередь не двигалась'],
+    'ошибка в заказе': ['не тот напиток', 'не доложили позицию', 'неправильный соус', 'перепутали объём', 'другое молоко'],
+    'качество блюд': ['холодный кофе', 'невкусная еда', 'недоваренный рис', 'комочки в матче', 'чёрствая выпечка'],
+    'чистота': ['грязная посуда', 'волосы в еде', 'грязная уборная', 'насекомые', 'пластик в круассане'],
+    'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились'],
+    
+    // УРОВЕНЬ 3: Конкретные детали инцидентов
+    '20 минут': ['засекал по часам', 'спросил у соседнего стола', 'заказал в 14:30, получил в 14:50', 'долгое ожидание для простого заказа', 'других обслужили быстрее'],
+    '30 минут': ['полчаса точно', 'с 15:00 до 15:30', 'дважды подходил узнать', 'время на телефоне показало', 'успел прочитать новости'],
+    'более часа': ['час и 10 минут', 'полтора часа ждал', 'с 12:00 до 13:15', 'весь обед потратил', 'опоздал на встречу']
+  },
+  
+  solutions: {
+    // УРОВЕНЬ 1: Основные направления решений
+    initial: ['таймер ожидания', 'обучение персонала', 'контроль качества', 'система проверки', 'стандарты сервиса'],
+    
+    // УРОВЕНЬ 2: Конкретные решения
+    'таймер ожидания': ['на кассе', 'видимый гостям', 'с уведомлениями', 'контроль времени', 'цифровая очередь'],
+    'обучение персонала': ['по сервису', 'по санитарии', 'по качеству', 'по коммуникации', 'регулярные тренинги'],
+    'контроль качества': ['проверка блюд', 'температурный контроль', 'свежесть продуктов', 'упаковка', 'дегустация'],
+    'система проверки': ['чек-лист качества', 'двойная проверка', 'контроль чистоты', 'стандарты подачи', 'фото блюд'],
+    'стандарты сервиса': ['вежливость', 'скорость', 'точность', 'чистота', 'профессионализм'],
+    
+    // УРОВЕНЬ 3: Детальные технические решения
+    'на кассе': ['большой дисплей', 'видимый всем', 'с номерами заказов', 'обновляется в реальном времени', 'со звуковым сигналом'],
+    'видимый гостям': ['на стене', 'над барной стойкой', 'в мобильном приложении', 'на столике с номером', 'на чеке QR-код'],
+    'с уведомлениями': ['СМС о готовности', 'push в приложении', 'звонок менеджера', 'вибрация трекера', 'email уведомления']
   }
 });
 
-// Текущие подсказки для эмоций
+// Текущие подсказки для каждого поля
 const currentSuggestions = reactive({
-  emotions: [...suggestions.emotions.initial]
+  emotions: [...suggestions.emotions.initial],
+  facts: [...suggestions.facts.initial],
+  solutions: [...suggestions.solutions.initial]
 });
 
 const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
+const phrasesForQuestion2 = ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'];
+const phrasesForQuestion3 = ['Как бы вы это исправили?', 'Что могло бы предотвратить эту ситуацию?', 'Какое одно изменение сделало бы ваш опыт идеальным?'];
+
 const currentQuestion1 = ref(phrasesForQuestion1[0]);
+const currentQuestion2 = ref(phrasesForQuestion2[0]);
+const currentQuestion3 = ref(phrasesForQuestion3[0]);
 
 let rotationInterval = null;
 let currentQuestionIndex1 = 0;
+let currentQuestionIndex2 = 0;
+let currentQuestionIndex3 = 0;
 
 // Проверка, являются ли текущие подсказки начальными
 function isInitialSuggestions(suggestionType) {
@@ -149,9 +287,18 @@ function updateSuggestions(suggestionType, selectedWord) {
 }
 
 function startRotation(questionNum) {
+  clearInterval(rotationInterval);
   rotationInterval = setInterval(() => {
-    currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length;
-    currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1];
+    if (questionNum === 1) {
+      currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length;
+      currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1];
+    } else if (questionNum === 2) {
+      currentQuestionIndex2 = (currentQuestionIndex2 + 1) % phrasesForQuestion2.length;
+      currentQuestion2.value = phrasesForQuestion2[currentQuestionIndex2];
+    } else if (questionNum === 3) {
+      currentQuestionIndex3 = (currentQuestionIndex3 + 1) % phrasesForQuestion3.length;
+      currentQuestion3.value = phrasesForQuestion3[currentQuestionIndex3];
+    }
   }, 3000);
 }
 
@@ -165,11 +312,57 @@ onUnmounted(() => {
   --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
 }
 
-.signal-demo-wrapper { 
+/* Внешний обёртчик */
+.signal-demo-wrapper {
   font-family: var(--signal-font-sans); 
   width: 100%; 
   max-width: none; 
   margin: 0; 
+}
+
+/* Хедер с переключателями над формой */
+.signal-demo__header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+/* Переключатель по центру */
+.signal-demo__switch {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 0;
+  background: transparent;
+  margin: 0;
+}
+
+.signal-demo__switch-btn {
+  appearance: none;
+  border: 1px solid #2c2c2f;
+  background: transparent;
+  color: #f0f0f0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.95em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease, font-weight .15s ease;
+  font-family: var(--signal-font-sans);
+}
+
+.signal-demo__switch-btn:hover { 
+  border-color: #A972FF; 
+}
+
+.signal-demo__switch-btn.is-active {
+  background: rgba(169, 114, 255, 0.14);
+  border-color: #A972FF;
+  font-weight: 700;
+}
+
+/* Контейнер формы с бордюром */
+.signal-demo__form-container {
   background-color: #1E1E20; 
   border-radius: 24px; 
   padding: 2rem; 
@@ -275,6 +468,30 @@ textarea:focus {
   transform: scale(1.05);
 }
 
+.signal-fact-bubble {
+  background: rgba(61, 220, 132, 0.1);
+  border-color: rgba(61, 220, 132, 0.3);
+  color: #3DDC84;
+}
+
+.signal-fact-bubble:hover {
+  background: #3DDC84;
+  color: #000;
+  transform: scale(1.05);
+}
+
+.signal-solution-bubble {
+  background: rgba(255, 184, 0, 0.1);
+  border-color: rgba(255, 184, 0, 0.3);
+  color: #FFB800;
+}
+
+.signal-solution-bubble:hover {
+  background: #FFB800;
+  color: #000;
+  transform: scale(1.05);
+}
+
 /* Кнопка сброса к начальным вариантам */
 .signal-reset-bubble {
   font-weight: 600;
@@ -299,7 +516,7 @@ textarea:focus {
 }
 
 @media (max-width: 768px) { 
-  .signal-demo-wrapper { 
+  .signal-demo__form-container { 
     padding: 1.5rem; 
   } 
   
@@ -318,6 +535,16 @@ textarea:focus {
   .signal-suggestion-bubble {
     font-size: 0.75rem;
     padding: 0.3rem 0.7rem;
+  }
+
+  .signal-demo__switch {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .signal-demo__switch-btn {
+    font-size: 0.85em;
+    padding: 6px 10px;
   }
 }
 </style>
