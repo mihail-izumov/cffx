@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="signal-modal-wrapper">
     <!-- Кнопка -->
     <button 
       @click="openModal" 
-      class="signal-button"
+      class="signal-modal-button"
     >
-      <span>Собрать Мой Отзыв</span>
-      <div class="icon-container">
+      <span class="signal-modal-button-text">Собрать Мой Отзыв</span>
+      <div class="signal-modal-icon-container">
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
           width="20" 
@@ -17,7 +17,7 @@
           stroke-width="2" 
           stroke-linecap="round" 
           stroke-linejoin="round"
-          class="text-cursor-icon"
+          class="signal-modal-text-cursor-icon"
         >
           <path d="M5 4h1a3 3 0 0 1 3 3 3 3 0 0 1 3-3h1"/>
           <path d="M13 20h-1a3 3 0 0 1-3-3 3 3 0 0 1-3 3H5"/>
@@ -31,11 +31,11 @@
     <!-- Модальное окно -->
     <div 
       v-if="isModalOpen" 
-      class="modal-overlay"
+      class="signal-modal-overlay"
       @click="closeModal"
     >
       <div 
-        class="modal-content"
+        class="signal-modal-content"
         @click.stop
       >
         <SignalT9Configurator />
@@ -79,8 +79,13 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Стили кнопки */
-.signal-button {
+/* Wrapper */
+.signal-modal-wrapper {
+  display: inline-block;
+}
+
+/* Стили кнопки - только для этого компонента */
+.signal-modal-button {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -97,17 +102,22 @@ onUnmounted(() => {
   gap: 12px;
 }
 
-.signal-button:hover {
+.signal-modal-button:hover {
   background: #e8e8ed;
   transform: translateY(-1px);
 }
 
-.signal-button:hover .icon-container {
+.signal-modal-button:hover .signal-modal-icon-container {
   background: #d1d1d6;
   transform: scale(1.05);
 }
 
-.icon-container {
+.signal-modal-button-text {
+  flex: 1;
+  text-align: left;
+}
+
+.signal-modal-icon-container {
   background: #e8e8ed;
   border-radius: 50%;
   width: 32px;
@@ -119,22 +129,22 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 
-.text-cursor-icon {
+.signal-modal-text-cursor-icon {
   color: #6d6d70;
   transition: color 0.2s ease;
 }
 
-.signal-button:hover .text-cursor-icon {
+.signal-modal-button:hover .signal-modal-text-cursor-icon {
   color: #48484a;
 }
 
-/* Модальное окно */
-.modal-overlay {
+/* Модальное окно - изолированные стили */
+.signal-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(4px);
   display: flex;
@@ -142,112 +152,81 @@ onUnmounted(() => {
   justify-content: center;
   z-index: 9999;
   padding: 20px;
+  box-sizing: border-box;
 }
 
-.modal-content {
+.signal-modal-content {
   background: #1e1e20;
   border-radius: 16px;
   padding: 32px;
-  /* Оптимальная ширина для десктопа */
+  /* Фиксированные размеры */
   width: 650px;
+  height: 680px;
   max-width: 95vw;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   color: white;
+  box-sizing: border-box;
 }
 
-/* Глобальные стили для контента внутри модального окна */
-.modal-content :deep(*) {
-  background: transparent !important;
-}
-
-/* Убираем разные фоны у внутренних элементов */
-.modal-content :deep(.container),
-.modal-content :deep(.content-area),
-.modal-content :deep(.form-section),
-.modal-content :deep(.tabs-container) {
-  background: transparent !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-/* Увеличиваем отступы внутри контейнеров */
-.modal-content :deep(.inner-content) {
-  padding: 24px !important;
-}
-
-/* Исправляем отступы для переключателей */
-.modal-content :deep(.tab-buttons),
-.modal-content :deep(.button-group),
-.modal-content :deep(.tags-container) {
-  margin: 16px 0 !important;
-  gap: 12px !important;
-  flex-wrap: wrap !important;
-}
-
-/* Убеждаемся что кнопки не выходят за границы */
-.modal-content :deep(.tab-button),
-.modal-content :deep(.tag-button) {
-  margin: 4px !important;
-  white-space: nowrap !important;
-}
-
-/* Адаптивность */
+/* Адаптивность только для модального окна */
 @media (max-width: 700px) {
-  .modal-content {
+  .signal-modal-content {
     width: 95vw;
+    height: 85vh;
     padding: 24px;
   }
 }
 
 @media (max-width: 768px) {
-  .signal-button {
+  .signal-modal-button {
     min-width: 200px;
     font-size: 14px;
     padding: 10px 16px;
   }
   
-  .icon-container {
+  .signal-modal-icon-container {
     width: 28px;
     height: 28px;
   }
   
-  .text-cursor-icon {
+  .signal-modal-text-cursor-icon {
     width: 16px;
     height: 16px;
   }
   
-  .modal-content {
+  .signal-modal-content {
     padding: 20px;
+    height: 80vh;
   }
 }
 
-/* Темная тема */
+/* Темная тема только для кнопки */
 @media (prefers-color-scheme: dark) {
-  .signal-button {
+  .signal-modal-button {
     background: #2c2c2e;
     color: #ffffff;
   }
   
-  .signal-button:hover {
+  .signal-modal-button:hover {
     background: #3a3a3c;
   }
   
-  .icon-container {
+  .signal-modal-icon-container {
     background: #3a3a3c;
   }
   
-  .signal-button:hover .icon-container {
+  .signal-modal-button:hover .signal-modal-icon-container {
     background: #48484a;
   }
   
-  .text-cursor-icon {
+  .signal-modal-text-cursor-icon {
     color: #98989d;
   }
   
-  .signal-button:hover .text-cursor-icon {
+  .signal-modal-button:hover .signal-modal-text-cursor-icon {
     color: #ffffff;
   }
 }
