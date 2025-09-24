@@ -155,10 +155,11 @@ onUnmounted(() => {
   box-sizing: border-box;
 }
 
-/* Контейнер модального окна - минимальные стили */
+/* Контейнер модального окна - возвращаем нужные отступы */
 .signal-modal-content {
   background: #1e1e20;
   border-radius: 16px;
+  padding: 32px;
   /* Фиксированные размеры */
   width: 650px;
   height: 680px;
@@ -167,14 +168,31 @@ onUnmounted(() => {
   overflow-y: auto;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
-  /* НЕ добавляем padding, display, align-items или другие стили макета */
+  color: white;
 }
 
-/* Адаптивность только для размеров контейнера */
+/* Убираем принудительное центрирование ТОЛЬКО для текстовых элементов */
+.signal-modal-content :deep(h1),
+.signal-modal-content :deep(h2), 
+.signal-modal-content :deep(h3),
+.signal-modal-content :deep(h4),
+.signal-modal-content :deep(p),
+.signal-modal-content :deep(span),
+.signal-modal-content :deep(label),
+.signal-modal-content :deep(.title),
+.signal-modal-content :deep(.subtitle),
+.signal-modal-content :deep(.description),
+.signal-modal-content :deep(.example-text),
+.signal-modal-content :deep(.hint-text) {
+  text-align: initial !important;
+}
+
+/* Адаптивность */
 @media (max-width: 700px) {
   .signal-modal-content {
     width: 95vw;
     height: 85vh;
+    padding: 24px;
   }
 }
 
@@ -196,6 +214,7 @@ onUnmounted(() => {
   }
   
   .signal-modal-content {
+    padding: 20px;
     height: 80vh;
   }
 }
