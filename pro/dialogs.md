@@ -41,8 +41,6 @@ notification: brew
 
 Все данные из реальных инцидентов Регламента: проблемы с ожиданием, санитарные нарушения, конкретные случаи вроде «комочки в матче» и «трогали трубочку грязными руками».
 
-<br>
-
 <div style="text-align: center; margin: 2rem 0;">
   <img 
     src="/SignalVSReview.jpg" 
@@ -60,8 +58,9 @@ notification: brew
   />
 </div>
 
-<br>
 <DialogsT9 />
+<br>
+<DialogsTestT9 />
 
 ## Не просто возвращает клиента — делает его лояльным
 
