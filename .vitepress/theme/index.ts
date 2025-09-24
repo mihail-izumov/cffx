@@ -76,6 +76,7 @@ import SignalFormKorzh1 from '../components/SignalFormKorzh1.vue'
 import DialogsT9 from '../components/DialogsT9.vue'
 import DialogsTestT9 from '../components/DialogsTestT9.vue'
 import SignalT9Configurator from '../components/SignalT9Configurator.vue'
+import SignalModalButton from '../components/SignalModalButton.vue'
 
 export default {
   extends: DefaultTheme,
@@ -158,5 +159,6 @@ export default {
     app.component('DialogsT9', DialogsT9)
     app.component('DialogsTestT9', DialogsTestT9)
     app.component('SignalT9Configurator', SignalT9Configurator)
+    app.component('SignalModalButton', SignalModalButton)
   },
 }
