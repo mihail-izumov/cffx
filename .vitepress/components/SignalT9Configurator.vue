@@ -501,7 +501,7 @@ onUnmounted(() => {
 
 .signal-demo__header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   margin-bottom: 16px;
 }
 
@@ -922,6 +922,7 @@ textarea:focus {
   .signal-demo__switch {
     flex-wrap: wrap;
     gap: 6px;
+    justify-content: center;
   }
   .signal-demo__switch-btn {
     font-size: 0.85em;
