@@ -32,6 +32,9 @@
               @click="copyToClipboard(form.emotionalRelease, 'emotions')"
               :disabled="copyStatus.emotions === 'copying'"
             >
+              <span class="signal-copy-emoji">
+                {{ copyStatus.emotions === 'copied' ? '✓' : copyStatus.emotions === 'copying' ? '⏳' : '📋' }}
+              </span>
               <span class="signal-liquid-copy-text">
                 {{ copyStatus.emotions === 'copied' ? 'Скопировано' : copyStatus.emotions === 'copying' ? 'Копирование...' : 'Скопировать' }}
               </span>
@@ -87,6 +90,9 @@
               @click="copyToClipboard(form.factualAnalysis, 'facts')"
               :disabled="copyStatus.facts === 'copying'"
             >
+              <span class="signal-copy-emoji">
+                {{ copyStatus.facts === 'copied' ? '✓' : copyStatus.facts === 'copying' ? '⏳' : '📋' }}
+              </span>
               <span class="signal-liquid-copy-text">
                 {{ copyStatus.facts === 'copied' ? 'Скопировано' : copyStatus.facts === 'copying' ? 'Копирование...' : 'Скопировать' }}
               </span>
@@ -142,6 +148,9 @@
               @click="copyToClipboard(form.constructiveSuggestions, 'solutions')"
               :disabled="copyStatus.solutions === 'copying'"
             >
+              <span class="signal-copy-emoji">
+                {{ copyStatus.solutions === 'copied' ? '✓' : copyStatus.solutions === 'copying' ? '⏳' : '📋' }}
+              </span>
               <span class="signal-liquid-copy-text">
                 {{ copyStatus.solutions === 'copied' ? 'Скопировано' : copyStatus.solutions === 'copying' ? 'Копирование...' : 'Скопировать' }}
               </span>
@@ -586,7 +595,7 @@ onUnmounted(() => {
   display: block;
 }
 
-/* Liquid bubble кнопка копирования с текстом */
+/* Liquid bubble кнопка копирования с эмодзи и текстом */
 .signal-liquid-copy-btn {
   position: relative;
   height: 32px;
@@ -599,6 +608,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   font-family: var(--signal-font-sans);
   flex-shrink: 0;
   min-width: fit-content;
@@ -630,12 +640,20 @@ onUnmounted(() => {
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+.signal-copy-emoji {
+  position: relative;
+  z-index: 3;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
 .signal-liquid-copy-text {
   position: relative;
   z-index: 3;
   font-size: 11px;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -645,6 +663,7 @@ onUnmounted(() => {
   --accent-color: #A972FF;
 }
 
+.signal-emotion-copy .signal-copy-emoji,
 .signal-emotion-copy .signal-liquid-copy-text {
   color: #A972FF;
 }
@@ -659,15 +678,19 @@ onUnmounted(() => {
   transform: scale(0.98);
 }
 
+.signal-emotion-copy:hover .signal-copy-emoji {
+  transform: scale(1.2);
+}
+
 .signal-emotion-copy:hover .signal-liquid-copy-text {
   color: rgba(169, 114, 255, 0.9);
-  transform: scale(1.05);
 }
 
 .signal-fact-copy {
   --accent-color: #3DDC84;
 }
 
+.signal-fact-copy .signal-copy-emoji,
 .signal-fact-copy .signal-liquid-copy-text {
   color: #3DDC84;
 }
@@ -682,15 +705,19 @@ onUnmounted(() => {
   transform: scale(0.98);
 }
 
+.signal-fact-copy:hover .signal-copy-emoji {
+  transform: scale(1.2);
+}
+
 .signal-fact-copy:hover .signal-liquid-copy-text {
   color: rgba(61, 220, 132, 0.9);
-  transform: scale(1.05);
 }
 
 .signal-solution-copy {
   --accent-color: #FFB800;
 }
 
+.signal-solution-copy .signal-copy-emoji,
 .signal-solution-copy .signal-liquid-copy-text {
   color: #FFB800;
 }
@@ -705,9 +732,12 @@ onUnmounted(() => {
   transform: scale(0.98);
 }
 
+.signal-solution-copy:hover .signal-copy-emoji {
+  transform: scale(1.2);
+}
+
 .signal-solution-copy:hover .signal-liquid-copy-text {
   color: rgba(255, 184, 0, 0.9);
-  transform: scale(1.05);
 }
 
 /* Состояние disabled */
@@ -724,7 +754,7 @@ onUnmounted(() => {
   transform: none;
 }
 
-.signal-liquid-copy-btn:disabled:hover .signal-liquid-copy-text {
+.signal-liquid-copy-btn:disabled:hover .signal-copy-emoji {
   transform: none;
 }
 
@@ -875,6 +905,10 @@ textarea:focus {
   .signal-liquid-copy-btn {
     height: 28px;
     padding: 0 12px;
+    gap: 4px;
+  }
+  .signal-copy-emoji {
+    font-size: 11px;
   }
   .signal-liquid-copy-text {
     font-size: 10px;
@@ -891,6 +925,10 @@ textarea:focus {
     align-self: flex-end;
     height: 26px;
     padding: 0 10px;
+    gap: 3px;
+  }
+  .signal-copy-emoji {
+    font-size: 10px;
   }
   .signal-liquid-copy-text {
     font-size: 9px;
