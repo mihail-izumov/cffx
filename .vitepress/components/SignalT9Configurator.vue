@@ -695,6 +695,7 @@ textarea:focus {
   font-size: 0.8rem;
   color: #777;
   margin: 0.5rem 0 0 0.25rem;
+  line-height: 1.2; /* Уменьшено с обычного 1.4-1.5 до 1.2 для более плотного расположения строк */
 }
 
 .signal-example-hint b {
@@ -942,6 +943,9 @@ textarea:focus {
   .signal-liquid-copy-text {
     font-size: 15px;
   }
+  .signal-example-hint {
+    line-height: 1.1; /* Еще более плотно на мобильных */
+  }
 }
 
 @media (max-width: 480px) {
@@ -955,6 +959,9 @@ textarea:focus {
   }
   .signal-liquid-copy-text {
     font-size: 14px;
+  }
+  .signal-example-hint {
+    line-height: 1.05; /* Минимальное межстрочное расстояние на очень маленьких экранах */
   }
 }
 </style>
