@@ -33,7 +33,7 @@
               :disabled="copyStatus.emotions === 'copying'"
             >
               <span class="signal-liquid-copy-text">
-                {{ copyStatus.emotions === 'copied' ? '✓' : copyStatus.emotions === 'copying' ? '...' : '📋' }}
+                {{ copyStatus.emotions === 'copied' ? 'Скопировано' : copyStatus.emotions === 'copying' ? 'Копирование...' : 'Скопировать' }}
               </span>
             </button>
           </div>
@@ -88,7 +88,7 @@
               :disabled="copyStatus.facts === 'copying'"
             >
               <span class="signal-liquid-copy-text">
-                {{ copyStatus.facts === 'copied' ? '✓' : copyStatus.facts === 'copying' ? '...' : '📋' }}
+                {{ copyStatus.facts === 'copied' ? 'Скопировано' : copyStatus.facts === 'copying' ? 'Копирование...' : 'Скопировать' }}
               </span>
             </button>
           </div>
@@ -143,7 +143,7 @@
               :disabled="copyStatus.solutions === 'copying'"
             >
               <span class="signal-liquid-copy-text">
-                {{ copyStatus.solutions === 'copied' ? '✓' : copyStatus.solutions === 'copying' ? '...' : '📋' }}
+                {{ copyStatus.solutions === 'copied' ? 'Скопировано' : copyStatus.solutions === 'copying' ? 'Копирование...' : 'Скопировать' }}
               </span>
             </button>
           </div>
@@ -586,12 +586,12 @@ onUnmounted(() => {
   display: block;
 }
 
-/* Liquid bubble кнопка копирования в стиле из примера */
+/* Liquid bubble кнопка копирования с текстом */
 .signal-liquid-copy-btn {
   position: relative;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 16px;
   border: none;
   cursor: pointer;
   overflow: hidden;
@@ -601,14 +601,16 @@ onUnmounted(() => {
   justify-content: center;
   font-family: var(--signal-font-sans);
   flex-shrink: 0;
+  min-width: fit-content;
+  white-space: nowrap;
 }
 
 .signal-liquid-copy-btn::before {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 50%;
-  padding: 2px;
+  border-radius: 16px;
+  padding: 1px;
   background: linear-gradient(135deg, var(--accent-color), rgba(255, 255, 255, 0.2));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -620,9 +622,9 @@ onUnmounted(() => {
 .signal-liquid-copy-btn::after {
   content: '';
   position: absolute;
-  inset: 2px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 70%),
+  inset: 1px;
+  border-radius: 15px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 70%),
               #2a2a2e;
   z-index: 2;
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -631,9 +633,11 @@ onUnmounted(() => {
 .signal-liquid-copy-text {
   position: relative;
   z-index: 3;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 600;
   transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Цветовые вариации для разных секций */
@@ -652,12 +656,12 @@ onUnmounted(() => {
 .signal-emotion-copy:hover::after {
   background: radial-gradient(circle at 30% 30%, rgba(169, 114, 255, 0.25) 0%, transparent 70%),
               #2a2a2e;
-  transform: scale(0.95);
+  transform: scale(0.98);
 }
 
 .signal-emotion-copy:hover .signal-liquid-copy-text {
   color: rgba(169, 114, 255, 0.9);
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .signal-fact-copy {
@@ -675,12 +679,12 @@ onUnmounted(() => {
 .signal-fact-copy:hover::after {
   background: radial-gradient(circle at 30% 30%, rgba(61, 220, 132, 0.25) 0%, transparent 70%),
               #2a2a2e;
-  transform: scale(0.95);
+  transform: scale(0.98);
 }
 
 .signal-fact-copy:hover .signal-liquid-copy-text {
   color: rgba(61, 220, 132, 0.9);
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .signal-solution-copy {
@@ -698,12 +702,12 @@ onUnmounted(() => {
 .signal-solution-copy:hover::after {
   background: radial-gradient(circle at 30% 30%, rgba(255, 184, 0, 0.25) 0%, transparent 70%),
               #2a2a2e;
-  transform: scale(0.95);
+  transform: scale(0.98);
 }
 
 .signal-solution-copy:hover .signal-liquid-copy-text {
   color: rgba(255, 184, 0, 0.9);
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 /* Состояние disabled */
@@ -869,11 +873,11 @@ textarea:focus {
     padding: 6px 10px;
   }
   .signal-liquid-copy-btn {
-    width: 32px;
-    height: 32px;
+    height: 28px;
+    padding: 0 12px;
   }
   .signal-liquid-copy-text {
-    font-size: 12px;
+    font-size: 10px;
   }
 }
 
@@ -885,6 +889,11 @@ textarea:focus {
   }
   .signal-liquid-copy-btn {
     align-self: flex-end;
+    height: 26px;
+    padding: 0 10px;
+  }
+  .signal-liquid-copy-text {
+    font-size: 9px;
   }
 }
 </style>
