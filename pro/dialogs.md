@@ -61,7 +61,6 @@ notification: brew
 <br>
 
 <DialogsTestT9 />
-<br>
 <DialogsT9 />
 
 ## Не просто возвращает клиента — делает его лояльным
