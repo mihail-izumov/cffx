@@ -1018,15 +1018,15 @@ watch(showBranchList, (newValue) => {
   margin-bottom: 8px !important; /* Было 16px, стало 8px */
 }
 
-/* Зафиксированная секция с кнопкой закрытия */
 .signal2-modal-close-section {
-  flex-shrink: 0; /* Не сжимается */
-  padding: 16px;
+  flex-shrink: 0;
+  padding: 20px 16px 24px 16px; /* Увеличил верхний и нижний отступы */
   background: #1e1e20;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   justify-content: center;
 }
+
 
 .signal2-modal-close-button {
   background: linear-gradient(135deg, #f59e0b, #fcd34d);
