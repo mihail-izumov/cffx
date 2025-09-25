@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
+import SignalT9Configurator from './SignalT9Configurator.vue'
 
 const cafeNames = ['Корж', 'Skuratov', 'Surf', 'MOSAIC', 'Белотурка', 'Кэрри']
 
@@ -119,6 +120,9 @@ const showRightGradient = ref(false)
 const showBadgeTooltip = ref(false)
 const isMobile = ref(false)
 
+// Состояние для модального окна "Собрать Мой Отзыв"
+const isReviewModalOpen = ref(false)
+
 const fetchSystemStatus = async () => {
   try {
     await new Promise(resolve => setTimeout(resolve, 50))
@@ -168,9 +172,16 @@ const goToReviews = (branch) => {
   window.open(url, '_blank')
 }
 
-const createTicket = () => {
-  emit('close')
-  window.location.href = '/signal/new'
+// Функция для открытия модального окна отзыва
+const openReviewModal = () => {
+  isReviewModalOpen.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+// Функция для закрытия модального окна отзыва
+const closeReviewModal = () => {
+  isReviewModalOpen.value = false
+  document.body.style.overflow = 'auto'
 }
 
 const openSignalNew = () => {
@@ -219,11 +230,16 @@ const cycleText = () => {
 const showInfoModal = ref(false)
 const showGrowthModal = ref(false)
 
+// Обновленная функция обработки Escape
 const onKeydown = (e) => {
   if (e.key === 'Escape') {
-    showInfoModal.value = false
-    showGrowthModal.value = false
-    showBadgeTooltip.value = false
+    if (isReviewModalOpen.value) {
+      closeReviewModal()
+    } else {
+      showInfoModal.value = false
+      showGrowthModal.value = false
+      showBadgeTooltip.value = false
+    }
   }
 }
 
@@ -483,8 +499,8 @@ watch(showBranchList, (newValue) => {
             </div>
 
             <div class="signal2-button-container">
-              <!-- Первая кнопка с кругом и иконкой -->
-              <button @click="createTicket" class="signal2-action-button signal2-ticket-button">
+              <!-- Первая кнопка с модальным окном -->
+              <button @click="openReviewModal" class="signal2-action-button signal2-ticket-button">
                 Собрать Мой Отзыв
                 <div class="signal2-button-icon-container">
                   <svg 
@@ -567,6 +583,20 @@ watch(showBranchList, (newValue) => {
             </button>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Модальное окно для "Собрать Мой Отзыв" -->
+    <div 
+      v-if="isReviewModalOpen" 
+      class="signal2-review-modal-overlay"
+      @click="closeReviewModal"
+    >
+      <div 
+        class="signal2-review-modal-content"
+        @click.stop
+      >
+        <SignalT9Configurator />
       </div>
     </div>
 
@@ -817,6 +847,52 @@ watch(showBranchList, (newValue) => {
   text-decoration-color: #c5f946 !important;
   border-bottom: none !important;
   background: none !important;
+}
+
+/* Стили для модального окна отзыва */
+.signal2-review-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.signal2-review-modal-content {
+  background: #1e1e20;
+  border-radius: 16px;
+  padding: 32px;
+  width: 650px;
+  height: 680px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  color: white;
+}
+
+.signal2-review-modal-content :deep(h1),
+.signal2-review-modal-content :deep(h2), 
+.signal2-review-modal-content :deep(h3),
+.signal2-review-modal-content :deep(h4),
+.signal2-review-modal-content :deep(p),
+.signal2-review-modal-content :deep(span),
+.signal2-review-modal-content :deep(label),
+.signal2-review-modal-content :deep(.title),
+.signal2-review-modal-content :deep(.subtitle),
+.signal2-review-modal-content :deep(.description),
+.signal2-review-modal-content :deep(.example-text),
+.signal2-review-modal-content :deep(.hint-text) {
+  text-align: initial !important;
 }
 
 /* Остальные базовые стили */
@@ -1252,7 +1328,7 @@ watch(showBranchList, (newValue) => {
 
 /* ИСПРАВЛЕНО: Более непрозрачный круг в кнопке */
 .signal2-golden-icon-container {
-  background: rgba(154, 91, 24, 0.7) !important; /* Изменил цвет и сделал менее прозрачным */
+  background: rgba(154, 91, 24, 0.7) !important;
 }
 
 .signal2-button-icon-signal {
@@ -1284,7 +1360,7 @@ watch(showBranchList, (newValue) => {
 
 /* ИСПРАВЛЕНО: Теперь круг хорошо виден при ховере */
 .signal2-review-button:hover .signal2-golden-icon-container {
-  background: rgba(205, 122, 32, 0.8) !important; /* Еще более контрастный цвет */
+  background: rgba(205, 122, 32, 0.8) !important;
   transform: scale(1.05);
 }
 
@@ -1673,9 +1749,15 @@ watch(showBranchList, (newValue) => {
     height: 28px;
   }
   
+  /* Увеличенная кнопка "Отправить Сигнал" в мобильной версии */
   .signal2-mystery-button {
-    font-size: 13px;
-    padding: 8px 16px;
+    font-size: 19px; /* Увеличено в 1.5 раза с 13px */
+    padding: 12px 24px; /* Увеличено в 1.5 раза с 8px 16px */
+  }
+  
+  /* Увеличенный размер ссылки "Как Работает" */
+  .signal2-how-it-works-link {
+    font-size: 19px; /* Увеличено в 1.5 раза с 13px */
   }
   
   /* Мобильное выравнивание кнопок по левому краю */
@@ -1686,6 +1768,21 @@ watch(showBranchList, (newValue) => {
   
   .signal2-button-icon-container {
     margin-left: auto;
+  }
+  
+  /* Адаптивность модального окна отзыва */
+  .signal2-review-modal-content {
+    width: 95vw;
+    height: 85vh;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  .signal2-review-modal-content {
+    width: 95vw;
+    height: 85vh;
+    padding: 24px;
   }
 }
 
@@ -1728,8 +1825,17 @@ watch(showBranchList, (newValue) => {
   }
   
   .signal2-mystery-button {
-    font-size: 12px;
-    padding: 6px 14px;
+    font-size: 18px;
+    padding: 9px 21px;
+  }
+  
+  .signal2-how-it-works-link {
+    font-size: 18px;
+  }
+  
+  .signal2-review-modal-content {
+    padding: 20px;
+    height: 80vh;
   }
 }
 </style>
