@@ -2,6 +2,7 @@ import DefaultTheme from 'vitepress/theme'
 import './custom.css'
 import Layout from './Layout.vue'
 
+
 // Импортируем все ваши существующие компоненты
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
