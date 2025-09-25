@@ -111,7 +111,11 @@ const systemMetrics = ref({
   lastUpdate: Date.now()
 })
 
-// Упрощенное состояние для тултипа бейджа
+// Состояние для градиентов скролла
+const showLeftGradient = ref(false)
+const showRightGradient = ref(false)
+
+// Состояние для тултипа бейджа
 const showBadgeTooltip = ref(false)
 const isMobile = ref(false)
 
@@ -154,6 +158,7 @@ const formatTime = (hours) => {
 const showBranchList = ref(false)
 const emit = defineEmits(['close'])
 const widgetContentRef = ref(null)
+const switchersRef = ref(null)
 const badgeRef = ref(null)
 
 const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
@@ -170,6 +175,19 @@ const createTicket = () => {
 
 const openSignalNew = () => {
   window.location.href = '/signal/new'
+}
+
+// Функция для обработки скролла переключателей
+const handleSwitcherScroll = () => {
+  if (!switchersRef.value) return
+  
+  const container = switchersRef.value
+  const scrollLeft = container.scrollLeft
+  const scrollWidth = container.scrollWidth
+  const clientWidth = container.clientWidth
+  
+  showLeftGradient.value = scrollLeft > 0
+  showRightGradient.value = scrollLeft < (scrollWidth - clientWidth)
 }
 
 // Проверка мобильности
@@ -231,6 +249,10 @@ onMounted(() => {
   window.addEventListener('keydown', onKeydown)
   window.addEventListener('resize', checkMobile)
   checkMobile()
+  
+  nextTick(() => {
+    handleSwitcherScroll()
+  })
 })
 
 onUnmounted(() => {
@@ -251,9 +273,13 @@ watch(showBranchList, (newValue) => {
 
 <template>
   <div class="signal2-widget-content" ref="widgetContentRef">
-    <!-- Контейнер переключателей с внутренними градиентами -->
+    <!-- Контейнер переключателей с градиентами -->
     <div class="signal2-cafe-switchers-container">
-      <div class="signal2-cafe-switchers">
+      <div 
+        class="signal2-cafe-switchers" 
+        ref="switchersRef"
+        @scroll="handleSwitcherScroll"
+      >
         <!-- Корж - Heart emoji -->
         <button
           class="signal2-switcher"
@@ -314,6 +340,16 @@ watch(showBranchList, (newValue) => {
           Кэрри
         </button>
       </div>
+      
+      <!-- Градиенты для скролла -->
+      <div 
+        class="signal2-switchers-gradient signal2-switchers-gradient-left"
+        :class="{ 'signal2-gradient-visible': showLeftGradient }"
+      ></div>
+      <div 
+        class="signal2-switchers-gradient signal2-switchers-gradient-right"
+        :class="{ 'signal2-gradient-visible': showRightGradient }"
+      ></div>
     </div>
 
     <div v-if="establishment">
@@ -321,7 +357,7 @@ watch(showBranchList, (newValue) => {
         <div class="signal2-main-card">
           <div class="signal2-establishment-header">
             <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
-            <!-- Исправленный бейдж с правильным тултипом -->
+            <!-- Бейдж с модальным окном для мобильных -->
             <div 
               v-if="establishment.status" 
               class="signal2-status-badge"
@@ -329,10 +365,10 @@ watch(showBranchList, (newValue) => {
               ref="badgeRef"
               @mouseenter="!isMobile && (showBadgeTooltip = true)"
               @mouseleave="!isMobile && (showBadgeTooltip = false)"
-              @click="!isMobile ? (showBadgeTooltip = !showBadgeTooltip) : null"
+              @click="isMobile ? (showBadgeTooltip = true) : (showBadgeTooltip = !showBadgeTooltip)"
             >
               {{ establishment.status }}
-              <!-- Исправленный тултип -->
+              <!-- Тултип только на десктопе -->
               <div 
                 v-if="showBadgeTooltip && !isMobile" 
                 class="signal2-badge-tooltip"
@@ -378,7 +414,7 @@ watch(showBranchList, (newValue) => {
             </div>
           </div>
 
-          <!-- Улучшенный блок статуса для мобильных -->
+          <!-- Исправленный блок статуса -->
           <div class="signal2-system-status-bar">
             <span v-if="establishment.isConnected" class="signal2-status-label">🟢 На связи:</span>
             <span v-else class="signal2-status-label-disconnected">🔴 Не подключен к Сигналу</span>
@@ -448,7 +484,7 @@ watch(showBranchList, (newValue) => {
               <button @click="showBranchList = true" class="signal2-action-button signal2-review-button">
                 Отправить Яндекс/ГИС
                 <div class="signal2-button-icon-container signal2-golden-icon-container">
-                  <svg class="signal2-button-icon signal2-white-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <svg class="signal2-button-icon signal2-white-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#422006" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m9 18 6-6-6-6" />
                   </svg>
                 </div>
@@ -458,7 +494,7 @@ watch(showBranchList, (newValue) => {
             <!-- Блок третьей кнопки с текстом и ссылкой -->
             <div v-if="establishment.isConnected" class="signal2-signal-section">
               <div class="signal2-signal-description">
-                Просто скажите, что не так и мы поможем решить любую проблему за 24 часа
+                Просто скажите, что не так и мы поможем решить любую проблему за 24 часа.
               </div>
               
               <div class="signal2-mystery-button-container">
@@ -469,7 +505,7 @@ watch(showBranchList, (newValue) => {
               </div>
               
               <div class="signal2-signal-link">
-                <a href="/signals" target="_blank" class="signal2-how-it-works-link">Как работает Сигнал</a>
+                <a href="/signals" target="_blank" class="signal2-how-it-works-link">Как Работает</a>
               </div>
             </div>
           </div>
@@ -506,16 +542,32 @@ watch(showBranchList, (newValue) => {
       </div>
     </div>
 
-    <!-- Модальные окна -->
-    <div v-if="showInfoModal" class="signal2-modal-overlay" @click.self="showInfoModal = false">
-      <div class="signal2-modal" role="dialog" aria-modal="true" id="signal2-signal-dialog" aria-label="Диалоги Сигнала">
+    <!-- Модальное окно для бейджа на мобильных -->
+    <div v-if="showBadgeTooltip && isMobile" class="signal2-modal-overlay" @click.self="showBadgeTooltip = false">
+      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Информация о лидере">
         <div class="signal2-modal-header">
-          <div class="signal2-modal-title">Диалоги Сигнала</div>
+          <div class="signal2-modal-title">Лидер</div>
         </div>
         <div class="signal2-modal-body">
-          Ваш Сигнал — это команда к действию для кофейни и видимый результат для вас.
+          <div class="signal2-tooltip-date" style="margin-bottom: 12px;">АКТУАЛЬНО: 06.09.2025</div>
+          <div>Обновляем каждую пятницу, 15:00 (МСК)</div>
+        </div>
+        <div class="signal2-modal-footer">
+          <button class="signal2-modal-ok" type="button" @click="showBadgeTooltip = false">Понятно</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальные окна -->
+    <div v-if="showInfoModal" class="signal2-modal-overlay" @click.self="showInfoModal = false">
+      <div class="signal2-modal" role="dialog" aria-modal="true" id="signal2-signal-dialog" aria-label="Ваши отзывы меняют всё">
+        <div class="signal2-modal-header">
+          <div class="signal2-modal-title">Ваши отзывы меняют всё.</div>
+        </div>
+        <div class="signal2-modal-body">
+          Каждый отзыв делает любимую кофейню еще лучше, а Сигнал помогает решить Вашу проблему за 24 часа. Почувствуйте силу настоящих перемен.
           <br /><br />
-          <span @click="() => window.open('/signals', '_blank')" class="signal2-modal-link">Как работает</span>
+          <span @click="() => window.open('/signals', '_blank')" class="signal2-modal-link">Как Работает Сигнал</span>
         </div>
         <div class="signal2-modal-footer">
           <button class="signal2-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
@@ -623,6 +675,17 @@ watch(showBranchList, (newValue) => {
   width: 100%;
 }
 
+/* Убираем эффект перелива на мобильных */
+@media (max-width: 768px) {
+  .signal2-switcher::before {
+    display: none;
+  }
+  
+  .signal2-switcher:hover::before {
+    display: none;
+  }
+}
+
 /* Активный переключатель */
 .signal2-switcher.active {
   background: rgba(255, 255, 255, 0.95);
@@ -642,6 +705,46 @@ watch(showBranchList, (newValue) => {
   align-items: center;
   justify-content: center;
   font-size: 14px;
+}
+
+/* Градиенты для скролла */
+.signal2-switchers-gradient {
+  position: absolute;
+  top: 0;
+  bottom: 12px;
+  width: 40px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.signal2-switchers-gradient.signal2-gradient-visible {
+  opacity: 1;
+}
+
+.signal2-switchers-gradient-left {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    var(--vp-c-bg-soft) 0%,
+    var(--vp-c-bg-soft) 30%,
+    rgba(34, 34, 34, 0.8) 60%,
+    rgba(34, 34, 34, 0.4) 80%,
+    transparent 100%
+  );
+}
+
+.signal2-switchers-gradient-right {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    var(--vp-c-bg-soft) 0%,
+    var(--vp-c-bg-soft) 30%,
+    rgba(34, 34, 34, 0.8) 60%,
+    rgba(34, 34, 34, 0.4) 80%,
+    transparent 100%
+  );
 }
 
 /* Остальные базовые стили */
@@ -724,7 +827,7 @@ watch(showBranchList, (newValue) => {
   cursor: help !important;
 }
 
-/* Исправленный тултип бейджа */
+/* Тултип бейджа */
 .signal2-badge-tooltip {
   position: absolute;
   top: calc(100% + 8px);
@@ -748,9 +851,10 @@ watch(showBranchList, (newValue) => {
   font-size: 11px;
   font-weight: 600;
   text-align: center;
-  margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  display: inline-block;
+  margin-bottom: 8px;
 }
 
 .signal2-tooltip-update {
@@ -894,7 +998,7 @@ watch(showBranchList, (newValue) => {
   transform: scale(1.05);
 }
 
-/* Улучшенный блок статуса */
+/* Блок статуса */
 .signal2-system-status-bar {
   display: flex;
   align-items: center;
@@ -1085,13 +1189,13 @@ watch(showBranchList, (newValue) => {
   color: currentColor;
 }
 
-/* Белая стрелка в золотистой кнопке */
+/* Исправленная стрелка в кнопке */
 .signal2-white-arrow {
-  stroke: white !important;
+  stroke: #422006 !important;
 }
 
 .signal2-review-button:hover .signal2-white-arrow {
-  stroke: white !important;
+  stroke: #422006 !important;
 }
 
 .signal2-review-button:hover .signal2-button-icon {
@@ -1104,7 +1208,7 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal2-review-button:hover .signal2-golden-icon-container {
-  background: rgba(66, 32, 6, 0.6) !important;
+  background: rgba(255, 193, 7, 0.4) !important;
   transform: scale(1.05);
 }
 
@@ -1223,17 +1327,18 @@ watch(showBranchList, (newValue) => {
   margin-top: 12px;
 }
 
+/* Исправленная ссылка "Как Работает" */
 .signal2-how-it-works-link {
-  color: rgba(197, 249, 70, 0.7);
-  text-decoration: none;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none !important;
   font-size: 13px;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .signal2-how-it-works-link:hover {
-  color: rgba(197, 249, 70, 1);
-  text-decoration: underline;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none !important;
 }
 
 /* Остальные стили */
@@ -1456,10 +1561,12 @@ watch(showBranchList, (newValue) => {
     transform: none;
   }
   
-  /* Улучшенный мобильный блок "На связи" */
+  /* Исправленный мобильный блок "На связи" */
   .signal2-system-status-bar {
+    flex-direction: column;
+    align-items: center;
     padding: 16px 20px;
-    gap: 12px;
+    gap: 8px;
     margin: 24px 0 20px 0;
   }
   
@@ -1467,15 +1574,22 @@ watch(showBranchList, (newValue) => {
   .signal2-status-label-disconnected {
     font-size: 16px;
     font-weight: 600;
+    margin-right: 0;
+  }
+  
+  /* Уменьшаем размер "Не подключен к Сигналу" */
+  .signal2-status-label-disconnected {
+    font-size: 14px;
+  }
+  
+  .signal2-status-metrics {
+    gap: 16px;
+    justify-content: center;
   }
   
   .signal2-metric-time,
   .signal2-metric-text {
     font-size: 16px;
-  }
-  
-  .signal2-status-metrics {
-    gap: 16px;
   }
   
   .signal2-button-icon-container {
@@ -1486,6 +1600,16 @@ watch(showBranchList, (newValue) => {
   .signal2-mystery-button {
     font-size: 13px;
     padding: 8px 16px;
+  }
+  
+  /* Мобильное выравнивание кнопок по левому краю */
+  .signal2-action-button {
+    justify-content: flex-start;
+    padding-left: 24px;
+  }
+  
+  .signal2-button-icon-container {
+    margin-left: auto;
   }
 }
 
