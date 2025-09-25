@@ -10,7 +10,7 @@ title: Новый Сигнал | Корж, Mosaic
 
 </div>
 
-<CoffeePointsSMR />
+
 
 <SignalModalButton />
 
