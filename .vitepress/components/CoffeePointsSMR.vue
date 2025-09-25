@@ -3,6 +3,7 @@ import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 
 const cafeNames = ['Корж', 'Skuratov', 'Surf', 'Mosaic', 'Белотурка', 'Кэрри']
 
+// Данные о кофейнях
 const cafes = {
   'Корж': {
     name: 'Корж',
@@ -23,7 +24,7 @@ const cafes = {
   'Skuratov': {
     name: 'Skuratov',
     totalReviews: '3,320',
-    status: '',
+    status: 'Лидер 👑', // Добавлен бейдж
     index: 87,
     branches: [
       { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/' },
@@ -33,7 +34,7 @@ const cafes = {
   'Surf': {
     name: 'Surf',
     totalReviews: '2,011',
-    status: '',
+    status: 'Лидер 👑', // Добавлен бейдж
     index: 83,
     branches: [
       { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/' },
@@ -43,7 +44,7 @@ const cafes = {
   'Mosaic': {
     name: 'Mosaic',
     totalReviews: '2,410',
-    status: '',
+    status: 'Лидер 👑', // Добавлен бейдж
     index: 85,
     branches: [
       { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618', yandexUrl: 'https://yandex.ru/maps/51/samara/house/9_ya_proseka_5_ya_malaya_liniya_3b/YUkYdw5hQUAAQFtpfX52dXVgZw==/' },
@@ -53,7 +54,7 @@ const cafes = {
   'Белотурка': {
     name: 'Белотурка',
     totalReviews: '2,910',
-    status: '',
+    status: 'Лидер 👑', // Добавлен бейдж
     index: 88,
     branches: [
       { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/' },
@@ -63,7 +64,7 @@ const cafes = {
   'Кэрри': {
     name: 'Кэрри',
     totalReviews: '2,110',
-    status: '',
+    status: 'Лидер 👑', // Добавлен бейдж
     index: 82,
     branches: [
       { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/' }
@@ -215,19 +216,7 @@ watch(showBranchList, (newValue) => {
 
     <div v-if="establishment">
       <div v-if="!showBranchList">
-        <div class="signal2-widget-header">
-          <div>
-            <h2 class="signal2-header-title">Отправьте Сигнал</h2>
-            <p class="signal2-header-subtitle">Каждая чашка кофе делает Вашу любимую кофейню еще лучше.</p>
-          </div>
-          <button @click="$emit('close')" class="signal2-internal-close-btn signal2-close-btn" aria-label="Закрыть окно">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 6L6 18" />
-              <path d="M6 6L18 18" />
-            </svg>
-          </button>
-        </div>
-
+        <!-- Блок с заголовком и кнопкой закрытия удален -->
         <div class="signal2-main-card">
           <div class="signal2-establishment-header">
             <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
@@ -305,10 +294,14 @@ watch(showBranchList, (newValue) => {
 
             <div class="signal2-button-container">
               <button @click="createTicket" class="signal2-action-button signal2-ticket-button">
-                Сообщить о проблеме
+                Собрать Мой Отзыв
+                <!-- Иконка сигнала -->
+                <svg class="signal2-button-icon-signal" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.5 5.5c-1.4 0-2.6 1.1-2.6 2.5v5c0 1.4 1.2 2.5 2.6 2.5h.5v-10h-.5zM5 5v10c0 1.1.9 2 2 2h6.28c.35-1.1.98-2.08 1.82-2.82L9 11h4l-2 5 4.5-6.5H13l1.8-3H7c-.55 0-1-.45-1-1s.45-1 1-1h10.45c-.3-.89-.78-1.68-1.39-2.32C15.2 5.2 14.26 5 13.26 5H7c-1.1 0-2 .9-2 2z"/>
+                </svg>
               </button>
               <button @click="showBranchList = true" class="signal2-action-button signal2-review-button">
-                Мне понравилось
+                Отзыв Яндекс/2ГИС
                 <svg class="signal2-button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="m9 18 6-6-6-6" />
                 </svg>
@@ -326,22 +319,17 @@ watch(showBranchList, (newValue) => {
               <path d="m12 19-7-7 7-7" />
             </svg>
           </button>
-
           <h2 class="signal2-branches-title">{{ establishment.name }}</h2>
-
           <div style="width: 44px;"></div>
         </div>
-
         <div class="signal2-branches-content">
           <p class="signal2-branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
-
           <div class="signal2-branches-list">
             <button v-for="(branch, index) in establishment.branches" :key="index" @click="goToReviews(branch)" class="signal2-branch-item">
               <div class="signal2-branch-info">
                 <div class="signal2-branch-number">{{ index + 1 }}</div>
                 <div class="signal2-branch-address">{{ branch.address }}</div>
               </div>
-
               <div class="signal2-branch-action">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="m9 18 6-6-6-6" />
@@ -373,24 +361,22 @@ watch(showBranchList, (newValue) => {
 
 <style scoped>
 .signal2-widget-content {
-  padding: 32px;
-  /* max-height и overflow-y удалены для интеграции в страницу */
+  padding: 32px 0; /* Убираем боковые отступы, т.к. они есть у родителя */
 }
 .signal2-cafe-switchers {
   display: flex;
   gap: 8px;
-  margin-bottom: 18px;
-  padding-bottom: 8px; /* Небольшой отступ снизу для скроллбара */
-  flex-wrap: nowrap; /* Запрещаем перенос */
-  overflow-x: auto; /* Включаем горизонтальный скролл */
-  -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: rgba(245, 158, 11, 0.7) transparent; /* Firefox */
+  margin-bottom: 24px; /* Увеличил отступ после свитчеров */
+  padding-bottom: 8px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--vp-c-bg-mute) transparent; /* Серый цвет скролла */
 }
 
-/* Стилизация скроллбара для Webkit-браузеров (Chrome, Safari) */
 .signal2-cafe-switchers::-webkit-scrollbar {
-  height: 6px;
+  height: 4px; /* Уменьшаем высоту скролла */
 }
 
 .signal2-cafe-switchers::-webkit-scrollbar-track {
@@ -398,11 +384,11 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal2-cafe-switchers::-webkit-scrollbar-thumb {
-  background-color: rgba(245, 158, 11, 0.5);
+  background-color: var(--vp-c-bg-mute); /* Серый цвет скролла */
   border-radius: 10px;
 }
 .signal2-cafe-switchers::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(245, 158, 11, 0.7);
+  background-color: var(--vp-c-border);
 }
 
 .signal2-switcher {
@@ -415,41 +401,29 @@ watch(showBranchList, (newValue) => {
   color: white;
   border: 1px solid var(--vp-c-border);
   transition: background 0.3s, color 0.3s;
-  white-space: nowrap; /* Текст внутри кнопок не переносится */
+  white-space: nowrap;
 }
 .signal2-switcher.active {
   background: #f59e0b;
   color: #222;
 }
 /* основной CSS префикс signal2- */
-.signal2-widget-header,
 .signal2-branches-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--vp-c-border);
 }
-.signal2-header-title,
 .signal2-branches-title {
   margin: 0;
   color: white;
   font-size: 26px;
   font-weight: 700;
   line-height: 1.2;
-  text-align: left;
-  flex-grow: 1;
-}
-.signal2-header-subtitle {
-  margin-top: 8px;
-  font-size: 15px;
-  color: var(--vp-c-text-2);
-}
-.signal2-branches-header {
-  padding-bottom: 20px;
-  border-bottom: 2px solid var(--vp-c-border);
-}
-.signal2-branches-title {
   text-align: center;
+  flex-grow: 1;
 }
 .signal2-internal-close-btn {
   background: var(--vp-c-bg-mute);
@@ -745,6 +719,9 @@ watch(showBranchList, (newValue) => {
 .signal2-button-icon {
   transition: transform 0.3s ease;
 }
+.signal2-button-icon-signal {
+  opacity: 0.8;
+}
 .signal2-review-button:hover .signal2-button-icon {
   transform: translateX(4px);
 }
@@ -885,7 +862,7 @@ watch(showBranchList, (newValue) => {
 }
 @media (max-width: 768px) {
   .signal2-widget-content {
-    padding: 24px;
+    padding: 24px 0;
   }
   .signal2-main-card {
     padding: 16px;
@@ -954,14 +931,7 @@ watch(showBranchList, (newValue) => {
 }
 @media (max-width: 480px) {
   .signal2-widget-content {
-    padding: 20px;
-  }
-  .signal2-header-title {
-    font-size: 22px;
-    text-align: left;
-  }
-  .signal2-header-subtitle {
-    font-size: 14px;
+    padding: 20px 0;
   }
   .signal2-branches-title {
     font-size: 22px;
