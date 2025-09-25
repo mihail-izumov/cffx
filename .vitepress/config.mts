@@ -1,5 +1,3 @@
-добавь счетчик яндекс метрики который я дал в этот конфиг:
-
 import { defineConfig, DefaultTheme } from 'vitepress'
 import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
