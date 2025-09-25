@@ -24,12 +24,12 @@ export default defineConfig({
     ['meta', { property: 'og:image', content: 'https://cffx.ru/cffx_og_card.jpg' }],
     ['meta', { property: 'og:type', content: 'website' }],
 
-    // --- НАЧАЛО: Мета-тег Content-Security-Policy для Яндекс.Метрики ---
+    // --- НАЧАЛО: Обновленный мета-тег Content-Security-Policy ---
     ['meta', { 
       'http-equiv': 'Content-Security-Policy', 
-      'content': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://mc.yandex.ru; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://mc.yandex.ru; connect-src 'self' wss: https://mc.yandex.ru; frame-src 'self' https://mc.yandex.ru; font-src 'self' data:; media-src 'self';"
+      'content': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://mc.yandex.ru; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://mc.yandex.ru; connect-src 'self' wss: https://mc.yandex.ru; frame-src 'self' https://mc.yandex.ru; media-src 'self';"
     }],
-    // --- КОНЕЦ: Мета-тег Content-Security-Policy ---
+    // --- КОНЕЦ: Обновленный мета-тег Content-Security-Policy ---
 
     // Остальные мета-теги
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
