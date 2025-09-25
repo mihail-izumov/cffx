@@ -24,6 +24,7 @@
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #A972FF;">
           <p class="signal-direction-label">Эмоции и чувства</p>
+          
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
@@ -65,6 +66,7 @@
       <div v-if="selectedSection === 'facts'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #3DDC84;">
           <p class="signal-direction-label">Детали проблемы</p>
+          
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
@@ -106,6 +108,7 @@
       <div v-if="selectedSection === 'solutions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #FFB800;">
           <p class="signal-direction-label">Предложение решения</p>
+          
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
@@ -142,17 +145,54 @@
           <p class="signal-example-hint" v-html="'Пример: «Добавить на кассе <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
         </div>
       </div>
+
+      <!-- БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ ВНИЗУ - ВСЕГДА ВИДНА -->
+      <div class="signal-copy-button-container">
+        <button 
+          class="signal-liquid-copy-btn signal-main-copy"
+          :class="[
+            selectedSection === 'emotions' ? 'signal-emotion-copy' : '',
+            selectedSection === 'facts' ? 'signal-fact-copy' : '',
+            selectedSection === 'solutions' ? 'signal-solution-copy' : '',
+            !hasAnyText ? 'signal-copy-disabled' : ''
+          ]"
+          @click="hasAnyText ? copyCurrentSectionText() : null"
+          :disabled="copyStatus.main === 'copying' || !hasAnyText"
+        >
+          <!-- SVG иконка буфера обмена -->
+          <svg class="signal-copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path v-if="copyStatus.main === 'copied'" d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path v-else-if="copyStatus.main === 'copying'" d="M12 6v6l4-4-4-4" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+          
+          <span class="signal-liquid-copy-text">
+            {{ 
+              !hasAnyText ? 'Введите текст для копирования' :
+              copyStatus.main === 'copied' ? 'Скопировано' : 
+              copyStatus.main === 'copying' ? 'Копирование...' : 
+              'Скопировать' 
+            }}
+          </span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref, onUnmounted } from 'vue';
+import { reactive, ref, onUnmounted, computed } from 'vue';
 
 const form = reactive({ 
   emotionalRelease: '',
   factualAnalysis: '',
   constructiveSuggestions: ''
+});
+
+// Состояние кнопок копирования
+const copyStatus = reactive({
+  main: 'idle', // 'idle', 'copying', 'copied'
 });
 
 const sections = [
@@ -164,7 +204,65 @@ const sections = [
 const selectedSection = ref('emotions');
 const isActive = (id) => id === selectedSection.value;
 
-// ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок из исходного кода
+// Проверяем, есть ли текст в любом из полей
+const hasAnyText = computed(() => {
+  return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
+});
+
+// Функция копирования текста текущей секции
+const copyCurrentSectionText = async () => {
+  if (!hasAnyText.value) return;
+  
+  let textToCopy = '';
+  
+  if (selectedSection.value === 'emotions' && form.emotionalRelease.trim()) {
+    textToCopy = form.emotionalRelease.trim();
+  } else if (selectedSection.value === 'facts' && form.factualAnalysis.trim()) {
+    textToCopy = form.factualAnalysis.trim();
+  } else if (selectedSection.value === 'solutions' && form.constructiveSuggestions.trim()) {
+    textToCopy = form.constructiveSuggestions.trim();
+  }
+  
+  if (!textToCopy) return;
+  
+  copyStatus.main = 'copying';
+  
+  try {
+    await navigator.clipboard.writeText(textToCopy);
+    copyStatus.main = 'copied';
+    
+    // Сброс статуса через 2 секунды
+    setTimeout(() => {
+      copyStatus.main = 'idle';
+    }, 2000);
+  } catch (err) {
+    console.error('Ошибка копирования:', err);
+    copyStatus.main = 'idle';
+    
+    // Fallback для старых браузеров
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = textToCopy;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      document.execCommand('copy');
+      textArea.remove();
+      
+      copyStatus.main = 'copied';
+      setTimeout(() => {
+        copyStatus.main = 'idle';
+      }, 2000);
+    } catch (fallbackError) {
+      console.error('Fallback копирование не удалось:', fallbackError);
+    }
+  }
+};
+
+// Обновленная 3-уровневая система подсказок из файла
 const suggestions = reactive({
   emotions: {
     // УРОВЕНЬ 1: Основные эмоции
@@ -249,18 +347,19 @@ const suggestions = reactive({
     initial: ['таймер ожидания', 'обучение персонала', 'контроль качества', 'система проверки', 'стандарты сервиса'],
     
     // УРОВЕНЬ 2: Конкретные решения
-    'таймер ожидания': ['на кассе', 'видимый гостям', 'с уведомлениями', 'контроль времени', 'цифровая очередь'],
+    'таймер ожидания': ['визуальный контроль бариста/старшего бариста', 'с номерами заказов', 'видимый гостям', 'контроль времени', 'сигналы на баре', 'обратная связь от гостей'],
     'обучение персонала': ['по сервису', 'по санитарии', 'по качеству', 'по коммуникации', 'регулярные тренинги'],
     'контроль качества': ['проверка блюд', 'температурный контроль', 'свежесть продуктов', 'упаковка', 'дегустация'],
     'система проверки': ['чек-лист качества', 'двойная проверка', 'контроль чистоты', 'стандарты подачи', 'фото блюд'],
     'стандарты сервиса': ['вежливость', 'скорость', 'точность', 'чистота', 'профессионализм'],
     
     // УРОВЕНЬ 3: Детальные технические решения
-    'на кассе': ['большой дисплей', 'видимый всем', 'с номерами заказов', 'обновляется в реальном времени', 'со звуковым сигналом'],
-    'видимый гостям': ['на стене', 'над барной стойкой', 'в мобильном приложении', 'на столике с номером', 'на чеке QR-код'],
-    'с уведомлениями': ['СМС о готовности', 'push в приложении', 'звонок менеджера', 'вибрация трекера', 'email уведомления'],
-    'контроль времени': ['стандарт 10 минут', 'красная зона после 15 мин', 'автоматический сигнал', 'статистика по сменам', 'штрафы за превышение'],
-    'цифровая очередь': ['номерки электронные', 'бронь времени', 'предзаказ', 'онлайн статус', 'мобильная очередь'],
+    'визуальный контроль бариста/старшего бариста': ['песочные часы на стойке', 'отчёты по среднему времени заказа', 'замеры скорости обслуживания менеджером', 'сравнение с нормой', 'обсуждение на пятиминутке'],
+    'с номерами заказов': ['в мобильном приложении', 'на чеке QR-код', 'на чеке номер заказа'],
+    'видимый гостям': ['в мобильном приложении', 'на чеке QR-код', 'на чеке номер заказа'],
+    'контроль времени': ['стандарт 7 минут', 'красная зона после 10 мин', 'автоотсчёт от момента пробития чека'],
+    'сигналы на баре': ['цветовые индикаторы готовности', 'звуковой таймер для бариста'],
+    'обратная связь от гостей': ['опрос о времени ожидания', 'кнопка "долго жду" в приложении', 'комментарий в чеке QR-кодом'],
     'по сервису': ['тренинги вежливости', 'ролевые игры', 'работа с жалобами', 'стандарты общения', 'мотивация персонала'],
     'по санитарии': ['мытье посуды', 'уборка столов', 'проверка чистоты', 'гигиена рук', 'контроль температуры'],
     'по качеству': ['дегустация напитков', 'проверка ингредиентов', 'температура подачи', 'внешний вид блюд', 'сроки годности'],
@@ -403,7 +502,7 @@ onUnmounted(() => {
 
 .signal-demo__header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   margin-bottom: 16px;
 }
 
@@ -417,7 +516,7 @@ onUnmounted(() => {
 
 .signal-demo__switch-btn {
   appearance: none;
-  border: 1px solid #2c2c2f;
+  border: 2px solid #2c2c2f;
   background: transparent;
   color: #f0f0f0;
   padding: 8px 14px;
@@ -518,6 +617,7 @@ textarea {
   color: #f0f0f0;
   transition: all 0.3s ease;
   font-family: var(--signal-font-sans);
+  resize: vertical;
 }
 
 textarea:focus {
@@ -557,7 +657,6 @@ textarea:focus {
 .signal-emotion-bubble:hover {
   background: #A972FF;
   color: #000;
-  transform: scale(1.05);
 }
 
 .signal-fact-bubble {
@@ -569,7 +668,6 @@ textarea:focus {
 .signal-fact-bubble:hover {
   background: #3DDC84;
   color: #000;
-  transform: scale(1.05);
 }
 
 .signal-solution-bubble {
@@ -581,7 +679,6 @@ textarea:focus {
 .signal-solution-bubble:hover {
   background: #FFB800;
   color: #000;
-  transform: scale(1.05);
 }
 
 .signal-reset-bubble {
@@ -599,11 +696,212 @@ textarea:focus {
   font-size: 0.8rem;
   color: #777;
   margin: 0.5rem 0 0 0.25rem;
+  line-height: 1.2; /* Уменьшено с обычного 1.4-1.5 до 1.2 для более плотного расположения строк */
 }
 
 .signal-example-hint b {
   color: #aaa;
   font-weight: 600;
+}
+
+/* БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ ВНИЗУ - ВСЕГДА ВИДНА */
+.signal-copy-button-container {
+  margin-top: 2rem;
+}
+
+.signal-liquid-copy-btn.signal-main-copy {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: var(--signal-font-sans);
+  white-space: nowrap;
+}
+
+.signal-liquid-copy-btn.signal-main-copy::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 2px;
+  background: linear-gradient(135deg, var(--accent-color), rgba(255, 255, 255, 0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: filter 0.4s ease;
+  z-index: 1;
+}
+
+.signal-liquid-copy-btn.signal-main-copy::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 18px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 70%),
+              #2a2a2e;
+  z-index: 2;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.signal-copy-icon {
+  position: relative;
+  z-index: 3;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.signal-liquid-copy-text {
+  position: relative;
+  z-index: 3;
+  font-size: 16px;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* НЕАКТИВНОЕ СОСТОЯНИЕ КНОПКИ */
+.signal-copy-disabled {
+  --accent-color: #666;
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+.signal-copy-disabled .signal-copy-icon,
+.signal-copy-disabled .signal-liquid-copy-text {
+  color: #666 !important;
+}
+
+.signal-copy-disabled::before {
+  background: linear-gradient(135deg, #666, rgba(102, 102, 102, 0.3)) !important;
+}
+
+.signal-copy-disabled::after {
+  background: radial-gradient(circle at 30% 30%, rgba(102, 102, 102, 0.1) 0%, transparent 70%),
+              #2a2a2e !important;
+}
+
+.signal-copy-disabled:hover::before {
+  filter: none !important;
+}
+
+.signal-copy-disabled:hover::after {
+  background: radial-gradient(circle at 30% 30%, rgba(102, 102, 102, 0.1) 0%, transparent 70%),
+              #2a2a2e !important;
+}
+
+.signal-copy-disabled:hover .signal-copy-icon {
+  transform: none !important;
+}
+
+.signal-copy-disabled:hover .signal-liquid-copy-text {
+  color: #666 !important;
+}
+
+/* Цветовые вариации для разных секций */
+.signal-emotion-copy:not(.signal-copy-disabled) {
+  --accent-color: #A972FF;
+}
+
+.signal-emotion-copy:not(.signal-copy-disabled) .signal-copy-icon,
+.signal-emotion-copy:not(.signal-copy-disabled) .signal-liquid-copy-text {
+  color: #A972FF;
+}
+
+.signal-emotion-copy:not(.signal-copy-disabled):hover::before {
+  filter: brightness(1.5) saturate(1.3);
+}
+
+.signal-emotion-copy:not(.signal-copy-disabled):hover::after {
+  background: radial-gradient(circle at 30% 30%, rgba(169, 114, 255, 0.2) 0%, rgba(169, 114, 255, 0.05) 100%),
+              #2a2a2e;
+}
+
+.signal-emotion-copy:not(.signal-copy-disabled):hover .signal-copy-icon {
+  transform: scale(1.2);
+}
+
+.signal-emotion-copy:not(.signal-copy-disabled):hover .signal-liquid-copy-text {
+  color: rgba(169, 114, 255, 0.9);
+}
+
+.signal-fact-copy:not(.signal-copy-disabled) {
+  --accent-color: #3DDC84;
+}
+
+.signal-fact-copy:not(.signal-copy-disabled) .signal-copy-icon,
+.signal-fact-copy:not(.signal-copy-disabled) .signal-liquid-copy-text {
+  color: #3DDC84;
+}
+
+.signal-fact-copy:not(.signal-copy-disabled):hover::before {
+  filter: brightness(1.5) saturate(1.3);
+}
+
+.signal-fact-copy:not(.signal-copy-disabled):hover::after {
+  background: radial-gradient(circle at 30% 30%, rgba(61, 220, 132, 0.2) 0%, rgba(61, 220, 132, 0.05) 100%),
+              #2a2a2e;
+}
+
+.signal-fact-copy:not(.signal-copy-disabled):hover .signal-copy-icon {
+  transform: scale(1.2);
+}
+
+.signal-fact-copy:not(.signal-copy-disabled):hover .signal-liquid-copy-text {
+  color: rgba(61, 220, 132, 0.9);
+}
+
+.signal-solution-copy:not(.signal-copy-disabled) {
+  --accent-color: #FFB800;
+}
+
+.signal-solution-copy:not(.signal-copy-disabled) .signal-copy-icon,
+.signal-solution-copy:not(.signal-copy-disabled) .signal-liquid-copy-text {
+  color: #FFB800;
+}
+
+.signal-solution-copy:not(.signal-copy-disabled):hover::before {
+  filter: brightness(1.5) saturate(1.3);
+}
+
+.signal-solution-copy:not(.signal-copy-disabled):hover::after {
+  background: radial-gradient(circle at 30% 30%, rgba(255, 184, 0, 0.2) 0%, rgba(255, 184, 0, 0.05) 100%),
+              #2a2a2e;
+}
+
+.signal-solution-copy:not(.signal-copy-disabled):hover .signal-copy-icon {
+  transform: scale(1.2);
+}
+
+.signal-solution-copy:not(.signal-copy-disabled):hover .signal-liquid-copy-text {
+  color: rgba(255, 184, 0, 0.9);
+}
+
+/* Состояние disabled для процесса копирования */
+.signal-liquid-copy-btn:disabled:not(.signal-copy-disabled) {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.signal-liquid-copy-btn:disabled:not(.signal-copy-disabled)::before {
+  filter: grayscale(1);
+}
+
+.signal-liquid-copy-btn:disabled:not(.signal-copy-disabled):hover::after {
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 70%),
+              #2a2a2e;
+}
+
+.signal-liquid-copy-btn:disabled:not(.signal-copy-disabled):hover .signal-copy-icon {
+  transform: none;
 }
 
 @media (max-width: 768px) {
@@ -626,10 +924,45 @@ textarea:focus {
   .signal-demo__switch {
     flex-wrap: wrap;
     gap: 6px;
+    justify-content: center;
   }
   .signal-demo__switch-btn {
     font-size: 0.85em;
     padding: 6px 10px;
+  }
+  .signal-copy-button-container {
+    margin-top: 1.5rem;
+  }
+  .signal-liquid-copy-btn.signal-main-copy {
+    height: 52px;
+    gap: 10px;
+  }
+  .signal-copy-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .signal-liquid-copy-text {
+    font-size: 15px;
+  }
+  .signal-example-hint {
+    line-height: 1.1; /* Еще более плотно на мобильных */
+  }
+}
+
+@media (max-width: 480px) {
+  .signal-liquid-copy-btn.signal-main-copy {
+    height: 48px;
+    gap: 8px;
+  }
+  .signal-copy-icon {
+    width: 15px;
+    height: 15px;
+  }
+  .signal-liquid-copy-text {
+    font-size: 14px;
+  }
+  .signal-example-hint {
+    line-height: 1.05; /* Минимальное межстрочное расстояние на очень маленьких экранах */
   }
 }
 </style>
