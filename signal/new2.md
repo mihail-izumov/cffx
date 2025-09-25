@@ -11,7 +11,6 @@ title: Новый Сигнал | Корж, Mosaic
 </div>
 
 
-
 <SignalModalButton />
 
 <SignalT9Configurator />
