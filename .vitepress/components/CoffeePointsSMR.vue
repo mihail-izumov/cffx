@@ -3,16 +3,6 @@ import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 
 const cafeNames = ['Корж', 'Skuratov', 'Surf', 'MOSAIC', 'Белотурка', 'Кэрри']
 
-// Правильные иконки из Lucide (точные SVG пути)
-const cafeIcons = {
-  'Корж': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>',
-  'Skuratov': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m15.5-6.5-4.24 4.24M7.76 12.24 3.52 16.48m12.96 0-4.24-4.24M7.76 7.76 3.52 3.52"/></svg>',
-  'Surf': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8c0-2.76-2.46-5-5.5-5S2 5.24 2 8h2l1-1 1 1h4m2-3c1.66 0 3 1.34 3 3v4c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1z"/><path d="M5.5 10h.01M6.5 16c.83.68 2.31 1.29 4 1.29 2.76 0 5-1.87 5-4.16V12h-6c-.55 0-1-.45-1-1s.45-1 1-1h6v-.84C15.5 6.87 13.26 5 10.5 5 8.19 5 6.17 6.04 5.5 7.5"/></svg>',
-  'MOSAIC': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="8"/><line x1="10" y1="2" x2="10" y2="8"/><line x1="14" y1="2" x2="14" y2="8"/></svg>',
-  'Белотурка': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M6 12v7c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2v-7"/><path d="M6 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/><path d="M6 4V2"/><path d="M18 4V2"/><path d="M10 10v4"/><path d="M14 10v4"/></svg>',
-  'Кэрри': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="2"/><path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-3.5c0-.3.2-.5.5-.5s.5.2.5.5v3.5c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-9l-4.2-3.1c-.4-.3-.8-.3-1.2 0Z"/><path d="m16 6 2 2 3-3"/><path d="m20 6-3 3.5-2-1.5"/></svg>'
-}
-
 // Данные о кофейнях
 const cafes = {
   'Корж': {
@@ -277,18 +267,94 @@ watch(showBranchList, (newValue) => {
         ref="switchersRef"
         @scroll="handleSwitcherScroll"
       >
+        <!-- Корж - Heart icon -->
         <button
-          v-for="name in cafeNames"
-          :key="name"
           class="signal2-switcher"
-          :class="{ active: selectedCafe === name }"
-          @click="selectedCafe = name"
+          :class="{ active: selectedCafe === 'Корж' }"
+          @click="selectedCafe = 'Корж'"
         >
-          <span class="signal2-switcher-icon" v-html="cafeIcons[name]"></span>
-          {{ name }}
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/>
+          </svg>
+          Корж
+        </button>
+
+        <!-- Skuratov - Cog icon -->
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Skuratov' }"
+          @click="selectedCafe = 'Skuratov'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m15.5-6.5-4.24 4.24M7.76 12.24 3.52 16.48m12.96 0-4.24-4.24M7.76 7.76 3.52 3.52"/>
+          </svg>
+          Skuratov
+        </button>
+
+        <!-- Surf - Tree Palm icon -->
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Surf' }"
+          @click="selectedCafe = 'Surf'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 8c0-2.76-2.46-5-5.5-5S2 5.24 2 8h2l1-1 1 1h4m2-3c1.66 0 3 1.34 3 3v4c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1z"/>
+            <path d="M5.5 10h.01M6.5 16c.83.68 2.31 1.29 4 1.29 2.76 0 5-1.87 5-4.16V12h-6c-.55 0-1-.45-1-1s.45-1 1-1h6v-.84C15.5 6.87 13.26 5 10.5 5 8.19 5 6.17 6.04 5.5 7.5"/>
+          </svg>
+          Surf
+        </button>
+
+        <!-- MOSAIC - Coffee icon -->
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'MOSAIC' }"
+          @click="selectedCafe = 'MOSAIC'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 8h1a4 4 0 1 1 0 8h-1"/>
+            <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
+            <line x1="6" y1="2" x2="6" y2="8"/>
+            <line x1="10" y1="2" x2="10" y2="8"/>
+            <line x1="14" y1="2" x2="14" y2="8"/>
+          </svg>
+          MOSAIC
+        </button>
+
+        <!-- Белотурка - Wheat icon -->
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Белотурка' }"
+          @click="selectedCafe = 'Белотурка'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12h20"/>
+            <path d="M6 12v7c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2v-7"/>
+            <path d="M6 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/>
+            <path d="M6 4V2"/>
+            <path d="M18 4V2"/>
+            <path d="M10 10v4"/>
+            <path d="M14 10v4"/>
+          </svg>
+          Белотурка
+        </button>
+
+        <!-- Кэрри - Cake Slice icon -->
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Кэрри' }"
+          @click="selectedCafe = 'Кэрри'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="7" r="2"/>
+            <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-3.5c0-.3.2-.5.5-.5s.5.2.5.5v3.5c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-9l-4.2-3.1c-.4-.3-.8-.3-1.2 0Z"/>
+            <path d="m16 6 2 2 3-3"/>
+            <path d="m20 6-3 3.5-2-1.5"/>
+          </svg>
+          Кэрри
         </button>
       </div>
-      <!-- Улучшенные градиенты -->
+      <!-- Улучшенные градиенты с правильным цветом фона -->
       <div 
         class="signal2-switchers-gradient signal2-switchers-gradient-left"
         :class="{ 'signal2-gradient-visible': showLeftGradient }"
@@ -304,7 +370,7 @@ watch(showBranchList, (newValue) => {
         <div class="signal2-main-card">
           <div class="signal2-establishment-header">
             <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
-            <!-- Интерактивный бейдж с тултипом -->
+            <!-- Интерактивный бейдж с исправленным тултипом -->
             <div 
               v-if="establishment.status" 
               class="signal2-status-badge signal2-badge-interactive"
@@ -314,7 +380,7 @@ watch(showBranchList, (newValue) => {
               @click="showBadgeTooltip = !showBadgeTooltip"
             >
               {{ establishment.status }}
-              <!-- Тултип -->
+              <!-- Исправленный тултип -->
               <div 
                 v-if="showBadgeTooltip" 
                 class="signal2-badge-tooltip"
@@ -400,29 +466,27 @@ watch(showBranchList, (newValue) => {
             </div>
 
             <div class="signal2-button-container">
-              <!-- Новая кнопка в стиле Apple -->
-              <button @click="createTicket" class="signal2-apple-button">
-                <span class="signal2-apple-button-text">Собрать Мой Отзыв</span>
-                <div class="signal2-apple-icon-container">
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width="18" 
-                    height="18" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    stroke-width="2" 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round"
-                    class="signal2-apple-text-cursor-icon"
-                  >
-                    <path d="M5 4h1a3 3 0 0 1 3 3 3 3 0 0 1 3-3h1"/>
-                    <path d="M13 20h-1a3 3 0 0 1-3-3 3 3 0 0 1-3 3H5"/>
-                    <path d="M5 16H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h1"/>
-                    <path d="M13 8h7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-7"/>
-                    <path d="M9 7v10"/>
-                  </svg>
-                </div>
+              <!-- Исправленная кнопка в едином стиле -->
+              <button @click="createTicket" class="signal2-action-button signal2-ticket-button">
+                Собрать Мой Отзыв
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="20" 
+                  height="20" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="2" 
+                  stroke-linecap="round" 
+                  stroke-linejoin="round"
+                  class="signal2-button-icon"
+                >
+                  <path d="M5 4h1a3 3 0 0 1 3 3 3 3 0 0 1 3-3h1"/>
+                  <path d="M13 20h-1a3 3 0 0 1-3-3 3 3 0 0 1-3 3H5"/>
+                  <path d="M5 16H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h1"/>
+                  <path d="M13 8h7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-7"/>
+                  <path d="M9 7v10"/>
+                </svg>
               </button>
               
               <button @click="showBranchList = true" class="signal2-action-button signal2-review-button">
@@ -444,7 +508,6 @@ watch(showBranchList, (newValue) => {
               <path d="m12 19-7-7 7-7" />
             </svg>
           </button>
-          <!-- Изменил на обычный div, чтобы избежать автостиля VitePress -->
           <div class="signal2-branches-title-text">{{ establishment.name }}</div>
           <div style="width: 44px;"></div>
         </div>
@@ -572,18 +635,19 @@ watch(showBranchList, (newValue) => {
   align-items: center;
   width: 16px;
   height: 16px;
+  flex-shrink: 0;
 }
 
-/* Улучшенные градиенты в стиле Apple */
+/* Исправленные градиенты с цветом фона */
 .signal2-switchers-gradient {
   position: absolute;
   top: 0;
   bottom: 12px;
-  width: 40px; /* Увеличил ширину */
+  width: 40px;
   pointer-events: none;
   z-index: 2;
   opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Плавная анимация */
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .signal2-switchers-gradient.signal2-gradient-visible {
@@ -594,10 +658,10 @@ watch(showBranchList, (newValue) => {
   left: 0;
   background: linear-gradient(
     to right,
-    var(--vp-c-bg, #111) 0%,
-    var(--vp-c-bg, #111) 20%,
-    rgba(17, 17, 17, 0.8) 40%,
-    rgba(17, 17, 17, 0.4) 70%,
+    var(--vp-c-bg) 0%,
+    var(--vp-c-bg) 30%,
+    rgba(var(--vp-c-bg-rgb), 0.8) 60%,
+    rgba(var(--vp-c-bg-rgb), 0.4) 80%,
     transparent 100%
   );
 }
@@ -606,15 +670,15 @@ watch(showBranchList, (newValue) => {
   right: 0;
   background: linear-gradient(
     to left,
-    var(--vp-c-bg, #111) 0%,
-    var(--vp-c-bg, #111) 20%,
-    rgba(17, 17, 17, 0.8) 40%,
-    rgba(17, 17, 17, 0.4) 70%,
+    var(--vp-c-bg) 0%,
+    var(--vp-c-bg) 30%,
+    rgba(var(--vp-c-bg-rgb), 0.8) 60%,
+    rgba(var(--vp-c-bg-rgb), 0.4) 80%,
     transparent 100%
   );
 }
 
-/* Интерактивный бейдж с тултипом */
+/* Исправленный тултип бейджа с правильным позиционированием */
 .signal2-badge-interactive {
   position: relative;
   cursor: help !important;
@@ -623,7 +687,8 @@ watch(showBranchList, (newValue) => {
 .signal2-badge-tooltip {
   position: absolute;
   top: calc(100% + 8px);
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   background: #1a1a1a;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
@@ -658,94 +723,11 @@ watch(showBranchList, (newValue) => {
 @keyframes signal2-tooltip-fade-in {
   from {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateX(-50%) translateY(-4px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Новая кнопка в стиле Apple */
-.signal2-apple-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #f5f5f7;
-  border: none;
-  border-radius: 25px;
-  padding: 12px 20px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #1d1d1f;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 220px;
-  gap: 12px;
-  flex: 1;
-}
-
-.signal2-apple-button:hover {
-  background: #e8e8ed;
-  transform: translateY(-1px);
-}
-
-.signal2-apple-button:hover .signal2-apple-icon-container {
-  background: #d1d1d6;
-  transform: scale(1.05);
-}
-
-.signal2-apple-button-text {
-  flex: 1;
-  text-align: left;
-}
-
-.signal2-apple-icon-container {
-  background: #e8e8ed;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.signal2-apple-text-cursor-icon {
-  color: #6d6d70;
-  transition: color 0.2s ease;
-}
-
-.signal2-apple-button:hover .signal2-apple-text-cursor-icon {
-  color: #48484a;
-}
-
-/* Темная тема для Apple кнопки */
-@media (prefers-color-scheme: dark) {
-  .signal2-apple-button {
-    background: #2c2c2e;
-    color: #ffffff;
-  }
-  
-  .signal2-apple-button:hover {
-    background: #3a3a3c;
-  }
-  
-  .signal2-apple-icon-container {
-    background: #3a3a3c;
-  }
-  
-  .signal2-apple-button:hover .signal2-apple-icon-container {
-    background: #48484a;
-  }
-  
-  .signal2-apple-text-cursor-icon {
-    color: #98989d;
-  }
-  
-  .signal2-apple-button:hover .signal2-apple-text-cursor-icon {
-    color: #ffffff;
+    transform: translateX(-50%) translateY(0);
   }
 }
 
@@ -1054,6 +1036,7 @@ watch(showBranchList, (newValue) => {
   display: flex;
   align-items: center;
 }
+
 .signal2-rotating-text {
   transition: opacity 0.5s ease-in-out;
   line-height: 1.2;
@@ -1072,19 +1055,31 @@ watch(showBranchList, (newValue) => {
   padding: 6px;
 }
 
+/* Приведение обеих кнопок к единому стилю */
 .signal2-action-button {
   flex: 1;
   padding: 14px 20px;
-  border-radius: 16px;
+  border-radius: 16px; /* Одинаковые скругления */
   border: none;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 16px; /* Одинаковый размер текста */
+  font-weight: 700; /* Одинаковая жирность */
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Центрирование текста */
   gap: 8px;
+}
+
+.signal2-ticket-button {
+  background: rgba(70, 70, 70, 0.8);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.signal2-ticket-button:hover {
+  background: rgba(85, 85, 85, 0.9);
+  color: white;
+  transform: translateY(-2px);
 }
 
 .signal2-review-button {
@@ -1230,7 +1225,6 @@ watch(showBranchList, (newValue) => {
   line-height: 1.5;
 }
 
-/* Убираем подчеркивания у ссылок */
 .signal2-modal-link {
   color: #a3e635;
   text-decoration: none !important;
@@ -1264,6 +1258,7 @@ watch(showBranchList, (newValue) => {
   background: var(--vp-c-bg-soft, #333);
 }
 
+/* Мобильные стили */
 @media (max-width: 768px) {
   .signal2-widget-content {
     padding: 24px 0;
@@ -1332,23 +1327,6 @@ watch(showBranchList, (newValue) => {
   .signal2-status-metrics {
     gap: 12px;
   }
-  
-  /* Мобильные стили для Apple кнопки */
-  .signal2-apple-button {
-    min-width: 200px;
-    font-size: 14px;
-    padding: 10px 16px;
-  }
-  
-  .signal2-apple-icon-container {
-    width: 28px;
-    height: 28px;
-  }
-  
-  .signal2-apple-text-cursor-icon {
-    width: 16px;
-    height: 16px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -1389,11 +1367,20 @@ watch(showBranchList, (newValue) => {
     margin-top: 20px;
   }
   
-  /* Дополнительные мобильные стили для тултипа */
+  /* Исправленное позиционирование тултипа на мобильных */
   .signal2-badge-tooltip {
-    right: -50%;
-    transform: translateX(50%);
-    min-width: 180px;
+    left: auto;
+    right: 0;
+    transform: none;
+    min-width: 250px;
+  }
+  
+  /* Убеждаемся что тултип не выходит за пределы экрана */
+  @media (max-width: 320px) {
+    .signal2-badge-tooltip {
+      min-width: 200px;
+      right: -20px;
+    }
   }
 }
 </style>
