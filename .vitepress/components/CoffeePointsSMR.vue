@@ -374,16 +374,37 @@ watch(showBranchList, (newValue) => {
 <style scoped>
 .signal2-widget-content {
   padding: 32px;
-  max-height: calc(100vh - 80px);
-  overflow-y: auto;
-  scroll-behavior: smooth;
+  /* max-height и overflow-y удалены для интеграции в страницу */
 }
 .signal2-cafe-switchers {
   display: flex;
   gap: 8px;
   margin-bottom: 18px;
-  flex-wrap: wrap;
+  padding-bottom: 8px; /* Небольшой отступ снизу для скроллбара */
+  flex-wrap: nowrap; /* Запрещаем перенос */
+  overflow-x: auto; /* Включаем горизонтальный скролл */
+  -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(245, 158, 11, 0.7) transparent; /* Firefox */
 }
+
+/* Стилизация скроллбара для Webkit-браузеров (Chrome, Safari) */
+.signal2-cafe-switchers::-webkit-scrollbar {
+  height: 6px;
+}
+
+.signal2-cafe-switchers::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.signal2-cafe-switchers::-webkit-scrollbar-thumb {
+  background-color: rgba(245, 158, 11, 0.5);
+  border-radius: 10px;
+}
+.signal2-cafe-switchers::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(245, 158, 11, 0.7);
+}
+
 .signal2-switcher {
   border-radius: 10px;
   background: var(--vp-c-bg-soft);
@@ -394,12 +415,13 @@ watch(showBranchList, (newValue) => {
   color: white;
   border: 1px solid var(--vp-c-border);
   transition: background 0.3s, color 0.3s;
+  white-space: nowrap; /* Текст внутри кнопок не переносится */
 }
 .signal2-switcher.active {
   background: #f59e0b;
   color: #222;
 }
-/* основной CSS префикс signal2- (копия вашего стиля review2 с префиксом) */
+/* основной CSS префикс signal2- */
 .signal2-widget-header,
 .signal2-branches-header {
   display: flex;
