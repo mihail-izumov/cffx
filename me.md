@@ -17,11 +17,3 @@ description: Где Начинается Ваша Кофейня
 
 <CoffeePointsSMR />
 
-<br>
-
-<SignalModalButton />
-
-<br><br>
-
-<SignalT9Configurator />
-
