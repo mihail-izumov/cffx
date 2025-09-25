@@ -23,18 +23,10 @@ export default defineConfig({
     ['meta', { property: 'og:description', content: 'Где Начинается Ваша Кофейня' }],
     ['meta', { property: 'og:image', content: 'https://cffx.ru/cffx_og_card.jpg' }],
     ['meta', { property: 'og:type', content: 'website' }],
-
-    // --- НАЧАЛО: Обновленный мета-тег Content-Security-Policy ---
-    ['meta', { 
-      'http-equiv': 'Content-Security-Policy', 
-      'content': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://mc.yandex.ru; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://mc.yandex.ru; connect-src 'self' wss: https://mc.yandex.ru; frame-src 'self' https://mc.yandex.ru; media-src 'self';"
-    }],
-    // --- КОНЕЦ: Обновленный мета-тег Content-Security-Policy ---
-
     // Остальные мета-теги
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
-
+    
     // --- НАЧАЛО: Код Яндекс.Метрики ---
     ['script', {}, `
       (function(m,e,t,r,i,k,a){
