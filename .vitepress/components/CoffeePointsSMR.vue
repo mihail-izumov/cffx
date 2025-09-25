@@ -30,7 +30,7 @@ const cafes = {
     index: 87,
     isConnected: false,
     branches: [
-      { address: 'Куйбыышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/' },
+      { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/' },
       { address: 'Революционная, 101В, к1', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858/' }
     ]
   },
@@ -882,18 +882,18 @@ watch(showBranchList, (newValue) => {
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  padding: 8px; /* Уменьшил отступы для мобильных */
+  padding: 8px;
   box-sizing: border-box;
 }
 
 .signal2-review-modal-content {
   background: #1e1e20;
   border-radius: 16px;
-  padding: 16px; /* Уменьшил отступы */
+  padding: 16px;
   width: 650px;
   height: 680px;
-  max-width: 98vw; /* Увеличил максимальную ширину */
-  max-height: 95vh; /* Увеличил максимальную высоту */
+  max-width: 95vw;
+  max-height: 95vh;
   overflow-y: auto;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
@@ -902,7 +902,7 @@ watch(showBranchList, (newValue) => {
   flex-direction: column;
 }
 
-/* Убираем лишние отступы внутри модального окна */
+/* Убираем только горизонтальные отступы, оставляем вертикальные для читаемости */
 .signal2-review-modal-content :deep(h1),
 .signal2-review-modal-content :deep(h2), 
 .signal2-review-modal-content :deep(h3),
@@ -916,24 +916,23 @@ watch(showBranchList, (newValue) => {
 .signal2-review-modal-content :deep(.example-text),
 .signal2-review-modal-content :deep(.hint-text) {
   text-align: initial !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
-/* Делаем контент внутри компонента максимально широким на мобильных */
+/* Убираем горизонтальные отступы у контейнеров */
 .signal2-review-modal-content :deep(.container),
-.signal2-review-modal-content :deep(.content),
-.signal2-review-modal-content :deep(.form-container),
-.signal2-review-modal-content :deep(.input-container) {
+.signal2-review-modal-content :deep(.content) {
   padding-left: 0 !important;
   padding-right: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
 
-/* Секция с кнопкой закрытия */
+/* Секция с кнопкой закрытия без разделителя */
 .signal2-modal-close-section {
   margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  /* Убрали border-top разделитель */
   display: flex;
   justify-content: center;
 }
@@ -1558,7 +1557,7 @@ watch(showBranchList, (newValue) => {
   color: rgba(255, 255, 255, 0.5);
   text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, 0.3);
-  font-size: 14px; /* Такой же размер как у текста над кнопкой */
+  font-size: 14px;
   font-weight: 500;
   transition: all 0.3s ease;
 }
@@ -1825,13 +1824,13 @@ watch(showBranchList, (newValue) => {
   
   /* Уменьшенная кнопка "Отправить Сигнал" в мобильной версии на 20% */
   .signal2-mystery-button {
-    font-size: 15px; /* Уменьшено на 20% с 19px */
-    padding: 10px 19px; /* Уменьшено на 20% */
+    font-size: 15px;
+    padding: 10px 19px;
   }
   
   /* Размер ссылки "Как Работает" такой же как у текста над кнопкой */
   .signal2-how-it-works-link {
-    font-size: 14px; /* Такой же как у signal2-signal-description */
+    font-size: 14px;
   }
   
   /* Мобильное выравнивание кнопок по левому краю */
@@ -1850,19 +1849,11 @@ watch(showBranchList, (newValue) => {
   }
   
   .signal2-review-modal-content {
-    width: 98vw;
+    width: 95vw;
     height: 95vh;
-    padding: 12px; /* Минимальные отступы */
-    max-width: 98vw;
+    padding: 12px;
+    max-width: 95vw;
     max-height: 95vh;
-  }
-  
-  /* Убираем все лишние отступы в мобильной версии модального окна */
-  .signal2-review-modal-content :deep(*) {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
   }
   
   /* Кнопка закрытия в мобильной версии */
@@ -1875,13 +1866,13 @@ watch(showBranchList, (newValue) => {
   
   .signal2-modal-close-section {
     margin-top: 16px;
-    padding-top: 12px;
+    padding-top: 8px;
   }
 }
 
 @media (max-width: 700px) {
   .signal2-review-modal-content {
-    width: 98vw;
+    width: 95vw;
     height: 95vh;
     padding: 12px;
   }
