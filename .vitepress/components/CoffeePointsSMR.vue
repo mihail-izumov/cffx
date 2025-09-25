@@ -1156,23 +1156,7 @@ watch(showBranchList, (newValue) => {
   background: rgba(66, 32, 6, 0.6) !important;
   transform: scale(1.05);
 }
-
-/* Таинственная третья кнопка */
-.signal2-mystery-button-container {
-  margin-top: 12px;
-  display: flex;
-  justify-content: center;
-}
-
-.signal2-mystery-button {
-  position: relative;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05));
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  color: rgba(139, 92, 246, 0.9);
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-size:
-
+  
   /* Таинственная третья кнопка */
 .signal2-mystery-button-container {
   margin-top: 12px;
