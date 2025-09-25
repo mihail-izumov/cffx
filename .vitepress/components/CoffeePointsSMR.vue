@@ -1969,10 +1969,10 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal2-review-modal-content {
-  width: 95vw;
-  height: 95vh;
-  max-width: 95vw;
-  max-height: 95vh;
+    width: 95vw;
+    height: 90vh; /* Изменил с 95vh на 90vh */
+    max-width: 95vw;
+    max-height: 90vh; /* Изменил с 95vh на 90vh */
 }
 
 .signal2-modal-scrollable-content {
@@ -1995,7 +1995,7 @@ watch(showBranchList, (newValue) => {
 @media (max-width: 700px) {
 .signal2-review-modal-content {
   width: 95vw;
-  height: 95vh;
+  height: 90vh;
 }
 
 .signal2-modal-scrollable-content {
@@ -2051,7 +2051,7 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal2-review-modal-content {
-  height: 95vh;
+  height: 90vh;
 }
 
 .signal2-modal-scrollable-content {
