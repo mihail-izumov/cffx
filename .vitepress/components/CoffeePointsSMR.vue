@@ -567,7 +567,7 @@ watch(showBranchList, (newValue) => {
         <div class="signal2-modal-body">
           Каждый отзыв делает любимую кофейню еще лучше, а Сигнал помогает решить Вашу проблему за 24 часа. Почувствуйте силу настоящих перемен.
           <br /><br />
-          <span @click="() => window.open('/signals', '_blank')" class="signal2-modal-link">Как Работает Сигнал</span>
+          <a href="https://cffx.ru/signals.html" target="_blank" class="signal2-modal-link">Как Работает Сигнал</a>
         </div>
         <div class="signal2-modal-footer">
           <button class="signal2-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
@@ -634,7 +634,7 @@ watch(showBranchList, (newValue) => {
   background-color: rgba(85, 85, 85, 0.9);
 }
 
-/* Переключатели с внутренними градиентами */
+/* Переключатели с исправленными внутренними градиентами */
 .signal2-switcher {
   border-radius: 50px;
   padding: 12px 20px;
@@ -654,25 +654,29 @@ watch(showBranchList, (newValue) => {
   color: rgba(255, 255, 255, 0.9);
 }
 
+/* Исправленный эффект перелива - плавный и широкий */
 .signal2-switcher::before {
   content: '';
   position: absolute;
-  left: -100%;
+  left: -200%;
   top: 0;
-  width: 0%;
+  width: 200%;
   height: 100%;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.1) 50%,
+    transparent 30%,
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 60%,
+    transparent 70%,
     transparent 100%
   );
-  transition: all 0.6s ease;
+  transition: all 1.2s ease;
 }
 
 .signal2-switcher:hover::before {
   left: 100%;
-  width: 100%;
 }
 
 /* Убираем эффект перелива на мобильных */
@@ -707,16 +711,16 @@ watch(showBranchList, (newValue) => {
   font-size: 14px;
 }
 
-/* Градиенты для скролла */
+/* Исправленные градиенты для скролла с правильным цветом фона */
 .signal2-switchers-gradient {
   position: absolute;
   top: 0;
   bottom: 12px;
-  width: 40px;
+  width: 60px; /* Увеличил ширину градиента */
   pointer-events: none;
   z-index: 2;
   opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: opacity 0.6s ease; /* Увеличил время для плавности */
 }
 
 .signal2-switchers-gradient.signal2-gradient-visible {
@@ -727,10 +731,11 @@ watch(showBranchList, (newValue) => {
   left: 0;
   background: linear-gradient(
     to right,
-    var(--vp-c-bg-soft) 0%,
-    var(--vp-c-bg-soft) 30%,
-    rgba(34, 34, 34, 0.8) 60%,
-    rgba(34, 34, 34, 0.4) 80%,
+    #1b1b1f 0%,
+    #1b1b1f 20%,
+    rgba(27, 27, 31, 0.95) 40%,
+    rgba(27, 27, 31, 0.8) 60%,
+    rgba(27, 27, 31, 0.5) 80%,
     transparent 100%
   );
 }
@@ -739,10 +744,11 @@ watch(showBranchList, (newValue) => {
   right: 0;
   background: linear-gradient(
     to left,
-    var(--vp-c-bg-soft) 0%,
-    var(--vp-c-bg-soft) 30%,
-    rgba(34, 34, 34, 0.8) 60%,
-    rgba(34, 34, 34, 0.4) 80%,
+    #1b1b1f 0%,
+    #1b1b1f 20%,
+    rgba(27, 27, 31, 0.95) 40%,
+    rgba(27, 27, 31, 0.8) 60%,
+    rgba(27, 27, 31, 0.5) 80%,
     transparent 100%
   );
 }
@@ -998,7 +1004,7 @@ watch(showBranchList, (newValue) => {
   transform: scale(1.05);
 }
 
-/* Блок статуса */
+/* Исправленный блок статуса - единый размер шрифта */
 .signal2-system-status-bar {
   display: flex;
   align-items: center;
@@ -1038,8 +1044,9 @@ watch(showBranchList, (newValue) => {
   gap: 4px;
 }
 
+/* Выравниваем размер шрифта всего текста в блоке "На связи" */
 .signal2-metric-time {
-  font-size: 12px;
+  font-size: 12px; /* Такой же как у "На связи" */
   font-weight: 700;
   color: rgba(255, 255, 255, 0.9);
   font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
@@ -1049,7 +1056,7 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal2-metric-text {
-  font-size: 12px;
+  font-size: 12px; /* Такой же как у "На связи" */
   font-weight: 500;
   color: rgba(255, 255, 255, 0.6);
 }
@@ -1189,7 +1196,7 @@ watch(showBranchList, (newValue) => {
   color: currentColor;
 }
 
-/* Исправленная стрелка в кнопке */
+/* Исправленная стрелка в кнопке - теперь видна при ховере */
 .signal2-white-arrow {
   stroke: #422006 !important;
 }
@@ -1207,8 +1214,9 @@ watch(showBranchList, (newValue) => {
   transform: scale(1.05);
 }
 
+/* Исправлено - теперь круг не пропадает при ховере */
 .signal2-review-button:hover .signal2-golden-icon-container {
-  background: rgba(255, 193, 7, 0.4) !important;
+  background: rgba(255, 193, 7, 0.2) !important; /* Сделал менее прозрачным */
   transform: scale(1.05);
 }
 
@@ -1327,18 +1335,19 @@ watch(showBranchList, (newValue) => {
   margin-top: 12px;
 }
 
-/* Исправленная ссылка "Как Работает" */
+/* Исправленная ссылка "Как Работает" - цвет такой же как у текста */
 .signal2-how-it-works-link {
   color: rgba(255, 255, 255, 0.5);
-  text-decoration: none !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.3); /* Подчеркивание цвета текста */
   font-size: 13px;
   font-weight: 500;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .signal2-how-it-works-link:hover {
   color: rgba(255, 255, 255, 0.8);
-  text-decoration: none !important;
+  text-decoration-color: rgba(255, 255, 255, 0.6);
 }
 
 /* Остальные стили */
@@ -1561,35 +1570,35 @@ watch(showBranchList, (newValue) => {
     transform: none;
   }
   
-  /* Исправленный мобильный блок "На связи" */
+  /* Исправленный компактный мобильный блок "На связи" */
   .signal2-system-status-bar {
     flex-direction: column;
     align-items: center;
-    padding: 16px 20px;
-    gap: 8px;
-    margin: 24px 0 20px 0;
+    padding: 12px 16px; /* Уменьшенные отступы */
+    gap: 6px; /* Меньшее расстояние между строками */
+    margin: 20px 0 16px 0; /* Меньшие отступы от края */
   }
   
   .signal2-status-label,
   .signal2-status-label-disconnected {
-    font-size: 16px;
+    font-size: 12px; /* Такой же размер как у всех */
     font-weight: 600;
     margin-right: 0;
   }
   
   /* Уменьшаем размер "Не подключен к Сигналу" */
   .signal2-status-label-disconnected {
-    font-size: 14px;
+    font-size: 11px;
   }
   
   .signal2-status-metrics {
-    gap: 16px;
+    gap: 12px; /* Меньшее расстояние */
     justify-content: center;
   }
   
   .signal2-metric-time,
   .signal2-metric-text {
-    font-size: 16px;
+    font-size: 12px; /* Такой же размер как у "На связи" */
   }
   
   .signal2-button-icon-container {
