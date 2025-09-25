@@ -184,11 +184,18 @@ const closeReviewModal = () => {
   document.body.style.overflow = 'auto'
 }
 
-// Функция для закрытия модального окна и перехода к отзывам
+// Исправленная функция для закрытия модального окна и перехода к отзывам
 const closeModalAndGoToReviews = () => {
   isReviewModalOpen.value = false
   document.body.style.overflow = 'auto'
   showBranchList.value = true
+  
+  // Скролл в начало страницы для показа заголовка и навигации
+  nextTick(() => {
+    if (widgetContentRef.value) {
+      widgetContentRef.value.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  })
 }
 
 const openSignalNew = () => {
@@ -286,10 +293,13 @@ onUnmounted(() => {
   window.removeEventListener('resize', checkMobile)
 })
 
+// Исправленная функция для отслеживания изменений списка филиалов
 watch(showBranchList, (newValue) => {
   if (newValue) {
     nextTick(() => {
-      widgetContentRef.value.scrollTo({ top: 0, behavior: 'smooth' })
+      if (widgetContentRef.value) {
+        widgetContentRef.value.scrollTo({ top: 0, behavior: 'smooth' })
+      }
     })
   }
 })
@@ -889,7 +899,7 @@ watch(showBranchList, (newValue) => {
 .signal2-review-modal-content {
   background: #1e1e20;
   border-radius: 16px;
-  padding: 16px;
+  padding: 20px 16px 16px 16px; /* УВЕЛИЧИЛ верхний отступ */
   width: 650px;
   height: 680px;
   max-width: 95vw;
@@ -929,10 +939,22 @@ watch(showBranchList, (newValue) => {
   margin-right: 0 !important;
 }
 
+/* УМЕНЬШИЛ отступы между блоками в 2 раза для экономии места */
+.signal2-review-modal-content :deep(.form-section),
+.signal2-review-modal-content :deep(.form-group),
+.signal2-review-modal-content :deep(.section-wrapper) {
+  margin-bottom: 10px !important; /* Было 20px, стало 10px */
+}
+
+.signal2-review-modal-content :deep(.card),
+.signal2-review-modal-content :deep(.block),
+.signal2-review-modal-content :deep(.content-block) {
+  margin-bottom: 8px !important; /* Было 16px, стало 8px */
+}
+
 /* Секция с кнопкой закрытия без разделителя */
 .signal2-modal-close-section {
   margin-top: 20px;
-  /* Убрали border-top разделитель */
   display: flex;
   justify-content: center;
 }
@@ -1851,7 +1873,7 @@ watch(showBranchList, (newValue) => {
   .signal2-review-modal-content {
     width: 95vw;
     height: 95vh;
-    padding: 12px;
+    padding: 20px 12px 12px 12px; /* Больший верхний отступ для мобильных */
     max-width: 95vw;
     max-height: 95vh;
   }
@@ -1874,7 +1896,7 @@ watch(showBranchList, (newValue) => {
   .signal2-review-modal-content {
     width: 95vw;
     height: 95vh;
-    padding: 12px;
+    padding: 20px 12px 12px 12px;
   }
 }
 
@@ -1926,7 +1948,7 @@ watch(showBranchList, (newValue) => {
   }
   
   .signal2-review-modal-content {
-    padding: 10px;
+    padding: 16px 10px 10px 10px;
     height: 95vh;
   }
 }
