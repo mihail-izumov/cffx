@@ -213,7 +213,7 @@ watch(showBranchList, (newValue) => {
       >{{ name }}</button>
     </div>
 
-    <div v-if="establishment.value">
+    <div v-if="establishment">
       <div v-if="!showBranchList">
         <div class="signal2-widget-header">
           <div>
@@ -230,8 +230,8 @@ watch(showBranchList, (newValue) => {
 
         <div class="signal2-main-card">
           <div class="signal2-establishment-header">
-            <h3 class="signal2-cafe-name">{{ establishment.value.name }}</h3>
-            <div v-if="establishment.value.status" class="signal2-status-badge">{{ establishment.value.status }}</div>
+            <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
+            <div v-if="establishment.status" class="signal2-status-badge">{{ establishment.status }}</div>
           </div>
 
           <div class="signal2-stats-grid">
@@ -239,7 +239,7 @@ watch(showBranchList, (newValue) => {
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-icon">☕</div>
-                  <div class="signal2-stat-value">{{ establishment.value.branches.length }}</div>
+                  <div class="signal2-stat-value">{{ establishment.branches.length }}</div>
                 </div>
                 <div class="signal2-stat-label">Кофейни</div>
               </div>
@@ -249,7 +249,7 @@ watch(showBranchList, (newValue) => {
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-icon">⚡</div>
-                  <div class="signal2-stat-value">{{ establishment.value.index }}</div>
+                  <div class="signal2-stat-value">{{ establishment.index }}</div>
                 </div>
                 <div class="signal2-stat-label">Индекс роста</div>
               </div>
@@ -259,7 +259,7 @@ watch(showBranchList, (newValue) => {
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-icon">📡</div>
-                  <div class="signal2-stat-value">{{ establishment.value.totalReviews }}</div>
+                  <div class="signal2-stat-value">{{ establishment.totalReviews }}</div>
                 </div>
                 <div class="signal2-stat-label">Отзывы</div>
               </div>
@@ -327,7 +327,7 @@ watch(showBranchList, (newValue) => {
             </svg>
           </button>
 
-          <h2 class="signal2-branches-title">{{ establishment.value.name }}</h2>
+          <h2 class="signal2-branches-title">{{ establishment.name }}</h2>
 
           <div style="width: 44px;"></div>
         </div>
@@ -336,7 +336,7 @@ watch(showBranchList, (newValue) => {
           <p class="signal2-branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
 
           <div class="signal2-branches-list">
-            <button v-for="(branch, index) in establishment.value.branches" :key="index" @click="goToReviews(branch)" class="signal2-branch-item">
+            <button v-for="(branch, index) in establishment.branches" :key="index" @click="goToReviews(branch)" class="signal2-branch-item">
               <div class="signal2-branch-info">
                 <div class="signal2-branch-number">{{ index + 1 }}</div>
                 <div class="signal2-branch-address">{{ branch.address }}</div>
