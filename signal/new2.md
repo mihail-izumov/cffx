@@ -12,7 +12,11 @@ title: Новый Сигнал | Корж, Mosaic
 
 <CoffeePointsSMR />
 
+<br>
+
 <SignalModalButton />
+
+<br>
 
 <SignalT9Configurator />
 
