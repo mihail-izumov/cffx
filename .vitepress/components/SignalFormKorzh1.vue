@@ -54,8 +54,8 @@
             v-model="form.emotionalRelease" 
             @focus="startRotation(1)" 
             rows="3" 
-            placeholder="Опишите свои чувства и впечатления..." 
-            required>
+            placeholder="Опишите свои чувства и впечатления..."
+            >
           </textarea>
           
           <!-- Подсказки-баблы для эмоций -->
@@ -92,8 +92,8 @@
             v-model="form.factualAnalysis" 
             @focus="startRotation(2)" 
             rows="3" 
-            placeholder="Опишите факты: что, когда и где произошло..." 
-            required>
+            placeholder="Опишите факты: что, когда и где произошло..."
+            >
           </textarea>
           
           <!-- Подсказки-баблы для деталей -->
@@ -130,8 +130,8 @@
             v-model="form.constructiveSuggestions" 
             @focus="startRotation(3)" 
             rows="3" 
-            placeholder="Предложите, как это можно исправить..." 
-            required>
+            placeholder="Предложите, как это можно исправить..."
+            >
           </textarea>
           
           <!-- Подсказки-баблы для решений -->
@@ -452,11 +452,10 @@ onUnmounted(() => {
   stopRotation();
 });
 
+// ИЗМЕНЕННОЕ УСЛОВИЕ ВАЛИДАЦИИ ФОРМЫ
 const isFormValid = computed(() => 
   form.coffeeShopAddress.trim() && 
-  form.emotionalRelease.trim() && 
-  form.factualAnalysis.trim() && 
-  form.constructiveSuggestions.trim() && 
+  (form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim()) && 
   form.name.trim() && 
   form.telegramPhone.trim() && 
   form.consent
