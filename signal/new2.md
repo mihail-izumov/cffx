@@ -8,4 +8,13 @@ title: Новый Сигнал | Корж, Mosaic
 # Отправьте Умный Отзыв
 Каждая чашка кофе делает Вашу любимую кофейню еще лучше. <br>
 
+</div>
 
+<CoffeePointsSMR />
+
+<SignalModalButton />
+
+<SignalT9Configurator />
+
+
+1234
