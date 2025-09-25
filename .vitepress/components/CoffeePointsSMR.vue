@@ -111,10 +111,6 @@ const systemMetrics = ref({
   lastUpdate: Date.now()
 })
 
-// Состояние скролла для градиентов
-const showLeftGradient = ref(false)
-const showRightGradient = ref(false)
-
 // Упрощенное состояние для тултипа бейджа
 const showBadgeTooltip = ref(false)
 const isMobile = ref(false)
@@ -158,7 +154,6 @@ const formatTime = (hours) => {
 const showBranchList = ref(false)
 const emit = defineEmits(['close'])
 const widgetContentRef = ref(null)
-const switchersRef = ref(null)
 const badgeRef = ref(null)
 
 const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
@@ -175,19 +170,6 @@ const createTicket = () => {
 
 const openSignalNew = () => {
   window.location.href = '/signal/new'
-}
-
-// Функция для обработки скролла переключателей
-const handleSwitcherScroll = () => {
-  if (!switchersRef.value) return
-  
-  const container = switchersRef.value
-  const scrollLeft = container.scrollLeft
-  const scrollWidth = container.scrollWidth
-  const clientWidth = container.clientWidth
-  
-  showLeftGradient.value = scrollLeft > 0
-  showRightGradient.value = scrollLeft < (scrollWidth - clientWidth)
 }
 
 // Проверка мобильности
@@ -249,10 +231,6 @@ onMounted(() => {
   window.addEventListener('keydown', onKeydown)
   window.addEventListener('resize', checkMobile)
   checkMobile()
-  
-  nextTick(() => {
-    handleSwitcherScroll()
-  })
 })
 
 onUnmounted(() => {
@@ -273,109 +251,69 @@ watch(showBranchList, (newValue) => {
 
 <template>
   <div class="signal2-widget-content" ref="widgetContentRef">
-    <!-- Контейнер переключателей с динамическими градиентами -->
+    <!-- Контейнер переключателей с внутренними градиентами -->
     <div class="signal2-cafe-switchers-container">
-      <div 
-        class="signal2-cafe-switchers" 
-        ref="switchersRef"
-        @scroll="handleSwitcherScroll"
-      >
-        <!-- Корж - Heart icon -->
+      <div class="signal2-cafe-switchers">
+        <!-- Корж - Heart emoji -->
         <button
           class="signal2-switcher"
           :class="{ active: selectedCafe === 'Корж' }"
           @click="selectedCafe = 'Корж'"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/>
-          </svg>
+          <span class="signal2-switcher-icon">❤️</span>
           Корж
         </button>
 
-        <!-- Skuratov - Cog icon -->
+        <!-- Skuratov - Gear emoji -->
         <button
           class="signal2-switcher"
           :class="{ active: selectedCafe === 'Skuratov' }"
           @click="selectedCafe = 'Skuratov'"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m15.5-6.5-4.24 4.24M7.76 12.24 3.52 16.48m12.96 0-4.24-4.24M7.76 7.76 3.52 3.52"/>
-          </svg>
+          <span class="signal2-switcher-icon">⚙️</span>
           Skuratov
         </button>
 
-        <!-- Surf - Tree Palm icon -->
+        <!-- Surf - Palm tree emoji -->
         <button
           class="signal2-switcher"
           :class="{ active: selectedCafe === 'Surf' }"
           @click="selectedCafe = 'Surf'"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M13 8c0-2.76-2.46-5-5.5-5S2 5.24 2 8h2l1-1 1 1h4m2-3c1.66 0 3 1.34 3 3v4c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1z"/>
-            <path d="M5.5 10h.01M6.5 16c.83.68 2.31 1.29 4 1.29 2.76 0 5-1.87 5-4.16V12h-6c-.55 0-1-.45-1-1s.45-1 1-1h6v-.84C15.5 6.87 13.26 5 10.5 5 8.19 5 6.17 6.04 5.5 7.5"/>
-          </svg>
+          <span class="signal2-switcher-icon">🌴</span>
           Surf
         </button>
 
-        <!-- MOSAIC - Coffee icon -->
+        <!-- MOSAIC - Coffee emoji -->
         <button
           class="signal2-switcher"
           :class="{ active: selectedCafe === 'MOSAIC' }"
           @click="selectedCafe = 'MOSAIC'"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 8h1a4 4 0 1 1 0 8h-1"/>
-            <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
-            <line x1="6" y1="2" x2="6" y2="8"/>
-            <line x1="10" y1="2" x2="10" y2="8"/>
-            <line x1="14" y1="2" x2="14" y2="8"/>
-          </svg>
+          <span class="signal2-switcher-icon">☕</span>
           MOSAIC
         </button>
 
-        <!-- Белотурка - Wheat icon -->
+        <!-- Белотурка - Wheat emoji -->
         <button
           class="signal2-switcher"
           :class="{ active: selectedCafe === 'Белотурка' }"
           @click="selectedCafe = 'Белотурка'"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 12h20"/>
-            <path d="M6 12v7c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2v-7"/>
-            <path d="M6 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/>
-            <path d="M6 4V2"/>
-            <path d="M18 4V2"/>
-            <path d="M10 10v4"/>
-            <path d="M14 10v4"/>
-          </svg>
+          <span class="signal2-switcher-icon">🌾</span>
           Белотурка
         </button>
 
-        <!-- Кэрри - Cake Slice icon -->
+        <!-- Кэрри - Cake emoji -->
         <button
           class="signal2-switcher"
           :class="{ active: selectedCafe === 'Кэрри' }"
           @click="selectedCafe = 'Кэрри'"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="7" r="2"/>
-            <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-3.5c0-.3.2-.5.5-.5s.5.2.5.5v3.5c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-9l-4.2-3.1c-.4-.3-.8-.3-1.2 0Z"/>
-            <path d="m16 6 2 2 3-3"/>
-            <path d="m20 6-3 3.5-2-1.5"/>
-          </svg>
+          <span class="signal2-switcher-icon">🎂</span>
           Кэрри
         </button>
       </div>
-      <!-- Исправленные градиенты -->
-      <div 
-        class="signal2-switchers-gradient signal2-switchers-gradient-left"
-        :class="{ 'signal2-gradient-visible': showLeftGradient }"
-      ></div>
-      <div 
-        class="signal2-switchers-gradient signal2-switchers-gradient-right"
-        :class="{ 'signal2-gradient-visible': showRightGradient }"
-      ></div>
     </div>
 
     <div v-if="establishment">
@@ -383,7 +321,7 @@ watch(showBranchList, (newValue) => {
         <div class="signal2-main-card">
           <div class="signal2-establishment-header">
             <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
-            <!-- Упрощенный бейдж для мобильных -->
+            <!-- Исправленный бейдж с правильным тултипом -->
             <div 
               v-if="establishment.status" 
               class="signal2-status-badge"
@@ -391,10 +329,10 @@ watch(showBranchList, (newValue) => {
               ref="badgeRef"
               @mouseenter="!isMobile && (showBadgeTooltip = true)"
               @mouseleave="!isMobile && (showBadgeTooltip = false)"
-              @click="isMobile ? null : (showBadgeTooltip = !showBadgeTooltip)"
+              @click="!isMobile ? (showBadgeTooltip = !showBadgeTooltip) : null"
             >
               {{ establishment.status }}
-              <!-- Тултип только на десктопе -->
+              <!-- Исправленный тултип -->
               <div 
                 v-if="showBadgeTooltip && !isMobile" 
                 class="signal2-badge-tooltip"
@@ -440,7 +378,7 @@ watch(showBranchList, (newValue) => {
             </div>
           </div>
 
-          <!-- Улучшенный блок статуса -->
+          <!-- Улучшенный блок статуса для мобильных -->
           <div class="signal2-system-status-bar">
             <span v-if="establishment.isConnected" class="signal2-status-label">🟢 На связи:</span>
             <span v-else class="signal2-status-label-disconnected">🔴 Не подключен к Сигналу</span>
@@ -506,23 +444,33 @@ watch(showBranchList, (newValue) => {
                 </div>
               </button>
               
-              <!-- Вторая кнопка с кругом и стрелкой -->
+              <!-- Вторая кнопка с исправленным текстом -->
               <button @click="showBranchList = true" class="signal2-action-button signal2-review-button">
-                Отзыв Яндекс/2ГИС
+                Отправить Яндекс/ГИС
                 <div class="signal2-button-icon-container signal2-golden-icon-container">
-                  <svg class="signal2-button-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <svg class="signal2-button-icon signal2-white-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m9 18 6-6-6-6" />
                   </svg>
                 </div>
               </button>
             </div>
 
-            <!-- Таинственная третья кнопка (только для подключенных) -->
-            <div v-if="establishment.isConnected" class="signal2-mystery-button-container">
-              <button @click="openSignalNew" class="signal2-mystery-button">
-                <span class="signal2-mystery-glow"></span>
-                <span class="signal2-mystery-text">Отправить ⚡ Сигнал</span>
-              </button>
+            <!-- Блок третьей кнопки с текстом и ссылкой -->
+            <div v-if="establishment.isConnected" class="signal2-signal-section">
+              <div class="signal2-signal-description">
+                Просто скажите, что не так и мы поможем решить любую проблему за 24 часа
+              </div>
+              
+              <div class="signal2-mystery-button-container">
+                <button @click="openSignalNew" class="signal2-mystery-button signal2-lime-button">
+                  <span class="signal2-mystery-glow"></span>
+                  <span class="signal2-mystery-text">Отправить ⚡ Сигнал</span>
+                </button>
+              </div>
+              
+              <div class="signal2-signal-link">
+                <a href="/signals" target="_blank" class="signal2-how-it-works-link">Как работает Сигнал</a>
+              </div>
             </div>
           </div>
         </div>
@@ -600,7 +548,7 @@ watch(showBranchList, (newValue) => {
   padding: 32px 0;
 }
 
-/* Контейнер переключателей с градиентами */
+/* Контейнер переключателей */
 .signal2-cafe-switchers-container {
   position: relative;
   margin-bottom: 32px;
@@ -634,6 +582,7 @@ watch(showBranchList, (newValue) => {
   background-color: rgba(85, 85, 85, 0.9);
 }
 
+/* Переключатели с внутренними градиентами */
 .signal2-switcher {
   border-radius: 50px;
   padding: 12px 20px;
@@ -647,112 +596,52 @@ watch(showBranchList, (newValue) => {
   align-items: center;
   gap: 8px;
   min-width: fit-content;
-  background: rgba(70, 70, 70, 0.8);
-  color: white;
+  position: relative;
+  overflow: hidden;
+  background: rgba(70, 70, 70, 0.6);
+  color: rgba(255, 255, 255, 0.9);
 }
 
+.signal2-switcher::before {
+  content: '';
+  position: absolute;
+  left: -100%;
+  top: 0;
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transition: all 0.6s ease;
+}
+
+.signal2-switcher:hover::before {
+  left: 100%;
+  width: 100%;
+}
+
+/* Активный переключатель */
 .signal2-switcher.active {
-  background: white;
-  color: black;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.signal2-switcher.active::before {
+  display: none;
 }
 
 .signal2-switcher-icon {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
-}
-
-/* Исправленные градиенты */
-.signal2-switchers-gradient {
-  position: absolute;
-  top: 0;
-  bottom: 12px;
-  width: 40px;
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.signal2-switchers-gradient.signal2-gradient-visible {
-  opacity: 1;
-}
-
-.signal2-switchers-gradient-left {
-  left: 0;
-  background: linear-gradient(
-    to right,
-    #111111 0%,
-    #111111 30%,
-    rgba(17, 17, 17, 0.8) 60%,
-    rgba(17, 17, 17, 0.4) 80%,
-    transparent 100%
-  );
-}
-
-.signal2-switchers-gradient-right {
-  right: 0;
-  background: linear-gradient(
-    to left,
-    #111111 0%,
-    #111111 30%,
-    rgba(17, 17, 17, 0.8) 60%,
-    rgba(17, 17, 17, 0.4) 80%,
-    transparent 100%
-  );
-}
-
-/* Упрощенный бейдж */
-.signal2-badge-interactive {
-  cursor: help !important;
-  position: relative;
-}
-
-.signal2-badge-tooltip {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 12px 16px;
-  min-width: 200px;
-  z-index: 1000;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  animation: signal2-tooltip-fade-in 0.2s ease-out;
-}
-
-.signal2-tooltip-date {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.7);
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.signal2-tooltip-update {
-  color: white;
-  font-size: 13px;
-  font-weight: 500;
-  text-align: center;
-  line-height: 1.3;
-}
-
-@keyframes signal2-tooltip-fade-in {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
 }
 
 /* Остальные базовые стили */
@@ -828,6 +717,59 @@ watch(showBranchList, (newValue) => {
   box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  position: relative;
+}
+
+.signal2-badge-interactive {
+  cursor: help !important;
+}
+
+/* Исправленный тултип бейджа */
+.signal2-badge-tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  transform: none;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-width: 200px;
+  z-index: 1000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  animation: signal2-tooltip-fade-in 0.2s ease-out;
+}
+
+.signal2-tooltip-date {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.signal2-tooltip-update {
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.3;
+}
+
+@keyframes signal2-tooltip-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .signal2-stats-grid {
@@ -959,7 +901,7 @@ watch(showBranchList, (newValue) => {
   justify-content: center;
   gap: 12px;
   margin: 20px 0 16px 0;
-  padding: 8px 12px; /* Уменьшил отступы */
+  padding: 8px 12px;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -969,7 +911,7 @@ watch(showBranchList, (newValue) => {
   font-size: 12px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.7);
-  margin-right: 6px; /* Уменьшил расстояние */
+  margin-right: 6px;
   flex-shrink: 0;
 }
 
@@ -993,7 +935,7 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal2-metric-time {
-  font-size: 12px; /* Размер как у "На связи" */
+  font-size: 12px;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.9);
   font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
@@ -1003,7 +945,7 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal2-metric-text {
-  font-size: 12px; /* Размер как у "На связи" */
+  font-size: 12px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.6);
 }
@@ -1131,7 +1073,7 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal2-golden-icon-container {
-  background: rgba(66, 32, 6, 0.3) !important; /* Золотистый оттенок */
+  background: rgba(66, 32, 6, 0.3) !important;
 }
 
 .signal2-button-icon-signal {
@@ -1141,6 +1083,15 @@ watch(showBranchList, (newValue) => {
 .signal2-button-icon {
   transition: transform 0.3s ease;
   color: currentColor;
+}
+
+/* Белая стрелка в золотистой кнопке */
+.signal2-white-arrow {
+  stroke: white !important;
+}
+
+.signal2-review-button:hover .signal2-white-arrow {
+  stroke: white !important;
 }
 
 .signal2-review-button:hover .signal2-button-icon {
@@ -1156,8 +1107,26 @@ watch(showBranchList, (newValue) => {
   background: rgba(66, 32, 6, 0.6) !important;
   transform: scale(1.05);
 }
-  
-  /* Таинственная третья кнопка */
+
+/* Блок третьей кнопки с отступами */
+.signal2-signal-section {
+  margin-top: 32px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+}
+
+.signal2-signal-description {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 16px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .signal2-mystery-button-container {
   margin-top: 12px;
   display: flex;
@@ -1189,6 +1158,22 @@ watch(showBranchList, (newValue) => {
   text-shadow: 0 0 12px rgba(139, 92, 246, 0.5);
 }
 
+/* Лаймовая третья кнопка */
+.signal2-lime-button {
+  background: linear-gradient(135deg, rgba(197, 249, 70, 0.1), rgba(163, 230, 53, 0.05)) !important;
+  border: 1px solid rgba(197, 249, 70, 0.2) !important;
+  color: rgba(197, 249, 70, 0.9) !important;
+  text-shadow: 0 0 8px rgba(197, 249, 70, 0.3) !important;
+}
+
+.signal2-lime-button:hover {
+  background: linear-gradient(135deg, rgba(197, 249, 70, 0.2), rgba(163, 230, 53, 0.1)) !important;
+  border-color: rgba(197, 249, 70, 0.4) !important;
+  color: rgba(197, 249, 70, 1) !important;
+  text-shadow: 0 0 12px rgba(197, 249, 70, 0.5) !important;
+  box-shadow: 0 8px 20px rgba(197, 249, 70, 0.15) !important;
+}
+
 .signal2-mystery-glow {
   position: absolute;
   top: -50%;
@@ -1203,6 +1188,14 @@ watch(showBranchList, (newValue) => {
   opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
+}
+
+.signal2-lime-button .signal2-mystery-glow {
+  background: radial-gradient(
+    circle,
+    rgba(197, 249, 70, 0.1) 0%,
+    transparent 70%
+  ) !important;
 }
 
 .signal2-mystery-button:hover .signal2-mystery-glow {
@@ -1224,6 +1217,23 @@ watch(showBranchList, (newValue) => {
     transform: scale(1.1);
     opacity: 0.6;
   }
+}
+
+.signal2-signal-link {
+  margin-top: 12px;
+}
+
+.signal2-how-it-works-link {
+  color: rgba(197, 249, 70, 0.7);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.signal2-how-it-works-link:hover {
+  color: rgba(197, 249, 70, 1);
+  text-decoration: underline;
 }
 
 /* Остальные стили */
@@ -1445,16 +1455,29 @@ watch(showBranchList, (newValue) => {
   .signal2-action-button:hover {
     transform: none;
   }
+  
+  /* Улучшенный мобильный блок "На связи" */
   .signal2-system-status-bar {
-    flex-direction: column;
-    gap: 6px; /* Уменьшил gap */
-    padding: 8px; /* Уменьшил padding */
-  }
-  .signal2-status-metrics {
+    padding: 16px 20px;
     gap: 12px;
+    margin: 24px 0 20px 0;
   }
   
-  /* Мобильные стили для кнопок */
+  .signal2-status-label,
+  .signal2-status-label-disconnected {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .signal2-metric-time,
+  .signal2-metric-text {
+    font-size: 16px;
+  }
+  
+  .signal2-status-metrics {
+    gap: 16px;
+  }
+  
   .signal2-button-icon-container {
     width: 28px;
     height: 28px;
