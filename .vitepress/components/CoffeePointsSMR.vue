@@ -184,6 +184,13 @@ const closeReviewModal = () => {
   document.body.style.overflow = 'auto'
 }
 
+// Функция для закрытия модального окна и перехода к отзывам
+const closeModalAndGoToReviews = () => {
+  isReviewModalOpen.value = false
+  document.body.style.overflow = 'auto'
+  showBranchList.value = true
+}
+
 const openSignalNew = () => {
   window.location.href = '/signal/new'
 }
@@ -597,6 +604,19 @@ watch(showBranchList, (newValue) => {
         @click.stop
       >
         <SignalT9Configurator />
+        
+        <!-- Кнопка закрытия и перехода к отзывам -->
+        <div class="signal2-modal-close-section">
+          <button 
+            @click="closeModalAndGoToReviews" 
+            class="signal2-modal-close-button"
+          >
+            Закрыть и перейти к отзывам
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -862,24 +882,27 @@ watch(showBranchList, (newValue) => {
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  padding: 20px;
+  padding: 8px; /* Уменьшил отступы для мобильных */
   box-sizing: border-box;
 }
 
 .signal2-review-modal-content {
   background: #1e1e20;
   border-radius: 16px;
-  padding: 32px;
+  padding: 16px; /* Уменьшил отступы */
   width: 650px;
   height: 680px;
-  max-width: 95vw;
-  max-height: 90vh;
+  max-width: 98vw; /* Увеличил максимальную ширину */
+  max-height: 95vh; /* Увеличил максимальную высоту */
   overflow-y: auto;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
   color: white;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Убираем лишние отступы внутри модального окна */
 .signal2-review-modal-content :deep(h1),
 .signal2-review-modal-content :deep(h2), 
 .signal2-review-modal-content :deep(h3),
@@ -893,6 +916,57 @@ watch(showBranchList, (newValue) => {
 .signal2-review-modal-content :deep(.example-text),
 .signal2-review-modal-content :deep(.hint-text) {
   text-align: initial !important;
+}
+
+/* Делаем контент внутри компонента максимально широким на мобильных */
+.signal2-review-modal-content :deep(.container),
+.signal2-review-modal-content :deep(.content),
+.signal2-review-modal-content :deep(.form-container),
+.signal2-review-modal-content :deep(.input-container) {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Секция с кнопкой закрытия */
+.signal2-modal-close-section {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+}
+
+.signal2-modal-close-button {
+  background: linear-gradient(135deg, #f59e0b, #fcd34d);
+  color: #422006;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 200px;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.signal2-modal-close-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+}
+
+.signal2-modal-close-button svg {
+  transition: transform 0.3s ease;
+}
+
+.signal2-modal-close-button:hover svg {
+  transform: translateX(2px);
 }
 
 /* Остальные базовые стили */
@@ -1484,7 +1558,7 @@ watch(showBranchList, (newValue) => {
   color: rgba(255, 255, 255, 0.5);
   text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, 0.3);
-  font-size: 13px;
+  font-size: 14px; /* Такой же размер как у текста над кнопкой */
   font-weight: 500;
   transition: all 0.3s ease;
 }
@@ -1749,15 +1823,15 @@ watch(showBranchList, (newValue) => {
     height: 28px;
   }
   
-  /* Увеличенная кнопка "Отправить Сигнал" в мобильной версии */
+  /* Уменьшенная кнопка "Отправить Сигнал" в мобильной версии на 20% */
   .signal2-mystery-button {
-    font-size: 19px; /* Увеличено в 1.5 раза с 13px */
-    padding: 12px 24px; /* Увеличено в 1.5 раза с 8px 16px */
+    font-size: 15px; /* Уменьшено на 20% с 19px */
+    padding: 10px 19px; /* Уменьшено на 20% */
   }
   
-  /* Увеличенный размер ссылки "Как Работает" */
+  /* Размер ссылки "Как Работает" такой же как у текста над кнопкой */
   .signal2-how-it-works-link {
-    font-size: 19px; /* Увеличено в 1.5 раза с 13px */
+    font-size: 14px; /* Такой же как у signal2-signal-description */
   }
   
   /* Мобильное выравнивание кнопок по левому краю */
@@ -1770,19 +1844,46 @@ watch(showBranchList, (newValue) => {
     margin-left: auto;
   }
   
-  /* Адаптивность модального окна отзыва */
+  /* Минимальные отступы для модального окна отзыва на мобильных */
+  .signal2-review-modal-overlay {
+    padding: 4px;
+  }
+  
   .signal2-review-modal-content {
-    width: 95vw;
-    height: 85vh;
-    padding: 24px;
+    width: 98vw;
+    height: 95vh;
+    padding: 12px; /* Минимальные отступы */
+    max-width: 98vw;
+    max-height: 95vh;
+  }
+  
+  /* Убираем все лишние отступы в мобильной версии модального окна */
+  .signal2-review-modal-content :deep(*) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  /* Кнопка закрытия в мобильной версии */
+  .signal2-modal-close-button {
+    width: 100%;
+    justify-content: center;
+    font-size: 14px;
+    padding: 12px 20px;
+  }
+  
+  .signal2-modal-close-section {
+    margin-top: 16px;
+    padding-top: 12px;
   }
 }
 
 @media (max-width: 700px) {
   .signal2-review-modal-content {
-    width: 95vw;
-    height: 85vh;
-    padding: 24px;
+    width: 98vw;
+    height: 95vh;
+    padding: 12px;
   }
 }
 
@@ -1825,17 +1926,17 @@ watch(showBranchList, (newValue) => {
   }
   
   .signal2-mystery-button {
-    font-size: 18px;
-    padding: 9px 21px;
+    font-size: 14px;
+    padding: 9px 18px;
   }
   
   .signal2-how-it-works-link {
-    font-size: 18px;
+    font-size: 14px;
   }
   
   .signal2-review-modal-content {
-    padding: 20px;
-    height: 80vh;
+    padding: 10px;
+    height: 95vh;
   }
 }
 </style>
