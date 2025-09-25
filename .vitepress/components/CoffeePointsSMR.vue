@@ -116,8 +116,11 @@ const systemMetrics = ref({
 const showLeftGradient = ref(false)
 const showRightGradient = ref(false)
 
-// Состояние для тултипа бейджа
+// Состояние для тултипов
 const showBadgeTooltip = ref(false)
+const showBranchesTooltip = ref(false)
+const showIndexTooltip = ref(false)
+const showReviewsTooltip = ref(false)
 const isMobile = ref(false)
 
 // Состояние для модального окна "Собрать Мой Отзыв"
@@ -253,6 +256,9 @@ const onKeydown = (e) => {
       showInfoModal.value = false
       showGrowthModal.value = false
       showBadgeTooltip.value = false
+      showBranchesTooltip.value = false
+      showIndexTooltip.value = false
+      showReviewsTooltip.value = false
     }
   }
 }
@@ -441,7 +447,13 @@ watch(showBranchList, (newValue) => {
           </div>
 
           <div class="signal2-stats-grid">
-            <div class="signal2-stat-card signal2-branches-card">
+            <!-- Кофейни с тултипом -->
+            <div 
+              class="signal2-stat-card signal2-branches-card"
+              @click="isMobile ? (showBranchesTooltip = true) : null"
+              @mouseenter="!isMobile && (showBranchesTooltip = true)"
+              @mouseleave="!isMobile && (showBranchesTooltip = false)"
+            >
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-icon">☕</div>
@@ -449,11 +461,21 @@ watch(showBranchList, (newValue) => {
                 </div>
                 <div class="signal2-stat-label">Кофейни</div>
               </div>
+              <!-- Тултип для кофеен -->
+              <div 
+                v-if="showBranchesTooltip && !isMobile" 
+                class="signal2-stat-tooltip"
+              >
+                <div class="signal2-tooltip-text">Информация о количестве кофеен в сети</div>
+              </div>
             </div>
 
+            <!-- Индекс роста с существующим тултипом -->
             <div 
               class="signal2-stat-card signal2-index-card signal2-clickable-card" 
               @click="openGrowthModal"
+              @mouseenter="!isMobile && (showIndexTooltip = true)"
+              @mouseleave="!isMobile && (showIndexTooltip = false)"
             >
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
@@ -462,15 +484,35 @@ watch(showBranchList, (newValue) => {
                 </div>
                 <div class="signal2-stat-label">Индекс роста</div>
               </div>
+              <!-- Тултип для индекса роста -->
+              <div 
+                v-if="showIndexTooltip && !isMobile" 
+                class="signal2-stat-tooltip"
+              >
+                <div class="signal2-tooltip-text">Нажмите для подробной информации об индексе роста</div>
+              </div>
             </div>
 
-            <div class="signal2-stat-card signal2-reviews-card">
+            <!-- Отзывы с тултипом (для мобильных откроется инфо-модал) -->
+            <div 
+              class="signal2-stat-card signal2-reviews-card"
+              @click="isMobile ? (showInfoModal = true) : null"
+              @mouseenter="!isMobile && (showReviewsTooltip = true)"
+              @mouseleave="!isMobile && (showReviewsTooltip = false)"
+            >
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-icon">📡</div>
                   <div class="signal2-stat-value">{{ establishment.totalReviews }}</div>
                 </div>
                 <div class="signal2-stat-label">Отзывы</div>
+              </div>
+              <!-- Тултип для отзывов -->
+              <div 
+                v-if="showReviewsTooltip && !isMobile" 
+                class="signal2-stat-tooltip"
+              >
+                <div class="signal2-tooltip-text">Общее количество отзывов о заведении</div>
               </div>
             </div>
           </div>
@@ -494,8 +536,10 @@ watch(showBranchList, (newValue) => {
           </div>
 
           <div class="signal2-control-panel">
+            <!-- Скрываем инфо-иконку и "Поделитесь" на мобильных -->
             <div class="signal2-control-panel-header">
               <button
+                v-if="!isMobile"
                 type="button"
                 class="signal2-info-link signal2-info-button"
                 aria-haspopup="dialog"
@@ -509,8 +553,8 @@ watch(showBranchList, (newValue) => {
                   <path d="M12 8h.01" />
                 </svg>
               </button>
-              <span class="signal2-static-prompt">Поделитесь:</span>
-              <div class="signal2-rotating-text-container">
+              <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
+              <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
                 <span :class="['signal2-rotating-text', { 'signal2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
               </div>
             </div>
@@ -603,7 +647,7 @@ watch(showBranchList, (newValue) => {
       </div>
     </div>
 
-    <!-- Модальное окно для "Собрать Мой Отзыв" -->
+    <!-- Модальное окно для "Собрать Мой Отзыв" с фиксированной высотой -->
     <div 
       v-if="isReviewModalOpen" 
       class="signal2-review-modal-overlay"
@@ -613,9 +657,11 @@ watch(showBranchList, (newValue) => {
         class="signal2-review-modal-content"
         @click.stop
       >
-        <SignalT9Configurator />
+        <div class="signal2-modal-scrollable-content">
+          <SignalT9Configurator />
+        </div>
         
-        <!-- Кнопка закрытия и перехода к отзывам -->
+        <!-- Кнопка закрытия зафиксирована внизу -->
         <div class="signal2-modal-close-section">
           <button 
             @click="closeModalAndGoToReviews" 
@@ -630,7 +676,7 @@ watch(showBranchList, (newValue) => {
       </div>
     </div>
 
-    <!-- Модальное окно для бейджа на мобильных -->
+    <!-- Модальные окна для тултипов на мобильных -->
     <div v-if="showBadgeTooltip && isMobile" class="signal2-modal-overlay" @click.self="showBadgeTooltip = false">
       <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Информация о лидере">
         <div class="signal2-modal-header">
@@ -642,6 +688,20 @@ watch(showBranchList, (newValue) => {
         </div>
         <div class="signal2-modal-footer">
           <button class="signal2-modal-ok" type="button" @click="showBadgeTooltip = false">Понятно</button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="showBranchesTooltip && isMobile" class="signal2-modal-overlay" @click.self="showBranchesTooltip = false">
+      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Информация о кофейнях">
+        <div class="signal2-modal-header">
+          <div class="signal2-modal-title">Кофейни</div>
+        </div>
+        <div class="signal2-modal-body">
+          <div>Информация о количестве кофеен в сети</div>
+        </div>
+        <div class="signal2-modal-footer">
+          <button class="signal2-modal-ok" type="button" @click="showBranchesTooltip = false">Понятно</button>
         </div>
       </div>
     </div>
@@ -879,7 +939,7 @@ watch(showBranchList, (newValue) => {
   background: none !important;
 }
 
-/* Стили для модального окна отзыва */
+/* Стили для модального окна отзыва с фиксированной высотой */
 .signal2-review-modal-overlay {
   position: fixed;
   top: 0;
@@ -899,17 +959,23 @@ watch(showBranchList, (newValue) => {
 .signal2-review-modal-content {
   background: #1e1e20;
   border-radius: 16px;
-  padding: 20px 16px 16px 16px; /* УВЕЛИЧИЛ верхний отступ */
   width: 650px;
-  height: 680px;
+  height: 680px; /* Фиксированная высота */
   max-width: 95vw;
   max-height: 95vh;
-  overflow-y: auto;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
   color: white;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* Предотвращаем переполнение */
+}
+
+/* Скроллируемая область для контента */
+.signal2-modal-scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px 16px 16px;
 }
 
 /* Убираем только горизонтальные отступы, оставляем вертикальные для читаемости */
@@ -952,9 +1018,12 @@ watch(showBranchList, (newValue) => {
   margin-bottom: 8px !important; /* Было 16px, стало 8px */
 }
 
-/* Секция с кнопкой закрытия без разделителя */
+/* Зафиксированная секция с кнопкой закрытия */
 .signal2-modal-close-section {
-  margin-top: 20px;
+  flex-shrink: 0; /* Не сжимается */
+  padding: 16px;
+  background: #1e1e20;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   justify-content: center;
 }
@@ -1084,6 +1153,28 @@ watch(showBranchList, (newValue) => {
   z-index: 1000;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   animation: signal2-tooltip-fade-in 0.2s ease-out;
+}
+
+/* Тултипы для статистических карточек */
+.signal2-stat-tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  animation: signal2-tooltip-fade-in 0.2s ease-out;
+}
+
+.signal2-tooltip-text {
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .signal2-tooltip-date {
@@ -1351,6 +1442,12 @@ watch(showBranchList, (newValue) => {
   min-height: 36px;
   display: flex;
   align-items: center;
+}
+
+/* Полная ширина для мобильных */
+.signal2-rotating-text-container.signal2-full-width {
+  text-align: center;
+  justify-content: center;
 }
 
 .signal2-rotating-text {
@@ -1769,6 +1866,7 @@ watch(showBranchList, (newValue) => {
     align-items: center;
     border-radius: 16px;
     transition: none;
+    cursor: pointer; /* Делаем кликабельными на мобильных */
   }
   .signal2-stat-card:hover {
     transform: none;
@@ -1846,8 +1944,8 @@ watch(showBranchList, (newValue) => {
   
   /* Уменьшенная кнопка "Отправить Сигнал" в мобильной версии на 20% */
   .signal2-mystery-button {
-    font-size: 15px;
-    padding: 10px 19px;
+    font-size: 12px; /* Уменьшено с 15px на 20% */
+    padding: 8px 15px; /* Уменьшено с 10px 19px на 20% */
   }
   
   /* Размер ссылки "Как Работает" такой же как у текста над кнопкой */
@@ -1866,90 +1964,97 @@ watch(showBranchList, (newValue) => {
   }
   
   /* Минимальные отступы для модального окна отзыва на мобильных */
-  .signal2-review-modal-overlay {
-    padding: 4px;
-  }
-  
-  .signal2-review-modal-content {
-    width: 95vw;
-    height: 95vh;
-    padding: 20px 12px 12px 12px; /* Больший верхний отступ для мобильных */
-    max-width: 95vw;
-    max-height: 95vh;
-  }
-  
-  /* Кнопка закрытия в мобильной версии */
-  .signal2-modal-close-button {
-    width: 100%;
-    justify-content: center;
-    font-size: 14px;
-    padding: 12px 20px;
-  }
-  
-  .signal2-modal-close-section {
-    margin-top: 16px;
-    padding-top: 8px;
-  }
+.signal2-review-modal-overlay {
+  padding: 4px;
+}
+
+.signal2-review-modal-content {
+  width: 95vw;
+  height: 95vh;
+  max-width: 95vw;
+  max-height: 95vh;
+}
+
+.signal2-modal-scrollable-content {
+  padding: 20px 12px 12px 12px; /* Больший верхний отступ для мобильных */
+}
+
+/* Кнопка закрытия в мобильной версии */
+.signal2-modal-close-button {
+  width: 100%;
+  justify-content: center;
+  font-size: 14px;
+  padding: 12px 20px;
+}
+
+.signal2-modal-close-section {
+  padding: 12px;
+}
 }
 
 @media (max-width: 700px) {
-  .signal2-review-modal-content {
-    width: 95vw;
-    height: 95vh;
-    padding: 20px 12px 12px 12px;
-  }
+.signal2-review-modal-content {
+  width: 95vw;
+  height: 95vh;
+}
+
+.signal2-modal-scrollable-content {
+  padding: 20px 12px 12px 12px;
+}
 }
 
 @media (max-width: 480px) {
-  .signal2-widget-content {
-    padding: 20px 0;
-  }
-  .signal2-branches-title-text {
-    font-size: 22px;
-    text-align: center;
-  }
-  .signal2-branches-subtitle {
-    font-size: 14px;
-  }
-  .signal2-cafe-name {
-    font-size: 20px;
-  }
-  .signal2-status-badge {
-    padding: 4px 12px;
-    font-size: 10px;
-  }
-  .signal2-status-metrics {
-    gap: 8px;
-  }
-  .signal2-metric-time {
-    font-size: 13px;
-    min-width: 28px;
-  }
-  .signal2-metric-text {
-    font-size: 13px;
-  }
-  .signal2-modal {
-    padding: 24px;
-  }
-  .signal2-modal-body {
-    margin-top: 12px;
-  }
-  .signal2-modal-footer {
-    margin-top: 20px;
-  }
-  
-  .signal2-mystery-button {
-    font-size: 14px;
-    padding: 9px 18px;
-  }
-  
-  .signal2-how-it-works-link {
-    font-size: 14px;
-  }
-  
-  .signal2-review-modal-content {
-    padding: 16px 10px 10px 10px;
-    height: 95vh;
-  }
+.signal2-widget-content {
+  padding: 20px 0;
 }
-</style>
+.signal2-branches-title-text {
+  font-size: 22px;
+  text-align: center;
+}
+.signal2-branches-subtitle {
+  font-size: 14px;
+}
+.signal2-cafe-name {
+  font-size: 20px;
+}
+.signal2-status-badge {
+  padding: 4px 12px;
+  font-size: 10px;
+}
+.signal2-status-metrics {
+  gap: 8px;
+}
+.signal2-metric-time {
+  font-size: 13px;
+  min-width: 28px;
+}
+.signal2-metric-text {
+  font-size: 13px;
+}
+.signal2-modal {
+  padding: 24px;
+}
+.signal2-modal-body {
+  margin-top: 12px;
+}
+.signal2-modal-footer {
+  margin-top: 20px;
+}
+
+.signal2-mystery-button {
+  font-size: 11px; /* Еще меньше для очень маленьких экранов */
+  padding: 7px 14px;
+}
+
+.signal2-how-it-works-link {
+  font-size: 14px;
+}
+
+.signal2-review-modal-content {
+  height: 95vh;
+}
+
+.signal2-modal-scrollable-content {
+  padding: 16px 10px 10px 10px;
+}
+}
