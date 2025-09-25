@@ -960,9 +960,9 @@ watch(showBranchList, (newValue) => {
   background: #1e1e20;
   border-radius: 16px;
   width: 650px;
-  height: 90vh; /* Адаптивная высота - 90% от высоты экрана */
+  height: 85vh; /* Было 90vh, стало 85vh */
   max-width: 95vw;
-  max-height: 90vh;
+  max-height: 85vh; /* Было 90vh, стало 85vh */
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
   color: white;
@@ -1970,9 +1970,9 @@ watch(showBranchList, (newValue) => {
 
 .signal2-review-modal-content {
     width: 95vw;
-    height: 90vh; /* Изменил с 95vh на 90vh */
+    height: 85vh; /* Было 90vh, стало 85vh */
     max-width: 95vw;
-    max-height: 90vh; /* Изменил с 95vh на 90vh */
+    max-height: 85vh; /* Было 90vh, стало 85vh */
 }
 
 .signal2-modal-scrollable-content {
@@ -1995,7 +1995,7 @@ watch(showBranchList, (newValue) => {
 @media (max-width: 700px) {
 .signal2-review-modal-content {
   width: 95vw;
-  height: 90vh;
+  height: 85vh;
 }
 
 .signal2-modal-scrollable-content {
@@ -2051,12 +2051,28 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal2-review-modal-content {
-  height: 90vh;
+  height: 85vh;
 }
 
 .signal2-modal-scrollable-content {
   padding: 16px 10px 10px 10px;
 }
 }
+
+/* Дополнительная поддержка для iPhone и Android */
+@media screen and (max-height: 700px) {
+  .signal2-review-modal-content {
+    height: 80vh !important;
+    max-height: 80vh !important;
+  }
+}
+
+@media screen and (max-height: 600px) {
+  .signal2-review-modal-content {
+    height: 75vh !important;
+    max-height: 75vh !important;
+  }
+}
+
 </style>
 
