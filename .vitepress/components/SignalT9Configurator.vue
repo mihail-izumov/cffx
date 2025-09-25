@@ -1,6 +1,6 @@
 <template>
   <div class="signal-demo-wrapper">
-    <!-- Переключатель сеекций над формой -->
+    <!-- Переключатель секций над формой -->
     <div class="signal-demo__header">
       <div class="signal-demo__switch" role="tablist" aria-label="Секции формы">
         <button
@@ -14,6 +14,28 @@
           @click="selectedSection = section.id"
         >
           {{ section.title }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Переключатель пола -->
+    <div class="signal-gender-switch">
+      <div class="signal-gender-container">
+        <button
+          class="signal-gender-btn signal-gender-female"
+          :class="{ 'is-active': selectedGender === 'female' }"
+          @click="selectedGender = 'female'"
+          aria-label="Женский"
+        >
+          <div class="signal-gender-icon">♀</div>
+        </button>
+        <button
+          class="signal-gender-btn signal-gender-male"
+          :class="{ 'is-active': selectedGender === 'male' }"
+          @click="selectedGender = 'male'"
+          aria-label="Мужской"
+        >
+          <div class="signal-gender-icon">♂</div>
         </button>
       </div>
     </div>
@@ -146,6 +168,31 @@
         </div>
       </div>
 
+      <!-- КНОПКА УПРОСТИТЬ -->
+      <div class="signal-humanize-button-container">
+        <button 
+          class="signal-liquid-humanize-btn"
+          @click="hasAnyText ? humanizeCurrentText() : null"
+          :disabled="humanizeStatus === 'processing' || !hasAnyText"
+        >
+          <!-- SVG иконка гуманизации -->
+          <svg class="signal-humanize-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 14c-3.5 0-6.5 2-6.5 4.5v1.5h13v-1.5c0-2.5-3-4.5-6.5-4.5z" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path v-if="humanizeStatus === 'completed'" d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+          
+          <span class="signal-liquid-humanize-text">
+            {{ 
+              !hasAnyText ? 'Упростить' :
+              humanizeStatus === 'completed' ? 'Упрощено' : 
+              humanizeStatus === 'processing' ? 'Упрощение...' : 
+              'Упростить' 
+            }}
+          </span>
+        </button>
+      </div>
+
       <!-- БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ ВНИЗУ - ВСЕГДА ВИДНА -->
       <div class="signal-copy-button-container">
         <button 
@@ -198,6 +245,12 @@ const questionRef1 = ref(null);
 const questionRef2 = ref(null);
 const questionRef3 = ref(null);
 
+// Пол пользователя
+const selectedGender = ref('female');
+
+// Состояние кнопки гуманизации
+const humanizeStatus = ref('idle'); // 'idle', 'processing', 'completed'
+
 onMounted(() => {
   const checkMobile = () => {
     isMobile.value = window.innerWidth <= 768;
@@ -224,6 +277,208 @@ const isActive = (id) => id === selectedSection.value;
 const hasAnyText = computed(() => {
   return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
 });
+
+// Получение текущего текста
+const getCurrentSectionText = () => {
+  if (selectedSection.value === 'emotions') return form.emotionalRelease.trim();
+  if (selectedSection.value === 'facts') return form.factualAnalysis.trim();
+  if (selectedSection.value === 'solutions') return form.constructiveSuggestions.trim();
+  return '';
+};
+
+// Обновление текущего поля
+const updateCurrentField = (newText) => {
+  if (selectedSection.value === 'emotions') form.emotionalRelease = newText;
+  else if (selectedSection.value === 'facts') form.factualAnalysis = newText;
+  else if (selectedSection.value === 'solutions') form.constructiveSuggestions = newText;
+};
+
+// Алгоритмы гуманизации
+const synonymDatabase = {
+  'разочарован': ['недоволен', 'расстроен', 'огорчён', 'возмущён'],
+  'разочарована': ['недовольна', 'расстроена', 'огорчена', 'возмущена'],
+  'сервис': ['обслуживание', 'работа персонала', 'качество услуг'],
+  'ожидания': ['надежды', 'предположения', 'расчёты'],
+  'качество': ['уровень', 'исполнение', 'состояние'],
+  'персонал': ['сотрудники', 'работники', 'команда']
+};
+
+const genderSpecificWords = {
+  female: {
+    'разочарован': 'разочарована',
+    'недоволен': 'недовольна', 
+    'расстроен': 'расстроена',
+    'огорчён': 'огорчена',
+    'возмущён': 'возмущена',
+    'удивлён': 'удивлена',
+    'был': 'была',
+    'заказал': 'заказала',
+    'ожидал': 'ожидала',
+    'думал': 'думала',
+    'хотел': 'хотела',
+    'пришёл': 'пришла'
+  },
+  male: {
+    'разочарована': 'разочарован',
+    'недовольна': 'недоволен',
+    'расстроена': 'расстроен',
+    'огорчена': 'огорчён',
+    'возмущена': 'возмущён',
+    'удивлена': 'удивлён',
+    'была': 'был',
+    'заказала': 'заказал',
+    'ожидала': 'ожидал',
+    'думала': 'думал',
+    'хотела': 'хотел',
+    'пришла': 'пришёл'
+  }
+};
+
+const contextualDetails = {
+  emotions: {
+    personalReactions: ['честно говоря', 'если честно', 'вообще-то', 'кстати'],
+    intensifiers: ['очень', 'довольно', 'крайне', 'весьма']
+  },
+  facts: {
+    peopleReferences: ['бариста', 'официантка', 'девушка на кассе', 'парень за баром'],
+    locations: ['у окна', 'в углу', 'за первым столиком', 'возле входа']
+  },
+  solutions: {
+    implementationWords: ['можно было бы', 'стоило бы', 'лучше бы'],
+    benefitPhrases: ['это помогло бы', 'так было бы удобнее', 'клиентам было бы приятнее']
+  }
+};
+
+function countWordRepetitions(text) {
+  const words = text.toLowerCase().split(/\s+/);
+  const frequency = {};
+  words.forEach(word => {
+    frequency[word] = (frequency[word] || 0) + 1;
+  });
+  return Object.values(frequency).filter(count => count > 2).length;
+}
+
+function replaceRepeatedWords(text, synonyms) {
+  let result = text;
+  const usedWords = new Set();
+  
+  Object.keys(synonyms).forEach(word => {
+    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+    const matches = text.match(regex);
+    
+    if (matches && matches.length > 1) {
+      let replacementIndex = 0;
+      result = result.replace(regex, (match) => {
+        if (usedWords.has(match.toLowerCase())) {
+          const replacement = synonyms[word][replacementIndex % synonyms[word].length];
+          replacementIndex++;
+          return replacement;
+        } else {
+          usedWords.add(match.toLowerCase());
+          return match;
+        }
+      });
+    }
+  });
+  
+  return result;
+}
+
+function applyGenderCorrection(text, gender) {
+  let result = text;
+  const corrections = genderSpecificWords[gender] || {};
+  
+  Object.keys(corrections).forEach(word => {
+    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+    result = result.replace(regex, corrections[word]);
+  });
+  
+  return result;
+}
+
+function addHumanDetails(text, section) {
+  const details = contextualDetails[section];
+  if (!details) return text;
+  
+  let result = text;
+  const sentences = result.split('. ');
+  
+  if (sentences.length > 1 && Math.random() > 0.5) {
+    // Добавляем личную реакцию в начало
+    if (details.personalReactions) {
+      const reaction = details.personalReactions[Math.floor(Math.random() * details.personalReactions.length)];
+      sentences[0] = reaction + ', ' + sentences[0].toLowerCase();
+    }
+  }
+  
+  return sentences.join('. ');
+}
+
+function restructureSentences(text) {
+  const sentences = text.split('. ');
+  const starters = ['К сожалению,', 'Правда в том, что', 'Дело в том, что'];
+  const conjunctions = ['потому что', 'так как', 'ведь'];
+  
+  return sentences.map((sentence, index) => {
+    if (index === 0 && Math.random() > 0.7) {
+      const starter = starters[Math.floor(Math.random() * starters.length)];
+      return starter + ' ' + sentence.toLowerCase();
+    }
+    
+    if (index > 0 && Math.random() > 0.6) {
+      const conjunction = conjunctions[Math.floor(Math.random() * conjunctions.length)];
+      return sentence + ', ' + conjunction + ' это важно';
+    }
+    
+    return sentence;
+  }).join('. ');
+}
+
+// Основная функция гуманизации
+async function humanizeCurrentText() {
+  const currentText = getCurrentSectionText();
+  if (!currentText) return;
+  
+  humanizeStatus.value = 'processing';
+  
+  try {
+    let humanizedText = currentText;
+    
+    // 1. Устраняем повторы
+    humanizedText = replaceRepeatedWords(humanizedText, synonymDatabase);
+    
+    // 2. Применяем гендерную коррекцию
+    humanizedText = applyGenderCorrection(humanizedText, selectedGender.value);
+    
+    // 3. Добавляем человеческие детали
+    humanizedText = addHumanDetails(humanizedText, selectedSection.value);
+    
+    // 4. Реструктурируем предложения
+    humanizedText = restructureSentences(humanizedText);
+    
+    // 5. Делаем первую букву заглавной
+    if (humanizedText) {
+      humanizedText = humanizedText.charAt(0).toUpperCase() + humanizedText.slice(1);
+    }
+    
+    // Имитируем обработку
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // Обновляем поле
+    updateCurrentField(humanizedText);
+    
+    humanizeStatus.value = 'completed';
+    
+    // Сброс статуса через 3 секунды
+    setTimeout(() => {
+      humanizeStatus.value = 'idle';
+    }, 3000);
+    
+  } catch (error) {
+    console.error('Ошибка гуманизации:', error);
+    humanizeStatus.value = 'idle';
+  }
+}
 
 // Функция копирования текста текущей секции
 const copyCurrentSectionText = async () => {
@@ -278,7 +533,7 @@ const copyCurrentSectionText = async () => {
   }
 };
 
-// ОБНОВЛЕННАЯ 3-УРОВНЕВАЯ система подсказок из файла
+// ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок из файла
 const suggestions = reactive({
   emotions: {
     // УРОВЕНЬ 1: Основные эмоции
@@ -570,6 +825,62 @@ onUnmounted(() => {
   border-color: #A972FF;
 }
 
+/* Переключатель пола */
+.signal-gender-switch {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.signal-gender-container {
+  display: flex;
+  gap: 12px;
+}
+
+.signal-gender-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.signal-gender-female {
+  background: rgba(255, 105, 180, 0.1);
+  color: #ff69b4;
+  border-color: rgba(255, 105, 180, 0.3);
+}
+
+.signal-gender-female.is-active {
+  background: #ff69b4;
+  color: #fff;
+  border-color: #ff69b4;
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.4);
+}
+
+.signal-gender-male {
+  background: rgba(135, 206, 235, 0.1);
+  color: #87ceeb;
+  border-color: rgba(135, 206, 235, 0.3);
+}
+
+.signal-gender-male.is-active {
+  background: #87ceeb;
+  color: #fff;
+  border-color: #87ceeb;
+  box-shadow: 0 0 20px rgba(135, 206, 235, 0.4);
+}
+
+.signal-gender-icon {
+  font-size: 22px;
+}
+
 .signal-demo__form-container {
   background-color: #1E1E20;
   border-radius: 24px;
@@ -718,6 +1029,59 @@ textarea:focus {
 .signal-example-hint b {
   color: #aaa;
   font-weight: 600;
+}
+
+/* КНОПКА ГУМАНИЗАЦИИ */
+.signal-humanize-button-container {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.signal-liquid-humanize-btn {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-radius: 18px;
+  border: 2px solid #444;
+  background: #2a2a2e;
+  color: #888;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: var(--signal-font-sans);
+  white-space: nowrap;
+}
+
+.signal-liquid-humanize-btn:not(:disabled):hover {
+  border-color: #666;
+  color: #bbb;
+  background: #333;
+}
+
+.signal-liquid-humanize-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.signal-humanize-icon {
+  position: relative;
+  z-index: 3;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.signal-liquid-humanize-text {
+  position: relative;
+  z-index: 3;
+  font-size: 15px;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ ВНИЗУ - ВСЕГДА ВИДНА */
@@ -963,6 +1327,27 @@ textarea:focus {
   .signal-example-hint {
     line-height: 1.1;
   }
+  .signal-gender-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .signal-gender-icon {
+    font-size: 20px;
+  }
+  .signal-humanize-button-container {
+    margin-top: 1.5rem;
+  }
+  .signal-liquid-humanize-btn {
+    height: 48px;
+    gap: 10px;
+  }
+  .signal-humanize-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .signal-liquid-humanize-text {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -979,6 +1364,24 @@ textarea:focus {
   }
   .signal-example-hint {
     line-height: 1.05;
+  }
+  .signal-gender-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .signal-gender-icon {
+    font-size: 18px;
+  }
+  .signal-liquid-humanize-btn {
+    height: 46px;
+    gap: 8px;
+  }
+  .signal-humanize-icon {
+    width: 15px;
+    height: 15px;
+  }
+  .signal-liquid-humanize-text {
+    font-size: 13px;
   }
 }
 </style>
