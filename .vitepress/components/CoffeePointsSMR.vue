@@ -299,7 +299,7 @@ watch(showBranchList, (newValue) => {
               </button>
               <span class="signal2-static-prompt">Поделитесь:</span>
               <div class="signal2-rotating-text-container">
-                <span :class="['signal2-rotating-text', { signal2-show: showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
+                <span :class="['signal2-rotating-text', { 'signal2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
               </div>
             </div>
 
@@ -382,6 +382,7 @@ watch(showBranchList, (newValue) => {
   display: flex;
   gap: 8px;
   margin-bottom: 18px;
+  flex-wrap: wrap;
 }
 .signal2-switcher {
   border-radius: 10px;
