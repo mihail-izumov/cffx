@@ -169,7 +169,7 @@
           
           <span class="signal-liquid-copy-text">
             {{ 
-              !hasAnyText ? 'Введите текст для копирования' :
+              !hasAnyText ? 'Скопировать' :
               copyStatus.main === 'copied' ? 'Скопировано' : 
               copyStatus.main === 'copying' ? 'Копирование...' : 
               'Скопировать' 
