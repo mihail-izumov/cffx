@@ -33,7 +33,7 @@
           <textarea 
             v-model="form.emotionalRelease" 
             @focus="startRotation(1)" 
-            rows="3" 
+            :rows="isMobile ? 5 : 3"
             placeholder="Разочарован ожиданиями..." 
             required>
           </textarea>
@@ -75,7 +75,7 @@
           <textarea 
             v-model="form.factualAnalysis" 
             @focus="startRotation(2)" 
-            rows="3" 
+            :rows="isMobile ? 5 : 3"
             placeholder="Опишите факты: что, когда и где произошло..." 
             required>
           </textarea>
@@ -117,7 +117,7 @@
           <textarea 
             v-model="form.constructiveSuggestions" 
             @focus="startRotation(3)" 
-            rows="3" 
+            :rows="isMobile ? 5 : 3"
             placeholder="Предложите, как это можно исправить..." 
             required>
           </textarea>
@@ -182,12 +182,23 @@
 </template>
 
 <script setup>
-import { reactive, ref, onUnmounted, computed } from 'vue';
+import { reactive, ref, onUnmounted, computed, onMounted } from 'vue';
 
 const form = reactive({ 
   emotionalRelease: '',
   factualAnalysis: '',
   constructiveSuggestions: ''
+});
+
+// Определение мобильного устройства
+const isMobile = ref(false);
+
+onMounted(() => {
+  const checkMobile = () => {
+    isMobile.value = window.innerWidth <= 768;
+  };
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
 });
 
 // Состояние кнопок копирования
@@ -588,8 +599,8 @@ onUnmounted(() => {
 }
 
 .signal-rotating-phrase-container {
-  height: 52px;
-  margin-bottom: 0.75rem;
+  height: 60px;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: flex-start;
   overflow: hidden;
@@ -696,7 +707,7 @@ textarea:focus {
   font-size: 0.8rem;
   color: #777;
   margin: 0.5rem 0 0 0.25rem;
-  line-height: 1.2; /* Уменьшено с обычного 1.4-1.5 до 1.2 для более плотного расположения строк */
+  line-height: 1.15;
 }
 
 .signal-example-hint b {
@@ -909,7 +920,7 @@ textarea:focus {
     padding: 1.5rem;
   }
   .signal-rotating-phrase-container {
-    height: 65px;
+    height: 75px;
   }
   .signal-question-label {
     font-size: 0.95rem;
@@ -945,7 +956,7 @@ textarea:focus {
     font-size: 15px;
   }
   .signal-example-hint {
-    line-height: 1.1; /* Еще более плотно на мобильных */
+    line-height: 1.1;
   }
 }
 
@@ -962,7 +973,7 @@ textarea:focus {
     font-size: 14px;
   }
   .signal-example-hint {
-    line-height: 1.05; /* Минимальное межстрочное расстояние на очень маленьких экранах */
+    line-height: 1.05;
   }
 }
 </style>
