@@ -960,15 +960,15 @@ watch(showBranchList, (newValue) => {
   background: #1e1e20;
   border-radius: 16px;
   width: 650px;
-  height: 680px; /* Фиксированная высота */
+  height: 90vh; /* Адаптивная высота - 90% от высоты экрана */
   max-width: 95vw;
-  max-height: 95vh;
+  max-height: 90vh;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
   color: white;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Предотвращаем переполнение */
+  overflow: hidden;
 }
 
 /* Скроллируемая область для контента */
