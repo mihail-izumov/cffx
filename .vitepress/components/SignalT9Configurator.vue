@@ -27,7 +27,7 @@
           
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
-              <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
+              <p :key="currentQuestion1" class="signal-question-label" ref="questionRef1">{{ currentQuestion1 }}</p>
             </transition>
           </div>
           <textarea 
@@ -69,7 +69,7 @@
           
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
-              <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
+              <p :key="currentQuestion2" class="signal-question-label" ref="questionRef2">{{ currentQuestion2 }}</p>
             </transition>
           </div>
           <textarea 
@@ -111,7 +111,7 @@
           
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
-              <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
+              <p :key="currentQuestion3" class="signal-question-label" ref="questionRef3">{{ currentQuestion3 }}</p>
             </transition>
           </div>
           <textarea 
@@ -182,7 +182,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, onUnmounted, computed, onMounted } from 'vue';
+import { reactive, ref, onUnmounted, computed, onMounted, nextTick } from 'vue';
 
 const form = reactive({ 
   emotionalRelease: '',
@@ -192,6 +192,11 @@ const form = reactive({
 
 // Определение мобильного устройства
 const isMobile = ref(false);
+
+// Refs для элементов вопросов
+const questionRef1 = ref(null);
+const questionRef2 = ref(null);
+const questionRef3 = ref(null);
 
 onMounted(() => {
   const checkMobile = () => {
@@ -599,8 +604,8 @@ onUnmounted(() => {
 }
 
 .signal-rotating-phrase-container {
-  height: 60px;
-  margin-bottom: 0.5rem;
+  min-height: 1.3em;
+  margin-bottom: 0.6rem;
   display: flex;
   align-items: flex-start;
   overflow: hidden;
@@ -920,7 +925,7 @@ textarea:focus {
     padding: 1.5rem;
   }
   .signal-rotating-phrase-container {
-    height: 75px;
+    min-height: 2.6em;
   }
   .signal-question-label {
     font-size: 0.95rem;
