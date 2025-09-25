@@ -77,6 +77,7 @@ import DialogsT9 from '../components/DialogsT9.vue'
 import DialogsTestT9 from '../components/DialogsTestT9.vue'
 import SignalT9Configurator from '../components/SignalT9Configurator.vue'
 import SignalModalButton from '../components/SignalModalButton.vue'
+import CoffeePointsSMR from '../components/CoffeePointsSMR.vue'
 
 export default {
   extends: DefaultTheme,
@@ -160,5 +161,6 @@ export default {
     app.component('DialogsTestT9', DialogsTestT9)
     app.component('SignalT9Configurator', SignalT9Configurator)
     app.component('SignalModalButton', SignalModalButton)
+    app.component('CoffeePointsSMR', CoffeePointsSMR)
   },
 }
