@@ -21,22 +21,16 @@
     <!-- Переключатель пола -->
     <div class="signal-gender-switch">
       <div class="signal-gender-container">
-        <button
+        <div 
           class="signal-gender-btn signal-gender-female"
           :class="{ 'is-active': selectedGender === 'female' }"
           @click="selectedGender = 'female'"
-          aria-label="Женский"
-        >
-          <div class="signal-gender-icon">♀</div>
-        </button>
-        <button
+        ></div>
+        <div 
           class="signal-gender-btn signal-gender-male"
           :class="{ 'is-active': selectedGender === 'male' }"
           @click="selectedGender = 'male'"
-          aria-label="Мужской"
-        >
-          <div class="signal-gender-icon">♂</div>
-        </button>
+        ></div>
       </div>
     </div>
 
@@ -168,38 +162,52 @@
         </div>
       </div>
 
-      <!-- КНОПКА УПРОСТИТЬ -->
-      <div class="signal-humanize-button-container">
-        <button 
-          class="signal-liquid-humanize-btn"
-          @click="hasAnyText ? humanizeCurrentText() : null"
-          :disabled="humanizeStatus === 'processing' || !hasAnyText"
-        >
-          <!-- SVG иконка гуманизации -->
-          <svg class="signal-humanize-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="8" r="2" stroke="currentColor" stroke-width="2"/>
-            <path d="M12 14c-3.5 0-6.5 2-6.5 4.5v1.5h13v-1.5c0-2.5-3-4.5-6.5-4.5z" stroke="currentColor" stroke-width="2" fill="none"/>
-            <path v-if="humanizeStatus === 'completed'" d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
-          </svg>
+      <!-- Секция "Итого" -->
+      <div v-if="selectedSection === 'summary'" class="signal-form-section">
+        <div class="signal-question-block" style="--accent-color: #FF6B6B;">
+          <p class="signal-direction-label">Итоговый отзыв</p>
           
-          <span class="signal-liquid-humanize-text">
-            {{ 
-              !hasAnyText ? 'Упростить' :
-              hasMultipleFields ? (
-                humanizeStatus === 'completed' ? 'Объединено и упрощено' : 
-                humanizeStatus === 'processing' ? 'Объединение и упрощение...' : 
-                'Объединить и упростить'
-              ) : (
-                humanizeStatus === 'completed' ? 'Упрощено' : 
-                humanizeStatus === 'processing' ? 'Упрощение...' : 
-                'Упростить'
-              )
-            }}
-          </span>
-        </button>
+          <div class="signal-rotating-phrase-container">
+            <p class="signal-question-label">Готовый отзыв для публикации</p>
+          </div>
+          <textarea 
+            v-model="form.summaryText" 
+            :rows="isMobile ? 8 : 6"
+            placeholder="Здесь появится готовый отзыв..." 
+            readonly>
+          </textarea>
+          
+          <p class="signal-example-hint">Отзыв будет составлен из заполненных вкладок с учетом выбранного пола</p>
+        </div>
+
+        <!-- КНОПКА СУММИРОВАТЬ - только в секции Итого -->
+        <div class="signal-humanize-button-container">
+          <button 
+            class="signal-liquid-humanize-btn"
+            @click="hasAnyText ? summarizeAllContent() : null"
+            :disabled="humanizeStatus === 'processing' || !hasAnyText"
+          >
+            <!-- SVG иконка суммирования -->
+            <svg class="signal-humanize-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 12c.552 0 1-.448 1-1s-.448-1-1-1-1 .448-1 1 .448 1 1 1z" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="M3 12c.552 0 1-.448 1-1s-.448-1-1-1-1 .448-1 1 .448 1 1 1z" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="M12 3c.552 0 1-.448 1-1s-.448-1-1-1-1 .448-1 1 .448 1 1 1z" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+            
+            <span class="signal-liquid-humanize-text">
+              {{ 
+                !hasAnyText ? 'Суммировать' :
+                humanizeStatus === 'completed' ? 'Готово' : 
+                humanizeStatus === 'processing' ? 'Суммирование...' : 
+                'Суммировать отзыв'
+              }}
+            </span>
+          </button>
+        </div>
       </div>
 
-      <!-- БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ ВНИЗУ - ВСЕГДА ВИДНА -->
+      <!-- КНОПКА КОПИРОВАНИЯ - всегда видна для всех секций -->
       <div class="signal-copy-button-container">
         <button 
           class="signal-liquid-copy-btn signal-main-copy"
@@ -207,13 +215,14 @@
             selectedSection === 'emotions' ? 'signal-emotion-copy' : '',
             selectedSection === 'facts' ? 'signal-fact-copy' : '',
             selectedSection === 'solutions' ? 'signal-solution-copy' : '',
+            selectedSection === 'summary' ? 'signal-summary-copy' : '',
             !hasAnyText ? 'signal-copy-disabled' : ''
           ]"
           @click="hasAnyText ? copyCurrentSectionText() : null"
           :disabled="copyStatus.main === 'copying' || !hasAnyText"
         >
           <!-- SVG иконка буфера обмена -->
-          <svg class="signal-copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <svg class="signal-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
             <rect x="8" y="2" width="8" height="4" rx="1" ry="1" stroke="currentColor" stroke-width="2" fill="none"/>
             <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" stroke="currentColor" stroke-width="2" fill="none"/>
             <path v-if="copyStatus.main === 'copied'" d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
@@ -240,7 +249,8 @@ import { reactive, ref, onUnmounted, computed, onMounted, nextTick } from 'vue';
 const form = reactive({ 
   emotionalRelease: '',
   factualAnalysis: '',
-  constructiveSuggestions: ''
+  constructiveSuggestions: '',
+  summaryText: ''
 });
 
 // Определение мобильного устройства
@@ -254,7 +264,7 @@ const questionRef3 = ref(null);
 // Пол пользователя
 const selectedGender = ref('female');
 
-// Состояние кнопки гуманизации
+// Состояние кнопки суммирования
 const humanizeStatus = ref('idle'); // 'idle', 'processing', 'completed'
 
 onMounted(() => {
@@ -273,18 +283,22 @@ const copyStatus = reactive({
 const sections = [
   { id: 'emotions', title: 'Эмоции' },
   { id: 'facts', title: 'Факты' },
-  { id: 'solutions', title: 'Решение' }
+  { id: 'solutions', title: 'Решение' },
+  { id: 'summary', title: 'Итого' }
 ];
 
 const selectedSection = ref('emotions');
 const isActive = (id) => id === selectedSection.value;
 
-// Проверяем, есть ли текст в любом из полей
+// Проверяем, есть ли текст в любом из полей (кроме итогового)
 const hasAnyText = computed(() => {
+  if (selectedSection.value === 'summary') {
+    return form.summaryText.trim();
+  }
   return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
 });
 
-// Проверяем, заполнено ли больше одного поля
+// Проверяем, заполнено ли больше одного поля для суммирования
 const hasMultipleFields = computed(() => {
   const fieldsCount = [
     form.emotionalRelease.trim(),
@@ -295,98 +309,16 @@ const hasMultipleFields = computed(() => {
   return fieldsCount > 1;
 });
 
-// Переходные фразы для суммирования
-const contextualTransitions = {
-  emotionToFact: [
-    '. Конкретно произошло следующее: ',
-    '. Дело в том, что ',
-    '. А именно: '
-  ],
-  factToSolution: [
-    '. Поэтому считаю, что можно ',
-    '. Чтобы избежать этого, стоило бы ',
-    '. Для решения проблемы лучше '
-  ],
-  emotionToSolution: [
-    '. Чтобы такого не повторялось, ',
-    '. Для улучшения ситуации ',
-    '. Решением могло бы стать '
-  ]
-};
-
-// Улучшенная функция суммирования с умными переходами
-const smartSummarizeAllFields = () => {
-  const emotionalText = form.emotionalRelease.trim();
-  const factualText = form.factualAnalysis.trim();
-  const solutionsText = form.constructiveSuggestions.trim();
-  
-  if (emotionalText && factualText && solutionsText) {
-    // Все три поля заполнены
-    const transition1 = contextualTransitions.emotionToFact[
-      Math.floor(Math.random() * contextualTransitions.emotionToFact.length)
-    ];
-    const transition2 = contextualTransitions.factToSolution[
-      Math.floor(Math.random() * contextualTransitions.factToSolution.length)
-    ];
-    
-    return `${emotionalText}${transition1.toLowerCase()}${factualText}${transition2.toLowerCase()}${solutionsText}`;
-    
-  } else if (emotionalText && factualText) {
-    // Эмоции + факты
-    const transition = contextualTransitions.emotionToFact[
-      Math.floor(Math.random() * contextualTransitions.emotionToFact.length)
-    ];
-    return `${emotionalText}${transition.toLowerCase()}${factualText}`;
-    
-  } else if (emotionalText && solutionsText) {
-    // Эмоции + решения
-    const transition = contextualTransitions.emotionToSolution[
-      Math.floor(Math.random() * contextualTransitions.emotionToSolution.length)
-    ];
-    return `${emotionalText}${transition.toLowerCase()}${solutionsText}`;
-    
-  } else if (factualText && solutionsText) {
-    // Факты + решения  
-    const transition = contextualTransitions.factToSolution[
-      Math.floor(Math.random() * contextualTransitions.factToSolution.length)
-    ];
-    return `${factualText}${transition.toLowerCase()}${solutionsText}`;
-    
-  } else {
-    // Только одно поле заполнено
-    return emotionalText || factualText || solutionsText || '';
-  }
-};
-
-// Получение текущего текста с возможностью суммирования
-const getCurrentSectionText = (summarizeAll = false) => {
-  if (summarizeAll) {
-    return smartSummarizeAllFields();
-  }
-  
+// Получение текущего текста
+const getCurrentSectionText = () => {
   if (selectedSection.value === 'emotions') return form.emotionalRelease.trim();
   if (selectedSection.value === 'facts') return form.factualAnalysis.trim();  
   if (selectedSection.value === 'solutions') return form.constructiveSuggestions.trim();
+  if (selectedSection.value === 'summary') return form.summaryText.trim();
   return '';
 };
 
-// Обновление текущего поля
-const updateCurrentField = (newText) => {
-  if (selectedSection.value === 'emotions') form.emotionalRelease = newText;
-  else if (selectedSection.value === 'facts') form.factualAnalysis = newText;
-  else if (selectedSection.value === 'solutions') form.constructiveSuggestions = newText;
-};
-
-// Алгоритмы гуманизации
-const synonymDatabase = {
-  'разочарован': ['недоволен', 'расстроен', 'огорчён', 'возмущён'],
-  'разочарована': ['недовольна', 'расстроена', 'огорчена', 'возмущена'],
-  'сервис': ['обслуживание', 'работа персонала', 'качество услуг'],
-  'ожидания': ['надежды', 'предположения', 'расчёты'],
-  'качество': ['уровень', 'исполнение', 'состояние'],
-  'персонал': ['сотрудники', 'работники', 'команда']
-};
-
+// Гендерная коррекция слов
 const genderSpecificWords = {
   female: {
     'разочарован': 'разочарована',
@@ -400,7 +332,13 @@ const genderSpecificWords = {
     'ожидал': 'ожидала',
     'думал': 'думала',
     'хотел': 'хотела',
-    'пришёл': 'пришла'
+    'пришёл': 'пришла',
+    'сел': 'села',
+    'поел': 'поела',  
+    'поехал': 'поехала',
+    'остался': 'осталась',
+    'получил': 'получила',
+    'попросил': 'попросила'
   },
   male: {
     'разочарована': 'разочарован',
@@ -414,60 +352,17 @@ const genderSpecificWords = {
     'ожидала': 'ожидал',
     'думала': 'думал',
     'хотела': 'хотел',
-    'пришла': 'пришёл'
+    'пришла': 'пришёл',
+    'села': 'сел',
+    'поела': 'поел',
+    'поехала': 'поехал',
+    'осталась': 'остался',
+    'получила': 'получил',
+    'попросила': 'попросил'
   }
 };
 
-const contextualDetails = {
-  emotions: {
-    personalReactions: ['честно говоря', 'если честно', 'вообще-то', 'кстати'],
-    intensifiers: ['очень', 'довольно', 'крайне', 'весьма']
-  },
-  facts: {
-    peopleReferences: ['бариста', 'официантка', 'девушка на кассе', 'парень за баром'],
-    locations: ['у окна', 'в углу', 'за первым столиком', 'возле входа']
-  },
-  solutions: {
-    implementationWords: ['можно было бы', 'стоило бы', 'лучше бы'],
-    benefitPhrases: ['это помогло бы', 'так было бы удобнее', 'клиентам было бы приятнее']
-  }
-};
-
-function countWordRepetitions(text) {
-  const words = text.toLowerCase().split(/\s+/);
-  const frequency = {};
-  words.forEach(word => {
-    frequency[word] = (frequency[word] || 0) + 1;
-  });
-  return Object.values(frequency).filter(count => count > 2).length;
-}
-
-function replaceRepeatedWords(text, synonyms) {
-  let result = text;
-  const usedWords = new Set();
-  
-  Object.keys(synonyms).forEach(word => {
-    const regex = new RegExp(`\\b${word}\\b`, 'gi');
-    const matches = text.match(regex);
-    
-    if (matches && matches.length > 1) {
-      let replacementIndex = 0;
-      result = result.replace(regex, (match) => {
-        if (usedWords.has(match.toLowerCase())) {
-          const replacement = synonyms[word][replacementIndex % synonyms[word].length];
-          replacementIndex++;
-          return replacement;
-        } else {
-          usedWords.add(match.toLowerCase());
-          return match;
-        }
-      });
-    }
-  });
-  
-  return result;
-}
-
+// Применение гендерной коррекции
 function applyGenderCorrection(text, gender) {
   let result = text;
   const corrections = genderSpecificWords[gender] || {};
@@ -480,107 +375,81 @@ function applyGenderCorrection(text, gender) {
   return result;
 }
 
-function addHumanDetails(text, section) {
-  const details = contextualDetails[section];
-  if (!details) return text;
+// Функция очистки и обрезания до 7 предложений
+function cleanAndLimitText(text) {
+  if (!text) return '';
   
-  let result = text;
-  const sentences = result.split('. ');
+  // Разбивает на предложения
+  let sentences = text.split(/\.\s+/);
   
-  if (sentences.length > 1 && Math.random() > 0.5) {
-    // Добавляем личную реакцию в начало
-    if (details.personalReactions) {
-      const reaction = details.personalReactions[Math.floor(Math.random() * details.personalReactions.length)];
-      sentences[0] = reaction + ', ' + sentences[0].toLowerCase();
-    }
+  // Удаляем пустые предложения и обрезки
+  sentences = sentences.filter(sentence => {
+    const cleaned = sentence.trim();
+    return cleaned.length > 10 && cleaned.includes(' '); // Минимум 10 символов и содержит пробел
+  });
+  
+  // Ограничиваем до 7 предложений
+  sentences = sentences.slice(0, 7);
+  
+  // Убираем повторяющиеся фразы "ведь это важно", "так как это важно", "потому что это важно"
+  sentences = sentences.map(sentence => {
+    return sentence
+      .replace(/,?\s*(ведь|так как|потому что)\s+это\s+важно/gi, '')
+      .replace(/,?\s*дело в том, что\s*/gi, '. ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }).filter(sentence => sentence.length > 5);
+  
+  return sentences.join('. ') + (sentences.length > 0 ? '.' : '');
+}
+
+// Улучшенная функция суммирования
+const smartSummarizeAllFields = () => {
+  const emotionalText = form.emotionalRelease.trim();
+  const factualText = form.factualAnalysis.trim();
+  const solutionsText = form.constructiveSuggestions.trim();
+  
+  const parts = [];
+  
+  if (emotionalText) parts.push(emotionalText);
+  if (factualText) parts.push(factualText);
+  if (solutionsText) parts.push(solutionsText);
+  
+  if (parts.length === 0) return '';
+  
+  // Простое соединение с точками
+  let result = parts.join('. ');
+  
+  // Применяем гендерную коррекцию
+  result = applyGenderCorrection(result, selectedGender.value);
+  
+  // Очищаем и ограничиваем
+  result = cleanAndLimitText(result);
+  
+  // Делаем первую букву заглавной
+  if (result) {
+    result = result.charAt(0).toUpperCase() + result.slice(1);
   }
   
-  return sentences.join('. ');
-}
+  return result;
+};
 
-// Функция добавления деталей для суммированного текста
-function addHumanDetailsForSummary(text) {
-  const allDetails = {
-    personalReactions: ['честно говоря', 'если честно', 'вообще-то', 'кстати', 'между прочим'],
-    intensifiers: ['очень', 'довольно', 'крайне', 'весьма', 'действительно'],
-    peopleReferences: ['бариста', 'официантка', 'девушка на кассе', 'парень за баром', 'персонал'],
-    locations: ['у окна', 'в углу', 'за первым столиком', 'возле входа', 'в центре зала'],
-    implementationWords: ['можно было бы', 'стоило бы', 'лучше бы', 'неплохо было бы'],
-    benefitPhrases: ['это помогло бы', 'так было бы удобнее', 'клиентам было бы приятнее', 'все остались бы довольны']
-  };
-  
-  let result = text;
-  const sentences = result.split('. ');
-  
-  // Добавляем личную реакцию в начало
-  if (sentences.length > 0 && Math.random() > 0.4) {
-    const reaction = allDetails.personalReactions[Math.floor(Math.random() * allDetails.personalReactions.length)];
-    sentences[0] = reaction + ', ' + sentences[0].toLowerCase();
-  }
-  
-  return sentences.join('. ');
-}
-
-function restructureSentences(text) {
-  const sentences = text.split('. ');
-  const starters = ['К сожалению,', 'Правда в том, что', 'Дело в том, что'];
-  const conjunctions = ['потому что', 'так как', 'ведь'];
-  
-  return sentences.map((sentence, index) => {
-    if (index === 0 && Math.random() > 0.7) {
-      const starter = starters[Math.floor(Math.random() * starters.length)];
-      return starter + ' ' + sentence.toLowerCase();
-    }
-    
-    if (index > 0 && Math.random() > 0.6) {
-      const conjunction = conjunctions[Math.floor(Math.random() * conjunctions.length)];
-      return sentence + ', ' + conjunction + ' это важно';
-    }
-    
-    return sentence;
-  }).join('. ');
-}
-
-// Полностью обновленная основная функция гуманизации
-async function humanizeCurrentText() {
-  // Определяем, работаем с одним полем или суммируем все
-  const shouldSummarize = hasMultipleFields.value;
-  const currentText = shouldSummarize ? smartSummarizeAllFields() : getCurrentSectionText();
-  
-  if (!currentText) return;
+// Основная функция суммирования
+async function summarizeAllContent() {
+  const hasContent = form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
+  if (!hasContent) return;
   
   humanizeStatus.value = 'processing';
   
   try {
-    let humanizedText = currentText;
-    
-    // 1. Устраняем повторы (особенно важно при суммировании)
-    humanizedText = replaceRepeatedWords(humanizedText, synonymDatabase);
-    
-    // 2. Применяем гендерную коррекцию
-    humanizedText = applyGenderCorrection(humanizedText, selectedGender.value);
-    
-    // 3. Добавляем человеческие детали (адаптируем под суммированный текст)
-    if (shouldSummarize) {
-      // Для суммированного текста добавляем детали с учетом всех секций
-      humanizedText = addHumanDetailsForSummary(humanizedText);
-    } else {
-      humanizedText = addHumanDetails(humanizedText, selectedSection.value);
-    }
-    
-    // 4. Реструктурируем предложения
-    humanizedText = restructureSentences(humanizedText);
-    
-    // 5. Делаем первую букву заглавной
-    if (humanizedText) {
-      humanizedText = humanizedText.charAt(0).toUpperCase() + humanizedText.slice(1);
-    }
-    
     // Имитируем обработку
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    // Обновляем текущее поле
-    updateCurrentField(humanizedText);
+    // Генерируем суммированный текст
+    const summarizedText = smartSummarizeAllFields();
+    
+    // Обновляем поле итогового отзыва
+    form.summaryText = summarizedText;
     
     humanizeStatus.value = 'completed';
     
@@ -590,7 +459,7 @@ async function humanizeCurrentText() {
     }, 3000);
     
   } catch (error) {
-    console.error('Ошибка гуманизации:', error);
+    console.error('Ошибка суммирования:', error);
     humanizeStatus.value = 'idle';
   }
 }
@@ -599,16 +468,7 @@ async function humanizeCurrentText() {
 const copyCurrentSectionText = async () => {
   if (!hasAnyText.value) return;
   
-  let textToCopy = '';
-  
-  if (selectedSection.value === 'emotions' && form.emotionalRelease.trim()) {
-    textToCopy = form.emotionalRelease.trim();
-  } else if (selectedSection.value === 'facts' && form.factualAnalysis.trim()) {
-    textToCopy = form.factualAnalysis.trim();
-  } else if (selectedSection.value === 'solutions' && form.constructiveSuggestions.trim()) {
-    textToCopy = form.constructiveSuggestions.trim();
-  }
-  
+  let textToCopy = getCurrentSectionText();
   if (!textToCopy) return;
   
   copyStatus.main = 'copying';
@@ -648,7 +508,7 @@ const copyCurrentSectionText = async () => {
   }
 };
 
-// ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок из файла [file:92]
+// ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок из файла
 const suggestions = reactive({
   emotions: {
     // УРОВЕНЬ 1: Основные эмоции
@@ -936,11 +796,18 @@ onUnmounted(() => {
   color: #FFB800;
 }
 
+.signal-demo__switch-btn.summary.is-active {
+  background: rgba(255, 107, 107, 0.14);
+  border-color: #FF6B6B;
+  font-weight: 700;
+  color: #FF6B6B;
+}
+
 .signal-demo__switch-btn:hover {
   border-color: #A972FF;
 }
 
-/* Переключатель пола */
+/* Переключатель пола - liquid bubble стиль */
 .signal-gender-switch {
   display: flex;
   justify-content: center;
@@ -949,51 +816,38 @@ onUnmounted(() => {
 
 .signal-gender-container {
   display: flex;
-  gap: 12px;
+  background: #2a2a2e;
+  border-radius: 20px;
+  padding: 4px;
+  border: 1px solid #444;
 }
 
 .signal-gender-btn {
-  width: 48px;
-  height: 48px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  border: 2px solid transparent;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: all 0.3s ease;
-  font-size: 20px;
-  font-weight: 600;
+  border: 2px solid transparent;
+  margin: 0 2px;
 }
 
 .signal-gender-female {
-  background: rgba(255, 105, 180, 0.1);
-  color: #ff69b4;
-  border-color: rgba(255, 105, 180, 0.3);
+  background: rgba(255, 105, 180, 0.3);
 }
 
 .signal-gender-female.is-active {
   background: #ff69b4;
-  color: #fff;
-  border-color: #ff69b4;
-  box-shadow: 0 0 20px rgba(255, 105, 180, 0.4);
+  box-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
 }
 
 .signal-gender-male {
-  background: rgba(135, 206, 235, 0.1);
-  color: #87ceeb;
-  border-color: rgba(135, 206, 235, 0.3);
+  background: rgba(135, 206, 235, 0.3);
 }
 
 .signal-gender-male.is-active {
   background: #87ceeb;
-  color: #fff;
-  border-color: #87ceeb;
-  box-shadow: 0 0 20px rgba(135, 206, 235, 0.4);
-}
-
-.signal-gender-icon {
-  font-size: 22px;
+  box-shadow: 0 0 12px rgba(135, 206, 235, 0.5);
 }
 
 .signal-demo__form-container {
@@ -1067,6 +921,12 @@ textarea:focus {
   border-color: var(--accent-color);
   background-color: #2a2a2e;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent);
+}
+
+textarea[readonly] {
+  background-color: #1a1a1c;
+  border-color: #333;
+  cursor: default;
 }
 
 ::placeholder { color: #666; }
@@ -1146,7 +1006,7 @@ textarea:focus {
   font-weight: 600;
 }
 
-/* КНОПКА ГУМАНИЗАЦИИ */
+/* КНОПКА СУММИРОВАНИЯ */
 .signal-humanize-button-container {
   margin-top: 2rem;
   margin-bottom: 1rem;
@@ -1284,23 +1144,6 @@ textarea:focus {
               #2a2a2e !important;
 }
 
-.signal-copy-disabled:hover::before {
-  filter: none !important;
-}
-
-.signal-copy-disabled:hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(102, 102, 102, 0.1) 0%, transparent 70%),
-              #2a2a2e !important;
-}
-
-.signal-copy-disabled:hover .signal-copy-icon {
-  transform: none !important;
-}
-
-.signal-copy-disabled:hover .signal-liquid-copy-text {
-  color: #666 !important;
-}
-
 /* Цветовые вариации для разных секций */
 .signal-emotion-copy:not(.signal-copy-disabled) {
   --accent-color: #A972FF;
@@ -1309,23 +1152,6 @@ textarea:focus {
 .signal-emotion-copy:not(.signal-copy-disabled) .signal-copy-icon,
 .signal-emotion-copy:not(.signal-copy-disabled) .signal-liquid-copy-text {
   color: #A972FF;
-}
-
-.signal-emotion-copy:not(.signal-copy-disabled):hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-emotion-copy:not(.signal-copy-disabled):hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(169, 114, 255, 0.2) 0%, rgba(169, 114, 255, 0.05) 100%),
-              #2a2a2e;
-}
-
-.signal-emotion-copy:not(.signal-copy-disabled):hover .signal-copy-icon {
-  transform: scale(1.2);
-}
-
-.signal-emotion-copy:not(.signal-copy-disabled):hover .signal-liquid-copy-text {
-  color: rgba(169, 114, 255, 0.9);
 }
 
 .signal-fact-copy:not(.signal-copy-disabled) {
@@ -1337,23 +1163,6 @@ textarea:focus {
   color: #3DDC84;
 }
 
-.signal-fact-copy:not(.signal-copy-disabled):hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-fact-copy:not(.signal-copy-disabled):hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(61, 220, 132, 0.2) 0%, rgba(61, 220, 132, 0.05) 100%),
-              #2a2a2e;
-}
-
-.signal-fact-copy:not(.signal-copy-disabled):hover .signal-copy-icon {
-  transform: scale(1.2);
-}
-
-.signal-fact-copy:not(.signal-copy-disabled):hover .signal-liquid-copy-text {
-  color: rgba(61, 220, 132, 0.9);
-}
-
 .signal-solution-copy:not(.signal-copy-disabled) {
   --accent-color: #FFB800;
 }
@@ -1363,40 +1172,37 @@ textarea:focus {
   color: #FFB800;
 }
 
+.signal-summary-copy:not(.signal-copy-disabled) {
+  --accent-color: #FF6B6B;
+}
+
+.signal-summary-copy:not(.signal-copy-disabled) .signal-copy-icon,
+.signal-summary-copy:not(.signal-copy-disabled) .signal-liquid-copy-text {
+  color: #FF6B6B;
+}
+
+/* Hover эффекты */
+.signal-emotion-copy:not(.signal-copy-disabled):hover::before {
+  filter: brightness(1.5) saturate(1.3);
+}
+
+.signal-fact-copy:not(.signal-copy-disabled):hover::before {
+  filter: brightness(1.5) saturate(1.3);
+}
+
 .signal-solution-copy:not(.signal-copy-disabled):hover::before {
   filter: brightness(1.5) saturate(1.3);
 }
 
-.signal-solution-copy:not(.signal-copy-disabled):hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(255, 184, 0, 0.2) 0%, rgba(255, 184, 0, 0.05) 100%),
-              #2a2a2e;
+.signal-summary-copy:not(.signal-copy-disabled):hover::before {
+  filter: brightness(1.5) saturate(1.3);
 }
 
-.signal-solution-copy:not(.signal-copy-disabled):hover .signal-copy-icon {
+.signal-emotion-copy:not(.signal-copy-disabled):hover .signal-copy-icon,
+.signal-fact-copy:not(.signal-copy-disabled):hover .signal-copy-icon,
+.signal-solution-copy:not(.signal-copy-disabled):hover .signal-copy-icon,
+.signal-summary-copy:not(.signal-copy-disabled):hover .signal-copy-icon {
   transform: scale(1.2);
-}
-
-.signal-solution-copy:not(.signal-copy-disabled):hover .signal-liquid-copy-text {
-  color: rgba(255, 184, 0, 0.9);
-}
-
-/* Состояние disabled для процесса копирования */
-.signal-liquid-copy-btn:disabled:not(.signal-copy-disabled) {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.signal-liquid-copy-btn:disabled:not(.signal-copy-disabled)::before {
-  filter: grayscale(1);
-}
-
-.signal-liquid-copy-btn:disabled:not(.signal-copy-disabled):hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 70%),
-              #2a2a2e;
-}
-
-.signal-liquid-copy-btn:disabled:not(.signal-copy-disabled):hover .signal-copy-icon {
-  transform: none;
 }
 
 @media (max-width: 768px) {
@@ -1433,8 +1239,8 @@ textarea:focus {
     gap: 10px;
   }
   .signal-copy-icon {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
   }
   .signal-liquid-copy-text {
     font-size: 15px;
@@ -1443,11 +1249,8 @@ textarea:focus {
     line-height: 1.1;
   }
   .signal-gender-btn {
-    width: 44px;
-    height: 44px;
-  }
-  .signal-gender-icon {
-    font-size: 20px;
+    width: 20px;
+    height: 20px;
   }
   .signal-humanize-button-container {
     margin-top: 1.5rem;
@@ -1457,8 +1260,8 @@ textarea:focus {
     gap: 10px;
   }
   .signal-humanize-icon {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
   }
   .signal-liquid-humanize-text {
     font-size: 14px;
@@ -1471,8 +1274,8 @@ textarea:focus {
     gap: 8px;
   }
   .signal-copy-icon {
-    width: 15px;
-    height: 15px;
+    width: 11px;
+    height: 11px;
   }
   .signal-liquid-copy-text {
     font-size: 14px;
@@ -1481,19 +1284,16 @@ textarea:focus {
     line-height: 1.05;
   }
   .signal-gender-btn {
-    width: 40px;
-    height: 40px;
-  }
-  .signal-gender-icon {
-    font-size: 18px;
+    width: 18px;
+    height: 18px;
   }
   .signal-liquid-humanize-btn {
     height: 46px;
     gap: 8px;
   }
   .signal-humanize-icon {
-    width: 15px;
-    height: 15px;
+    width: 11px;
+    height: 11px;
   }
   .signal-liquid-humanize-text {
     font-size: 13px;
