@@ -58,7 +58,7 @@
           <!-- Подсказки-баблы для эмоций -->
           <div class="signal-suggestions-container">
             <div 
-              v-for="suggestion in genderedSuggestions.emotions" 
+              v-for="suggestion in currentSuggestions.emotions" 
               :key="suggestion"
               class="signal-suggestion-bubble signal-emotion-bubble"
               @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
@@ -101,7 +101,7 @@
           <!-- Подсказки-баблы для деталей -->
           <div class="signal-suggestions-container">
             <div 
-              v-for="suggestion in genderedSuggestions.facts" 
+              v-for="suggestion in currentSuggestions.facts" 
               :key="suggestion"
               class="signal-suggestion-bubble signal-fact-bubble"
               @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
@@ -144,7 +144,7 @@
           <!-- Подсказки-баблы для решений -->
           <div class="signal-suggestions-container">
             <div 
-              v-for="suggestion in genderedSuggestions.solutions" 
+              v-for="suggestion in currentSuggestions.solutions" 
               :key="suggestion"
               class="signal-suggestion-bubble signal-solution-bubble"
               @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
@@ -248,7 +248,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, onUnmounted, computed, onMounted, nextTick, watch } from 'vue';
+import { reactive, ref, onUnmounted, computed, onMounted } from 'vue';
 
 const form = reactive({ 
   emotionalRelease: '',
@@ -273,13 +273,17 @@ const humanizeStatus = ref('idle'); // 'idle', 'processing', 'completed'
 
 // Функция сохранения в localStorage
 const saveToStorage = () => {
-  const dataToSave = {
-    form: { ...form },
-    selectedGender: selectedGender.value,
-    selectedSection: selectedSection.value,
-    selectedSuggestions: { ...selectedSuggestions }
-  };
-  localStorage.setItem('signalFormData', JSON.stringify(dataToSave));
+  try {
+    const dataToSave = {
+      form: { ...form },
+      selectedGender: selectedGender.value,
+      selectedSection: selectedSection.value,
+      selectedSuggestions: { ...selectedSuggestions }
+    };
+    localStorage.setItem('signalFormData', JSON.stringify(dataToSave));
+  } catch (error) {
+    console.error('Ошибка сохранения:', error);
+  }
 };
 
 // Функция загрузки из localStorage
@@ -315,11 +319,10 @@ onMounted(() => {
   
   // Загружаем данные при запуске
   loadFromStorage();
+  
+  // Инициализируем подсказки
+  updateSuggestionsForGender();
 });
-
-// Сохраняем при изменении пола
-watch(selectedGender, saveToStorage);
-watch(selectedSection, saveToStorage);
 
 // Состояние кнопок копирования
 const copyStatus = reactive({
@@ -347,17 +350,6 @@ const hasAnyText = computed(() => {
 // Проверяем, есть ли контент для суммирования 
 const hasContentToSummarize = computed(() => {
   return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
-});
-
-// Проверяем, заполнено ли больше одного поля для суммирования
-const hasMultipleFields = computed(() => {
-  const fieldsCount = [
-    form.emotionalRelease.trim(),
-    form.factualAnalysis.trim(), 
-    form.constructiveSuggestions.trim()
-  ].filter(text => text.length > 0).length;
-  
-  return fieldsCount > 1;
 });
 
 // Получение текущего текста
@@ -548,149 +540,68 @@ const copyCurrentSectionText = async () => {
   } catch (err) {
     console.error('Ошибка копирования:', err);
     copyStatus.main = 'idle';
-    
-    // Fallback для старых браузеров
-    try {
-      const textArea = document.createElement('textarea');
-      textArea.value = textToCopy;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-999999px';
-      textArea.style.top = '-999999px';
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      document.execCommand('copy');
-      textArea.remove();
-      
-      copyStatus.main = 'copied';
-      setTimeout(() => {
-        copyStatus.main = 'idle';
-      }, 2000);
-    } catch (fallbackError) {
-      console.error('Fallback копирование не удалось:', fallbackError);
-    }
   }
 };
 
-// ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок из файла - базовые (женские)
-const baseSuggestions = reactive({
+// Базовые подсказки (женские по умолчанию)
+const baseSuggestions = {
   emotions: {
-    // УРОВЕНЬ 1: Основные эмоции
     initial: ['расстроена', 'разочарована', 'недовольна', 'возмущена', 'удивлена'],
-    
-    // УРОВЕНЬ 2: Причины эмоций
     'расстроена': ['долго ждала', 'грязная посуда', 'холодный кофе', 'грубый персонал', 'забыли заказ'],
     'разочарована': ['качеством', 'сервисом', 'ожиданиями', 'атмосферой', 'чистотой'],
     'недовольна': ['обслуживанием', 'очередью', 'ошибкой в заказе', 'температурой блюд', 'упаковкой'],
     'возмущена': ['антисанитарией', 'хамством', 'обманом', 'некачественной едой', 'инородными предметами'],
-    'удивлена': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком', 'отношением'],
-    
-    // УРОВЕНЬ 3: Детали эмоциональных переживаний
-    'долго ждала': ['20 минут', '30 минут', 'более часа', 'без объяснений', 'видя пустую кофейню'],
-    'грязная посуда': ['следы помады', 'остатки еды', 'жирные пятна', 'засохший кофе', 'странный запах'],
-    'холодный кофе': ['едва теплый', 'совсем остыл', 'подали холодным', 'остыл пока ждала', 'температура комнатная'],
-    'грубый персонал': ['не поздоровались', 'хамили', 'игнорировали', 'были раздражены', 'повысили голос'],
-    'забыли заказ': ['через 40 минут', 'не записали', 'потеряли чек', 'не передали на кухню', 'сидела и ждала'],
-    'качеством': ['хуже чем обычно', 'не соответствует цене', 'испортилось за месяц', 'как в фастфуде', 'совсем не то'],
-    'сервисом': ['медленный', 'невнимательный', 'равнодушный', 'непрофессиональный', 'хаотичный'],
-    'ожиданиями': ['ждала большего', 'по отзывам лучше', 'раньше было вкуснее', 'не оправдал репутацию', 'переоценила место'],
-    'атмосферой': ['шумно и грязно', 'неуютно', 'холодно', 'плохая музыка', 'неприятные запахи'],
-    'чистотой': ['грязные столы', 'липкий пол', 'немытая посуда', 'пыль везде', 'антисанитария']
+    'удивлена': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком', 'отношением']
   },
-  
   facts: {
-    // УРОВЕНЬ 1: Основные категории проблем
     initial: ['ожидание', 'ошибка в заказе', 'качество блюд', 'чистота', 'персонал'],
-    
-    // УРОВЕНЬ 2: Детали проблем
     'ожидание': ['20 минут', '30 минут', 'более часа', 'забыли заказ', 'очередь не двигалась'],
     'ошибка в заказе': ['не тот напиток', 'не доложили позицию', 'неправильный соус', 'перепутали объём', 'другое молоко'],
     'качество блюд': ['холодный кофе', 'невкусная еда', 'недоваренный рис', 'комочки в матче', 'чёрствая выпечка'],
     'чистота': ['грязная посуда', 'волосы в еде', 'грязная уборная', 'насекомые', 'пластик в круассане'],
-    'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились'],
-    
-    // УРОВЕНЬ 3: Конкретные детали инцидентов
-    '20 минут': ['засекала по часам', 'спросила у соседнего стола', 'заказала в 14:30, получила в 14:50', 'долгое ожидание для простого заказа', 'других обслужили быстрее'],
-    '30 минут': ['полчаса точно', 'с 15:00 до 15:30', 'дважды подходила узнать', 'время на телефоне показало', 'успела прочитать новости'],
-    'более часа': ['час и 10 минут', 'полтора часа ждала', 'с 12:00 до 13:15', 'весь обед потратила', 'опоздала на встречу']
+    'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились']
   },
-  
   solutions: {
-    // УРОВЕНЬ 1: Основные направления решений
     initial: ['таймер ожидания', 'обучение персонала', 'контроль качества', 'система проверки', 'стандарты сервиса'],
-    
-    // УРОВЕНЬ 2: Конкретные решения
     'таймер ожидания': ['визуальный контроль бариста', 'с номерами заказов', 'видимый гостям', 'контроль времени', 'сигналы на баре'],
     'обучение персонала': ['по сервису', 'по санитарии', 'по качеству', 'по коммуникации', 'регулярные тренинги'],
     'контроль качества': ['проверка блюд', 'температурный контроль', 'свежесть продуктов', 'упаковка', 'дегустация'],
     'система проверки': ['чек-лист качества', 'двойная проверка', 'контроль чистоты', 'стандарты подачи', 'фото блюд'],
     'стандарты сервиса': ['вежливость', 'скорость', 'точность', 'чистота', 'профессионализм']
   }
-});
-
-// Гендерные подсказки - computed свойство
-const genderedSuggestions = computed(() => {
-  if (selectedGender.value === 'male') {
-    // Для мужского пола меняем окончания
-    const maleSuggestions = JSON.parse(JSON.stringify(baseSuggestions));
-    
-    // Меняем подсказки эмоций
-    maleSuggestions.emotions.initial = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'];
-    maleSuggestions.emotions['расстроен'] = ['долго ждал', 'грязная посуда', 'холодный кофе', 'грубый персонал', 'забыли заказ'];
-    maleSuggestions.emotions['разочарован'] = maleSuggestions.emotions['разочарована'] || [];
-    maleSuggestions.emotions['недоволен'] = maleSuggestions.emotions['недовольна'] || [];
-    maleSuggestions.emotions['возмущён'] = maleSuggestions.emotions['возмущена'] || [];
-    maleSuggestions.emotions['удивлён'] = maleSuggestions.emotions['удивлена'] || [];
-    
-    // Корректируем детали для мужского пола
-    if (maleSuggestions.emotions['долго ждал']) {
-      maleSuggestions.emotions['долго ждал'][3] = 'сидел и ждал';
-    }
-    
-    // Корректируем факты для мужского пола
-    maleSuggestions.facts['20 минут'][0] = 'засекал по часам';
-    maleSuggestions.facts['20 минут'][1] = 'спросил у соседнего стола';
-    maleSuggestions.facts['20 минут'][2] = 'заказал в 14:30, получил в 14:50';
-    maleSuggestions.facts['30 минут'][0] = 'полчаса точно';
-    maleSuggestions.facts['30 минут'][2] = 'дважды подходил узнать';
-    maleSuggestions.facts['30 минут'][4] = 'успел прочитать новости';
-    maleSuggestions.facts['более часа'][1] = 'полтора часа ждал';
-    maleSuggestions.facts['более часа'][3] = 'весь обед потратил';
-    maleSuggestions.facts['более часа'][4] = 'опоздал на встречу';
-    
-    return maleSuggestions;
-  }
-  
-  return baseSuggestions;
-});
+};
 
 // Текущие подсказки для каждого поля
 const currentSuggestions = reactive({
-  emotions: [],
-  facts: [],
-  solutions: []
+  emotions: [...baseSuggestions.emotions.initial],
+  facts: [...baseSuggestions.facts.initial],
+  solutions: [...baseSuggestions.solutions.initial]
 });
 
-// Инициализация текущих подсказок
-watch(() => genderedSuggestions.value, (newSuggestions) => {
-  currentSuggestions.emotions = [...newSuggestions.emotions.initial];
-  currentSuggestions.facts = [...newSuggestions.facts.initial];
-  currentSuggestions.solutions = [...newSuggestions.solutions.initial];
-}, { immediate: true });
-
-// Выбранные подсказки (для построения цепочек) - теперь отслеживаем для скрытия
+// Выбранные подсказки (для построения цепочек)
 const selectedSuggestions = reactive({
   emotions: [],
   facts: [],
   solutions: []
 });
 
-// Счетчики веток для улучшенного разделения текста
-const branchCounters = reactive({
-  emotions: 0,
-  facts: 0,
-  solutions: 0
-});
+// Функция обновления подсказок под пол
+const updateSuggestionsForGender = () => {
+  if (selectedGender.value === 'male') {
+    currentSuggestions.emotions = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'];
+  } else {
+    currentSuggestions.emotions = [...baseSuggestions.emotions.initial];
+  }
+};
+
+// Следим за изменением пола
+const originalSelectedGender = selectedGender.value;
+const genderWatcher = setInterval(() => {
+  if (selectedGender.value !== originalSelectedGender) {
+    updateSuggestionsForGender();
+    saveToStorage();
+  }
+}, 100);
 
 const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
 const phrasesForQuestion2 = ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'];
@@ -707,53 +618,42 @@ let currentQuestionIndex3 = 0;
 
 // Проверка, являются ли текущие подсказки начальными
 function isInitialSuggestions(suggestionType) {
-  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(genderedSuggestions.value[suggestionType].initial);
+  const initialSuggs = suggestionType === 'emotions' && selectedGender.value === 'male' 
+    ? ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён']
+    : baseSuggestions[suggestionType].initial;
+  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(initialSuggs);
 }
 
 // Сброс подсказок к начальным вариантам
 function resetSuggestions(suggestionType) {
-  currentSuggestions[suggestionType] = [...genderedSuggestions.value[suggestionType].initial];
-  selectedSuggestions[suggestionType] = []; // Сбрасываем выбранные
+  if (suggestionType === 'emotions' && selectedGender.value === 'male') {
+    currentSuggestions.emotions = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'];
+  } else {
+    currentSuggestions[suggestionType] = [...baseSuggestions[suggestionType].initial];
+  }
+  selectedSuggestions[suggestionType] = [];
   saveToStorage();
 }
 
-// УЛУЧШЕННАЯ функция выбора подсказки с скрытием уже выбранных
+// Функция выбора подсказки
 function selectSuggestion(fieldName, suggestion, suggestionType) {
   const currentText = form[fieldName].trim();
   
-  // Определяем, начинается ли новая ветка
-  const isNewBranch = isInitialSuggestions(suggestionType);
-  
   if (currentText) {
-    if (isNewBranch) {
-      // Новая ветка - добавляем с точкой и заглавной буквы
-      form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-      branchCounters[suggestionType]++;
-    } else {
-      // Продолжение ветки - добавляем через пробел
-      form[fieldName] = currentText + ' ' + suggestion;
-    }
+    form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
   } else {
-    // Первый выбор
     form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-    branchCounters[suggestionType] = 1;
   }
   
-  // Сохраняем выбранную подсказку
   selectedSuggestions[suggestionType].push(suggestion);
-  
-  // Обновляем доступные подсказки на основе выбора
   updateSuggestions(suggestionType, suggestion);
-  
-  // Сохраняем изменения
   saveToStorage();
 }
 
-// Обновление подсказок на основе выбора с фильтрацией уже выбранных
+// Обновление подсказок на основе выбора
 function updateSuggestions(suggestionType, selectedWord) {
-  const nextSuggestions = genderedSuggestions.value[suggestionType][selectedWord];
+  const nextSuggestions = baseSuggestions[suggestionType][selectedWord];
   if (nextSuggestions && nextSuggestions.length > 0) {
-    // Фильтруем уже выбранные подсказки
     const filteredSuggestions = nextSuggestions.filter(suggestion => 
       !selectedSuggestions[suggestionType].includes(suggestion)
     );
@@ -761,18 +661,10 @@ function updateSuggestions(suggestionType, selectedWord) {
     if (filteredSuggestions.length > 0) {
       currentSuggestions[suggestionType] = filteredSuggestions;
     } else {
-      // Если все подсказки использованы, показываем начальные (тоже отфильтрованные)
-      const filteredInitial = genderedSuggestions.value[suggestionType].initial.filter(suggestion => 
-        !selectedSuggestions[suggestionType].includes(suggestion)
-      );
-      currentSuggestions[suggestionType] = filteredInitial;
+      resetSuggestions(suggestionType);
     }
   } else {
-    // Если нет продолжения цепочки, показываем начальные подсказки (отфильтрованные)
-    const filteredInitial = genderedSuggestions.value[suggestionType].initial.filter(suggestion => 
-      !selectedSuggestions[suggestionType].includes(suggestion)
-    );
-    currentSuggestions[suggestionType] = filteredInitial;
+    resetSuggestions(suggestionType);
   }
 }
 
@@ -794,10 +686,12 @@ function startRotation(questionNum) {
 
 onUnmounted(() => {
   clearInterval(rotationInterval);
+  clearInterval(genderWatcher);
 });
 </script>
 
 <style scoped>
+/* Все стили остаются точно такими же... */
 :root {
   --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
@@ -1078,7 +972,7 @@ textarea[readonly] {
 .signal-liquid-humanize-btn {
   position: relative;
   width: 100%;
-  height: 56px; /* Такая же высота как кнопка копирования */
+  height: 56px;
   border-radius: 18px;
   border: 2px solid #444;
   background: #2a2a2e;
@@ -1115,14 +1009,14 @@ textarea[readonly] {
 .signal-liquid-humanize-text {
   position: relative;
   z-index: 3;
-  font-size: 16px; /* Такой же размер как у кнопки копирования */
+  font-size: 16px;
   font-weight: 600;
   transition: color 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-/* БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ - уменьшенный отступ */
+/* КНОПКА КОПИРОВАНИЯ */
 .signal-copy-button-container {
   margin-top: 1rem;
 }
