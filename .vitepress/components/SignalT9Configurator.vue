@@ -184,8 +184,8 @@
         <div class="signal-humanize-button-container">
           <button 
             class="signal-liquid-humanize-btn"
-            @click="hasAnyText ? summarizeAllContent() : null"
-            :disabled="humanizeStatus === 'processing' || !hasAnyText"
+            @click="hasContentToSummarize ? summarizeAllContent() : null"
+            :disabled="humanizeStatus === 'processing' || !hasContentToSummarize"
           >
             <!-- SVG иконка суммирования -->
             <svg class="signal-humanize-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
@@ -197,7 +197,7 @@
             
             <span class="signal-liquid-humanize-text">
               {{ 
-                !hasAnyText ? 'Суммировать' :
+                !hasContentToSummarize ? 'Заполните вкладки' :
                 humanizeStatus === 'completed' ? 'Готово' : 
                 humanizeStatus === 'processing' ? 'Суммирование...' : 
                 'Суммировать отзыв'
@@ -295,6 +295,11 @@ const hasAnyText = computed(() => {
   if (selectedSection.value === 'summary') {
     return form.summaryText.trim();
   }
+  return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
+});
+
+// Проверяем, есть ли контент для суммирования 
+const hasContentToSummarize = computed(() => {
   return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
 });
 
@@ -636,7 +641,7 @@ const currentSuggestions = reactive({
   solutions: [...suggestions.solutions.initial]
 });
 
-// Выбранные подсказки (для построения цепочек)
+// Выбранные подсказки (для построения цепочек) - теперь отслеживаем для скрытия
 const selectedSuggestions = reactive({
   emotions: [],
   facts: [],
@@ -671,9 +676,10 @@ function isInitialSuggestions(suggestionType) {
 // Сброс подсказок к начальным вариантам
 function resetSuggestions(suggestionType) {
   currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
+  selectedSuggestions[suggestionType] = []; // Сбрасываем выбранные
 }
 
-// УЛУЧШЕННАЯ функция выбора подсказки с разделением веток
+// УЛУЧШЕННАЯ функция выбора подсказки с скрытием уже выбранных
 function selectSuggestion(fieldName, suggestion, suggestionType) {
   const currentText = form[fieldName].trim();
   
@@ -702,14 +708,30 @@ function selectSuggestion(fieldName, suggestion, suggestionType) {
   updateSuggestions(suggestionType, suggestion);
 }
 
-// Обновление подсказок на основе выбора
+// Обновление подсказок на основе выбора с фильтрацией уже выбранных
 function updateSuggestions(suggestionType, selectedWord) {
   const nextSuggestions = suggestions[suggestionType][selectedWord];
   if (nextSuggestions && nextSuggestions.length > 0) {
-    currentSuggestions[suggestionType] = [...nextSuggestions];
+    // Фильтруем уже выбранные подсказки
+    const filteredSuggestions = nextSuggestions.filter(suggestion => 
+      !selectedSuggestions[suggestionType].includes(suggestion)
+    );
+    
+    if (filteredSuggestions.length > 0) {
+      currentSuggestions[suggestionType] = filteredSuggestions;
+    } else {
+      // Если все подсказки использованы, показываем начальные (тоже отфильтрованные)
+      const filteredInitial = suggestions[suggestionType].initial.filter(suggestion => 
+        !selectedSuggestions[suggestionType].includes(suggestion)
+      );
+      currentSuggestions[suggestionType] = filteredInitial;
+    }
   } else {
-    // Если нет продолжения цепочки, показываем начальные подсказки
-    currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
+    // Если нет продолжения цепочки, показываем начальные подсказки (отфильтрованные)
+    const filteredInitial = suggestions[suggestionType].initial.filter(suggestion => 
+      !selectedSuggestions[suggestionType].includes(suggestion)
+    );
+    currentSuggestions[suggestionType] = filteredInitial;
   }
 }
 
@@ -1008,7 +1030,7 @@ textarea[readonly] {
 
 /* КНОПКА СУММИРОВАНИЯ */
 .signal-humanize-button-container {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   margin-bottom: 1rem;
 }
 
@@ -1059,9 +1081,9 @@ textarea[readonly] {
   letter-spacing: 0.05em;
 }
 
-/* БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ ВНИЗУ - ВСЕГДА ВИДНА */
+/* БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ - уменьшенный отступ */
 .signal-copy-button-container {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .signal-liquid-copy-btn.signal-main-copy {
@@ -1182,18 +1204,9 @@ textarea[readonly] {
 }
 
 /* Hover эффекты */
-.signal-emotion-copy:not(.signal-copy-disabled):hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-fact-copy:not(.signal-copy-disabled):hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-solution-copy:not(.signal-copy-disabled):hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
+.signal-emotion-copy:not(.signal-copy-disabled):hover::before,
+.signal-fact-copy:not(.signal-copy-disabled):hover::before,
+.signal-solution-copy:not(.signal-copy-disabled):hover::before,
 .signal-summary-copy:not(.signal-copy-disabled):hover::before {
   filter: brightness(1.5) saturate(1.3);
 }
@@ -1232,7 +1245,7 @@ textarea[readonly] {
     padding: 6px 10px;
   }
   .signal-copy-button-container {
-    margin-top: 1.5rem;
+    margin-top: 0.75rem;
   }
   .signal-liquid-copy-btn.signal-main-copy {
     height: 52px;
@@ -1253,7 +1266,7 @@ textarea[readonly] {
     height: 20px;
   }
   .signal-humanize-button-container {
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
   }
   .signal-liquid-humanize-btn {
     height: 48px;
