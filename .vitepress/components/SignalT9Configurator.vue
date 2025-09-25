@@ -185,9 +185,15 @@
           <span class="signal-liquid-humanize-text">
             {{ 
               !hasAnyText ? 'Упростить' :
-              humanizeStatus === 'completed' ? 'Упрощено' : 
-              humanizeStatus === 'processing' ? 'Упрощение...' : 
-              'Упростить' 
+              hasMultipleFields ? (
+                humanizeStatus === 'completed' ? 'Объединено и упрощено' : 
+                humanizeStatus === 'processing' ? 'Объединение и упрощение...' : 
+                'Объединить и упростить'
+              ) : (
+                humanizeStatus === 'completed' ? 'Упрощено' : 
+                humanizeStatus === 'processing' ? 'Упрощение...' : 
+                'Упростить'
+              )
             }}
           </span>
         </button>
@@ -278,10 +284,88 @@ const hasAnyText = computed(() => {
   return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
 });
 
-// Получение текущего текста
-const getCurrentSectionText = () => {
+// Проверяем, заполнено ли больше одного поля
+const hasMultipleFields = computed(() => {
+  const fieldsCount = [
+    form.emotionalRelease.trim(),
+    form.factualAnalysis.trim(), 
+    form.constructiveSuggestions.trim()
+  ].filter(text => text.length > 0).length;
+  
+  return fieldsCount > 1;
+});
+
+// Переходные фразы для суммирования
+const contextualTransitions = {
+  emotionToFact: [
+    '. Конкретно произошло следующее: ',
+    '. Дело в том, что ',
+    '. А именно: '
+  ],
+  factToSolution: [
+    '. Поэтому считаю, что можно ',
+    '. Чтобы избежать этого, стоило бы ',
+    '. Для решения проблемы лучше '
+  ],
+  emotionToSolution: [
+    '. Чтобы такого не повторялось, ',
+    '. Для улучшения ситуации ',
+    '. Решением могло бы стать '
+  ]
+};
+
+// Улучшенная функция суммирования с умными переходами
+const smartSummarizeAllFields = () => {
+  const emotionalText = form.emotionalRelease.trim();
+  const factualText = form.factualAnalysis.trim();
+  const solutionsText = form.constructiveSuggestions.trim();
+  
+  if (emotionalText && factualText && solutionsText) {
+    // Все три поля заполнены
+    const transition1 = contextualTransitions.emotionToFact[
+      Math.floor(Math.random() * contextualTransitions.emotionToFact.length)
+    ];
+    const transition2 = contextualTransitions.factToSolution[
+      Math.floor(Math.random() * contextualTransitions.factToSolution.length)
+    ];
+    
+    return `${emotionalText}${transition1.toLowerCase()}${factualText}${transition2.toLowerCase()}${solutionsText}`;
+    
+  } else if (emotionalText && factualText) {
+    // Эмоции + факты
+    const transition = contextualTransitions.emotionToFact[
+      Math.floor(Math.random() * contextualTransitions.emotionToFact.length)
+    ];
+    return `${emotionalText}${transition.toLowerCase()}${factualText}`;
+    
+  } else if (emotionalText && solutionsText) {
+    // Эмоции + решения
+    const transition = contextualTransitions.emotionToSolution[
+      Math.floor(Math.random() * contextualTransitions.emotionToSolution.length)
+    ];
+    return `${emotionalText}${transition.toLowerCase()}${solutionsText}`;
+    
+  } else if (factualText && solutionsText) {
+    // Факты + решения  
+    const transition = contextualTransitions.factToSolution[
+      Math.floor(Math.random() * contextualTransitions.factToSolution.length)
+    ];
+    return `${factualText}${transition.toLowerCase()}${solutionsText}`;
+    
+  } else {
+    // Только одно поле заполнено
+    return emotionalText || factualText || solutionsText || '';
+  }
+};
+
+// Получение текущего текста с возможностью суммирования
+const getCurrentSectionText = (summarizeAll = false) => {
+  if (summarizeAll) {
+    return smartSummarizeAllFields();
+  }
+  
   if (selectedSection.value === 'emotions') return form.emotionalRelease.trim();
-  if (selectedSection.value === 'facts') return form.factualAnalysis.trim();
+  if (selectedSection.value === 'facts') return form.factualAnalysis.trim();  
   if (selectedSection.value === 'solutions') return form.constructiveSuggestions.trim();
   return '';
 };
@@ -414,6 +498,29 @@ function addHumanDetails(text, section) {
   return sentences.join('. ');
 }
 
+// Функция добавления деталей для суммированного текста
+function addHumanDetailsForSummary(text) {
+  const allDetails = {
+    personalReactions: ['честно говоря', 'если честно', 'вообще-то', 'кстати', 'между прочим'],
+    intensifiers: ['очень', 'довольно', 'крайне', 'весьма', 'действительно'],
+    peopleReferences: ['бариста', 'официантка', 'девушка на кассе', 'парень за баром', 'персонал'],
+    locations: ['у окна', 'в углу', 'за первым столиком', 'возле входа', 'в центре зала'],
+    implementationWords: ['можно было бы', 'стоило бы', 'лучше бы', 'неплохо было бы'],
+    benefitPhrases: ['это помогло бы', 'так было бы удобнее', 'клиентам было бы приятнее', 'все остались бы довольны']
+  };
+  
+  let result = text;
+  const sentences = result.split('. ');
+  
+  // Добавляем личную реакцию в начало
+  if (sentences.length > 0 && Math.random() > 0.4) {
+    const reaction = allDetails.personalReactions[Math.floor(Math.random() * allDetails.personalReactions.length)];
+    sentences[0] = reaction + ', ' + sentences[0].toLowerCase();
+  }
+  
+  return sentences.join('. ');
+}
+
 function restructureSentences(text) {
   const sentences = text.split('. ');
   const starters = ['К сожалению,', 'Правда в том, что', 'Дело в том, что'];
@@ -434,9 +541,12 @@ function restructureSentences(text) {
   }).join('. ');
 }
 
-// Основная функция гуманизации
+// Полностью обновленная основная функция гуманизации
 async function humanizeCurrentText() {
-  const currentText = getCurrentSectionText();
+  // Определяем, работаем с одним полем или суммируем все
+  const shouldSummarize = hasMultipleFields.value;
+  const currentText = shouldSummarize ? smartSummarizeAllFields() : getCurrentSectionText();
+  
   if (!currentText) return;
   
   humanizeStatus.value = 'processing';
@@ -444,14 +554,19 @@ async function humanizeCurrentText() {
   try {
     let humanizedText = currentText;
     
-    // 1. Устраняем повторы
+    // 1. Устраняем повторы (особенно важно при суммировании)
     humanizedText = replaceRepeatedWords(humanizedText, synonymDatabase);
     
     // 2. Применяем гендерную коррекцию
     humanizedText = applyGenderCorrection(humanizedText, selectedGender.value);
     
-    // 3. Добавляем человеческие детали
-    humanizedText = addHumanDetails(humanizedText, selectedSection.value);
+    // 3. Добавляем человеческие детали (адаптируем под суммированный текст)
+    if (shouldSummarize) {
+      // Для суммированного текста добавляем детали с учетом всех секций
+      humanizedText = addHumanDetailsForSummary(humanizedText);
+    } else {
+      humanizedText = addHumanDetails(humanizedText, selectedSection.value);
+    }
     
     // 4. Реструктурируем предложения
     humanizedText = restructureSentences(humanizedText);
@@ -464,7 +579,7 @@ async function humanizeCurrentText() {
     // Имитируем обработку
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    // Обновляем поле
+    // Обновляем текущее поле
     updateCurrentField(humanizedText);
     
     humanizeStatus.value = 'completed';
@@ -533,7 +648,7 @@ const copyCurrentSectionText = async () => {
   }
 };
 
-// ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок из файла
+// ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок из файла [file:92]
 const suggestions = reactive({
   emotions: {
     // УРОВЕНЬ 1: Основные эмоции
