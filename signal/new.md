@@ -1,7 +1,8 @@
 ---
 prev: false
 next: false
-title: Новый Сигнал | Корж, Mosaic
+pageClass: centered-page
+title: Новый Сигнал – Корж
 ---
 <div align="center">
 
