@@ -213,6 +213,10 @@
           <div class="signal-rotating-phrase-container">
             <p class="signal-question-label">От эмоций до конструктивных предложений</p>
           </div>
+          
+          <!-- Заголовок перед текстом -->
+          <div class="signal-plan-header">План отзыва:</div>
+          
           <textarea 
             v-model="form.summaryText" 
             :rows="isMobile ? 8 : 6"
@@ -222,26 +226,19 @@
           <p class="signal-example-hint">Конструктивный отзыв = сумма Ваших эмоций, фактов и решений.</p>
         </div>
 
-        <!-- КНОПКА СУММИРОВАТЬ - только в секции Итого -->
+        <!-- КНОПКА ОБНОВИТЬ - только в секции Итого -->
         <div class="signal-humanize-button-container">
           <button 
             class="signal-liquid-humanize-btn"
             @click="hasContentToSummarize ? summarizeAllContent() : null"
             :disabled="humanizeStatus === 'processing' || !hasContentToSummarize"
           >
-            <svg class="signal-humanize-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M21 12c.552 0 1-.448 1-1s-.448-1-1-1-1 .448-1 1 .448 1 1 1z" stroke="currentColor" stroke-width="2" fill="none"/>
-              <path d="M3 12c.552 0 1-.448 1-1s-.448-1-1-1-1 .448-1 1 .448 1 1 1z" stroke="currentColor" stroke-width="2" fill="none"/>
-              <path d="M12 3c.552 0 1-.448 1-1s-.448-1-1-1-1 .448-1 1 .448 1 1 1z" stroke="currentColor" stroke-width="2" fill="none"/>
-            </svg>
-            
             <span class="signal-liquid-humanize-text">
               {{ 
                 !hasContentToSummarize ? 'Заполните вкладки' :
                 humanizeStatus === 'completed' ? 'Готово' : 
-                humanizeStatus === 'processing' ? 'Суммирование...' : 
-                'Суммировать отзыв'
+                humanizeStatus === 'processing' ? 'Обновление...' : 
+                'Обновить'
               }}
             </span>
           </button>
@@ -283,14 +280,15 @@
             selectedSection === 'emotions' ? 'signal-emotion-next' : '',
             selectedSection === 'facts' ? 'signal-fact-next' : '',
             selectedSection === 'solutions' ? 'signal-solution-next' : '',
-            !hasCurrentSectionText ? 'signal-next-disabled' : ''
+            !hasCurrentSectionText ? 'signal-next-disabled' : '',
+            selectedSection === 'share' && hasCurrentSectionText ? 'signal-share-active' : ''
           ]"
           @click="hasCurrentSectionText ? goToNextSection() : null"
           :disabled="nextStatus === 'processing' || !hasCurrentSectionText"
         >
           <span class="signal-liquid-next-text">Дальше</span>
-          <svg class="signal-next-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
-            <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg class="signal-next-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
       </div>
@@ -371,14 +369,14 @@ const getCurrentSectionText = () => {
   return '';
 };
 
-// Переход к следующей секции
+// Переход к следующей секции БЕЗ ИСКУССТВЕННЫХ ЗАДЕРЖЕК
 const goToNextSection = async () => {
   const currentIndex = sections.findIndex(s => s.id === selectedSection.value);
   
   if (selectedSection.value === 'solutions') {
-    // Запускаем суммирование при переходе с "Решение"
+    // Быстро запускаем суммирование без задержек
     nextStatus.value = 'processing';
-    await summarizeAllContent();
+    summarizeAllContent();
     nextStatus.value = 'idle';
   }
   
@@ -415,72 +413,211 @@ function applyGenderCorrection(text, gender) {
   return result;
 }
 
-// УЛУЧШЕННАЯ функция структурирования БЕЗ ВЫВОДА
+// Функция для удаления дублей
+function removeDuplicates(text) {
+  const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 3);
+  const uniqueSentences = [];
+  const seen = new Set();
+  
+  sentences.forEach(sentence => {
+    const normalized = sentence.toLowerCase().replace(/\s+/g, ' ');
+    if (!seen.has(normalized) && normalized.length > 5) {
+      seen.add(normalized);
+      uniqueSentences.push(sentence);
+    }
+  });
+  
+  return uniqueSentences.join('. ') + (uniqueSentences.length > 0 ? '.' : '');
+}
+
+// ВОССТАНОВЛЕННАЯ функция структурирования с правильным форматированием
 function structureAndCleanText(shareText, emotionalText, factualText, solutionsText, gender) {
   let result = '';
   
   // 1. Сначала текст из "Поделитесь"
   if (shareText) {
-    result += shareText.trim();
-  }
-  
-  // Функция для добавления знаков препинания
-  function addPunctuation(text) {
-    // Разбиваем на предложения и добавляем запятые, тире
-    const sentences = text.split(/[.!]/).map(s => s.trim()).filter(s => s);
-    return sentences.join(', ') + '.';
+    let userText = shareText.trim();
+    // Добавляем точку в конце если её нет
+    if (!userText.match(/[.!?]$/)) {
+      userText += '.';
+    }
+    result += `МОИ ВПЕЧАТЛЕНИЯ: ${userText.charAt(0).toUpperCase() + userText.slice(1)}`;
   }
   
   // 2. Эмоциональная часть
   if (emotionalText) {
     const emotions = applyGenderCorrection(emotionalText.trim(), gender);
-    const emotionsFormatted = addPunctuation(emotions);
-    if (result) result += ' ';
-    result += emotionsFormatted;
+    const sentences = emotions.split(/[.!]/).map(s => s.trim()).filter(s => s);
+    
+    const positiveEmotions = [];
+    const neutralEmotions = [];
+    const negativeEmotions = [];
+    
+    sentences.forEach(sentence => {
+      const lower = sentence.toLowerCase();
+      if (lower.includes('доволь') || lower.includes('восхищ') || lower.includes('благодар')) {
+        // Добавляем тире для положительных эмоций
+        const parts = sentence.split(' ');
+        if (parts.length > 3) {
+          const formatted = parts.slice(0, 3).join(' ') + ' – ' + parts.slice(3).join(' ');
+          positiveEmotions.push(formatted);
+        } else {
+          positiveEmotions.push(sentence);
+        }
+      } else if (lower.includes('удивл')) {
+        neutralEmotions.push(sentence);
+      } else {
+        // Добавляем тире для негативных эмоций 
+        const parts = sentence.split(' ');
+        if (parts.length > 3) {
+          const formatted = parts.slice(0, 3).join(' ') + ' – ' + parts.slice(3).join(' ');
+          negativeEmotions.push(formatted);
+        } else {
+          negativeEmotions.push(sentence);
+        }
+      }
+    });
+    
+    let emotionText = '';
+    if (positiveEmotions.length > 0) emotionText += positiveEmotions.join('. ') + '. ';
+    if (neutralEmotions.length > 0) emotionText += neutralEmotions.join('. ') + '. ';
+    if (negativeEmotions.length > 0) emotionText += negativeEmotions.join('. ') + '.';
+    
+    emotionText = removeDuplicates(emotionText);
+    if (result) result += '\n\n';
+    result += `ВПЕЧАТЛЕНИЯ: ${emotionText}`;
   }
   
-  // 3. Фактологическая часть
+  // 3. Фактологическая часть с правильным форматированием "Категория: детали"
   if (factualText) {
+    if (result) result += '\n\n';
+    
     const facts = factualText.trim();
-    const factsFormatted = addPunctuation(facts);
-    if (result) result += ' ';
-    result += factsFormatted;
+    const sentences = facts.split(/[.!]/).map(s => s.trim()).filter(s => s);
+    const factGroups = {};
+    
+    sentences.forEach(sentence => {
+      // Определяем категорию по первым 2-3 словам
+      let category = '';
+      
+      if (sentence.toLowerCase().includes('ожидан') || sentence.toLowerCase().includes('ждал')) {
+        category = 'Ожидание';
+      } else if (sentence.toLowerCase().includes('заказ') || sentence.toLowerCase().includes('доложи')) {
+        category = 'Ошибка в заказе';
+      } else if (sentence.toLowerCase().includes('качество') || sentence.toLowerCase().includes('кофе') || sentence.toLowerCase().includes('еда')) {
+        category = 'Качество блюд';
+      } else if (sentence.toLowerCase().includes('чист') || sentence.toLowerCase().includes('посуда')) {
+        category = 'Чистота';
+      } else if (sentence.toLowerCase().includes('персонал') || sentence.toLowerCase().includes('сотрудн')) {
+        category = 'Персонал';
+      } else {
+        const words = sentence.split(' ');
+        category = words.slice(0, 2).join(' ');
+      }
+      
+      if (!factGroups[category]) factGroups[category] = [];
+      
+      // Извлекаем детали (убираем категорию из начала)
+      let details = sentence;
+      if (sentence.toLowerCase().startsWith(category.toLowerCase())) {
+        details = sentence.substring(category.length).replace(/^[\s:,-]+/, '');
+      }
+      
+      if (details && details.length > 3) {
+        factGroups[category].push(details);
+      }
+    });
+    
+    let factText = '';
+    Object.keys(factGroups).forEach(category => {
+      if (factGroups[category].length > 0) {
+        const uniqueDetails = [...new Set(factGroups[category])];
+        factText += `${category}: ${uniqueDetails.join(', ')}. `;
+      }
+    });
+    
+    factText = removeDuplicates(factText);
+    result += `ПРОБЛЕМЫ: ${factText}`;
   }
   
-  // 4. Решения
+  // 4. Парсинг решений с форматированием "Направление: конкретные меры"
   if (solutionsText) {
+    if (result) result += '\n\n';
+    
     const solutions = solutionsText.trim();
-    const solutionsFormatted = addPunctuation(solutions);
-    if (result) result += ' ';
-    result += solutionsFormatted;
+    const sentences = solutions.split(/[.!]/).map(s => s.trim()).filter(s => s);
+    const solutionGroups = {};
+    
+    sentences.forEach(sentence => {
+      let category = '';
+      
+      if (sentence.toLowerCase().includes('таймер') || sentence.toLowerCase().includes('контроль времени')) {
+        category = 'Таймер ожидания';
+      } else if (sentence.toLowerCase().includes('обучение')) {
+        category = 'Обучение персонала';
+      } else if (sentence.toLowerCase().includes('контроль качества')) {
+        category = 'Контроль качества';
+      } else if (sentence.toLowerCase().includes('проверк')) {
+        category = 'Система проверки';
+      } else if (sentence.toLowerCase().includes('стандарт')) {
+        category = 'Стандарты сервиса';
+      } else {
+        const words = sentence.split(' ');
+        category = words.slice(0, 2).join(' ');
+      }
+      
+      if (!solutionGroups[category]) solutionGroups[category] = [];
+      
+      let details = sentence;
+      if (sentence.toLowerCase().startsWith(category.toLowerCase())) {
+        details = sentence.substring(category.length).replace(/^[\s:,-]+/, '');
+      }
+      
+      if (details && details.length > 3) {
+        solutionGroups[category].push(details);
+      }
+    });
+    
+    let solutionText = '';
+    Object.keys(solutionGroups).forEach(category => {
+      if (solutionGroups[category].length > 0) {
+        const uniqueDetails = [...new Set(solutionGroups[category])];
+        solutionText += `${category}: ${uniqueDetails.join(', ')}. `;
+      }
+    });
+    
+    solutionText = removeDuplicates(solutionText);
+    result += `ПРЕДЛОЖЕНИЯ: ${solutionText}`;
   }
   
   return result;
 }
 
-async function summarizeAllContent() {
+// ИСПРАВЛЕННАЯ функция суммирования БЕЗ задержек и с гендерной коррекцией
+function summarizeAllContent() {
   const hasContent = form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
   if (!hasContent) return;
   
   humanizeStatus.value = 'processing';
   
   try {
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
+    // Генерируем структурированный текст с учетом ТЕКУЩЕГО пола
     const structuredText = structureAndCleanText(
       form.shareExperience.trim(),
       form.emotionalRelease.trim(),
       form.factualAnalysis.trim(),
       form.constructiveSuggestions.trim(),
-      selectedGender.value
+      selectedGender.value // используем текущий выбранный пол
     );
     
-    form.summaryText = structuredText;
+    // Применяем гендерную коррекцию ко ВСЕМУ тексту в итоге
+    form.summaryText = applyGenderCorrection(structuredText, selectedGender.value);
+    
     humanizeStatus.value = 'completed';
     
     setTimeout(() => {
       humanizeStatus.value = 'idle';
-    }, 3000);
+    }, 2000);
     
   } catch (error) {
     console.error('Ошибка суммирования:', error);
@@ -975,6 +1112,13 @@ function startRotation(questionNum) {
   display: block;
 }
 
+.signal-plan-header {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #f0f0f0;
+  margin-bottom: 0.5rem;
+}
+
 .signal-rotating-phrase-container {
   min-height: 1.3em;
   margin-bottom: 0.6rem;
@@ -1092,10 +1236,10 @@ textarea:focus {
   font-weight: 600;
 }
 
-/* КНОПКА СУММИРОВАНИЯ */
+/* КНОПКА ОБНОВИТЬ */
 .signal-humanize-button-container {
   margin-top: 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem; /* Уменьшено расстояние между кнопками в 2 раза */
 }
 
 .signal-liquid-humanize-btn {
@@ -1128,13 +1272,6 @@ textarea:focus {
   opacity: 0.5;
 }
 
-.signal-humanize-icon {
-  position: relative;
-  z-index: 3;
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
-}
-
 .signal-liquid-humanize-text {
   position: relative;
   z-index: 3;
@@ -1147,7 +1284,7 @@ textarea:focus {
 
 /* КНОПКА КОПИРОВАНИЯ - только на Итого */
 .signal-copy-button-container {
-  margin-top: 1rem;
+  margin-top: 0.5rem; /* Уменьшено расстояние между кнопками в 2 раза */
 }
 
 .signal-liquid-copy-btn.signal-main-copy {
@@ -1224,7 +1361,7 @@ textarea:focus {
   color: #FF6B6B;
 }
 
-/* КНОПКА ДАЛЬШЕ */
+/* КНОПКА ДАЛЬШЕ - сексуальная и заметная */
 .signal-next-button-container {
   margin-top: 1rem;
 }
@@ -1241,7 +1378,7 @@ textarea:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 16px; /* Увеличено расстояние между текстом и стрелкой */
   font-family: var(--signal-font-sans);
   white-space: nowrap;
 }
@@ -1296,6 +1433,17 @@ textarea:focus {
 .signal-share-next:not(.signal-next-disabled) .signal-next-icon,
 .signal-share-next:not(.signal-next-disabled) .signal-liquid-next-text {
   color: #6B7280;
+}
+
+/* АКТИВНАЯ кнопка "Поделитесь" с белым текстом */
+.signal-share-active.signal-share-next:not(.signal-next-disabled) .signal-next-icon,
+.signal-share-active.signal-share-next:not(.signal-next-disabled) .signal-liquid-next-text {
+  color: #ffffff !important;
+}
+
+.signal-share-active.signal-share-next:not(.signal-next-disabled)::after {
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 70%),
+              linear-gradient(135deg, #6B7280, #4B5563);
 }
 
 .signal-emotion-next:not(.signal-next-disabled) {
@@ -1355,6 +1503,15 @@ textarea:focus {
     width: 20px;
     height: 6px;
     border-radius: 3px;
+  }
+  
+  .signal-liquid-next-btn {
+    gap: 12px; /* Меньший gap на мобильных */
+  }
+  
+  .signal-next-icon {
+    width: 16px;
+    height: 16px;
   }
 }
 </style>
