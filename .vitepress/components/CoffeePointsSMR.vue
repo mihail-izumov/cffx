@@ -667,7 +667,7 @@ watch(showBranchList, (newValue) => {
             @click="closeModalAndGoToReviews" 
             class="signal2-modal-close-button"
           >
-            Закрыть и перейти к отзывам
+            Закрыть и перейти к локациям
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="m9 18 6-6-6-6" />
             </svg>
