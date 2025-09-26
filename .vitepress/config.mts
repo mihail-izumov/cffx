@@ -29,8 +29,6 @@ export default defineConfig({
     // Добавляем динамические метатеги для каждой страницы
     head.push(['meta', { property: 'og:title', content: pageTitle }])
     head.push(['meta', { property: 'og:description', content: pageDescription }])
-    head.push(['meta', { name: 'twitter:title', content: pageTitle }])
-    head.push(['meta', { name: 'twitter:description', content: pageDescription }])
     
     return head
   },
