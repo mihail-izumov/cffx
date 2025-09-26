@@ -67,6 +67,7 @@ export default defineConfig({
         const links = [
           { text: 'Обновления', href: '/changelog' },
           { text: 'Поддержка', href: '/support' },
+          { text: 'Фестиваль', link: '/fest' },
           { text: 'Условия использования', href: '/terms' },
           { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
           { text: 'Контакт', href: '/about/contacts' }
@@ -316,8 +317,7 @@ export default defineConfig({
 
 function nav(): DefaultTheme.NavItem[] {
   return [
-    { text: 'Как работает', link: '/signals' },
-    { text: 'Фестиваль', link: '/fest' },
+    { text: 'Кофейни', link: '/me' },
     {
       text: 'Инвестиции',
       items: [
@@ -329,7 +329,7 @@ function nav(): DefaultTheme.NavItem[] {
       ]
     },
     {
-      text: 'Умная Кофейня',
+      text: 'Для Бизнеса',
       items: [
         { text: '→ Начать', link: '/pro' },  
         { text: 'Диалоги', link: '/pro/dialogs' },
