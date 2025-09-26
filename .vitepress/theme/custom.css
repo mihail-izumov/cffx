@@ -10,41 +10,31 @@
 .layout-home .VPFeature .details { color: rgba(255, 255, 255, 0.85) !important; }
 .layout-home .VPFeature a:hover { color: #4ade80 !important; }
 
-/* --- СТИЛИ ДЛЯ ЦЕНТРИРОВАНИЯ СТРАНИЦ --- */
-.centered-page .VPDoc .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 32px;
-}
-
-.centered-page .VPContent {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-/* Убираем боковые отступы */
+/* --- УЛУЧШЕННЫЕ СТИЛИ ДЛЯ ЦЕНТРИРОВАНИЯ --- */
 .centered-page .VPDoc:not(.has-sidebar) .container {
-    max-width: 1200px;
+    max-width: 1584px !important;
 }
 
-/* Центрируем основной контент */
-.centered-page .content {
-    max-width: 768px;
+.centered-page .VPDoc:not(.has-sidebar) .content {
+    max-width: 1264px !important;
     margin: 0 auto;
 }
 
-/* Для полной ширины контейнера при необходимости */
-.centered-page .content-container {
-    max-width: none;
+.centered-page .VPDoc.has-aside .content-container {
+    max-width: 1168px !important;
 }
+
+/* Если нужен более стандартный размер, раскомментируйте это: */
+/*
+.centered-page .content {
+    max-width: 840px;
+    margin: 0 auto;
+}
+*/
 
 /* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
     .centered-page .VPDoc .container {
         padding: 0 16px;
-    }
-    
-    .centered-page .VPContent {
-        max-width: 100%;
     }
 }
