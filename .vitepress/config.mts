@@ -1,9 +1,11 @@
 import { defineConfig, DefaultTheme } from 'vitepress'
 import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
+
 export default defineConfig({
   title: 'Сигнал',
   appearance: 'force-dark',
+  
   locales: {
     '/': {
       lang: 'ru-RU',
@@ -11,18 +13,40 @@ export default defineConfig({
       description: 'Где Начинается Ваша Кофейня',
     },
   },
+  
   transformPageData(pageData) {
     return pageData
   },
+  
+  // Новый хук для динамической генерации метатегов
+  transformHead: ({ pageData }) => {
+    const head = []
+    
+    // Получаем заголовок и описание страницы
+    const pageTitle = pageData.frontmatter.title || pageData.title || 'Сигнал'
+    const pageDescription = pageData.frontmatter.description || pageData.description || 'Где Начинается Ваша Кофейня'
+    
+    // Добавляем динамические метатеги для каждой страницы
+    head.push(['meta', { property: 'og:title', content: pageTitle }])
+    head.push(['meta', { property: 'og:description', content: pageDescription }])
+    head.push(['meta', { name: 'twitter:title', content: pageTitle }])
+    head.push(['meta', { name: 'twitter:description', content: pageDescription }])
+    
+    return head
+  },
+  
   buildEnd(siteConfig) {
     // Этот хук выполняется после сборки
   },
+  
   head: [
-    // Мета-теги по умолчанию для всех страниц
-    ['meta', { property: 'og:title', content: 'Сигнал' }],
-    ['meta', { property: 'og:description', content: 'Где Начинается Ваша Кофейня' }],
+    // Убираем статичные og:title и og:description - теперь они динамические
+    // Оставляем только общие метатеги
     ['meta', { property: 'og:image', content: 'https://cffx.ru/cffx_og_card.jpg' }],
     ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:site_name', content: 'Сигнал' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:image', content: 'https://cffx.ru/cffx_og_card.jpg' }],
     // Остальные мета-теги
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
@@ -214,9 +238,11 @@ export default defineConfig({
     .VPFooter .copyright{margin-top:2px!important}
     `]
   ],
+  
   base: '/',
   outDir: '.vitepress/dist',
   description: 'Где Начинается Ваша Кофейня',
+  
   themeConfig: {
     logo: '/favicon.svg',
     siteTitle: "Сигнал",
@@ -276,11 +302,12 @@ export default defineConfig({
     ],
   }
 })
+
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Как работает', link: '/signals' },
     { text: 'Фестиваль', link: '/fest' },
-{
+    {
       text: 'Инвестиции',
       items: [
         { text: 'Пульс', link: '/invest/pulse' },
@@ -300,6 +327,7 @@ function nav(): DefaultTheme.NavItem[] {
     }
   ]
 }
+
 function sidebarBrew(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -313,6 +341,7 @@ function sidebarBrew(): DefaultTheme.SidebarItem[] {
     }
   ]
 }
+
 function sidebarPulse(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -328,9 +357,12 @@ function sidebarPulse(): DefaultTheme.SidebarItem[] {
     }
   ]
 }
+
 function sidebarTerms(): DefaultTheme.SidebarItem[] {
   return [{
-      text: 'Условия использования', collapsed: false, items: [
+      text: 'Условия использования', 
+      collapsed: false, 
+      items: [
         { text: 'Соглашения', link: '/terms' },
         { text: 'Политика конфиденциальности', link: '/terms/policy' },
         { text: 'Согласие на обработку данных', link: '/terms/privacy' },
