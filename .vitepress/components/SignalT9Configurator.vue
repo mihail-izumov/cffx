@@ -1,6 +1,6 @@
 <template>
   <div class="signal-demo-wrapper">
-    <!-- Переключатель секций над формой -->
+    <!-- Переключатель секцний над формой -->
     <div class="signal-demo__header">
       <div class="signal-demo__switch" role="tablist" aria-label="Секции формы">
         <button
