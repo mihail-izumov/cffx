@@ -1942,11 +1942,10 @@ watch(showBranchList, (newValue) => {
     height: 28px;
   }
   
-  /* Уменьшенная кнопка "Отправить Сигнал" в мобильной версии на 20% */
-  .signal2-mystery-button {
-    font-size: 12px; /* Уменьшено с 15px на 20% */
-    padding: 8px 15px; /* Уменьшено с 10px 19px на 20% */
-  }
+.signal2-mystery-button {
+  font-size: 15.6px; /* увеличено на 30% с 12px */
+  padding: 10.4px 19.5px; /* увеличено на 30% с 8px 15px */
+}
   
   /* Размер ссылки "Как Работает" такой же как у текста над кнопкой */
   .signal2-how-it-works-link {
@@ -2042,8 +2041,8 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal2-mystery-button {
-  font-size: 11px; /* Еще меньше для очень маленьких экранов */
-  padding: 7px 14px;
+  font-size: 14.3px; /* увеличено на 30% с 11px */
+  padding: 9.1px 18.2px; /* увеличено на 30% с 7px 14px */
 }
 
 .signal2-how-it-works-link {
