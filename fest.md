@@ -2,6 +2,7 @@
 outline: false
 prev: false
 next: false
+pageClass: centered-page
 title: Культура Кофе | Фестиваль в Самаре – Сентябрь 28, 2025
 notification: general
 description: Где Начинается Ваша Кофейня
