@@ -77,7 +77,7 @@ const cafes = {
     name: 'Белотурка',
     totalReviews: '2,941',
     status: 'Скоро в ⚡ Индексе',
-    index: ~,
+    index: '~',
     isConnected: false,
     branches: [
       { address: 'Куйбышева, 99', gisUrl: 'https://2gis.ru/samara/firm/70000001075213346/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/21345450545/reviews/' },
@@ -91,7 +91,7 @@ const cafes = {
     name: 'Кэрри',
     totalReviews: '3,568',
     status: 'Скоро в ⚡ Индексе',
-    index: ~,
+    index: '~',
     isConnected: false,
     branches: [
       { address: 'Ново-Садовая ул., 160М', gisUrl: 'https://2gis.ru/samara/firm/70000001070543566/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/kerri/202386458956/reviews/' },
