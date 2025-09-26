@@ -18,17 +18,35 @@ export default defineConfig({
     return pageData
   },
   
-  // Новый хук для динамической генерации метатегов
+  // Исправленный хук для динамической генерации метатегов
   transformHead: ({ pageData }) => {
     const head = []
     
-    // Получаем заголовок и описание страницы
+    // Получаем данные из frontmatter
     const pageTitle = pageData.frontmatter.title || pageData.title || 'Сигнал'
     const pageDescription = pageData.frontmatter.description || pageData.description || 'Где Начинается Ваша Кофейня'
     
-    // Добавляем динамические метатеги для каждой страницы
+    // Проверяем, есть ли кастомная картинка в frontmatter
+    const hasCustomImage = pageData.frontmatter.head && 
+      pageData.frontmatter.head.some(tag => 
+        tag[0] === 'meta' && 
+        tag[1].property === 'og:image'
+      )
+    
+    // Добавляем динамические метатеги
     head.push(['meta', { property: 'og:title', content: pageTitle }])
     head.push(['meta', { property: 'og:description', content: pageDescription }])
+    
+    // Добавляем изображение только если нет кастомного в frontmatter
+    if (!hasCustomImage) {
+      head.push(['meta', { property: 'og:image', content: 'https://cffx.ru/cffx_og_card.jpg' }])
+      head.push(['meta', { name: 'twitter:image', content: 'https://cffx.ru/cffx_og_card.jpg' }])
+    }
+    
+    // Twitter карточка - summary для маленькой иконки
+    head.push(['meta', { name: 'twitter:card', content: 'summary' }])
+    head.push(['meta', { name: 'twitter:title', content: pageTitle }])
+    head.push(['meta', { name: 'twitter:description', content: pageDescription }])
     
     return head
   },
@@ -38,14 +56,9 @@ export default defineConfig({
   },
   
   head: [
-    // Убираем статичные og:title и og:description - теперь они динамические
-    // Оставляем только общие метатеги
-    ['meta', { property: 'og:image', content: 'https://cffx.ru/cffx_og_card.jpg' }],
+    // Только общие метатеги, которые не должны меняться
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Сигнал' }],
-    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { name: 'twitter:image', content: 'https://cffx.ru/cffx_og_card.jpg' }],
-    // Остальные мета-теги
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
     ['script', {}, `
