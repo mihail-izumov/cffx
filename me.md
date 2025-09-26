@@ -14,4 +14,3 @@ description: Где Начинается Ваша Кофейня
 </div>
 
 <CoffeePointsSMR />
-
