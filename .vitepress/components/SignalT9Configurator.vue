@@ -24,12 +24,12 @@
         <div 
           class="signal-gender-btn signal-gender-female"
           :class="{ 'is-active': selectedGender === 'female' }"
-          @click="selectedGender = 'female'"
+          @click="selectedGender = 'female'; updateSuggestionsForGender()"
         ></div>
         <div 
           class="signal-gender-btn signal-gender-male"
           :class="{ 'is-active': selectedGender === 'male' }"
-          @click="selectedGender = 'male'"
+          @click="selectedGender = 'male'; updateSuggestionsForGender()"
         ></div>
       </div>
     </div>
@@ -50,7 +50,7 @@
             v-model="form.emotionalRelease" 
             @focus="startRotation(1)" 
             :rows="isMobile ? 5 : 3"
-            placeholder="Разочарован ожиданиями..." 
+            :placeholder="selectedGender === 'female' ? 'Разочарована ожиданиями...' : 'Разочарован ожиданиями...'" 
             required>
           </textarea>
           
@@ -165,15 +165,15 @@
       <!-- Секция "Итого" -->
       <div v-if="selectedSection === 'summary'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #FF6B6B;">
-          <p class="signal-direction-label">Итоговый отзыв</p>
+          <p class="signal-direction-label">План вашего отзыва</p>
           
           <div class="signal-rotating-phrase-container">
-            <p class="signal-question-label">Готовый отзыв для публикации</p>
+            <p class="signal-question-label">От эмоций до конструктивных предложений</p>
           </div>
           <textarea 
             v-model="form.summaryText" 
             :rows="isMobile ? 8 : 6"
-            placeholder="Здесь появится готовый отзыв..." 
+            placeholder="Здесь появится план вашего отзыва..." 
             readonly>
           </textarea>
           
@@ -184,8 +184,8 @@
         <div class="signal-humanize-button-container">
           <button 
             class="signal-liquid-humanize-btn"
-            @click="hasAnyText ? summarizeAllContent() : null"
-            :disabled="humanizeStatus === 'processing' || !hasAnyText"
+            @click="hasContentToSummarize ? summarizeAllContent() : null"
+            :disabled="humanizeStatus === 'processing' || !hasContentToSummarize"
           >
             <!-- SVG иконка суммирования -->
             <svg class="signal-humanize-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
@@ -197,7 +197,7 @@
             
             <span class="signal-liquid-humanize-text">
               {{ 
-                !hasAnyText ? 'Суммировать' :
+                !hasContentToSummarize ? 'Заполните вкладки' :
                 humanizeStatus === 'completed' ? 'Готово' : 
                 humanizeStatus === 'processing' ? 'Суммирование...' : 
                 'Суммировать отзыв'
@@ -244,7 +244,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, onUnmounted, computed, onMounted, nextTick } from 'vue';
+import { reactive, ref, onUnmounted, computed, onMounted } from 'vue';
 
 const form = reactive({ 
   emotionalRelease: '',
@@ -273,6 +273,7 @@ onMounted(() => {
   };
   checkMobile();
   window.addEventListener('resize', checkMobile);
+  updateSuggestionsForGender();
 });
 
 // Состояние кнопок копирования
@@ -298,15 +299,9 @@ const hasAnyText = computed(() => {
   return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
 });
 
-// Проверяем, заполнено ли больше одного поля для суммирования
-const hasMultipleFields = computed(() => {
-  const fieldsCount = [
-    form.emotionalRelease.trim(),
-    form.factualAnalysis.trim(), 
-    form.constructiveSuggestions.trim()
-  ].filter(text => text.length > 0).length;
-  
-  return fieldsCount > 1;
+// Проверяем, есть ли контент для суммирования независимо от секции
+const hasContentToSummarize = computed(() => {
+  return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
 });
 
 // Получение текущего текста
@@ -338,7 +333,16 @@ const genderSpecificWords = {
     'поехал': 'поехала',
     'остался': 'осталась',
     'получил': 'получила',
-    'попросил': 'попросила'
+    'попросил': 'попросила',
+    'засекал': 'засекала',
+    'спросил': 'спросила',
+    'заказал в': 'заказала в',
+    'получил в': 'получила в',
+    'подходил': 'подходила',
+    'успел': 'успела',
+    'ждал': 'ждала',
+    'потратил': 'потратила',
+    'опоздал': 'опоздала'
   },
   male: {
     'разочарована': 'разочарован',
@@ -358,7 +362,16 @@ const genderSpecificWords = {
     'поехала': 'поехал',
     'осталась': 'остался',
     'получила': 'получил',
-    'попросила': 'попросил'
+    'попросила': 'попросил',
+    'засекала': 'засекал',
+    'спросила': 'спросил',
+    'заказала в': 'заказал в',
+    'получила в': 'получил в',
+    'подходила': 'подходил',
+    'успела': 'успел',
+    'ждала': 'ждал',
+    'потратила': 'потратил',
+    'опоздала': 'опоздал'
   }
 };
 
@@ -375,64 +388,71 @@ function applyGenderCorrection(text, gender) {
   return result;
 }
 
-// Функция очистки и обрезания до 7 предложений
-function cleanAndLimitText(text) {
-  if (!text) return '';
+// Улучшенная функция структурирования текста
+function structureAndCleanText(emotionalText, factualText, solutionsText, gender) {
+  let result = '';
   
-  // Разбивает на предложения
-  let sentences = text.split(/\.\s+/);
+  // 1. Эмоциональная часть
+  if (emotionalText) {
+    const emotions = emotionalText.trim();
+    const correctedEmotions = applyGenderCorrection(emotions, gender);
+    result += `**Впечатления:** ${correctedEmotions}`;
+  }
   
-  // Удаляем пустые предложения и обрезки
-  sentences = sentences.filter(sentence => {
-    const cleaned = sentence.trim();
-    return cleaned.length > 10 && cleaned.includes(' '); // Минимум 10 символов и содержит пробел
-  });
+  // 2. Фактологическая часть
+  if (factualText) {
+    const facts = factualText.trim();
+    if (result) result += '\n\n';
+    result += `**Проблемы:** ${facts}`;
+  }
   
-  // Ограничиваем до 7 предложений
-  sentences = sentences.slice(0, 7);
+  // 3. Решения
+  if (solutionsText) {
+    const solutions = solutionsText.trim();
+    if (result) result += '\n\n';
+    result += `**Предложения:** ${solutions}`;
+  }
   
-  // Убираем повторяющиеся фразы "ведь это важно", "так как это важно", "потому что это важно"
-  sentences = sentences.map(sentence => {
-    return sentence
-      .replace(/,?\s*(ведь|так как|потому что)\s+это\s+важно/gi, '')
-      .replace(/,?\s*дело в том, что\s*/gi, '. ')
-      .replace(/\s+/g, ' ')
-      .trim();
-  }).filter(sentence => sentence.length > 5);
-  
-  return sentences.join('. ') + (sentences.length > 0 ? '.' : '');
-}
-
-// Улучшенная функция суммирования
-const smartSummarizeAllFields = () => {
-  const emotionalText = form.emotionalRelease.trim();
-  const factualText = form.factualAnalysis.trim();
-  const solutionsText = form.constructiveSuggestions.trim();
-  
-  const parts = [];
-  
-  if (emotionalText) parts.push(emotionalText);
-  if (factualText) parts.push(factualText);
-  if (solutionsText) parts.push(solutionsText);
-  
-  if (parts.length === 0) return '';
-  
-  // Простое соединение с точками
-  let result = parts.join('. ');
-  
-  // Применяем гендерную коррекцию
-  result = applyGenderCorrection(result, selectedGender.value);
-  
-  // Очищаем и ограничиваем
-  result = cleanAndLimitText(result);
-  
-  // Делаем первую букву заглавной
-  if (result) {
-    result = result.charAt(0).toUpperCase() + result.slice(1);
+  // 4. Краткий вывод
+  if (emotionalText || factualText || solutionsText) {
+    if (result) result += '\n\n';
+    const conclusion = generateConclusion(emotionalText, factualText, solutionsText, gender);
+    result += `**Вывод:** ${conclusion}`;
   }
   
   return result;
-};
+}
+
+// Генерация краткого вывода
+function generateConclusion(emotions, facts, solutions, gender) {
+  const hasEmotions = emotions && emotions.trim();
+  const hasFacts = facts && facts.trim();  
+  const hasSolutions = solutions && solutions.trim();
+  
+  let conclusion = '';
+  
+  if (hasEmotions && hasFacts && hasSolutions) {
+    conclusion = gender === 'female' ? 
+      'Посещение не оправдало ожиданий, однако проблемы решаемы при должном внимании руководства.' :
+      'Посещение не оправдало ожиданий, однако проблемы решаемы при должном внимании руководства.';
+  } else if (hasEmotions && hasFacts) {
+    conclusion = gender === 'female' ?
+      'Была разочарована качеством обслуживания по указанным причинам.' :
+      'Был разочарован качеством обслуживания по указанным причинам.';
+  } else if (hasEmotions && hasSolutions) {
+    conclusion = gender === 'female' ?
+      'Надеюсь, что предложенные улучшения помогут избежать подобных ситуаций.' :
+      'Надеюсь, что предложенные улучшения помогут избежать подобных ситуаций.';
+  } else if (hasFacts && hasSolutions) {
+    conclusion = 'Описанные проблемы требуют внимания для улучшения сервиса.';
+  } else {
+    conclusion = gender === 'female' ?
+      'Делюсь опытом для улучшения качества обслуживания.' :
+      'Делюсь опытом для улучшения качества обслуживания.';
+  }
+  
+  return conclusion;
+}
 
 // Основная функция суммирования
 async function summarizeAllContent() {
@@ -445,11 +465,16 @@ async function summarizeAllContent() {
     // Имитируем обработку
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    // Генерируем суммированный текст
-    const summarizedText = smartSummarizeAllFields();
+    // Генерируем структурированный текст
+    const structuredText = structureAndCleanText(
+      form.emotionalRelease.trim(),
+      form.factualAnalysis.trim(),
+      form.constructiveSuggestions.trim(),
+      selectedGender.value
+    );
     
     // Обновляем поле итогового отзыва
-    form.summaryText = summarizedText;
+    form.summaryText = structuredText;
     
     humanizeStatus.value = 'completed';
     
@@ -508,147 +533,59 @@ const copyCurrentSectionText = async () => {
   }
 };
 
-// ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок из файла
-const suggestions = reactive({
+// Базовые подсказки (женские)
+const baseSuggestions = {
   emotions: {
-    // УРОВЕНЬ 1: Основные эмоции
-    initial: ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'],
-    
-    // УРОВЕНЬ 2: Причины эмоций
-    'расстроен': ['долго ждал', 'грязная посуда', 'холодный кофе', 'грубый персонал', 'забыли заказ'],
-    'разочарован': ['качеством', 'сервисом', 'ожиданиями', 'атмосферой', 'чистотой'],
-    'недоволен': ['обслуживанием', 'очередью', 'ошибкой в заказе', 'температурой блюд', 'упаковкой'],
-    'возмущён': ['антисанитарией', 'хамством', 'обманом', 'некачественной едой', 'инородными предметами'],
-    'удивлён': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком', 'отношением'],
-    
-    // УРОВЕНЬ 3: Детали эмоциональных переживаний
-    'долго ждал': ['20 минут', '30 минут', 'более часа', 'без объяснений', 'видя пустую кофейню'],
-    'грязная посуда': ['следы помады', 'остатки еды', 'жирные пятна', 'засохший кофе', 'странный запах'],
-    'холодный кофе': ['едва теплый', 'совсем остыл', 'подали холодным', 'остыл пока ждал', 'температура комнатная'],
-    'грубый персонал': ['не поздоровались', 'хамили', 'игнорировали', 'были раздражены', 'повысили голос'],
-    'забыли заказ': ['через 40 минут', 'не записали', 'потеряли чек', 'не передали на кухню', 'сидел и ждал'],
-    'качеством': ['хуже чем обычно', 'не соответствует цене', 'испортилось за месяц', 'как в фастфуде', 'совсем не то'],
-    'сервисом': ['медленный', 'невнимательный', 'равнодушный', 'непрофессиональный', 'хаотичный'],
-    'ожиданиями': ['ждал большего', 'по отзывам лучше', 'раньше было вкуснее', 'не оправдал репутацию', 'переоценил место'],
-    'атмосферой': ['шумно и грязно', 'неуютно', 'холодно', 'плохая музыка', 'неприятные запахи'],
-    'чистотой': ['грязные столы', 'липкий пол', 'немытая посуда', 'пыль везде', 'антисанитария'],
-    'обслуживанием': ['долгое ожидание', 'путаница в заказах', 'невежливость', 'игнорирование', 'ошибки кассира'],
-    'очередью': ['не двигалась', 'час стоял', 'нет системы', 'хаос', 'всех пропускают'],
-    'ошибкой в заказе': ['не тот напиток', 'забыли позицию', 'неправильный размер', 'другой сироп', 'перепутали'],
-    'температурой блюд': ['холодные', 'остывшие', 'чуть теплые', 'не разогрели', 'ледяные'],
-    'упаковкой': ['протекающие крышки', 'слабые пакеты', 'разорвалась', 'неудобная', 'грязная'],
-    'антисанитарией': ['грязные руки', 'упал и подали', 'на полу готовят', 'мухи', 'тараканы'],
-    'хамством': ['нагрубили', 'оскорбили', 'накричали', 'показали характер', 'послали'],
-    'обманом': ['не тот объем', 'обвесили', 'скрыли стоимость', 'навязали', 'обсчитали'],
-    'некачественной едой': ['испорченная', 'несвежая', 'странный вкус', 'горькая', 'кислая'],
-    'инородными предметами': ['волосы в еде', 'пластик в круассане', 'проволока', 'нитки', 'жук'],
-    'таким сервисом': ['впервые такое', 'не ожидал', 'шокирован', 'не верю', 'ужасно'],
-    'проблемами': ['постоянные', 'одни и те же', 'системные', 'не решаются', 'игнорируются'],
-    'невниманием': ['не слушают', 'не реагируют', 'все равно', 'безразличие', 'не заботятся'],
-    'беспорядком': ['хаос', 'непорядок', 'бардак', 'неорганизованность', 'суета'],
-    'отношением': ['пренебрежение', 'высокомерие', 'равнодушие', 'неуважение', 'хамство']
+    initial: ['расстроена', 'разочарована', 'недовольна', 'возмущена', 'удивлена'],
+    'расстроена': ['долго ждала', 'грязная посуда', 'холодный кофе', 'грубый персонал', 'забыли заказ'],
+    'разочарована': ['качеством', 'сервисом', 'ожиданиями', 'атмосферой', 'чистотой'],
+    'недовольна': ['обслуживанием', 'очередью', 'ошибкой в заказе', 'температурой блюд', 'упаковкой'],
+    'возмущена': ['антисанитарией', 'хамством', 'обманом', 'некачественной едой', 'инородными предметами'],
+    'удивлена': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком', 'отношением']
   },
-  
   facts: {
-    // УРОВЕНЬ 1: Основные категории проблем
     initial: ['ожидание', 'ошибка в заказе', 'качество блюд', 'чистота', 'персонал'],
-    
-    // УРОВЕНЬ 2: Детали проблем
     'ожидание': ['20 минут', '30 минут', 'более часа', 'забыли заказ', 'очередь не двигалась'],
     'ошибка в заказе': ['не тот напиток', 'не доложили позицию', 'неправильный соус', 'перепутали объём', 'другое молоко'],
     'качество блюд': ['холодный кофе', 'невкусная еда', 'недоваренный рис', 'комочки в матче', 'чёрствая выпечка'],
     'чистота': ['грязная посуда', 'волосы в еде', 'грязная уборная', 'насекомые', 'пластик в круассане'],
-    'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились'],
-    
-    // УРОВЕНЬ 3: Конкретные детали инцидентов
-    '20 минут': ['засекал по часам', 'спросил у соседнего стола', 'заказал в 14:30, получил в 14:50', 'долгое ожидание для простого заказа', 'других обслужили быстрее'],
-    '30 минут': ['полчаса точно', 'с 15:00 до 15:30', 'дважды подходил узнать', 'время на телефоне показало', 'успел прочитать новости'],
-    'более часа': ['час и 10 минут', 'полтора часа ждал', 'с 12:00 до 13:15', 'весь обед потратил', 'опоздал на встречу'],
-    'забыли заказ': ['не записали', 'потеряли чек', 'не передали на кухню', 'перепутали с другим', 'готовили не то'],
-    'очередь не двигалась': ['стоял полчаса', 'один кассир на всех', 'касса сломалась', 'менялись местами', 'хаос'],
-    'не тот напиток': ['заказал латте, принесли капучино', 'просил без сахара, был сладкий', 'хотел большой, дали маленький', 'другой сироп добавили', 'обычное молоко вместо овсяного'],
-    'не доложили позицию': ['забыли десерт', 'нет половины заказа', 'пропали сэндвичи', 'только кофе принесли', 'блинчики не было'],
-    'неправильный соус': ['положили не тот соус к тыквенным панкейкам', 'острый вместо сладкого', 'майонез вместо сметаны', 'кетчуп забыли', 'соус отдельно не дали'],
-    'перепутали объём': ['несоответствие объема напитков', 'маленький вместо большого', 'дали меньше чем заказал', 'размер не тот', 'обманули с порцией'],
-    'другое молоко': ['обычное вместо овсяного', 'соевое вместо миндального', 'с лактозой дали', 'не предупредили', 'аллергия может быть'],
-    'холодный кофе': ['градусов 40-50', 'можно было пить сразу', 'не обжигал язык', 'как будто стоял долго', 'температура комнатная'],
-    'невкусная еда': ['пересоленная', 'недосоленная', 'горькая', 'кислая', 'странный вкус'],
-    'недоваренный рис': ['недоваренный рис, не свежий лайм и черный волос в редисе', 'жесткий', 'сырой', 'хрустит на зубах', 'не доварили'],
-    'комочки в матче': ['комочки в матче', 'не размешали', 'порошок не растворился', 'комки муки', 'неоднородная масса'],
-    'чёрствая выпечка': ['как камень', 'вчерашняя', 'сухая', 'твердая', 'невозможно откусить'],
-    'грязная посуда': ['на чашке помада', 'жирные разводы на тарелке', 'крошки от предыдущих гостей', 'капли кофе на блюдце', 'следы от губной помады'],
-    'волосы в еде': ['черный волос в редисе', 'длинный волос в салате', 'волосы на булочке', 'в супе волос', 'противно есть'],
-    'грязная уборная': ['не убирали', 'бумаги нет', 'воняет', 'лужи на полу', 'грязь везде'],
-    'насекомые': ['тараканы бегают', 'муха в кофе', 'жук в салате', 'паук на стене', 'противно смотреть'],
-    'пластик в круассане': ['кусочек пластика в круассане', 'твердый кусок', 'чуть не сломал зуб', 'опасно', 'мог подавиться'],
-    'грубость': ['не поздоровались', 'ответили резко', 'закатили глаза', 'проигнорировали вопрос', 'были явно недовольны'],
-    'невнимательность': ['не слушали', 'переспрашивали', 'отвлекались', 'забыли просьбу', 'записали неправильно'],
-    'некомпетентность': ['не знали меню', 'не умели готовить', 'путались в кнопках', 'долго соображали', 'спрашивали у коллег'],
-    'трогали еду руками': ['трогали трубочку грязными руками', 'лапали булочки', 'без перчаток', 'грязными руками', 'неаккуратно'],
-    'не извинились': ['даже не извинились', 'было все равно', 'сделали вид что нормально', 'проигнорировали', 'сказали что так и надо']
+    'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились']
   },
-  
   solutions: {
-    // УРОВЕНЬ 1: Основные направления решений
     initial: ['таймер ожидания', 'обучение персонала', 'контроль качества', 'система проверки', 'стандарты сервиса'],
-    
-    // УРОВЕНЬ 2: Конкретные решения
-    'таймер ожидания': ['визуальный контроль бариста/старшего бариста', 'с номерами заказов', 'видимый гостям', 'контроль времени', 'сигналы на баре', 'обратная связь от гостей'],
+    'таймер ожидания': ['визуальный контроль бариста', 'с номерами заказов', 'видимый гостям', 'контроль времени', 'сигналы на баре'],
     'обучение персонала': ['по сервису', 'по санитарии', 'по качеству', 'по коммуникации', 'регулярные тренинги'],
     'контроль качества': ['проверка блюд', 'температурный контроль', 'свежесть продуктов', 'упаковка', 'дегустация'],
     'система проверки': ['чек-лист качества', 'двойная проверка', 'контроль чистоты', 'стандарты подачи', 'фото блюд'],
-    'стандарты сервиса': ['вежливость', 'скорость', 'точность', 'чистота', 'профессионализм'],
-    
-    // УРОВЕНЬ 3: Детальные технические решения
-    'визуальный контроль бариста/старшего бариста': ['песочные часы на стойке', 'отчёты по среднему времени заказа', 'замеры скорости обслуживания менеджером', 'сравнение с нормой', 'обсуждение на пятиминутке'],
-    'с номерами заказов': ['в мобильном приложении', 'на чеке QR-код', 'на чеке номер заказа'],
-    'видимый гостям': ['в мобильном приложении', 'на чеке QR-код', 'на чеке номер заказа'],
-    'контроль времени': ['стандарт 7 минут', 'красная зона после 10 мин', 'автоотсчёт от момента пробития чека'],
-    'сигналы на баре': ['цветовые индикаторы готовности', 'звуковой таймер для бариста'],
-    'обратная связь от гостей': ['опрос о времени ожидания', 'кнопка "долго жду" в приложении', 'комментарий в чеке QR-кодом'],
-    'по сервису': ['тренинги вежливости', 'ролевые игры', 'работа с жалобами', 'стандарты общения', 'мотивация персонала'],
-    'по санитарии': ['мытье посуды', 'уборка столов', 'проверка чистоты', 'гигиена рук', 'контроль температуры'],
-    'по качеству': ['дегустация напитков', 'проверка ингредиентов', 'температура подачи', 'внешний вид блюд', 'сроки годности'],
-    'по коммуникации': ['активное слушание', 'решение конфликтов', 'извинения и компенсации', 'позитивное общение', 'работа с негативом'],
-    'регулярные тренинги': ['раз в месяц', 'новых сотрудников', 'переаттестация', 'мастер-классы', 'обмен опытом'],
-    'проверка блюд': ['перед подачей', 'температура напитков', 'внешний вид', 'соответствие заказу', 'свежесть ингредиентов'],
-    'температурный контроль': ['термометр для кофе', '85-90 градусов', 'горячие блюда', 'холодные напитки', 'контроль каждый час'],
-    'свежесть продуктов': ['ежедневная поставка', 'сроки годности', 'ротация товара', 'маркировка даты', 'утилизация просрочки'],
-    'упаковка': ['герметичные крышки', 'качественные пакеты', 'стаканы не протекают', 'салфетки в комплекте', 'удобная переноска'],
-    'дегустация': ['каждая партия', 'новые рецепты', 'мнение гостей', 'тестирование вкуса', 'корректировка рецептур'],
-    'чек-лист качества': ['для каждого заказа', 'проверка температуры', 'чистота посуды', 'правильность состава', 'время подачи'],
-    'двойная проверка': ['готовящий и подающий', 'кассир и бариста', 'менеджер и персонал', 'фото готового блюда', 'подпись ответственного'],
-    'контроль чистоты': ['каждый час', 'чек-лист уборки', 'дезинфекция', 'мытье рук', 'чистая форма'],
-    'стандарты подачи': ['правильная посуда', 'украшение блюд', 'салфетки и приборы', 'температура подачи', 'презентация'],
-    'фото блюд': ['перед подачей', 'контроль качества', 'обучение персонала', 'соцсети', 'архив образцов'],
-    'вежливость': ['приветствие с улыбкой', 'благодарность гостю', 'извинения за ошибки', 'помощь в выборе', 'прощание'],
-    'скорость': ['стандарт 10 минут', 'быстрое принятие заказа', 'оперативная готовка', 'мгновенная подача', 'ускоренная оплата'],
-    'точность': ['записывать заказы', 'повторять вслух', 'проверять чек', 'уточнять детали', 'контроль состава'],
-    'чистота': ['мытье рук каждые 30 мин', 'чистая форма', 'дезинфекция поверхностей', 'порядок на рабочем месте', 'свежая посуда'],
-    'профессионализм': ['знание меню', 'умение готовить', 'решение проблем', 'работа в команде', 'развитие навыков']
+    'стандарты сервиса': ['вежливость', 'скорость', 'точность', 'чистота', 'профессионализм']
   }
-});
+};
 
 // Текущие подсказки для каждого поля
 const currentSuggestions = reactive({
-  emotions: [...suggestions.emotions.initial],
-  facts: [...suggestions.facts.initial],
-  solutions: [...suggestions.solutions.initial]
+  emotions: [...baseSuggestions.emotions.initial],
+  facts: [...baseSuggestions.facts.initial],
+  solutions: [...baseSuggestions.solutions.initial]
 });
 
-// Выбранные подсказки (для построения цепочек)
+// Выбранные подсказки (для фильтрации)
 const selectedSuggestions = reactive({
   emotions: [],
   facts: [],
   solutions: []
 });
 
-// Счетчики веток для улучшенного разделения текста
-const branchCounters = reactive({
-  emotions: 0,
-  facts: 0,
-  solutions: 0
-});
+// Функция обновления подсказок под пол
+const updateSuggestionsForGender = () => {
+  if (selectedGender.value === 'male') {
+    // Меняем женские окончания на мужские
+    currentSuggestions.emotions = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'];
+  } else {
+    currentSuggestions.emotions = [...baseSuggestions.emotions.initial];
+  }
+  // Сбрасываем выбранные подсказки при смене пола
+  selectedSuggestions.emotions = [];
+};
 
 const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
 const phrasesForQuestion2 = ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'];
@@ -665,15 +602,23 @@ let currentQuestionIndex3 = 0;
 
 // Проверка, являются ли текущие подсказки начальными
 function isInitialSuggestions(suggestionType) {
-  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(suggestions[suggestionType].initial);
+  const initialSuggs = suggestionType === 'emotions' && selectedGender.value === 'male' 
+    ? ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён']
+    : baseSuggestions[suggestionType].initial;
+  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(initialSuggs);
 }
 
 // Сброс подсказок к начальным вариантам
 function resetSuggestions(suggestionType) {
-  currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
+  if (suggestionType === 'emotions' && selectedGender.value === 'male') {
+    currentSuggestions.emotions = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'];
+  } else {
+    currentSuggestions[suggestionType] = [...baseSuggestions[suggestionType].initial];
+  }
+  selectedSuggestions[suggestionType] = []; // Очищаем список выбранных
 }
 
-// УЛУЧШЕННАЯ функция выбора подсказки с разделением веток
+// Функция выбора подсказки с фильтрацией
 function selectSuggestion(fieldName, suggestion, suggestionType) {
   const currentText = form[fieldName].trim();
   
@@ -684,7 +629,6 @@ function selectSuggestion(fieldName, suggestion, suggestionType) {
     if (isNewBranch) {
       // Новая ветка - добавляем с точкой и заглавной буквы
       form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-      branchCounters[suggestionType]++;
     } else {
       // Продолжение ветки - добавляем через пробел
       form[fieldName] = currentText + ' ' + suggestion;
@@ -692,7 +636,6 @@ function selectSuggestion(fieldName, suggestion, suggestionType) {
   } else {
     // Первый выбор
     form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-    branchCounters[suggestionType] = 1;
   }
   
   // Сохраняем выбранную подсказку
@@ -702,14 +645,38 @@ function selectSuggestion(fieldName, suggestion, suggestionType) {
   updateSuggestions(suggestionType, suggestion);
 }
 
-// Обновление подсказок на основе выбора
+// Обновление подсказок на основе выбора с фильтрацией
 function updateSuggestions(suggestionType, selectedWord) {
-  const nextSuggestions = suggestions[suggestionType][selectedWord];
+  const nextSuggestions = baseSuggestions[suggestionType][selectedWord];
   if (nextSuggestions && nextSuggestions.length > 0) {
-    currentSuggestions[suggestionType] = [...nextSuggestions];
+    // Фильтруем уже выбранные подсказки
+    const filteredSuggestions = nextSuggestions.filter(suggestion => 
+      !selectedSuggestions[suggestionType].includes(suggestion)
+    );
+    
+    if (filteredSuggestions.length > 0) {
+      currentSuggestions[suggestionType] = filteredSuggestions;
+    } else {
+      // Если все подсказки использованы, показываем начальные (тоже отфильтрованные)
+      const filteredInitial = suggestionType === 'emotions' && selectedGender.value === 'male'
+        ? ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'].filter(suggestion => 
+            !selectedSuggestions[suggestionType].includes(suggestion)
+          )
+        : baseSuggestions[suggestionType].initial.filter(suggestion => 
+            !selectedSuggestions[suggestionType].includes(suggestion)
+          );
+      currentSuggestions[suggestionType] = filteredInitial;
+    }
   } else {
-    // Если нет продолжения цепочки, показываем начальные подсказки
-    currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
+    // Если нет продолжения цепочки, показываем начальные подсказки (отфильтрованные)
+    const filteredInitial = suggestionType === 'emotions' && selectedGender.value === 'male'
+      ? ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'].filter(suggestion => 
+          !selectedSuggestions[suggestionType].includes(suggestion)
+        )
+      : baseSuggestions[suggestionType].initial.filter(suggestion => 
+          !selectedSuggestions[suggestionType].includes(suggestion)
+        );
+    currentSuggestions[suggestionType] = filteredInitial;
   }
 }
 
@@ -1006,16 +973,16 @@ textarea[readonly] {
   font-weight: 600;
 }
 
-/* КНОПКА СУММИРОВАНИЯ */
+/* КНОПКА СУММИРОВАНИЯ - высота 56px */
 .signal-humanize-button-container {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   margin-bottom: 1rem;
 }
 
 .signal-liquid-humanize-btn {
   position: relative;
   width: 100%;
-  height: 50px;
+  height: 56px;
   border-radius: 18px;
   border: 2px solid #444;
   background: #2a2a2e;
@@ -1052,16 +1019,16 @@ textarea[readonly] {
 .signal-liquid-humanize-text {
   position: relative;
   z-index: 3;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   transition: color 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-/* БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ ВНИЗУ - ВСЕГДА ВИДНА */
+/* КНОПКА КОПИРОВАНИЯ */
 .signal-copy-button-container {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .signal-liquid-copy-btn.signal-main-copy {
@@ -1182,18 +1149,9 @@ textarea[readonly] {
 }
 
 /* Hover эффекты */
-.signal-emotion-copy:not(.signal-copy-disabled):hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-fact-copy:not(.signal-copy-disabled):hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-solution-copy:not(.signal-copy-disabled):hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
+.signal-emotion-copy:not(.signal-copy-disabled):hover::before,
+.signal-fact-copy:not(.signal-copy-disabled):hover::before,
+.signal-solution-copy:not(.signal-copy-disabled):hover::before,
 .signal-summary-copy:not(.signal-copy-disabled):hover::before {
   filter: brightness(1.5) saturate(1.3);
 }
@@ -1232,7 +1190,7 @@ textarea[readonly] {
     padding: 6px 10px;
   }
   .signal-copy-button-container {
-    margin-top: 1.5rem;
+    margin-top: 0.75rem;
   }
   .signal-liquid-copy-btn.signal-main-copy {
     height: 52px;
@@ -1253,7 +1211,7 @@ textarea[readonly] {
     height: 20px;
   }
   .signal-humanize-button-container {
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
   }
   .signal-liquid-humanize-btn {
     height: 48px;
