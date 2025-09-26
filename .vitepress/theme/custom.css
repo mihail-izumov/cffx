@@ -10,41 +10,33 @@
 .layout-home .VPFeature .details { color: rgba(255, 255, 255, 0.85) !important; }
 .layout-home .VPFeature a:hover { color: #4ade80 !important; }
 
-/* --- СТИЛИ ДЛЯ ЦЕНТРИРОВАНИЯ С УВЕЛИЧЕННОЙ ШИРИНОЙ --- */
+/* --- ЦЕНТРИРОВАНИЕ ДЛЯ pageClass: centered-page --- */
+/* 1) Убираем grid у документа, чтобы не было левой колонки под сайдбар */
+.centered-page .VPDoc {
+  display: block !important;
+}
+
+/* 2) На всякий случай скрываем aside/outline, если они рендерятся */
+.centered-page .VPDoc .aside,
+.centered-page .VPDoc .outline {
+  display: none !important;
+}
+
+/* 3) Центрируем контейнер и задаём ширины */
 .centered-page .VPDoc .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 32px;
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
-.centered-page .VPContent {
-    max-width: 1000px;
-    margin: 0 auto;
+/* Внутренний контент немного уже контейнера для комфортного чтения */
+.centered-page .VPDoc .content {
+  max-width: 928px;
+  margin: 0 auto;
 }
 
-/* Убираем боковые отступы */
-.centered-page .VPDoc:not(.has-sidebar) .container {
-    max-width: 1200px;
-}
-
-/* Центрируем основной контент с увеличенной шириной */
-.centered-page .content {
-    max-width: 960px;
-    margin: 0 auto;
-}
-
-/* Для полной ширины контейнера при необходимости */
-.centered-page .content-container {
-    max-width: none;
-}
-
-/* Адаптивность для мобильных устройств */
+/* 4) Мобильная адаптация */
 @media (max-width: 768px) {
-    .centered-page .VPDoc .container {
-        padding: 0 16px;
-    }
-    
-    .centered-page .VPContent {
-        max-width: 100%;
-    }
+  .centered-page .VPDoc .container { padding: 0 16px; }
+  .centered-page .VPDoc .content { max-width: 100%; }
 }
