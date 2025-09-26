@@ -347,7 +347,7 @@ const goToNextSection = () => {
   if (idx < sections.length - 1) selectedSection.value = sections[idx + 1].id;
 };
 
-// ===== Гендерная коррекция для кириллицы =====
+/* ===================== Гендерная коррекция (обновлено) ===================== */
 const CYR = 'А-Яа-яЁё';
 const beforeBoundary = `(^|[^${CYR}])`;
 const afterBoundary = `(?=[^${CYR}]|$)`;
@@ -403,9 +403,9 @@ function applyGenderCorrection(text, gender) {
   }
   return out;
 }
+/* ========================================================================== */
 
-// ===== Вспомогательные =====
-const SECTION_SPLIT = '---';
+/* ===== Вспомогательные ===== */
 function removeDuplicates(text) {
   const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 2);
   const seen = new Set();
@@ -417,22 +417,23 @@ function removeDuplicates(text) {
   return uniq.join('. ') + (uniq.length ? '.' : '');
 }
 
+/* ===== Сбор итогового текста (меняли только гендер и разделитель) ===== */
 function structureAndCleanText(shareText, emotionalText, factualText, solutionsText, gender) {
   let result = '';
 
-  // Мой отзыв сейчас
+  // Мой отзыв сейчас — применяем гендер прямо к тексту пользователя
   if (shareText.trim()) {
-    let s = shareText.trim();
+    let s = applyGenderCorrection(shareText.trim(), gender);
     if (!/[.!?]$/.test(s)) s += '.';
-    result += `МОЙ ОТЗЫВ СЕЙЧАС: ${s[0].toUpperCase()}${s.slice(1)}`;
+    result += `МОЙ ОТЗЫВ СЕЙЧАС: ${s[0]?.toUpperCase() ?? ''}${s.slice(1)}`;
   } else {
     result += `МОЙ ОТЗЫВ СЕЙЧАС: (можно дополнить)`;
   }
 
-  // Разделитель и заголовок
-  result += `\n\n${SECTION_SPLIT}\nМожно улучшить:\n${SECTION_SPLIT}\n`;
+  // Разделитель и заголовок (замена '--- ... ---' на просто заголовок)
+  result += `\n\nМожно улучшить:\n`;
 
-  // Впечатления
+  // ВПЕЧАТЛЕНИЯ
   result += '\n';
   if (emotionalText.trim()) {
     const src = applyGenderCorrection(emotionalText.trim(), gender);
@@ -460,7 +461,7 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
     result += `ВПЕЧАТЛЕНИЯ\n(можно дополнить)`;
   }
 
-  // Проблемы
+  // ПРОБЛЕМЫ
   result += '\n\n';
   if (factualText.trim()) {
     const facts = factualText.trim();
@@ -488,7 +489,7 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
     result += `ПРОБЛЕМЫ\n(можно дополнить)`;
   }
 
-  // Предложения
+  // ПРЕДЛОЖЕНИЯ
   result += '\n\n';
   if (solutionsText.trim()) {
     const sols = solutionsText.trim();
@@ -519,6 +520,7 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
   return result;
 }
 
+/* ===== Обновить/суммировать (оставлено, но с гендерным проходом) ===== */
 function summarizeAllContent() {
   humanizeStatus.value = 'processing';
   try {
@@ -540,15 +542,18 @@ function summarizeAllContent() {
   }
 }
 
+/* ===== Применение пола по клику (пересчёт итога) ===== */
 function onGenderClick(gender) {
   selectedGender.value = gender;
   updateSuggestionsForGender();
-  if (selectedSection.value === 'summary' && form.summaryText.trim()) {
+  if (selectedSection.value === 'summary' && hasAnyForSummary.value) {
+    summarizeAllContent(); // пересобираем весь итог с учётом пола, включая "МОЙ ОТЗЫВ СЕЙЧАС"
+  } else if (selectedSection.value === 'summary' && form.summaryText.trim()) {
     form.summaryText = applyGenderCorrection(form.summaryText, selectedGender.value);
   }
 }
 
-// Подсказки (сокращённые для примера)
+/* ===== Подсказки (ваши списки остаются как есть) ===== */
 const baseSuggestions = {
   emotions: {
     initial: ['расстроена', 'разочарована', 'недовольна', 'возмущена', 'удивлена', 'довольна', 'восхищена', 'благодарна'],
@@ -601,7 +606,7 @@ function selectSuggestion(field, suggestion, type) {
 }
 const capitalize = s => s ? s[0].toUpperCase() + s.slice(1) : s;
 
-// Ротаторы
+/* ===== Ротаторы ===== */
 const phrasesForShare = [
   'Что вызвало улыбку или напряжение?',
   'Какой момент хотелось бы изменить?', 
@@ -684,22 +689,25 @@ function startRotation(num) {
 .modal-ok { background: #222; border: 1px solid rgba(255,255,255,0.12); color: #fff; border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 500; }
 .modal-ok:hover { background: #333; }
 
+/* Контейнер */
 .signal-demo__form-container { background-color: #1E1E20; border-radius: 24px; padding: 2rem; color: #f0f0f0; border: 1px solid #2c2c2f; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
 .signal-form-section { display: flex; flex-direction: column; gap: 1.5rem; }
 .signal-question-block { background-color: #2a2a2e; border-radius: 16px; padding: 1.25rem; border: 1px solid #3a3a3e; border-left: 4px solid var(--accent-color,#444); }
 
 .signal-direction-label { font-weight: 600; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: .05em; margin-bottom: .5rem; display: block; }
 
-/* Фикс высоты ротатора */
+/* Ротатор */
 .signal-rotating-phrase-container { min-height: 1.3em; margin-bottom: .6rem; display: flex; align-items: flex-start; overflow: hidden; }
 .signal-rotating-fixed-height { min-height: 2.6em; }
 .signal-question-label { font-weight: 500; font-size: 1rem; margin: 0; color: #f0f0f0; line-height: 1.3; width: 100%; }
 .fade-enter-active,.fade-leave-active { transition: opacity .5s ease; } .fade-enter-from,.fade-leave-to { opacity: 0; }
 
+/* Поля */
 textarea { width: 100%; background-color: #242426; border: 1px solid #444; border-radius: 10px; padding: .75rem 1rem; font-size: .95rem; color: #f0f0f0; transition: all .3s ease; font-family: var(--signal-font-sans); resize: vertical; }
 textarea:focus { outline: none; border-color: var(--accent-color); background-color: #2a2a2e; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); }
 ::placeholder { color: #666; }
 
+/* Подсказки */
 .signal-suggestions-container { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; margin-bottom: .5rem; }
 .signal-suggestion-bubble { padding: .35rem .85rem; border-radius: 20px; font-size: .8rem; font-weight: 500; cursor: pointer; transition: all .2s ease; border: 1px solid transparent; user-select: none; }
 .signal-emotion-bubble { background: rgba(169,114,255,.1); border-color: rgba(169,114,255,.3); color: #A972FF; }
@@ -707,15 +715,15 @@ textarea:focus { outline: none; border-color: var(--accent-color); background-co
 .signal-solution-bubble { background: rgba(255,184,0,.1); border-color: rgba(255,184,0,.3); color: #FFB800; }
 .signal-reset-bubble { font-weight: 600; opacity: .8; font-size: .75rem; border-style: dashed !important; }
 
+/* Хинты */
 .signal-example-hint { font-size: .8rem; color: #777; margin: .5rem 0 0 .25rem; line-height: 1.15; }
 .signal-example-hint-white { color: #f0f0f0 !important; margin: .5rem 0 0 0 !important; }
 
-/* Черта и подсказка */
 .signal-hint-separator { margin: 1rem 0; }
 .signal-hint-line { border: none; height: 1px; background: rgba(255,255,255,.2); margin-bottom: .75rem; }
 .signal-hint-text { font-size: .8rem; color: rgba(255,255,255,.6); line-height: 1.4; margin: 0; font-style: italic; }
 
-/* Кнопки внизу итога: уменьшенные отступы */
+/* Кнопки итога */
 .signal-humanize-button-container { margin-top: .75rem; margin-bottom: .25rem; }
 .signal-liquid-humanize-btn { position: relative; width: 100%; height: 56px; border-radius: 18px; border: 2px solid #444; background: #2a2a2e; color: #888; cursor: pointer; overflow: hidden; transition: all .3s ease; display: flex; align-items: center; justify-content: center; gap: 12px; white-space: nowrap; }
 .signal-liquid-humanize-btn:disabled { opacity: .5; cursor: not-allowed; }
