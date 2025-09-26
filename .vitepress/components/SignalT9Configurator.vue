@@ -42,12 +42,12 @@
           <div 
             class="signal-gender-btn signal-gender-female"
             :class="{ 'is-active': selectedGender === 'female' }"
-            @click="selectedGender = 'female'; updateSuggestionsForGender()"
+            @click="selectedGender = 'female'; updateSuggestionsForGender(); applyGenderToSummary()"
           ></div>
           <div 
             class="signal-gender-btn signal-gender-male"
             :class="{ 'is-active': selectedGender === 'male' }"
-            @click="selectedGender = 'male'; updateSuggestionsForGender()"
+            @click="selectedGender = 'male'; updateSuggestionsForGender(); applyGenderToSummary()"
           ></div>
         </div>
       </div>
@@ -208,7 +208,7 @@
       <!-- Секция "Итого" -->
       <div v-if="selectedSection === 'summary'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #FF6B6B;">
-          <p class="signal-direction-label">План вашего отзыва</p>
+          <p class="signal-direction-label">План умного отзыва</p>
           
           <div class="signal-rotating-phrase-container">
             <p class="signal-question-label">От эмоций до конструктивных предложений</p>
@@ -299,7 +299,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, onUnmounted, computed, onMounted, watch } from 'vue';
+import { reactive, ref, onUnmounted, computed, onMounted } from 'vue';
 
 const form = reactive({ 
   shareExperience: '',
@@ -338,13 +338,12 @@ onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown);
 });
 
-// Отслеживаем изменение пола и обновляем итоговый текст
-watch(selectedGender, () => {
+// ИСПРАВЛЕНИЕ 2: Новая функция для применения гендера к существующему тексту
+const applyGenderToSummary = () => {
   if (selectedSection.value === 'summary' && form.summaryText.trim()) {
-    // Применяем гендерную коррекцию к существующему тексту
     form.summaryText = applyGenderCorrection(form.summaryText, selectedGender.value);
   }
-});
+};
 
 const copyStatus = reactive({
   main: 'idle'
@@ -374,7 +373,7 @@ const hasContentToSummarize = computed(() => {
   return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
 });
 
-// ИСПРАВЛЕНИЕ 6: Функция для получения плейсхолдера
+// ИСПРАВЛЕНИЕ 1: Исправлена функция для плейсхолдера
 const getPlaceholderText = () => {
   const hasAnyContent = form.shareExperience.trim() || 
                        form.emotionalRelease.trim() || 
@@ -383,17 +382,6 @@ const getPlaceholderText = () => {
   
   if (!hasAnyContent) {
     return "Здесь появится план вашего отзыва...";
-  }
-  
-  // Проверяем, есть ли пустые поля
-  const emptyFields = [];
-  if (!form.shareExperience.trim()) emptyFields.push("поделиться впечатлениями");
-  if (!form.emotionalRelease.trim()) emptyFields.push("эмоции");
-  if (!form.factualAnalysis.trim()) emptyFields.push("факты");
-  if (!form.constructiveSuggestions.trim()) emptyFields.push("решения");
-  
-  if (emptyFields.length > 0) {
-    return "(можно дополнить)";
   }
   
   return "Здесь появится план вашего отзыва...";
@@ -465,28 +453,28 @@ function removeDuplicates(text) {
   return uniqueSentences.join('. ') + (uniqueSentences.length > 0 ? '.' : '');
 }
 
-// ИСПРАВЛЕННАЯ функция структурирования с новым форматированием
+// ИСПРАВЛЕНИЕ 1 и 3: Полностью переписанная функция структурирования
 function structureAndCleanText(shareText, emotionalText, factualText, solutionsText, gender) {
   let result = '';
   
-  // 1. Сначала текст из "Поделитесь"
-  if (shareText) {
+  // 1. Блок "МОЙ ОТЗЫВ СЕЙЧАС"
+  if (shareText.trim()) {
     let userText = shareText.trim();
-    // Добавляем точку в конце если её нет
     if (!userText.match(/[.!?]$/)) {
       userText += '.';
     }
     result += `МОЙ ОТЗЫВ СЕЙЧАС: ${userText.charAt(0).toUpperCase() + userText.slice(1)}`;
+  } else {
+    result += `МОЙ ОТЗЫВ СЕЙЧАС: (можно дополнить)`;
   }
   
-  // Заголовок для улучшений
-  if (emotionalText || factualText || solutionsText) {
-    if (result) result += '\n\n';
-    result += 'МОЖНО УЛУЧШИТЬ:';
-  }
+  // 2. ИСПРАВЛЕНИЕ 3: Заголовок "Можно улучшить:" (жирный, не заглавные)
+  if (result) result += '\n\n';
+  result += '**Можно улучшить:**';
   
-  // 2. Эмоциональная часть
-  if (emotionalText) {
+  // 3. Блок ВПЕЧАТЛЕНИЯ
+  if (result) result += '\n\n';
+  if (emotionalText.trim()) {
     const emotions = applyGenderCorrection(emotionalText.trim(), gender);
     const sentences = emotions.split(/[.!]/).map(s => s.trim()).filter(s => s);
     
@@ -497,7 +485,6 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
     sentences.forEach(sentence => {
       const lower = sentence.toLowerCase();
       if (lower.includes('доволь') || lower.includes('восхищ') || lower.includes('благодар')) {
-        // Добавляем тире для положительных эмоций
         const parts = sentence.split(' ');
         if (parts.length > 3) {
           const formatted = parts.slice(0, 3).join(' ') + ' – ' + parts.slice(3).join(' ');
@@ -508,7 +495,6 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
       } else if (lower.includes('удивл')) {
         neutralEmotions.push(sentence);
       } else {
-        // Добавляем тире для негативных эмоций 
         const parts = sentence.split(' ');
         if (parts.length > 3) {
           const formatted = parts.slice(0, 3).join(' ') + ' – ' + parts.slice(3).join(' ');
@@ -525,20 +511,19 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
     if (negativeEmotions.length > 0) emotionText += negativeEmotions.join('. ') + '.';
     
     emotionText = removeDuplicates(emotionText);
-    if (result) result += '\n\n';
     result += `ВПЕЧАТЛЕНИЯ\n${emotionText}`;
+  } else {
+    result += `ВПЕЧАТЛЕНИЯ\n(можно дополнить)`;
   }
   
-  // 3. Фактологическая часть с правильным форматированием "Категория: детали"
-  if (factualText) {
-    if (result) result += '\n\n';
-    
+  // 4. Блок ПРОБЛЕМЫ
+  if (result) result += '\n\n';
+  if (factualText.trim()) {
     const facts = factualText.trim();
     const sentences = facts.split(/[.!]/).map(s => s.trim()).filter(s => s);
     const factGroups = {};
     
     sentences.forEach(sentence => {
-      // Определяем категорию по первым 2-3 словам
       let category = '';
       
       if (sentence.toLowerCase().includes('ожидан') || sentence.toLowerCase().includes('ждал')) {
@@ -558,7 +543,6 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
       
       if (!factGroups[category]) factGroups[category] = [];
       
-      // Извлекаем детали (убираем категорию из начала)
       let details = sentence;
       if (sentence.toLowerCase().startsWith(category.toLowerCase())) {
         details = sentence.substring(category.length).replace(/^[\s:,-]+/, '');
@@ -579,12 +563,13 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
     
     factText = removeDuplicates(factText);
     result += `ПРОБЛЕМЫ\n${factText}`;
+  } else {
+    result += `ПРОБЛЕМЫ\n(можно дополнить)`;
   }
   
-  // 4. Парсинг решений с форматированием "Направление: конкретные меры"
-  if (solutionsText) {
-    if (result) result += '\n\n';
-    
+  // 5. Блок ПРЕДЛОЖЕНИЯ
+  if (result) result += '\n\n';
+  if (solutionsText.trim()) {
     const solutions = solutionsText.trim();
     const sentences = solutions.split(/[.!]/).map(s => s.trim()).filter(s => s);
     const solutionGroups = {};
@@ -629,29 +614,28 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
     
     solutionText = removeDuplicates(solutionText);
     result += `ПРЕДЛОЖЕНИЯ\n${solutionText}`;
+  } else {
+    result += `ПРЕДЛОЖЕНИЯ\n(можно дополнить)`;
   }
   
   return result;
 }
 
-// ИСПРАВЛЕНИЕ 1: ПОЛНОСТЬЮ ИСПРАВЛЕННАЯ функция суммирования с правильной гендерной коррекцией
+// ИСПРАВЛЕНИЕ 2: Полностью исправленная функция суммирования с принудительной гендерной коррекцией
 function summarizeAllContent() {
-  const hasContent = form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
-  if (!hasContent) return;
-  
   humanizeStatus.value = 'processing';
   
   try {
-    // Генерируем структурированный текст БЕЗ применения гендера
+    // Генерируем структурированный текст с текущим гендером
     let structuredText = structureAndCleanText(
-      form.shareExperience.trim(),
-      form.emotionalRelease.trim(),
-      form.factualAnalysis.trim(),
-      form.constructiveSuggestions.trim(),
-      'neutral' // сначала генерируем нейтральный текст
+      form.shareExperience,
+      form.emotionalRelease,
+      form.factualAnalysis,
+      form.constructiveSuggestions,
+      selectedGender.value
     );
     
-    // ЗАТЕМ применяем гендерную коррекцию ко ВСЕМУ итоговому тексту
+    // ПРИНУДИТЕЛЬНО применяем гендерную коррекцию ко всему тексту
     structuredText = applyGenderCorrection(structuredText, selectedGender.value);
     
     form.summaryText = structuredText;
