@@ -20,7 +20,7 @@
 
     <!-- Блок с кнопкой информации и переключателем пола в одну строку -->
     <div class="signal-controls-row">
-      <!-- Кнопка "Как сделать лучше" -->
+      <!-- Кнопка "Как работает" -->
       <button 
         type="button" 
         class="signal-info-button"
@@ -33,7 +33,7 @@
         :aria-expanded="showInfoModal ? 'true' : 'false'"
         @click="showInfoModal = true"
       >
-        Как сделать лучше
+        Как работает
       </button>
 
       <!-- Переключатель пола -->
@@ -57,10 +57,10 @@
     <div v-if="showInfoModal" class="modal-overlay" @click.self="showInfoModal = false">
       <div class="modal" role="dialog" aria-modal="true" id="signal-dialog" aria-label="Информация о Сигнале">
         <div class="modal-header">
-          <div class="modal-title">Сделайте этот отзыв персональным.</div>
+          <div class="modal-title">Ваши отзывы меняют всё.</div>
         </div>
         <div class="modal-body">
-          Сейчас ваш отзыв выглядит как спам из-за работы алгоритмов, но вы можете сделать текст более личным, используя план отзыва и подсказки.<br><br>
+          Каждый отзыв делает любимую кофейню еще лучше, а Сигнал помогает решить Вашу проблему за 24 часа. Почувствуйте силу настоящих перемен.<br><br>
           <a href="https://cffx.ru/signals.html" target="_blank" class="modal-link no-vitepress-style">Как Работает Сигнал</a>
         </div>
         <div class="modal-footer">
@@ -217,7 +217,7 @@
           <textarea 
             v-model="form.summaryText" 
             :rows="isMobile ? 10 : 8"
-            placeholder="Здесь появится план вашего отзыва..."
+            :placeholder="getPlaceholderText()"
           ></textarea>
           
           <!-- Полупрозрачная черта с подсказкой -->
@@ -226,7 +226,7 @@
             <p class="signal-hint-text">Сейчас ваш отзыв выглядит как спам из-за работы алгоритмов, но вы можете сделать текст более личным, используя план отзыва и подсказки.</p>
           </div>
           
-          <p class="signal-example-hint">Конструктивный отзыв = сумма Ваших эмоций, фактов и решений.</p>
+          <p class="signal-example-hint signal-example-hint-white">Конструктивный отзыв = сумма Ваших эмоций, фактов и решений.</p>
         </div>
 
         <!-- КНОПКА ОБНОВИТЬ - только в секции Итого -->
@@ -255,11 +255,10 @@
             @click="form.summaryText.trim() ? copyCurrentSectionText() : null"
             :disabled="copyStatus.main === 'copying' || !form.summaryText.trim()"
           >
-            <svg class="signal-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <rect x="8" y="2" width="8" height="4" rx="1" ry="1" stroke="currentColor" stroke-width="2" fill="none"/>
-              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" stroke="currentColor" stroke-width="2" fill="none"/>
-              <path v-if="copyStatus.main === 'copied'" d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
-              <path v-else-if="copyStatus.main === 'copying'" d="M12 6v6l4-4-4-4" stroke="currentColor" stroke-width="2" fill="none"/>
+            <!-- Новая иконка копирования -->
+            <svg class="signal-copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
             </svg>
             
             <span class="signal-liquid-copy-text">
@@ -374,6 +373,31 @@ const hasCurrentSectionText = computed(() => {
 const hasContentToSummarize = computed(() => {
   return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
 });
+
+// ИСПРАВЛЕНИЕ 6: Функция для получения плейсхолдера
+const getPlaceholderText = () => {
+  const hasAnyContent = form.shareExperience.trim() || 
+                       form.emotionalRelease.trim() || 
+                       form.factualAnalysis.trim() || 
+                       form.constructiveSuggestions.trim();
+  
+  if (!hasAnyContent) {
+    return "Здесь появится план вашего отзыва...";
+  }
+  
+  // Проверяем, есть ли пустые поля
+  const emptyFields = [];
+  if (!form.shareExperience.trim()) emptyFields.push("поделиться впечатлениями");
+  if (!form.emotionalRelease.trim()) emptyFields.push("эмоции");
+  if (!form.factualAnalysis.trim()) emptyFields.push("факты");
+  if (!form.constructiveSuggestions.trim()) emptyFields.push("решения");
+  
+  if (emptyFields.length > 0) {
+    return "(можно дополнить)";
+  }
+  
+  return "Здесь появится план вашего отзыва...";
+};
 
 const getCurrentSectionText = () => {
   if (selectedSection.value === 'summary') return form.summaryText.trim();
@@ -610,7 +634,7 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
   return result;
 }
 
-// ИСПРАВЛЕННАЯ функция суммирования БЕЗ задержек и с гендерной коррекцией
+// ИСПРАВЛЕНИЕ 1: ПОЛНОСТЬЮ ИСПРАВЛЕННАЯ функция суммирования с правильной гендерной коррекцией
 function summarizeAllContent() {
   const hasContent = form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
   if (!hasContent) return;
@@ -618,17 +642,19 @@ function summarizeAllContent() {
   humanizeStatus.value = 'processing';
   
   try {
-    // Генерируем структурированный текст с учетом ТЕКУЩЕГО пола
-    const structuredText = structureAndCleanText(
+    // Генерируем структурированный текст БЕЗ применения гендера
+    let structuredText = structureAndCleanText(
       form.shareExperience.trim(),
       form.emotionalRelease.trim(),
       form.factualAnalysis.trim(),
       form.constructiveSuggestions.trim(),
-      selectedGender.value // используем текущий выбранный пол
+      'neutral' // сначала генерируем нейтральный текст
     );
     
-    // Применяем гендерную коррекцию ко ВСЕМУ тексту в итоге
-    form.summaryText = applyGenderCorrection(structuredText, selectedGender.value);
+    // ЗАТЕМ применяем гендерную коррекцию ко ВСЕМУ итоговому тексту
+    structuredText = applyGenderCorrection(structuredText, selectedGender.value);
+    
+    form.summaryText = structuredText;
     
     humanizeStatus.value = 'completed';
     
@@ -1246,6 +1272,12 @@ textarea:focus {
   line-height: 1.15;
 }
 
+/* ИСПРАВЛЕНИЕ 2: Белый цвет для нижней подсказки */
+.signal-example-hint-white {
+  color: #f0f0f0 !important;
+  margin: 0.5rem 0 0 0rem !important; /* Выровнено влево как hint-text */
+}
+
 .signal-example-hint b {
   color: #aaa;
   font-weight: 600;
@@ -1271,10 +1303,10 @@ textarea:focus {
   font-style: italic;
 }
 
-/* КНОПКА ОБНОВИТЬ */
+/* ИСПРАВЛЕНИЕ 3: КНОПКА ОБНОВИТЬ - уменьшено расстояние */
 .signal-humanize-button-container {
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem; /* Уменьшено расстояние между кнопками в 2 раза */
+  margin-top: 0.75rem; /* уменьшено с 1.5rem */
+  margin-bottom: 0.25rem; /* уменьшено с 0.5rem */
 }
 
 .signal-liquid-humanize-btn {
@@ -1317,9 +1349,9 @@ textarea:focus {
   letter-spacing: 0.05em;
 }
 
-/* КНОПКА КОПИРОВАНИЯ - только на Итого */
+/* ИСПРАВЛЕНИЕ 3: КНОПКА КОПИРОВАНИЯ - уменьшено расстояние */
 .signal-copy-button-container {
-  margin-top: 0.5rem; /* Уменьшено расстояние между кнопками в 2 раза */
+  margin-top: 0.25rem; /* уменьшено с 0.5rem */
 }
 
 .signal-liquid-copy-btn.signal-main-copy {
@@ -1364,6 +1396,7 @@ textarea:focus {
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* ИСПРАВЛЕНИЕ 7: Новая иконка копирования */
 .signal-copy-icon {
   position: relative;
   z-index: 3;
