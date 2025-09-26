@@ -1,6 +1,6 @@
 <template>
-  <div class="signal-demo-wrapper">
-    <!-- Переключатель секцний над формой -->
+  <div class="signal-demo-wrapper" v-if="mounted">
+    <!-- Переключатель секций над формой -->
     <div class="signal-demo__header">
       <div class="signal-demo__switch" role="tablist" aria-label="Секции формы">
         <button
@@ -24,12 +24,12 @@
         <div 
           class="signal-gender-btn signal-gender-female"
           :class="{ 'is-active': selectedGender === 'female' }"
-          @click="selectedGender = 'female'"
+          @click="changeGender('female')"
         ></div>
         <div 
           class="signal-gender-btn signal-gender-male"
           :class="{ 'is-active': selectedGender === 'male' }"
-          @click="selectedGender = 'male'"
+          @click="changeGender('male')"
         ></div>
       </div>
     </div>
@@ -49,7 +49,6 @@
           <textarea 
             v-model="form.emotionalRelease" 
             @focus="startRotation(1)" 
-            @input="saveToStorage"
             :rows="isMobile ? 5 : 3"
             :placeholder="selectedGender === 'female' ? 'Разочарована ожиданиями...' : 'Разочарован ожиданиями...'" 
             required>
@@ -92,7 +91,6 @@
           <textarea 
             v-model="form.factualAnalysis" 
             @focus="startRotation(2)" 
-            @input="saveToStorage"
             :rows="isMobile ? 5 : 3"
             placeholder="Опишите факты: что, когда и где произошло..." 
             required>
@@ -135,7 +133,6 @@
           <textarea 
             v-model="form.constructiveSuggestions" 
             @focus="startRotation(3)" 
-            @input="saveToStorage"
             :rows="isMobile ? 5 : 3"
             placeholder="Предложите, как это можно исправить..." 
             required>
@@ -175,7 +172,6 @@
           </div>
           <textarea 
             v-model="form.summaryText" 
-            @input="saveToStorage"
             :rows="isMobile ? 8 : 6"
             placeholder="Здесь появится готовый отзыв..." 
             readonly>
@@ -250,6 +246,9 @@
 <script setup>
 import { reactive, ref, onUnmounted, computed, onMounted } from 'vue';
 
+// SSR защита
+const mounted = ref(false);
+
 const form = reactive({ 
   emotionalRelease: '',
   factualAnalysis: '',
@@ -271,56 +270,15 @@ const selectedGender = ref('female');
 // Состояние кнопки суммирования
 const humanizeStatus = ref('idle'); // 'idle', 'processing', 'completed'
 
-// Функция сохранения в localStorage
-const saveToStorage = () => {
-  try {
-    const dataToSave = {
-      form: { ...form },
-      selectedGender: selectedGender.value,
-      selectedSection: selectedSection.value,
-      selectedSuggestions: { ...selectedSuggestions }
-    };
-    localStorage.setItem('signalFormData', JSON.stringify(dataToSave));
-  } catch (error) {
-    console.error('Ошибка сохранения:', error);
-  }
-};
-
-// Функция загрузки из localStorage
-const loadFromStorage = () => {
-  try {
-    const savedData = localStorage.getItem('signalFormData');
-    if (savedData) {
-      const parsed = JSON.parse(savedData);
-      if (parsed.form) {
-        Object.assign(form, parsed.form);
-      }
-      if (parsed.selectedGender) {
-        selectedGender.value = parsed.selectedGender;
-      }
-      if (parsed.selectedSection) {
-        selectedSection.value = parsed.selectedSection;
-      }
-      if (parsed.selectedSuggestions) {
-        Object.assign(selectedSuggestions, parsed.selectedSuggestions);
-      }
-    }
-  } catch (error) {
-    console.error('Ошибка загрузки данных:', error);
-  }
-};
-
 onMounted(() => {
+  mounted.value = true;
   const checkMobile = () => {
     isMobile.value = window.innerWidth <= 768;
   };
   checkMobile();
   window.addEventListener('resize', checkMobile);
   
-  // Загружаем данные при запуске
-  loadFromStorage();
-  
-  // Инициализируем подсказки
+  // Инициализируем подсказки под пол
   updateSuggestionsForGender();
 });
 
@@ -381,7 +339,16 @@ const genderSpecificWords = {
     'поехал': 'поехала',
     'остался': 'осталась',
     'получил': 'получила',
-    'попросил': 'попросила'
+    'попросил': 'попросила',
+    'засекал': 'засекала',
+    'спросил': 'спросила',
+    'заказал в': 'заказала в',
+    'получил в': 'получила в',
+    'подходил': 'подходила',
+    'успел': 'успела',
+    'ждал': 'ждала',
+    'потратил': 'потратила',
+    'опоздал': 'опоздала'
   },
   male: {
     'разочарована': 'разочарован',
@@ -401,7 +368,16 @@ const genderSpecificWords = {
     'поехала': 'поехал',
     'осталась': 'остался',
     'получила': 'получил',
-    'попросила': 'попросил'
+    'попросила': 'попросил',
+    'засекала': 'засекал',
+    'спросила': 'спросил',
+    'заказала в': 'заказал в',
+    'получила в': 'получил в',
+    'подходила': 'подходил',
+    'успела': 'успел',
+    'ждала': 'ждал',
+    'потратила': 'потратил',
+    'опоздала': 'опоздал'
   }
 };
 
@@ -495,756 +471,4 @@ async function summarizeAllContent() {
     // Имитируем обработку
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    // Генерируем структурированный текст
-    const structuredText = structureAndCleanText(
-      form.emotionalRelease.trim(),
-      form.factualAnalysis.trim(),
-      form.constructiveSuggestions.trim(),
-      selectedGender.value
-    );
-    
-    // Обновляем поле итогового отзыва
-    form.summaryText = structuredText;
-    saveToStorage();
-    
-    humanizeStatus.value = 'completed';
-    
-    // Сброс статуса через 3 секунды
-    setTimeout(() => {
-      humanizeStatus.value = 'idle';
-    }, 3000);
-    
-  } catch (error) {
-    console.error('Ошибка суммирования:', error);
-    humanizeStatus.value = 'idle';
-  }
-}
-
-// Функция копирования текста текущей секции
-const copyCurrentSectionText = async () => {
-  if (!hasAnyText.value) return;
-  
-  let textToCopy = getCurrentSectionText();
-  if (!textToCopy) return;
-  
-  copyStatus.main = 'copying';
-  
-  try {
-    await navigator.clipboard.writeText(textToCopy);
-    copyStatus.main = 'copied';
-    
-    // Сброс статуса через 2 секунды
-    setTimeout(() => {
-      copyStatus.main = 'idle';
-    }, 2000);
-  } catch (err) {
-    console.error('Ошибка копирования:', err);
-    copyStatus.main = 'idle';
-  }
-};
-
-// Базовые подсказки (женские по умолчанию)
-const baseSuggestions = {
-  emotions: {
-    initial: ['расстроена', 'разочарована', 'недовольна', 'возмущена', 'удивлена'],
-    'расстроена': ['долго ждала', 'грязная посуда', 'холодный кофе', 'грубый персонал', 'забыли заказ'],
-    'разочарована': ['качеством', 'сервисом', 'ожиданиями', 'атмосферой', 'чистотой'],
-    'недовольна': ['обслуживанием', 'очередью', 'ошибкой в заказе', 'температурой блюд', 'упаковкой'],
-    'возмущена': ['антисанитарией', 'хамством', 'обманом', 'некачественной едой', 'инородными предметами'],
-    'удивлена': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком', 'отношением']
-  },
-  facts: {
-    initial: ['ожидание', 'ошибка в заказе', 'качество блюд', 'чистота', 'персонал'],
-    'ожидание': ['20 минут', '30 минут', 'более часа', 'забыли заказ', 'очередь не двигалась'],
-    'ошибка в заказе': ['не тот напиток', 'не доложили позицию', 'неправильный соус', 'перепутали объём', 'другое молоко'],
-    'качество блюд': ['холодный кофе', 'невкусная еда', 'недоваренный рис', 'комочки в матче', 'чёрствая выпечка'],
-    'чистота': ['грязная посуда', 'волосы в еде', 'грязная уборная', 'насекомые', 'пластик в круассане'],
-    'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились']
-  },
-  solutions: {
-    initial: ['таймер ожидания', 'обучение персонала', 'контроль качества', 'система проверки', 'стандарты сервиса'],
-    'таймер ожидания': ['визуальный контроль бариста', 'с номерами заказов', 'видимый гостям', 'контроль времени', 'сигналы на баре'],
-    'обучение персонала': ['по сервису', 'по санитарии', 'по качеству', 'по коммуникации', 'регулярные тренинги'],
-    'контроль качества': ['проверка блюд', 'температурный контроль', 'свежесть продуктов', 'упаковка', 'дегустация'],
-    'система проверки': ['чек-лист качества', 'двойная проверка', 'контроль чистоты', 'стандарты подачи', 'фото блюд'],
-    'стандарты сервиса': ['вежливость', 'скорость', 'точность', 'чистота', 'профессионализм']
-  }
-};
-
-// Текущие подсказки для каждого поля
-const currentSuggestions = reactive({
-  emotions: [...baseSuggestions.emotions.initial],
-  facts: [...baseSuggestions.facts.initial],
-  solutions: [...baseSuggestions.solutions.initial]
-});
-
-// Выбранные подсказки (для построения цепочек)
-const selectedSuggestions = reactive({
-  emotions: [],
-  facts: [],
-  solutions: []
-});
-
-// Функция обновления подсказок под пол
-const updateSuggestionsForGender = () => {
-  if (selectedGender.value === 'male') {
-    currentSuggestions.emotions = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'];
-  } else {
-    currentSuggestions.emotions = [...baseSuggestions.emotions.initial];
-  }
-};
-
-// Следим за изменением пола
-const originalSelectedGender = selectedGender.value;
-const genderWatcher = setInterval(() => {
-  if (selectedGender.value !== originalSelectedGender) {
-    updateSuggestionsForGender();
-    saveToStorage();
-  }
-}, 100);
-
-const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
-const phrasesForQuestion2 = ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'];
-const phrasesForQuestion3 = ['Как бы вы это исправили?', 'Что могло бы предотвратить эту ситуацию?', 'Какое одно изменение сделало бы ваш опыт идеальным?'];
-
-const currentQuestion1 = ref(phrasesForQuestion1[0]);
-const currentQuestion2 = ref(phrasesForQuestion2[0]);
-const currentQuestion3 = ref(phrasesForQuestion3[0]);
-
-let rotationInterval = null;
-let currentQuestionIndex1 = 0;
-let currentQuestionIndex2 = 0;
-let currentQuestionIndex3 = 0;
-
-// Проверка, являются ли текущие подсказки начальными
-function isInitialSuggestions(suggestionType) {
-  const initialSuggs = suggestionType === 'emotions' && selectedGender.value === 'male' 
-    ? ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён']
-    : baseSuggestions[suggestionType].initial;
-  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(initialSuggs);
-}
-
-// Сброс подсказок к начальным вариантам
-function resetSuggestions(suggestionType) {
-  if (suggestionType === 'emotions' && selectedGender.value === 'male') {
-    currentSuggestions.emotions = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'];
-  } else {
-    currentSuggestions[suggestionType] = [...baseSuggestions[suggestionType].initial];
-  }
-  selectedSuggestions[suggestionType] = [];
-  saveToStorage();
-}
-
-// Функция выбора подсказки
-function selectSuggestion(fieldName, suggestion, suggestionType) {
-  const currentText = form[fieldName].trim();
-  
-  if (currentText) {
-    form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-  } else {
-    form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-  }
-  
-  selectedSuggestions[suggestionType].push(suggestion);
-  updateSuggestions(suggestionType, suggestion);
-  saveToStorage();
-}
-
-// Обновление подсказок на основе выбора
-function updateSuggestions(suggestionType, selectedWord) {
-  const nextSuggestions = baseSuggestions[suggestionType][selectedWord];
-  if (nextSuggestions && nextSuggestions.length > 0) {
-    const filteredSuggestions = nextSuggestions.filter(suggestion => 
-      !selectedSuggestions[suggestionType].includes(suggestion)
-    );
-    
-    if (filteredSuggestions.length > 0) {
-      currentSuggestions[suggestionType] = filteredSuggestions;
-    } else {
-      resetSuggestions(suggestionType);
-    }
-  } else {
-    resetSuggestions(suggestionType);
-  }
-}
-
-function startRotation(questionNum) {
-  clearInterval(rotationInterval);
-  rotationInterval = setInterval(() => {
-    if (questionNum === 1) {
-      currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length;
-      currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1];
-    } else if (questionNum === 2) {
-      currentQuestionIndex2 = (currentQuestionIndex2 + 1) % phrasesForQuestion2.length;
-      currentQuestion2.value = phrasesForQuestion2[currentQuestionIndex2];
-    } else if (questionNum === 3) {
-      currentQuestionIndex3 = (currentQuestionIndex3 + 1) % phrasesForQuestion3.length;
-      currentQuestion3.value = phrasesForQuestion3[currentQuestionIndex3];
-    }
-  }, 3000);
-}
-
-onUnmounted(() => {
-  clearInterval(rotationInterval);
-  clearInterval(genderWatcher);
-});
-</script>
-
-<style scoped>
-/* Все стили остаются точно такими же... */
-:root {
-  --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-}
-
-.signal-demo-wrapper {
-  font-family: var(--signal-font-sans);
-  width: 100%;
-  max-width: none;
-  margin: 0;
-}
-
-.signal-demo__header {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 16px;
-}
-
-.signal-demo__switch {
-  display: flex;
-  gap: 8px;
-  padding: 0;
-  background: transparent;
-  margin: 0;
-}
-
-.signal-demo__switch-btn {
-  appearance: none;
-  border: 2px solid #2c2c2f;
-  background: transparent;
-  color: #f0f0f0;
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-size: 0.95em;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, font-weight 0.15s ease;
-  font-family: var(--signal-font-sans);
-  text-transform: none;
-}
-
-.signal-demo__switch-btn.emotions.is-active {
-  background: rgba(169, 114, 255, 0.14);
-  border-color: #A972FF;
-  font-weight: 700;
-  color: #A972FF;
-}
-
-.signal-demo__switch-btn.facts.is-active {
-  background: rgba(61, 220, 132, 0.14);
-  border-color: #3DDC84;
-  font-weight: 700;
-  color: #3DDC84;
-}
-
-.signal-demo__switch-btn.solutions.is-active {
-  background: rgba(255, 184, 0, 0.14);
-  border-color: #FFB800;
-  font-weight: 700;
-  color: #FFB800;
-}
-
-.signal-demo__switch-btn.summary.is-active {
-  background: rgba(255, 107, 107, 0.14);
-  border-color: #FF6B6B;
-  font-weight: 700;
-  color: #FF6B6B;
-}
-
-.signal-demo__switch-btn:hover {
-  border-color: #A972FF;
-}
-
-/* Переключатель пола - liquid bubble стиль */
-.signal-gender-switch {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.signal-gender-container {
-  display: flex;
-  background: #2a2a2e;
-  border-radius: 20px;
-  padding: 4px;
-  border: 1px solid #444;
-}
-
-.signal-gender-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-  margin: 0 2px;
-}
-
-.signal-gender-female {
-  background: rgba(255, 105, 180, 0.3);
-}
-
-.signal-gender-female.is-active {
-  background: #ff69b4;
-  box-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
-}
-
-.signal-gender-male {
-  background: rgba(135, 206, 235, 0.3);
-}
-
-.signal-gender-male.is-active {
-  background: #87ceeb;
-  box-shadow: 0 0 12px rgba(135, 206, 235, 0.5);
-}
-
-.signal-demo__form-container {
-  background-color: #1E1E20;
-  border-radius: 24px;
-  padding: 2rem;
-  color: #f0f0f0;
-  border: 1px solid #2c2c2f;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-}
-
-.signal-form-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.signal-question-block {
-  background-color: #2a2a2e;
-  border-radius: 16px;
-  padding: 1.25rem;
-  border: 1px solid #3a3a3e;
-  border-left: 4px solid var(--accent-color, #444);
-}
-
-.signal-direction-label {
-  font-weight: 600;
-  font-size: 0.75rem;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.5rem;
-  display: block;
-}
-
-.signal-rotating-phrase-container {
-  min-height: 1.3em;
-  margin-bottom: 0.6rem;
-  display: flex;
-  align-items: flex-start;
-  overflow: hidden;
-}
-
-.signal-question-label {
-  font-weight: 500;
-  font-size: 1rem;
-  margin: 0;
-  color: #f0f0f0;
-  line-height: 1.3;
-  width: 100%;
-}
-
-.fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
-
-textarea {
-  width: 100%;
-  background-color: #242426;
-  border: 1px solid #444;
-  border-radius: 10px;
-  padding: 0.75rem 1rem;
-  font-size: 0.95rem;
-  color: #f0f0f0;
-  transition: all 0.3s ease;
-  font-family: var(--signal-font-sans);
-  resize: vertical;
-}
-
-textarea:focus {
-  outline: none;
-  border-color: var(--accent-color);
-  background-color: #2a2a2e;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent);
-}
-
-textarea[readonly] {
-  background-color: #1a1a1c;
-  border-color: #333;
-  cursor: default;
-}
-
-::placeholder { color: #666; }
-
-.signal-suggestions-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-
-.signal-suggestion-bubble {
-  padding: 0.35rem 0.85rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-  user-select: none;
-}
-
-.signal-emotion-bubble {
-  background: rgba(169, 114, 255, 0.1);
-  border-color: rgba(169, 114, 255, 0.3);
-  color: #A972FF;
-}
-
-.signal-emotion-bubble:hover {
-  background: #A972FF;
-  color: #000;
-}
-
-.signal-fact-bubble {
-  background: rgba(61, 220, 132, 0.1);
-  border-color: rgba(61, 220, 132, 0.3);
-  color: #3DDC84;
-}
-
-.signal-fact-bubble:hover {
-  background: #3DDC84;
-  color: #000;
-}
-
-.signal-solution-bubble {
-  background: rgba(255, 184, 0, 0.1);
-  border-color: rgba(255, 184, 0, 0.3);
-  color: #FFB800;
-}
-
-.signal-solution-bubble:hover {
-  background: #FFB800;
-  color: #000;
-}
-
-.signal-reset-bubble {
-  font-weight: 600;
-  opacity: 0.8;
-  font-size: 0.75rem;
-  border-style: dashed !important;
-}
-
-.signal-reset-bubble:hover {
-  opacity: 1;
-}
-
-.signal-example-hint {
-  font-size: 0.8rem;
-  color: #777;
-  margin: 0.5rem 0 0 0.25rem;
-  line-height: 1.15;
-}
-
-.signal-example-hint b {
-  color: #aaa;
-  font-weight: 600;
-}
-
-/* КНОПКА СУММИРОВАНИЯ - такая же высота как копирование */
-.signal-humanize-button-container {
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.signal-liquid-humanize-btn {
-  position: relative;
-  width: 100%;
-  height: 56px;
-  border-radius: 18px;
-  border: 2px solid #444;
-  background: #2a2a2e;
-  color: #888;
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  font-family: var(--signal-font-sans);
-  white-space: nowrap;
-}
-
-.signal-liquid-humanize-btn:not(:disabled):hover {
-  border-color: #666;
-  color: #bbb;
-  background: #333;
-}
-
-.signal-liquid-humanize-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.signal-humanize-icon {
-  position: relative;
-  z-index: 3;
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
-}
-
-.signal-liquid-humanize-text {
-  position: relative;
-  z-index: 3;
-  font-size: 16px;
-  font-weight: 600;
-  transition: color 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* КНОПКА КОПИРОВАНИЯ */
-.signal-copy-button-container {
-  margin-top: 1rem;
-}
-
-.signal-liquid-copy-btn.signal-main-copy {
-  position: relative;
-  width: 100%;
-  height: 56px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  font-family: var(--signal-font-sans);
-  white-space: nowrap;
-}
-
-.signal-liquid-copy-btn.signal-main-copy::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  padding: 2px;
-  background: linear-gradient(135deg, var(--accent-color), rgba(255, 255, 255, 0.2));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  transition: filter 0.4s ease;
-  z-index: 1;
-}
-
-.signal-liquid-copy-btn.signal-main-copy::after {
-  content: '';
-  position: absolute;
-  inset: 2px;
-  border-radius: 18px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 70%),
-              #2a2a2e;
-  z-index: 2;
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.signal-copy-icon {
-  position: relative;
-  z-index: 3;
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
-}
-
-.signal-liquid-copy-text {
-  position: relative;
-  z-index: 3;
-  font-size: 16px;
-  font-weight: 600;
-  transition: color 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* НЕАКТИВНОЕ СОСТОЯНИЕ КНОПКИ */
-.signal-copy-disabled {
-  --accent-color: #666;
-  opacity: 0.5;
-  cursor: not-allowed !important;
-}
-
-.signal-copy-disabled .signal-copy-icon,
-.signal-copy-disabled .signal-liquid-copy-text {
-  color: #666 !important;
-}
-
-.signal-copy-disabled::before {
-  background: linear-gradient(135deg, #666, rgba(102, 102, 102, 0.3)) !important;
-}
-
-.signal-copy-disabled::after {
-  background: radial-gradient(circle at 30% 30%, rgba(102, 102, 102, 0.1) 0%, transparent 70%),
-              #2a2a2e !important;
-}
-
-/* Цветовые вариации для разных секций */
-.signal-emotion-copy:not(.signal-copy-disabled) {
-  --accent-color: #A972FF;
-}
-
-.signal-emotion-copy:not(.signal-copy-disabled) .signal-copy-icon,
-.signal-emotion-copy:not(.signal-copy-disabled) .signal-liquid-copy-text {
-  color: #A972FF;
-}
-
-.signal-fact-copy:not(.signal-copy-disabled) {
-  --accent-color: #3DDC84;
-}
-
-.signal-fact-copy:not(.signal-copy-disabled) .signal-copy-icon,
-.signal-fact-copy:not(.signal-copy-disabled) .signal-liquid-copy-text {
-  color: #3DDC84;
-}
-
-.signal-solution-copy:not(.signal-copy-disabled) {
-  --accent-color: #FFB800;
-}
-
-.signal-solution-copy:not(.signal-copy-disabled) .signal-copy-icon,
-.signal-solution-copy:not(.signal-copy-disabled) .signal-liquid-copy-text {
-  color: #FFB800;
-}
-
-.signal-summary-copy:not(.signal-copy-disabled) {
-  --accent-color: #FF6B6B;
-}
-
-.signal-summary-copy:not(.signal-copy-disabled) .signal-copy-icon,
-.signal-summary-copy:not(.signal-copy-disabled) .signal-liquid-copy-text {
-  color: #FF6B6B;
-}
-
-/* Hover эффекты */
-.signal-emotion-copy:not(.signal-copy-disabled):hover::before,
-.signal-fact-copy:not(.signal-copy-disabled):hover::before,
-.signal-solution-copy:not(.signal-copy-disabled):hover::before,
-.signal-summary-copy:not(.signal-copy-disabled):hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-emotion-copy:not(.signal-copy-disabled):hover .signal-copy-icon,
-.signal-fact-copy:not(.signal-copy-disabled):hover .signal-copy-icon,
-.signal-solution-copy:not(.signal-copy-disabled):hover .signal-copy-icon,
-.signal-summary-copy:not(.signal-copy-disabled):hover .signal-copy-icon {
-  transform: scale(1.2);
-}
-
-@media (max-width: 768px) {
-  .signal-demo__form-container {
-    padding: 1.5rem;
-  }
-  .signal-rotating-phrase-container {
-    min-height: 2.6em;
-  }
-  .signal-question-label {
-    font-size: 0.95rem;
-  }
-  .signal-suggestions-container {
-    gap: 0.4rem;
-  }
-  .signal-suggestion-bubble {
-    font-size: 0.75rem;
-    padding: 0.3rem 0.7rem;
-  }
-  .signal-demo__switch {
-    flex-wrap: wrap;
-    gap: 6px;
-    justify-content: center;
-  }
-  .signal-demo__switch-btn {
-    font-size: 0.85em;
-    padding: 6px 10px;
-  }
-  .signal-copy-button-container {
-    margin-top: 0.75rem;
-  }
-  .signal-liquid-copy-btn.signal-main-copy {
-    height: 52px;
-    gap: 10px;
-  }
-  .signal-copy-icon {
-    width: 12px;
-    height: 12px;
-  }
-  .signal-liquid-copy-text {
-    font-size: 15px;
-  }
-  .signal-example-hint {
-    line-height: 1.1;
-  }
-  .signal-gender-btn {
-    width: 20px;
-    height: 20px;
-  }
-  .signal-humanize-button-container {
-    margin-top: 1.25rem;
-  }
-  .signal-liquid-humanize-btn {
-    height: 48px;
-    gap: 10px;
-  }
-  .signal-humanize-icon {
-    width: 12px;
-    height: 12px;
-  }
-  .signal-liquid-humanize-text {
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .signal-liquid-copy-btn.signal-main-copy {
-    height: 48px;
-    gap: 8px;
-  }
-  .signal-copy-icon {
-    width: 11px;
-    height: 11px;
-  }
-  .signal-liquid-copy-text {
-    font-size: 14px;
-  }
-  .signal-example-hint {
-    line-height: 1.05;
-  }
-  .signal-gender-btn {
-    width: 18px;
-    height: 18px;
-  }
-  .signal-liquid-humanize-btn {
-    height: 46px;
-    gap: 8px;
-  }
-  .signal-humanize-icon {
-    width: 11px;
-    height: 11px;
-  }
-  .signal-liquid-humanize-text {
-    font-size: 13px;
-  }
-}
-</style>
+    //
