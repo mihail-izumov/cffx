@@ -10,28 +10,41 @@
 .layout-home .VPFeature .details { color: rgba(255, 255, 255, 0.85) !important; }
 .layout-home .VPFeature a:hover { color: #4ade80 !important; }
 
-/* --- СТИЛИ ДЛЯ АБСОЛЮТНОГО ЦЕНТРИРОВАНИЯ --- */
-.centered-page .VPDoc {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
+/* --- СТИЛИ ДЛЯ ЦЕНТРИРОВАНИЯ С УВЕЛИЧЕННОЙ ШИРИНОЙ --- */
 .centered-page .VPDoc .container {
-    max-width: 928px;
-    width: 100%;
-    padding: 0 24px;
-    margin: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
 }
 
-.centered-page .VPDoc .content {
+.centered-page .VPContent {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Убираем боковые отступы */
+.centered-page .VPDoc:not(.has-sidebar) .container {
+    max-width: 1200px;
+}
+
+/* Центрируем основной контент с увеличенной шириной */
+.centered-page .content {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+/* Для полной ширины контейнера при необходимости */
+.centered-page .content-container {
     max-width: none;
-    margin: 0;
 }
 
-/* Адаптивность */
+/* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
     .centered-page .VPDoc .container {
         padding: 0 16px;
+    }
+    
+    .centered-page .VPContent {
+        max-width: 100%;
     }
 }
