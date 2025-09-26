@@ -74,7 +74,7 @@
       <!-- Секция "Поделитесь" -->
       <div v-if="selectedSection === 'share'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #6B7280;">
-          <div class="signal-rotating-phrase-container">
+          <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestionShare" class="signal-question-label">{{ currentQuestionShare }}</p>
             </transition>
@@ -94,7 +94,7 @@
       <!-- Секция "Эмоции и чувства" -->
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #A972FF;">
-          <div class="signal-rotating-phrase-container">
+          <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion1" class="signal-question-label" ref="questionRef1">{{ currentQuestion1 }}</p>
             </transition>
@@ -132,7 +132,7 @@
       <!-- Секция "Детали проблемы" -->
       <div v-if="selectedSection === 'facts'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #3DDC84;">
-          <div class="signal-rotating-phrase-container">
+          <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion2" class="signal-question-label" ref="questionRef2">{{ currentQuestion2 }}</p>
             </transition>
@@ -170,7 +170,7 @@
       <!-- Секция "Предложение решения" -->
       <div v-if="selectedSection === 'solutions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #FFB800;">
-          <div class="signal-rotating-phrase-container">
+          <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion3" class="signal-question-label" ref="questionRef3">{{ currentQuestion3 }}</p>
             </transition>
@@ -214,14 +214,17 @@
             <p class="signal-question-label">От эмоций до конструктивных предложений</p>
           </div>
           
-          <!-- Заголовок перед текстом -->
-          <div class="signal-plan-header">План отзыва:</div>
-          
           <textarea 
             v-model="form.summaryText" 
-            :rows="isMobile ? 8 : 6"
+            :rows="isMobile ? 10 : 8"
             placeholder="Здесь появится план вашего отзыва..."
           ></textarea>
+          
+          <!-- Полупрозрачная черта с подсказкой -->
+          <div class="signal-hint-separator">
+            <hr class="signal-hint-line">
+            <p class="signal-hint-text">Сейчас ваш отзыв выглядит как спам из-за работы алгоритмов, но вы можете сделать текст более личным, используя план отзыва и подсказки.</p>
+          </div>
           
           <p class="signal-example-hint">Конструктивный отзыв = сумма Ваших эмоций, фактов и решений.</p>
         </div>
@@ -297,7 +300,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, onUnmounted, computed, onMounted } from 'vue';
+import { reactive, ref, onUnmounted, computed, onMounted, watch } from 'vue';
 
 const form = reactive({ 
   shareExperience: '',
@@ -334,6 +337,14 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown);
+});
+
+// Отслеживаем изменение пола и обновляем итоговый текст
+watch(selectedGender, () => {
+  if (selectedSection.value === 'summary' && form.summaryText.trim()) {
+    // Применяем гендерную коррекцию к существующему тексту
+    form.summaryText = applyGenderCorrection(form.summaryText, selectedGender.value);
+  }
 });
 
 const copyStatus = reactive({
@@ -430,7 +441,7 @@ function removeDuplicates(text) {
   return uniqueSentences.join('. ') + (uniqueSentences.length > 0 ? '.' : '');
 }
 
-// ВОССТАНОВЛЕННАЯ функция структурирования с правильным форматированием
+// ИСПРАВЛЕННАЯ функция структурирования с новым форматированием
 function structureAndCleanText(shareText, emotionalText, factualText, solutionsText, gender) {
   let result = '';
   
@@ -441,7 +452,13 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
     if (!userText.match(/[.!?]$/)) {
       userText += '.';
     }
-    result += `МОИ ВПЕЧАТЛЕНИЯ: ${userText.charAt(0).toUpperCase() + userText.slice(1)}`;
+    result += `МОЙ ОТЗЫВ СЕЙЧАС: ${userText.charAt(0).toUpperCase() + userText.slice(1)}`;
+  }
+  
+  // Заголовок для улучшений
+  if (emotionalText || factualText || solutionsText) {
+    if (result) result += '\n\n';
+    result += 'МОЖНО УЛУЧШИТЬ:';
   }
   
   // 2. Эмоциональная часть
@@ -485,7 +502,7 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
     
     emotionText = removeDuplicates(emotionText);
     if (result) result += '\n\n';
-    result += `ВПЕЧАТЛЕНИЯ: ${emotionText}`;
+    result += `ВПЕЧАТЛЕНИЯ\n${emotionText}`;
   }
   
   // 3. Фактологическая часть с правильным форматированием "Категория: детали"
@@ -537,7 +554,7 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
     });
     
     factText = removeDuplicates(factText);
-    result += `ПРОБЛЕМЫ: ${factText}`;
+    result += `ПРОБЛЕМЫ\n${factText}`;
   }
   
   // 4. Парсинг решений с форматированием "Направление: конкретные меры"
@@ -587,7 +604,7 @@ function structureAndCleanText(shareText, emotionalText, factualText, solutionsT
     });
     
     solutionText = removeDuplicates(solutionText);
-    result += `ПРЕДЛОЖЕНИЯ: ${solutionText}`;
+    result += `ПРЕДЛОЖЕНИЯ\n${solutionText}`;
   }
   
   return result;
@@ -1112,19 +1129,17 @@ function startRotation(questionNum) {
   display: block;
 }
 
-.signal-plan-header {
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: #f0f0f0;
-  margin-bottom: 0.5rem;
-}
-
+/* ИСПРАВЛЕНИЕ 1: Фиксированная высота для ротатора вопросов */
 .signal-rotating-phrase-container {
   min-height: 1.3em;
   margin-bottom: 0.6rem;
   display: flex;
   align-items: flex-start;
   overflow: hidden;
+}
+
+.signal-rotating-fixed-height {
+  min-height: 2.6em; /* Зафиксировали высоту для 2 строк на мобильных */
 }
 
 .signal-question-label {
@@ -1234,6 +1249,26 @@ textarea:focus {
 .signal-example-hint b {
   color: #aaa;
   font-weight: 600;
+}
+
+/* Полупрозрачная черта с подсказкой */
+.signal-hint-separator {
+  margin: 1rem 0;
+}
+
+.signal-hint-line {
+  border: none;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin-bottom: 0.75rem;
+}
+
+.signal-hint-text {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+  margin: 0;
+  font-style: italic;
 }
 
 /* КНОПКА ОБНОВИТЬ */
@@ -1512,6 +1547,16 @@ textarea:focus {
   .signal-next-icon {
     width: 16px;
     height: 16px;
+  }
+  
+  /* Фиксированная высота вопросов на мобильных */
+  .signal-rotating-fixed-height {
+    min-height: 2.8em; /* Немного больше на мобильных для двух строк */
+  }
+  
+  .signal-question-label {
+    font-size: 0.95rem;
+    line-height: 1.4; /* Лучшая читаемость на мобильных */
   }
 }
 </style>
