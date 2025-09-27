@@ -1,163 +1,134 @@
 <template>
-<div class="festival-schedule">
-  <!-- Блок с кнопками для переключения вкладок -->
-  <div class="tabs">
-    <button :class="{ active: activeTab === 'benke' }" @click="activeTab = 'benke'">
-      Бенке Холл
-    </button>
-    <button :class="{ active: activeTab === 'event' }" @click="activeTab = 'event'">
-      Малый эвент
-    </button>
-    <button :class="{ active: activeTab === 'studio' }" @click="activeTab = 'studio'">
-      А106 студия
-    </button>
+<div class="festival-experience">
+<!-- Блок с кнопками для переключения вкладок -->
+<div class="tabs">
+  <button :class="{ active: activeTab === 'tastings' }" @click="activeTab = 'tastings'">
+    ☕ Дегустации
+  </button>
+  <button :class="{ active: activeTab === 'pairings' }" @click="activeTab = 'pairings'">
+    🍷 Пейринги
+  </button>
+  <button :class="{ active: activeTab === 'masterclasses' }" @click="activeTab = 'masterclasses'">
+    🎨 Мастер-классы
+  </button>
+</div>
+<!-- Контент для вкладок -->
+<div class="tab-content">
+  <!-- Вкладка 1: Дегустации -->
+  <div v-show="activeTab === 'tastings'" class="content-section">
+    <h3>Погрузитесь в мир вкусов через профессиональные дегустации</h3>
+    
+    <div class="experience-grid">
+      <!-- Изображение в рамках карточки - ПЕРВОЕ -->
+      <div class="experience-card image-card">
+        <img src="/tasting-ban.jpg" alt="Festival Banner" class="card-image" />
+      </div>
+      
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Профессиональный каппинг</h4>
+          <span class="card-badge">SCA стандарты</span>
+        </div>
+        <p class="card-description">Учитесь оценивать кофе по международным стандартам. Развивайте навыки Q-грейдера и понимание качественных характеристик зерна.</p>
+      </div>
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Слепые дегустации</h4>
+          <span class="card-badge">Без предрассудков</span>
+        </div>
+        <p class="card-description">Развивайте чувствительность вкусовых рецепторов, учитесь определять происхождение и способ обработки зерна без визуальных подсказок.</p>
+      </div>
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Треугольные тесты</h4>
+          <span class="card-badge">Точность восприятия</span>
+        </div>
+        <p class="card-description">Тренируйте способность различать тонкие нюансы в похожих образцах. Профессиональный инструмент контроля качества.</p>
+        <div class="card-highlight">
+          <strong>Задача:</strong> Найти отличия в одном зерне из разных партий
+        </div>
+      </div>
+    </div>
   </div>
-
-  <!-- Контент для вкладок -->
-  <div class="tab-content">
-    <!-- Вкладка: Бенке Холл -->
-    <div v-show="activeTab === 'benke'" class="content-section">
-      <div class="schedule-grid">
-        <div class="event-card">
-          <h4>Презентация осеннего меню от Хюгешной</h4>
-          <div class="badges">
-            <span class="time-badge">11:00</span>
-            <span class="location-badge">Бенке Холл</span>
-          </div>
-          <div class="event-author">
-            Хюгешная
-          </div>
+  <!-- Вкладка 2: Пейринги -->
+  <div v-show="activeTab === 'pairings'" class="content-section">
+    <h3>Откройте гармонию вкусов через уникальные сочетания</h3>
+    
+    <div class="experience-grid">
+      <!-- Изображение в рамках карточки - ПЕРВОЕ -->
+      <div class="experience-card image-card">
+        <img src="/peirings-ban.jpg" alt="Festival Banner" class="card-image" />
+      </div>
+      
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Wine & Coffee</h4>
+          <span class="card-badge">Авторские пары</span>
         </div>
-
-        <div class="event-card">
-          <h4>Мастер-класс по джезве (турка), воронке, кемексу и гейзерной кофеварке</h4>
-          <div class="badges">
-            <span class="time-badge">15:00</span>
-            <span class="location-badge">Бенке Холл</span>
-          </div>
-          <div class="event-author">
-            Кофейня «На краю земли»
-          </div>
+        <p class="card-description">Изучайте принципы сочетания кислотности, сладости и танинов. Понимайте, как вино и кофе могут дополнять друг друга.</p>
+      </div>
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Кофе и десерты</h4>
+          <span class="card-badge">Гастрономия</span>
         </div>
-
-        <div class="event-card">
-          <h4>Домашние методы</h4>
-          <div class="badges">
-            <span class="time-badge">18:00</span>
-            <span class="location-badge">Бенке Холл</span>
-          </div>
-          <div class="event-author">
-            Евгений Ивахненко, 8 Атомов
-          </div>
-        </div>
-
-        <div class="event-card">
-          <h4>Голоса Волги на сцене Станкозавода</h4>
-          <div class="badges">
-            <span class="time-badge">19:00</span>
-            <span class="location-badge">Бенке холл</span>
-          </div>
-          <div class="event-author">
-            Хор «Константа»
-          </div>
-        </div>
-
-        <div class="event-card">
-          <h4>Выставка картин на кофейную тематику – при поддержке Арт 100</h4>
-          <div class="badges">
-            <span class="time-badge">Весь день</span>
-            <span class="location-badge">Бенке холл</span>
-          </div>
-          <div class="event-author">
-            Иван Шкатов, художник
-          </div>
-        </div>
+        <p class="card-description">Понимайте, как текстуры и вкусы усиливают друг друга. Секреты создания идеальных сочетаний от профессиональных кондитеров.</p>
       </div>
     </div>
-
-    <!-- Вкладка: Малый эвент -->
-    <div v-show="activeTab === 'event'" class="content-section">
-      <div class="schedule-grid">
-        <div class="event-card">
-          <h4>Презентация: "НЕ Франшиза: Развитие кофейного рынка Самары"</h4>
-          <div class="badges">
-            <span class="time-badge">12:00</span>
-            <span class="location-badge">Лекторий "Малый эвент"</span>
-          </div>
-          <div class="event-author">
-            Михаил Изюмов, Сигнал
-          </div>
+  </div>
+  <!-- Вкладка 3: Мастер-классы -->
+  <div v-show="activeTab === 'masterclasses'" class="content-section">
+    <h3>Получите практические навыки от профессионалов индустрии</h3>
+    
+    <div class="experience-grid">
+      <!-- Изображение в рамках карточки - ПЕРВОЕ -->
+      <div class="experience-card image-card">
+        <img src="/master-ban.jpg" alt="Festival Banner" class="card-image" />
+      </div>
+      
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Латте-арт для начинающих</h4>
+          <span class="card-badge">Hands-on</span>
         </div>
-
-        <div class="event-card">
-          <h4>Кофе и Вино: Органолептика (Блок 1)</h4>
-          <div class="badges">
-            <span class="time-badge">14:00</span>
-            <span class="location-badge">Лекторий "Малый эвент"</span>
-          </div>
-          <div class="event-author">
-            Александр Миронов, старший кавист Vittoria Gourmet
-          </div>
-        </div>
-
-        <div class="event-card">
-          <h4>Кофе и Вино: Органолептика (Блок 2)</h4>
-          <div class="badges">
-            <span class="time-badge">17:00</span>
-            <span class="location-badge">Лекторий "Малый эвент"</span>
-          </div>
-          <div class="event-author">
-            Александр Миронов, старший кавист Vittoria Gourmet
-          </div>
+        <p class="card-description">Основы работы с молочной пеной, создание базовых рисунков. От простого сердца до сложного тюльпана.</p>
+        <div class="card-highlight">
+          <strong>Мастер:</strong> Твинс
         </div>
       </div>
-    </div>
-
-    <!-- Вкладка: А106 студия -->
-    <div v-show="activeTab === 'studio'" class="content-section">
-      <div class="schedule-grid">
-        <div class="event-card">
-          <h4>Каппинг: Красная комната (Блок 1)</h4>
-          <div class="badges">
-            <span class="time-badge">13:00</span>
-            <span class="location-badge">А106 студия</span>
-          </div>
-          <div class="event-author">
-            MOSAIC
-          </div>
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Альтернативные способы</h4>
+          <span class="card-badge">V60 • Chemex • AeroPress</span>
         </div>
-
-        <div class="event-card">
-          <h4>Каппинг: Красная комната (Блок 2)</h4>
-          <div class="badges">
-            <span class="time-badge">16:00</span>
-            <span class="location-badge">А106 студия</span>
-          </div>
-          <div class="event-author">
-            MOSAIC
-          </div>
+        <p class="card-description">Как выбрать метод заваривания под конкретное зерно и настроение. Секреты извлечения максимума вкуса.</p>
+        <div class="card-highlight">
+          <strong>Опыт:</strong> Кофейня "На краю земли"
+        </div>
+      </div>
+      <div class="experience-card">
+        <div class="card-header">
+          <h4>Домашняя обжарка</h4>
+          <span class="card-badge">От зерна до чашки</span>
+        </div>
+        <p class="card-description">Понимание профилей обжарки, работа с домашним оборудованием. Создавайте уникальные вкусы самостоятельно.</p>
+        <div class="card-highlight">
+          <strong>Ведут:</strong> White Cup
         </div>
       </div>
     </div>
   </div>
 </div>
+</div>
 </template>
-
 <script setup>
 import { ref } from 'vue'
-const activeTab = ref('benke')
+const activeTab = ref('tastings')
 </script>
-
 <style scoped>
-.festival-schedule {
-  margin: 0.75rem 0;
-  padding: 1.25rem;
-  border-radius: 12px;
-  background: rgba(50, 55, 62, 0.8);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.festival-experience {
+  margin: 1.5rem 0;
 }
-
 .tabs {
   display: inline-flex;
   gap: 4px;
@@ -166,7 +137,6 @@ const activeTab = ref('benke')
   border-radius: 10px;
   padding: 4px;
 }
-
 .tabs button {
   padding: 8px 12px;
   border: none;
@@ -179,149 +149,115 @@ const activeTab = ref('benke')
   font-size: 0.9rem;
   white-space: nowrap;
 }
-
 .tabs button:hover {
   background: rgba(255, 255, 255, 0.05);
   color: #ffffff;
 }
-
 .tabs button.active {
   background: #84cc16;
   color: #000000;
   font-weight: 600;
 }
-
 .content-section {
   animation: fadeIn 0.3s ease-in-out;
 }
-
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-.schedule-grid {
+.content-section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
+  color: var(--vp-c-text-1);
+  font-weight: 600;
+}
+.experience-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
 }
-
-.event-card {
-  background: rgba(255, 255, 255, 0.05);
+.experience-card {
+  background: var(--vp-c-bg-soft);
   border-radius: 10px;
   padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--vp-c-divider);
   transition: all 0.2s ease;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  backdrop-filter: blur(4px);
 }
-
-.event-card:hover {
+.experience-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  border-color: #84cc16;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border-color: var(--vp-c-brand);
 }
-
-.event-card h4 {
-  margin: 0 0 1rem 0;
+.card-header {
+  margin-bottom: 0.75rem;
+}
+.card-header h4 {
+  margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--vp-c-text-1);
   line-height: 1.3;
 }
-
-.badges {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.time-badge, .location-badge {
+.card-badge {
   display: inline-block;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.8rem;
+  background: #4ade80;
+  color: #000000;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
   font-weight: 600;
   line-height: 1.2;
-  position: relative;
+}
+.card-description {
+  color: var(--vp-c-text-2);
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+.card-highlight {
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  padding: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--vp-c-text-2);
+}
+.card-highlight strong {
+  color: var(--vp-c-text-1);
+}
+
+/* Стили для карточки с изображением */
+.image-card {
+  padding: 0;
   overflow: hidden;
-  transition: all 0.3s ease;
-  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.time-badge {
-  background: linear-gradient(135deg, #84cc16 0%, #a3e635 50%, #84cc16 100%);
-  box-shadow: 0 4px 15px rgba(132, 204, 22, 0.3);
-}
-
-.time-badge:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(132, 204, 22, 0.4);
-}
-
-.location-badge {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #6366f1 100%);
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-  color: #ffffff;
-}
-
-.location-badge:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
-}
-
-.time-badge::before, .location-badge::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
+.card-image {
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.5s;
-}
-
-.time-badge:hover::before, .location-badge:hover::before {
-  left: 100%;
-}
-
-.event-author {
-  background: rgba(0, 0, 0, 0.4);
-  color: #ffffff;
-  padding: 0.6rem 0.85rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-top: auto;
-  width: fit-content;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
-  .festival-schedule {
-    margin-top: 0.5rem;
-    padding: 1rem;
-  }
-  
   .tabs {
     flex-wrap: wrap;
     justify-content: center;
   }
-  
-  .schedule-grid {
+  .experience-grid {
     grid-template-columns: 1fr;
     gap: 0.8rem;
   }
-  
-  .event-card {
+  .experience-card {
     padding: 0.8rem;
   }
-  
-  .badges {
-    flex-wrap: wrap;
+  .image-card {
+    padding: 0;
   }
 }
 </style>
