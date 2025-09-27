@@ -51,10 +51,10 @@ head:
 
 <FestBrands />
 
-## АКТИВНОСТИ
+### АКТИВНОСТИ
 <FestActivities />
 
-## ПРОГРАММА
+### ПРОГРАММА
 <FestProgram />
 
 <div style="text-align: center; margin: 2rem 0;">
