@@ -51,9 +51,11 @@ head:
 
 <FestBrands />
 
-## ПРОГРАММА ФЕСТИВАЛЯ
-
+## АКТИВНОСТИ
 <FestActivities />
+
+## ПРОГРАММА
+<FestProgram />
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
