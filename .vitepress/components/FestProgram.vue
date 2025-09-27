@@ -153,15 +153,16 @@ const activeTab = ref('benke')
   margin: 0.75rem 0;
   padding: 1.25rem;
   border-radius: 12px;
-  background: #2a2f36;
-  border: 1px solid #3a4047;
+  background: rgba(50, 55, 62, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .tabs {
   display: inline-flex;
   gap: 4px;
   margin-bottom: 1.5rem;
-  background: #1e2328;
+  background: #2a2a2a;
   border-radius: 10px;
   padding: 4px;
 }
@@ -206,19 +207,20 @@ const activeTab = ref('benke')
 }
 
 .event-card {
-  background: #1e2328;
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
   padding: 1rem;
-  border: 1px solid #3a4047;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.2s ease;
   position: relative;
   display: flex;
   flex-direction: column;
+  backdrop-filter: blur(4px);
 }
 
 .event-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   border-color: #84cc16;
 }
 
@@ -236,30 +238,57 @@ const activeTab = ref('benke')
   margin-bottom: 1rem;
 }
 
-.time-badge {
+.time-badge, .location-badge {
   display: inline-block;
-  background: #84cc16;
-  color: #000000;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 600;
   line-height: 1.2;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  color: #000000;
+}
+
+.time-badge {
+  background: linear-gradient(135deg, #84cc16 0%, #a3e635 50%, #84cc16 100%);
+  box-shadow: 0 4px 15px rgba(132, 204, 22, 0.3);
+}
+
+.time-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(132, 204, 22, 0.4);
 }
 
 .location-badge {
-  display: inline-block;
-  background: #6366f1;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #6366f1 100%);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
   color: #ffffff;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  line-height: 1.2;
+}
+
+.location-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+.time-badge::before, .location-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s;
+}
+
+.time-badge:hover::before, .location-badge:hover::before {
+  left: 100%;
 }
 
 .event-author {
-  background: #0d1117;
+  background: rgba(0, 0, 0, 0.4);
   color: #ffffff;
   padding: 0.6rem 0.85rem;
   border-radius: 6px;
@@ -267,6 +296,7 @@ const activeTab = ref('benke')
   font-weight: 500;
   margin-top: auto;
   width: fit-content;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Адаптивность */
