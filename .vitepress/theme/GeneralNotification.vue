@@ -11,8 +11,8 @@ const notifications = [
   { 
     text: 'Где начинается Ваша Кофейня', 
     hasButton: true,
-    buttonText: 'Отправить ⚡ Сигнал',
-    buttonUrl: '/signal/new'
+    buttonText: 'Отправьте Умный Отзыв',
+    buttonUrl: '/me'
   },
   { 
     text: 'Присоединяйтесь к главному кофейному событию года', 
