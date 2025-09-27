@@ -79,6 +79,7 @@ import DialogsTestT9 from '../components/DialogsTestT9.vue'
 import SignalT9Configurator from '../components/SignalT9Configurator.vue'
 import SignalModalButton from '../components/SignalModalButton.vue'
 import CoffeePointsSMR from '../components/CoffeePointsSMR.vue'
+import FestProgram from '../components/FestProgram.vue'
 
 export default {
   extends: DefaultTheme,
@@ -163,5 +164,6 @@ export default {
     app.component('SignalT9Configurator', SignalT9Configurator)
     app.component('SignalModalButton', SignalModalButton)
     app.component('CoffeePointsSMR', CoffeePointsSMR)
+    app.component('FestProgram', FestProgram)
   },
 }
