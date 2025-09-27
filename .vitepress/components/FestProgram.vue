@@ -79,7 +79,7 @@
     <div v-show="activeTab === 'event'" class="content-section">
       <div class="schedule-grid">
         <div class="event-card">
-          <h4>Презентация: "НЕ Франшиза: Развитие кофейного рынка Самары"</h4>
+          <h4>НЕ Франшиза: Развитие кофейного рынка Самары</h4>
           <div class="badges">
             <span class="time-badge">12:00</span>
             <span class="location-badge">Лекторий "Малый эвент"</span>
