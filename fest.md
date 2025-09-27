@@ -20,7 +20,7 @@ head:
 <div style="text-align: center; margin: 2rem 0;">
   <img 
     src="/fest2025_smr_ban_1.jpg" 
-    alt="BREW intro"
+    alt="Фестиваль Культура Кофе в Самаре"
     style="
       width: 100%;
       max-width: 800px;
