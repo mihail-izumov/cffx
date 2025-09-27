@@ -150,17 +150,20 @@ const activeTab = ref('benke')
 
 <style scoped>
 .festival-schedule {
-  margin: 0.5rem 0;
-  background: #3a4047; /* Светлее основного темного фона сайта */
-  border-radius: 16px;
-  padding: 1rem 1.5rem 1.5rem;
+  margin: 0.75rem 0;
+  padding: 1rem;
+  border-radius: 14px;
+  background: rgba(22, 24, 28, 0.6);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(132, 204, 22, 0.15);
 }
 
 .tabs {
   display: inline-flex;
   gap: 4px;
   margin-bottom: 1.5rem;
-  background: #2a2a2a;
+  background: rgba(34, 38, 44, 0.8);
+  border: 1px solid rgba(132, 204, 22, 0.12);
   border-radius: 10px;
   padding: 4px;
 }
@@ -169,7 +172,7 @@ const activeTab = ref('benke')
   padding: 8px 12px;
   border: none;
   background: transparent;
-  color: #9ca3af;
+  color: #c9d1d9;
   cursor: pointer;
   border-radius: 6px;
   font-weight: 500;
@@ -179,13 +182,13 @@ const activeTab = ref('benke')
 }
 
 .tabs button:hover {
-  background: rgba(132, 204, 22, 0.1);
-  color: #ffffff;
+  background: rgba(132, 204, 22, 0.08);
+  color: #e5e7eb;
 }
 
 .tabs button.active {
   background: #84cc16;
-  color: #000000;
+  color: #0b0f12;
   font-weight: 600;
 }
 
@@ -201,107 +204,98 @@ const activeTab = ref('benke')
 .schedule-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
 .event-card {
-  background: #4a5258; /* Еще светлее для карточек */
+  background: linear-gradient(180deg, rgba(32,36,42,0.9), rgba(28,31,36,0.9));
+  border: 1px solid rgba(99,102,241,0.08);
   border-radius: 12px;
-  padding: 1.25rem;
-  border: 1px solid #5a6269;
+  padding: 1rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
   transition: all 0.2s ease;
   position: relative;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .event-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  border-color: #84cc16;
-  background: #525964; /* Светлеет при hover */
+  box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+  border-color: rgba(132,204,22,0.25);
 }
 
 .event-card h4 {
   margin: 0 0 1rem 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #e8eaed;
   line-height: 1.3;
 }
 
 .badges {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.45rem;
   margin-bottom: 1rem;
 }
 
 .time-badge, .location-badge {
   display: inline-block;
-  color: white;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  line-height: 1.2;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.25), 0 6px 18px rgba(0,0,0,0.25);
+  transition: transform .2s ease, box-shadow .2s ease;
 }
 
 .time-badge {
-  background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
-  box-shadow: 0 4px 15px rgba(132, 204, 22, 0.4);
-}
-
-.time-badge:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(132, 204, 22, 0.6);
+  background: radial-gradient(120% 120% at 10% 10%, #a3e635 0%, #84cc16 40%, #65a30d 100%);
+  color: #0b0f12;
 }
 
 .location-badge {
-  background: linear-gradient(135deg, #22d3ee 0%, #0891b2 100%); /* Циан из палитры сайта */
-  box-shadow: 0 4px 15px rgba(34, 211, 238, 0.4);
-}
-
-.location-badge:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(34, 211, 238, 0.6);
+  background: radial-gradient(120% 120% at 10% 10%, #a78bfa 0%, #6366f1 45%, #4f46e5 100%);
+  color: #0b0f12;
 }
 
 .time-badge::before, .location-badge::before {
-  content: '';
+  content: "";
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s;
+  inset: -40% -60% auto auto;
+  width: 140%;
+  height: 200%;
+  background: conic-gradient(from 0deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06), transparent 60%);
+  mix-blend-mode: screen;
+  transform: rotate(12deg);
 }
 
-.time-badge:hover::before, .location-badge:hover::before {
-  left: 100%;
+.time-badge:hover, .location-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.25), 0 10px 24px rgba(0,0,0,0.35);
 }
 
 .event-author {
-  background: #1a1a1a;
-  color: #ffffff;
-  padding: 0.6rem 0.85rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
   margin-top: auto;
   width: fit-content;
+  color: #e5e7eb;
+  background: linear-gradient(180deg, #13161a, #0f1216);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
   .festival-schedule {
-    padding: 1rem;
-    margin: 1rem 0;
+    margin-top: 0.5rem;
+    padding: 0.85rem;
   }
   
   .tabs {
@@ -315,7 +309,7 @@ const activeTab = ref('benke')
   }
   
   .event-card {
-    padding: 1rem;
+    padding: 0.9rem;
   }
   
   .badges {
