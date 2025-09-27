@@ -150,12 +150,7 @@ const activeTab = ref('benke')
 
 <style scoped>
 .festival-schedule {
-  margin: 0.75rem 0;
-  padding: 1.25rem;
-  border-radius: 12px;
-  background: rgba(50, 55, 62, 0.8);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 1rem 0;
 }
 
 .tabs {
@@ -207,28 +202,27 @@ const activeTab = ref('benke')
 }
 
 .event-card {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--vp-c-bg-soft);
   border-radius: 10px;
   padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--vp-c-divider);
   transition: all 0.2s ease;
   position: relative;
   display: flex;
   flex-direction: column;
-  backdrop-filter: blur(4px);
 }
 
 .event-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  border-color: #84cc16;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border-color: var(--vp-c-brand);
 }
 
 .event-card h4 {
   margin: 0 0 1rem 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--vp-c-text-1);
   line-height: 1.3;
 }
 
@@ -248,28 +242,28 @@ const activeTab = ref('benke')
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
-  color: #000000;
 }
 
 .time-badge {
-  background: linear-gradient(135deg, #84cc16 0%, #a3e635 50%, #84cc16 100%);
-  box-shadow: 0 4px 15px rgba(132, 204, 22, 0.3);
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 50%, #16a34a 100%);
+  color: #000000;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
 }
 
 .time-badge:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(132, 204, 22, 0.4);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
 }
 
 .location-badge {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #6366f1 100%);
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-  color: #ffffff;
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 50%, #16a34a 100%);
+  color: #000000;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
 }
 
 .location-badge:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
 }
 
 .time-badge::before, .location-badge::before {
@@ -288,24 +282,22 @@ const activeTab = ref('benke')
 }
 
 .event-author {
-  background: rgba(0, 0, 0, 0.4);
-  color: #ffffff;
-  padding: 0.6rem 0.85rem;
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  color: var(--vp-c-text-2);
+  padding: 0.6rem;
   border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.85rem;
   margin-top: auto;
   width: fit-content;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-author strong {
+  color: var(--vp-c-text-1);
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
-  .festival-schedule {
-    margin-top: 0.5rem;
-    padding: 1rem;
-  }
-  
   .tabs {
     flex-wrap: wrap;
     justify-content: center;
