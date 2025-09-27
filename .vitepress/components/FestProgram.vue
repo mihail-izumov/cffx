@@ -55,7 +55,7 @@
           <h4>Голоса Волги на сцене Станкозавода</h4>
           <div class="badges">
             <span class="time-badge">19:00</span>
-            <span class="location-badge">Бенке Холл</span>
+            <span class="location-badge">Бенке холл</span>
           </div>
           <div class="event-author">
             Хор «Константа»
@@ -66,7 +66,7 @@
           <h4>Выставка картин на кофейную тематику – при поддержке Арт 100</h4>
           <div class="badges">
             <span class="time-badge">Весь день</span>
-            <span class="location-badge">Бенке Холл</span>
+            <span class="location-badge">Бенке холл</span>
           </div>
           <div class="event-author">
             Иван Шкатов, художник
@@ -82,7 +82,7 @@
           <h4>Презентация: "НЕ Франшиза: Развитие кофейного рынка Самары"</h4>
           <div class="badges">
             <span class="time-badge">12:00</span>
-            <span class="location-badge">Малый эвент</span>
+            <span class="location-badge">Лекторий "Малый эвент"</span>
           </div>
           <div class="event-author">
             Михаил Изюмов, Сигнал
@@ -93,7 +93,7 @@
           <h4>Кофе и Вино: Органолептика (Блок 1)</h4>
           <div class="badges">
             <span class="time-badge">14:00</span>
-            <span class="location-badge">Малый эвент</span>
+            <span class="location-badge">Лекторий "Малый эвент"</span>
           </div>
           <div class="event-author">
             Александр Миронов, старший кавист Vittoria Gourmet
@@ -104,7 +104,7 @@
           <h4>Кофе и Вино: Органолептика (Блок 2)</h4>
           <div class="badges">
             <span class="time-badge">17:00</span>
-            <span class="location-badge">Малый эвент</span>
+            <span class="location-badge">Лекторий "Малый эвент"</span>
           </div>
           <div class="event-author">
             Александр Миронов, старший кавист Vittoria Gourmet
@@ -232,26 +232,53 @@ const activeTab = ref('benke')
   margin-bottom: 1rem;
 }
 
-.time-badge {
+.time-badge, .location-badge {
   display: inline-block;
-  background: #3b82f6; /* Синий цвет как на скриншоте */
   color: white;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 600;
   line-height: 1.2;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.time-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.time-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
 }
 
 .location-badge {
-  display: inline-block;
-  background: #10b981; /* Зеленый цвет как на скриншоте */
-  color: white;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  line-height: 1.2;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+}
+
+.location-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
+}
+
+.time-badge::before, .location-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.time-badge:hover::before, .location-badge:hover::before {
+  left: 100%;
 }
 
 .event-author {
@@ -262,7 +289,7 @@ const activeTab = ref('benke')
   font-size: 0.9rem;
   font-weight: 500;
   margin-top: auto;
-  width: fit-content; /* Делаем блок компактным */
+  width: fit-content;
 }
 
 /* Адаптивность */
