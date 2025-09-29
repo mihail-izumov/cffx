@@ -81,6 +81,7 @@ import SignalModalButton from '../components/SignalModalButton.vue'
 import CoffeePointsSMR from '../components/CoffeePointsSMR.vue'
 import FestProgram from '../components/FestProgram.vue'
 import VideoPlayer from '../components/VideoPlayer.vue'
+import PDFButton from '../components/PDFButton.vue'
 
 export default {
   extends: DefaultTheme,
@@ -167,5 +168,6 @@ export default {
     app.component('CoffeePointsSMR', CoffeePointsSMR)
     app.component('FestProgram', FestProgram)
     app.component('VideoPlayer', VideoPlayer)
+    app.component('PDFButton', PDFButton)
   },
 }
