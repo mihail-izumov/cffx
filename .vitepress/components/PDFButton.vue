@@ -4,7 +4,7 @@
       @click="openPDF"
       class="pdf-button"
     >
-      <span class="pdf-button-text">Открыть отчёт</span>
+      <span class="pdf-button-text">Открыть презентацию</span>
       <div class="pdf-button-icon-container">
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
