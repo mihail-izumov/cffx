@@ -20,16 +20,24 @@
         Ваш браузер не поддерживает видео элемент.
       </video>
       
+      <!-- Liquid Fluid переключатель качества -->
       <div class="video-controls">
-        <div class="quality-selector">
-          <select 
-            v-model="selectedQuality" 
-            @change="changeQuality"
-            class="quality-select"
-          >
-            <option value="sd">SD (720p)</option>
-            <option value="hd">HD (1080p)</option>
-          </select>
+        <div class="quality-toggle">
+          <input 
+            type="checkbox" 
+            id="quality-switch" 
+            v-model="isHDQuality"
+            @change="toggleQuality"
+            class="quality-checkbox"
+          />
+          <label for="quality-switch" class="quality-label">
+            <div class="quality-slider">
+              <div class="quality-slider-inner">
+                <div class="quality-text quality-sd" :class="{ active: !isHDQuality }">SD</div>
+                <div class="quality-text quality-hd" :class="{ active: isHDQuality }">HD</div>
+              </div>
+            </div>
+          </label>
         </div>
       </div>
       
@@ -82,7 +90,7 @@ const props = defineProps({
 })
 
 const videoElement = ref(null)
-const selectedQuality = ref('sd')
+const isHDQuality = ref(false) // Начинаем с SD
 const isLoading = ref(false)
 const hasError = ref(false)
 const errorMessage = ref('')
@@ -90,10 +98,10 @@ const currentTime = ref(0)
 const isPlaying = ref(false)
 
 const currentVideoSrc = computed(() => {
-  return selectedQuality.value === 'hd' ? props.hdSrc : props.sdSrc
+  return isHDQuality.value ? props.hdSrc : props.sdSrc
 })
 
-const changeQuality = () => {
+const toggleQuality = () => {
   if (!videoElement.value) return
   
   // Сохраняем состояние
@@ -202,44 +210,121 @@ watch(currentVideoSrc, () => {
 .video-wrapper {
   position: relative;
   background: #000;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  min-height: 300px;
+  /* Убираем min-height для мобильных */
+  aspect-ratio: 16/9;
 }
 
 video {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
   display: block;
 }
 
 .video-controls {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 16px;
+  right: 16px;
   z-index: 10;
 }
 
-.quality-selector {
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 4px;
-  padding: 4px;
-  backdrop-filter: blur(10px);
+/* Liquid Fluid переключатель в графитовом цвете */
+.quality-toggle {
+  position: relative;
 }
 
-.quality-select {
-  background: transparent;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 12px;
+.quality-checkbox {
+  display: none;
+}
+
+.quality-label {
   cursor: pointer;
-  outline: none;
+  display: block;
 }
 
-.quality-select:hover {
-  border-color: rgba(255, 255, 255, 0.6);
+.quality-slider {
+  width: 80px;
+  height: 32px;
+  background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+  border: 1px solid #404040;
+}
+
+.quality-slider-inner {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.quality-slider-inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(135deg, #6c7c87 0%, #4a5568 100%);
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  transform: translateX(0);
+}
+
+.quality-checkbox:checked + .quality-label .quality-slider-inner::before {
+  transform: translateX(100%);
+  background: linear-gradient(135th, #718096 0%, #4a5568 100%);
+}
+
+.quality-text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  font-weight: 600;
+  color: #9a9a9a;
+  transition: all 0.3s ease;
+  z-index: 2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.quality-sd {
+  left: 8px;
+}
+
+.quality-hd {
+  right: 8px;
+}
+
+.quality-text.active {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Hover эффект */
+.quality-label:hover .quality-slider {
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Liquid анимация при клике */
+.quality-slider:active {
+  transform: scale(0.98);
 }
 
 .loading-overlay {
@@ -254,6 +339,7 @@ video {
   align-items: center;
   justify-content: center;
   z-index: 20;
+  border-radius: 12px;
 }
 
 .loading-spinner {
@@ -282,6 +368,7 @@ video {
   align-items: center;
   justify-content: center;
   z-index: 25;
+  border-radius: 12px;
 }
 
 .error-content {
@@ -320,11 +407,12 @@ video {
   color: white;
   border: none;
   padding: 8px 16px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
   text-decoration: none;
   display: inline-block;
+  transition: background 0.3s ease;
 }
 
 .retry-button:hover, .direct-link:hover {
@@ -343,7 +431,64 @@ video {
   to { transform: rotate(360deg); }
 }
 
+/* Адаптивный дизайн для разных разрешений */
+
+/* Планшеты (768px - 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .video-wrapper {
+    border-radius: 10px;
+  }
+  
+  .video-controls {
+    top: 12px;
+    right: 12px;
+  }
+  
+  .quality-slider {
+    width: 75px;
+    height: 30px;
+  }
+  
+  .quality-text {
+    font-size: 9px;
+  }
+}
+
+/* Мобильные устройства (до 768px) */
 @media (max-width: 768px) {
+  .video-wrapper {
+    border-radius: 8px;
+    /* Убираем черное поле снизу */
+    min-height: unset;
+  }
+  
+  video {
+    /* Обеспечиваем правильное соотношение сторон */
+    object-fit: cover;
+  }
+  
+  .video-controls {
+    top: 8px;
+    right: 8px;
+  }
+  
+  .quality-slider {
+    width: 70px;
+    height: 28px;
+  }
+  
+  .quality-text {
+    font-size: 8px;
+  }
+  
+  .quality-sd {
+    left: 6px;
+  }
+  
+  .quality-hd {
+    right: 6px;
+  }
+  
   .error-actions {
     flex-direction: column;
     align-items: center;
@@ -352,6 +497,69 @@ video {
   .retry-button, .direct-link {
     width: 100%;
     max-width: 200px;
+  }
+  
+  .loading-text {
+    font-size: 14px;
+  }
+  
+  .error-content {
+    padding: 16px;
+  }
+}
+
+/* Очень маленькие экраны (до 480px) */
+@media (max-width: 480px) {
+  .video-player-container {
+    margin: 0.5rem 0;
+  }
+  
+  .video-wrapper {
+    border-radius: 6px;
+  }
+  
+  .quality-slider {
+    width: 65px;
+    height: 26px;
+  }
+  
+  .quality-text {
+    font-size: 7px;
+  }
+  
+  .loading-spinner {
+    width: 32px;
+    height: 32px;
+    border-width: 2px;
+  }
+  
+  .error-icon {
+    font-size: 36px;
+  }
+  
+  .error-text {
+    font-size: 16px;
+  }
+}
+
+/* Ландшафтная ориентация на мобильных */
+@media (max-width: 768px) and (orientation: landscape) {
+  .video-wrapper {
+    aspect-ratio: unset;
+    height: 100vh;
+    max-height: 400px;
+  }
+  
+  .video-controls {
+    top: 12px;
+    right: 12px;
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .video-player-container {
+    background: var(--vp-c-bg-soft, #1a1a1a);
   }
 }
 </style>
