@@ -82,6 +82,7 @@ import CoffeePointsSMR from '../components/CoffeePointsSMR.vue'
 import FestProgram from '../components/FestProgram.vue'
 import VideoPlayer from '../components/VideoPlayer.vue'
 import PDFButton from '../components/PDFButton.vue'
+import SmartReview3Cards from '../components/SmartReview3Cards.vue'
 
 export default {
   extends: DefaultTheme,
@@ -169,5 +170,6 @@ export default {
     app.component('FestProgram', FestProgram)
     app.component('VideoPlayer', VideoPlayer)
     app.component('PDFButton', PDFButton)
+    app.component('SmartReview3Cards', SmartReview3Cards)    
   },
 }
