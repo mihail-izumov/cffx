@@ -5,22 +5,17 @@
         ref="videoElement"
         :poster="poster"
         controls
-        preload="metadata"
+        preload="none"
         @loadstart="onLoadStart"
-        @loadedmetadata="onLoadedMetadata"
+        @loadeddata="onLoadedData"
         @canplay="onCanPlay"
-        @canplaythrough="onCanPlayThrough"
-        @progress="onProgress"
-        @waiting="onWaiting"
         @error="onError"
-        crossorigin="anonymous"
+        @play="onPlay"
+        @pause="onPause"
       >
         <source 
-          v-for="source in videoSources" 
-          :key="source.quality"
-          :src="source.src"
-          :type="source.type"
-          :data-quality="source.quality"
+          :src="currentVideoSrc"
+          type="video/mp4"
         />
         Ваш браузер не поддерживает видео элемент.
       </video>
@@ -31,38 +26,33 @@
             v-model="selectedQuality" 
             @change="changeQuality"
             class="quality-select"
-            :disabled="isLoading"
           >
-            <option 
-              v-for="source in videoSources" 
-              :key="source.quality"
-              :value="source.quality"
-            >
-              {{ source.label }}
-            </option>
+            <option value="sd">SD (720p)</option>
+            <option value="hd">HD (1080p)</option>
           </select>
         </div>
       </div>
       
-      <!-- Загрузка метаданных -->
+      <!-- Простой индикатор загрузки -->
       <div v-if="isLoading" class="loading-overlay">
-        <div class="loading-content">
-          <div class="loading-spinner"></div>
-          <div class="loading-text">{{ loadingText }}</div>
-          <div v-if="showProgress" class="loading-percentage">
-            {{ Math.round(loadedPercentage) }}%
-          </div>
-        </div>
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Загрузка...</div>
       </div>
       
-      <!-- Ошибка загрузки -->
+      <!-- Ошибка с диагностикой -->
       <div v-if="hasError" class="error-overlay">
         <div class="error-content">
           <div class="error-icon">⚠️</div>
-          <div class="error-text">Ошибка загрузки видео</div>
-          <button @click="retryLoad" class="retry-button">
-            Попробовать снова
-          </button>
+          <div class="error-text">Не удалось загрузить видео</div>
+          <div class="error-details">{{ errorMessage }}</div>
+          <div class="error-actions">
+            <button @click="retryLoad" class="retry-button">
+              Попробовать снова
+            </button>
+            <a :href="currentVideoSrc" target="_blank" class="direct-link">
+              Открыть напрямую
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -70,7 +60,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 const props = defineProps({
   poster: {
@@ -92,150 +82,112 @@ const props = defineProps({
 })
 
 const videoElement = ref(null)
-const selectedQuality = ref('sd') // Начинаем с SD для быстрой загрузки
-const isLoading = ref(true)
+const selectedQuality = ref('sd')
+const isLoading = ref(false)
 const hasError = ref(false)
-const loadingText = ref('Подготовка видео...')
-const loadedPercentage = ref(0)
-const showProgress = ref(false)
+const errorMessage = ref('')
 const currentTime = ref(0)
-const wasPlaying = ref(false)
+const isPlaying = ref(false)
 
-const videoSources = computed(() => [
-  {
-    src: props.sdSrc,
-    quality: 'sd',
-    label: 'SD (720p)',
-    type: 'video/mp4'
-  },
-  {
-    src: props.hdSrc,
-    quality: 'hd',
-    label: 'HD (1080p)',
-    type: 'video/mp4'
-  }
-])
+const currentVideoSrc = computed(() => {
+  return selectedQuality.value === 'hd' ? props.hdSrc : props.sdSrc
+})
 
-// Предзагрузка видео с timeout
-const preloadVideo = (src, timeout = 10000) => {
-  return new Promise((resolve, reject) => {
-    const video = document.createElement('video')
-    video.preload = 'metadata'
-    video.src = src
-    
-    const timeoutId = setTimeout(() => {
-      reject(new Error('Timeout'))
-    }, timeout)
-    
-    video.addEventListener('loadedmetadata', () => {
-      clearTimeout(timeoutId)
-      resolve(video)
-    })
-    
-    video.addEventListener('error', () => {
-      clearTimeout(timeoutId)
-      reject(new Error('Load error'))
-    })
-  })
-}
-
-const changeQuality = async () => {
+const changeQuality = () => {
   if (!videoElement.value) return
   
+  // Сохраняем состояние
   currentTime.value = videoElement.value.currentTime
-  wasPlaying.value = !videoElement.value.paused
+  isPlaying.value = !videoElement.value.paused
   
-  isLoading.value = true
-  loadingText.value = 'Переключение качества...'
+  // Сбрасываем ошибки
   hasError.value = false
+  errorMessage.value = ''
   
-  const selectedSource = videoSources.value.find(
-    source => source.quality === selectedQuality.value
-  )
+  // Загружаем новое видео
+  videoElement.value.load()
   
-  if (selectedSource) {
-    try {
-      await preloadVideo(selectedSource.src, 8000)
-      
-      videoElement.value.src = selectedSource.src
-      videoElement.value.load()
-      
-      videoElement.value.addEventListener('loadeddata', () => {
-        videoElement.value.currentTime = currentTime.value
-        if (wasPlaying.value) {
-          videoElement.value.play()
-        }
-      }, { once: true })
-      
-    } catch (error) {
-      console.error('Ошибка смены качества:', error)
-      hasError.value = true
-      isLoading.value = false
+  // Восстанавливаем позицию после загрузки
+  videoElement.value.addEventListener('loadeddata', () => {
+    if (currentTime.value > 0) {
+      videoElement.value.currentTime = currentTime.value
     }
-  }
+    if (isPlaying.value) {
+      videoElement.value.play().catch(e => {
+        console.log('Autoplay заблокирован:', e)
+      })
+    }
+  }, { once: true })
 }
 
 const onLoadStart = () => {
   isLoading.value = true
-  loadingText.value = 'Загрузка видео...'
   hasError.value = false
-  showProgress.value = true
+  errorMessage.value = ''
 }
 
-const onLoadedMetadata = () => {
-  loadingText.value = 'Подготовка к воспроизведению...'
-}
-
-const onProgress = () => {
-  if (!videoElement.value) return
-  
-  const video = videoElement.value
-  if (video.buffered.length > 0 && video.duration) {
-    const bufferedEnd = video.buffered.end(video.buffered.length - 1)
-    loadedPercentage.value = (bufferedEnd / video.duration) * 100
-  }
+const onLoadedData = () => {
+  isLoading.value = false
+  hasError.value = false
 }
 
 const onCanPlay = () => {
-  loadingText.value = 'Почти готово...'
-}
-
-const onCanPlayThrough = () => {
   isLoading.value = false
-  showProgress.value = false
   hasError.value = false
-}
-
-const onWaiting = () => {
-  if (!isLoading.value) {
-    loadingText.value = 'Буферизация...'
-    isLoading.value = true
-  }
 }
 
 const onError = (event) => {
   console.error('Ошибка видео:', event)
-  hasError.value = true
   isLoading.value = false
-  loadingText.value = 'Ошибка загрузки'
+  hasError.value = true
+  
+  const video = event.target
+  const error = video.error
+  
+  if (error) {
+    switch (error.code) {
+      case error.MEDIA_ERR_ABORTED:
+        errorMessage.value = 'Загрузка прервана пользователем'
+        break
+      case error.MEDIA_ERR_NETWORK:
+        errorMessage.value = 'Ошибка сети при загрузке'
+        break
+      case error.MEDIA_ERR_DECODE:
+        errorMessage.value = 'Ошибка декодирования видео'
+        break
+      case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+        errorMessage.value = 'Формат видео не поддерживается'
+        break
+      default:
+        errorMessage.value = 'Неизвестная ошибка'
+    }
+  } else {
+    errorMessage.value = 'Проверьте доступность файла'
+  }
+}
+
+const onPlay = () => {
+  isPlaying.value = true
+}
+
+const onPause = () => {
+  isPlaying.value = false
 }
 
 const retryLoad = () => {
   hasError.value = false
+  errorMessage.value = ''
   isLoading.value = true
+  
   if (videoElement.value) {
     videoElement.value.load()
   }
 }
 
-// Инициализация с SD качеством
-onMounted(async () => {
+// Отслеживаем изменения источника
+watch(currentVideoSrc, () => {
   if (videoElement.value) {
-    // Начинаем с SD для быстрой загрузки
-    const sdSource = videoSources.value.find(s => s.quality === 'sd')
-    if (sdSource) {
-      videoElement.value.src = sdSource.src
-    }
+    videoElement.value.load()
   }
 })
 </script>
@@ -252,7 +204,7 @@ onMounted(async () => {
   background: #000;
   border-radius: 8px;
   overflow: hidden;
-  min-height: 200px;
+  min-height: 300px;
 }
 
 video {
@@ -286,9 +238,8 @@ video {
   outline: none;
 }
 
-.quality-select:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.quality-select:hover {
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 .loading-overlay {
@@ -299,14 +250,10 @@ video {
   bottom: 0;
   background: rgba(0, 0, 0, 0.8);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 20;
-}
-
-.loading-content {
-  text-align: center;
-  color: white;
 }
 
 .loading-spinner {
@@ -316,17 +263,12 @@ video {
   border-radius: 50%;
   border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
-  margin: 0 auto 16px;
+  margin-bottom: 16px;
 }
 
 .loading-text {
+  color: white;
   font-size: 16px;
-  margin-bottom: 8px;
-}
-
-.loading-percentage {
-  font-size: 14px;
-  opacity: 0.8;
 }
 
 .error-overlay {
@@ -345,6 +287,8 @@ video {
 .error-content {
   text-align: center;
   color: white;
+  padding: 20px;
+  max-width: 400px;
 }
 
 .error-icon {
@@ -354,10 +298,24 @@ video {
 
 .error-text {
   font-size: 18px;
-  margin-bottom: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
-.retry-button {
+.error-details {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.error-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.retry-button, .direct-link {
   background: #007bff;
   color: white;
   border: none;
@@ -365,13 +323,35 @@ video {
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  text-decoration: none;
+  display: inline-block;
 }
 
-.retry-button:hover {
+.retry-button:hover, .direct-link:hover {
   background: #0056b3;
+}
+
+.direct-link {
+  background: #28a745;
+}
+
+.direct-link:hover {
+  background: #1e7e34;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .error-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .retry-button, .direct-link {
+    width: 100%;
+    max-width: 200px;
+  }
 }
 </style>
