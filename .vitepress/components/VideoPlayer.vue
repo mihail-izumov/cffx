@@ -212,7 +212,6 @@ watch(currentVideoSrc, () => {
   background: #000;
   border-radius: 12px;
   overflow: hidden;
-  /* Убираем min-height для мобильных */
   aspect-ratio: 16/9;
 }
 
@@ -287,7 +286,7 @@ video {
 
 .quality-checkbox:checked + .quality-label .quality-slider-inner::before {
   transform: translateX(100%);
-  background: linear-gradient(135th, #718096 0%, #4a5568 100%);
+  background: linear-gradient(135deg, #718096 0%, #4a5568 100%);
 }
 
 .quality-text {
@@ -300,14 +299,17 @@ video {
   transition: all 0.3s ease;
   z-index: 2;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  /* Исправленное центрирование */
+  width: 50%;
+  text-align: center;
 }
 
 .quality-sd {
-  left: 8px;
+  left: 0; /* Левая половина от 0% до 50% */
 }
 
 .quality-hd {
-  right: 8px;
+  right: 0; /* Правая половина от 50% до 100% */
 }
 
 .quality-text.active {
@@ -458,12 +460,10 @@ video {
 @media (max-width: 768px) {
   .video-wrapper {
     border-radius: 8px;
-    /* Убираем черное поле снизу */
     min-height: unset;
   }
   
   video {
-    /* Обеспечиваем правильное соотношение сторон */
     object-fit: cover;
   }
   
@@ -479,14 +479,6 @@ video {
   
   .quality-text {
     font-size: 8px;
-  }
-  
-  .quality-sd {
-    left: 6px;
-  }
-  
-  .quality-hd {
-    right: 6px;
   }
   
   .error-actions {
