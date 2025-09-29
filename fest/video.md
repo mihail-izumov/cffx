@@ -4,3 +4,5 @@
   poster="https://your-host.com/poster.jpg"
   :autoplay="false"
 />
+
+<PDFButton />
