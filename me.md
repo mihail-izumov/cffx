@@ -14,5 +14,4 @@ description: Где Начинается Ваша Кофейня
 </div>
 
 <CoffeePointsSMR />
-
 <SmartReview3Cards />
