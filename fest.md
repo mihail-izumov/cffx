@@ -36,16 +36,20 @@ head:
 
 ## Фестиваль в Самаре
 
-<Badge type="warning" text="Сентябрь 28, 2025" /> <Badge type="tip" text="Станкозавод" /> <Badge type="info" text="3000 гостей" />
+<Badge type="warning" text="Сентябрь 28, 2025" /> <Badge type="tip" text="Станкозавод" /> <Badge type="info" text="1500+ гостей" />
 <br>
 
-**Приглашаем вас на фестиваль, где кофейная культура соединится с винной традицией и гастрономическими открытиями.** <br><br>
-Событие приурочено к Международному Дню Кофе и станет настоящим праздником для всех ценителей качественных напитков.
+**Фестиваль, где кофейная культура соединяется гастрономическими открытиями.** <br><br>
+Событие приурочено к Международному Дню Кофе, настоящий праздник для всех ценителей качественных напитков.
 
-<div class="button-group">
-  <a href="https://kultura-kofe-event.timepad.ru/event/3575231" class="btn btn-primary" target="_blank" rel="noopener noreferrer"><strong>Купить билет</strong></a>
-  <a href="/fest/join" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Участвовать</a>
-</div>
+<VideoPlayer 
+  hd-src="http://70e1aad645fc.hosting.myjino.ru/fest2025/signal_fest2025_hd.mp4"
+  sd-src="http://70e1aad645fc.hosting.myjino.ru/fest2025/signal_fest2025_sd.mp4"
+  poster="/not-franchise-poster.jpg"
+  :autoplay="false"
+/>
+
+<PDFButton />
 
 ### Участники
 
