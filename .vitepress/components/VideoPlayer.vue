@@ -6,13 +6,14 @@
         :poster="poster"
         controls
         preload="metadata"
-        crossorigin="anonymous"
         @loadstart="onLoadStart"
-        @canplay="onCanPlay"
         @loadedmetadata="onLoadedMetadata"
+        @canplay="onCanPlay"
+        @canplaythrough="onCanPlayThrough"
         @progress="onProgress"
         @waiting="onWaiting"
-        @playing="onPlaying"
+        @error="onError"
+        crossorigin="anonymous"
       >
         <source 
           v-for="source in videoSources" 
@@ -30,6 +31,7 @@
             v-model="selectedQuality" 
             @change="changeQuality"
             class="quality-select"
+            :disabled="isLoading"
           >
             <option 
               v-for="source in videoSources" 
@@ -42,30 +44,25 @@
         </div>
       </div>
       
-      <!-- Индикатор буферизации -->
-      <div v-if="isBuffering" class="buffering-overlay">
-        <div class="buffering-spinner"></div>
-        <div class="buffering-text">Буферизация...</div>
+      <!-- Загрузка метаданных -->
+      <div v-if="isLoading" class="loading-overlay">
+        <div class="loading-content">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">{{ loadingText }}</div>
+          <div v-if="showProgress" class="loading-percentage">
+            {{ Math.round(loadedPercentage) }}%
+          </div>
+        </div>
       </div>
       
-      <!-- Индикатор загрузки -->
-      <div v-if="loading && !isBuffering" class="loading-overlay">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">Загрузка видео...</div>
-      </div>
-      
-      <!-- Прогресс-бар загрузки -->
-      <div v-if="showBufferProgress" class="buffer-progress">
-        <div class="buffer-bar">
-          <div 
-            v-for="range in bufferedRanges" 
-            :key="range.start"
-            class="buffer-segment"
-            :style="{
-              left: range.startPercent + '%',
-              width: range.widthPercent + '%'
-            }"
-          ></div>
+      <!-- Ошибка загрузки -->
+      <div v-if="hasError" class="error-overlay">
+        <div class="error-content">
+          <div class="error-icon">⚠️</div>
+          <div class="error-text">Ошибка загрузки видео</div>
+          <button @click="retryLoad" class="retry-button">
+            Попробовать снова
+          </button>
         </div>
       </div>
     </div>
@@ -73,7 +70,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, nextTick } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 
 const props = defineProps({
   poster: {
@@ -91,179 +88,153 @@ const props = defineProps({
   autoplay: {
     type: Boolean,
     default: false
-  },
-  width: {
-    type: String,
-    default: '100%'
-  },
-  height: {
-    type: String,
-    default: 'auto'
-  },
-  preloadMode: {
-    type: String,
-    default: 'metadata', // 'none', 'metadata', 'auto'
-    validator: value => ['none', 'metadata', 'auto'].includes(value)
   }
 })
 
 const videoElement = ref(null)
-const selectedQuality = ref('hd')
-const loading = ref(false)
-const isBuffering = ref(false)
+const selectedQuality = ref('sd') // Начинаем с SD для быстрой загрузки
+const isLoading = ref(true)
+const hasError = ref(false)
+const loadingText = ref('Подготовка видео...')
+const loadedPercentage = ref(0)
+const showProgress = ref(false)
 const currentTime = ref(0)
 const wasPlaying = ref(false)
-const duration = ref(0)
-const bufferedRanges = ref([])
-const showBufferProgress = ref(false)
 
 const videoSources = computed(() => [
-  {
-    src: props.hdSrc,
-    quality: 'hd',
-    label: 'HD (1080p)',
-    type: 'video/mp4'
-  },
   {
     src: props.sdSrc,
     quality: 'sd',
     label: 'SD (720p)',
     type: 'video/mp4'
+  },
+  {
+    src: props.hdSrc,
+    quality: 'hd',
+    label: 'HD (1080p)',
+    type: 'video/mp4'
   }
 ])
 
-const updateBufferedRanges = () => {
-  if (!videoElement.value || !duration.value) return
-  
-  const buffered = videoElement.value.buffered
-  const ranges = []
-  
-  for (let i = 0; i < buffered.length; i++) {
-    const start = buffered.start(i)
-    const end = buffered.end(i)
+// Предзагрузка видео с timeout
+const preloadVideo = (src, timeout = 10000) => {
+  return new Promise((resolve, reject) => {
+    const video = document.createElement('video')
+    video.preload = 'metadata'
+    video.src = src
     
-    ranges.push({
-      start,
-      end,
-      startPercent: (start / duration.value) * 100,
-      widthPercent: ((end - start) / duration.value) * 100
+    const timeoutId = setTimeout(() => {
+      reject(new Error('Timeout'))
+    }, timeout)
+    
+    video.addEventListener('loadedmetadata', () => {
+      clearTimeout(timeoutId)
+      resolve(video)
     })
-  }
-  
-  bufferedRanges.value = ranges
+    
+    video.addEventListener('error', () => {
+      clearTimeout(timeoutId)
+      reject(new Error('Load error'))
+    })
+  })
 }
 
 const changeQuality = async () => {
   if (!videoElement.value) return
   
-  // Сохраняем текущее состояние
   currentTime.value = videoElement.value.currentTime
   wasPlaying.value = !videoElement.value.paused
   
-  loading.value = true
-  isBuffering.value = false
+  isLoading.value = true
+  loadingText.value = 'Переключение качества...'
+  hasError.value = false
   
-  // Находим выбранный источник
   const selectedSource = videoSources.value.find(
     source => source.quality === selectedQuality.value
   )
   
   if (selectedSource) {
-    // Меняем источник видео
-    videoElement.value.src = selectedSource.src
-    
-    // Устанавливаем preload для немедленной загрузки метаданных
-    videoElement.value.preload = 'metadata'
-    
-    videoElement.value.load()
-    
-    // Восстанавливаем позицию и состояние воспроизведения
-    const handleLoadedData = async () => {
-      try {
+    try {
+      await preloadVideo(selectedSource.src, 8000)
+      
+      videoElement.value.src = selectedSource.src
+      videoElement.value.load()
+      
+      videoElement.value.addEventListener('loadeddata', () => {
         videoElement.value.currentTime = currentTime.value
-        
         if (wasPlaying.value) {
-          await videoElement.value.play()
+          videoElement.value.play()
         }
-        
-        loading.value = false
-        videoElement.value.removeEventListener('loadeddata', handleLoadedData)
-      } catch (error) {
-        console.error('Ошибка при воспроизведении:', error)
-        loading.value = false
-      }
+      }, { once: true })
+      
+    } catch (error) {
+      console.error('Ошибка смены качества:', error)
+      hasError.value = true
+      isLoading.value = false
     }
-    
-    videoElement.value.addEventListener('loadeddata', handleLoadedData)
   }
 }
 
 const onLoadStart = () => {
-  loading.value = true
-  isBuffering.value = false
-  showBufferProgress.value = true
+  isLoading.value = true
+  loadingText.value = 'Загрузка видео...'
+  hasError.value = false
+  showProgress.value = true
 }
 
 const onLoadedMetadata = () => {
-  if (videoElement.value) {
-    duration.value = videoElement.value.duration
-    updateBufferedRanges()
+  loadingText.value = 'Подготовка к воспроизведению...'
+}
+
+const onProgress = () => {
+  if (!videoElement.value) return
+  
+  const video = videoElement.value
+  if (video.buffered.length > 0 && video.duration) {
+    const bufferedEnd = video.buffered.end(video.buffered.length - 1)
+    loadedPercentage.value = (bufferedEnd / video.duration) * 100
   }
 }
 
 const onCanPlay = () => {
-  loading.value = false
-  isBuffering.value = false
-  updateBufferedRanges()
+  loadingText.value = 'Почти готово...'
 }
 
-const onProgress = () => {
-  updateBufferedRanges()
+const onCanPlayThrough = () => {
+  isLoading.value = false
+  showProgress.value = false
+  hasError.value = false
 }
 
 const onWaiting = () => {
-  isBuffering.value = true
-}
-
-const onPlaying = () => {
-  isBuffering.value = false
-  loading.value = false
-}
-
-// Предзагрузка метаданных при наведении мыши
-const handleMouseEnter = () => {
-  if (videoElement.value && videoElement.value.preload === 'none') {
-    videoElement.value.preload = 'metadata'
+  if (!isLoading.value) {
+    loadingText.value = 'Буферизация...'
+    isLoading.value = true
   }
 }
 
-onMounted(() => {
+const onError = (event) => {
+  console.error('Ошибка видео:', event)
+  hasError.value = true
+  isLoading.value = false
+  loadingText.value = 'Ошибка загрузки'
+}
+
+const retryLoad = () => {
+  hasError.value = false
+  isLoading.value = true
   if (videoElement.value) {
-    // Устанавливаем режим предзагрузки
-    videoElement.value.preload = props.preloadMode
-    
-    // Добавляем обработчик наведения мыши для ленивой загрузки
-    if (props.preloadMode === 'none') {
-      videoElement.value.addEventListener('mouseenter', handleMouseEnter)
-    }
-    
-    if (props.autoplay) {
-      // Для автовоспроизведения устанавливаем preload="metadata"
-      videoElement.value.preload = 'metadata'
-      
-      const tryAutoplay = async () => {
-        try {
-          await videoElement.value.play()
-        } catch (error) {
-          console.warn('Автовоспроизведение заблокировано:', error)
-        }
-      }
-      
-      if (videoElement.value.readyState >= 3) {
-        tryAutoplay()
-      } else {
-        videoElement.value.addEventListener('canplay', tryAutoplay, { once: true })
-      }
+    videoElement.value.load()
+  }
+}
+
+// Инициализация с SD качеством
+onMounted(async () => {
+  if (videoElement.value) {
+    // Начинаем с SD для быстрой загрузки
+    const sdSource = videoSources.value.find(s => s.quality === 'sd')
+    if (sdSource) {
+      videoElement.value.src = sdSource.src
     }
   }
 })
@@ -281,6 +252,7 @@ onMounted(() => {
   background: #000;
   border-radius: 8px;
   overflow: hidden;
+  min-height: 200px;
 }
 
 video {
@@ -314,64 +286,27 @@ video {
   outline: none;
 }
 
-.quality-select:hover {
-  border-color: rgba(255, 255, 255, 0.6);
+.quality-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.quality-select:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-}
-
-.quality-select option {
-  background: #333;
-  color: white;
-}
-
-/* Overlay для буферизации */
-.buffering-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 15;
-}
-
-.buffering-spinner {
-  width: 32px;
-  height: 32px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: #fff;
-  animation: spin 0.8s linear infinite;
-  margin-bottom: 8px;
-}
-
-.buffering-text {
-  color: white;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-/* Overlay для загрузки */
 .loading-overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 20;
+}
+
+.loading-content {
+  text-align: center;
+  color: white;
 }
 
 .loading-spinner {
@@ -381,65 +316,62 @@ video {
   border-radius: 50%;
   border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
-  margin-bottom: 12px;
+  margin: 0 auto 16px;
 }
 
 .loading-text {
-  color: white;
   font-size: 16px;
-  font-weight: 500;
+  margin-bottom: 8px;
 }
 
-/* Прогресс-бар буферизации */
-.buffer-progress {
+.loading-percentage {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.error-overlay {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  z-index: 5;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 25;
 }
 
-.buffer-bar {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
+.error-content {
+  text-align: center;
+  color: white;
 }
 
-.buffer-segment {
-  position: absolute;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.4);
-  transition: width 0.3s ease;
+.error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.error-text {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.retry-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.retry-button:hover {
+  background: #0056b3;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .video-controls {
-    top: 5px;
-    right: 5px;
-  }
-  
-  .quality-select {
-    font-size: 11px;
-    padding: 3px 6px;
-  }
-  
-  .buffering-text,
-  .loading-text {
-    font-size: 12px;
-  }
-}
-
-/* Dark theme support */
-@media (prefers-color-scheme: dark) {
-  .video-player-container {
-    background: var(--vp-c-bg-soft);
-  }
 }
 </style>
