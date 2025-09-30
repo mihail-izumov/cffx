@@ -228,7 +228,7 @@ export default defineConfig({
       .VPNavScreen .VPNavScreenSocialLinks{display:flex!important;flex-direction:column!important;gap:12px!important}
       .VPNavScreen .VPSocialLink{display:flex!important;align-items:center!important;justify-content:center!important;padding:12px!important;background:var(--vp-c-bg)!important;border-radius:6px!important;border:1px solid var(--vp-c-divider)!important;transition:all .3s ease!important;text-decoration:none!important}
       .VPNavScreen .VPSocialLink:hover{background:var(--vp-c-bg-mute)!important;border-color:var(--vp-c-brand)!important}
-      .VPNavScreen .VPSocialLink[aria-label="login-link"]::after{content:"Кабинет"!important;font-size:16px!important;font-weight:600!important;color:var(--vp-c-text-1)!important}
+      .VPNavScreen .VPSocialLink[aria-label="login-link"]::after{content:"Как Работает"!important;font-size:16px!important;font-weight:600!important;color:var(--vp-c-text-1)!important}
       .VPNavScreen .VPSocialLink[aria-label="signal-link"]::after{content:"Отправить ⚡ Сигнал"!important;font-size:16px!important;font-weight:600!important;color:white!important;background:var(--vp-c-brand-1)!important;border-radius:6px!important;padding:6px 12px!important}
       .footer-row{flex-direction:column!important;gap:8px!important}
       .dot-separator{display:none!important}
@@ -237,7 +237,7 @@ export default defineConfig({
     /* Стили кнопок - исправлены цвета + молния между слов */
     .VPSocialLink .vpi-social-github{display:none!important}
     .VPSocialLink{width:auto!important;height:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important}
-    .VPSocialLink[aria-label="login-link"]::after{content:"Кабинет";font-size:14px;color:white!important;padding:6px 12px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:transparent;transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0}
+    .VPSocialLink[aria-label="login-link"]::after{content:"Как Работает";font-size:14px;color:white!important;padding:6px 12px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:transparent;transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0}
     .VPSocialLink[aria-label="login-link"]:hover::after{background:var(--vp-c-bg-soft);border-color:var(--vp-c-brand-2);color:var(--vp-c-brand-2)!important}
     .VPSocialLink[aria-label="signal-link"]::after{content:"Отправить ⚡ Сигнал";font-size:14px;color:white;padding:8px 16px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:var(--vp-c-brand-1);transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0;font-weight:600}
     .VPSocialLink[aria-label="signal-link"]:hover::after{background:var(--vp-c-brand-2);border-color:var(--vp-c-brand-2);color:#000}
@@ -303,7 +303,7 @@ export default defineConfig({
       },
       { 
         icon: { svg: '' }, 
-        link: 'https://app.mplan.sbs', 
+        link: '/signals', 
         ariaLabel: 'login-link' 
       },
       { 
