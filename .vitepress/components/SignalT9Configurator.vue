@@ -49,7 +49,6 @@
         <div class="modal-title">Ваши отзывы меняют всё.</div>
         <div class="modal-body">
           Каждый отзыв делает любимую кофейню еще лучше, а Сигнал помогает решить Вашу проблему за 24 часа. Почувствуйте силу настоящих перемен.<br><br>
-          <!-- ПРАВКА 4: Убрать двойное подчеркивание -->
           <a href="https://cffx.ru/signals.html" target="_blank" class="modal-link no-double-underline">Как Работает Сигнал</a>
         </div>
         <div class="modal-footer">
@@ -62,7 +61,6 @@
     <div class="signal-demo__form-container">
       <!-- Секция 1: Поделитесь -->
       <div v-if="selectedSection === 'share'" class="signal-form-section">
-        <!-- ПРАВКА 1: Белая полоска и переключатель -->
         <div class="signal-question-block share-block" style="--accent-color: #fff;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
             <transition name="fade" mode="out-in">
@@ -197,7 +195,7 @@
         </div>
       </div>
 
-      <!-- ПРАВКА 3: Секция 6: Локация - полный список -->
+      <!-- Секция 6: Локация -->
       <div v-if="selectedSection === 'location'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #5A9FB8;">
           <p class="signal-direction-label">Выбрать локацию</p>
@@ -219,20 +217,21 @@
 
       <!-- Секция 7: Контакт -->
       <div v-if="selectedSection === 'contact'" class="signal-form-section">
-        <!-- ПРАВКА 5, 6, 7: Экран подтверждения -->
+        <!-- ПРАВКА 1, 2: Экран подтверждения -->
         <div v-if="formSubmitted" class="signal-success-screen">
           <div class="signal-success-content">
+            <!-- ПРАВКА 1: Убрать "Все готово" -->
             <h3>Отзыв отправлен</h3>
-            <!-- ПРАВКА 7: Дата и тикет на отдельной строке, белый цвет -->
+            <!-- ПРАВКА 1: Больше серого поля для тикета -->
             <div class="signal-success-ticket-info">
               <span class="signal-success-date">{{ currentDate }}</span>
               <span class="signal-success-ticket">{{ formattedTicketNumber }}</span>
             </div>
             
-            <h2>Все готово!</h2>
-            <p>Нажмите на кнопку ниже, чтобы отправить ваш тикет ассистенту Анне и получить результат вашего запроса.</p>
-            <!-- ПРАВКА 5: Всегда показывать кнопку и ссылку -->
-            <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Активировать Сигнал в Telegram</a>
+            <!-- ПРАВКА 2: Текст по центру -->
+            <p class="signal-success-description">Нажмите на кнопку ниже, чтобы отправить ваш тикет ассистенту Анне и получить результат вашего запроса.</p>
+            <!-- ПРАВКА 4: Новый текст кнопки -->
+            <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Отправить тикет Анне</a>
             <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">Кто Анна и как работает</a>
           </div>
         </div>
@@ -253,7 +252,6 @@
               <p class="signal-input-hint">Чтобы получать обновления и видеть результат.</p>
             </div>
           </div>
-          <!-- ПРАВКА 4: Убрать двойное подчеркивание -->
           <label class="signal-agreement">
             <input type="checkbox" v-model="form.agreedToTerms" />
             <span>С <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a> согласен/на</span>
@@ -326,7 +324,6 @@ const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
 const currentDate = ref('');
 
-// ПРАВКА 3: Полный список кофеен и адресов
 const cafes = {
   'Корж': {
     branches: [
@@ -537,7 +534,6 @@ function updateSuggestionsForGender() {
   }
 }
 
-// ПРАВКА 2: Ротатор вопросов
 const questionsShare = ['Что произошло?', 'Расскажите о ситуации', 'Опишите вашу проблему'];
 const questions1 = { 
   female: ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что вас расстроило?'],
@@ -650,7 +646,6 @@ onUnmounted(() => {
   box-shadow: 0 0 10px rgba(0, 194, 168, 0.5);
 }
 
-/* ПРАВКА 1: Белый переключатель на первом экране */
 .signal-breadcrumb.share.is-active .signal-breadcrumb-circle {
   background: #fff;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
@@ -807,7 +802,6 @@ onUnmounted(() => {
   color: #ddd !important;
 }
 
-/* ПРАВКА 4: Убрать двойное подчеркивание */
 .no-double-underline {
   text-decoration: none !important;
   border-bottom: 1px solid currentColor !important;
@@ -1215,7 +1209,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   cursor: not-allowed;
 }
 
-/* ПРАВКА 6, 7: Экран подтверждения по центру + новая структура */
+/* ПРАВКА 1, 2: Экран подтверждения */
 .signal-success-screen {
   display: flex;
   flex-direction: column;
@@ -1239,17 +1233,17 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   font-size: 1.5rem;
   font-weight: 600;
   color: #fff;
-  margin: 0 0 1rem 0;
+  margin: 0 0 1.5rem 0;
   text-align: center;
 }
 
-/* ПРАВКА 7: Дата и тикет на отдельной строке */
+/* ПРАВКА 1: Больше серого поля для тикета */
 .signal-success-ticket-info {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   flex-wrap: wrap;
 }
 
@@ -1263,34 +1257,32 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   background-color: #2a2a2e;
   color: #fff;
   font-weight: 700;
-  padding: 0.6rem 1.5rem;
+  padding: 0.7rem 2.5rem;
   border-radius: 12px;
   letter-spacing: 1px;
   font-family: var(--signal-font-mono);
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
-.signal-success-content h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #fff;
-  margin: 0 0 0.5rem 0;
-  text-align: center;
-}
-
-.signal-success-content p {
+/* ПРАВКА 2: Текст по центру */
+.signal-success-description {
   color: #b0b0b0;
   line-height: 1.6;
   margin: 0 0 1.5rem 0;
   text-align: center;
+  width: 100%;
 }
 
+/* ПРАВКА 3, 4: Кнопка без артефактов */
 .signal-telegram-button {
   display: inline-block;
   padding: 0.8rem 1.5rem;
   border-radius: 12px;
   font-weight: 600;
-  text-decoration: none;
+  text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
   transition: all 0.3s;
 }
 
@@ -1307,6 +1299,8 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 .signal-telegram-button:hover {
   filter: brightness(110%);
   transform: scale(1.05);
+  text-decoration: none !important;
+  border: none !important;
 }
 
 .signal-secondary-link {
@@ -1340,6 +1334,10 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   .signal-success-ticket-info {
     flex-direction: column;
     gap: 0.75rem;
+  }
+  
+  .signal-success-ticket {
+    padding: 0.6rem 2rem;
   }
 }
 </style>
