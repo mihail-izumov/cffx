@@ -678,7 +678,6 @@ watch(showBranchList, (newValue) => {
 .signal2-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 .signal2-stat-card { position: relative; border-radius: 22px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background: var(--vp-c-bg-soft); }
 .signal2-stat-card:hover { transform: translateY(-8px); }
-.signal2-clickable-card { cursor: pointer; }
 .signal2-stat-card::before { content: ''; position: absolute; inset: 0; border-radius: 22px; padding: 2px; background: var(--signal2-border-gradient); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: filter 0.4s ease; z-index: 3; }
 .signal2-stat-card:hover::before { filter: brightness(2) saturate(1.5); }
 .signal2-stat-card.signal2-orange-stat, .signal2-stat-card.signal2-lime-stat { cursor: pointer; }
@@ -817,7 +816,6 @@ watch(showBranchList, (newValue) => {
     align-items: center;
     border-radius: 16px; 
     transition: none; 
-    cursor: pointer; 
   }
   
   .signal2-stat-card:hover { transform: none; }
