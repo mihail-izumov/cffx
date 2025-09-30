@@ -1257,7 +1257,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   background-color: #2a2a2e;
   color: #fff;
   font-weight: 700;
-  padding: 1rem 5rem;  /* Для еще большего серого поля */
+  padding: 1rem 5rem !important;
   border-radius: 12px;
   letter-spacing: 1px;
   font-family: var(--signal-font-mono);
