@@ -798,17 +798,24 @@ function structureAndCleanText(share, emotional, factual, solutions, gender) {
   // ВПЕЧАТЛЕНИЯ
   if (emotional) {
     result += `ВПЕЧАТЛЕНИЯ\n`;
-    // Разбиваем на предложения по точкам
     const emotionalSentences = emotional.split('. ').filter(s => s.trim());
     emotionalSentences.forEach((sentence, index) => {
-      // Первая буква заглавная, остальное как есть
       const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-      // Заменяем пробелы между уровнями на двоеточия и тире
-      const withPunctuation = formatted
-        .replace(/([а-яё]+)\s+([а-яё\s]+)\s+([а-яё\s]+)$/i, '$1: $2 — $3')
-        .replace(/([а-яё]+)\s+([а-яё\s]+)$/i, '$1: $2');
+      // Умная обработка: ищем паттерн "слово1 слово2 слово3"
+      const parts = formatted.split(/\s+/);
       
-      result += `• ${withPunctuation}`;
+      let readable = '';
+      if (parts.length >= 3) {
+        // Если 3+ слов - делаем читаемым: "Эмоция по причине — детали"
+        readable = `${parts[0]} ${parts.slice(1, -1).join(' ')}, ${parts[parts.length - 1]}`;
+      } else if (parts.length === 2) {
+        // Если 2 слова - через запятую
+        readable = `${parts[0]}, ${parts[1]}`;
+      } else {
+        readable = formatted;
+      }
+      
+      result += `• ${readable}`;
       if (index < emotionalSentences.length - 1) {
         result += '\n';
       }
@@ -822,11 +829,19 @@ function structureAndCleanText(share, emotional, factual, solutions, gender) {
     const factualSentences = factual.split('. ').filter(s => s.trim());
     factualSentences.forEach((sentence, index) => {
       const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-      const withPunctuation = formatted
-        .replace(/([а-яё]+)\s+([а-яё\s]+)\s+([а-яё\s]+)$/i, '$1: $2 — $3')
-        .replace(/([а-яё]+)\s+([а-яё\s]+)$/i, '$1: $2');
+      const parts = formatted.split(/\s+/);
       
-      result += `• ${withPunctuation}`;
+      let readable = '';
+      if (parts.length >= 3) {
+        // "Категория проблема — детали"
+        readable = `${parts[0]} ${parts.slice(1, -1).join(' ')}, ${parts[parts.length - 1]}`;
+      } else if (parts.length === 2) {
+        readable = `${parts[0]}, ${parts[1]}`;
+      } else {
+        readable = formatted;
+      }
+      
+      result += `• ${readable}`;
       if (index < factualSentences.length - 1) {
         result += '\n';
       }
@@ -840,11 +855,19 @@ function structureAndCleanText(share, emotional, factual, solutions, gender) {
     const solutionsSentences = solutions.split('. ').filter(s => s.trim());
     solutionsSentences.forEach((sentence, index) => {
       const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-      const withPunctuation = formatted
-        .replace(/([а-яё]+)\s+([а-яё\s]+)\s+([а-яё\s]+)$/i, '$1: $2 — $3')
-        .replace(/([а-яё]+)\s+([а-яё\s]+)$/i, '$1: $2');
+      const parts = formatted.split(/\s+/);
       
-      result += `• ${withPunctuation}`;
+      let readable = '';
+      if (parts.length >= 3) {
+        // "Решение уточнение — детали"
+        readable = `${parts[0]} ${parts.slice(1, -1).join(' ')}, ${parts[parts.length - 1]}`;
+      } else if (parts.length === 2) {
+        readable = `${parts[0]}, ${parts[1]}`;
+      } else {
+        readable = formatted;
+      }
+      
+      result += `• ${readable}`;
       if (index < solutionsSentences.length - 1) {
         result += '\n';
       }
