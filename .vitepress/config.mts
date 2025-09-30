@@ -192,10 +192,56 @@ export default defineConfig({
       .VPNavScreen .VPNavScreenSocialLinks,.VPNavScreen .VPNavScreenAppearance{margin:16px!important;padding:16px!important;border:1px solid var(--vp-c-divider)!important;border-radius:8px!important;background:var(--vp-c-bg-soft)!important}
       .VPNavScreen .VPNavScreenAppearance{display:none!important}
       .VPNavScreen .VPNavScreenSocialLinks{display:flex!important;flex-direction:column!important;gap:12px!important}
-      .VPNavScreen .VPSocialLink{display:flex!important;align-items:center!important;justify-content:center!important;padding:12px!important;background:var(--vp-c-bg)!important;border-radius:6px!important;border:1px solid var(--vp-c-divider)!important;transition:all .3s ease!important;text-decoration:none!important}
-      .VPNavScreen .VPSocialLink:hover{background:var(--vp-c-bg-mute)!important;border-color:var(--vp-c-brand)!important}
-      .VPNavScreen .VPSocialLink[aria-label="login-link"]::after{content:"Как Работает"!important;font-size:16px!important;font-weight:600!important;color:var(--vp-c-text-1)!important}
-      .VPNavScreen .VPSocialLink[aria-label="signal-link"]::after{content:"Отправить ⚡ Сигнал"!important;font-size:16px!important;font-weight:600!important;color:white!important;background:var(--vp-c-brand-1)!important;border-radius:6px!important;padding:6px 12px!important}
+      .VPNavScreen .VPSocialLink{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;background:transparent!important;border-radius:0!important;border:none!important;transition:all .3s ease!important;text-decoration:none!important}
+      .VPNavScreen .VPSocialLink:hover{background:transparent!important;border-color:transparent!important}
+      
+      /* Мобильные кнопки - одинаковый дизайн как на десктопе */
+      .VPNavScreen .VPSocialLink[aria-label="login-link"]::after,
+      .VPNavScreen .VPSocialLink[aria-label="signal-link"]::after {
+        display:flex!important;
+        align-items:center!important;
+        justify-content:center!important;
+        width:100%!important;
+        min-width:0!important;
+        box-sizing:border-box!important;
+        font-size:18px!important;
+        font-weight:600!important;
+        border-radius:12px!important;
+        padding:18px!important;
+        margin:0!important;
+        height:52px!important;
+        min-height:52px!important;
+      }
+      
+      .VPNavScreen .VPSocialLink[aria-label="login-link"]::after{
+        content:"Как Работает"!important;
+        background:#3b3b3d!important;
+        color:#f0f0f0!important;
+        border:none!important;
+        transition:background 0.2s, color 0.2s!important;
+      }
+      
+      .VPNavScreen .VPSocialLink[aria-label="login-link"]:hover::after{
+        background:#454546!important;
+        color:#c5f946!important;
+      }
+      
+      .VPNavScreen .VPSocialLink[aria-label="signal-link"]::after{
+        content:"Отправить ⚡ Сигнал"!important;
+        background-image:linear-gradient(-45deg, #c5f946, #85a931, #c5f946, #85a931);
+        background-size:400% 400%;
+        animation:liquid-fluid 6s ease infinite;
+        color:#000!important;
+        border:none!important;
+        transition:all 0.2s!important;
+      }
+      
+      .VPNavScreen .VPSocialLink[aria-label="signal-link"]:hover::after{
+        background-image:linear-gradient(-45deg, #85a931, #c5f946, #85a931, #c5f946);
+        color:#000!important;
+        font-weight:700!important;
+      }
+      
       .footer-row{flex-direction:column!important;gap:8px!important}
       .dot-separator{display:none!important}
     }
