@@ -777,12 +777,71 @@ function applyGenderCorrection(text, gender) {
 
 function structureAndCleanText(share, emotional, factual, solutions, gender) {
   let result = '';
-  if (share) result += `МОЙ ОТЗЫВ: ${share}\n\n`;
-  if (emotional) result += `ВПЕЧАТЛЕНИЯ\n${emotional}\n\n`;
-  if (factual) result += `ПРОБЛЕМЫ\n${factual}\n\n`;
-  if (solutions) result += `ПРЕДЛОЖЕНИЯ\n${solutions}`;
-  return result;
+  
+  // МОЙ ОТЗЫВ
+  if (share) {
+    result += `МОЙ ОТЗЫВ\n${share}\n\n`;
+  }
+  
+  // ВПЕЧАТЛЕНИЯ
+  if (emotional) {
+    result += `ВПЕЧАТЛЕНИЯ\n`;
+    // Разбиваем на предложения по точкам
+    const emotionalSentences = emotional.split('. ').filter(s => s.trim());
+    emotionalSentences.forEach((sentence, index) => {
+      // Первая буква заглавная, остальное как есть
+      const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
+      // Заменяем пробелы между уровнями на двоеточия и тире
+      const withPunctuation = formatted
+        .replace(/([а-яё]+)\s+([а-яё\s]+)\s+([а-яё\s]+)$/i, '$1: $2 — $3')
+        .replace(/([а-яё]+)\s+([а-яё\s]+)$/i, '$1: $2');
+      
+      result += `• ${withPunctuation}`;
+      if (index < emotionalSentences.length - 1) {
+        result += '\n';
+      }
+    });
+    result += '\n\n';
+  }
+  
+  // ПРОБЛЕМЫ
+  if (factual) {
+    result += `ПРОБЛЕМЫ\n`;
+    const factualSentences = factual.split('. ').filter(s => s.trim());
+    factualSentences.forEach((sentence, index) => {
+      const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
+      const withPunctuation = formatted
+        .replace(/([а-яё]+)\s+([а-яё\s]+)\s+([а-яё\s]+)$/i, '$1: $2 — $3')
+        .replace(/([а-яё]+)\s+([а-яё\s]+)$/i, '$1: $2');
+      
+      result += `• ${withPunctuation}`;
+      if (index < factualSentences.length - 1) {
+        result += '\n';
+      }
+    });
+    result += '\n\n';
+  }
+  
+  // ПРЕДЛОЖЕНИЯ
+  if (solutions) {
+    result += `ПРЕДЛОЖЕНИЯ\n`;
+    const solutionsSentences = solutions.split('. ').filter(s => s.trim());
+    solutionsSentences.forEach((sentence, index) => {
+      const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
+      const withPunctuation = formatted
+        .replace(/([а-яё]+)\s+([а-яё\s]+)\s+([а-яё\s]+)$/i, '$1: $2 — $3')
+        .replace(/([а-яё]+)\s+([а-яё\s]+)$/i, '$1: $2');
+      
+      result += `• ${withPunctuation}`;
+      if (index < solutionsSentences.length - 1) {
+        result += '\n';
+      }
+    });
+  }
+  
+  return result.trim();
 }
+
 
 onUnmounted(() => {
   if (rotationInterval) clearInterval(rotationInterval);
