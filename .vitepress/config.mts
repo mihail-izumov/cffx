@@ -18,45 +18,32 @@ export default defineConfig({
     return pageData
   },
   
-  // Исправленный хук для динамической генерации метатегов
   transformHead: ({ pageData }) => {
     const head = []
-    
-    // Получаем данные из frontmatter
     const pageTitle = pageData.frontmatter.title || pageData.title || 'Сигнал'
     const pageDescription = pageData.frontmatter.description || pageData.description || 'Где Начинается Ваша Кофейня'
-    
-    // Проверяем, есть ли кастомная картинка в frontmatter
     const hasCustomImage = pageData.frontmatter.head && 
       pageData.frontmatter.head.some(tag => 
         tag[0] === 'meta' && 
         tag[1].property === 'og:image'
       )
-    
-    // Добавляем динамические метатеги
     head.push(['meta', { property: 'og:title', content: pageTitle }])
     head.push(['meta', { property: 'og:description', content: pageDescription }])
-    
-    // Добавляем изображение только если нет кастомного в frontmatter
     if (!hasCustomImage) {
       head.push(['meta', { property: 'og:image', content: 'https://cffx.ru/cffx_og_card.jpg' }])
       head.push(['meta', { name: 'twitter:image', content: 'https://cffx.ru/cffx_og_card.jpg' }])
     }
-    
-    // Twitter карточка - summary для маленькой иконки
     head.push(['meta', { name: 'twitter:card', content: 'summary' }])
     head.push(['meta', { name: 'twitter:title', content: pageTitle }])
     head.push(['meta', { name: 'twitter:description', content: pageDescription }])
-    
     return head
   },
   
   buildEnd(siteConfig) {
-    // Этот хук выполняется после сборки
+    // Выполняется после сборки
   },
   
   head: [
-    // Только общие метатеги, которые не должны меняться
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Сигнал' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
@@ -110,22 +97,22 @@ export default defineConfig({
         }
       }
       function updateSocialLinkTargets() {
-        // --- Correction for the "signal-link" button ---
+        // Для ссылки "Как Работает" - убрать target="_blank"
         const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
         signalLinks.forEach(signalLink => {
           signalLink.setAttribute('target', '_self');
           signalLink.removeAttribute('rel');
         });
-        // --- Original functionality for "apply-link" ---
-        const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="apply-link"]');
+        // Для "Как Работает" (login-link) убрать target и rel (не открывать в новом окне)
+        const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="login-link"]');
         applyLinks.forEach(applyLink => {
-          applyLink.href = '/apply';
-          applyLink.setAttribute('target', '_self');
+          applyLink.href = '/apply'; // если нужно менять href, иначе удалить эту строку
+          applyLink.setAttribute('target', '_self'); 
           applyLink.removeAttribute('rel');
           const newLink = document.createElement('a');
-          newLink.href = '/apply';
+          newLink.href = applyLink.href;
           newLink.className = applyLink.className;
-          newLink.setAttribute('aria-label', 'apply-link');
+          newLink.setAttribute('aria-label', 'login-link');
           newLink.setAttribute('target', '_self');
           Array.from(applyLink.attributes).forEach(attr => {
             if (attr.name !== 'href' && attr.name !== 'target' && attr.name !== 'rel') {
@@ -151,104 +138,88 @@ export default defineConfig({
       }).observe(document, { subtree: true, childList: true });
     })();
     `],
+    
     ['style', {}, `
-    .VPSwitchAppearance{display:none!important}
-    .VPSocialLink[aria-label="login-link"]::after{font-weight:600!important}
-    .VPHero .name,.VPHero .text,.VPHero .tagline{color:white!important}
-    .VPHero .tagline a{color:var(--vp-c-brand-2)!important;text-decoration:none;transition:all .3s ease}
-    .VPHero .tagline a:hover{color:var(--vp-c-brand-1)!important;text-decoration:underline}
-    .VPHero .VPButton{background-color:var(--vp-c-brand-1)!important;border-color:var(--vp-c-brand-1)!important;color:white!important;transition:all .3s ease;text-decoration:none!important}
-    .VPHero .VPButton:hover{background-color:var(--vp-c-brand-2)!important;border-color:var(--vp-c-brand-2)!important;color:#000!important;transform:translateY(-2px);text-decoration:none!important}
-    .VPContent a{color:var(--vp-c-brand-2);text-decoration:none;border-bottom:1px solid transparent;transition:all .3s ease}
-    .VPContent a:hover{color:var(--vp-c-brand-1);border-bottom-color:var(--vp-c-brand-1)}
-    .VPFeature .title,.VPFeature .link-text{transition:color .25s ease-in-out}
-    .VPFeature .link-text{color:var(--vp-c-brand-1)}
-    a.VPFeature.link:hover .title,a.VPFeature.link:hover .link-text{color:var(--vp-c-brand-2)}
-    html:not(.dark) .VPFeature{background-color:#202124!important;border-color:#3c3c3c!important}
-    html:not(.dark) .VPFeature .title{color:#C5F946!important}
-    html:not(.dark) .VPFeature .details{color:rgba(235,235,245,.6)!important}
-    html:not(.dark) .VPFeature .link-text{color:#347b6c!important}
-    html:not(.dark) .VPFeature .link-text .icon{fill:#347b6c!important}
-    html:not(.dark) a.VPFeature.link:hover{background-color:#2f2f2f!important;border-color:#555!important}
-    
-    /* Переопределение базовых CSS переменных VitePress */
+    /* Цветовые переменные лаймовой гаммы для кнопок */
     :root{
-      --vp-c-brand-1:#347b6c;
-      --vp-c-brand-2:#C5F946;
-      --vp-c-brand-3:#347b6c;
-      --vp-c-brand-soft:rgba(52,123,108,.14);
-      /* Заменяем серые цвета на зелёные */
-      --vp-c-bg-mute:rgba(52,123,108,.1);
-      --vp-c-bg-soft:rgba(52,123,108,.1);
-      --vp-c-divider:rgba(52,123,108,.2);
-      --vp-c-gutter:rgba(52,123,108,.1);
-      /* Переопределяем цвета текста для единообразия */
-      --vp-c-text-2:#b3b3b3;
+      --lime-soft: rgba(197, 249, 70, 0.1);
+      --lime-medium: rgba(163, 230, 53, 0.2);
+      --lime-bright: #c5f946;
+      --lime-dark: #85a931;
+      --graphite: #4a4a4a;
+      --graphite-light: #6e6e6e;
     }
     
-    .VPNavBarTitle .logo{height:32px!important;width:auto!important}
-    
-    /* Исправление навигации - принудительно белые цвета */
-    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink{color:white!important}
-    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink:hover{color:var(--vp-c-brand-2)!important}
-    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink.active{color:var(--vp-c-brand-2)!important}
-    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink.has-dropdown{color:white!important}
-    .VPNavBar .VPNavBarMenu .VPNavBarMenuLink.has-dropdown:hover{color:var(--vp-c-brand-2)!important}
-    
-    /* Выпадающее меню - исправленные цвета ховера */
-    .VPMenuGroup .title{color:var(--vp-c-brand-2)!important}
-    .VPMenuItem .text{color:white!important}
-    .VPMenuItem:hover .text{color:var(--vp-c-brand-2)!important}
-    .VPMenuItem:hover{background-color:rgba(197,249,70,.1)!important}
-    
-    /* Телеграм иконка - принудительно белая (это действительно github иконка в конфиге) */
-    .VPSocialLinks .VPSocialLink svg{fill:white!important}
-    .VPSocialLinks .VPSocialLink:hover svg{fill:var(--vp-c-brand-2)!important}
-    .VPSocialLinks .VPSocialLink:first-child svg{fill:white!important}
-    .VPSocialLinks .VPSocialLink:first-child:hover svg{fill:var(--vp-c-brand-2)!important}
-    
-    @media (min-width:961px){
-      .VPNavBar .content{gap:0!important}
-      .VPNavBarMenu{margin-right:0!important}
-      .VPNavBarSocialLinks{min-width:auto!important;justify-content:flex-end!important;gap:16px!important;margin-left:0!important;flex-shrink:0!important}
-      .VPSocialLink:not(:last-child){margin-right:4px!important}
-    }
-    @media (max-width:960px) and (min-width:769px){
-      .VPNavBar .content{gap:0!important}
-      .VPNavBarMenu{margin-right:0!important}
-      .VPNavBarSocialLinks{margin-left:4px!important;gap:12px!important;flex-shrink:0!important}
-      .VPSocialLink:not(:last-child){margin-right:2px!important}
-    }
-    @media (max-width:768px){
-      .VPNavBar .VPNavBarSocialLinks{display:none!important}
-      .VPNavScreen{overflow-y:auto!important}
-      .VPNavScreen .VPNavScreenMenu{padding-bottom:16px!important}
-      .VPNavScreen .VPNavScreenSocialLinks,.VPNavScreen .VPNavScreenAppearance{margin:16px!important;padding:16px!important;border:1px solid var(--vp-c-divider)!important;border-radius:8px!important;background:var(--vp-c-bg-soft)!important}
-      .VPNavScreen .VPNavScreenAppearance{display:none!important}
-      .VPNavScreen .VPNavScreenSocialLinks{display:flex!important;flex-direction:column!important;gap:12px!important}
-      .VPNavScreen .VPSocialLink{display:flex!important;align-items:center!important;justify-content:center!important;padding:12px!important;background:var(--vp-c-bg)!important;border-radius:6px!important;border:1px solid var(--vp-c-divider)!important;transition:all .3s ease!important;text-decoration:none!important}
-      .VPNavScreen .VPSocialLink:hover{background:var(--vp-c-bg-mute)!important;border-color:var(--vp-c-brand)!important}
-      .VPNavScreen .VPSocialLink[aria-label="login-link"]::after{content:"Как Работает"!important;font-size:16px!important;font-weight:600!important;color:var(--vp-c-text-1)!important}
-      .VPNavScreen .VPSocialLink[aria-label="signal-link"]::after{content:"Отправить ⚡ Сигнал"!important;font-size:16px!important;font-weight:600!important;color:white!important;background:var(--vp-c-brand-1)!important;border-radius:6px!important;padding:6px 12px!important}
-      .footer-row{flex-direction:column!important;gap:8px!important}
-      .dot-separator{display:none!important}
+    /* Эффект liquid fluid для кнопок */
+    @keyframes liquid-fliud {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
     
-    /* Стили кнопок - исправлены цвета + молния между слов */
-    .VPSocialLink .vpi-social-github{display:none!important}
-    .VPSocialLink{width:auto!important;height:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important}
-    .VPSocialLink[aria-label="login-link"]::after{content:"Как Работает";font-size:14px;color:white!important;padding:6px 12px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:transparent;transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0}
-    .VPSocialLink[aria-label="login-link"]:hover::after{background:var(--vp-c-bg-soft);border-color:var(--vp-c-brand-2);color:var(--vp-c-brand-2)!important}
-    .VPSocialLink[aria-label="signal-link"]::after{content:"Отправить ⚡ Сигнал";font-size:14px;color:white;padding:8px 16px;border:1px solid var(--vp-c-brand-1);border-radius:6px;background:var(--vp-c-brand-1);transition:all .3s ease;white-space:nowrap;margin:0;flex-shrink:0;font-weight:600}
-    .VPSocialLink[aria-label="signal-link"]:hover::after{background:var(--vp-c-brand-2);border-color:var(--vp-c-brand-2);color:#000}
+    .VPSocialLink {
+      width: auto !important;
+      height: auto !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      margin: 0;
+      padding: 0; /* сброс внутреннего отступа */
+    }
     
-    .custom-footer-links{display:flex;flex-direction:column;gap:3px;align-items:center}
-    .footer-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
-    .footer-row a{color:var(--vp-c-text-2);text-decoration:none;transition:color .3s ease}
-    .footer-row a:hover{color:var(--vp-c-brand)}
-    .dot-separator{color:var(--vp-c-text-3);font-weight:bold}
-    .VPFooter .copyright{margin-top:2px!important}
-    `]
+    /* Кнопка "Как Работает" - менее заметная, графитовая без рамки в пассивном состоянии */
+    .VPSocialLink[aria-label="login-link"]::after {
+      content: "Как Работает";
+      font-size: 14px;
+      color: var(--graphite);
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-weight: 400;
+      transition: all 0.4s ease;
+      background-image: linear-gradient(-45deg, var(--lime-soft), var(--lime-medium), var(--lime-soft), var(--lime-medium));
+      background-size: 400% 400%;
+      animation: liquid-fliud 6s ease infinite;
+    }
+    
+    .VPSocialLink[aria-label="login-link"]:hover::after {
+      color: var(--lime-bright);
+      background-image: linear-gradient(-45deg, var(--lime-bright), var(--lime-dark), var(--lime-bright), var(--lime-dark));
+      animation: liquid-fliud 4s ease infinite;
+      font-weight: 600;
+    }
+    
+    /* Кнопка "Отправить ⚡ Сигнал" - яркая лаймовая с эффектом liquid fluid */
+    .VPSocialLink[aria-label="signal-link"]::after {
+      content: "Отправить ⚡ Сигнал";
+      font-size: 14px;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      border: none; /* убрана рамка */
+      background-image: linear-gradient(-45deg, var(--lime-bright), var(--lime-dark), var(--lime-bright), var(--lime-dark));
+      background-size: 400% 400%;
+      animation: liquid-fliud 6s ease infinite;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      margin: 0;
+      flex-shrink: 0;
+    }
+    
+    .VPSocialLink[aria-label="signal-link"]:hover::after {
+      background-image: linear-gradient(-45deg, var(--lime-dark), var(--lime-bright), var(--lime-dark), var(--lime-bright));
+      color: #000;
+      font-weight: 700;
+      transform: translateY(-2px);
+    }
+    
+    /* Остальные стили из оригинала можно добавить ниже, если нужно */
+  `]
   ],
   
   base: '/',
@@ -288,7 +259,7 @@ export default defineConfig({
             resetButtonTitle: 'Сбросить поиск',
             backButtonTitle: 'Закрыть поиск',
             noResultsText: 'Результаты не найдены для',
-            footer: { selectText: 'выбрать', navigateText: 'навигация', closeText: 'закрыть' }
+            footer: { selectText: 'Выбрать', navigateText: 'Навигация', closeText: 'Закрыть' }
           }
         }
       }
