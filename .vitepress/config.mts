@@ -106,7 +106,6 @@ export default defineConfig({
         // Для "Как Работает" (login-link) убрать target и rel (не открывать в новом окне)
         const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="login-link"]');
         applyLinks.forEach(applyLink => {
-          applyLink.href = '/apply'; // если нужно менять href, иначе удалить эту строку
           applyLink.setAttribute('target', '_self'); 
           applyLink.removeAttribute('rel');
           const newLink = document.createElement('a');
@@ -146,8 +145,7 @@ export default defineConfig({
       --lime-medium: rgba(163, 230, 53, 0.2);
       --lime-bright: #c5f946;
       --lime-dark: #85a931;
-      --graphite: #4a4a4a;
-      --graphite-light: #6e6e6e;
+      --graphite: #6e6e6e; /* светлый графитовый */
     }
     
     /* Эффект liquid fluid для кнопок */
@@ -164,61 +162,59 @@ export default defineConfig({
       justify-content: center !important;
       flex-shrink: 0 !important;
       cursor: pointer;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-      margin: 0;
-      padding: 0; /* сброс внутреннего отступа */
+      transition: all 0.3s ease !important;
+      white-space: nowrap !important;
+      margin: 0 !important;
+      padding: 0 !important; /* сброс внутреннего отступа */
     }
     
-    /* Кнопка "Как Работает" - менее заметная, графитовая без рамки в пассивном состоянии */
+    /* Кнопка "Как Работает" - графитовый цвет, без рамки, сохранив все исходные размеры и padding */
     .VPSocialLink[aria-label="login-link"]::after {
       content: "Как Работает";
-      font-size: 14px;
-      color: var(--graphite);
-      background: transparent;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 12px;
-      font-weight: 400;
-      transition: all 0.4s ease;
-      background-image: linear-gradient(-45deg, var(--lime-soft), var(--lime-medium), var(--lime-soft), var(--lime-medium));
-      background-size: 400% 400%;
-      animation: liquid-fliud 6s ease infinite;
+      font-size: 14px !important;
+      color: var(--graphite) !important;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 6px !important;
+      padding: 6px 12px !important;
+      font-weight: 400 !important;
+      transition: color 0.3s ease !important;
+      white-space: nowrap !important;
+      margin: 0 !important;
+      flex-shrink: 0 !important;
+      box-shadow: none !important;
     }
     
     .VPSocialLink[aria-label="login-link"]:hover::after {
-      color: var(--lime-bright);
-      background-image: linear-gradient(-45deg, var(--lime-bright), var(--lime-dark), var(--lime-bright), var(--lime-dark));
-      animation: liquid-fliud 4s ease infinite;
-      font-weight: 600;
+      color: var(--lime-bright) !important;
+      background: transparent !important;
+      font-weight: 600 !important;
     }
     
-    /* Кнопка "Отправить ⚡ Сигнал" - яркая лаймовая с эффектом liquid fluid */
+    /* Кнопка "Отправить ⚡ Сигнал" - лаймовая с эффектом liquid fluid */
     .VPSocialLink[aria-label="signal-link"]::after {
       content: "Отправить ⚡ Сигнал";
-      font-size: 14px;
-      color: #000;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-weight: 600;
-      border: none; /* убрана рамка */
+      font-size: 14px !important;
+      color: #000 !important;
+      padding: 8px 16px !important;
+      border-radius: 6px !important;
+      font-weight: 600 !important;
+      border: none !important; /* убрана рамка */
       background-image: linear-gradient(-45deg, var(--lime-bright), var(--lime-dark), var(--lime-bright), var(--lime-dark));
       background-size: 400% 400%;
       animation: liquid-fliud 6s ease infinite;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-      margin: 0;
-      flex-shrink: 0;
+      transition: all 0.3s ease !important;
+      white-space: nowrap !important;
+      margin: 0 !important;
+      flex-shrink: 0 !important;
     }
     
     .VPSocialLink[aria-label="signal-link"]:hover::after {
       background-image: linear-gradient(-45deg, var(--lime-dark), var(--lime-bright), var(--lime-dark), var(--lime-bright));
-      color: #000;
-      font-weight: 700;
+      color: #000 !important;
+      font-weight: 700 !important;
       transform: translateY(-2px);
     }
-    
-    /* Остальные стили из оригинала можно добавить ниже, если нужно */
   `]
   ],
   
