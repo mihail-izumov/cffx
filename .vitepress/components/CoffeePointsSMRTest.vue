@@ -11,7 +11,7 @@ const cafes = {
     yandex2gis: 51,
     yandex2gisPercent: 94,
     smartReviews: 0,
-    smartReviewsPercent: Без решений,
+    smartReviewsPercent: 'Без решений',
     signals: '2',
     signalsPercent: 100,
     isConnected: true,
