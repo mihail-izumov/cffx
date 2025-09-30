@@ -4,7 +4,6 @@ import SignalT9Configurator from './SignalT9Configurator.vue'
 
 const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка', 'Кэрри']
 
-// Данные о кофейнях - ОБНОВЛЕНО ИЗ ТАБЛИЦЫ
 const cafes = {
   'Корж': {
     name: 'Корж',
@@ -46,7 +45,7 @@ const cafes = {
         { address: 'Напротив ЦСКА', gisUrl: 'https://2gis.ru/samara/firm/70000001088760179/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/62781566656/reviews/' }
     ]
   },
-    'Skuratov': {
+  'Skuratov': {
     name: 'Skuratov',
     totalReviews: '3,129',
     status: 'Актуально: 30.09.2025',
@@ -81,10 +80,10 @@ const cafes = {
     isConnected: false,
     branches: [
       { address: 'Куйбышева, 99', gisUrl: 'https://2gis.ru/samara/firm/70000001075213346/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/21345450545/reviews/' },
-      { address: 'Молодогвардейская, 153', gisUrl: 'https://2gis.ru/samara/firm/70000001094600683/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturка/71041285330/reviews/' },
-      { address: 'Ново-Садовая, 106', gisUrl: 'https://2gis.ru/samara/firm/70000001095659001/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturка/56246021902/reviews/' },
-      { address: 'Московское шоссе, 41 (РДЦ)', gisUrl: 'https://2gis.ru/samara/firm/70000001090546275/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturка/34710016395/reviews/' },
-      { address: 'Московское шоссе, 81Б (Парк Хаус)', gisUrl: 'https://2gis.ru/samara/firm/70000001100074136/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturка/90354199231/reviews/' }
+      { address: 'Молодогвардейская, 153', gisUrl: 'https://2gis.ru/samara/firm/70000001094600683/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/71041285330/reviews/' },
+      { address: 'Ново-Садовая, 106', gisUrl: 'https://2gis.ru/samara/firm/70000001095659001/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/56246021902/reviews/' },
+      { address: 'Московское шоссе, 41 (РДЦ)', gisUrl: 'https://2gis.ru/samara/firm/70000001090546275/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/34710016395/reviews/' },
+      { address: 'Московское шоссе, 81Б (Парк Хаус)', gisUrl: 'https://2gis.ru/samara/firm/70000001100074136/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/90354199231/reviews/' }
     ]
   },
   'Кэрри': {
@@ -197,18 +196,6 @@ const openReviewModal = () => {
 const closeReviewModal = () => {
   isReviewModalOpen.value = false
   document.body.style.overflow = 'auto'
-}
-
-const closeModalAndGoToReviews = () => {
-  isReviewModalOpen.value = false
-  document.body.style.overflow = 'auto'
-  showBranchList.value = true
-  
-  nextTick(() => {
-    if (widgetContentRef.value) {
-      widgetContentRef.value.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-  })
 }
 
 const openSignalNew = () => {
@@ -335,7 +322,7 @@ watch(showBranchList, (newValue) => {
           :class="{ active: selectedCafe === 'MOSAIC' }"
           @click="selectedCafe = 'MOSAIC'"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.513 4.856 13.12 2.17a.5.5 0 0 1 .86.46l-1.377 4.317"/><path d="M15.656 10H20a1 1 0 0 1 .78 1.63l-1.72 1.773"/><path d="M16.273 16.273 10.88 21.83a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14H4a1 1 0 0 1-.78-1.63l4.507-4.643"/><path d="m2 2 20 20"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg>
           MOSAIC
         </button>
         <button
@@ -343,7 +330,7 @@ watch(showBranchList, (newValue) => {
           :class="{ active: selectedCafe === 'Surf' }"
           @click="selectedCafe = 'Surf'"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.513 4.856 13.12 2.17a.5.5 0 0 1 .86.46l-1.377 4.317"/><path d="M15.656 10H20a1 1 0 0 1 .78 1.63l-1.72 1.773"/><path d="M16.273 16.273 10.88 21.83a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14H4a1 1 0 0 1-.78-1.63l4.507-4.643"/><path d="m2 2 20 20"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg>
           Surf
         </button>
         <button
@@ -351,7 +338,7 @@ watch(showBranchList, (newValue) => {
           :class="{ active: selectedCafe === 'Skuratov' }"
           @click="selectedCafe = 'Skuratov'"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.513 4.856 13.12 2.17a.5.5 0 0 1 .86.46l-1.377 4.317"/><path d="M15.656 10H20a1 1 0 0 1 .78 1.63l-1.72 1.773"/><path d="M16.273 16.273 10.88 21.83a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14H4a1 1 0 0 1-.78-1.63l4.507-4.643"/><path d="m2 2 20 20"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
           Skuratov
         </button>
         <button
@@ -359,7 +346,7 @@ watch(showBranchList, (newValue) => {
           :class="{ active: selectedCafe === 'Белотурка' }"
           @click="selectedCafe = 'Белотурка'"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.513 4.856 13.12 2.17a.5.5 0 0 1 .86.46l-1.377 4.317"/><path d="M15.656 10H20a1 1 0 0 1 .78 1.63l-1.72 1.773"/><path d="M16.273 16.273 10.88 21.83a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14H4a1 1 0 0 1-.78-1.63l4.507-4.643"/><path d="m2 2 20 20"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
           Белотурка
         </button>
         <button
@@ -367,7 +354,7 @@ watch(showBranchList, (newValue) => {
           :class="{ active: selectedCafe === 'Кэрри' }"
           @click="selectedCafe = 'Кэрри'"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.513 4.856 13.12 2.17a.5.5 0 0 1 .86.46l-1.377 4.317"/><path d="M15.656 10H20a1 1 0 0 1 .78 1.63l-1.72 1.773"/><path d="M16.273 16.273 10.88 21.83a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14H4a1 1 0 0 1-.78-1.63l4.507-4.643"/><path d="m2 2 20 20"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
           Кэрри
         </button>
       </div>
@@ -397,7 +384,7 @@ watch(showBranchList, (newValue) => {
           </div>
 
           <div class="signal2-stats-grid">
-            <div class="signal2-stat-card signal2-branches-card signal2-graphite">
+            <div class="signal2-stat-card signal2-graphite-stat">
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-icon">💬</div>
@@ -407,7 +394,7 @@ watch(showBranchList, (newValue) => {
               </div>
             </div>
 
-            <div class="signal2-stat-card signal2-index-card signal2-yelloworange" @click="openGrowthModal">
+            <div class="signal2-stat-card signal2-orange-stat" @click="openGrowthModal">
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-icon">📡</div>
@@ -417,7 +404,7 @@ watch(showBranchList, (newValue) => {
               </div>
             </div>
 
-            <div class="signal2-stat-card signal2-reviews-card signal2-lime" @click="isMobile ? (showInfoModal = true) : null">
+            <div class="signal2-stat-card signal2-lime-stat" @click="isMobile ? (showInfoModal = true) : null">
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-icon">⚡</div>
@@ -469,14 +456,13 @@ watch(showBranchList, (newValue) => {
             </div>
 
             <div class="signal2-button-container">
-              <button @click="showBranchList = true" class="signal2-action-button signal2-ticket-button">
+              <button @click="openReviewModal" class="signal2-action-button signal2-ticket-button">
                 Отправить Яндекс/ГИС
                 <div class="signal2-button-icon-container">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pinned-icon lucide-map-pinned"><path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0"/><circle cx="12" cy="8" r="2"/><path d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0"/><circle cx="12" cy="8" r="2"/><path d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712"/></svg>
                 </div>
               </button>
-              
-              <button @click="openReviewModal" class="signal2-action-button signal2-review-button">
+              <button @click="showBranchList = true" class="signal2-action-button signal2-review-button">
                 Отправить Умный Отзыв
                 <div class="signal2-button-icon-container signal2-golden-icon-container">
                   <svg class="signal2-button-icon signal2-white-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#422006" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -550,19 +536,11 @@ watch(showBranchList, (newValue) => {
         </div>
         
         <div class="signal2-modal-close-section">
-          <button 
-            @click="closeModalAndGoToReviews" 
-            class="signal2-modal-close-button"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m9 18 6-6-6-6" />
-            </svg>
-            Перейти к выбору локаций
-          </button>
+          <button @click="closeReviewModal" class="signal2-modal-close-button signal2-graphite-button">Закрыть и вернуться</button>
         </div>
       </div>
     </div>
-    
+
     <div v-if="showInfoModal" class="signal2-modal-overlay" @click.self="showInfoModal = false">
       <div class="signal2-modal" role="dialog" aria-modal="true" id="signal2-signal-dialog" aria-label="Ваши отзывы меняют всё">
         <div class="signal2-modal-header">
@@ -603,12 +581,10 @@ watch(showBranchList, (newValue) => {
 .signal2-widget-content {
   padding: 32px 0;
 }
-
 .signal2-cafe-switchers-container {
   position: relative;
   margin-bottom: 32px;
 }
-
 .signal2-cafe-switchers {
   display: flex;
   gap: 12px;
@@ -619,24 +595,19 @@ watch(showBranchList, (newValue) => {
   scrollbar-width: thin;
   scrollbar-color: rgba(70, 70, 70, 0.8) transparent;
 }
-
 .signal2-cafe-switchers::-webkit-scrollbar {
   height: 2px;
 }
-
 .signal2-cafe-switchers::-webkit-scrollbar-track {
   background: transparent;
 }
-
 .signal2-cafe-switchers::-webkit-scrollbar-thumb {
   background-color: rgba(70, 70, 70, 0.8);
   border-radius: 10px;
 }
-
 .signal2-cafe-switchers::-webkit-scrollbar-thumb:hover {
   background-color: rgba(85, 85, 85, 0.9);
 }
-
 .signal2-switcher {
   border-radius: 50px;
   padding: 12px 20px;
@@ -655,7 +626,6 @@ watch(showBranchList, (newValue) => {
   background: rgba(70, 70, 70, 0.6);
   color: rgba(255, 255, 255, 0.9);
 }
-
 .signal2-switcher::before {
   content: '';
   position: absolute;
@@ -675,31 +645,23 @@ watch(showBranchList, (newValue) => {
   );
   transition: all 1.2s ease;
 }
-
 .signal2-switcher:hover::before {
   left: 100%;
 }
-
 @media (max-width: 768px) {
-  .signal2-switcher::before {
-    display: none;
-  }
-  
+  .signal2-switcher::before,
   .signal2-switcher:hover::before {
     display: none;
   }
 }
-
 .signal2-switcher.active {
   background: rgba(255, 255, 255, 0.95);
   color: #333;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
 .signal2-switcher.active::before {
   display: none;
 }
-
 .signal2-switcher-icon {
   width: 16px;
   height: 16px;
@@ -708,7 +670,6 @@ watch(showBranchList, (newValue) => {
   align-items: center;
   justify-content: center;
 }
-
 .signal2-switchers-gradient {
   position: absolute;
   top: 0;
@@ -719,11 +680,9 @@ watch(showBranchList, (newValue) => {
   opacity: 0;
   transition: opacity 0.6s ease;
 }
-
 .signal2-switchers-gradient.signal2-gradient-visible {
   opacity: 1;
 }
-
 .signal2-switchers-gradient-left {
   left: 0;
   background: linear-gradient(
@@ -736,7 +695,6 @@ watch(showBranchList, (newValue) => {
     transparent 100%
   );
 }
-
 .signal2-switchers-gradient-right {
   right: 0;
   background: linear-gradient(
@@ -749,21 +707,18 @@ watch(showBranchList, (newValue) => {
     transparent 100%
   );
 }
-
 :deep(.signal2-no-vitepress-style) {
   text-decoration: underline !important;
   text-decoration-color: rgba(255, 255, 255, 0.3) !important;
   border-bottom: none !important;
   background: none !important;
 }
-
 :deep(.signal2-no-vitepress-style:hover) {
   text-decoration: underline !important;
   text-decoration-color: rgba(255, 255, 255, 0.6) !important;
   border-bottom: none !important;
   background: none !important;
 }
-
 :deep(.signal2-no-vitepress-style:visited),
 :deep(.signal2-no-vitepress-style:focus),
 :deep(.signal2-no-vitepress-style:active) {
@@ -772,21 +727,18 @@ watch(showBranchList, (newValue) => {
   border-bottom: none !important;
   background: none !important;
 }
-
 :deep(.signal2-modal-link.signal2-no-vitepress-style) {
   text-decoration: underline !important;
   text-decoration-color: #a3e635 !important;
   border-bottom: none !important;
   background: none !important;
 }
-
 :deep(.signal2-modal-link.signal2-no-vitepress-style:hover) {
   text-decoration: underline !important;
   text-decoration-color: #c5f946 !important;
   border-bottom: none !important;
   background: none !important;
 }
-
 .signal2-review-modal-overlay {
   position: fixed;
   top: 0;
@@ -802,7 +754,6 @@ watch(showBranchList, (newValue) => {
   padding: 8px;
   box-sizing: border-box;
 }
-
 .signal2-review-modal-content {
   background: #1e1e20;
   border-radius: 16px;
@@ -817,35 +768,29 @@ watch(showBranchList, (newValue) => {
   flex-direction: column;
   overflow: hidden;
 }
-
 .signal2-modal-scrollable-content {
   flex: 1;
   overflow-y: auto;
   padding: 20px 16px 16px 16px;
 }
-
 :deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(p), :deep(span), :deep(label),
 :deep(.title), :deep(.subtitle), :deep(.description), :deep(.example-text), :deep(.hint-text) {
   text-align: initial !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
-
 :deep(.container), :deep(.content) {
   padding-left: 0 !important;
   padding-right: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
-
 :deep(.form-section), :deep(.form-group), :deep(.section-wrapper) {
   margin-bottom: clamp(10px, 2vw, 10px) !important;
 }
-
 :deep(.card), :deep(.block), :deep(.content-block) {
   margin-bottom: clamp(8px, 1.6vw, 8px) !important;
 }
-
 .signal2-modal-close-section {
   flex-shrink: 0;
   padding: 20px 16px 24px 16px;
@@ -854,7 +799,6 @@ watch(showBranchList, (newValue) => {
   display: flex;
   justify-content: center;
 }
-
 .signal2-modal-close-button {
   background: linear-gradient(135deg, #f59e0b, #fcd34d);
   color: #422006;
@@ -872,20 +816,10 @@ watch(showBranchList, (newValue) => {
   justify-content: center;
   box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
 }
-
 .signal2-modal-close-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
 }
-
-.signal2-modal-close-button svg {
-  transition: transform 0.3s ease;
-}
-
-.signal2-modal-close-button:hover svg {
-  transform: translateX(2px);
-}
-
 .signal2-branches-header {
   display: flex;
   justify-content: space-between;
@@ -894,7 +828,6 @@ watch(showBranchList, (newValue) => {
   padding-bottom: 20px;
   border-bottom: 2px solid var(--vp-c-border);
 }
-
 .signal2-branches-title-text {
   margin: 0;
   color: white;
@@ -904,7 +837,6 @@ watch(showBranchList, (newValue) => {
   text-align: center;
   flex-grow: 1;
 }
-
 .signal2-internal-close-btn {
   background: var(--vp-c-bg-mute);
   border: 2px solid var(--vp-c-border);
@@ -919,33 +851,28 @@ watch(showBranchList, (newValue) => {
   transition: all 0.3s ease;
   flex-shrink: 0;
 }
-
 .signal2-back-btn:hover {
   background: var(--vp-c-bg-soft);
   border-color: var(--vp-c-text-2);
   color: white;
 }
-
 .signal2-main-card {
   background: var(--vp-c-bg-soft);
   border-radius: 20px;
   padding: 24px;
 }
-
 .signal2-establishment-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
 }
-
 .signal2-cafe-name {
   margin: 0;
   color: #ffffff;
   font-size: 24px;
   font-weight: 600;
 }
-
 .signal2-status-badge {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
   color: rgba(255, 255, 255, 0.7);
@@ -960,24 +887,15 @@ watch(showBranchList, (newValue) => {
   letter-spacing: 0.5px;
   position: relative;
 }
-
 @keyframes signal2-tooltip-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
 .signal2-stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 16px;
 }
-
 .signal2-stat-card {
   position: relative;
   border-radius: 22px;
@@ -985,15 +903,12 @@ watch(showBranchList, (newValue) => {
   overflow: hidden;
   background: var(--vp-c-bg-soft);
 }
-
 .signal2-stat-card:hover {
   transform: translateY(-8px);
 }
-
 .signal2-clickable-card {
   cursor: pointer;
 }
-
 .signal2-stat-card::before {
   content: '';
   position: absolute;
@@ -1007,29 +922,9 @@ watch(showBranchList, (newValue) => {
   transition: filter 0.4s ease;
   z-index: 3;
 }
-
 .signal2-stat-card:hover::before {
   filter: brightness(2) saturate(1.5);
 }
-
-.signal2-stat-card.signal2-graphite {
-  --signal2-border-gradient: linear-gradient(135deg, #4a5568, #718096, #a0aec0);
-  --signal2-glow-color: rgba(113, 128, 150, 0.25);
-  --signal2-glow-hover-color: rgba(113, 128, 150, 0.6);
-}
-
-.signal2-stat-card.signal2-yelloworange {
-  --signal2-border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d);
-  --signal2-glow-color: rgba(245, 158, 11, 0.25);
-  --signal2-glow-hover-color: rgba(245, 158, 11, 0.6);
-}
-
-.signal2-stat-card.signal2-lime {
-  --signal2-border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #c5f946);
-  --signal2-glow-color: rgba(197, 249, 70, 0.25);
-  --signal2-glow-hover-color: rgba(197, 249, 70, 0.6);
-}
-
 .signal2-stat-content {
   background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%);
   border-radius: 20px;
@@ -1045,28 +940,23 @@ watch(showBranchList, (newValue) => {
   position: relative;
   z-index: 2;
 }
-
 .signal2-stat-card:hover .signal2-stat-content {
   background: radial-gradient(circle at 50% 0%, var(--signal2-glow-hover-color) 0%, transparent 70%);
   box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.4);
 }
-
 .signal2-stat-icon,
 .signal2-stat-value,
 .signal2-stat-label {
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-
 .signal2-stat-icon {
   font-size: 28px;
   opacity: 0.8;
   height: 32px;
 }
-
 .signal2-stat-card:hover .signal2-stat-icon {
   transform: scale(1.2);
 }
-
 .signal2-stat-value {
   font-family: 'Inter', sans-serif;
   font-size: 3.2rem;
@@ -1076,12 +966,10 @@ watch(showBranchList, (newValue) => {
   margin: 12px 0;
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7);
 }
-
 .signal2-stat-card:hover .signal2-stat-value {
   transform: scale(1.15);
   text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8);
 }
-
 .signal2-stat-label {
   font-size: 11px;
   font-weight: 500;
@@ -1089,11 +977,9 @@ watch(showBranchList, (newValue) => {
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
-
 .signal2-stat-card:hover .signal2-stat-label {
   transform: scale(1.05);
 }
-
 .signal2-system-status-bar {
   display: flex;
   align-items: center;
@@ -1105,7 +991,6 @@ watch(showBranchList, (newValue) => {
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
-
 .signal2-status-label {
   font-size: 14px;
   font-weight: 600;
@@ -1113,26 +998,22 @@ watch(showBranchList, (newValue) => {
   margin-right: 6px;
   flex-shrink: 0;
 }
-
 .signal2-status-label-disconnected {
   font-size: 14px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.7);
   flex-shrink: 0;
 }
-
 .signal2-status-metrics {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
 .signal2-status-metric {
   display: flex;
   align-items: baseline;
   gap: 4px;
 }
-
 .signal2-metric-time {
   font-size: 14px;
   font-weight: 700;
@@ -1142,23 +1023,19 @@ watch(showBranchList, (newValue) => {
   text-align: right;
   transition: all 0.3s ease;
 }
-
 .signal2-metric-text {
   font-size: 14px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.6);
 }
-
 .signal2-status-separator {
   color: rgba(255, 255, 255, 0.3);
   font-size: 14px;
   margin: 0 4px;
 }
-
 .signal2-control-panel {
   margin-top: 24px;
 }
-
 .signal2-control-panel-header {
   display: flex;
   align-items: center;
@@ -1168,7 +1045,6 @@ watch(showBranchList, (newValue) => {
   font-size: 14px;
   font-weight: 600;
 }
-
 .signal2-info-link {
   color: rgba(255, 255, 255, 0.5);
   display: flex;
@@ -1176,24 +1052,20 @@ watch(showBranchList, (newValue) => {
   transition: color 0.3s ease;
   flex-shrink: 0;
 }
-
 .signal2-info-link:hover,
 .signal2-info-link:focus {
   color: white;
 }
-
 .signal2-info-button {
   background: transparent;
   border: none;
   cursor: pointer;
 }
-
 .signal2-static-prompt {
   color: white;
   margin-right: 8px;
   flex-shrink: 0;
 }
-
 .signal2-rotating-text-container {
   flex-grow: 1;
   text-align: left;
@@ -1202,21 +1074,17 @@ watch(showBranchList, (newValue) => {
   display: flex;
   align-items: center;
 }
-
 .signal2-rotating-text-container.signal2-full-width {
   text-align: center;
   justify-content: center;
 }
-
 .signal2-rotating-text {
   transition: opacity 0.5s ease-in-out;
   line-height: 1.2;
 }
-
 .signal2-rotating-text:not(.signal2-show) {
   opacity: 0;
 }
-
 .signal2-button-container {
   display: flex;
   gap: 6px;
@@ -1225,7 +1093,6 @@ watch(showBranchList, (newValue) => {
   border-radius: 20px;
   padding: 6px;
 }
-
 .signal2-action-button {
   flex: 1;
   padding: 14px 20px;
@@ -1240,29 +1107,24 @@ watch(showBranchList, (newValue) => {
   justify-content: center;
   gap: 8px;
 }
-
 .signal2-ticket-button {
   background: rgba(70, 70, 70, 0.8);
   color: rgba(255, 255, 255, 0.9);
 }
-
 .signal2-ticket-button:hover {
   background: rgba(85, 85, 85, 0.9);
   color: white;
   transform: translateY(-2px);
 }
-
 .signal2-review-button {
   background: linear-gradient(135deg, #f59e0b, #fcd34d);
   color: #422006;
   box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
 }
-
 .signal2-review-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
 }
-
 .signal2-button-icon-container {
   width: 32px;
   height: 32px;
@@ -1274,37 +1136,30 @@ watch(showBranchList, (newValue) => {
   flex-shrink: 0;
   transition: all 0.3s ease;
 }
-
 .signal2-golden-icon-container {
   background: rgba(154, 91, 24, 0.7) !important;
 }
-
 .signal2-button-icon {
   transition: transform 0.3s ease;
   color: currentColor;
 }
-
 .signal2-review-button:hover .signal2-button-icon {
   transform: translateX(2px);
 }
-
 .signal2-ticket-button:hover .signal2-button-icon-container {
   background: rgba(35, 35, 35, 1);
   transform: scale(1.05);
 }
-
 .signal2-review-button:hover .signal2-golden-icon-container {
   background: rgba(205, 122, 32, 0.8) !important;
   transform: scale(1.05);
 }
-
 .signal2-signal-section {
   margin-top: 32px;
   padding: 20px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   text-align: center;
 }
-
 .signal2-signal-description {
   color: rgba(255, 255, 255, 0.8);
   font-size: 14px;
@@ -1315,13 +1170,11 @@ watch(showBranchList, (newValue) => {
   margin-left: auto;
   margin-right: auto;
 }
-
 .signal2-mystery-button-container {
   margin-top: 12px;
   display: flex;
   justify-content: center;
 }
-
 .signal2-mystery-button {
   position: relative;
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05));
@@ -1337,7 +1190,6 @@ watch(showBranchList, (newValue) => {
   backdrop-filter: blur(8px);
   text-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
 }
-
 .signal2-mystery-button:hover {
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1));
   border-color: rgba(139, 92, 246, 0.4);
@@ -1346,14 +1198,12 @@ watch(showBranchList, (newValue) => {
   box-shadow: 0 8px 20px rgba(139, 92, 246, 0.15);
   text-shadow: 0 0 12px rgba(139, 92, 246, 0.5);
 }
-
 .signal2-lime-button {
   background: linear-gradient(135deg, rgba(197, 249, 70, 0.1), rgba(163, 230, 53, 0.05)) !important;
   border: 1px solid rgba(197, 249, 70, 0.2) !important;
   color: rgba(197, 249, 70, 0.9) !important;
   text-shadow: 0 0 8px rgba(197, 249, 70, 0.3) !important;
 }
-
 .signal2-lime-button:hover {
   background: linear-gradient(135deg, rgba(197, 249, 70, 0.2), rgba(163, 230, 53, 0.1)) !important;
   border-color: rgba(197, 249, 70, 0.4) !important;
@@ -1361,7 +1211,6 @@ watch(showBranchList, (newValue) => {
   text-shadow: 0 0 12px rgba(197, 249, 70, 0.5) !important;
   box-shadow: 0 8px 20px rgba(197, 249, 70, 0.15) !important;
 }
-
 .signal2-mystery-glow {
   position: absolute;
   top: -50%;
@@ -1377,7 +1226,6 @@ watch(showBranchList, (newValue) => {
   transition: opacity 0.4s ease;
   pointer-events: none;
 }
-
 .signal2-lime-button .signal2-mystery-glow {
   background: radial-gradient(
     circle,
@@ -1385,17 +1233,14 @@ watch(showBranchList, (newValue) => {
     transparent 70%
   ) !important;
 }
-
 .signal2-mystery-button:hover .signal2-mystery-glow {
   opacity: 1;
   animation: signal2-mystery-pulse 2s infinite;
 }
-
 .signal2-mystery-text {
   position: relative;
   z-index: 2;
 }
-
 @keyframes signal2-mystery-pulse {
   0%, 100% { 
     transform: scale(1);
@@ -1406,11 +1251,9 @@ watch(showBranchList, (newValue) => {
     opacity: 0.6;
   }
 }
-
 .signal2-signal-link {
   margin-top: 12px;
 }
-
 .signal2-how-it-works-link {
   color: rgba(255, 255, 255, 0.5);
   text-decoration: underline;
@@ -1419,27 +1262,22 @@ watch(showBranchList, (newValue) => {
   font-weight: 500;
   transition: all 0.3s ease;
 }
-
 .signal2-how-it-works-link:hover {
   color: rgba(255, 255, 255, 0.8);
   text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, 0.6);
 }
-
 .signal2-branches-content {
   flex-grow: 1;
 }
-
 .signal2-branches-subtitle {
   margin: 0 0 16px 0;
   font-size: 16px;
   color: var(--vp-c-text-2);
 }
-
 .signal2-branches-list {
   padding: 0;
 }
-
 .signal2-branch-item {
   display: flex;
   align-items: center;
@@ -1454,14 +1292,12 @@ watch(showBranchList, (newValue) => {
   transition: all 0.3s ease;
   text-align: left;
 }
-
 .signal2-branch-item:hover {
   background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), var(--vp-c-bg-soft));
   border-color: #f59e0b;
   box-shadow: 0 8px 20px rgba(245, 158, 11, 0.1);
   transform: translateX(4px);
 }
-
 .signal2-branch-info {
   display: flex;
   align-items: center;
@@ -1469,7 +1305,6 @@ watch(showBranchList, (newValue) => {
   flex: 1;
   overflow: hidden;
 }
-
 .signal2-branch-number {
   background: linear-gradient(135deg, #f59e0b, #fcd34d);
   color: #422006;
@@ -1485,12 +1320,10 @@ watch(showBranchList, (newValue) => {
   transition: all 0.3s ease;
   box-shadow: none;
 }
-
 .signal2-branch-item:hover .signal2-branch-number {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2),
     inset 0 0 10px rgba(245, 158, 11, 0.5);
 }
-
 .signal2-branch-address {
   font-weight: 600;
   font-size: 16px;
@@ -1499,17 +1332,14 @@ watch(showBranchList, (newValue) => {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .signal2-branch-action {
   color: #f59e0b;
   transition: transform 0.3s ease;
   margin-left: 12px;
 }
-
 .signal2-branch-item:hover .signal2-branch-action {
   transform: translateX(4px);
 }
-
 .signal2-modal-overlay {
   position: fixed;
   inset: 0;
@@ -1520,7 +1350,6 @@ watch(showBranchList, (newValue) => {
   justify-content: center;
   z-index: 1000;
 }
-
 .signal2-modal {
   background: var(--vp-c-bg, #111);
   color: var(--vp-c-text-1, #fff);
@@ -1530,26 +1359,22 @@ watch(showBranchList, (newValue) => {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
   padding: 32px;
 }
-
 .signal2-modal-header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 12px;
 }
-
 .signal2-modal-title {
   font-weight: 700;
   font-size: 16px;
 }
-
 .signal2-modal-body {
   margin-top: 16px;
   font-size: 14px;
   color: var(--vp-c-text-1);
   line-height: 1.5;
 }
-
 .signal2-modal-link {
   color: #a3e635;
   text-decoration: underline;
@@ -1558,19 +1383,16 @@ watch(showBranchList, (newValue) => {
   transition: all 0.3s ease;
   cursor: pointer;
 }
-
 .signal2-modal-link:hover {
   color: #c5f946;
   text-decoration: underline;
   text-decoration-color: #c5f946 !important;
 }
-
 .signal2-modal-footer {
   margin-top: 24px;
   display: flex;
   justify-content: flex-end;
 }
-
 .signal2-modal-ok {
   background: var(--vp-c-bg-mute, #222);
   border: 1px solid var(--vp-c-border);
@@ -1580,225 +1402,88 @@ watch(showBranchList, (newValue) => {
   cursor: pointer;
   font-weight: 500;
 }
-
 .signal2-modal-ok:hover {
   background: var(--vp-c-bg-soft, #333);
 }
-
 @media (max-width: 768px) {
-  .signal2-widget-content {
-    padding: 24px 0;
-  }
-  .signal2-main-card {
-    padding: 16px;
-  }
-  .signal2-stats-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .signal2-stat-card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 16px;
-    transition: none;
-    cursor: pointer;
-  }
-  .signal2-stat-card:hover {
-    transform: none;
-  }
-  .signal2-stat-content {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    width: 100%;
-    background: none !important;
-    box-shadow: none !important;
-  }
-  .signal2-stat-left-group {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .signal2-stat-icon {
-    font-size: 28px;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-  }
-  .signal2-stat-value {
-    font-size: 2rem;
-    font-weight: 600;
-    margin: 0;
-  }
-  .signal2-stat-label {
-    font-size: 16px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.9);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .signal2-button-container {
-    flex-direction: column;
-    gap: 8px;
-  }
-  .signal2-action-button:hover {
-    transform: none;
-  }
-  
-  .signal2-system-status-bar {
-    flex-direction: column;
-    align-items: center;
-    padding: 8px 12px;
-    gap: 4px;
-    margin: 16px 0 12px 0;
-  }
-  
-  .signal2-status-label,
-  .signal2-status-label-disconnected {
-    font-size: 14px;
-    font-weight: 600;
-    margin-right: 0;
-  }
-  
-  .signal2-status-metrics {
-    gap: 12px;
-    justify-content: center;
-  }
-  
-  .signal2-metric-time,
-  .signal2-metric-text {
-    font-size: 14px;
-  }
-  
-  .signal2-button-icon-container {
-    width: 28px;
-    height: 28px;
-  }
-  
-  .signal2-mystery-button {
-    font-size: clamp(15.6px, 3vw, 12px);
-    padding: clamp(10.4px, 1.95vw, 8px) clamp(19.5px, 3.75vw, 15px);
-  }
-  
-  .signal2-how-it-works-link {
-    font-size: 14px;
-  }
-
-  .signal2-action-button {
-    justify-content: center;
-  }
-
-  .signal2-button-icon-container {
-    margin-left: 0 !important;
-  }
-  
-  .signal2-review-modal-overlay {
-    padding: 4px;
-  }
-
-  .signal2-review-modal-content {
-      width: 95vw;
-      height: clamp(85vh, 90vh, 85vh);
-      max-width: 95vw;
-      max-height: clamp(85vh, 90vh, 85vh);
-  }
-
-  .signal2-modal-scrollable-content {
-    padding: 20px 12px 12px 12px;
-  }
-
-  .signal2-modal-close-button {
-    width: 100%;
-    justify-content: center;
-    font-size: 14px;
-    padding: 12px 20px;
-  }
-
-  .signal2-modal-close-section {
-    padding: 12px;
-  }
+  .signal2-widget-content { padding: 24px 0; }
+  .signal2-main-card { padding: 16px; }
+  .signal2-stats-grid { grid-template-columns: 1fr; gap: 12px; }
+  .signal2-stat-card { display: flex; flex-direction: row; align-items: center; border-radius: 16px; transition: none; cursor: pointer; }
+  .signal2-stat-card:hover { transform: none; }
+  .signal2-stat-content { flex-direction: row; justify-content: space-between; align-items: center; padding: 12px 16px; width: 100%; background: none !important; box-shadow: none !important; }
+  .signal2-stat-left-group { display: flex; align-items: center; gap: 16px; }
+  .signal2-stat-icon { font-size: 28px; line-height: 1; display: flex; align-items: center; }
+  .signal2-stat-value { font-size: 2rem; font-weight: 600; margin: 0; }
+  .signal2-stat-label { font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 0.05em; }
+  .signal2-button-container { flex-direction: column; gap: 8px; }
+  .signal2-action-button:hover { transform: none; }
+  .signal2-system-status-bar { flex-direction: column; align-items: center; padding: 8px 12px; gap: 4px; margin: 16px 0 12px 0; }
+  .signal2-status-label, .signal2-status-label-disconnected { font-size: 14px; font-weight: 600; margin-right: 0; }
+  .signal2-status-metrics { gap: 12px; justify-content: center; }
+  .signal2-metric-time, .signal2-metric-text { font-size: 14px; }
+  .signal2-button-icon-container { width: 28px; height: 28px; }
+  .signal2-mystery-button { font-size: clamp(15.6px, 3vw, 12px); padding: clamp(10.4px, 1.95vw, 8px) clamp(19.5px, 3.75vw, 15px); }
+  .signal2-how-it-works-link { font-size: 14px; }
+  .signal2-action-button { justify-content: center !important; }
+  .signal2-button-icon-container { margin-left: 8px !important; margin-right: -8px; }
+  .signal2-review-modal-overlay { padding: 4px; }
+  .signal2-review-modal-content { width: 95vw; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); }
+  .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
+  .signal2-modal-close-button { width: 100%; justify-content: center; font-size: 14px; padding: 12px 20px; }
+  .signal2-modal-close-section { padding: 12px; }
 }
-
 @media (max-width: 700px) {
-  .signal2-review-modal-content {
-    width: 95vw;
-    height: 85vh;
-  }
-
-  .signal2-modal-scrollable-content {
-    padding: 20px 12px 12px 12px;
-  }
+  .signal2-review-modal-content { width: 95vw; height: 85vh; }
+  .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
 }
-
 @media (max-width: 480px) {
-  .signal2-widget-content {
-    padding: 20px 0;
-  }
-  .signal2-branches-title-text {
-    font-size: 22px;
-    text-align: center;
-  }
-  .signal2-branches-subtitle {
-    font-size: 14px;
-  }
-  .signal2-cafe-name {
-    font-size: 20px;
-  }
-  .signal2-status-badge {
-    padding: 4px 12px;
-    font-size: 10px;
-  }
-  .signal2-status-metrics {
-    gap: 8px;
-  }
-  .signal2-metric-time {
-    font-size: 13px;
-    min-width: 28px;
-  }
-  .signal2-metric-text {
-    font-size: 13px;
-  }
-  .signal2-modal {
-    padding: 24px;
-  }
-  .signal2-modal-body {
-    margin-top: 12px;
-  }
-  .signal2-modal-footer {
-    margin-top: 20px;
-  }
-
-  .signal2-mystery-button {
-    font-size: clamp(14.3px, 3vw, 11px);
-    padding: clamp(9.1px, 1.82vw, 7px) clamp(18.2px, 3.64vw, 14px);
-  }
-
-  .signal2-how-it-works-link {
-    font-size: 14px;
-  }
-
-  .signal2-review-modal-content {
-    height: 85vh;
-  }
-
-  .signal2-modal-scrollable-content {
-    padding: 16px 10px 10px 10px;
-  }
+  .signal2-widget-content { padding: 20px 0; }
+  .signal2-branches-title-text { font-size: 22px; text-align: center; }
+  .signal2-branches-subtitle { font-size: 14px; }
+  .signal2-cafe-name { font-size: 20px; }
+  .signal2-status-badge { padding: 4px 12px; font-size: 10px; }
+  .signal2-status-metrics { gap: 8px; }
+  .signal2-metric-time { font-size: 13px; min-width: 28px; }
+  .signal2-metric-text { font-size: 13px; }
+  .signal2-modal { padding: 24px; }
+  .signal2-modal-body { margin-top: 12px; }
+  .signal2-modal-footer { margin-top: 20px; }
+  .signal2-mystery-button { font-size: clamp(14.3px, 3vw, 11px); padding: clamp(9.1px, 1.82vw, 7px) clamp(18.2px, 3.64vw, 14px); }
+  .signal2-how-it-works-link { font-size: 14px; }
+  .signal2-review-modal-content { height: 85vh; }
+  .signal2-modal-scrollable-content { padding: 16px 10px 10px 10px; }
 }
-
 @media screen and (max-height: 700px) {
-  .signal2-review-modal-content {
-    height: 80vh !important;
-    max-height: 80vh !important;
-  }
+  .signal2-review-modal-content { height: 80vh !important; max-height: 80vh !important; }
 }
-
 @media screen and (max-height: 600px) {
-  .signal2-review-modal-content {
-    height: 75vh !important;
-    max-height: 75vh !important;
-  }
+  .signal2-review-modal-content { height: 75vh !important; max-height: 75vh !important; }
+}
+.signal2-graphite-stat {
+  --signal2-border-gradient: linear-gradient(135deg, #4a5568, #718096, #a0aec0);
+  --signal2-glow-color: rgba(113, 128, 150, 0.25);
+  --signal2-glow-hover-color: rgba(113, 128, 150, 0.6);
+}
+.signal2-orange-stat {
+  --signal2-border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d);
+  --signal2-glow-color: rgba(245, 158, 11, 0.25);
+  --signal2-glow-hover-color: rgba(245, 158, 11, 0.6);
+}
+.signal2-lime-stat {
+  --signal2-border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #c5f946);
+  --signal2-glow-color: rgba(197, 249, 70, 0.25);
+  --signal2-glow-hover-color: rgba(197, 249, 70, 0.6);
+}
+.signal2-graphite-button {
+  background: rgba(70, 70, 70, 0.8) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: none !important;
+}
+.signal2-graphite-button:hover {
+  background: rgba(85, 85, 85, 0.9) !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
 }
 </style>
