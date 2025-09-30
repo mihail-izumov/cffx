@@ -619,6 +619,8 @@ const baseSuggestions = {
   }
 };
 
+const maleEmotionsInitial = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён', 'доволен', 'восхищён', 'благодарен'];
+
 const currentSuggestions = reactive({
   emotions: baseSuggestions.emotions.initial,
   facts: baseSuggestions.facts.initial,
@@ -634,7 +636,7 @@ let selectedFirstLevelSuggestions = reactive({
 function selectSuggestion(fieldName, suggestion, suggestionType) {
   const currentText = form[fieldName].trim();
   const isNewBranch = isInitialSuggestions(suggestionType);
-  
+
   if (currentText) {
     if (isNewBranch) {
       form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
@@ -644,44 +646,50 @@ function selectSuggestion(fieldName, suggestion, suggestionType) {
   } else {
     form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
   }
-  
-  // Запоминаем использованную подсказку первого уровня
-  if (baseSuggestions[suggestionType].initial.includes(suggestion) || 
-     (suggestionType === 'emotions' && ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён', 'доволен', 'восхищён', 'благодарен'].includes(suggestion))) {
+
+  if (suggestionType === 'emotions') {
+    if (!selectedFirstLevelSuggestions.emotions.includes(suggestion)) {
+      selectedFirstLevelSuggestions.emotions.push(suggestion);
+    }
+  } else {
     if (!selectedFirstLevelSuggestions[suggestionType].includes(suggestion)) {
       selectedFirstLevelSuggestions[suggestionType].push(suggestion);
     }
   }
-  
+
   updateSuggestions(suggestionType, suggestion);
 }
 
 function updateSuggestions(suggestionType, selectedWord) {
-  const nextSuggestions = baseSuggestions[suggestionType][selectedWord];
-  
+  let nextSuggestions = baseSuggestions[suggestionType][selectedWord];
+
+  if (suggestionType === 'emotions' && selectedGender.value === 'male') {
+    if (!nextSuggestions) {
+      const remaining = maleEmotionsInitial.filter(e => !selectedFirstLevelSuggestions.emotions.includes(e));
+      if (remaining.length === 0) {
+        selectedFirstLevelSuggestions.emotions = [];
+        currentSuggestions.emotions = [...maleEmotionsInitial];
+      } else {
+        currentSuggestions.emotions = remaining;
+      }
+      return;
+    }
+  }
+
   if (nextSuggestions && nextSuggestions.length > 0) {
-    // Есть следующий уровень - показываем его
     currentSuggestions[suggestionType] = [...nextSuggestions];
   } else {
-    // Нет следующего уровня - возвращаемся к initial, убирая использованные
     if (suggestionType === 'emotions' && selectedGender.value === 'male') {
-      const maleEmotions = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён', 'доволен', 'восхищён', 'благодарен'];
-      const remaining = maleEmotions.filter(item => !selectedFirstLevelSuggestions.emotions.includes(item));
-      
+      const remaining = maleEmotionsInitial.filter(e => !selectedFirstLevelSuggestions.emotions.includes(e));
       if (remaining.length === 0) {
-        // Все использованы - сбрасываем
         selectedFirstLevelSuggestions.emotions = [];
-        currentSuggestions.emotions = [...maleEmotions];
+        currentSuggestions.emotions = [...maleEmotionsInitial];
       } else {
         currentSuggestions.emotions = remaining;
       }
     } else {
-      const remaining = baseSuggestions[suggestionType].initial.filter(
-        item => !selectedFirstLevelSuggestions[suggestionType].includes(item)
-      );
-      
+      const remaining = baseSuggestions[suggestionType].initial.filter(item => !selectedFirstLevelSuggestions[suggestionType].includes(item));
       if (remaining.length === 0) {
-        // Все использованы - сбрасываем
         selectedFirstLevelSuggestions[suggestionType] = [];
         currentSuggestions[suggestionType] = [...baseSuggestions[suggestionType].initial];
       } else {
@@ -691,41 +699,37 @@ function updateSuggestions(suggestionType, selectedWord) {
   }
 }
 
-function isInitialSuggestions(suggestionType) {
-  const initialSuggs = suggestionType === 'emotions' && selectedGender.value === 'male' 
-    ? ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён', 'доволен', 'восхищён', 'благодарен']
-    : baseSuggestions[suggestionType].initial;
-  
-  // Проверяем, совпадают ли текущие подсказки с начальными (минус использованные)
-  const unusedInitial = initialSuggs.filter(
-    item => !selectedFirstLevelSuggestions[suggestionType].includes(item)
-  );
-  
-  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(unusedInitial);
-}
-
 function resetSuggestions(suggestionType) {
   selectedFirstLevelSuggestions[suggestionType] = [];
-  
   if (suggestionType === 'emotions' && selectedGender.value === 'male') {
-    currentSuggestions.emotions = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён', 'доволен', 'восхищён', 'благодарен'];
+    currentSuggestions.emotions = [...maleEmotionsInitial];
   } else {
     currentSuggestions[suggestionType] = [...baseSuggestions[suggestionType].initial];
   }
 }
 
-const updateSuggestionsForGender = () => {
+function isInitialSuggestions(suggestionType) {
+  const initialSuggs = suggestionType === 'emotions' && selectedGender.value === 'male' 
+    ? maleEmotionsInitial
+    : baseSuggestions[suggestionType].initial;
+
+  const unusedInitial = initialSuggs.filter(
+    item => !selectedFirstLevelSuggestions[suggestionType].includes(item)
+  );
+
+  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(unusedInitial);
+}
+
+function updateSuggestionsForGender() {
   if (selectedGender.value === 'male') {
-    const maleEmotions = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён', 'доволен', 'восхищён', 'благодарен'];
-    currentSuggestions.emotions = maleEmotions.filter(
-      item => !selectedFirstLevelSuggestions.emotions.includes(item)
-    );
+    const remaining = maleEmotionsInitial.filter(e => !selectedFirstLevelSuggestions.emotions.includes(e));
+    currentSuggestions.emotions = remaining.length > 0 ? remaining : [...maleEmotionsInitial];
   } else {
-    currentSuggestions.emotions = baseSuggestions.emotions.initial.filter(
-      item => !selectedFirstLevelSuggestions.emotions.includes(item)
-    );
+    const remaining = baseSuggestions.emotions.initial.filter(e => !selectedFirstLevelSuggestions.emotions.includes(e));
+    currentSuggestions.emotions = remaining.length > 0 ? remaining : [...baseSuggestions.emotions.initial];
   }
-};
+}
+
 
 // ===== КОНЕЦ ИСПРАВЛЕННОЙ ЧАСТИ =====
 
