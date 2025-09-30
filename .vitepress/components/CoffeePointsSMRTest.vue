@@ -106,16 +106,17 @@ const cafeProfiles = {
 const todayStatus = computed(() => {
   const today = new Date();
   const day = String(today.getDate()).padStart(2, '0');
-  const year_short = today.getFullYear().toString().slice(-2);
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const year = today.getFullYear();
   
   const monthNames = [
-    'Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июн.',
-    'Июл.', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.'
+    'ЯНВАРЬ', 'ФЕВРАЛЬ', 'МАРТ', 'АПРЕЛЬ', 'МАЙ', 'ИЮНЬ',
+    'ИЮЛЬ', 'АВГУСТ', 'СЕНТЯБРЬ', 'ОКТЯБРЬ', 'НОЯБРЬ', 'ДЕКАБРЬ'
   ];
   
   const monthName = monthNames[today.getMonth()];
   
-  return `🟢 ${day} ${monthName} ${year_short}`;
+  return `🟢 ${day}.${month} → ${monthName} ${year}`;
 });
 
 
@@ -888,22 +889,22 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal2-modal-close-button {
-  background-image: linear-gradient(-45deg, #111111, #222222, #111111, #222222);
-  background-size: 400% 400%;
-  animation: liquid-fluid 6s ease infinite;
-  border: 1px solid #444;
-  color: #eee;
+  background-color: #272727;
+  border: none;
+  color: #888;
   padding: 14px 24px;
   border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: none;
+  animation: none;
 }
 
 .signal2-modal-close-button:hover {
-  background-image: linear-gradient(-45deg, #222222, #111111, #222222, #111111);
+  background-color: #333333;
   color: #fff;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
   transform: translateY(-2px);
 }
 
