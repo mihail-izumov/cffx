@@ -560,16 +560,15 @@ watch(showBranchList, (newValue) => {
     </div>
 
     <div v-if="showGrowthModal" class="signal2-modal-overlay" @click.self="showGrowthModal = false">
-      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Индекс Роста">
+      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Умные Отзывы">
         <div class="signal2-modal-header">
-          <div class="signal2-modal-title">Индекс Роста</div>
+          <div class="signal2-modal-title">Умные Отзывы</div>
         </div>
         <div class="signal2-modal-body">
-          Все забыли, что такое настоящий рост.<br>
-          Они измеряют рейтинг на 2ГИС и Яндекс.<br>
-          Мы находим в отзывах гостей то, что не видят другие.<br><br>
-          Наш Индекс показывает не размер бизнеса сегодня, а возможности, которые он может реализовать завтра.<br><br>
-          <span @click="openInvestLink" class="signal2-modal-link">Индекс Роста Самары</span>
+          Мы передаем ваш отзыв нужному менеджеру и стараемся помочь. Мы не гарантируем ответ, но сделаем всё, чтобы ваш голос был услышан.<br>
+          Укажите ваш контакт в Телеграм, чтобы ИИ-ассистент Анна сообщила вам, когда будет готов ответ.<br><br>
+          Если у вашей кофейни подключен Сигнал, вы гарантировано получите ответ за 24 часа.<br><br>
+          <span @click="openInvestLink" class="signal2-modal-link">Как работает ⚡ Сигнал</span>
         </div>
         <div class="signal2-modal-footer">
           <button class="signal2-modal-ok" type="button" @click="showGrowthModal = false">Понятно</button>
