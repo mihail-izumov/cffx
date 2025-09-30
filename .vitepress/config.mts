@@ -107,18 +107,45 @@ export default defineConfig({
           applyLink.removeAttribute('rel');
         });
       }
+
+      function forceTargetSelfOnMobile() {
+        if (window.innerWidth <= 768) {
+          document.querySelectorAll('.VPSocialLink[aria-label="login-link"], .VPSocialLink[aria-label="signal-link"]').forEach(link => {
+            link.setAttribute('target', '_self');
+            link.removeAttribute('rel');
+          });
+        }
+      }
+
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => { replaceFooter(); updateSocialLinkTargets(); });
-      } else { replaceFooter(); updateSocialLinkTargets(); }
-      window.addEventListener('load', () => { replaceFooter(); updateSocialLinkTargets(); });
-      setTimeout(() => { replaceFooter(); updateSocialLinkTargets(); }, 1000);
-      setTimeout(() => { replaceFooter(); updateSocialLinkTargets(); }, 2000);
+        document.addEventListener('DOMContentLoaded', () => {
+          replaceFooter();
+          updateSocialLinkTargets();
+          forceTargetSelfOnMobile();
+        });
+      } else {
+        replaceFooter();
+        updateSocialLinkTargets();
+        forceTargetSelfOnMobile();
+      }
+      window.addEventListener('load', () => {
+        replaceFooter();
+        updateSocialLinkTargets();
+        forceTargetSelfOnMobile();
+      });
+      window.addEventListener('resize', () => {
+        forceTargetSelfOnMobile();
+      });
       let lastUrl = location.href;
       new MutationObserver(() => {
         const url = location.href;
         if (url !== lastUrl) {
           lastUrl = url;
-          setTimeout(() => { replaceFooter(); updateSocialLinkTargets(); }, 100);
+          setTimeout(() => {
+            replaceFooter();
+            updateSocialLinkTargets();
+            forceTargetSelfOnMobile();
+          }, 100);
         }
       }).observe(document, { subtree: true, childList: true });
     })();
@@ -246,7 +273,6 @@ export default defineConfig({
       .dot-separator{display:none!important}
     }
     
-    /* Анимация liquid fluid */
     @keyframes liquid-fluid {
       0%, 100% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -255,7 +281,6 @@ export default defineConfig({
     .VPSocialLink .vpi-social-github{display:none!important}
     .VPSocialLink{width:auto!important;height:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important}
     
-    /* Кнопка "Как Работает" - графитовая с фоном */
     .VPSocialLink[aria-label="login-link"]::after{
       content:"Как Работает";
       font-size:14px;
@@ -275,7 +300,6 @@ export default defineConfig({
       color:#c5f946!important;
     }
     
-    /* Кнопка "Отправить ⚡ Сигнал" - лаймовая с liquid fluid */
     .VPSocialLink[aria-label="signal-link"]::after{
       content:"Отправить ⚡ Сигнал";
       font-size:14px;
