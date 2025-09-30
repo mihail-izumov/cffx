@@ -796,97 +796,177 @@ function applyGenderCorrection(text, gender) {
 
 function structureAndCleanText(share, emotional, factual, solutions, gender) {
   let result = '';
-  
-  // Вспомогательная функция для умной пунктуации ПО СМЫСЛУ
-  function smartPunctuation(sentence) {
-    let cleaned = sentence.trim().replace(/\s+/g, ' ');
-    const words = cleaned.split(/\s+/);
-    
-    if (words.length === 1) {
-      return cleaned;
-    } else if (words.length === 2) {
-      return `${words[0]}: ${words[1]}`;
-    } else if (words.length === 3) {
-      return `${words[0]}: ${words[1]} ${words[2]}`;
-    } else if (words.length === 4) {
-      // 4 слова: первое - категория, остальные - описание без запятой
-      return `${words[0]}: ${words[1]} ${words[2]} ${words[3]}`;
-    } else if (words.length === 5) {
-      // 5 слов: двоеточие после первого, запятая после третьего
-      return `${words[0]}: ${words[1]} ${words[2]}, ${words[3]} ${words[4]}`;
-    } else if (words.length >= 6) {
-      // 6+ слов: двоеточие после первого, запятая примерно на 60% длины
-      // Это обычно разделяет "описание проблемы" от "деталей"
-      const commaPosition = Math.floor(words.length * 0.6);
-      const beforeComma = words.slice(1, commaPosition).join(' ');
-      const afterComma = words.slice(commaPosition).join(' ');
-      return `${words[0]}: ${beforeComma}, ${afterComma}`;
+
+  // Набор устойчивых пар и словосочетаний, которые нельзя разрывать запятой
+  const protectedBigrams = new Set([
+    'нет системы',
+    'мгновенная подача',
+    'длинный волос',
+    'архив образцов',
+    'по санитарии',
+    'качественный звук',
+    'идеальный вкус',
+    'точные пропорции',
+    'за решение',
+    'за внимание',
+    'за профессионализм',
+    'за рекомендацию',
+    'за уютную',
+    'по качеству',
+    'по сервису',
+    'по коммуникации',
+    'по времени',
+    'чистая посуда',
+    'грязная посуда',
+    'холодный кофе',
+    'волосы в',
+    'ошибка в',
+  ]);
+
+  // Попытаться склеить устойчивые пары внутри строки (чтобы не резать запятой)
+  function joinProtectedBigrams(text) {
+    let words = text.trim().split(/\s+/);
+    if (words.length < 2) return text.trim();
+
+    const joined = [];
+    for (let i = 0; i < words.length; i++) {
+      const bigram = (words[i] + ' ' + (words[i + 1] || '')).toLowerCase();
+      if (i < words.length - 1 && protectedBigrams.has(bigram)) {
+        joined.push(words[i] + ' ' + words[i + 1]);
+        i += 1;
+      } else {
+        joined.push(words[i]);
+      }
     }
-    
-    return cleaned;
+    return joined.join(' ');
   }
-  
+
+  // Разбор «цепочки» на уровни: ожидаем 1–3 блока
+  // Мы формируем уровни по логике ввода: первая лексема — уровень1, далее — уровень2 (одно или два слова),
+  // остальное — уровень3 (детали). Для улучшения читаемости допускаем 2 слова в уровне2, если это устойчивое сочетание.
+  function splitIntoLevels(sentence) {
+    const cleaned = sentence.trim().replace(/\s+/g, ' ');
+    let words = cleaned.split(' ');
+    if (words.length === 0) return { l1: '', l2: '', l3: '' };
+
+    const l1 = words[0]; // всегда первое слово — уровень1
+    words = words.slice(1);
+
+    if (words.length === 0) return { l1, l2: '', l3: '' };
+
+    // кандидаты для l2: одно слово как минимум
+    let l2 = words[0];
+    let remainder = words.slice(1);
+
+    // если первые два слова образуют защищённую пару — берём их как уровень2
+    if (remainder.length >= 1) {
+      const candidateBigram = (l2 + ' ' + remainder[0]).toLowerCase();
+      if (protectedBigrams.has(candidateBigram)) {
+        l2 = l2 + ' ' + remainder[0];
+        remainder = remainder.slice(1);
+      }
+    }
+
+    const l3 = remainder.join(' '); // всё, что осталось — детали
+    return { l1, l2, l3 };
+  }
+
+  // Форматирование одной «цепочки» с корректной пунктуацией
+  function formatChain(sentence) {
+    // Склеиваем устойчивые пары, чтобы не рвать их запятой
+    const normalized = sentence.charAt(0).toUpperCase() + sentence.slice(1);
+    const glued = joinProtectedBigrams(normalized);
+    const { l1, l2, l3 } = splitIntoLevels(glued);
+
+    if (!l1) return '';
+
+    // 1 уровень
+    if (!l2 && !l3) {
+      return l1;
+    }
+
+    // 1 + 2 уровни
+    if (l2 && !l3) {
+      return `${l1} ${l2}:`;
+    }
+
+    // 1 + 2 + 3 уровни
+    // Внутри l3 попробуем поставить ОДНУ запятую, если есть явные два смысловых блока
+    // Критерии: ищем короткое служебное слово (<=3) примерно в середине или защищенную биграмму — запятую ставим ДО неё
+    let l3Words = l3.split(/\s+/);
+    let commaIdx = -1;
+
+    // попытка: найти служебное/короткое слово во второй трети — поставить запятую перед ним
+    for (let i = 1; i < l3Words.length - 1; i++) {
+      const w = l3Words[i].toLowerCase();
+      if (w.length <= 3 && i >= Math.floor(l3Words.length / 3)) {
+        commaIdx = i;
+        break;
+      }
+    }
+
+    if (commaIdx === -1 && l3Words.length >= 4) {
+      // запасной вариант: запятая на 2/3
+      commaIdx = Math.floor(l3Words.length * 0.66);
+    }
+
+    // НО: не разрывать защищённые биграммы
+    if (commaIdx > 0) {
+      const leftBigram = (l3Words[commaIdx - 1] + ' ' + l3Words[commaIdx]).toLowerCase();
+      if (protectedBigrams.has(leftBigram) && commaIdx < l3Words.length - 1) {
+        // если запятая попала внутрь биграммы — сдвигаем вправо
+        commaIdx += 1;
+      }
+    }
+
+    let l3Formatted;
+    if (commaIdx > 0 && commaIdx < l3Words.length - 1) {
+      l3Formatted = l3Words.slice(0, commaIdx).join(' ') + ', ' + l3Words.slice(commaIdx).join(' ');
+    } else {
+      l3Formatted = l3; // не разобрали — оставляем как есть
+    }
+
+    return `${l1} ${l2}: ${l3Formatted}`;
+  }
+
+  // Удаление дублей между цепочками
+  function formatSection(text) {
+    const lines = text.split('. ').map(s => s.trim()).filter(Boolean);
+    const seen = new Set();
+    const out = [];
+    for (const line of lines) {
+      const key = line.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const formatted = formatChain(line);
+      if (formatted) out.push(`• ${formatted}`);
+    }
+    return out.join('\n');
+  }
+
   // МОЙ ОТЗЫВ
   if (share) {
     result += `МОЙ ОТЗЫВ\n${share}\n\n`;
   }
-  
+
   // ВПЕЧАТЛЕНИЯ
   if (emotional) {
     result += `ВПЕЧАТЛЕНИЯ\n`;
-    const emotionalSentences = emotional.split('. ').filter(s => s.trim());
-    const seenEmotions = new Set();
-    
-    emotionalSentences.forEach((sentence) => {
-      const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-      const normalized = formatted.toLowerCase();
-      
-      if (!seenEmotions.has(normalized)) {
-        seenEmotions.add(normalized);
-        const withPunctuation = smartPunctuation(formatted);
-        result += `• ${withPunctuation}\n`;
-      }
-    });
-    result += '\n';
+    result += formatSection(emotional) + '\n\n';
   }
-  
+
   // ПРОБЛЕМЫ
   if (factual) {
     result += `ПРОБЛЕМЫ\n`;
-    const factualSentences = factual.split('. ').filter(s => s.trim());
-    const seenFacts = new Set();
-    
-    factualSentences.forEach((sentence) => {
-      const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-      const normalized = formatted.toLowerCase();
-      
-      if (!seenFacts.has(normalized)) {
-        seenFacts.add(normalized);
-        const withPunctuation = smartPunctuation(formatted);
-        result += `• ${withPunctuation}\n`;
-      }
-    });
-    result += '\n';
+    result += formatSection(factual) + '\n\n';
   }
-  
+
   // ПРЕДЛОЖЕНИЯ
   if (solutions) {
     result += `ПРЕДЛОЖЕНИЯ\n`;
-    const solutionsSentences = solutions.split('. ').filter(s => s.trim());
-    const seenSolutions = new Set();
-    
-    solutionsSentences.forEach((sentence) => {
-      const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-      const normalized = formatted.toLowerCase();
-      
-      if (!seenSolutions.has(normalized)) {
-        seenSolutions.add(normalized);
-        const withPunctuation = smartPunctuation(formatted);
-        result += `• ${withPunctuation}\n`;
-      }
-    });
+    result += formatSection(solutions);
   }
-  
+
   return result.trim();
 }
 
