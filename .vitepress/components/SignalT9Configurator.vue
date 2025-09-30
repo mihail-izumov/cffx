@@ -797,32 +797,30 @@ function applyGenderCorrection(text, gender) {
 function structureAndCleanText(share, emotional, factual, solutions, gender) {
   let result = '';
   
-  // Вспомогательная функция для умной пунктуации
+  // Вспомогательная функция для умной пунктуации ПО СМЫСЛУ
   function smartPunctuation(sentence) {
     let cleaned = sentence.trim().replace(/\s+/g, ' ');
     const words = cleaned.split(/\s+/);
     
     if (words.length === 1) {
-      // Одно слово - просто возвращаем как есть
       return cleaned;
     } else if (words.length === 2) {
-      // Два слова - добавляем двоеточие: "категория: детали"
       return `${words[0]}: ${words[1]}`;
     } else if (words.length === 3) {
-      // Три слова - двоеточие после первого: "категория: детали уточнение"
       return `${words[0]}: ${words[1]} ${words[2]}`;
     } else if (words.length === 4) {
-      // Четыре слова - двоеточие и запятая: "категория: детали, уточнение еще"
-      return `${words[0]}: ${words[1]}, ${words[2]} ${words[3]}`;
+      // 4 слова: первое - категория, остальные - описание без запятой
+      return `${words[0]}: ${words[1]} ${words[2]} ${words[3]}`;
     } else if (words.length === 5) {
-      // Пять слов - делим 2:3: "категория: детали уточнение, еще детали"
+      // 5 слов: двоеточие после первого, запятая после третьего
       return `${words[0]}: ${words[1]} ${words[2]}, ${words[3]} ${words[4]}`;
     } else if (words.length >= 6) {
-      // Шесть и более - делим примерно пополам
-      const midPoint = Math.ceil(words.length / 2);
-      const firstPart = words.slice(1, midPoint).join(' ');
-      const secondPart = words.slice(midPoint).join(' ');
-      return `${words[0]}: ${firstPart}, ${secondPart}`;
+      // 6+ слов: двоеточие после первого, запятая примерно на 60% длины
+      // Это обычно разделяет "описание проблемы" от "деталей"
+      const commaPosition = Math.floor(words.length * 0.6);
+      const beforeComma = words.slice(1, commaPosition).join(' ');
+      const afterComma = words.slice(commaPosition).join(' ');
+      return `${words[0]}: ${beforeComma}, ${afterComma}`;
     }
     
     return cleaned;
@@ -843,7 +841,6 @@ function structureAndCleanText(share, emotional, factual, solutions, gender) {
       const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
       const normalized = formatted.toLowerCase();
       
-      // Проверяем на дубликаты
       if (!seenEmotions.has(normalized)) {
         seenEmotions.add(normalized);
         const withPunctuation = smartPunctuation(formatted);
@@ -892,7 +889,6 @@ function structureAndCleanText(share, emotional, factual, solutions, gender) {
   
   return result.trim();
 }
-
 
 onUnmounted(() => {
   if (rotationInterval) clearInterval(rotationInterval);
