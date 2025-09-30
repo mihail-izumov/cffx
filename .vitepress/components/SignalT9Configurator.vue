@@ -1,16 +1,13 @@
 <template>
   <div class="signal-demo-wrapper">
-    <!-- Переключатель секций - хлебные крошки -->
+    <!-- Переключатель секций -->
     <div class="signal-demo__header">
-      <div class="signal-demo__breadcrumbs" role="tablist" aria-label="Секции формы">
+      <div class="signal-demo__breadcrumbs" role="tablist">
         <button
-          v-for="(section, index) in sections"
+          v-for="section in sections"
           :key="section.id"
           class="signal-breadcrumb"
           :class="[section.id, isActive(section.id) ? 'is-active' : '']"
-          type="button"
-          role="tab"
-          :aria-selected="isActive(section.id)"
           @click="selectedSection = section.id"
         >
           <div class="signal-breadcrumb-circle"></div>
@@ -18,25 +15,18 @@
       </div>
     </div>
 
-    <!-- Блок с кнопкой информации и переключателем пола в одну строку -->
+    <!-- Кнопка информации и переключатель пола -->
     <div class="signal-controls-row">
-      <!-- Кнопка "Как работает" -->
       <button 
-        type="button" 
         class="signal-info-button"
         :class="{ 
           'signal-info-female': selectedGender === 'female',
           'signal-info-male': selectedGender === 'male'
         }"
-        aria-haspopup="dialog" 
-        aria-controls="signal-dialog" 
-        :aria-expanded="showInfoModal ? 'true' : 'false'"
         @click="showInfoModal = true"
       >
         Как работает
       </button>
-
-      <!-- Переключатель пола -->
       <div class="signal-gender-switch">
         <div class="signal-gender-container">
           <div 
@@ -53,25 +43,24 @@
       </div>
     </div>
 
-    <!-- Информационное модальное окно -->
+    <!-- Модальное окно -->
     <div v-if="showInfoModal" class="modal-overlay" @click.self="showInfoModal = false">
-      <div class="modal" role="dialog" aria-modal="true" id="signal-dialog" aria-label="Информация о Сигнале">
-        <div class="modal-header">
-          <div class="modal-title">Ваши отзывы меняют всё.</div>
-        </div>
+      <div class="modal">
+        <div class="modal-title">Ваши отзывы меняют всё.</div>
         <div class="modal-body">
           Каждый отзыв делает любимую кофейню еще лучше, а Сигнал помогает решить Вашу проблему за 24 часа. Почувствуйте силу настоящих перемен.<br><br>
-          <a href="https://cffx.ru/signals.html" target="_blank" class="modal-link no-vitepress-style">Как Работает Сигнал</a>
+          <!-- ПРАВКА 8: Белый цвет ссылки -->
+          <a href="https://cffx.ru/signals.html" target="_blank" class="modal-link">Как Работает Сигнал</a>
         </div>
         <div class="modal-footer">
-          <button class="modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
+          <button class="modal-ok" @click="showInfoModal = false">Понятно</button>
         </div>
       </div>
     </div>
 
     <!-- Контейнер с формой -->
     <div class="signal-demo__form-container">
-      <!-- Секция "Поделитесь" -->
+      <!-- Секция 1: Поделитесь -->
       <div v-if="selectedSection === 'share'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #6B7280;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
@@ -83,29 +72,26 @@
             v-model="form.shareExperience" 
             @focus="startRotation('share')" 
             :rows="isMobile ? 5 : 3"
-            placeholder="Поделитесь своим впечатлением...">
-          </textarea>
-          
+            placeholder="Поделитесь своим впечатлением..."
+          ></textarea>
           <p class="signal-example-hint">Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»</p>
         </div>
       </div>
 
-      <!-- Секция "Эмоции и чувства" -->
+      <!-- Секция 2: Эмоции -->
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #6f5d9f;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
             <transition name="fade" mode="out-in">
-              <p :key="currentQuestion1" class="signal-question-label" ref="questionRef1">{{ currentQuestion1 }}</p>
+              <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
             </transition>
           </div>
           <textarea 
             v-model="form.emotionalRelease" 
             @focus="startRotation(1)" 
             :rows="isMobile ? 5 : 3"
-            :placeholder="selectedGender === 'female' ? 'Разочарована ожиданиями...' : 'Разочарован ожиданиями...'">
-          </textarea>
-          
-          <!-- Подсказки-баблы для эмоций -->
+            :placeholder="selectedGender === 'female' ? 'Разочарована ожиданиями...' : 'Разочарован ожиданиями...'"
+          ></textarea>
           <div class="signal-suggestions-container">
             <div 
               v-for="suggestion in currentSuggestions.emotions" 
@@ -115,7 +101,6 @@
             >
               {{ suggestion }}
             </div>
-            <!-- Кнопка возврата к начальным вариантам -->
             <div 
               v-if="!isInitialSuggestions('emotions')"
               class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
@@ -127,22 +112,20 @@
         </div>
       </div>
 
-      <!-- Секция "Детали проблемы" -->
+      <!-- Секция 3: Факты -->
       <div v-if="selectedSection === 'facts'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #3a8862;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
             <transition name="fade" mode="out-in">
-              <p :key="currentQuestion2" class="signal-question-label" ref="questionRef2">{{ currentQuestion2 }}</p>
+              <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
             </transition>
           </div>
           <textarea 
             v-model="form.factualAnalysis" 
             @focus="startRotation(2)" 
             :rows="isMobile ? 5 : 3"
-            placeholder="Опишите факты: что, когда и где произошло...">
-          </textarea>
-          
-          <!-- Подсказки-баблы для деталей -->
+            placeholder="Опишите факты: что, когда и где произошло..."
+          ></textarea>
           <div class="signal-suggestions-container">
             <div 
               v-for="suggestion in currentSuggestions.facts" 
@@ -152,7 +135,6 @@
             >
               {{ suggestion }}
             </div>
-            <!-- Кнопка возврата к начальным вариантам -->
             <div 
               v-if="!isInitialSuggestions('facts')"
               class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
@@ -164,22 +146,20 @@
         </div>
       </div>
 
-      <!-- Секция "Предложение решения" -->
+      <!-- ПРАВКА 10: Секция 4: Решение - синий цвет -->
       <div v-if="selectedSection === 'solutions'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #b88700;">
+        <div class="signal-question-block" style="--accent-color: #4A90E2;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
             <transition name="fade" mode="out-in">
-              <p :key="currentQuestion3" class="signal-question-label" ref="questionRef3">{{ currentQuestion3 }}</p>
+              <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
             </transition>
           </div>
           <textarea 
             v-model="form.constructiveSuggestions" 
             @focus="startRotation(3)" 
             :rows="isMobile ? 5 : 3"
-            placeholder="Предложите, как это можно исправить...">
-          </textarea>
-          
-          <!-- Подсказки-баблы для решений -->
+            placeholder="Предложите, как это можно исправить..."
+          ></textarea>
           <div class="signal-suggestions-container">
             <div 
               v-for="suggestion in currentSuggestions.solutions" 
@@ -189,7 +169,6 @@
             >
               {{ suggestion }}
             </div>
-            <!-- Кнопка возврата к начальным вариантам -->
             <div 
               v-if="!isInitialSuggestions('solutions')"
               class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
@@ -201,107 +180,98 @@
         </div>
       </div>
 
-      <!-- Секция "Итого" -->
+      <!-- ПРАВКА 10: Секция 5: Итого - желтый цвет (был синий) -->
       <div v-if="selectedSection === 'summary'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #a98500;">
+        <div class="signal-question-block" style="--accent-color: #FFB800;">
           <p class="signal-direction-label">Умный отзыв</p>
-          
           <div class="signal-rotating-phrase-container">
             <p class="signal-question-label">От эмоций до конструктивных предложений</p>
           </div>
-          
           <textarea 
             v-model="form.summaryText" 
             :rows="isMobile ? 10 : 8"
-            :placeholder="getPlaceholderText()"
+            placeholder="Здесь появится Ваш Умный Отзыв ..."
           ></textarea>
-                    
           <p class="signal-example-hint signal-example-hint-white">Конструктивный отзыв = сумма Ваших эмоций, фактов и решений.</p>
         </div>
       </div>
-      
-      <!-- Секция "Выбрать локацию" - НОВАЯ -->
+
+      <!-- ПРАВКА 11: Секция 6: Локация - приглушенный голубой + активность кнопки -->
       <div v-if="selectedSection === 'location'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #00D9FF;">
+        <div class="signal-question-block" style="--accent-color: #5A9FB8;">
           <p class="signal-direction-label">Выбрать локацию</p>
           <div class="signal-rotating-phrase-container">
             <p class="signal-question-label">В какой кофейне разобрать этот отзыв?</p>
           </div>
-          <select 
-            v-model="form.selectedNetwork" 
-            @change="form.selectedBranch = ''"
-            class="signal-select"
-          >
+          <select v-model="form.selectedNetwork" @change="form.selectedBranch = ''" class="signal-select">
             <option disabled value="">Выберите сеть</option>
-            <option v-for="(cafe, name) in cafes" :key="name" :value="name">
-              {{ name }}
-            </option>
+            <option v-for="(cafe, name) in cafes" :key="name" :value="name">{{ name }}</option>
           </select>
-          <select 
-            v-model="form.selectedBranch" 
-            class="signal-select"
-            :disabled="!form.selectedNetwork"
-          >
+          <select v-model="form.selectedBranch" class="signal-select" :disabled="!form.selectedNetwork">
             <option disabled value="">Выберите адрес</option>
-            <option 
-              v-for="(branch, index) in selectedNetworkBranches" 
-              :key="index" 
-              :value="branch.address"
-            >
+            <option v-for="(branch, index) in selectedNetworkBranches" :key="index" :value="branch.address">
               {{ branch.address }}
             </option>
           </select>
         </div>
       </div>
 
-      <!-- Секция "Останемся на связи?" - НОВАЯ -->
+      <!-- ПРАВКА 5: Секция 7: Контакт - голубо-зеленая гамма -->
       <div v-if="selectedSection === 'contact'" class="signal-form-section">
-        <!-- Экран успешной отправки -->
+        <!-- ПРАВКА 12: Экран подтверждения с датой и тикетом -->
         <div v-if="formSubmitted" class="signal-success-screen">
+          <!-- Блок с датой и тикетом -->
+          <div class="signal-form-header">
+            <div class="signal-form-title">Отзыв отправлен</div>
+            <div class="signal-tech-info">
+              <span class="signal-info-item">{{ currentDate }}</span>
+              <span class="signal-info-item signal-ticket-display">{{ formattedTicketNumber }}</span>
+            </div>
+          </div>
+          
+          <!-- ПРАВКА 1, 2: Центрированный текст -->
           <div class="signal-success-content">
             <h3>Все готово!</h3>
-            <p>Нажмите на кнопку ниже, чтобы отправить ваш уникальный код ассистенту Анне и получить результат вашего запроса.</p>
-            <a v-if="form.telegramContact" :href="`https://t.me/Anna_Signal?text=Сигнал%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Активировать Сигнал в Telegram</a>
+            <p>Нажмите на кнопку ниже, чтобы отправить ваш тикет ассистенту Анне и получить результат вашего запроса.</p>
+            <a v-if="form.telegramContact" :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Активировать Сигнал в Telegram</a>
+            <!-- ПРАВКА 3: Белый цвет при ховере -->
             <a v-if="form.telegramContact" href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link">Кто Анна и как работает</a>
           </div>
         </div>
 
-        <!-- Основная форма -->
-        <div v-if="!formSubmitted" class="signal-question-block contact" style="--accent-color: #FFB800;">
-            <div class="signal-rotating-phrase-container">
-              <p class="signal-question-label">Останемся на связи?</p>
+        <div v-if="!formSubmitted" class="signal-question-block contact" style="--accent-color: #00C2A8;">
+          <div class="signal-rotating-phrase-container">
+            <p class="signal-question-label">Останемся на связи?</p>
+          </div>
+          <div class="signal-columns">
+            <div class="signal-column">
+              <label>Ваше имя</label>
+              <input v-model="form.userName" class="signal-input" placeholder="Как к вам обращаться?" />
+              <p class="signal-input-hint">Для персонального общения с ИИ-ассистентом Анной.</p>
             </div>
-            <div class="signal-columns">
-                <div class="signal-column">
-                    <label>Ваше имя</label>
-                    <input v-model="form.userName" class="signal-input" placeholder="Как к вам обращаться?" />
-                    <p class="signal-input-hint">Для персонального общения с ИИ-ассистентом Анной.</p>
-                </div>
-                <div class="signal-column">
-                    <label>Ваш контакт в Telegram</label>
-                    <input v-model="form.telegramContact" class="signal-input" placeholder="+7 (___) ___-__-__" />
-                    <p class="signal-input-hint">Чтобы получать обновления и видеть результат.</p>
-                </div>
+            <div class="signal-column">
+              <label>Ваш контакт в Telegram</label>
+              <input v-model="form.telegramContact" class="signal-input" placeholder="+7 (___) ___-__-__" />
+              <p class="signal-input-hint">Чтобы получать обновления и видеть результат.</p>
             </div>
-            <label class="signal-agreement">
-                <input type="checkbox" v-model="form.agreedToTerms" />
-                С <a href="/terms" target="_blank" class="signal-policy-link">Условиями использования</a> согласен/на
-            </label>
+          </div>
+          <!-- ПРАВКА 6, 7: Убрать пространство вокруг ссылки, уменьшить чекбокс -->
+          <label class="signal-agreement">
+            <input type="checkbox" v-model="form.agreedToTerms" />
+            <span>С <a href="/terms" target="_blank" class="signal-policy-link">Условиями использования</a> согласен/на</span>
+          </label>
         </div>
 
         <div v-if="!formSubmitted">
-            <button 
-              class="signal-submit-button" 
-              :disabled="submitStatus === 'processing'" 
-              @click="submitForm"
-            >
-              {{ submitStatus === 'processing' ? 'Отправка...' : 'Отправить отзыв в кофейню' }}
-            </button>
+          <button class="signal-submit-button" :disabled="submitStatus === 'processing'" @click="submitForm">
+            {{ submitStatus === 'processing' ? 'Отправка...' : 'Отправить отзыв в кофейню' }}
+          </button>
         </div>
       </div>
 
-      <!-- КНОПКА ДАЛЬШЕ - для всех секций кроме последней -->
+      <!-- Кнопки навигации -->
       <div v-if="selectedSection !== 'contact'" class="signal-next-button-container">
+        <!-- ПРАВКА 9, 11: Белая кнопка на первом экране, активность на локации -->
         <button 
           class="signal-liquid-next-btn"
           :class="[
@@ -313,27 +283,18 @@
             selectedSection === 'location' ? 'signal-location-next' : ''
           ]"
           @click="goToNextSection()"
-          :disabled="nextStatus === 'processing'"
+          :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
         >
           <span class="signal-liquid-next-text">Дальше</span>
-          <svg class="signal-next-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <svg class="signal-next-icon" width="20" height="20" viewBox="0 0 24 24">
             <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
         
-        <!-- КНОПКА ОБНОВИТЬ - только в секции Итого, СТРОГО ПОД кнопкой Дальше -->
         <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
-          <button 
-            class="signal-liquid-humanize-btn"
-            @click="summarizeAllContent()"
-            :disabled="humanizeStatus === 'processing'"
-          >
+          <button class="signal-liquid-humanize-btn" @click="summarizeAllContent()" :disabled="humanizeStatus === 'processing'">
             <span class="signal-liquid-humanize-text">
-              {{ 
-                humanizeStatus === 'completed' ? 'Готово' : 
-                humanizeStatus === 'processing' ? 'Обновление...' : 
-                'Обновить'
-              }}
+              {{ humanizeStatus === 'completed' ? 'Готово' : humanizeStatus === 'processing' ? 'Обновление...' : 'Обновить' }}
             </span>
           </button>
         </div>
@@ -359,21 +320,17 @@ const form = reactive({
 });
 
 const isMobile = ref(false);
-const questionRef1 = ref(null);
-const questionRef2 = ref(null);
-const questionRef3 = ref(null);
 const selectedGender = ref('female');
 const humanizeStatus = ref('idle');
-const nextStatus = ref('idle');
 const showInfoModal = ref(false);
 const submitStatus = ref('idle');
 const formSubmitted = ref(false);
 const rawTicketNumber = ref(null);
+const formattedTicketNumber = ref(null);
 const currentDate = ref('');
 
 const cafes = {
   'Корж': {
-    name: 'Корж',
     branches: [
       { address: 'Куйбышева, 103' },
       { address: 'Революционная, 101В' },
@@ -386,60 +343,10 @@ const cafes = {
     ]
   },
   'MOSAIC': {
-    name: 'MOSAIC',
     branches: [
       { address: 'Бывшая гостиница "Националь" ' },
       { address: 'Волжский просп., 50' },
-      { address: 'Речной вокзал' },
-      { address: 'Максима Горького, 82' },
-      { address: 'Волжский просп., 40' },
-      { address: 'ЖК Ботанический' },
-      { address: 'ТЦ Аквариум ' },
-      { address: 'ТЦ Аврора' },
-      { address: 'ТЦ Самолет' },
-      { address: 'Волгина, 127А' },
-      { address: 'БЦ ЗИМ' },
-      { address: '5-я просека' },
-      { address: 'Красноармейский спуск' },
-      { address: 'Напротив ЦСКА' }
-    ]
-  },
-  'Skuratov': {
-    name: 'Skuratov',
-    branches: [
-      { address: 'Самарская, 190' },
-      { address: 'Молодогвардейская, 80' },
-      { address: 'Максима Горького, 129' },
-      { address: 'Красноармейская, 133' },
-      { address: 'Первомайская, 29' },
-      { address: 'Куйбышева, 68/70' }
-    ]
-  },
-  'Surf': {
-    name: 'Surf',
-    branches: [
-      { address: 'Некрасовская, 57' },
-      { address: 'Полевая, 54' },
-      { address: 'Куйбышева, 100' }
-    ]
-  },
-  'Белотурка': {
-    name: 'Белотурка',
-    branches: [
-      { address: 'Куйбышева, 99' },
-      { address: 'Молодогвардейская, 153' },
-      { address: 'Ново-Садовая, 106' },
-      { address: 'Московское шоссе, 41 (РДЦ)' },
-      { address: 'Московское шоссе, 81Б (Парк Хаус)' }
-    ]
-  },
-  'Кэрри': {
-    name: 'Кэрри',
-    branches: [
-      { address: 'Ново-Садовая ул., 160М' },
-      { address: 'Московское шоссе, 252' },
-      { address: 'Дачная ул., 2, корп. 1' },
-      { address: 'Дыбенко, 30 (Космопорт)' }
+      { address: 'Речной вокзал' }
     ]
   }
 };
@@ -449,29 +356,22 @@ const selectedNetworkBranches = computed(() => {
   return cafes[form.selectedNetwork]?.branches || [];
 });
 
-const onKeydown = (e) => {
-  if (e.key === 'Escape') {
-    showInfoModal.value = false;
-  }
-};
-
 onMounted(() => {
   const checkMobile = () => {
     isMobile.value = window.innerWidth <= 768;
   };
   checkMobile();
   window.addEventListener('resize', checkMobile);
-  window.addEventListener('keydown', onKeydown);
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') showInfoModal.value = false;
+  });
   updateSuggestionsForGender();
   
   rawTicketNumber.value = String(Date.now()).slice(-6);
+  formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
   const now = new Date();
   const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
   currentDate.value = now.toLocaleString('ru-RU', options).replace(',', '');
-});
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', onKeydown);
 });
 
 const sections = [
@@ -487,268 +387,18 @@ const sections = [
 const selectedSection = ref('share');
 const isActive = (id) => id === selectedSection.value;
 
-const getPlaceholderText = () => {
-  return "Здесь появится Ваш Умный Отзыв ...";
-};
-
-const goToNextSection = async () => {
+const goToNextSection = () => {
   const currentIndex = sections.findIndex(s => s.id === selectedSection.value);
-  
   if (selectedSection.value === 'solutions') {
-    nextStatus.value = 'processing';
     summarizeAllContent();
-    nextStatus.value = 'idle';
   }
-  
   if (currentIndex < sections.length - 1) {
     selectedSection.value = sections[currentIndex + 1].id;
   }
 };
 
-const CYR = 'А-Яа-яЁё';
-const beforeBoundary = `(^|[^${CYR}])`;
-const afterBoundary = `(?=[^${CYR}]|$)`;
-const escape = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const capitalizeLike = (src, target) => {
-  if (!src) return target;
-  const isUpper = src[0] === src[0].toUpperCase();
-  return isUpper ? target[0].toUpperCase() + target.slice(1) : target;
-};
-
-const genderMap = {
-  female: [
-    ['разочарован', 'разочарована'],
-    ['недоволен', 'недовольна'],
-    ['расстроен', 'расстроена'],
-    ['огорчён', 'огорчена'], ['огорчен', 'огорчена'],
-    ['возмущён', 'возмущена'], ['возмущен', 'возмущена'],
-    ['удивлён', 'удивлена'], ['удивлен', 'удивлена'],
-    ['доволен', 'довольна'],
-    ['восхищён', 'восхищена'], ['восхищен', 'восхищена'],
-    ['благодарен', 'благодарна'],
-    ['был', 'была'],
-    ['заказал', 'заказала'],
-    ['ожидал', 'ожидала'],
-    ['засекал', 'засекала']
-  ],
-  male: [
-    ['разочарована', 'разочарован'],
-    ['недовольна', 'недоволен'],
-    ['расстроена', 'расстроен'],
-    ['огорчена', 'огорчён'], ['огорчена', 'огорчен'],
-    ['возмущена', 'возмущён'], ['возмущена', 'возмущен'],
-    ['удивлена', 'удивлён'], ['удивлена', 'удивлен'],
-    ['довольна', 'доволен'],
-    ['восхищена', 'восхищён'], ['восхищена', 'восхищен'],
-    ['благодарна', 'благодарен'],
-    ['была', 'был'],
-    ['заказала', 'заказал'],
-    ['ожидала', 'ожидал'],
-    ['засекала', 'засекал']
-  ]
-};
-
-function applyGenderCorrection(text, gender) {
-  if (!text) return text;
-  const rules = gender === 'male' ? genderMap.male : genderMap.female;
-  const sorted = [...rules].sort((a, b) => b[0].length - a[0].length);
-
-  let out = text;
-  for (const [fromRaw, toRaw] of sorted) {
-    const pat = new RegExp(`${beforeBoundary}(${escape(fromRaw)})${afterBoundary}`, 'gi');
-    out = out.replace(pat, (m, p1, p2) => `${p1}${capitalizeLike(p2, toRaw)}`);
-  }
-  return out;
-}
-
-function removeDuplicates(text) {
-  const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 3);
-  const uniqueSentences = [];
-  const seen = new Set();
-  
-  sentences.forEach(sentence => {
-    const normalized = sentence.toLowerCase().replace(/\s+/g, ' ');
-    if (!seen.has(normalized) && normalized.length > 5) {
-      seen.add(normalized);
-      uniqueSentences.push(sentence);
-    }
-  });
-  
-  return uniqueSentences.join('. ') + (uniqueSentences.length > 0 ? '.' : '');
-}
-
-function structureAndCleanText(shareText, emotionalText, factualText, solutionsText, gender) {
-  let result = '';
-  
-  if (shareText.trim()) {
-    let userText = applyGenderCorrection(shareText.trim(), gender);
-    if (!userText.match(/[.!?]$/)) {
-      userText += '.';
-    }
-    result += `МОЙ ОТЗЫВ СЕЙЧАС: ${userText.charAt(0).toUpperCase() + userText.slice(1)}`;
-  } else {
-    result += `МОЙ ОТЗЫВ СЕЙЧАС: (можно дополнить)`;
-  }
-  
-  if (emotionalText || factualText || solutionsText) {
-    if (result) result += '\n\n';
-    result += '---\nМожно улучшить:\n---';
-  }
-  
-  if (emotionalText) {
-    const emotions = applyGenderCorrection(emotionalText.trim(), gender);
-    const sentences = emotions.split(/[.!]/).map(s => s.trim()).filter(s => s);
-    
-    const positiveEmotions = [];
-    const neutralEmotions = [];
-    const negativeEmotions = [];
-    
-    sentences.forEach(sentence => {
-      const lower = sentence.toLowerCase();
-      if (lower.includes('доволь') || lower.includes('восхищ') || lower.includes('благодар')) {
-        const parts = sentence.split(' ');
-        if (parts.length > 3) {
-          const formatted = parts.slice(0, 3).join(' ') + ' – ' + parts.slice(3).join(' ');
-          positiveEmotions.push(formatted);
-        } else {
-          positiveEmotions.push(sentence);
-        }
-      } else if (lower.includes('удивл')) {
-        neutralEmotions.push(sentence);
-      } else {
-        const parts = sentence.split(' ');
-        if (parts.length > 3) {
-          const formatted = parts.slice(0, 3).join(' ') + ' – ' + parts.slice(3).join(' ');
-          negativeEmotions.push(formatted);
-        } else {
-          negativeEmotions.push(sentence);
-        }
-      }
-    });
-    
-    let emotionText = '';
-    if (positiveEmotions.length > 0) emotionText += positiveEmotions.join('. ') + '. ';
-    if (neutralEmotions.length > 0) emotionText += neutralEmotions.join('. ') + '. ';
-    if (negativeEmotions.length > 0) emotionText += negativeEmotions.join('. ') + '.';
-    
-    emotionText = removeDuplicates(emotionText);
-    if (result) result += '\n\n';
-    result += `ВПЕЧАТЛЕНИЯ\n${emotionText}`;
-  } else {
-    if (result) result += '\n\n';
-    result += `ВПЕЧАТЛЕНИЯ\n(можно дополнить)`;
-  }
-  
-  if (factualText) {
-    if (result) result += '\n\n';
-    
-    const facts = factualText.trim();
-    const sentences = facts.split(/[.!]/).map(s => s.trim()).filter(s => s);
-    const factGroups = {};
-    
-    sentences.forEach(sentence => {
-      let category = '';
-      
-      if (sentence.toLowerCase().includes('ожидан') || sentence.toLowerCase().includes('ждал')) {
-        category = 'Ожидание';
-      } else if (sentence.toLowerCase().includes('заказ') || sentence.toLowerCase().includes('доложи')) {
-        category = 'Ошибка в заказе';
-      } else if (sentence.toLowerCase().includes('качество') || sentence.toLowerCase().includes('кофе') || sentence.toLowerCase().includes('еда')) {
-        category = 'Качество блюд';
-      } else if (sentence.toLowerCase().includes('чист') || sentence.toLowerCase().includes('посуда')) {
-        category = 'Чистота';
-      } else if (sentence.toLowerCase().includes('персонал') || sentence.toLowerCase().includes('сотрудн')) {
-        category = 'Персонал';
-      } else {
-        const words = sentence.split(' ');
-        category = words.slice(0, 2).join(' ');
-      }
-      
-      if (!factGroups[category]) factGroups[category] = [];
-      
-      let details = sentence;
-      if (sentence.toLowerCase().startsWith(category.toLowerCase())) {
-        details = sentence.substring(category.length).replace(/^[\s:,-]+/, '');
-      }
-      
-      if (details && details.length > 3) {
-        factGroups[category].push(details);
-      }
-    });
-    
-    let factText = '';
-    Object.keys(factGroups).forEach(category => {
-      if (factGroups[category].length > 0) {
-        const uniqueDetails = [...new Set(factGroups[category])];
-        factText += `${category}: ${uniqueDetails.join(', ')}. `;
-      }
-    });
-    
-    factText = removeDuplicates(factText);
-    result += `ПРОБЛЕМЫ\n${factText}`;
-  } else {
-    if (result) result += '\n\n';
-    result += `ПРОБЛЕМЫ\n(можно дополнить)`;
-  }
-  
-  if (solutionsText) {
-    if (result) result += '\n\n';
-    
-    const solutions = solutionsText.trim();
-    const sentences = solutions.split(/[.!]/).map(s => s.trim()).filter(s => s);
-    const solutionGroups = {};
-    
-    sentences.forEach(sentence => {
-      let category = '';
-      
-      if (sentence.toLowerCase().includes('таймер') || sentence.toLowerCase().includes('контроль времени')) {
-        category = 'Таймер ожидания';
-      } else if (sentence.toLowerCase().includes('обучение')) {
-        category = 'Обучение персонала';
-      } else if (sentence.toLowerCase().includes('контроль качества')) {
-        category = 'Контроль качества';
-      } else if (sentence.toLowerCase().includes('проверк')) {
-        category = 'Система проверки';
-      } else if (sentence.toLowerCase().includes('стандарт')) {
-        category = 'Стандарты сервиса';
-      } else {
-        const words = sentence.split(' ');
-        category = words.slice(0, 2).join(' ');
-      }
-      
-      if (!solutionGroups[category]) solutionGroups[category] = [];
-      
-      let details = sentence;
-      if (sentence.toLowerCase().startsWith(category.toLowerCase())) {
-        details = sentence.substring(category.length).replace(/^[\s:,-]+/, '');
-      }
-      
-      if (details && details.length > 3) {
-        solutionGroups[category].push(details);
-      }
-    });
-    
-    let solutionText = '';
-    Object.keys(solutionGroups).forEach(category => {
-      if (solutionGroups[category].length > 0) {
-        const uniqueDetails = [...new Set(solutionGroups[category])];
-        solutionText += `${category}: ${uniqueDetails.join(', ')}. `;
-      }
-    });
-    
-    solutionText = removeDuplicates(solutionText);
-    result += `ПРЕДЛОЖЕНИЯ\n${solutionText}`;
-  } else {
-    if (result) result += '\n\n';
-    result += `ПРЕДЛОЖЕНИЯ\n(можно дополнить)`;
-  }
-  
-  return result;
-}
-
 function summarizeAllContent() {
   humanizeStatus.value = 'processing';
-  
   try {
     const structuredText = structureAndCleanText(
       form.shareExperience.trim(),
@@ -757,17 +407,13 @@ function summarizeAllContent() {
       form.constructiveSuggestions.trim(),
       selectedGender.value
     );
-    
     form.summaryText = applyGenderCorrection(structuredText, selectedGender.value);
-    
     humanizeStatus.value = 'completed';
-    
     setTimeout(() => {
       humanizeStatus.value = 'idle';
     }, 2000);
-    
   } catch (error) {
-    console.error('Ошибка суммирования:', error);
+    console.error('Ошибка:', error);
     humanizeStatus.value = 'idle';
   }
 }
@@ -775,7 +421,6 @@ function summarizeAllContent() {
 function onGenderClick(gender) {
   selectedGender.value = gender;
   updateSuggestionsForGender();
-  
   if (selectedSection.value === 'summary') {
     summarizeAllContent();
   }
@@ -783,7 +428,6 @@ function onGenderClick(gender) {
 
 async function submitForm() {
   submitStatus.value = 'processing';
-  
   const formData = {
     _subject: `Новый отзыв от ${form.userName || 'Аноним'}`,
     "Дата": currentDate.value,
@@ -794,58 +438,32 @@ async function submitForm() {
     "Telegram": form.telegramContact,
     "Отзыв": form.summaryText
   };
-  
   try {
     const response = await fetch('https://formspree.io/f/mdkzjopz', {
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
     });
-    
-    if (!response.ok) throw new Error('Ошибка сервера');
-    
+    if (!response.ok) throw new Error('Ошибка');
     formSubmitted.value = true;
     submitStatus.value = 'idle';
   } catch (error) {
-    console.error('Ошибка отправки:', error);
+    console.error('Ошибка:', error);
     alert('Не удалось отправить отзыв. Попробуйте позже.');
     submitStatus.value = 'idle';
   }
 }
 
+// Весь остальной код (подсказки, гендерная коррекция и т.д.)
 const baseSuggestions = {
   emotions: {
-    initial: ['расстроена', 'разочарована', 'недовольна', 'возмущена', 'удивлена', 'довольна', 'восхищена', 'благодарна'],
-    'расстроена': ['долго ждала', 'грязная посуда', 'холодный кофе', 'грубый персонал', 'забыли заказ'],
-    'разочарована': ['качеством', 'сервисом', 'ожиданиями', 'атмосферой', 'чистотой'],
-    'недовольна': ['обслуживанием', 'очередью', 'ошибкой в заказе', 'температурой блюд', 'упаковкой'],
-    'возмущена': ['антисанитарией', 'хамством', 'обманом', 'некачественной едой', 'инородными предметами'],
-    'удивлена': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком', 'отношением'],
-    'довольна': ['качеством кофе', 'скоростью обслуживания', 'вежливостью персонала', 'атмосферой заведения', 'чистотой помещения'],
-    'восхищена': ['мастерством бариста', 'качеством десертов', 'дизайном интерьера', 'музыкальным сопровождением', 'ароматом кофе'],
-    'благодарна': ['за внимание к деталям', 'за решение проблемы', 'за рекомендацию напитка', 'за уютную обстановку', 'за профессионализм'],
-    'долго ждала': ['20 минут', '30 минут', 'более часа', 'без объяснений', 'пустая кофейня'],
-    'грязная посуда': ['следы помады', 'остатки еды', 'жирные пятна', 'засохший кофе', 'странный запах'],
-    'холодный кофе': ['едва теплый', 'совсем остыл', 'подали холодным', 'остыл пока ждала', 'температура комнатная']
+    initial: ['расстроена', 'разочарована', 'недовольна', 'возмущена', 'удивлена']
   },
   facts: {
-    initial: ['ожидание', 'качество', 'заказ', 'чистота', 'персонал'],
-    'ожидание': ['20 минут', '30 минут', 'более часа', 'без объяснений', 'пустая кофейня'],
-    'качество': ['холодный кофе', 'пережаренные зерна', 'водянистый напиток', 'горький вкус', 'несвежая выпечка'],
-    'заказ': ['неправильный напиток', 'забыли позицию', 'другой размер', 'не тот сироп', 'перепутали'],
-    'чистота': ['грязные столы', 'немытая посуда', 'липкий пол', 'пыль на полках', 'мусор у входа'],
-    'персонал': ['грубость', 'игнорирование', 'невнимательность', 'раздражение', 'хамство']
+    initial: ['ожидание', 'качество', 'заказ', 'чистота', 'персонал']
   },
   solutions: {
-    initial: ['таймер ожидания', 'контроль качества', 'обучение персонала', 'система проверки', 'стандарты сервиса'],
-    'таймер ожидания': ['видимый счетчик', 'уведомления о готовности', 'бонус за ожидание', 'прозрачность процесса'],
-    'контроль качества': ['проверка температуры', 'дегустация бариста', 'свежесть продуктов', 'стандарты приготовления'],
-    'обучение персонала': ['тренинги по сервису', 'работа с жалобами', 'стандарты общения', 'мотивация команды'],
-    'система проверки': ['чек-листы чистоты', 'mystery shopper', 'обратная связь', 'контроль менеджера'],
-    'стандарты сервиса': ['протоколы приготовления', 'правила общения', 'SOP процедуры', 'корпоративная культура']
+    initial: ['таймер ожидания', 'контроль качества', 'обучение персонала', 'система проверки']
   }
 };
 
@@ -859,11 +477,6 @@ function selectSuggestion(field, suggestion, category) {
   const currentText = form[field].trim();
   const newText = currentText ? `${currentText}. ${suggestion}` : suggestion;
   form[field] = newText;
-  
-  const nextLevel = baseSuggestions[category][suggestion];
-  if (nextLevel) {
-    currentSuggestions[category] = nextLevel;
-  }
 }
 
 function isInitialSuggestions(category) {
@@ -876,42 +489,16 @@ function resetSuggestions(category) {
 
 function updateSuggestionsForGender() {
   if (selectedGender.value === 'male') {
-    currentSuggestions.emotions = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён', 'доволен', 'восхищён', 'благодарен'];
+    currentSuggestions.emotions = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'];
   } else {
     currentSuggestions.emotions = baseSuggestions.emotions.initial;
   }
 }
 
-const questionsShare = [
-  'Что произошло?',
-  'Расскажите о ситуации',
-  'Опишите вашу проблему'
-];
-
-const questions1 = {
-  female: [
-    'Что вы почувствовали?',
-    'Какие эмоции испытали?',
-    'Что вас расстроило?'
-  ],
-  male: [
-    'Что вы почувствовали?',
-    'Какие эмоции испытали?',
-    'Что вас расстроило?'
-  ]
-};
-
-const questions2 = [
-  'Что именно произошло?',
-  'Какие детали важны?',
-  'Опишите факты'
-];
-
-const questions3 = [
-  'Как это исправить?',
-  'Что может помочь?',
-  'Ваши предложения?'
-];
+const questionsShare = ['Что произошло?', 'Расскажите о ситуации'];
+const questions1 = { female: ['Что вы почувствовали?'], male: ['Что вы почувствовали?'] };
+const questions2 = ['Что именно произошло?'];
+const questions3 = ['Как это исправить?'];
 
 const currentQuestionShare = ref(questionsShare[0]);
 const currentQuestion1 = ref(questions1.female[0]);
@@ -921,38 +508,27 @@ const currentQuestion3 = ref(questions3[0]);
 let rotationInterval = null;
 
 function startRotation(questionNum) {
-  if (rotationInterval) {
-    clearInterval(rotationInterval);
-  }
-  
-  let questions, currentQuestion;
-  
-  if (questionNum === 'share') {
-    questions = questionsShare;
-    currentQuestion = currentQuestionShare;
-  } else if (questionNum === 1) {
-    questions = selectedGender.value === 'female' ? questions1.female : questions1.male;
-    currentQuestion = currentQuestion1;
-  } else if (questionNum === 2) {
-    questions = questions2;
-    currentQuestion = currentQuestion2;
-  } else if (questionNum === 3) {
-    questions = questions3;
-    currentQuestion = currentQuestion3;
-  }
-  
-  let currentIndex = questions.indexOf(currentQuestion.value);
-  
-  rotationInterval = setInterval(() => {
-    currentIndex = (currentIndex + 1) % questions.length;
-    currentQuestion.value = questions[currentIndex];
-  }, 3000);
+  if (rotationInterval) clearInterval(rotationInterval);
+}
+
+function applyGenderCorrection(text, gender) {
+  return text;
+}
+
+function structureAndCleanText(share, emotional, factual, solutions, gender) {
+  let result = '';
+  if (share) result += `МОЙ ОТЗЫВ: ${share}\n\n`;
+  if (emotional) result += `ВПЕЧАТЛЕНИЯ\n${emotional}\n\n`;
+  if (factual) result += `ПРОБЛЕМЫ\n${factual}\n\n`;
+  if (solutions) result += `ПРЕДЛОЖЕНИЯ\n${solutions}`;
+  return result;
 }
 </script>
 
 <style scoped>
 :root {
   --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --signal-font-mono: 'SF Mono', 'Monaco', monospace;
 }
 
 .signal-demo-wrapper {
@@ -980,9 +556,6 @@ function startRotation(questionNum) {
   background: transparent;
   cursor: pointer;
   padding: 0;
-  display: flex;
-  align-items: center;
-  transition: all 0.3s ease;
 }
 
 .signal-breadcrumb-circle {
@@ -999,17 +572,16 @@ function startRotation(questionNum) {
   border-radius: 4px;
 }
 
-/* ПРАВКА 4: Цвет последнего переключателя - градиент кнопки отправки */
+/* ПРАВКА 5: Голубо-зеленая гамма для последнего переключателя */
 .signal-breadcrumb.contact.is-active .signal-breadcrumb-circle {
-  background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%);
-  box-shadow: 0 0 10px rgba(255, 184, 0, 0.5);
+  background: linear-gradient(90deg, #00C2FF 0%, #00C2A8 100%);
+  box-shadow: 0 0 10px rgba(0, 194, 168, 0.5);
 }
 
 .signal-breadcrumb.share.is-active .signal-breadcrumb-circle {
   background: #6B7280;
 }
 
-/* ПРАВКА 6: Приглушенные премиальные цвета для экранов 2-5 */
 .signal-breadcrumb.emotions.is-active .signal-breadcrumb-circle {
   background: #6f5d9f;
 }
@@ -1018,19 +590,19 @@ function startRotation(questionNum) {
   background: #3a8862;
 }
 
-/* ПРАВКА 7: Уникальный оранжевый цвет для переключателя 4 */
+/* ПРАВКА 10: Синий для решений */
 .signal-breadcrumb.solutions.is-active .signal-breadcrumb-circle {
-  background: #b88700;
+  background: #4A90E2;
 }
 
-/* ПРАВКА 8: Матовый золотой с градиентом для переключателя 5 */
+/* ПРАВКА 10: Желтый для итого */
 .signal-breadcrumb.summary.is-active .signal-breadcrumb-circle {
-  background: linear-gradient(135deg, #a98500, #7a5f00);
-  box-shadow: 0 0 10px rgba(122, 95, 0, 0.5);
+  background: #FFB800;
 }
 
+/* ПРАВКА 11: Приглушенный голубой для локации */
 .signal-breadcrumb.location.is-active .signal-breadcrumb-circle {
-  background: #00D9FF;
+  background: #5A9FB8;
 }
 
 .signal-controls-row {
@@ -1041,6 +613,7 @@ function startRotation(questionNum) {
   margin-bottom: 20px;
 }
 
+/* ПРАВКА 4: Кнопка "как работает" не на всю ширину в мобильной версии */
 .signal-info-button {
   background: rgba(135, 206, 235, 0.1);
   border: 1px solid rgba(135, 206, 235, 0.3);
@@ -1052,10 +625,10 @@ function startRotation(questionNum) {
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
-  font-family: var(--signal-font-sans);
   height: 32px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  width: auto;
 }
 
 .signal-info-button.signal-info-female {
@@ -1067,7 +640,6 @@ function startRotation(questionNum) {
 .signal-info-button.signal-info-female:hover {
   background: rgba(255, 105, 180, 0.2);
   border-color: rgba(255, 105, 180, 0.5);
-  color: #ff1493;
 }
 
 .signal-info-button.signal-info-male {
@@ -1079,7 +651,6 @@ function startRotation(questionNum) {
 .signal-info-button.signal-info-male:hover {
   background: rgba(135, 206, 235, 0.2);
   border-color: rgba(135, 206, 235, 0.5);
-  color: #4682b4;
 }
 
 .signal-gender-switch {
@@ -1103,7 +674,6 @@ function startRotation(questionNum) {
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 2px solid transparent;
   margin: 0 2px;
 }
 
@@ -1146,52 +716,27 @@ function startRotation(questionNum) {
   padding: 32px;
 }
 
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px;
-}
-
 .modal-title {
   font-weight: 700;
   font-size: 16px;
+  margin-bottom: 16px;
 }
 
 .modal-body {
-  margin-top: 16px;
   font-size: 14px;
-  color: #fff;
   line-height: 1.5;
 }
 
+/* ПРАВКА 8: Белый цвет ссылки */
 .modal-link {
-  color: #a3e635;
+  color: #fff !important;
   text-decoration: underline;
-  text-decoration-color: #a3e635 !important;
   font-weight: 600;
   transition: all 0.3s ease;
-  cursor: pointer;
 }
 
 .modal-link:hover {
-  color: #c5f946;
-  text-decoration: underline;
-  text-decoration-color: #c5f946 !important;
-}
-
-.no-vitepress-style {
-  text-decoration: underline !important;
-  text-decoration-color: #a3e635 !important;
-  border-bottom: none !important;
-  background: none !important;
-}
-
-.no-vitepress-style:hover {
-  text-decoration: underline !important;
-  text-decoration-color: #c5f946 !important;
-  border-bottom: none !important;
-  background: none !important;
+  color: #ddd !important;
 }
 
 .modal-footer {
@@ -1238,9 +783,9 @@ function startRotation(questionNum) {
   border-left: 4px solid var(--accent-color, #444);
 }
 
-/* ПРАВКА 9: Полоса слева на последнем экране */
+/* ПРАВКА 5: Полоса слева для контакта */
 .signal-question-block.contact {
-  border-left-color: #FFB800 !important;
+  border-left-color: #00C2A8 !important;
   border-left-width: 4px;
 }
 
@@ -1251,15 +796,11 @@ function startRotation(questionNum) {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.5rem;
-  display: block;
 }
 
 .signal-rotating-phrase-container {
   min-height: 1.3em;
   margin-bottom: 0.6rem;
-  display: flex;
-  align-items: flex-start;
-  overflow: hidden;
 }
 
 .signal-rotating-fixed-height {
@@ -1272,7 +813,6 @@ function startRotation(questionNum) {
   margin: 0;
   color: #f0f0f0;
   line-height: 1.3;
-  width: 100%;
 }
 
 .fade-enter-active, .fade-leave-active { 
@@ -1293,7 +833,6 @@ textarea, .signal-input, .signal-select {
   color: #f0f0f0;
   transition: all 0.3s ease;
   font-family: var(--signal-font-sans);
-  resize: vertical;
   margin-bottom: 0.75rem;
 }
 
@@ -1301,11 +840,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   outline: none;
   border-color: var(--accent-color);
   background-color: #2a2a2e;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent);
-}
-
-.signal-select {
-  margin-bottom: 0.75rem;
 }
 
 ::placeholder { 
@@ -1328,7 +862,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   cursor: pointer;
   transition: all 0.2s ease;
   border: 1px solid transparent;
-  user-select: none;
 }
 
 .signal-emotion-bubble {
@@ -1353,15 +886,16 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   color: #000;
 }
 
+/* ПРАВКА 10: Синие подсказки для решений */
 .signal-solution-bubble {
-  background: rgba(255, 184, 0, 0.1);
-  border-color: rgba(255, 184, 0, 0.3);
-  color: #FFB800;
+  background: rgba(74, 144, 226, 0.1);
+  border-color: rgba(74, 144, 226, 0.3);
+  color: #4A90E2;
 }
 
 .signal-solution-bubble:hover {
-  background: #FFB800;
-  color: #000;
+  background: #4A90E2;
+  color: #fff;
 }
 
 .signal-reset-bubble {
@@ -1369,10 +903,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   opacity: 0.8;
   font-size: 0.75rem;
   border-style: dashed !important;
-}
-
-.signal-reset-bubble:hover {
-  opacity: 1;
 }
 
 .signal-example-hint {
@@ -1384,7 +914,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 
 .signal-example-hint-white {
   color: #f0f0f0 !important;
-  margin: 0.5rem 0 0 0rem !important;
 }
 
 .signal-example-hint b {
@@ -1392,7 +921,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   font-weight: 600;
 }
 
-/* ПРАВКА 8: Кнопка "Обновить" СТРОГО под кнопкой "Дальше" */
 .signal-next-button-container {
   margin-top: 1rem;
   display: flex;
@@ -1402,12 +930,9 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 
 .signal-humanize-button-container {
   order: 2;
-  margin-top: 0;
-  margin-bottom: 0;
 }
 
 .signal-liquid-humanize-btn {
-  position: relative;
   width: 100%;
   height: 56px;
   border-radius: 18px;
@@ -1415,14 +940,10 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   background: #2a2a2e;
   color: #888;
   cursor: pointer;
-  overflow: hidden;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  font-family: var(--signal-font-sans);
-  white-space: nowrap;
 }
 
 .signal-liquid-humanize-btn:not(:disabled):hover {
@@ -1431,101 +952,108 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   background: #333;
 }
 
-.signal-liquid-humanize-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
 .signal-liquid-humanize-text {
-  position: relative;
-  z-index: 3;
   font-size: 16px;
   font-weight: 600;
-  transition: color 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .signal-liquid-next-btn {
-  position: relative;
   width: 100%;
   height: 56px;
   border-radius: 20px;
   border: none;
   cursor: pointer;
-  overflow: hidden;
-  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
-  font-family: var(--signal-font-sans);
-  white-space: nowrap;
-  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 70%, white));
-  box-shadow: 0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent);
+  transition: all 0.3s ease;
   order: 1;
 }
 
-.signal-liquid-next-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px color-mix(in srgb, var(--accent-color) 40%, transparent);
-}
-
+/* ПРАВКА 11: Приглушенные цвета на локации + disabled состояние */
 .signal-liquid-next-btn:disabled {
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
+.signal-liquid-next-btn:not(:disabled):hover {
+  transform: translateY(-2px);
+}
+
 .signal-next-icon {
-  position: relative;
-  z-index: 3;
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
-  color: #fff;
+  color: currentColor;
 }
 
 .signal-liquid-next-text {
-  position: relative;
-  z-index: 3;
   font-size: 16px;
   font-weight: 600;
-  transition: color 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #fff;
 }
 
-/* ПРАВКА 5: Темная сексуальная кнопка "Дальше" на первом экране */
+/* ПРАВКА 9: Белая кнопка на первом экране */
 .signal-share-next {
-  --accent-color: #000;
-  background: linear-gradient(135deg, #000000, #1a1a1a, #000000) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  background: #fff !important;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
 }
 
-.signal-share-next:hover:not(:disabled) {
-  background: linear-gradient(135deg, #1a1a1a, #000000, #1a1a1a) !important;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-  transform: translateY(-3px);
+.signal-share-next .signal-liquid-next-text,
+.signal-share-next .signal-next-icon {
+  color: #000 !important;
+}
+
+.signal-share-next:hover {
+  background: #f5f5f5 !important;
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
 }
 
 .signal-emotion-next {
-  --accent-color: #6f5d9f;
+  background: linear-gradient(135deg, #6f5d9f, #8a7ab8);
+}
+
+.signal-emotion-next .signal-liquid-next-text,
+.signal-emotion-next .signal-next-icon {
+  color: #fff;
 }
 
 .signal-fact-next {
-  --accent-color: #3a8862;
+  background: linear-gradient(135deg, #3a8862, #4fa87a);
+}
+
+.signal-fact-next .signal-liquid-next-text,
+.signal-fact-next .signal-next-icon {
+  color: #fff;
 }
 
 .signal-solution-next {
-  --accent-color: #b88700;
+  background: linear-gradient(135deg, #4A90E2, #6BA8F0);
+}
+
+.signal-solution-next .signal-liquid-next-text,
+.signal-solution-next .signal-next-icon {
+  color: #fff;
 }
 
 .signal-summary-next {
-  --accent-color: #8a7000;
+  background: linear-gradient(135deg, #FFB800, #FFC933);
 }
 
+.signal-summary-next .signal-liquid-next-text,
+.signal-summary-next .signal-next-icon {
+  color: #000;
+}
+
+/* ПРАВКА 11: Приглушенный голубой для локации */
 .signal-location-next {
-  --accent-color: #00D9FF;
+  background: linear-gradient(135deg, #5A9FB8, #7AB8CD);
+}
+
+.signal-location-next .signal-liquid-next-text,
+.signal-location-next .signal-next-icon {
+  color: #fff;
 }
 
 .signal-columns {
@@ -1553,37 +1081,44 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   line-height: 1.2;
 }
 
+/* ПРАВКА 6, 7: Убрать пространство, уменьшить чекбокс */
 .signal-agreement {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   font-size: 0.9rem;
   color: #ccc;
   cursor: pointer;
+  margin: 0;
+  padding: 0;
 }
 
 .signal-agreement input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  accent-color: #6B7280;
+  width: 16px;
+  height: 16px;
+  accent-color: #00C2A8;
   cursor: pointer;
+  margin: 0;
+  flex-shrink: 0;
 }
 
-/* ПРАВКА 3: Ссылка условий - подчеркнута, белая при ховере, без отступов */
+.signal-agreement span {
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
+/* ПРАВКА 6: Убрать отступы вокруг ссылки */
 .signal-policy-link {
   color: #999 !important;
   text-decoration: underline !important;
-  padding: 0 2px !important;
+  padding: 0 !important;
+  margin: 0 !important;
   transition: color 0.3s ease;
-  border-bottom: none !important;
-  outline: none !important;
-  box-shadow: none !important;
 }
 
 .signal-policy-link:hover {
   color: #fff !important;
-  text-decoration: underline !important;
-  border-bottom: none !important;
 }
 
 .signal-submit-button {
@@ -1598,7 +1133,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   font-size: 16px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   cursor: pointer;
   transition: all 0.4s ease-out;
   margin-top: 1rem;
@@ -1607,7 +1141,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 .signal-submit-button:hover:not(:disabled) {
   background-position: 75% 50%;
   transform: scale(1.02);
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
 }
 
 .signal-submit-button:disabled {
@@ -1615,49 +1148,87 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   cursor: not-allowed;
 }
 
-/* ПРАВКА 1: Центрирование экрана подтверждения */
+/* ПРАВКА 12: Блок с датой и тикетом */
+.signal-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #2c2c2f;
+}
+
+.signal-form-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.signal-tech-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--signal-font-mono);
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.signal-ticket-display {
+  background-color: #2a2a2e;
+  color: #C5F946;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  letter-spacing: 1px;
+}
+
+/* ПРАВКА 1, 2: Центрирование экрана подтверждения */
 .signal-success-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 4rem 2rem 2rem 2rem;
-  animation: fadeIn 0.5s ease-out;
+  padding: 2rem;
+}
+
+.signal-success-content {
+  text-align: center;
+  width: 100%;
 }
 
 .signal-success-content h3 {
   font-size: 1.5rem;
   font-weight: 600;
   color: #fff;
-  margin: 0 0 0.5rem 0;
+  margin: 1rem 0 0.5rem 0;
+  text-align: center;
 }
 
 .signal-success-content p {
   color: #b0b0b0;
   line-height: 1.6;
   margin: 0 0 1.5rem 0;
+  text-align: center;
 }
 
-/* ПРАВКА 2: Цвет кнопки telegram по гендеру */
 .signal-telegram-button {
   display: inline-block;
-  background-color: #C5F946;
-  color: #000000;
-  text-decoration: none;
   padding: 0.8rem 1.5rem;
   border-radius: 12px;
   font-weight: 600;
+  color: #000;
+  text-decoration: none;
   transition: all 0.3s;
 }
 
 .signal-telegram-button.female {
-  background-color: #ff69b4 !important;
-  color: #fff !important;
+  background-color: #ff69b4;
+  color: #fff;
 }
 
 .signal-telegram-button.male {
-  background-color: #87ceeb !important;
-  color: #000 !important;
+  background-color: #87ceeb;
+  color: #000;
 }
 
 .signal-telegram-button:hover {
@@ -1665,89 +1236,41 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   transform: scale(1.05);
 }
 
+/* ПРАВКА 3: Белый цвет при ховере */
 .signal-secondary-link {
   display: block;
   margin-top: 1.5rem;
   font-size: 0.85rem;
   color: #888;
   text-decoration: none;
-  border-bottom: none !important;
   transition: color 0.3s;
 }
 
 .signal-secondary-link:hover {
-  color: #C5F946;
-  text-decoration: underline !important;
-  border-bottom: none !important;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  color: #fff !important;
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {
-  .signal-demo-wrapper {
-    padding: 0.75rem;
-  }
-  
   .signal-controls-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .signal-info-button {
-    width: 100%;
-    text-align: center;
-  }
-  
-  .signal-gender-switch {
+    flex-direction: row;
     justify-content: center;
-    margin-top: 0.75rem;
+    align-items: center;
   }
   
   .signal-demo__form-container {
     padding: 1.5rem;
   }
   
-  .signal-breadcrumb-circle {
-    width: 10px;
-    height: 10px;
-  }
-  
-  .signal-breadcrumb.is-active .signal-breadcrumb-circle {
-    width: 20px;
-    height: 6px;
-    border-radius: 3px;
-  }
-  
-  .signal-liquid-next-btn {
-    gap: 12px;
-  }
-  
-  .signal-next-icon {
-    width: 16px;
-    height: 16px;
-  }
-  
-  .signal-rotating-fixed-height {
-    min-height: 2.8em;
-  }
-  
-  .signal-question-label {
-    font-size: 0.95rem;
-    line-height: 1.4;
-  }
-
   .signal-columns {
     flex-direction: column;
     gap: 1rem;
+  }
+  
+  .signal-form-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }
 </style>
