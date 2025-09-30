@@ -49,8 +49,8 @@
         <div class="modal-title">Ваши отзывы меняют всё.</div>
         <div class="modal-body">
           Каждый отзыв делает любимую кофейню еще лучше, а Сигнал помогает решить Вашу проблему за 24 часа. Почувствуйте силу настоящих перемен.<br><br>
-          <!-- ПРАВКА 8: Белый цвет ссылки -->
-          <a href="https://cffx.ru/signals.html" target="_blank" class="modal-link">Как Работает Сигнал</a>
+          <!-- ПРАВКА 4: Убрать двойное подчеркивание -->
+          <a href="https://cffx.ru/signals.html" target="_blank" class="modal-link no-double-underline">Как Работает Сигнал</a>
         </div>
         <div class="modal-footer">
           <button class="modal-ok" @click="showInfoModal = false">Понятно</button>
@@ -62,7 +62,8 @@
     <div class="signal-demo__form-container">
       <!-- Секция 1: Поделитесь -->
       <div v-if="selectedSection === 'share'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #6B7280;">
+        <!-- ПРАВКА 1: Белая полоска и переключатель -->
+        <div class="signal-question-block share-block" style="--accent-color: #fff;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestionShare" class="signal-question-label">{{ currentQuestionShare }}</p>
@@ -146,7 +147,7 @@
         </div>
       </div>
 
-      <!-- ПРАВКА 10: Секция 4: Решение - синий цвет -->
+      <!-- Секция 4: Решение -->
       <div v-if="selectedSection === 'solutions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #4A90E2;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
@@ -180,7 +181,7 @@
         </div>
       </div>
 
-      <!-- ПРАВКА 10: Секция 5: Итого - желтый цвет (был синий) -->
+      <!-- Секция 5: Итого -->
       <div v-if="selectedSection === 'summary'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #FFB800;">
           <p class="signal-direction-label">Умный отзыв</p>
@@ -196,7 +197,7 @@
         </div>
       </div>
 
-      <!-- ПРАВКА 11: Секция 6: Локация - приглушенный голубой + активность кнопки -->
+      <!-- ПРАВКА 3: Секция 6: Локация - полный список -->
       <div v-if="selectedSection === 'location'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #5A9FB8;">
           <p class="signal-direction-label">Выбрать локацию</p>
@@ -216,26 +217,23 @@
         </div>
       </div>
 
-      <!-- ПРАВКА 5: Секция 7: Контакт - голубо-зеленая гамма -->
+      <!-- Секция 7: Контакт -->
       <div v-if="selectedSection === 'contact'" class="signal-form-section">
-        <!-- ПРАВКА 12: Экран подтверждения с датой и тикетом -->
+        <!-- ПРАВКА 5, 6, 7: Экран подтверждения -->
         <div v-if="formSubmitted" class="signal-success-screen">
-          <!-- Блок с датой и тикетом -->
-          <div class="signal-form-header">
-            <div class="signal-form-title">Отзыв отправлен</div>
-            <div class="signal-tech-info">
-              <span class="signal-info-item">{{ currentDate }}</span>
-              <span class="signal-info-item signal-ticket-display">{{ formattedTicketNumber }}</span>
-            </div>
-          </div>
-          
-          <!-- ПРАВКА 1, 2: Центрированный текст -->
           <div class="signal-success-content">
-            <h3>Все готово!</h3>
+            <h3>Отзыв отправлен</h3>
+            <!-- ПРАВКА 7: Дата и тикет на отдельной строке, белый цвет -->
+            <div class="signal-success-ticket-info">
+              <span class="signal-success-date">{{ currentDate }}</span>
+              <span class="signal-success-ticket">{{ formattedTicketNumber }}</span>
+            </div>
+            
+            <h2>Все готово!</h2>
             <p>Нажмите на кнопку ниже, чтобы отправить ваш тикет ассистенту Анне и получить результат вашего запроса.</p>
-            <a v-if="form.telegramContact" :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Активировать Сигнал в Telegram</a>
-            <!-- ПРАВКА 3: Белый цвет при ховере -->
-            <a v-if="form.telegramContact" href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link">Кто Анна и как работает</a>
+            <!-- ПРАВКА 5: Всегда показывать кнопку и ссылку -->
+            <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Активировать Сигнал в Telegram</a>
+            <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">Кто Анна и как работает</a>
           </div>
         </div>
 
@@ -255,10 +253,10 @@
               <p class="signal-input-hint">Чтобы получать обновления и видеть результат.</p>
             </div>
           </div>
-          <!-- ПРАВКА 6, 7: Убрать пространство вокруг ссылки, уменьшить чекбокс -->
+          <!-- ПРАВКА 4: Убрать двойное подчеркивание -->
           <label class="signal-agreement">
             <input type="checkbox" v-model="form.agreedToTerms" />
-            <span>С <a href="/terms" target="_blank" class="signal-policy-link">Условиями использования</a> согласен/на</span>
+            <span>С <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a> согласен/на</span>
           </label>
         </div>
 
@@ -271,7 +269,6 @@
 
       <!-- Кнопки навигации -->
       <div v-if="selectedSection !== 'contact'" class="signal-next-button-container">
-        <!-- ПРАВКА 9, 11: Белая кнопка на первом экране, активность на локации -->
         <button 
           class="signal-liquid-next-btn"
           :class="[
@@ -329,6 +326,7 @@ const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
 const currentDate = ref('');
 
+// ПРАВКА 3: Полный список кофеен и адресов
 const cafes = {
   'Корж': {
     branches: [
@@ -344,9 +342,54 @@ const cafes = {
   },
   'MOSAIC': {
     branches: [
-      { address: 'Бывшая гостиница "Националь" ' },
+      { address: 'Бывшая гостиница "Националь"' },
       { address: 'Волжский просп., 50' },
-      { address: 'Речной вокзал' }
+      { address: 'Речной вокзал' },
+      { address: 'Максима Горького, 82' },
+      { address: 'Волжский просп., 40' },
+      { address: 'ЖК Ботанический' },
+      { address: 'ТЦ Аквариум' },
+      { address: 'ТЦ Аврора' },
+      { address: 'ТЦ Самолет' },
+      { address: 'Волгина, 127А' },
+      { address: 'БЦ ЗИМ' },
+      { address: '5-я просека' },
+      { address: 'Красноармейский спуск' },
+      { address: 'Напротив ЦСКА' }
+    ]
+  },
+  'Skuratov': {
+    branches: [
+      { address: 'Самарская, 190' },
+      { address: 'Молодогвардейская, 80' },
+      { address: 'Максима Горького, 129' },
+      { address: 'Красноармейская, 133' },
+      { address: 'Первомайская, 29' },
+      { address: 'Куйбышева, 68/70' }
+    ]
+  },
+  'Surf': {
+    branches: [
+      { address: 'Некрасовская, 57' },
+      { address: 'Полевая, 54' },
+      { address: 'Куйбышева, 100' }
+    ]
+  },
+  'Белотурка': {
+    branches: [
+      { address: 'Куйбышева, 99' },
+      { address: 'Молодогвардейская, 153' },
+      { address: 'Ново-Садовая, 106' },
+      { address: 'Московское шоссе, 41 (РДЦ)' },
+      { address: 'Московское шоссе, 81Б (Парк Хаус)' }
+    ]
+  },
+  'Кэрри': {
+    branches: [
+      { address: 'Ново-Садовая ул., 160М' },
+      { address: 'Московское шоссе, 252' },
+      { address: 'Дачная ул., 2, корп. 1' },
+      { address: 'Дыбенко, 30 (Космопорт)' }
     ]
   }
 };
@@ -454,7 +497,6 @@ async function submitForm() {
   }
 }
 
-// Весь остальной код (подсказки, гендерная коррекция и т.д.)
 const baseSuggestions = {
   emotions: {
     initial: ['расстроена', 'разочарована', 'недовольна', 'возмущена', 'удивлена']
@@ -495,10 +537,14 @@ function updateSuggestionsForGender() {
   }
 }
 
-const questionsShare = ['Что произошло?', 'Расскажите о ситуации'];
-const questions1 = { female: ['Что вы почувствовали?'], male: ['Что вы почувствовали?'] };
-const questions2 = ['Что именно произошло?'];
-const questions3 = ['Как это исправить?'];
+// ПРАВКА 2: Ротатор вопросов
+const questionsShare = ['Что произошло?', 'Расскажите о ситуации', 'Опишите вашу проблему'];
+const questions1 = { 
+  female: ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что вас расстроило?'],
+  male: ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что вас расстроило?']
+};
+const questions2 = ['Что именно произошло?', 'Какие детали важны?', 'Опишите факты'];
+const questions3 = ['Как это исправить?', 'Что может помочь?', 'Ваши предложения?'];
 
 const currentQuestionShare = ref(questionsShare[0]);
 const currentQuestion1 = ref(questions1.female[0]);
@@ -509,6 +555,29 @@ let rotationInterval = null;
 
 function startRotation(questionNum) {
   if (rotationInterval) clearInterval(rotationInterval);
+  
+  let questions, currentQuestion;
+  
+  if (questionNum === 'share') {
+    questions = questionsShare;
+    currentQuestion = currentQuestionShare;
+  } else if (questionNum === 1) {
+    questions = selectedGender.value === 'female' ? questions1.female : questions1.male;
+    currentQuestion = currentQuestion1;
+  } else if (questionNum === 2) {
+    questions = questions2;
+    currentQuestion = currentQuestion2;
+  } else if (questionNum === 3) {
+    questions = questions3;
+    currentQuestion = currentQuestion3;
+  }
+  
+  let currentIndex = questions.indexOf(currentQuestion.value);
+  
+  rotationInterval = setInterval(() => {
+    currentIndex = (currentIndex + 1) % questions.length;
+    currentQuestion.value = questions[currentIndex];
+  }, 3000);
 }
 
 function applyGenderCorrection(text, gender) {
@@ -523,6 +592,10 @@ function structureAndCleanText(share, emotional, factual, solutions, gender) {
   if (solutions) result += `ПРЕДЛОЖЕНИЯ\n${solutions}`;
   return result;
 }
+
+onUnmounted(() => {
+  if (rotationInterval) clearInterval(rotationInterval);
+});
 </script>
 
 <style scoped>
@@ -572,14 +645,15 @@ function structureAndCleanText(share, emotional, factual, solutions, gender) {
   border-radius: 4px;
 }
 
-/* ПРАВКА 5: Голубо-зеленая гамма для последнего переключателя */
 .signal-breadcrumb.contact.is-active .signal-breadcrumb-circle {
   background: linear-gradient(90deg, #00C2FF 0%, #00C2A8 100%);
   box-shadow: 0 0 10px rgba(0, 194, 168, 0.5);
 }
 
+/* ПРАВКА 1: Белый переключатель на первом экране */
 .signal-breadcrumb.share.is-active .signal-breadcrumb-circle {
-  background: #6B7280;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .signal-breadcrumb.emotions.is-active .signal-breadcrumb-circle {
@@ -590,17 +664,14 @@ function structureAndCleanText(share, emotional, factual, solutions, gender) {
   background: #3a8862;
 }
 
-/* ПРАВКА 10: Синий для решений */
 .signal-breadcrumb.solutions.is-active .signal-breadcrumb-circle {
   background: #4A90E2;
 }
 
-/* ПРАВКА 10: Желтый для итого */
 .signal-breadcrumb.summary.is-active .signal-breadcrumb-circle {
   background: #FFB800;
 }
 
-/* ПРАВКА 11: Приглушенный голубой для локации */
 .signal-breadcrumb.location.is-active .signal-breadcrumb-circle {
   background: #5A9FB8;
 }
@@ -613,7 +684,6 @@ function structureAndCleanText(share, emotional, factual, solutions, gender) {
   margin-bottom: 20px;
 }
 
-/* ПРАВКА 4: Кнопка "как работает" не на всю ширину в мобильной версии */
 .signal-info-button {
   background: rgba(135, 206, 235, 0.1);
   border: 1px solid rgba(135, 206, 235, 0.3);
@@ -727,16 +797,25 @@ function structureAndCleanText(share, emotional, factual, solutions, gender) {
   line-height: 1.5;
 }
 
-/* ПРАВКА 8: Белый цвет ссылки */
 .modal-link {
   color: #fff !important;
-  text-decoration: underline;
   font-weight: 600;
   transition: all 0.3s ease;
 }
 
 .modal-link:hover {
   color: #ddd !important;
+}
+
+/* ПРАВКА 4: Убрать двойное подчеркивание */
+.no-double-underline {
+  text-decoration: none !important;
+  border-bottom: 1px solid currentColor !important;
+  padding-bottom: 1px !important;
+}
+
+.no-double-underline:hover {
+  border-bottom: 1px solid currentColor !important;
 }
 
 .modal-footer {
@@ -783,7 +862,6 @@ function structureAndCleanText(share, emotional, factual, solutions, gender) {
   border-left: 4px solid var(--accent-color, #444);
 }
 
-/* ПРАВКА 5: Полоса слева для контакта */
 .signal-question-block.contact {
   border-left-color: #00C2A8 !important;
   border-left-width: 4px;
@@ -886,7 +964,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   color: #000;
 }
 
-/* ПРАВКА 10: Синие подсказки для решений */
 .signal-solution-bubble {
   background: rgba(74, 144, 226, 0.1);
   border-color: rgba(74, 144, 226, 0.3);
@@ -973,7 +1050,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   order: 1;
 }
 
-/* ПРАВКА 11: Приглушенные цвета на локации + disabled состояние */
 .signal-liquid-next-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
@@ -983,10 +1059,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   transform: translateY(-2px);
 }
 
-.signal-next-icon {
-  color: currentColor;
-}
-
 .signal-liquid-next-text {
   font-size: 16px;
   font-weight: 600;
@@ -994,7 +1066,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   letter-spacing: 0.05em;
 }
 
-/* ПРАВКА 9: Белая кнопка на первом экране */
 .signal-share-next {
   background: #fff !important;
   box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
@@ -1046,7 +1117,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   color: #000;
 }
 
-/* ПРАВКА 11: Приглушенный голубой для локации */
 .signal-location-next {
   background: linear-gradient(135deg, #5A9FB8, #7AB8CD);
 }
@@ -1081,7 +1151,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   line-height: 1.2;
 }
 
-/* ПРАВКА 6, 7: Убрать пространство, уменьшить чекбокс */
 .signal-agreement {
   display: flex;
   align-items: center;
@@ -1108,10 +1177,8 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   line-height: 1.4;
 }
 
-/* ПРАВКА 6: Убрать отступы вокруг ссылки */
 .signal-policy-link {
   color: #999 !important;
-  text-decoration: underline !important;
   padding: 0 !important;
   margin: 0 !important;
   transition: color 0.3s ease;
@@ -1148,59 +1215,66 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   cursor: not-allowed;
 }
 
-/* ПРАВКА 12: Блок с датой и тикетом */
-.signal-form-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #2c2c2f;
-}
-
-.signal-form-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #fff;
-}
-
-.signal-tech-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-family: var(--signal-font-mono);
-  font-size: 0.9rem;
-  color: #888;
-}
-
-.signal-ticket-display {
-  background-color: #2a2a2e;
-  color: #C5F946;
-  font-weight: 700;
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-  letter-spacing: 1px;
-}
-
-/* ПРАВКА 1, 2: Центрирование экрана подтверждения */
+/* ПРАВКА 6, 7: Экран подтверждения по центру + новая структура */
 .signal-success-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 2rem;
+  width: 100%;
 }
 
 .signal-success-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   width: 100%;
+  max-width: 600px;
 }
 
 .signal-success-content h3 {
   font-size: 1.5rem;
   font-weight: 600;
   color: #fff;
-  margin: 1rem 0 0.5rem 0;
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+/* ПРАВКА 7: Дата и тикет на отдельной строке */
+.signal-success-ticket-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.signal-success-date {
+  font-family: var(--signal-font-mono);
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.signal-success-ticket {
+  background-color: #2a2a2e;
+  color: #fff;
+  font-weight: 700;
+  padding: 0.6rem 1.5rem;
+  border-radius: 12px;
+  letter-spacing: 1px;
+  font-family: var(--signal-font-mono);
+  font-size: 1rem;
+}
+
+.signal-success-content h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 0.5rem 0;
   text-align: center;
 }
 
@@ -1216,7 +1290,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   padding: 0.8rem 1.5rem;
   border-radius: 12px;
   font-weight: 600;
-  color: #000;
   text-decoration: none;
   transition: all 0.3s;
 }
@@ -1236,19 +1309,16 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   transform: scale(1.05);
 }
 
-/* ПРАВКА 3: Белый цвет при ховере */
 .signal-secondary-link {
   display: block;
   margin-top: 1.5rem;
   font-size: 0.85rem;
   color: #888;
-  text-decoration: none;
   transition: color 0.3s;
 }
 
 .signal-secondary-link:hover {
   color: #fff !important;
-  text-decoration: underline;
 }
 
 @media (max-width: 768px) {
@@ -1267,10 +1337,9 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
     gap: 1rem;
   }
   
-  .signal-form-header {
+  .signal-success-ticket-info {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
 }
 </style>
