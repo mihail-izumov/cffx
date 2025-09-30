@@ -260,7 +260,7 @@ const openGrowthModal = () => {
 }
 
 const openInvestLink = () => {
-  window.open('/invest/smr', '_blank')
+  window.open('/signals', '_blank')
 }
 
 watch(selectedCafe, (newName) => {
@@ -565,7 +565,7 @@ watch(showBranchList, (newValue) => {
           <div class="signal2-modal-title">Умные Отзывы</div>
         </div>
         <div class="signal2-modal-body">
-          Мы передаем ваш отзыв нужному менеджеру и стараемся помочь. Мы не гарантируем ответ, но сделаем всё, чтобы ваш голос был услышан.<br>
+          Мы передаем ваш отзыв нужному менеджеру и стараемся помочь. Мы не гарантируем ответ, но сделаем всё, чтобы ваш голос был услышан.<br><br>
           Укажите ваш контакт в Телеграм, чтобы ИИ-ассистент Анна сообщила вам, когда будет готов ответ.<br><br>
           Если у вашей кофейни подключен Сигнал, вы гарантировано получите ответ за 24 часа.<br><br>
           <span @click="openInvestLink" class="signal2-modal-link">Как работает ⚡ Сигнал</span>
