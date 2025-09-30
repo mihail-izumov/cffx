@@ -18,12 +18,6 @@ const cafes = {
     branches: [
       { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/reviews' },
       { address: 'Революционная, 101В', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858//reviews' },
-      { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/152008652145/reviews' },
-      { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/reviews' },
-      { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/reviews' },
-      { address: 'Дачная, 2к2', gisUrl: 'https://2gis.ru/samara/firm/70000001045453045/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/144063441903/reviews' },
-      { address: 'Ульяновская, 19', gisUrl: 'https://2gis.ru/samara/firm/70000001033411071/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/102178077269/reviews' },
-      { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/reviews' }
     ]
   },
   'MOSAIC': {
@@ -120,9 +114,9 @@ const todayStatus = computed(() => {
     'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
   ];
   
-  const monthName = monthNames[today.getMonth()];
+  const monthName = monthNames[today.getMonth()].toUpperCase();
   
-  return `${monthName}: ${day}.${month}.${year}`;
+  return `${day}.${month}.${year} → ${monthName} ${year} 🟢 Live`;
 });
 
 const getCafeConfig = (cafeName) => {
@@ -655,16 +649,15 @@ watch(showBranchList, (newValue) => {
 .signal2-stat-card:hover::before { filter: brightness(2) saturate(1.5); }
 .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
 .signal2-stat-card:hover .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.4); }
-.signal2-stat-value, .signal2-stat-label { transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.signal2-stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin: 12px 0; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); }
+.signal2-stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); }
 .signal2-stat-card:hover .signal2-stat-value { transform: scale(1.15); text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); }
 
 .signal2-stat-label {
   color: #ffffff;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 14px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   margin-bottom: 12px;
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -681,7 +674,7 @@ watch(showBranchList, (newValue) => {
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: 4px;
+  margin-top: auto;
 }
 
 .signal2-badge-emoji {
@@ -777,16 +770,13 @@ watch(showBranchList, (newValue) => {
 .signal2-modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 500; }
 .signal2-modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
-/* Компактная мобильная версия - цифра и название на одной строке */
+/* Мобильная версия */
 @media (max-width: 768px) {
   .signal2-widget-content { padding: 24px 0; }
-  .main-card { padding: 16px; }
-  .stats-grid { grid-template-columns: 1fr; gap: 12px; }
+  .signal2-main-card { padding: 16px; }
+  .signal2-stats-grid { grid-template-columns: 1fr; gap: 12px; }
   
   .signal2-stat-card { 
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     border-radius: 16px; 
     transition: none; 
     cursor: pointer; 
@@ -795,36 +785,31 @@ watch(showBranchList, (newValue) => {
   .signal2-stat-card:hover { transform: none; }
   
   .signal2-stat-content { 
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    padding: 16px; 
-    width: 100%; 
+    padding: 20px; 
     background: none !important; 
     box-shadow: none !important;
   }
   
-  .signal2-stat-left-group { 
-    display: flex; 
-    align-items: center; 
-    gap: 16px;
-  }
-  
-  .signal2-stat-value { 
-    font-size: 2rem; 
-    font-weight: 600; 
-    margin: 0;
+  .signal2-stat-value {
+    font-size: 2.8rem;
+    margin-bottom: 4px;
   }
   
   .signal2-stat-label { 
-    font-size: 16px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+    color: rgba(255, 255, 255, 0.7);
   }
   
   .signal2-stat-badge { 
-    flex-shrink: 0;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
     margin-top: 0;
   }
   
