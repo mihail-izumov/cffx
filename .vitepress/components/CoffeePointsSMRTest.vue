@@ -456,7 +456,7 @@ watch(showBranchList, (newValue) => {
               </div>
             </div>
 
-            <div class="signal2-stat-card signal2-lime-stat" @click="isMobile ? (showInfoModal = true) : null">
+            <div class="signal2-stat-card signal2-lime-stat" @click="showInfoModal = true">
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-value">{{ establishment.signals }}</div>
