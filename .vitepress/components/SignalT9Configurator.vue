@@ -797,6 +797,28 @@ function applyGenderCorrection(text, gender) {
 function structureAndCleanText(share, emotional, factual, solutions, gender) {
   let result = '';
   
+  // Вспомогательная функция для умной пунктуации
+  function smartPunctuation(sentence) {
+    let cleaned = sentence.trim().replace(/\s+/g, ' ');
+    const words = cleaned.split(/\s+/);
+    
+    if (words.length === 1) {
+      return cleaned;
+    } else if (words.length === 2) {
+      return `${words[0]}: ${words[1]}`;
+    } else if (words.length === 3) {
+      return `${words[0]}: ${words[1]} ${words[2]}`;
+    } else if (words.length >= 4) {
+      // Умная запятая после примерно половины текста
+      const midPoint = Math.floor(words.length / 2);
+      const firstPart = words.slice(1, midPoint).join(' ');
+      const secondPart = words.slice(midPoint).join(' ');
+      return `${words[0]}: ${firstPart}, ${secondPart}`;
+    }
+    
+    return cleaned;
+  }
+  
   // МОЙ ОТЗЫВ
   if (share) {
     result += `МОЙ ОТЗЫВ\n${share}\n\n`;
@@ -806,84 +828,60 @@ function structureAndCleanText(share, emotional, factual, solutions, gender) {
   if (emotional) {
     result += `ВПЕЧАТЛЕНИЯ\n`;
     const emotionalSentences = emotional.split('. ').filter(s => s.trim());
-    emotionalSentences.forEach((sentence, index) => {
+    const seenEmotions = new Set();
+    
+    emotionalSentences.forEach((sentence) => {
       const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-      // Умная обработка: ищем паттерн "слово1 слово2 слово3"
-      const parts = formatted.split(/\s+/);
+      const normalized = formatted.toLowerCase();
       
-      let readable = '';
-      if (parts.length >= 3) {
-        // Если 3+ слов - делаем читаемым: "Эмоция по причине — детали"
-        readable = `${parts[0]} ${parts.slice(1, -1).join(' ')}, ${parts[parts.length - 1]}`;
-      } else if (parts.length === 2) {
-        // Если 2 слова - через запятую
-        readable = `${parts[0]}, ${parts[1]}`;
-      } else {
-        readable = formatted;
-      }
-      
-      result += `• ${readable}`;
-      if (index < emotionalSentences.length - 1) {
-        result += '\n';
+      if (!seenEmotions.has(normalized)) {
+        seenEmotions.add(normalized);
+        const withPunctuation = smartPunctuation(formatted);
+        result += `• ${withPunctuation}\n`;
       }
     });
-    result += '\n\n';
+    result += '\n';
   }
   
   // ПРОБЛЕМЫ
   if (factual) {
     result += `ПРОБЛЕМЫ\n`;
     const factualSentences = factual.split('. ').filter(s => s.trim());
-    factualSentences.forEach((sentence, index) => {
+    const seenFacts = new Set();
+    
+    factualSentences.forEach((sentence) => {
       const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-      const parts = formatted.split(/\s+/);
+      const normalized = formatted.toLowerCase();
       
-      let readable = '';
-      if (parts.length >= 3) {
-        // "Категория проблема — детали"
-        readable = `${parts[0]} ${parts.slice(1, -1).join(' ')}, ${parts[parts.length - 1]}`;
-      } else if (parts.length === 2) {
-        readable = `${parts[0]}, ${parts[1]}`;
-      } else {
-        readable = formatted;
-      }
-      
-      result += `• ${readable}`;
-      if (index < factualSentences.length - 1) {
-        result += '\n';
+      if (!seenFacts.has(normalized)) {
+        seenFacts.add(normalized);
+        const withPunctuation = smartPunctuation(formatted);
+        result += `• ${withPunctuation}\n`;
       }
     });
-    result += '\n\n';
+    result += '\n';
   }
   
   // ПРЕДЛОЖЕНИЯ
   if (solutions) {
     result += `ПРЕДЛОЖЕНИЯ\n`;
     const solutionsSentences = solutions.split('. ').filter(s => s.trim());
-    solutionsSentences.forEach((sentence, index) => {
+    const seenSolutions = new Set();
+    
+    solutionsSentences.forEach((sentence) => {
       const formatted = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-      const parts = formatted.split(/\s+/);
+      const normalized = formatted.toLowerCase();
       
-      let readable = '';
-      if (parts.length >= 3) {
-        // "Решение уточнение — детали"
-        readable = `${parts[0]} ${parts.slice(1, -1).join(' ')}, ${parts[parts.length - 1]}`;
-      } else if (parts.length === 2) {
-        readable = `${parts[0]}, ${parts[1]}`;
-      } else {
-        readable = formatted;
-      }
-      
-      result += `• ${readable}`;
-      if (index < solutionsSentences.length - 1) {
-        result += '\n';
+      if (!seenSolutions.has(normalized)) {
+        seenSolutions.add(normalized);
+        const withPunctuation = smartPunctuation(formatted);
+        result += `• ${withPunctuation}\n`;
       }
     });
   }
   
   return result.trim();
 }
-
 
 onUnmounted(() => {
   if (rotationInterval) clearInterval(rotationInterval);
