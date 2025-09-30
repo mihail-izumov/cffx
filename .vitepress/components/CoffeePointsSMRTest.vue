@@ -4,12 +4,11 @@ import SignalT9Configurator from './SignalT9Configurator.vue'
 
 const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка', 'Кэрри']
 
-// Данные о кофейнях
+// Данные о кофейнях (без статичного status)
 const cafes = {
   'Корж': {
     name: 'Корж',
     totalReviews: '4,520',
-    status: 'Актуально: 30.09.2025',
     index: 98,
     isConnected: true,
     branches: [
@@ -23,10 +22,9 @@ const cafes = {
       { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/reviews' }
     ]
   },
-  'MOSAIC': {
+    'MOSAIC': {
     name: 'MOSAIC',
     totalReviews: '2,231',
-    status: 'Актуально: 30.09.2025',
     index: 91,
     isConnected: false,
     branches: [
@@ -46,10 +44,9 @@ const cafes = {
         { address: 'Напротив ЦСКА', gisUrl: 'https://2gis.ru/samara/firm/70000001088760179/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/62781566656/reviews/' }
     ]
   },
-  'Skuratov': {
+    'Skuratov': {
     name: 'Skuratov',
     totalReviews: '3,129',
-    status: 'Актуально: 30.09.2025',
     index: 96,
     isConnected: false,
     branches: [
@@ -64,7 +61,6 @@ const cafes = {
   'Surf': {
     name: 'Surf',
     totalReviews: '925',
-    status: 'Актуально: 30.09.2025',
     index: 93,
     isConnected: false,
     branches: [
@@ -76,7 +72,6 @@ const cafes = {
   'Белотурка': {
     name: 'Белотурка',
     totalReviews: '2,941',
-    status: 'Актуально: 30.09.2025',
     index: '~',
     isConnected: false,
     branches: [
@@ -90,7 +85,6 @@ const cafes = {
   'Кэрри': {
     name: 'Кэрри',
     totalReviews: '3,568',
-    status: 'Актуально: 30.09.2025',
     index: '~',
     isConnected: false,
     branches: [
@@ -111,6 +105,15 @@ const cafeProfiles = {
   'кэрри': { responseTime: { base: 2.0, min: 1.5, max: 2.6 }, resolutionTime: { base: 16.4, min: 14, max: 19 } }
 }
 
+// Динамическое вычисление статуса
+const todayStatus = computed(() => {
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Месяцы в JS начинаются с 0
+  const year = today.getFullYear();
+  return `Актуально: ${day}.${month}.${year}`;
+});
+
 const getCafeConfig = (cafeName) => {
   const normalized = cafeName?.toLowerCase() || ''
   return cafeProfiles[normalized] || { responseTime: { base: 2, min: 1, max: 3 }, resolutionTime: { base: 15, min: 12, max: 18 } }
@@ -121,7 +124,6 @@ const selectedCafe = ref(cafeNames[0] || 'Корж')
 const establishment = computed(() => cafes[selectedCafe.value] || {
   name: '',
   totalReviews: '',
-  status: '',
   index: 0,
   isConnected: false,
   branches: []
@@ -258,7 +260,7 @@ const openGrowthModal = () => {
 }
 
 const openInvestLink = () => {
-  window.open('/signals', '_blank')
+  window.open('/invest/smr', '_blank')
 }
 
 watch(selectedCafe, (newName) => {
@@ -376,11 +378,10 @@ watch(showBranchList, (newValue) => {
           <div class="signal2-establishment-header">
             <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
             <div 
-              v-if="establishment.status" 
               class="signal2-status-badge"
               ref="badgeRef"
             >
-              {{ establishment.status }}
+              {{ todayStatus }}
             </div>
           </div>
 
@@ -559,15 +560,16 @@ watch(showBranchList, (newValue) => {
     </div>
 
     <div v-if="showGrowthModal" class="signal2-modal-overlay" @click.self="showGrowthModal = false">
-      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Умные Отзывы">
+      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Индекс Роста">
         <div class="signal2-modal-header">
-          <div class="signal2-modal-title">Умные Отзывы</div>
+          <div class="signal2-modal-title">Индекс Роста</div>
         </div>
         <div class="signal2-modal-body">
-          Мы передаем ваш отзыв нужному менеджеру и стараемся помочь. Мы не гарантируем ответ, но сделаем всё, чтобы ваш голос был услышан.<br>
-          Укажите ваш контакт в Телеграм, чтобы ИИ-ассистент Анна сообщила вам, когда будет готов ответ.<br><br>
-          Если у вашей кофейни подключен Сигнал, вы гарантировано получите ответ за 24 часа.<br><br>
-          <span @click="openInvestLink" class="signal2-modal-link">Как работает ⚡ Сигнал</span>
+          Все забыли, что такое настоящий рост.<br>
+          Они измеряют рейтинг на 2ГИС и Яндекс.<br>
+          Мы находим в отзывах гостей то, что не видят другие.<br><br>
+          Наш Индекс показывает не размер бизнеса сегодня, а возможности, которые он может реализовать завтра.<br><br>
+          <span @click="openInvestLink" class="signal2-modal-link">Индекс Роста Самары</span>
         </div>
         <div class="signal2-modal-footer">
           <button class="signal2-modal-ok" type="button" @click="showGrowthModal = false">Понятно</button>
