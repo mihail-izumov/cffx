@@ -658,7 +658,17 @@ watch(showBranchList, (newValue) => {
 .signal2-stat-value, .signal2-stat-label { transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .signal2-stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin: 12px 0; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); }
 .signal2-stat-card:hover .signal2-stat-value { transform: scale(1.15); text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); }
-.signal2-stat-label { font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+
+.signal2-stat-label {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
 .signal2-stat-card:hover .signal2-stat-label { transform: scale(1.05); }
 
 /* Стили для бейджей */
@@ -770,8 +780,8 @@ watch(showBranchList, (newValue) => {
 /* Компактная мобильная версия - цифра и название на одной строке */
 @media (max-width: 768px) {
   .signal2-widget-content { padding: 24px 0; }
-  .signal2-main-card { padding: 16px; }
-  .signal2-stats-grid { grid-template-columns: 1fr; gap: 12px; }
+  .main-card { padding: 16px; }
+  .stats-grid { grid-template-columns: 1fr; gap: 12px; }
   
   .signal2-stat-card { 
     display: flex;
@@ -807,11 +817,9 @@ watch(showBranchList, (newValue) => {
   }
   
   .signal2-stat-label { 
-    font-size: 16px; 
-    font-weight: 500; 
-    color: rgba(255, 255, 255, 0.9); 
-    text-transform: uppercase; 
-    letter-spacing: 0.05em; 
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
     margin-bottom: 0;
   }
   
