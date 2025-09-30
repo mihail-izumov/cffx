@@ -559,15 +559,15 @@ watch(showBranchList, (newValue) => {
     </div>
 
     <div v-if="showGrowthModal" class="signal2-modal-overlay" @click.self="showGrowthModal = false">
-      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Индекс Роста">
+      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Умные Отзывы">
         <div class="signal2-modal-header">
-          <div class="signal2-modal-title">Индекс Роста</div>
+          <div class="signal2-modal-title">Умные Отзывы</div>
         </div>
         <div class="signal2-modal-body">
-          Все забыли, что такое настоящий рост.<br>
-          Они измеряют рейтинг на 2ГИС и Яндекс.<br>
-          Мы находим в отзывах гостей то, что не видят другие.<br><br>
-          Наш Индекс показывает не размер бизнеса сегодня, а возможности, которые он может реализовать завтра.<br><br>
+          Мы передаем ваш отзыв нужному менеджеру и стараемся помочь.<br>
+          Мы не гарантируем ответ, но сделаем всё, чтобы ваш голос был услышан.<br>
+          Укажите ваш контакт в Телеграм, чтобы ИИ-ассистент Анна сообщила вам, когда будет готов ответ.<br><br>
+          Если у вашей кофейни подключен Сигнал, вы гарантировано получите ответ за 24 часа.<br><br>
           <span @click="openInvestLink" class="signal2-modal-link">Индекс Роста Самары</span>
         </div>
         <div class="signal2-modal-footer">
@@ -684,12 +684,12 @@ watch(showBranchList, (newValue) => {
 .signal2-branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
 .signal2-branches-list { padding: 0; }
 .signal2-branch-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px; margin-bottom: 12px; background: var(--vp-c-bg-soft); border: 2px solid var(--vp-c-border); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
-.signal2-branch-item:hover { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), var(--vp-c-bg-soft)); border-color: #f59e0b; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.1); transform: translateX(4px); }
+.signal2-branch-item:hover { background: var(--vp-c-bg-soft); border-color: rgba(255, 255, 255, 0.5); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); transform: translateX(4px); }
 .signal2-branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
-.signal2-branch-number { background: linear-gradient(135deg, #f59e0b, #fcd34d); color: #422006; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; transition: all 0.3s ease; box-shadow: none; }
-.signal2-branch-item:hover .signal2-branch-number { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(245, 158, 11, 0.5); }
+.signal2-branch-number { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; transition: all 0.3s ease; box-shadow: none; }
+.signal2-branch-item:hover .signal2-branch-number { background: rgba(85, 85, 85, 0.9); box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4); }
 .signal2-branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.signal2-branch-action { color: #f59e0b; transition: transform 0.3s ease; margin-left: 12px; }
+.signal2-branch-action { color: rgba(255, 255, 255, 0.5); transition: transform 0.3s ease; margin-left: 12px; }
 .signal2-branch-item:hover .signal2-branch-action { transform: translateX(4px); }
 .signal2-modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
 .signal2-modal { background: var(--vp-c-bg, #111); color: var(--vp-c-text-1, #fff); border: 1px solid var(--vp-c-border, rgba(255, 255, 255, 0.12)); border-radius: 12px; width: min(520px, 96vw); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); padding: 32px; }
