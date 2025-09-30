@@ -425,8 +425,8 @@ watch(showBranchList, (newValue) => {
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-value">{{ establishment.yandex2gis }}</div>
+                  <div class="signal2-stat-label">Яндекс/2ГИС</div>
                 </div>
-                <div class="signal2-stat-label">Яндекс/2ГИС</div>
                 <div class="signal2-stat-badge signal2-graphite-badge">
                   <span class="signal2-badge-emoji">💬</span>
                   <span class="signal2-badge-text">Ответ: {{ establishment.yandex2gisPercent }}%</span>
@@ -438,8 +438,8 @@ watch(showBranchList, (newValue) => {
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-value">{{ establishment.smartReviews }}</div>
+                  <div class="signal2-stat-label">Умные Отзывы</div>
                 </div>
-                <div class="signal2-stat-label">Умные Отзывы</div>
                 <div class="signal2-stat-badge signal2-orange-badge">
                   <span class="signal2-badge-emoji">📡</span>
                   <span class="signal2-badge-text">Решение: {{ establishment.smartReviewsPercent }}%</span>
@@ -451,8 +451,8 @@ watch(showBranchList, (newValue) => {
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-value">{{ establishment.signals }}</div>
+                  <div class="signal2-stat-label">Сигналы</div>
                 </div>
-                <div class="signal2-stat-label">Сигналы</div>
                 <div class="signal2-stat-badge signal2-lime-badge">
                   <span class="signal2-badge-emoji">⚡</span>
                   <span class="signal2-badge-text">Решение: {{ establishment.signalsPercent }}%</span>
@@ -678,7 +678,7 @@ watch(showBranchList, (newValue) => {
 .signal2-stat-label { font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
 .signal2-stat-card:hover .signal2-stat-label { transform: scale(1.05); }
 
-/* Новые стили для бейджей */
+/* Стили для бейджей */
 .signal2-stat-badge {
   display: flex;
   align-items: center;
@@ -784,61 +784,57 @@ watch(showBranchList, (newValue) => {
 .signal2-modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 500; }
 .signal2-modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
-/* Исправления для мобильной версии */
+/* Компактная мобильная версия - цифра и название на одной строке */
 @media (max-width: 768px) {
   .signal2-widget-content { padding: 24px 0; }
   .signal2-main-card { padding: 16px; }
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 12px; }
   
   .signal2-stat-card { 
-    display: block;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     border-radius: 16px; 
     transition: none; 
     cursor: pointer; 
-    min-height: 120px;
   }
   
   .signal2-stat-card:hover { transform: none; }
   
   .signal2-stat-content { 
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     padding: 16px; 
     width: 100%; 
     background: none !important; 
     box-shadow: none !important;
-    position: relative;
-  }
-  
-  .signal2-stat-label { 
-    font-size: 13px; 
-    font-weight: 600; 
-    color: rgba(255, 255, 255, 0.9); 
-    text-transform: uppercase; 
-    letter-spacing: 0.05em; 
-    margin-bottom: 8px;
-    align-self: flex-start;
   }
   
   .signal2-stat-left-group { 
     display: flex; 
     align-items: center; 
     gap: 16px;
-    margin-top: 8px;
   }
   
   .signal2-stat-value { 
-    font-size: 2.4rem; 
+    font-size: 2rem; 
     font-weight: 600; 
     margin: 0;
-    align-self: flex-start;
+  }
+  
+  .signal2-stat-label { 
+    font-size: 16px; 
+    font-weight: 500; 
+    color: rgba(255, 255, 255, 0.9); 
+    text-transform: uppercase; 
+    letter-spacing: 0.05em; 
+    margin-bottom: 0;
   }
   
   .signal2-stat-badge { 
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
+    flex-shrink: 0;
+    margin-top: 0;
   }
   
   .signal2-button-container { flex-direction: column; gap: 8px; }
