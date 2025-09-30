@@ -134,7 +134,15 @@ const todayStatus = computed(() => {
   const day = String(today.getDate()).padStart(2, '0');
   const month = String(today.getMonth() + 1).padStart(2, '0');
   const year = today.getFullYear();
-  return `Актуально: ${day}.${month}.${year}`;
+  
+  const monthNames = [
+    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+  ];
+  
+  const monthName = monthNames[today.getMonth()];
+  
+  return `${monthName}: ${day}.${month}.${year}`;
 });
 
 const getCafeConfig = (cafeName) => {
@@ -434,7 +442,7 @@ watch(showBranchList, (newValue) => {
                 <div class="signal2-stat-label">Умные Отзывы</div>
                 <div class="signal2-stat-badge signal2-orange-badge">
                   <span class="signal2-badge-emoji">📡</span>
-                  <span class="signal2-badge-text">Ответ: {{ establishment.smartReviewsPercent }}%</span>
+                  <span class="signal2-badge-text">Решение: {{ establishment.smartReviewsPercent }}%</span>
                 </div>
               </div>
             </div>
@@ -447,7 +455,7 @@ watch(showBranchList, (newValue) => {
                 <div class="signal2-stat-label">Сигналы</div>
                 <div class="signal2-stat-badge signal2-lime-badge">
                   <span class="signal2-badge-emoji">⚡</span>
-                  <span class="signal2-badge-text">Результат: {{ establishment.signalsPercent }}%</span>
+                  <span class="signal2-badge-text">Решение: {{ establishment.signalsPercent }}%</span>
                 </div>
               </div>
             </div>
@@ -775,17 +783,64 @@ watch(showBranchList, (newValue) => {
 .signal2-modal-footer { margin-top: 24px; display: flex; justify-content: flex-end; }
 .signal2-modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 500; }
 .signal2-modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
+
+/* Исправления для мобильной версии */
 @media (max-width: 768px) {
   .signal2-widget-content { padding: 24px 0; }
   .signal2-main-card { padding: 16px; }
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 12px; }
-  .signal2-stat-card { display: flex; flex-direction: row; align-items: center; border-radius: 16px; transition: none; cursor: pointer; }
+  
+  .signal2-stat-card { 
+    display: block;
+    border-radius: 16px; 
+    transition: none; 
+    cursor: pointer; 
+    min-height: 120px;
+  }
+  
   .signal2-stat-card:hover { transform: none; }
-  .signal2-stat-content { flex-direction: row; justify-content: space-between; align-items: center; padding: 16px; width: 100%; background: none !important; box-shadow: none !important; }
-  .signal2-stat-left-group { display: flex; align-items: center; gap: 16px; }
-  .signal2-stat-value { font-size: 2rem; font-weight: 600; margin: 0; }
-  .signal2-stat-label { font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0; position: absolute; top: 16px; left: 16px; }
-  .signal2-stat-badge { position: absolute; bottom: 12px; right: 12px; }
+  
+  .signal2-stat-content { 
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 16px; 
+    width: 100%; 
+    background: none !important; 
+    box-shadow: none !important;
+    position: relative;
+  }
+  
+  .signal2-stat-label { 
+    font-size: 13px; 
+    font-weight: 600; 
+    color: rgba(255, 255, 255, 0.9); 
+    text-transform: uppercase; 
+    letter-spacing: 0.05em; 
+    margin-bottom: 8px;
+    align-self: flex-start;
+  }
+  
+  .signal2-stat-left-group { 
+    display: flex; 
+    align-items: center; 
+    gap: 16px;
+    margin-top: 8px;
+  }
+  
+  .signal2-stat-value { 
+    font-size: 2.4rem; 
+    font-weight: 600; 
+    margin: 0;
+    align-self: flex-start;
+  }
+  
+  .signal2-stat-badge { 
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+  }
+  
   .signal2-button-container { flex-direction: column; gap: 8px; }
   .signal2-action-button:hover { transform: none; }
   .signal2-system-status-bar { flex-direction: column; align-items: center; padding: 8px 12px; gap: 4px; margin: 16px 0 12px 0; }
