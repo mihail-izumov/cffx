@@ -4,7 +4,7 @@ import SignalT9Configurator from './SignalT9Configurator.vue'
 
 const cafeNames = ['Корж', 'MOSAIC', 'Skuratov', 'Surf', 'Белотурка', 'Кэрри']
 
-// Данные о кофейнях - ОБНОВЛЕНО ИЗ ТАБЛИЦЫ
+// Данные о кофейнях - ОБНОВЛЕН4О ИЗ ТАБЛИЦЫ
 const cafes = {
   'Корж': {
     name: 'Корж',
