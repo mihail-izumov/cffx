@@ -1257,20 +1257,20 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   background-color: #2a2a2e;
   color: #fff;
   font-weight: 700;
-  padding: 0.7rem 2.5rem;
+  padding: 1rem 5rem;  /* Для еще большего серого поля */
   border-radius: 12px;
   letter-spacing: 1px;
   font-family: var(--signal-font-mono);
   font-size: 1.1rem;
 }
 
-/* ПРАВКА 2: Текст по центру */
 .signal-success-description {
   color: #b0b0b0;
   line-height: 1.6;
   margin: 0 0 1.5rem 0;
-  text-align: center;
-  width: 100%;
+  text-align: center !important;  /* ← ДОБАВИТЬ !important */
+  width: 100% !important;          /* ← ДОБАВИТЬ !important */
+  display: block !important;       /* ← ДОБАВИТЬ ЭТУ СТРОКУ */
 }
 
 /* ПРАВКА 3, 4: Кнопка без артефактов */
