@@ -9,8 +9,8 @@ const cafes = {
   'Корж': {
     name: 'Корж',
     yandex2gis: 8,
-    smartReviews: 98,
-    signals: '4,520',
+    smartReviews: 0,
+    signals: '2',
     isConnected: true,
     branches: [
       { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/reviews' },
@@ -26,8 +26,8 @@ const cafes = {
   'MOSAIC': {
     name: 'MOSAIC',
     yandex2gis: 14,
-    smartReviews: 91,
-    signals: '2,231',
+    smartReviews: 0,
+    signals: '0',
     isConnected: false,
     branches: [
         { address: 'Фрунзе, 91', gisUrl: 'https://2gis.ru/samara/firm/70000001077330664/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/151180373582/reviews/' },
@@ -49,8 +49,8 @@ const cafes = {
   'Skuratov': {
     name: 'Skuratov',
     yandex2gis: 6,
-    smartReviews: 96,
-    signals: '3,129',
+    smartReviews: 0,
+    signals: '0',
     isConnected: false,
     branches: [
       { address: 'Самарская, 190', gisUrl: 'https://2gis.ru/samara/firm/70000001062410566/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov/150151107830/reviews/' },
@@ -64,8 +64,8 @@ const cafes = {
   'Surf': {
     name: 'Surf',
     yandex2gis: 3,
-    smartReviews: 93,
-    signals: '925',
+    smartReviews: 0,
+    signals: '0',
     isConnected: false,
     branches: [
       { address: 'Некрасовская, 57', gisUrl: 'https://2gis.ru/samara/firm/70000001036632385/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/surf_coffee/130764135504/reviews/' },
@@ -76,8 +76,8 @@ const cafes = {
   'Белотурка': {
     name: 'Белотурка',
     yandex2gis: 5,
-    smartReviews: '~',
-    signals: '2,941',
+    smartReviews: 0,
+    signals: '0',
     isConnected: false,
     branches: [
       { address: 'Куйбышева, 99', gisUrl: 'https://2gis.ru/samara/firm/70000001075213346/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/21345450545/reviews/' },
@@ -90,8 +90,8 @@ const cafes = {
   'Кэрри': {
     name: 'Кэрри',
     yandex2gis: 4,
-    smartReviews: '~',
-    signals: '3,568',
+    smartReviews: 0,
+    signals: '0',
     isConnected: false,
     branches: [
       { address: 'Ново-Садовая ул., 160М', gisUrl: 'https://2gis.ru/samara/firm/70000001070543566/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/kerri/202386458956/reviews/' },
@@ -266,7 +266,7 @@ const openGrowthModal = () => {
 }
 
 const openInvestLink = () => {
-  window.open('/invest/smr', '_blank')
+  window.open('/signals', '_blank')
 }
 
 watch(selectedCafe, (newName) => {
@@ -566,16 +566,15 @@ watch(showBranchList, (newValue) => {
     </div>
 
     <div v-if="showGrowthModal" class="signal2-modal-overlay" @click.self="showGrowthModal = false">
-      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Индекс Роста">
+      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Умные Отзывы">
         <div class="signal2-modal-header">
-          <div class="signal2-modal-title">Индекс Роста</div>
+          <div class="signal2-modal-title">Умные Отзывы</div>
         </div>
         <div class="signal2-modal-body">
-          Все забыли, что такое настоящий рост.<br>
-          Они измеряют рейтинг на 2ГИС и Яндекс.<br>
-          Мы находим в отзывах гостей то, что не видят другие.<br><br>
-          Наш Индекс показывает не размер бизнеса сегодня, а возможности, которые он может реализовать завтра.<br><br>
-          <span @click="openInvestLink" class="signal2-modal-link">Индекс Роста Самары</span>
+          Мы передаем ваш отзыв нужному менеджеру и стараемся помочь. Мы не гарантируем ответ, но сделаем всё, чтобы ваш голос был услышан.<br><br>
+          Укажите ваш контакт в Телеграм, чтобы ИИ-ассистент Анна сообщила вам, когда будет готов ответ.<br><br>
+          Если у вашей кофейни подключен Сигнал, вы гарантировано получите ответ за 24 часа.<br><br>
+          <span @click="openInvestLink" class="signal2-modal-link">Как работает ⚡ Сигнал</span>
         </div>
         <div class="signal2-modal-footer">
           <button class="signal2-modal-ok" type="button" @click="showGrowthModal = false">Понятно</button>
