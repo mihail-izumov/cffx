@@ -4,13 +4,16 @@ import SignalT9Configurator from './SignalT9Configurator.vue'
 
 const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка', 'Кэрри']
 
-// Данные о кофейнях (с новыми переменными для удобного редактирования)
+// Данные о кофейнях (с процентами из таблицы)
 const cafes = {
   'Корж': {
     name: 'Корж',
     yandex2gis: 51,
+    yandex2gisPercent: 94,
     smartReviews: 0,
+    smartReviewsPercent: 0,
     signals: '2',
+    signalsPercent: 0,
     isConnected: true,
     branches: [
       { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/reviews' },
@@ -26,31 +29,37 @@ const cafes = {
   'MOSAIC': {
     name: 'MOSAIC',
     yandex2gis: 194,
+    yandex2gisPercent: 42,
     smartReviews: 0,
+    smartReviewsPercent: 0,
     signals: '0',
+    signalsPercent: 0,
     isConnected: false,
     branches: [
-        { address: 'Бывшая гостиница "Националь" ', gisUrl: 'https://2gis.ru/samara/firm/70000001077330664/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/151180373582/reviews/' },
-        { address: 'Волжский просп., 50', gisUrl: 'https://2gis.ru/samara/firm/70000001074565560/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/241776381665/reviews/' },
-        { address: 'Речной вокзал', gisUrl: 'https://2gis.ru/samara/firm/70000001074565559/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/26968768492/reviews/' },
-        { address: 'Максима Горького, 82', gisUrl: 'https://2gis.ru/samara/firm/70000001065476074/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/130707944684/reviews/' },
-        { address: 'Волжский просп., 40', gisUrl: 'https://2gis.ru/samara/firm/70000001052939655/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/26968768492/reviews/' },
-        { address: 'ЖК Ботанический', gisUrl: 'https://2gis.ru/samara/firm/70000001035366800/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/186171163289/reviews/' },
-        { address: 'ТЦ Аквариум ', gisUrl: 'https://2gis.ru/samara/firm/70000001034344804/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/40452073764/reviews/' },
-        { address: 'ТЦ Аврора', gisUrl: 'https://2gis.ru/samara/firm/70000001046644341/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/121248491329/reviews/' },
-        { address: 'ТЦ Самолет', gisUrl: 'https://2gis.ru/samara/firm/70000001027292047/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/241817444822/reviews/' },
-        { address: 'Волгина, 127А', gisUrl: 'https://2gis.ru/samara/firm/70000001026465823/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/189131333340/reviews/' },
-        { address: 'БЦ ЗИМ', gisUrl: 'https://2gis.ru/samara/firm/70000001027292024/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/131060566066/reviews/' },
-        { address: '5-я просека', gisUrl: 'https://2gis.ru/samara/firm/70000001037266527/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/59004397239/reviews/' },
-        { address: 'Красноармейский спуск', gisUrl: 'https://2gis.ru/samara/firm/70000001074565722/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/87795478653/reviews/' },
-        { address: 'Напротив ЦСКА', gisUrl: 'https://2gis.ru/samara/firm/70000001088760179/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/62781566656/reviews/' }
+      { address: 'Бывшая гостиница "Националь" ', gisUrl: 'https://2gis.ru/samara/firm/70000001077330664/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/151180373582/reviews/' },
+      { address: 'Волжский просп., 50', gisUrl: 'https://2gis.ru/samara/firm/70000001074565560/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/241776381665/reviews/' },
+      { address: 'Речной вокзал', gisUrl: 'https://2gis.ru/samara/firm/70000001074565559/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/26968768492/reviews/' },
+      { address: 'Максима Горького, 82', gisUrl: 'https://2gis.ru/samara/firm/70000001065476074/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/130707944684/reviews/' },
+      { address: 'Волжский просп., 40', gisUrl: 'https://2gis.ru/samara/firm/70000001052939655/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/26968768492/reviews/' },
+      { address: 'ЖК Ботанический', gisUrl: 'https://2gis.ru/samara/firm/70000001035366800/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/186171163289/reviews/' },
+      { address: 'ТЦ Аквариум ', gisUrl: 'https://2gis.ru/samara/firm/70000001034344804/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/40452073764/reviews/' },
+      { address: 'ТЦ Аврора', gisUrl: 'https://2gis.ru/samara/firm/70000001046644341/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/121248491329/reviews/' },
+      { address: 'ТЦ Самолет', gisUrl: 'https://2gis.ru/samara/firm/70000001027292047/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/241817444822/reviews/' },
+      { address: 'Волгина, 127А', gisUrl: 'https://2gis.ru/samara/firm/70000001026465823/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/189131333340/reviews/' },
+      { address: 'БЦ ЗИМ', gisUrl: 'https://2gis.ru/samara/firm/70000001027292024/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/131060566066/reviews/' },
+      { address: '5-я просека', gisUrl: 'https://2gis.ru/samara/firm/70000001037266527/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/59004397239/reviews/' },
+      { address: 'Красноармейский спуск', gisUrl: 'https://2gis.ru/samara/firm/70000001074565722/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/87795478653/reviews/' },
+      { address: 'Напротив ЦСКА', gisUrl: 'https://2gis.ru/samara/firm/70000001088760179/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/62781566656/reviews/' }
     ]
   },
   'Skuratov': {
     name: 'Skuratov',
     yandex2gis: 44,
+    yandex2gisPercent: 89,
     smartReviews: 0,
+    smartReviewsPercent: 0,
     signals: '0',
+    signalsPercent: 0,
     isConnected: false,
     branches: [
       { address: 'Самарская, 190', gisUrl: 'https://2gis.ru/samara/firm/70000001062410566/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov/150151107830/reviews/' },
@@ -64,8 +73,11 @@ const cafes = {
   'Surf': {
     name: 'Surf',
     yandex2gis: 12,
+    yandex2gisPercent: 100,
     smartReviews: 0,
+    smartReviewsPercent: 0,
     signals: '0',
+    signalsPercent: 0,
     isConnected: false,
     branches: [
       { address: 'Некрасовская, 57', gisUrl: 'https://2gis.ru/samara/firm/70000001036632385/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/surf_coffee/130764135504/reviews/' },
@@ -76,8 +88,11 @@ const cafes = {
   'Белотурка': {
     name: 'Белотурка',
     yandex2gis: 135,
+    yandex2gisPercent: 1,
     smartReviews: 0,
+    smartReviewsPercent: 0,
     signals: '0',
+    signalsPercent: 0,
     isConnected: false,
     branches: [
       { address: 'Куйбышева, 99', gisUrl: 'https://2gis.ru/samara/firm/70000001075213346/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/21345450545/reviews/' },
@@ -90,8 +105,11 @@ const cafes = {
   'Кэрри': {
     name: 'Кэрри',
     yandex2gis: 101,
+    yandex2gisPercent: 97,
     smartReviews: 0,
+    smartReviewsPercent: 0,
     signals: '0',
+    signalsPercent: 0,
     isConnected: false,
     branches: [
       { address: 'Ново-Садовая ул., 160М', gisUrl: 'https://2gis.ru/samara/firm/70000001070543566/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/kerri/202386458956/reviews/' },
@@ -129,8 +147,11 @@ const selectedCafe = ref(cafeNames[0] || 'Корж')
 const establishment = computed(() => cafes[selectedCafe.value] || {
   name: '',
   yandex2gis: 0,
+  yandex2gisPercent: 0,
   smartReviews: 0,
+  smartReviewsPercent: 0,
   signals: '0',
+  signalsPercent: 0,
   isConnected: false,
   branches: []
 })
@@ -395,30 +416,39 @@ watch(showBranchList, (newValue) => {
             <div class="signal2-stat-card signal2-graphite-stat">
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
-                  <div class="signal2-stat-icon">💬</div>
                   <div class="signal2-stat-value">{{ establishment.yandex2gis }}</div>
                 </div>
                 <div class="signal2-stat-label">Яндекс/2ГИС</div>
+                <div class="signal2-stat-badge signal2-graphite-badge">
+                  <span class="signal2-badge-emoji">💬</span>
+                  <span class="signal2-badge-text">Ответ: {{ establishment.yandex2gisPercent }}%</span>
+                </div>
               </div>
             </div>
 
             <div class="signal2-stat-card signal2-orange-stat" @click="openGrowthModal">
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
-                  <div class="signal2-stat-icon">📡</div>
                   <div class="signal2-stat-value">{{ establishment.smartReviews }}</div>
                 </div>
                 <div class="signal2-stat-label">Умные Отзывы</div>
+                <div class="signal2-stat-badge signal2-orange-badge">
+                  <span class="signal2-badge-emoji">📡</span>
+                  <span class="signal2-badge-text">Ответ: {{ establishment.smartReviewsPercent }}%</span>
+                </div>
               </div>
             </div>
 
             <div class="signal2-stat-card signal2-lime-stat" @click="isMobile ? (showInfoModal = true) : null">
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
-                  <div class="signal2-stat-icon">⚡</div>
                   <div class="signal2-stat-value">{{ establishment.signals }}</div>
                 </div>
                 <div class="signal2-stat-label">Сигналы</div>
+                <div class="signal2-stat-badge signal2-lime-badge">
+                  <span class="signal2-badge-emoji">⚡</span>
+                  <span class="signal2-badge-text">Результат: {{ establishment.signalsPercent }}%</span>
+                </div>
               </div>
             </div>
           </div>
@@ -634,13 +664,51 @@ watch(showBranchList, (newValue) => {
 .signal2-stat-card:hover::before { filter: brightness(2) saturate(1.5); }
 .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
 .signal2-stat-card:hover .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.4); }
-.signal2-stat-icon, .signal2-stat-value, .signal2-stat-label { transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.signal2-stat-icon { font-size: 28px; opacity: 0.8; height: 32px; }
-.signal2-stat-card:hover .signal2-stat-icon { transform: scale(1.2); }
+.signal2-stat-value, .signal2-stat-label { transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .signal2-stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin: 12px 0; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); }
 .signal2-stat-card:hover .signal2-stat-value { transform: scale(1.15); text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); }
-.signal2-stat-label { font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; letter-spacing: 0.1em; }
+.signal2-stat-label { font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
 .signal2-stat-card:hover .signal2-stat-label { transform: scale(1.05); }
+
+/* Новые стили для бейджей */
+.signal2-stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 4px;
+}
+
+.signal2-badge-emoji {
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.signal2-badge-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.signal2-graphite-badge .signal2-badge-text {
+  color: rgba(160, 174, 192, 1);
+}
+
+.signal2-orange-badge .signal2-badge-text {
+  color: rgba(252, 211, 77, 1);
+}
+
+.signal2-lime-badge .signal2-badge-text {
+  color: rgba(197, 249, 70, 1);
+}
+
 .signal2-system-status-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0 16px 0; padding: 8px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06); }
 .signal2-status-label { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); margin-right: 6px; flex-shrink: 0; }
 .signal2-status-label-disconnected { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); flex-shrink: 0; }
@@ -713,11 +781,11 @@ watch(showBranchList, (newValue) => {
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 12px; }
   .signal2-stat-card { display: flex; flex-direction: row; align-items: center; border-radius: 16px; transition: none; cursor: pointer; }
   .signal2-stat-card:hover { transform: none; }
-  .signal2-stat-content { flex-direction: row; justify-content: space-between; align-items: center; padding: 12px 16px; width: 100%; background: none !important; box-shadow: none !important; }
+  .signal2-stat-content { flex-direction: row; justify-content: space-between; align-items: center; padding: 16px; width: 100%; background: none !important; box-shadow: none !important; }
   .signal2-stat-left-group { display: flex; align-items: center; gap: 16px; }
-  .signal2-stat-icon { font-size: 28px; line-height: 1; display: flex; align-items: center; }
   .signal2-stat-value { font-size: 2rem; font-weight: 600; margin: 0; }
-  .signal2-stat-label { font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 0.05em; }
+  .signal2-stat-label { font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0; position: absolute; top: 16px; left: 16px; }
+  .signal2-stat-badge { position: absolute; bottom: 12px; right: 12px; }
   .signal2-button-container { flex-direction: column; gap: 8px; }
   .signal2-action-button:hover { transform: none; }
   .signal2-system-status-bar { flex-direction: column; align-items: center; padding: 8px 12px; gap: 4px; margin: 16px 0 12px 0; }
