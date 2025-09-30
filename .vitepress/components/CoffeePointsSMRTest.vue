@@ -106,18 +106,18 @@ const cafeProfiles = {
 const todayStatus = computed(() => {
   const today = new Date();
   const day = String(today.getDate()).padStart(2, '0');
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const year = today.getFullYear();
+  const year_short = today.getFullYear().toString().slice(-2);
   
   const monthNames = [
-    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+    'Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июн.',
+    'Июл.', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.'
   ];
   
-  const monthName = monthNames[today.getMonth()].toUpperCase();
+  const monthName = monthNames[today.getMonth()];
   
-  return `${day}.${month}.${year} → ${monthName} ${year} 🟢 Live`;
+  return `🟢 ${day} ${monthName} ${year_short}`;
 });
+
 
 const getCafeConfig = (cafeName) => {
   const normalized = cafeName?.toLowerCase() || ''
@@ -559,7 +559,7 @@ watch(showBranchList, (newValue) => {
         </div>
         
         <div class="signal2-modal-close-section">
-          <button @click="closeReviewModal" class="signal2-modal-close-button signal2-graphite-button">Закрыть и вернуться</button>
+          <button @click="closeReviewModal" class="signal2-modal-close-button">Закрыть и вернуться</button>
         </div>
       </div>
     </div>
@@ -631,7 +631,6 @@ watch(showBranchList, (newValue) => {
 :deep(.form-section), :deep(.form-group), :deep(.section-wrapper) { margin-bottom: clamp(10px, 2vw, 10px) !important; }
 :deep(.card), :deep(.block), :deep(.content-block) { margin-bottom: clamp(8px, 1.6vw, 8px) !important; }
 .signal2-modal-close-section { flex-shrink: 0; padding: 20px 16px 24px 16px; background: #1e1e20; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: center; }
-.signal2-modal-close-button { border-radius: 12px; padding: 14px 24px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; min-width: 200px; justify-content: center; }
 .signal2-branches-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid var(--vp-c-border); }
 .signal2-branches-title-text { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; text-align: center; flex-grow: 1; }
 .signal2-internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
@@ -639,7 +638,7 @@ watch(showBranchList, (newValue) => {
 .signal2-main-card { background: var(--vp-c-bg-soft); border-radius: 20px; padding: 24px; }
 .signal2-establishment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
 .signal2-cafe-name { margin: 0; color: #ffffff; font-size: 24px; font-weight: 600; }
-.signal2-status-badge { background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1)); color: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3); text-transform: uppercase; letter-spacing: 0.5px; position: relative; }
+.signal2-status-badge { background: rgba(0,0,0,0.2); backdrop-filter: blur(5px); color: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3); text-transform: uppercase; letter-spacing: 0.5px; position: relative; }
 @keyframes signal2-tooltip-fade-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 .signal2-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 .signal2-stat-card { position: relative; border-radius: 22px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background: var(--vp-c-bg-soft); }
@@ -649,7 +648,7 @@ watch(showBranchList, (newValue) => {
 .signal2-stat-card:hover::before { filter: brightness(2) saturate(1.5); }
 .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
 .signal2-stat-card:hover .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.4); }
-.signal2-stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); }
+.signal2-stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .signal2-stat-card:hover .signal2-stat-value { transform: scale(1.15); text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); }
 
 .signal2-stat-label {
@@ -770,13 +769,16 @@ watch(showBranchList, (newValue) => {
 .signal2-modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 500; }
 .signal2-modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
-/* Мобильная версия */
+/* Мобильная версия (исходный компактный вид) */
 @media (max-width: 768px) {
   .signal2-widget-content { padding: 24px 0; }
   .signal2-main-card { padding: 16px; }
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 12px; }
   
   .signal2-stat-card { 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     border-radius: 16px; 
     transition: none; 
     cursor: pointer; 
@@ -785,31 +787,38 @@ watch(showBranchList, (newValue) => {
   .signal2-stat-card:hover { transform: none; }
   
   .signal2-stat-content { 
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    padding: 20px; 
+    padding: 12px 16px;
+    width: 100%; 
     background: none !important; 
     box-shadow: none !important;
   }
   
-  .signal2-stat-value {
-    font-size: 2.8rem;
-    margin-bottom: 4px;
+  .signal2-stat-left-group { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px;
+  }
+  
+  .signal2-stat-value { 
+    font-size: 2rem; 
+    font-weight: 600; 
+    margin: 0;
   }
   
   .signal2-stat-label { 
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: 0.08em;
-    margin-bottom: 16px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    margin-bottom: 0;
   }
   
   .signal2-stat-badge { 
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
+    flex-shrink: 0;
     margin-top: 0;
   }
   
@@ -872,24 +881,32 @@ watch(showBranchList, (newValue) => {
   --signal2-glow-color: rgba(197, 249, 70, 0.25);
   --signal2-glow-hover-color: rgba(197, 249, 70, 0.6);
 }
-.signal2-graphite-button {
-  background: rgba(70, 70, 70, 0.8) !important;
-  color: rgba(255, 255, 255, 0.9) !important;
-  box-shadow: none !important;
-  border: none;
-}
-.signal2-graphite-button:hover {
-  background: rgba(85, 85, 85, 0.9) !important;
-  color: white !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
-}
 
-/* Анимация для бейджа 100% */
 @keyframes liquid-fluid {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
+
+.signal2-modal-close-button {
+  background-image: linear-gradient(-45deg, #111111, #222222, #111111, #222222);
+  background-size: 400% 400%;
+  animation: liquid-fluid 6s ease infinite;
+  border: 1px solid #444;
+  color: #eee;
+  padding: 14px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.signal2-modal-close-button:hover {
+  background-image: linear-gradient(-45deg, #222222, #111111, #222222, #111111);
+  color: #fff;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  transform: translateY(-2px);
+}
+
 
 .signal-100-badge {
   background-image: linear-gradient(-45deg, #c5f946, #85a931, #c5f946, #85a931);
@@ -904,6 +921,6 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal-100-badge .signal2-badge-emoji {
-  filter: brightness(0); /* Затемняет эмодзи */
+  filter: brightness(0);
 }
 </style>
