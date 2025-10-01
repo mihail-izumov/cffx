@@ -167,14 +167,14 @@
         <div class="signal-question-block" style="--accent-color: #FFB800;">
           <p class="signal-direction-label">Умный отзыв</p>
           <div class="signal-rotating-phrase-container">
-            <p class="signal-question-label">От эмоций до конструктивных предложений</p>
+            <p class="signal-question-label">Что поможет чувствовать себя лучше?</p>
           </div>
           <textarea 
             v-model="form.summaryText" 
             :rows="isMobile ? 10 : 8"
             placeholder="Здесь появится Ваш Умный Отзыв ..."
           ></textarea>
-          <p class="signal-example-hint signal-example-hint-white">Конструктивный отзыв = сумма Ваших эмоций, фактов и решений.</p>
+          <p class="signal-example-hint signal-example-hint-white">От эмоций до конструктивных предложений</p>
         </div>
       </div>
 
@@ -212,7 +212,7 @@
             </div>
             
             <!-- ПРАВКА 2: Текст по центру -->
-            <p class="signal-success-description">Нажмите на кнопку ниже, чтобы отправить ваш тикет ассистенту Анне и получить результат вашего запроса.</p>
+            <p class="signal-success-description">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
             <!-- ПРАВКА 4: Новый текст кнопки -->
             <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Отправить тикет Анне</a>
             <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">Кто Анна и как работает</a>
