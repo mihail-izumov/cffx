@@ -1,9 +1,8 @@
+import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
 import Layout from './Layout.vue'
 
-
-// Импортируем все ваши существующие компоненты
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
 import FeaturesGrid from '../components/FeaturesGrid.vue'
@@ -87,15 +86,20 @@ import SmartReview3Cards from '../components/SmartReview3Cards.vue'
 import SignalWidget from '../components/SignalWidget.vue'
 import SignalBranchSelector from '../components/SignalBranchSelector.vue'
 import SignalCafeCard from '../components/SignalCafeCard.vue'
+import SignalModalWrapper from '../components/SignalModalWrapper.vue'
 
 export default {
   extends: DefaultTheme,
 
-  // 2. Указываем наш новый CustomLayout в качестве основного
-  Layout: Layout,
+  // Обновляем Layout, чтобы добавить модальное окно
+  Layout: () => {
+    return h(Layout, null, {
+      // Добавляем модальное окно в layout-bottom слот
+      'layout-bottom': () => h(SignalModalWrapper)
+    })
+  },
 
   enhanceApp({ app }) {
-    // Регистрация ваших компонентов остается без изменений
     app.component('SimulatorCards', SimulatorCards)
     app.component('BrandCards', BrandCards)
     app.component('FeaturesGrid', FeaturesGrid)
@@ -179,5 +183,6 @@ export default {
     app.component('SignalWidget', SignalWidget)  
     app.component('SignalCafeCard', SignalCafeCard)  
     app.component('SignalBranchSelector', SignalBranchSelector)  
+    app.component('SignalModalWrapper', SignalModalWrapper)
   },
 }
