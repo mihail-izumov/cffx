@@ -59,23 +59,6 @@
 
     <!-- Контейнер с формой -->
     <div class="signal-demo__form-container">
-      <!-- Секция 1: Поделитесь -->
-      <div v-if="selectedSection === 'share'" class="signal-form-section">
-        <div class="signal-question-block share-block" style="--accent-color: #fff;">
-          <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestionShare" class="signal-question-label">{{ currentQuestionShare }}</p>
-            </transition>
-          </div>
-          <textarea 
-            v-model="form.shareExperience" 
-            @focus="startRotation('share')" 
-            :rows="isMobile ? 5 : 3"
-            placeholder="Поделитесь своим впечатлением..."
-          ></textarea>
-          <p class="signal-example-hint">Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»</p>
-        </div>
-      </div>
 
       <!-- Секция 2: Эмоции -->
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
@@ -415,7 +398,6 @@ onMounted(() => {
 });
 
 const sections = [
-  { id: 'share', title: 'Поделитесь' },
   { id: 'emotions', title: 'Эмоции' },
   { id: 'facts', title: 'Факты' },
   { id: 'solutions', title: 'Решение' },
@@ -424,7 +406,7 @@ const sections = [
   { id: 'contact', title: 'Связь' }
 ];
 
-const selectedSection = ref('share');
+const selectedSection = ref('emotions');
 const isActive = (id) => id === selectedSection.value;
 
 const goToNextSection = () => {
@@ -768,10 +750,7 @@ function startRotation(questionNum) {
   
   let questions, currentQuestion;
   
-  if (questionNum === 'share') {
-    questions = questionsShare;
-    currentQuestion = currentQuestionShare;
-  } else if (questionNum === 1) {
+  if (questionNum === 1) {
     questions = selectedGender.value === 'female' ? questions1.female : questions1.male;
     currentQuestion = currentQuestion1;
   } else if (questionNum === 2) {
@@ -1439,21 +1418,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-}
-
-.signal-share-next {
-  background: #fff !important;
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
-}
-
-.signal-share-next .signal-liquid-next-text,
-.signal-share-next .signal-next-icon {
-  color: #000 !important;
-}
-
-.signal-share-next:hover {
-  background: #f5f5f5 !important;
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
 }
 
 .signal-emotion-next {
