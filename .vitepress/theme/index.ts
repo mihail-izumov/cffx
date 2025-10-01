@@ -84,6 +84,9 @@ import FestProgram from '../components/FestProgram.vue'
 import VideoPlayer from '../components/VideoPlayer.vue'
 import PDFButton from '../components/PDFButton.vue'
 import SmartReview3Cards from '../components/SmartReview3Cards.vue'
+import SignalWidget from '../components/SignalWidget.vue'
+import SignalBranchSelector from '../components/SignalBranchSelector.vue'
+import SignalCafeCard.vue from '../components/SignalCafeCard.vue'
 
 export default {
   extends: DefaultTheme,
@@ -173,5 +176,8 @@ export default {
     app.component('VideoPlayer', VideoPlayer)
     app.component('PDFButton', PDFButton)
     app.component('SmartReview3Cards', SmartReview3Cards)    
+    app.component('SignalWidget', SignalWidget)  
+    app.component('SignalCafeCard', SignalCafeCard)  
+    app.component('SignalBranchSelector', SignalBranchSelector)  
   },
 }
