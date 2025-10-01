@@ -286,16 +286,6 @@
 <script setup>
 import { reactive, ref, onUnmounted, computed, onMounted, watch } from 'vue';
 
-const emotionsTextarea = ref(null)
-
-watch(selectedSection, (newValue) => {
-  if (newValue === 'emotions') {
-    setTimeout(() => {
-      emotionsTextarea.value?.focus()
-    }, 100)
-  }
-})
-
 const form = reactive({ 
   shareExperience: '',
   emotionalRelease: '',
@@ -385,6 +375,29 @@ const cafes = {
     ]
   }
 };
+
+const sections = [
+  { id: 'emotions', title: 'Эмоции' },
+  { id: 'facts', title: 'Факты' },
+  { id: 'solutions', title: 'Решение' },
+  { id: 'summary', title: 'Итого' },
+  { id: 'location', title: 'Локация' },
+  { id: 'contact', title: 'Связь' }
+];
+
+const selectedSection = ref('emotions');
+
+// Ref для textarea
+const emotionsTextarea = ref(null);
+
+// Watch ПОСЛЕ объявления selectedSection
+watch(selectedSection, (newValue) => {
+  if (newValue === 'emotions') {
+    setTimeout(() => {
+      emotionsTextarea.value?.focus();
+    }, 100);
+  }
+});
 
 const selectedNetworkBranches = computed(() => {
   if (!form.selectedNetwork) return [];
