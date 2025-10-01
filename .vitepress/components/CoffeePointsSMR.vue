@@ -509,29 +509,15 @@ watch(showBranchList, (newValue) => {
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0"/><circle cx="12" cy="8" r="2"/><path d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712"/></svg>
                 </div>
               </button>
-              <button @click="openReviewModal" class="signal2-action-button signal2-signal-button">
+              <button @click="openReviewModal" class="signal2-action-button signal2-review-button">
                 Отправить Сигнал
-                <div class="signal2-button-icon-container signal2-lime-icon-container">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+                <div class="signal2-button-icon-container signal2-golden-icon-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#422006" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
                 </div>
               </button>
             </div>
 
-            <div v-if="establishment.isConnected" class="signal2-signal-section">
-              <div class="signal2-signal-description">
-                Просто скажите, что не так и мы поможем решить любую проблему за 24 часа.
-              </div>
-              
-              <div class="signal2-mystery-button-container">
-                <button @click="openSignalNew" class="signal2-mystery-button signal2-lime-button">
-                  <span class="signal2-mystery-glow"></span>
-                  <span class="signal2-mystery-text">Отправить ⚡ Сигнал</span>
-                </button>
-              </div>
-              
-              <div class="signal2-signal-link">
-                <a href="/signals" target="_blank" class="signal2-how-it-works-link signal2-no-vitepress-style">Как Работает</a>
-              </div>
+            <div v-if="establishment.isConnected" class="signal2-signal-section"><a href="/signals" target="_blank" class="signal2-how-it-works-link signal2-no-vitepress-style">Как Работает</a></div>
             </div>
           </div>
         </div>
@@ -746,15 +732,15 @@ watch(showBranchList, (newValue) => {
 .signal2-action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .signal2-ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
 .signal2-ticket-button:hover { background: rgba(85, 85, 85, 0.9); color: white; transform: translateY(-2px); }
-.signal2-signal-button { background: linear-gradient(135deg, #f59e0b, #fcd34d); color: #422006; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
-.signal2-signal-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); }
+.signal2-review-button { background: linear-gradient(135deg, #a3e635, #c5f946); color: #422006; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
+.signal2-review-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); }
 .signal2-button-icon-container { width: 32px; height: 32px; border-radius: 50%; background: rgba(50, 50, 50, 0.9); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
-.signal2-lime-icon-container { background: rgba(74, 124, 15, 0.7) !important; }
+.signal2-golden-icon-container { background: rgba(154, 91, 24, 0.7) !important; }
 .signal2-button-icon { transition: transform 0.3s ease; color: currentColor; }
-.signal2-signal-button:hover .signal2-button-icon { transform: translateX(2px); }
+.signal2-review-button:hover .signal2-button-icon { transform: translateX(2px); }
 .signal2-ticket-button:hover .signal2-button-icon-container { background: rgba(35, 35, 35, 1); transform: scale(1.05); }
-.signal2-signal-button:hover .signal2-lime-icon-container { background: rgba(205, 122, 32, 0.8) !important; transform: scale(1.05); }
-.signal2-signal-section { margin-top: 24px; padding: 12px 0; text-align: center; }
+.signal2-review-button:hover .signal2-golden-icon-container { background: rgba(205, 122, 32, 0.8) !important; transform: scale(1.05); }
+.signal2-signal-section { margin-top: 32px; padding: 20px 0; border-top: none; text-align: center; }
 .signal2-signal-description { color: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 500; line-height: 1.4; margin-bottom: 16px; max-width: 300px; margin-left: auto; margin-right: auto; }
 .signal2-mystery-button-container { margin-top: 12px; display: flex; justify-content: center; }
 .signal2-mystery-button { position: relative; background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05)); border: 1px solid rgba(139, 92, 246, 0.2); color: rgba(139, 92, 246, 0.9); padding: 10px 20px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); overflow: hidden; backdrop-filter: blur(8px); text-shadow: 0 0 8px rgba(139, 92, 246, 0.3); }
