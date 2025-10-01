@@ -299,7 +299,7 @@ const form = reactive({
   selectedBranch: '',
   userName: '',
   isIncognito: false,
-  agreedToTerms: true
+  agreedToTerms: false
 });
 
 const isMobile = ref(false);
