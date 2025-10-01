@@ -485,7 +485,7 @@ watch(showBranchList, (newValue) => {
 
           <div class="signal2-system-status-bar">
             <span v-if="establishment.isConnected" class="signal2-status-label">🟢 На связи:</span>
-            <span v-else class="signal2-status-label-disconnected">🔴 Постараемся помочь, но решение не гарантировано</span>
+            <span v-else class="signal2-status-label-disconnected">🟡 Постараемся помочь, ,<br class="signal2-mobile-break">но решение не гарантировано</span>
             
             <div v-if="establishment.isConnected" class="signal2-status-metrics">
               <div class="signal2-status-metric">
@@ -920,4 +920,23 @@ watch(showBranchList, (newValue) => {
 .signal-100-badge .signal2-badge-emoji {
   filter: brightness(0);
 }
+
+  /* Скрываем перенос строки на десктопе */
+.signal2-mobile-break {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Показываем перенос строки на мобильных */
+  .signal2-mobile-break {
+    display: block;
+  }
+  
+  /* Центрируем текст на мобильных */
+  .signal2-status-label-disconnected {
+    text-align: center;
+    line-height: 1.4;
+  }
+}
+
 </style>
