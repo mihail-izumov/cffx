@@ -60,39 +60,41 @@
     <!-- Контейнер с формой -->
     <div class="signal-demo__form-container">
 
-      <!-- Секция 2: Эмоции -->
-      <div v-if="selectedSection === 'emotions'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #6f5d9f;">
-          <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
-            </transition>
-          </div>
-          <textarea 
-            v-model="form.emotionalRelease" 
-            @focus="startRotation(1)" 
-            :rows="isMobile ? 5 : 3"
-            :placeholder="selectedGender === 'female' ? 'Разочарована ожиданиями...' : 'Разочарован ожиданиями...'"
-          ></textarea>
-          <div class="signal-suggestions-container">
-            <div 
-              v-for="suggestion in currentSuggestions.emotions" 
-              :key="suggestion"
-              class="signal-suggestion-bubble signal-emotion-bubble"
-              @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
-            >
-              {{ suggestion }}
-            </div>
-            <div 
-              v-if="!isInitialSuggestions('emotions')"
-              class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
-              @click="resetSuggestions('emotions')"
-            >
-              ← Ещё варианты
-            </div>
-          </div>
-        </div>
+ <!-- Секция 2: Эмоции -->
+<div v-if="selectedSection === 'emotions'" class="signal-form-section">
+  <div class="signal-question-block" style="--accent-color: #6f5d9f;">
+    <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
+      <transition name="fade" mode="out-in">
+        <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
+      </transition>
+    </div>
+    <textarea 
+      ref="emotionsTextarea"
+      v-model="form.emotionalRelease" 
+      @focus="startRotation(1)" 
+      :rows="isMobile ? 5 : 3"
+      :placeholder="selectedGender === 'female' ? 'Разочарована ожиданиями...' : 'Разочарован ожиданиями...'"
+    ></textarea>
+    <div class="signal-suggestions-container">
+      <div 
+        v-for="suggestion in currentSuggestions.emotions" 
+        :key="suggestion"
+        class="signal-suggestion-bubble signal-emotion-bubble"
+        @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
+      >
+        {{ suggestion }}
       </div>
+      <div 
+        v-if="!isInitialSuggestions('emotions')"
+        class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
+        @click="resetSuggestions('emotions')"
+      >
+        ← Ещё варианты
+      </div>
+    </div>
+  </div>
+</div>
+
 
       <!-- Секция 3: Факты -->
       <div v-if="selectedSection === 'facts'" class="signal-form-section">
@@ -282,7 +284,17 @@
 </template>
 
 <script setup>
-import { reactive, ref, onUnmounted, computed, onMounted } from 'vue';
+import { reactive, ref, onUnmounted, computed, onMounted, watch } from 'vue';
+
+const emotionsTextarea = ref(null)
+
+watch(selectedSection, (newValue) => {
+  if (newValue === 'emotions') {
+    setTimeout(() => {
+      emotionsTextarea.value?.focus()
+    }, 100)
+  }
+})
 
 const form = reactive({ 
   shareExperience: '',
