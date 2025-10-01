@@ -100,18 +100,6 @@ export default defineConfig({
         signalLinks.forEach(signalLink => {
           signalLink.setAttribute('target', '_self');
           signalLink.removeAttribute('rel');
-          signalLink.removeAttribute('href');
-          signalLink.style.cursor = 'pointer';
-          
-          // ДОБАВЛЯЕМ ОБРАБОТЧИК ДЛЯ ОТКРЫТИЯ МОДАЛЬНОГО ОКНА
-          signalLink.onclick = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (window.openSignalModal) {
-              window.openSignalModal();
-            }
-            return false;
-          };
         });
         const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="login-link"]');
         applyLinks.forEach(applyLink => {
@@ -125,19 +113,6 @@ export default defineConfig({
           document.querySelectorAll('.VPSocialLink[aria-label="login-link"], .VPSocialLink[aria-label="signal-link"]').forEach(link => {
             link.setAttribute('target', '_self');
             link.removeAttribute('rel');
-          });
-          
-          // ТАКЖЕ ДОБАВЛЯЕМ ОБРАБОТЧИК НА МОБИЛЬНЫХ
-          const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
-          signalLinks.forEach(signalLink => {
-            signalLink.onclick = (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (window.openSignalModal) {
-                window.openSignalModal();
-              }
-              return false;
-            };
           });
         }
       }
@@ -413,7 +388,7 @@ export default defineConfig({
       },
       { 
         icon: { svg: '' }, 
-        link: '#', 
+        link: '/signal/new', 
         ariaLabel: 'signal-link' 
       }
     ],
