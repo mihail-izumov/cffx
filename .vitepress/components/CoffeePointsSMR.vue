@@ -10,8 +10,6 @@ const cafes = {
     name: 'Корж',
     yandex2gis: 51,
     yandex2gisPercent: 94,
-    smartReviews: 0,
-    smartReviewsPercent: 0,
     signals: '2',
     signalsPercent: 100,
     isConnected: true,
@@ -30,8 +28,6 @@ const cafes = {
     name: 'MOSAIC',
     yandex2gis: 194,
     yandex2gisPercent: 42,
-    smartReviews: 0,
-    smartReviewsPercent: 0,
     signals: '0',
     signalsPercent: 0,
     isConnected: false,
@@ -56,8 +52,6 @@ const cafes = {
     name: 'Skuratov',
     yandex2gis: 44,
     yandex2gisPercent: 89,
-    smartReviews: 0,
-    smartReviewsPercent: 0,
     signals: '0',
     signalsPercent: 0,
     isConnected: false,
@@ -74,8 +68,6 @@ const cafes = {
     name: 'Surf',
     yandex2gis: 12,
     yandex2gisPercent: 100,
-    smartReviews: 0,
-    smartReviewsPercent: 0,
     signals: '0',
     signalsPercent: 0,
     isConnected: false,
@@ -89,8 +81,6 @@ const cafes = {
     name: 'Белотурка',
     yandex2gis: 135,
     yandex2gisPercent: 1,
-    smartReviews: 0,
-    smartReviewsPercent: 0,
     signals: '0',
     signalsPercent: 0,
     isConnected: false,
@@ -106,8 +96,6 @@ const cafes = {
     name: 'Кэрри',
     yandex2gis: 101,
     yandex2gisPercent: 97,
-    smartReviews: 0,
-    smartReviewsPercent: 0,
     signals: '0',
     signalsPercent: 0,
     isConnected: false,
@@ -153,7 +141,6 @@ const todayStatus = computed(() => {
   return `🟢 ${day}.${month} → ${monthName} ${year}`;
 });
 
-
 const getCafeConfig = (cafeName) => {
   const normalized = cafeName?.toLowerCase() || ''
   return cafeProfiles[normalized] || { responseTime: { base: 2, min: 1, max: 3 }, resolutionTime: { base: 15, min: 12, max: 18 } }
@@ -165,8 +152,6 @@ const establishment = computed(() => cafes[selectedCafe.value] || {
   name: '',
   yandex2gis: 0,
   yandex2gisPercent: 0,
-  smartReviews: 0,
-  smartReviewsPercent: 0,
   signals: '0',
   signalsPercent: 0,
   isConnected: false,
@@ -286,7 +271,6 @@ const cycleText = () => {
 }
 
 const showInfoModal = ref(false)
-const showGrowthModal = ref(false)
 
 const onKeydown = (e) => {
   if (e.key === 'Escape') {
@@ -294,13 +278,8 @@ const onKeydown = (e) => {
       closeReviewModal()
     } else {
       showInfoModal.value = false
-      showGrowthModal.value = false
     }
   }
-}
-
-const openGrowthModal = () => {
-  showGrowthModal.value = true
 }
 
 const openInvestLink = () => {
@@ -443,8 +422,6 @@ watch(showBranchList, (newValue) => {
               </div>
             </div>
 
-            
-
             <div class="signal2-stat-card signal2-lime-stat" @click="isMobile ? (showInfoModal = true) : null">
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
@@ -509,7 +486,7 @@ watch(showBranchList, (newValue) => {
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0"/><circle cx="12" cy="8" r="2"/><path d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712"/></svg>
                 </div>
               </button>
-              <button @click="openReviewModal" class="signal2-action-button signal2-review-button">
+              <button @click="openReviewModal" class="signal2-action-button signal2-signal-button">
                 Отправить Сигнал
                 <div class="signal2-button-icon-container signal2-golden-icon-container">
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#422006" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
@@ -517,7 +494,10 @@ watch(showBranchList, (newValue) => {
               </button>
             </div>
 
-            <div v-if="establishment.isConnected" class="signal2-signal-section"><a href="/signals" target="_blank" class="signal2-how-it-works-link signal2-no-vitepress-style">Как Работает</a></div>
+            <div v-if="establishment.isConnected" class="signal2-signal-section">
+              <div class="signal2-signal-link">
+                <a href="/signals" target="_blank" class="signal2-how-it-works-link signal2-no-vitepress-style">Как Работает</a>
+              </div>
             </div>
           </div>
         </div>
@@ -588,22 +568,6 @@ watch(showBranchList, (newValue) => {
       </div>
     </div>
 
-    <div v-if="showGrowthModal" class="signal2-modal-overlay" @click.self="showGrowthModal = false">
-      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Умные Отзывы">
-        <div class="signal2-modal-header">
-          <div class="signal2-modal-title">Умные Отзывы</div>
-        </div>
-        <div class="signal2-modal-body">
-          Мы передаем ваш отзыв нужному менеджеру и стараемся помочь. Мы не гарантируем ответ, но сделаем всё, чтобы ваш голос был услышан.<br><br>
-          Укажите ваш контакт в Телеграм, чтобы ИИ-ассистент Анна сообщила вам, когда будет готов ответ.<br><br>
-          Если у вашей кофейни подключен Сигнал, вы гарантировано получите ответ за 24 часа.<br><br>
-          <span @click="openInvestLink" class="signal2-modal-link">Как работает ⚡ Сигнал</span>
-        </div>
-        <div class="signal2-modal-footer">
-          <button class="signal2-modal-ok" type="button" @click="showGrowthModal = false">Понятно</button>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -653,7 +617,7 @@ watch(showBranchList, (newValue) => {
 .signal2-stat-card:hover { transform: translateY(-8px); }
 .signal2-stat-card::before { content: ''; position: absolute; inset: 0; border-radius: 22px; padding: 2px; background: var(--signal2-border-gradient); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: filter 0.4s ease; z-index: 3; }
 .signal2-stat-card:hover::before { filter: brightness(2) saturate(1.5); }
-.signal2-stat-card.signal2-orange-stat, .signal2-stat-card.signal2-lime-stat { cursor: pointer; }
+.signal2-stat-card.signal2-lime-stat { cursor: pointer; }
 .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
 .signal2-stat-card:hover .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.4); }
 .signal2-stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
@@ -709,7 +673,6 @@ watch(showBranchList, (newValue) => {
 .signal2-lime-badge .signal2-badge-text {
   color: rgba(197, 249, 70, 1);
 }
-
 .signal2-system-status-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0 16px 0; padding: 8px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06); }
 .signal2-status-label { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); margin-right: 6px; flex-shrink: 0; }
 .signal2-status-label-disconnected { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); flex-shrink: 0; }
@@ -732,26 +695,16 @@ watch(showBranchList, (newValue) => {
 .signal2-action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .signal2-ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
 .signal2-ticket-button:hover { background: rgba(85, 85, 85, 0.9); color: white; transform: translateY(-2px); }
-.signal2-review-button { background: linear-gradient(135deg, #a3e635, #c5f946); color: #422006; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
-.signal2-review-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); }
+.signal2-signal-button { background: linear-gradient(135deg, #a3e635, #c5f946); color: #422006; box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3); }
+.signal2-signal-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(163, 230, 53, 0.4); }
 .signal2-button-icon-container { width: 32px; height: 32px; border-radius: 50%; background: rgba(50, 50, 50, 0.9); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
 .signal2-golden-icon-container { background: rgba(154, 91, 24, 0.7) !important; }
 .signal2-button-icon { transition: transform 0.3s ease; color: currentColor; }
-.signal2-review-button:hover .signal2-button-icon { transform: translateX(2px); }
+.signal2-signal-button:hover .signal2-button-icon { transform: translateX(2px); }
 .signal2-ticket-button:hover .signal2-button-icon-container { background: rgba(35, 35, 35, 1); transform: scale(1.05); }
-.signal2-review-button:hover .signal2-golden-icon-container { background: rgba(205, 122, 32, 0.8) !important; transform: scale(1.05); }
-.signal2-signal-section { margin-top: 32px; padding: 20px 0; border-top: none; text-align: center; }
-.signal2-signal-description { color: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 500; line-height: 1.4; margin-bottom: 16px; max-width: 300px; margin-left: auto; margin-right: auto; }
-.signal2-mystery-button-container { margin-top: 12px; display: flex; justify-content: center; }
-.signal2-mystery-button { position: relative; background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05)); border: 1px solid rgba(139, 92, 246, 0.2); color: rgba(139, 92, 246, 0.9); padding: 10px 20px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); overflow: hidden; backdrop-filter: blur(8px); text-shadow: 0 0 8px rgba(139, 92, 246, 0.3); }
-.signal2-mystery-button:hover { background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1)); border-color: rgba(139, 92, 246, 0.4); color: rgba(139, 92, 246, 1); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(139, 92, 246, 0.15); text-shadow: 0 0 12px rgba(139, 92, 246, 0.5); }
-.signal2-lime-button { background: linear-gradient(135deg, rgba(197, 249, 70, 0.1), rgba(163, 230, 53, 0.05)) !important; border: 1px solid rgba(197, 249, 70, 0.2) !important; color: rgba(197, 249, 70, 0.9) !important; text-shadow: 0 0 8px rgba(197, 249, 70, 0.3) !important; }
-.signal2-lime-button:hover { background: linear-gradient(135deg, rgba(197, 249, 70, 0.2), rgba(163, 230, 53, 0.1)) !important; border-color: rgba(197, 249, 70, 0.4) !important; color: rgba(197, 249, 70, 1) !important; text-shadow: 0 0 12px rgba(197, 249, 70, 0.5) !important; box-shadow: 0 8px 20px rgba(197, 249, 70, 0.15) !important; }
-.signal2-mystery-glow { position: absolute; top: -50%; left: -50%; right: -50%; bottom: -50%; background: radial-gradient( circle, rgba(139, 92, 246, 0.1) 0%, transparent 70% ); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; }
-.signal2-lime-button .signal2-mystery-glow { background: radial-gradient( circle, rgba(197, 249, 70, 0.1) 0%, transparent 70% ) !important; }
-.signal2-mystery-button:hover .signal2-mystery-glow { opacity: 1; animation: signal2-mystery-pulse 2s infinite; }
-.signal2-mystery-text { position: relative; z-index: 2; }
-@keyframes signal2-mystery-pulse { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.1); opacity: 0.6; } }
+.signal2-signal-button:hover .signal2-golden-icon-container { background: rgba(205, 122, 32, 0.8) !important; transform: scale(1.05); }
+.signal2-signal-section { margin-top: 24px; padding: 12px 0; text-align: center; }
+
 .signal2-signal-link { margin-top: 12px; }
 .signal2-how-it-works-link { color: rgba(255, 255, 255, 0.5); text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.3); font-size: 14px; font-weight: 500; transition: all 0.3s ease; }
 .signal2-how-it-works-link:hover { color: rgba(255, 255, 255, 0.8); text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.6); }
@@ -776,7 +729,6 @@ watch(showBranchList, (newValue) => {
 .signal2-modal-footer { margin-top: 24px; display: flex; justify-content: flex-end; }
 .signal2-modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 500; }
 .signal2-modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
-
 /* Мобильная версия (исходный компактный вид) */
 @media (max-width: 768px) {
   .signal2-widget-content { padding: 24px 0; }
@@ -836,7 +788,6 @@ watch(showBranchList, (newValue) => {
   .signal2-status-metrics { gap: 12px; justify-content: center; }
   .signal2-metric-time, .signal2-metric-text { font-size: 14px; }
   .signal2-button-icon-container { width: 28px; height: 28px; }
-  .signal2-mystery-button { font-size: clamp(15.6px, 3vw, 12px); padding: clamp(10.4px, 1.95vw, 8px) clamp(19.5px, 3.75vw, 15px); }
   .signal2-how-it-works-link { font-size: 14px; }
   .signal2-action-button { justify-content: center !important; }
   .signal2-button-icon-container { margin-left: 8px !important; margin-right: -8px; }
@@ -862,7 +813,6 @@ watch(showBranchList, (newValue) => {
   .signal2-modal { padding: 24px; }
   .signal2-modal-body { margin-top: 12px; }
   .signal2-modal-footer { margin-top: 20px; }
-  .signal2-mystery-button { font-size: clamp(14.3px, 3vw, 11px); padding: clamp(9.1px, 1.82vw, 7px) clamp(18.2px, 3.64vw, 14px); }
   .signal2-how-it-works-link { font-size: 14px; }
   .signal2-review-modal-content { height: 85vh; }
   .signal2-modal-scrollable-content { padding: 16px 10px 10px 10px; }
@@ -877,11 +827,6 @@ watch(showBranchList, (newValue) => {
   --signal2-border-gradient: linear-gradient(135deg, #4a5568, #718096, #a0aec0);
   --signal2-glow-color: rgba(113, 128, 150, 0.25);
   --signal2-glow-hover-color: rgba(113, 128, 150, 0.6);
-}
-.signal2-orange-stat {
-  --signal2-border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d);
-  --signal2-glow-color: rgba(245, 158, 11, 0.25);
-  --signal2-glow-hover-color: rgba(245, 158, 11, 0.6);
 }
 .signal2-lime-stat {
   --signal2-border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #c5f946);
