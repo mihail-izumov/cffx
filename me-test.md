@@ -6,4 +6,6 @@ pageClass: centered-page
 title: Отправьте Умный Отзыв – Тест
 ---
 
-<CoffeePointsSMRTest />
+<SignalWidget />
+
+
