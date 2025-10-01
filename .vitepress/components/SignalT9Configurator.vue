@@ -247,7 +247,7 @@
         </div>
 
         <div v-if="!formSubmitted">
-          <button class="signal-submit-button" :disabled="submitStatus === 'processing'" @click="submitForm">
+          <button class="signal-submit-button" :disabled="submitStatus === 'processing' || !form.agreedToTerms" @click="submitForm">
             {{ submitStatus === 'processing' ? 'Отправка...' : 'Отправить отзыв в кофейню' }}
           </button>
         </div>
