@@ -86,7 +86,7 @@ import PDFButton from '../components/PDFButton.vue'
 import SmartReview3Cards from '../components/SmartReview3Cards.vue'
 import SignalWidget from '../components/SignalWidget.vue'
 import SignalBranchSelector from '../components/SignalBranchSelector.vue'
-import SignalCafeCard.vue from '../components/SignalCafeCard.vue'
+import SignalCafeCard from '../components/SignalCafeCard.vue'
 
 export default {
   extends: DefaultTheme,
