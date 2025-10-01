@@ -242,7 +242,7 @@
 
           <label class="signal-agreement">
             <input type="checkbox" v-model="form.agreedToTerms" />
-            <span>С <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a> согласен/на</span>
+            <span>Подтверждаю согласие с <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a></span>
           </label>
         </div>
 
