@@ -1,31 +1,31 @@
 <template>
   <div class="anna-brands-container">
-    <!-- ШАГ 1 -->
+    <!-- ХАРАКТЕР -->
     <div class="anna-brand-card anna-step-card">
-      <h3 class="anna-title">Отправьте Сигнал</h3>
-      <p class="anna-description-main">Наша умная форма поможет за 30 секунд изложить свои мысли и предложения</p>
-      <p class="anna-description-goals anna-step-goals">Ничего лишнего — только суть</p>
+      <h3 class="anna-title">Понимает с полуслова</h3>
+      <p class="anna-description-main">Не судит и не критикует. Скажите «здесь паршиво» — она поймёт, что именно вас беспокоит</p>
+      <p class="anna-description-goals anna-step-goals">Не требует больших объяснений</p>
     </div>
     
-    <!-- ШАГ 2 -->
+    <!-- НАВЫКИ -->
     <div class="anna-brand-card anna-step-card">
-      <h3 class="anna-title">Получите поддержку</h3>
-      <p class="anna-description-main">ИИ-ассистент Анна поможет сформировать запрос, так чтобы он был гарантированно услышан кофейней</p>
-      <p class="anna-description-goals anna-step-goals">Превращает ваши эмоции в действия</p>
+      <h3 class="anna-title">Говорит языком решений</h3>
+      <p class="anna-description-main">Ваше «бесит медленное обслуживание» Анна переводит в «оптимизировать время подачи заказов»</p>
+      <p class="anna-description-goals anna-step-goals">Кофейни слушают Анну</p>
     </div>
     
-    <!-- ШАГ 3 -->
+    <!-- СВЯЗИ -->
     <div class="anna-brand-card anna-step-card">
-      <h3 class="anna-title">Запустите Процесс</h3>
-      <p class="anna-description-main">Ваш Сигнал немедленно поступает в работу менеджеру нужной кофейни</p>
-      <p class="anna-description-goals anna-step-goals">Мы гарантируем, что вы получите ответ</p>
+      <h3 class="anna-title">Знает, к кому обратиться</h3>
+      <p class="anna-description-main">Доставляет ваш Сигнал именно тому, кто может всё изменить</p>
+      <p class="anna-description-goals anna-step-goals">Прямая линия с каждым управляющим</p>
     </div>
     
-    <!-- ШАГ 4 -->
+    <!-- ПАМЯТЬ -->
     <div class="anna-brand-card anna-step-card">
-      <h3 class="anna-title">Получите Результат</h3>
-      <p class="anna-description-main">Анна отправит вам результат в Телеграм-чат, когда разбор будет закончен</p>
-      <p class="anna-description-goals anna-step-goals">Не просто ответ, а результат</p>
+      <h3 class="anna-title">Следит за результатом</h3>
+      <p class="anna-description-main">Помнит каждый ваш сигнал и отслеживает, что с ним происходит</p>
+      <p class="anna-description-goals anna-step-goals">Присылает уведомления, когда всё готово</p>
     </div>
   </div>
 </template>
@@ -94,7 +94,7 @@
   color: #ffffff !important;
 }
 
-/* Основной текст (белый) */
+/* Основной текст */
 .anna-description-main {
   color: #4a5a4a !important;
   font-size: 15px !important;
