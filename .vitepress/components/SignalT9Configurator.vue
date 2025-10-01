@@ -223,18 +223,23 @@
           <div class="signal-rotating-phrase-container">
             <p class="signal-question-label">Останемся на связи?</p>
           </div>
-          <div class="signal-columns">
-            <div class="signal-column">
-              <label>Ваше имя</label>
-              <input v-model="form.userName" class="signal-input" placeholder="Как к вам обращаться?" />
-              <p class="signal-input-hint">Для персонального общения с ИИ-ассистентом Анной.</p>
-            </div>
-            <div class="signal-column">
-              <label>Ваш контакт в Telegram</label>
-              <input v-model="form.telegramContact" class="signal-input" placeholder="+7 (___) ___-__-__" />
-              <p class="signal-input-hint">Чтобы получать обновления и видеть результат.</p>
-            </div>
+          
+          <!-- Переключатель режима "Инкогнито" -->
+          <div class="signal-incognito-toggle">
+            <label class="signal-toggle-label">
+              <input type="checkbox" v-model="form.isIncognito" class="signal-toggle-checkbox" />
+              <span class="signal-toggle-slider"></span>
+              <span class="signal-toggle-text">Режим "Инкогнито"</span>
+            </label>
           </div>
+
+          <!-- Поле ввода имени (показывается только если НЕ инкогнито) -->
+          <div v-if="!form.isIncognito" class="signal-name-field">
+            <label>Ваше имя</label>
+            <input v-model="form.userName" class="signal-input" placeholder="Как к вам обращаться?" />
+            <p class="signal-input-hint">Для персонального общения с ИИ-ассистентом Анной.</p>
+          </div>
+
           <label class="signal-agreement">
             <input type="checkbox" v-model="form.agreedToTerms" />
             <span>С <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a> согласен/на</span>
@@ -293,7 +298,7 @@ const form = reactive({
   selectedNetwork: '',
   selectedBranch: '',
   userName: '',
-  telegramContact: '',
+  isIncognito: false,
   agreedToTerms: true
 });
 
@@ -457,7 +462,6 @@ async function submitForm() {
     "Сеть": form.selectedNetwork,
     "Адрес": form.selectedBranch,
     "Имя": form.userName,
-    "Telegram": form.telegramContact,
     "Отзыв": form.summaryText
   };
   try {
@@ -1685,4 +1689,70 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
     padding: 0.6rem 2rem;
   }
 }
+
+  .signal-incognito-toggle {
+  margin-bottom: 1.5rem;
+}
+
+.signal-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.signal-toggle-checkbox {
+  display: none;
+}
+
+.signal-toggle-slider {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  background-color: #444;
+  border-radius: 26px;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.signal-toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #fff;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.3s ease;
+}
+
+.signal-toggle-checkbox:checked + .signal-toggle-slider {
+  background-color: #00C2A8;
+}
+
+.signal-toggle-checkbox:checked + .signal-toggle-slider::before {
+  transform: translateX(22px);
+}
+
+.signal-toggle-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #ccc;
+}
+
+.signal-name-field {
+  margin-bottom: 1rem;
+}
+
+.signal-name-field label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #aaa;
+  margin-bottom: 0.5rem;
+}
+
+  
 </style>
