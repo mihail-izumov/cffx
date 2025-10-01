@@ -288,6 +288,7 @@ const cycleText = () => {
 }
 
 const showInfoModal = ref(false)
+const showGrowthModal = ref(false)
 
 const onKeydown = (e) => {
   if (e.key === 'Escape') {
@@ -295,12 +296,28 @@ const onKeydown = (e) => {
       closeReviewModal()
     } else {
       showInfoModal.value = false
+      showGrowthModal.value = false
     }
   }
 }
 
 const openInvestLink = () => {
   window.open('/signals', '_blank')
+}
+
+const openYandexModal = () => {
+  if (isMobile.value) return
+  showYandexTooltip.value = false
+  showGrowthModal.value = true
+}
+
+const openSignalsModal = () => {
+  if (isMobile.value) {
+    showInfoModal.value = true
+  } else {
+    showSignalsTooltip.value = false
+    showInfoModal.value = true
+  }
 }
 
 watch(selectedCafe, (newName) => {
@@ -430,6 +447,7 @@ watch(showBranchList, (newValue) => {
               class="signal2-stat-card signal2-graphite-stat"
               @mouseenter="!isMobile ? showYandexTooltip = true : null"
               @mouseleave="!isMobile ? showYandexTooltip = false : null"
+              @click="openYandexModal"
             >
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
@@ -445,9 +463,9 @@ watch(showBranchList, (newValue) => {
 
             <div 
               class="signal2-stat-card signal2-lime-stat" 
-              @click="isMobile ? (showInfoModal = true) : null"
               @mouseenter="!isMobile ? showSignalsTooltip = true : null"
               @mouseleave="!isMobile ? showSignalsTooltip = false : null"
+              @click="openSignalsModal"
             >
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
@@ -465,49 +483,24 @@ watch(showBranchList, (newValue) => {
             </div>
           </div>
 
-          <div v-if="showYandexTooltip && !isMobile" class="signal2-tooltip">
-            <div class="signal2-tooltip-title">Отзыв Яндекс/2ГИС</div>
-            <div class="signal2-tooltip-text">Ваше мнение увидят все, но кофейня может не ответить</div>
-          </div>
-
-          <div v-if="showSignalsTooltip && !isMobile" class="signal2-tooltip">
-            <div class="signal2-tooltip-title">Сигналы</div>
-            <div class="signal2-tooltip-text">Быстрая помощь и решение проблем за 24 часа</div>
+          <div class="signal2-system-status-bar">
+            <span v-if="establishment.isConnected" class="signal2-status-label">🟢 На связи:</span>
+            <span v-else class="signal2-status-label-disconnected">🔴 Постараемся помочь, но решение не гарантировано</span>
+            
+            <div v-if="establishment.isConnected" class="signal2-status-metrics">
+              <div class="signal2-status-metric">
+                <span class="signal2-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
+                <span class="signal2-metric-text">→ ответ</span>
+              </div>
+              <div class="signal2-status-separator">•</div>
+              <div class="signal2-status-metric">
+                <span class="signal2-metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
+                <span class="signal2-metric-text">→ решение</span>
+              </div>
+            </div>
           </div>
 
           <div class="signal2-control-panel">
-            <div class="signal2-button-container">
-              <button @click="showBranchList = true" class="signal2-action-button signal2-ticket-button">
-                Отправить Яндекс/ГИС
-                <div class="signal2-button-icon-container">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0"/><circle cx="12" cy="8" r="2"/><path d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712"/></svg>
-                </div>
-              </button>
-              <button @click="openReviewModal" class="signal2-action-button signal2-review-button">
-                Отправить Сигнал
-                <div class="signal2-button-icon-container signal2-golden-icon-container">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#422006" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-                </div>
-              </button>
-            </div>
-
-            <div class="signal2-system-status-bar">
-              <span v-if="establishment.isConnected" class="signal2-status-label">🟢 На связи:</span>
-              <span v-else class="signal2-status-label-disconnected">🔴 Постараемся помочь, но решение не гарантировано</span>
-              
-              <div v-if="establishment.isConnected" class="signal2-status-metrics">
-                <div class="signal2-status-metric">
-                  <span class="signal2-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
-                  <span class="signal2-metric-text">→ ответ</span>
-                </div>
-                <div class="signal2-status-separator">•</div>
-                <div class="signal2-status-metric">
-                  <span class="signal2-metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
-                  <span class="signal2-metric-text">→ решение</span>
-                </div>
-              </div>
-            </div>
-
             <div class="signal2-control-panel-header">
               <button
                 v-if="!isMobile"
@@ -528,6 +521,21 @@ watch(showBranchList, (newValue) => {
               <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
                 <span :class="['signal2-rotating-text', { 'signal2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
               </div>
+            </div>
+
+            <div class="signal2-button-container">
+              <button @click="showBranchList = true" class="signal2-action-button signal2-ticket-button">
+                Отправить Яндекс/ГИС
+                <div class="signal2-button-icon-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0"/><circle cx="12" cy="8" r="2"/><path d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712"/></svg>
+                </div>
+              </button>
+              <button @click="openReviewModal" class="signal2-action-button signal2-review-button">
+                Отправить Сигнал
+                <div class="signal2-button-icon-container signal2-lime-icon-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2e05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+                </div>
+              </button>
             </div>
           </div>
         </div>
@@ -583,17 +591,29 @@ watch(showBranchList, (newValue) => {
     </div>
 
     <div v-if="showInfoModal" class="signal2-modal-overlay" @click.self="showInfoModal = false">
-      <div class="signal2-modal" role="dialog" aria-modal="true" id="signal2-signal-dialog" aria-label="Ваши отзывы меняют всё">
+      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Сигналы">
         <div class="signal2-modal-header">
-          <div class="signal2-modal-title">Ваши отзывы меняют всё.</div>
+          <div class="signal2-modal-title">Сигналы</div>
         </div>
         <div class="signal2-modal-body">
-          Каждый отзыв делает любимую кофейню еще лучше, а Сигнал помогает решить Вашу проблему за 24 часа. Почувствуйте силу настоящих перемен.
-          <br /><br />
-          <a href="https://cffx.ru/signals.html" target="_blank" class="signal2-modal-link signal2-no-vitepress-style">Как Работает Сигнал</a>
+          Быстрая помощь и решение проблем за 24 часа. Ваш сигнал мгновенно поступает в работу управляющему кофейни, и вы получаете не просто ответ, а реальный результат.
         </div>
         <div class="signal2-modal-footer">
           <button class="signal2-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="showGrowthModal" class="signal2-modal-overlay" @click.self="showGrowthModal = false">
+      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Отзыв Яндекс/2ГИС">
+        <div class="signal2-modal-header">
+          <div class="signal2-modal-title">Отзыв Яндекс/2ГИС</div>
+        </div>
+        <div class="signal2-modal-body">
+          Ваше мнение увидят все, но кофейня может не ответить. Классические отзывы помогают другим гостям, но не гарантируют решение вашей проблемы.
+        </div>
+        <div class="signal2-modal-footer">
+          <button class="signal2-modal-ok" type="button" @click="showGrowthModal = false">Понятно</button>
         </div>
       </div>
     </div>
@@ -642,11 +662,10 @@ watch(showBranchList, (newValue) => {
 .signal2-cafe-name { margin: 0; color: #ffffff; font-size: 24px; font-weight: 600; }
 .signal2-status-badge { background: rgba(0,0,0,0.2); backdrop-filter: blur(5px); color: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3); text-transform: uppercase; letter-spacing: 0.5px; position: relative; }
 .signal2-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.signal2-stat-card { position: relative; border-radius: 22px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background: var(--vp-c-bg-soft); }
+.signal2-stat-card { position: relative; border-radius: 22px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background: var(--vp-c-bg-soft); cursor: pointer; }
 .signal2-stat-card:hover { transform: translateY(-8px); }
 .signal2-stat-card::before { content: ''; position: absolute; inset: 0; border-radius: 22px; padding: 2px; background: var(--signal2-border-gradient); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: filter 0.4s ease; z-index: 3; }
 .signal2-stat-card:hover::before { filter: brightness(2) saturate(1.5); }
-.signal2-stat-card.signal2-lime-stat { cursor: pointer; }
 .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
 .signal2-stat-card:hover .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.4); }
 .signal2-stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
@@ -723,14 +742,14 @@ watch(showBranchList, (newValue) => {
 .signal2-action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .signal2-ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
 .signal2-ticket-button:hover { background: rgba(85, 85, 85, 0.9); color: white; transform: translateY(-2px); }
-.signal2-review-button { background: linear-gradient(135deg, #a3e635, #c5f946); color: #422006; box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3); }
+.signal2-review-button { background: linear-gradient(135deg, #a3e635, #c5f946); color: #1a2e05; box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3); }
 .signal2-review-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(163, 230, 53, 0.4); }
 .signal2-button-icon-container { width: 32px; height: 32px; border-radius: 50%; background: rgba(50, 50, 50, 0.9); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
-.signal2-golden-icon-container { background: rgba(70, 70, 70, 0.9) !important; }
+.signal2-lime-icon-container { background: rgba(100, 150, 30, 0.4) !important; }
 .signal2-button-icon { transition: transform 0.3s ease; color: currentColor; }
 .signal2-review-button:hover .signal2-button-icon { transform: translateX(2px); }
 .signal2-ticket-button:hover .signal2-button-icon-container { background: rgba(35, 35, 35, 1); transform: scale(1.05); }
-.signal2-review-button:hover .signal2-golden-icon-container { background: rgba(85, 85, 85, 1) !important; transform: scale(1.05); }
+.signal2-review-button:hover .signal2-lime-icon-container { background: rgba(120, 180, 40, 0.5) !important; transform: scale(1.05); }
 .signal2-branches-content { flex-grow: 1; }
 .signal2-branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
 .signal2-branches-list { padding: 0; }
@@ -752,46 +771,6 @@ watch(showBranchList, (newValue) => {
 .signal2-modal-footer { margin-top: 24px; display: flex; justify-content: flex-end; }
 .signal2-modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 500; }
 .signal2-modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
-
-.signal2-tooltip {
-  position: fixed;
-  background: rgba(20, 20, 20, 0.98);
-  border: 1px solid rgba(163, 230, 53, 0.3);
-  border-radius: 12px;
-  padding: 12px 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-  z-index: 10000;
-  pointer-events: none;
-  max-width: 280px;
-  backdrop-filter: blur(8px);
-  animation: signal2-tooltip-fade-in 0.2s ease-out;
-}
-
-.signal2-tooltip-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #a3e635;
-  margin-bottom: 6px;
-  letter-spacing: 0.02em;
-}
-
-.signal2-tooltip-text {
-  font-size: 12px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.4;
-}
-
-@keyframes signal2-tooltip-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 .signal2-radio-icon {
   display: inline-block;
@@ -891,10 +870,9 @@ watch(showBranchList, (newValue) => {
   .signal2-review-modal-content { height: 75vh !important; max-height: 75vh !important; }
 }
 .signal2-graphite-stat {
-  --signal2-border-gradient: linear-gradient(135deg, #4a5568, #718096, #a0aec0);
-  --signal2-glow-color: rgba(113, 128, 150, 0.25);
-  --signal2-glow-hover-color: rgba(113, 128, 150, 0.6);
-  border: 2px solid rgba(70, 70, 70, 0.8);
+  --signal2-border-gradient: linear-gradient(135deg, rgba(70, 70, 70, 0.8), rgba(113, 128, 150, 0.6), rgba(70, 70, 70, 0.8));
+  --signal2-glow-color: rgba(70, 70, 70, 0.25);
+  --signal2-glow-hover-color: rgba(113, 128, 150, 0.4);
 }
 .signal2-lime-stat {
   --signal2-border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #c5f946);
