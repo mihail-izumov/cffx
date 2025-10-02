@@ -10,32 +10,34 @@
     stroke-linejoin="round"
   >
     <defs>
-      <!-- Маска, которая обрезает углы на низких уровнях заливки -->
-      <mask id="cup-bottom-mask">
-        <rect x="0" y="0" width="100%" height="100%" fill="white" />
-        <!-- Вырезаем уголки, которые "выпирают" на 2-м шаге -->
-        <circle v-if="h < 4" cx="5" :cy="17" r="1.5" fill="black" />
-        <circle v-if="h < 4" cx="16" :cy="17" r="1.5" fill="black" />
-      </mask>
+      <!--
+        Область для заливки. Поднята вместе с чашей.
+        (y-координаты уменьшены на 4px)
+      -->
+      <clipPath id="cup-liquid-clip-path">
+        <path d="M5 4 H16 V13 A3 3 0 0 1 13 16 H8 A3 3 0 0 1 5 13 V4 Z" />
+      </clipPath>
     </defs>
 
-    <!-- Заливка: скруглённый прямоугольник, обрезанный маской -->
+    <!--
+      Жидкость. Также поднята на 4px.
+    -->
     <rect
       class="coffee-fill"
-      :x="innerX"
-      :y="innerY + innerH - h"
-      :width="innerW"
+      clip-path="url(#cup-liquid-clip-path)"
+      x="5"
+      :y="16 - h"
+      width="11"
       :height="h"
-      rx="1.2"
-      ry="1.2"
-      mask="url(#cup-bottom-mask)"
     />
 
-<!-- Контур чашки, ручки и блюдца (рисуются поверх заливки) -->
-<path d="M5 2h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V2z" />
-<path d="M16 2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" />
-<path d="M5 15h13" />
-
+    <!--
+      Контур чашки и ручка (подняты на 4px).
+      Блюдце осталось на прежнем месте.
+    -->
+    <path d="M5 4 H16 V13 A3 3 0 0 1 13 16 H8 A3 3 0 0 1 5 13 V4 Z" />
+    <path d="M16 4h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" />
+    <path d="M5 21h13" />
   </svg>
 </template>
 
@@ -48,21 +50,16 @@ const props = defineProps({
   size: { type: [Number, String], default: 22 },
 })
 
-// Координаты внутренней части чашки
-const innerX = 5,
-  innerY = 8,
-  innerW = 11,
-  innerH = 9
-
-// Высота заливки с заметными ступенями
+// Этот блок остается без изменений
 const h = computed(() => {
   const i = Math.max(0, Math.min(props.stepIndex, props.stepsTotal - 1))
-  const stepsPx = [0, 2, 4, 6, 7.5, 9]
+  const stepsPx = [0, 3, 5, 7, 9, 11, 12]
   return stepsPx[i] ?? 0
 })
 </script>
 
 <style scoped>
+/* Этот блок остается без изменений */
 .coffee-fill {
   fill: currentColor;
   stroke: none;
