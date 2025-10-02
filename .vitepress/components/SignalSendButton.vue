@@ -33,7 +33,7 @@ const openModal = () => {
   outline: none;
 }
 
-/* Анимация с переливом */
+/* Анимация перелива */
 .btn-primary {
   background-image: linear-gradient(-45deg, #c5f946, #85a931, #c5f946, #85a931);
   background-size: 400% 400%;
@@ -43,7 +43,7 @@ const openModal = () => {
 }
 
 .btn-primary:hover {
-  background-image: linear-gradient(-45deg, #85a931, #c5f946, #85a931, #c5f946);
+  animation-direction: reverse;
   color: #000 !important;
   font-weight: 700;
   transform: translateY(-2px);
