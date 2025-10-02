@@ -416,9 +416,6 @@ const sections = [
 
 const selectedSection = ref('emotions');
 
-// Уникальный id clipPath, чтобы не конфликтовать между несколькими кнопками
-const clipId = `cup-clip-${Math.random().toString(36).slice(2, 9)}`
-
 const coffeeFillHeight = computed(() => {
   const i = sections.findIndex(s => s.id === selectedSection.value)
   const steps = [0, 2, 4, 6, 7, 8]   // 6 экранов = 6 видимых уровней
