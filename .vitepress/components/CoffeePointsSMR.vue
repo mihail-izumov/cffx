@@ -8,11 +8,11 @@ const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка
 const cafes = {
   'Корж': {
     name: 'Корж',
-    yandex2gis: 51,
+    yandex2gis: 5,
     yandex2gisPercent: 94,
     smartReviews: 0,
     smartReviewsPercent: 0,
-    signals: '2',
+    signals: '1',
     signalsPercent: 100,
     isConnected: true,
     branches: [
@@ -28,7 +28,7 @@ const cafes = {
   },
   'MOSAIC': {
     name: 'MOSAIC',
-    yandex2gis: 194,
+    yandex2gis: 12,
     yandex2gisPercent: 42,
     smartReviews: 0,
     smartReviewsPercent: 0,
@@ -54,7 +54,7 @@ const cafes = {
   },
   'Skuratov': {
     name: 'Skuratov',
-    yandex2gis: 44,
+    yandex2gis: 2,
     yandex2gisPercent: 89,
     smartReviews: 0,
     smartReviewsPercent: 0,
@@ -72,7 +72,7 @@ const cafes = {
   },
   'Surf': {
     name: 'Surf',
-    yandex2gis: 12,
+    yandex2gis: 1,
     yandex2gisPercent: 100,
     smartReviews: 0,
     smartReviewsPercent: 0,
@@ -87,7 +87,7 @@ const cafes = {
   },
   'Белотурка': {
     name: 'Белотурка',
-    yandex2gis: 135,
+    yandex2gis: 8,
     yandex2gisPercent: 1,
     smartReviews: 0,
     smartReviewsPercent: 0,
@@ -104,7 +104,7 @@ const cafes = {
   },
   'Кэрри': {
     name: 'Кэрри',
-    yandex2gis: 101,
+    yandex2gis: 4,
     yandex2gisPercent: 97,
     smartReviews: 0,
     smartReviewsPercent: 0,
