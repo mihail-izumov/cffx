@@ -10,7 +10,7 @@ export default defineConfig({
     '/': {
       lang: 'ru-RU',
       title: 'Сигнал',
-      description: 'Где Начинается Ваша Кофейня',
+      description: 'Где Начинается Вааша Кофейня',
     },
   },
   
