@@ -268,12 +268,12 @@
           @click="goToNextSection()"
           :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
         >
+<span class="signal-liquid-next-text">Дальше</span>
 <svg class="signal-next-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M10 2v2"/><path d="M14 2v2"/><path d="M6 2v2"/>
   <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
   <rect class="signal-coffee-fill" x="4" y="9" width="9" height="0" rx="1"/>
 </svg>
-
         </button>
         
         <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
@@ -1756,22 +1756,19 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   margin-bottom: 0.5rem;
 }
 
-  /* Анимация наполнения чашки */
+/* Анимация наполнения чашки */
 .signal-next-icon .signal-coffee-fill {
   fill: currentColor;
-  opacity: 0.3;
+  opacity: 0.4;
   animation: coffee-fill 2s ease-in-out infinite;
-  transform-origin: bottom;
 }
 
 @keyframes coffee-fill {
   0%, 100% {
-    height: 0;
-    y: 17;
+    height: 0px;
   }
   50% {
-    height: 8;
-    y: 9;
+    height: 8px;
   }
 }
 
