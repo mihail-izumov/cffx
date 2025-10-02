@@ -269,28 +269,33 @@
           :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
         >
 <span class="signal-liquid-next-text">Дальше</span>
-<svg class="signal-next-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <defs>
-    <!-- Маска, которая определяет видимую область заливки -->
-    <mask id="coffee-mask">
-      <path fill="white" d="M3.5,9.5 V17 a3.5,3.5 0 0,0 3.5,3.5 H13 a3.5,3.5 0 0,0 3.5,-3.5 V9.5 Z" />
-    </mask>
-  </defs>
-
-  <!-- Контур чашки и ручки -->
-  <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
+<svg class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Чашка с ручкой -->
+  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/>
+  <path d="M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
   
-  <!-- Блюдце (теперь точно видно) -->
-  <path d="M5 21h14"/>
+  <!-- Блюдце -->
+  <path d="M6 21h12"/>
   
-  <!-- Заливка, которая будет обрезана по маске -->
-  <rect 
-    class="signal-coffee-fill" 
-    x="3" y="9" width="14" height="12" 
-    fill="currentColor" 
-    mask="url(#coffee-mask)" 
-    :transform="`translate(0, ${8 - coffeeFillHeight})`"
-  />
+  <!-- Заливка - 6 уровней -->
+  <g v-if="coffeeFillLevel >= 1">
+    <path d="M5 19.5h11" stroke="none" fill="currentColor" opacity="0.3" stroke-width="3"/>
+  </g>
+  <g v-if="coffeeFillLevel >= 2">
+    <path d="M5 17.5h11" stroke="none" fill="currentColor" opacity="0.3" stroke-width="3"/>
+  </g>
+  <g v-if="coffeeFillLevel >= 3">
+    <path d="M5 15.5h11" stroke="none" fill="currentColor" opacity="0.3" stroke-width="3"/>
+  </g>
+  <g v-if="coffeeFillLevel >= 4">
+    <path d="M5 13.5h11" stroke="none" fill="currentColor" opacity="0.3" stroke-width="3"/>
+  </g>
+  <g v-if="coffeeFillLevel >= 5">
+    <path d="M5 11.5h11" stroke="none" fill="currentColor" opacity="0.3" stroke-width="3"/>
+  </g>
+  <g v-if="coffeeFillLevel >= 6">
+    <path d="M5 9.5h11" stroke="none" fill="currentColor" opacity="0.3" stroke-width="3"/>
+  </g>
 </svg>
 
         </button>
@@ -434,11 +439,10 @@ const sections = [
 
 const selectedSection = ref('emotions');
 
-const coffeeFillHeight = computed(() => {
+const coffeeFillLevel = computed(() => {
   const sectionIndex = sections.findIndex(s => s.id === selectedSection.value)
-  // Заливка от 0 до 8px (от низа чашки y=17 до верха y=9)
-  // При индексе 0 (emotions) = 0px, при индексе 5 (contact) = 8px
-  return Math.min((sectionIndex / 5) * 8, 8)
+  // 6 секций = 6 уровней (0-6)
+  return sectionIndex
 })
 
 const isActive = (id) => id === selectedSection.value;
@@ -1794,9 +1798,9 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   margin-bottom: 0.5rem;
 }
 
-/* Плавное наполнение чашки при переходах */
-.signal-next-icon .signal-coffee-fill {
-  transition: transform 0.4s ease-in-out;
+/* Плавное появление уровней заливки */
+.signal-next-icon g {
+  transition: opacity 0.3s ease-in-out;
 }
 
 </style>
