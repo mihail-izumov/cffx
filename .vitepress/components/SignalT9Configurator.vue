@@ -269,33 +269,45 @@
           :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
         >
 <span class="signal-liquid-next-text">Дальше</span>
-<svg class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <!-- Чашка с ручкой -->
-  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/>
-  <path d="M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
-  
-  <!-- Блюдце -->
-  <path d="M6 21h12"/>
-  
-  <!-- Заливка - 6 уровней -->
-  <g v-if="coffeeFillLevel >= 1">
-    <path d="M5 19.5h11" stroke="none" fill="currentColor" opacity="0.3" stroke-width="3"/>
-  </g>
-  <g v-if="coffeeFillLevel >= 2">
-    <path d="M5 17.5h11" stroke="none" fill="currentColor" opacity="0.3" stroke-width="3"/>
-  </g>
-  <g v-if="coffeeFillLevel >= 3">
-    <path d="M5 15.5h11" stroke="none" fill="currentColor" opacity="0.3" stroke-width="3"/>
-  </g>
-  <g v-if="coffeeFillLevel >= 4">
-    <path d="M5 13.5h11" stroke="none" fill="currentColor" opacity="0.3" stroke-width="3"/>
-  </g>
-  <g v-if="coffeeFillLevel >= 5">
-    <path d="M5 11.5h11" stroke="none" fill="currentColor" opacity="0.3" stroke-width="3"/>
-  </g>
-  <g v-if="coffeeFillLevel >= 6">
-    <path d="M5 9.5h11" stroke="none" fill="currentColor" opacity="0.3" stroke-width="3"/>
-  </g>
+<!-- Уровень 0: пустая чашка -->
+<svg v-if="coffeeFillLevel === 0" class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
+  <line x1="6" y1="21" x2="16" y2="21"/>
+</svg>
+
+<!-- Уровень 1: 20% -->
+<svg v-else-if="coffeeFillLevel === 1" class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
+  <rect x="5" y="15" width="11" height="2" fill="currentColor" opacity="0.4"/>
+  <line x1="6" y1="21" x2="16" y2="21"/>
+</svg>
+
+<!-- Уровень 2: 40% -->
+<svg v-else-if="coffeeFillLevel === 2" class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
+  <rect x="5" y="13" width="11" height="4" fill="currentColor" opacity="0.4"/>
+  <line x1="6" y1="21" x2="16" y2="21"/>
+</svg>
+
+<!-- Уровень 3: 60% -->
+<svg v-else-if="coffeeFillLevel === 3" class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
+  <rect x="5" y="11" width="11" height="6" fill="currentColor" opacity="0.4"/>
+  <line x1="6" y1="21" x2="16" y2="21"/>
+</svg>
+
+<!-- Уровень 4: 80% -->
+<svg v-else-if="coffeeFillLevel === 4" class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
+  <rect x="5" y="9.5" width="11" height="7.5" fill="currentColor" opacity="0.4"/>
+  <line x1="6" y1="21" x2="16" y2="21"/>
+</svg>
+
+<!-- Уровень 5: 100% -->
+<svg v-else class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
+  <rect x="5" y="8" width="11" height="9" fill="currentColor" opacity="0.5"/>
+  <line x1="6" y1="21" x2="16" y2="21"/>
 </svg>
 
         </button>
@@ -1798,9 +1810,13 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   margin-bottom: 0.5rem;
 }
 
-/* Плавное появление уровней заливки */
-.signal-next-icon g {
-  transition: opacity 0.3s ease-in-out;
+/* Плавная смена иконок */
+.signal-next-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transform: translateY(1px);
+  transition: opacity 0.2s ease-in-out; /* ← ДОБАВИТЬ */
 }
 
 </style>
