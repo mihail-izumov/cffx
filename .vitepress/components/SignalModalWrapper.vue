@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import SignalT9Configurator from './SignalT9Configurator.vue'
+// Убедитесь, что путь к компоненту правильный
+import SignalT9Configurator from '../../components/SignalT9Configurator.vue'
 
 const isReviewModalOpen = ref(false)
 
@@ -45,6 +46,7 @@ onUnmounted(() => {
           @click.stop
         >
           <div class="signal-modal-content">
+            <!-- Здесь будет ваш компонент с формой -->
             <SignalT9Configurator />
           </div>
           
@@ -53,7 +55,7 @@ onUnmounted(() => {
               @click="closeReviewModal" 
               class="signal-modal-close-btn"
             >
-              Закрыть
+              Закрыть и вернуться
             </button>
           </div>
         </div>
@@ -63,54 +65,52 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* Анимация появления */
+/* Анимация */
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: opacity 0.3s ease;
 }
-
 .modal-fade-enter-from,
 .modal-fade-leave-to {
   opacity: 0;
 }
-
 .modal-fade-enter-active .signal-modal-container,
 .modal-fade-leave-active .signal-modal-container {
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }
-
 .modal-fade-enter-from .signal-modal-container,
 .modal-fade-leave-to .signal-modal-container {
-  transform: translateY(20px);
+  transform: scale(0.95);
+  opacity: 0;
 }
 
-/* Overlay */
+/* Оверлей */
 .signal-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10000;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
   padding: 20px;
   box-sizing: border-box;
 }
 
 /* Контейнер модального окна */
 .signal-modal-container {
-  background: #1a1a1c;
-  border-radius: 12px;
+  background: #1e1e21;
+  border-radius: 16px;
   width: 100%;
-  max-width: 600px;
+  max-width: 480px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -118,68 +118,65 @@ onUnmounted(() => {
 .signal-modal-content {
   flex: 1;
   overflow-y: auto;
-  padding: 0;
+  padding: 0; /* Убираем отступы, так как они должны быть в SignalT9Configurator */
 }
 
-/* Кастомная прокрутка */
+/* Стилизация скроллбара */
 .signal-modal-content::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
-
 .signal-modal-content::-webkit-scrollbar-track {
-  background: #2a2a2c;
-  border-radius: 4px;
+  background: transparent;
 }
-
 .signal-modal-content::-webkit-scrollbar-thumb {
-  background: #3b3b3d;
-  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
 }
 
-.signal-modal-content::-webkit-scrollbar-thumb:hover {
-  background: #4a4a4c;
-}
-
-/* Футер с кнопкой */
+/* Футер */
 .signal-modal-footer {
   padding: 16px 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  background: #202124;
+  background: #242427;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
 }
 
+/* Кнопка "Закрыть" */
 .signal-modal-close-btn {
   width: 100%;
-  padding: 12px 24px;
-  background: #3b3b3d;
-  color: #f0f0f0;
+  padding: 12px;
+  background: #3a3a3c;
+  color: #c7c7cc;
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 10px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .signal-modal-close-btn:hover {
-  background: #454546;
-  color: #c5f946;
-  transform: translateY(-1px);
+  background: #48484a;
+  color: white;
 }
 
-/* Мобильная версия */
+/* Адаптивность */
 @media (max-width: 768px) {
   .signal-modal-overlay {
-    padding: 10px;
+    padding: 0;
   }
-  
   .signal-modal-container {
     max-width: 100%;
-    max-height: 95vh;
-    border-radius: 8px;
+    max-height: 100%;
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+    border: none;
   }
-  
   .signal-modal-footer {
-    padding: 12px 16px;
+    padding: 12px 16px 24px 16px; /* Добавляем отступ снизу для мобильных */
+    border-radius: 0;
   }
 }
 </style>
