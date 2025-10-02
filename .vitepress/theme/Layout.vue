@@ -8,12 +8,12 @@
     </template>
   </DefaultLayout>
   
-  <!-- Добавляем модальное окно вне Layout -->
+  <!-- Модальное окно -->
   <SignalModalWrapper />
 </template>
 
 <script setup>
-import { computed, watch } from 'vue'
+import { computed, watch, onMounted, nextTick } from 'vue'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import NotificationSlider from './NotificationSlider.vue'
@@ -36,6 +36,95 @@ watch(shouldShowBanner, (newVal) => {
     }
   }
 }, { immediate: true })
+
+// Обработка мобильной кнопки "Отправить Сигнал"
+onMounted(() => {
+  if (typeof window === 'undefined') return
+  
+  const setupMobileSignalButton = () => {
+    // Проверяем, что это мобильное устройство
+    if (window.innerWidth > 768) return
+    
+    // Ждём, пока window.openSignalModal станет доступна
+    const checkModal = setInterval(() => {
+      if (window.openSignalModal) {
+        clearInterval(checkModal)
+        
+        // Находим кнопку в мобильном меню
+        const signalLinks = document.querySelectorAll('.VPNavScreen .VPSocialLink[aria-label="signal-link"]')
+        
+        signalLinks.forEach((link) => {
+          // Отключаем стандартное поведение ссылки
+          link.removeAttribute('href')
+          link.style.pointerEvents = 'none'
+          link.style.position = 'relative'
+          
+          // Создаём overlay-кнопку
+          const overlay = document.createElement('button')
+          overlay.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+          `
+          
+          overlay.addEventListener('click', (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            
+            // Закрываем мобильное меню
+            const navScreen = document.querySelector('.VPNavScreen')
+            if (navScreen) {
+              navScreen.classList.remove('open')
+            }
+            
+            // Убираем блокировку скролла
+            document.body.classList.remove('overflow-hidden')
+            
+            // Сбрасываем состояние кнопки меню
+            const menuButton = document.querySelector('.VPNavBarHamburger button')
+            if (menuButton) {
+              menuButton.setAttribute('aria-expanded', 'false')
+            }
+            
+            // Открываем модальное окно
+            nextTick(() => {
+              if (window.openSignalModal) {
+                window.openSignalModal()
+              }
+            })
+          })
+          
+          link.appendChild(overlay)
+        })
+      }
+    }, 100)
+    
+    // Таймаут на случай, если модальное окно не загрузится
+    setTimeout(() => clearInterval(checkModal), 5000)
+  }
+  
+  // Запускаем при загрузке
+  setupMobileSignalButton()
+  
+  // Запускаем при изменении размера окна
+  window.addEventListener('resize', setupMobileSignalButton)
+  
+  // Запускаем при изменениях в DOM (для SPA-навигации)
+  const observer = new MutationObserver(() => {
+    setupMobileSignalButton()
+  })
+  
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  })
+})
 </script>
 
 <style>
