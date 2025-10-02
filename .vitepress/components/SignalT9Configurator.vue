@@ -210,7 +210,7 @@
       </div>
 
       <p class="signal-success-description">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
-      <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Отправить тикет Анне</a>
+      <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Получить Ответ</a>
       <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">Кто Анна и как работает</a>
     </div>
   </div>
