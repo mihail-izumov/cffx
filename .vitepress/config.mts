@@ -97,7 +97,6 @@ export default defineConfig({
         }
       }
       
-      // Функция для ожидания доступности window.openSignalModal
       function waitForModal(callback, maxAttempts = 50) {
         let attempts = 0;
         const interval = setInterval(() => {
@@ -115,7 +114,6 @@ export default defineConfig({
       
       function updateSocialLinkTargets() {
         waitForModal(() => {
-          // Обработка кнопки "Отправить Сигнал"
           const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
           console.log('Found signal links:', signalLinks.length);
           
@@ -125,7 +123,6 @@ export default defineConfig({
             signalLink.removeAttribute('href');
             signalLink.style.cursor = 'pointer';
             
-            // Удаляем старые обработчики через клонирование
             const newLink = signalLink.cloneNode(true);
             signalLink.parentNode.replaceChild(newLink, signalLink);
             
@@ -168,6 +165,7 @@ export default defineConfig({
               signalLink.setAttribute('target', '_self');
               signalLink.removeAttribute('rel');
               signalLink.removeAttribute('href');
+              signalLink.setAttribute('href', 'javascript:void(0)');
               signalLink.style.cursor = 'pointer';
               
               const newLink = signalLink.cloneNode(true);
@@ -176,13 +174,32 @@ export default defineConfig({
               newLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                e.stopImmediatePropagation();
                 console.log('Mobile: Signal button clicked!');
+                
+                // Закрываем мобильное меню
+                const navScreen = document.querySelector('.VPNavScreen');
+                if (navScreen) {
+                  navScreen.classList.remove('open');
+                }
+                
+                // Убираем класс overflow-hidden с body
+                document.body.classList.remove('overflow-hidden');
+                
+                // Закрываем кнопку меню
+                const menuButton = document.querySelector('.VPNavBarHamburger button');
+                if (menuButton) {
+                  menuButton.setAttribute('aria-expanded', 'false');
+                }
+                
                 try {
                   window.openSignalModal();
                   console.log('✓ Mobile modal opened');
                 } catch (error) {
                   console.error('✗ Mobile error:', error);
                 }
+                
+                return false;
               });
             });
           });
