@@ -10,26 +10,29 @@
     stroke-linejoin="round"
   >
     <defs>
-      <!-- Область заливки (сделана шире) -->
+      <!-- Область заливки (остается без изменений) -->
       <clipPath id="cup-liquid-clip-path">
         <path d="M4 4 H18 V13 A3 3 0 0 1 15 16 H7 A3 3 0 0 1 4 13 V4 Z" />
       </clipPath>
     </defs>
 
-    <!-- Заливка (сделана шире) -->
-    <rect
-      class="coffee-fill"
-      clip-path="url(#cup-liquid-clip-path)"
-      x="4"
-      :y="16 - h"
-      width="14"
-      :height="h"
-    />
+    <!-- Группа для смещения всех элементов вверх на 2px -->
+    <g transform="translate(0, -2)">
+      <!-- Заливка (остается без изменений) -->
+      <rect
+        class="coffee-fill"
+        clip-path="url(#cup-liquid-clip-path)"
+        x="4"
+        :y="16 - h"
+        width="14"
+        :height="h"
+      />
 
-    <!-- Контур чашки, ручка и блюдце (сделаны шире) -->
-    <path d="M4 4 H18 V13 A3 3 0 0 1 15 16 H7 A3 3 0 0 1 4 13 V4 Z" />
-    <path d="M18 6h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" />
-    <path d="M4 20h14" />
+      <!-- Контур чашки, ручка и блюдце (остаются без изменений) -->
+      <path d="M4 4 H18 V13 A3 3 0 0 1 15 16 H7 A3 3 0 0 1 4 13 V4 Z" />
+      <path d="M18 6h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" />
+      <path d="M4 20h14" />
+    </g>
   </svg>
 </template>
 
