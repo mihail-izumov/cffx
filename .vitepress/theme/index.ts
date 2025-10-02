@@ -91,13 +91,8 @@ import SignalModalWrapper from '../components/SignalModalWrapper.vue'
 export default {
   extends: DefaultTheme,
 
-  // Обновляем Layout, чтобы добавить модальное окно
-  Layout: () => {
-    return h(Layout, null, {
-      // Добавляем модальное окно в layout-bottom слот
-      'layout-bottom': () => h(SignalModalWrapper)
-    })
-  },
+  // Используем Layout напрямую (модальное окно добавлено в Layout.vue)
+  Layout: Layout,
 
   enhanceApp({ app }) {
     app.component('SimulatorCards', SimulatorCards)
