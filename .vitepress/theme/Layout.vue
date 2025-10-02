@@ -14,7 +14,7 @@
 
 <script setup>
 import { computed, watch, onMounted, nextTick } from 'vue'
-import { useData } from 'vitepress'
+import { useData, useRouter } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
@@ -22,6 +22,7 @@ import SignalModalWrapper from '../components/SignalModalWrapper.vue'
 
 const DefaultLayout = DefaultTheme.Layout
 const { frontmatter } = useData()
+const router = useRouter()
 
 const shouldShowBanner = computed(() => 
   frontmatter.value?.notification === 'brew' || frontmatter.value?.notification === 'general'
@@ -43,23 +44,48 @@ onMounted(() => {
   
   const setupMobileSignalButton = () => {
     // Проверяем, что это мобильное устройство
-    if (window.innerWidth > 768) return
+    if (window.innerWidth > 768) {
+      console.log('Not mobile, skipping mobile setup')
+      return
+    }
+    
+    console.log('Mobile detected, setting up signal button...')
     
     // Ждём, пока window.openSignalModal станет доступна
+    let attempts = 0
     const checkModal = setInterval(() => {
+      attempts++
+      
       if (window.openSignalModal) {
         clearInterval(checkModal)
+        console.log('✓ Modal function found, setting up buttons...')
         
         // Находим кнопку в мобильном меню
         const signalLinks = document.querySelectorAll('.VPNavScreen .VPSocialLink[aria-label="signal-link"]')
+        console.log('Found signal links:', signalLinks.length)
         
-        signalLinks.forEach((link) => {
+        if (signalLinks.length === 0) {
+          console.log('No signal links found yet, will retry on next mutation')
+          return
+        }
+        
+        signalLinks.forEach((link, index) => {
+          console.log('Processing link', index, link)
+          
+          // Проверяем, не обработана ли уже эта кнопка
+          if (link.dataset.signalProcessed) {
+            console.log('Link already processed, skipping')
+            return
+          }
+          
+          // Помечаем как обработанную
+          link.dataset.signalProcessed = 'true'
+          
           // Отключаем стандартное поведение ссылки
           link.removeAttribute('href')
-          link.style.pointerEvents = 'none'
           link.style.position = 'relative'
           
-          // Создаём overlay-кнопку
+          // Создаём overlay-кнопку поверх псевдоэлемента ::after
           const overlay = document.createElement('button')
           overlay.style.cssText = `
             position: absolute;
@@ -70,17 +96,23 @@ onMounted(() => {
             background: transparent;
             border: none;
             cursor: pointer;
-            z-index: 10;
+            z-index: 100;
+            -webkit-tap-highlight-color: transparent;
           `
+          overlay.setAttribute('aria-label', 'Отправить Сигнал')
           
           overlay.addEventListener('click', (e) => {
             e.preventDefault()
             e.stopPropagation()
+            e.stopImmediatePropagation()
+            
+            console.log('✓ Mobile signal button clicked!')
             
             // Закрываем мобильное меню
             const navScreen = document.querySelector('.VPNavScreen')
             if (navScreen) {
               navScreen.classList.remove('open')
+              console.log('✓ Mobile menu closed')
             }
             
             // Убираем блокировку скролла
@@ -92,38 +124,55 @@ onMounted(() => {
               menuButton.setAttribute('aria-expanded', 'false')
             }
             
-            // Открываем модальное окно
-            nextTick(() => {
+            // Открываем модальное окно с небольшой задержкой
+            setTimeout(() => {
               if (window.openSignalModal) {
                 window.openSignalModal()
+                console.log('✓ Modal opened')
+              } else {
+                console.error('✗ window.openSignalModal not found')
               }
-            })
+            }, 100)
           })
           
+          // Добавляем обработчик на touchstart для лучшей работы на мобильных
+          overlay.addEventListener('touchstart', (e) => {
+            console.log('Touch detected on signal button')
+          }, { passive: true })
+          
           link.appendChild(overlay)
+          console.log('✓ Overlay button added to link', index)
         })
+      } else if (attempts > 50) {
+        clearInterval(checkModal)
+        console.error('✗ Modal function not found after 5 seconds')
       }
     }, 100)
-    
-    // Таймаут на случай, если модальное окно не загрузится
-    setTimeout(() => clearInterval(checkModal), 5000)
   }
   
   // Запускаем при загрузке
-  setupMobileSignalButton()
+  nextTick(() => {
+    setTimeout(setupMobileSignalButton, 500)
+  })
   
-  // Запускаем при изменении размера окна
-  window.addEventListener('resize', setupMobileSignalButton)
-  
-  // Запускаем при изменениях в DOM (для SPA-навигации)
+  // Следим за изменениями в DOM для SPA-навигации
   const observer = new MutationObserver(() => {
-    setupMobileSignalButton()
+    if (window.innerWidth <= 768) {
+      setupMobileSignalButton()
+    }
   })
   
   observer.observe(document.body, {
     childList: true,
     subtree: true
   })
+  
+  // Обработка изменения роутов
+  router.onAfterRouteChanged = () => {
+    if (window.innerWidth <= 768) {
+      setTimeout(setupMobileSignalButton, 300)
+    }
+  }
 })
 </script>
 
@@ -135,13 +184,10 @@ onMounted(() => {
   margin: 16px auto 48px auto;
   padding: 0;
   box-sizing: border-box;
-  
-  /* ФИКСИРОВАННАЯ ВЫСОТА равная максимальной высоте всех слайдов */
-  height: 44px; /* Фиксированная высота вместо min-height */
-  overflow: hidden; /* Скрываем переполнение */
+  height: 44px;
+  overflow: hidden;
 }
 
-/* Контейнер внутри баннера тоже с фиксированной высотой */
 .notification-container > * {
   height: 100%;
   display: flex;
@@ -149,28 +195,31 @@ onMounted(() => {
   justify-content: center;
 }
 
-/* Отступ до заголовка */
 body.has-banner .VPDoc {
   margin-top: 0;
   padding-top: 16px;
 }
 
-/* Скругления */
 .VPDoc,
 .VPContent {
   border-radius: 5px;
 }
 
-/* Мобильная версия - большая фиксированная высота */
+/* Мобильная версия */
 @media (max-width: 768px) {
   .notification-container {
     max-width: 100%;
     margin: 12px 0 36px 0;
-    height: 72px; /* Больше высота для мобильных слайдов */
+    height: 72px;
   }
   
   body.has-banner .VPDoc {
     padding-top: 20px;
+  }
+  
+  /* Убираем pointer-events с псевдоэлемента, чтобы overlay мог принимать клики */
+  .VPNavScreen .VPSocialLink[aria-label="signal-link"]::after {
+    pointer-events: none !important;
   }
 }
 
@@ -179,7 +228,7 @@ body.has-banner .VPDoc {
   .notification-container {
     max-width: calc(100% - 24px);
     margin: 14px 12px 42px 12px;
-    height: 58px; /* Промежуточная высота */
+    height: 58px;
   }
   
   body.has-banner .VPDoc {
