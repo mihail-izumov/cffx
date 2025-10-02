@@ -1413,7 +1413,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   transition: all 0.3s ease;
   order: 1;
   font-size: 0;
@@ -1439,10 +1439,11 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
 .signal-next-icon {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  transform: translateY(1px); /* Легкое смещение вниз для идеального центра */
+  vertical-align: middle;
+  transform: translate(0, 2px); /* было 1px, стало 2px — оптический центр */
 }
 
 .signal-next-icon .signal-coffee-fill {
