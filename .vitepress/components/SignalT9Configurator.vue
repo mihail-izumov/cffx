@@ -269,13 +269,28 @@
           :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
         >
 <span class="signal-liquid-next-text">Дальше</span>
-<svg class="signal-next-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <!-- Контур чашки -->
+<svg class="signal-next-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <!-- Маска, которая определяет видимую область заливки -->
+    <mask id="coffee-mask">
+      <path fill="white" d="M3.5,9.5 V17 a3.5,3.5 0 0,0 3.5,3.5 H13 a3.5,3.5 0 0,0 3.5,-3.5 V9.5 Z" />
+    </mask>
+  </defs>
+
+  <!-- Контур чашки и ручки -->
   <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
-  <!-- Блюдце -->
-  <line x1="6" y1="21" x2="10" y2="21" stroke-width="2"/>
-  <!-- Заливка -->
-  <rect class="signal-coffee-fill" x="3" :y="17 - coffeeFillHeight" width="10" :height="coffeeFillHeight"/>
+  
+  <!-- Блюдце (теперь точно видно) -->
+  <path d="M5 21h14"/>
+  
+  <!-- Заливка, которая будет обрезана по маске -->
+  <rect 
+    class="signal-coffee-fill" 
+    x="3" y="9" width="14" height="12" 
+    fill="currentColor" 
+    mask="url(#coffee-mask)" 
+    :transform="`translate(0, ${8 - coffeeFillHeight})`"
+  />
 </svg>
 
         </button>
@@ -1446,6 +1461,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  transform: translateY(1px); /* Легкое смещение вниз для идеального центра */
 }
 
 .signal-emotion-next {
@@ -1780,9 +1796,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 
 /* Плавное наполнение чашки при переходах */
 .signal-next-icon .signal-coffee-fill {
-  fill: currentColor;
-  opacity: 1;
-  transition: height 0.4s ease-in-out, y 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out;
 }
 
 </style>
