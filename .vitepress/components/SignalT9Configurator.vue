@@ -269,11 +269,17 @@
           :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
         >
 <span class="signal-liquid-next-text">Дальше</span>
-<svg class="signal-next-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M10 2v2"/><path d="M14 2v2"/><path d="M6 2v2"/>
+<svg class="signal-next-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <clipPath id="coffee-cup-clip">
+      <path d="M4 9h9v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9z"/>
+    </clipPath>
+  </defs>
   <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
-  <rect class="signal-coffee-fill" x="4" :y="17 - coffeeFillHeight" width="9" :height="coffeeFillHeight"/>
+  <rect class="signal-coffee-fill" x="3" :y="9" width="10" :height="coffeeFillHeight" clip-path="url(#coffee-cup-clip)"/>
 </svg>
+
+
         </button>
         
         <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
@@ -1767,9 +1773,8 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 /* Плавное наполнение чашки при переходах */
 .signal-next-icon .signal-coffee-fill {
   fill: currentColor;
-  opacity: 0.5;
+  opacity: 1;
   transition: height 0.4s ease-in-out, y 0.4s ease-in-out;
 }
 
-  
 </style>
