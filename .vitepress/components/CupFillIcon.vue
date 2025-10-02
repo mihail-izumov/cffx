@@ -16,8 +16,7 @@
       </clipPath>
     </defs>
 
-    <!-- Группа для смещения всех элементов вверх на 2px -->
-    <g transform="translate(0, -2)">
+    <g transform="translate(0, -1)">
       <!-- Заливка (остается без изменений) -->
       <rect
         class="coffee-fill"
