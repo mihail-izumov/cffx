@@ -26,7 +26,7 @@
 <div class="signal-product-tabs__content">
   <!-- Вкладка: Перехват негатива -->
   <div v-show="activeTab === 'interception'" class="signal-product-tabs__panel">
-    <h3>От потери клиентов к лояльным сторонникам</h3>
+    <h3>Управление оттоком клиентов в реальном времени</h3>
     <div class="signal-product-tabs__grid">
       <div class="signal-product-tabs__card">
         <div class="signal-product-tabs__card-header"><h4>Диалоги с Анной</h4><span class="signal-product-tabs__badge">ИИ-ассистент</span></div>
@@ -44,7 +44,7 @@
         <div class="signal-product-tabs__card-highlight"><strong>Влияние:</strong> Улучшение опыта → Рост Индекса</div>
       </div>
       <div class="signal-product-tabs__card">
-        <div class="signal-product-tabs__card-header"><h4>Дежурная команда 24/7</h4><span class="signal-product-tabs__badge">Поддержка 24/7</span></div>
+        <div class="signal-product-tabs__card-header"><h4>Система мониторинга 24/7</h4><span class="signal-product-tabs__badge">Поддержка 24/7</span></div>
         <p class="signal-product-tabs__card-description">Круглосуточная поддержка без выходных. Персональные диалоги ведутся по SLA: ИИ-ассистент Анна + живой аналитик Сигнала.</p>
         <div class="signal-product-tabs__card-highlight"><strong>Команда:</strong> ИИ-ассистент + Аналитик</div>
       </div>
