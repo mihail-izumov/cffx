@@ -88,6 +88,7 @@ import SignalBranchSelector from '../components/SignalBranchSelector.vue'
 import SignalCafeCard from '../components/SignalCafeCard.vue'
 import SignalModalWrapper from '../components/SignalModalWrapper.vue'
 import SignalSendButton from '../components/SignalSendButton.vue'
+import CupFillIcon from '../components/CupFillIcon.vue'
 
 export default {
   extends: DefaultTheme,
@@ -181,5 +182,6 @@ export default {
     app.component('SignalBranchSelector', SignalBranchSelector)  
     app.component('SignalModalWrapper', SignalModalWrapper)
     app.component('SignalSendButton', SignalSendButton)
+    app.component('CupFillIcon', CupFillIcon)
   },
 }
