@@ -96,11 +96,27 @@ export default defineConfig({
         }
       }
       function updateSocialLinkTargets() {
+        // Обработка кнопки "Отправить Сигнал" - открывает модальное окно
         const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
         signalLinks.forEach(signalLink => {
           signalLink.setAttribute('target', '_self');
           signalLink.removeAttribute('rel');
+          signalLink.removeAttribute('href');
+          signalLink.style.cursor = 'pointer';
+          
+          // Убираем старые обработчики и добавляем новый
+          const newLink = signalLink.cloneNode(true);
+          signalLink.parentNode.replaceChild(newLink, signalLink);
+          
+          newLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (window.openSignalModal) {
+              window.openSignalModal();
+            }
+          });
         });
+        
         const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="login-link"]');
         applyLinks.forEach(applyLink => {
           applyLink.setAttribute('target', '_self');
@@ -110,9 +126,29 @@ export default defineConfig({
 
       function forceTargetSelfOnMobile() {
         if (window.innerWidth <= 768) {
-          document.querySelectorAll('.VPSocialLink[aria-label="login-link"], .VPSocialLink[aria-label="signal-link"]').forEach(link => {
+          document.querySelectorAll('.VPSocialLink[aria-label="login-link"]').forEach(link => {
             link.setAttribute('target', '_self');
             link.removeAttribute('rel');
+          });
+          
+          // Обработка кнопки сигнала на мобильных
+          const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
+          signalLinks.forEach(signalLink => {
+            signalLink.setAttribute('target', '_self');
+            signalLink.removeAttribute('rel');
+            signalLink.removeAttribute('href');
+            signalLink.style.cursor = 'pointer';
+            
+            const newLink = signalLink.cloneNode(true);
+            signalLink.parentNode.replaceChild(newLink, signalLink);
+            
+            newLink.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (window.openSignalModal) {
+                window.openSignalModal();
+              }
+            });
           });
         }
       }
@@ -388,7 +424,7 @@ export default defineConfig({
       },
       { 
         icon: { svg: '' }, 
-        link: '/signal/new', 
+        link: '#', 
         ariaLabel: 'signal-link' 
       }
     ],
