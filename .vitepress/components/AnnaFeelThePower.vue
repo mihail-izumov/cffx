@@ -10,9 +10,9 @@
           Каждый Сигнал помогает любимым кофейням стать лучше уже сегодня.
         </p>
       </div>
-      <a href="/signal/new" class="user-card-button">
+      <button @click="openModal" class="user-card-button">
         <strong>Отправить ⚡ Сигнал</strong>
-      </a>
+      </button>
     </div>
     
     <div class="user-coffee-card">
@@ -31,6 +31,16 @@
     </div>
   </div>
 </template>
+
+<script setup>
+const openModal = () => {
+  if (window.openSignalModal) {
+    window.openSignalModal()
+  } else {
+    console.error('Modal function not available')
+  }
+}
+</script>
 
 <style scoped>
 .user-coffee-cards-container {
@@ -97,6 +107,8 @@
   border: none;
   cursor: pointer;
   margin-top: auto;
+  display: block;
+  width: 100%;
 }
 
 .user-card-button:hover {
