@@ -5,16 +5,17 @@
     fill="none" stroke="currentColor" stroke-width="2"
     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
   >
-    <!-- Жидкость (сначала, чтобы быть «под» контуром) -->
+<!-- Низ жидкости: ровный прямоугольник, без rx/ry -->
 <rect
   :x="innerX"
   :y="yFill"
   :width="innerW"
   :height="h"
-  :rx="corner"
-  :ry="corner"
+  rx="0"
+  ry="0"
   class="coffee-fill"
 />
+
     <!-- Корпус чашки и ручка -->
     <path d="M5 5h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V5z"/>
     <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/>
@@ -26,13 +27,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const corner = computed(() => (h.value >= 4 ? 1.2 : 0))
-
-const yFill = computed(() => {
-const base = innerY + innerH - h.value
-return h.value < 3 ? base + 0.5 : base
-})
-
+const yFill = computed(() => innerY + innerH - h.value)
 
 const props = defineProps({
   stepIndex:   { type: Number, default: 0 },   // 0..stepsTotal-1
