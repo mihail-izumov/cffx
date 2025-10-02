@@ -6,12 +6,12 @@
     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
   >
     <!-- Жидкость (сначала, чтобы быть «под» контуром) -->
-    <rect
+<rect
   :x="innerX"
   :y="innerY + innerH - h"
   :width="innerW"
   :height="h"
-  rx="1.2" ry="1.2"
+  :rx="corner" :ry="corner"
   class="coffee-fill"
 />
     <!-- Корпус чашки и ручка -->
@@ -24,6 +24,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+
+const corner = computed(() => (h.value >= 3 ? 1.2 : 0))
 
 const props = defineProps({
   stepIndex:   { type: Number, default: 0 },   // 0..stepsTotal-1
