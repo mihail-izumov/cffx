@@ -8,7 +8,7 @@ notification: brew
 
 # Диалоги
 
-## Забота о гостях 24/7
+## В 5-8 раз больше обратной связи
 
 <RotatingPhrases />
 
@@ -27,7 +27,7 @@ notification: brew
   <Badge type="tip" text="Требуется Сопровождение" style="position: relative; top: 2px;" />
 </div>
 
-## Снижение эскалации конфликтов в 3 раза
+## 94% проблем решаются до публикации
 
 <Dialogs3Cards />
 
