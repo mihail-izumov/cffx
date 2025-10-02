@@ -485,7 +485,7 @@ watch(showBranchList, (newValue) => {
 
           <div class="signal2-system-status-bar">
             <span v-if="establishment.isConnected" class="signal2-status-label">🟢 На связи:</span>
-            <span v-else class="signal2-status-label-disconnected">🟡 Отправим вашу проблему менеджеру <br class="signal2-mobile-break">и постараемся помочь</span>
+            <span v-else class="signal2-status-label-disconnected">🟡 Отправим тикет менеджеру <br class="signal2-mobile-break">и постараемся помочь</span>
             
             <div v-if="establishment.isConnected" class="signal2-status-metrics">
               <div class="signal2-status-metric">
