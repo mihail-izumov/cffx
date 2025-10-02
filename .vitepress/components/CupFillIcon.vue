@@ -8,10 +8,11 @@
     <!-- Жидкость (сначала, чтобы быть «под» контуром) -->
 <rect
   :x="innerX"
-  :y="innerY + innerH - h"
+  :y="yFill"
   :width="innerW"
   :height="h"
-  :rx="corner" :ry="corner"
+  :rx="corner"
+  :ry="corner"
   class="coffee-fill"
 />
     <!-- Корпус чашки и ручка -->
@@ -25,7 +26,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const corner = computed(() => (h.value >= 3 ? 1.2 : 0))
+const corner = computed(() => (h.value >= 4 ? 1.2 : 0))
+
+const yFill = computed(() => {
+const base = innerY + innerH - h.value
+return h.value < 3 ? base + 0.5 : base
+})
+
 
 const props = defineProps({
   stepIndex:   { type: Number, default: 0 },   // 0..stepsTotal-1
@@ -39,7 +46,7 @@ const innerX = 5, innerY = 9, innerW = 11, innerH = 8
 // Заметные ступени высоты (px) — без «невидимого» первого шага
 const h = computed(() => {
   const i = Math.max(0, Math.min(props.stepIndex, props.stepsTotal - 1))
-  const stepsPx = [0, 2, 4, 6, 7, 8]
+  const stepsPx = [0, 2.5, 4, 6, 7, 8]
   return stepsPx[i] ?? Math.round((innerH * i / (props.stepsTotal - 1)) * 10) / 10
 })
 </script>
