@@ -269,16 +269,14 @@
           :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
         >
 <span class="signal-liquid-next-text">Дальше</span>
-<svg class="signal-next-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <defs>
-    <clipPath id="coffee-cup-clip">
-      <path d="M4 9h9v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9z"/>
-    </clipPath>
-  </defs>
+<svg class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Чашка -->
   <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
-  <rect class="signal-coffee-fill" x="3" :y="9" width="10" :height="coffeeFillHeight" clip-path="url(#coffee-cup-clip)"/>
+  <!-- Блюдце -->
+  <line x1="6" y1="21" x2="10" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <!-- Заливка снизу вверх -->
+  <rect class="signal-coffee-fill" x="3.5" :y="17 - coffeeFillHeight" width="9.5" :height="coffeeFillHeight"/>
 </svg>
-
 
         </button>
         
@@ -423,8 +421,7 @@ const selectedSection = ref('emotions');
 
 const coffeeFillHeight = computed(() => {
   const sectionIndex = sections.findIndex(s => s.id === selectedSection.value)
-  // 6 секций: emotions, facts, solutions, summary, location, contact
-  // Высота от 0 до 8 (максимальная высота чашки)
+  // Максимальная высота заливки 8px (от y=17 до y=9)
   return Math.min((sectionIndex / 5) * 8, 8)
 })
 
@@ -1419,7 +1416,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 10px;
   transition: all 0.3s ease;
   order: 1;
 }
