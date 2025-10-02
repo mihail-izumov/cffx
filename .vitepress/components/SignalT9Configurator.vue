@@ -268,48 +268,36 @@
           @click="goToNextSection()"
           :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
         >
+<!-- Текст оставляем -->
 <span class="signal-liquid-next-text">Дальше</span>
-<!-- Уровень 0: пустая чашка -->
-<svg v-if="coffeeFillLevel === 0" class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
-  <line x1="6" y1="21" x2="16" y2="21"/>
-</svg>
 
-<!-- Уровень 1: 20% -->
-<svg v-else-if="coffeeFillLevel === 1" class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
-  <rect x="5" y="15" width="11" height="2" fill="currentColor" opacity="0.4"/>
-  <line x1="6" y1="21" x2="16" y2="21"/>
-</svg>
+<!-- ПОЛНАЯ замена SVG-иконки -->
+<svg class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <!-- Уникальный clipPath в координатах viewBox -->
+    <clipPath :id="clipId" clipPathUnits="userSpaceOnUse">
+      <!-- Внутренняя «чаша»: подгон под контур, чтобы не было правой дырки -->
+      <rect x="5" y="9" width="11" height="8" rx="1.2" ry="1.2" />
+    </clipPath>
+  </defs>
 
-<!-- Уровень 2: 40% -->
-<svg v-else-if="coffeeFillLevel === 2" class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
-  <rect x="5" y="13" width="11" height="4" fill="currentColor" opacity="0.4"/>
-  <line x1="6" y1="21" x2="16" y2="21"/>
-</svg>
+  <!-- Контур чашки и ручка -->
+  <path d="M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
+  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/>
 
-<!-- Уровень 3: 60% -->
-<svg v-else-if="coffeeFillLevel === 3" class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
-  <rect x="5" y="11" width="11" height="6" fill="currentColor" opacity="0.4"/>
-  <line x1="6" y1="21" x2="16" y2="21"/>
-</svg>
+  <!-- Блюдце -->
+  <path d="M6 21h12"/>
 
-<!-- Уровень 4: 80% -->
-<svg v-else-if="coffeeFillLevel === 4" class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
-  <rect x="5" y="9.5" width="11" height="7.5" fill="currentColor" opacity="0.4"/>
-  <line x1="6" y1="21" x2="16" y2="21"/>
+  <!-- Жидкость: один прямоугольник, клиппинг повторяет внутренность чашки -->
+  <rect
+    class="signal-coffee-fill"
+    x="5"
+    :y="17 - coffeeFillHeight"
+    width="11"
+    :height="coffeeFillHeight"
+    :clip-path="`url(#${clipId})`"
+  />
 </svg>
-
-<!-- Уровень 5: 100% -->
-<svg v-else class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
-  <rect x="5" y="8" width="11" height="9" fill="currentColor" opacity="0.5"/>
-  <line x1="6" y1="21" x2="16" y2="21"/>
-</svg>
-
         </button>
         
         <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
@@ -451,10 +439,13 @@ const sections = [
 
 const selectedSection = ref('emotions');
 
-const coffeeFillLevel = computed(() => {
+// Уникальный id clipPath, чтобы не конфликтовать между несколькими кнопками
+const clipId = `cup-clip-${Math.random().toString(36).slice(2, 9)}`
+
+// Высота заливки 0..8px (растёт по мере перехода секций)
+const coffeeFillHeight = computed(() => {
   const sectionIndex = sections.findIndex(s => s.id === selectedSection.value)
-  // 6 секций = 6 уровней (0-6)
-  return sectionIndex
+  return Math.min((sectionIndex / 5) * 8, 8)
 })
 
 const isActive = (id) => id === selectedSection.value;
@@ -1479,6 +1470,13 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   flex-shrink: 0;
   transform: translateY(1px); /* Легкое смещение вниз для идеального центра */
 }
+
+.signal-next-icon .signal-coffee-fill {
+  fill: currentColor;
+  opacity: 1;
+  transition: height 0.3s ease-in-out, y 0.3s ease-in-out;
+}
+
 
 .signal-emotion-next {
   background: linear-gradient(135deg, #6f5d9f, #8a7ab8);
