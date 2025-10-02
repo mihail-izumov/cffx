@@ -10,7 +10,7 @@ export default defineConfig({
     '/': {
       lang: 'ru-RU',
       title: 'Сигнал',
-      description: 'Где Начинается Вааша Кофейня',
+      description: 'Где Начинается Ваша Кофейня',
     },
   },
   
@@ -75,6 +75,7 @@ export default defineConfig({
         html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Сигнал 2025 • Компания <a href="https://runscale.ru" target="_blank" style="color: inherit; text-decoration: underline;">Модуля Роста®</a></div>';
         return html;
       }
+      
       function replaceFooter() {
         let footer = document.querySelector('.VPFooter');
         if (!footer) {
@@ -95,25 +96,53 @@ export default defineConfig({
           footer.style.paddingBottom = '30px';
         }
       }
+      
+      // Функция для ожидания доступности window.openSignalModal
+      function waitForModal(callback, maxAttempts = 50) {
+        let attempts = 0;
+        const interval = setInterval(() => {
+          attempts++;
+          if (window.openSignalModal) {
+            clearInterval(interval);
+            console.log('✓ window.openSignalModal is ready');
+            callback();
+          } else if (attempts >= maxAttempts) {
+            clearInterval(interval);
+            console.error('✗ window.openSignalModal not available after', maxAttempts * 100, 'ms');
+          }
+        }, 100);
+      }
+      
       function updateSocialLinkTargets() {
-        // Обработка кнопки "Отправить Сигнал" - открывает модальное окно
-        const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
-        signalLinks.forEach(signalLink => {
-          signalLink.setAttribute('target', '_self');
-          signalLink.removeAttribute('rel');
-          signalLink.removeAttribute('href');
-          signalLink.style.cursor = 'pointer';
+        waitForModal(() => {
+          // Обработка кнопки "Отправить Сигнал"
+          const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
+          console.log('Found signal links:', signalLinks.length);
           
-          // Убираем старые обработчики и добавляем новый
-          const newLink = signalLink.cloneNode(true);
-          signalLink.parentNode.replaceChild(newLink, signalLink);
-          
-          newLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (window.openSignalModal) {
-              window.openSignalModal();
-            }
+          signalLinks.forEach((signalLink, index) => {
+            signalLink.setAttribute('target', '_self');
+            signalLink.removeAttribute('rel');
+            signalLink.removeAttribute('href');
+            signalLink.style.cursor = 'pointer';
+            
+            // Удаляем старые обработчики через клонирование
+            const newLink = signalLink.cloneNode(true);
+            signalLink.parentNode.replaceChild(newLink, signalLink);
+            
+            newLink.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('Signal button clicked! Index:', index);
+              console.log('Calling window.openSignalModal...');
+              try {
+                window.openSignalModal();
+                console.log('✓ Modal opened successfully');
+              } catch (error) {
+                console.error('✗ Error opening modal:', error);
+              }
+            });
+            
+            console.log('✓ Event listener attached to signal button', index);
           });
         });
         
@@ -131,23 +160,30 @@ export default defineConfig({
             link.removeAttribute('rel');
           });
           
-          // Обработка кнопки сигнала на мобильных
-          const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
-          signalLinks.forEach(signalLink => {
-            signalLink.setAttribute('target', '_self');
-            signalLink.removeAttribute('rel');
-            signalLink.removeAttribute('href');
-            signalLink.style.cursor = 'pointer';
+          waitForModal(() => {
+            const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
+            console.log('Mobile: Found signal links:', signalLinks.length);
             
-            const newLink = signalLink.cloneNode(true);
-            signalLink.parentNode.replaceChild(newLink, signalLink);
-            
-            newLink.addEventListener('click', (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (window.openSignalModal) {
-                window.openSignalModal();
-              }
+            signalLinks.forEach((signalLink, index) => {
+              signalLink.setAttribute('target', '_self');
+              signalLink.removeAttribute('rel');
+              signalLink.removeAttribute('href');
+              signalLink.style.cursor = 'pointer';
+              
+              const newLink = signalLink.cloneNode(true);
+              signalLink.parentNode.replaceChild(newLink, signalLink);
+              
+              newLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile: Signal button clicked!');
+                try {
+                  window.openSignalModal();
+                  console.log('✓ Mobile modal opened');
+                } catch (error) {
+                  console.error('✗ Mobile error:', error);
+                }
+              });
             });
           });
         }
@@ -156,22 +192,31 @@ export default defineConfig({
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
           replaceFooter();
-          updateSocialLinkTargets();
-          forceTargetSelfOnMobile();
+          setTimeout(() => {
+            updateSocialLinkTargets();
+            forceTargetSelfOnMobile();
+          }, 500);
         });
       } else {
         replaceFooter();
-        updateSocialLinkTargets();
-        forceTargetSelfOnMobile();
+        setTimeout(() => {
+          updateSocialLinkTargets();
+          forceTargetSelfOnMobile();
+        }, 500);
       }
+      
       window.addEventListener('load', () => {
         replaceFooter();
-        updateSocialLinkTargets();
-        forceTargetSelfOnMobile();
+        setTimeout(() => {
+          updateSocialLinkTargets();
+          forceTargetSelfOnMobile();
+        }, 500);
       });
+      
       window.addEventListener('resize', () => {
         forceTargetSelfOnMobile();
       });
+      
       let lastUrl = location.href;
       new MutationObserver(() => {
         const url = location.href;
@@ -181,7 +226,7 @@ export default defineConfig({
             replaceFooter();
             updateSocialLinkTargets();
             forceTargetSelfOnMobile();
-          }, 100);
+          }, 500);
         }
       }).observe(document, { subtree: true, childList: true });
     })();
@@ -258,7 +303,6 @@ export default defineConfig({
       .VPNavScreen .VPSocialLink{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;background:transparent!important;border-radius:0!important;border:none!important;transition:all .3s ease!important;text-decoration:none!important}
       .VPNavScreen .VPSocialLink:hover{background:transparent!important;border-color:transparent!important}
       
-      /* Мобильные кнопки - одинаковый дизайн как на десктопе */
       .VPNavScreen .VPSocialLink[aria-label="login-link"]::after,
       .VPNavScreen .VPSocialLink[aria-label="signal-link"]::after {
         display:flex!important;
