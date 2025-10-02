@@ -140,7 +140,7 @@
             v-model="form.constructiveSuggestions" 
             @focus="startRotation(3)" 
             :rows="isMobile ? 5 : 3"
-            placeholder="Предложите, как это можно исправить..."
+            placeholder="Можно пропустить, но это самое интересное ..."
           ></textarea>
           <div class="signal-suggestions-container">
             <div 
@@ -165,16 +165,16 @@
       <!-- Секция 5: Итого -->
       <div v-if="selectedSection === 'summary'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #FFB800;">
-          <p class="signal-direction-label">Умный отзыв</p>
+          <p class="signal-direction-label">Ваш Сигнал</p>
           <div class="signal-rotating-phrase-container">
             <p class="signal-question-label">Что поможет чувствовать себя лучше?</p>
           </div>
           <textarea 
             v-model="form.summaryText" 
             :rows="isMobile ? 10 : 8"
-            placeholder="Здесь появится Ваш Умный Отзыв ..."
+            placeholder="Перемены начинаются здесь ..."
           ></textarea>
-          <p class="signal-example-hint signal-example-hint-white">От эмоций до конструктивных предложений</p>
+          <p class="signal-example-hint signal-example-hint-white">Команда к действию для кофейни и видимый результат для вас</p>
         </div>
       </div>
 
