@@ -114,8 +114,9 @@ export default defineConfig({
       
       function updateSocialLinkTargets() {
         waitForModal(() => {
-          const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
-          console.log('Found signal links:', signalLinks.length);
+          // Обработка кнопки "Отправить Сигнал" только для ДЕСКТОПА
+          const signalLinks = document.querySelectorAll('.VPNavBar .VPSocialLink[aria-label="signal-link"]');
+          console.log('Desktop: Found signal links:', signalLinks.length);
           
           signalLinks.forEach((signalLink, index) => {
             signalLink.setAttribute('target', '_self');
@@ -129,17 +130,16 @@ export default defineConfig({
             newLink.addEventListener('click', (e) => {
               e.preventDefault();
               e.stopPropagation();
-              console.log('Signal button clicked! Index:', index);
-              console.log('Calling window.openSignalModal...');
+              console.log('Desktop: Signal button clicked!');
               try {
                 window.openSignalModal();
-                console.log('✓ Modal opened successfully');
+                console.log('✓ Desktop modal opened');
               } catch (error) {
-                console.error('✗ Error opening modal:', error);
+                console.error('✗ Desktop error:', error);
               }
             });
             
-            console.log('✓ Event listener attached to signal button', index);
+            console.log('✓ Desktop event listener attached to signal button', index);
           });
         });
         
@@ -150,75 +150,17 @@ export default defineConfig({
         });
       }
 
-      function forceTargetSelfOnMobile() {
-        if (window.innerWidth <= 768) {
-          document.querySelectorAll('.VPSocialLink[aria-label="login-link"]').forEach(link => {
-            link.setAttribute('target', '_self');
-            link.removeAttribute('rel');
-          });
-          
-          waitForModal(() => {
-            const signalLinks = document.querySelectorAll('.VPSocialLink[aria-label="signal-link"]');
-            console.log('Mobile: Found signal links:', signalLinks.length);
-            
-            signalLinks.forEach((signalLink, index) => {
-              signalLink.setAttribute('target', '_self');
-              signalLink.removeAttribute('rel');
-              signalLink.removeAttribute('href');
-              signalLink.setAttribute('href', 'javascript:void(0)');
-              signalLink.style.cursor = 'pointer';
-              
-              const newLink = signalLink.cloneNode(true);
-              signalLink.parentNode.replaceChild(newLink, signalLink);
-              
-              newLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                console.log('Mobile: Signal button clicked!');
-                
-                // Закрываем мобильное меню
-                const navScreen = document.querySelector('.VPNavScreen');
-                if (navScreen) {
-                  navScreen.classList.remove('open');
-                }
-                
-                // Убираем класс overflow-hidden с body
-                document.body.classList.remove('overflow-hidden');
-                
-                // Закрываем кнопку меню
-                const menuButton = document.querySelector('.VPNavBarHamburger button');
-                if (menuButton) {
-                  menuButton.setAttribute('aria-expanded', 'false');
-                }
-                
-                try {
-                  window.openSignalModal();
-                  console.log('✓ Mobile modal opened');
-                } catch (error) {
-                  console.error('✗ Mobile error:', error);
-                }
-                
-                return false;
-              });
-            });
-          });
-        }
-      }
-
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
           replaceFooter();
           setTimeout(() => {
             updateSocialLinkTargets();
-            forceTargetSelfOnMobile();
           }, 500);
         });
       } else {
         replaceFooter();
         setTimeout(() => {
           updateSocialLinkTargets();
-          forceTargetSelfOnMobile();
         }, 500);
       }
       
@@ -226,12 +168,7 @@ export default defineConfig({
         replaceFooter();
         setTimeout(() => {
           updateSocialLinkTargets();
-          forceTargetSelfOnMobile();
         }, 500);
-      });
-      
-      window.addEventListener('resize', () => {
-        forceTargetSelfOnMobile();
       });
       
       let lastUrl = location.href;
@@ -242,7 +179,6 @@ export default defineConfig({
           setTimeout(() => {
             replaceFooter();
             updateSocialLinkTargets();
-            forceTargetSelfOnMobile();
           }, 500);
         }
       }).observe(document, { subtree: true, childList: true });
