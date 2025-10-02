@@ -1443,7 +1443,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   align-items: center;
   flex-shrink: 0;
   vertical-align: middle;
-  transform: translate(0, 2px); /* было 1px, стало 2px — оптический центр */
+  transform: translate(0, 1px);
 }
 
 .signal-next-icon .signal-coffee-fill {
