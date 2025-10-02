@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-// Убедитесь, что путь к компоненту правильный
-import SignalT9Configurator from '../../components/SignalT9Configurator.vue'
+import SignalT9Configurator from './SignalT9Configurator.vue'
 
 const isReviewModalOpen = ref(false)
 
@@ -22,7 +21,6 @@ const onKeydown = (e: KeyboardEvent) => {
 }
 
 onMounted(() => {
-  // Экспортируем функцию глобально
   (window as any).openSignalModal = openReviewModal
   document.addEventListener('keydown', onKeydown)
 })
@@ -46,7 +44,6 @@ onUnmounted(() => {
           @click.stop
         >
           <div class="signal-modal-content">
-            <!-- Здесь будет ваш компонент с формой -->
             <SignalT9Configurator />
           </div>
           
@@ -118,7 +115,7 @@ onUnmounted(() => {
 .signal-modal-content {
   flex: 1;
   overflow-y: auto;
-  padding: 0; /* Убираем отступы, так как они должны быть в SignalT9Configurator */
+  padding: 0;
 }
 
 /* Стилизация скроллбара */
@@ -175,7 +172,7 @@ onUnmounted(() => {
     border: none;
   }
   .signal-modal-footer {
-    padding: 12px 16px 24px 16px; /* Добавляем отступ снизу для мобильных */
+    padding: 12px 16px 24px 16px;
     border-radius: 0;
   }
 }
