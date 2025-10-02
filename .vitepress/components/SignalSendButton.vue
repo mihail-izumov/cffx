@@ -18,30 +18,31 @@ const openModal = () => {
 .btn {
   display: inline-block;
   padding: 12px 24px;
-  border-radius: 12px;
+  border-radius: 8px;
   font-weight: 700;
-  font-size: 1.4rem;
+  font-size: 1.05rem;
   text-align: center;
   cursor: pointer;
+  user-select: none;
   border: none;
   transition: all 0.3s ease;
-  color: #000;
-  background: none;
   background-color: unset;
+  color: inherit;
 }
 
-/* Градиент и анимация как в навигации */
 .btn-animated {
   background-image: linear-gradient(-45deg, #c5f946, #85a931, #c5f946, #85a931);
   background-size: 400% 400%;
   animation: liquid-fluid 6s ease infinite;
   color: #000 !important;
+  border: none;
 }
 
 .btn-animated:hover {
   animation-direction: reverse;
-  transform: translateY(-2px);
   color: #000 !important;
+  font-weight: 700;
+  transform: translateY(-2px);
 }
 
 @keyframes liquid-fluid {
