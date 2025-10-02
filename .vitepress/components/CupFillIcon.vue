@@ -10,31 +10,30 @@
     stroke-linejoin="round"
   >
     <defs>
-      <!--
-        Этот clipPath определяет видимую область для заливки.
-        Он в точности повторяет внутренний контур чашки.
-      -->
-      <clipPath id="cup-liquid-clip-path">
-        <path d="M5 8 H16 V17 A3 3 0 0 1 13 20 H8 A3 3 0 0 1 5 17 V8 Z" />
-      </clipPath>
+      <!-- Маска, которая обрезает углы на низких уровнях заливки -->
+      <mask id="cup-bottom-mask">
+        <rect x="0" y="0" width="100%" height="100%" fill="white" />
+        <!-- Вырезаем уголки, которые "выпирают" на 2-м шаге -->
+        <circle v-if="h < 4" cx="5" :cy="17" r="1.5" fill="black" />
+        <circle v-if="h < 4" cx="16" :cy="17" r="1.5" fill="black" />
+      </mask>
     </defs>
 
-    <!--
-      Жидкость: простой прямоугольник, который анимируется по высоте
-      и обрезается по форме clipPath.
-    -->
+    <!-- Заливка: скруглённый прямоугольник, обрезанный маской -->
     <rect
       class="coffee-fill"
-      clip-path="url(#cup-liquid-clip-path)"
-      x="5"
-      :y="20 - h"
-      width="11"
+      :x="innerX"
+      :y="innerY + innerH - h"
+      :width="innerW"
       :height="h"
+      rx="1.2"
+      ry="1.2"
+      mask="url(#cup-bottom-mask)"
     />
 
-    <!-- Контур чашки, ручки и блюдца (рисуется поверх заливки) -->
-    <path d="M5 8 H16 V17 A3 3 0 0 1 13 20 H8 A3 3 0 0 1 5 17 V8 Z" />
-    <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" />
+    <!-- Контур чашки, ручка и блюдце (рисуются поверх) -->
+    <path d="M5 6h11v11a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V6z" />
+    <path d="M16 6h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" />
     <path d="M5 21h13" />
   </svg>
 </template>
@@ -45,23 +44,27 @@ import { computed } from 'vue'
 const props = defineProps({
   stepIndex: { type: Number, default: 0 },
   stepsTotal: { type: Number, default: 6 },
-  size: { type: [Number, String], default: 22 }
+  size: { type: [Number, String], default: 22 },
 })
 
-// Вычисляем высоту жидкости с учетом шагов
+// Координаты внутренней части чашки
+const innerX = 5,
+  innerY = 8,
+  innerW = 11,
+  innerH = 9
+
+// Высота заливки с заметными ступенями
 const h = computed(() => {
-  const i = Math.max(0, Math.min(props.stepIndex, props.stepsTotal - 1));
-  // Ступени подобраны для хорошей видимости, особенно на первом шаге
-  const stepsPx = [0, 3, 5, 7, 9, 11, 12];
-  return stepsPx[i] ?? 0;
-});
+  const i = Math.max(0, Math.min(props.stepIndex, props.stepsTotal - 1))
+  const stepsPx = [0, 2, 4, 6, 7.5, 9]
+  return stepsPx[i] ?? 0
+})
 </script>
 
 <style scoped>
 .coffee-fill {
   fill: currentColor;
   stroke: none;
-  /* Анимируем только высоту и позицию, чтобы было плавно */
   transition: height 0.3s ease-in-out, y 0.3s ease-in-out;
 }
 </style>
