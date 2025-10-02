@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import SignalT9Configurator from '../../components/SignalT9Configurator.vue'
+import SignalT9Configurator from './SignalT9Configurator.vue'
 
 const isReviewModalOpen = ref(false)
 
