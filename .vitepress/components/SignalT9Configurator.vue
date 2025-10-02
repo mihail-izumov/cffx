@@ -269,15 +269,14 @@
           :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
         >
 <span class="signal-liquid-next-text">Дальше</span>
-<svg class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <!-- Чашка -->
+<svg class="signal-next-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Контур чашки -->
   <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
-  <!-- Блюдце -->
-  <line x1="6" y1="21" x2="10" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-  <!-- Заливка снизу вверх -->
-  <rect class="signal-coffee-fill" x="3.5" :y="17 - coffeeFillHeight" width="9.5" :height="coffeeFillHeight"/>
+  <!-- Блюдце (горизонтальная линия) -->
+  <line x1="6" y1="20" x2="10" y2="20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Заливка кофе (снизу вверх) -->
+  <path class="signal-coffee-fill" :d="`M 4 ${17 - coffeeFillHeight} L 4 17 L 13 17 L 13 ${17 - coffeeFillHeight} Z`"/>
 </svg>
-
         </button>
         
         <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
@@ -421,7 +420,8 @@ const selectedSection = ref('emotions');
 
 const coffeeFillHeight = computed(() => {
   const sectionIndex = sections.findIndex(s => s.id === selectedSection.value)
-  // Максимальная высота заливки 8px (от y=17 до y=9)
+  // Заливка от 0 до 8px (от низа чашки y=17 до верха y=9)
+  // При индексе 0 (emotions) = 0px, при индексе 5 (contact) = 8px
   return Math.min((sectionIndex / 5) * 8, 8)
 })
 
@@ -1416,9 +1416,10 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   transition: all 0.3s ease;
   order: 1;
+  font-size: 0;
 }
 
 .signal-liquid-next-btn:disabled {
@@ -1435,6 +1436,15 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.signal-next-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .signal-emotion-next {
@@ -1771,7 +1781,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 .signal-next-icon .signal-coffee-fill {
   fill: currentColor;
   opacity: 1;
-  transition: height 0.4s ease-in-out, y 0.4s ease-in-out;
+  transition: d 0.5s ease-in-out;
 }
 
 </style>
