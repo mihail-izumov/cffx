@@ -219,20 +219,20 @@
       <p class="signal-question-label">Останемся на связи?</p>
     </div>
     
-    <!-- Поле ввода имени (показывается всегда) -->
-    <div class="signal-name-field">
-      <label>Ваше имя</label>
-      <input v-model="form.userName" class="signal-input" placeholder="Как к вам обращаться?" />
-      <p class="signal-input-hint">Для персонального общения с ИИ-ассистентом Анной.</p>
-    </div>
-
-    <!-- Переключатель режима "Инкогнито" (после поля имени) -->
+    <!-- Переключатель режима "Инкогнито" (сверху) -->
     <div class="signal-incognito-toggle">
       <label class="signal-toggle-label">
         <input type="checkbox" v-model="form.isIncognito" class="signal-toggle-checkbox" />
         <span class="signal-toggle-slider"></span>
         <span class="signal-toggle-text">Режим "Инкогнито"</span>
       </label>
+    </div>
+
+    <!-- Поле ввода имени (показывается только если НЕ инкогнито) -->
+    <div v-if="!form.isIncognito" class="signal-name-field">
+      <label>Ваше имя</label>
+      <input v-model="form.userName" class="signal-input" placeholder="Как к вам обращаться?" />
+      <p class="signal-input-hint">Для персонального общения с ИИ-ассистентом Анной.</p>
     </div>
 
     <label class="signal-agreement">
