@@ -272,11 +272,12 @@
 <svg class="signal-next-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <!-- Контур чашки -->
   <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
-  <!-- Блюдце (горизонтальная линия) -->
-  <line x1="6" y1="20" x2="10" y2="20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-  <!-- Заливка кофе (снизу вверх) -->
-  <path class="signal-coffee-fill" :d="`M 4 ${17 - coffeeFillHeight} L 4 17 L 13 17 L 13 ${17 - coffeeFillHeight} Z`"/>
+  <!-- Блюдце -->
+  <line x1="6" y1="21" x2="10" y2="21" stroke-width="2"/>
+  <!-- Заливка -->
+  <rect class="signal-coffee-fill" x="3" :y="17 - coffeeFillHeight" width="10" :height="coffeeFillHeight"/>
 </svg>
+
         </button>
         
         <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
@@ -1416,7 +1417,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 8px;
   transition: all 0.3s ease;
   order: 1;
   font-size: 0;
@@ -1781,7 +1782,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 .signal-next-icon .signal-coffee-fill {
   fill: currentColor;
   opacity: 1;
-  transition: d 0.5s ease-in-out;
+  transition: height 0.4s ease-in-out, y 0.4s ease-in-out;
 }
 
 </style>
