@@ -7,14 +7,15 @@
   >
     <!-- Жидкость (сначала, чтобы быть «под» контуром) -->
     <rect
-      :x="innerX"
-      :y="innerY + innerH - h"
-      :width="innerW"
-      :height="h"
-      class="coffee-fill"
-    />
+  :x="innerX"
+  :y="innerY + innerH - h"
+  :width="innerW"
+  :height="h"
+  rx="1.2" ry="1.2"
+  class="coffee-fill"
+/>
     <!-- Корпус чашки и ручка -->
-    <path d="M5 6h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V6z"/>
+    <path d="M5 5h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V5z"/>
     <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/>
     <!-- Блюдце -->
     <path d="M5 21h13"/>
