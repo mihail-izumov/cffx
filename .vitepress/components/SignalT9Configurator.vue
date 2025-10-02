@@ -198,60 +198,55 @@
         </div>
       </div>
 
-      <!-- Секция 7: Контакт -->
-      <div v-if="selectedSection === 'contact'" class="signal-form-section">
-        <!-- ПРАВКА 1, 2: Экран подтверждения -->
-        <div v-if="formSubmitted" class="signal-success-screen">
-          <div class="signal-success-content">
-            <!-- ПРАВКА 1: Убрать "Все готово" -->
-            <h3>Отзыв отправлен</h3>
-            <!-- ПРАВКА 1: Больше серого поля для тикета -->
-            <div class="signal-success-ticket-info">
-              <span class="signal-success-date">{{ currentDate }}</span>
-              <span class="signal-success-ticket">{{ formattedTicketNumber }}</span>
-            </div>
-            
-            <!-- ПРАВКА 2: Текст по центру -->
-            <p class="signal-success-description">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
-            <!-- ПРАВКА 4: Новый текст кнопки -->
-            <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Отправить тикет Анне</a>
-            <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">Кто Анна и как работает</a>
-          </div>
-        </div>
-
-        <div v-if="!formSubmitted" class="signal-question-block contact" style="--accent-color: #00C2A8;">
-          <div class="signal-rotating-phrase-container">
-            <p class="signal-question-label">Останемся на связи?</p>
-          </div>
-          
-          <!-- Переключатель режима "Инкогнито" -->
-          <div class="signal-incognito-toggle">
-            <label class="signal-toggle-label">
-              <input type="checkbox" v-model="form.isIncognito" class="signal-toggle-checkbox" />
-              <span class="signal-toggle-slider"></span>
-              <span class="signal-toggle-text">Режим "Инкогнито"</span>
-            </label>
-          </div>
-
-          <!-- Поле ввода имени (показывается только если НЕ инкогнито) -->
-          <div v-if="!form.isIncognito" class="signal-name-field">
-            <label>Ваше имя</label>
-            <input v-model="form.userName" class="signal-input" placeholder="Как к вам обращаться?" />
-            <p class="signal-input-hint">Для персонального общения с ИИ-ассистентом Анной.</p>
-          </div>
-
-          <label class="signal-agreement">
-            <input type="checkbox" v-model="form.agreedToTerms" />
-            <span>Подтверждаю согласие с <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a></span>
-          </label>
-        </div>
-
-        <div v-if="!formSubmitted">
-          <button class="signal-submit-button" :disabled="submitStatus === 'processing' || !form.agreedToTerms" @click="submitForm">
-            {{ submitStatus === 'processing' ? 'Отправка...' : 'Отправить отзыв в кофейню' }}
-          </button>
-        </div>
+<!-- Секция 7: Контакт -->
+<div v-if="selectedSection === 'contact'" class="signal-form-section">
+  <!-- Экран подтверждения -->
+  <div v-if="formSubmitted" class="signal-success-screen">
+    <div class="signal-success-content">
+      <h3>Отзыв отправлен</h3>
+      <div class="signal-success-ticket-info">
+        <span class="signal-success-date">{{ currentDate }}</span>
+        <span class="signal-success-ticket">{{ formattedTicketNumber }}</span>
       </div>
+      <p class="signal-success-description">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
+      <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Отправить тикет Анне</a>
+      <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">Кто Анна и как работает</a>
+    </div>
+  </div>
+
+  <div v-if="!formSubmitted" class="signal-question-block contact" style="--accent-color: #00C2A8;">
+    <div class="signal-rotating-phrase-container">
+      <p class="signal-question-label">Останемся на связи?</p>
+    </div>
+    
+    <!-- Поле ввода имени (показывается всегда) -->
+    <div class="signal-name-field">
+      <label>Ваше имя</label>
+      <input v-model="form.userName" class="signal-input" placeholder="Как к вам обращаться?" />
+      <p class="signal-input-hint">Для персонального общения с ИИ-ассистентом Анной.</p>
+    </div>
+
+    <!-- Переключатель режима "Инкогнито" (после поля имени) -->
+    <div class="signal-incognito-toggle">
+      <label class="signal-toggle-label">
+        <input type="checkbox" v-model="form.isIncognito" class="signal-toggle-checkbox" />
+        <span class="signal-toggle-slider"></span>
+        <span class="signal-toggle-text">Режим "Инкогнито"</span>
+      </label>
+    </div>
+
+    <label class="signal-agreement">
+      <input type="checkbox" v-model="form.agreedToTerms" />
+      <span>Подтверждаю согласие с <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a></span>
+    </label>
+  </div>
+
+  <div v-if="!formSubmitted">
+    <button class="signal-submit-button" :disabled="submitStatus === 'processing' || !form.agreedToTerms" @click="submitForm">
+      {{ submitStatus === 'processing' ? 'Отправка...' : 'Отправить отзыв в кофейню' }}
+    </button>
+  </div>
+</div>
 
       <!-- Кнопки навигации -->
       <div v-if="selectedSection !== 'contact'" class="signal-next-button-container">
