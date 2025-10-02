@@ -32,148 +32,186 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <Teleport to="body">
-    <Transition name="modal-fade">
-      <div 
-        v-if="isReviewModalOpen" 
-        class="signal-modal-overlay"
-        @click="closeReviewModal"
-      >
-        <div 
-          class="signal-modal-container"
-          @click.stop
-        >
-          <div class="signal-modal-content">
-            <SignalT9Configurator />
-          </div>
-          
-          <div class="signal-modal-footer">
-            <button 
-              @click="closeReviewModal" 
-              class="signal-modal-close-btn"
-            >
-              Закрыть и вернуться
-            </button>
-          </div>
-        </div>
+  <div v-if="isReviewModalOpen" class="signal2-review-modal-overlay" @click="closeReviewModal">
+    <div class="signal2-review-modal-content" @click.stop>
+      <div class="signal2-modal-scrollable-content">
+        <SignalT9Configurator />
       </div>
-    </Transition>
-  </Teleport>
+      
+      <div class="signal2-modal-close-section">
+        <button @click="closeReviewModal" class="signal2-modal-close-button">
+          Закрыть и вернуться
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-/* Анимация */
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-.modal-fade-enter-from,
-.modal-fade-leave-to {
-  opacity: 0;
-}
-.modal-fade-enter-active .signal-modal-container,
-.modal-fade-leave-active .signal-modal-container {
-  transition: all 0.3s ease;
-}
-.modal-fade-enter-from .signal-modal-container,
-.modal-fade-leave-to .signal-modal-container {
-  transform: scale(0.95);
-  opacity: 0;
-}
-
-/* Оверлей */
-.signal-modal-overlay {
+.signal2-review-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10000;
-  backdrop-filter: blur(8px);
-  padding: 20px;
+  z-index: 9999;
+  padding: 8px;
   box-sizing: border-box;
 }
 
-/* Контейнер модального окна */
-.signal-modal-container {
-  background: #1e1e21;
+.signal2-review-modal-content {
+  background: #1e1e20;
   border-radius: 16px;
-  width: 100%;
-  max-width: 480px;
-  max-height: 90vh;
+  width: 650px;
+  height: clamp(85vh, 90vh, 85vh);
+  max-width: 95vw;
+  max-height: clamp(85vh, 90vh, 85vh);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  color: white;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
 }
 
-/* Содержимое с прокруткой */
-.signal-modal-content {
+.signal2-modal-scrollable-content {
   flex: 1;
   overflow-y: auto;
-  padding: 0;
+  padding: 20px 16px 16px 16px;
 }
 
-/* Стилизация скроллбара */
-.signal-modal-content::-webkit-scrollbar {
-  width: 6px;
-}
-.signal-modal-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-.signal-modal-content::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
+.signal2-modal-scrollable-content :deep(h1),
+.signal2-modal-scrollable-content :deep(h2),
+.signal2-modal-scrollable-content :deep(h3),
+.signal2-modal-scrollable-content :deep(h4),
+.signal2-modal-scrollable-content :deep(p),
+.signal2-modal-scrollable-content :deep(span),
+.signal2-modal-scrollable-content :deep(label),
+.signal2-modal-scrollable-content :deep(.title),
+.signal2-modal-scrollable-content :deep(.subtitle),
+.signal2-modal-scrollable-content :deep(.description),
+.signal2-modal-scrollable-content :deep(.example-text),
+.signal2-modal-scrollable-content :deep(.hint-text) {
+  text-align: initial !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
-/* Футер */
-.signal-modal-footer {
-  padding: 16px 24px;
+.signal2-modal-scrollable-content :deep(.container),
+.signal2-modal-scrollable-content :deep(.content) {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.signal2-modal-scrollable-content :deep(.form-section),
+.signal2-modal-scrollable-content :deep(.form-group),
+.signal2-modal-scrollable-content :deep(.section-wrapper) {
+  margin-bottom: clamp(10px, 2vw, 10px) !important;
+}
+
+.signal2-modal-scrollable-content :deep(.card),
+.signal2-modal-scrollable-content :deep(.block),
+.signal2-modal-scrollable-content :deep(.content-block) {
+  margin-bottom: clamp(8px, 1.6vw, 8px) !important;
+}
+
+.signal2-modal-close-section {
+  flex-shrink: 0;
+  padding: 20px 16px 24px 16px;
+  background: #1e1e20;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  background: #242427;
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
+  display: flex;
+  justify-content: center;
 }
 
-/* Кнопка "Закрыть" */
-.signal-modal-close-btn {
-  width: 100%;
-  padding: 12px;
-  background: #3a3a3c;
-  color: #c7c7cc;
+.signal2-modal-close-button {
+  background-color: #272727;
   border: none;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 600;
+  color: #888;
+  padding: 14px 24px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: none;
+  animation: none;
 }
 
-.signal-modal-close-btn:hover {
-  background: #48484a;
-  color: white;
+.signal2-modal-close-button:hover {
+  background-color: #333333;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  transform: translateY(-2px);
 }
 
-/* Адаптивность */
+/* Мобильная версия */
 @media (max-width: 768px) {
-  .signal-modal-overlay {
-    padding: 0;
+  .signal2-review-modal-overlay {
+    padding: 4px;
   }
-  .signal-modal-container {
-    max-width: 100%;
-    max-height: 100%;
-    height: 100%;
+  
+  .signal2-review-modal-content {
+    width: 95vw;
+    height: clamp(85vh, 90vh, 85vh);
+    max-width: 95vw;
+    max-height: clamp(85vh, 90vh, 85vh);
+  }
+  
+  .signal2-modal-scrollable-content {
+    padding: 20px 12px 12px 12px;
+  }
+  
+  .signal2-modal-close-button {
     width: 100%;
-    border-radius: 0;
-    border: none;
+    justify-content: center;
+    font-size: 14px;
+    padding: 12px 20px;
   }
-  .signal-modal-footer {
-    padding: 12px 16px 24px 16px;
-    border-radius: 0;
+  
+  .signal2-modal-close-section {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 700px) {
+  .signal2-review-modal-content {
+    width: 95vw;
+    height: 85vh;
+  }
+  
+  .signal2-modal-scrollable-content {
+    padding: 20px 12px 12px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signal2-review-modal-content {
+    height: 85vh;
+  }
+  
+  .signal2-modal-scrollable-content {
+    padding: 16px 10px 10px 10px;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .signal2-review-modal-content {
+    height: 80vh !important;
+    max-height: 80vh !important;
+  }
+}
+
+@media screen and (max-height: 600px) {
+  .signal2-review-modal-content {
+    height: 75vh !important;
+    max-height: 75vh !important;
   }
 }
 </style>
