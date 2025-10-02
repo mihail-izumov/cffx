@@ -268,36 +268,13 @@
           @click="goToNextSection()"
           :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
         >
-<!-- Текст оставляем -->
 <span class="signal-liquid-next-text">Дальше</span>
-
-<!-- ПОЛНАЯ замена SVG-иконки -->
-<svg class="signal-next-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <defs>
-    <!-- Уникальный clipPath в координатах viewBox -->
-    <clipPath :id="clipId" clipPathUnits="userSpaceOnUse">
-      <!-- Внутренняя «чаша»: подгон под контур, чтобы не было правой дырки -->
-      <rect x="5" y="9" width="11" height="8" rx="1.2" ry="1.2" />
-    </clipPath>
-  </defs>
-
-  <!-- Контур чашки и ручка -->
-  <path d="M5 8h11v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8z"/>
-  <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/>
-
-  <!-- Блюдце -->
-  <path d="M6 21h12"/>
-
-  <!-- Жидкость: один прямоугольник, клиппинг повторяет внутренность чашки -->
-  <rect
-    class="signal-coffee-fill"
-    x="5"
-    :y="17 - coffeeFillHeight"
-    width="11"
-    :height="coffeeFillHeight"
-    :clip-path="`url(#${clipId})`"
-  />
-</svg>
+<CupFillIcon
+  class="signal-next-icon"
+  :step-index="sections.findIndex(s => s.id === selectedSection)"
+  :steps-total="6"
+  :size="22"
+/>
         </button>
         
         <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
