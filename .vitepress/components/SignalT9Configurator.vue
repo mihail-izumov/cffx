@@ -442,10 +442,10 @@ const selectedSection = ref('emotions');
 // Уникальный id clipPath, чтобы не конфликтовать между несколькими кнопками
 const clipId = `cup-clip-${Math.random().toString(36).slice(2, 9)}`
 
-// Высота заливки 0..8px (растёт по мере перехода секций)
 const coffeeFillHeight = computed(() => {
-  const sectionIndex = sections.findIndex(s => s.id === selectedSection.value)
-  return Math.min((sectionIndex / 5) * 8, 8)
+  const i = sections.findIndex(s => s.id === selectedSection.value)
+  const steps = [0, 2, 4, 6, 7, 8]   // 6 экранов = 6 видимых уровней
+  return steps[Math.max(0, Math.min(i, steps.length - 1))]
 })
 
 const isActive = (id) => id === selectedSection.value;
