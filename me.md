@@ -14,6 +14,8 @@ description: Где Начинается Ваша Кофейня
 
 <SignalSendButton />
 
+### Кофейни в Самаре
+
 </div>
 
 <CoffeePointsSMR />
