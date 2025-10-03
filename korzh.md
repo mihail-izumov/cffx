@@ -11,10 +11,10 @@ description: Где Начинается Ваша Кофейня
 
 <div align="center">
 
-<span class="signal-badge">Где начинается ваша кофейня</span> <br>
+<span class="korzh-badge">Где начинается ваша кофейня</span> <br>
 
 <h1>
-  <span>Отправьте Сигнал</span><br class="mobile-break"> <span>в Корж.</span>
+  <span>Отправьте Сигнал</span><br class="mobile-break"> <span>в Корж</span>
 </h1>
 
 <p>
