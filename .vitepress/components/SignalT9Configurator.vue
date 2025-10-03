@@ -200,7 +200,8 @@
 
 <!-- Секция 7: Контакт -->
 <div v-if="selectedSection === 'contact'" class="signal-form-section">
-  <!-- Экран подтверждения -->
+
+  <!-- Экран подтверждения (показывается ПОСЛЕ отправки) -->
   <div v-if="formSubmitted" class="signal-success-screen">
     <div class="signal-success-content">
       <h3>Сигнал ⚡ отправлен</h3>
@@ -208,55 +209,54 @@
         <span class="signal-success-date">{{ currentDate }}</span>
         <span class="signal-success-ticket">{{ formattedTicketNumber }}</span>
       </div>
-
       <p class="signal-success-description">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
       <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Получить Ответ</a>
       <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">Кто Анна и как работает</a>
     </div>
   </div>
 
-  <div v-if="!formSubmitted" class="signal-question-block contact" style="--accent-color: #00C2A8;">
-    <div class="signal-rotating-phrase-container">
-      <p class="signal-question-label">Отправьте Сигнал</p>
+  <!-- Форма отправки (показывается ДО отправки) -->
+  <template v-if="!formSubmitted">
+    <div class="signal-question-block contact" style="--accent-color: #00C2A8;">
+      <div class="signal-rotating-phrase-container">
+        <p class="signal-question-label">Отправьте Сигнал</p>
+      </div>
+
+      <!-- Поле ввода имени -->
+      <div v-if="!form.isIncognito" class="signal-name-field">
+        <label>Ваше Имя</label>
+        <input v-model="form.userName" class="signal-input" placeholder="Для персонального разбора" />
+      </div>
+
+      <!-- Переключатель "Инкогнито" -->
+      <div class="signal-incognito-toggle">
+        <label class="signal-toggle-label">
+          <input type="checkbox" v-model="form.isIncognito" class="signal-toggle-checkbox" />
+          <span class="signal-toggle-slider"></span>
+          <span class="signal-toggle-text">Анонимно</span>
+        </label>
+      </div>
+
+      <!-- Динамическая подсказка -->
+      <p class="signal-input-hint">
+        {{ form.isIncognito 
+           ? 'Ваше имя не будет передано, только текст сигнала.' 
+           : 'Кофейня ответит. Анна вернёт и поможет уточнить.' }}
+      </p>
     </div>
 
-<!-- Поле ввода имени (показывается только если НЕ инкогнито) -->
-<div v-if="!form.isIncognito" class="signal-name-field">
-  <label>Ваше Имя</label>
-  <input v-model="form.userName" class="signal-input" placeholder="Для персонального разбора" />
-  <!-- Старая подсказка отсюда удалена -->
-</div>
-
-<!-- Переключатель режима "Инкогнито" -->
-<div class="signal-incognito-toggle">
-  <label class="signal-toggle-label">
-    <input type="checkbox" v-model="form.isIncognito" class="signal-toggle-checkbox" />
-    <span class="signal-toggle-slider"></span>
-    <span class="signal-toggle-text">Анонимно</span>
-  </label>
-</div>
-
-<!-- Динамическая подсказка, которая меняет текст -->
-<p class="signal-input-hint">
-  {{ form.isIncognito 
-     ? 'Кофейня ответит. Анна вернёт и поможет уточнить.' 
-     : 'Отправим Сигнал нужному менеджеру, ответ по запросу.' }}
-</p>
-
-</div>
-
-
+    <!-- Соглашение с условиями -->
     <label class="signal-agreement">
       <input type="checkbox" v-model="form.agreedToTerms" />
       <span>Подтверждаю согласие с <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a></span>
     </label>
-  </div>
 
-  <div v-if="!formSubmitted">
+    <!-- Кнопка отправки -->
     <button class="signal-submit-button" :disabled="submitStatus === 'processing' || !form.agreedToTerms" @click="submitForm">
       {{ submitStatus === 'processing' ? 'Отправка...' : 'Отправить в кофейню' }}
     </button>
-  </div>
+  </template>
+
 </div>
 
       <!-- Кнопки навигации -->
