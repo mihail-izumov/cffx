@@ -444,7 +444,7 @@ watch(showBranchList, (newValue) => {
 }
 /* Основная карточка */
 .signal-main-card { 
-  background: rgba(76, 29, 149, 0.2);
+  background: rgba(46, 16, 101, 0.15);
   border-radius: 20px; 
   padding: 24px; 
 }
@@ -582,32 +582,43 @@ watch(showBranchList, (newValue) => {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
+  padding: 4px 10px;
   border-radius: 12px;
-  background: rgba(109, 40, 217, 0.3);
+  background: rgba(30, 10, 60, 0.6);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(167, 139, 250, 0.3);
+  border: 1px solid rgba(109, 40, 217, 0.3);
   margin-top: auto;
 }
 
 .signal-badge-text {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  color: rgba(220, 210, 255, 0.9);
+  color: rgba(200, 190, 230, 0.85);
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
 
 .signal-100-badge {
-  background-image: linear-gradient(-45deg, #c5f946, #85a931, #c5f946, #85a931);
+  background: rgba(109, 40, 217, 0.4);
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.signal-100-badge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-45deg, rgba(197, 249, 70, 0.3), rgba(133, 169, 49, 0.3), rgba(197, 249, 70, 0.3), rgba(133, 169, 49, 0.3));
   background-size: 400% 400%;
   animation: liquid-fluid 6s ease infinite;
-  border: none;
+  z-index: 0;
 }
 
 .signal-100-badge .signal-badge-text {
-  color: #000;
-  font-weight: 700;
+  color: rgba(220, 255, 150, 0.95);
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes liquid-fluid {
@@ -746,11 +757,12 @@ watch(showBranchList, (newValue) => {
   gap: 8px; 
 }
 .signal-ticket-button { 
-  background: rgba(70, 70, 70, 0.8); 
-  color: rgba(255, 255, 255, 0.9); 
+  background: rgba(46, 16, 101, 0.6); 
+  color: rgba(200, 190, 230, 0.95); 
+  border: 1px solid rgba(109, 40, 217, 0.3);
 }
 .signal-ticket-button:hover { 
-  background: rgba(85, 85, 85, 0.9); 
+  background: rgba(76, 29, 149, 0.7); 
   color: white; 
   transform: translateY(-2px); 
 }
@@ -914,15 +926,15 @@ watch(showBranchList, (newValue) => {
 @media (max-width: 768px) {
   .signal-widget-content { 
     padding: 16px; 
-    max-width: 95vw;
+    max-width: 98vw;
     margin: 0 auto;
   }
   .signal-main-card { 
-    padding: 16px; 
+    padding: 14px; 
   }
   .signal-stats-grid { 
     grid-template-columns: 1fr; 
-    gap: 12px; 
+    gap: 10px; 
   }
   .signal-stat-card { 
     display: flex; 
@@ -938,39 +950,47 @@ watch(showBranchList, (newValue) => {
     flex-direction: row; 
     justify-content: flex-start; 
     align-items: center; 
-    padding: 12px 16px; 
+    padding: 10px 12px; 
     width: 100%; 
     background: none !important; 
     box-shadow: none !important; 
-    gap: 12px;
+    gap: 10px;
   }
   .signal-stat-icon {
-    font-size: 32px;
-    flex-shrink: 0;
+    display: none;
   }
   .signal-stat-left-group { 
     display: flex; 
     align-items: center; 
-    gap: 12px; 
+    gap: 10px; 
     flex: 1;
+    min-width: 0;
   }
   .signal-stat-value { 
-    font-size: 2rem; 
+    font-size: 1.6rem; 
     font-weight: 600; 
-    margin: 0; 
+    margin: 0;
+    flex-shrink: 0;
   }
   .signal-stat-label { 
-    font-size: 14px; 
+    font-size: 13px; 
     font-weight: 600; 
     color: rgba(255, 255, 255, 0.9); 
     text-transform: none;
     letter-spacing: 0.02em; 
     margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .signal-stat-badge { 
     flex-shrink: 0; 
     margin-top: 0;
     margin-left: auto;
+    padding: 4px 8px;
+  }
+  .signal-badge-text {
+    font-size: 9px;
   }
   .signal-button-container { 
     flex-direction: column; 
@@ -1002,7 +1022,7 @@ watch(showBranchList, (newValue) => {
 }
 @media (max-width: 480px) {
   .signal-widget-content { 
-    padding: 16px; 
+    padding: 14px; 
   }
   .signal-header-title { 
     font-size: 22px; 
