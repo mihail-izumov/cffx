@@ -276,7 +276,7 @@ watch(showBranchList, (newValue) => {
                 <div class="signal-stat-value">{{ establishment.signals }}</div>
                 <div class="signal-stat-label">Сигналы</div>
               </div>
-              <div class="signal-stat-badge signal-signals-badge">
+              <div class="signal-stat-badge signal-signals-badge" :class="{ 'signal-100-badge': establishment.signalsPercent === 100 }">
                 <span class="signal-badge-text">{{ getSolutionText(establishment.signalsPercent) }}</span>
               </div>
             </div>
@@ -598,11 +598,45 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal-badge-text {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: rgba(200, 190, 230, 0.85);
   letter-spacing: 0.02em;
   white-space: nowrap;
+}
+
+/* Анимация для бабла "Решение: 100%" */
+.signal-100-badge {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(-45deg, rgba(109, 40, 217, 0.5), rgba(147, 51, 234, 0.6), rgba(168, 85, 247, 0.5), rgba(147, 51, 234, 0.6));
+  background-size: 400% 400%;
+  animation: gradient-shift 8s ease infinite, pulse-glow 2s ease-in-out infinite;
+  border: 1px solid rgba(168, 85, 247, 0.5);
+}
+
+.signal-100-badge .signal-badge-text {
+  color: rgba(233, 213, 255, 1);
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.4), inset 0 0 8px rgba(168, 85, 247, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(168, 85, 247, 0.6), inset 0 0 12px rgba(168, 85, 247, 0.3);
+  }
 }
 
 /* Статус системы */
