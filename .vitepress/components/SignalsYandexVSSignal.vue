@@ -17,7 +17,7 @@
         <div class="cell smart-cell">
           <span class="mobile-label">Сигнал:</span>
           <span class="arrow">→</span>
-          <p><strong>Поступает в работу</strong> немедленно</p>
+          <p><strong>Поступает в работу немедленно</strong></p>
         </div>
       </div>
       
@@ -41,7 +41,7 @@
         <div class="cell smart-cell">
           <span class="mobile-label">Сигнал:</span>
           <span class="arrow">→</span>
-          <p><strong>Результат виден всем</strong> в Индексе Роста</p>
+          <p><strong>Результат виден всем</strong></p>
         </div>
       </div>
     </div>
