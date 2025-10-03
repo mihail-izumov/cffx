@@ -1540,7 +1540,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 .signal-input-hint {
   font-size: 0.75rem;
   color: #777;
-  margin-top: 0.25rem;
+  margin-top: 0;
   line-height: 1.2;
 }
 
@@ -1741,7 +1741,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
   .signal-incognito-toggle {
-  margin-bottom: 1.5rem;
+  margin-bottom: 12px;
 }
 
 .signal-toggle-label {
@@ -1793,14 +1793,14 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
 .signal-name-field {
-  margin-bottom: 1rem;
+  margin-bottom: 12px;
 }
 
 .signal-name-field label {
   display: block;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #aaa;
+  color: #FFFFFF;
   margin-bottom: 0.5rem;
 }
 
