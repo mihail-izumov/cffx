@@ -14,6 +14,10 @@ description: Где Начинается Ваша Кофейня
   <span>Ваш Сигнал — тому,</span><br class="mobile-break"> <span>кто решает.</span>
 </h1>
 
+<p>
+  <strong>Анонимно. Без регистрации.</strong><br class="mobile-break"> Результат — в течение дня.
+</p>
+
 <style>
 /* По умолчанию скрываем тег <br> с классом .mobile-break */
 .mobile-break {
@@ -27,9 +31,6 @@ description: Где Начинается Ваша Кофейня
   }
 }
 </style>
-
-
-**Анонимно. Без регистрации.** Результат — в течение дня.
 
 <SignalSendButton />
 
