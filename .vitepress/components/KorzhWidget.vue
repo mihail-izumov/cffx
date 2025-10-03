@@ -173,13 +173,16 @@ const onKeydown = (e) => {
   }
 }
 
-// Вычисляемое свойство для отображения текущей даты
+// Вычисляемое свойство для отображения текущей даты в формате как в примере
 const currentDateBadge = computed(() => {
   const today = new Date();
   const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const year = today.getFullYear();
   const monthNames = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
   const monthName = monthNames[today.getMonth()];
-  return `${day} ${monthName}`;
+  
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="signal-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> ${day}.${month} → ${monthName.toUpperCase()} ${year}`;
 });
 
 // Отслеживаем смену кофейни и сбрасываем метрики
@@ -225,7 +228,7 @@ watch(showBranchList, (newValue) => {
       <div class="signal-main-card">
         <div class="signal-establishment-header">
           <h3 class="signal-cafe-name">{{ establishment.name }}</h3>
-          <div class="signal-status-badge">{{ currentDateBadge }}</div>
+          <div class="signal-status-badge" v-html="currentDateBadge"></div>
         </div>
         
         <div class="signal-stats-grid">
@@ -261,7 +264,12 @@ watch(showBranchList, (newValue) => {
         </div>
         
         <div class="signal-system-status-bar">
-          <span class="signal-status-label">🟢 На связи:</span>
+          <span class="signal-status-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="signal-zap-icon">
+              <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+            </svg>
+            На связи:
+          </span>
           <div class="signal-status-metrics">
             <div class="signal-status-metric">
               <span class="signal-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
@@ -444,6 +452,13 @@ watch(showBranchList, (newValue) => {
   box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3); 
   text-transform: uppercase; 
   letter-spacing: 0.5px; 
+  display: flex;
+  align-items: center;
+}
+.signal-radio-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 4px;
 }
 /* Сетка статистики */
 .signal-stats-grid { 
@@ -558,7 +573,14 @@ watch(showBranchList, (newValue) => {
   font-weight: 600; 
   color: rgba(255, 255, 255, 0.7); 
   margin-right: 8px; 
-  flex-shrink: 0; 
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.signal-zap-icon {
+  display: inline-block;
+  vertical-align: middle;
 }
 .signal-status-metrics { 
   display: flex; 
@@ -887,8 +909,12 @@ watch(showBranchList, (newValue) => {
   }
   .signal-system-status-bar { 
     flex-direction: column; 
-    gap: 8px; 
-    padding: 12px; 
+    gap: 6px; 
+    padding: 8px 12px; 
+    margin: 16px 0 12px 0;
+  }
+  .signal-status-label {
+    margin-right: 0;
   }
   .signal-status-metrics { 
     gap: 12px; 
