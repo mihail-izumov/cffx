@@ -220,21 +220,31 @@
       <p class="signal-question-label">Отправьте Сигнал</p>
     </div>
 
-    <!-- Поле ввода имени (показывается только если НЕ инкогнито) -->
-    <div v-if="!form.isIncognito" class="signal-name-field">
-      <label>Ваше имя</label>
-      <input v-model="form.userName" class="signal-input" placeholder="Как к вам обращаться?" />
-      <p class="signal-input-hint">Для персонального общения с ИИ-ассистентом Анной.</p>
-    </div>
+<!-- Поле ввода имени (показывается только если НЕ инкогнито) -->
+<div v-if="!form.isIncognito" class="signal-name-field">
+  <label>Ваше Имя</label>
+  <input v-model="form.userName" class="signal-input" placeholder="Для персонального разбора" />
+  <!-- Старая подсказка отсюда удалена -->
+</div>
 
-    <!-- Переключатель режима "Инкогнито" (ниже поля с именем) -->
-    <div class="signal-incognito-toggle">
-      <label class="signal-toggle-label">
-        <input type="checkbox" v-model="form.isIncognito" class="signal-toggle-checkbox" />
-        <span class="signal-toggle-slider"></span>
-        <span class="signal-toggle-text">Анонимно</span>
-      </label>
-    </div>
+<!-- Переключатель режима "Инкогнито" -->
+<div class="signal-incognito-toggle">
+  <label class="signal-toggle-label">
+    <input type="checkbox" v-model="form.isIncognito" class="signal-toggle-checkbox" />
+    <span class="signal-toggle-slider"></span>
+    <span class="signal-toggle-text">Анонимно</span>
+  </label>
+</div>
+
+<!-- Динамическая подсказка, которая меняет текст -->
+<p class="signal-input-hint">
+  {{ form.isIncognito 
+     ? 'Кофейня ответит. Анна вернёт и поможет уточнить.' 
+     : 'Отправим Сигнал нужному менеджеру, ответ по запросу.' }}
+</p>
+
+</div>
+
 
     <label class="signal-agreement">
       <input type="checkbox" v-model="form.agreedToTerms" />
