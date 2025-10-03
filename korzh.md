@@ -18,7 +18,7 @@ description: Где Начинается Ваша Кофейня
 </h1>
 
 <p>
-  <strong>Каждая чашка кофе делает</strong><br class="mobile-break"> Вашу любимую кофейню еще лучше.
+  <strong>Каждая чашка кофе</strong><br class="mobile-break">делает Вашу любимую кофейню еще лучше.
 </p>
 
 <style>
