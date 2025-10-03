@@ -8,12 +8,13 @@ description: Где Начинается Ваша Кофейня
 ---
 <div align="center">
 
-<span class="signal-badge">Как работает</span> <br><br>
+<span class="signal-badge">Умный отзыв для тех, кто любит кофе</span> <br><br>
 
 <h1>
   <span>Ваш Сигнал — тому,</span><br class="mobile-break"> <span>кто решает.</span>
 </h1>
 
+<style>
 /* По умолчанию скрываем тег <br> с классом .mobile-break */
 .mobile-break {
   display: none;
@@ -25,6 +26,8 @@ description: Где Начинается Ваша Кофейня
     display: inline;
   }
 }
+</style>
+
 
 **Анонимно. Без регистрации.** Результат — в течение дня.
 
