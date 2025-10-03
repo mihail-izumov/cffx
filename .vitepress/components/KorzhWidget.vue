@@ -605,7 +605,7 @@ watch(showBranchList, (newValue) => {
   white-space: nowrap;
 }
 
-/* Анимация для бабла "Решение: 100%" - контрастная версия */
+/* Анимация для бабла "Решение: 100%" - плавный перелив */
 .signal-100-badge {
   position: relative;
   overflow: hidden;
@@ -621,15 +621,17 @@ watch(showBranchList, (newValue) => {
   background: linear-gradient(
     90deg, 
     transparent 0%, 
-    rgba(167, 139, 250, 0.4) 25%,
-    rgba(196, 181, 253, 0.6) 50%,
-    rgba(167, 139, 250, 0.4) 75%,
+    transparent 20%,
+    rgba(167, 139, 250, 0.35) 40%,
+    rgba(196, 181, 253, 0.55) 50%,
+    rgba(167, 139, 250, 0.35) 60%,
+    transparent 80%,
     transparent 100%
   );
   background-size: 200% 100%;
-  animation: shimmer-wave 3s ease-in-out infinite;
+  animation: shimmer-wave 6s ease-in-out infinite;
   opacity: 0;
-  animation: shimmer-wave 3s ease-in-out infinite, fade-in-out 3s ease-in-out infinite;
+  animation: shimmer-wave 6s ease-in-out infinite, fade-in-out 6s ease-in-out infinite;
 }
 
 .signal-100-badge .signal-badge-text {
@@ -652,11 +654,16 @@ watch(showBranchList, (newValue) => {
   0%, 100% {
     opacity: 0;
   }
-  50% {
-    opacity: 1;
+  40% {
+    opacity: 0.8;
+  }
+  60% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
   }
 }
-
 
 /* Статус системы */
 .signal-system-status-bar { 
