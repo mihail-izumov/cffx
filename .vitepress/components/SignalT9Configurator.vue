@@ -204,7 +204,7 @@
   <!-- Экран подтверждения (показывается ПОСЛЕ отправки) -->
   <div v-if="formSubmitted" class="signal-success-screen">
     <div class="signal-success-content">
-      <h3>Сигнал ⚡ отправлен</h3>
+      <h3>Сигнал отправлен ⚡</h3>
       <div class="signal-success-ticket-info">
         <span class="signal-success-date">{{ currentDate }}</span>
         <span class="signal-success-ticket">{{ formattedTicketNumber }}</span>
