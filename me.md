@@ -14,6 +14,18 @@ description: Где Начинается Ваша Кофейня
   <span>Ваш Сигнал — тому,</span><br class="mobile-break"> <span>кто решает.</span>
 </h1>
 
+/* По умолчанию скрываем тег <br> с классом .mobile-break */
+.mobile-break {
+  display: none;
+}
+
+/* Показываем <br> только на мобильных устройствах (экраны до 767px включительно) */
+@media (max-width: 767px) {
+  .mobile-break {
+    display: inline;
+  }
+}
+
 **Анонимно. Без регистрации.** Результат — в течение дня.
 
 <SignalSendButton />
