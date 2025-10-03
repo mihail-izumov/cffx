@@ -3,8 +3,12 @@ outline: false
 prev: false
 next: false
 pageClass: centered-page
-title: Отправьте Умный Отзыв – Корж
+title: Отправьте Умный Отзыв в Корж
 description: Где Начинается Ваша Кофейня
+head:
+  - - meta
+    - property: "og:image"
+      content: "https://cffx.ru/korzh_og_card.jpg"
 ---
 
 </div>
