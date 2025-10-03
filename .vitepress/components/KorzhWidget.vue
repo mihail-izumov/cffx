@@ -43,11 +43,11 @@ const cafeProfiles = {
 
 // -------------------------
 const establishment = {
-  name: 'Корж Сегодня',
+  name: 'Корж',
   totalReviews: '4,520',
-  yandex2gis: 5,
+  yandex2gis: '4,9',
   yandex2gisPercent: 94,
-  signals: 1,
+  signals: 2,
   signalsPercent: 100,
   branches: [
     { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/reviews' },
@@ -245,12 +245,12 @@ watch(showBranchList, (newValue) => {
         <div class="signal-stats-grid">
           <div class="signal-stat-card signal-reviews-card">
             <div class="signal-stat-content">
+              <div class="signal-stat-icon">📡</div>
               <div class="signal-stat-left-group">
                 <div class="signal-stat-value">{{ establishment.totalReviews }}</div>
                 <div class="signal-stat-label">Отзывы</div>
               </div>
               <div class="signal-stat-badge signal-reviews-badge">
-                <span class="signal-badge-emoji">📡</span>
                 <span class="signal-badge-text">Ответ: {{ establishment.yandex2gisPercent }}%</span>
               </div>
             </div>
@@ -258,21 +258,25 @@ watch(showBranchList, (newValue) => {
           
           <div class="signal-stat-card signal-yandex-card">
             <div class="signal-stat-content">
+              <div class="signal-stat-icon">🏆</div>
               <div class="signal-stat-left-group">
                 <div class="signal-stat-value">{{ establishment.yandex2gis }}</div>
                 <div class="signal-stat-label">Яндекс/2ГИС</div>
+              </div>
+              <div class="signal-stat-badge signal-rating-badge">
+                <span class="signal-badge-text">Рейтинг Сегодня</span>
               </div>
             </div>
           </div>
           
           <div class="signal-stat-card signal-signals-card">
             <div class="signal-stat-content">
+              <div class="signal-stat-icon">⚡</div>
               <div class="signal-stat-left-group">
                 <div class="signal-stat-value">{{ establishment.signals }}</div>
                 <div class="signal-stat-label">Сигналы</div>
               </div>
               <div class="signal-stat-badge signal-signals-badge" :class="{ 'signal-100-badge': establishment.signalsPercent === 100 }">
-                <span class="signal-badge-emoji">⚡</span>
                 <span class="signal-badge-text">{{ getSolutionText(establishment.signalsPercent) }}</span>
               </div>
             </div>
@@ -440,7 +444,7 @@ watch(showBranchList, (newValue) => {
 }
 /* Основная карточка */
 .signal-main-card { 
-  background: var(--vp-c-bg-soft); 
+  background: rgba(76, 29, 149, 0.2);
   border-radius: 20px; 
   padding: 24px; 
 }
@@ -541,13 +545,21 @@ watch(showBranchList, (newValue) => {
 .signal-stat-label { 
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
 }
+.signal-stat-icon { 
+  font-size: 28px; 
+  opacity: 0.8; 
+  height: 32px; 
+}
+.signal-stat-card:hover .signal-stat-icon { 
+  transform: scale(1.2); 
+}
 .signal-stat-value { 
   font-family: 'Inter', sans-serif; 
   font-size: 3.2rem; 
   font-weight: 600; 
   line-height: 1; 
   color: #fff; 
-  margin-bottom: 8px; 
+  margin: 12px 0; 
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); 
 }
 .signal-stat-card:hover .signal-stat-value { 
@@ -555,12 +567,11 @@ watch(showBranchList, (newValue) => {
   text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); 
 }
 .signal-stat-label { 
-  font-size: 14px; 
-  font-weight: 700; 
-  color: rgba(255, 255, 255, 1); 
+  font-size: 11px; 
+  font-weight: 500; 
+  color: rgba(255, 255, 255, 0.7); 
   text-transform: uppercase; 
   letter-spacing: 0.1em; 
-  margin-bottom: 12px;
 }
 .signal-stat-card:hover .signal-stat-label { 
   transform: scale(1.05); 
@@ -573,32 +584,18 @@ watch(showBranchList, (newValue) => {
   gap: 6px;
   padding: 6px 12px;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(109, 40, 217, 0.3);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.3);
   margin-top: auto;
-}
-
-.signal-badge-emoji {
-  font-size: 16px;
-  line-height: 1;
-  flex-shrink: 0;
 }
 
 .signal-badge-text {
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(220, 210, 255, 0.9);
   letter-spacing: 0.02em;
   white-space: nowrap;
-}
-
-.signal-reviews-badge .signal-badge-text {
-  color: rgba(160, 174, 192, 1);
-}
-
-.signal-signals-badge .signal-badge-text {
-  color: rgba(197, 249, 70, 1);
 }
 
 .signal-100-badge {
@@ -611,10 +608,6 @@ watch(showBranchList, (newValue) => {
 .signal-100-badge .signal-badge-text {
   color: #000;
   font-weight: 700;
-}
-
-.signal-100-badge .signal-badge-emoji {
-  filter: brightness(0);
 }
 
 @keyframes liquid-fluid {
@@ -920,7 +913,9 @@ watch(showBranchList, (newValue) => {
 }
 @media (max-width: 768px) {
   .signal-widget-content { 
-    padding: 24px; 
+    padding: 16px; 
+    max-width: 95vw;
+    margin: 0 auto;
   }
   .signal-main-card { 
     padding: 16px; 
@@ -941,17 +936,23 @@ watch(showBranchList, (newValue) => {
   }
   .signal-stat-content { 
     flex-direction: row; 
-    justify-content: space-between; 
+    justify-content: flex-start; 
     align-items: center; 
     padding: 12px 16px; 
     width: 100%; 
     background: none !important; 
     box-shadow: none !important; 
+    gap: 12px;
+  }
+  .signal-stat-icon {
+    font-size: 32px;
+    flex-shrink: 0;
   }
   .signal-stat-left-group { 
     display: flex; 
     align-items: center; 
     gap: 12px; 
+    flex: 1;
   }
   .signal-stat-value { 
     font-size: 2rem; 
@@ -968,7 +969,8 @@ watch(showBranchList, (newValue) => {
   }
   .signal-stat-badge { 
     flex-shrink: 0; 
-    margin-top: 0; 
+    margin-top: 0;
+    margin-left: auto;
   }
   .signal-button-container { 
     flex-direction: column; 
@@ -979,20 +981,28 @@ watch(showBranchList, (newValue) => {
   }
   .signal-system-status-bar { 
     flex-direction: column; 
-    gap: 6px; 
-    padding: 8px 12px; 
+    gap: 8px; 
+    padding: 12px; 
     margin: 16px 0 12px 0;
   }
   .signal-status-label {
     margin-right: 0;
+    font-size: 13px;
   }
   .signal-status-metrics { 
     gap: 12px; 
   }
+  .signal-metric-time {
+    font-size: 13px;
+    min-width: 34px;
+  }
+  .signal-metric-text {
+    font-size: 12px;
+  }
 }
 @media (max-width: 480px) {
   .signal-widget-content { 
-    padding: 20px; 
+    padding: 16px; 
   }
   .signal-header-title { 
     font-size: 22px; 
@@ -1017,13 +1027,6 @@ watch(showBranchList, (newValue) => {
   }
   .signal-status-metrics { 
     gap: 8px; 
-  }
-  .signal-metric-time { 
-    font-size: 11px; 
-    min-width: 28px; 
-  }
-  .signal-metric-text { 
-    font-size: 10px; 
   }
   .signal-modal { 
     padding: 24px; 
