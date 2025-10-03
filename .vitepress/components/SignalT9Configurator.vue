@@ -217,7 +217,7 @@
 
   <div v-if="!formSubmitted" class="signal-question-block contact" style="--accent-color: #00C2A8;">
     <div class="signal-rotating-phrase-container">
-      <p class="signal-question-label">Останемся на связи?</p>
+      <p class="signal-question-label">Отправьте Сигнал</p>
     </div>
 
     <!-- Поле ввода имени (показывается только если НЕ инкогнито) -->
@@ -262,7 +262,7 @@
     selectedSection === 'location' ? 'signal-location-next' : ''
   ]"
   @click="goToNextSection"
-  :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
+  :disabled="(selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim())) || (selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch))"
 >
   <span class="signal-liquid-next-text">{{ currentSectionData.buttonText }}</span>
   <CupFillIcon
@@ -272,6 +272,7 @@
     :size="22"
   />
 </button>
+
 
         
         <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
