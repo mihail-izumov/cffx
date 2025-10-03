@@ -244,34 +244,35 @@
 
   <div v-if="!formSubmitted">
     <button class="signal-submit-button" :disabled="submitStatus === 'processing' || !form.agreedToTerms" @click="submitForm">
-      {{ submitStatus === 'processing' ? 'Отправка...' : 'Отправить отзыв в кофейню' }}
+      {{ submitStatus === 'processing' ? 'Отправка...' : 'Отправить в кофейню' }}
     </button>
   </div>
 </div>
 
       <!-- Кнопки навигации -->
       <div v-if="selectedSection !== 'contact'" class="signal-next-button-container">
-        <button 
-          class="signal-liquid-next-btn"
-          :class="[
-            selectedSection === 'share' ? 'signal-share-next' : '',
-            selectedSection === 'emotions' ? 'signal-emotion-next' : '',
-            selectedSection === 'facts' ? 'signal-fact-next' : '',
-            selectedSection === 'solutions' ? 'signal-solution-next' : '',
-            selectedSection === 'summary' ? 'signal-summary-next' : '',
-            selectedSection === 'location' ? 'signal-location-next' : ''
-          ]"
-          @click="goToNextSection()"
-          :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
-        >
-<span class="signal-liquid-next-text">Дальше</span>
-<CupFillIcon
-  class="signal-next-icon"
-  :step-index="sections.findIndex(s => s.id === selectedSection)"
-  :steps-total="6"
-  :size="22"
-/>
-        </button>
+        <button
+  class="signal-liquid-next-btn"
+  :class="[
+    selectedSection === 'share' ? 'signal-share-next' : '',
+    selectedSection === 'emotions' ? 'signal-emotion-next' : '',
+    selectedSection === 'facts' ? 'signal-fact-next' : '',
+    selectedSection === 'solutions' ? 'signal-solution-next' : '',
+    selectedSection === 'summary' ? 'signal-summary-next' : '',
+    selectedSection === 'location' ? 'signal-location-next' : ''
+  ]"
+  @click="goToNextSection"
+  :disabled="selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch)"
+>
+  <span class="signal-liquid-next-text">{{ currentSectionData.buttonText }}</span>
+  <CupFillIcon
+    class="signal-next-icon"
+    :step-index="sections.findIndex(s => s.id === selectedSection)"
+    :steps-total="6"
+    :size="22"
+  />
+</button>
+
         
         <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
           <button class="signal-liquid-humanize-btn" @click="summarizeAllContent()" :disabled="humanizeStatus === 'processing'">
@@ -402,15 +403,19 @@ onMounted(() => {
 });
 
 const sections = [
-  { id: 'emotions', title: 'Эмоции' },
-  { id: 'facts', title: 'Факты' },
-  { id: 'solutions', title: 'Решение' },
-  { id: 'summary', title: 'Итого' },
-  { id: 'location', title: 'Локация' },
-  { id: 'contact', title: 'Связь' }
+  { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
+  { id: 'facts', title: 'Факты', buttonText: 'К решению ситуации' },
+  { id: 'solutions', title: 'Решения', buttonText: 'Сформировать Сигнал' },
+  { id: 'summary', title: 'Резюме', buttonText: 'Выбрать локацию' },
+  { id: 'location', title: 'Локация', buttonText: 'Формат ответа' },
+  { id: 'contact', title: 'Контакт', buttonText: '' } // На последнем шаге кнопка не отображается
 ];
 
 const selectedSection = ref('emotions');
+
+const currentSectionData = computed(() => {
+return sections.find(s => s.id === selectedSection.value);
+});
 
 const coffeeFillHeight = computed(() => {
   const i = sections.findIndex(s => s.id === selectedSection.value)
