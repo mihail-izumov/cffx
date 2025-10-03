@@ -43,9 +43,11 @@ const cafeProfiles = {
 
 // -------------------------
 const establishment = {
-  name: 'Корж',
+  name: 'Корж Сегодня',
   totalReviews: '4,520',
+  yandex2gis: 5,
   yandex2gisPercent: 94,
+  signals: 1,
   signalsPercent: 100,
   branches: [
     { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/reviews' },
@@ -187,6 +189,13 @@ const currentDateBadge = computed(() => {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="signal-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/><circle cx="12" cy="12" r="2"/></svg> ${day}.${month} → ${monthName} ${year}`;
 });
 
+const getSolutionText = (percent) => {
+  if (percent === 0) {
+    return 'Без решений';
+  }
+  return `Решение: ${percent}%`;
+};
+
 // Отслеживаем смену кофейни и сбрасываем метрики
 watch(() => establishment.name, (newName) => {
   const newConfig = getCafeConfig(newName)
@@ -237,38 +246,35 @@ watch(showBranchList, (newValue) => {
           <div class="signal-stat-card signal-reviews-card">
             <div class="signal-stat-content">
               <div class="signal-stat-left-group">
-                <div class="signal-stat-icon">📡</div>
                 <div class="signal-stat-value">{{ establishment.totalReviews }}</div>
+                <div class="signal-stat-label">Отзывы</div>
               </div>
-              <div class="signal-stat-label">Отзывы</div>
-            </div>
-            <div class="signal-stat-badge signal-reviews-badge">
-              <span class="signal-badge-emoji">📊</span>
-              <span class="signal-badge-text">Ответ: {{ establishment.yandex2gisPercent }}%</span>
+              <div class="signal-stat-badge signal-reviews-badge">
+                <span class="signal-badge-emoji">📡</span>
+                <span class="signal-badge-text">Ответ: {{ establishment.yandex2gisPercent }}%</span>
+              </div>
             </div>
           </div>
           
           <div class="signal-stat-card signal-yandex-card">
             <div class="signal-stat-content">
               <div class="signal-stat-left-group">
-                <div class="signal-stat-icon">🏆</div>
-                <div class="signal-stat-value">4,9</div>
+                <div class="signal-stat-value">{{ establishment.yandex2gis }}</div>
+                <div class="signal-stat-label">Яндекс/2ГИС</div>
               </div>
-              <div class="signal-stat-label">Яндекс/2ГИС</div>
             </div>
           </div>
           
           <div class="signal-stat-card signal-signals-card">
             <div class="signal-stat-content">
               <div class="signal-stat-left-group">
-                <div class="signal-stat-icon">⚡</div>
-                <div class="signal-stat-value">2</div>
+                <div class="signal-stat-value">{{ establishment.signals }}</div>
+                <div class="signal-stat-label">Сигналы</div>
               </div>
-              <div class="signal-stat-label">Сигналы</div>
-            </div>
-            <div class="signal-stat-badge signal-signals-badge" :class="{ 'signal-100-badge': establishment.signalsPercent === 100 }">
-              <span class="signal-badge-emoji">✓</span>
-              <span class="signal-badge-text">Решение: {{ establishment.signalsPercent }}%</span>
+              <div class="signal-stat-badge signal-signals-badge" :class="{ 'signal-100-badge': establishment.signalsPercent === 100 }">
+                <span class="signal-badge-emoji">⚡</span>
+                <span class="signal-badge-text">{{ getSolutionText(establishment.signalsPercent) }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -535,21 +541,13 @@ watch(showBranchList, (newValue) => {
 .signal-stat-label { 
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
 }
-.signal-stat-icon { 
-  font-size: 28px; 
-  opacity: 0.8; 
-  height: 32px; 
-}
-.signal-stat-card:hover .signal-stat-icon { 
-  transform: scale(1.2); 
-}
 .signal-stat-value { 
   font-family: 'Inter', sans-serif; 
   font-size: 3.2rem; 
   font-weight: 600; 
   line-height: 1; 
   color: #fff; 
-  margin: 12px 0; 
+  margin-bottom: 8px; 
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); 
 }
 .signal-stat-card:hover .signal-stat-value { 
@@ -557,11 +555,12 @@ watch(showBranchList, (newValue) => {
   text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); 
 }
 .signal-stat-label { 
-  font-size: 11px; 
-  font-weight: 500; 
-  color: rgba(255, 255, 255, 0.7); 
+  font-size: 14px; 
+  font-weight: 700; 
+  color: rgba(255, 255, 255, 1); 
   text-transform: uppercase; 
   letter-spacing: 0.1em; 
+  margin-bottom: 12px;
 }
 .signal-stat-card:hover .signal-stat-label { 
   transform: scale(1.05); 
@@ -595,7 +594,7 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal-reviews-badge .signal-badge-text {
-  color: rgba(167, 139, 250, 1);
+  color: rgba(160, 174, 192, 1);
 }
 
 .signal-signals-badge .signal-badge-text {
@@ -884,7 +883,8 @@ watch(showBranchList, (newValue) => {
   margin-top: 16px; 
   font-size: 14px; 
   color: var(--vp-c-text-1); 
-  line-height: 1.5; 
+  line-height: 1.5;
+  text-align: left;
 }
 .signal-modal-link {
   color: #c4b5fd;
@@ -953,12 +953,6 @@ watch(showBranchList, (newValue) => {
     align-items: center; 
     gap: 12px; 
   }
-  .signal-stat-icon { 
-    font-size: 28px; 
-    line-height: 1; 
-    display: flex; 
-    align-items: center; 
-  }
   .signal-stat-value { 
     font-size: 2rem; 
     font-weight: 600; 
@@ -969,12 +963,12 @@ watch(showBranchList, (newValue) => {
     font-weight: 600; 
     color: rgba(255, 255, 255, 0.9); 
     text-transform: none;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.02em; 
     margin-bottom: 0;
   }
-  .signal-stat-badge {
-    flex-shrink: 0;
-    margin-top: 0;
+  .signal-stat-badge { 
+    flex-shrink: 0; 
+    margin-top: 0; 
   }
   .signal-button-container { 
     flex-direction: column; 
