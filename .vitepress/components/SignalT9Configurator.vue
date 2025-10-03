@@ -232,7 +232,7 @@
       <label class="signal-toggle-label">
         <input type="checkbox" v-model="form.isIncognito" class="signal-toggle-checkbox" />
         <span class="signal-toggle-slider"></span>
-        <span class="signal-toggle-text">Режим "Инкогнито"</span>
+        <span class="signal-toggle-text">Анонимно</span>
       </label>
     </div>
 
