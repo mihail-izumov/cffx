@@ -276,7 +276,7 @@ watch(showBranchList, (newValue) => {
                 <div class="signal-stat-value">{{ establishment.signals }}</div>
                 <div class="signal-stat-label">Сигналы</div>
               </div>
-              <div class="signal-stat-badge signal-signals-badge" :class="{ 'signal-100-badge': establishment.signalsPercent === 100 }">
+              <div class="signal-stat-badge signal-signals-badge">
                 <span class="signal-badge-text">{{ getSolutionText(establishment.signalsPercent) }}</span>
               </div>
             </div>
@@ -444,7 +444,7 @@ watch(showBranchList, (newValue) => {
 }
 /* Основная карточка */
 .signal-main-card { 
-  background: rgba(46, 16, 101, 0.15);
+  background: rgba(56, 26, 111, 0.18);
   border-radius: 20px; 
   padding: 24px; 
 }
@@ -528,13 +528,14 @@ watch(showBranchList, (newValue) => {
   display: flex; 
   flex-direction: column; 
   align-items: center; 
-  justify-content: space-between; 
+  justify-content: center; 
   height: 100%; 
   text-align: center; 
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3); 
   transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
   position: relative; 
   z-index: 2; 
+  gap: 8px;
 }
 .signal-stat-card:hover .signal-stat-content { 
   background: radial-gradient(circle at 50% 0%, var(--signal-glow-hover-color) 0%, transparent 70%); 
@@ -549,9 +550,16 @@ watch(showBranchList, (newValue) => {
   font-size: 28px; 
   opacity: 0.8; 
   height: 32px; 
+  margin-bottom: 4px;
 }
 .signal-stat-card:hover .signal-stat-icon { 
   transform: scale(1.2); 
+}
+.signal-stat-left-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
 }
 .signal-stat-value { 
   font-family: 'Inter', sans-serif; 
@@ -559,7 +567,6 @@ watch(showBranchList, (newValue) => {
   font-weight: 600; 
   line-height: 1; 
   color: #fff; 
-  margin: 12px 0; 
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); 
 }
 .signal-stat-card:hover .signal-stat-value { 
@@ -587,7 +594,7 @@ watch(showBranchList, (newValue) => {
   background: rgba(30, 10, 60, 0.6);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(109, 40, 217, 0.3);
-  margin-top: auto;
+  margin-top: 8px;
 }
 
 .signal-badge-text {
@@ -596,38 +603,6 @@ watch(showBranchList, (newValue) => {
   color: rgba(200, 190, 230, 0.85);
   letter-spacing: 0.02em;
   white-space: nowrap;
-}
-
-.signal-100-badge {
-  background: rgba(109, 40, 217, 0.4);
-  border: 1px solid rgba(167, 139, 250, 0.4);
-  position: relative;
-  overflow: hidden;
-}
-
-.signal-100-badge::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(-45deg, rgba(197, 249, 70, 0.3), rgba(133, 169, 49, 0.3), rgba(197, 249, 70, 0.3), rgba(133, 169, 49, 0.3));
-  background-size: 400% 400%;
-  animation: liquid-fluid 6s ease infinite;
-  z-index: 0;
-}
-
-.signal-100-badge .signal-badge-text {
-  color: rgba(220, 255, 150, 0.95);
-  position: relative;
-  z-index: 1;
-}
-
-@keyframes liquid-fluid {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
 }
 
 /* Статус системы */
@@ -936,6 +911,18 @@ watch(showBranchList, (newValue) => {
     grid-template-columns: 1fr; 
     gap: 10px; 
   }
+  
+  /* Порядок карточек в мобильной версии: Яндекс, Отзывы, Сигналы */
+  .signal-yandex-card {
+    order: 1;
+  }
+  .signal-reviews-card {
+    order: 2;
+  }
+  .signal-signals-card {
+    order: 3;
+  }
+  
   .signal-stat-card { 
     display: flex; 
     flex-direction: row; 
@@ -961,6 +948,7 @@ watch(showBranchList, (newValue) => {
   }
   .signal-stat-left-group { 
     display: flex; 
+    flex-direction: row;
     align-items: center; 
     gap: 10px; 
     flex: 1;
