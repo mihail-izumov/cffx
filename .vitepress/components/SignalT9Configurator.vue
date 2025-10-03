@@ -169,11 +169,11 @@
           <div class="signal-rotating-phrase-container">
             <p class="signal-question-label">Что поможет чувствовать себя лучше?</p>
           </div>
-          <textarea 
-            v-model="form.summaryText" 
-            :rows="isMobile ? 10 : 8"
-            placeholder="Перемены начинаются здесь ..."
-          ></textarea>
+        <textarea 
+          v-model="form.summaryText" 
+          :rows="isMobile ? 8 : 6"
+          placeholder="Перемены начинаются здесь ..."
+        ></textarea>
           <p class="signal-example-hint signal-example-hint-white">Команда к действию для кофейни и видимый результат для вас</p>
         </div>
       </div>
@@ -224,8 +224,8 @@
 
       <!-- Поле ввода имени -->
       <div v-if="!form.isIncognito" class="signal-name-field">
-        <label>Ваше Имя</label>
-        <input v-model="form.userName" class="signal-input" placeholder="Для персонального разбора" />
+        <label>Для персонального разбора</label>
+        <input v-model="form.userName" class="signal-input" placeholder="Ваше Имя" />
       </div>
 
       <!-- Переключатель "Инкогнито" -->
@@ -240,7 +240,7 @@
       <!-- Динамическая подсказка -->
       <p class="signal-input-hint">
         {{ form.isIncognito 
-           ? 'Ваше имя не будет передано, только текст сигнала.' 
+           ? 'Кофейня получит Сигнал. Ответ по запросу у Анны.' 
            : 'Кофейня ответит. Анна вернёт и поможет уточнить.' }}
       </p>
     </div>
