@@ -2,7 +2,6 @@
 outline: false
 prev: false
 next: false
-pageClass: centered-page
 title: Отправьте Умный Отзыв в Корж
 description: Где Начинается Ваша Кофейня
 head:
