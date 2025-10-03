@@ -106,7 +106,7 @@
             v-model="form.factualAnalysis" 
             @focus="startRotation(2)" 
             :rows="isMobile ? 5 : 3"
-            placeholder="Опишите факты: что, когда и где произошло..."
+            placeholder="Несколько фактов: что и когда случилось..."
           ></textarea>
           <div class="signal-suggestions-container">
             <div 
@@ -183,7 +183,7 @@
         <div class="signal-question-block" style="--accent-color: #5A9FB8;">
           <p class="signal-direction-label">Выбрать локацию</p>
           <div class="signal-rotating-phrase-container">
-            <p class="signal-question-label">В какой кофейне разобрать этот отзыв?</p>
+            <p class="signal-question-label">В какой кофейне разобрать этот Сигнал?</p>
           </div>
           <select v-model="form.selectedNetwork" @change="form.selectedBranch = ''" class="signal-select">
             <option disabled value="">Выберите сеть</option>
