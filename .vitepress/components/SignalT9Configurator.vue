@@ -1538,7 +1538,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
 .signal-input-hint {
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #777;
   margin-top: 0;
   line-height: 1.2;
