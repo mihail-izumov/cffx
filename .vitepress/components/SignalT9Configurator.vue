@@ -1441,8 +1441,8 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 .signal-liquid-next-text {
   font-size: 16px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  text-transform: none;
+  letter-spacing: normal;
   line-height: 1;
   display: flex;
   align-items: center;
