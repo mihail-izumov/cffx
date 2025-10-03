@@ -72,7 +72,7 @@
             v-model="form.emotionalRelease" 
             @focus="startRotation(1)" 
             :rows="isMobile ? 5 : 3"
-            :placeholder="selectedGender === 'female' ? 'Разочарована ожиданиями...' : 'Разочарован ожиданиями...'"
+            :placeholder="selectedGender === 'female' ? 'Или напишите своими словами...' : 'Или напишите своими словами...'"
           ></textarea>
           <div class="signal-suggestions-container">
             <div 
@@ -167,7 +167,7 @@
         <div class="signal-question-block" style="--accent-color: #FFB800;">
           <p class="signal-direction-label">Ваш Сигнал</p>
           <div class="signal-rotating-phrase-container">
-            <p class="signal-question-label">Что поможет чувствовать себя лучше?</p>
+            <p class="signal-question-label">Что должно измениться?</p>
           </div>
         <textarea 
           v-model="form.summaryText" 
