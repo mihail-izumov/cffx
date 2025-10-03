@@ -40,3 +40,23 @@
   .centered-page .VPDoc .container { padding: 0 16px; }
   .centered-page .VPDoc .content { max-width: 100%; }
 }
+
+/* --- Фирменный лаймовый бейдж Signal --- */
+.signal-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 24px;
+  background: #232325; /* тёмный фон */
+  border: 2px solid #bfff2a; /* лаймовая обводка */
+  color: #bfff2a; /* текст */
+  font-weight: 500;
+  font-size: 1.12em;
+  box-shadow: 0 0 8px 0 #bfff2a33;
+  letter-spacing: 0.02em; 
+  transition: background 0.2s;
+}
+
+.signal-badge:hover {
+  background: #28282c;
+  box-shadow: 0 0 16px 0 #bfff2a88;
+}
