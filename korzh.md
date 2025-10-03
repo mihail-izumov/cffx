@@ -22,7 +22,7 @@ head:
 </h1>
 
 <p>
-  <strong>Каждая чашка кофе</strong><br class="mobile-break">делает Вашу любимую кофейню еще лучше.
+  <strong>Каждая чашка кофе</strong><br class="mobile-break"> делает Вашу любимую кофейню еще лучше.
 </p>
 
 <style>
