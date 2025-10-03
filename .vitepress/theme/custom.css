@@ -41,23 +41,26 @@
   .centered-page .VPDoc .content { max-width: 100%; }
 }
 
-/* --- Фирменный лаймовый бейдж Signal (v2: Компактный, с внутренним свечением) --- */
+/* --- Фирменный лаймовый бейдж Signal (v3: Стиль тега) --- */
 .signal-badge {
   display: inline-block;
-  padding: 4px 14px;            /* Уменьшены отступы для компактности */
-  border-radius: 20px;
-  background: #232325;           /* Исходный темный фон */
-  border: 1.5px solid #bfff2a;    /* Обводка стала тоньше */
-  color: #bfff2a;                 /* Фирменный лаймовый цвет текста */
+  padding: 2px 12px;           /* Минимальные отступы для компактности */
+  border-radius: 16px;         /* Полное скругление, как у тегов */
+  background: #282A2E;         /* Слегка измененный фон для контраста */
+  border: 1px solid #bfff2a;   /* Тонкая лаймовая обводка */
+  color: #bfff2a;               /* Лаймовый цвет текста */
   font-weight: 500;
-  font-size: 1em;                  /* Уменьшен размер шрифта */
-  /* Внутреннее свечение для создания эффекта глубины, как в примере */
-  box-shadow: inset 0 0 8px 2px rgba(191, 255, 42, 0.2);
-  transition: all 0.2s ease;
+  font-size: 0.875em;          /* Маленький размер шрифта */
+  line-height: 1.5;            /* Для лучшего вертикального выравнивания */
+  box-shadow: none;              /* Полное отсутствие теней */
+  transition: none;              /* Отключены все анимации */
+  cursor: default;               /* Стандартный курсор без намека на клик */
 }
 
+/* Убираем любые возможные изменения при наведении */
 .signal-badge:hover {
-  background: #28282c;           /* Фон становится чуть светлее */
-  /* Внутреннее свечение усиливается, внешнее отсутствует */
-  box-shadow: inset 0 0 12px 3px rgba(191, 255, 42, 0.35);
+  background: #282A2E;
+  border-color: #bfff2a;
+  color: #bfff2a;
+  box-shadow: none;
 }
