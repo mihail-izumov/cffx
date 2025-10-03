@@ -45,6 +45,8 @@ const cafeProfiles = {
 const establishment = {
   name: 'Корж',
   totalReviews: '4,520',
+  yandex2gisPercent: 94,
+  signalsPercent: 100,
   branches: [
     { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/reviews' },
     { address: 'Революционная, 101В', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858//reviews' },
@@ -179,10 +181,10 @@ const currentDateBadge = computed(() => {
   const day = String(today.getDate()).padStart(2, '0');
   const month = String(today.getMonth() + 1).padStart(2, '0');
   const year = today.getFullYear();
-  const monthNames = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+  const monthNames = ["ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"];
   const monthName = monthNames[today.getMonth()];
   
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="signal-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> ${day}.${month} → ${monthName.toUpperCase()} ${year}`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="signal-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/><circle cx="12" cy="12" r="2"/></svg> ${day}.${month} → ${monthName} ${year}`;
 });
 
 // Отслеживаем смену кофейни и сбрасываем метрики
@@ -240,6 +242,10 @@ watch(showBranchList, (newValue) => {
               </div>
               <div class="signal-stat-label">Отзывы</div>
             </div>
+            <div class="signal-stat-badge signal-reviews-badge">
+              <span class="signal-badge-emoji">📊</span>
+              <span class="signal-badge-text">Ответ: {{ establishment.yandex2gisPercent }}%</span>
+            </div>
           </div>
           
           <div class="signal-stat-card signal-yandex-card">
@@ -259,6 +265,10 @@ watch(showBranchList, (newValue) => {
                 <div class="signal-stat-value">2</div>
               </div>
               <div class="signal-stat-label">Сигналы</div>
+            </div>
+            <div class="signal-stat-badge signal-signals-badge" :class="{ 'signal-100-badge': establishment.signalsPercent === 100 }">
+              <span class="signal-badge-emoji">✓</span>
+              <span class="signal-badge-text">Решение: {{ establishment.signalsPercent }}%</span>
             </div>
           </div>
         </div>
@@ -556,6 +566,67 @@ watch(showBranchList, (newValue) => {
 .signal-stat-card:hover .signal-stat-label { 
   transform: scale(1.05); 
 }
+
+/* Баблы в карточках */
+.signal-stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+}
+
+.signal-badge-emoji {
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.signal-badge-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.signal-reviews-badge .signal-badge-text {
+  color: rgba(167, 139, 250, 1);
+}
+
+.signal-signals-badge .signal-badge-text {
+  color: rgba(197, 249, 70, 1);
+}
+
+.signal-100-badge {
+  background-image: linear-gradient(-45deg, #c5f946, #85a931, #c5f946, #85a931);
+  background-size: 400% 400%;
+  animation: liquid-fluid 6s ease infinite;
+  border: none;
+}
+
+.signal-100-badge .signal-badge-text {
+  color: #000;
+  font-weight: 700;
+}
+
+.signal-100-badge .signal-badge-emoji {
+  filter: brightness(0);
+}
+
+@keyframes liquid-fluid {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 /* Статус системы */
 .signal-system-status-bar { 
   display: flex; 
@@ -880,7 +951,7 @@ watch(showBranchList, (newValue) => {
   .signal-stat-left-group { 
     display: flex; 
     align-items: center; 
-    gap: 16px; 
+    gap: 12px; 
   }
   .signal-stat-icon { 
     font-size: 28px; 
@@ -894,11 +965,16 @@ watch(showBranchList, (newValue) => {
     margin: 0; 
   }
   .signal-stat-label { 
-    font-size: 16px; 
-    font-weight: 500; 
+    font-size: 14px; 
+    font-weight: 600; 
     color: rgba(255, 255, 255, 0.9); 
-    text-transform: uppercase; 
-    letter-spacing: 0.05em; 
+    text-transform: none;
+    letter-spacing: 0.02em;
+    margin-bottom: 0;
+  }
+  .signal-stat-badge {
+    flex-shrink: 0;
+    margin-top: 0;
   }
   .signal-button-container { 
     flex-direction: column; 
