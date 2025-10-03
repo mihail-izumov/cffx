@@ -605,29 +605,58 @@ watch(showBranchList, (newValue) => {
   white-space: nowrap;
 }
 
-/* Анимация для бабла "Решение: 100%" - приглушенная версия */
+/* Анимация для бабла "Решение: 100%" - контрастная версия */
 .signal-100-badge {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(-45deg, rgba(80, 40, 130, 0.5), rgba(100, 50, 150, 0.55), rgba(90, 45, 140, 0.5), rgba(100, 50, 150, 0.55));
-  background-size: 400% 400%;
-  animation: gradient-shift 8s ease infinite;
-  border: 1px solid rgba(109, 40, 217, 0.4);
+  background: rgba(30, 10, 60, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(109, 40, 217, 0.3);
+}
+
+.signal-100-badge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    rgba(167, 139, 250, 0.4) 25%,
+    rgba(196, 181, 253, 0.6) 50%,
+    rgba(167, 139, 250, 0.4) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-wave 3s ease-in-out infinite;
+  opacity: 0;
+  animation: shimmer-wave 3s ease-in-out infinite, fade-in-out 3s ease-in-out infinite;
 }
 
 .signal-100-badge .signal-badge-text {
-  color: rgba(210, 195, 235, 0.95);
+  color: rgba(200, 190, 230, 0.85);
   font-weight: 700;
+  position: relative;
+  z-index: 1;
 }
 
-@keyframes gradient-shift {
+@keyframes shimmer-wave {
   0%, 100% {
-    background-position: 0% 50%;
+    background-position: -100% 0;
   }
   50% {
-    background-position: 100% 50%;
+    background-position: 200% 0;
   }
 }
+
+@keyframes fade-in-out {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 
 /* Статус системы */
 .signal-system-status-bar { 
