@@ -1,8 +1,10 @@
 <script setup>
 import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
+
 // --- НАСТРОЙКИ АНИМАЦИИ ---
 const ROTATION_INTERVAL_MS = 7000
 const FADE_DURATION_MS = 1000
+
 // Профили всех кофеен с базовыми значениями времени
 const cafeProfiles = {
   'корж': {
@@ -38,23 +40,23 @@ const cafeProfiles = {
     resolutionTime: { base: 19.1, min: 17, max: 22 }
   }
 }
+
 // -------------------------
 const establishment = {
-  name: 'Корж', // МЕСТО 1: Заменить название кофейни
+  name: 'Корж',
   totalReviews: '4,520',
-    branches: [
-      { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/reviews' },
-      { address: 'Революционная, 101В', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858//reviews' },
-      { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/152008652145/reviews' },
-      { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/reviews' },
-      { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/reviews' },
-      { address: 'Дачная, 2к2', gisUrl: 'https://2gis.ru/samara/firm/70000001045453045/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/144063441903/reviews' },
-      { address: 'Ульяновская, 19', gisUrl: 'https://2gis.ru/samara/firm/70000001033411071/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/102178077269/reviews' },
-      { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/reviews' }
-    ],
-  status: 'Лидер 👑',
-  index: 98,
+  branches: [
+    { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/reviews' },
+    { address: 'Революционная, 101В', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858//reviews' },
+    { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/152008652145/reviews' },
+    { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/reviews' },
+    { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/reviews' },
+    { address: 'Дачная, 2к2', gisUrl: 'https://2gis.ru/samara/firm/70000001045453045/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/144063441903/reviews' },
+    { address: 'Ульяновская, 19', gisUrl: 'https://2gis.ru/samara/firm/70000001033411071/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/102178077269/reviews' },
+    { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/reviews' }
+  ],
 }
+
 // Функция получения конфига кофейни с фоллбэком
 const getCafeConfig = (cafeName) => {
   const normalizedName = cafeName.toLowerCase()
@@ -63,20 +65,22 @@ const getCafeConfig = (cafeName) => {
     resolutionTime: { base: 18.0, min: 15, max: 21 }
   }
 }
-// МЕСТО 2: Автоматически определяется из establishment.name
+
+// Автоматически определяется из establishment.name
 const cafeConfig = getCafeConfig(establishment.name)
+
 // Система метрик реального времени с персональными значениями
 const systemMetrics = ref({
   responseTime: cafeConfig.responseTime.base,
   resolutionTime: cafeConfig.resolutionTime.base,
   lastUpdate: Date.now()
 })
+
 // Получение данных с сервера
 const fetchSystemStatus = async () => {
   try {
     await new Promise(resolve => setTimeout(resolve, 50))
     
-    // Получаем актуальный конфиг для текущей кофейни
     const currentConfig = getCafeConfig(establishment.name)
     
     const now = Date.now()
@@ -107,6 +111,7 @@ const fetchSystemStatus = async () => {
     console.warn('Metrics update failed, using cached values')
   }
 }
+
 // Форматирование времени
 const formatTime = (hours) => {
   if (hours < 1) {
@@ -114,19 +119,24 @@ const formatTime = (hours) => {
   }
   return `${hours.toFixed(1)}ч`
 }
+
 const showBranchList = ref(false)
 const emit = defineEmits(['close'])
 const widgetContentRef = ref(null)
+
 const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
+
 const goToReviews = (branch) => {
   const service = getRandomService()
   const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
   window.open(url, '_blank')
 }
+
 const createTicket = () => {
   emit('close')
   window.location.href = '/signal/korzh/new'
 }
+
 const rotatingQuestions = [
   "\"Что почувствовали в эту минуту?\"",
   "\"Что вызвало улыбку или напряжение?\"",
@@ -134,10 +144,12 @@ const rotatingQuestions = [
   "\"Что дало ощущение уюта/суеты?\"",
   "\"Одно слово, которое осталось после визита?\""
 ]
+
 const currentQuestionIndex = ref(0)
 const showText = ref(true)
 let intervalId = null
 let metricsIntervalId = null
+
 const cycleText = () => {
   showText.value = false
   setTimeout(() => {
@@ -145,13 +157,25 @@ const cycleText = () => {
     showText.value = true
   }, FADE_DURATION_MS)
 }
+
 // Модальное окно для инфо
 const showInfoModal = ref(false)
+
 const onKeydown = (e) => {
   if (e.key === 'Escape') {
     showInfoModal.value = false
   }
 }
+
+// Вычисляемое свойство для отображения текущей даты
+const currentDate = computed(() => {
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  return `${day}.${month}`;
+});
+
+
 // Отслеживаем смену кофейни и сбрасываем метрики
 watch(() => establishment.name, (newName) => {
   const newConfig = getCafeConfig(newName)
@@ -159,17 +183,20 @@ watch(() => establishment.name, (newName) => {
   systemMetrics.value.resolutionTime = newConfig.resolutionTime.base
   systemMetrics.value.lastUpdate = Date.now()
 })
+
 onMounted(() => {
   intervalId = setInterval(cycleText, ROTATION_INTERVAL_MS)
   metricsIntervalId = setInterval(fetchSystemStatus, 45000)
   fetchSystemStatus()
   window.addEventListener('keydown', onKeydown)
 })
+
 onUnmounted(() => {
   clearInterval(intervalId)
   clearInterval(metricsIntervalId)
   window.removeEventListener('keydown', onKeydown)
 })
+
 watch(showBranchList, (newValue) => {
   if (newValue) {
     nextTick(() => {
@@ -178,45 +205,23 @@ watch(showBranchList, (newValue) => {
   }
 })
 </script>
+
 <template>
   <div class="signal-widget-content" ref="widgetContentRef">
     <!-- Первый экран -->
     <div v-if="!showBranchList">
-      <div class="signal-widget-header">
-        <div>
-          <div class="signal-header-title">Отправьте Сигнал</div>
-          <p class="signal-header-subtitle">Каждая чашка кофе делает Вашу любимую кофейню еще лучше.</p>
-        </div>
-        <!-- Кнопка закрытия удалена -->
+      <!-- Заголовок и подзаголовок удалены -->
+      <div class="signal-widget-header" style="margin-bottom: 0;">
       </div>
       
       <div class="signal-main-card">
         <div class="signal-establishment-header">
           <h3 class="signal-cafe-name">{{ establishment.name }}</h3>
-          <div class="signal-status-badge">{{ establishment.status }}</div>
+          <div class="signal-status-badge">{{ currentDate }}</div>
         </div>
         
         <div class="signal-stats-grid">
-          <div class="signal-stat-card signal-branches-card">
-            <div class="signal-stat-content">
-              <div class="signal-stat-left-group">
-                <div class="signal-stat-icon">☕</div>
-                <div class="signal-stat-value">{{ establishment.branches.length }}</div>
-              </div>
-              <div class="signal-stat-label">Кофейни</div>
-            </div>
-          </div>
-          
-          <div class="signal-stat-card signal-index-card">
-            <div class="signal-stat-content">
-              <div class="signal-stat-left-group">
-                <div class="signal-stat-icon">⚡</div>
-                <div class="signal-stat-value">{{ establishment.index }}</div>
-              </div>
-              <div class="signal-stat-label">Индекс роста</div>
-            </div>
-          </div>
-          
+          <!-- Карточка Отзывы -->
           <div class="signal-stat-card signal-reviews-card">
             <div class="signal-stat-content">
               <div class="signal-stat-left-group">
@@ -226,7 +231,30 @@ watch(showBranchList, (newValue) => {
               <div class="signal-stat-label">Отзывы</div>
             </div>
           </div>
+          
+          <!-- Карточка Яндекс/2ГИС -->
+          <div class="signal-stat-card signal-yandex-card">
+            <div class="signal-stat-content">
+              <div class="signal-stat-left-group">
+                <div class="signal-stat-icon">🏆</div>
+                <div class="signal-stat-value">4,9</div>
+              </div>
+              <div class="signal-stat-label">Яндекс/2ГИС</div>
+            </div>
+          </div>
+          
+          <!-- Карточка Сигналы -->
+          <div class="signal-stat-card signal-signals-card">
+            <div class="signal-stat-content">
+              <div class="signal-stat-left-group">
+                <div class="signal-stat-icon">⚡</div>
+                <div class="signal-stat-value">2</div>
+              </div>
+              <div class="signal-stat-label">Сигналы</div>
+            </div>
+          </div>
         </div>
+        
         <!-- СТАТУС СИСТЕМЫ СИГНАЛОВ -->
         <div class="signal-system-status-bar">
           <span class="signal-status-label">🟢 На связи:</span>
@@ -324,6 +352,7 @@ watch(showBranchList, (newValue) => {
     </div>
   </div>
 </template>
+
 <style scoped>
 /* Основные контейнеры */
 .signal-widget-content { 
@@ -376,12 +405,6 @@ watch(showBranchList, (newValue) => {
   transition: all 0.3s ease; 
   flex-shrink: 0; 
 }
-.signal-close-btn:hover { 
-  background: linear-gradient(135deg, #991b1b, #ef4444); 
-  border-color: #ef4444; 
-  color: white; 
-  transform: rotate(90deg); 
-}
 .signal-back-btn:hover { 
   background: var(--vp-c-bg-soft); 
   border-color: var(--vp-c-text-2); 
@@ -406,9 +429,9 @@ watch(showBranchList, (newValue) => {
   font-weight: 600; 
 }
 .signal-status-badge { 
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1)); 
-  color: rgba(255, 255, 255, 0.7); 
-  border: 1px solid rgba(255, 255, 255, 0.1); 
+  background: linear-gradient(135deg, rgba(169, 140, 246, 0.2), rgba(0, 0, 0, 0.2));
+  color: rgba(220, 210, 255, 0.9);
+  border: 1px solid rgba(169, 140, 246, 0.3);
   padding: 6px 16px; 
   border-radius: 20px; 
   font-size: 12px; 
@@ -450,21 +473,13 @@ watch(showBranchList, (newValue) => {
 .signal-stat-card:hover::before { 
   filter: brightness(2) saturate(1.5); 
 }
-/* Цветовые схемы карточек */
-.signal-branches-card { 
-  --signal-border-gradient: linear-gradient(135deg, #3730a3, #8b5cf6, #c4b5fd); 
-  --signal-glow-color: rgba(139, 92, 246, 0.25); 
-  --signal-glow-hover-color: rgba(139, 92, 246, 0.6); 
-}
-.signal-index-card { 
-  --signal-border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #C5F946); 
-  --signal-glow-color: rgba(197, 249, 70, 0.25); 
-  --signal-glow-hover-color: rgba(197, 249, 70, 0.6); 
-}
+/* Цветовые схемы карточек - ВСЕ В ФИОЛЕТОВОЙ ГАММЕ */
+.signal-signals-card,
+.signal-yandex-card,
 .signal-reviews-card { 
-  --signal-border-gradient: linear-gradient(135deg, #b45309, #f59e0b, #fcd34d); 
-  --signal-glow-color: rgba(245, 158, 11, 0.25); 
-  --signal-glow-hover-color: rgba(245, 158, 11, 0.6); 
+  --signal-border-gradient: linear-gradient(135deg, #6d28d9, #a78bfa, #ddd6fe); 
+  --signal-glow-color: rgba(167, 139, 250, 0.25); 
+  --signal-glow-hover-color: rgba(167, 139, 250, 0.6); 
 }
 /* Содержимое карточек */
 .signal-stat-content { 
@@ -651,13 +666,13 @@ watch(showBranchList, (newValue) => {
   transform: translateY(-2px); 
 }
 .signal-review-button { 
-  background: linear-gradient(135deg, #f59e0b, #fcd34d); 
-  color: #422006; 
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); 
+  background: linear-gradient(135deg, #a78bfa, #ddd6fe);
+  color: #4c1d95; 
+  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);
 }
 .signal-review-button:hover { 
   transform: translateY(-2px); 
-  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); 
+  box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4);
 }
 .signal-button-icon { 
   transition: transform 0.3s ease; 
@@ -692,9 +707,9 @@ watch(showBranchList, (newValue) => {
   text-align: left; 
 }
 .signal-branch-item:hover { 
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), var(--vp-c-bg-soft)); 
-  border-color: #f59e0b; 
-  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.1); 
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), var(--vp-c-bg-soft)); 
+  border-color: #a78bfa; 
+  box-shadow: 0 8px 20px rgba(167, 139, 250, 0.1); 
   transform: translateX(4px); 
 }
 .signal-branch-info { 
@@ -705,8 +720,8 @@ watch(showBranchList, (newValue) => {
   overflow: hidden; 
 }
 .signal-branch-number { 
-  background: linear-gradient(135deg, #f59e0b, #fcd34d); 
-  color: #422006; 
+  background: linear-gradient(135deg, #a78bfa, #ddd6fe); 
+  color: #4c1d95; 
   width: 32px; 
   height: 32px; 
   border-radius: 50%; 
@@ -720,7 +735,7 @@ watch(showBranchList, (newValue) => {
   box-shadow: none; 
 }
 .signal-branch-item:hover .signal-branch-number { 
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(245, 158, 11, 0.5); 
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(167, 139, 250, 0.5); 
 }
 .signal-branch-address { 
   font-weight: 600; 
@@ -731,7 +746,7 @@ watch(showBranchList, (newValue) => {
   text-overflow: ellipsis; 
 }
 .signal-branch-action { 
-  color: #f59e0b; 
+  color: #a78bfa; 
   transition: transform 0.3s ease; 
   margin-left: 12px; 
 }
@@ -775,13 +790,13 @@ watch(showBranchList, (newValue) => {
   line-height: 1.5; 
 }
 .signal-modal-link {
-  color: #A3E635;
+  color: #c4b5fd; /* фиолетовый */
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
 }
 .signal-modal-link:hover {
-  color: #C5F946;
+  color: #ddd6fe; /* светло-фиолетовый */
   text-decoration: underline;
 }
 .signal-modal-footer { 
@@ -852,7 +867,7 @@ watch(showBranchList, (newValue) => {
     font-size: 16px; 
     font-weight: 500; 
     color: rgba(255, 255, 255, 0.9); 
-    text-transform: uppercase; 
+    text-transform: none; /* uppercase in this case */
     letter-spacing: 0.05em; 
   }
   .signal-button-container { 
