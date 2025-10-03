@@ -64,3 +64,27 @@
   color: #bfff2a;
   box-shadow: none;
 }
+
+/* --- Фирменный фиолетовый бейдж Korzh (v3: Стиль тега) --- */
+.korzh-badge {
+  display: inline-block;
+  padding: 2px 12px;           /* Минимальные отступы для компактности */
+  border-radius: 16px;         /* Полное скругление, как у тегов */
+  background: #2D2A33;         /* Темный фон для контраста с фиолетовым */
+  border: 1px solid #b191c2;   /* Тонкая фиолетовая обводка */
+  color: #b191c2;              /* Фиолетовый цвет текста */
+  font-weight: 500;
+  font-size: 0.875em;          /* Маленький размер шрифта */
+  line-height: 1.5;            /* Для лучшего вертикального выравнивания */
+  box-shadow: none;            /* Полное отсутствие теней */
+  transition: none;            /* Отключены все анимации */
+  cursor: default;             /* Стандартный курсор без намека на клик */
+}
+
+/* Убираем любые возможные изменения при наведении */
+.korzh-badge:hover {
+  background: #2D2A33;
+  border-color: #b191c2;
+  color: #b191c2;
+  box-shadow: none;
+}
