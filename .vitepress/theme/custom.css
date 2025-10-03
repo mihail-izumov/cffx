@@ -65,14 +65,16 @@
   box-shadow: none;
 }
 
-/* --- Фирменный фиолетовый бейдж Korzh (v3: Стиль тега) --- */
+/* --- Фирменный фиолетовый бейдж Korzh (v4: С градиентом) --- */
 .korzh-badge {
   display: inline-block;
   padding: 2px 12px;           /* Минимальные отступы для компактности */
   border-radius: 16px;         /* Полное скругление, как у тегов */
-  background: #2D2A33;         /* Темный фон для контраста с фиолетовым */
-  border: 1px solid #b191c2;   /* Тонкая фиолетовая обводка */
-  color: #b191c2;              /* Фиолетовый цвет текста */
+  background: #2D2A33;         /* Темный фон для контраста */
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+  color: #c5a8f0;              /* Более яркий фиолетовый текст */
   font-weight: 500;
   font-size: 0.875em;          /* Маленький размер шрифта */
   line-height: 1.5;            /* Для лучшего вертикального выравнивания */
@@ -81,10 +83,20 @@
   cursor: default;             /* Стандартный курсор без намека на клик */
 }
 
+.korzh-badge::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(180deg, #7d6db8 0%, #544d7a 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
 /* Убираем любые возможные изменения при наведении */
 .korzh-badge:hover {
-  background: #2D2A33;
-  border-color: #b191c2;
-  color: #b191c2;
-  box-shadow: none;
+  color: #c5a8f0;
 }
