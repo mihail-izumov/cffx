@@ -76,6 +76,12 @@ const systemMetrics = ref({
   lastUpdate: Date.now()
 })
 
+// Определение мобильной версии
+const isMobile = ref(false)
+const checkMobile = () => {
+  isMobile.value = window.innerWidth <= 768
+}
+
 // Получение данных с сервера
 const fetchSystemStatus = async () => {
   try {
@@ -168,13 +174,13 @@ const onKeydown = (e) => {
 }
 
 // Вычисляемое свойство для отображения текущей даты
-const currentDate = computed(() => {
+const currentDateBadge = computed(() => {
   const today = new Date();
   const day = String(today.getDate()).padStart(2, '0');
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  return `${day}.${month}`;
+  const monthNames = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+  const monthName = monthNames[today.getMonth()];
+  return `${day} ${monthName}`;
 });
-
 
 // Отслеживаем смену кофейни и сбрасываем метрики
 watch(() => establishment.name, (newName) => {
@@ -189,12 +195,15 @@ onMounted(() => {
   metricsIntervalId = setInterval(fetchSystemStatus, 45000)
   fetchSystemStatus()
   window.addEventListener('keydown', onKeydown)
+  window.addEventListener('resize', checkMobile)
+  checkMobile()
 })
 
 onUnmounted(() => {
   clearInterval(intervalId)
   clearInterval(metricsIntervalId)
   window.removeEventListener('keydown', onKeydown)
+  window.removeEventListener('resize', checkMobile)
 })
 
 watch(showBranchList, (newValue) => {
@@ -210,18 +219,16 @@ watch(showBranchList, (newValue) => {
   <div class="signal-widget-content" ref="widgetContentRef">
     <!-- Первый экран -->
     <div v-if="!showBranchList">
-      <!-- Заголовок и подзаголовок удалены -->
       <div class="signal-widget-header" style="margin-bottom: 0;">
       </div>
       
       <div class="signal-main-card">
         <div class="signal-establishment-header">
           <h3 class="signal-cafe-name">{{ establishment.name }}</h3>
-          <div class="signal-status-badge">{{ currentDate }}</div>
+          <div class="signal-status-badge">{{ currentDateBadge }}</div>
         </div>
         
         <div class="signal-stats-grid">
-          <!-- Карточка Отзывы -->
           <div class="signal-stat-card signal-reviews-card">
             <div class="signal-stat-content">
               <div class="signal-stat-left-group">
@@ -232,7 +239,6 @@ watch(showBranchList, (newValue) => {
             </div>
           </div>
           
-          <!-- Карточка Яндекс/2ГИС -->
           <div class="signal-stat-card signal-yandex-card">
             <div class="signal-stat-content">
               <div class="signal-stat-left-group">
@@ -243,7 +249,6 @@ watch(showBranchList, (newValue) => {
             </div>
           </div>
           
-          <!-- Карточка Сигналы -->
           <div class="signal-stat-card signal-signals-card">
             <div class="signal-stat-content">
               <div class="signal-stat-left-group">
@@ -255,7 +260,6 @@ watch(showBranchList, (newValue) => {
           </div>
         </div>
         
-        <!-- СТАТУС СИСТЕМЫ СИГНАЛОВ -->
         <div class="signal-system-status-bar">
           <span class="signal-status-label">🟢 На связи:</span>
           <div class="signal-status-metrics">
@@ -271,10 +275,10 @@ watch(showBranchList, (newValue) => {
           </div>
         </div>
         
-        <!-- ПУЛЬТ УПРАВЛЕНИЯ -->
         <div class="signal-control-panel">
           <div class="signal-control-panel-header">
             <button
+              v-if="!isMobile"
               type="button"
               class="signal-info-link signal-info-button"
               aria-haspopup="dialog"
@@ -286,8 +290,8 @@ watch(showBranchList, (newValue) => {
                 <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
               </svg>
             </button>
-            <span class="signal-static-prompt">Поделитесь:</span>
-            <div class="signal-rotating-text-container">
+            <span v-if="!isMobile" class="signal-static-prompt">Поделитесь:</span>
+            <div class="signal-rotating-text-container" :class="{ 'centered-mobile': isMobile }">
               <span :class="['signal-rotating-text', { 'signal-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
             </div>
           </div>
@@ -790,13 +794,13 @@ watch(showBranchList, (newValue) => {
   line-height: 1.5; 
 }
 .signal-modal-link {
-  color: #c4b5fd; /* фиолетовый */
+  color: #c4b5fd;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
 }
 .signal-modal-link:hover {
-  color: #ddd6fe; /* светло-фиолетовый */
+  color: #ddd6fe;
   text-decoration: underline;
 }
 .signal-modal-footer { 
@@ -817,6 +821,10 @@ watch(showBranchList, (newValue) => {
   background: var(--vp-c-bg-soft, #333); 
 }
 /* Адаптивность */
+.signal-rotating-text-container.centered-mobile {
+  text-align: center;
+  justify-content: center;
+}
 @media (max-width: 768px) {
   .signal-widget-content { 
     padding: 24px; 
@@ -867,7 +875,7 @@ watch(showBranchList, (newValue) => {
     font-size: 16px; 
     font-weight: 500; 
     color: rgba(255, 255, 255, 0.9); 
-    text-transform: none; /* uppercase in this case */
+    text-transform: uppercase; 
     letter-spacing: 0.05em; 
   }
   .signal-button-container { 
