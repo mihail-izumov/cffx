@@ -6,7 +6,7 @@
     <div class="table-content">
       <div class="table-header">
         <div class="header-cell usual">Обычный отзыв Яндекс/2ГИС</div>
-        <div class="header-cell smart">Ваш Сигнал Здесь</div>
+        <div class="header-cell smart">⚡ Сигнал</div>
       </div>
       
       <div class="table-row">
