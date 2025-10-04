@@ -1733,8 +1733,27 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
     margin-bottom: 12px;
   }
 
-  .signal-demo-form-container {
-    padding: 1rem 1.5rem;
+  /* Увеличиваем ширину основного контейнера формы */
+  .signal-demo__form-container {
+    padding: 1rem 0.75rem; /* Уменьшаем боковые отступы */
+    max-width: 100%; /* Используем всю доступную ширину */
+  }
+  
+  /* Увеличиваем ширину блока с вопросами */
+  .signal-question-block {
+    padding: 1rem 0.85rem; /* Уменьшаем внутренние отступы */
+  }
+
+  /* Увеличиваем ширину кнопки "Дальше" */
+  .signal-liquid-next-btn {
+    width: 100%;
+    height: 52px; /* Можно немного уменьшить высоту для мобильных */
+  }
+
+  /* Увеличиваем размер шрифта в баблах подсказок */
+  .signal-suggestion-bubble {
+    font-size: 0.85rem; /* Немного больше для удобства нажатия */
+    padding: 0.4rem 0.9rem;
   }
   
   .signal-columns {
@@ -1751,7 +1770,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
     padding: 0.6rem 2rem;
   }
 }
-
 
   .signal-incognito-toggle {
   margin-bottom: 12px;
