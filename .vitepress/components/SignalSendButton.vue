@@ -3,7 +3,7 @@
     <strong>Отправить ⚡ Сигнал</strong>
   </button>
 
-  <!-- Добавляем модальное окно прямо в этот компонент -->
+  <!-- Модальное окно -->
   <div v-if="isModalOpen" class="signal2-review-modal-overlay" @click="closeModal">
     <div class="signal2-review-modal-content" @click.stop>
       <div class="signal2-modal-scrollable-content">
@@ -36,7 +36,7 @@ const closeModal = () => {
 </script>
 
 <style scoped>
-/* Ваши существующие стили для кнопки */
+/* Стили только для кнопки - оставляем scoped */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -71,8 +71,10 @@ const closeModal = () => {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
+</style>
 
-/* Добавляем стили для модального окна (скопируйте их из CoffeePointsSMR.vue) */
+<style>
+/* Стили для модального окна - БЕЗ scoped */
 .signal2-review-modal-overlay {
   position: fixed;
   top: 0;
@@ -111,11 +113,9 @@ const closeModal = () => {
 }
 
 .signal2-modal-close-section {
-  position: sticky;
-  bottom: 0;
+  flex-shrink: 0;
+  padding: 20px 16px 24px 16px;
   background: #1e1e20;
-  padding: 16px;
-  padding-bottom: calc(16px + env(safe-area-inset-bottom));
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   justify-content: center;
