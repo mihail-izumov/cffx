@@ -14,11 +14,22 @@
 </template>
 
 <script setup>
-defineProps({
+import { watch } from 'vue'
+
+const props = defineProps({
   isOpen: Boolean
 })
 
 defineEmits(['close'])
+
+// Управление скроллом body при открытии/закрытии модального окна
+watch(() => props.isOpen, (newValue) => {
+  if (newValue) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = 'auto'
+  }
+})
 </script>
 
 <style>
