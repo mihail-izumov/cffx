@@ -2,7 +2,7 @@
   <div v-if="isOpen" class="signal2-review-modal-overlay" @click="$emit('close')">
     <div class="signal2-review-modal-content" @click.stop>
       <div class="signal2-modal-scrollable-content">
-        <slot></slot>
+        <slot />
       </div>
       <div class="signal2-modal-close-section">
         <button @click="$emit('close')" class="signal2-modal-close-button">
@@ -22,14 +22,18 @@ const props = defineProps({
 
 defineEmits(['close'])
 
-watch(() => props.isOpen, (isOpen) => {
-  if (typeof document !== 'undefined') {
-    document.body.style.overflow = isOpen ? 'hidden' : 'auto'
+// Управление скроллом body при открытии/закрытии модального окна
+watch(() => props.isOpen, (newValue) => {
+  if (newValue) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = 'auto'
   }
 })
 </script>
 
-<style scoped>
+<style>
+/* Глобальные стили для модального окна - БЕЗ scoped */
 .signal2-review-modal-overlay {
   position: fixed;
   top: 0;
@@ -54,6 +58,8 @@ watch(() => props.isOpen, (isOpen) => {
   max-width: 95vw;
   max-height: clamp(85vh, 90vh, 85vh);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  color: white;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -62,13 +68,12 @@ watch(() => props.isOpen, (isOpen) => {
 .signal2-modal-scrollable-content {
   flex: 1;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  min-height: 0;
+  padding: 20px 16px 16px 16px;
 }
 
 .signal2-modal-close-section {
   flex-shrink: 0;
-  padding: 16px 16px;
+  padding: 20px 16px 24px 16px;
   background: #1e1e20;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
@@ -84,27 +89,50 @@ watch(() => props.isOpen, (isOpen) => {
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s ease;
-  width: 100%;
 }
 
 .signal2-modal-close-button:hover {
   background-color: #333333;
   color: #fff;
+  transform: translateY(-2px);
 }
 
+/* Мобильные стили */
 @media (max-width: 768px) {
   .signal2-review-modal-overlay {
-    padding: 0;
-    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    padding: 0 8px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
   }
+
   .signal2-review-modal-content {
-    width: 100%;
-    height: 90vh;
-    max-height: 90vh;
-    border-radius: 16px 16px 0 0;
+    margin-top: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+    height: auto;
+    max-height: none;
   }
+
+  .signal2-modal-scrollable-content {
+    padding-bottom: 70px !important;
+  }
+
   .signal2-modal-close-section {
+    position: static;
+    flex-shrink: 0;
+    padding: 16px 16px;
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+
+  .signal2-modal-close-button {
+    width: 100%;
+    justify-content: center;
+    font-size: 14px;
+    padding: 12px 20px;
   }
 }
 </style>
