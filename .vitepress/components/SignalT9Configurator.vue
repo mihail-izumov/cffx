@@ -1337,10 +1337,20 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   color: #A972FF;
 }
 
+.signal-emotion-bubble:hover {
+  background: #A972FF;
+  color: #000;
+}
+
 .signal-fact-bubble {
   background: rgba(61, 220, 132, 0.1);
   border-color: rgba(61, 220, 132, 0.3);
   color: #3DDC84;
+}
+
+.signal-fact-bubble:hover {
+  background: #3DDC84;
+  color: #000;
 }
 
 .signal-solution-bubble {
@@ -1348,26 +1358,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   border-color: rgba(74, 144, 226, 0.3);
   color: #4A90E2;
 }
-
-/* Применяем ховер-эффекты только для устройств с мышью */
-@media (hover: hover) and (pointer: fine) {
-  .signal-emotion-bubble:hover {
-    background: #A972FF;
-    color: #000;
-  }
-
-  .signal-fact-bubble:hover {
-    background: #3DDC84;
-    color: #000;
-  }
-  
-  /* Добавляем недостающий hover для .signal-solution-bubble */
-  .signal-solution-bubble:hover {
-    background: #4A90E2;
-    color: #fff;
-  }
-}
-
 
 .signal-solution-bubble:hover {
   background: #4A90E2;
