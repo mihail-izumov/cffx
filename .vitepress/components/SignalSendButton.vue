@@ -138,39 +138,42 @@ const closeModal = () => {
   transform: translateY(-2px);
 }
 
-/* Мобильные стили */
+/* Мобильные стили с !important для перебивания scoped стилей */
 @media (max-width: 768px) {
   .signal2-review-modal-overlay {
-    display: flex;
-    flex-direction: column;
-    padding: 0 8px;
-    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0 8px !important;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom)) !important;
   }
 
   .signal2-review-modal-content {
-    margin-top: 20px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-height: 0;
-    height: auto;
-    max-height: none;
+    margin-top: 20px !important;
+    flex-grow: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
   }
 
   .signal2-modal-scrollable-content {
-    padding-bottom: 70px !important;
+    flex: 1 !important;
+    overflow-y: auto !important;
+    padding: 20px 16px 70px 16px !important;
   }
 
   .signal2-modal-close-section {
-    position: static;
-    flex-shrink: 0;
-    padding: 16px 16px;
-    padding-bottom: calc(16px + env(safe-area-inset-bottom));
-    background: #1e1e20;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    justify-content: center;
+    position: static !important;
+    flex-shrink: 0 !important;
+    padding: 16px 16px !important;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
+    background: #1e1e20 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin-bottom: 0 !important;
   }
 }
 </style>
