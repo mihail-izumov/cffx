@@ -2,10 +2,12 @@
   <div v-if="isOpen" class="signal2-review-modal-overlay" @click="$emit('close')">
     <div class="signal2-review-modal-content" @click.stop>
       <div class="signal2-modal-scrollable-content">
-        <slot name="content"></slot>
+        <slot></slot>
       </div>
       <div class="signal2-modal-close-section">
-        <slot name="footer"></slot>
+        <button @click="$emit('close')" class="signal2-modal-close-button">
+          Закрыть и вернуться
+        </button>
       </div>
     </div>
   </div>
@@ -58,32 +60,51 @@ watch(() => props.isOpen, (isOpen) => {
 }
 
 .signal2-modal-scrollable-content {
-  flex: 1; /* Занимать все доступное пространство */
+  flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  min-height: 0; /* Важно для корректной работы flex: 1 */
+  min-height: 0;
 }
 
 .signal2-modal-close-section {
-  flex-shrink: 0; /* Не сжиматься */
-  padding: 20px 16px 24px 16px;
+  flex-shrink: 0;
+  padding: 16px 16px;
   background: #1e1e20;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+}
+
+.signal2-modal-close-button {
+  background-color: #272727;
+  border: none;
+  color: #888;
+  padding: 14px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.signal2-modal-close-button:hover {
+  background-color: #333333;
+  color: #fff;
 }
 
 @media (max-width: 768px) {
   .signal2-review-modal-overlay {
     padding: 0;
-    align-items: flex-end; /* Выравнивание по низу на мобильных */
+    align-items: flex-end;
   }
   .signal2-review-modal-content {
     width: 100%;
-    height: 90vh; /* Занимать почти весь экран */
+    height: 90vh;
     max-height: 90vh;
     border-radius: 16px 16px 0 0;
   }
   .signal2-modal-close-section {
-    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
   }
 }
 </style>
