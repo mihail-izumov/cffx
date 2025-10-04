@@ -1,1852 +1,941 @@
-<template>
-  <div class="signal-demo-wrapper">
-    <!-- Переключатель секций -->
-    <div class="signal-demo__header">
-      <div class="signal-demo__breadcrumbs" role="tablist">
-        <button
-          v-for="section in sections"
-          :key="section.id"
-          class="signal-breadcrumb"
-          :class="[section.id, isActive(section.id) ? 'is-active' : '']"
-          @click="selectedSection = section.id"
-        >
-          <div class="signal-breadcrumb-circle"></div>
-        </button>
-      </div>
-    </div>
-
-    <!-- Кнопка информации и переключатель пола -->
-    <div class="signal-controls-row">
-      <button 
-        class="signal-info-button"
-        :class="{ 
-          'signal-info-female': selectedGender === 'female',
-          'signal-info-male': selectedGender === 'male'
-        }"
-        @click="showInfoModal = true"
-      >
-        Как работает
-      </button>
-      <div class="signal-gender-switch">
-        <div class="signal-gender-container">
-          <div 
-            class="signal-gender-btn signal-gender-female"
-            :class="{ 'is-active': selectedGender === 'female' }"
-            @click="onGenderClick('female')"
-          ></div>
-          <div 
-            class="signal-gender-btn signal-gender-male"
-            :class="{ 'is-active': selectedGender === 'male' }"
-            @click="onGenderClick('male')"
-          ></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Модальное окно -->
-    <div v-if="showInfoModal" class="modal-overlay" @click.self="showInfoModal = false">
-      <div class="modal">
-        <div class="modal-title">Ваши отзывы меняют всё.</div>
-        <div class="modal-body">
-          Каждый отзыв делает любимую кофейню еще лучше, а Сигнал помогает решить Вашу проблему за 24 часа. Почувствуйте силу настоящих перемен.<br><br>
-          <a href="https://cffx.ru/signals.html" target="_blank" class="modal-link no-double-underline">Как Работает Сигнал</a>
-        </div>
-        <div class="modal-footer">
-          <button class="modal-ok" @click="showInfoModal = false">Понятно</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Контейнер с формой -->
-    <div class="signal-demo__form-container">
-
-      <!-- Секция 2: Эмоции -->
-      <div v-if="selectedSection === 'emotions'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #6f5d9f;">
-          <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
-            </transition>
-          </div>
-          <textarea 
-            v-model="form.emotionalRelease" 
-            @focus="startRotation(1)" 
-            :rows="isMobile ? 5 : 3"
-            :placeholder="selectedGender === 'female' ? 'Или напишите своими словами...' : 'Или напишите своими словами...'"
-          ></textarea>
-          <div class="signal-suggestions-container">
-            <div 
-              v-for="suggestion in currentSuggestions.emotions" 
-              :key="suggestion"
-              class="signal-suggestion-bubble signal-emotion-bubble"
-              @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
-            >
-              {{ suggestion }}
-            </div>
-            <div 
-              v-if="!isInitialSuggestions('emotions')"
-              class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
-              @click="resetSuggestions('emotions')"
-            >
-              ← Ещё варианты
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Секция 3: Факты -->
-      <div v-if="selectedSection === 'facts'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #3a8862;">
-          <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
-            </transition>
-          </div>
-          <textarea 
-            v-model="form.factualAnalysis" 
-            @focus="startRotation(2)" 
-            :rows="isMobile ? 5 : 3"
-            placeholder="Несколько фактов: что и когда случилось..."
-          ></textarea>
-          <div class="signal-suggestions-container">
-            <div 
-              v-for="suggestion in currentSuggestions.facts" 
-              :key="suggestion"
-              class="signal-suggestion-bubble signal-fact-bubble"
-              @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
-            >
-              {{ suggestion }}
-            </div>
-            <div 
-              v-if="!isInitialSuggestions('facts')"
-              class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
-              @click="resetSuggestions('facts')"
-            >
-              ← Ещё варианты
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Секция 4: Решение -->
-      <div v-if="selectedSection === 'solutions'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #4A90E2;">
-          <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
-            </transition>
-          </div>
-          <textarea 
-            v-model="form.constructiveSuggestions" 
-            @focus="startRotation(3)" 
-            :rows="isMobile ? 5 : 3"
-            placeholder="Можно пропустить, но это самое интересное ..."
-          ></textarea>
-          <div class="signal-suggestions-container">
-            <div 
-              v-for="suggestion in currentSuggestions.solutions" 
-              :key="suggestion"
-              class="signal-suggestion-bubble signal-solution-bubble"
-              @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
-            >
-              {{ suggestion }}
-            </div>
-            <div 
-              v-if="!isInitialSuggestions('solutions')"
-              class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
-              @click="resetSuggestions('solutions')"
-            >
-              ← Ещё варианты
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Секция 5: Итого -->
-      <div v-if="selectedSection === 'summary'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #FFB800;">
-          <p class="signal-direction-label">Ваш Сигнал</p>
-          <div class="signal-rotating-phrase-container">
-            <p class="signal-question-label">Что должно измениться?</p>
-          </div>
-        <textarea 
-          v-model="form.summaryText" 
-          :rows="isMobile ? 8 : 6"
-          placeholder="Перемены начинаются здесь ..."
-        ></textarea>
-          <p class="signal-example-hint signal-example-hint-white">Команда к действию для кофейни и видимый результат для вас</p>
-        </div>
-      </div>
-
-      <!-- Секция 6: Локация -->
-      <div v-if="selectedSection === 'location'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #5A9FB8;">
-          <p class="signal-direction-label">Выбрать локацию</p>
-          <div class="signal-rotating-phrase-container">
-            <p class="signal-question-label">В какой кофейне разобрать этот Сигнал?</p>
-          </div>
-          <select v-model="form.selectedNetwork" @change="form.selectedBranch = ''" class="signal-select">
-            <option disabled value="">Выберите сеть</option>
-            <option v-for="(cafe, name) in cafes" :key="name" :value="name">{{ name }}</option>
-          </select>
-          <select v-model="form.selectedBranch" class="signal-select" :disabled="!form.selectedNetwork">
-            <option disabled value="">Выберите адрес</option>
-            <option v-for="(branch, index) in selectedNetworkBranches" :key="index" :value="branch.address">
-              {{ branch.address }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-<!-- Секция 7: Контакт -->
-<div v-if="selectedSection === 'contact'" class="signal-form-section">
-
-  <!-- Экран подтверждения (показывается ПОСЛЕ отправки) -->
-  <div v-if="formSubmitted" class="signal-success-screen">
-    <div class="signal-success-content">
-      <h3>Сигнал отправлен ⚡</h3>
-      <div class="signal-success-ticket-info">
-        <span class="signal-success-date">{{ currentDate }}</span>
-        <span class="signal-success-ticket">{{ formattedTicketNumber }}</span>
-      </div>
-      <p class="signal-success-description">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
-      <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Получить Ответ</a>
-      <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">Кто Анна и как работает</a>
-    </div>
-  </div>
-
-  <!-- Форма отправки (показывается ДО отправки) -->
-  <template v-if="!formSubmitted">
-    <div class="signal-question-block contact" style="--accent-color: #00C2A8;">
-      <div class="signal-rotating-phrase-container">
-        <p class="signal-question-label">Отправьте Сигнал</p>
-      </div>
-
-      <!-- Поле ввода имени -->
-      <div v-if="!form.isIncognito" class="signal-name-field">
-        <label>Для персонального разбора</label>
-        <input v-model="form.userName" class="signal-input" placeholder="Ваше Имя" />
-      </div>
-
-      <!-- Переключатель "Инкогнито" -->
-      <div class="signal-incognito-toggle">
-        <label class="signal-toggle-label">
-          <input type="checkbox" v-model="form.isIncognito" class="signal-toggle-checkbox" />
-          <span class="signal-toggle-slider"></span>
-          <span class="signal-toggle-text">Анонимно</span>
-        </label>
-      </div>
-
-      <!-- Динамическая подсказка -->
-      <p class="signal-input-hint">
-        {{ form.isIncognito 
-           ? 'Кофейня получит Сигнал. Ответ по запросу у Анны.' 
-           : 'Кофейня ответит. Анна вернёт и поможет уточнить.' }}
-      </p>
-    </div>
-
-    <!-- Соглашение с условиями -->
-    <label class="signal-agreement">
-      <input type="checkbox" v-model="form.agreedToTerms" />
-      <span>Подтверждаю согласие с <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a></span>
-    </label>
-
-    <!-- Кнопка отправки -->
-    <button class="signal-submit-button" :disabled="submitStatus === 'processing' || !form.agreedToTerms" @click="submitForm">
-      {{ submitStatus === 'processing' ? 'Отправка...' : 'Отправить в кофейню' }}
-    </button>
-  </template>
-
-</div>
-
-      <!-- Кнопки навигации -->
-      <div v-if="selectedSection !== 'contact'" class="signal-next-button-container">
-        <button
-  class="signal-liquid-next-btn"
-  :class="[
-    selectedSection === 'share' ? 'signal-share-next' : '',
-    selectedSection === 'emotions' ? 'signal-emotion-next' : '',
-    selectedSection === 'facts' ? 'signal-fact-next' : '',
-    selectedSection === 'solutions' ? 'signal-solution-next' : '',
-    selectedSection === 'summary' ? 'signal-summary-next' : '',
-    selectedSection === 'location' ? 'signal-location-next' : ''
-  ]"
-  @click="goToNextSection"
-  :disabled="(selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim())) || (selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch))"
->
-  <span class="signal-liquid-next-text">{{ currentSectionData.buttonText }}</span>
-  <CupFillIcon
-    class="signal-next-icon"
-    :step-index="sections.findIndex(s => s.id === selectedSection)"
-    :steps-total="6"
-    :size="22"
-  />
-</button>
-
-
-        
-        <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
-          <button class="signal-liquid-humanize-btn" @click="summarizeAllContent()" :disabled="humanizeStatus === 'processing'">
-            <span class="signal-liquid-humanize-text">
-              {{ humanizeStatus === 'completed' ? 'Готово' : humanizeStatus === 'processing' ? 'Обновление...' : 'Обновить' }}
-            </span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
-import { reactive, ref, onUnmounted, computed, onMounted } from 'vue';
+import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
+import SignalT9Configurator from './SignalT9Configurator.vue'
 
-const form = reactive({ 
-  shareExperience: '',
-  emotionalRelease: '',
-  factualAnalysis: '',
-  constructiveSuggestions: '',
-  summaryText: '',
-  selectedNetwork: '',
-  selectedBranch: '',
-  userName: '',
-  isIncognito: false,
-  agreedToTerms: false
-});
+const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка', 'Кэрри']
 
-const isMobile = ref(false);
-const selectedGender = ref('female');
-const humanizeStatus = ref('idle');
-const showInfoModal = ref(false);
-const submitStatus = ref('idle');
-const formSubmitted = ref(false);
-const rawTicketNumber = ref(null);
-const formattedTicketNumber = ref(null);
-const currentDate = ref('');
-
+// Данные о кофейнях с полными адресами
 const cafes = {
   'Корж': {
+    name: 'Корж',
+    yandex2gis: 5,
+    yandex2gisPercent: 94,
+    smartReviews: 0,
+    smartReviewsPercent: 0,
+    signals: '1',
+    signalsPercent: 100,
+    isConnected: true,
     branches: [
-      { address: 'Куйбышева, 103' },
-      { address: 'Революционная, 101В' },
-      { address: '9 просека 5-я малая линия, 3б' },
-      { address: 'Льва Толстого, 30Б' },
-      { address: 'Самарская, 270' },
-      { address: 'Дачная, 2к2' },
-      { address: 'Ульяновская, 19' },
-      { address: 'Ново-Садовая, 106б' }
+      { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/reviews' },
+      { address: 'Революционная, 101В', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858//reviews' },
+      { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/152008652145/reviews' },
+      { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/reviews' },
+      { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/reviews' },
+      { address: 'Дачная, 2к2', gisUrl: 'https://2gis.ru/samara/firm/70000001045453045/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/144063441903/reviews' },
+      { address: 'Ульяновская, 19', gisUrl: 'https://2gis.ru/samara/firm/70000001033411071/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/102178077269/reviews' },
+      { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/reviews' }
     ]
   },
   'MOSAIC': {
+    name: 'MOSAIC',
+    yandex2gis: 12,
+    yandex2gisPercent: 42,
+    smartReviews: 0,
+    smartReviewsPercent: 0,
+    signals: '0',
+    signalsPercent: 0,
+    isConnected: false,
     branches: [
-      { address: 'Бывшая гостиница "Националь"' },
-      { address: 'Волжский просп., 50' },
-      { address: 'Речной вокзал' },
-      { address: 'Максима Горького, 82' },
-      { address: 'Волжский просп., 40' },
-      { address: 'ЖК Ботанический' },
-      { address: 'ТЦ Аквариум' },
-      { address: 'ТЦ Аврора' },
-      { address: 'ТЦ Самолет' },
-      { address: 'Волгина, 127А' },
-      { address: 'БЦ ЗИМ' },
-      { address: '5-я просека' },
-      { address: 'Красноармейский спуск' },
-      { address: 'Напротив ЦСКА' }
+      { address: 'Бывшая гостиница "Националь" ', gisUrl: 'https://2gis.ru/samara/firm/70000001077330664/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/151180373582/reviews/' },
+      { address: 'Волжский просп., 50', gisUrl: 'https://2gis.ru/samara/firm/70000001074565560/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/241776381665/reviews/' },
+      { address: 'Речной вокзал', gisUrl: 'https://2gis.ru/samara/firm/70000001074565559/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/26968768492/reviews/' },
+      { address: 'Максима Горького, 82', gisUrl: 'https://2gis.ru/samara/firm/70000001065476074/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/130707944684/reviews/' },
+      { address: 'Волжский просп., 40', gisUrl: 'https://2gis.ru/samara/firm/70000001052939655/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/26968768492/reviews/' },
+      { address: 'ЖК Ботанический', gisUrl: 'https://2gis.ru/samara/firm/70000001035366800/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/186171163289/reviews/' },
+      { address: 'ТЦ Аквариум ', gisUrl: 'https://2gis.ru/samara/firm/70000001034344804/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/40452073764/reviews/' },
+      { address: 'ТЦ Аврора', gisUrl: 'https://2gis.ru/samara/firm/70000001046644341/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/121248491329/reviews/' },
+      { address: 'ТЦ Самолет', gisUrl: 'https://2gis.ru/samara/firm/70000001027292047/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/241817444822/reviews/' },
+      { address: 'Волгина, 127А', gisUrl: 'https://2gis.ru/samara/firm/70000001026465823/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/189131333340/reviews/' },
+      { address: 'БЦ ЗИМ', gisUrl: 'https://2gis.ru/samara/firm/70000001027292024/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/131060566066/reviews/' },
+      { address: '5-я просека', gisUrl: 'https://2gis.ru/samara/firm/70000001037266527/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/59004397239/reviews/' },
+      { address: 'Красноармейский спуск', gisUrl: 'https://2gis.ru/samara/firm/70000001074565722/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/87795478653/reviews/' },
+      { address: 'Напротив ЦСКА', gisUrl: 'https://2gis.ru/samara/firm/70000001088760179/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/62781566656/reviews/' }
     ]
   },
   'Skuratov': {
+    name: 'Skuratov',
+    yandex2gis: 2,
+    yandex2gisPercent: 89,
+    smartReviews: 0,
+    smartReviewsPercent: 0,
+    signals: '0',
+    signalsPercent: 0,
+    isConnected: false,
     branches: [
-      { address: 'Самарская, 190' },
-      { address: 'Молодогвардейская, 80' },
-      { address: 'Максима Горького, 129' },
-      { address: 'Красноармейская, 133' },
-      { address: 'Первомайская, 29' },
-      { address: 'Куйбышева, 68/70' }
+      { address: 'Самарская, 190', gisUrl: 'https://2gis.ru/samara/firm/70000001062410566/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov/150151107830/reviews/' },
+      { address: 'Молодогвардейская, 80', gisUrl: 'https://2gis.ru/samara/firm/70000001063379108/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov_coffee/112256596811/reviews/' },
+      { address: 'Максима Горького, 129', gisUrl: 'https://2gis.ru/samara/firm/70000001094239079/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov_coffee/222229699719/reviews/' },
+      { address: 'Красноармейская, 133', gisUrl: 'https://2gis.ru/samara/firm/70000001052366972/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov_coffee/9331047841/reviews/' },
+      { address: 'Первомайская, 29', gisUrl: 'https://2gis.ru/samara/firm/70000001043589620/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov_coffee/64247746809/reviews/' },
+      { address: 'Куйбышева, 68/70', gisUrl: 'https://2gis.ru/samara/firm/70000001036538224/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov_coffee/203299963607/reviews/' }
     ]
   },
   'Surf': {
+    name: 'Surf',
+    yandex2gis: 1,
+    yandex2gisPercent: 100,
+    smartReviews: 0,
+    smartReviewsPercent: 0,
+    signals: '0',
+    signalsPercent: 0,
+    isConnected: false,
     branches: [
-      { address: 'Некрасовская, 57' },
-      { address: 'Полевая, 54' },
-      { address: 'Куйбышева, 100' }
+      { address: 'Некрасовская, 57', gisUrl: 'https://2gis.ru/samara/firm/70000001036632385/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/surf_coffee/130764135504/reviews/' },
+      { address: 'Полевая, 54', gisUrl: 'https://2gis.ru/samara/firm/70000001047142182/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/surf_coffee_x_pool/179188509748/reviews/' },
+      { address: 'Куйбышева, 100', gisUrl: 'https://2gis.ru/samara/firm/70000001082424572/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/surf_coffee/13215597722/reviews/' }
     ]
   },
   'Белотурка': {
+    name: 'Белотурка',
+    yandex2gis: 8,
+    yandex2gisPercent: 1,
+    smartReviews: 0,
+    smartReviewsPercent: 0,
+    signals: '0',
+    signalsPercent: 0,
+    isConnected: false,
     branches: [
-      { address: 'Куйбышева, 99' },
-      { address: 'Молодогвардейская, 153' },
-      { address: 'Ново-Садовая, 106' },
-      { address: 'Московское шоссе, 41 (РДЦ)' },
-      { address: 'Московское шоссе, 81Б (Парк Хаус)' }
+      { address: 'Куйбышева, 99', gisUrl: 'https://2gis.ru/samara/firm/70000001075213346/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/21345450545/reviews/' },
+      { address: 'Молодогвардейская, 153', gisUrl: 'https://2gis.ru/samara/firm/70000001094600683/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/71041285330/reviews/' },
+      { address: 'Ново-Садовая, 106', gisUrl: 'https://2gis.ru/samara/firm/70000001095659001/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/56246021902/reviews/' },
+      { address: 'Московское шоссе, 41 (РДЦ)', gisUrl: 'https://2gis.ru/samara/firm/70000001090546275/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/34710016395/reviews/' },
+      { address: 'Московское шоссе, 81Б (Парк Хаус)', gisUrl: 'https://2gis.ru/samara/firm/70000001100074136/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/90354199231/reviews/' }
     ]
   },
   'Кэрри': {
+    name: 'Кэрри',
+    yandex2gis: 4,
+    yandex2gisPercent: 97,
+    smartReviews: 0,
+    smartReviewsPercent: 0,
+    signals: '0',
+    signalsPercent: 0,
+    isConnected: false,
     branches: [
-      { address: 'Ново-Садовая ул., 160М' },
-      { address: 'Московское шоссе, 252' },
-      { address: 'Дачная ул., 2, корп. 1' },
-      { address: 'Дыбенко, 30 (Космопорт)' }
+      { address: 'Ново-Садовая ул., 160М', gisUrl: 'https://2gis.ru/samara/firm/70000001070543566/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/kerri/202386458956/reviews/' },
+      { address: 'Московское шоссе, 252', gisUrl: 'https://2gis.ru/samara/firm/70000001028380476/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/kerri/158033026774/reviews/' },
+      { address: 'Дачная ул., 2, корп. 1', gisUrl: 'https://2gis.ru/samara/firm/70000001020794652/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/kerri/75305070589/reviews/' },
+      { address: 'Дыбенко, 30 (Космопорт)', gisUrl: 'https://2gis.ru/samara/firm/70000001027327015/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/kerri/25856651419/reviews/' }
     ]
   }
+}
+
+
+const getSolutionText = (percent) => {
+  if (percent === 0) {
+    return 'Без решений';
+  }
+  return `Решение: ${percent}%`;
 };
 
-const selectedNetworkBranches = computed(() => {
-  if (!form.selectedNetwork) return [];
-  return cafes[form.selectedNetwork]?.branches || [];
-});
+const cafeProfiles = {
+  'корж': { responseTime: { base: 2.3, min: 1.8, max: 2.8 }, resolutionTime: { base: 17.5, min: 15, max: 20 } },
+  'mosaic': { responseTime: { base: 1.4, min: 1.0, max: 1.9 }, resolutionTime: { base: 14.7, min: 12, max: 17 } },
+  'skuratov': { responseTime: { base: 1.6, min: 1.2, max: 2.1 }, resolutionTime: { base: 15.2, min: 13, max: 18 } },
+  'surf': { responseTime: { base: 3.1, min: 2.5, max: 3.8 }, resolutionTime: { base: 20.3, min: 18, max: 23 } },
+  'белотурка': { responseTime: { base: 2.7, min: 2.2, max: 3.2 }, resolutionTime: { base: 18.8, min: 16, max: 22 } },
+  'кэрри': { responseTime: { base: 2.0, min: 1.5, max: 2.6 }, resolutionTime: { base: 16.4, min: 14, max: 19 } }
+}
 
-onMounted(() => {
-  const checkMobile = () => {
-    isMobile.value = window.innerWidth <= 768;
-  };
-  checkMobile();
-  window.addEventListener('resize', checkMobile);
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') showInfoModal.value = false;
-  });
-  updateSuggestionsForGender();
+const todayStatus = computed(() => {
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const year = today.getFullYear();
   
-  rawTicketNumber.value = String(Date.now()).slice(-6);
-  formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
-  const now = new Date();
-  const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-  currentDate.value = now.toLocaleString('ru-RU', options).replace(',', '');
+  const monthNames = [
+    'ЯНВАРЬ', 'ФЕВРАЛЬ', 'МАРТ', 'АПРЕЛЬ', 'МАЙ', 'ИЮНЬ',
+    'ИЮЛЬ', 'АВГУСТ', 'СЕНТЯБРЬ', 'ОКТЯБРЬ', 'НОЯБРЬ', 'ДЕКАБРЬ'
+  ];
+  
+  const monthName = monthNames[today.getMonth()];
+  
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a3e635" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="signal2-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/><circle cx="12" cy="12" r="2"/></svg> ${day}.${month} → ${monthName} ${year}`;
 });
 
-const sections = [
-  { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
-  { id: 'facts', title: 'Факты', buttonText: 'К решению ситуации' },
-  { id: 'solutions', title: 'Решения', buttonText: 'Сформировать Сигнал' },
-  { id: 'summary', title: 'Резюме', buttonText: 'Выбрать локацию' },
-  { id: 'location', title: 'Локация', buttonText: 'Формат ответа' },
-  { id: 'contact', title: 'Контакт', buttonText: '' } // На последнем шаге кнопка не отображается
-];
+const getCafeConfig = (cafeName) => {
+  const normalized = cafeName?.toLowerCase() || ''
+  return cafeProfiles[normalized] || { responseTime: { base: 2, min: 1, max: 3 }, resolutionTime: { base: 15, min: 12, max: 18 } }
+}
 
-const selectedSection = ref('emotions');
+const selectedCafe = ref(cafeNames[0] || 'Корж')
 
-const currentSectionData = computed(() => {
-return sections.find(s => s.id === selectedSection.value);
-});
-
-const coffeeFillHeight = computed(() => {
-  const i = sections.findIndex(s => s.id === selectedSection.value)
-  const steps = [0, 2, 4, 6, 7, 8]   // 6 экранов = 6 видимых уровней
-  return steps[Math.max(0, Math.min(i, steps.length - 1))]
+const establishment = computed(() => cafes[selectedCafe.value] || {
+  name: '',
+  yandex2gis: 0,
+  yandex2gisPercent: 0,
+  smartReviews: 0,
+  smartReviewsPercent: 0,
+  signals: '0',
+  signalsPercent: 0,
+  isConnected: false,
+  branches: []
 })
 
-const isActive = (id) => id === selectedSection.value;
+const cafeConfig = computed(() => getCafeConfig(selectedCafe.value))
 
-const goToNextSection = () => {
-  const currentIndex = sections.findIndex(s => s.id === selectedSection.value);
-  if (selectedSection.value === 'solutions') {
-    summarizeAllContent();
-  }
-  if (currentIndex < sections.length - 1) {
-    selectedSection.value = sections[currentIndex + 1].id;
-  }
-};
+const systemMetrics = ref({
+  responseTime: cafeConfig.value.responseTime.base,
+  resolutionTime: cafeConfig.value.resolutionTime.base,
+  lastUpdate: Date.now()
+})
 
-function summarizeAllContent() {
-  humanizeStatus.value = 'processing';
+const showLeftGradient = ref(false)
+const showRightGradient = ref(false)
+const isMobile = ref(false)
+const isReviewModalOpen = ref(false)
+
+const showYandexTooltip = ref(false)
+const showSignalsTooltip = ref(false)
+
+const fetchSystemStatus = async () => {
   try {
-    const structuredText = structureAndCleanText(
-      form.shareExperience.trim(),
-      form.emotionalRelease.trim(),
-      form.factualAnalysis.trim(),
-      form.constructiveSuggestions.trim(),
-      selectedGender.value
-    );
-    form.summaryText = applyGenderCorrection(structuredText, selectedGender.value);
-    humanizeStatus.value = 'completed';
-    setTimeout(() => {
-      humanizeStatus.value = 'idle';
-    }, 2000);
+    await new Promise(resolve => setTimeout(resolve, 50))
+    const currentConfig = cafeConfig.value
+    const now = Date.now()
+    const hourOfDay = new Date().getHours()
+    const isBusinessHours = hourOfDay >= 9 && hourOfDay <= 21
+    const loadFactor = isBusinessHours ? 0.8 : 1.2
+    const responseVariation = (Math.random() - 0.5) * 0.15 * loadFactor
+    const resolutionVariation = (Math.random() - 0.5) * 1.2 * loadFactor
+
+    systemMetrics.value.responseTime = Math.max(
+      currentConfig.responseTime.min,
+      Math.min(currentConfig.responseTime.max,
+        systemMetrics.value.responseTime + responseVariation
+      )
+    )
+
+    systemMetrics.value.resolutionTime = Math.max(
+      currentConfig.resolutionTime.min,
+      Math.min(currentConfig.resolutionTime.max,
+        systemMetrics.value.resolutionTime + resolutionVariation
+      )
+    )
+
+    systemMetrics.value.lastUpdate = now
   } catch (error) {
-    console.error('Ошибка:', error);
-    humanizeStatus.value = 'idle';
+    // ignore
   }
 }
 
-function onGenderClick(gender) {
-  selectedGender.value = gender;
-  updateSuggestionsForGender();
-  if (selectedSection.value === 'summary') {
-    summarizeAllContent();
-  }
+const formatTime = (hours) => {
+  if (hours < 1) return `${Math.round(hours * 60)}мин`
+  return `${hours.toFixed(1)}ч`
 }
 
-async function submitForm() {
-  submitStatus.value = 'processing';
-  const formData = {
-    _subject: `Новый отзыв от ${form.userName || 'Аноним'}`,
-    "Дата": currentDate.value,
-    "Код тикета": rawTicketNumber.value,
-    "Сеть": form.selectedNetwork,
-    "Адрес": form.selectedBranch,
-    "Имя": form.userName,
-    "Отзыв": form.summaryText
-  };
-  try {
-    const response = await fetch('https://formspree.io/f/mdkzjopz', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    });
-    if (!response.ok) throw new Error('Ошибка');
-    formSubmitted.value = true;
-    submitStatus.value = 'idle';
-  } catch (error) {
-    console.error('Ошибка:', error);
-    alert('Не удалось отправить отзыв. Попробуйте позже.');
-    submitStatus.value = 'idle';
-  }
+const showBranchList = ref(false)
+const emit = defineEmits(['close'])
+const widgetContentRef = ref(null)
+const switchersRef = ref(null)
+const badgeRef = ref(null)
+
+const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
+const goToReviews = (branch) => {
+  const service = getRandomService()
+  const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
+  window.open(url, '_blank')
 }
 
-// ===== ИСПРАВЛЕННАЯ ЧАСТЬ: ТРЕХУРОВНЕВАЯ СИСТЕМА ПОДСКАЗОК =====
+const openReviewModal = () => {
+  isReviewModalOpen.value = true
+  document.body.style.overflow = 'hidden'
+}
 
-const baseSuggestions = {
-emotions: {
-  // Положительные эмоции - первый уровень
-  initial: ['довольна', 'восхищена', 'благодарна', 'удивлена', 'расстроена', 'разочарована', 'недовольна', 'возмущена'],
+const closeReviewModal = () => {
+  isReviewModalOpen.value = false
+  document.body.style.overflow = 'auto'
+}
+
+const openSignalNew = () => {
+  window.location.href = '/signal/new'
+}
+
+const handleSwitcherScroll = () => {
+  if (!switchersRef.value) return
   
-  // Мужской род - положительные
-  'доволен': ['качеством кофе', 'скоростью обслуживания', 'вежливостью персонала', 'атмосферой заведения', 'чистотой помещения'],
-  'восхищён': ['мастерством бариста', 'качеством десертов', 'дизайном интерьера', 'музыкальным сопровождением', 'ароматом кофе'],
-  'благодарен': ['за внимание к деталям', 'за решение проблемы', 'за рекомендацию напитка', 'за уютную обстановку', 'за профессионализм'],
-
-  // Нейтральные эмоции - удивление
-  'удивлён': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком', 'отношением'],
-
-  // Мужской род - негативные
-  'расстроен': ['долго ждал', 'грязная посуда', 'холодный кофе', 'грубый персонал', 'забыли заказ'],
-  'разочарован': ['качеством', 'сервисом', 'ожиданиями', 'атмосферой', 'чистотой'],
-  'недоволен': ['обслуживанием', 'очередью', 'ошибкой в заказе', 'температурой блюд', 'упаковкой'],
-  'возмущён': ['антисанитарией', 'хамством', 'обманом', 'некачественной едой', 'инородными предметами'],
-
-  // Женский род - положительные
-  'довольна': ['качеством кофе', 'скоростью обслуживания', 'вежливостью персонала', 'атмосферой заведения', 'чистотой помещения'],
-  'восхищена': ['мастерством бариста', 'качеством десертов', 'дизайном интерьера', 'музыкальным сопровождением', 'ароматом кофе'],
-  'благодарна': ['за внимание к деталям', 'за решение проблемы', 'за рекомендацию напитка', 'за уютную обстановку', 'за профессионализм'],
-
-  // Нейтральные эмоции - удивление (женский род)
-  'удивлена': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком', 'отношением'],
-
-  // Женский род - негативные
-  'расстроена': ['долго ждала', 'грязная посуда', 'холодный кофе', 'грубый персонал', 'забыли заказ'],
-  'разочарована': ['качеством', 'сервисом', 'ожиданиями', 'атмосферой', 'чистотой'],
-  'недовольна': ['обслуживанием', 'очередью', 'ошибкой в заказе', 'температурой блюд', 'упаковкой'],
-  'возмущена': ['антисанитарией', 'хамством', 'обманом', 'некачественной едой', 'инородными предметами'],
+  const container = switchersRef.value
+  const scrollLeft = container.scrollLeft
+  const scrollWidth = container.scrollWidth
+  const clientWidth = container.clientWidth
   
-  // ГЕНДЕРНО-НЕЙТРАЛЬНЫЕ второй и третий уровни (используются для обоих родов)
-  'долго ждал': ['20 минут', '30 минут', 'более часа', 'без объяснений', 'видя пустую кофейню'],
-  'долго ждала': ['20 минут', '30 минут', 'более часа', 'без объяснений', 'видя пустую кофейню'],
-  'грязная посуда': ['следы помады', 'остатки еды', 'жирные пятна', 'засохший кофе', 'странный запах'],
-  'холодный кофе': ['едва теплый', 'совсем остыл', 'подали холодным', 'температура комнатная'],
-  'грубый персонал': ['не поздоровались', 'хамили', 'игнорировали', 'были раздражены', 'повысили голос'],
-  'забыли заказ': ['через 40 минут', 'не записали', 'потеряли чек', 'не передали на кухню'],
-  'качеством': ['хуже чем обычно', 'не соответствует цене', 'испортилось за месяц', 'как в фастфуде', 'совсем не то'],
-  'сервисом': ['медленный', 'невнимательный', 'равнодушный', 'непрофессиональный', 'хаотичный'],
-  'ожиданиями': ['по отзывам лучше', 'раньше было вкуснее', 'не оправдал репутацию'],
-  'атмосферой': ['шумно и грязно', 'неуютно', 'холодно', 'плохая музыка', 'неприятные запахи'],
-  'чистотой': ['грязные столы', 'липкий пол', 'немытая посуда', 'пыль везде', 'антисанитария'],
-  'обслуживанием': ['долгое ожидание', 'путаница в заказах', 'невежливость', 'игнорирование', 'ошибки кассира'],
-  'очередью': ['не двигалась', 'час ожидания', 'нет системы', 'хаос', 'всех пропускают'],
-  'ошибкой в заказе': ['не тот напиток', 'забыли позицию', 'неправильный размер', 'другой сироп', 'перепутали'],
-  'температурой блюд': ['холодные', 'остывшие', 'чуть теплые', 'не разогрели', 'ледяные'],
-  'упаковкой': ['протекающие крышки', 'слабые пакеты', 'разорвалась', 'неудобная', 'грязная'],
-  'антисанитарией': ['грязные руки', 'упал и подали', 'на полу готовят', 'мухи', 'тараканы'],
-  'хамством': ['нагрубили', 'оскорбили', 'накричали', 'показали характер', 'послали'],
-  'обманом': ['не тот объем', 'обвесили', 'скрыли стоимость', 'навязали', 'обсчитали'],
-  'некачественной едой': ['испорченная', 'несвежая', 'странный вкус', 'горькая', 'кислая'],
-  'инородными предметами': ['волосы в еде', 'пластик в круассане', 'проволока', 'нитки', 'жук'],
-  'таким сервисом': ['впервые такое', 'шокирован', 'не верю', 'ужасно'],
-  'проблемами': ['постоянные', 'одни и те же', 'системные', 'не решаются', 'игнорируются'],
-  'невниманием': ['не слушают', 'не реагируют', 'все равно', 'безразличие', 'не заботятся'],
-  'беспорядком': ['хаос', 'непорядок', 'бардак', 'неорганизованность', 'суета'],
-  'отношением': ['пренебрежение', 'высокомерие', 'равнодушие', 'неуважение', 'хамство'],
-  'качеством кофе': ['идеальная температура', 'богатый аромат', 'сбалансированный вкус', 'красивая подача', 'свежая обжарка'],
-  'скоростью обслуживания': ['заказ за 3 минуты', 'мгновенная подача', 'нет очередей', 'четкая организация', 'быстрая оплата'],
-  'вежливостью персонала': ['улыбчивые сотрудники', 'внимательное отношение', 'помощь в выборе', 'вежливое общение', 'профессионализм'],
-  'атмосферой заведения': ['уютный интерьер', 'приятная музыка', 'комфортные места', 'теплое освещение', 'спокойная обстановка'],
-  'чистотой помещения': ['сверкающая посуда', 'чистые столы', 'порядок везде', 'свежий воздух', 'аккуратность'],
-  'мастерством бариста': ['красивый латте-арт', 'точные пропорции', 'умение готовить', 'знание рецептов', 'творческий подход'],
-  'качеством десертов': ['свежая выпечка', 'идеальный вкус', 'красивая презентация', 'домашний вкус', 'качественные ингредиенты'],
-  'дизайном интерьера': ['стильное оформление', 'продуманные детали', 'современный дизайн', 'удобная мебель', 'гармоничные цвета'],
-  'музыкальным сопровождением': ['приятная фоновая музыка', 'подходящий плейлист', 'комфортная громкость', 'качественный звук', 'атмосферные композиции'],
-  'ароматом кофе': ['насыщенный запах', 'свежемолотые зерна', 'манящий аромат', 'качественные сорта', 'профессиональная обжарка'],
-  'за внимание к деталям': ['запомнили предпочтения', 'учли пожелания', 'индивидуальный подход', 'забота о госте', 'персональный сервис'],
-  'за решение проблемы': ['быстро исправили ошибку', 'заменили напиток', 'извинились за неудобство', 'предложили компенсацию', 'проявили понимание'],
-  'за рекомендацию напитка': ['подобрали по вкусу', 'посоветовали новинку', 'объяснили особенности', 'учли предпочтения', 'помогли выбрать'],
-  'за уютную обстановку': ['домашняя атмосфера', 'теплый прием', 'комфортные условия', 'располагающая обстановка', 'приятное времяпрепровождение'],
-  'за профессионализм': ['высокий уровень сервиса', 'компетентность', 'качественная работа', 'внимание к деталям', 'превосходное обслуживание']
-},
+  showLeftGradient.value = scrollLeft > 5
+  showRightGradient.value = scrollLeft < (scrollWidth - clientWidth - 5)
+}
 
-  facts: {
-    initial: ['ожидание', 'ошибка в заказе', 'качество блюд', 'чистота', 'персонал'],
-    'ожидание': ['20 минут', '30 минут', 'более часа', 'забыли заказ', 'очередь не двигалась'],
-    'ошибка в заказе': ['не тот напиток', 'не доложили позицию', 'неправильный соус', 'перепутали объём', 'другое молоко'],
-    'качество блюд': ['холодный кофе', 'невкусная еда', 'недоваренный рис', 'комочки в матче', 'чёрствая выпечка'],
-    'чистота': ['грязная посуда', 'волосы в еде', 'грязная уборная', 'насекомые', 'пластик в круассане'],
-    'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились'],
-    '20 минут': ['засекала по часам', 'спросила у соседнего стола', 'заказала в 14:30, получила в 14:50', 'долгое ожидание для простого заказа', 'других обслужили быстрее'],
-    '30 минут': ['полчаса точно', 'с 15:00 до 15:30', 'дважды подходила узнать', 'время на телефоне показало', 'успела прочитать новости'],
-    'более часа': ['час и 10 минут', 'полтора часа ждала', 'с 12:00 до 13:15', 'весь обед потратила', 'опоздала на встречу'],
-    'забыли заказ': ['не записали', 'потеряли чек', 'не передали на кухню', 'перепутали с другим', 'готовили не то'],
-    'очередь не двигалась': ['стояла полчаса', 'один кассир на всех', 'касса сломалась', 'менялись местами', 'хаос'],
-    'не тот напиток': ['заказала латте, принесли капучино', 'просила без сахара, был сладкий', 'хотела большой, дали маленький', 'другой сироп добавили', 'обычное молоко вместо овсяного'],
-    'не доложили позицию': ['забыли десерт', 'нет половины заказа', 'пропали сэндвичи', 'только кофе принесли', 'блинчики не было'],
-    'неправильный соус': ['положили не тот соус к тыквенным панкейкам', 'острый вместо сладкого', 'майонез вместо сметаны', 'кетчуп забыли', 'соус отдельно не дали'],
-    'перепутали объём': ['несоответствие объема напитков', 'маленький вместо большого', 'дали меньше чем заказала', 'размер не тот', 'обманули с порцией'],
-    'другое молоко': ['обычное вместо овсяного', 'соевое вместо миндального', 'с лактозой дали', 'не предупредили', 'аллергия может быть'],
-    'холодный кофе': ['градусов 40-50', 'можно было пить сразу', 'не обжигал язык', 'как будто стоял долго', 'температура комнатная'],
-    'невкусная еда': ['пересоленная', 'недосоленная', 'горькая', 'кислая', 'странный вкус'],
-    'недоваренный рис': ['недоваренный рис, не свежий лайм и черный волос в редисе', 'жесткий', 'сырой', 'хрустит на зубах', 'не доварили'],
-    'комочки в матче': ['комочки в матче', 'не размешали', 'порошок не растворился', 'комки муки', 'неоднородная масса'],
-    'чёрствая выпечка': ['как камень', 'вчерашняя', 'сухая', 'твердая', 'невозможно откусить'],
-    'грязная посуда': ['на чашке помада', 'жирные разводы на тарелке', 'крошки от предыдущих гостей', 'капли кофе на блюдце', 'следы от губной помады'],
-    'волосы в еде': ['черный волос в редисе', 'длинный волос в салате', 'волосы на булочке', 'в супе волос', 'противно есть'],
-    'грязная уборная': ['не убирали', 'бумаги нет', 'воняет', 'лужи на полу', 'грязь везде'],
-    'насекомые': ['тараканы бегают', 'муха в кофе', 'жук в салате', 'паук на стене', 'противно смотреть'],
-    'пластик в круассане': ['кусочек пластика в круассане', 'твердый кусок', 'чуть не сломала зуб', 'опасно', 'могла подавиться'],
-    'грубость': ['не поздоровались', 'ответили резко', 'закатили глаза', 'проигнорировали вопрос', 'были явно недовольны'],
-    'невнимательность': ['не слушали', 'переспрашивали', 'отвлекались', 'забыли просьбу', 'записали неправильно'],
-    'некомпетентность': ['не знали меню', 'не умели готовить', 'путались в кнопках', 'долго соображали', 'спрашивали у коллег'],
-    'трогали еду руками': ['трогали трубочку грязными руками', 'лапали булочки', 'без перчаток', 'грязными руками', 'неаккуратно'],
-    'не извинились': ['даже не извинились', 'было все равно', 'сделали вид что нормально', 'проигнорировали', 'сказали что так и надо']
-  },
+const checkMobile = () => {
+  isMobile.value = window.innerWidth <= 768
+}
 
-  solutions: {
-    initial: ['таймер ожидания', 'обучение персонала', 'контроль качества', 'система проверки', 'стандарты сервиса'],
-    'таймер ожидания': ['визуальный контроль бариста', 'с номерами заказов', 'видимый гостям', 'контроль времени', 'сигналы на баре', 'обратная связь от гостей'],
-    'обучение персонала': ['по сервису', 'по санитарии', 'по качеству', 'по коммуникации', 'регулярные тренинги'],
-    'контроль качества': ['проверка блюд', 'температурный контроль', 'свежесть продуктов', 'упаковка', 'дегустация'],
-    'система проверки': ['чек-лист качества', 'двойная проверка', 'контроль чистоты', 'стандарты подачи', 'фото блюд'],
-    'стандарты сервиса': ['вежливость', 'скорость', 'точность', 'чистота', 'профессионализм'],
-    'визуальный контроль бариста': ['песочные часы на стойке', 'отчёты по среднему времени заказа', 'замеры скорости обслуживания менеджером', 'сравнение с нормой', 'обсуждение на пятиминутке'],
-    'с номерами заказов': ['в мобильном приложении', 'на чеке QR-код', 'на чеке номер заказа'],
-    'видимый гостям': ['в мобильном приложении', 'на чеке QR-код', 'на чеке номер заказа'],
-    'контроль времени': ['стандарт 7 минут', 'красная зона после 10 мин', 'автоотсчёт от момента пробития чека'],
-    'сигналы на баре': ['цветовые индикаторы готовности', 'звуковой таймер для бариста'],
-    'обратная связь от гостей': ['опрос о времени ожидания', 'кнопка "долго жду" в приложении', 'комментарий в чеке QR-кодом'],
-    'по сервису': ['тренинги вежливости', 'ролевые игры', 'работа с жалобами', 'стандарты общения', 'мотивация персонала'],
-    'по санитарии': ['мытье посуды', 'уборка столов', 'проверка чистоты', 'гигиена рук', 'контроль температуры'],
-    'по качеству': ['дегустация напитков', 'проверка ингредиентов', 'температура подачи', 'внешний вид блюд', 'сроки годности'],
-    'по коммуникации': ['активное слушание', 'решение конфликтов', 'извинения и компенсации', 'позитивное общение', 'работа с негативом'],
-    'регулярные тренинги': ['раз в месяц', 'новых сотрудников', 'переаттестация', 'мастер-классы', 'обмен опытом'],
-    'проверка блюд': ['перед подачей', 'температура напитков', 'внешний вид', 'соответствие заказу', 'свежесть ингредиентов'],
-    'температурный контроль': ['термометр для кофе', '85-90 градусов', 'горячие блюда', 'холодные напитки', 'контроль каждый час'],
-    'свежесть продуктов': ['ежедневная поставка', 'сроки годности', 'ротация товара', 'маркировка даты', 'утилизация просрочки'],
-    'упаковка': ['герметичные крышки', 'качественные пакеты', 'стаканы не протекают', 'салфетки в комплекте', 'удобная переноска'],
-    'дегустация': ['каждая партия', 'новые рецепты', 'мнение гостей', 'тестирование вкуса', 'корректировка рецептур'],
-    'чек-лист качества': ['для каждого заказа', 'проверка температуры', 'чистота посуды', 'правильность состава', 'время подачи'],
-    'двойная проверка': ['готовящий и подающий', 'кассир и бариста', 'менеджер и персонал', 'фото готового блюда', 'подпись ответственного'],
-    'контроль чистоты': ['каждый час', 'чек-лист уборки', 'дезинфекция', 'мытье рук', 'чистая форма'],
-    'стандарты подачи': ['правильная посуда', 'украшение блюд', 'салфетки и приборы', 'температура подачи', 'презентация'],
-    'фото блюд': ['перед подачей', 'контроль качества', 'обучение персонала', 'соцсети', 'архив образцов'],
-    'вежливость': ['приветствие с улыбкой', 'благодарность гостю', 'извинения за ошибки', 'помощь в выборе', 'прощание'],
-    'скорость': ['стандарт 10 минут', 'быстрое принятие заказа', 'оперативная готовка', 'мгновенная подача', 'ускоренная оплата'],
-    'точность': ['записывать заказы', 'повторять вслух', 'проверять чек', 'уточнять детали', 'контроль состава'],
-    'чистота': ['мытье рук каждые 30 мин', 'чистая форма', 'дезинфекция поверхностей', 'порядок на рабочем месте', 'свежая посуда'],
-    'профессионализм': ['знание меню', 'умение готовить', 'решение проблем', 'работа в команде', 'развитие навыков']
-  }
-};
+const rotatingQuestions = [
+  "\"Что почувствовали в эту минуту?\"",
+  "\"Что вызвало улыбку или напряжение?\"",
+  "\"Какой момент хотелось бы изменить?\"",
+  "\"Что дало ощущение уюта/суеты?\"",
+  "\"Одно слово, которое осталось после визита?\""
+]
+const currentQuestionIndex = ref(0)
+const showText = ref(true)
+let intervalId = null
+let metricsIntervalId = null
 
-const maleEmotionsInitial = ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён', 'доволен', 'восхищён', 'благодарен'];
+const cycleText = () => {
+  showText.value = false
+  setTimeout(() => {
+    currentQuestionIndex.value = (currentQuestionIndex.value + 1) % rotatingQuestions.length
+    showText.value = true
+  }, 1000)
+}
 
-const currentSuggestions = reactive({
-  emotions: baseSuggestions.emotions.initial,
-  facts: baseSuggestions.facts.initial,
-  solutions: baseSuggestions.solutions.initial
-});
+const showInfoModal = ref(false)
+const showGrowthModal = ref(false)
 
-let selectedFirstLevelSuggestions = reactive({
-  emotions: [],
-  facts: [],
-  solutions: []
-});
-
-function selectSuggestion(fieldName, suggestion, suggestionType) {
-  const currentText = form[fieldName].trim();
-  const isNewBranch = isInitialSuggestions(suggestionType);
-
-  if (currentText) {
-    if (isNewBranch) {
-      form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+const onKeydown = (e) => {
+  if (e.key === 'Escape') {
+    if (isReviewModalOpen.value) {
+      closeReviewModal()
     } else {
-      form[fieldName] = currentText + ' ' + suggestion;
-    }
-  } else {
-    form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-  }
-
-  if (suggestionType === 'emotions') {
-    if (!selectedFirstLevelSuggestions.emotions.includes(suggestion)) {
-      selectedFirstLevelSuggestions.emotions.push(suggestion);
-    }
-  } else {
-    if (!selectedFirstLevelSuggestions[suggestionType].includes(suggestion)) {
-      selectedFirstLevelSuggestions[suggestionType].push(suggestion);
-    }
-  }
-
-  updateSuggestions(suggestionType, suggestion);
-}
-
-function updateSuggestions(suggestionType, selectedWord) {
-  let nextSuggestions = baseSuggestions[suggestionType][selectedWord];
-
-  if (suggestionType === 'emotions' && selectedGender.value === 'male') {
-    if (!nextSuggestions) {
-      const remaining = maleEmotionsInitial.filter(e => !selectedFirstLevelSuggestions.emotions.includes(e));
-      if (remaining.length === 0) {
-        selectedFirstLevelSuggestions.emotions = [];
-        currentSuggestions.emotions = [...maleEmotionsInitial];
-      } else {
-        currentSuggestions.emotions = remaining;
-      }
-      return;
-    }
-  }
-
-  if (nextSuggestions && nextSuggestions.length > 0) {
-    currentSuggestions[suggestionType] = [...nextSuggestions];
-  } else {
-    if (suggestionType === 'emotions' && selectedGender.value === 'male') {
-      const remaining = maleEmotionsInitial.filter(e => !selectedFirstLevelSuggestions.emotions.includes(e));
-      if (remaining.length === 0) {
-        selectedFirstLevelSuggestions.emotions = [];
-        currentSuggestions.emotions = [...maleEmotionsInitial];
-      } else {
-        currentSuggestions.emotions = remaining;
-      }
-    } else {
-      const remaining = baseSuggestions[suggestionType].initial.filter(item => !selectedFirstLevelSuggestions[suggestionType].includes(item));
-      if (remaining.length === 0) {
-        selectedFirstLevelSuggestions[suggestionType] = [];
-        currentSuggestions[suggestionType] = [...baseSuggestions[suggestionType].initial];
-      } else {
-        currentSuggestions[suggestionType] = remaining;
-      }
+      showInfoModal.value = false
+      showGrowthModal.value = false
     }
   }
 }
 
-function resetSuggestions(suggestionType) {
-  selectedFirstLevelSuggestions[suggestionType] = [];
-  if (suggestionType === 'emotions' && selectedGender.value === 'male') {
-    currentSuggestions.emotions = [...maleEmotionsInitial];
+const openInvestLink = () => {
+  window.open('/signals', '_blank')
+}
+
+const openYandexModal = () => {
+  if (isMobile.value) return
+  showYandexTooltip.value = false
+  showGrowthModal.value = true
+}
+
+const openSignalsModal = () => {
+  if (isMobile.value) {
+    showInfoModal.value = true
   } else {
-    currentSuggestions[suggestionType] = [...baseSuggestions[suggestionType].initial];
+    showSignalsTooltip.value = false
+    showInfoModal.value = true
   }
 }
 
-function isInitialSuggestions(suggestionType) {
-  const initialSuggs = suggestionType === 'emotions' && selectedGender.value === 'male' 
-    ? maleEmotionsInitial
-    : baseSuggestions[suggestionType].initial;
+watch(selectedCafe, (newName) => {
+  const newConfig = getCafeConfig(newName)
+  systemMetrics.value.responseTime = newConfig.responseTime.base
+  systemMetrics.value.resolutionTime = newConfig.resolutionTime.base
+  systemMetrics.value.lastUpdate = Date.now()
+  fetchSystemStatus()
+})
 
-  const unusedInitial = initialSuggs.filter(
-    item => !selectedFirstLevelSuggestions[suggestionType].includes(item)
-  );
-
-  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(unusedInitial);
-}
-
-function updateSuggestionsForGender() {
-  if (selectedGender.value === 'male') {
-    const remaining = maleEmotionsInitial.filter(e => !selectedFirstLevelSuggestions.emotions.includes(e));
-    currentSuggestions.emotions = remaining.length > 0 ? remaining : [...maleEmotionsInitial];
-  } else {
-    const remaining = baseSuggestions.emotions.initial.filter(e => !selectedFirstLevelSuggestions.emotions.includes(e));
-    currentSuggestions.emotions = remaining.length > 0 ? remaining : [...baseSuggestions.emotions.initial];
-  }
-}
-
-
-// ===== КОНЕЦ ИСПРАВЛЕННОЙ ЧАСТИ =====
-
-const questionsShare = ['Что произошло?', 'Расскажите о ситуации', 'Опишите вашу проблему'];
-const questions1 = { 
-  female: ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что вас расстроило?'],
-  male: ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что вас расстроило?']
-};
-const questions2 = ['Что именно произошло?', 'Какие детали важны?', 'Опишите факты'];
-const questions3 = ['Как это исправить?', 'Что может помочь?', 'Ваши предложения?'];
-
-const currentQuestionShare = ref(questionsShare[0]);
-const currentQuestion1 = ref(questions1.female[0]);
-const currentQuestion2 = ref(questions2[0]);
-const currentQuestion3 = ref(questions3[0]);
-
-let rotationInterval = null;
-
-function startRotation(questionNum) {
-  if (rotationInterval) clearInterval(rotationInterval);
+onMounted(() => {
+  intervalId = setInterval(cycleText, 7000)
+  metricsIntervalId = setInterval(fetchSystemStatus, 45000)
+  fetchSystemStatus()
+  window.addEventListener('keydown', onKeydown)
+  window.addEventListener('resize', checkMobile)
+  checkMobile()
   
-  let questions, currentQuestion;
-  
-  if (questionNum === 1) {
-    questions = selectedGender.value === 'female' ? questions1.female : questions1.male;
-    currentQuestion = currentQuestion1;
-  } else if (questionNum === 2) {
-    questions = questions2;
-    currentQuestion = currentQuestion2;
-  } else if (questionNum === 3) {
-    questions = questions3;
-    currentQuestion = currentQuestion3;
-  }
-  
-  let currentIndex = questions.indexOf(currentQuestion.value);
-  
-  rotationInterval = setInterval(() => {
-    currentIndex = (currentIndex + 1) % questions.length;
-    currentQuestion.value = questions[currentIndex];
-  }, 3000);
-}
-
-function applyGenderCorrection(text, gender) {
-  return text;
-}
-
-function structureAndCleanText(share, emotional, factual, solutions, gender) {
-  let result = '';
-
-  // Набор устойчивых пар и словосочетаний, которые нельзя разрывать запятой
-  const protectedBigrams = new Set([
-    'нет системы',
-    'мгновенная подача',
-    'длинный волос',
-    'архив образцов',
-    'по санитарии',
-    'качественный звук',
-    'идеальный вкус',
-    'точные пропорции',
-    'за решение',
-    'за внимание',
-    'за профессионализм',
-    'за рекомендацию',
-    'за уютную',
-    'по качеству',
-    'по сервису',
-    'по коммуникации',
-    'по времени',
-    'чистая посуда',
-    'грязная посуда',
-    'холодный кофе',
-    'волосы в',
-    'ошибка в',
-  ]);
-
-  // Попытаться склеить устойчивые пары внутри строки (чтобы не резать запятой)
-  function joinProtectedBigrams(text) {
-    let words = text.trim().split(/\s+/);
-    if (words.length < 2) return text.trim();
-
-    const joined = [];
-    for (let i = 0; i < words.length; i++) {
-      const bigram = (words[i] + ' ' + (words[i + 1] || '')).toLowerCase();
-      if (i < words.length - 1 && protectedBigrams.has(bigram)) {
-        joined.push(words[i] + ' ' + words[i + 1]);
-        i += 1;
-      } else {
-        joined.push(words[i]);
-      }
-    }
-    return joined.join(' ');
-  }
-
-  // Разбор «цепочки» на уровни: ожидаем 1–3 блока
-  // Мы формируем уровни по логике ввода: первая лексема — уровень1, далее — уровень2 (одно или два слова),
-  // остальное — уровень3 (детали). Для улучшения читаемости допускаем 2 слова в уровне2, если это устойчивое сочетание.
-  function splitIntoLevels(sentence) {
-    const cleaned = sentence.trim().replace(/\s+/g, ' ');
-    let words = cleaned.split(' ');
-    if (words.length === 0) return { l1: '', l2: '', l3: '' };
-
-    const l1 = words[0]; // всегда первое слово — уровень1
-    words = words.slice(1);
-
-    if (words.length === 0) return { l1, l2: '', l3: '' };
-
-    // кандидаты для l2: одно слово как минимум
-    let l2 = words[0];
-    let remainder = words.slice(1);
-
-    // если первые два слова образуют защищённую пару — берём их как уровень2
-    if (remainder.length >= 1) {
-      const candidateBigram = (l2 + ' ' + remainder[0]).toLowerCase();
-      if (protectedBigrams.has(candidateBigram)) {
-        l2 = l2 + ' ' + remainder[0];
-        remainder = remainder.slice(1);
-      }
-    }
-
-    const l3 = remainder.join(' '); // всё, что осталось — детали
-    return { l1, l2, l3 };
-  }
-
-  // Форматирование одной «цепочки» с корректной пунктуацией
-  function formatChain(sentence) {
-    // Склеиваем устойчивые пары, чтобы не рвать их запятой
-    const normalized = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-    const glued = joinProtectedBigrams(normalized);
-    const { l1, l2, l3 } = splitIntoLevels(glued);
-
-    if (!l1) return '';
-
-    // 1 уровень
-    if (!l2 && !l3) {
-      return l1;
-    }
-
-    // 1 + 2 уровни
-    if (l2 && !l3) {
-      return `${l1} ${l2}:`;
-    }
-
-    // 1 + 2 + 3 уровни
-    // Внутри l3 попробуем поставить ОДНУ запятую, если есть явные два смысловых блока
-    // Критерии: ищем короткое служебное слово (<=3) примерно в середине или защищенную биграмму — запятую ставим ДО неё
-    let l3Words = l3.split(/\s+/);
-    let commaIdx = -1;
-
-    // попытка: найти служебное/короткое слово во второй трети — поставить запятую перед ним
-    for (let i = 1; i < l3Words.length - 1; i++) {
-      const w = l3Words[i].toLowerCase();
-      if (w.length <= 3 && i >= Math.floor(l3Words.length / 3)) {
-        commaIdx = i;
-        break;
-      }
-    }
-
-    if (commaIdx === -1 && l3Words.length >= 4) {
-      // запасной вариант: запятая на 2/3
-      commaIdx = Math.floor(l3Words.length * 0.66);
-    }
-
-    // НО: не разрывать защищённые биграммы
-    if (commaIdx > 0) {
-      const leftBigram = (l3Words[commaIdx - 1] + ' ' + l3Words[commaIdx]).toLowerCase();
-      if (protectedBigrams.has(leftBigram) && commaIdx < l3Words.length - 1) {
-        // если запятая попала внутрь биграммы — сдвигаем вправо
-        commaIdx += 1;
-      }
-    }
-
-    let l3Formatted;
-    if (commaIdx > 0 && commaIdx < l3Words.length - 1) {
-      l3Formatted = l3Words.slice(0, commaIdx).join(' ') + ', ' + l3Words.slice(commaIdx).join(' ');
-    } else {
-      l3Formatted = l3; // не разобрали — оставляем как есть
-    }
-
-    return `${l1} ${l2}: ${l3Formatted}`;
-  }
-
-  // Удаление дублей между цепочками
-  function formatSection(text) {
-    const lines = text.split('. ').map(s => s.trim()).filter(Boolean);
-    const seen = new Set();
-    const out = [];
-    for (const line of lines) {
-      const key = line.toLowerCase();
-      if (seen.has(key)) continue;
-      seen.add(key);
-      const formatted = formatChain(line);
-      if (formatted) out.push(`• ${formatted}`);
-    }
-    return out.join('\n');
-  }
-
-  // МОЙ ОТЗЫВ
-  if (share) {
-    result += `МОЙ ОТЗЫВ\n${share}\n\n`;
-  }
-
-  // ВПЕЧАТЛЕНИЯ
-  if (emotional) {
-    result += `ВПЕЧАТЛЕНИЯ\n`;
-    result += formatSection(emotional) + '\n\n';
-  }
-
-  // ПРОБЛЕМЫ
-  if (factual) {
-    result += `ПРОБЛЕМЫ\n`;
-    result += formatSection(factual) + '\n\n';
-  }
-
-  // ПРЕДЛОЖЕНИЯ
-  if (solutions) {
-    result += `ПРЕДЛОЖЕНИЯ\n`;
-    result += formatSection(solutions);
-  }
-
-  return result.trim();
-}
+  nextTick(() => {
+    handleSwitcherScroll()
+  })
+})
 
 onUnmounted(() => {
-  if (rotationInterval) clearInterval(rotationInterval);
-});
+  clearInterval(intervalId)
+  clearInterval(metricsIntervalId)
+  window.removeEventListener('keydown', onKeydown)
+  window.removeEventListener('resize', checkMobile)
+})
+
+watch(showBranchList, (newValue) => {
+  if (newValue) {
+    nextTick(() => {
+      if (widgetContentRef.value) {
+        widgetContentRef.value.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    })
+  }
+})
 </script>
 
+<template>
+  <div class="signal2-widget-content" ref="widgetContentRef">
+    <div class="signal2-cafe-switchers-container">
+      <div 
+        class="signal2-cafe-switchers" 
+        ref="switchersRef"
+        @scroll="handleSwitcherScroll"
+      >
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Корж' }"
+          @click="selectedCafe = 'Корж'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+          </svg>
+          Корж
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'MOSAIC' }"
+          @click="selectedCafe = 'MOSAIC'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg>
+          MOSAIC
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Surf' }"
+          @click="selectedCafe = 'Surf'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg>
+          Surf
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Skuratov' }"
+          @click="selectedCafe = 'Skuratov'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+          Skuratov
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Белотурка' }"
+          @click="selectedCafe = 'Белотурка'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+          Белотурка
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Кэрри' }"
+          @click="selectedCafe = 'Кэрри'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+          Кэрри
+        </button>
+      </div>
+      
+      <div 
+        class="signal2-switchers-gradient signal2-switchers-gradient-left"
+        :class="{ 'signal2-gradient-visible': showLeftGradient }"
+      ></div>
+      <div 
+        class="signal2-switchers-gradient signal2-switchers-gradient-right"
+        :class="{ 'signal2-gradient-visible': showRightGradient }"
+      ></div>
+    </div>
+
+    <div v-if="establishment">
+      <div v-if="!showBranchList">
+        <div class="signal2-main-card">
+          <div class="signal2-establishment-header">
+            <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
+            <div 
+              class="signal2-status-badge"
+              ref="badgeRef"
+            >
+              <span v-html="todayStatus"></span>
+            </div>
+          </div>
+
+          <div class="signal2-stats-grid">
+            <div 
+              class="signal2-stat-card signal2-graphite-stat"
+              @mouseenter="!isMobile ? showYandexTooltip = true : null"
+              @mouseleave="!isMobile ? showYandexTooltip = false : null"
+              @click="openYandexModal"
+            >
+              <div class="signal2-stat-content">
+                <div class="signal2-stat-left-group">
+                  <div class="signal2-stat-value">{{ establishment.yandex2gis }}</div>
+                  <div class="signal2-stat-label">Яндекс/2ГИС</div>
+                </div>
+                <div class="signal2-stat-badge signal2-graphite-badge">
+                  <span class="signal2-badge-emoji">💬</span>
+                  <span class="signal2-badge-text">Ответ: {{ establishment.yandex2gisPercent }}%</span>
+                </div>
+              </div>
+            </div>
+
+            <div 
+              class="signal2-stat-card signal2-lime-stat" 
+              @mouseenter="!isMobile ? showSignalsTooltip = true : null"
+              @mouseleave="!isMobile ? showSignalsTooltip = false : null"
+              @click="openSignalsModal"
+            >
+              <div class="signal2-stat-content">
+                <div class="signal2-stat-left-group">
+                  <div class="signal2-stat-value">{{ establishment.signals }}</div>
+                  <div class="signal2-stat-label">Сигналы</div>
+                </div>
+                <div 
+                  class="signal2-stat-badge signal2-lime-badge" 
+                  :class="{ 'signal-100-badge': establishment.signalsPercent === 100 }"
+                >
+                  <span class="signal2-badge-emoji">⚡</span>
+                  <span class="signal2-badge-text">{{ getSolutionText(establishment.signalsPercent) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="signal2-system-status-bar">
+            <span v-if="establishment.isConnected" class="signal2-status-label">🟢 На связи:</span>
+            <span v-else class="signal2-status-label-disconnected">🟡 Отправим менеджеру кофейни <br class="signal2-mobile-break">и постараемся помочь</span>
+            
+            <div v-if="establishment.isConnected" class="signal2-status-metrics">
+              <div class="signal2-status-metric">
+                <span class="signal2-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
+                <span class="signal2-metric-text">→ ответ</span>
+              </div>
+              <div class="signal2-status-separator">•</div>
+              <div class="signal2-status-metric">
+                <span class="signal2-metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
+                <span class="signal2-metric-text">→ решение</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="signal2-control-panel">
+            <div class="signal2-control-panel-header">
+              <button
+                v-if="!isMobile"
+                type="button"
+                class="signal2-info-link signal2-info-button"
+                aria-haspopup="dialog"
+                aria-controls="signal2-signal-dialog"
+                :aria-expanded="showInfoModal ? 'true' : 'false'"
+                @click="showInfoModal = true"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 16v-4" />
+                  <path d="M12 8h.01" />
+                </svg>
+              </button>
+              <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
+              <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
+                <span :class="['signal2-rotating-text', { 'signal2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
+              </div>
+            </div>
+
+            <div class="signal2-button-container">
+              <button @click="showBranchList = true" class="signal2-action-button signal2-ticket-button">
+                Отзыв Яндекс/ГИС
+                <div class="signal2-button-icon-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0"/><circle cx="12" cy="8" r="2"/><path d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712"/></svg>
+                </div>
+              </button>
+              <button @click="openReviewModal" class="signal2-action-button signal2-review-button">
+                Отправить Сигнал
+                <div class="signal2-button-icon-container signal2-lime-icon-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2e05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-else>
+        <div class="signal2-branches-header">
+          <button @click="showBranchList = false" class="signal2-internal-close-btn signal2-back-btn" aria-label="Вернуться назад">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5" />
+              <path d="m12 19-7-7 7-7" />
+            </svg>
+          </button>
+          <div class="signal2-branches-title-text">{{ establishment.name }}</div>
+          <div style="width: 44px;"></div>
+        </div>
+        <div class="signal2-branches-content">
+          <p class="signal2-branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
+          <div class="signal2-branches-list">
+            <button v-for="(branch, index) in establishment.branches" :key="index" @click="goToReviews(branch)" class="signal2-branch-item">
+              <div class="signal2-branch-info">
+                <div class="signal2-branch-number">{{ index + 1 }}</div>
+                <div class="signal2-branch-address">{{ branch.address }}</div>
+              </div>
+              <div class="signal2-branch-action">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div 
+      v-if="isReviewModalOpen" 
+      class="signal2-review-modal-overlay"
+      @click="closeReviewModal"
+    >
+      <div 
+        class="signal2-review-modal-content"
+        @click.stop
+      >
+        <div class="signal2-modal-scrollable-content">
+          <SignalT9Configurator />
+        </div>
+        
+        <div class="signal2-modal-close-section">
+          <button @click="closeReviewModal" class="signal2-modal-close-button">Закрыть и вернуться</button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="showInfoModal" class="signal2-modal-overlay" @click.self="showInfoModal = false">
+      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Сигналы">
+        <div class="signal2-modal-header">
+          <div class="signal2-modal-title">Сигналы</div>
+        </div>
+        <div class="signal2-modal-body">
+          Быстрая помощь и решение проблем за 24 часа. Ваш сигнал мгновенно поступает в работу управляющему кофейни, и вы получаете не просто ответ, а реальный результат.
+        </div>
+        <div class="signal2-modal-footer">
+          <button class="signal2-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="showGrowthModal" class="signal2-modal-overlay" @click.self="showGrowthModal = false">
+      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Отзыв Яндекс/2ГИС">
+        <div class="signal2-modal-header">
+          <div class="signal2-modal-title">Отзыв Яндекс/2ГИС</div>
+        </div>
+        <div class="signal2-modal-body">
+          Ваше мнение увидят все, но кофейня может не ответить. Классические отзывы помогают другим гостям, но не гарантируют решение вашей проблемы.
+        </div>
+        <div class="signal2-modal-footer">
+          <button class="signal2-modal-ok" type="button" @click="showGrowthModal = false">Понятно</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>
+
 <style scoped>
-:root {
-  --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --signal-font-mono: 'SF Mono', 'Monaco', monospace;
-}
+.signal2-widget-content { padding: 32px 0; }
+.signal2-cafe-switchers-container { position: relative; margin-bottom: 32px; }
+.signal2-cafe-switchers { display: flex; gap: 12px; padding-bottom: 12px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: rgba(70, 70, 70, 0.8) transparent; }
+.signal2-cafe-switchers::-webkit-scrollbar { height: 2px; }
+.signal2-cafe-switchers::-webkit-scrollbar-track { background: transparent; }
+.signal2-cafe-switchers::-webkit-scrollbar-thumb { background-color: rgba(70, 70, 70, 0.8); border-radius: 10px; }
+.signal2-cafe-switchers::-webkit-scrollbar-thumb:hover { background-color: rgba(85, 85, 85, 0.9); }
+.signal2-switcher { border-radius: 50px; padding: 12px 20px; font-size: 15px; font-weight: 700; cursor: pointer; border: none; transition: all 0.3s ease; white-space: nowrap; display: flex; align-items: center; gap: 8px; min-width: fit-content; position: relative; overflow: hidden; background: rgba(70, 70, 70, 0.6); color: rgba(255, 255, 255, 0.9); }
+.signal2-switcher::before { content: ''; position: absolute; left: -200%; top: 0; width: 200%; height: 100%; background: linear-gradient(90deg, transparent 0%, transparent 30%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.08) 60%, transparent 70%, transparent 100%); transition: all 1.2s ease; }
+.signal2-switcher:hover::before { left: 100%; }
+@media (max-width: 768px) { .signal2-switcher::before, .signal2-switcher:hover::before { display: none; } }
+.signal2-switcher.active { background: rgba(255, 255, 255, 0.95); color: #333; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+.signal2-switcher.active::before { display: none; }
+.signal2-switcher-icon { width: 16px; height: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.signal2-switchers-gradient { position: absolute; top: 0; bottom: 12px; width: 60px; pointer-events: none; z-index: 2; opacity: 0; transition: opacity 0.6s ease; }
+.signal2-switchers-gradient.signal2-gradient-visible { opacity: 1; }
+.signal2-switchers-gradient-left { left: 0; background: linear-gradient( to right, #1b1b1f 0%, #1b1b1f 20%, rgba(27, 27, 31, 0.95) 40%, rgba(27, 27, 31, 0.8) 60%, rgba(27, 27, 31, 0.5) 80%, transparent 100% ); }
+.signal2-switchers-gradient-right { right: 0; background: linear-gradient( to left, #1b1b1f 0%, #1b1b1f 20%, rgba(27, 27, 31, 0.95) 40%, rgba(27, 27, 31, 0.8) 60%, rgba(27, 27, 31, 0.5) 80%, transparent 100% ); }
+:deep(.signal2-no-vitepress-style) { text-decoration: underline !important; text-decoration-color: rgba(255, 255, 255, 0.3) !important; border-bottom: none !important; background: none !important; }
+:deep(.signal2-no-vitepress-style:hover) { text-decoration: underline !important; text-decoration-color: rgba(255, 255, 255, 0.6) !important; border-bottom: none !important; background: none !important; }
+:deep(.signal2-no-vitepress-style:visited), :deep(.signal2-no-vitepress-style:focus), :deep(.signal2-no-vitepress-style:active) { text-decoration: underline !important; text-decoration-color: rgba(255, 255, 255, 0.3) !important; border-bottom: none !important; background: none !important; }
+:deep(.signal2-modal-link.signal2-no-vitepress-style) { text-decoration: underline !important; text-decoration-color: #a3e635 !important; border-bottom: none !important; background: none !important; }
+:deep(.signal2-modal-link.signal2-no-vitepress-style:hover) { text-decoration: underline !important; text-decoration-color: #c5f946 !important; border-bottom: none !important; background: none !important; }
+.signal2-review-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 8px; box-sizing: border-box; }
+.signal2-review-modal-content { background: #1e1e20; border-radius: 16px; width: 650px; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); box-sizing: border-box; color: white; display: flex; flex-direction: column; overflow: hidden; }
+.signal2-modal-scrollable-content { flex: 1; overflow-y: auto; padding: 20px 16px 16px 16px; }
+:deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(p), :deep(span), :deep(label), :deep(.title), :deep(.subtitle), :deep(.description), :deep(.example-text), :deep(.hint-text) { text-align: initial !important; padding-left: 0 !important; padding-right: 0 !important; }
+:deep(.container), :deep(.content) { padding-left: 0 !important; padding-right: 0 !important; margin-left: 0 !important; margin-right: 0 !important; }
+:deep(.form-section), :deep(.form-group), :deep(.section-wrapper) { margin-bottom: clamp(10px, 2vw, 10px) !important; }
+:deep(.card), :deep(.block), :deep(.content-block) { margin-bottom: clamp(8px, 1.6vw, 8px) !important; }
+.signal2-modal-close-section { position: sticky; bottom: 0; background: #1e1e20; padding: 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: center; }
+.signal2-branches-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid var(--vp-c-border); }
+.signal2-branches-title-text { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; text-align: center; flex-grow: 1; }
+.signal2-internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
+.signal2-back-btn:hover { background: var(--vp-c-bg-soft); border-color: var(--vp-c-text-2); color: white; }
+.signal2-main-card { background: var(--vp-c-bg-soft); border-radius: 20px; padding: 20px; }
+.signal2-establishment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.signal2-cafe-name { margin: 0; color: #ffffff; font-size: 24px; font-weight: 600; }
+.signal2-status-badge { background: rgba(0,0,0,0.2); backdrop-filter: blur(5px); color: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3); text-transform: uppercase; letter-spacing: 0.5px; position: relative; }
+.signal2-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.signal2-stat-card { position: relative; border-radius: 22px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background: var(--vp-c-bg-soft); cursor: pointer; }
+.signal2-stat-card:hover { transform: translateY(-8px); }
+.signal2-stat-card::before { content: ''; position: absolute; inset: 0; border-radius: 22px; padding: 2px; background: var(--signal2-border-gradient); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: filter 0.4s ease; z-index: 3; }
+.signal2-stat-card:hover::before { filter: brightness(2) saturate(1.5); }
+.signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
+.signal2-stat-card:hover .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.4); }
+.signal2-stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.signal2-stat-card:hover .signal2-stat-value { transform: scale(1.15); text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); }
 
-.signal-demo-wrapper {
-  font-family: var(--signal-font-sans);
-  width: 100%;
-  max-width: none;
-  margin: 0;
-}
-
-.signal-demo__header {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 24px;
-}
-
-.signal-demo__breadcrumbs {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.signal-breadcrumb {
-  appearance: none;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-}
-
-.signal-breadcrumb-circle {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #444;
-  transition: all 0.3s ease;
-}
-
-.signal-breadcrumb.is-active .signal-breadcrumb-circle {
-  width: 24px;
-  height: 8px;
-  border-radius: 4px;
-}
-
-.signal-breadcrumb.contact.is-active .signal-breadcrumb-circle {
-  background: linear-gradient(90deg, #00C2FF 0%, #00C2A8 100%);
-  box-shadow: 0 0 10px rgba(0, 194, 168, 0.5);
-}
-
-.signal-breadcrumb.share.is-active .signal-breadcrumb-circle {
-  background: #fff;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-.signal-breadcrumb.emotions.is-active .signal-breadcrumb-circle {
-  background: #6f5d9f;
-}
-
-.signal-breadcrumb.facts.is-active .signal-breadcrumb-circle {
-  background: #3a8862;
-}
-
-.signal-breadcrumb.solutions.is-active .signal-breadcrumb-circle {
-  background: #4A90E2;
-}
-
-.signal-breadcrumb.summary.is-active .signal-breadcrumb-circle {
-  background: #FFB800;
-}
-
-.signal-breadcrumb.location.is-active .signal-breadcrumb-circle {
-  background: #5A9FB8;
-}
-
-.signal-controls-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.signal-info-button {
-  background: rgba(135, 206, 235, 0.1);
-  border: 1px solid rgba(135, 206, 235, 0.3);
-  color: #87ceeb;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  height: 32px;
-  display: inline-flex;
-  align-items: center;
-  width: auto;
-}
-
-.signal-info-button.signal-info-female {
-  background: rgba(255, 105, 180, 0.1);
-  border-color: rgba(255, 105, 180, 0.3);
-  color: #ff69b4;
-}
-
-.signal-info-button.signal-info-female:hover {
-  background: rgba(255, 105, 180, 0.2);
-  border-color: rgba(255, 105, 180, 0.5);
-}
-
-.signal-info-button.signal-info-male {
-  background: rgba(135, 206, 235, 0.1);
-  border-color: rgba(135, 206, 235, 0.3);
-  color: #87ceeb;
-}
-
-.signal-info-button.signal-info-male:hover {
-  background: rgba(135, 206, 235, 0.2);
-  border-color: rgba(135, 206, 235, 0.5);
-}
-
-.signal-gender-switch {
-  display: flex;
-  justify-content: center;
-}
-
-.signal-gender-container {
-  display: flex;
-  background: #2a2a2e;
-  border-radius: 20px;
-  padding: 4px;
-  border: 1px solid #444;
-  height: 32px;
-  align-items: center;
-}
-
-.signal-gender-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin: 0 2px;
-}
-
-.signal-gender-female {
-  background: rgba(255, 105, 180, 0.3);
-}
-
-.signal-gender-female.is-active {
-  background: #ff69b4;
-  box-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
-}
-
-.signal-gender-male {
-  background: rgba(135, 206, 235, 0.3);
-}
-
-.signal-gender-male.is-active {
-  background: #87ceeb;
-  box-shadow: 0 0 12px rgba(135, 206, 235, 0.5);
-}
-
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal {
-  background: #111;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  width: min(520px, 96vw);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  padding: 32px;
-}
-
-.modal-title {
+.signal2-stat-label {
+  color: #ffffff;
   font-weight: 700;
-  font-size: 16px;
-  margin-bottom: 16px;
-}
-
-.modal-body {
   font-size: 14px;
-  line-height: 1.5;
-}
-
-.modal-link {
-  color: #fff !important;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.modal-link:hover {
-  color: #ddd !important;
-}
-
-.no-double-underline {
-  text-decoration: none !important;
-  border-bottom: 1px solid currentColor !important;
-  padding-bottom: 1px !important;
-}
-
-.no-double-underline:hover {
-  border-bottom: 1px solid currentColor !important;
-}
-
-.modal-footer {
-  margin-top: 24px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.modal-ok {
-  background: #222;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #fff;
-  border-radius: 8px;
-  padding: 10px 16px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.modal-ok:hover {
-  background: #333;
-}
-
-.signal-demo__form-container {
-  background-color: #1E1E20;
-  border-radius: 24px;
-  padding: 2rem;
-  color: #f0f0f0;
-  border: 1px solid #2c2c2f;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-}
-
-.signal-form-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.signal-question-block {
-  background-color: #2a2a2e;
-  border-radius: 16px;
-  padding: 1.25rem;
-  border: 1px solid #3a3a3e;
-  border-left: 4px solid var(--accent-color, #444);
-}
-
-.signal-question-block.contact {
-  border-left-color: #00C2A8 !important;
-  border-left-width: 4px;
-}
-
-.signal-direction-label {
-  font-weight: 600;
-  font-size: 0.75rem;
-  color: #888;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.5rem;
+  margin-bottom: 12px;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.signal-rotating-phrase-container {
-  min-height: 1.3em;
-  margin-bottom: 0.6rem;
-}
+.signal2-stat-card:hover .signal2-stat-label { transform: scale(1.05); }
 
-.signal-rotating-fixed-height {
-  min-height: 2.6em;
-}
-
-.signal-question-label {
-  font-weight: 500;
-  font-size: 1rem;
-  margin: 0;
-  color: #f0f0f0;
-  line-height: 1.3;
-}
-
-.fade-enter-active, .fade-leave-active { 
-  transition: opacity 0.5s ease; 
-}
-
-.fade-enter-from, .fade-leave-to { 
-  opacity: 0; 
-}
-
-textarea, .signal-input, .signal-select {
-  width: 100%;
-  background-color: #242426;
-  border: 1px solid #444;
-  border-radius: 10px;
-  padding: 0.75rem 1rem;
-  font-size: 0.95rem;
-  color: #f0f0f0;
-  transition: all 0.3s ease;
-  font-family: var(--signal-font-sans);
-  margin-bottom: 0.75rem;
-}
-
-textarea:focus, .signal-input:focus, .signal-select:focus {
-  outline: none;
-  border-color: var(--accent-color);
-  background-color: #2a2a2e;
-}
-
-::placeholder { 
-  color: #666; 
-}
-
-.signal-suggestions-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-
-.signal-suggestion-bubble {
-  padding: 0.35rem 0.85rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
-
-.signal-emotion-bubble {
-  background: rgba(169, 114, 255, 0.1);
-  border-color: rgba(169, 114, 255, 0.3);
-  color: #A972FF;
-}
-
-.signal-fact-bubble {
-  background: rgba(61, 220, 132, 0.1);
-  border-color: rgba(61, 220, 132, 0.3);
-  color: #3DDC84;
-}
-
-.signal-solution-bubble {
-  background: rgba(74, 144, 226, 0.1);
-  border-color: rgba(74, 144, 226, 0.3);
-  color: #4A90E2;
-}
-
-/* Применяем ховер-эффекты только для устройств с мышью */
-@media (hover: hover) and (pointer: fine) {
-  .signal-emotion-bubble:hover {
-    background: #A972FF;
-    color: #000;
-  }
-
-  .signal-fact-bubble:hover {
-    background: #3DDC84;
-    color: #000;
-  }
-  
-  /* Добавляем недостающий hover для .signal-solution-bubble */
-  .signal-solution-bubble:hover {
-    background: #4A90E2;
-    color: #fff;
-  }
-}
-
-
-.signal-solution-bubble:hover {
-  background: #4A90E2;
-  color: #fff;
-}
-
-.signal-reset-bubble {
-  font-weight: 600;
-  opacity: 0.8;
-  font-size: 0.75rem;
-  border-style: dashed !important;
-}
-
-.signal-example-hint {
-  font-size: 0.8rem;
-  color: #777;
-  margin: 0.5rem 0 0 0.25rem;
-  line-height: 1.15;
-}
-
-.signal-example-hint-white {
-  color: #f0f0f0 !important;
-}
-
-.signal-example-hint b {
-  color: #aaa;
-  font-weight: 600;
-}
-
-.signal-next-button-container {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.signal-humanize-button-container {
-  order: 2;
-}
-
-.signal-liquid-humanize-btn {
-  width: 100%;
-  height: 56px;
-  border-radius: 18px;
-  border: 2px solid #444;
-  background: #2a2a2e;
-  color: #888;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.signal2-stat-badge {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
 }
 
-.signal-liquid-humanize-btn:not(:disabled):hover {
-  border-color: #666;
-  color: #bbb;
-  background: #333;
-}
-
-.signal-liquid-humanize-text {
+.signal2-badge-emoji {
   font-size: 16px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.signal-liquid-next-btn {
-  width: 100%;
-  height: 56px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: all 0.3s ease;
-  order: 1;
-  font-size: 0;
-}
-
-.signal-liquid-next-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.signal-liquid-next-btn:not(:disabled):hover {
-  transform: translateY(-2px);
-}
-
-.signal-liquid-next-text {
-  font-size: 16px;
-  font-weight: 600;
-  text-transform: none;
-  letter-spacing: normal;
   line-height: 1;
-  display: flex;
-  align-items: center;
-}
-
-.signal-next-icon {
-  display: inline-flex;
-  align-items: center;
-  flex-shrink: 0;
-  vertical-align: middle;
-  transform: translate(0, 0px);
-}
-
-.signal-next-icon .signal-coffee-fill {
-  fill: currentColor;
-  opacity: 1;
-  transition: height 0.3s ease-in-out, y 0.3s ease-in-out;
-}
-
-
-.signal-emotion-next {
-  background: linear-gradient(135deg, #6f5d9f, #8a7ab8);
-}
-
-.signal-emotion-next .signal-liquid-next-text,
-.signal-emotion-next .signal-next-icon {
-  color: #fff;
-}
-
-.signal-fact-next {
-  background: linear-gradient(135deg, #3a8862, #4fa87a);
-}
-
-.signal-fact-next .signal-liquid-next-text,
-.signal-fact-next .signal-next-icon {
-  color: #fff;
-}
-
-.signal-solution-next {
-  background: linear-gradient(135deg, #4A90E2, #6BA8F0);
-}
-
-.signal-solution-next .signal-liquid-next-text,
-.signal-solution-next .signal-next-icon {
-  color: #fff;
-}
-
-.signal-summary-next {
-  background: linear-gradient(135deg, #FFB800, #FFC933);
-}
-
-.signal-summary-next .signal-liquid-next-text,
-.signal-summary-next .signal-next-icon {
-  color: #000;
-}
-
-.signal-location-next {
-  background: linear-gradient(135deg, #5A9FB8, #7AB8CD);
-}
-
-.signal-location-next .signal-liquid-next-text,
-.signal-location-next .signal-next-icon {
-  color: #fff;
-}
-
-.signal-columns {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.signal-column {
-  flex: 1;
-}
-
-.signal-column label {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #aaa;
-  margin-bottom: 0.5rem;
-}
-
-.signal-input-hint {
-  font-size: 0.9rem;
-  color: #777;
-  margin-top: 0;
-  line-height: 1.2;
-}
-
-.signal-agreement {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: #ccc;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-}
-
-.signal-agreement input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: #00C2A8;
-  cursor: pointer;
-  margin: 0;
   flex-shrink: 0;
 }
 
-.signal-agreement span {
-  margin: 0;
-  padding: 0;
-  line-height: 1.4;
-}
-
-.signal-policy-link {
-  color: #999 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  transition: color 0.3s ease;
-}
-
-.signal-policy-link:hover {
-  color: #fff !important;
-}
-
-.signal-submit-button {
-  width: 100%;
-  height: 56px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%);
-  background-size: 200% auto;
-  background-position: 25% 50%;
-  color: #fff;
-  font-size: 16px;
+.signal2-badge-text {
+  font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.4s ease-out;
-  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
-.signal-submit-button:hover:not(:disabled) {
-  background-position: 75% 50%;
-  transform: scale(1.02);
+.signal2-graphite-badge .signal2-badge-text {
+  color: rgba(160, 174, 192, 1);
 }
 
-.signal-submit-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.signal2-orange-badge .signal2-badge-text {
+  color: rgba(252, 211, 77, 1);
 }
 
-/* ПРАВКА 1, 2: Экран подтверждения */
-.signal-success-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 3rem 2rem;
-  width: 100%;
+.signal2-lime-badge .signal2-badge-text {
+  color: rgba(197, 249, 70, 1);
 }
+.signal2-system-status-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0 16px 0; padding: 8px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06); }
+.signal2-status-label { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); margin-right: 6px; flex-shrink: 0; }
+.signal2-status-label-disconnected { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); flex-shrink: 0; }
+.signal2-status-metrics { display: flex; align-items: center; gap: 8px; }
+.signal2-status-metric { display: flex; align-items: baseline; gap: 4px; }
+.signal2-metric-time { font-size: 14px; font-weight: 700; color: rgba(255, 255, 255, 0.9); font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace; min-width: 32px; text-align: right; transition: all 0.3s ease; }
+.signal2-metric-text { font-size: 14px; font-weight: 500; color: rgba(255, 255, 255, 0.6); }
+.signal2-status-separator { color: rgba(255, 255, 255, 0.3); font-size: 14px; margin: 0 4px; }
+.signal2-control-panel { margin-top: 24px; }
+.signal2-control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; }
+.signal2-info-link { color: rgba(255, 255, 255, 0.5); display: flex; align-items: center; transition: color 0.3s ease; flex-shrink: 0; }
+.signal2-info-link:hover, .signal2-info-link:focus { color: white; }
+.signal2-info-button { background: transparent; border: none; cursor: pointer; }
+.signal2-static-prompt { color: white; margin-right: 8px; flex-shrink: 0; }
+.signal2-rotating-text-container { flex-grow: 1; text-align: left; color: rgba(255, 255, 255, 0.7); min-height: 36px; display: flex; align-items: center; }
+.signal2-rotating-text-container.signal2-full-width { text-align: center; justify-content: center; }
+.signal2-rotating-text { transition: opacity 0.5s ease-in-out; line-height: 1.2; }
+.signal2-rotating-text:not(.signal2-show) { opacity: 0; }
+.signal2-button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
+.signal2-action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.signal2-ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
+.signal2-ticket-button:hover { background: rgba(85, 85, 85, 0.9); color: white; transform: translateY(-2px); }
+.signal2-review-button { background: linear-gradient(135deg, #a3e635, #c5f946); color: #1a2e05; box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3); }
+.signal2-review-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(163, 230, 53, 0.4); }
+.signal2-button-icon-container { width: 32px; height: 32px; border-radius: 50%; background: rgba(50, 50, 50, 0.9); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
+.signal2-lime-icon-container { background: rgba(100, 150, 30, 0.4) !important; }
+.signal2-button-icon { transition: transform 0.3s ease; color: currentColor; }
+.signal2-review-button:hover .signal2-button-icon { transform: translateX(2px); }
+.signal2-ticket-button:hover .signal2-button-icon-container { background: rgba(35, 35, 35, 1); transform: scale(1.05); }
+.signal2-review-button:hover .signal2-lime-icon-container { background: rgba(120, 180, 40, 0.5) !important; transform: scale(1.05); }
+.signal2-branches-content { flex-grow: 1; }
+.signal2-branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
+.signal2-branches-list { padding: 0; }
+.signal2-branch-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px; margin-bottom: 12px; background: var(--vp-c-bg-soft); border: 2px solid var(--vp-c-border); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
+.signal2-branch-item:hover { background: var(--vp-c-bg-soft); border-color: rgba(255, 255, 255, 0.5); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); transform: translateX(4px); }
+.signal2-branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
+.signal2-branch-number { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; transition: all 0.3s ease; box-shadow: none; }
+.signal2-branch-item:hover .signal2-branch-number { background: rgba(85, 85, 85, 0.9); box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4); }
+.signal2-branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.signal2-branch-action { color: rgba(255, 255, 255, 0.5); transition: transform 0.3s ease; margin-left: 12px; }
+.signal2-branch-item:hover .signal2-branch-action { transform: translateX(4px); }
+.signal2-modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.signal2-modal { background: var(--vp-c-bg, #111); color: var(--vp-c-text-1, #fff); border: 1px solid var(--vp-c-border, rgba(255, 255, 255, 0.12)); border-radius: 12px; width: min(520px, 96vw); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); padding: 32px; }
+.signal2-modal-header { display: flex; align-items: center; justify-content: flex-start; gap: 12px; }
+.signal2-modal-title { font-weight: 700; font-size: 16px; }
+.signal2-modal-body { margin-top: 16px; font-size: 14px; color: var(--vp-c-text-1); line-height: 1.5; }
+.signal2-modal-link { color: #a3e635; text-decoration: underline; text-decoration-color: #a3e635 !important; font-weight: 600; transition: all 0.3s ease; cursor: pointer; }
+.signal2-modal-link:hover { color: #c5f946; text-decoration: underline; text-decoration-color: #c5f946 !important; }
+.signal2-modal-footer { margin-top: 24px; display: flex; justify-content: flex-end; }
+.signal2-modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 500; }
+.signal2-modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
-.signal-success-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  max-width: 600px;
-}
-
-.signal-success-content h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #fff;
-  margin: 0 0 1.5rem 0;
-  text-align: center;
-}
-
-/* ПРАВКА 1: Больше серого поля для тикета */
-.signal-success-ticket-info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
-  flex-wrap: wrap;
-}
-
-.signal-success-date {
-  font-family: var(--signal-font-mono);
-  font-size: 0.9rem;
-  color: #888;
-}
-
-.signal-success-ticket {
-  background-color: #2a2a2e;
-  color: #fff;
-  font-weight: 700;
-  padding: 0.7rem 2.5rem !important;
-  border-radius: 12px;
-  letter-spacing: 1px;
-  font-family: var(--signal-font-mono);
-  font-size: 1.1rem;
-}
-
-.signal-success-description {
-  color: #b0b0b0;
-  line-height: 1.6;
-  margin: 0 0 1.5rem 0;
-  text-align: center !important;
-  width: 100% !important;
-  display: block !important;
-}
-
-/* ПРАВКА 3, 4: Кнопка без артефактов */
-.signal-telegram-button {
+.signal2-radio-icon {
   display: inline-block;
-  padding: 0.8rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 600;
-  text-decoration: none !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  transition: all 0.3s;
-}
-
-.signal-telegram-button.female {
-  background-color: #ff69b4;
-  color: #fff;
-}
-
-.signal-telegram-button.male {
-  background-color: #87ceeb;
-  color: #000;
-}
-
-.signal-telegram-button:hover {
-  filter: brightness(110%);
-  transform: scale(1.05);
-  text-decoration: none !important;
-  border: none !important;
-}
-
-.signal-secondary-link {
-  display: block;
-  margin-top: 1.5rem;
-  font-size: 0.85rem;
-  color: #888;
-  transition: color 0.3s;
-}
-
-.signal-secondary-link:hover {
-  color: #fff !important;
+  vertical-align: middle;
+  margin-right: 4px;
 }
 
 @media (max-width: 768px) {
-  .signal-demo__header {
-    margin-bottom: 12px;
-  }
-
-  .signal-controls-row {
-    margin-bottom: 12px;
-  }
-
-  /* Увеличиваем ширину ТОЛЬКО для основного контейнера формы */
-  .signal-demo-wrapper > .signal-demo__form-container {
-    padding: 1rem 0.5rem; /* Уменьшаем боковые отступы */
+  .signal2-widget-content { padding: 24px 0; }
+  .signal2-main-card { padding: 16px; }
+  .signal2-stats-grid { grid-template-columns: 1fr; gap: 12px; }
+  
+  .signal2-stat-card { 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 16px; 
+    transition: none; 
   }
   
-  /* Увеличиваем ширину блока с вопросами */
-  .signal-question-block {
-    padding: 1rem 0.85rem;
-  }
-
-  /* Увеличиваем ширину кнопки "Дальше" */
-  .signal-liquid-next-btn {
-    width: 100%;
-    height: 52px;
-  }
-
-  /* Увеличиваем размер баблов подсказок */
-  .signal-suggestion-bubble {
-    font-size: 0.85rem;
-    padding: 0.4rem 0.9rem;
+  .signal2-stat-card:hover { transform: none; }
+  
+  .signal2-stat-content { 
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    width: 100%; 
+    background: none !important; 
+    box-shadow: none !important;
   }
   
-  .signal-columns {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .signal-success-ticket-info {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .signal-success-ticket {
-    padding: 0.6rem 2rem;
+  .signal2-stat-left-group { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px;
   }
   
-  /* Модальное окно остается с прежними параметрами */
-  .modal {
-    width: min(520px, 96vw);
-    padding: 32px;
+  .signal2-stat-value { 
+    font-size: 2rem; 
+    font-weight: 600; 
+    margin: 0;
   }
+  
+  .signal2-stat-label { 
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    margin-bottom: 0;
+  }
+  
+  .signal2-stat-badge { 
+    flex-shrink: 0;
+    margin-top: 0;
+  }
+  
+  .signal2-button-container { flex-direction: column; gap: 8px; }
+  .signal2-action-button:hover { transform: none; }
+  .signal2-system-status-bar { flex-direction: column; align-items: center; padding: 8px 12px; gap: 4px; margin: 16px 0 12px 0; }
+  .signal2-status-label, .signal2-status-label-disconnected { font-size: 14px; font-weight: 600; margin-right: 0; }
+  .signal2-status-metrics { gap: 12px; justify-content: center; }
+  .signal2-metric-time, .signal2-metric-text { font-size: 14px; }
+  .signal2-button-icon-container { width: 28px; height: 28px; }
+  .signal2-action-button { justify-content: center !important; }
+  .signal2-button-icon-container { margin-left: 8px !important; margin-right: -8px; }
+  .signal2-review-modal-overlay { display: flex; flex-direction: column; padding: 0 8px; padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
+  .signal2-review-modal-content { margin-top: 20px; flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; height: auto; max-height: none; }
+  .signal2-modal-scrollable-content { padding-bottom: 70px !important; }
+  .signal2-modal-close-button { width: 100%; justify-content: center; font-size: 14px; padding: 12px 20px; }
+  .signal2-modal-close-section { position: static; flex-shrink: 0; padding-top: 16px; }
+  
+}
+@media (max-width: 700px) {
+  .signal2-review-modal-content { width: 95vw; height: 85vh; }
+}
+@media (max-width: 480px) {
+  .signal2-widget-content { padding: 20px 0; }
+  .signal2-branches-title-text { font-size: 22px; text-align: center; }
+  .signal2-branches-subtitle { font-size: 14px; }
+  .signal2-cafe-name { font-size: 20px; }
+  .signal2-status-badge { padding: 4px 12px; font-size: 10px; }
+  .signal2-status-metrics { gap: 8px; }
+  .signal2-metric-time { font-size: 13px; min-width: 28px; }
+  .signal2-metric-text { font-size: 13px; }
+  .signal2-modal { padding: 24px; }
+  .signal2-modal-body { margin-top: 12px; }
+  .signal2-modal-footer { margin-top: 20px; }
+  .signal2-review-modal-content { height: 85vh; }
+}
+@media screen and (max-height: 700px) {
+  .signal2-review-modal-content { height: 80vh !important; max-height: 80vh !important; }
+}
+@media screen and (max-height: 600px) {
+  .signal2-review-modal-content { height: 75vh !important; max-height: 75vh !important; }
+}
+.signal2-graphite-stat {
+  --signal2-border-gradient: linear-gradient(135deg, rgba(70, 70, 70, 0.8), rgba(113, 128, 150, 0.6), rgba(70, 70, 70, 0.8));
+  --signal2-glow-color: rgba(70, 70, 70, 0.25);
+  --signal2-glow-hover-color: rgba(113, 128, 150, 0.4);
+}
+.signal2-lime-stat {
+  --signal2-border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #c5f946);
+  --signal2-glow-color: rgba(197, 249, 70, 0.25);
+  --signal2-glow-hover-color: rgba(197, 249, 70, 0.6);
 }
 
-  .signal-incognito-toggle {
-  margin-bottom: 12px;
+@keyframes liquid-fluid {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
-.signal-toggle-label {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.signal2-modal-close-button {
+  background-color: #272727;
+  border: none;
+  color: #888;
+  padding: 14px 24px;
+  border-radius: 12px;
   cursor: pointer;
-  user-select: none;
+  font-weight: 600;
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: none;
+  animation: none;
 }
 
-.signal-toggle-checkbox {
+.signal2-modal-close-button:hover {
+  background-color: #333333;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  transform: translateY(-2px);
+}
+
+.signal-100-badge {
+  background-image: linear-gradient(-45deg, #c5f946, #85a931, #c5f946, #85a931);
+  background-size: 400% 400%;
+  animation: liquid-fluid 6s ease infinite;
+  border: none;
+}
+
+.signal-100-badge .signal2-badge-text {
+  color: #000;
+  font-weight: 700;
+}
+
+.signal-100-badge .signal2-badge-emoji {
+  filter: brightness(0);
+}
+
+  /* Скрываем перенос строки на десктопе */
+.signal2-mobile-break {
   display: none;
 }
 
-.signal-toggle-slider {
-  position: relative;
-  width: 48px;
-  height: 26px;
-  background-color: #444;
-  border-radius: 26px;
-  transition: background-color 0.3s ease;
-  flex-shrink: 0;
-}
-
-.signal-toggle-slider::before {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: #fff;
-  top: 3px;
-  left: 3px;
-  transition: transform 0.3s ease;
-}
-
-.signal-toggle-checkbox:checked + .signal-toggle-slider {
-  background-color: #00C2A8;
-}
-
-.signal-toggle-checkbox:checked + .signal-toggle-slider::before {
-  transform: translateX(22px);
-}
-
-.signal-toggle-text {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #ccc;
-}
-
-.signal-name-field {
-  margin-bottom: 12px;
-}
-
-.signal-name-field label {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #FFFFFF;
-  margin-bottom: 0.5rem;
-}
-
-/* Плавная смена иконок */
-.signal-next-icon {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  transform: translateY(1px);
-  transition: opacity 0.2s ease-in-out; /* ← ДОБАВИТЬ */
+@media (max-width: 768px) {
+  /* Показываем перенос строки на мобильных */
+  .signal2-mobile-break {
+    display: block;
+  }
+  
+  /* Центрируем текст на мобильных */
+  .signal2-status-label-disconnected {
+    text-align: center;
+    line-height: 1.4;
+  }
 }
 
 </style>
