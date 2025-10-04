@@ -1337,20 +1337,10 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   color: #A972FF;
 }
 
-.signal-emotion-bubble:hover {
-  background: #A972FF;
-  color: #000;
-}
-
 .signal-fact-bubble {
   background: rgba(61, 220, 132, 0.1);
   border-color: rgba(61, 220, 132, 0.3);
   color: #3DDC84;
-}
-
-.signal-fact-bubble:hover {
-  background: #3DDC84;
-  color: #000;
 }
 
 .signal-solution-bubble {
@@ -1358,6 +1348,26 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   border-color: rgba(74, 144, 226, 0.3);
   color: #4A90E2;
 }
+
+/* Применяем ховер-эффекты только для устройств с мышью */
+@media (hover: hover) and (pointer: fine) {
+  .signal-emotion-bubble:hover {
+    background: #A972FF;
+    color: #000;
+  }
+
+  .signal-fact-bubble:hover {
+    background: #3DDC84;
+    color: #000;
+  }
+  
+  /* Добавляем недостающий hover для .signal-solution-bubble */
+  .signal-solution-bubble:hover {
+    background: #4A90E2;
+    color: #fff;
+  }
+}
+
 
 .signal-solution-bubble:hover {
   background: #4A90E2;
@@ -1723,8 +1733,27 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
     margin-bottom: 12px;
   }
 
-  .signal-demo-form-container {
-    padding: 1rem 1.5rem;
+  /* Увеличиваем ширину основного контейнера формы */
+  .signal-demo__form-container {
+    padding: 1rem 0.75rem; /* Уменьшаем боковые отступы */
+    max-width: 100%; /* Используем всю доступную ширину */
+  }
+  
+  /* Увеличиваем ширину блока с вопросами */
+  .signal-question-block {
+    padding: 1rem 0.85rem; /* Уменьшаем внутренние отступы */
+  }
+
+  /* Увеличиваем ширину кнопки "Дальше" */
+  .signal-liquid-next-btn {
+    width: 100%;
+    height: 52px; /* Можно немного уменьшить высоту для мобильных */
+  }
+
+  /* Увеличиваем размер шрифта в баблах подсказок */
+  .signal-suggestion-bubble {
+    font-size: 0.85rem; /* Немного больше для удобства нажатия */
+    padding: 0.4rem 0.9rem;
   }
   
   .signal-columns {
@@ -1741,7 +1770,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
     padding: 0.6rem 2rem;
   }
 }
-
 
   .signal-incognito-toggle {
   margin-bottom: 12px;
