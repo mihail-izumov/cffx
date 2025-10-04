@@ -3,7 +3,6 @@
     <strong>Отправить ⚡ Сигнал</strong>
   </button>
 
-  <!-- Модальное окно (самодостаточная структура) -->
   <div v-if="isModalOpen" class="signal2-review-modal-overlay" @click="closeModal">
     <div class="signal2-review-modal-content" @click.stop>
       <div class="signal2-modal-scrollable-content">
@@ -32,13 +31,8 @@ const closeModal = () => {
   isModalOpen.value = false
 }
 
-// Централизованное управление скроллом body
 watch(isModalOpen, (isOpen) => {
-  if (isOpen) {
-    document.body.style.overflow = 'hidden'
-  } else {
-    document.body.style.overflow = 'auto'
-  }
+  document.body.style.overflow = isOpen ? 'hidden' : 'auto'
 })
 </script>
 
@@ -76,28 +70,7 @@ watch(isModalOpen, (isOpen) => {
   50% { background-position: 100% 50%; }
 }
 
-/* --- ПОЛНЫЙ НАБОР СТИЛЕЙ И СБРОСОВ ИЗ CoffeePointsSMR.vue --- */
-
-/* Глубокие сбросы стилей VitePress */
-:deep(.signal2-no-vitepress-style) {
-  text-decoration: underline !important;
-  text-decoration-color: rgba(255, 255, 255, 0.3) !important;
-  border-bottom: none !important;
-  background: none !important;
-}
-:deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(p), :deep(span), :deep(label) {
-  text-align: initial !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-:deep(.container), :deep(.content) {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
-/* Стили модального окна */
+/* Стили модального окна (БЕЗ :deep сбросов!) */
 .signal2-review-modal-overlay {
   position: fixed;
   top: 0;
@@ -163,7 +136,6 @@ watch(isModalOpen, (isOpen) => {
   transform: translateY(-2px);
 }
 
-/* Мобильные стили по ширине */
 @media (max-width: 768px) {
   .signal2-review-modal-overlay {
     display: flex;
@@ -187,13 +159,11 @@ watch(isModalOpen, (isOpen) => {
   }
   .signal2-modal-close-button {
     width: 100%;
-    justify-content: center;
     font-size: 14px;
     padding: 12px 20px;
   }
 }
 
-/* Адаптация для экранов с малой высотой */
 @media screen and (max-height: 700px) {
   .signal2-review-modal-content {
     height: 80vh !important;
