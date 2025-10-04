@@ -3,21 +3,19 @@
     <strong>Отправить ⚡ Сигнал</strong>
   </button>
 
-  <!-- Телепортируем модалку в <body>, чтобы исключить влияние предков -->
-  <Teleport to="body">
-    <div v-if="isModalOpen" class="signal2-review-modal-overlay" @click="closeModal">
-      <div class="signal2-review-modal-content" @click.stop>
-        <div class="signal2-modal-scrollable-content">
-          <SignalT9Configurator />
-        </div>
-        <div class="signal2-modal-close-section">
-          <button @click="closeModal" class="signal2-modal-close-button">
-            Закрыть и вернуться
-          </button>
-        </div>
+  <!-- Модальное окно (самодостаточная структура) -->
+  <div v-if="isModalOpen" class="signal2-review-modal-overlay" @click="closeModal">
+    <div class="signal2-review-modal-content" @click.stop>
+      <div class="signal2-modal-scrollable-content">
+        <SignalT9Configurator />
+      </div>
+      <div class="signal2-modal-close-section">
+        <button @click="closeModal" class="signal2-modal-close-button">
+          Закрыть и вернуться
+        </button>
       </div>
     </div>
-  </Teleport>
+  </div>
 </template>
 
 <script setup>
@@ -34,14 +32,18 @@ const closeModal = () => {
   isModalOpen.value = false
 }
 
-// Централизовано управляем скроллом body при открытии/закрытии
-watch(isModalOpen, (open) => {
-  document.body.style.overflow = open ? 'hidden' : 'auto'
+// Управление скроллом body при открытии/закрытии
+watch(isModalOpen, (isOpen) => {
+  if (isOpen) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = 'auto'
+  }
 })
 </script>
 
 <style scoped>
-/* Кнопка */
+/* Стили кнопки */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -74,13 +76,15 @@ watch(isModalOpen, (open) => {
   50% { background-position: 100% 50%; }
 }
 
-/* Модалка */
+/* --- Стили модального окна (скопированы из CoffeePointsSMR.vue) --- */
+
 .signal2-review-modal-overlay {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,.8);
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -89,6 +93,7 @@ watch(isModalOpen, (open) => {
   padding: 8px;
   box-sizing: border-box;
 }
+
 .signal2-review-modal-content {
   background: #1e1e20;
   border-radius: 16px;
@@ -96,28 +101,29 @@ watch(isModalOpen, (open) => {
   height: clamp(85vh, 90vh, 85vh);
   max-width: 95vw;
   max-height: clamp(85vh, 90vh, 85vh);
-  box-shadow: 0 20px 40px rgba(0,0,0,.5);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
-  color: #fff;
+  color: white;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
+
 .signal2-modal-scrollable-content {
   flex: 1;
   overflow-y: auto;
   padding: 20px 16px 16px 16px;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
 }
+
 .signal2-modal-close-section {
   flex-shrink: 0;
   padding: 20px 16px 24px 16px;
   background: #1e1e20;
-  border-top: 1px solid rgba(255,255,255,.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   justify-content: center;
 }
+
 .signal2-modal-close-button {
   background-color: #272727;
   border: none;
@@ -126,15 +132,16 @@ watch(isModalOpen, (open) => {
   border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
+
 .signal2-modal-close-button:hover {
   background-color: #333333;
   color: #fff;
   transform: translateY(-2px);
 }
 
-/* Мобильные правила по ширине */
+/* Мобильные стили по ширине */
 @media (max-width: 768px) {
   .signal2-review-modal-overlay {
     display: flex;
@@ -169,11 +176,17 @@ watch(isModalOpen, (open) => {
   }
 }
 
-/* Адаптация для малой высоты экрана */
+/* Адаптация для экранов с малой высотой */
 @media screen and (max-height: 700px) {
-  .signal2-review-modal-content { height: 80vh !important; max-height: 80vh !important; }
+  .signal2-review-modal-content {
+    height: 80vh !important;
+    max-height: 80vh !important;
+  }
 }
 @media screen and (max-height: 600px) {
-  .signal2-review-modal-content { height: 75vh !important; max-height: 75vh !important; }
+  .signal2-review-modal-content {
+    height: 75vh !important;
+    max-height: 75vh !important;
+  }
 }
 </style>
