@@ -846,6 +846,7 @@ watch(showBranchList, (newValue) => {
   
 }
 @media (max-width: 700px) {
+  .signal2-review-modal-content { width: 95vw; height: 85vh; }
 }
 @media (max-width: 480px) {
   .signal2-widget-content { padding: 20px 0; }
@@ -859,6 +860,7 @@ watch(showBranchList, (newValue) => {
   .signal2-modal { padding: 24px; }
   .signal2-modal-body { margin-top: 12px; }
   .signal2-modal-footer { margin-top: 20px; }
+  .signal2-review-modal-content { height: 85vh; }
 }
 @media screen and (max-height: 700px) {
   .signal2-review-modal-content { height: 80vh !important; max-height: 80vh !important; }
