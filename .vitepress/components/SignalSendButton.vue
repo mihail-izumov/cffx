@@ -3,7 +3,7 @@
     <strong>Отправить ⚡ Сигнал</strong>
   </button>
 
-  <!-- Модальное окно - точная копия структуры из CoffeePointsSMR.vue -->
+  <!-- Модальное окно -->
   <div 
     v-if="isModalOpen" 
     class="signal2-review-modal-overlay"
@@ -153,6 +153,7 @@ watch(isModalOpen, (newValue) => {
   transform: translateY(-2px);
 }
 
+/* Мобильные стили по ширине экрана */
 @media (max-width: 768px) {
   .signal2-review-modal-overlay {
     display: flex;
@@ -179,7 +180,8 @@ watch(isModalOpen, (newValue) => {
   .signal2-modal-close-section {
     position: static;
     flex-shrink: 0;
-    padding-top: 16px;
+    padding: 16px 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
   }
 
   .signal2-modal-close-button {
@@ -187,6 +189,21 @@ watch(isModalOpen, (newValue) => {
     justify-content: center;
     font-size: 14px;
     padding: 12px 20px;
+  }
+}
+
+/* Адаптация для экранов с малой высотой */
+@media screen and (max-height: 700px) {
+  .signal2-review-modal-content {
+    height: 80vh !important;
+    max-height: 80vh !important;
+  }
+}
+
+@media screen and (max-height: 600px) {
+  .signal2-review-modal-content {
+    height: 75vh !important;
+    max-height: 75vh !important;
   }
 }
 </style>
