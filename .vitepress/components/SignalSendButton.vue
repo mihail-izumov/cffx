@@ -52,6 +52,7 @@ watch(isModalOpen, (isOpen) => {
   background-color: unset;
   color: inherit;
 }
+
 .btn-animated {
   background-image: linear-gradient(-45deg, #c5f946, #85a931, #c5f946, #85a931);
   background-size: 400% 400%;
@@ -59,18 +60,20 @@ watch(isModalOpen, (isOpen) => {
   color: #000 !important;
   border: none;
 }
+
 .btn-animated:hover {
   animation-direction: reverse;
   color: #000 !important;
   font-weight: 700;
   transform: translateY(-2px);
 }
+
 @keyframes liquid-fluid {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
 
-/* Стили модального окна (БЕЗ :deep сбросов!) */
+/* Стили модального окна */
 .signal2-review-modal-overlay {
   position: fixed;
   top: 0;
@@ -143,20 +146,28 @@ watch(isModalOpen, (isOpen) => {
     padding: 0 8px;
     padding-bottom: calc(8px + env(safe-area-inset-bottom));
   }
+  
   .signal2-review-modal-content {
     margin-top: 20px;
     flex-grow: 1;
     height: auto;
     max-height: none;
   }
+  
   .signal2-modal-scrollable-content {
     padding-bottom: 70px !important;
   }
+  
   .signal2-modal-close-section {
-    position: static;
+    position: sticky;
+    bottom: 0;
+    flex-shrink: 0;
     padding: 16px 16px;
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    background: #1e1e20;
+    z-index: 10;
   }
+  
   .signal2-modal-close-button {
     width: 100%;
     font-size: 14px;
@@ -170,6 +181,7 @@ watch(isModalOpen, (isOpen) => {
     max-height: 80vh !important;
   }
 }
+
 @media screen and (max-height: 600px) {
   .signal2-review-modal-content {
     height: 75vh !important;
