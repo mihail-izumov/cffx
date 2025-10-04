@@ -1,22 +1,7 @@
 <template>
-  <div class="page-container">
-    <!-- 
-      Это обертка для вашего основного контента.
-      Разместите здесь всё, что должно быть прижато к верху на мобильных устройствах.
-    -->
-    <div class="content-wrapper">
-      <h1>Заголовок</h1>
-      <p>Ваш контент здесь...</p>
-      <p>Этот блок будет растягиваться, чтобы оттолкнуть кнопку вниз на мобильных устройствах.</p>
-    </div>
-
-    <!-- Блок с кнопкой, который останется внизу -->
-    <div class="bottom-button-block">
-      <button class="btn btn-animated" type="button" @click="openModal">
-        <strong>Отправить ⚡ Сигнал</strong>
-      </button>
-    </div>
-  </div>
+  <button class="btn btn-animated" type="button" @click="openModal">
+    <strong>Отправить ⚡ Сигнал</strong>
+  </button>
 </template>
 
 <script setup>
@@ -30,31 +15,6 @@ const openModal = () => {
 </script>
 
 <style scoped>
-/* Стили для мобильной верстки */
-@media (max-width: 768px) {
-  .page-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Занимает как минимум всю высоту экрана */
-  }
-
-  .content-wrapper {
-    flex-grow: 1; /* Заставляет этот блок занять всё доступное пространство */
-  }
-  
-  .bottom-button-block {
-    padding: 16px;
-    width: 100%;
-    /* Можно добавить фон, если страница не белая */
-    /* background-color: var(--vp-c-bg); */
-  }
-
-  .bottom-button-block .btn {
-    width: 100%; /* Растягиваем кнопку на всю ширину */
-  }
-}
-
-/* Ваши оригинальные стили для кнопки */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -88,5 +48,17 @@ const openModal = () => {
 @keyframes liquid-fluid {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+}
+
+/* Стили для мобильной версии */
+@media (max-width: 768px) {
+  .btn {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    width: calc(100% - 32px);
+    z-index: 1000;
+  }
 }
 </style>
