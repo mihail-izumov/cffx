@@ -32,7 +32,7 @@ const closeModal = () => {
   isModalOpen.value = false
 }
 
-// Управление скроллом body при открытии/закрытии
+// Централизованное управление скроллом body
 watch(isModalOpen, (isOpen) => {
   if (isOpen) {
     document.body.style.overflow = 'hidden'
@@ -76,8 +76,28 @@ watch(isModalOpen, (isOpen) => {
   50% { background-position: 100% 50%; }
 }
 
-/* --- Стили модального окна (скопированы из CoffeePointsSMR.vue) --- */
+/* --- ПОЛНЫЙ НАБОР СТИЛЕЙ И СБРОСОВ ИЗ CoffeePointsSMR.vue --- */
 
+/* Глубокие сбросы стилей VitePress */
+:deep(.signal2-no-vitepress-style) {
+  text-decoration: underline !important;
+  text-decoration-color: rgba(255, 255, 255, 0.3) !important;
+  border-bottom: none !important;
+  background: none !important;
+}
+:deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(p), :deep(span), :deep(label) {
+  text-align: initial !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+:deep(.container), :deep(.content) {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Стили модального окна */
 .signal2-review-modal-overlay {
   position: fixed;
   top: 0;
@@ -113,6 +133,8 @@ watch(isModalOpen, (isOpen) => {
   flex: 1;
   overflow-y: auto;
   padding: 20px 16px 16px 16px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .signal2-modal-close-section {
@@ -152,10 +174,6 @@ watch(isModalOpen, (isOpen) => {
   .signal2-review-modal-content {
     margin-top: 20px;
     flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-height: 0;
     height: auto;
     max-height: none;
   }
@@ -164,7 +182,6 @@ watch(isModalOpen, (isOpen) => {
   }
   .signal2-modal-close-section {
     position: static;
-    flex-shrink: 0;
     padding: 16px 16px;
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
   }
