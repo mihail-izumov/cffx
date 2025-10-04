@@ -1715,17 +1715,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
 @media (max-width: 768px) {
-  .signal-controls-row {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .signal-demo__form-container {
-    padding: 1.5rem;
-  }
-  
-@media (max-width: 768px) {
   .signal-demo__header {
     margin-bottom: 12px;
   }
@@ -1737,22 +1726,22 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   .signal-demo-form-container {
     padding: 1rem 1.5rem;
   }
-
+  
   .signal-columns {
     flex-direction: column;
     gap: 1rem;
   }
 
-  
   .signal-success-ticket-info {
     flex-direction: column;
     gap: 0.75rem;
   }
-  
+
   .signal-success-ticket {
     padding: 0.6rem 2rem;
   }
 }
+
 
   .signal-incognito-toggle {
   margin-bottom: 12px;
