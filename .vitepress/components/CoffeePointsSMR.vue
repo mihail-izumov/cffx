@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 import SignalT9Configurator from './SignalT9Configurator.vue'
+import ReviewModal from './ReviewModal.vue'
 
 const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка', 'Кэрри']
 
@@ -571,24 +572,10 @@ watch(showBranchList, (newValue) => {
       </div>
     </div>
 
-    <div 
-      v-if="isReviewModalOpen" 
-      class="signal2-review-modal-overlay"
-      @click="closeReviewModal"
-    >
-      <div 
-        class="signal2-review-modal-content"
-        @click.stop
-      >
-        <div class="signal2-modal-scrollable-content">
-          <SignalT9Configurator />
-        </div>
-        
-        <div class="signal2-modal-close-section">
-          <button @click="closeReviewModal" class="signal2-modal-close-button">Закрыть и вернуться</button>
-        </div>
-      </div>
-    </div>
+    <ReviewModal :is-open="isReviewModalOpen" @close="closeReviewModal">
+  <SignalT9Configurator />
+</ReviewModal>
+
 
     <div v-if="showInfoModal" class="signal2-modal-overlay" @click.self="showInfoModal = false">
       <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Сигналы">
@@ -645,14 +632,10 @@ watch(showBranchList, (newValue) => {
 :deep(.signal2-no-vitepress-style:visited), :deep(.signal2-no-vitepress-style:focus), :deep(.signal2-no-vitepress-style:active) { text-decoration: underline !important; text-decoration-color: rgba(255, 255, 255, 0.3) !important; border-bottom: none !important; background: none !important; }
 :deep(.signal2-modal-link.signal2-no-vitepress-style) { text-decoration: underline !important; text-decoration-color: #a3e635 !important; border-bottom: none !important; background: none !important; }
 :deep(.signal2-modal-link.signal2-no-vitepress-style:hover) { text-decoration: underline !important; text-decoration-color: #c5f946 !important; border-bottom: none !important; background: none !important; }
-.signal2-review-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 8px; box-sizing: border-box; }
-.signal2-review-modal-content { background: #1e1e20; border-radius: 16px; width: 650px; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); box-sizing: border-box; color: white; display: flex; flex-direction: column; overflow: hidden; }
-.signal2-modal-scrollable-content { flex: 1; overflow-y: auto; padding: 20px 16px 16px 16px; }
 :deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(p), :deep(span), :deep(label), :deep(.title), :deep(.subtitle), :deep(.description), :deep(.example-text), :deep(.hint-text) { text-align: initial !important; padding-left: 0 !important; padding-right: 0 !important; }
 :deep(.container), :deep(.content) { padding-left: 0 !important; padding-right: 0 !important; margin-left: 0 !important; margin-right: 0 !important; }
 :deep(.form-section), :deep(.form-group), :deep(.section-wrapper) { margin-bottom: clamp(10px, 2vw, 10px) !important; }
 :deep(.card), :deep(.block), :deep(.content-block) { margin-bottom: clamp(8px, 1.6vw, 8px) !important; }
-.signal2-modal-close-section { position: fixed; bottom: 0; left: 0; width: 100%; padding: 12px 16px; padding-bottom: calc(12px + env(safe-area-inset-bottom)); background: #1e1e20; display: flex; justify-content: center; box-sizing: border-box; }
 .signal2-branches-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid var(--vp-c-border); }
 .signal2-branches-title-text { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; text-align: center; flex-grow: 1; }
 .signal2-internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
@@ -838,15 +821,9 @@ watch(showBranchList, (newValue) => {
   .signal2-button-icon-container { width: 28px; height: 28px; }
   .signal2-action-button { justify-content: center !important; }
   .signal2-button-icon-container { margin-left: 8px !important; margin-right: -8px; }
-  .signal2-review-modal-overlay { align-items: flex-start; padding: 15px 4px 4px 4px; }
-  .signal2-review-modal-content { width: 95vw; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); }
-  .signal2-modal-scrollable-content { padding: 20px 12px 80px 12px; }
-  .signal2-modal-close-button { width: 100%; justify-content: center; font-size: 14px; padding: 12px 20px; }
-  .signal2-modal-close-section { padding: 12px; }
+  
 }
 @media (max-width: 700px) {
-  .signal2-review-modal-content { width: 95vw; height: 85vh; }
-  .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
 }
 @media (max-width: 480px) {
   .signal2-widget-content { padding: 20px 0; }
@@ -860,8 +837,6 @@ watch(showBranchList, (newValue) => {
   .signal2-modal { padding: 24px; }
   .signal2-modal-body { margin-top: 12px; }
   .signal2-modal-footer { margin-top: 20px; }
-  .signal2-review-modal-content { height: 85vh; }
-  .signal2-modal-scrollable-content { padding: 16px 10px 10px 10px; }
 }
 @media screen and (max-height: 700px) {
   .signal2-review-modal-content { height: 80vh !important; max-height: 80vh !important; }
