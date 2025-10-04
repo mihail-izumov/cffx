@@ -838,7 +838,7 @@ watch(showBranchList, (newValue) => {
   .signal2-button-icon-container { width: 28px; height: 28px; }
   .signal2-action-button { justify-content: center !important; }
   .signal2-button-icon-container { margin-left: 8px !important; margin-right: -8px; }
-  .signal2-review-modal-overlay { align-items: flex-start; padding-top: 20px; }
+  .signal2-review-modal-overlay { display: flex; flex-direction: column; padding: 20px 8px; padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
   .signal2-review-modal-content { width: 95vw; max-width: 95vw; max-height: calc(100vh - 120px); overflow-y: auto; }
   .signal2-modal-scrollable-content { padding-bottom: 70px !important; }
   .signal2-modal-close-button { width: 100%; justify-content: center; font-size: 14px; padding: 12px 20px; }
