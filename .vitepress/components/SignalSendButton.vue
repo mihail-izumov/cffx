@@ -49,16 +49,4 @@ const openModal = () => {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
-
-/* Стили для мобильной версии */
-@media (max-width: 768px) {
-  .btn {
-    position: fixed;
-    bottom: 16px;
-    left: 16px;
-    right: 16px;
-    width: calc(100% - 32px);
-    z-index: 1000;
-  }
-}
 </style>
