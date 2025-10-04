@@ -652,7 +652,7 @@ watch(showBranchList, (newValue) => {
 :deep(.container), :deep(.content) { padding-left: 0 !important; padding-right: 0 !important; margin-left: 0 !important; margin-right: 0 !important; }
 :deep(.form-section), :deep(.form-group), :deep(.section-wrapper) { margin-bottom: clamp(10px, 2vw, 10px) !important; }
 :deep(.card), :deep(.block), :deep(.content-block) { margin-bottom: clamp(8px, 1.6vw, 8px) !important; }
-.signal2-modal-close-section { position: sticky; bottom: 0; background: #1e1e20; padding: 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: center; }
+.signal2-modal-close-section { flex-shrink: 0; padding: 20px 16px 24px 16px; background: #1e1e20; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: center; }
 .signal2-branches-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid var(--vp-c-border); }
 .signal2-branches-title-text { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; text-align: center; flex-grow: 1; }
 .signal2-internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
@@ -838,14 +838,15 @@ watch(showBranchList, (newValue) => {
   .signal2-button-icon-container { width: 28px; height: 28px; }
   .signal2-action-button { justify-content: center !important; }
   .signal2-button-icon-container { margin-left: 8px !important; margin-right: -8px; }
-  .signal2-review-modal-overlay { align-items: flex-start; padding-top: 20px; }
+  .signal2-review-modal-overlay { padding: 4px; }
   .signal2-review-modal-content { width: 95vw; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); }
-  .signal2-modal-scrollable-content { padding-bottom: 70px !important; }
+  .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
   .signal2-modal-close-button { width: 100%; justify-content: center; font-size: 14px; padding: 12px 20px; }
-  .signal2-modal-close-section { position: fixed !important; bottom: env(safe-area-inset-bottom, 0); left: 0; width: 100%; padding: 12px 16px; background: #1e1e20; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: center; box-sizing: border-box; z-index: 10000; }
+  .signal2-modal-close-section { padding: 12px; }
 }
 @media (max-width: 700px) {
   .signal2-review-modal-content { width: 95vw; height: 85vh; }
+  .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
 }
 @media (max-width: 480px) {
   .signal2-widget-content { padding: 20px 0; }
@@ -860,6 +861,7 @@ watch(showBranchList, (newValue) => {
   .signal2-modal-body { margin-top: 12px; }
   .signal2-modal-footer { margin-top: 20px; }
   .signal2-review-modal-content { height: 85vh; }
+  .signal2-modal-scrollable-content { padding: 16px 10px 10px 10px; }
 }
 @media screen and (max-height: 700px) {
   .signal2-review-modal-content { height: 80vh !important; max-height: 80vh !important; }
