@@ -21,7 +21,9 @@ const props = defineProps({
 defineEmits(['close'])
 
 watch(() => props.isOpen, (isOpen) => {
-  document.body.style.overflow = isOpen ? 'hidden' : 'auto'
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = isOpen ? 'hidden' : 'auto'
+  }
 })
 </script>
 
@@ -56,9 +58,10 @@ watch(() => props.isOpen, (isOpen) => {
 }
 
 .signal2-modal-scrollable-content {
-  flex: 1; /* Ключевое свойство, чтобы занимать все место */
+  flex: 1; /* Занимать все доступное пространство */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  min-height: 0; /* Важно для корректной работы flex: 1 */
 }
 
 .signal2-modal-close-section {
