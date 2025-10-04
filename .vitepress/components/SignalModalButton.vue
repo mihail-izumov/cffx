@@ -28,17 +28,25 @@
       </div>
     </button>
 
-    <!-- Используем компонент ReviewModal -->
-    <ReviewModal :is-open="isModalOpen" @close="closeModal">
-      <SignalT9Configurator />
-    </ReviewModal>
+    <!-- Модальное окно -->
+    <div 
+      v-if="isModalOpen" 
+      class="signal-modal-overlay"
+      @click="closeModal"
+    >
+      <div 
+        class="signal-modal-content"
+        @click.stop
+      >
+        <SignalT9Configurator />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import SignalT9Configurator from './SignalT9Configurator.vue'
-import ReviewModal from './ReviewModal.vue'
 
 const isModalOpen = ref(false)
 
@@ -58,6 +66,8 @@ const handleKeydown = (event) => {
     closeModal()
   }
 }
+
+import { onMounted, onUnmounted } from 'vue'
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
@@ -128,7 +138,64 @@ onUnmounted(() => {
   color: #48484a;
 }
 
-/* Адаптивность для кнопки */
+/* Оверлей модального окна */
+.signal-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Контейнер модального окна - возвращаем нужные отступы */
+.signal-modal-content {
+  background: #1e1e20;
+  border-radius: 16px;
+  padding: 32px;
+  /* Фиксированные размеры */
+  width: 650px;
+  height: 680px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  color: white;
+}
+
+/* Убираем принудительное центрирование ТОЛЬКО для текстовых элементов */
+.signal-modal-content :deep(h1),
+.signal-modal-content :deep(h2), 
+.signal-modal-content :deep(h3),
+.signal-modal-content :deep(h4),
+.signal-modal-content :deep(p),
+.signal-modal-content :deep(span),
+.signal-modal-content :deep(label),
+.signal-modal-content :deep(.title),
+.signal-modal-content :deep(.subtitle),
+.signal-modal-content :deep(.description),
+.signal-modal-content :deep(.example-text),
+.signal-modal-content :deep(.hint-text) {
+  text-align: initial !important;
+}
+
+/* Адаптивность */
+@media (max-width: 700px) {
+  .signal-modal-content {
+    width: 95vw;
+    height: 85vh;
+    padding: 24px;
+  }
+}
+
 @media (max-width: 768px) {
   .signal-modal-button {
     min-width: 200px;
@@ -144,6 +211,11 @@ onUnmounted(() => {
   .signal-modal-text-cursor-icon {
     width: 16px;
     height: 16px;
+  }
+  
+  .signal-modal-content {
+    padding: 20px;
+    height: 80vh;
   }
 }
 
