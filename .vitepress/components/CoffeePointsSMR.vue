@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 import SignalT9Configurator from './SignalT9Configurator.vue'
+import ReviewModal from './ReviewModal.vue'
 
 const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка', 'Кэрри']
 
