@@ -838,15 +838,14 @@ watch(showBranchList, (newValue) => {
   .signal2-button-icon-container { width: 28px; height: 28px; }
   .signal2-action-button { justify-content: center !important; }
   .signal2-button-icon-container { margin-left: 8px !important; margin-right: -8px; }
-  .signal2-review-modal-overlay { align-items: flex-start; padding-top: 20px; }
-  .signal2-review-modal-content { width: 95vw; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); }
-  .signal2-modal-scrollable-content { padding: 20px 12px 80px 12px; }
+  .signal2-review-modal-overlay { display: flex; flex-direction: column; padding: 0 8px; padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
+  .signal2-review-modal-content { margin-top: 20px; flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; height: auto; max-height: none; }
+  .signal2-modal-scrollable-content { padding-bottom: 70px !important; }
   .signal2-modal-close-button { width: 100%; justify-content: center; font-size: 14px; padding: 12px 20px; }
-  .signal2-modal-close-section { padding: 12px; }
+  .signal2-modal-close-section { position: static; flex-shrink: 0; padding-top: 16px; }
+  
 }
 @media (max-width: 700px) {
-  .signal2-review-modal-content { width: 95vw; height: 85vh; }
-  .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
 }
 @media (max-width: 480px) {
   .signal2-widget-content { padding: 20px 0; }
@@ -860,8 +859,6 @@ watch(showBranchList, (newValue) => {
   .signal2-modal { padding: 24px; }
   .signal2-modal-body { margin-top: 12px; }
   .signal2-modal-footer { margin-top: 20px; }
-  .signal2-review-modal-content { height: 85vh; }
-  .signal2-modal-scrollable-content { padding: 16px 10px 10px 10px; }
 }
 @media screen and (max-height: 700px) {
   .signal2-review-modal-content { height: 80vh !important; max-height: 80vh !important; }
