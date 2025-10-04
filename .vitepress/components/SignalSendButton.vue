@@ -4,14 +4,7 @@
   </button>
 
   <ReviewModal :is-open="isModalOpen" @close="closeModal">
-    <template #content>
-      <SignalT9Configurator />
-    </template>
-    <template #footer>
-      <button @click="closeModal" class="signal2-modal-close-button">
-        Закрыть и вернуться
-      </button>
-    </template>
+    <SignalT9Configurator />
   </ReviewModal>
 </template>
 
@@ -40,27 +33,13 @@ const closeModal = () => { isModalOpen.value = false; };
   cursor: pointer;
   transition: transform 0.3s ease;
 }
+
 .btn-animated:hover {
   transform: translateY(-2px);
 }
+
 @keyframes liquid-fluid {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
-}
-
-.signal2-modal-close-button {
-  background-color: #272727;
-  border: none;
-  color: #888;
-  padding: 14px 24px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  width: 100%;
-}
-.signal2-modal-close-button:hover {
-  background-color: #333333;
-  color: #fff;
 }
 </style>
