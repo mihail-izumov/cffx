@@ -1,5 +1,5 @@
 <template>
-  <button class="btn btn-animated" type="button" @click="openModal">
+  <button class="btn-animated" type="button" @click="openModal">
     <strong>Отправить ⚡ Сигнал</strong>
   </button>
 
@@ -27,7 +27,6 @@ const closeModal = () => { isModalOpen.value = false; };
 </script>
 
 <style scoped>
-/* Стили для основной кнопки "Отправить сигнал" */
 .btn-animated {
   background-image: linear-gradient(-45deg, #c5f946, #85a931, #c5f946, #85a931);
   background-size: 400% 400%;
@@ -49,7 +48,6 @@ const closeModal = () => { isModalOpen.value = false; };
   50% { background-position: 100% 50%; }
 }
 
-/* Стили для кнопки "Закрыть", передаваемой в футер */
 .signal2-modal-close-button {
   background-color: #272727;
   border: none;
