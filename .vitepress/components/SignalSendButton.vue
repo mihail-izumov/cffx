@@ -91,6 +91,7 @@ watch(isModalOpen, (isOpen) => {
 }
 
 .signal2-review-modal-content {
+  position: relative;
   background: #1e1e20;
   border-radius: 16px;
   width: 650px;
@@ -111,6 +112,7 @@ watch(isModalOpen, (isOpen) => {
   padding: 20px 16px 16px 16px;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+  padding-bottom: 100px;
 }
 
 .signal2-modal-close-section {
@@ -143,29 +145,38 @@ watch(isModalOpen, (isOpen) => {
   .signal2-review-modal-overlay {
     display: flex;
     flex-direction: column;
-    padding: 0 8px;
-    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+    align-items: stretch;
+    padding: 0;
   }
   
   .signal2-review-modal-content {
     margin-top: 20px;
-    flex-grow: 1;
+    flex: 1;
     height: auto;
     max-height: none;
+    border-radius: 16px 16px 0 0;
+    display: flex;
+    flex-direction: column;
   }
   
   .signal2-modal-scrollable-content {
-    padding-bottom: 70px !important;
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 16px;
+    padding-bottom: 100px;
   }
   
   .signal2-modal-close-section {
-    position: sticky;
+    position: fixed;
     bottom: 0;
-    flex-shrink: 0;
-    padding: 16px 16px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 16px;
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
     background: #1e1e20;
-    z-index: 10;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 10000;
   }
   
   .signal2-modal-close-button {
