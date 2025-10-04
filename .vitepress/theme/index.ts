@@ -89,6 +89,7 @@ import SignalCafeCard from '../components/SignalCafeCard.vue'
 import SignalModalWrapper from '../components/SignalModalWrapper.vue'
 import SignalSendButton from '../components/SignalSendButton.vue'
 import CupFillIcon from '../components/CupFillIcon.vue'
+import ReviewModal from '../components/ReviewModal.vue'
 
 export default {
   extends: DefaultTheme,
@@ -183,5 +184,6 @@ export default {
     app.component('SignalModalWrapper', SignalModalWrapper)
     app.component('SignalSendButton', SignalSendButton)
     app.component('CupFillIcon', CupFillIcon)
+    app.component('ReviewModal', ReviewModal)
   },
 }
