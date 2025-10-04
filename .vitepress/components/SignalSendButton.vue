@@ -52,7 +52,6 @@ watch(isModalOpen, (isOpen) => {
   background-color: unset;
   color: inherit;
 }
-
 .btn-animated {
   background-image: linear-gradient(-45deg, #c5f946, #85a931, #c5f946, #85a931);
   background-size: 400% 400%;
@@ -60,14 +59,12 @@ watch(isModalOpen, (isOpen) => {
   color: #000 !important;
   border: none;
 }
-
 .btn-animated:hover {
   animation-direction: reverse;
   color: #000 !important;
   font-weight: 700;
   transform: translateY(-2px);
 }
-
 @keyframes liquid-fluid {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -91,7 +88,6 @@ watch(isModalOpen, (isOpen) => {
 }
 
 .signal2-review-modal-content {
-  position: relative;
   background: #1e1e20;
   border-radius: 16px;
   width: 650px;
@@ -112,7 +108,6 @@ watch(isModalOpen, (isOpen) => {
   padding: 20px 16px 16px 16px;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  padding-bottom: 100px;
 }
 
 .signal2-modal-close-section {
@@ -145,58 +140,28 @@ watch(isModalOpen, (isOpen) => {
   .signal2-review-modal-overlay {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     padding: 0;
   }
-  
   .signal2-review-modal-content {
     margin-top: 20px;
     flex: 1;
-    height: auto;
+    height: 100%;
     max-height: none;
-    border-radius: 16px 16px 0 0;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .signal2-modal-scrollable-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px 16px;
-    padding-bottom: 100px;
-  }
-  
-  .signal2-modal-close-section {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
     width: 100%;
+    border-radius: 16px 16px 0 0;
+  }
+  .signal2-modal-scrollable-content {
+    /* padding-bottom убран, т.к. кнопка в потоке */
+  }
+  .signal2-modal-close-section {
+    position: static;
     padding: 16px;
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
-    background: #1e1e20;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 10000;
   }
-  
   .signal2-modal-close-button {
     width: 100%;
     font-size: 14px;
     padding: 12px 20px;
-  }
-}
-
-@media screen and (max-height: 700px) {
-  .signal2-review-modal-content {
-    height: 80vh !important;
-    max-height: 80vh !important;
-  }
-}
-
-@media screen and (max-height: 600px) {
-  .signal2-review-modal-content {
-    height: 75vh !important;
-    max-height: 75vh !important;
   }
 }
 </style>
