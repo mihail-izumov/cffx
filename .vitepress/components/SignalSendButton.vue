@@ -3,31 +3,41 @@
     <strong>Отправить ⚡ Сигнал</strong>
   </button>
 
-  <!-- Модальное окно БЕЗ собственной кнопки закрытия -->
-  <div v-if="isModalOpen" class="signal2-review-modal-overlay" @click="closeModal">
-    <div class="signal2-review-modal-content" @click.stop>
-      <!-- Компонент теперь сам управляет закрытием -->
-      <SignalT9Configurator @close="closeModal" />
-    </div>
-  </div>
+  <!-- Используем ГОТОВЫЙ компонент ReviewModal, как в CoffeePointsSMR.vue -->
+  <ReviewModal :is-open="isModalOpen" @close="closeModal">
+    <template #content>
+      <SignalT9Configurator />
+    </template>
+    <template #footer>
+      <button @click="closeModal" class="signal2-modal-close-button">
+        Закрыть и вернуться
+      </button>
+    </template>
+  </ReviewModal>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
-import SignalT9Configurator from './SignalT9Configurator.vue'
+import { ref, watch } from 'vue';
+import ReviewModal from './ReviewModal.vue'; // ← Убедитесь, что путь правильный
+import SignalT9Configurator from './SignalT9Configurator.vue';
 
-const isModalOpen = ref(false)
+const isModalOpen = ref(false);
 
-const openModal = () => { isModalOpen.value = true }
-const closeModal = () => { isModalOpen.value = false }
+const openModal = () => {
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+};
 
 watch(isModalOpen, (isOpen) => {
-  document.body.style.overflow = isOpen ? 'hidden' : 'auto'
-})
+  document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+});
 </script>
 
 <style scoped>
-/* Стили кнопки остаются прежними */
+/* Стили для основной кнопки "Отправить сигнал" */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -52,48 +62,21 @@ watch(isModalOpen, (isOpen) => {
   50% { background-position: 100% 50%; }
 }
 
-/* Стили модального окна */
-.signal2-review-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 8px;
-  box-sizing: border-box;
+/* Стили для кнопки "Закрыть", передаваемой в футер модалки */
+.signal2-modal-close-button {
+  background-color: #272727;
+  border: none;
+  color: #888;
+  padding: 14px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
 }
-
-.signal2-review-modal-content {
-  background: #1e1e20;
-  border-radius: 16px;
-  width: 650px;
-  height: clamp(85vh, 90vh, 85vh);
-  max-width: 95vw;
-  max-height: clamp(85vh, 90vh, 85vh);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  box-sizing: border-box;
-  color: white;
-  display: flex; /* Важно для дочернего компонента */
-  flex-direction: column; /* Важно для дочернего компонента */
-  overflow: hidden;
-}
-
-@media (max-width: 768px) {
-  .signal2-review-modal-overlay {
-    padding: 0;
-  }
-  .signal2-review-modal-content {
-    margin-top: 20px;
-    width: 100%;
-    height: 100%;
-    max-height: none;
-    border-radius: 16px 16px 0 0;
-  }
+.signal2-modal-close-button:hover {
+  background-color: #333333;
+  color: #fff;
+  transform: translateY(-2px);
 }
 </style>
