@@ -1725,10 +1725,24 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
     padding: 1.5rem;
   }
   
+@media (max-width: 768px) {
+  .signal-demo__header {
+    margin-bottom: 12px;
+  }
+
+  .signal-controls-row {
+    margin-bottom: 12px;
+  }
+
+  .signal-demo-form-container {
+    padding: 1rem 1.5rem;
+  }
+
   .signal-columns {
     flex-direction: column;
     gap: 1rem;
   }
+
   
   .signal-success-ticket-info {
     flex-direction: column;
