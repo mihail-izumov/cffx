@@ -165,7 +165,12 @@ const closeModal = () => {
   .signal2-modal-close-section {
     position: static;
     flex-shrink: 0;
-    padding-top: 16px;
+    padding: 16px 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    background: #1e1e20;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
   }
 }
 </style>
