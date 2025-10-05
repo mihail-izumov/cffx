@@ -6,7 +6,7 @@ pageClass: centered-page
 title: Отправьте Умный Отзыв – Тест
 ---
 
-<SignalWidget />
+<FestImageSlider />
 
 
 
