@@ -37,19 +37,17 @@
           </button>
           
           <div class="pdf-viewer-wrapper">
-            <!-- Текст загрузки -->
+            <!-- Простой текст загрузки -->
             <div class="pdf-loading">
-              <div class="loading-spinner"></div>
               <p class="loading-text">Загрузка презентации</p>
             </div>
             
-            <!-- iframe -->
+            <!-- iframe с отступом сверху -->
             <iframe 
               :src="pdfUrl"
               class="pdf-iframe"
               frameborder="0"
               allowfullscreen
-              @load="onIframeLoad"
             ></iframe>
           </div>
         </div>
@@ -62,7 +60,6 @@
 import { ref } from 'vue'
 
 const isOpen = ref(false)
-const isLoading = ref(true)
 const pdfUrl = 'https://drive.google.com/file/d/1NePcnHaJranV7Ul0b6mShLzCPf3EespV/preview'
 
 const togglePDF = () => {
@@ -70,17 +67,9 @@ const togglePDF = () => {
   
   if (isOpen.value) {
     document.body.style.overflow = 'hidden'
-    isLoading.value = true
   } else {
     document.body.style.overflow = ''
   }
-}
-
-const onIframeLoad = () => {
-  // Небольшая задержка для плавного исчезновения
-  setTimeout(() => {
-    isLoading.value = false
-  }, 500)
 }
 </script>
 
@@ -157,14 +146,15 @@ const onIframeLoad = () => {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  padding-top: 80px; /* ДОБАВЛЕНО: отступ сверху на десктопе */
 }
 
 .pdf-modal-container {
   position: relative;
   width: 100%;
   max-width: 1200px;
-  height: 90vh;
-  background: #1a1a1a; /* ИЗМЕНЕНО: темный фон */
+  height: calc(90vh - 60px); /* ИЗМЕНЕНО: высота минус отступ */
+  background: #1a1a1a;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -200,10 +190,11 @@ const onIframeLoad = () => {
   width: 100%;
   height: 100%;
   position: relative;
-  background: #1a1a1a; /* Темный фон */
+  background: #1a1a1a;
+  padding-top: 70px; /* ДОБАВЛЕНО: внутренний отступ для iframe */
 }
 
-/* Экран загрузки */
+/* Экран загрузки - простой текст */
 .pdf-loading {
   position: absolute;
   top: 0;
@@ -212,43 +203,21 @@ const onIframeLoad = () => {
   height: 100%;
   background: #1a1a1a;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 1;
-  transition: opacity 0.3s ease;
-}
-
-.pdf-iframe:not([src=""]) ~ .pdf-loading {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 4px solid rgba(132, 204, 22, 0.2);
-  border-top: 4px solid #84cc16;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 20px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 .loading-text {
   color: #84cc16;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   margin: 0;
 }
 
 .pdf-iframe {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 70px); /* ИЗМЕНЕНО: высота минус отступ */
   border: none;
   position: relative;
   z-index: 2;
@@ -271,28 +240,24 @@ const onIframeLoad = () => {
 
   .pdf-modal-overlay {
     padding: 0;
+    padding-top: 60px;
   }
 
   .pdf-modal-container {
     max-width: 100%;
-    height: 100vh;
+    height: calc(100vh - 60px);
     border-radius: 0;
   }
 
   .pdf-modal-close {
-    top: 10px;
-    left: 10px;
+    top: 15px;
+    left: 15px;
     width: 36px;
     height: 36px;
   }
 
   .loading-text {
     font-size: 16px;
-  }
-
-  .loading-spinner {
-    width: 40px;
-    height: 40px;
   }
 }
 </style>
