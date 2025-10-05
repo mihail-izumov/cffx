@@ -821,7 +821,7 @@ watch(showBranchList, (newValue) => {
 .signal2-modal-close-icon {
   display: flex !important;
   position: fixed !important;
-  top: calc((100vh - 85vh) / 4 - 22px) !important;
+  top: 4vh !important;
   right: 2.5vw !important;
   width: 44px !important;
   height: 44px !important;
