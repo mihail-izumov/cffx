@@ -2,22 +2,23 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const notifications = [
-  { 
-    text: 'Участвуете в фестивале?', 
-    hasButton: true,
-    buttonText: 'Подать Заявку',
-    buttonUrl: '/fest/join'
-  },
-  { 
-    text: 'Где начинается Ваша Кофейня', 
-    hasButton: true,
-    buttonText: 'Отправьте Умный Отзыв',
-    buttonUrl: '/me'
-  },
-  { 
-    text: 'Присоединяйтесь к главному кофейному событию года', 
+    { 
+    text: 'Главное кофейное событие 2025 года в Самаре', 
     hasButton: false 
+  },
+  { 
+    text: 'Презентация Сигнала о развитии кофейного рынка', 
+    hasButton: true,
+    buttonText: 'Смотреть',
+    buttonUrl: '/fest.htmlпрезентация-сигнала'
+  },
+  { 
+    text: 'ТОП-50 кофеен Самары', 
+    hasButton: true,
+    buttonText: 'Индекс Роста',
+    buttonUrl: '/invest/smr'
   }
+
 ]
 
 const currentIndex = ref(0)
