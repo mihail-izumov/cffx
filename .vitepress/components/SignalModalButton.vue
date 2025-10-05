@@ -1,29 +1,27 @@
 <template>
-  <div class="signal-modal-wrapper">
-    <!-- Модальное окно -->
+  <!-- Модальное окно БЕЗ wrapper -->
+  <div 
+    v-if="isModalOpen" 
+    class="signal2-review-modal-overlay"
+    @click="closeModal"
+  >
     <div 
-      v-if="isModalOpen" 
-      class="signal2-review-modal-overlay"
-      @click="closeModal"
+      class="signal2-review-modal-content"
+      @click.stop
     >
-      <div 
-        class="signal2-review-modal-content"
-        @click.stop
-      >
-        <div class="signal2-modal-scrollable-content">
-          <SignalT9Configurator />
-        </div>
-        
-        <div class="signal2-modal-close-section">
-          <!-- Крестик для мобильной версии -->
-          <button @click="closeModal" class="signal2-modal-close-icon" aria-label="Закрыть">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 6 6 18"/>
-              <path d="m6 6 12 12"/>
-            </svg>
-          </button>
-          <button @click="closeModal" class="signal2-modal-close-button">Закрыть и вернуться</button>
-        </div>
+      <div class="signal2-modal-scrollable-content">
+        <SignalT9Configurator />
+      </div>
+      
+      <div class="signal2-modal-close-section">
+        <!-- Крестик для мобильной версии -->
+        <button @click="closeModal" class="signal2-modal-close-icon" aria-label="Закрыть">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+          </svg>
+        </button>
+        <button @click="closeModal" class="signal2-modal-close-button">Закрыть и вернуться</button>
       </div>
     </div>
   </div>
@@ -72,11 +70,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Wrapper - скрываем, так как кнопки больше нет */
-.signal-modal-wrapper {
-  display: none;
-}
-
 /* Стили модального окна */
 .signal2-review-modal-overlay { 
   position: fixed; 
