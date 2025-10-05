@@ -36,6 +36,24 @@ head:
     display: inline;
   }
 }
+
+/* Убираем ограничение ширины VitePress для виджета */
+.vp-doc {
+  max-width: 100% !important;
+  padding: 24px !important;
+}
+
+.vp-doc .content-container,
+.vp-doc .container {
+  max-width: 100% !important;
+}
+
+/* Для мобильных устройств */
+@media (max-width: 768px) {
+  .vp-doc {
+    padding: 16px !important;
+  }
+}
 </style>
 
 <KorzhWidget />
