@@ -1303,11 +1303,12 @@ input#telegramPhone:focus {
   border-radius: 12px; 
   font-weight: 600; 
   margin-top: 1.5rem; 
-  transition: background-color 0.3s, transform 0.3s; 
+  transition: all 0.3s ease; 
 }
 
 .signal-telegram-button:hover { 
   background-color: #b399c8; 
+  color: #ffffff;  /* ← добавили белый цвет текста */
   transform: scale(1.05); 
 }
 
@@ -1322,7 +1323,7 @@ input#telegramPhone:focus {
 }
 
 .signal-secondary-link:hover { 
-  color: #C5F946; 
+  color: #B39DC8;  /* ← изменили с #C5F946 на #B39DC8 */
   text-decoration: underline !important; 
   border-bottom: none !important; 
 }
