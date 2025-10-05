@@ -86,8 +86,8 @@
 
       <!-- Секция с вопросами и подсказками -->
       <div class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #A972FF;">
-          <p class="signal-direction-label">Эмоции и чувства</p>
+        <div class="signal-question-block" :class="genderClass" style="--accent-color: #A972FF;">
+  <p class="signal-direction-label">Эмоции и чувства</p>
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
@@ -123,8 +123,8 @@
           <p class="signal-example-hint" v-html="'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»'"></p>
         </div>
         
-        <div class="signal-question-block" style="--accent-color: #3DDC84;">
-          <p class="signal-direction-label">Детали проблемы</p>
+        <div class="signal-question-block" :class="genderClass" style="--accent-color: #3DDC84;">
+  <p class="signal-direction-label">Детали проблемы</p>
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
@@ -160,8 +160,8 @@
           <p class="signal-example-hint" v-html="'Пример: «Заказ на два капучино <b>ждал 22 минуты</b>, хотя в кафе был почти один»'"></p>
         </div>
         
-        <div class="signal-question-block" style="--accent-color: #FFB800;">
-          <p class="signal-direction-label">Предложение решения</p>
+        <div class="signal-question-block" :class="genderClass" style="--accent-color: #FFB800;">
+  <p class="signal-direction-label">Предложение решения</p>
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
@@ -254,6 +254,11 @@ const currentDate = ref('');
 const activeRotator = ref(0);
 const selectedGender = ref('female');
 const showInfoModal = ref(false);
+// Вычисляемое свойство для гендерного класса
+const genderClass = computed(() => {
+  return selectedGender.value === 'female' ? 'gender-female' : 'gender-male';
+});
+
 
 // ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок с гендерными вариантами
 const baseSuggestions = {
@@ -828,6 +833,86 @@ async function submitForm() {
 .signal-gender-btn:hover {
   opacity: 0.7;
   transform: scale(1.05);
+}
+
+/* ===============================
+   ГЕНДЕРНЫЕ ЦВЕТА ДЛЯ БЛОКОВ
+   =============================== */
+
+/* Женские цвета для блоков */
+.signal-question-block.gender-female {
+  border-left-color: #ff69b4 !important;
+}
+
+.signal-question-block.gender-female .signal-emotion-bubble {
+  background: rgba(255, 105, 180, 0.1);
+  border-color: rgba(255, 105, 180, 0.3);
+  color: #ff69b4;
+}
+
+.signal-question-block.gender-female .signal-emotion-bubble:hover {
+  background: #ff69b4;
+  color: #fff;
+}
+
+.signal-question-block.gender-female .signal-fact-bubble {
+  background: rgba(255, 105, 180, 0.1);
+  border-color: rgba(255, 105, 180, 0.3);
+  color: #ff69b4;
+}
+
+.signal-question-block.gender-female .signal-fact-bubble:hover {
+  background: #ff69b4;
+  color: #fff;
+}
+
+.signal-question-block.gender-female .signal-solution-bubble {
+  background: rgba(255, 105, 180, 0.1);
+  border-color: rgba(255, 105, 180, 0.3);
+  color: #ff69b4;
+}
+
+.signal-question-block.gender-female .signal-solution-bubble:hover {
+  background: #ff69b4;
+  color: #fff;
+}
+
+/* Мужские цвета для блоков */
+.signal-question-block.gender-male {
+  border-left-color: #87ceeb !important;
+}
+
+.signal-question-block.gender-male .signal-emotion-bubble {
+  background: rgba(135, 206, 235, 0.1);
+  border-color: rgba(135, 206, 235, 0.3);
+  color: #87ceeb;
+}
+
+.signal-question-block.gender-male .signal-emotion-bubble:hover {
+  background: #87ceeb;
+  color: #000;
+}
+
+.signal-question-block.gender-male .signal-fact-bubble {
+  background: rgba(135, 206, 235, 0.1);
+  border-color: rgba(135, 206, 235, 0.3);
+  color: #87ceeb;
+}
+
+.signal-question-block.gender-male .signal-fact-bubble:hover {
+  background: #87ceeb;
+  color: #000;
+}
+
+.signal-question-block.gender-male .signal-solution-bubble {
+  background: rgba(135, 206, 235, 0.1);
+  border-color: rgba(135, 206, 235, 0.3);
+  color: #87ceeb;
+}
+
+.signal-question-block.gender-male .signal-solution-bubble:hover {
+  background: #87ceeb;
+  color: #000;
 }
 
 /* ===============================
