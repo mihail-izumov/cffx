@@ -1348,7 +1348,6 @@ input#telegramPhone:focus {
     grid-template-columns: 1fr; 
   } 
   
-  @media (max-width: 768px) {
   .signal-form-header { 
     flex-direction: column; 
     align-items: center;     /* ← изменили с flex-start на center */
