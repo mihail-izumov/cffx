@@ -4,7 +4,7 @@
       @click="openPDF"
       class="pdf-button"
     >
-      <span class="pdf-button-text">Открыть презентацию</span>
+      <span class="pdf-button-text">Слайды</span>
       <div class="pdf-button-icon-container">
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
@@ -42,8 +42,8 @@ const openPDF = () => {
 }
 
 .pdf-button {
-  background: linear-gradient(135deg, #f59e0b, #fcd34d);
-  color: #422006;
+  background: linear-gradient(135deg, #84cc16, #bef264);
+  color: #1a2e05;
   border: none;
   border-radius: 12px;
   padding: 14px 24px;
@@ -56,16 +56,16 @@ const openPDF = () => {
   gap: 12px;
   min-width: 200px;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 4px 12px rgba(132, 204, 22, 0.3);
 }
 
 .pdf-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 8px 20px rgba(132, 204, 22, 0.4);
 }
 
 .pdf-button-text {
-  color: #422006;
+  color: #1a2e05;
   font-weight: 600;
 }
 
@@ -73,7 +73,7 @@ const openPDF = () => {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(154, 91, 24, 0.7);
+  background: rgba(54, 83, 20, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,13 +82,13 @@ const openPDF = () => {
 }
 
 .pdf-button:hover .pdf-button-icon-container {
-  background: rgba(205, 122, 32, 0.8);
+  background: rgba(77, 124, 15, 0.8);
   transform: scale(1.05);
 }
 
 .pdf-button-icon {
   transition: transform 0.3s ease;
-  stroke: #422006;
+  stroke: #1a2e05;
 }
 
 .pdf-button:hover .pdf-button-icon {
