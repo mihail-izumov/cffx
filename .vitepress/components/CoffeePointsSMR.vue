@@ -854,18 +854,6 @@ watch(showBranchList, (newValue) => {
   .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
   .signal2-modal-close-button { width: 100%; justify-content: center; font-size: 14px; padding: 12px 20px; }
   .signal2-modal-close-section { padding: 12px; }
-
-    
-  /* Показываем перенос строки на мобильных */
-  .signal2-mobile-break {
-    display: block;
-  }
-  
-  /* Центрируем текст на мобильных */
-  .signal2-status-label-disconnected {
-    text-align: center;
-    line-height: 1.4;
-  }
   
   /* Крестик для мобильной версии */
   .signal2-modal-close-icon {
