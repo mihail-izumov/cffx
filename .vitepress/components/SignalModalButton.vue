@@ -61,6 +61,13 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import SignalT9Configurator from './SignalT9Configurator.vue'
 
+// Декларация для TypeScript
+declare global {
+  interface Window {
+    openSignalModal?: () => void
+  }
+}
+
 const isModalOpen = ref(false)
 
 const openModal = () => {
@@ -81,10 +88,19 @@ const handleKeydown = (event) => {
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
+  
+  // Регистрируем глобальную функцию для открытия модалки из конфига
+  window.openSignalModal = openModal
+  console.log('✓ window.openSignalModal registered')
 })
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
+  
+  // Очищаем глобальную функцию при размонтировании
+  if (window.openSignalModal === openModal) {
+    delete window.openSignalModal
+  }
 })
 </script>
 
