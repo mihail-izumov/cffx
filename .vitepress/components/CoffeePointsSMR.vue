@@ -999,25 +999,4 @@ watch(showBranchList, (newValue) => {
   }
 }
 
-/* Мобильная версия - показываем крестик, скрываем кнопку */
-@media (max-width: 768px) {
-  .signal2-modal-close-icon {
-    display: flex; /* Показываем крестик */
-  }
-  
-  .signal2-modal-close-button {
-    display: none; /* Скрываем текстовую кнопку */
-  }
-  
-  .signal2-modal-close-section {
-    padding: 0; /* Убираем padding так как кнопки нет */
-    border-top: none;
-    background: transparent;
-  }
-  
-  .signal2-review-modal-content {
-    position: relative; /* Для позиционирования крестика */
-  }
-}
-
 </style>
