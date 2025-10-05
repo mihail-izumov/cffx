@@ -73,7 +73,7 @@ const openPDF = () => {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(54, 83, 20, 0.7);
+  background: rgba(255, 255, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,7 +82,7 @@ const openPDF = () => {
 }
 
 .pdf-button:hover .pdf-button-icon-container {
-  background: rgba(77, 124, 15, 0.8);
+  background: rgba(255, 255, 255, 0.45);
   transform: scale(1.05);
 }
 
