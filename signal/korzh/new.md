@@ -16,10 +16,12 @@ title: Отправить Сигнал в Корж
 a.purple-link {
   color: #9b7fb7 !important;
   text-decoration: underline !important;
+  border-bottom: none !important;
 }
 
 a.purple-link:hover {
   color: #7d5f97 !important;
   text-decoration: underline !important;
+  border-bottom: none !important;
 }
 </style>
