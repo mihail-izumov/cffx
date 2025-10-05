@@ -10,7 +10,7 @@ const notifications = [
     text: 'Презентация Сигнала о развитии кофейного рынка', 
     hasButton: true,
     buttonText: 'Смотреть',
-    buttonUrl: '/fest.htmlпрезентация-сигнала'
+    buttonUrl: '/fest#презентация-сигнала'
   },
   { 
     text: 'ТОП-50 кофеен Самары', 
