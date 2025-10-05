@@ -585,6 +585,13 @@ watch(showBranchList, (newValue) => {
         </div>
         
         <div class="signal2-modal-close-section">
+              <!-- Крестик для мобильной версии -->
+      <button @click="closeReviewModal" class="signal2-modal-close-icon" aria-label="Закрыть">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"/>
+          <path d="m6 6 12 12"/>
+        </svg>
+      </button>
           <button @click="closeReviewModal" class="signal2-modal-close-button">Закрыть и вернуться</button>
         </div>
       </div>
@@ -936,6 +943,53 @@ watch(showBranchList, (newValue) => {
   .signal2-status-label-disconnected {
     text-align: center;
     line-height: 1.4;
+  }
+}
+
+  /* Иконка крестика (скрыта на десктопе) */
+.signal2-modal-close-icon {
+  display: none; /* Скрыта по умолчанию */
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
+.signal2-modal-close-icon:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.05);
+}
+
+/* Мобильная версия - показываем крестик, скрываем кнопку */
+@media (max-width: 768px) {
+  .signal2-modal-close-icon {
+    display: flex; /* Показываем крестик */
+  }
+  
+  .signal2-modal-close-button {
+    display: none; /* Скрываем текстовую кнопку */
+  }
+  
+  .signal2-modal-close-section {
+    padding: 0; /* Убираем padding так как кнопки нет */
+    border-top: none;
+    background: transparent;
+  }
+  
+  .signal2-review-modal-content {
+    position: relative; /* Для позиционирования крестика */
   }
 }
 
