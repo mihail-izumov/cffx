@@ -1,14 +1,14 @@
 <template>
   <div class="image-slider">
     <div class="slider-container">
-      <transition name="fade" mode="out-in">
-        <img 
-          :key="currentIndex" 
-          :src="images[currentIndex]" 
-          :alt="`Slide ${currentIndex + 1}`"
-          class="slider-image"
-        />
-      </transition>
+      <img 
+        v-for="(image, index) in images" 
+        :key="index"
+        :src="image" 
+        :alt="`Slide ${index + 1}`"
+        :class="['slider-image', { active: currentIndex === index }]"
+        loading="eager"
+      />
     </div>
     
     <!-- Точки для десктопа -->
@@ -47,7 +47,7 @@ const props = defineProps({
   },
   autoplayDelay: {
     type: Number,
-    default: 4000
+    default: 5000
   }
 })
 
@@ -99,26 +99,30 @@ onUnmounted(() => {
   width: 100%;
   overflow: hidden;
   border-radius: 16px;
-  background: #f0f0f0;
+  background: #2c2c2c;
 }
 
 .slider-image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: auto;
   display: block;
   border-radius: 16px;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
   pointer-events: none;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
+.slider-image:first-child {
+  position: relative;
 }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+.slider-image.active {
+  opacity: 1;
+  z-index: 1;
 }
 
 /* Точки для десктопа */
@@ -134,18 +138,18 @@ onUnmounted(() => {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #ccc;
+  background-color: #2c2c2c;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .dot:hover {
-  background-color: #888;
+  background-color: #4a4a4a;
   transform: scale(1.2);
 }
 
 .dot.active {
-  background-color: #333;
+  background-color: #c6f945;
   width: 12px;
   height: 12px;
 }
@@ -155,7 +159,7 @@ onUnmounted(() => {
   display: none;
   width: 100%;
   height: 4px;
-  background-color: #e0e0e0;
+  background-color: #2c2c2c;
   border-radius: 2px;
   margin-top: 16px;
   overflow: hidden;
@@ -163,7 +167,7 @@ onUnmounted(() => {
 
 .progress-fill {
   height: 100%;
-  background-color: #333;
+  background-color: #c6f945;
   transition: width 0.3s ease;
   border-radius: 2px;
 }
