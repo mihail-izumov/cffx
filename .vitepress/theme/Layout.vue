@@ -9,7 +9,7 @@
   </DefaultLayout>
   
   <!-- Модальное окно -->
-  <SignalModalWrapper />
+  <SignalModalButton />
 </template>
 
 <script setup>
@@ -18,7 +18,7 @@ import { useData, useRouter } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
-import SignalModalWrapper from '../components/SignalModalWrapper.vue'
+import SignalModalButton from '../components/SignalModalButton.vue'
 
 const DefaultLayout = DefaultTheme.Layout
 const { frontmatter } = useData()
