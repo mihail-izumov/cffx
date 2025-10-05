@@ -720,9 +720,9 @@ async function submitForm() {
 
 .signal-address-select:focus { 
   outline: none; 
-  border-color: #C5F946; 
+  border-color: #B39DC8; 
   background-color: #2a2a2e; 
-  box-shadow: 0 0 0 3px rgba(197, 249, 70, 0.2); 
+  box-shadow: 0 0 0 3px rgba(179, 157, 200, 0.2); 
 }
 
 .signal-address-select option { 
@@ -893,6 +893,17 @@ async function submitForm() {
   color: #000;
 }
 
+/* Гендерная подсветка для textarea */
+.signal-question-block.gender-female textarea:focus {
+  border-color: #ff69b4 !important;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2) !important;
+}
+
+.signal-question-block.gender-male textarea:focus {
+  border-color: #87ceeb !important;
+  box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.2) !important;
+}
+
 .signal-question-block.gender-male .signal-fact-bubble {
   background: rgba(135, 206, 235, 0.1);
   border-color: rgba(135, 206, 235, 0.3);
@@ -1029,6 +1040,13 @@ textarea:focus, input:focus {
   border-color: var(--accent-color); 
   background-color: #2a2a2e; 
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); 
+}
+
+/* Сиреневая подсветка для имени и телефона */
+input#name:focus, 
+input#telegramPhone:focus {
+  border-color: #B39DC8 !important;
+  box-shadow: 0 0 0 3px rgba(179, 157, 200, 0.2) !important;
 }
 
 ::placeholder { color: #666; }
