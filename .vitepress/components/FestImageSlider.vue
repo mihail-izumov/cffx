@@ -1,6 +1,11 @@
 <template>
   <div class="image-slider">
-    <div class="slider-container">
+    <div 
+      class="slider-container"
+      @touchstart="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
+    >
       <img 
         v-for="(image, index) in images" 
         :key="index"
@@ -21,8 +26,14 @@
       />
     </div>
     
-    <!-- Полоса прогресса для мобильных -->
-    <div class="slider-progress-bar">
+    <!-- Интерактивная полоса прогресса для мобильных -->
+    <div 
+      class="slider-progress-bar"
+      @click="handleProgressClick"
+      @touchstart="handleProgressTouchStart"
+      @touchmove="handleProgressTouchMove"
+      @touchend="handleProgressTouchEnd"
+    >
       <div 
         class="progress-fill"
         :style="{ width: progressWidth + '%' }"
@@ -39,10 +50,9 @@ const props = defineProps({
     type: Array,
     required: true,
     default: () => [
-      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST05997.jpg',
-      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06000.jpg',
-      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06001.jpg',
-      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06003.jpg'
+      'https://example.com/image1.jpg',
+      'https://example.com/image2.jpg',
+      'https://example.com/image3.jpg'
     ]
   },
   autoplayDelay: {
@@ -53,6 +63,9 @@ const props = defineProps({
 
 const currentIndex = ref(0)
 let timer = null
+let touchStartX = 0
+let touchEndX = 0
+let isDraggingProgress = false
 
 const progressWidth = computed(() => {
   return ((currentIndex.value + 1) / props.images.length) * 100
@@ -60,10 +73,82 @@ const progressWidth = computed(() => {
 
 const goToSlide = (index) => {
   currentIndex.value = index
+  resetAutoplay()
 }
 
 const nextSlide = () => {
   currentIndex.value = (currentIndex.value + 1) % props.images.length
+}
+
+const prevSlide = () => {
+  currentIndex.value = (currentIndex.value - 1 + props.images.length) % props.images.length
+}
+
+// Свайп изображений пальцем
+const handleTouchStart = (e) => {
+  touchStartX = e.touches[0].clientX
+  stopAutoplay()
+}
+
+const handleTouchMove = (e) => {
+  touchEndX = e.touches[0].clientX
+}
+
+const handleTouchEnd = () => {
+  const swipeDistance = touchStartX - touchEndX
+  const minSwipeDistance = 50
+  
+  if (Math.abs(swipeDistance) > minSwipeDistance) {
+    if (swipeDistance > 0) {
+      // Свайп влево - следующий слайд
+      nextSlide()
+    } else {
+      // Свайп вправо - предыдущий слайд
+      prevSlide()
+    }
+  }
+  
+  resetAutoplay()
+}
+
+// Взаимодействие с полосой прогресса
+const handleProgressClick = (e) => {
+  const progressBar = e.currentTarget
+  const clickPosition = e.offsetX
+  const barWidth = progressBar.offsetWidth
+  const clickPercent = clickPosition / barWidth
+  const newIndex = Math.floor(clickPercent * props.images.length)
+  
+  currentIndex.value = Math.min(newIndex, props.images.length - 1)
+  resetAutoplay()
+}
+
+const handleProgressTouchStart = (e) => {
+  isDraggingProgress = true
+  stopAutoplay()
+  e.stopPropagation()
+}
+
+const handleProgressTouchMove = (e) => {
+  if (!isDraggingProgress) return
+  
+  const progressBar = e.currentTarget
+  const touch = e.touches[0]
+  const rect = progressBar.getBoundingClientRect()
+  const touchPosition = touch.clientX - rect.left
+  const barWidth = progressBar.offsetWidth
+  const touchPercent = Math.max(0, Math.min(1, touchPosition / barWidth))
+  const newIndex = Math.floor(touchPercent * props.images.length)
+  
+  currentIndex.value = Math.min(newIndex, props.images.length - 1)
+  e.preventDefault()
+  e.stopPropagation()
+}
+
+const handleProgressTouchEnd = (e) => {
+  isDraggingProgress = false
+  resetAutoplay()
+  e.stopPropagation()
 }
 
 const startAutoplay = () => {
@@ -75,6 +160,11 @@ const stopAutoplay = () => {
     clearInterval(timer)
     timer = null
   }
+}
+
+const resetAutoplay = () => {
+  stopAutoplay()
+  startAutoplay()
 }
 
 onMounted(() => {
@@ -100,6 +190,7 @@ onUnmounted(() => {
   overflow: hidden;
   border-radius: 16px;
   background: #2c2c2c;
+  touch-action: pan-y pinch-zoom;
 }
 
 .slider-image {
@@ -114,6 +205,8 @@ onUnmounted(() => {
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
   pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .slider-image:first-child {
@@ -154,22 +247,25 @@ onUnmounted(() => {
   height: 12px;
 }
 
-/* Полоса прогресса для мобильных */
+/* Интерактивная полоса прогресса для мобильных */
 .slider-progress-bar {
   display: none;
   width: 100%;
-  height: 4px;
+  height: 7px;
   background-color: #2c2c2c;
-  border-radius: 2px;
+  border-radius: 4px;
   margin-top: 16px;
   overflow: hidden;
+  cursor: pointer;
+  touch-action: none;
 }
 
 .progress-fill {
   height: 100%;
   background-color: #c6f945;
   transition: width 0.3s ease;
-  border-radius: 2px;
+  border-radius: 4px;
+  pointer-events: none;
 }
 
 /* Медиа-запрос для мобильных устройств */
