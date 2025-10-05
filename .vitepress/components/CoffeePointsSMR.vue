@@ -818,29 +818,31 @@ watch(showBranchList, (newValue) => {
   }
   
   /* Крестик для мобильной версии */
-  .signal2-modal-close-icon {
-    display: flex !important;
-    position: fixed;
-    top: calc((100vh - 85vh) / 2 / 2 - 22px);
-    right: 2.5vw;
-    width: 44px;
-    height: 44px;
-    background: #2a2a2c;
-    border: none;
-    border-radius: 8px;
-    color: rgba(255, 255, 255, 0.8);
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 10001;
-  }
-  
-  .signal2-modal-close-icon:hover {
-    background: #35353a;
-    color: white;
-    transform: scale(1.05);
-  }
+.signal2-modal-close-icon {
+  display: flex !important;
+  position: fixed !important;
+  top: calc((100vh - 85vh) / 2 / 2 - 22px) !important;
+  right: 2.5vw !important;
+  width: 44px !important;
+  height: 44px !important;
+  background: #2a2a2c !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  cursor: pointer !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.3s ease;
+  z-index: 10001 !important;
+  backdrop-filter: none !important;
+  opacity: 1 !important;
+}
+
+.signal2-modal-close-icon:hover {
+  background: #35353a !important;
+  color: white !important;
+  transform: scale(1.05) !important;
+}
   
   /* Скрываем текстовую кнопку на мобильных */
   .signal2-modal-close-button { display: none; }
