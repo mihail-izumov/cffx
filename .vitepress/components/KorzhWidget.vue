@@ -410,14 +410,14 @@ watch(showBranchList, (newValue) => {
   max-height: calc(100vh - 80px); 
   overflow-y: auto; 
   scroll-behavior: smooth;
+  width: 100%; /* ДОБАВИТЬ: всегда занимает 100% ширины родителя */
+  box-sizing: border-box; /* ДОБАВИТЬ */
 }
 
 /* Стили только для модального режима */
 .signal-widget-content.modal-mode {
-  width: 100%;
-  max-width: 850px;
-  margin: 0 auto;
-  box-sizing: border-box;
+  max-width: 850px; /* ДОБАВИТЬ: ограничение только в модалке */
+  margin: 0 auto; /* ДОБАВИТЬ: центрирование только в модалке */
 }
   
 .signal-widget-header, 
