@@ -573,7 +573,7 @@ a.badge-calculator:hover {
   }
   
   .reviews-modal-close-btn {
-    top: 34px !important;
+    top: 24px !important;
     right: 12px;
     width: 40px;
     height: 40px;
