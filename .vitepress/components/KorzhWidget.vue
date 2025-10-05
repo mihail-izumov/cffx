@@ -1,6 +1,14 @@
 <script setup>
 import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 
+// Проп для определения использования в модальном окне
+const props = defineProps({
+  isModal: {
+    type: Boolean,
+    default: false
+  }
+})
+
 // --- НАСТРОЙКИ АНИМАЦИИ ---
 const ROTATION_INTERVAL_MS = 7000
 const FADE_DURATION_MS = 1000
@@ -234,6 +242,16 @@ watch(showBranchList, (newValue) => {
     <!-- Первый экран -->
     <div v-if="!showBranchList">
       <div class="signal-widget-header" style="margin-bottom: 0;">
+        <button 
+          v-if="props.isModal" 
+          @click="$emit('close')" 
+          class="signal-widget-close-btn" 
+          aria-label="Закрыть виджет"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+          </svg>
+        </button>
       </div>
       
       <div class="signal-main-card">
@@ -441,6 +459,29 @@ watch(showBranchList, (newValue) => {
   background: var(--vp-c-bg-soft); 
   border-color: var(--vp-c-text-2); 
   color: white; 
+}
+/* Кнопка закрытия виджета (только для модального режима) */
+.signal-widget-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: var(--vp-c-bg-mute);
+  border: 2px solid var(--vp-c-border);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--vp-c-text-2);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+.signal-widget-close-btn:hover {
+  background: var(--vp-c-bg-soft);
+  border-color: var(--vp-c-text-2);
+  color: white;
 }
 /* Основная карточка */
 .signal-main-card { 
@@ -963,6 +1004,12 @@ watch(showBranchList, (newValue) => {
     padding: 16px; 
     max-width: 98vw;
     margin: 0 auto;
+  }
+  .signal-widget-close-btn {
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
   }
   .signal-main-card { 
     padding: 14px; 
