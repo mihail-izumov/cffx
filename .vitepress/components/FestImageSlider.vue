@@ -11,6 +11,7 @@
       </transition>
     </div>
     
+    <!-- Точки для десктопа -->
     <div class="slider-dots">
       <span 
         v-for="(image, index) in images" 
@@ -19,11 +20,19 @@
         @click="goToSlide(index)"
       />
     </div>
+    
+    <!-- Полоса прогресса для мобильных -->
+    <div class="slider-progress-bar">
+      <div 
+        class="progress-fill"
+        :style="{ width: progressWidth + '%' }"
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
   images: {
@@ -43,6 +52,10 @@ const props = defineProps({
 
 const currentIndex = ref(0)
 let timer = null
+
+const progressWidth = computed(() => {
+  return ((currentIndex.value + 1) / props.images.length) * 100
+})
 
 const goToSlide = (index) => {
   currentIndex.value = index
@@ -107,6 +120,7 @@ onUnmounted(() => {
   opacity: 0;
 }
 
+/* Точки для десктопа */
 .slider-dots {
   display: flex;
   justify-content: center;
@@ -133,5 +147,34 @@ onUnmounted(() => {
   background-color: #333;
   width: 12px;
   height: 12px;
+}
+
+/* Полоса прогресса для мобильных */
+.slider-progress-bar {
+  display: none;
+  width: 100%;
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #333;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+/* Медиа-запрос для мобильных устройств */
+@media (max-width: 768px) {
+  .slider-dots {
+    display: none;
+  }
+  
+  .slider-progress-bar {
+    display: block;
+  }
 }
 </style>
