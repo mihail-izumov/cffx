@@ -3,6 +3,7 @@ outline: false
 prev: false
 next: false
 pageClass: centered-page
+notification: brew
 title: Как работает Умный Отзыв
 description: Где Начинается Ваша Кофейня
 ---
