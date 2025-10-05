@@ -954,40 +954,37 @@ watch(showBranchList, (newValue) => {
 
 /* Мобильная версия */
 @media (max-width: 768px) {
-  /* Показываем перенос строки на мобильных */
   .signal2-mobile-break {
     display: block;
   }
   
-  /* Центрируем текст на мобильных */
   .signal2-status-label-disconnected {
     text-align: center;
     line-height: 1.4;
   }
   
-  /* Крестик для мобильной версии */
   .signal2-modal-close-icon {
     display: flex;
     position: fixed;
-    top: calc((100vh - 85vh) / 2 - 54px);
+    top: calc((100vh - 85vh) / 2 / 2 - 22px); /* Центрируем между верхом экрана и контейнером */
     right: 2.5vw;
     width: 44px;
     height: 44px;
-    background: rgba(255, 255, 255, 0.1);
+    background: #2a2a2c; /* Серый цвет чуть светлее фона */
     border: none;
     border-radius: 8px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
     cursor: pointer;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
     z-index: 10001;
-    backdrop-filter: blur(4px);
+    backdrop-filter: none; /* Убираем blur */
   }
   
   .signal2-modal-close-icon:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.9);
+    background: #35353a; /* Светлее при наведении */
+    color: white;
     transform: scale(1.05);
   }
   
@@ -1001,7 +998,6 @@ watch(showBranchList, (newValue) => {
     background: transparent;
   }
 }
-
 
 /* Мобильная версия - показываем крестик, скрываем кнопку */
 @media (max-width: 768px) {
