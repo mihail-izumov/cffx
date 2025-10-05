@@ -13,15 +13,31 @@
         @play="onPlay"
         @pause="onPause"
       >
+        <!-- Источник добавляется динамически после первого клика -->
         <source 
+          v-if="videoLoaded"
           :src="currentVideoSrc"
           type="video/mp4"
         />
         Ваш браузер не поддерживает видео элемент.
       </video>
       
+      <!-- Кастомная кнопка Play поверх постера -->
+      <div 
+        v-if="!videoLoaded && !hasError" 
+        class="play-overlay"
+        @click="initializeVideo"
+      >
+        <div class="play-button">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="40" fill="rgba(0,0,0,0.6)"/>
+            <path d="M32 25L57 40L32 55V25Z" fill="white"/>
+          </svg>
+        </div>
+      </div>
+      
       <!-- Liquid Fluid переключатель качества -->
-      <div class="video-controls">
+      <div class="video-controls" v-if="videoLoaded">
         <div class="quality-toggle">
           <input 
             type="checkbox" 
@@ -41,13 +57,13 @@
         </div>
       </div>
       
-      <!-- Простой индикатор загрузки -->
+      <!-- Индикатор загрузки -->
       <div v-if="isLoading" class="loading-overlay">
         <div class="loading-spinner"></div>
         <div class="loading-text">Загрузка...</div>
       </div>
       
-      <!-- Ошибка с диагностикой -->
+      <!-- Ошибка -->
       <div v-if="hasError" class="error-overlay">
         <div class="error-content">
           <div class="error-icon">⚠️</div>
@@ -68,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 
 const props = defineProps({
   poster: {
@@ -90,32 +106,47 @@ const props = defineProps({
 })
 
 const videoElement = ref(null)
-const isHDQuality = ref(false) // Начинаем с SD
+const isHDQuality = ref(false)
 const isLoading = ref(false)
 const hasError = ref(false)
 const errorMessage = ref('')
 const currentTime = ref(0)
 const isPlaying = ref(false)
+const videoLoaded = ref(false) // Новый флаг
 
 const currentVideoSrc = computed(() => {
   return isHDQuality.value ? props.hdSrc : props.sdSrc
 })
 
+const initializeVideo = () => {
+  if (!videoElement.value || videoLoaded.value) return
+  
+  videoLoaded.value = true
+  
+  // Ждем следующего тика для добавления source
+  setTimeout(() => {
+    if (videoElement.value) {
+      videoElement.value.load()
+      // Автоматически начинаем воспроизведение
+      videoElement.value.play().catch(e => {
+        console.log('Autoplay заблокирован:', e)
+        isLoading.value = false
+      })
+    }
+  }, 0)
+}
+
 const toggleQuality = () => {
   if (!videoElement.value) return
   
-  // Сохраняем состояние
   currentTime.value = videoElement.value.currentTime
   isPlaying.value = !videoElement.value.paused
   
-  // Сбрасываем ошибки
   hasError.value = false
   errorMessage.value = ''
   
-  // Загружаем новое видео
   videoElement.value.load()
   
-  // Восстанавливаем позицию после загрузки
   videoElement.value.addEventListener('loadeddata', () => {
     if (currentTime.value > 0) {
       videoElement.value.currentTime = currentTime.value
@@ -129,7 +160,9 @@ const toggleQuality = () => {
 }
 
 const onLoadStart = () => {
-  isLoading.value = true
+  if (videoLoaded.value) {
+    isLoading.value = true
+  }
   hasError.value = false
   errorMessage.value = ''
 }
@@ -185,19 +218,16 @@ const onPause = () => {
 const retryLoad = () => {
   hasError.value = false
   errorMessage.value = ''
-  isLoading.value = true
+  videoLoaded.value = false
+  isLoading.value = false
   
+  // Сбрасываем видео и начинаем заново
   if (videoElement.value) {
+    videoElement.value.pause()
+    videoElement.value.removeAttribute('src')
     videoElement.value.load()
   }
 }
-
-// Отслеживаем изменения источника
-watch(currentVideoSrc, () => {
-  if (videoElement.value) {
-    videoElement.value.load()
-  }
-})
 </script>
 
 <style scoped>
@@ -220,6 +250,40 @@ video {
   height: 100%;
   object-fit: contain;
   display: block;
+}
+
+/* Оверлей с кнопкой Play */
+.play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 15;
+  background: transparent;
+  transition: background 0.3s ease;
+}
+
+.play-overlay:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.play-button {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.9;
+}
+
+.play-overlay:hover .play-button {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.play-button svg {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
 }
 
 .video-controls {
@@ -299,17 +363,16 @@ video {
   transition: all 0.3s ease;
   z-index: 2;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  /* Исправленное центрирование */
   width: 50%;
   text-align: center;
 }
 
 .quality-sd {
-  left: 0; /* Левая половина от 0% до 50% */
+  left: 0;
 }
 
 .quality-hd {
-  right: 0; /* Правая половина от 50% до 100% */
+  right: 0;
 }
 
 .quality-text.active {
@@ -317,14 +380,12 @@ video {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-/* Hover эффект */
 .quality-label:hover .quality-slider {
   box-shadow: 
     inset 0 2px 4px rgba(0, 0, 0, 0.4),
     0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Liquid анимация при клике */
 .quality-slider:active {
   transform: scale(0.98);
 }
@@ -433,9 +494,7 @@ video {
   to { transform: rotate(360deg); }
 }
 
-/* Адаптивный дизайн для разных разрешений */
-
-/* Планшеты (768px - 1024px) */
+/* Адаптивный дизайн */
 @media (max-width: 1024px) and (min-width: 769px) {
   .video-wrapper {
     border-radius: 10px;
@@ -454,13 +513,16 @@ video {
   .quality-text {
     font-size: 9px;
   }
+  
+  .play-button svg {
+    width: 70px;
+    height: 70px;
+  }
 }
 
-/* Мобильные устройства (до 768px) */
 @media (max-width: 768px) {
   .video-wrapper {
     border-radius: 8px;
-    min-height: unset;
   }
   
   video {
@@ -479,6 +541,11 @@ video {
   
   .quality-text {
     font-size: 8px;
+  }
+  
+  .play-button svg {
+    width: 60px;
+    height: 60px;
   }
   
   .error-actions {
@@ -500,7 +567,6 @@ video {
   }
 }
 
-/* Очень маленькие экраны (до 480px) */
 @media (max-width: 480px) {
   .video-player-container {
     margin: 0.5rem 0;
@@ -519,6 +585,11 @@ video {
     font-size: 7px;
   }
   
+  .play-button svg {
+    width: 50px;
+    height: 50px;
+  }
+  
   .loading-spinner {
     width: 32px;
     height: 32px;
@@ -534,7 +605,6 @@ video {
   }
 }
 
-/* Ландшафтная ориентация на мобильных */
 @media (max-width: 768px) and (orientation: landscape) {
   .video-wrapper {
     aspect-ratio: unset;
@@ -548,7 +618,6 @@ video {
   }
 }
 
-/* Dark theme support */
 @media (prefers-color-scheme: dark) {
   .video-player-container {
     background: var(--vp-c-bg-soft, #1a1a1a);
