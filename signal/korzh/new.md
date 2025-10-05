@@ -4,11 +4,11 @@ next: false
 title: Отправить Сигнал в Корж
 ---
 <div class="back-button-container">
-  <a href="/signals" class="back-button">
+  <a href="/korzh" class="back-button">
     <svg class="back-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    Назад
+    Назад к виджету
   </a>
 </div>
 
@@ -17,6 +17,8 @@ title: Отправить Сигнал в Корж
   max-width: 640px;
   margin: 20px auto 0 auto;
   padding: 0 2rem;
+  display: flex;
+  justify-content: center;
 }
 
 .back-button {
@@ -36,8 +38,9 @@ title: Отправить Сигнал в Корж
 }
 
 .back-button:hover {
-  background: rgba(179, 157, 200, 0.2);
+  background: #B39DC8;
   border-color: #B39DC8;
+  color: #ffffff;
   transform: translateX(-3px);
 }
 
