@@ -50,9 +50,10 @@ const props = defineProps({
     type: Array,
     required: true,
     default: () => [
-      'https://example.com/image1.jpg',
-      'https://example.com/image2.jpg',
-      'https://example.com/image3.jpg'
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST05997.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06000.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06001.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06003.jpg'
     ]
   },
   autoplayDelay: {
