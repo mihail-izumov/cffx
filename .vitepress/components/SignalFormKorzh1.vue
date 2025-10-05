@@ -1348,10 +1348,20 @@ input#telegramPhone:focus {
     grid-template-columns: 1fr; 
   } 
   
+  @media (max-width: 768px) {
   .signal-form-header { 
     flex-direction: column; 
-    align-items: flex-start; 
+    align-items: center;     /* ← изменили с flex-start на center */
+    text-align: center;      /* ← добавили центрирование текста */
     gap: 0.5rem; 
+  }
+  
+  .signal-form-title {
+    text-align: center;      /* ← центрируем заголовок */
+  }
+  
+  .signal-tech-info {
+    justify-content: center; /* ← центрируем дату и тикет */
   }
   
   .signal-rotating-phrase-container {
