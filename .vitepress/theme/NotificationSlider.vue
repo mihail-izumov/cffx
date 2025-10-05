@@ -14,7 +14,7 @@ const notifications = [
     buttonUrl: '/invest/smr'
   },
   { 
-    text: 'Где Начинается Ваша Кофейня', 
+    text: 'Отправим стикер и подключим кофейню бесплатно за 5 дней', 
     hasButton: false 
   }
 ]
