@@ -252,7 +252,7 @@ onUnmounted(() => {
 .slider-progress-bar {
   display: none;
   width: 100%;
-  height: 7px;
+  height: 3.5px;
   background-color: #2c2c2c;
   border-radius: 4px;
   margin-top: 16px;
