@@ -50,18 +50,19 @@ onUnmounted(() => {
       <transition name="iso-brew-fade" mode="out-in">
         <div class="iso-brew-slider__wrapper" :key="currentIndex">
           <p class="iso-brew-slider__text">
-            {{ currentNotification.text }}
-            <!-- Ссылка для мобильной версии -->
-            <a 
-              v-if="currentNotification.hasButton"
-              :href="currentNotification.buttonUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="iso-brew-slider__link-mobile"
-            >
-              {{ currentNotification.buttonText }}
-            </a>
-          </p>
+  <span v-html="currentNotification.text"></span>
+  <!-- Ссылка для мобильной версии -->
+  <a 
+    v-if="currentNotification.hasButton"
+    :href="currentNotification.buttonUrl"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="iso-brew-slider__link-mobile"
+  >
+    {{ currentNotification.buttonText }}
+  </a>
+</p>
+
           <!-- Кнопка для десктопной версии -->
           <button 
             v-if="currentNotification.hasButton" 
