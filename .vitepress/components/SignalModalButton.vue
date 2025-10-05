@@ -327,16 +327,6 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 700px) {
-  .signal2-review-modal-content { width: 95vw; height: 85vh; }
-  .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
-}
-
-@media (max-width: 480px) {
-  .signal2-review-modal-content { height: 85vh; }
-  .signal2-modal-scrollable-content { padding: 16px 10px 10px 10px; }
-}
-
 @media screen and (max-height: 700px) {
   .signal2-review-modal-content { height: 80vh !important; max-height: 80vh !important; }
 }
