@@ -5,6 +5,7 @@
         ref="videoElement"
         :poster="poster"
         :controls="videoLoaded"
+        :class="{ 'video-initialized': videoLoaded }"
         preload="none"
         playsinline
         @loadstart="onLoadStart"
@@ -250,33 +251,33 @@ video {
   display: block;
 }
 
-/* Скрываем нативные элементы управления до инициализации */
-video::-webkit-media-controls {
+/* Скрываем нативные контролы ТОЛЬКО до инициализации */
+video:not(.video-initialized)::-webkit-media-controls {
   display: none !important;
 }
 
-video::-webkit-media-controls-enclosure {
+video:not(.video-initialized)::-webkit-media-controls-enclosure {
   display: none !important;
 }
 
-video::-webkit-media-controls-panel {
+video:not(.video-initialized)::-webkit-media-controls-panel {
   display: none !important;
 }
 
-video::-webkit-media-controls-play-button {
+video:not(.video-initialized)::-webkit-media-controls-play-button {
   display: none !important;
 }
 
-video::-webkit-media-controls-start-playback-button {
+video:not(.video-initialized)::-webkit-media-controls-start-playback-button {
   display: none !important;
 }
 
-video::-webkit-media-controls-overlay-play-button {
+video:not(.video-initialized)::-webkit-media-controls-overlay-play-button {
   display: none !important;
 }
 
 /* Для Firefox */
-video::-moz-media-controls {
+video:not(.video-initialized)::-moz-media-controls {
   display: none !important;
 }
 
