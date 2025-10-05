@@ -1,33 +1,5 @@
 <template>
   <div class="signal-modal-wrapper">
-    <!-- Кнопка в навигации -->
-    <button 
-      @click="openModal" 
-      class="signal-modal-button"
-    >
-      <span class="signal-modal-button-text">Собрать Мой Отзыв</span>
-      <div class="signal-modal-icon-container">
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="20" 
-          height="20" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          stroke-width="2" 
-          stroke-linecap="round" 
-          stroke-linejoin="round"
-          class="signal-modal-text-cursor-icon"
-        >
-          <path d="M5 4h1a3 3 0 0 1 3 3 3 3 0 0 1 3-3h1"/>
-          <path d="M13 20h-1a3 3 0 0 1-3-3 3 3 0 0 1-3 3H5"/>
-          <path d="M5 16H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h1"/>
-          <path d="M13 8h7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-7"/>
-          <path d="M9 7v10"/>
-        </svg>
-      </div>
-    </button>
-
     <!-- Модальное окно -->
     <div 
       v-if="isModalOpen" 
@@ -100,66 +72,12 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Wrapper */
+/* Wrapper - скрываем, так как кнопки больше нет */
 .signal-modal-wrapper {
-  display: inline-block;
+  display: none;
 }
 
-/* Стили кнопки в навигации */
-.signal-modal-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #f5f5f7;
-  border: none;
-  border-radius: 25px;
-  padding: 12px 20px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #1d1d1f;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 220px;
-  gap: 12px;
-}
-
-.signal-modal-button:hover {
-  background: #e8e8ed;
-  transform: translateY(-1px);
-}
-
-.signal-modal-button:hover .signal-modal-icon-container {
-  background: #d1d1d6;
-  transform: scale(1.05);
-}
-
-.signal-modal-button-text {
-  flex: 1;
-  text-align: left;
-}
-
-.signal-modal-icon-container {
-  background: #e8e8ed;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.signal-modal-text-cursor-icon {
-  color: #6d6d70;
-  transition: color 0.2s ease;
-}
-
-.signal-modal-button:hover .signal-modal-text-cursor-icon {
-  color: #48484a;
-}
-
-/* Стили модального окна — ПОЛНАЯ КОПИЯ финальной версии */
+/* Стили модального окна */
 .signal2-review-modal-overlay { 
   position: fixed; 
   top: 0; 
@@ -251,22 +169,6 @@ onUnmounted(() => {
 .signal2-modal-close-icon { display: none; }
 
 @media (max-width: 768px) {
-  .signal-modal-button {
-    min-width: 200px;
-    font-size: 14px;
-    padding: 10px 16px;
-  }
-  
-  .signal-modal-icon-container {
-    width: 28px;
-    height: 28px;
-  }
-  
-  .signal-modal-text-cursor-icon {
-    width: 16px;
-    height: 16px;
-  }
-  
   .signal2-review-modal-overlay { padding: 4px; }
   .signal2-review-modal-content { 
     width: 95vw; 
@@ -275,12 +177,6 @@ onUnmounted(() => {
     max-height: clamp(85vh, 90vh, 85vh); 
   }
   .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
-  .signal2-modal-close-button { 
-    width: 100%; 
-    justify-content: center; 
-    font-size: 14px; 
-    padding: 12px 20px; 
-  }
   .signal2-modal-close-section { padding: 12px; }
   
   /* Крестик для мобильной версии */
@@ -333,33 +229,5 @@ onUnmounted(() => {
 
 @media screen and (max-height: 600px) {
   .signal2-review-modal-content { height: 75vh !important; max-height: 75vh !important; }
-}
-
-/* Темная тема только для кнопки */
-@media (prefers-color-scheme: dark) {
-  .signal-modal-button {
-    background: #2c2c2e;
-    color: #ffffff;
-  }
-  
-  .signal-modal-button:hover {
-    background: #3a3a3c;
-  }
-  
-  .signal-modal-icon-container {
-    background: #3a3a3c;
-  }
-  
-  .signal-modal-button:hover .signal-modal-icon-container {
-    background: #48484a;
-  }
-  
-  .signal-modal-text-cursor-icon {
-    color: #98989d;
-  }
-  
-  .signal-modal-button:hover .signal-modal-text-cursor-icon {
-    color: #ffffff;
-  }
 }
 </style>
