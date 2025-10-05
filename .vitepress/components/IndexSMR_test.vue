@@ -103,13 +103,19 @@
   </div>
 
   <Teleport to="body">
-  <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
-    <div class="reviews-modal-container" @click.stop>
-      <KorzhWidget :is-modal="true" @close="closeReviewsModal" />
+    <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
+      <!-- Кнопка закрытия вынесена наружу -->
+      <button @click="closeReviewsModal" class="reviews-modal-close-btn" aria-label="Закрыть">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+        </svg>
+      </button>
+      
+      <div class="reviews-modal-container" @click.stop>
+        <KorzhWidget :is-modal="false" @close="closeReviewsModal" />
+      </div>
     </div>
-  </div>
-</Teleport>
-
+  </Teleport>
 </template>
 
 <script>
@@ -420,7 +426,7 @@ export default {
 
 /* НОВЫЕ СТИЛИ ДЛЯ НАЗВАНИЙ */
 .coffee-name-clickable {
-  color: var(--vp-c-brand-2, #C5F946); /* зеленый цвет бренда */
+  color: var(--vp-c-brand-2, #C5F946);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   font-weight: 600;
@@ -428,7 +434,7 @@ export default {
   transition: all 0.3s ease;
 }
 .coffee-name-clickable:hover {
-  color: var(--vp-c-brand-1, #347b6c); /* темно-зеленый при hover */
+  color: var(--vp-c-brand-1, #347b6c);
   border-bottom-color: var(--vp-c-brand-1, #347b6c);
 }
 .coffee-name-regular {
@@ -455,11 +461,38 @@ export default {
   padding: 20px;
   box-sizing: border-box;
 }
+
+/* Кнопка закрытия вынесена наружу */
+.reviews-modal-close-btn {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  background: var(--vp-c-bg-mute);
+  border: 2px solid var(--vp-c-border);
+  border-radius: 50%;
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10001;
+}
+
+.reviews-modal-close-btn:hover {
+  background: var(--vp-c-bg-soft);
+  border-color: var(--vp-c-text-2);
+  color: white;
+  transform: scale(1.05);
+}
+
 .reviews-modal-container {
   background: var(--vp-c-bg);
   border-radius: 20px;
-  max-width: 800px;
-  width: 100%;
+  width: 850px;
+  max-width: 95vw;
   max-height: calc(100vh - 40px);
   position: relative;
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
@@ -533,10 +566,20 @@ a.badge-calculator:hover {
 
 @media (max-width: 768px) {
   .reviews-modal-backdrop { 
-    padding: 10px 15px; 
+    padding: 10px; 
   }
+  
+  .reviews-modal-close-btn {
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+  }
+  
   .reviews-modal-container {
-    max-height: calc(100vh - 30px);
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100vh - 20px);
     border-radius: 15px;
   }
 }
@@ -545,6 +588,12 @@ a.badge-calculator:hover {
   .reviews-modal-backdrop { 
     padding: 5px; 
   }
+  
+  .reviews-modal-close-btn {
+    top: 8px;
+    right: 8px;
+  }
+  
   .reviews-modal-container {
     border-radius: 12px;
     max-height: calc(100vh - 10px);
