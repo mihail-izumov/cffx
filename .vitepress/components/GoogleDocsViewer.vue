@@ -1,6 +1,9 @@
 <template>
   <div class="pdf-button-container">
-    <button @click="togglePDF" class="pdf-button">
+    <button
+      @click="togglePDF"
+      class="pdf-button"
+    >
       <span class="pdf-button-text">{{ isOpen ? 'Закрыть' : 'Слайды' }}</span>
       <div class="pdf-button-icon-container">
         <svg 
@@ -34,11 +37,19 @@
           </button>
           
           <div class="pdf-viewer-wrapper">
+            <!-- Текст загрузки -->
+            <div class="pdf-loading">
+              <div class="loading-spinner"></div>
+              <p class="loading-text">Загрузка презентации</p>
+            </div>
+            
+            <!-- iframe -->
             <iframe 
               :src="pdfUrl"
               class="pdf-iframe"
               frameborder="0"
               allowfullscreen
+              @load="onIframeLoad"
             ></iframe>
           </div>
         </div>
@@ -51,6 +62,7 @@
 import { ref } from 'vue'
 
 const isOpen = ref(false)
+const isLoading = ref(true)
 const pdfUrl = 'https://drive.google.com/file/d/1NePcnHaJranV7Ul0b6mShLzCPf3EespV/preview'
 
 const togglePDF = () => {
@@ -58,9 +70,17 @@ const togglePDF = () => {
   
   if (isOpen.value) {
     document.body.style.overflow = 'hidden'
+    isLoading.value = true
   } else {
     document.body.style.overflow = ''
   }
+}
+
+const onIframeLoad = () => {
+  // Небольшая задержка для плавного исчезновения
+  setTimeout(() => {
+    isLoading.value = false
+  }, 500)
 }
 </script>
 
@@ -144,7 +164,7 @@ const togglePDF = () => {
   width: 100%;
   max-width: 1200px;
   height: 90vh;
-  background: white;
+  background: #1a1a1a; /* ИЗМЕНЕНО: темный фон */
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -153,7 +173,7 @@ const togglePDF = () => {
 .pdf-modal-close {
   position: absolute;
   top: 15px;
-  right: 15px;
+  left: 15px;
   z-index: 10000;
   background: rgba(132, 204, 22, 0.9);
   border: none;
@@ -179,12 +199,60 @@ const togglePDF = () => {
 .pdf-viewer-wrapper {
   width: 100%;
   height: 100%;
+  position: relative;
+  background: #1a1a1a; /* Темный фон */
+}
+
+/* Экран загрузки */
+.pdf-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  transition: opacity 0.3s ease;
+}
+
+.pdf-iframe:not([src=""]) ~ .pdf-loading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(132, 204, 22, 0.2);
+  border-top: 4px solid #84cc16;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: #84cc16;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
 }
 
 .pdf-iframe {
   width: 100%;
   height: 100%;
   border: none;
+  position: relative;
+  z-index: 2;
+  background: #1a1a1a;
 }
 
 @media (max-width: 768px) {
@@ -213,9 +281,18 @@ const togglePDF = () => {
 
   .pdf-modal-close {
     top: 10px;
-    right: 10px;
+    left: 10px;
     width: 36px;
     height: 36px;
+  }
+
+  .loading-text {
+    font-size: 16px;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
   }
 }
 </style>
