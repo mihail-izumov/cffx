@@ -1229,7 +1229,7 @@ textarea:focus, input:focus {
 }
 
 .signal-submit-btn { 
-  background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%); 
+  background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 50%, #C5B3D9 100%); 
   color: #fff; 
   font-weight: 600; 
   font-size: 1rem; 
@@ -1247,7 +1247,7 @@ textarea:focus, input:focus {
 .signal-submit-btn:hover:not(:disabled) { 
   background-position: 75% 50%; 
   transform: scale(1.02); 
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); 
+  box-shadow: 0 10px 20px -5px rgba(155, 127, 183, 0.4); 
 }
 
 .signal-submit-btn:disabled { 
