@@ -1355,13 +1355,8 @@ textarea:focus, input:focus {
 
   .signal-controls-row {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     gap: 0.75rem;
-  }
-
-  .signal-info-button {
-    width: 100%;
-    text-align: center;
   }
 
   .signal-gender-switch {
