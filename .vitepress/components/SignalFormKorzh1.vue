@@ -1178,15 +1178,14 @@ input#telegramPhone:focus {
 
 .signal-checkbox-group { 
   display: flex; 
-  align-items: flex-start; 
+  align-items: center;
   gap: 0.75rem;
   width: 100%;
 }
 
 .signal-checkbox-group input { 
-  accent-color: #00C2FF; 
+  accent-color: #B39DC8;
   flex-shrink: 0; 
-  margin-top: 0.15rem;
   width: 18px;
   height: 18px;
 }
