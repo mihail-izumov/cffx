@@ -409,7 +409,9 @@ watch(showBranchList, (newValue) => {
   padding: 32px; 
   max-height: calc(100vh - 80px); 
   overflow-y: auto; 
-  scroll-behavior: smooth; 
+  scroll-behavior: smooth;
+  min-width: 750px;
+  width: 750px;
 }
 .signal-widget-header, 
 .signal-branches-header { 
@@ -802,10 +804,16 @@ watch(showBranchList, (newValue) => {
   min-height: 36px; 
   display: flex; 
   align-items: center;
+  min-width: 420px;
+  max-width: 420px;
 }
 .signal-rotating-text { 
   transition: opacity 0.5s ease-in-out; 
-  line-height: 1.2; 
+  line-height: 1.2;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .signal-rotating-text:not(.signal-show) { 
   opacity: 0; 
@@ -1002,7 +1010,9 @@ watch(showBranchList, (newValue) => {
 @media (max-width: 768px) {
   .signal-widget-content { 
     padding: 16px; 
-    max-width: 98vw;
+    max-width: 100%;
+    width: 100%;
+    min-width: unset;
     margin: 0 auto;
   }
   .signal-widget-close-btn {
@@ -1017,6 +1027,16 @@ watch(showBranchList, (newValue) => {
   .signal-stats-grid { 
     grid-template-columns: 1fr; 
     gap: 10px; 
+  }
+  
+  .signal-rotating-text-container {
+    min-width: unset;
+    max-width: unset;
+  }
+  
+  .signal-rotating-text {
+    white-space: normal;
+    overflow: visible;
   }
   
   /* Порядок карточек в мобильной версии: Яндекс, Отзывы, Сигналы */
