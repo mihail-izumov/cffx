@@ -817,18 +817,18 @@ watch(showBranchList, (newValue) => {
     line-height: 1.4;
   }
   
-  /* Крестик для мобильной версии */
+/* Крестик для мобильной версии */
 .signal2-modal-close-icon {
   display: flex !important;
   position: fixed !important;
-  top: calc((100vh - 85vh) / 2 / 2) !important;
+  top: calc((100vh - 85vh) / 4 - 22px) !important;  /* Поднимаем выше, ровно 1/4 от отступа */
   right: 2.5vw !important;
   width: 44px !important;
   height: 44px !important;
-  background: #2a2a2c !important;
+  background: #1a1a1c !important;  /* Темнее: было #2a2a2c */
   border: none !important;
   border-radius: 8px !important;
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: #3a3a3c !important;  /* Крестик темнее: чуть светлее фона #1a1a1c */
   cursor: pointer !important;
   align-items: center !important;
   justify-content: center !important;
@@ -839,9 +839,14 @@ watch(showBranchList, (newValue) => {
 }
 
 .signal2-modal-close-icon:hover {
-  background: #35353a !important;
-  color: white !important;
+  background: #252527 !important;  /* При hover чуть светлее */
+  color: #5a5a5c !important;  /* Крестик становится заметнее */
   transform: scale(1.05) !important;
+}
+
+.signal2-modal-close-icon svg {
+  fill: currentColor !important;
+  stroke: none !important;
 }
   
   /* Скрываем текстовую кнопку на мобильных */
