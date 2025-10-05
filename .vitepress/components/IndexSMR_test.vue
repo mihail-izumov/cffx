@@ -105,7 +105,7 @@
   <Teleport to="body">
   <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
     <div class="reviews-modal-container" @click.stop>
-      <KorzhWidget @close="closeReviewsModal" />
+      <KorzhWidget :is-modal="true" @close="closeReviewsModal" />
     </div>
   </div>
 </Teleport>
