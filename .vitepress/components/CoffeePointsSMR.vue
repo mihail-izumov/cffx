@@ -963,14 +963,15 @@ watch(showBranchList, (newValue) => {
     line-height: 1.4;
   }
   
+  /* Крестик для мобильной версии */
   .signal2-modal-close-icon {
     display: flex;
     position: fixed;
-    top: calc((100vh - 85vh) / 2 / 2 - 22px); /* Центрируем между верхом экрана и контейнером */
+    top: calc((100vh - 85vh) / 2 / 2 - 22px);
     right: 2.5vw;
     width: 44px;
     height: 44px;
-    background: #2a2a2c; /* Серый цвет чуть светлее фона */
+    background: #2a2a2c;
     border: none;
     border-radius: 8px;
     color: rgba(255, 255, 255, 0.8);
@@ -979,11 +980,11 @@ watch(showBranchList, (newValue) => {
     justify-content: center;
     transition: all 0.3s ease;
     z-index: 10001;
-    backdrop-filter: none; /* Убираем blur */
+    backdrop-filter: none;
   }
   
   .signal2-modal-close-icon:hover {
-    background: #35353a; /* Светлее при наведении */
+    background: #35353a;
     color: white;
     transform: scale(1.05);
   }
@@ -998,5 +999,6 @@ watch(showBranchList, (newValue) => {
     background: transparent;
   }
 }
+
 
 </style>
