@@ -238,7 +238,7 @@ watch(showBranchList, (newValue) => {
 </script>
 
 <template>
-  <div class="signal-widget-content" ref="widgetContentRef">
+  <div class="signal-widget-content" :class="{ 'modal-mode': props.isModal }" ref="widgetContentRef">
     <!-- Первый экран -->
     <div v-if="!showBranchList">
       <div class="signal-widget-header" style="margin-bottom: 0;">
@@ -410,11 +410,16 @@ watch(showBranchList, (newValue) => {
   max-height: calc(100vh - 80px); 
   overflow-y: auto; 
   scroll-behavior: smooth;
-  width: 100%; /* ИЗМЕНИТЬ: вместо width: 750px */
-  max-width: 850px; /* ДОБАВИТЬ: максимальная ширина */
-  margin: 0 auto; /* ДОБАВИТЬ: центрирование */
-  box-sizing: border-box; /* ДОБАВИТЬ: учет padding */
 }
+
+/* Стили только для модального режима */
+.signal-widget-content.modal-mode {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+  
 .signal-widget-header, 
 .signal-branches-header { 
   display: flex; 
