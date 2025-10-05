@@ -37,17 +37,19 @@
           </button>
           
           <div class="pdf-viewer-wrapper">
-            <!-- Простой текст загрузки -->
-            <div class="pdf-loading">
+            <!-- Индикатор загрузки -->
+            <div v-if="isLoading" class="pdf-loading">
               <p class="loading-text">Загрузка презентации</p>
             </div>
             
-            <!-- iframe с отступом сверху -->
+            <!-- iframe скрыт до загрузки -->
             <iframe 
               :src="pdfUrl"
               class="pdf-iframe"
+              :class="{ 'iframe-hidden': isLoading }"
               frameborder="0"
               allowfullscreen
+              @load="handleIframeLoad"
             ></iframe>
           </div>
         </div>
@@ -60,6 +62,7 @@
 import { ref } from 'vue'
 
 const isOpen = ref(false)
+const isLoading = ref(true)
 const pdfUrl = 'https://drive.google.com/file/d/1NePcnHaJranV7Ul0b6mShLzCPf3EespV/preview'
 
 const togglePDF = () => {
@@ -67,9 +70,16 @@ const togglePDF = () => {
   
   if (isOpen.value) {
     document.body.style.overflow = 'hidden'
+    isLoading.value = true
   } else {
     document.body.style.overflow = ''
   }
+}
+
+const handleIframeLoad = () => {
+  setTimeout(() => {
+    isLoading.value = false
+  }, 1500)
 }
 </script>
 
@@ -146,14 +156,14 @@ const togglePDF = () => {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  padding-top: 80px; /* ДОБАВЛЕНО: отступ сверху на десктопе */
+  padding-top: 80px;
 }
 
 .pdf-modal-container {
   position: relative;
   width: 100%;
   max-width: 1200px;
-  height: calc(90vh - 60px); /* ИЗМЕНЕНО: высота минус отступ */
+  height: calc(90vh - 60px);
   background: #1a1a1a;
   border-radius: 12px;
   overflow: hidden;
@@ -163,7 +173,7 @@ const togglePDF = () => {
 .pdf-modal-close {
   position: absolute;
   top: 15px;
-  left: 15px;
+  right: 15px; /* ИЗМЕНЕНО: было left */
   z-index: 10000;
   background: rgba(132, 204, 22, 0.9);
   border: none;
@@ -191,10 +201,10 @@ const togglePDF = () => {
   height: 100%;
   position: relative;
   background: #1a1a1a;
-  padding-top: 70px; /* ДОБАВЛЕНО: внутренний отступ для iframe */
+  padding-top: 70px;
 }
 
-/* Экран загрузки - простой текст */
+/* Экран загрузки */
 .pdf-loading {
   position: absolute;
   top: 0;
@@ -205,7 +215,7 @@ const togglePDF = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1;
+  z-index: 10;
 }
 
 .loading-text {
@@ -217,11 +227,17 @@ const togglePDF = () => {
 
 .pdf-iframe {
   width: 100%;
-  height: calc(100% - 70px); /* ИЗМЕНЕНО: высота минус отступ */
+  height: calc(100% - 70px);
   border: none;
   position: relative;
   z-index: 2;
   background: #1a1a1a;
+  transition: opacity 0.3s ease;
+}
+
+.iframe-hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 @media (max-width: 768px) {
@@ -251,7 +267,7 @@ const togglePDF = () => {
 
   .pdf-modal-close {
     top: 15px;
-    left: 15px;
+    right: 15px; /* ИЗМЕНЕНО: было left */
     width: 36px;
     height: 36px;
   }
