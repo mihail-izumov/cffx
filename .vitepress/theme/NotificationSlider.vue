@@ -2,16 +2,16 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 const notifications = [
   { 
-    text: 'Перехватите негатив до того, как он попадёт в 2ГИС/Яндекс.', 
-    hasButton: true,
-    buttonText: 'Узнать Больше',
-    buttonUrl: '/pro/dialogs'
-  },
-  { 
     text: 'Презентация Сигнала на Фестивале "Культура Кофе 2025".', 
     hasButton: true,
     buttonText: 'Смотреть',
     buttonUrl: '/fest#презентация-сигнала'
+  },
+    { 
+    text: 'Перехватите негатив до того, как он попадёт в 2ГИС/Яндекс.', 
+    hasButton: true,
+    buttonText: 'Узнать Больше',
+    buttonUrl: '/pro/dialogs'
   },
   { 
     text: 'Отправим стикер и подключим кофейню <strong>бесплатно за 5 дней</strong>.', 
