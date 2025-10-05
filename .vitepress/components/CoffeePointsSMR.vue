@@ -947,30 +947,61 @@ watch(showBranchList, (newValue) => {
 }
 
   /* Иконка крестика (скрыта на десктопе) */
+/* Иконка крестика (скрыта по умолчанию) */
 .signal2-modal-close-icon {
-  display: none; /* Скрыта по умолчанию */
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 36px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  border-radius: 8px;
-  color: rgba(255, 255, 255, 0.6);
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  z-index: 10;
-  backdrop-filter: blur(4px);
+  display: none;
 }
 
-.signal2-modal-close-icon:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.9);
-  transform: scale(1.05);
+/* Мобильная версия */
+@media (max-width: 768px) {
+  /* Показываем перенос строки на мобильных */
+  .signal2-mobile-break {
+    display: block;
+  }
+  
+  /* Центрируем текст на мобильных */
+  .signal2-status-label-disconnected {
+    text-align: center;
+    line-height: 1.4;
+  }
+  
+  /* Крестик для мобильной версии */
+  .signal2-modal-close-icon {
+    display: flex;
+    position: fixed;
+    top: calc((100vh - 85vh) / 2 - 54px);
+    right: 2.5vw;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10001;
+    backdrop-filter: blur(4px);
+  }
+  
+  .signal2-modal-close-icon:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.05);
+  }
+  
+  .signal2-modal-close-button {
+    display: none;
+  }
+  
+  .signal2-modal-close-section {
+    padding: 0;
+    border-top: none;
+    background: transparent;
+  }
 }
+
 
 /* Мобильная версия - показываем крестик, скрываем кнопку */
 @media (max-width: 768px) {
