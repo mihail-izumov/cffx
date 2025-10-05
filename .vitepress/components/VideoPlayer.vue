@@ -4,8 +4,9 @@
       <video 
         ref="videoElement"
         :poster="poster"
-        controls
+        :controls="videoLoaded"
         preload="none"
+        playsinline
         @loadstart="onLoadStart"
         @loadeddata="onLoadedData"
         @canplay="onCanPlay"
@@ -112,7 +113,7 @@ const hasError = ref(false)
 const errorMessage = ref('')
 const currentTime = ref(0)
 const isPlaying = ref(false)
-const videoLoaded = ref(false) // Новый флаг
+const videoLoaded = ref(false)
 
 const currentVideoSrc = computed(() => {
   return isHDQuality.value ? props.hdSrc : props.sdSrc
@@ -123,11 +124,9 @@ const initializeVideo = () => {
   
   videoLoaded.value = true
   
-  // Ждем следующего тика для добавления source
   setTimeout(() => {
     if (videoElement.value) {
       videoElement.value.load()
-      // Автоматически начинаем воспроизведение
       videoElement.value.play().catch(e => {
         console.log('Autoplay заблокирован:', e)
         isLoading.value = false
@@ -221,7 +220,6 @@ const retryLoad = () => {
   videoLoaded.value = false
   isLoading.value = false
   
-  // Сбрасываем видео и начинаем заново
   if (videoElement.value) {
     videoElement.value.pause()
     videoElement.value.removeAttribute('src')
@@ -250,6 +248,36 @@ video {
   height: 100%;
   object-fit: contain;
   display: block;
+}
+
+/* Скрываем нативные элементы управления до инициализации */
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+video::-webkit-media-controls-panel {
+  display: none !important;
+}
+
+video::-webkit-media-controls-play-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+}
+
+/* Для Firefox */
+video::-moz-media-controls {
+  display: none !important;
 }
 
 /* Оверлей с кнопкой Play */
