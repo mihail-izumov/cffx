@@ -61,13 +61,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import SignalT9Configurator from './SignalT9Configurator.vue'
 
-// Декларация для TypeScript
-declare global {
-  interface Window {
-    openSignalModal?: () => void
-  }
-}
-
 const isModalOpen = ref(false)
 
 const openModal = () => {
