@@ -50,10 +50,24 @@ const props = defineProps({
     type: Array,
     required: true,
     default: () => [
-      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST05997.jpg',
-      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06000.jpg',
-      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06001.jpg',
-      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06003.jpg'
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06122.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06021.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06039.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06176.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06111.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06197.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06187.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06007.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06045.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06067.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06073.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06086.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06092.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06106.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06117.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06210.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06260.jpg',
+      'https://70e1aad645fc.hosting.myjino.ru/fest2025/gallery/OST06276.jpg'
     ]
   },
   autoplayDelay: {
