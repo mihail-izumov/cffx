@@ -639,7 +639,6 @@ watch(showBranchList, (newValue) => {
 .signal2-switcher { border-radius: 50px; padding: 12px 20px; font-size: 15px; font-weight: 700; cursor: pointer; border: none; transition: all 0.3s ease; white-space: nowrap; display: flex; align-items: center; gap: 8px; min-width: fit-content; position: relative; overflow: hidden; background: rgba(70, 70, 70, 0.6); color: rgba(255, 255, 255, 0.9); }
 .signal2-switcher::before { content: ''; position: absolute; left: -200%; top: 0; width: 200%; height: 100%; background: linear-gradient(90deg, transparent 0%, transparent 30%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.08) 60%, transparent 70%, transparent 100%); transition: all 1.2s ease; }
 .signal2-switcher:hover::before { left: 100%; }
-@media (max-width: 768px) { .signal2-switcher::before, .signal2-switcher:hover::before { display: none; } }
 .signal2-switcher.active { background: rgba(255, 255, 255, 0.95); color: #333; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
 .signal2-switcher.active::before { display: none; }
 .signal2-switcher-icon { width: 16px; height: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
@@ -786,6 +785,11 @@ watch(showBranchList, (newValue) => {
 }
 
 @media (max-width: 768px) {
+  .signal2-switcher::before, 
+  .signal2-switcher:hover::before { 
+    display: none; 
+  }
+  
   .signal2-widget-content { padding: 24px 0; }
   .signal2-main-card { padding: 16px; }
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 12px; }
@@ -850,6 +854,57 @@ watch(showBranchList, (newValue) => {
   .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
   .signal2-modal-close-button { width: 100%; justify-content: center; font-size: 14px; padding: 12px 20px; }
   .signal2-modal-close-section { padding: 12px; }
+
+    
+  /* Показываем перенос строки на мобильных */
+  .signal2-mobile-break {
+    display: block;
+  }
+  
+  /* Центрируем текст на мобильных */
+  .signal2-status-label-disconnected {
+    text-align: center;
+    line-height: 1.4;
+  }
+  
+  /* Крестик для мобильной версии */
+  .signal2-modal-close-icon {
+    display: flex;
+    position: fixed;
+    top: calc((100vh - 85vh) / 2 / 2 - 22px);
+    right: 2.5vw;
+    width: 44px;
+    height: 44px;
+    background: #2a2a2c;
+    border: none;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10001;
+    backdrop-filter: none;
+  }
+  
+  .signal2-modal-close-icon:hover {
+    background: #35353a;
+    color: white;
+    transform: scale(1.05);
+  }
+  
+  /* Скрываем текстовую кнопку на мобильных */
+  .signal2-modal-close-button {
+    display: none;
+  }
+  
+  /* Убираем фон секции */
+  .signal2-modal-close-section {
+    padding: 0;
+    border-top: none;
+    background: transparent;
+  }
+
 }
 @media (max-width: 700px) {
   .signal2-review-modal-content { width: 95vw; height: 85vh; }
@@ -932,73 +987,5 @@ watch(showBranchList, (newValue) => {
 .signal2-mobile-break {
   display: none;
 }
-
-@media (max-width: 768px) {
-  /* Показываем перенос строки на мобильных */
-  .signal2-mobile-break {
-    display: block;
-  }
-  
-  /* Центрируем текст на мобильных */
-  .signal2-status-label-disconnected {
-    text-align: center;
-    line-height: 1.4;
-  }
-}
-
-  /* Иконка крестика (скрыта на десктопе) */
-/* Иконка крестика (скрыта по умолчанию) */
-.signal2-modal-close-icon {
-  display: none;
-}
-
-/* Мобильная версия */
-@media (max-width: 768px) {
-  .signal2-mobile-break {
-    display: block;
-  }
-  
-  .signal2-status-label-disconnected {
-    text-align: center;
-    line-height: 1.4;
-  }
-  
-  /* Крестик для мобильной версии */
-  .signal2-modal-close-icon {
-    display: flex;
-    position: fixed;
-    top: calc((100vh - 85vh) / 2 / 2 - 22px);
-    right: 2.5vw;
-    width: 44px;
-    height: 44px;
-    background: #2a2a2c;
-    border: none;
-    border-radius: 8px;
-    color: rgba(255, 255, 255, 0.8);
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 10001;
-    backdrop-filter: none;
-  }
-  
-  .signal2-modal-close-icon:hover {
-    background: #35353a;
-    color: white;
-    transform: scale(1.05);
-  }
-  
-  .signal2-modal-close-button {
-    display: none;
-  }
-  
-  .signal2-modal-close-section {
-    padding: 0;
-    border-top: none;
-    background: transparent;
-  }
-}
-
 
 </style>
