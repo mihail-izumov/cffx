@@ -738,92 +738,91 @@ async function submitForm() {
    =============================== */
 .signal-controls-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 1.5rem;
-  gap: 1rem;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
 .signal-info-button {
-  padding: 0.6rem 1.2rem;
-  background: linear-gradient(135deg, #A972FF 0%, #00C2FF 100%);
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 0.85rem;
-  font-weight: 600;
+  background: rgba(135, 206, 235, 0.1);
+  border: 1px solid rgba(135, 206, 235, 0.3);
+  color: #87ceeb;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(169, 114, 255, 0.3);
-}
-
-.signal-info-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(169, 114, 255, 0.4);
+  white-space: nowrap;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  width: auto;
 }
 
 .signal-info-button.signal-info-female {
-  background: linear-gradient(135deg, #FF6B9D 0%, #FFA6C3 100%);
-  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+  background: rgba(255, 105, 180, 0.1);
+  border-color: rgba(255, 105, 180, 0.3);
+  color: #ff69b4;
 }
 
 .signal-info-button.signal-info-female:hover {
-  box-shadow: 0 6px 16px rgba(255, 107, 157, 0.4);
+  background: rgba(255, 105, 180, 0.2);
+  border-color: rgba(255, 105, 180, 0.5);
 }
 
 .signal-info-button.signal-info-male {
-  background: linear-gradient(135deg, #4A90E2 0%, #7CB9E8 100%);
-  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+  background: rgba(135, 206, 235, 0.1);
+  border-color: rgba(135, 206, 235, 0.3);
+  color: #87ceeb;
 }
 
 .signal-info-button.signal-info-male:hover {
-  box-shadow: 0 6px 16px rgba(74, 144, 226, 0.4);
+  background: rgba(135, 206, 235, 0.2);
+  border-color: rgba(135, 206, 235, 0.5);
 }
 
 .signal-gender-switch {
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
 
 .signal-gender-container {
   display: flex;
-  gap: 0.5rem;
-  background-color: #2a2a2e;
-  padding: 0.35rem;
-  border-radius: 12px;
-  border: 1px solid #3a3a3e;
+  background: #2a2a2e;
+  border-radius: 20px;
+  padding: 4px;
+  border: 1px solid #444;
+  height: 32px;
+  align-items: center;
 }
 
 .signal-gender-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
-  position: relative;
-  border: 2px solid transparent;
+  margin: 0 2px;
 }
 
 .signal-gender-female {
-  background: linear-gradient(135deg, #FF6B9D 0%, #FFA6C3 100%);
-  opacity: 0.4;
+  background: rgba(255, 105, 180, 0.3);
 }
 
 .signal-gender-female.is-active {
-  opacity: 1;
-  border-color: #FF6B9D;
-  box-shadow: 0 0 12px rgba(255, 107, 157, 0.5);
+  background: #ff69b4;
+  box-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
 }
 
 .signal-gender-male {
-  background: linear-gradient(135deg, #4A90E2 0%, #7CB9E8 100%);
-  opacity: 0.4;
+  background: rgba(135, 206, 235, 0.3);
 }
 
 .signal-gender-male.is-active {
-  opacity: 1;
-  border-color: #4A90E2;
-  box-shadow: 0 0 12px rgba(74, 144, 226, 0.5);
+  background: #87ceeb;
+  box-shadow: 0 0 12px rgba(135, 206, 235, 0.5);
 }
 
 .signal-gender-btn:hover {
