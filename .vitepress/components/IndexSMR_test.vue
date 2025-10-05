@@ -499,7 +499,10 @@ export default {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  align-items: center; /* ДОБАВИТЬ: центрирование по горизонтали */
+  justify-content: flex-start; /* ДОБАВИТЬ: выравнивание сверху */
 }
+
 
 /* Badge стили */
 .badge {
