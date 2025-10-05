@@ -35,7 +35,7 @@
           
           <div class="pdf-viewer-wrapper">
             <iframe 
-              :src="`https://docs.google.com/viewer?url=${encodeURIComponent(pdfUrl)}&embedded=true`"
+              :src="pdfUrl"
               class="pdf-iframe"
               frameborder="0"
               allowfullscreen
@@ -51,7 +51,7 @@
 import { ref } from 'vue'
 
 const isOpen = ref(false)
-const pdfUrl = 'http://70e1aad645fc.hosting.myjino.ru/fest2025/NOT_FRANCHISE_The_Coffee_Market_in_Samara_Signal.pdf'
+const pdfUrl = 'https://drive.google.com/file/d/1NePcnHaJranV7Ul0b6mShLzCPf3EespV/preview'
 
 const togglePDF = () => {
   isOpen.value = !isOpen.value
@@ -125,7 +125,6 @@ const togglePDF = () => {
   transform: translateX(2px);
 }
 
-/* PDF Modal */
 .pdf-modal-overlay {
   position: fixed;
   top: 0;
@@ -188,7 +187,6 @@ const togglePDF = () => {
   border: none;
 }
 
-/* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
   .pdf-button {
     width: 100%;
