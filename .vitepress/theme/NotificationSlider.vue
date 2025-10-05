@@ -8,10 +8,10 @@ const notifications = [
     buttonUrl: '/pro/dialogs'
   },
   { 
-    text: 'Находим в отзывах то, что не видят другие.', 
+    text: 'Презентация Сигнала на Фестивале "Культура Кофе".', 
     hasButton: true,
-    buttonText: 'Индекс Роста',
-    buttonUrl: '/invest/smr'
+    buttonText: 'Смотреть',
+    buttonUrl: '/fest#презентация-сигнала'
   },
   { 
     text: 'Отправим стикер и подключим кофейню бесплатно за 5 дней', 
