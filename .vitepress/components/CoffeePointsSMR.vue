@@ -676,56 +676,14 @@ watch(showBranchList, (newValue) => {
 .signal2-stat-card:hover .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.4); }
 .signal2-stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .signal2-stat-card:hover .signal2-stat-value { transform: scale(1.15); text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); }
-
-.signal2-stat-label {
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
+.signal2-stat-label { color: #ffffff; font-weight: 700; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .signal2-stat-card:hover .signal2-stat-label { transform: scale(1.05); }
-
-.signal2-stat-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: auto;
-}
-
-.signal2-badge-emoji {
-  font-size: 16px;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-.signal2-badge-text {
-  font-size: 11px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-}
-
-.signal2-graphite-badge .signal2-badge-text {
-  color: rgba(160, 174, 192, 1);
-}
-
-.signal2-orange-badge .signal2-badge-text {
-  color: rgba(252, 211, 77, 1);
-}
-
-.signal2-lime-badge .signal2-badge-text {
-  color: rgba(197, 249, 70, 1);
-}
+.signal2-stat-badge { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.1); margin-top: auto; }
+.signal2-badge-emoji { font-size: 16px; line-height: 1; flex-shrink: 0; }
+.signal2-badge-text { font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.85); letter-spacing: 0.02em; white-space: nowrap; }
+.signal2-graphite-badge .signal2-badge-text { color: rgba(160, 174, 192, 1); }
+.signal2-orange-badge .signal2-badge-text { color: rgba(252, 211, 77, 1); }
+.signal2-lime-badge .signal2-badge-text { color: rgba(197, 249, 70, 1); }
 .signal2-system-status-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0 16px 0; padding: 8px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06); }
 .signal2-status-label { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); margin-right: 6px; flex-shrink: 0; }
 .signal2-status-label-disconnected { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); flex-shrink: 0; }
@@ -777,18 +735,15 @@ watch(showBranchList, (newValue) => {
 .signal2-modal-footer { margin-top: 24px; display: flex; justify-content: flex-end; }
 .signal2-modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 500; }
 .signal2-modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
+.signal2-radio-icon { display: inline-block; vertical-align: middle; margin-right: 4px; }
 
-.signal2-radio-icon {
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 4px;
-}
+/* Базовые стили — крестик скрыт на десктопе, перенос скрыт */
+.signal2-mobile-break { display: none; }
+.signal2-modal-close-icon { display: none; }
 
 @media (max-width: 768px) {
   .signal2-switcher::before, 
-  .signal2-switcher:hover::before { 
-    display: none; 
-  }
+  .signal2-switcher:hover::before { display: none; }
   
   .signal2-widget-content { padding: 24px 0; }
   .signal2-main-card { padding: 16px; }
@@ -855,9 +810,7 @@ watch(showBranchList, (newValue) => {
   .signal2-modal-close-button { width: 100%; justify-content: center; font-size: 14px; padding: 12px 20px; }
   .signal2-modal-close-section { padding: 12px; }
   
-  .signal2-mobile-break {
-    display: block;
-  }
+  .signal2-mobile-break { display: block; }
   
   .signal2-status-label-disconnected {
     text-align: center;
@@ -866,7 +819,7 @@ watch(showBranchList, (newValue) => {
   
   /* Крестик для мобильной версии */
   .signal2-modal-close-icon {
-    display: flex;
+    display: flex !important;
     position: fixed;
     top: calc((100vh - 85vh) / 2 / 2 - 22px);
     right: 2.5vw;
@@ -881,7 +834,6 @@ watch(showBranchList, (newValue) => {
     justify-content: center;
     transition: all 0.3s ease;
     z-index: 10001;
-    backdrop-filter: none;
   }
   
   .signal2-modal-close-icon:hover {
@@ -891,9 +843,7 @@ watch(showBranchList, (newValue) => {
   }
   
   /* Скрываем текстовую кнопку на мобильных */
-  .signal2-modal-close-button {
-    display: none;
-  }
+  .signal2-modal-close-button { display: none; }
   
   /* Убираем фон секции */
   .signal2-modal-close-section {
@@ -979,12 +929,5 @@ watch(showBranchList, (newValue) => {
   filter: brightness(0);
 }
 
-.signal2-mobile-break {
-  display: none;
-}
-
-.signal2-modal-close-icon {
-  display: none;
-}
-
 </style>
+
