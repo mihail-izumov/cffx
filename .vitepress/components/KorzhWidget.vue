@@ -410,8 +410,10 @@ watch(showBranchList, (newValue) => {
   max-height: calc(100vh - 80px); 
   overflow-y: auto; 
   scroll-behavior: smooth;
-  min-width: 750px;
-  width: 750px;
+  width: 100%; /* ИЗМЕНИТЬ: вместо width: 750px */
+  max-width: 850px; /* ДОБАВИТЬ: максимальная ширина */
+  margin: 0 auto; /* ДОБАВИТЬ: центрирование */
+  box-sizing: border-box; /* ДОБАВИТЬ: учет padding */
 }
 .signal-widget-header, 
 .signal-branches-header { 
@@ -804,8 +806,8 @@ watch(showBranchList, (newValue) => {
   min-height: 36px; 
   display: flex; 
   align-items: center;
-  min-width: 420px;
-  max-width: 420px;
+  min-width: 350px; /* ИЗМЕНИТЬ: уменьшить с 420px */
+  max-width: none; /* ИЗМЕНИТЬ: убрать ограничение max-width */
 }
 .signal-rotating-text { 
   transition: opacity 0.5s ease-in-out; 
