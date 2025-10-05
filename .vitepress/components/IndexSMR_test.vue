@@ -103,22 +103,23 @@
   </div>
 
   <Teleport to="body">
-    <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
-      <div class="reviews-modal-container" @click.stop>
-        <ReviewsWidget @close="closeReviewsModal" />
-      </div>
+  <div v-if="showReviewsModal" class="reviews-modal-backdrop" @click="closeReviewsModal">
+    <div class="reviews-modal-container" @click.stop>
+      <KorzhWidget @close="closeReviewsModal" />
     </div>
-  </Teleport>
+  </div>
+</Teleport>
+
 </template>
 
 <script>
 import { ref } from 'vue'
-import ReviewsWidget from './ReviewsWidget.vue'
+import KorzhWidget from './KorzhWidget.vue'
 
 export default {
   name: 'IndexSMR',
   components: {
-    ReviewsWidget
+    KorzhWidget
   },
   setup() {
     const showReviewsModal = ref(false)
