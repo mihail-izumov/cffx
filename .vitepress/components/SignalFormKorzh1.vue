@@ -203,12 +203,12 @@
       <div class="signal-form-section signal-personal-data-section">
         <div class="signal-question-block signal-compact">
           <label class="signal-question-label">Ваше имя</label>
-          <p class="signal-question-help">Для персонального общения с ИИ-ассистентом Анной.</p>
+          <p class="signal-question-help">Для персонального разбора с ИИ-ассистентом Анной</p>
           <input type="text" id="name" v-model="form.name" @focus="stopRotation()" placeholder="Как к вам обращаться?" required>
         </div>
         <div class="signal-question-block signal-compact">
           <label class="signal-question-label">Ваш контакт в Telegram</label>
-          <p class="signal-question-help">Чтобы получать обновления и видеть результат.</p>
+          <p class="signal-question-help">Чтобы получать обновления и видеть результат</p>
           <input type="tel" id="telegramPhone" v-model="form.telegramPhone" @focus="stopRotation()" placeholder="Ник или Номер телефона" required>
         </div>
       </div>
