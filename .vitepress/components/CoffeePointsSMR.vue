@@ -586,7 +586,7 @@ watch(showBranchList, (newValue) => {
         
         <div class="signal2-modal-close-section">
               <!-- Крестик для мобильной версии -->
-      <button @click="closeReviewModal" class="" aria-label="Закрыть">
+      <button @click="closeReviewModal" class="signal2-modal-close-icon" aria-label="Закрыть">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M18 6 6 18"/>
           <path d="m6 6 12 12"/>
@@ -969,24 +969,24 @@ watch(showBranchList, (newValue) => {
   .signal2-modal-close-icon {
     display: flex;
     position: fixed;
-    top: calc((100vh - 85vh) / 2 / 2 - 22px); /* Центрируем между верхом экрана и контейнером */
+    top: calc((100vh - 85vh) / 2 - 54px);
     right: 2.5vw;
     width: 44px;
     height: 44px;
-    background: #2a2a2c; /* Серый цвет чуть светлее фона */
+    background: rgba(255, 255, 255, 0.1);
     border: none;
     border-radius: 8px;
-    color: rgba(255, 255, 255, 0.8); /* Светлее для контраста */
+    color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
     z-index: 10001;
-    backdrop-filter: none; /* Убираем blur */
+    backdrop-filter: blur(4px);
   }
   
   .signal2-modal-close-icon:hover {
-    background: #35353a; /* Светлее при наведении */
+    background: rgba(255, 255, 255, 0.15);
     color: rgba(255, 255, 255, 0.9);
     transform: scale(1.05);
   }
