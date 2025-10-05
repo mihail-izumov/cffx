@@ -8,7 +8,7 @@ const notifications = [
     buttonUrl: '/pro/dialogs'
   },
   { 
-    text: 'Презентация Сигнала на Фестивале "Культура Кофе".', 
+    text: 'Презентация Сигнала на Фестивале "Культура Кофе 2025".', 
     hasButton: true,
     buttonText: 'Смотреть',
     buttonUrl: '/fest#презентация-сигнала'
