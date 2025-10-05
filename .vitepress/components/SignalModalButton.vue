@@ -1,6 +1,6 @@
 <template>
   <div class="signal-modal-wrapper">
-    <!-- Кнопка -->
+    <!-- Кнопка в навигации -->
     <button 
       @click="openModal" 
       class="signal-modal-button"
@@ -83,15 +83,17 @@ onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
   
   // Регистрируем глобальную функцию для открытия модалки из конфига
-  window.openSignalModal = openModal
-  console.log('✓ window.openSignalModal registered')
+  if (typeof window !== 'undefined') {
+    window.openSignalModal = openModal
+    console.log('✓ window.openSignalModal registered')
+  }
 })
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
   
   // Очищаем глобальную функцию при размонтировании
-  if (window.openSignalModal === openModal) {
+  if (typeof window !== 'undefined' && window.openSignalModal === openModal) {
     delete window.openSignalModal
   }
 })
@@ -103,7 +105,7 @@ onUnmounted(() => {
   display: inline-block;
 }
 
-/* Стили кнопки - только для этого компонента */
+/* Стили кнопки в навигации */
 .signal-modal-button {
   display: flex;
   align-items: center;
