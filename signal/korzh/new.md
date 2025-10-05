@@ -7,21 +7,6 @@ title: Отправить Сигнал в Корж
 
 # Ваш Сигнал — тому, кто решает.
 Поможем решить любую проблему в вашей кофейне Корж за 24 часа. <br>
-<a href="/signals" target="_blank" rel="noopener noreferrer" class="purple-link">Как работает Сигнал</a>
 
 </div>
 <SignalFormKorzh1 />
-
-<style>
-a.purple-link {
-  color: #9b7fb7 !important;
-  text-decoration: underline !important;
-  border-bottom: none !important;
-}
-
-a.purple-link:hover {
-  color: #7d5f97 !important;
-  text-decoration: underline !important;
-  border-bottom: none !important;
-}
-</style>
