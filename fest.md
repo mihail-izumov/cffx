@@ -32,7 +32,7 @@ head:
   :autoplay="false"
 />
 
-<PDFButton />
+<GoogleDocsViewer />
 
 ### Участники
 
