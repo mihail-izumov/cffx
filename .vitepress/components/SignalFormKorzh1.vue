@@ -971,7 +971,7 @@ async function submitForm() {
 }
 
 .modal-link {
-  color: #00C2FF;
+  color: #B39DC8;
   text-decoration: none;
   font-weight: 600;
   border-bottom: 1px solid transparent;
@@ -979,8 +979,8 @@ async function submitForm() {
 }
 
 .modal-link:hover {
-  color: #C5F946;
-  border-bottom-color: #C5F946;
+  color: #C5B3D9;
+  border-bottom-color: #C5B3D9;
 }
 
 .modal-footer {
@@ -989,7 +989,7 @@ async function submitForm() {
 }
 
 .modal-ok {
-  background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%);
+  background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 50%, #C5B3D9 100%);
   color: #fff;
   font-weight: 600;
   font-size: 0.95rem;
@@ -1005,7 +1005,7 @@ async function submitForm() {
 .modal-ok:hover {
   background-position: 75% 50%;
   transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 20px rgba(155, 127, 183, 0.4);
 }
 
 /* ===============================
