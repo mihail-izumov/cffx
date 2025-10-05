@@ -3,9 +3,9 @@
     <!-- Экран успешной отправки -->
     <div v-if="formSubmitted" class="signal-success-message">
       <div class="signal-success-text">
-        <h3>Все готово!</h3>
-        <p>Нажмите на кнопку ниже, чтобы отправить ваш уникальный код ассистенту Анне и активировать ваш запрос.</p>
-        <a :href="`https://t.me/Anna_Signal?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="signal-telegram-button">Активировать Сигнал в Telegram</a>
+        <h3>Сигнал отправлен ⚡</h3>
+        <p>Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
+        <a :href="`https://t.me/Anna_Signal?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="signal-telegram-button">Получить ответ</a>
         <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link">Кто Анна и как работает</a>
       </div>
     </div>
@@ -537,7 +537,7 @@ async function submitForm() {
 
 .signal-ticket-display { 
   background-color: #2a2a2e; 
-  color: #C5F946; 
+  color: #9b7fb7; 
   font-weight: 700; 
   padding: 0.5rem 1rem; 
   border-radius: 12px; 
@@ -909,7 +909,7 @@ textarea:focus, input:focus {
 
 .signal-telegram-button { 
   display: inline-block; 
-  background-color: #C5F946; 
+  background-color: #9b7fb7; 
   color: #000000; 
   text-decoration: none; 
   padding: 0.8rem 1.5rem; 
@@ -920,7 +920,7 @@ textarea:focus, input:focus {
 }
 
 .signal-telegram-button:hover { 
-  background-color: #d6ff6a; 
+  background-color: #b399c8; 
   transform: scale(1.05); 
 }
 
