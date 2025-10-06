@@ -21,14 +21,20 @@ head:
 
 Событие приурочено к Международному Дню Кофе, настоящий праздник для всех ценителей качественных напитков.
 
-<FestImageSlider />
-
 <VideoPlayer 
   hd-src="http://70e1aad645fc.hosting.myjino.ru/fest2025/fest2025_smr_1080x1920.mp4"
   sd-src="http://70e1aad645fc.hosting.myjino.ru/fest2025/fest2025_smr_1080x1920.mp4"
   poster="/fest2025_video_ban.jpg"
   :autoplay="false"
 />
+
+### Галерея Фестиваля
+
+<FestImageSlider />
+
+### Участники
+
+<FestBrands />
 
 ## Презентация Сигнала
 
@@ -41,14 +47,10 @@ head:
 
 <GoogleDocsViewer />
 
-### Участники
-
-<FestBrands />
-
-### АКТИВНОСТИ
+### Активности для Гостей
 <FestActivities />
 
-### ПРОГРАММА
+### Программа Фестиваля
 <FestProgram />
 
 <div style="text-align: center; margin: 2rem 0;">
