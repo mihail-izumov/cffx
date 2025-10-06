@@ -13,13 +13,13 @@ hero:
   actions:
     - theme: brand
       text: Отправить ⚡ Сигнал
-      link: /signal/new
+      link: /me
 
 features:
-  - title: Отправьте Умный Отзыв
-    details: "Каждый отзыв делает Вашу любимую кофейню еще лучше."
-    link: /me
-    linkText: Кофейни в Самаре
+  - title: ТОП-50 кофеен Самары
+    details: "Не размер бизнеса сегодня, а возможности, которые он может реализовать завтра."
+    link: /invest/smr
+    linkText: Индекс Роста
   - title: Инвестиции в Кофейни
     details: "Начните инвестировать в кофейный рынок прямо сейчас."
     link: /invest/pulse
