@@ -23,6 +23,13 @@ head:
 
 <FestImageSlider />
 
+<VideoPlayer 
+  hd-src="http://70e1aad645fc.hosting.myjino.ru/fest2025/fest2025_smr_1080x1920.mp4"
+  sd-src="http://70e1aad645fc.hosting.myjino.ru/fest2025/fest2025_smr_1080x1920.mp4"
+  poster="/fest2025_video_ban.jpg"
+  :autoplay="false"
+/>
+
 ## Презентация Сигнала
 
 <VideoPlayer 
