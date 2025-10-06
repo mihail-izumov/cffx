@@ -29,12 +29,8 @@ head:
 />
 
 ### Галерея Фестиваля
-
+<br>
 <FestImageSlider />
-
-### Участники
-
-<FestBrands />
 
 ## Презентация Сигнала
 
@@ -46,6 +42,10 @@ head:
 />
 
 <GoogleDocsViewer />
+
+### Участники
+
+<FestBrands />
 
 ### Активности для Гостей
 <FestActivities />
