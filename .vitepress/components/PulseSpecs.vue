@@ -79,7 +79,7 @@
       <div class="specs-grid four-cols">
         <div class="spec-item">
           <span class="spec-value">
-            <a href="https://runscale.ru/radar/signal/log">Сигналы Радара</a>
+            <a href="https://runscale.ru/radar/overview">Сигналы Радара</a>
           </span>
           <p class="spec-label">Инструмент</p>
         </div>
