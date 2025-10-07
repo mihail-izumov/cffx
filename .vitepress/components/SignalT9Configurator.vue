@@ -253,7 +253,7 @@
     <!-- Кнопка отправки -->
 <button 
   class="signal-submit-button" 
-  :disabled="submitStatus === 'processing' || !form.agreedToTerms"
+  :disabled="submitStatus === 'processing' || !form.agreedToTerms || !isEmotionFilled"
   @click="submitForm"
 >
   <span class="signal-liquid-next-text">{{ submitButtonText }}</span>
@@ -275,7 +275,7 @@
     selectedSection === 'location' ? 'signal-location-next' : ''
   ]"
   @click="goToNextSection"
-  :disabled="(selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim())) || (selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch))"
+  :disabled="(selectedSection === 'emotions' && !isEmotionFilled) || (selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim())) || (selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch))"
 >
   <span class="signal-liquid-next-text">{{ currentSectionData.buttonText }}</span>
   <CupFillIcon
@@ -332,6 +332,7 @@ const submitButtonText = computed(() => {
   }
   return 'Отправить в кофейню';
 });
+const isEmotionFilled = computed(() => form.emotionalRelease && form.emotionalRelease.trim().length > 0);
 const formSubmitted = ref(false);
 const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
