@@ -414,15 +414,15 @@ onMounted(() => {
 });
 
 const sections = [
+  { id: 'location', title: 'Локация', buttonText: 'Начать' },
   { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
   { id: 'facts', title: 'Факты', buttonText: 'К решению ситуации' },
   { id: 'solutions', title: 'Решения', buttonText: 'Сформировать Сигнал' },
   { id: 'summary', title: 'Резюме', buttonText: 'Выбрать локацию' },
-  { id: 'location', title: 'Локация', buttonText: 'Формат ответа' },
   { id: 'contact', title: 'Контакт', buttonText: '' } // На последнем шаге кнопка не отображается
 ];
 
-const selectedSection = ref('emotions');
+const selectedSection = ref('location');
 
 const currentSectionData = computed(() => {
 return sections.find(s => s.id === selectedSection.value);
