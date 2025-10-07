@@ -327,7 +327,9 @@ const submitButtonText = computed(() => {
     return '⏳ Отправляется...';
   }
   if (form.selectedNetwork) {
-    return `Отправить в ${form.selectedNetwork}`;
+    // Вызываем нашу функцию для склонения
+    const networkInAccusative = getAccusativeCase(form.selectedNetwork);
+    return `Отправить в ${networkInAccusative}`;
   }
   return 'Отправить в кофейню';
 });
@@ -488,6 +490,32 @@ function onGenderClick(gender) {
   }
 }
 
+  function getAccusativeCase(networkName) {
+  if (!networkName) return '';
+  const lastChar = networkName.slice(-1).toLowerCase();
+  const lowerCaseName = networkName.toLowerCase();
+
+  // Исключения, которые не меняются
+  const exceptions = ['корж', 'skuratov', 'surf'];
+  if (exceptions.includes(lowerCaseName)) {
+    return networkName;
+  }
+
+  // Простое правило для окончаний на "а"
+  if (lastChar === 'а') {
+    return networkName.slice(0, -1) + 'у';
+  }
+  
+  // Простое правило для окончаний на "я"
+  if (lastChar === 'я') {
+    return networkName.slice(0, -1) + 'ю';
+  }
+
+  // Возвращаем как есть, если правило не подошло
+  return networkName;
+}
+
+  
 async function submitForm() {
   submitStatus.value = 'processing';
   const formData = {
