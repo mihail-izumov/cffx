@@ -26,7 +26,7 @@
           <label class="signal-question-label">Ваша кофейня "Корж"</label>
           <p class="signal-question-help">Выберите адрес, где произошла ситуация</p>
           <select v-model="form.coffeeShopAddress" class="signal-address-select" required>
-            <option value="">Выберите адрес</option>
+            <option value="">Выбрать локацию</option>
             <option value="Куйбышева, 103">Куйбышева, 103</option>
             <option value="Льва Толстого, 30Б">Льва Толстого, 30Б</option>
             <option value="Революционная, 101В" disabled>Революционная, 101В</option>
