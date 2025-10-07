@@ -72,7 +72,7 @@
             v-model="form.emotionalRelease" 
             @focus="startRotation(1)" 
             :rows="isMobile ? 5 : 3"
-            :placeholder="selectedGender === 'female' ? 'Или напишите своими словами...' : 'Или напишите своими словами...'"
+            :placeholder="selectedGender === 'female' ? 'Или напишите своими словами ...' : 'Или напишите своими словами ...'"
           ></textarea>
           <div class="signal-suggestions-container">
             <div 
