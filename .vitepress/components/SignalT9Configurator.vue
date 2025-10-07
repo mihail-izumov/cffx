@@ -322,6 +322,15 @@ const selectedGender = ref('female');
 const humanizeStatus = ref('idle');
 const showInfoModal = ref(false);
 const submitStatus = ref('idle');
+const submitButtonText = computed(() => {
+  if (submitStatus.value === 'processing') {
+    return '⏳ Отправляется...';
+  }
+  if (form.selectedNetwork) {
+    return `Отправить в ${form.selectedNetwork}`;
+  }
+  return 'Отправить в кофейню';
+});
 const formSubmitted = ref(false);
 const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
