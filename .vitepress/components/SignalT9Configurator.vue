@@ -140,7 +140,7 @@
             v-model="form.constructiveSuggestions" 
             @focus="startRotation(3)" 
             :rows="isMobile ? 5 : 3"
-            placeholder="Можно пропустить, но это самое интересное ..."
+            placeholder="Дайте честный совет ..."
           ></textarea>
           <div class="signal-suggestions-container">
             <div 
@@ -808,11 +808,11 @@ function updateSuggestionsForGender() {
 
 const questionsShare = ['Что произошло?', 'Расскажите о ситуации', 'Опишите вашу проблему'];
 const questions1 = { 
-  female: ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что вас расстроило?'],
-  male: ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что вас расстроило?']
+  female: ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что расстроило?', 'Что порадовало?'],
+  male: ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что расстроило?', 'Что порадовало?']
 };
 const questions2 = ['Что именно произошло?', 'Какие детали важны?', 'Опишите факты'];
-const questions3 = ['Как это исправить?', 'Что может помочь?', 'Ваши предложения?'];
+const questions3 = ['Что можно сделать лучше?', 'Как исправить?', 'Ваши предложения?'];
 
 const currentQuestionShare = ref(questionsShare[0]);
 const currentQuestion1 = ref(questions1.female[0]);
