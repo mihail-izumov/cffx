@@ -1,7 +1,12 @@
 ---
 prev: false
 next: false
-title: Отправить Сигнал в Корж
+title: Новый Сигнал в Корж
+description: Где Начинается Ваша Кофейня
+head:
+  - - meta
+    - property: "og:image"
+      content: "https://cffx.ru/korzh_og_card.jpg"
 ---
 <div class="back-button-container">
   <a href="/korzh" class="back-button">
