@@ -252,9 +252,20 @@
     </label>
 
     <!-- Кнопка отправки -->
-    <button class="signal-submit-button" :disabled="submitStatus === 'processing' || !form.agreedToTerms" @click="submitForm">
-      {{ submitStatus === 'processing' ? 'Отправка...' : 'Отправить в кофейню' }}
-    </button>
+<button 
+  class="signal-submit-button" 
+  :disabled="submitStatus === 'processing' || !form.agreedToTerms"
+  @click="submitForm"
+>
+  <span class="signal-liquid-next-text">
+    {{ submitStatus === 'processing' 
+        ? '⏳ Отправляется...' 
+        : form.selectedNetwork 
+          ? `Отправить в ${form.selectedNetwork}` 
+          : 'Отправить в кофейню' 
+    }}
+  </span>
+</button>
   </template>
 
 </div>
@@ -418,7 +429,7 @@ const sections = [
   { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
   { id: 'facts', title: 'Факты', buttonText: 'К решению ситуации' },
   { id: 'solutions', title: 'Решения', buttonText: 'Сформировать Сигнал' },
-  { id: 'summary', title: 'Резюме', buttonText: 'Выбрать локацию' },
+  { id: 'summary', title: 'Резюме', buttonText: 'Формат ответа' },
   { id: 'contact', title: 'Контакт', buttonText: '' } // На последнем шаге кнопка не отображается
 ];
 
