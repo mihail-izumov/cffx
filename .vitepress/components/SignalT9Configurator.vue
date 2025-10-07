@@ -106,7 +106,7 @@
             v-model="form.factualAnalysis" 
             @focus="startRotation(2)" 
             :rows="isMobile ? 5 : 3"
-            placeholder="Несколько фактов: что и когда случилось..."
+            placeholder="Несколько фактов: что и когда произошло ..."
           ></textarea>
           <div class="signal-suggestions-container">
             <div 
