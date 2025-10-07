@@ -24,7 +24,7 @@
       <div class="signal-form-section">
         <div class="signal-question-block signal-compact">
           <label class="signal-question-label">Ваша кофейня "Корж"</label>
-          <p class="signal-question-help">Выберите адрес, где произошла ситуация</p>
+          <p class="signal-question-help">В какой кофейне произошла ситуация?</p>
           <select v-model="form.coffeeShopAddress" class="signal-address-select" required>
             <option value="">Выбрать локацию</option>
             <option value="Куйбышева, 103">Куйбышева, 103</option>
