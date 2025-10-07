@@ -1617,10 +1617,11 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   cursor: pointer;
   transition: all 0.4s ease-out;
   margin-top: 1rem;
-  display: flex;              /* Добавить */
-  align-items: center;        /* Добавить */
-  justify-content: center;    /* Добавить */
-  text-align: center;         /* Добавить */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0;                    /* Добавить эту строку */
 }
 
 .signal-submit-button .signal-liquid-next-text {
