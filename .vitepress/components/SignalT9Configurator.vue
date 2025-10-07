@@ -1621,13 +1621,15 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0;                    /* Добавить эту строку */
+  padding: 0;    /* Убрать любые паддинги */
 }
 
 .signal-submit-button .signal-liquid-next-text {
   display: block;
   width: 100%;
   text-align: center;
+  padding: 0;   /* Убрать любые паддинги у текста */
+  margin: 0;    /* Убрать любые отступы */
 }
 
 .signal-submit-button:hover:not(:disabled) {
