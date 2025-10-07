@@ -1476,9 +1476,8 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   text-transform: none;
   letter-spacing: normal;
   line-height: 1;
-  display: block;
-  width: 100%;
-  text-align: center;
+  display: flex;
+  align-items: center;
 }
 
 .signal-next-icon {
@@ -1622,6 +1621,12 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   align-items: center;        /* Добавить */
   justify-content: center;    /* Добавить */
   text-align: center;         /* Добавить */
+}
+
+.signal-submit-button .signal-liquid-next-text {
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 
 .signal-submit-button:hover:not(:disabled) {
