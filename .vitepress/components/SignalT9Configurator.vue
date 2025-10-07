@@ -1627,11 +1627,9 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
 .signal-submit-button .signal-liquid-next-text {
-  display: block;
-  width: 100%;
-  text-align: center;
-  padding: 0;   /* Убрать любые паддинги у текста */
-  margin: 0;    /* Убрать любые отступы */
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .signal-submit-button:hover:not(:disabled) {
