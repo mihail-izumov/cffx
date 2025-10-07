@@ -257,14 +257,7 @@
   :disabled="submitStatus === 'processing' || !form.agreedToTerms"
   @click="submitForm"
 >
-  <span class="signal-liquid-next-text">
-    {{ submitStatus === 'processing' 
-        ? '⏳ Отправляется...' 
-        : form.selectedNetwork 
-          ? `Отправить в ${form.selectedNetwork}` 
-          : 'Отправить в кофейню' 
-    }}
-  </span>
+  <span class="signal-liquid-next-text">{{ submitButtonText }}</span>
 </button>
   </template>
 
