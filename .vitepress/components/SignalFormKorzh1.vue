@@ -209,7 +209,7 @@
         <div class="signal-question-block signal-compact">
           <label class="signal-question-label">Ваш контакт в Telegram</label>
           <p class="signal-question-help">Чтобы получать обновления и видеть результат</p>
-          <input type="tel" id="telegramPhone" v-model="form.telegramPhone" @focus="stopRotation()" placeholder="Ник или Номер телефона" required>
+          <<input type="text" id="telegramPhone" v-model="form.telegramPhone" placeholder="Ник или Номер телефона" required>
         </div>
       </div>
       
