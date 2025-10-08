@@ -560,17 +560,21 @@ const isFormValid = computed(() =>
 async function submitForm() {
   if (!isFormValid.value) return;
   isSubmitting.value = true;
+  
+  // Объединяем три поля в одну строку
+  const fullReview = `Эмоции: ${form.emotionalRelease}\n\nДетали: ${form.factualAnalysis}\n\nРешение: ${form.constructiveSuggestions}`;
+
+  // Создаем объект данных в формате, который ожидает Formspree
   const formData = { 
-    _subject: `Новый Сигнал ${formattedTicketNumber.value} от ${form.name} (Корж, ${form.coffeeShopAddress})`, 
-    "Код тикета": rawTicketNumber.value, 
+    _subject: `Новый Сигнал ${formattedTicketNumber.value} от ${form.name}`,
+    "Тикет": rawTicketNumber.value, 
     "Дата": currentDate.value, 
     "Кофейня": `Корж, ${form.coffeeShopAddress}`,
     "Имя": form.name, 
-    "1. Эмоции": form.emotionalRelease, 
-    "2. Детали": form.factualAnalysis, 
-    "3. Решение": form.constructiveSuggestions, 
-    "Контакт в Telegram": form.telegramPhone 
+    "Отзыв": fullReview, // <--- Отправляем одно поле "Отзыв"
+    "Телеграм": form.telegramPhone 
   };
+
   try {
     const response = await fetch('https://formspree.io/f/mdkzjopz', { 
       method: 'POST', 
