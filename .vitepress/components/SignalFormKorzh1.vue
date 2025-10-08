@@ -573,8 +573,7 @@ async function submitForm() {
     "Телеграм": form.telegramPhone 
   };
 
-  // Формируем сообщение для Telegram
-const telegramMessage = `
+  const telegramMessage = `
 Новый Сигнал ⚡️ ${formattedTicketNumber.value}
 
 Дата: ${currentDate.value}
@@ -595,71 +594,96 @@ ${form.constructiveSuggestions}
   const TELEGRAM_BOT_TOKEN = '7550484285:AAFtxYSoPx6ZakRIqLAkzTh4UUI0T9VrczA';
   const TELEGRAM_CHAT_ID = '390497';
 
-  try {
-    // Отправляем в Formspree И в Telegram параллельно
-    const [formspreeResponse, telegramResponse] = await Promise.allSettled([
-      // Отправка в Formspree
-      fetch('https://formspree.io/f/mdkzjopz', { 
+  // Функция для отправки в Formspree с повторными попытками
+  async function sendToFormspree(retryCount = 0) {
+    const maxRetries = 3;
+    const retryDelay = 2000; // 2 секунды между попытками
+    
+    try {
+      const response = await fetch('https://formspree.io/f/mdkzjopz', { 
         method: 'POST', 
         headers: { 
           'Accept': 'application/json', 
           'Content-Type': 'application/json' 
         }, 
         body: JSON.stringify(formData) 
-      }),
+      });
+
+      if (response.status === 429) {
+        // Rate limit - будем повторять в фоне после показа успеха
+        console.warn('⚠️ Formspree rate limit. Повторим через 30 секунд в фоне.');
+        setTimeout(() => sendToFormspree(retryCount + 1), 30000);
+        return { success: false, rateLimited: true };
+      }
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('✅ Formspree успешно:', data);
+      return { success: true, data };
       
-      // Отправка в Telegram (запасной канал)
-      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: telegramMessage
-        })
-      })
-    ]);
-
-    // Детальное логирование Formspree
-    console.log('=== Formspree ===');
-    console.log('Status:', formspreeResponse.status);
-    if (formspreeResponse.status === 'fulfilled') {
-      const formspreeData = await formspreeResponse.value.json();
-      console.log('Response:', formspreeData);
-      console.log('HTTP Status:', formspreeResponse.value.status);
-    } else {
-      console.error('Formspree error:', formspreeResponse.reason);
+    } catch (error) {
+      console.error(`❌ Formspree попытка ${retryCount + 1}:`, error);
+      
+      if (retryCount < maxRetries) {
+        console.log(`⏳ Повторная попытка через ${retryDelay / 1000}с...`);
+        await new Promise(resolve => setTimeout(resolve, retryDelay));
+        return sendToFormspree(retryCount + 1);
+      }
+      
+      return { success: false, error };
     }
+  }
 
-    // Детальное логирование Telegram
-    console.log('=== Telegram ===');
-    console.log('Status:', telegramResponse.status);
-    if (telegramResponse.status === 'fulfilled') {
-      const telegramData = await telegramResponse.value.json();
-      console.log('Response:', telegramData);
-      console.log('HTTP Status:', telegramResponse.value.status);
-    } else {
-      console.error('Telegram error:', telegramResponse.reason);
-    }
-
-    // Проверяем, что хотя бы один канал сработал успешно
-    const formspreeSuccess = formspreeResponse.status === 'fulfilled' && formspreeResponse.value.ok;
-    const telegramSuccess = telegramResponse.status === 'fulfilled' && telegramResponse.value.ok;
-
-    if (formspreeSuccess || telegramSuccess) {
-      console.log('✅ Форма успешно отправлена через:', 
-        formspreeSuccess && telegramSuccess ? 'Formspree и Telegram' :
-        formspreeSuccess ? 'Formspree' : 'Telegram'
+  try {
+    // ПРИОРИТЕТ 1: Сначала отправляем в Telegram (быстро и надёжно)
+    let telegramSuccess = false;
+    try {
+      const telegramResponse = await fetch(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, 
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: telegramMessage
+          })
+        }
       );
+      
+      if (telegramResponse.ok) {
+        telegramSuccess = true;
+        console.log('✅ Telegram успешно');
+      }
+    } catch (error) {
+      console.error('❌ Telegram ошибка:', error);
+    }
+
+    // ПРИОРИТЕТ 2: Пытаемся отправить в Formspree
+    const formspreeResult = await sendToFormspree();
+    
+    // Если Telegram сработал - показываем успех сразу
+    // Formspree будет повторять попытки в фоне
+    if (telegramSuccess) {
+      console.log('✅ Форма отправлена! Данные сохранены в Telegram.');
+      if (formspreeResult.rateLimited) {
+        console.log('ℹ️ Formspree занят. Повторим попытку автоматически.');
+      }
+      formSubmitted.value = true;
+    } else if (formspreeResult.success) {
+      // Если только Formspree сработал
+      console.log('✅ Форма отправлена через Formspree');
       formSubmitted.value = true;
     } else {
-      throw new Error('Оба канала отправки недоступны');
+      // Оба канала недоступны
+      throw new Error('Оба канала отправки временно недоступны');
     }
     
   } catch (error) {
-    console.error('❌ Критическая ошибка отправки:', error);
-    alert('Не удалось отправить отзыв. Попробуйте позже.');
+    console.error('❌ Критическая ошибка:', error);
+    alert('Не удалось отправить форму. Пожалуйста, попробуйте через минуту.');
   } finally { 
     isSubmitting.value = false; 
   }
