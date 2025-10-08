@@ -580,51 +580,78 @@ ${form.factualAnalysis}
 ${form.constructiveSuggestions}
   `.trim();
 
-  // Данные для Airtable Webhook
-  const airtableData = {
-    ticketNumber: formattedTicketNumber.value,
-    date: currentDate.value,
-    coffeehouse: `Корж, ${form.coffeeShopAddress}`,
-    name: form.name,
-    telegram: form.telegramPhone,
-    emotionalRelease: form.emotionalRelease,
-    factualAnalysis: form.factualAnalysis,
-    constructiveSuggestions: form.constructiveSuggestions
-  };
-
   const TELEGRAM_BOT_TOKEN = '7550484285:AAFtxYSoPx6ZakRIqLAkzTh4UUI0T9VrczA';
   const TELEGRAM_CHAT_ID = '390497';
   const AIRTABLE_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyN19ejNAj63qs2fuJUf6VT3aFZJxygwj6yQYcLMh4DgUiux3amyeE6gPCixlTtTSrUUQ/exec';
 
   try {
-    // Отправляем в 2 канала одновременно
-    const [telegramResult, airtableResult] = await Promise.allSettled([
-      // 1. Telegram (уведомления)
-      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    // 1. Отправляем в Telegram
+    let telegramSuccess = false;
+    try {
+      const telegramResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           chat_id: TELEGRAM_CHAT_ID,
           text: telegramMessage
         })
-      }),
+      });
+      telegramSuccess = telegramResponse.ok;
+      console.log('Telegram:', telegramSuccess ? '✅' : '❌');
+    } catch (error) {
+      console.error('❌ Telegram ошибка:', error);
+    }
 
-      // 2. Airtable (база данных)
-      fetch(AIRTABLE_WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(airtableData)
-      })
-    ]);
+    // 2. Отправляем в Airtable через скрытую форму (обход CORS)
+    let airtableSuccess = false;
+    try {
+      const airtableData = {
+        ticketNumber: formattedTicketNumber.value,
+        date: currentDate.value,
+        coffeehouse: `Корж, ${form.coffeeShopAddress}`,
+        name: form.name,
+        telegram: form.telegramPhone,
+        emotionalRelease: form.emotionalRelease,
+        factualAnalysis: form.factualAnalysis,
+        constructiveSuggestions: form.constructiveSuggestions
+      };
 
-    // Проверяем результаты
-    const telegramSuccess = telegramResult.status === 'fulfilled' && telegramResult.value.ok;
-    const airtableSuccess = airtableResult.status === 'fulfilled' && airtableResult.value.ok;
+      // Создаём скрытую форму для отправки
+      const hiddenForm = document.createElement('form');
+      hiddenForm.method = 'POST';
+      hiddenForm.action = AIRTABLE_WEBHOOK_URL;
+      hiddenForm.target = 'airtable_iframe';
+      hiddenForm.style.display = 'none';
 
-    // Логируем результаты
-    console.log('=== Результаты отправки ===');
-    console.log('Telegram:', telegramSuccess ? '✅' : '❌');
-    console.log('Airtable:', airtableSuccess ? '✅' : '❌');
+      // Добавляем данные как скрытые поля
+      Object.keys(airtableData).forEach(key => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = airtableData[key];
+        hiddenForm.appendChild(input);
+      });
+
+      // Создаём скрытый iframe для приёма ответа
+      let iframe = document.getElementById('airtable_iframe');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.name = 'airtable_iframe';
+        iframe.id = 'airtable_iframe';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+      }
+
+      // Отправляем форму
+      document.body.appendChild(hiddenForm);
+      hiddenForm.submit();
+      document.body.removeChild(hiddenForm);
+
+      airtableSuccess = true;
+      console.log('Airtable: ✅');
+    } catch (error) {
+      console.error('❌ Airtable ошибка:', error);
+    }
 
     // Если хотя бы один канал сработал - показываем успех
     if (telegramSuccess || airtableSuccess) {
