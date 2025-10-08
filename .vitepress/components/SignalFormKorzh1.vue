@@ -247,6 +247,7 @@ const form = reactive({
 });
 
 const isSubmitting = ref(false);
+const submittedTime = ref('');
 const formSubmitted = ref(false);
 const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
@@ -561,6 +562,15 @@ async function submitForm() {
   if (!isFormValid.value) return;
   isSubmitting.value = true;
 
+  // Генерируем время отправки (момент нажатия кнопки)
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  submittedTime.value = `${year}-${month}-${day} ${hours}:${minutes}`;
+
   const telegramMessage = `
 Новый Сигнал ⚡️ ${formattedTicketNumber.value}
 
@@ -601,12 +611,13 @@ ${form.constructiveSuggestions}
       console.error('❌ Telegram ошибка:', error);
     }
 
-    // 2. Отправляем в Airtable через FormData (обход CORS)
+    // 2. Отправляем в Airtable
     let airtableSuccess = false;
     try {
       const formDataForAirtable = new FormData();
       formDataForAirtable.append('ticketNumber', formattedTicketNumber.value);
       formDataForAirtable.append('date', currentDate.value);
+      formDataForAirtable.append('submitted', submittedTime.value); // Добавили время отправки
       formDataForAirtable.append('coffeehouse', `Корж, ${form.coffeeShopAddress}`);
       formDataForAirtable.append('name', form.name);
       formDataForAirtable.append('telegram', form.telegramPhone);
@@ -619,13 +630,12 @@ ${form.constructiveSuggestions}
         body: formDataForAirtable
       });
 
-      airtableSuccess = true; // FormData всегда проходит
+      airtableSuccess = true;
       console.log('Airtable: ✅ (отправлено)');
     } catch (error) {
       console.error('❌ Airtable ошибка:', error);
     }
 
-    // Если хотя бы один канал сработал
     if (telegramSuccess || airtableSuccess) {
       const workingChannels = [
         telegramSuccess ? 'Telegram' : null,
