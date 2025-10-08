@@ -561,35 +561,110 @@ async function submitForm() {
   if (!isFormValid.value) return;
   isSubmitting.value = true;
   
-  // Объединяем три поля в одну строку
   const fullReview = `Эмоции: ${form.emotionalRelease}\n\nДетали: ${form.factualAnalysis}\n\nРешение: ${form.constructiveSuggestions}`;
 
-  // Создаем объект данных в формате, который ожидает Formspree
   const formData = { 
     _subject: `Новый Сигнал ${formattedTicketNumber.value} от ${form.name}`,
     "Тикет": rawTicketNumber.value, 
     "Дата": currentDate.value, 
     "Кофейня": `Корж, ${form.coffeeShopAddress}`,
     "Имя": form.name, 
-    "Отзыв": fullReview, // <--- Отправляем одно поле "Отзыв"
+    "Отзыв": fullReview,
     "Телеграм": form.telegramPhone 
   };
 
+  // Формируем сообщение для Telegram
+  const telegramMessage = `
+🔔 Новый Сигнал ${formattedTicketNumber.value}
+
+📅 Дата: ${currentDate.value}
+🏪 Кофейня: Корж, ${form.coffeeShopAddress}
+👤 Имя: ${form.name}
+📱 Телеграм: ${form.telegramPhone}
+
+💭 Эмоции:
+${form.emotionalRelease}
+
+📝 Детали:
+${form.factualAnalysis}
+
+💡 Решение:
+${form.constructiveSuggestions}
+  `.trim();
+
+  const TELEGRAM_BOT_TOKEN = '7550484285:AAFtxYSoPx6ZakRIqLAkzTh4UUI0T9VrczA';
+  const TELEGRAM_CHAT_ID = '390497';
+
   try {
-    const response = await fetch('https://formspree.io/f/mdkzjopz', { 
-      method: 'POST', 
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, 
-      body: JSON.stringify(formData) 
-    });
-    if (!response.ok) throw new Error('Ошибка сервера');
-    formSubmitted.value = true;
+    // Отправляем в Formspree И в Telegram параллельно
+    const [formspreeResponse, telegramResponse] = await Promise.allSettled([
+      // Отправка в Formspree
+      fetch('https://formspree.io/f/mdkzjopz', { 
+        method: 'POST', 
+        headers: { 
+          'Accept': 'application/json', 
+          'Content-Type': 'application/json' 
+        }, 
+        body: JSON.stringify(formData) 
+      }),
+      
+      // Отправка в Telegram (запасной канал)
+      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: telegramMessage
+        })
+      })
+    ]);
+
+    // Детальное логирование Formspree
+    console.log('=== Formspree ===');
+    console.log('Status:', formspreeResponse.status);
+    if (formspreeResponse.status === 'fulfilled') {
+      const formspreeData = await formspreeResponse.value.json();
+      console.log('Response:', formspreeData);
+      console.log('HTTP Status:', formspreeResponse.value.status);
+    } else {
+      console.error('Formspree error:', formspreeResponse.reason);
+    }
+
+    // Детальное логирование Telegram
+    console.log('=== Telegram ===');
+    console.log('Status:', telegramResponse.status);
+    if (telegramResponse.status === 'fulfilled') {
+      const telegramData = await telegramResponse.value.json();
+      console.log('Response:', telegramData);
+      console.log('HTTP Status:', telegramResponse.value.status);
+    } else {
+      console.error('Telegram error:', telegramResponse.reason);
+    }
+
+    // Проверяем, что хотя бы один канал сработал успешно
+    const formspreeSuccess = formspreeResponse.status === 'fulfilled' && formspreeResponse.value.ok;
+    const telegramSuccess = telegramResponse.status === 'fulfilled' && telegramResponse.value.ok;
+
+    if (formspreeSuccess || telegramSuccess) {
+      console.log('✅ Форма успешно отправлена через:', 
+        formspreeSuccess && telegramSuccess ? 'Formspree и Telegram' :
+        formspreeSuccess ? 'Formspree' : 'Telegram'
+      );
+      formSubmitted.value = true;
+    } else {
+      throw new Error('Оба канала отправки недоступны');
+    }
+    
   } catch (error) {
-    console.error('Ошибка отправки:', error);
+    console.error('❌ Критическая ошибка отправки:', error);
     alert('Не удалось отправить отзыв. Попробуйте позже.');
   } finally { 
     isSubmitting.value = false; 
   }
 }
+
 </script>
 
 <style scoped>
