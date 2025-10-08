@@ -580,6 +580,18 @@ ${form.factualAnalysis}
 ${form.constructiveSuggestions}
   `.trim();
 
+  // Данные для Airtable
+  const airtableData = new URLSearchParams({
+    ticketNumber: formattedTicketNumber.value,
+    date: currentDate.value,
+    coffeehouse: `Корж, ${form.coffeeShopAddress}`,
+    name: form.name,
+    telegram: form.telegramPhone,
+    emotionalRelease: form.emotionalRelease,
+    factualAnalysis: form.factualAnalysis,
+    constructiveSuggestions: form.constructiveSuggestions
+  });
+
   const TELEGRAM_BOT_TOKEN = '7550484285:AAFtxYSoPx6ZakRIqLAkzTh4UUI0T9VrczA';
   const TELEGRAM_CHAT_ID = '390497';
   const AIRTABLE_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyN19ejNAj63qs2fuJUf6VT3aFZJxygwj6yQYcLMh4DgUiux3amyeE6gPCixlTtTSrUUQ/exec';
@@ -602,58 +614,25 @@ ${form.constructiveSuggestions}
       console.error('❌ Telegram ошибка:', error);
     }
 
-    // 2. Отправляем в Airtable через скрытую форму (обход CORS)
+    // 2. Отправляем в Airtable через no-cors режим
     let airtableSuccess = false;
     try {
-      const airtableData = {
-        ticketNumber: formattedTicketNumber.value,
-        date: currentDate.value,
-        coffeehouse: `Корж, ${form.coffeeShopAddress}`,
-        name: form.name,
-        telegram: form.telegramPhone,
-        emotionalRelease: form.emotionalRelease,
-        factualAnalysis: form.factualAnalysis,
-        constructiveSuggestions: form.constructiveSuggestions
-      };
-
-      // Создаём скрытую форму для отправки
-      const hiddenForm = document.createElement('form');
-      hiddenForm.method = 'POST';
-      hiddenForm.action = AIRTABLE_WEBHOOK_URL;
-      hiddenForm.target = 'airtable_iframe';
-      hiddenForm.style.display = 'none';
-
-      // Добавляем данные как скрытые поля
-      Object.keys(airtableData).forEach(key => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = airtableData[key];
-        hiddenForm.appendChild(input);
+      await fetch(AIRTABLE_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: airtableData.toString()
       });
-
-      // Создаём скрытый iframe для приёма ответа
-      let iframe = document.getElementById('airtable_iframe');
-      if (!iframe) {
-        iframe = document.createElement('iframe');
-        iframe.name = 'airtable_iframe';
-        iframe.id = 'airtable_iframe';
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-      }
-
-      // Отправляем форму
-      document.body.appendChild(hiddenForm);
-      hiddenForm.submit();
-      document.body.removeChild(hiddenForm);
-
+      // В no-cors режиме мы не можем проверить ответ, поэтому считаем успешным
       airtableSuccess = true;
-      console.log('Airtable: ✅');
+      console.log('Airtable: ✅ (отправлено)');
     } catch (error) {
       console.error('❌ Airtable ошибка:', error);
     }
 
-    // Если хотя бы один канал сработал - показываем успех
+    // Если хотя бы один канал сработал
     if (telegramSuccess || airtableSuccess) {
       const workingChannels = [
         telegramSuccess ? 'Telegram' : null, 
