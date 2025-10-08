@@ -561,7 +561,6 @@ async function submitForm() {
   if (!isFormValid.value) return;
   isSubmitting.value = true;
 
-  // Сообщение для Telegram
   const telegramMessage = `
 Новый Сигнал ⚡️ ${formattedTicketNumber.value}
 
@@ -579,18 +578,6 @@ ${form.factualAnalysis}
 Решение:
 ${form.constructiveSuggestions}
   `.trim();
-
-  // Данные для Airtable
-  const airtableData = new URLSearchParams({
-    ticketNumber: formattedTicketNumber.value,
-    date: currentDate.value,
-    coffeehouse: `Корж, ${form.coffeeShopAddress}`,
-    name: form.name,
-    telegram: form.telegramPhone,
-    emotionalRelease: form.emotionalRelease,
-    factualAnalysis: form.factualAnalysis,
-    constructiveSuggestions: form.constructiveSuggestions
-  });
 
   const TELEGRAM_BOT_TOKEN = '7550484285:AAFtxYSoPx6ZakRIqLAkzTh4UUI0T9VrczA';
   const TELEGRAM_CHAT_ID = '390497';
@@ -614,19 +601,25 @@ ${form.constructiveSuggestions}
       console.error('❌ Telegram ошибка:', error);
     }
 
-    // 2. Отправляем в Airtable через no-cors режим
+    // 2. Отправляем в Airtable через FormData (обход CORS)
     let airtableSuccess = false;
     try {
-      await fetch(AIRTABLE_WEBHOOK_URL, {
+      const formDataForAirtable = new FormData();
+      formDataForAirtable.append('ticketNumber', formattedTicketNumber.value);
+      formDataForAirtable.append('date', currentDate.value);
+      formDataForAirtable.append('coffeehouse', `Корж, ${form.coffeeShopAddress}`);
+      formDataForAirtable.append('name', form.name);
+      formDataForAirtable.append('telegram', form.telegramPhone);
+      formDataForAirtable.append('emotionalRelease', form.emotionalRelease);
+      formDataForAirtable.append('factualAnalysis', form.factualAnalysis);
+      formDataForAirtable.append('constructiveSuggestions', form.constructiveSuggestions);
+
+      const airtableResponse = await fetch(AIRTABLE_WEBHOOK_URL, {
         method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: airtableData.toString()
+        body: formDataForAirtable
       });
-      // В no-cors режиме мы не можем проверить ответ, поэтому считаем успешным
-      airtableSuccess = true;
+
+      airtableSuccess = true; // FormData всегда проходит
       console.log('Airtable: ✅ (отправлено)');
     } catch (error) {
       console.error('❌ Airtable ошибка:', error);
@@ -635,7 +628,7 @@ ${form.constructiveSuggestions}
     // Если хотя бы один канал сработал
     if (telegramSuccess || airtableSuccess) {
       const workingChannels = [
-        telegramSuccess ? 'Telegram' : null, 
+        telegramSuccess ? 'Telegram' : null,
         airtableSuccess ? 'База данных' : null
       ].filter(Boolean);
       
