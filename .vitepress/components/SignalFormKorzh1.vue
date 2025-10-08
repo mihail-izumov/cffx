@@ -574,21 +574,21 @@ async function submitForm() {
   };
 
   // Формируем сообщение для Telegram
-  const telegramMessage = `
-🔔 Новый Сигнал ${formattedTicketNumber.value}
+const telegramMessage = `
+Новый Сигнал ⚡️ ${formattedTicketNumber.value}
 
-📅 Дата: ${currentDate.value}
-🏪 Кофейня: Корж, ${form.coffeeShopAddress}
-👤 Имя: ${form.name}
-📱 Телеграм: ${form.telegramPhone}
+Дата: ${currentDate.value}
+Кофейня: Корж, ${form.coffeeShopAddress}
+Имя: ${form.name}
+Телеграм: ${form.telegramPhone}
 
-💭 Эмоции:
+Эмоции:
 ${form.emotionalRelease}
 
-📝 Детали:
+Детали:
 ${form.factualAnalysis}
 
-💡 Решение:
+Решение:
 ${form.constructiveSuggestions}
   `.trim();
 
