@@ -540,8 +540,13 @@ onMounted(() => {
   rawTicketNumber.value = String(Date.now()).slice(-6);
   formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
   const now = new Date();
-  const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-  currentDate.value = now.toLocaleString('ru-RU', options).replace(',', '');
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  currentDate.value = `${year}-${month}-${day} ${hours}:${minutes}`;
+  
   initializeSuggestions();
 });
 
