@@ -28,7 +28,7 @@ const cafes = {
   },
   'MOSAIC': {
     name: 'MOSAIC',
-    yandex2gis: 12,
+    yandex2gis: 116,
     yandex2gisPercent: 42,
     smartReviews: 0,
     smartReviewsPercent: 0,
