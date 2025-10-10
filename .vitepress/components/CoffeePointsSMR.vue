@@ -54,7 +54,7 @@ const cafes = {
   },
   'Skuratov': {
     name: 'Skuratov',
-    yandex2gis: 2,
+    yandex2gis: 3,
     yandex2gisPercent: 89,
     smartReviews: 0,
     smartReviewsPercent: 0,
