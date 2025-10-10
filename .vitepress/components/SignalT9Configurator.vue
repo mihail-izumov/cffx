@@ -565,28 +565,41 @@ ${form.summaryText}
       console.error('❌ Telegram ошибка:', error);
     }
 
-    // 2. Отправляем в Airtable через webhook
-    let airtableSuccess = false;
-    try {
-      const formDataForAirtable = new FormData();
-      formDataForAirtable.append('ticketNumber', formattedTicketNumber.value);
-      formDataForAirtable.append('date', currentDate.value);
-      formDataForAirtable.append('submitted', submittedTime);
-      formDataForAirtable.append('network', form.selectedNetwork);
-      formDataForAirtable.append('address', form.selectedBranch);
-      formDataForAirtable.append('name', form.userName || 'Аноним');
-      formDataForAirtable.append('review', form.summaryText);
+// 2. Отправляем в Airtable через webhook
+let airtableSuccess = false;
+try {
+  const formDataForAirtable = new FormData();
+  formDataForAirtable.append('ticketNumber', formattedTicketNumber.value);
+  formDataForAirtable.append('date', currentDate.value);
+  formDataForAirtable.append('submitted', submittedTime);
+  formDataForAirtable.append('network', form.selectedNetwork);
+  formDataForAirtable.append('address', form.selectedBranch);
+  formDataForAirtable.append('name', form.userName || 'Аноним');
+  formDataForAirtable.append('review', form.summaryText);
 
-      const airtableResponse = await fetch(AIRTABLE_WEBHOOK_URL, {
-        method: 'POST',
-        body: formDataForAirtable
-      });
+  console.log('Отправка в Airtable...', AIRTABLE_WEBHOOK_URL);
 
-      airtableSuccess = airtableResponse.ok;
-      console.log('Airtable:', airtableSuccess ? '✅' : '❌');
-    } catch (error) {
-      console.error('❌ Airtable ошибка:', error);
-    }
+  const airtableResponse = await fetch(AIRTABLE_WEBHOOK_URL, {
+    method: 'POST',
+    body: formDataForAirtable
+  });
+
+  // ВАЖНО: Проверяем реальный ответ
+  const responseText = await airtableResponse.text();
+  console.log('Ответ от Airtable:', responseText);
+  
+  if (airtableResponse.ok) {
+    const result = JSON.parse(responseText);
+    airtableSuccess = result.status === 'success';
+    console.log('Airtable статус:', result.status);
+  }
+  
+  console.log('Airtable:', airtableSuccess ? '✅' : '❌');
+} catch (error) {
+  console.error('❌ Airtable ошибка:', error);
+  console.error('Детали ошибки:', error.message, error.stack);
+}
+
 
     // Проверяем успешность хотя бы одного канала
     if (telegramSuccess || airtableSuccess) {
