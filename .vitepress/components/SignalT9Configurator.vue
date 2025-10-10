@@ -596,22 +596,6 @@ try {
     body: formDataForAirtable
   });
 
-  // Дальше код остается как есть
-  const responseText = await airtableResponse.text();
-  console.log('Ответ от Airtable:', responseText);
-  
-  if (airtableResponse.ok) {
-    const result = JSON.parse(responseText);
-    airtableSuccess = result.status === 'success';
-    console.log('Airtable статус:', result.status);
-  }
-  
-  console.log('Airtable:', airtableSuccess ? '✅' : '❌');
-} catch (error) {
-  console.error('❌ Airtable ошибка:', error);
-  console.error('Детали ошибки:', error.message);
-}
-
 
   // ВАЖНО: Проверяем реальный ответ
   const responseText = await airtableResponse.text();
