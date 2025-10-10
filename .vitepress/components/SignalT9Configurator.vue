@@ -568,6 +568,18 @@ ${form.summaryText}
 // 2. Отправляем в Airtable через webhook
 let airtableSuccess = false;
 try {
+  // ===== ДОБАВЬТЕ ЭТИ СТРОКИ =====
+  console.log('=== ДАННЫЕ ДЛЯ ОТПРАВКИ ===');
+  console.log('ticketNumber:', formattedTicketNumber.value);
+  console.log('date:', currentDate.value);
+  console.log('submitted:', submittedTime);
+  console.log('network:', form.selectedNetwork);
+  console.log('address:', form.selectedBranch);
+  console.log('name:', form.userName);
+  console.log('review:', form.summaryText);
+  console.log('==========================');
+  // ===== КОНЕЦ ДОБАВЛЕНИЯ =====
+
   const formDataForAirtable = new FormData();
   formDataForAirtable.append('ticketNumber', formattedTicketNumber.value);
   formDataForAirtable.append('date', currentDate.value);
@@ -583,6 +595,23 @@ try {
     method: 'POST',
     body: formDataForAirtable
   });
+
+  // Дальше код остается как есть
+  const responseText = await airtableResponse.text();
+  console.log('Ответ от Airtable:', responseText);
+  
+  if (airtableResponse.ok) {
+    const result = JSON.parse(responseText);
+    airtableSuccess = result.status === 'success';
+    console.log('Airtable статус:', result.status);
+  }
+  
+  console.log('Airtable:', airtableSuccess ? '✅' : '❌');
+} catch (error) {
+  console.error('❌ Airtable ошибка:', error);
+  console.error('Детали ошибки:', error.message);
+}
+
 
   // ВАЖНО: Проверяем реальный ответ
   const responseText = await airtableResponse.text();
