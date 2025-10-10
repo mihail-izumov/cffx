@@ -518,27 +518,106 @@ function onGenderClick(gender) {
   
 async function submitForm() {
   submitStatus.value = 'processing';
-  const formData = {
-    _subject: `Новый отзыв от ${form.userName || 'Аноним'}`,
-    "Дата": currentDate.value,
-    "Код тикета": rawTicketNumber.value,
-    "Сеть": form.selectedNetwork,
-    "Адрес": form.selectedBranch,
-    "Имя": form.userName,
-    "Отзыв": form.summaryText
-  };
+
+  // Генерируем время отправки с секундами
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const submittedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+  // Формируем сообщение для Telegram
+  const telegramMessage = `
+Новый отзыв ⚡️ ${formattedTicketNumber.value}
+
+Дата: ${currentDate.value}
+Сеть: ${form.selectedNetwork}
+Адрес: ${form.selectedBranch}
+Имя: ${form.userName || 'Аноним'}
+
+Отзыв:
+${form.summaryText}
+  `.trim();
+
+  // Данные для SignalCffxBot и Airtable
+  const TELEGRAM_BOT_TOKEN = '8104669951:AAFaqYLEBY_yCcvsfpWUhx409FAYeS7roDA';
+  const TELEGRAM_CHAT_ID = '7999126446';
+  const AIRTABLE_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxJwH_xeeHBxWY6EYVIIEahQknl_R-p7aAkhxeWySAm3o9BZNvng9MUMcJ8SBdAr7T7/exec';
+
   try {
-    const response = await fetch('https://formspree.io/f/mdkzjopz', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    });
-    if (!response.ok) throw new Error('Ошибка');
-    formSubmitted.value = true;
-    submitStatus.value = 'idle';
+    // 1. Отправляем в Telegram
+    let telegramSuccess = false;
+    try {
+      const telegramResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: telegramMessage
+        })
+      });
+      telegramSuccess = telegramResponse.ok;
+      console.log('Telegram:', telegramSuccess ? '✅' : '❌');
+    } catch (error) {
+      console.error('❌ Telegram ошибка:', error);
+    }
+
+// 2. Отправляем в Airtable через webhook
+let airtableSuccess = false;
+try {
+  const formDataForAirtable = new FormData();
+  formDataForAirtable.append('ticketNumber', formattedTicketNumber.value);
+  formDataForAirtable.append('date', currentDate.value);
+  formDataForAirtable.append('submitted', submittedTime);
+  formDataForAirtable.append('network', form.selectedNetwork);
+  formDataForAirtable.append('address', form.selectedBranch);
+  formDataForAirtable.append('name', form.userName || 'Аноним');
+  formDataForAirtable.append('review', form.summaryText);
+
+  console.log('Отправка в Airtable...', AIRTABLE_WEBHOOK_URL);
+
+  const airtableResponse = await fetch(AIRTABLE_WEBHOOK_URL, {
+    method: 'POST',
+    body: formDataForAirtable
+  });
+
+  // ВАЖНО: Проверяем реальный ответ
+  const responseText = await airtableResponse.text();
+  console.log('Ответ от Airtable:', responseText);
+  
+  if (airtableResponse.ok) {
+    const result = JSON.parse(responseText);
+    airtableSuccess = result.status === 'success';
+    console.log('Airtable статус:', result.status);
+  }
+  
+  console.log('Airtable:', airtableSuccess ? '✅' : '❌');
+} catch (error) {
+  console.error('❌ Airtable ошибка:', error);
+  console.error('Детали ошибки:', error.message, error.stack);
+}
+
+
+    // Проверяем успешность хотя бы одного канала
+    if (telegramSuccess || airtableSuccess) {
+      const workingChannels = [
+        telegramSuccess ? 'Telegram' : null,
+        airtableSuccess ? 'База данных' : null
+      ].filter(Boolean);
+      
+      console.log(`✅ Отзыв сохранён в: ${workingChannels.join(', ')}`);
+      formSubmitted.value = true;
+      submitStatus.value = 'idle';
+    } else {
+      throw new Error('Оба канала недоступны');
+    }
+    
   } catch (error) {
-    console.error('Ошибка:', error);
-    alert('Не удалось отправить отзыв. Попробуйте позже.');
+    console.error('❌ Критическая ошибка:', error);
+    alert('Не удалось отправить отзыв. Попробуйте через минуту.');
     submitStatus.value = 'idle';
   }
 }
