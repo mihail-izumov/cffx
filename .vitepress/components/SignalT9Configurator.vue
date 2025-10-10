@@ -542,10 +542,10 @@ async function submitForm() {
 ${form.summaryText}
   `.trim();
 
-  // ВАШИ ДАННЫЕ ДЛЯ НОВОГО БОТА
+  // Данные для SignalCffxBot и Airtable
   const TELEGRAM_BOT_TOKEN = '8104669951:AAFaqYLEBY_yCcvsfpWUhx409FAYeS7roDA';
   const TELEGRAM_CHAT_ID = '7999126446';
-  const AIRTABLE_WEBHOOK_URL = 'ВАШ_GOOGLE_APPS_SCRIPT_WEBHOOK_URL'; // Создадим ниже
+  const AIRTABLE_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxJwH_xeeHBxWY6EYVIIEahQknl_R-p7aAkhxeWySAm3o9BZNvng9MUMcJ8SBdAr7T7/exec';
 
   try {
     // 1. Отправляем в Telegram
@@ -582,8 +582,8 @@ ${form.summaryText}
         body: formDataForAirtable
       });
 
-      airtableSuccess = true;
-      console.log('Airtable: ✅ (отправлено)');
+      airtableSuccess = airtableResponse.ok;
+      console.log('Airtable:', airtableSuccess ? '✅' : '❌');
     } catch (error) {
       console.error('❌ Airtable ошибка:', error);
     }
@@ -608,7 +608,6 @@ ${form.summaryText}
     submitStatus.value = 'idle';
   }
 }
-
 
 // ===== ИСПРАВЛЕННАЯ ЧАСТЬ: ТРЕХУРОВНЕВАЯ СИСТЕМА ПОДСКАЗОК =====
 
