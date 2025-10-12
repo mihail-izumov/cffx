@@ -528,10 +528,19 @@ async function submitForm() {
   const minutes = String(now.getMinutes()).padStart(2, '0');
   const seconds = String(now.getSeconds()).padStart(2, '0');
   const submittedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
-  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxJwH_xeeHBxWY6EYVIIEahQknl_R-p7aAkhxeWySAm3o9BZNvng9MUMcJ8SBdAr7T7/exec';
+  
+  // 🆕 Генерируем уникальный ID клиента (для rate limiting)
+  let clientId = localStorage.getItem('signal_client_id');
+  if (!clientId) {
+    clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now();
+    localStorage.setItem('signal_client_id', clientId);
+  }
+  
+  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxJw_HxeeHBxWY6EYVIIEahQknlR-p7aAkhxeWySAm3o9BZNvng9MUMcJ8SBdAr7T7/exec';
   
   const formData = new FormData();
+  formData.append('referer', window.location.origin);
+  formData.append('clientId', clientId);
   formData.append('ticketNumber', formattedTicketNumber.value);
   formData.append('date', currentDate.value);
   formData.append('submitted', submittedTime);
@@ -553,16 +562,23 @@ async function submitForm() {
       formSubmitted.value = true;
       submitStatus.value = 'idle';
     } else {
-      throw new Error('Ошибка обработки данных');
+      throw new Error(result.message || 'Ошибка обработки данных');
     }
   } catch (error) {
     console.error('❌ Ошибка отправки:', error);
-    alert('Не удалось отправить отзыв. Пожалуйста, попробуйте через минуту.');
+    
+    // 🆕 Более детальное сообщение об ошибке
+    if (error.message && error.message.includes('много запросов')) {
+      alert('Вы отправили слишком много отзывов. Пожалуйста, подождите минуту.');
+    } else {
+      alert('Не удалось отправить отзыв. Пожалуйста, попробуйте через минуту.');
+    }
+    
     submitStatus.value = 'idle';
   }
 }
 
-// ===== ИСПРАВЛЕННАЯ ЧАСТЬ: ТРЕХУРОВНЕВАЯ СИСТЕМА ПОДСКАЗОК =====
+// ===== ТРЕХУРОВНЕВАЯ СИСТЕМА ПОДСКАЗОК =====
 
 const baseSuggestions = {
 emotions: {
