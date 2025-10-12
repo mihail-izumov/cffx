@@ -566,7 +566,7 @@ async function submitForm() {
     localStorage.setItem('signal_client_id', clientId);
   }
   
-  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwG0MJ1em-ja8sF_2fYcEFUzmg9GlHCQgDpXYW42XwosmSuQ0zs0w5JxoBCPC607qGZ-Q/exec';
+  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyBxwUIkFpPKk8lOX7bZtd1-Y6b9kIafNXofE789MWNMYxZR_uux7sr9C_9VY35JxfD8g/exec';
   
   const formData = new FormData();
   formData.append('referer', window.location.origin);
