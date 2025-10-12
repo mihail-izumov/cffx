@@ -412,21 +412,33 @@ const selectedNetworkBranches = computed(() => {
 
 onMounted(() => {
   const checkMobile = () => {
-    isMobile.value = window.innerWidth <= 768;
-  };
-  checkMobile();
-  window.addEventListener('resize', checkMobile);
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') showInfoModal.value = false;
-  });
-  updateSuggestionsForGender();
+    isMobile.value = window.innerWidth <= 768
+  }
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
   
-  rawTicketNumber.value = String(Date.now()).slice(-6);
-  formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
-  const now = new Date();
-  const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-  currentDate.value = now.toLocaleString('ru-RU', options).replace(',', '');
-});
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      showInfoModal.value = false
+    }
+  })
+  
+  updateSuggestionsForGender()
+  
+  rawTicketNumber.value = String(Date.now()).slice(-6)
+  formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`
+  
+  // ИСПРАВЛЕНО: добавлены секунды
+  const now = new Date()
+  const day = String(now.getDate()).padStart(2, '0')
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const year = now.getFullYear()
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  const seconds = String(now.getSeconds()).padStart(2, '0')
+  
+  currentDate.value = `${day}.${month}.${year}, ${hours}:${minutes}:${seconds}`
+})
 
 const sections = [
   { id: 'location', title: 'Локация', buttonText: 'Начать' },
