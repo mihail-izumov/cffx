@@ -252,7 +252,6 @@ const formSubmitted = ref(false);
 const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
 const currentDate = ref('');
-const currentDateWithSeconds = ref('');
 const activeRotator = ref(0);
 const selectedGender = ref('female');
 const showInfoModal = ref(false);
@@ -543,17 +542,16 @@ onMounted(() => {
   
   // Добавляем секунды
   const now = new Date();
-  const day = String(now.getDate()).padStart(2, '0');
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const year = now.getFullYear();
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
-  currentDate.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  currentDateWithSeconds.value = `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
-  
-  initializeSuggestions();
-});
+const day = String(now.getDate()).padStart(2, '0');
+const month = String(now.getMonth() + 1).padStart(2, '0');
+const year = now.getFullYear();
+const hours = String(now.getHours()).padStart(2, '0');
+const minutes = String(now.getMinutes()).padStart(2, '0');
+const seconds = String(now.getSeconds()).padStart(2, '0');
+
+currentDate.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+initializeSuggestions();
 
 onUnmounted(() => {
   stopRotation();
@@ -596,7 +594,7 @@ async function submitForm() {
   formData.append('referer', window.location.origin);
   formData.append('clientId', clientId);
   formData.append('ticketNumber', formattedTicketNumber.value);
-  formData.append('date', currentDateWithSeconds.value);
+  formData.append('date', currentDate.value);
   formData.append('submitted', submittedTime.value);
   formData.append('coffeehouse', `Корж, ${form.coffeeShopAddress}`);
   formData.append('name', form.name);
