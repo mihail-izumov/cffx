@@ -571,7 +571,6 @@ async function submitForm() {
   
   isSubmitting.value = true;
   
-  // Генерируем время отправки
   const now = new Date();
   const day = String(now.getDate()).padStart(2, '0');
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -588,7 +587,7 @@ async function submitForm() {
     localStorage.setItem('signal_client_id', clientId);
   }
   
-  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxtBxEldN-sCY8SpGZXSwx5__RTJvpZPqeqlUgKzO2On8OcYGA2l81FxBsTNrkBHkLv9A/exec';
+  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxtBxEldN-sCY8SpGZXSwx5RTJvpZPqeqlUgKzO2On8OcYGA2l81FxBsTNrkBHkLv9A/exec';
   
   const formData = new FormData();
   formData.append('referer', window.location.origin);
@@ -596,7 +595,7 @@ async function submitForm() {
   formData.append('ticketNumber', formattedTicketNumber.value);
   formData.append('date', currentDate.value);
   formData.append('submitted', submittedTime.value);
-  formData.append('coffeehouse', `Корж, ${form.coffeeShopAddress}`);
+  formData.append('coffeehouse', `Корж, ${form.coffeeShopAddress}`);  // ← ИСПРАВЛЕНО!
   formData.append('name', form.name);
   formData.append('telegram', form.telegramPhone);
   formData.append('emotionalRelease', form.emotionalRelease);
