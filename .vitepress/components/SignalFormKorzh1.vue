@@ -568,9 +568,10 @@ const isFormValid = computed(() =>
 
 async function submitForm() {
   if (!isFormValid.value) return;
+  
   isSubmitting.value = true;
-
-  // Генерируем время отправки с секундами
+  
+  // Генерируем время отправки
   const now = new Date();
   const day = String(now.getDate()).padStart(2, '0');
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -579,89 +580,54 @@ async function submitForm() {
   const minutes = String(now.getMinutes()).padStart(2, '0');
   const seconds = String(now.getSeconds()).padStart(2, '0');
   submittedTime.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
-  const telegramMessage = `
-Новый Сигнал ⚡️ ${formattedTicketNumber.value}
-
-Дата: ${currentDate.value}
-Кофейня: Корж, ${form.coffeeShopAddress}
-Имя: ${form.name}
-Телеграм: ${form.telegramPhone}
-
-Эмоции:
-${form.emotionalRelease}
-
-Детали:
-${form.factualAnalysis}
-
-Решение:
-${form.constructiveSuggestions}
-  `.trim();
-
-  const TELEGRAM_BOT_TOKEN = '7550484285:AAFtxYSoPx6ZakRIqLAkzTh4UUI0T9VrczA';
-  const TELEGRAM_CHAT_ID = '390497';
-  const AIRTABLE_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyN19ejNAj63qs2fuJUf6VT3aFZJxygwj6yQYcLMh4DgUiux3amyeE6gPCixlTtTSrUUQ/exec';
-
+  
+  // Генерируем уникальный ID клиента (для rate limiting)
+  let clientId = localStorage.getItem('signal_client_id');
+  if (!clientId) {
+    clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now();
+    localStorage.setItem('signal_client_id', clientId);
+  }
+  
+  // ⚡️ ЕДИНСТВЕННЫЙ endpoint
+  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyMPd0Y6i_3UKmAtsB2jTIjKbQ8PQExBLPzwuP0vpmODbBewjvg_ZMkxZCZv9pSwyBsww/exec';
+  
+  const formData = new FormData();
+  formData.append('referer', window.location.origin);
+  formData.append('clientId', clientId);
+  formData.append('ticketNumber', formattedTicketNumber.value);
+  formData.append('date', currentDate.value);
+  formData.append('submitted', submittedTime.value);
+  formData.append('coffeehouse', `Корж, ${form.coffeeShopAddress}`);
+  formData.append('name', form.name);
+  formData.append('telegram', form.telegramPhone);
+  formData.append('emotionalRelease', form.emotionalRelease);
+  formData.append('factualAnalysis', form.factualAnalysis);
+  formData.append('constructiveSuggestions', form.constructiveSuggestions);
+  
   try {
-    // 1. Отправляем в Telegram
-    let telegramSuccess = false;
-    try {
-      const telegramResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: telegramMessage
-        })
-      });
-      telegramSuccess = telegramResponse.ok;
-      console.log('Telegram:', telegramSuccess ? '✅' : '❌');
-    } catch (error) {
-      console.error('❌ Telegram ошибка:', error);
-    }
-
-    // 2. Отправляем в Airtable
-    let airtableSuccess = false;
-    try {
-      const formDataForAirtable = new FormData();
-      formDataForAirtable.append('ticketNumber', formattedTicketNumber.value);
-      formDataForAirtable.append('date', currentDate.value);
-      formDataForAirtable.append('submitted', submittedTime.value); // Добавили время отправки
-      formDataForAirtable.append('coffeehouse', `Корж, ${form.coffeeShopAddress}`);
-      formDataForAirtable.append('name', form.name);
-      formDataForAirtable.append('telegram', form.telegramPhone);
-      formDataForAirtable.append('emotionalRelease', form.emotionalRelease);
-      formDataForAirtable.append('factualAnalysis', form.factualAnalysis);
-      formDataForAirtable.append('constructiveSuggestions', form.constructiveSuggestions);
-
-      const airtableResponse = await fetch(AIRTABLE_WEBHOOK_URL, {
-        method: 'POST',
-        body: formDataForAirtable
-      });
-
-      airtableSuccess = true;
-      console.log('Airtable: ✅ (отправлено)');
-    } catch (error) {
-      console.error('❌ Airtable ошибка:', error);
-    }
-
-    if (telegramSuccess || airtableSuccess) {
-      const workingChannels = [
-        telegramSuccess ? 'Telegram' : null,
-        airtableSuccess ? 'База данных' : null
-      ].filter(Boolean);
-      
-      console.log(`✅ Сигнал сохранён в: ${workingChannels.join(', ')}`);
+    const response = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      body: formData
+    });
+    
+    const result = await response.json();
+    
+    if (result.status === 'success' && result.processed) {
+      console.log('✅ Отзыв успешно отправлен');
       formSubmitted.value = true;
     } else {
-      throw new Error('Оба канала недоступны');
+      throw new Error(result.message || 'Ошибка обработки данных');
     }
-    
   } catch (error) {
-    console.error('❌ Критическая ошибка:', error);
-    alert('Не удалось отправить сигнал. Попробуйте через минуту.');
-  } finally { 
-    isSubmitting.value = false; 
+    console.error('❌ Ошибка отправки:', error);
+    
+    if (error.message && error.message.includes('много запросов')) {
+      alert('Вы отправили слишком много отзывов. Пожалуйста, подождите минуту.');
+    } else {
+      alert('Не удалось отправить отзыв. Пожалуйста, попробуйте через минуту.');
+    }
+  } finally {
+    isSubmitting.value = false;
   }
 }
 
