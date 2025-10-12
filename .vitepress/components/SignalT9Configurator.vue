@@ -495,23 +495,18 @@ function onGenderClick(gender) {
   const lastChar = networkName.slice(-1).toLowerCase();
   const lowerCaseName = networkName.toLowerCase();
 
-  // Исключения, которые не меняются
   const exceptions = ['корж', 'skuratov', 'surf'];
   if (exceptions.includes(lowerCaseName)) {
     return networkName;
   }
 
-  // Простое правило для окончаний на "а"
   if (lastChar === 'а') {
     return networkName.slice(0, -1) + 'у';
   }
-  
-  // Простое правило для окончаний на "я"
+
   if (lastChar === 'я') {
     return networkName.slice(0, -1) + 'ю';
   }
-
-  // Возвращаем как есть, если правило не подошло
   return networkName;
 }
 
@@ -519,7 +514,6 @@ function onGenderClick(gender) {
 async function submitForm() {
   submitStatus.value = 'processing';
   
-  // Генерируем время отправки с секундами
   const now = new Date();
   const day = String(now.getDate()).padStart(2, '0');
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -529,14 +523,13 @@ async function submitForm() {
   const seconds = String(now.getSeconds()).padStart(2, '0');
   const submittedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   
-  // 🆕 Генерируем уникальный ID клиента (для rate limiting)
   let clientId = localStorage.getItem('signal_client_id');
   if (!clientId) {
     clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now();
     localStorage.setItem('signal_client_id', clientId);
   }
   
-  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz_N3_F-K92vGYI4ZxqkeBA3h_BldqRbIdhrxmOp3HjCnRtO8htSVD9Wf38YlVsxAdv/exec';
+  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzIzGbFxYAEbZ_Fn7twQRWVzNFMHKKn3RKZgiVXiHNHxttyw8SRGAVV4Fis9SlK4-mn/exec';
   
   const formData = new FormData();
   formData.append('referer', window.location.origin);
