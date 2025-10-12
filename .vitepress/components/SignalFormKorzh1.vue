@@ -252,6 +252,7 @@ const formSubmitted = ref(false);
 const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
 const currentDate = ref('');
+const currentDateWithSeconds = ref('');
 const activeRotator = ref(0);
 const selectedGender = ref('female');
 const showInfoModal = ref(false);
@@ -547,8 +548,9 @@ onMounted(() => {
   const year = now.getFullYear();
   const hours = String(now.getHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');  // ← ДОБАВИЛИ СЕКУНДЫ
-  currentDate.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;  // ← ДОБАВИЛИ :${seconds}
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  currentDate.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  currentDateWithSeconds.value = `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
   
   initializeSuggestions();
 });
@@ -588,14 +590,13 @@ async function submitForm() {
     localStorage.setItem('signal_client_id', clientId);
   }
   
-  // ⚡️ ЕДИНСТВЕННЫЙ endpoint
-  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyMPd0Y6i_3UKmAtsB2jTIjKbQ8PQExBLPzwuP0vpmODbBewjvg_ZMkxZCZv9pSwyBsww/exec';
+  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxtBxEldN-sCY8SpGZXSwx5__RTJvpZPqeqlUgKzO2On8OcYGA2l81FxBsTNrkBHkLv9A/exec';
   
   const formData = new FormData();
   formData.append('referer', window.location.origin);
   formData.append('clientId', clientId);
   formData.append('ticketNumber', formattedTicketNumber.value);
-  formData.append('date', currentDate.value);
+  formData.append('date', currentDateWithSeconds.value);
   formData.append('submitted', submittedTime.value);
   formData.append('coffeehouse', `Корж, ${form.coffeeShopAddress}`);
   formData.append('name', form.name);
