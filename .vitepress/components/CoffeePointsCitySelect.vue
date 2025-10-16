@@ -1,6 +1,6 @@
 <template>
-  <div class="city-row">
-    <h3 class="city-title">Кофейни в</h3>
+  <div class="city-center-row">
+    <h3 class="city-title">Кофейни</h3>
     <div class="city-dropdown-combo">
       <button
         class="city-dropdown-btn"
@@ -72,18 +72,22 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.city-row {
+/* Центрирование блока сверху и по горизонтали, всегда */
+.city-center-row {
+  position: absolute;
+  left: 50%;
+  top: 50px;
+  transform: translateX(-50%);
   display: flex !important;
-  align-items: flex-start !important;
-  gap: 20px !important;
-  margin-top: 44px;
-  margin-left: 60vw; /* ровно к правому верхнему углу */
+  align-items: center !important;
+  gap: 18px !important;
   width: fit-content;
   min-width: 0;
+  z-index: 5;
 }
 .city-title {
   color: #fff !important;
-  font-size: 1.35rem !important;
+  font-size: 1.22rem !important;
   font-weight: 600 !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -91,7 +95,6 @@ onBeforeUnmount(() => {
   line-height: 1.7;
 }
 
-/* Combo */
 .city-dropdown-combo {
   position: relative;
   display: flex;
@@ -99,7 +102,6 @@ onBeforeUnmount(() => {
   min-width: 0;
 }
 
-/* Button style — mini */
 .city-dropdown-btn {
   display: flex !important;
   align-items: center !important;
@@ -195,10 +197,27 @@ onBeforeUnmount(() => {
   background: #484926 !important;
   color: #E4EBC4 !important;
 }
-@media (max-width: 900px) {
-  .city-row { margin-left: 20vw; }
+@media (max-width: 800px) {
+  .city-center-row {
+    left: 50%;
+    top: 30px;
+    transform: translateX(-50%);
+    gap: 11px !important;
+  }
+  .city-title {
+    font-size: 1.08rem !important;
+  }
 }
-@media (max-width: 600px) {
-  .city-row { margin-left: 3vw; gap: 10px; }
+
+@media (max-width: 440px) {
+  .city-center-row {
+    left: 50%;
+    top: 14px;
+    gap: 8px !important;
+    transform: translateX(-50%);
+  }
+  .city-title {
+    font-size: 0.98rem !important;
+  }
 }
 </style>
