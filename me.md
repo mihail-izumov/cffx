@@ -35,7 +35,11 @@ description: Где Начинается Ваша Кофейня
 
 <SignalSendButton />
 
+<br>
+
 ---
+
+<br>
 
 <CoffeePointsCitySelect />
 
