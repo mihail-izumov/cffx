@@ -1,44 +1,31 @@
 <template>
-  <div class="city-select-flex">
-    <h3 class="city-select-title">Кофейни в</h3>
-    <div class="dropdown" :class="{ open: open }">
-      <div class="buttons">
-        <button
-          :class="['item-btn', { active: active === 'samara' }]"
-          @click="go('/me')"
-          tabindex="0"
-        >
-          <span class="icon pointer">
-            <!-- Иконка мыши, ПОВЕРНУТА ВПРАВО -->
-            <svg xmlns="http://www.w3.org/2000/svg" style="transform: rotate(0deg);" width="22" height="22" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-             class="lucide-mouse-pointer-2">
-              <path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z"/>
-            </svg>
-          </span>
-          <span class="samara">Самара</span>
-        </button>
-        <button
-          :class="['item-btn', { active: active === 'partner' }]"
-          @click="go('/partner')"
-          tabindex="0"
-        >Стать партнером</button>
-      </div>
-      <span class="dropdown-arrow" @click="toggleDropdown">
-        <!-- Стрелка-галочка -->
-        <svg width="16" height="16" viewBox="0 0 10 10" fill="none"
-         stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" style="display:block;">
-          <polyline points="2.5,4.3 5,7.3 7.5,4.3"/>
-        </svg>
-      </span>
-      <ul v-if="open" class="options">
-        <li>
-          <a href="/me" class="option-link" :class="{ chosen: active === 'samara' }"
-             @click.prevent="select('samara')">
-            <span class="icon pointer right">
-              <svg xmlns="http://www.w3.org/2000/svg" style="transform: rotate(0deg);" width="20" height="20" viewBox="0 0 24 24" fill="none"
+  <div class="city-row">
+    <h3 class="city-title">Кофейни в</h3>
+    <div class="city-dropdown" :class="{ open: open }" @click="open=!open">
+      <div class="city-selected">
+        <span class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-               class="lucide-mouse-pointer-2">
+               style="transform: rotate(-15deg);">
+            <path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z"/>
+          </svg>
+        </span>
+        <span :class="{'lime': active==='samara'}">Самара</span>
+        <span class="arrow" :class="{lime:open}">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 6 8 10 12 6"/>
+          </svg>
+        </span>
+      </div>
+      <ul v-if="open" class="city-options">
+        <li>
+          <a href="/me"
+             :class="['city-btn', active==='samara'?'lime':'']"
+             @click="setActive('samara')"> 
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                   style="transform: rotate(-15deg);">
                 <path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z"/>
               </svg>
             </span>
@@ -46,155 +33,178 @@
           </a>
         </li>
         <li>
-          <a href="/partner" class="option-link" :class="{ chosen: active === 'partner' }"
-             @click.prevent="select('partner')">
+          <a href="/partner" class="city-btn" :class="{active:active==='partner'}" @click="setActive('partner')">
             Стать партнером
           </a>
         </li>
       </ul>
+    </div>
+    <div class="city-btns">
+      <a href="/me"
+         class="city-btn" 
+         :class="['no-radius', active==='samara'?'lime':'']"
+         @click="setActive('samara')">Самара</a>
+      <a href="/partner"
+         class="city-btn" 
+         :class="['no-radius',active==='partner'?'lime':'']"
+         @click="setActive('partner')">Стать партнером</a>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-
 const open = ref(false)
 const active = ref('samara')
-function go(url) {
-  window.open(url, '_blank')
-}
-function select(val) {
-  active.value = val
-  open.value = false
-  go(val === 'samara' ? '/me' : '/partner')
-}
-function toggleDropdown() {
-  open.value = !open.value
+function setActive(a) {
+  active.value=a
+  open.value=false
 }
 </script>
 
 <style scoped>
-.city-select-flex {
-  display: flex;
-  align-items: center;
-  gap: 22px;
+.city-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0 !important;
+  background: none !important;
 }
-
-.city-select-title {
+.city-title {
   color: #fff !important;
-  font-size: 1.28rem;
-  font-weight: 600;
-  margin: 0;
-  letter-spacing: 0.01em;
+  margin: 0 !important;
+  font-size: 1.28rem !important;
+  font-weight: 600 !important;
+  padding-right: 1.14rem !important;
 }
-
-.dropdown {
-  position: relative;
-  display: flex;
-  align-items: center;
-  border: 1.2px solid #C7FF28 !important;
-  border-radius: 15px;
-  background: #181918 !important;
-  box-shadow: none !important;
-  transition: border-color 0.17s;
-  padding: 0 0.3rem;
-  min-width: 240px;
+.city-dropdown {
+  position: relative !important;
+  border-radius: 13px !important;
+  border: 1.3px solid #C7FF28 !important;
+  background: #222318 !important;
+  min-width: 170px !important;
+  margin: 0 !important;
+  transition: border-color 0.13s !important;
+  z-index: 10 !important;
 }
-
-.dropdown-arrow {
-  margin-left: 7px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  color: #C7FF28;
-  background: none;
+.city-dropdown.open {
+  box-shadow: 0 0 6px 1px #C7FF28 !important;
+  border-color: #C7FF28 !important;
 }
-
-.buttons {
-  display: flex;
-  align-items: center;
-  gap: 0;
-}
-
-.item-btn {
-  border: none !important;
-  outline: none !important;
+.city-selected {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 1.08rem !important;
+  padding: 0.7rem 1.05rem !important;
   background: none !important;
-  color: #AEB6A5 !important;
-  font-size: 1.12rem !important;
-  font-weight: 500;
-  padding: 0.8rem 1.2rem;
-  border-radius: 12px 0 0 12px;
-  margin: 0;
-  position: relative;
-  transition: color 0.13s, box-shadow 0.14s;
-  z-index: 1;
-  box-shadow: none !important;
+  color: #b7bca6 !important;
+  font-weight: 500 !important;
 }
-.item-btn:last-child {
-  border-left: 1.2px solid #222523 !important;
-  border-radius: 0 12px 12px 0;
-}
-.item-btn.active {
+.city-selected .icon {
   color: #C7FF28 !important;
-  background: rgba(199,255,40,0.07);
+  margin-right: 4px !important;
+  min-width: 17px !important;
 }
-.item-btn:hover:not(.active) {
-  color: #E4EBC4 !important;
-  background: #232523 !important;
+.city-selected .arrow {
+  margin-left: .6rem !important;
+  display: flex !important;
+  align-items: center !important;
+  color: #C7FF28 !important;
+  transition: color 0.14s !important;
 }
-.item-btn:focus { box-shadow: none !important; }
-
-.icon.pointer {
-  display: inline-flex;
-  vertical-align: middle;
-  margin-right: 8px;
-  color: #C7FF28;
-  min-width: 20px;
-  transform: rotate(0deg) !important;
+.city-selected .arrow svg {
+  stroke: #C7FF28 !important;
+  background: transparent !important;
 }
-.samara { margin-right: 2px; }
-
-.options {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  width: 100%;
-  background: #181918 !important;
-  border-radius: 0 0 12px 12px !important;
-  box-shadow: none !important;
-  padding: 0;
-  z-index: 9999;
-  border: 1.2px solid #C7FF28 !important;
+.city-options {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  width: 100% !important;
+  background: #151617 !important;
+  border-radius: 0 0 13px 13px !important;
+  margin: 0 !important;
+  box-shadow: 0 3px 16px 0 rgba(13,16,9,0.19) !important;
+  border: none !important;
+  padding: 0 !important;
+  z-index: 900 !important;
 }
-.options li {
-  list-style: none;
-  margin: 0;
+.city-options li {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
-.option-link {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  color: #AEB6A5 !important;
+.city-btn {
+  background: none !important;
+  color: #b8beac !important;
   text-decoration: none !important;
-  padding: 0.85rem 1.08rem;
-  font-size: 1.106rem;
-  transition: background 0.13s, color 0.13s;
-  background: none !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  font-size: 1.06rem !important;
+  padding: 0.75rem 1.16rem !important;
   border: none !important;
-  cursor: pointer;
+  box-shadow: none !important;
+  transition: background 0.13s !important;
+  cursor: pointer !important;
+  outline: none !important;
+  border-radius: 0 !important;
 }
-.option-link.chosen {
+.city-btn.lime, 
+.city-btn.active.lime, 
+.city-btn.lime:focus,
+.city-btn.lime:active {
   color: #C7FF28 !important;
-  background: rgba(199,255,40,0.08) !important;
+  font-weight: 600 !important;
+  background: none !important;
 }
-.option-link:not(.chosen):hover {
-  color: #E4EBC4 !important;
-  background: #232523 !important;
+.city-btn:hover, .city-btn.active:not(.lime) {
+  color: #e4ebc4 !important;
+  background: #262724 !important;
 }
-.option-link .icon.pointer.right {
-  margin-right: 5px;
+.no-radius {
+  margin-right: 0 !important;
+  border-radius: 0 !important;
 }
-.options li + li { margin-left: 0; }
+.city-btns {
+  display: flex !important;
+  align-items: center !important;
+  margin-left: 1rem !important;
+}
+.city-btns .city-btn {
+  background: #191a16 !important;
+  border-radius: 0 !important;
+  border-left: 1px solid #262724 !important;
+  font-size: 1.03rem !important;
+  padding: 0.64rem 1.19rem !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+.city-btns .city-btn:first-child {
+  border-left: none !important;
+}
+.city-btns .city-btn.lime {
+  color: #C7FF28 !important;
+  font-weight: 600 !important;
+  background: #191a16 !important;
+}
+.city-btns .city-btn:hover:not(.lime) {
+  background: #223900 !important;
+  color: #e4ebc4 !important;
+}
+.city-btns .city-btn:active {
+  box-shadow: none !important;
+}
+.lime { color: #C7FF28 !important; }
+.city-options li .icon { color: #C7FF28 !important; min-width: 17px !important; }
+.city-options li a:hover, .city-options li a:focus {
+  background: #1e200d !important;
+  color: #e4ebc4 !important;
+}
+.city-options li a.lime {
+  color: #C7FF28 !important;
+  font-weight: 600 !important;
+}
+.city-options li a:not(.lime):hover { color: #b7bca6 !important; background: #1a1a18 !important; }
 </style>
