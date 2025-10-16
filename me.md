@@ -9,7 +9,7 @@ description: Где Начинается Ваша Кофейня
 ---
 <div align="center">
 
-<span class="signal-badge">Умный отзыв для любящих кофе</span> <br>
+<span class="signal-badge">Для любящих кофе</span> <br>
 
 <h1>
   <span>Ваш Сигнал — тому,</span><br class="mobile-break"> <span>кто решает.</span>
