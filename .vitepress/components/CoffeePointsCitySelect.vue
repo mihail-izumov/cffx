@@ -33,8 +33,8 @@
           @mousedown.stop
         >
           <a class="menu-entry"
-             href="/pro">
-            Новый город
+             href="/partner">
+            Стать партнером
           </a>
         </div>
       </transition>
@@ -72,18 +72,15 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* Центрирование блока сверху и по горизонтали, всегда */
 .city-center-row {
-  position: absolute;
-  left: 50%;
-  top: 50px;
-  transform: translateX(-50%);
   display: flex !important;
   align-items: center !important;
+  justify-content: center !important;
   gap: 18px !important;
-  width: fit-content;
-  min-width: 0;
-  z-index: 5;
+  width: 100%;
+  margin: 0 auto 16px auto;
+  padding-top: 8px;
+  /* для pageClass: centered-page достаточно */
 }
 .city-title {
   color: #fff !important;
@@ -94,14 +91,11 @@ onBeforeUnmount(() => {
   letter-spacing: 0.01em !important;
   line-height: 1.7;
 }
-
 .city-dropdown-combo {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-width: 0;
 }
-
 .city-dropdown-btn {
   display: flex !important;
   align-items: center !important;
@@ -120,12 +114,10 @@ onBeforeUnmount(() => {
   position: relative !important;
   z-index: 3;
 }
-
 .city-dropdown-btn.open {
   border-bottom-right-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
 }
-
 .city-dropdown-btn .icon {
   color: #beff13 !important;
   display: flex;
@@ -153,13 +145,11 @@ onBeforeUnmount(() => {
 .city-dropdown-btn.open .arrow svg {
   stroke: #babebe !important;
 }
-
 .fade-menu-enter-active, .fade-menu-leave-active {
   transition: opacity 0.14s, transform 0.15s;
 }
 .fade-menu-enter-from, .fade-menu-leave-to { opacity: 0; transform: translateY(-8px) scale(0.97); }
 .fade-menu-enter-to, .fade-menu-leave-from { opacity: 1; transform: translateY(0) scale(1); }
-
 .city-dropdown-menu {
   position: absolute !important;
   left: 0 !important;
@@ -175,7 +165,6 @@ onBeforeUnmount(() => {
   padding: 0 !important;
   overflow: hidden !important;
 }
-
 .menu-entry {
   width: 100% !important;
   font-size: 1.02rem !important;
@@ -198,26 +187,11 @@ onBeforeUnmount(() => {
   color: #E4EBC4 !important;
 }
 @media (max-width: 800px) {
-  .city-center-row {
-    left: 50%;
-    top: 30px;
-    transform: translateX(-50%);
-    gap: 11px !important;
-  }
-  .city-title {
-    font-size: 1.08rem !important;
-  }
+  .city-center-row { gap: 11px !important;}
+  .city-title { font-size: 1.08rem !important; }
 }
-
 @media (max-width: 440px) {
-  .city-center-row {
-    left: 50%;
-    top: 14px;
-    gap: 8px !important;
-    transform: translateX(-50%);
-  }
-  .city-title {
-    font-size: 0.98rem !important;
-  }
+  .city-center-row { gap: 8px !important;}
+  .city-title { font-size: 0.98rem !important; }
 }
 </style>
