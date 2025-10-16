@@ -33,8 +33,8 @@
           @mousedown.stop
         >
           <a class="menu-entry"
-             href="/partner">
-            Стать партнером
+             href="/pro">
+            Новый город
           </a>
         </div>
       </transition>
