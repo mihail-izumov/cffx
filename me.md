@@ -35,6 +35,8 @@ description: Где Начинается Ваша Кофейня
 
 <SignalSendButton />
 
+---
+
 <CoffeePointsCitySelect />
 
 </div>
