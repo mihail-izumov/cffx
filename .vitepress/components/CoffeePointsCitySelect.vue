@@ -1,17 +1,16 @@
 <template>
-  <div class="center-wrap">
+  <div class="city-row">
+    <h3 class="city-title">Кофейни в</h3>
     <div class="city-dropdown-combo">
       <button
         class="city-dropdown-btn"
         :class="{ open: open }"
         @click="toggle"
-        @mouseenter="hovered=true"
-        @mouseleave="hovered=false"
         ref="dropdown"
         type="button"
       >
         <span class="icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                viewBox="0 0 24 24" fill="none"
                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                style="transform: scaleX(-1) rotate(-11deg)">
@@ -20,8 +19,8 @@
         </span>
         <span class="city-selected lime">Самара</span>
         <span class="arrow" :class="{open: open}">
-          <svg width="18" height="18" viewBox="0 0 16 16" fill="none"
-               stroke="#9ba278" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"
+               stroke="#9ba278" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="4 6 8 10 12 6"/>
           </svg>
         </span>
@@ -34,32 +33,26 @@
           @mousedown.stop
         >
           <a class="menu-entry"
-             href="/partner"
-             @mouseenter="entryHover=true"
-             @mouseleave="entryHover=false">
+             href="/partner">
             Стать партнером
           </a>
         </div>
       </transition>
     </div>
-    <h3 class="city-title">Кофейни в</h3>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 const open = ref(false)
-const hovered = ref(false)
-const entryHover = ref(false)
 const dropdown = ref(null)
-const dropdownWidth = ref(320)
+const dropdownWidth = ref(200)
 
 function handleResize() {
   if (dropdown.value) {
     dropdownWidth.value = dropdown.value.offsetWidth
   }
 }
-
 function closeMenu(e) {
   if (dropdown.value && !dropdown.value.contains(e.target)) open.value = false
 }
@@ -79,51 +72,49 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.center-wrap {
-  width: 100vw;
-  min-height: 50vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 3rem;
-  gap: 18px;
+.city-row {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
+  margin-top: 44px;
+  margin-left: 60vw; /* ровно к правому верхнему углу */
+  width: fit-content;
+  min-width: 0;
 }
-
 .city-title {
   color: #fff !important;
-  font-size: 2rem !important;
+  font-size: 1.35rem !important;
   font-weight: 600 !important;
   margin: 0 !important;
+  padding: 0 !important;
   letter-spacing: 0.01em !important;
-  margin-top: 20px;
+  line-height: 1.7;
 }
 
+/* Combo */
 .city-dropdown-combo {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  min-width: 0;
 }
 
-/* Dropdown button style */
+/* Button style — mini */
 .city-dropdown-btn {
   display: flex !important;
   align-items: center !important;
-  gap: 0.7rem !important;
-  padding: 1.18rem 2.1rem !important;
-  border-radius: 25px !important;
-  border: 2.4px solid #C7FF28 !important;
+  gap: 0.55rem !important;
+  padding: 0.58rem 1.01rem !important;
+  border-radius: 14px !important;
+  border: 1.5px solid #C7FF28 !important;
   background: #25251b !important;
-  font-size: 1.23rem !important;
+  font-size: 1.02rem !important;
   font-weight: 500 !important;
   color: #cfd5bd !important;
   cursor: pointer !important;
   outline: none !important;
-  box-shadow: 0 0 21px 0 #C7FF2825 !important;
-  transition: border-color 0.18s cubic-bezier(.44,1.72,.58,.76),
-              box-shadow 0.22s cubic-bezier(.44,1.72,.58,.76),
-              background 0.14s, color 0.14s;
+  box-shadow: 0 0 10px 0 #C7FF2820 !important;
+  transition: border-color 0.16s, box-shadow 0.20s, background 0.14s, color 0.14s;
   position: relative !important;
   z-index: 3;
 }
@@ -138,19 +129,15 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
 }
-
-/* City name always lime */
 .city-selected.lime {
   color: #C7FF28 !important;
   font-weight: 600 !important;
 }
-
-/* Arrow style */
 .arrow {
-  margin-left: 1.05rem !important;
+  margin-left: 0.54rem !important;
   display: flex !important;
   align-items: center !important;
-  transition: transform 0.33s cubic-bezier(.44,1.45,.58,.76), stroke 0.23s;
+  transition: transform 0.23s, stroke 0.20s;
   stroke: #818274 !important;
 }
 .arrow svg {
@@ -165,12 +152,11 @@ onBeforeUnmount(() => {
   stroke: #babebe !important;
 }
 
-/* Dropdown menu block styles */
 .fade-menu-enter-active, .fade-menu-leave-active {
-  transition: opacity 0.18s cubic-bezier(.47,1.83,.49,.68), transform 0.23s cubic-bezier(.47,1.83,.49,.68);
+  transition: opacity 0.14s, transform 0.15s;
 }
-.fade-menu-enter-from, .fade-menu-leave-to { opacity: 0; transform: translateY(-13px) scale(0.98)}
-.fade-menu-enter-to, .fade-menu-leave-from { opacity: 1; transform: translateY(0) scale(1) }
+.fade-menu-enter-from, .fade-menu-leave-to { opacity: 0; transform: translateY(-8px) scale(0.97); }
+.fade-menu-enter-to, .fade-menu-leave-from { opacity: 1; transform: translateY(0) scale(1); }
 
 .city-dropdown-menu {
   position: absolute !important;
@@ -178,21 +164,20 @@ onBeforeUnmount(() => {
   top: 100% !important;
   z-index: 2 !important;
   min-width: 100% !important;
-  width: 320px;
   background: #34321f !important;
-  box-shadow: 0 0 21px 1px #C7FF2825, 0 2px 11px 0 #1c260b12 !important;
-  border-radius: 0 0 25px 25px !important;
-  border: 2.4px solid #C7FF28 !important;
+  box-shadow: 0 0 14px 1px #C7FF2820, 0 2px 7px 0 #1c260b11 !important;
+  border-radius: 0 0 14px 14px !important;
+  border: 1.5px solid #C7FF28 !important;
   border-top: none !important;
-  margin-top: -2.4px;
+  margin-top: -1.5px;
   padding: 0 !important;
   overflow: hidden !important;
 }
 
 .menu-entry {
   width: 100% !important;
-  font-size: 1.33rem !important;
-  padding: 1.7rem 2rem !important;
+  font-size: 1.02rem !important;
+  padding: 1.1rem 1.05rem !important;
   color: #cccfc4 !important;
   background: transparent !important;
   border: none !important;
@@ -200,7 +185,7 @@ onBeforeUnmount(() => {
   text-align: left !important;
   font-weight: 500 !important;
   letter-spacing: 0.01em !important;
-  transition: background 0.16s, color 0.16s !important;
+  transition: background 0.11s, color 0.13s !important;
   cursor: pointer !important;
   outline: none !important;
   border-radius: 0 !important;
@@ -210,10 +195,10 @@ onBeforeUnmount(() => {
   background: #484926 !important;
   color: #E4EBC4 !important;
 }
-
-@media (max-width: 640px) {
-  .center-wrap { margin-top: 0; }
-  .city-dropdown-btn, .city-dropdown-menu { width: 98vw; max-width: 99vw; }
+@media (max-width: 900px) {
+  .city-row { margin-left: 20vw; }
 }
-
+@media (max-width: 600px) {
+  .city-row { margin-left: 3vw; gap: 10px; }
+}
 </style>
