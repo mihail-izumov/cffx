@@ -388,7 +388,8 @@ export default defineConfig({
     sidebar: {
       '/pro/': { items: sidebarBrew() },
       '/invest/': { items: sidebarPulse() },
-      '/terms/': { items: sidebarTerms() }
+      '/terms/': { items: sidebarTerms() },
+      '/system/': { items: sidebarSystem() }
     },
     search: {
       provider: 'local',
@@ -493,4 +494,19 @@ function sidebarTerms(): DefaultTheme.SidebarItem[] {
         { text: 'Оферта', link: '/terms/oferta' }
       ]
     }]
+}
+
+function sidebarSystem(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: 'Система',
+      collapsed: false,
+      items: [
+        { text: 'Тикет-система', link: '/system/tickets' },
+        { text: 'Система уведомлений', link: '/system/tickets/notifications' },
+        { text: 'Примеры работы SLA-таймера', link: '/system/tickets/sla-timer-examples' },
+        { text: 'Аналитика и отчёты', link: '/system/tickets/analytics' }
+      ]
+    }
+  ]
 }
