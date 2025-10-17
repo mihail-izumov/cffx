@@ -51,7 +51,7 @@ export default defineConfig({
     (function() {
       function createFooterContent() {
         const links = [
-          { text: 'Система', href: '/system/overview' },          
+          { text: 'Система', href: '/system' },          
           { text: 'Обновления', href: '/changelog' },
           { text: 'Поддержка', href: '/support' },
           { text: 'Фестиваль', href: '/fest' },
