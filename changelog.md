@@ -4,7 +4,7 @@ prev: false
 next: false
 pageClass: centered-page
 title: Обновления Сигнала
-notification: general
+notification: brew
 description: Узнавайте первым о новых кофейнях рядом с вами, изменениях на кофейном рынке и обновлях Индекса
 
 ---
