@@ -22,9 +22,9 @@
 
 ### Узнать Больше
 
-[Автоматическая система уведомлений](/system/tickets/notifications)
-[Примеры работы SLA-таймера](/system/tickets/sla-timer-examples)
-[Аналитика и отчёты](/system/tickets/analytics)
+[Автоматическая система уведомлений](/system/tickets/notifications) <br>
+[Примеры работы SLA-таймера](/system/tickets/sla-timer-examples) <br>
+[Аналитика и отчёты](/system/tickets/analytics) <br>
 
 ## Режим работы тикет-системы (24/5)
 
