@@ -2,7 +2,6 @@ import { defineConfig, DefaultTheme } from 'vitepress'
 import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
 
-
 export default defineConfig({
   title: 'Сигнал',
   appearance: 'force-dark',
@@ -54,7 +53,6 @@ export default defineConfig({
         const links = [
           { text: 'Система', href: '/system' },          
           { text: 'Обновления', href: '/changelog' },
-          { text: 'Поддержка', href: '/support' },
           { text: 'Фестиваль', href: '/fest' },
           { text: 'Условия использования', href: '/terms' },
           { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
