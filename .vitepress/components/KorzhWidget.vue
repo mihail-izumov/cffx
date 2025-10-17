@@ -52,7 +52,7 @@ const cafeProfiles = {
 // -------------------------
 const establishment = {
   name: 'Корж',
-  totalReviews: '17',
+  totalReviews: '24',
   yandex2gis: '4,9',
   yandex2gisPercent: 94,
   signals: 0,
