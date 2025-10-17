@@ -4,7 +4,7 @@ prev: false
 next: false
 pageClass: centered-page
 title: Наша система
-notification: general
+notification: brew
 description: Безупречная работа с Сигналами
 
 ---
