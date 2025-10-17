@@ -8,7 +8,7 @@ const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка
 const cafes = {
   'Корж': {
     name: 'Корж',
-    yandex2gis: 17,
+    yandex2gis: 24,
     yandex2gisPercent: 94,
     smartReviews: 0,
     smartReviewsPercent: 0,
