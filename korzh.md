@@ -49,5 +49,5 @@ head:
 </style>
 
 <KorzhWidget />
-
+<br><br>
 <SignalWidgetBadge />
