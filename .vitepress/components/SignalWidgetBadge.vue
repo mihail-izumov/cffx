@@ -56,7 +56,7 @@
   align-items: center;
   gap: 16px;
   padding: 12px 20px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.65);
   border-radius: 12px;
   backdrop-filter: blur(10px);
   cursor: pointer;
@@ -76,14 +76,9 @@
   padding: 1px;
   background: linear-gradient(
     135deg,
-    rgba(40, 40, 40, 0.7) 0%,
-    rgba(75, 75, 75, 0.85) 15%,
-    rgba(50, 50, 50, 0.65) 30%,
-    rgba(85, 85, 85, 0.9) 45%,
-    rgba(45, 45, 45, 0.6) 60%,
-    rgba(70, 70, 70, 0.8) 75%,
-    rgba(55, 55, 55, 0.7) 90%,
-    rgba(65, 65, 65, 0.75) 100%
+    rgba(45, 45, 45, 0.65) 0%,
+    rgba(80, 80, 80, 0.85) 50%,
+    rgba(50, 50, 50, 0.7) 100%
   );
   -webkit-mask: 
     linear-gradient(#fff 0 0) content-box, 
@@ -92,21 +87,16 @@
   mask-composite: exclude;
   pointer-events: none;
   z-index: -1;
-  transition: opacity 0.6s ease;
+  transition: background 0.6s ease;
 }
 
 /* Более яркая обводка при наведении */
 .sp-signal-badge-link:hover .sp-signal-badge::before {
   background: linear-gradient(
     135deg,
-    rgba(60, 60, 60, 0.8) 0%,
-    rgba(100, 100, 100, 0.95) 15%,
-    rgba(70, 70, 70, 0.75) 30%,
-    rgba(110, 110, 110, 1) 45%,
-    rgba(65, 65, 65, 0.7) 60%,
-    rgba(95, 95, 95, 0.9) 75%,
-    rgba(75, 75, 75, 0.8) 90%,
-    rgba(90, 90, 90, 0.85) 100%
+    rgba(65, 65, 65, 0.75) 0%,
+    rgba(105, 105, 105, 0.95) 50%,
+    rgba(70, 70, 70, 0.8) 100%
   );
 }
 
