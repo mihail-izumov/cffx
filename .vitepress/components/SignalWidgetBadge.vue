@@ -77,9 +77,9 @@
   background: 
     conic-gradient(
       from 135deg at 50% 50%,
-      rgba(35, 35, 35, 0.5),
-      rgba(60, 60, 60, 0.7) 50%,
-      rgba(35, 35, 35, 0.5)
+      rgba(30, 30, 30, 0.45),
+      rgba(55, 55, 55, 0.65) 50%,
+      rgba(30, 30, 30, 0.45)
     );
   -webkit-mask: 
     linear-gradient(#fff 0 0) content-box, 
@@ -92,7 +92,7 @@
   transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Смещенный градиент (при наведении) */
+/* Смещенный градиент (при наведении, менее яркий) */
 .sp-signal-badge::after {
   content: '';
   position: absolute;
@@ -105,9 +105,9 @@
   background: 
     conic-gradient(
       from 215deg at 50% 50%,
-      rgba(65, 65, 65, 0.75),
-      rgba(110, 110, 110, 0.95) 50%,
-      rgba(65, 65, 65, 0.75)
+      rgba(55, 55, 55, 0.7),
+      rgba(95, 95, 95, 0.88) 50%,
+      rgba(55, 55, 55, 0.7)
     );
   -webkit-mask: 
     linear-gradient(#fff 0 0) content-box, 
@@ -140,14 +140,16 @@
   flex-shrink: 0;
 }
 
+/* Центральная точка с пульсацией */
 .sp-radar-center {
   position: absolute;
   width: 8px;
   height: 8px;
-  background: rgba(200, 200, 200, 0.95);
+  background: rgba(170, 170, 170, 0.85);
   border-radius: 50%;
-  box-shadow: 0 0 16px rgba(200, 200, 200, 0.8);
+  box-shadow: 0 0 12px rgba(170, 170, 170, 0.7);
   z-index: 10;
+  animation: sp-radar-center-pulse 8s ease-out infinite;
   transition: background 0.6s ease, box-shadow 0.6s ease;
 }
 
@@ -156,6 +158,20 @@
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
 }
 
+/* Пульсация центральной точки */
+@keyframes sp-radar-center-pulse {
+  0% {
+    transform: scale(0.96);
+  }
+  3% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Волны радара */
 .sp-radar-wave {
   position: absolute;
   width: 100%;
@@ -166,12 +182,10 @@
   transition: border-color 0.6s ease;
 }
 
-.sp-signal-badge-link:hover .sp-radar-wave {
-  border-color: rgba(220, 220, 220, 0.8);
-}
-
+/* Первая волна толще */
 .sp-wave-1 {
   animation-delay: 0s;
+  border-width: 3px;
 }
 
 .sp-wave-2 {
@@ -180,6 +194,10 @@
 
 .sp-wave-3 {
   animation-delay: 5.2s;
+}
+
+.sp-signal-badge-link:hover .sp-radar-wave {
+  border-color: rgba(220, 220, 220, 0.8);
 }
 
 @keyframes sp-radar-pulse {
