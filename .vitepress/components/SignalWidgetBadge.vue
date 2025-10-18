@@ -38,20 +38,22 @@
   text-decoration: none;
 }
 
-/* Темные фон и обводка */
+/* Черный фон, прозрачность 80%, темная градиентная обводка */
 .sp-signal-badge {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 16px;
   padding: 12px 20px;
-  background: rgba(20, 20, 30, 0.85);
-  border: 1.5px solid rgba(50, 50, 60, 0.8);
+  background: rgba(0, 0, 0, 0.80);
   border-radius: 12px;
+  border: 1.5px solid;
+  border-image: linear-gradient(135deg, #101014 40%, #2a2a2e 100%) 1;
   backdrop-filter: blur(10px);
-  cursor: pointer;
+  box-sizing: border-box;
+  transition: background 0.3s, border 0.5s;
 }
 
-/* Контейнер радара */
+/* Радиолокация остаётся яркой на тёмном */
 .sp-radar-container {
   position: relative;
   width: 48px;
@@ -66,9 +68,9 @@
   position: absolute;
   width: 8px;
   height: 8px;
-  background: #444;
+  background: #aed0fd;
   border-radius: 50%;
-  box-shadow: 0 0 12px rgba(40, 40, 40, 0.5);
+  box-shadow: 0 0 14px rgba(120,180,255,0.8);
   z-index: 10;
 }
 
@@ -76,51 +78,49 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  border: 2px solid rgba(70, 70, 80, 0.42);
+  border: 2px solid rgba(120,180,255,0.17);
   border-radius: 50%;
-  animation: sp-radar-pulse 4s ease-out infinite;
+  animation: sp-radar-pulse 7s cubic-bezier(0.23,1,0.32,1) infinite;
+  transition: border-color 0.5s;
 }
 
 .sp-wave-1 { animation-delay: 0s; }
-.sp-wave-2 { animation-delay: 1.3s; }
-.sp-wave-3 { animation-delay: 2.6s; }
+.sp-wave-2 { animation-delay: 2.33s; }
+.sp-wave-3 { animation-delay: 4.66s; }
 
 @keyframes sp-radar-pulse {
-  0%   { transform: scale(0.2); opacity: 0; }
-  10%  { opacity: 0.5; }
-  80%  { opacity: 0.18; }
-  100% { transform: scale(1); opacity: 0; }
+  0%   {transform: scale(0.2); opacity: 0;}
+  10%  {opacity: 0.5;}
+  40%  {opacity: 0.22;}
+  100% {transform: scale(1); opacity: 0;}
 }
 
-/* Текст по правой стороне бейджа */
+/* Текст всегда по левой стороне */
 .sp-badge-text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  align-items: flex-end;
-  text-align: right;
+  gap: 4px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  align-items: flex-start;
 }
 
-/* Еще темнее */
 .sp-badge-label {
   font-size: 14px;
-  color: #51515a;
+  color: #3f414b;
   font-weight: 400;
   line-height: 1.2;
-  transition: color 0.18s;
+  transition: color 0.4s;
 }
 
 .sp-badge-brand {
   font-size: 16px;
-  color: #bbbbbe;
+  color: #4b4d56;
   font-weight: 600;
   letter-spacing: 0.5px;
-  margin-top: 2px;
-  transition: color 0.18s;
+  transition: color 0.4s;
 }
 
-/* Только изменение цвета текста при наведении */
+/* На hover меняется только цвет текста, все остальное без эффектов! */
 .sp-signal-badge-link:hover .sp-badge-brand,
 .sp-signal-badge-link:focus .sp-badge-brand {
   color: #fff;
@@ -128,15 +128,16 @@
 
 .sp-signal-badge-link:hover .sp-badge-label,
 .sp-signal-badge-link:focus .sp-badge-label {
-  color: #a0a0ad;
+  color: #98a3be;
 }
 
+/* Адаптивность */
 @media (max-width: 640px) {
-  .sp-badge-wrapper-outer { padding: 16px 12px; }
-  .sp-signal-badge { padding: 10px 16px; gap: 12px; }
+  .sp-badge-wrapper-outer { padding: 16px 8px; }
+  .sp-signal-badge { padding: 10px 12px; gap: 12px; }
   .sp-radar-container { width: 40px; height: 40px; }
   .sp-radar-center { width: 6px; height: 6px; }
   .sp-badge-label { font-size: 12px; }
-  .sp-badge-brand { font-size: 14px; }
+  .sp-badge-brand { font-size: 13px; }
 }
 </style>
