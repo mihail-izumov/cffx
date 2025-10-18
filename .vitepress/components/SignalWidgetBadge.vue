@@ -64,37 +64,44 @@
   z-index: 1;
 }
 
-/* Обводка и анимация */
+/* Градиентная обводка через псевдоэлемент */
 .sp-signal-badge::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   border-radius: 12px;
   padding: 1px;
-  background: linear-gradient(
-    115deg,
-    rgba(45,45,45,0.55) 0%,
-    rgba(80,80,80,0.85) 50%,
-    rgba(50,50,50,0.7) 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  background: 
+    conic-gradient(
+      from 135deg at 50% 50%,
+      rgba(45, 45, 45, 0.65) 0deg,
+      rgba(80, 80, 80, 0.85) 180deg,
+      rgba(45, 45, 45, 0.65) 360deg
+    );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
   z-index: -1;
-  transition: 
-    background 1.2s cubic-bezier(0.39,0.58,0.57,1),
-    background-position 1.2s cubic-bezier(0.39,0.58,0.57,1);
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  filter: brightness(1);
 }
 
+/* Более яркая обводка и смещение при наведении */
 .sp-signal-badge-link:hover .sp-signal-badge::before {
-  /* Смещение градиента - угол стал больше! */
-  background: linear-gradient(
-    195deg,
-    rgba(65,65,65,0.65) 0%,
-    rgba(120,120,120,0.95) 57%,
-    rgba(70,70,70,0.8) 100%
-  );
+  background: 
+    conic-gradient(
+      from 215deg at 50% 50%,
+      rgba(65, 65, 65, 0.75) 0deg,
+      rgba(110, 110, 110, 0.95) 180deg,
+      rgba(65, 65, 65, 0.75) 360deg
+    );
+  filter: brightness(1.15);
 }
 
 /* Контейнер радара */
@@ -180,7 +187,7 @@
   color: rgba(120, 120, 120, 0.9);
   font-weight: 400;
   line-height: 1.2;
-  transition: color 0.6s cubic-bezier(0.39,0.58,0.57,1);
+  transition: color 0.6s ease;
 }
 
 .sp-badge-brand {
@@ -188,7 +195,7 @@
   color: rgba(140, 140, 140, 0.95);
   font-weight: 600;
   letter-spacing: 0.5px;
-  transition: color 0.6s cubic-bezier(0.39,0.58,0.57,1);
+  transition: color 0.6s ease;
 }
 
 .sp-signal-badge-link:hover .sp-badge-label {
