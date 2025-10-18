@@ -64,7 +64,7 @@
   z-index: 1;
 }
 
-/* Градиентная обводка через псевдоэлемент */
+/* Базовый градиент обводки */
 .sp-signal-badge::before {
   content: '';
   position: absolute;
@@ -77,9 +77,9 @@
   background: 
     conic-gradient(
       from 135deg at 50% 50%,
-      rgba(45, 45, 45, 0.65) 0deg,
-      rgba(80, 80, 80, 0.85) 180deg,
-      rgba(45, 45, 45, 0.65) 360deg
+      rgba(45, 45, 45, 0.65),
+      rgba(80, 80, 80, 0.85) 50%,
+      rgba(45, 45, 45, 0.65)
     );
   -webkit-mask: 
     linear-gradient(#fff 0 0) content-box, 
@@ -88,20 +88,45 @@
   mask-composite: exclude;
   pointer-events: none;
   z-index: -1;
-  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  filter: brightness(1);
+  opacity: 1;
+  transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Более яркая обводка и смещение при наведении */
-.sp-signal-badge-link:hover .sp-signal-badge::before {
+/* Смещенный градиент (при наведении) */
+.sp-signal-badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  padding: 1px;
   background: 
     conic-gradient(
       from 215deg at 50% 50%,
-      rgba(65, 65, 65, 0.75) 0deg,
-      rgba(110, 110, 110, 0.95) 180deg,
-      rgba(65, 65, 65, 0.75) 360deg
+      rgba(65, 65, 65, 0.75),
+      rgba(110, 110, 110, 0.95) 50%,
+      rgba(65, 65, 65, 0.75)
     );
-  filter: brightness(1.15);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* При наведении скрываем первый градиент и показываем второй */
+.sp-signal-badge-link:hover .sp-signal-badge::before {
+  opacity: 0;
+}
+
+.sp-signal-badge-link:hover .sp-signal-badge::after {
+  opacity: 1;
 }
 
 /* Контейнер радара */
