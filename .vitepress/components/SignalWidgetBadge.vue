@@ -1,153 +1,170 @@
 <template>
-  <div class="sb2025-badge-liquidv3">
-    <div class="sb2025-radar-containerv3">
-      <div class="sb2025-radar-centerv3"></div>
-      <div class="sb2025-radar-wavev3 sb2025-wavev3-1"></div>
-      <div class="sb2025-radar-wavev3 sb2025-wavev3-2"></div>
-      <div class="sb2025-radar-wavev3 sb2025-wavev3-3"></div>
+  <div class="liqbadge-outer">
+    <div class="liqbadge-radar">
+      <div class="liqbadge-center"></div>
+      <div class="liqbadge-wave liqbadge-wave1"></div>
+      <div class="liqbadge-wave liqbadge-wave2"></div>
+      <div class="liqbadge-wave liqbadge-wave3"></div>
+      <!-- Блики прямо поверх иконки radar -->
+      <div class="liqbadge-glare liqbadge-glare1"></div>
+      <div class="liqbadge-glare liqbadge-glare2"></div>
     </div>
-    <div class="sb2025-badge-textv3">
-      <span class="sb2025-badge-labelv3">Репутация под защитой</span>
-      <span class="sb2025-badge-brandv3">Работает Сигнал</span>
+    <div class="liqbadge-text">
+      <span class="liqbadge-label">Репутация под защитой</span>
+      <span class="liqbadge-brand">Работает Сигнал</span>
     </div>
   </div>
 </template>
 
 <style scoped>
-.sb2025-badge-liquidv3 {
+.liqbadge-outer {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 26px;
-  width: 100%;
-  max-width: 1100px;
-  min-width: 340px;
-  min-height: 135px;
-  padding: 18px 0;
-  margin: 42px auto 38px auto;
-  border-radius: 56px;
-  /* Liquid glass Apple 2025: светлый, контрастный, плавные переливы! */
+  gap: 16px;
+  padding: 12px 20px;
+  border-radius: 17px;
+  min-width: 0;
   background:
-    radial-gradient(110% 110% at 30% 66%, #fffbe9 0%, #e9fdbc 32%, #ebfbce88 59%, #e7ffde 100%),
-    linear-gradient(88deg, #fff 87%, #f7fbe2 100%);
-  box-shadow:
-    0 6px 36px 0 #d8e98433,
-    0 1.5px 9px 0 #d7e9a039,
-    0 0 44px 0 #f9ffe94d;
-  backdrop-filter: blur(15px);
+    /* Главный светлый бурлящий слой */
+    linear-gradient(123deg, #f6ffd9 25%, #faffef 87%, #e9ffcf 100%),
+    /* Легкая зеленая подсветка и туманность */
+    radial-gradient(110% 80% at 5% 80%, #e7ffc6 0%, #e9ffd944 25%, #fff0 75%),
+    /* Белый глянец */
+    linear-gradient(108deg, rgba(255,255,255,0.52) 80%, rgba(227,255,208,0.13) 120%);
   position: relative;
+  box-shadow:
+    0 1.5px 19px 0 #cfedbb59,
+    0 1.5px 9px 0 #d7e9a039,
+    0 0 20px 0 #fdfffd38;
+  backdrop-filter: blur(14px);
 }
 
-.sb2025-radar-containerv3 {
+/* Radar block */
+.liqbadge-radar {
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
-
-.sb2025-radar-centerv3 {
+/* Radar animated waves */
+.liqbadge-wave {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 14px;
-  height: 14px;
-  background: radial-gradient(circle, #D3FE29 87%, #C7FF2848 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 14px 6px #C7FF284a, 0 0 9px 2px #DAFE7355, 0 0 0 1px #fff;
-  transform: translate(-50%,-50%);
-  z-index: 2;
-  animation: sb2025-core-pulsev3 2.8s infinite;
-}
-@keyframes sb2025-core-pulsev3 {
-  0%, 100% { box-shadow: 0 0 22px 6px #d1f8735c, 0 0 12px 3px #DAFE7399;}
-  55% { box-shadow: 0 0 34px 11px #C7FF2828, 0 0 18px 6px #DAFE732f;}
-}
-
-.sb2025-radar-wavev3 {
-  position: absolute;
-  left: 50%;
-  top: 50%;
   width: 100%;
   height: 100%;
-  border: 2.1px solid #baf55859;
+  border: 2px solid #a5c33e88;
   border-radius: 50%;
-  opacity: 0.44;
-  transform: translate(-50%,-50%);
-  animation: sb2025-radar-pulse-liquidv3 3.2s cubic-bezier(.23,0,.61,1) infinite;
-  filter: blur(0.2px) drop-shadow(0 0 7px #dafe7352);
+  animation: liq-radar-pulse 4s ease-out infinite;
+  background: transparent;
+  z-index: 2;
+  box-sizing: border-box;
 }
+.liqbadge-wave1 { animation-delay: 0s;}
+.liqbadge-wave2 { animation-delay: 1.3s;}
+.liqbadge-wave3 { animation-delay: 2.6s;}
 
-.sb2025-wavev3-1 { animation-delay: 0s;}
-.sb2025-wavev3-2 { animation-delay: 1.04s;}
-.sb2025-wavev3-3 { animation-delay: 2.06s;}
-
-@keyframes sb2025-radar-pulse-liquidv3 {
+@keyframes liq-radar-pulse {
   0% {
-    transform: translate(-50%,-50%) scale(0.23);
-    opacity: 0.10;
-    border-color: #C7FF2845;
+    transform: scale(0.2);
+    opacity: 0;
   }
-  22% {
-    opacity: 0.55;
-    border-color: #baf55899;
+  10% {
+    opacity: 0.6;
   }
-  82% {
-    opacity: 0.24;
-    border-color: #baf55822;
+  80% {
+    opacity: 0.22;
   }
   100% {
-    transform: translate(-50%,-50%) scale(1.07);
+    transform: scale(1);
     opacity: 0;
-    border-color: #fff0;
   }
 }
 
-/* Тексты бейджа — темные */
-.sb2025-badge-textv3 {
+/* Radar center, теперь темный для контраста с бликами */
+.liqbadge-center {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 12px; height: 12px;
+  background: radial-gradient(circle, #263e18 73%, #b5fa49 95%, #fff0 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 13px 3px #405e1780, 0 0 8px 2px #8dc74188;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+/* Блики как у apple glass: слева и справа, поверх иконки */
+.liqbadge-glare {
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
+  background: transparent;
+}
+.liqbadge-glare1 {
+  left: 5px; top: 4px;
+  width: 38px; height: 19px;
+  border-radius: 55% 60% 38% 80%/90% 80% 44% 53%;
+  background: linear-gradient(120deg,rgba(255,255,255,0.50) 0%,rgba(255,255,255,0.07) 85%);
+  filter: blur(2.8px) brightness(1.52);
+  opacity: 0.71;
+}
+.liqbadge-glare2 {
+  right: 1.5px; bottom: 5.5px;
+  width: 21px; height: 13px;
+  border-radius: 60% 48% 38% 30%/70% 70% 49% 55%;
+  background: linear-gradient(130deg,rgba(255,255,255,0.42) 30%,rgba(255,255,255,0.03) 80%);
+  filter: blur(2.3px) brightness(1.3);
+  opacity: 0.42;
+}
+
+/* Текст бейджа */
+.liqbadge-text {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  justify-content: center;
 }
 
-.sb2025-badge-labelv3 {
-  font-size: 2.05rem;
-  color: #332;
-  font-weight: 500;
-  line-height: 1.18;
-  text-shadow: 0 2px 3px #fffce34a;
-  letter-spacing: 0.01em;
-  margin-left: 14px;
+.liqbadge-label {
+  font-size: 14px;
+  color: #fff;
+  font-weight: 400;
+  line-height: 1.2;
+  text-shadow: 0 1.5px 7px #fff8, 0 1.5px 1.5px #eafba5cc;
 }
 
-.sb2025-badge-brandv3 {
-  font-size: 2.5rem;
-  color: #292d10;
-  font-weight: 700;
-  letter-spacing: 1.1px;
-  background: linear-gradient(94deg, #94a81a 12%, #c7ff28 98%, #333 150%);
-  background-clip: text;
+.liqbadge-brand {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-shadow: 0 4px 18px #afec53, 0 1.2px 2.7px #faff, 0 1.2px 4px #c7ff28;
+  background: linear-gradient(95deg, #fff 35%, #eaffba 120%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-fill-color: transparent;
-  filter: drop-shadow(0px 1.2px 13px #c7ff2850);
-  margin-left: 14px;
+          background-clip: text;
+          text-fill-color: transparent;
 }
 
 /* Адаптивность */
-@media (max-width: 800px) {
-  .sb2025-badge-liquidv3 {
-    min-width: 220px;
-    padding: 12px 1vw;
-    min-height: 76px;
+@media (max-width: 640px) {
+  .liqbadge-outer {
+    padding: 10px 16px;
+    gap: 12px;
+    border-radius: 12px;
   }
-  .sb2025-badge-labelv3 { font-size: 1.13rem;}
-  .sb2025-badge-brandv3 { font-size: 1.21rem;}
-  .sb2025-radar-containerv3 { width: 31px; height: 31px;}
-  .sb2025-radar-centerv3 { width: 6px; height: 6px;}
+  .liqbadge-radar {
+    width: 40px;
+    height: 40px;
+  }
+  .liqbadge-center {
+    width: 8px; height: 8px;
+  }
+  .liqbadge-label {
+    font-size: 12px;
+  }
+  .liqbadge-brand {
+    font-size: 14px;
+  }
 }
 </style>
