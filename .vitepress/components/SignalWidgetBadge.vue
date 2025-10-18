@@ -140,7 +140,7 @@
   flex-shrink: 0;
 }
 
-/* Центральная точка с пульсацией */
+/* Центральная точка с резкой пульсацией */
 .sp-radar-center {
   position: absolute;
   width: 8px;
@@ -149,7 +149,7 @@
   border-radius: 50%;
   box-shadow: 0 0 12px rgba(170, 170, 170, 0.7);
   z-index: 10;
-  animation: sp-radar-center-pulse 8s ease-out infinite;
+  animation: sp-radar-center-pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   transition: background 0.6s ease, box-shadow 0.6s ease;
 }
 
@@ -158,10 +158,13 @@
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
 }
 
-/* Пульсация центральной точки */
+/* Резкая пульсация с паузой */
 @keyframes sp-radar-center-pulse {
   0% {
     transform: scale(0.96);
+  }
+  1.5% {
+    transform: scale(1);
   }
   3% {
     transform: scale(1);
@@ -182,18 +185,18 @@
   transition: border-color 0.6s ease;
 }
 
-/* Первая волна толще */
+/* Первая волна толще с задержкой */
 .sp-wave-1 {
-  animation-delay: 0s;
+  animation-delay: 0.24s;
   border-width: 3px;
 }
 
 .sp-wave-2 {
-  animation-delay: 2.6s;
+  animation-delay: 2.84s;
 }
 
 .sp-wave-3 {
-  animation-delay: 5.2s;
+  animation-delay: 5.44s;
 }
 
 .sp-signal-badge-link:hover .sp-radar-wave {
