@@ -140,7 +140,7 @@
   flex-shrink: 0;
 }
 
-/* Центральная точка с резкой пульсацией */
+/* Центральная точка с заметной пульсацией */
 .sp-radar-center {
   position: absolute;
   width: 8px;
@@ -158,13 +158,16 @@
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
 }
 
-/* Резкая пульсация с паузой */
+/* Заметная пульсация с отскоком */
 @keyframes sp-radar-center-pulse {
   0% {
-    transform: scale(0.96);
+    transform: scale(0.88);
   }
-  1.5% {
-    transform: scale(1);
+  1% {
+    transform: scale(1.08);
+  }
+  2% {
+    transform: scale(0.98);
   }
   3% {
     transform: scale(1);
