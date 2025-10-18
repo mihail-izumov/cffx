@@ -16,7 +16,7 @@
         </div>
         <div class="sp-badge-text">
           <span class="sp-badge-label">Репутация под защитой</span>
-          <span class="sp-badge-brand">Работает Сигнал</span>
+          <span class="sp-badge-brand">Сигнал работает.</span>
         </div>
       </div>
     </a>
