@@ -5,7 +5,7 @@
       href="https://runscale.ru"
       target="_blank"
       rel="noopener"
-      aria-label="Перейти на Runscale"
+      aria-label="Больше о Сигналах"
     >
       <div class="sp-signal-badge">
         <div class="sp-radar-container">
