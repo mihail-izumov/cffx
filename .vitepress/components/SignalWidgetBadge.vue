@@ -38,6 +38,7 @@
   text-decoration: none !important;
   outline: none !important;
   border: none !important;
+  position: relative;
 }
 
 .sp-signal-badge-link:focus,
@@ -50,17 +51,37 @@
 }
 
 .sp-signal-badge {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 16px;
   padding: 12px 20px;
   background: rgba(0, 0, 0, 0.8);
-  border: 1px solid transparent;
-  border-image: linear-gradient(135deg, rgba(60, 60, 60, 0.6), rgba(40, 40, 40, 0.8)) 1;
   border-radius: 12px;
   backdrop-filter: blur(10px);
   cursor: pointer;
   box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+  z-index: 1;
+}
+
+/* Градиентная обводка через псевдоэлемент */
+.sp-signal-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(60, 60, 60, 0.6), rgba(40, 40, 40, 0.8));
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* Контейнер радара */
