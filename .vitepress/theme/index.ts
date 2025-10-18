@@ -94,6 +94,7 @@ import FestImageSlider from '../components/FestImageSlider.vue'
 import GoogleDocsViewer from '../components/GoogleDocsViewer.vue'
 import CoffeePointsCitySelect from '../components/CoffeePointsCitySelect.vue'
 import SystemTabs from '../components/SystemTabs.vue'
+import SignalWidgetBadge from '../components/SignalWidgetBadge.vue'
 
 export default {
   extends: DefaultTheme,
@@ -193,5 +194,6 @@ export default {
     app.component('GoogleDocsViewer', GoogleDocsViewer)
     app.component('CoffeePointsCitySelect', CoffeePointsCitySelect)
     app.component('SystemTabs', SystemTabs)
+    app.component('SignalWidgetBadge', SignalWidgetBadge)
   },
 }
