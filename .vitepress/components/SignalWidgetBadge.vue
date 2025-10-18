@@ -64,22 +64,22 @@
   z-index: 1;
 }
 
-/* Базовый градиент обводки */
+/* Базовый градиент обводки (приглушенный) */
 .sp-signal-badge::before {
   content: '';
   position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  bottom: -1px;
-  border-radius: 13px;
-  padding: 2px;
+  top: -0.5px;
+  left: -0.5px;
+  right: -0.5px;
+  bottom: -0.5px;
+  border-radius: 12.5px;
+  padding: 1px;
   background: 
     conic-gradient(
       from 135deg at 50% 50%,
-      rgba(45, 45, 45, 0.65),
-      rgba(80, 80, 80, 0.85) 50%,
-      rgba(45, 45, 45, 0.65)
+      rgba(35, 35, 35, 0.5),
+      rgba(60, 60, 60, 0.7) 50%,
+      rgba(35, 35, 35, 0.5)
     );
   -webkit-mask: 
     linear-gradient(#fff 0 0) content-box, 
@@ -96,12 +96,12 @@
 .sp-signal-badge::after {
   content: '';
   position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  bottom: -1px;
-  border-radius: 13px;
-  padding: 2px;
+  top: -0.5px;
+  left: -0.5px;
+  right: -0.5px;
+  bottom: -0.5px;
+  border-radius: 12.5px;
+  padding: 1px;
   background: 
     conic-gradient(
       from 215deg at 50% 50%,
@@ -162,7 +162,7 @@
   height: 100%;
   border: 2px solid rgba(180, 180, 180, 0.65);
   border-radius: 50%;
-  animation: sp-radar-pulse 4s ease-out infinite;
+  animation: sp-radar-pulse 8s ease-out infinite;
   transition: border-color 0.6s ease;
 }
 
@@ -175,11 +175,11 @@
 }
 
 .sp-wave-2 {
-  animation-delay: 1.3s;
+  animation-delay: 2.6s;
 }
 
 .sp-wave-3 {
-  animation-delay: 2.6s;
+  animation-delay: 5.2s;
 }
 
 @keyframes sp-radar-pulse {
