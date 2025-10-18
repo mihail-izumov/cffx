@@ -64,39 +64,36 @@
   z-index: 1;
 }
 
-/* Градиентная обводка через псевдоэлемент */
+/* Обводка и анимация */
 .sp-signal-badge::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   border-radius: 12px;
   padding: 1px;
   background: linear-gradient(
-    135deg,
-    rgba(45, 45, 45, 0.65) 0%,
-    rgba(80, 80, 80, 0.85) 50%,
-    rgba(50, 50, 50, 0.7) 100%
+    115deg,
+    rgba(45,45,45,0.55) 0%,
+    rgba(80,80,80,0.85) 50%,
+    rgba(50,50,50,0.7) 100%
   );
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
   z-index: -1;
-  transition: background 0.6s ease;
+  transition: 
+    background 1.2s cubic-bezier(0.39,0.58,0.57,1),
+    background-position 1.2s cubic-bezier(0.39,0.58,0.57,1);
 }
 
-/* Более яркая обводка при наведении */
 .sp-signal-badge-link:hover .sp-signal-badge::before {
+  /* Смещение градиента - угол стал больше! */
   background: linear-gradient(
-    135deg,
-    rgba(65, 65, 65, 0.75) 0%,
-    rgba(105, 105, 105, 0.95) 50%,
-    rgba(70, 70, 70, 0.8) 100%
+    195deg,
+    rgba(65,65,65,0.65) 0%,
+    rgba(120,120,120,0.95) 57%,
+    rgba(70,70,70,0.8) 100%
   );
 }
 
@@ -183,7 +180,7 @@
   color: rgba(120, 120, 120, 0.9);
   font-weight: 400;
   line-height: 1.2;
-  transition: color 0.6s ease;
+  transition: color 0.6s cubic-bezier(0.39,0.58,0.57,1);
 }
 
 .sp-badge-brand {
@@ -191,7 +188,7 @@
   color: rgba(140, 140, 140, 0.95);
   font-weight: 600;
   letter-spacing: 0.5px;
-  transition: color 0.6s ease;
+  transition: color 0.6s cubic-bezier(0.39,0.58,0.57,1);
 }
 
 .sp-signal-badge-link:hover .sp-badge-label {
