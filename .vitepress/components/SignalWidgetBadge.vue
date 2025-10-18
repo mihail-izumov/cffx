@@ -12,7 +12,7 @@
     
     <div class="badge-text">
       <span class="badge-label">Репутация под защитой</span>
-      <span class="badge-brand">Сигнал</span>
+      <span class="badge-brand">Работает Сигнал</span>
     </div>
   </div>
 </template>
