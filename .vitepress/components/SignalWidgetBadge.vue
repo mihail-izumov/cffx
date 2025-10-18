@@ -35,12 +35,18 @@
 
 .sp-signal-badge-link {
   display: inline-flex;
-  text-decoration: none;
-  outline: none;
+  text-decoration: none !important;
+  outline: none !important;
+  border: none !important;
 }
 
-.sp-signal-badge-link:focus {
-  outline: none;
+.sp-signal-badge-link:focus,
+.sp-signal-badge-link:active,
+.sp-signal-badge-link:hover {
+  outline: none !important;
+  border: none !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
 }
 
 .sp-signal-badge {
@@ -49,7 +55,8 @@
   gap: 16px;
   padding: 12px 20px;
   background: rgba(0, 0, 0, 0.8);
-  border: 1px solid rgba(50, 50, 50, 0.7);
+  border: 1px solid transparent;
+  border-image: linear-gradient(135deg, rgba(60, 60, 60, 0.6), rgba(40, 40, 40, 0.8)) 1;
   border-radius: 12px;
   backdrop-filter: blur(10px);
   cursor: pointer;
@@ -71,30 +78,30 @@
   position: absolute;
   width: 8px;
   height: 8px;
-  background: rgba(180, 180, 180, 0.9);
+  background: rgba(100, 100, 100, 0.8);
   border-radius: 50%;
-  box-shadow: 0 0 12px rgba(180, 180, 180, 0.7);
+  box-shadow: 0 0 10px rgba(100, 100, 100, 0.5);
   z-index: 10;
   transition: background 0.6s ease, box-shadow 0.6s ease;
 }
 
 .sp-signal-badge-link:hover .sp-radar-center {
   background: rgba(200, 200, 200, 0.95);
-  box-shadow: 0 0 14px rgba(200, 200, 200, 0.8);
+  box-shadow: 0 0 16px rgba(200, 200, 200, 0.8);
 }
 
 .sp-radar-wave {
   position: absolute;
   width: 100%;
   height: 100%;
-  border: 2px solid rgba(160, 160, 160, 0.5);
+  border: 2px solid rgba(110, 110, 110, 0.4);
   border-radius: 50%;
   animation: sp-radar-pulse 4s ease-out infinite;
   transition: border-color 0.6s ease;
 }
 
 .sp-signal-badge-link:hover .sp-radar-wave {
-  border-color: rgba(180, 180, 180, 0.6);
+  border-color: rgba(180, 180, 180, 0.65);
 }
 
 .sp-wave-1 {
