@@ -140,7 +140,7 @@
   flex-shrink: 0;
 }
 
-/* Центральная точка с заметной пульсацией */
+/* Центральная точка с очень заметной пульсацией */
 .sp-radar-center {
   position: absolute;
   width: 8px;
@@ -158,18 +158,18 @@
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
 }
 
-/* Заметная пульсация с отскоком */
+/* Очень заметная пульсация с отскоком */
 @keyframes sp-radar-center-pulse {
   0% {
-    transform: scale(0.88);
+    transform: scale(0.82);
   }
-  1% {
-    transform: scale(1.08);
+  0.8% {
+    transform: scale(1.15);
   }
-  2% {
-    transform: scale(0.98);
+  1.8% {
+    transform: scale(0.96);
   }
-  3% {
+  2.8% {
     transform: scale(1);
   }
   100% {
@@ -186,6 +186,7 @@
   border-radius: 50%;
   animation: sp-radar-pulse 8s ease-out infinite;
   transition: border-color 0.6s ease;
+  opacity: 0;
 }
 
 /* Первая волна толще с задержкой */
@@ -209,6 +210,9 @@
 @keyframes sp-radar-pulse {
   0% {
     transform: scale(0.2);
+    opacity: 0;
+  }
+  1% {
     opacity: 0;
   }
   10% {
