@@ -4,16 +4,20 @@
       class="sp-signal-badge-link"
       href="https://runscale.ru"
       target="_blank"
-      rel="noopener"
+      rel="noopener noreferrer"
       aria-label="Перейти на Runscale"
     >
       <div class="sp-signal-badge">
         <div class="sp-radar-container">
+          <!-- Центральная точка радара -->
           <div class="sp-radar-center"></div>
+          
+          <!-- Анимированные волны -->
           <div class="sp-radar-wave sp-wave-1"></div>
           <div class="sp-radar-wave sp-wave-2"></div>
           <div class="sp-radar-wave sp-wave-3"></div>
         </div>
+        
         <div class="sp-badge-text">
           <span class="sp-badge-label">Репутация под защитой</span>
           <span class="sp-badge-brand">Работает Сигнал</span>
@@ -24,6 +28,7 @@
 </template>
 
 <style scoped>
+/* Внешний контейнер для центрирования */
 .sp-badge-wrapper-outer {
   width: 100%;
   display: flex;
@@ -33,27 +38,32 @@
   background: transparent;
 }
 
+/* Ссылка, оборачивающая бейдж */
 .sp-signal-badge-link {
   display: inline-flex;
   text-decoration: none;
+  border-radius: 12px; /* Для скругления фокуса */
 }
 
-/* Черный фон, прозрачность 80%, темная градиентная обводка */
+/* Основной стиль бейджа */
 .sp-signal-badge {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 16px;
   padding: 12px 20px;
-  background: rgba(0, 0, 0, 0.80);
+  /* Темный фон с прозрачностью */
+  background: rgba(15, 15, 15, 0.8);
+  border: 1px solid;
+  /* Градиентная обводка */
+  border-image-source: linear-gradient(to bottom, rgba(80, 80, 80, 0.5), rgba(40, 40, 40, 0.5));
+  border-image-slice: 1;
   border-radius: 12px;
-  border: 1.5px solid;
-  border-image: linear-gradient(135deg, #101014 40%, #2a2a2e 100%) 1;
   backdrop-filter: blur(10px);
-  box-sizing: border-box;
-  transition: background 0.3s, border 0.5s;
+  cursor: pointer;
+  transition: background 0.5s ease;
 }
 
-/* Радиолокация остаётся яркой на тёмном */
+/* --- Стили радара --- */
 .sp-radar-container {
   position: relative;
   width: 48px;
@@ -68,9 +78,10 @@
   position: absolute;
   width: 8px;
   height: 8px;
-  background: #aed0fd;
+  /* Цвет центра, видимый на темном фоне */
+  background: #999;
   border-radius: 50%;
-  box-shadow: 0 0 14px rgba(120,180,255,0.8);
+  box-shadow: 0 0 12px rgba(153, 153, 153, 0.6);
   z-index: 10;
 }
 
@@ -78,66 +89,86 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  border: 2px solid rgba(120,180,255,0.17);
+  /* Цвет волн, видимый на темном фоне */
+  border: 2px solid rgba(153, 153, 153, 0.4);
   border-radius: 50%;
-  animation: sp-radar-pulse 7s cubic-bezier(0.23,1,0.32,1) infinite;
-  transition: border-color 0.5s;
+  animation: sp-radar-pulse 4s ease-out infinite;
 }
 
 .sp-wave-1 { animation-delay: 0s; }
-.sp-wave-2 { animation-delay: 2.33s; }
-.sp-wave-3 { animation-delay: 4.66s; }
+.sp-wave-2 { animation-delay: 1.3s; }
+.sp-wave-3 { animation-delay: 2.6s; }
 
 @keyframes sp-radar-pulse {
-  0%   {transform: scale(0.2); opacity: 0;}
-  10%  {opacity: 0.5;}
-  40%  {opacity: 0.22;}
-  100% {transform: scale(1); opacity: 0;}
+  0% { transform: scale(0.2); opacity: 0; }
+  10% { opacity: 0.7; }
+  80% { opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0; }
 }
 
-/* Текст всегда по левой стороне */
+/* --- Стили текста --- */
 .sp-badge-text {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
+  /* Текст выравнивается по левому краю внутри этого блока */
+  text-align: left; 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  align-items: flex-start;
 }
 
 .sp-badge-label {
   font-size: 14px;
-  color: #3f414b;
+  /* Затемненный цвет текста */
+  color: #777;
   font-weight: 400;
   line-height: 1.2;
-  transition: color 0.4s;
+  /* Плавный переход цвета */
+  transition: color 0.5s ease;
 }
 
 .sp-badge-brand {
   font-size: 16px;
-  color: #4b4d56;
+  /* Затемненный цвет текста */
+  color: #999;
   font-weight: 600;
   letter-spacing: 0.5px;
-  transition: color 0.4s;
+  /* Плавный переход цвета */
+  transition: color 0.5s ease;
 }
 
-/* На hover меняется только цвет текста, все остальное без эффектов! */
-.sp-signal-badge-link:hover .sp-badge-brand,
-.sp-signal-badge-link:focus .sp-badge-brand {
+/* --- Эффекты при наведении --- */
+.sp-signal-badge-link:hover .sp-badge-label {
+  /* Текст становится ярче */
+  color: #aaa;
+}
+
+.sp-signal-badge-link:hover .sp-badge-brand {
+  /* Текст становится белым */
   color: #fff;
 }
 
-.sp-signal-badge-link:hover .sp-badge-label,
-.sp-signal-badge-link:focus .sp-badge-label {
-  color: #98a3be;
-}
-
-/* Адаптивность */
+/* --- Адаптивность --- */
 @media (max-width: 640px) {
-  .sp-badge-wrapper-outer { padding: 16px 8px; }
-  .sp-signal-badge { padding: 10px 12px; gap: 12px; }
-  .sp-radar-container { width: 40px; height: 40px; }
-  .sp-radar-center { width: 6px; height: 6px; }
-  .sp-badge-label { font-size: 12px; }
-  .sp-badge-brand { font-size: 13px; }
+  .sp-badge-wrapper-outer {
+    padding: 16px 12px;
+  }
+  .sp-signal-badge {
+    padding: 10px 16px;
+    gap: 12px;
+  }
+  .sp-radar-container {
+    width: 40px;
+    height: 40px;
+  }
+  .sp-radar-center {
+    width: 6px;
+    height: 6px;
+  }
+  .sp-badge-label {
+    font-size: 12px;
+  }
+  .sp-badge-brand {
+    font-size: 14px;
+  }
 }
 </style>
