@@ -1,26 +1,29 @@
 <template>
   <div class="sp-badge-wrapper-outer">
-    <div class="sp-signal-badge">
-      <div class="sp-radar-container">
-        <!-- Центральная точка (сердце системы) -->
-        <div class="sp-radar-center"></div>
-        
-        <!-- Три волны, которые расходятся с задержкой -->
-        <div class="sp-radar-wave sp-wave-1"></div>
-        <div class="sp-radar-wave sp-wave-2"></div>
-        <div class="sp-radar-wave sp-wave-3"></div>
+    <a
+      class="sp-signal-badge-link"
+      href="https://runscale.ru"
+      target="_blank"
+      rel="noopener"
+      aria-label="Перейти на Runscale"
+    >
+      <div class="sp-signal-badge">
+        <div class="sp-radar-container">
+          <div class="sp-radar-center"></div>
+          <div class="sp-radar-wave sp-wave-1"></div>
+          <div class="sp-radar-wave sp-wave-2"></div>
+          <div class="sp-radar-wave sp-wave-3"></div>
+        </div>
+        <div class="sp-badge-text">
+          <span class="sp-badge-label">Репутация под защитой</span>
+          <span class="sp-badge-brand">Работает Сигнал</span>
+        </div>
       </div>
-      
-      <div class="sp-badge-text">
-        <span class="sp-badge-label">Репутация под защитой</span>
-        <span class="sp-badge-brand">Работает Сигнал</span>
-      </div>
-    </div>
+    </a>
   </div>
 </template>
 
 <style scoped>
-/* Внешний контейнер для центрирования */
 .sp-badge-wrapper-outer {
   width: 100%;
   display: flex;
@@ -30,7 +33,12 @@
   background: transparent;
 }
 
-/* Основной бейдж */
+/* Кликабельная вся область */
+.sp-signal-badge-link {
+  display: inline-flex;
+  text-decoration: none;
+}
+
 .sp-signal-badge {
   display: inline-flex;
   align-items: center;
@@ -40,6 +48,13 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   backdrop-filter: blur(10px);
+  transition: box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.sp-signal-badge-link:hover .sp-signal-badge,
+.sp-signal-badge-link:focus .sp-signal-badge {
+  box-shadow: 0 0 0 3px rgba(136, 136, 136, 0.15);
 }
 
 /* Контейнер радара */
@@ -53,7 +68,6 @@
   flex-shrink: 0;
 }
 
-/* Центральная точка (всегда светится) */
 .sp-radar-center {
   position: absolute;
   width: 8px;
@@ -64,7 +78,6 @@
   z-index: 10;
 }
 
-/* Волны радара */
 .sp-radar-wave {
   position: absolute;
   width: 100%;
@@ -74,7 +87,6 @@
   animation: sp-radar-pulse 4s ease-out infinite;
 }
 
-/* Задержка для каждой волны */
 .sp-wave-1 {
   animation-delay: 0s;
 }
@@ -87,7 +99,6 @@
   animation-delay: 2.6s;
 }
 
-/* Анимация волны */
 @keyframes sp-radar-pulse {
   0% {
     transform: scale(0.2);
@@ -105,7 +116,6 @@
   }
 }
 
-/* Текст бейджа */
 .sp-badge-text {
   display: flex;
   flex-direction: column;
@@ -127,7 +137,6 @@
   letter-spacing: 0.5px;
 }
 
-/* Адаптивность */
 @media (max-width: 640px) {
   .sp-badge-wrapper-outer {
     padding: 16px 12px;
@@ -142,16 +151,13 @@
     width: 40px;
     height: 40px;
   }
-  
   .sp-radar-center {
     width: 6px;
     height: 6px;
   }
-  
   .sp-badge-label {
     font-size: 12px;
   }
-  
   .sp-badge-brand {
     font-size: 14px;
   }
