@@ -14,7 +14,7 @@
     <!-- Основной контейнер с фоном и элементами -->
     <div 
       class="content-wrapper" 
-      :style="{ backgroundImage: 'url(https://i.imgur.com/3g2D4b4.png)' }"
+      :style="{ backgroundImage: 'url(/cffx-cup.png)' }"
     >
       <!-- Зарезервированное место и сами стрелки -->
       <div class="nav-placeholder">
