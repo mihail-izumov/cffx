@@ -4,12 +4,12 @@ prev: false
 next: false
 pageClass: centered-page
 notification: brew
-title: Как работает Умный Отзыв
-description: Где Начинается Ваша Кофейня
+title: Как работает Сигнал
+description: Просто скажите, что не так
 ---
 <div align="center">
 
-<span class="signal-badge">Умный отзыв для любящих кофе</span> <br>
+<span class="signal-badge">Для любящих кофе</span> <br>
 
 <h1>
   <span>Ваш Сигнал — тому,</span><br class="mobile-break"> <span>кто решает.</span>
