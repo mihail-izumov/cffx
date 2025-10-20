@@ -16,7 +16,7 @@
       class="content-wrapper" 
       :style="{ backgroundImage: `url('/cffx-cup.png')` }"
     >
-      <!-- Зарезервированное место для стрелок -->
+      <!-- Зарезервированное место и стрелки, прижатые влево -->
       <div class="nav-placeholder">
         <transition name="slide-in">
           <div 
@@ -24,14 +24,10 @@
             class="nav-arrows"
           >
             <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
             <button class="arrow-button" @click="navigate(1)" :disabled="activeIndex === items.length - 1">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M6 9L12 15L18 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
           </div>
         </transition>
@@ -53,11 +49,7 @@
               @click="setActive(index)"
             >
               <div class="pill-icon-wrapper">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  irclele cx="12" cy="12" r="10"/>
-                  <path d="M8 12h8"/>
-                  <path d="M12 8v8"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
               </div>
               <span class="pill-title">{{ item.title }}</span>
             </button>
@@ -80,7 +72,7 @@
 import { ref, watch, nextTick } from 'vue';
 
 const activeIndex = ref(null);
-const containerHeight = ref(650);
+const containerHeight = ref(650); // Минимальная высота
 const itemRefs = ref([]);
 
 const items = ref([
@@ -131,17 +123,19 @@ function closeAll() {
 </script>
 
 <style scoped>
+/* Главный контейнер на всю ширину */
 .feature-selector-container {
   position: relative;
   width: 100%;
+  min-height: 650px; /* Минимальная высота, чтобы избежать сжатия */
   background-color: transparent;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow: hidden;
   transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Контейнер с фоновым изображением и элементами */
 .content-wrapper {
-  position: relative;
   display: flex;
   align-items: flex-start;
   height: 100%;
@@ -149,9 +143,10 @@ function closeAll() {
   background-size: auto 50%;
   background-position: right center;
   background-repeat: no-repeat;
-  background-attachment: local;
+  background-attachment: fixed; /* Фиксируем фон */
 }
 
+/* Кнопка "Закрыть всё" */
 .close-all-btn {
   position: absolute;
   top: 20px;
@@ -175,30 +170,28 @@ function closeAll() {
   color: #fff;
 }
 
+/* Пустое место для стрелок, прижатое влево и центрирующее их */
 .nav-placeholder {
-  position: sticky;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 104px;
-  height: fit-content;
+  position: relative;
+  width: 104px; /* Увеличено вдвое для большего отступа */
+  height: 100%;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  align-self: center;
 }
 
+/* Навигационные стрелки */
 .nav-arrows {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
-
 .arrow-button {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: #000;
   border: none;
   display: flex;
   align-items: center;
@@ -210,14 +203,15 @@ function closeAll() {
   pointer-events: none;
 }
 .arrow-button:hover:not(:disabled) {
-  background-color: rgba(0, 0, 0, 0.95);
+  background-color: #1a1a1a; /* Темно-серый ховер */
 }
 .arrow-button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: #000; /* Убеждаемся, что фон черный и становится прозрачнее */
 }
 
+/* Список элементов */
 .feature-list {
   display: flex;
   flex-direction: column;
@@ -229,6 +223,7 @@ function closeAll() {
   max-width: 450px;
 }
 
+/* Стили кнопки-пилюли */
 .pill-button {
   display: flex;
   align-items: center;
@@ -260,10 +255,11 @@ function closeAll() {
   white-space: nowrap;
 }
 
+/* Стили блока с контентом */
 .content-box {
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  background-color: rgba(0, 0, 0, 0.75); /* Небольшая прозрачность */
+  backdrop-filter: blur(18px); /* Размытие фона */
+  -webkit-backdrop-filter: blur(18px);
   border-radius: 24px;
   padding: 22px 28px;
   border: 1px solid rgba(255,255,255,0.1);
@@ -277,29 +273,14 @@ function closeAll() {
   color: #fff;
 }
 
-.fade-enter-active, .fade-leave-active { 
-  transition: opacity 0.3s ease; 
-}
-.fade-enter-from, .fade-leave-to { 
-  opacity: 0; 
-}
+/* Анимации */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
 
-.slide-in-enter-active { 
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
-}
-.slide-in-leave-active { 
-  transition: all 0.3s cubic-bezier(0.5, 0, 0.75, 0); 
-}
-.slide-in-enter-from, .slide-in-leave-to { 
-  opacity: 0; 
-  transform: translateX(-20px); 
-}
+.slide-in-enter-active { transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+.slide-in-leave-active { transition: all 0.3s cubic-bezier(0.5, 0, 0.75, 0); }
+.slide-in-enter-from, .slide-in-leave-to { opacity: 0; transform: translateX(-20px); }
 
-.item-swap-enter-active, .item-swap-leave-active { 
-  transition: all 0.3s ease-in-out; 
-}
-.item-swap-enter-from, .item-swap-leave-to { 
-  opacity: 0; 
-  transform: scale(0.95); 
-}
+.item-swap-enter-active, .item-swap-leave-active { transition: all 0.3s ease-in-out; }
+.item-swap-enter-from, .item-swap-leave-to { opacity: 0; transform: scale(0.95); }
 </style>
