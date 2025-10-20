@@ -1,7 +1,7 @@
 <template>
   <div class="feature-selector-container">
     
-    <!-- Кнопка "Закрыть всё" -->
+    <!-- Кнопка "Закрыть всё" (появляется при выборе элемента) -->
     <transition name="fade">
       <button v-if="activeIndex !== null" class="close-all-btn" @click="closeAll">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -12,8 +12,10 @@
     </transition>
 
     <!-- Основной контейнер с фоном и элементами -->
-    <div class="content-wrapper">
-      <!-- Зарезервированное место и стрелки, прижатые влево -->
+    <div 
+      class="content-wrapper"
+    >
+      <!-- Зарезервированное место и сами стрелки -->
       <div class="nav-placeholder">
         <transition name="slide-in">
           <div 
@@ -38,7 +40,7 @@
           class="feature-item-wrapper"
         >
           <transition name="item-swap" mode="out-in">
-            <!-- Кнопка-пилюля -->
+            <!-- Кнопка-пилюля (видима, если элемент не активен) -->
             <button
               v-if="activeIndex !== index"
               class="pill-button"
@@ -50,7 +52,7 @@
               <span class="pill-title">{{ item.title }}</span>
             </button>
 
-            <!-- Блок с контентом -->
+            <!-- Блок с контентом (виден, если элемент активен) -->
             <div
               v-else
               class="content-box"
@@ -60,9 +62,14 @@
           </transition>
         </div>
       </div>
-      
+
       <!-- Фоновое изображение -->
-      <div class="background-image"></div>
+      <div class="background-image-container">
+        <div 
+          class="background-image"
+          :style="{ backgroundImage: 'url(/cffx-cup.png)' }"
+        ></div>
+      </div>
     </div>
   </div>
 </template>
@@ -71,6 +78,7 @@
 import { ref } from 'vue';
 
 const activeIndex = ref(null);
+let touchStartX = 0;
 
 const items = ref([
   { id: 1, title: 'Архитектура Проблем', content: '<strong>Архитектура Проблем.</strong> Система автоматически распознаёт и классифицирует каждую проблему — от чистоты в зале до тона голоса сотрудника. Вы видите не хаос мнений, а ясную архитектуру боли и радости ваших клиентов. Это позволяет мгновенно отличать критические сбои от мелких недочетов.' },
@@ -97,6 +105,17 @@ function navigate(direction) {
 function closeAll() {
   activeIndex.value = null;
 }
+
+function handleTouchStart(e) {
+  touchStartX = e.touches[0].clientX;
+}
+
+function handleTouchEnd(e) {
+  const touchEndX = e.changedTouches[0].clientX;
+  if (touchStartX - touchEndX > 50) { // Свайп влево
+    closeAll();
+  }
+}
 </script>
 
 <style scoped>
@@ -107,6 +126,7 @@ function closeAll() {
   min-height: 700px;
   background-color: transparent;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
 }
 
 /* Контейнер с элементами */
@@ -115,23 +135,30 @@ function closeAll() {
   display: flex;
   align-items: flex-start;
   padding: 40px 0 40px 20px;
-  min-height: 700px;
+  min-height: inherit;
 }
 
 /* Фоновое изображение (зафиксировано) */
-.background-image {
+.background-image-container {
   position: absolute;
+  top: 0;
   right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.background-image {
+  position: sticky;
   top: 50%;
   transform: translateY(-50%);
-  width: 40%;
+  width: 50%;
   height: 50%;
-  background-image: url('/cffx-cup.png');
+  margin-left: auto; /* Прижимаем к правому краю */
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  pointer-events: none;
-  z-index: 0;
 }
 
 /* Кнопка "Закрыть всё" */
@@ -161,7 +188,7 @@ function closeAll() {
 /* Пустое место для стрелок (УВЕЛИЧЕНО В 2 РАЗА) */
 .nav-placeholder {
   position: relative;
-  width: 104px; /* Было 52px, теперь 104px */
+  width: 104px; /* Увеличено для отступа */
   min-height: 500px;
   flex-shrink: 0;
   display: flex;
@@ -198,7 +225,7 @@ function closeAll() {
 }
 
 .arrow-button:hover:not(:disabled) {
-  background-color: rgba(0, 0, 0, 0.85); /* Темнее при ховере */
+  background-color: rgba(26, 26, 26, 0.85); /* Темно-серый ховер */
 }
 
 .arrow-button:disabled {
