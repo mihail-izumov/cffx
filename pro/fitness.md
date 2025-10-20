@@ -83,7 +83,7 @@ notification: brew
 
 </div>
 
-<DialogsTarifs />
+<FitnessTarifs />
 
 <div align="center">
 
