@@ -6,6 +6,13 @@
         <GeneralNotification v-else />
       </div>
     </template>
+
+    <!-- ИЗМЕНЕНИЕ: Добавляем компонент в слот подвала -->
+    <template #vp-layout-bottom>
+      <div class="custom-footer-slogan">
+        <RotatingSlogan />
+      </div>
+    </template>
   </DefaultLayout>
   
   <!-- Модальное окно -->
@@ -19,6 +26,9 @@ import DefaultTheme from 'vitepress/theme'
 import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
 import SignalModalButton from '../components/SignalModalButton.vue'
+
+// --- ИЗМЕНЕНИЕ: Импортируем ваш новый компонент ---
+import RotatingSlogan from '../components/RotatingSlogan.vue'
 
 const DefaultLayout = DefaultTheme.Layout
 const { frontmatter } = useData()
@@ -45,11 +55,8 @@ onMounted(() => {
   const setupMobileSignalButton = () => {
     // Проверяем, что это мобильное устройство
     if (window.innerWidth > 768) {
-      console.log('Not mobile, skipping mobile setup')
       return
     }
-    
-    console.log('Mobile detected, setting up signal button...')
     
     // Ждём, пока window.openSignalModal станет доступна
     let attempts = 0
@@ -58,34 +65,23 @@ onMounted(() => {
       
       if (window.openSignalModal) {
         clearInterval(checkModal)
-        console.log('✓ Modal function found, setting up buttons...')
         
         // Находим кнопку в мобильном меню
         const signalLinks = document.querySelectorAll('.VPNavScreen .VPSocialLink[aria-label="signal-link"]')
-        console.log('Found signal links:', signalLinks.length)
         
         if (signalLinks.length === 0) {
-          console.log('No signal links found yet, will retry on next mutation')
           return
         }
         
-        signalLinks.forEach((link, index) => {
-          console.log('Processing link', index, link)
-          
-          // Проверяем, не обработана ли уже эта кнопка
+        signalLinks.forEach((link) => {
           if (link.dataset.signalProcessed) {
-            console.log('Link already processed, skipping')
             return
           }
-          
-          // Помечаем как обработанную
           link.dataset.signalProcessed = 'true'
           
-          // Отключаем стандартное поведение ссылки
           link.removeAttribute('href')
           link.style.position = 'relative'
           
-          // Создаём overlay-кнопку поверх псевдоэлемента ::after
           const overlay = document.createElement('button')
           overlay.style.cssText = `
             position: absolute;
@@ -106,56 +102,37 @@ onMounted(() => {
             e.stopPropagation()
             e.stopImmediatePropagation()
             
-            console.log('✓ Mobile signal button clicked!')
-            
-            // Закрываем мобильное меню
             const navScreen = document.querySelector('.VPNavScreen')
             if (navScreen) {
               navScreen.classList.remove('open')
-              console.log('✓ Mobile menu closed')
             }
             
-            // Убираем блокировку скролла
             document.body.classList.remove('overflow-hidden')
             
-            // Сбрасываем состояние кнопки меню
             const menuButton = document.querySelector('.VPNavBarHamburger button')
             if (menuButton) {
               menuButton.setAttribute('aria-expanded', 'false')
             }
             
-            // Открываем модальное окно с небольшой задержкой
             setTimeout(() => {
               if (window.openSignalModal) {
                 window.openSignalModal()
-                console.log('✓ Modal opened')
-              } else {
-                console.error('✗ window.openSignalModal not found')
               }
             }, 100)
           })
           
-          // Добавляем обработчик на touchstart для лучшей работы на мобильных
-          overlay.addEventListener('touchstart', (e) => {
-            console.log('Touch detected on signal button')
-          }, { passive: true })
-          
           link.appendChild(overlay)
-          console.log('✓ Overlay button added to link', index)
         })
       } else if (attempts > 50) {
         clearInterval(checkModal)
-        console.error('✗ Modal function not found after 5 seconds')
       }
     }, 100)
   }
   
-  // Запускаем при загрузке
   nextTick(() => {
     setTimeout(setupMobileSignalButton, 500)
   })
   
-  // Следим за изменениями в DOM для SPA-навигации
   const observer = new MutationObserver(() => {
     if (window.innerWidth <= 768) {
       setupMobileSignalButton()
@@ -167,7 +144,6 @@ onMounted(() => {
     subtree: true
   })
   
-  // Обработка изменения роутов
   router.onAfterRouteChanged = () => {
     if (window.innerWidth <= 768) {
       setTimeout(setupMobileSignalButton, 300)
@@ -177,6 +153,16 @@ onMounted(() => {
 </script>
 
 <style>
+/* --- ИЗМЕНЕНИЕ: Стили для контейнера слогана --- */
+.custom-footer-slogan {
+  /* Убираем отступ у стандартного футера, чтобы наш компонент встал на его место */
+  margin-top: -32px;
+  padding-bottom: 32px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 /* ФИКСИРОВАННАЯ ВЫСОТА - ключ к решению проблемы прыжков */
 .notification-container {
   max-width: 688px;
@@ -217,7 +203,6 @@ body.has-banner .VPDoc {
     padding-top: 20px;
   }
   
-  /* Убираем pointer-events с псевдоэлемента, чтобы overlay мог принимать клики */
   .VPNavScreen .VPSocialLink[aria-label="signal-link"]::after {
     pointer-events: none !important;
   }
