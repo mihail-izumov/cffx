@@ -14,7 +14,7 @@
     <!-- Основной контейнер с фоном и элементами -->
     <div 
       class="content-wrapper" 
-      :style="{ backgroundImage: 'url(https://www.apple.com/v/apple-watch-ultra-2/c/images/overview/design/design_display__dd6c6c52n5ya_large.jpg)' }"
+      :style="{ backgroundImage: 'url(/cffx-cup.png)' }"
     >
       <!-- Навигационные стрелки (появляются при выборе элемента) -->
       <transition name="slide-in">
