@@ -71,7 +71,8 @@ export default defineConfig({
         });
         html += '</div></div>';
         html += '<div style="margin-top: 24px; text-align: center;">';
-        html += '<div style="color: white; font-size: 14px;">Где Начинается Ваша Кофейня</div>';
+        // --- ИЗМЕНЕНИЕ: Контейнер для монтирования Vue-компонента ---
+        html += '<div id="vue-footer-phrase"></div>';
         html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Сигнал 2025 • Создано в <a href="https://orxaos.sbs" target="_blank" style="color: inherit; text-decoration: underline;">Orxaos</a></div>';
         return html;
       }
@@ -96,6 +97,21 @@ export default defineConfig({
           footer.style.paddingBottom = '30px';
         }
       }
+
+      // --- ИЗМЕНЕНИЕ: Функция для монтирования Vue-компонента ---
+      async function mountFooterPhrase() {
+        const container = document.getElementById('vue-footer-phrase');
+        if (!container || container.hasChildNodes()) {
+          return; // Не монтировать, если контейнера нет или он уже заполнен
+        }
+        try {
+          const { createApp } = await import('vue');
+          const module = await import('/.vitepress/theme/components/RotatingSlogan.vue');
+          createApp(module.default).mount(container);
+        } catch (e) {
+          console.error('Failed to mount RotatingSlogan component:', e);
+        }
+      }
       
       function waitForModal(callback, maxAttempts = 50) {
         let attempts = 0;
@@ -103,7 +119,6 @@ export default defineConfig({
           attempts++;
           if (window.openSignalModal) {
             clearInterval(interval);
-            console.log('✓ window.openSignalModal is ready');
             callback();
           } else if (attempts >= maxAttempts) {
             clearInterval(interval);
@@ -114,32 +129,25 @@ export default defineConfig({
       
       function updateSocialLinkTargets() {
         waitForModal(() => {
-          // Обработка кнопки "Отправить Сигнал" только для ДЕСКТОПА
           const signalLinks = document.querySelectorAll('.VPNavBar .VPSocialLink[aria-label="signal-link"]');
-          console.log('Desktop: Found signal links:', signalLinks.length);
-          
-          signalLinks.forEach((signalLink, index) => {
-            signalLink.setAttribute('target', '_self');
-            signalLink.removeAttribute('rel');
-            signalLink.removeAttribute('href');
-            signalLink.style.cursor = 'pointer';
-            
+          signalLinks.forEach((signalLink) => {
             const newLink = signalLink.cloneNode(true);
             signalLink.parentNode.replaceChild(newLink, signalLink);
+            
+            newLink.setAttribute('target', '_self');
+            newLink.removeAttribute('rel');
+            newLink.removeAttribute('href');
+            newLink.style.cursor = 'pointer';
             
             newLink.addEventListener('click', (e) => {
               e.preventDefault();
               e.stopPropagation();
-              console.log('Desktop: Signal button clicked!');
               try {
                 window.openSignalModal();
-                console.log('✓ Desktop modal opened');
               } catch (error) {
                 console.error('✗ Desktop error:', error);
               }
             });
-            
-            console.log('✓ Desktop event listener attached to signal button', index);
           });
         });
         
@@ -150,36 +158,24 @@ export default defineConfig({
         });
       }
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-          replaceFooter();
-          setTimeout(() => {
-            updateSocialLinkTargets();
-          }, 500);
-        });
-      } else {
+      function runUpdates() {
         replaceFooter();
-        setTimeout(() => {
-          updateSocialLinkTargets();
-        }, 500);
+        updateSocialLinkTargets();
+        mountFooterPhrase(); // Вызываем монтирование компонента
       }
-      
-      window.addEventListener('load', () => {
-        replaceFooter();
-        setTimeout(() => {
-          updateSocialLinkTargets();
-        }, 500);
-      });
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(runUpdates, 100));
+      } else {
+        setTimeout(runUpdates, 100);
+      }
       
       let lastUrl = location.href;
       new MutationObserver(() => {
         const url = location.href;
         if (url !== lastUrl) {
           lastUrl = url;
-          setTimeout(() => {
-            replaceFooter();
-            updateSocialLinkTargets();
-          }, 500);
+          setTimeout(runUpdates, 300); // Немного увеличим задержку для SPA-переходов
         }
       }).observe(document, { subtree: true, childList: true });
     })();
