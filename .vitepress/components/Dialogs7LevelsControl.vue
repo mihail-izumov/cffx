@@ -13,7 +13,8 @@
 
     <!-- Основной контейнер с фоном и элементами -->
     <div 
-      class="content-wrapper"
+      class="content-wrapper" 
+      :style="{ backgroundImage: 'url(/cffx-cup.png)' }"
     >
       <!-- Зарезервированное место и сами стрелки -->
       <div class="nav-placeholder">
@@ -21,6 +22,8 @@
           <div 
             v-if="activeIndex !== null" 
             class="nav-arrows"
+            @touchstart.passive="handleTouchStart"
+            @touchend.passive="handleTouchEnd"
           >
             <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -61,14 +64,6 @@
             </div>
           </transition>
         </div>
-      </div>
-
-      <!-- Фоновое изображение -->
-      <div class="background-image-container">
-        <div 
-          class="background-image"
-          :style="{ backgroundImage: 'url(/cffx-cup.png)' }"
-        ></div>
       </div>
     </div>
   </div>
@@ -119,45 +114,24 @@ function handleTouchEnd(e) {
 </script>
 
 <style scoped>
-/* Главный контейнер на всю ширину с прозрачным фоном */
+/* Главный контейнер на всю ширину */
 .feature-selector-container {
   position: relative;
   width: 100%;
-  min-height: 700px;
+  height: 580px; /* Фиксированная высота */
   background-color: transparent;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  overflow: hidden;
+  overflow: hidden; /* Скрываем все, что выходит за пределы */
 }
 
-/* Контейнер с элементами */
+/* Контейнер с фоновым изображением и элементами */
 .content-wrapper {
-  position: relative;
   display: flex;
   align-items: flex-start;
-  padding: 40px 0 40px 20px;
-  min-height: inherit;
-}
-
-/* Фоновое изображение (зафиксировано) */
-.background-image-container {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.background-image {
-  position: sticky;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 50%;
-  height: 50%;
-  margin-left: auto; /* Прижимаем к правому краю */
-  background-size: contain;
-  background-position: center;
+  height: 100%;
+  padding: 40px 20px;
+  background-size: auto 50%; /* Размер изображения 50% от высоты контейнера */
+  background-position: right center;
   background-repeat: no-repeat;
 }
 
@@ -181,37 +155,32 @@ function handleTouchEnd(e) {
   transition: all 0.2s ease;
 }
 .close-all-btn:hover {
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: #111;
   color: #fff;
 }
 
-/* Пустое место для стрелок (УВЕЛИЧЕНО В 2 РАЗА) */
+/* Пустое место для стрелок */
 .nav-placeholder {
   position: relative;
-  width: 104px; /* Увеличено для отступа */
-  min-height: 500px;
+  width: 52px; /* Ширина = ширина стрелок + отступ */
+  height: 100%;
   flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
 }
 
-/* Навигационные стрелки (зафиксированы по центру) */
+/* Навигационные стрелки */
 .nav-arrows {
-  position: sticky;
-  top: 50%;
-  transform: translateY(-50%);
+  position: absolute;
+  left: 0;
+  top: 5px; /* Синхронизация по высоте */
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
-
 .arrow-button {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: #000;
   border: none;
   display: flex;
   align-items: center;
@@ -219,19 +188,15 @@ function handleTouchEnd(e) {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-
 .arrow-button svg {
-  pointer-events: none;
+  pointer-events: none; /* Клик проходит сквозь SVG на кнопку */
 }
-
 .arrow-button:hover:not(:disabled) {
-  background-color: rgba(26, 26, 26, 0.85); /* Темно-серый ховер */
+  background-color: #111;
 }
-
 .arrow-button:disabled {
-  opacity: 0.3;
+  opacity: 0.4;
   cursor: not-allowed;
-  background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* Список элементов */
@@ -239,16 +204,14 @@ function handleTouchEnd(e) {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  z-index: 10;
-  position: relative;
 }
 
 .feature-item-wrapper {
-  width: max-content;
+  width: max-content; /* Ширина по контенту */
   max-width: 450px;
 }
 
-/* Стили кнопки-пилюли (черный фон) */
+/* Стили кнопки-пилюли */
 .pill-button {
   display: flex;
   align-items: center;
@@ -262,21 +225,17 @@ function handleTouchEnd(e) {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-
 .pill-button:hover {
-  background-color: #1a1a1a;
+  background-color: #111;
 }
-
 .pill-icon-wrapper {
   color: #8A8A8E;
   flex-shrink: 0;
 }
-
 .pill-icon-wrapper svg {
   width: 24px;
   height: 24px;
 }
-
 .pill-title {
   color: #F2F2F7;
   font-size: 17px;
@@ -284,49 +243,32 @@ function handleTouchEnd(e) {
   white-space: nowrap;
 }
 
-/* Стили блока с контентом (ПРОЗРАЧНОСТЬ И РАЗМЫТИЕ) */
+/* Стили блока с контентом */
 .content-box {
-  background-color: rgba(0, 0, 0, 0.65); /* Прозрачность 65% */
-  backdrop-filter: blur(20px); /* Размытие фона */
-  -webkit-backdrop-filter: blur(20px);
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   border-radius: 24px;
   padding: 22px 28px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,0.1);
   color: #EAEAEB;
   font-size: 17px;
   line-height: 1.5;
   font-weight: 500;
 }
-
 :deep(.content-box strong) {
   font-weight: 700;
   color: #fff;
 }
 
 /* Анимации */
-.fade-enter-active, .fade-leave-active { 
-  transition: opacity 0.3s ease; 
-}
-.fade-enter-from, .fade-leave-to { 
-  opacity: 0; 
-}
+.fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
 
-.slide-in-enter-active { 
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
-}
-.slide-in-leave-active { 
-  transition: all 0.3s cubic-bezier(0.5, 0, 0.75, 0); 
-}
-.slide-in-enter-from, .slide-in-leave-to { 
-  opacity: 0; 
-  transform: translateX(-20px); 
-}
+.slide-in-enter-active { transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+.slide-in-leave-active { transition: all 0.3s cubic-bezier(0.5, 0, 0.75, 0); }
+.slide-in-enter-from, .slide-in-leave-to { opacity: 0; transform: translateX(-20px); }
 
-.item-swap-enter-active, .item-swap-leave-active { 
-  transition: all 0.3s ease-in-out; 
-}
-.item-swap-enter-from, .item-swap-leave-to { 
-  opacity: 0; 
-  transform: scale(0.95); 
-}
+.item-swap-enter-active, .item-swap-leave-active { transition: all 0.3s ease-in-out; }
+.item-swap-enter-from, .item-swap-leave-to { opacity: 0; transform: scale(0.95); }
 </style>
