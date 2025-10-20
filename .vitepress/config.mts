@@ -47,7 +47,143 @@ export default defineConfig({
     ['meta', { property: 'og:site_name', content: 'Сигнал' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
-    // --- ИЗМЕНЕНИЕ: Вся секция <script> была удалена, так как теперь подвал управляется через Layout.vue ---
+    ['script', {}, `
+    (function() {
+      function createFooterContent() {
+        const links = [
+          { text: 'Система', href: '/system' },          
+          { text: 'Обновления', href: '/changelog' },
+          { text: 'Фестиваль', href: '/fest' },
+          { text: 'Условия использования', href: '/terms' },
+          { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
+          { text: 'Контакт', href: '/about/contacts' }
+        ];
+        let html = '<hr style="border: 0; border-top: 1px solid var(--vp-c-divider); margin: 24px 0;">';
+        html += '<div class="custom-footer-links"><div class="footer-row">';
+        links.slice(0, 3).forEach((link, i) => {
+          if (i > 0) html += '<span class="dot-separator">•</span>';
+          html += '<a href="' + link.href + '"' + (link.target ? ' target="' + link.target + '" rel="noopener noreferrer"' : '') + '>' + link.text + '</a>';
+        });
+        html += '</div><div class="footer-row">';
+        links.slice(3).forEach((link, i) => {
+          if (i > 0) html += '<span class="dot-separator">•</span>';
+          html += '<a href="' + link.href + '"' + (link.target ? ' target="' + link.target + '" rel="noopener noreferrer"' : '') + '>' + link.text + '</a>';
+        });
+        html += '</div></div>';
+        html += '<div style="margin-top: 24px; text-align: center;">';
+        html += '<div style="color: white; font-size: 14px;">Где Начинается Ваша Кофейня</div>';
+        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Сигнал 2025 • Создано в <a href="https://orxaos.sbs" target="_blank" style="color: inherit; text-decoration: underline;">Orxaos</a></div>';
+        return html;
+      }
+      
+      function replaceFooter() {
+        let footer = document.querySelector('.VPFooter');
+        if (!footer) {
+          footer = document.createElement('footer');
+          footer.className = 'VPFooter';
+          document.body.appendChild(footer);
+        }
+        footer.innerHTML = createFooterContent();
+        if (window.location.pathname !== '/') {
+          footer.style.position = 'relative';
+          footer.style.bottom = '70px';
+          footer.style.zIndex = '10';
+          footer.style.marginBottom = '-70px';
+        } else {
+          footer.style.position = '';
+          footer.style.bottom = '';
+          footer.style.zIndex = '';
+          footer.style.paddingBottom = '30px';
+        }
+      }
+      
+      function waitForModal(callback, maxAttempts = 50) {
+        let attempts = 0;
+        const interval = setInterval(() => {
+          attempts++;
+          if (window.openSignalModal) {
+            clearInterval(interval);
+            console.log('✓ window.openSignalModal is ready');
+            callback();
+          } else if (attempts >= maxAttempts) {
+            clearInterval(interval);
+            console.error('✗ window.openSignalModal not available after', maxAttempts * 100, 'ms');
+          }
+        }, 100);
+      }
+      
+      function updateSocialLinkTargets() {
+        waitForModal(() => {
+          // Обработка кнопки "Отправить Сигнал" только для ДЕСКТОПА
+          const signalLinks = document.querySelectorAll('.VPNavBar .VPSocialLink[aria-label="signal-link"]');
+          console.log('Desktop: Found signal links:', signalLinks.length);
+          
+          signalLinks.forEach((signalLink, index) => {
+            signalLink.setAttribute('target', '_self');
+            signalLink.removeAttribute('rel');
+            signalLink.removeAttribute('href');
+            signalLink.style.cursor = 'pointer';
+            
+            const newLink = signalLink.cloneNode(true);
+            signalLink.parentNode.replaceChild(newLink, signalLink);
+            
+            newLink.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('Desktop: Signal button clicked!');
+              try {
+                window.openSignalModal();
+                console.log('✓ Desktop modal opened');
+              } catch (error) {
+                console.error('✗ Desktop error:', error);
+              }
+            });
+            
+            console.log('✓ Desktop event listener attached to signal button', index);
+          });
+        });
+        
+        const applyLinks = document.querySelectorAll('.VPSocialLink[aria-label="login-link"]');
+        applyLinks.forEach(applyLink => {
+          applyLink.setAttribute('target', '_self');
+          applyLink.removeAttribute('rel');
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          replaceFooter();
+          setTimeout(() => {
+            updateSocialLinkTargets();
+          }, 500);
+        });
+      } else {
+        replaceFooter();
+        setTimeout(() => {
+          updateSocialLinkTargets();
+        }, 500);
+      }
+      
+      window.addEventListener('load', () => {
+        replaceFooter();
+        setTimeout(() => {
+          updateSocialLinkTargets();
+        }, 500);
+      });
+      
+      let lastUrl = location.href;
+      new MutationObserver(() => {
+        const url = location.href;
+        if (url !== lastUrl) {
+          lastUrl = url;
+          setTimeout(() => {
+            replaceFooter();
+            updateSocialLinkTargets();
+          }, 500);
+        }
+      }).observe(document, { subtree: true, childList: true });
+    })();
+    `],
     ['style', {}, `
     .VPSwitchAppearance{display:none!important}
     .VPSocialLink[aria-label="login-link"]::after{font-weight:600!important}
