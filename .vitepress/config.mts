@@ -49,34 +49,6 @@ export default defineConfig({
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
     ['script', {}, `
     (function() {
-      // --- Функция для анимации фразы ---
-      function startPhraseRotation() {
-        // Очищаем предыдущий интервал, если он был, чтобы избежать дублирования
-        if (window.footerAnimationInterval) {
-          clearInterval(window.footerAnimationInterval);
-        }
-        
-        const phrases = ['Ваша Кофейня', 'Ваш Фитнес-клуб', 'Ваш Отель'];
-        let currentIndex = 0;
-        const element = document.getElementById('rotating-phrase');
-        
-        if (!element) return; // Если элемент не найден, выходим
-        
-        // Устанавливаем начальное значение и видимость
-        element.textContent = phrases[currentIndex];
-        element.style.opacity = 1;
-        
-        // Запускаем интервал смены фраз
-        window.footerAnimationInterval = setInterval(() => {
-          element.style.opacity = 0; // Скрываем текущую фразу
-          setTimeout(() => {
-            currentIndex = (currentIndex + 1) % phrases.length;
-            element.textContent = phrases[currentIndex];
-            element.style.opacity = 1; // Показываем новую фразу
-          }, 800); // Задержка равна времени анимации в CSS
-        }, 3000); // Интервал смены фраз
-      }
-
       function createFooterContent() {
         const links = [
           { text: 'Система', href: '/system' },          
@@ -99,7 +71,7 @@ export default defineConfig({
         });
         html += '</div></div>';
         html += '<div style="margin-top: 24px; text-align: center;">';
-        html += '<div style="color: white; font-size: 14px; display: flex; justify-content: center; align-items: center; gap: 6px;"><span>[translate:Где Начинается]</span><span id="rotating-phrase">[translate:Ваша Кофейня]</span></div>';
+        html += '<div style="color: white; font-size: 14px;">Где Начинается Ваша Кофейня</div>';
         html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Сигнал 2025 • Создано в <a href="https://orxaos.sbs" target="_blank" style="color: inherit; text-decoration: underline;">Orxaos</a></div>';
         return html;
       }
@@ -142,6 +114,7 @@ export default defineConfig({
       
       function updateSocialLinkTargets() {
         waitForModal(() => {
+          // Обработка кнопки "Отправить Сигнал" только для ДЕСКТОПА
           const signalLinks = document.querySelectorAll('.VPNavBar .VPSocialLink[aria-label="signal-link"]');
           console.log('Desktop: Found signal links:', signalLinks.length);
           
@@ -177,38 +150,41 @@ export default defineConfig({
         });
       }
 
-      function runUpdates() {
-        replaceFooter();
-        updateSocialLinkTargets();
-        startPhraseRotation(); // Запускаем анимацию
-      }
-
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => setTimeout(runUpdates, 500));
+        document.addEventListener('DOMContentLoaded', () => {
+          replaceFooter();
+          setTimeout(() => {
+            updateSocialLinkTargets();
+          }, 500);
+        });
       } else {
-        setTimeout(runUpdates, 500);
+        replaceFooter();
+        setTimeout(() => {
+          updateSocialLinkTargets();
+        }, 500);
       }
       
-      window.addEventListener('load', () => setTimeout(runUpdates, 500));
+      window.addEventListener('load', () => {
+        replaceFooter();
+        setTimeout(() => {
+          updateSocialLinkTargets();
+        }, 500);
+      });
       
       let lastUrl = location.href;
       new MutationObserver(() => {
         const url = location.href;
         if (url !== lastUrl) {
           lastUrl = url;
-          setTimeout(runUpdates, 500);
+          setTimeout(() => {
+            replaceFooter();
+            updateSocialLinkTargets();
+          }, 500);
         }
       }).observe(document, { subtree: true, childList: true });
     })();
     `],
     ['style', {}, `
-    #rotating-phrase {
-      display: inline-block;
-      transition: opacity 0.8s ease-in-out;
-      width: 140px; /* Фиксированная ширина для выравнивания */
-      text-align: left; /* Текст внутри блока будет слева */
-    }
-
     .VPSwitchAppearance{display:none!important}
     .VPSocialLink[aria-label="login-link"]::after{font-weight:600!important}
     .VPHero .name,.VPHero .text,.VPHero .tagline{color:white!important}
