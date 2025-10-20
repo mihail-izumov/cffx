@@ -3,6 +3,7 @@ outline: false
 prev: false
 next: false
 title: Сигнал для Фитнеса
+description: Где Начинается Ваш Фитнес
 notification: brew
 ---
 
