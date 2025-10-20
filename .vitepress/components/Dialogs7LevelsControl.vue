@@ -1,7 +1,7 @@
 <template>
-  <div class="feature-selector-container">
+  <div class="feature-selector-container" :style="{ height: containerHeight + 'px' }">
     
-    <!-- Кнопка "Закрыть всё" (появляется при выборе элемента) -->
+    <!-- Кнопка "Закрыть всё" -->
     <transition name="fade">
       <button v-if="activeIndex !== null" class="close-all-btn" @click="closeAll">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -14,16 +14,14 @@
     <!-- Основной контейнер с фоном и элементами -->
     <div 
       class="content-wrapper" 
-      :style="{ backgroundImage: 'url(/cffx-cup.png)' }"
+      :style="{ backgroundImage: `url('/cffx-cup.png')` }"
     >
-      <!-- Зарезервированное место и сами стрелки -->
+      <!-- Зарезервированное место и стрелки, прижатые влево -->
       <div class="nav-placeholder">
         <transition name="slide-in">
           <div 
             v-if="activeIndex !== null" 
             class="nav-arrows"
-            @touchstart.passive="handleTouchStart"
-            @touchend.passive="handleTouchEnd"
           >
             <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -41,9 +39,10 @@
           v-for="(item, index) in items" 
           :key="item.id" 
           class="feature-item-wrapper"
+          ref="itemRefs"
         >
           <transition name="item-swap" mode="out-in">
-            <!-- Кнопка-пилюля (видима, если элемент не активен) -->
+            <!-- Кнопка-пилюля -->
             <button
               v-if="activeIndex !== index"
               class="pill-button"
@@ -55,7 +54,7 @@
               <span class="pill-title">{{ item.title }}</span>
             </button>
 
-            <!-- Блок с контентом (виден, если элемент активен) -->
+            <!-- Блок с контентом -->
             <div
               v-else
               class="content-box"
@@ -70,10 +69,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch, nextTick, onMounted } from 'vue';
 
 const activeIndex = ref(null);
-let touchStartX = 0;
+const containerHeight = ref(650); // Начальная и минимальная высота
+const itemRefs = ref([]);
 
 const items = ref([
   { id: 1, title: 'Архитектура Проблем', content: '<strong>Архитектура Проблем.</strong> Система автоматически распознаёт и классифицирует каждую проблему — от чистоты в зале до тона голоса сотрудника. Вы видите не хаос мнений, а ясную архитектуру боли и радости ваших клиентов. Это позволяет мгновенно отличать критические сбои от мелких недочетов.' },
@@ -84,6 +84,28 @@ const items = ref([
   { id: 6, title: 'Протоколы Компенсаций', content: '<strong>Протоколы Компенсаций.</strong> Настройте логику выдачи бонусов за разные типы сбоев. Система сама предложит гостю сертификат или скидку в точном соответствии с вашими правилами. Это превращает любой сбой из проблемы в возможность продемонстрировать исключительный сервис.' },
   { id: 7, title: 'Метрики Успеха', content: '<strong>Метрики Успеха.</strong> Вы получаете доступ к дашборду, где в реальном времени отслеживаются ключевые показатели: среднее время решения проблемы, уровень удовлетворённости (NPS) после диалога, самые частые типы проблем. Вы управляете репутацией на основе данных, а не интуиции.' }
 ]);
+
+// Динамический расчет высоты контейнера
+watch(activeIndex, async () => {
+  await nextTick();
+  
+  let totalHeight = 80; // Сумма верхнего и нижнего padding (40px + 40px)
+  const gap = 12; // Отступ между элементами
+
+  if (itemRefs.value.length > 0) {
+    itemRefs.value.forEach((el, index) => {
+      if (el) {
+        totalHeight += el.offsetHeight;
+        if (index < itemRefs.value.length - 1) {
+          totalHeight += gap;
+        }
+      }
+    });
+  }
+  
+  // Устанавливаем высоту, но не меньше минимального значения
+  containerHeight.value = Math.max(650, totalHeight);
+});
 
 function setActive(index) {
   activeIndex.value = index;
@@ -100,17 +122,6 @@ function navigate(direction) {
 function closeAll() {
   activeIndex.value = null;
 }
-
-function handleTouchStart(e) {
-  touchStartX = e.touches[0].clientX;
-}
-
-function handleTouchEnd(e) {
-  const touchEndX = e.changedTouches[0].clientX;
-  if (touchStartX - touchEndX > 50) { // Свайп влево
-    closeAll();
-  }
-}
 </script>
 
 <style scoped>
@@ -118,10 +129,10 @@ function handleTouchEnd(e) {
 .feature-selector-container {
   position: relative;
   width: 100%;
-  height: 580px; /* Фиксированная высота */
   background-color: transparent;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  overflow: hidden; /* Скрываем все, что выходит за пределы */
+  overflow: hidden;
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Контейнер с фоновым изображением и элементами */
@@ -129,8 +140,8 @@ function handleTouchEnd(e) {
   display: flex;
   align-items: flex-start;
   height: 100%;
-  padding: 40px 20px;
-  background-size: auto 50%; /* Размер изображения 50% от высоты контейнера */
+  padding: 40px 0; /* Сдвигает все влево */
+  background-size: auto 50%;
   background-position: right center;
   background-repeat: no-repeat;
 }
@@ -159,26 +170,26 @@ function handleTouchEnd(e) {
   color: #fff;
 }
 
-/* Пустое место для стрелок */
+/* Пустое место для стрелок, прижатое влево и центрирующее их */
 .nav-placeholder {
   position: relative;
-  width: 52px; /* Ширина = ширина стрелок + отступ */
+  width: 52px;
   height: 100%;
   flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Навигационные стрелки */
 .nav-arrows {
-  position: absolute;
-  left: 0;
-  top: 5px; /* Синхронизация по высоте */
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
 }
 .arrow-button {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background-color: #000;
   border: none;
@@ -192,7 +203,7 @@ function handleTouchEnd(e) {
   pointer-events: none; /* Клик проходит сквозь SVG на кнопку */
 }
 .arrow-button:hover:not(:disabled) {
-  background-color: #111;
+  background-color: #1a1a1a;
 }
 .arrow-button:disabled {
   opacity: 0.4;
@@ -207,7 +218,7 @@ function handleTouchEnd(e) {
 }
 
 .feature-item-wrapper {
-  width: max-content; /* Ширина по контенту */
+  width: max-content;
   max-width: 450px;
 }
 
@@ -245,7 +256,7 @@ function handleTouchEnd(e) {
 
 /* Стили блока с контентом */
 .content-box {
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-radius: 24px;
