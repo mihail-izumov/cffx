@@ -95,6 +95,7 @@ import GoogleDocsViewer from '../components/GoogleDocsViewer.vue'
 import CoffeePointsCitySelect from '../components/CoffeePointsCitySelect.vue'
 import SystemTabs from '../components/SystemTabs.vue'
 import SignalWidgetBadge from '../components/SignalWidgetBadge.vue'
+import FitnessTarifs from '../components/FitnessTarifs.vue'
 
 export default {
   extends: DefaultTheme,
@@ -195,5 +196,6 @@ export default {
     app.component('CoffeePointsCitySelect', CoffeePointsCitySelect)
     app.component('SystemTabs', SystemTabs)
     app.component('SignalWidgetBadge', SignalWidgetBadge)
+    app.component('FitnessTarifs', FitnessTarifs)
   },
 }
