@@ -99,8 +99,7 @@ export default defineConfig({
         });
         html += '</div></div>';
         html += '<div style="margin-top: 24px; text-align: center;">';
-        // --- ИЗМЕНЕНИЕ ЗДЕСЬ: добавили span с id для анимации ---
-        html += '<div style="color: white; font-size: 14px; display: flex; justify-content: center; align-items: center; gap: 6px;"><span>Где Начинается</span><span id="rotating-phrase">Ваша Кофейня</span></div>';
+        html += '<div style="color: white; font-size: 14px; display: flex; justify-content: center; align-items: center; gap: 6px;"><span>[translate:Где Начинается]</span><span id="rotating-phrase">[translate:Ваша Кофейня]</span></div>';
         html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Сигнал 2025 • Создано в <a href="https://orxaos.sbs" target="_blank" style="color: inherit; text-decoration: underline;">Orxaos</a></div>';
         return html;
       }
@@ -203,12 +202,11 @@ export default defineConfig({
     })();
     `],
     ['style', {}, `
-    /* --- ИЗМЕНЕНИЕ ЗДЕСЬ: стили для анимированной фразы --- */
     #rotating-phrase {
       display: inline-block;
       transition: opacity 0.8s ease-in-out;
-      min-width: 130px; /* Предотвращает "прыжок" макета */
-      text-align: left;
+      width: 140px; /* Фиксированная ширина для выравнивания */
+      text-align: left; /* Текст внутри блока будет слева */
     }
 
     .VPSwitchAppearance{display:none!important}
