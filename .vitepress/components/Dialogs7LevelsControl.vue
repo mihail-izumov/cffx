@@ -1,5 +1,5 @@
 <template>
-  <div class="feature-selector-container" :style="{ height: containerHeight + 'px' }">
+  <div class="feature-selector-container">
     
     <!-- Кнопка "Закрыть всё" -->
     <transition name="fade">
@@ -12,10 +12,7 @@
     </transition>
 
     <!-- Основной контейнер с фоном и элементами -->
-    <div 
-      class="content-wrapper" 
-      :style="{ backgroundImage: `url('/cffx-cup.png')` }"
-    >
+    <div class="content-wrapper">
       <!-- Зарезервированное место и стрелки, прижатые влево -->
       <div class="nav-placeholder">
         <transition name="slide-in">
@@ -39,7 +36,6 @@
           v-for="(item, index) in items" 
           :key="item.id" 
           class="feature-item-wrapper"
-          ref="itemRefs"
         >
           <transition name="item-swap" mode="out-in">
             <!-- Кнопка-пилюля -->
@@ -64,16 +60,17 @@
           </transition>
         </div>
       </div>
+      
+      <!-- Фоновое изображение -->
+      <div class="background-image"></div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from 'vue';
+import { ref } from 'vue';
 
 const activeIndex = ref(null);
-const containerHeight = ref(650); // Минимальная высота
-const itemRefs = ref([]);
 
 const items = ref([
   { id: 1, title: 'Архитектура Проблем', content: '<strong>Архитектура Проблем.</strong> Система автоматически распознаёт и классифицирует каждую проблему — от чистоты в зале до тона голоса сотрудника. Вы видите не хаос мнений, а ясную архитектуру боли и радости ваших клиентов. Это позволяет мгновенно отличать критические сбои от мелких недочетов.' },
@@ -84,26 +81,6 @@ const items = ref([
   { id: 6, title: 'Протоколы Компенсаций', content: '<strong>Протоколы Компенсаций.</strong> Настройте логику выдачи бонусов за разные типы сбоев. Система сама предложит гостю сертификат или скидку в точном соответствии с вашими правилами. Это превращает любой сбой из проблемы в возможность продемонстрировать исключительный сервис.' },
   { id: 7, title: 'Метрики Успеха', content: '<strong>Метрики Успеха.</strong> Вы получаете доступ к дашборду, где в реальном времени отслеживаются ключевые показатели: среднее время решения проблемы, уровень удовлетворённости (NPS) после диалога, самые частые типы проблем. Вы управляете репутацией на основе данных, а не интуиции.' }
 ]);
-
-watch(activeIndex, async () => {
-  await nextTick();
-  
-  let totalHeight = 80;
-  const gap = 12;
-
-  if (itemRefs.value.length > 0) {
-    itemRefs.value.forEach((el, index) => {
-      if (el) {
-        totalHeight += el.offsetHeight;
-        if (index < itemRefs.value.length - 1) {
-          totalHeight += gap;
-        }
-      }
-    });
-  }
-  
-  containerHeight.value = Math.max(650, totalHeight);
-});
 
 function setActive(index) {
   activeIndex.value = index;
@@ -123,27 +100,38 @@ function closeAll() {
 </script>
 
 <style scoped>
-/* Главный контейнер на всю ширину */
+/* Главный контейнер на всю ширину с прозрачным фоном */
 .feature-selector-container {
   position: relative;
   width: 100%;
-  min-height: 650px; /* Минимальная высота, чтобы избежать сжатия */
+  min-height: 700px;
   background-color: transparent;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  overflow: hidden;
-  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Контейнер с фоновым изображением и элементами */
+/* Контейнер с элементами */
 .content-wrapper {
+  position: relative;
   display: flex;
   align-items: flex-start;
-  height: 100%;
-  padding: 40px 0;
-  background-size: auto 50%;
-  background-position: right center;
+  padding: 40px 0 40px 20px;
+  min-height: 700px;
+}
+
+/* Фоновое изображение (зафиксировано) */
+.background-image {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40%;
+  height: 50%;
+  background-image: url('/cffx-cup.png');
+  background-size: contain;
+  background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed; /* Фиксируем фон */
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Кнопка "Закрыть всё" */
@@ -166,32 +154,37 @@ function closeAll() {
   transition: all 0.2s ease;
 }
 .close-all-btn:hover {
-  background-color: #111;
+  background-color: rgba(0, 0, 0, 0.9);
   color: #fff;
 }
 
-/* Пустое место для стрелок, прижатое влево и центрирующее их */
+/* Пустое место для стрелок (УВЕЛИЧЕНО В 2 РАЗА) */
 .nav-placeholder {
   position: relative;
-  width: 104px; /* Увеличено вдвое для большего отступа */
-  height: 100%;
+  width: 104px; /* Было 52px, теперь 104px */
+  min-height: 500px;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 }
 
-/* Навигационные стрелки */
+/* Навигационные стрелки (зафиксированы по центру) */
 .nav-arrows {
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
+
 .arrow-button {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.6);
   border: none;
   display: flex;
   align-items: center;
@@ -199,16 +192,19 @@ function closeAll() {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
+
 .arrow-button svg {
   pointer-events: none;
 }
+
 .arrow-button:hover:not(:disabled) {
-  background-color: #1a1a1a; /* Темно-серый ховер */
+  background-color: rgba(0, 0, 0, 0.85); /* Темнее при ховере */
 }
+
 .arrow-button:disabled {
-  opacity: 0.4;
+  opacity: 0.3;
   cursor: not-allowed;
-  background-color: #000; /* Убеждаемся, что фон черный и становится прозрачнее */
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* Список элементов */
@@ -216,6 +212,8 @@ function closeAll() {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  z-index: 10;
+  position: relative;
 }
 
 .feature-item-wrapper {
@@ -223,7 +221,7 @@ function closeAll() {
   max-width: 450px;
 }
 
-/* Стили кнопки-пилюли */
+/* Стили кнопки-пилюли (черный фон) */
 .pill-button {
   display: flex;
   align-items: center;
@@ -237,17 +235,21 @@ function closeAll() {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
+
 .pill-button:hover {
-  background-color: #111;
+  background-color: #1a1a1a;
 }
+
 .pill-icon-wrapper {
   color: #8A8A8E;
   flex-shrink: 0;
 }
+
 .pill-icon-wrapper svg {
   width: 24px;
   height: 24px;
 }
+
 .pill-title {
   color: #F2F2F7;
   font-size: 17px;
@@ -255,32 +257,49 @@ function closeAll() {
   white-space: nowrap;
 }
 
-/* Стили блока с контентом */
+/* Стили блока с контентом (ПРОЗРАЧНОСТЬ И РАЗМЫТИЕ) */
 .content-box {
-  background-color: rgba(0, 0, 0, 0.75); /* Небольшая прозрачность */
-  backdrop-filter: blur(18px); /* Размытие фона */
-  -webkit-backdrop-filter: blur(18px);
+  background-color: rgba(0, 0, 0, 0.65); /* Прозрачность 65% */
+  backdrop-filter: blur(20px); /* Размытие фона */
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 24px;
   padding: 22px 28px;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #EAEAEB;
   font-size: 17px;
   line-height: 1.5;
   font-weight: 500;
 }
+
 :deep(.content-box strong) {
   font-weight: 700;
   color: #fff;
 }
 
 /* Анимации */
-.fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
+.fade-enter-active, .fade-leave-active { 
+  transition: opacity 0.3s ease; 
+}
+.fade-enter-from, .fade-leave-to { 
+  opacity: 0; 
+}
 
-.slide-in-enter-active { transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
-.slide-in-leave-active { transition: all 0.3s cubic-bezier(0.5, 0, 0.75, 0); }
-.slide-in-enter-from, .slide-in-leave-to { opacity: 0; transform: translateX(-20px); }
+.slide-in-enter-active { 
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+.slide-in-leave-active { 
+  transition: all 0.3s cubic-bezier(0.5, 0, 0.75, 0); 
+}
+.slide-in-enter-from, .slide-in-leave-to { 
+  opacity: 0; 
+  transform: translateX(-20px); 
+}
 
-.item-swap-enter-active, .item-swap-leave-active { transition: all 0.3s ease-in-out; }
-.item-swap-enter-from, .item-swap-leave-to { opacity: 0; transform: scale(0.95); }
+.item-swap-enter-active, .item-swap-leave-active { 
+  transition: all 0.3s ease-in-out; 
+}
+.item-swap-enter-from, .item-swap-leave-to { 
+  opacity: 0; 
+  transform: scale(0.95); 
+}
 </style>
