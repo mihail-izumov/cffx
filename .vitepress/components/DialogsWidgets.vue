@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="card-footer">
-          <a href="/korzh" class="play-btn">Play</a>
+          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Play</a>
         </div>
       </div>
 
@@ -75,7 +75,7 @@
           </div>
         </div>
         <div class="card-footer">
-          <a href="/korzh" class="play-btn">Play</a>
+          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Play</a>
         </div>
       </div>
     </div>
@@ -154,6 +154,7 @@
 .btn-see-all:hover {
   border-color: #616161;
   background: #2a2a2a;
+  color: #e0e0e0;
 }
 
 .icon-circle {
