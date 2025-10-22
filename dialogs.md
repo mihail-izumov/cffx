@@ -11,7 +11,7 @@ description: Где Начинается Ваш Бизнес
 <span class="signal-badge">Диалоги Сигнала</span> <br>
 
 <h1>
-  <span>Решить любую проблему клиента</span><br class="mobile-break"> <span>за 24 часа.</span>
+  <span>Решить любую проблему</span><br class="mobile-break"> <span>клиента за 24 часа.</span>
 </h1>
 
 <p>
@@ -33,11 +33,14 @@ description: Где Начинается Ваш Бизнес
 
 ### Мы это изменили.
 
-Запустить Сигнал в Ноябре 2025
-
 <div style="background-color: #2d2d2d; border: 0px solid #404040; border-radius: 8px; padding: 7px 10px; font-size: 13px; color: #a8a8a8; margin: 8px 0; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 500; line-height: 1.2;">
   <span>Проведем аналитику отзывов и <a href="/pro/dialogs#быстрыи-старт" style="color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; text-decoration-skip-ink: auto; border-bottom: none; box-shadow: none; font-weight: 500;">разработаем SLA для старта</a></span>
   <Badge type="tip" text="Бесплатно за 5 дней" style="position: relative; top: 2px;" />
+</div>
+
+<div class="checkup-cta-section">
+  <div class="checkup-price">От ₽90,000/мес.</div>
+  <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
 
 <SignalAbout3Cards />
