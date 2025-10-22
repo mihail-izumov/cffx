@@ -2,7 +2,6 @@
 
 Каждый владелец бизнеса заслуживает системы сервиса, которая работает как он сам. Но стандартные решения не созданы для тех, кто хочет контроля без микроменеджмента (мы уважаем тех, кто копается в деталях, но ведь есть дела поважнее). Поэтому мы всё изменили.​
 
-
 <div class="button-group">
   <a href="/pro/dialogs#начать-сегодня" class="btn btn-primary" rel="noopener noreferrer"><strong>Начать бесплатно</strong></a>
   <a href="/pro/dialogs#тарифы" class="btn btn-secondary" rel="noopener noreferrer">Тарифы и спецификация</a>
@@ -12,7 +11,7 @@
 
 <DialogsFirst5Days />
 
-## Настройте Сигнал
+# Настройте Сигнал
 
 Систему Сигнала легко настроить. Адаптируем систему Сигнала как нужно именно вам. Можете полностью доверить ей безопасность обратной связи с клиентами.
 
@@ -20,7 +19,33 @@
 
 <SignalConstructorModules />
 
-## Design your ultimate driving machine.
+## Система подсказок
+
+<div style="text-align: center; margin: 2rem 0;">
+  <img 
+    src="/SignalVSReview.jpg" 
+    alt="BREW intro"
+    style="
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      border-radius: max(12px, min(24px, 3vw));
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    "
+    onmouseover="this.style.transform='scale(1.02)'"
+    onmouseout="this.style.transform='scale(1)'"
+  />
+</div>
+
+### Сигнал собирает детализированную обратную связь от гостей кофеен
+
+**Все данные из реальных инцидентов Регламента:** информация основана на реальных случаях и анализе происшествий.
+
+<br>
+
+<DialogsTestT9 />
+<DialogsT9 />
 
 <style>
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
