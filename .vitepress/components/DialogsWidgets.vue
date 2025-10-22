@@ -1,80 +1,76 @@
 <template>
   <div class="essential-apps">
-    <div class="header">
-      <div class="title-section">
-        <h2>Essential Apps (Alpha)</h2>
-        <p class="subtitle">Make your homescreen yours - build apps and browse community creations.</p>
-      </div>
-      <div class="actions">
-        <button class="btn-create">
-          Create your app
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="btn-see-all">
-          See all
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="apps-grid">
-      <div class="app-card">
-        <div class="card-header">
-          <span class="app-name">BIG EYES</span>
-          <button class="like-btn">
-            <span class="like-count">[840]</span>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M10 17.5L8.8125 16.4375C4.375 12.4375 1.5 9.86458 1.5 6.70833C1.5 4.13542 3.51042 2.125 6.08333 2.125C7.52083 2.125 8.90625 2.77083 10 3.82292C11.0937 2.77083 12.4792 2.125 13.9167 2.125C16.4896 2.125 18.5 4.13542 18.5 6.70833C18.5 9.86458 15.625 12.4375 11.1875 16.4479L10 17.5Z" stroke="currentColor" stroke-width="1.5"/>
+    <div class="container">
+      <div class="header">
+        <div class="title-section">
+          <h2>Essential Apps (Alpha)</h2>
+          <p class="subtitle">Make your homescreen yours - build apps and browse community creations.</p>
+        </div>
+        <div class="actions">
+          <button class="btn-create">
+            Create your app
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="btn-see-all">
+            See all
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
         </div>
-        <div class="app-icon">
-          <div class="icon-big-eyes">
-            <div class="eye"></div>
-            <div class="eye"></div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="author">
-            <div class="avatar"></div>
-            <span class="author-name">Carl Pei</span>
-          </div>
-        </div>
       </div>
 
-      <div class="app-card">
-        <div class="card-header">
-          <span class="app-name">TICTAP PLAY</span>
-          <button class="like-btn">
-            <span class="like-count">[612]</span>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M10 17.5L8.8125 16.4375C4.375 12.4375 1.5 9.86458 1.5 6.70833C1.5 4.13542 3.51042 2.125 6.08333 2.125C7.52083 2.125 8.90625 2.77083 10 3.82292C11.0937 2.77083 12.4792 2.125 13.9167 2.125C16.4896 2.125 18.5 4.13542 18.5 6.70833C18.5 9.86458 15.625 12.4375 11.1875 16.4479L10 17.5Z" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
-          </button>
-        </div>
-        <div class="app-icon">
-          <div class="icon-tictap">
-            <div class="grid-3x3">
-              <div class="cell cross"></div>
-              <div class="cell dot"></div>
-              <div class="cell empty"></div>
-              <div class="cell cross"></div>
-              <div class="cell empty"></div>
-              <div class="cell empty"></div>
-              <div class="cell empty"></div>
-              <div class="cell empty"></div>
-              <div class="cell dot"></div>
+      <div class="apps-grid">
+        <div class="app-card">
+          <div class="card-header">
+            <span class="app-name">КОРЖ</span>
+            <div class="like-info">
+              <span class="like-count">[840]</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 2L12 8H18L13 12L15 18L10 14L5 18L7 12L2 8H8L10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
             </div>
           </div>
+          <div class="app-icon">
+            <div class="icon-big-eyes">
+              <div class="eye"></div>
+              <div class="eye"></div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="/korzh" class="play-btn">Play</a>
+          </div>
         </div>
-        <div class="card-footer">
-          <div class="author">
-            <div class="avatar"></div>
-            <span class="author-name">Keith</span>
+
+        <div class="app-card">
+          <div class="card-header">
+            <span class="app-name">TICTAP PLAY</span>
+            <div class="like-info">
+              <span class="like-count">[612]</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 2L12 8H18L13 12L15 18L10 14L5 18L7 12L2 8H8L10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="app-icon">
+            <div class="icon-tictap">
+              <div class="grid-3x3">
+                <div class="cell cross"></div>
+                <div class="cell dot"></div>
+                <div class="cell empty"></div>
+                <div class="cell cross"></div>
+                <div class="cell empty"></div>
+                <div class="cell empty"></div>
+                <div class="cell empty"></div>
+                <div class="cell empty"></div>
+                <div class="cell dot"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="/korzh" class="play-btn">Play</a>
           </div>
         </div>
       </div>
@@ -84,11 +80,15 @@
 
 <style scoped>
 .essential-apps {
+  width: 100%;
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+.container {
   max-width: 1280px;
   margin: 0 auto;
   padding: 48px 24px;
-  background-color: #1a1a1a;
-  color: #e0e0e0;
 }
 
 .header {
@@ -115,9 +115,9 @@
 }
 
 .actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
-  flex-wrap: wrap;
 }
 
 .btn-create {
@@ -131,8 +131,10 @@
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   transition: all 0.3s ease;
+  width: 100%;
 }
 
 .btn-create:hover {
@@ -151,8 +153,10 @@
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   transition: all 0.3s ease;
+  width: 100%;
 }
 
 .btn-see-all:hover {
@@ -194,21 +198,13 @@
   letter-spacing: 0.5px;
 }
 
-.like-btn {
-  background: transparent;
-  border: none;
+.like-info {
   color: #9e9e9e;
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 14px;
-  transition: all 0.2s ease;
   padding: 4px;
-}
-
-.like-btn:hover {
-  color: #e0e0e0;
 }
 
 .like-count {
@@ -301,27 +297,32 @@
   align-items: center;
 }
 
-.author {
+.play-btn {
+  width: 100%;
+  background: transparent;
+  color: #e0e0e0;
+  border: 2px solid #424242;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  transition: all 0.3s ease;
+  text-decoration: none;
 }
 
-.avatar {
-  width: 32px;
-  height: 32px;
-  background: #424242;
-  border-radius: 50%;
-}
-
-.author-name {
-  font-size: 14px;
-  color: #b0b0b0;
-  font-weight: 400;
+.play-btn:hover {
+  border-color: #ffd600;
+  background: #ffd600;
+  color: #1a1a1a;
+  transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
-  .essential-apps {
+  .container {
     padding: 32px 16px;
   }
 
@@ -334,13 +335,7 @@
   }
 
   .actions {
-    flex-direction: column;
-  }
-
-  .btn-create,
-  .btn-see-all {
-    width: 100%;
-    justify-content: center;
+    grid-template-columns: 1fr;
   }
 
   .apps-grid {
