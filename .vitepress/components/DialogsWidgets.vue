@@ -1,77 +1,75 @@
 <template>
   <div class="essential-apps">
-    <div class="container">
-      <div class="header">
-        <div class="title-section">
-          <h2>Essential Apps (Alpha)</h2>
-          <p class="subtitle">Make your homescreen yours - build apps and browse community creations.</p>
+    <div class="header">
+      <div class="title-section">
+        <h2>Essential Apps (Alpha)</h2>
+        <p class="subtitle">Make your homescreen yours - build apps and browse community creations.</p>
+      </div>
+      <div class="actions">
+        <button class="btn-create">
+          Create your app
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="btn-see-all">
+          See all
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="apps-grid">
+      <div class="app-card">
+        <div class="card-header">
+          <span class="app-name">КОРЖ</span>
+          <div class="like-info">
+            <span class="like-count">[840]</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+            </svg>
+          </div>
         </div>
-        <div class="actions">
-          <button class="btn-create">
-            Create your app
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <button class="btn-see-all">
-            See all
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
+        <div class="app-icon">
+          <div class="icon-big-eyes">
+            <div class="eye"></div>
+            <div class="eye"></div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="/korzh" class="play-btn">Play</a>
         </div>
       </div>
 
-      <div class="apps-grid">
-        <div class="app-card">
-          <div class="card-header">
-            <span class="app-name">КОРЖ</span>
-            <div class="like-info">
-              <span class="like-count">[840]</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="app-icon">
-            <div class="icon-big-eyes">
-              <div class="eye"></div>
-              <div class="eye"></div>
-            </div>
-          </div>
-          <div class="card-footer">
-            <a href="/korzh" class="play-btn">Play</a>
+      <div class="app-card">
+        <div class="card-header">
+          <span class="app-name">TICTAP PLAY</span>
+          <div class="like-info">
+            <span class="like-count">[612]</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+            </svg>
           </div>
         </div>
-
-        <div class="app-card">
-          <div class="card-header">
-            <span class="app-name">TICTAP PLAY</span>
-            <div class="like-info">
-              <span class="like-count">[612]</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
-              </svg>
+        <div class="app-icon">
+          <div class="icon-tictap">
+            <div class="grid-3x3">
+              <div class="cell cross"></div>
+              <div class="cell dot"></div>
+              <div class="cell empty"></div>
+              <div class="cell cross"></div>
+              <div class="cell empty"></div>
+              <div class="cell empty"></div>
+              <div class="cell empty"></div>
+              <div class="cell empty"></div>
+              <div class="cell dot"></div>
             </div>
           </div>
-          <div class="app-icon">
-            <div class="icon-tictap">
-              <div class="grid-3x3">
-                <div class="cell cross"></div>
-                <div class="cell dot"></div>
-                <div class="cell empty"></div>
-                <div class="cell cross"></div>
-                <div class="cell empty"></div>
-                <div class="cell empty"></div>
-                <div class="cell empty"></div>
-                <div class="cell empty"></div>
-                <div class="cell dot"></div>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer">
-            <a href="/korzh" class="play-btn">Play</a>
-          </div>
+        </div>
+        <div class="card-footer">
+          <a href="/korzh" class="play-btn">Play</a>
         </div>
       </div>
     </div>
@@ -82,14 +80,8 @@
 .essential-apps {
   background-color: #1a1a1a;
   color: #e0e0e0;
-  margin: 0;
-  padding: 48px 0;
-}
-
-.container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 24px;
+  margin: 48px 0;
+  padding: 0;
 }
 
 .header {
@@ -328,11 +320,7 @@
 
 @media (max-width: 768px) {
   .essential-apps {
-    padding: 32px 0;
-  }
-
-  .container {
-    padding: 0 16px;
+    margin: 32px 0;
   }
 
   .actions {
