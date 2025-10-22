@@ -6,11 +6,19 @@ title: Диалоги Сигнала
 description: Где Начинается Ваш Бизнес
 ---
 
+<div align="center">
+
 <span class="signal-badge">Диалоги Сигнала</span> <br>
 
-# Решить любую проблему клиента за 24 часа.
+<h1>
+  <span>Решить любую проблему клиента</span><br class="mobile-break"> <span>за 24 часа.</span>
+</h1>
 
-From sleep and recovery to what’s happening inside your body, WHOOP brings it all together — make smarter choices today that add more years to your life.
+<p>
+  <strong>From sleep and recovery to what’s happening inside your body</strong><br class="mobile-break"> WHOOP brings it all together — make smarter choices today that add more years to your life.
+</p>
+
+</div>
 
 <div class="checkup-cta-section">
   <div class="checkup-price">От ₽90,000/мес.</div>
