@@ -8,15 +8,21 @@
       <div class="actions">
         <button class="btn-create">
           Create your app
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <span class="icon-circle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 7h10v10"/>
+              <path d="M7 17 17 7"/>
+            </svg>
+          </span>
         </button>
         <button class="btn-see-all">
           See all
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <span class="icon-circle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/>
+              <path d="m12 5 7 7-7 7"/>
+            </svg>
+          </span>
         </button>
       </div>
     </div>
@@ -111,10 +117,8 @@
   gap: 16px;
 }
 
-.btn-create {
-  background: #C5F946;
-  color: #1a1a1a;
-  border: none;
+.btn-create,
+.btn-see-all {
   padding: 16px 32px;
   border-radius: 50px;
   font-size: 16px;
@@ -126,6 +130,13 @@
   gap: 8px;
   transition: all 0.3s ease;
   width: 100%;
+  position: relative;
+}
+
+.btn-create {
+  background: #C5F946;
+  color: #1a1a1a;
+  border: none;
 }
 
 .btn-create:hover {
@@ -137,22 +148,55 @@
   background: transparent;
   color: #e0e0e0;
   border: 2px solid #424242;
-  padding: 16px 32px;
-  border-radius: 50px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-  width: 100%;
 }
 
 .btn-see-all:hover {
   border-color: #616161;
   background: #2a2a2a;
+}
+
+.icon-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+
+.icon-circle::before {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-create .icon-circle::before {
+  background: #1a1a1a;
+}
+
+.btn-see-all .icon-circle::before {
+  background: #e0e0e0;
+}
+
+.btn-create:hover .icon-circle::before {
+  opacity: 1;
+}
+
+.btn-see-all:hover .icon-circle::before {
+  opacity: 1;
+}
+
+.icon-circle svg {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-see-all:hover .icon-circle svg {
+  stroke: #1a1a1a;
 }
 
 .apps-grid {
