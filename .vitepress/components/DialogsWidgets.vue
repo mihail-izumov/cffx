@@ -15,7 +15,7 @@
             </svg>
           </span>
         </button>
-        <button class="btn-see-all">
+        <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="btn-see-all">
           See all
           <span class="icon-circle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -23,7 +23,7 @@
               <path d="m12 5 7 7-7 7"/>
             </svg>
           </span>
-        </button>
+        </a>
       </div>
     </div>
 
@@ -131,6 +131,7 @@
   transition: all 0.3s ease;
   width: 100%;
   position: relative;
+  text-decoration: none;
 }
 
 .btn-create {
@@ -193,6 +194,11 @@
 .icon-circle svg {
   position: relative;
   z-index: 1;
+  transition: stroke 0.3s ease;
+}
+
+.btn-create:hover .icon-circle svg {
+  stroke: #C5F946;
 }
 
 .btn-see-all:hover .icon-circle svg {
