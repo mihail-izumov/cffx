@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header">
         <div class="title-section">
-          <h2>Essential Apps </h2>
+          <h2>Essential Apps (Alpha)</h2>
           <p class="subtitle">Make your homescreen yours - build apps and browse community creations.</p>
         </div>
         <div class="actions">
@@ -28,8 +28,8 @@
             <span class="app-name">КОРЖ</span>
             <div class="like-info">
               <span class="like-count">[840]</span>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10 2L12 8H18L13 12L15 18L10 14L5 18L7 12L2 8H8L10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
               </svg>
             </div>
           </div>
@@ -49,8 +49,8 @@
             <span class="app-name">TICTAP PLAY</span>
             <div class="like-info">
               <span class="like-count">[612]</span>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10 2L12 8H18L13 12L15 18L10 14L5 18L7 12L2 8H8L10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
               </svg>
             </div>
           </div>
@@ -80,7 +80,8 @@
 
 <style scoped>
 .essential-apps {
-  width: 100%;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
   background-color: #1a1a1a;
   color: #e0e0e0;
 }
@@ -105,6 +106,8 @@
   color: #f5f5f5;
   margin: 0 0 12px 0;
   letter-spacing: -0.5px;
+  border-top: none !important;
+  padding-top: 0 !important;
 }
 
 .subtitle {
@@ -121,7 +124,7 @@
 }
 
 .btn-create {
-  background: #ffd600;
+  background: #C5F946;
   color: #1a1a1a;
   border: none;
   padding: 16px 32px;
@@ -138,7 +141,7 @@
 }
 
 .btn-create:hover {
-  background: #ffed4e;
+  background: #d4ff6b;
   transform: translateY(-2px);
 }
 
@@ -176,12 +179,13 @@
   padding: 24px;
   transition: all 0.3s ease;
   border: 1px solid #3a3a3a;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .app-card:hover {
-  transform: translateY(-4px);
-  border-color: #4a4a4a;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  background: #323232;
 }
 
 .card-header {
@@ -204,18 +208,17 @@
   align-items: center;
   gap: 6px;
   font-size: 14px;
-  padding: 4px;
 }
 
 .like-count {
-  font-family: monospace;
+  font-family: inherit;
 }
 
 .app-icon {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 280px;
+  flex: 1;
   margin-bottom: 24px;
 }
 
@@ -305,7 +308,7 @@
   padding: 14px 32px;
   border-radius: 50px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -315,10 +318,16 @@
 }
 
 .play-btn:hover {
-  border-color: #ffd600;
-  background: #ffd600;
+  border-color: #C5F946;
+  background: #C5F946;
   color: #1a1a1a;
   transform: translateY(-2px);
+}
+
+.app-card:has(.play-btn:hover) {
+  transform: translateY(-4px);
+  border-color: #4a4a4a;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 @media (max-width: 768px) {
@@ -340,10 +349,6 @@
 
   .apps-grid {
     grid-template-columns: 1fr;
-  }
-
-  .app-icon {
-    min-height: 240px;
   }
 
   .icon-big-eyes,
