@@ -2,12 +2,12 @@
   <div class="essential-apps">
     <div class="header">
       <div class="title-section">
-        <h2>Essential Apps (Alpha)</h2>
-        <p class="subtitle">Make your homescreen yours - build apps and browse community creations.</p>
+        <h2>Виджет Сигнала</h2>
+        <p class="subtitle">Ваша система обратной связи может быть какой угодно. Даже чатом в Телеграм.</p>
       </div>
       <div class="actions">
         <a href="https://example.com" class="btn-create">
-          Create your app
+          Настроить Свой Сигнал
           <span class="icon-circle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M7 7h10v10"/>
@@ -16,7 +16,7 @@
           </span>
         </a>
         <a href="https://example.com" class="btn-see-all">
-          See all
+          Спецификации и цены
           <span class="icon-circle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14"/>
@@ -46,7 +46,7 @@
         </div>
         <p class="card-description">Не говорим вам, как варить кофе.</p>
         <div class="card-footer">
-          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Play</a>
+          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Сигнал в Корж</a>
         </div>
       </div>
 
@@ -77,7 +77,7 @@
         </div>
         <p class="card-description">50% ваших новых клиентов боятся заходить в зал. Знаем, как это исправить.</p>
         <div class="card-footer">
-          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Play</a>
+          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Тест-драйв</a>
         </div>
       </div>
     </div>
