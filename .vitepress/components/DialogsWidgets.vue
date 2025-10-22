@@ -2,7 +2,7 @@
   <div class="essential-apps">
     <div class="header">
       <div class="title-section">
-        <h2>Виджеты Сигнала</h2>
+        <h2>Essential Apps (Alpha)</h2>
         <p class="subtitle">Make your homescreen yours - build apps and browse community creations.</p>
       </div>
       <div class="actions">
@@ -30,7 +30,7 @@
     <div class="apps-grid">
       <div class="app-card">
         <div class="card-header">
-          <span class="app-name">РЕСТОРАНЫ/КОФЕЙНИ</span>
+          <span class="app-name">КОРЖ</span>
           <div class="like-info">
             <span class="like-count">[840]</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -44,7 +44,7 @@
             <div class="eye"></div>
           </div>
         </div>
-        <p class="card-description">Не говорим вам, как варить кофе.</p>
+        <p class="card-description">50% ваших новых клиентов боятся заходить в зал. Знаем, как это исправить.</p>
         <div class="card-footer">
           <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Play</a>
         </div>
@@ -52,7 +52,7 @@
 
       <div class="app-card">
         <div class="card-header">
-          <span class="app-name">ФИТНЕС</span>
+          <span class="app-name">TICTAP PLAY</span>
           <div class="like-info">
             <span class="like-count">[612]</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -414,6 +414,12 @@
   .grid-3x3 {
     width: 140px;
     height: 140px;
+  }
+
+  .card-description {
+    font-size: 14px;
+    margin: 0 0 20px 0;
+    padding: 0 12px;
   }
 }
 </style>
