@@ -212,7 +212,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
-  align-items: start;
 }
 
 .app-card {
@@ -223,6 +222,7 @@
   border: 1px solid #3a3a3a;
   display: grid;
   grid-template-rows: auto auto 1fr auto;
+  height: 100%;
 }
 
 .app-card:hover {
