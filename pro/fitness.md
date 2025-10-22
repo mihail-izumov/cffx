@@ -78,30 +78,12 @@ notification: brew
 <DialogsFirst5Days />
 
 <div align="center">
-
-## Тарифы
-
-**Разовый платеж за внедрение – ₽150,000**
-
-</div>
-
-<FitnessTarifs />
-
-<div align="center">
-
-## Начать Сегодня
-
-</div>
-
-<DialogsForm />
-
-<div align="center">
   
 ## Почему выгодно
 
 </div>
 
-<LTVCalc />
+
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
