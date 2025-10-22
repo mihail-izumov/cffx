@@ -61,34 +61,6 @@ description: Где Начинается Ваш Бизнес
 
 <Dialogs7LevelsControl />
 
-## Система подсказок
-
-<div style="text-align: center; margin: 2rem 0;">
-  <img 
-    src="/SignalVSReview.jpg" 
-    alt="BREW intro"
-    style="
-      width: 100%;
-      max-width: 800px;
-      height: auto;
-      border-radius: max(12px, min(24px, 3vw));
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-    "
-    onmouseover="this.style.transform='scale(1.02)'"
-    onmouseout="this.style.transform='scale(1)'"
-  />
-</div>
-
-### Сигнал собирает детализированную обратную связь от гостей кофеен
-
-**Все данные из реальных инцидентов Регламента:** информация основана на реальных случаях и анализе происшествий.
-
-<br>
-
-<DialogsTestT9 />
-<DialogsT9 />
-
 ## Не просто возвращает клиента — делает его лояльным
 
 <DialogsAnnaWorks />
@@ -98,12 +70,6 @@ description: Где Начинается Ваш Бизнес
 Автоматизация управления репутацией и персональная поддержка связи с клиентами.
 
 <DialogsFeatures />
-
-<div align="center">
-  
-## Почему выгодно
-
-</div>
 
 
 
