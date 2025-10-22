@@ -6,6 +6,8 @@ title: Диалоги Сигнала
 description: Где Начинается Ваш Бизнес
 ---
 
+<span class="signal-badge">Диалоги Сигнала</span> <br>
+
 # Решить любую проблему клиента за 24 часа.
 
 From sleep and recovery to what’s happening inside your body, WHOOP brings it all together — make smarter choices today that add more years to your life.
