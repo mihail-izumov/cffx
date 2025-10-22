@@ -2,7 +2,7 @@
   <div class="essential-apps">
     <div class="header">
       <div class="title-section">
-        <h2>Essential Apps (Alpha)</h2>
+        <h2>Виджеты Сигнала</h2>
         <p class="subtitle">Make your homescreen yours - build apps and browse community creations.</p>
       </div>
       <div class="actions">
@@ -30,7 +30,7 @@
     <div class="apps-grid">
       <div class="app-card">
         <div class="card-header">
-          <span class="app-name">КОРЖ</span>
+          <span class="app-name">РЕСТОРАНЫ/КОФЕЙНИ</span>
           <div class="like-info">
             <span class="like-count">[840]</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -52,7 +52,7 @@
 
       <div class="app-card">
         <div class="card-header">
-          <span class="app-name">TICTAP PLAY</span>
+          <span class="app-name">ФИТНЕС</span>
           <div class="like-info">
             <span class="like-count">[612]</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -337,7 +337,7 @@
 }
 
 .card-description {
-  font-size: 16px;
+  font-size: 13px;
   color: #f5f5f5;
   text-align: center;
   margin: 0 0 16px 0;
