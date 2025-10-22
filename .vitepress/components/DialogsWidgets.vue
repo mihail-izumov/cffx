@@ -30,7 +30,7 @@
     <div class="apps-grid">
       <div class="app-card">
         <div class="card-header">
-          <span class="app-name">КОРЖ</span>
+          <span class="app-name">РЕСТОРАНЫ/КОФЕЙНИ</span>
           <div class="like-info">
             <span class="like-count">[840]</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -44,7 +44,7 @@
             <div class="eye"></div>
           </div>
         </div>
-        <p class="card-description">50% ваших новых клиентов боятся заходить в зал. Знаем, как это исправить.</p>
+        <p class="card-description">Не говорим вам, как варить кофе.</p>
         <div class="card-footer">
           <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Play</a>
         </div>
@@ -52,7 +52,7 @@
 
       <div class="app-card">
         <div class="card-header">
-          <span class="app-name">TICTAP PLAY</span>
+          <span class="app-name">ФИТНЕС</span>
           <div class="like-info">
             <span class="like-count">[612]</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -212,6 +212,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
+  align-items: start;
 }
 
 .app-card {
@@ -220,9 +221,8 @@
   padding: 24px;
   transition: all 0.3s ease;
   border: 1px solid #3a3a3a;
-  aspect-ratio: 1 / 1;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
 }
 
 .app-card:hover {
@@ -342,7 +342,6 @@
   text-align: center;
   margin: 0 0 16px 0;
   line-height: 1.5;
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -417,9 +416,9 @@
   }
 
   .card-description {
-    font-size: 14px;
-    margin: 0 0 20px 0;
-    padding: 0 12px;
+    font-size: 16px;
+    margin: 0 0 16px 0;
+    padding: 0 8px;
   }
 }
 </style>
