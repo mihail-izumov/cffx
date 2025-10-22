@@ -44,7 +44,7 @@
             <div class="eye"></div>
           </div>
         </div>
-        <p class="card-description">50% ваших новых клиентов боятся заходить в зал. Знаем, как это исправить.</p>
+        <p class="card-description">Не говорим вам, как варить кофе.</p>
         <div class="card-footer">
           <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Play</a>
         </div>
