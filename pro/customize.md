@@ -3,22 +3,17 @@
 Каждый владелец бизнеса заслуживает системы сервиса, которая работает как он сам. Но стандартные решения не созданы для тех, кто хочет контроля без микроменеджмента (мы уважаем тех, кто копается в деталях, но ведь есть дела поважнее). Поэтому мы всё изменили.​
 
 <div class="button-group">
-  <a href="/pro/dialogs#начать-сегодня" class="btn btn-primary" rel="noopener noreferrer"><strong>Получить QR-код</strong></a>
-  <a href="/pro/dialogs#тарифы" class="btn btn-secondary" rel="noopener noreferrer">Тарифы</a>
-</div>
-
-<div style="background-color: #2d2d2d; border: 0px solid #404040; border-radius: 8px; padding: 7px 10px; font-size: 13px; color: #a8a8a8; margin: 8px 0; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 500; line-height: 1.2;">
-  <span>Отправим стикер и <a href="/pro/dialogs#быстрыи-старт" style="color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; text-decoration-skip-ink: auto; border-bottom: none; box-shadow: none; font-weight: 500;">подключим за 5 дней</a></span>
-  <Badge type="tip" text="Требуется Сопровождение" style="position: relative; top: 2px;" />
+  <a href="/pro/dialogs#начать-сегодня" class="btn btn-primary" rel="noopener noreferrer"><strong>Начать бесплатно</strong></a>
+  <a href="/pro/dialogs#тарифы" class="btn btn-secondary" rel="noopener noreferrer">Тарифы и спецификация</a>
 </div>
 
 ## Быстрый Старт
 
 <DialogsFirst5Days />
 
-## Точная адаптация
+## Настройте Сигнал
 
-Систему Сигнала легко настроить. Вы можете адаптировать систему Сигнала как нужно именно вам и полностью доверить ей безопасность обратной связи с клиентами.
+Систему Сигнала легко настроить. Адаптируем систему Сигнала как нужно именно вам. Можете полностью доверить ей безопасность обратной связи с клиентами.
 
 ### 7 точек контроля, которые подстраиваются под вашу уникальность.
 
