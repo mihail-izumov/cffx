@@ -21,7 +21,7 @@ From sleep and recovery to what’s happening inside your body, WHOOP brings it 
 
 <DialogsWidgets />
 
-## Недовольные сервисом клиенты стали слишком дорогими.
+# Недовольные сервисом клиенты стали слишком дорогими.
 
 ### Мы это изменили.
 
@@ -34,13 +34,15 @@ From sleep and recovery to what’s happening inside your body, WHOOP brings it 
 
 <SignalAbout3Cards />
 
-## 94% проблем решаются до публикации в Яндекс/2ГИС
+## 94% проблем решаются до публикации в Яндекс/2ГИС.
 
 <DialogsSteps />
 
-## 7 уровней вашего контроля
+## Тотальная эффективность каждого процесса.
 
 Система Сигнал создана, чтобы быть мощной для нас и простой для вас. Вы получаете полный контроль над каждым аспектом защиты вашей репутации, не погружаясь в ненужную сложность.
+
+### 7 уровней вашего контроля
 
 <Dialogs7LevelsControl />
 
@@ -107,6 +109,7 @@ From sleep and recovery to what’s happening inside your body, WHOOP brings it 
   />
 </div>
 
+<style>
 /* Checkup CTA Section - Perfect Single Line */
 .checkup-cta-section {
   background-color: #2a2a2a;
