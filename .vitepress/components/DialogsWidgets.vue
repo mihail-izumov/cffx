@@ -2,12 +2,12 @@
   <div class="essential-apps">
     <div class="header">
       <div class="title-section">
-        <h2>Essential Apps (Alpha)</h2>
-        <p class="subtitle">Make your homescreen yours - build apps and browse community creations.</p>
+        <h2>Виджет Сигнала</h2>
+        <p class="subtitle">Ваша система обратной связи может быть какой угодно. Даже чатом в Телеграм.</p>
       </div>
       <div class="actions">
         <button class="btn-create">
-          Create your app
+          Настроить Свой Сигнал
           <span class="icon-circle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M7 7h10v10"/>
@@ -16,7 +16,7 @@
           </span>
         </button>
         <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="btn-see-all">
-          See all
+          Спецификации и цены
           <span class="icon-circle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14"/>
