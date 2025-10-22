@@ -44,6 +44,7 @@
             <div class="eye"></div>
           </div>
         </div>
+        <p class="card-description">50% ваших новых клиентов боятся заходить в зал. Знаем, как это исправить.</p>
         <div class="card-footer">
           <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Play</a>
         </div>
@@ -74,6 +75,7 @@
             </div>
           </div>
         </div>
+        <p class="card-description">50% ваших новых клиентов боятся заходить в зал. Знаем, как это исправить.</p>
         <div class="card-footer">
           <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Play</a>
         </div>
@@ -257,13 +259,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1;
-  margin-bottom: 24px;
+  height: 160px;
+  margin-bottom: 16px;
 }
 
 .icon-big-eyes {
-  width: 200px;
-  height: 200px;
+  width: 160px;
+  height: 160px;
   background: #1a1a1a;
   border-radius: 32px;
   display: flex;
@@ -274,15 +276,15 @@
 }
 
 .eye {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   background: #f5f5f5;
   border-radius: 50%;
 }
 
 .icon-tictap {
-  width: 200px;
-  height: 200px;
+  width: 160px;
+  height: 160px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -334,6 +336,18 @@
   border-radius: 50%;
 }
 
+.card-description {
+  font-size: 16px;
+  color: #f5f5f5;
+  text-align: center;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .card-footer {
   display: flex;
   align-items: center;
@@ -382,10 +396,19 @@
     grid-template-columns: 1fr;
   }
 
+  .app-icon {
+    height: 140px;
+  }
+
   .icon-big-eyes,
   .icon-tictap {
-    width: 180px;
-    height: 180px;
+    width: 140px;
+    height: 140px;
+  }
+
+  .eye {
+    width: 40px;
+    height: 40px;
   }
 
   .grid-3x3 {
