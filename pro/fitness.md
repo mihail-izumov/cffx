@@ -7,7 +7,16 @@ description: Где Начинается Ваш Фитнес
 notification: brew
 ---
 
-# Сигнал для Фитнеса
+# Помогаем решить любую проблему клиента за 24 часа.
+
+<Dialogs3Cards />
+
+# Ваша система обратной связи может быть какой угодно. Даже 
+
+Join thousands of creators to build something uniquely yours, and
+discover the creativity of the Nothing Community.
+
+<DialogsWidgets />
 
 ## 50% ваших новых клиентов боятся заходить в зал. Мы знаем, как это исправить.
 
@@ -25,7 +34,7 @@ notification: brew
 
 ## 94% проблем решаются до публикации
 
-<Dialogs3Cards />
+
 
 ## Полный цикл 3ч → 24ч
 
