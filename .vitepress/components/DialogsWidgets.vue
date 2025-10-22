@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header">
         <div class="title-section">
-          <h2>Essential Apps (Alpha)</h2>
+          <h2>Essential Apps </h2>
           <p class="subtitle">Make your homescreen yours - build apps and browse community creations.</p>
         </div>
         <div class="actions">
