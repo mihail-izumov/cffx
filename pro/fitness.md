@@ -11,7 +11,7 @@ notification: brew
 
 ## 50% ваших новых клиентов боятся заходить в зал. Мы знаем, как это исправить.
 
-SignalAbout3Cards <Dialogs3Cards />
+<SignalAbout3Cards />
 
 <div class="button-group">
   <a href="/pro/dialogs#начать-сегодня" class="btn btn-primary" rel="noopener noreferrer"><strong>Получить QR-код</strong></a>
