@@ -99,6 +99,7 @@ import FitnessTarifs from '../components/FitnessTarifs.vue'
 import Dialogs7LevelsControl from '../components/Dialogs7LevelsControl.vue'
 import RotatingSlogan from '../components/RotatingSlogan.vue'
 import SignalConstructorModules from '../components/SignalConstructorModules.vue'
+import SignalAbout3Cards from '../components/SignalAbout3Cards.vue'
 
 export default {
   extends: DefaultTheme,
@@ -203,5 +204,6 @@ export default {
     app.component('Dialogs7LevelsControl', Dialogs7LevelsControl)
     app.component('RotatingSlogan', RotatingSlogan)
     app.component('SignalConstructorModules', SignalConstructorModules)
+    app.component('SignalAbout3Cards', SignalAbout3Cards)
   },
 }
