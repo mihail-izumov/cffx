@@ -29,8 +29,6 @@ description: Где Начинается Ваш Бизнес
 
 <Dialogs3Cards />
 
-<DialogsWidgets />
-
 # Недовольные сервисом клиенты стали слишком дорогими.
 
 ### Мы это изменили.
@@ -67,7 +65,7 @@ description: Где Начинается Ваш Бизнес
 
 <DialogsFeatures />
 
-
+<DialogsWidgets />
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
