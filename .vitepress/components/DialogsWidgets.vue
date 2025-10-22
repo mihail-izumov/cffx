@@ -80,16 +80,16 @@
 
 <style scoped>
 .essential-apps {
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
   background-color: #1a1a1a;
   color: #e0e0e0;
+  margin: 0;
+  padding: 48px 0;
 }
 
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 48px 24px;
+  padding: 0 24px;
 }
 
 .header {
@@ -101,12 +101,8 @@
 }
 
 .title-section h2 {
-  font-size: 42px;
-  font-weight: 400;
-  color: #f5f5f5;
-  margin: 0 0 12px 0;
-  letter-spacing: -0.5px;
   border-top: none !important;
+  margin-top: 0 !important;
   padding-top: 0 !important;
 }
 
@@ -331,16 +327,12 @@
 }
 
 @media (max-width: 768px) {
+  .essential-apps {
+    padding: 32px 0;
+  }
+
   .container {
-    padding: 32px 16px;
-  }
-
-  .title-section h2 {
-    font-size: 32px;
-  }
-
-  .subtitle {
-    font-size: 16px;
+    padding: 0 16px;
   }
 
   .actions {
