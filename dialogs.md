@@ -6,7 +6,11 @@ title: Диалоги Сигнала
 description: Где Начинается Ваш Бизнес
 ---
 
-# Помогаем решить любую проблему клиента за 24 часа.
+# Решить любую проблему клиента за 24 часа.
+
+From sleep and recovery to what’s happening inside your body, WHOOP brings it all together — make smarter choices today that add more years to your life.
+
+
 
 <div style="background-color: #2d2d2d; border: 0px solid #404040; border-radius: 8px; padding: 7px 10px; font-size: 13px; color: #a8a8a8; margin: 8px 0; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 500; line-height: 1.2;">
   <span>Отправим стикер и <a href="/pro/dialogs#быстрыи-старт" style="color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; text-decoration-skip-ink: auto; border-bottom: none; box-shadow: none; font-weight: 500;">подключим за 5 дней</a></span>
@@ -15,27 +19,19 @@ description: Где Начинается Ваш Бизнес
 
 <Dialogs3Cards />
 
-Ваша система обратной связи может быть какой угодно. Даже 
 
 <DialogsWidgets />
 
-## 50% ваших новых клиентов боятся заходить в зал. Мы знаем, как это исправить.
 
 <SignalAbout3Cards />
 
-
-
-## 94% проблем решаются до публикации
-
-
-
-## Полный цикл 3ч → 24ч
+## 94% проблем решаются до публикации в Яндекс/2ГИС
 
 <DialogsSteps />
 
-## 7 Уровней Вашего Контроля
+## 7 уровней вашего контроля
 
-Система «Сигнал» создана, чтобы быть мощной для нас и простой для вас. Вы получаете полный контроль над каждым аспектом защиты вашей репутации, не погружаясь в ненужную сложность.
+Система Сигнал создана, чтобы быть мощной для нас и простой для вас. Вы получаете полный контроль над каждым аспектом защиты вашей репутации, не погружаясь в ненужную сложность.
 
 <Dialogs7LevelsControl />
 
