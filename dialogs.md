@@ -79,10 +79,6 @@ description: Где Начинается Ваш Бизнес
 
 <DialogsFeatures />
 
-## Быстрый Старт
-
-<DialogsFirst5Days />
-
 <div align="center">
   
 ## Почему выгодно
