@@ -11,7 +11,7 @@ notification: brew
 
 <div align="center">
 
-<h1 style="font-size: 80px !important; line-height: 1.3;">Сигнал<br>для бизнеса</h1>
+<h1 style="font-size: 80px !important; line-height: 0.9;">Сигнал<br>для бизнеса</h1>
 
 <br>
 
