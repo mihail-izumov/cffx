@@ -101,6 +101,7 @@ import RotatingSlogan from '../components/RotatingSlogan.vue'
 import SignalConstructorModules from '../components/SignalConstructorModules.vue'
 import SignalAbout3Cards from '../components/SignalAbout3Cards.vue'
 import DialogsWidgets from '../components/DialogsWidgets.vue'
+import SignalProductsSlider from '../components/SignalProductsSlider.vue'
 
 export default {
   extends: DefaultTheme,
@@ -207,5 +208,6 @@ export default {
     app.component('SignalConstructorModules', SignalConstructorModules)
     app.component('SignalAbout3Cards', SignalAbout3Cards)
     app.component('DialogsWidgets', DialogsWidgets)
+    app.component('SignalProductsSlider', SignalProductsSlider)
   },
 }
