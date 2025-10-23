@@ -72,35 +72,35 @@ onUnmounted(() => {
   <svg width="0" height="0" style="position: absolute;">
     <defs>
       <linearGradient id="gradient-1" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" style="stop-color:#4a4a4a;stop-opacity:1" />
-        <stop offset="25%" style="stop-color:#525252;stop-opacity:1" />
-        <stop offset="50%" style="stop-color:#5a5a5a;stop-opacity:1" />
-        <stop offset="75%" style="stop-color:#626262;stop-opacity:1" />
-        <stop offset="100%" style="stop-color:#6a6a6a;stop-opacity:1" />
+        <stop offset="0%" style="stop-color:#585858;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#606060;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#686868;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#707070;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#787878;stop-opacity:1" />
       </linearGradient>
       
       <linearGradient id="gradient-2" x1="100%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" style="stop-color:#505050;stop-opacity:1" />
-        <stop offset="25%" style="stop-color:#585858;stop-opacity:1" />
-        <stop offset="50%" style="stop-color:#606060;stop-opacity:1" />
-        <stop offset="75%" style="stop-color:#686868;stop-opacity:1" />
-        <stop offset="100%" style="stop-color:#707070;stop-opacity:1" />
+        <stop offset="0%" style="stop-color:#5a5a5a;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#626262;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#6a6a6a;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#727272;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#7a7a7a;stop-opacity:1" />
       </linearGradient>
       
       <linearGradient id="gradient-3" x1="0%" y1="100%" x2="100%" y2="0%">
-        <stop offset="0%" style="stop-color:#484848;stop-opacity:1" />
-        <stop offset="25%" style="stop-color:#505050;stop-opacity:1" />
-        <stop offset="50%" style="stop-color:#585858;stop-opacity:1" />
-        <stop offset="75%" style="stop-color:#606060;stop-opacity:1" />
-        <stop offset="100%" style="stop-color:#686868;stop-opacity:1" />
+        <stop offset="0%" style="stop-color:#565656;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#5e5e5e;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#666666;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#6e6e6e;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#767676;stop-opacity:1" />
       </linearGradient>
       
       <linearGradient id="gradient-4" x1="50%" y1="0%" x2="50%" y2="100%">
-        <stop offset="0%" style="stop-color:#4c4c4c;stop-opacity:1" />
-        <stop offset="25%" style="stop-color:#545454;stop-opacity:1" />
-        <stop offset="50%" style="stop-color:#5c5c5c;stop-opacity:1" />
-        <stop offset="75%" style="stop-color:#646464;stop-opacity:1" />
-        <stop offset="100%" style="stop-color:#6c6c6c;stop-opacity:1" />
+        <stop offset="0%" style="stop-color:#5c5c5c;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#646464;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#6c6c6c;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#747474;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#7c7c7c;stop-opacity:1" />
       </linearGradient>
     </defs>
   </svg>
@@ -182,8 +182,8 @@ onUnmounted(() => {
   padding: 16px 20px; 
   font-size: 15px; 
   cursor: pointer; 
-  border: none; 
-  transition: background 0.3s ease, box-shadow 0.3s ease; 
+  border: 1px solid rgba(60, 60, 60, 0.4);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
   white-space: nowrap; 
   display: flex; 
   flex-direction: column;
@@ -194,14 +194,58 @@ onUnmounted(() => {
   width: 175px;
   position: relative; 
   overflow: hidden; 
-  background: rgba(55, 55, 55, 0.75); 
+  background: linear-gradient(135deg, rgba(40, 40, 40, 0.9) 0%, rgba(35, 35, 35, 0.95) 100%);
   color: rgba(255, 255, 255, 0.9); 
   text-decoration: none;
   height: 120px;
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    0 4px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.signal2-switcher::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.1) 50%, 
+    transparent 100%
+  );
+  opacity: 0.6;
+}
+
+.signal2-switcher::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.08) 0%, 
+    transparent 50%, 
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .signal2-switcher:hover { 
-  background: rgba(75, 75, 75, 0.85); 
+  background: linear-gradient(135deg, rgba(50, 50, 50, 0.95) 0%, rgba(45, 45, 45, 1) 100%);
+  border-color: rgba(70, 70, 70, 0.6);
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    0 8px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
 }
 
 .signal2-switcher-icon {
@@ -212,11 +256,12 @@ onUnmounted(() => {
   align-items: center; 
   justify-content: center; 
   transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-.signal2-switcher:hover .signal2-switcher-icon,
-.signal2-switcher:hover .signal2-switcher-title {
-  color: rgba(255, 255, 255, 0.9);
+.signal2-switcher:hover .signal2-switcher-icon {
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+  transform: scale(1.05);
 }
 
 .signal2-switcher-text {
@@ -231,8 +276,13 @@ onUnmounted(() => {
   font-size: 13px;
   font-weight: 400;
   line-height: 1.2;
-  color: rgba(255, 255, 255, 1);
+  color: rgba(255, 255, 255, 0.95);
   transition: color 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.signal2-switcher:hover .signal2-switcher-title {
+  color: rgba(255, 255, 255, 1);
 }
 
 .signal2-switcher-subtitle {
@@ -242,6 +292,7 @@ onUnmounted(() => {
   line-height: 1.3;
   white-space: normal;
   max-width: 145px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .signal2-switchers-gradient { 
