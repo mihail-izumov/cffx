@@ -81,7 +81,7 @@ notification: brew
 
 @media screen and (max-width: 768px) {
   .responsive-heading {
-    font-size: 40px;
+    font-size: 32px;
   }
 }
 </style>
