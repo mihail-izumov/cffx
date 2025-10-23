@@ -4,11 +4,13 @@ prev: false
 next: false
 title: Диалоги Сигнала
 description: Где Начинается Ваш Бизнес
+notification: brew
 ---
+<SignalProductsSliders />
+
+<h1 style="font-size: 80px;">Сигнал для бизнеса</h1>
 
 <div align="center">
-
-<span class="signal-badge">Диалоги Сигнала</span> <br>
 
 <h1>
   <span>Решить любую проблему</span><br class="mobile-break"> <span>клиента за 24 часа.</span>
