@@ -75,21 +75,21 @@ notification: brew
 
 <style>
 .responsive-heading {
-  font-size: 80px;
-  line-height: 0.9;
+  font-size: 80px !important;
+  line-height: 0.9 !important;
 }
 
 @media screen and (max-width: 768px) {
   .responsive-heading {
-    font-size: 50px;
-    line-height: 0.9;
+    font-size: 50px !important;
+    line-height: 0.9 !important;
   }
 }
 
 @media screen and (max-width: 480px) {
   .responsive-heading {
-    font-size: 32px;
-    line-height: 0.9;
+    font-size: 32px !important;
+    line-height: 0.9 !important;
   }
 }
 </style>
