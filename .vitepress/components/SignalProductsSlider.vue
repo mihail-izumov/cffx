@@ -117,9 +117,11 @@ onUnmounted(() => {
           :href="item.url"
           class="signal2-switcher"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" :stroke="`url(#${item.gradientId})`" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path :d="item.icon"/>
-          </svg>
+          <div class="signal2-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" :stroke="`url(#${item.gradientId})`" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path :d="item.icon"/>
+            </svg>
+          </div>
           <div class="signal2-switcher-text">
             <div class="signal2-switcher-title">{{ item.name }}</div>
             <div class="signal2-switcher-subtitle">{{ item.subtitle }}</div>
@@ -182,8 +184,8 @@ onUnmounted(() => {
   padding: 16px 20px; 
   font-size: 15px; 
   cursor: pointer; 
-  border: 1px solid rgba(60, 60, 60, 0.4);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+  border: none; 
+  transition: background 0.3s ease, box-shadow 0.3s ease; 
   white-space: nowrap; 
   display: flex; 
   flex-direction: column;
@@ -194,19 +196,36 @@ onUnmounted(() => {
   width: 175px;
   position: relative; 
   overflow: hidden; 
-  background: linear-gradient(135deg, rgba(40, 40, 40, 0.9) 0%, rgba(35, 35, 35, 0.95) 100%);
+  background: rgba(55, 55, 55, 0.75); 
   color: rgba(255, 255, 255, 0.9); 
   text-decoration: none;
   height: 120px;
+}
+
+.signal2-switcher:hover { 
+  background: rgba(75, 75, 75, 0.85); 
+}
+
+.signal2-icon-wrapper {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(40, 40, 40, 0.9) 0%, rgba(35, 35, 35, 0.95) 100%);
+  border: 1px solid rgba(60, 60, 60, 0.4);
   box-shadow: 
     0 1px 3px rgba(0, 0, 0, 0.3),
     0 4px 8px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.signal2-switcher::before {
+.signal2-icon-wrapper::before {
   content: '';
   position: absolute;
   top: 0;
@@ -221,11 +240,11 @@ onUnmounted(() => {
   opacity: 0.6;
 }
 
-.signal2-switcher::after {
+.signal2-icon-wrapper::after {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 12px;
+  border-radius: 10px;
   padding: 1px;
   background: linear-gradient(135deg, 
     rgba(255, 255, 255, 0.08) 0%, 
@@ -238,14 +257,14 @@ onUnmounted(() => {
   pointer-events: none;
 }
 
-.signal2-switcher:hover { 
+.signal2-switcher:hover .signal2-icon-wrapper {
   background: linear-gradient(135deg, rgba(50, 50, 50, 0.95) 0%, rgba(45, 45, 45, 1) 100%);
   border-color: rgba(70, 70, 70, 0.6);
   box-shadow: 
     0 2px 6px rgba(0, 0, 0, 0.4),
     0 8px 16px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.05);
 }
 
 .signal2-switcher-icon {
@@ -261,7 +280,6 @@ onUnmounted(() => {
 
 .signal2-switcher:hover .signal2-switcher-icon {
   filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
-  transform: scale(1.05);
 }
 
 .signal2-switcher-text {
@@ -276,13 +294,8 @@ onUnmounted(() => {
   font-size: 13px;
   font-weight: 400;
   line-height: 1.2;
-  color: rgba(255, 255, 255, 0.95);
-  transition: color 0.3s ease;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-}
-
-.signal2-switcher:hover .signal2-switcher-title {
   color: rgba(255, 255, 255, 1);
+  transition: color 0.3s ease;
 }
 
 .signal2-switcher-subtitle {
@@ -292,7 +305,6 @@ onUnmounted(() => {
   line-height: 1.3;
   white-space: normal;
   max-width: 145px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .signal2-switchers-gradient { 
