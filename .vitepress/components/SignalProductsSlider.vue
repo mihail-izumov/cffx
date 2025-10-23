@@ -6,25 +6,25 @@ const cafeItems = [
     name: 'Диалоги',
     subtitle: 'Окупается с первых Сигналов',
     url: '/dialogi',
-    active: false
+    active: true
   },
   {
     name: 'Система',
     subtitle: 'Поток связи → метрики и рост',
     url: '/sistema',
-    active: false
+    active: true
   },
   {
     name: 'Настроить Сигнал',
     subtitle: 'Старт за 48 часов. Бесплатно.',
     url: '/nastroit-signal',
-    active: false
+    active: true
   },
   {
     name: 'Спецификация',
     subtitle: 'Дьявол в деталях',
     url: '/specifikacija',
-    active: false
+    active: true
   }
 ]
 
@@ -65,7 +65,6 @@ onMounted(() => {
           :key="item.name"
           :href="item.url"
           class="signal2-switcher"
-          :class="{ disabled: item.name === 'Диалоги' }"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/>
@@ -87,7 +86,13 @@ onMounted(() => {
       <div 
         class="signal2-switchers-gradient signal2-switchers-gradient-right"
         :class="{ 'signal2-gradient-visible': showRightGradient }"
-      ></div>
+      >
+        <div class="signal2-gradient-arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -105,7 +110,8 @@ onMounted(() => {
 .signal2-cafe-switchers { 
   display: flex; 
   gap: 12px; 
-  padding-bottom: 12px; 
+  padding-bottom: 12px;
+  padding-right: 12px;
   flex-wrap: nowrap; 
   overflow-x: auto; 
   -webkit-overflow-scrolling: touch; 
@@ -131,20 +137,20 @@ onMounted(() => {
 }
 
 .signal2-switcher { 
-  border-radius: 5px; 
+  border-radius: 12px; 
   padding: 16px 20px; 
   font-size: 15px; 
-  font-weight: 700; 
   cursor: pointer; 
   border: none; 
-  transition: all 0.3s ease; 
+  transition: background 0.5s ease, box-shadow 0.5s ease; 
   white-space: nowrap; 
   display: flex; 
   flex-direction: column;
   align-items: center; 
   gap: 12px; 
-  min-width: fit-content; 
-  max-width: 180px;
+  min-width: 140px;
+  max-width: 140px;
+  width: 140px;
   position: relative; 
   overflow: hidden; 
   background: rgba(70, 70, 70, 0.65); 
@@ -154,21 +160,8 @@ onMounted(() => {
 }
 
 .signal2-switcher:hover { 
-  background: rgba(255, 255, 255, 0.95); 
-  color: #333; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
-}
-
-.signal2-switcher.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.signal2-switcher.disabled:hover {
-  background: rgba(70, 70, 70, 0.65);
-  color: rgba(255, 255, 255, 0.9);
-  box-shadow: none;
+  background: rgba(90, 90, 90, 0.85); 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
 }
 
 .signal2-switcher-icon { 
@@ -189,34 +182,26 @@ onMounted(() => {
 }
 
 .signal2-switcher-title {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 400;
   line-height: 1.2;
   color: rgba(255, 255, 255, 1);
 }
 
-.signal2-switcher:hover .signal2-switcher-title {
-  color: #333;
-}
-
 .signal2-switcher-subtitle {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
   opacity: 0.7;
   line-height: 1.3;
   white-space: normal;
-  max-width: 160px;
-}
-
-.signal2-switcher:hover .signal2-switcher-subtitle {
-  opacity: 0.6;
+  max-width: 120px;
 }
 
 .signal2-switchers-gradient { 
   position: absolute; 
   top: 0; 
   bottom: 12px; 
-  width: 60px; 
+  width: 80px; 
   pointer-events: none; 
   z-index: 2; 
   opacity: 0; 
@@ -245,12 +230,33 @@ onMounted(() => {
   background: linear-gradient(
     to left, 
     #1b1b1f 0%, 
-    #1b1b1f 20%, 
-    rgba(27, 27, 31, 0.95) 40%, 
-    rgba(27, 27, 31, 0.8) 60%, 
-    rgba(27, 27, 31, 0.5) 80%, 
+    #1b1b1f 30%, 
+    rgba(27, 27, 31, 0.95) 50%, 
+    rgba(27, 27, 31, 0.8) 70%, 
+    rgba(27, 27, 31, 0.5) 85%, 
     transparent 100%
-  ); 
+  );
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 15px;
+}
+
+.signal2-gradient-arrow {
+  width: 2px;
+  height: 60%;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 1px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signal2-gradient-arrow svg {
+  position: absolute;
+  right: -9px;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 768px) {
@@ -260,8 +266,10 @@ onMounted(() => {
 
   .signal2-switcher {
     height: 110px;
-    padding: 14px 18px;
-    max-width: 160px;
+    padding: 14px 16px;
+    min-width: 130px;
+    max-width: 130px;
+    width: 130px;
   }
 
   .signal2-switcher-icon {
@@ -270,12 +278,12 @@ onMounted(() => {
   }
 
   .signal2-switcher-title {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .signal2-switcher-subtitle {
-    font-size: 11px;
-    max-width: 140px;
+    font-size: 10px;
+    max-width: 110px;
   }
 }
 
@@ -286,9 +294,11 @@ onMounted(() => {
 
   .signal2-switcher {
     height: 100px;
-    padding: 12px 16px;
+    padding: 12px 14px;
     gap: 10px;
-    max-width: 140px;
+    min-width: 120px;
+    max-width: 120px;
+    width: 120px;
   }
 
   .signal2-switcher-icon {
@@ -297,12 +307,17 @@ onMounted(() => {
   }
 
   .signal2-switcher-title {
-    font-size: 13px;
+    font-size: 11px;
   }
 
   .signal2-switcher-subtitle {
-    font-size: 10px;
-    max-width: 120px;
+    font-size: 9px;
+    max-width: 100px;
+  }
+
+  .signal2-gradient-arrow svg {
+    width: 18px;
+    height: 18px;
   }
 }
 </style>
