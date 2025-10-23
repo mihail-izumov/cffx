@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick, onMounted } from 'vue'
+import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 
 const cafeItems = [
   {
@@ -28,7 +28,6 @@ const cafeItems = [
   }
 ]
 
-const selectedCafe = ref(null)
 const showLeftGradient = ref(false)
 const showRightGradient = ref(false)
 const switchersRef = ref(null)
@@ -41,14 +40,27 @@ const handleSwitcherScroll = () => {
   const scrollWidth = container.scrollWidth
   const clientWidth = container.clientWidth
   
-  showLeftGradient.value = scrollLeft > 5
-  showRightGradient.value = scrollLeft < (scrollWidth - clientWidth - 5)
+  showLeftGradient.value = scrollLeft > 10
+  showRightGradient.value = scrollLeft < (scrollWidth - clientWidth - 10)
 }
 
 onMounted(() => {
-  nextTick(() => {
-    handleSwitcherScroll()
-  })
+  const container = switchersRef.value
+  if (container) {
+    nextTick(() => {
+      handleSwitcherScroll()
+    })
+    container.addEventListener('scroll', handleSwitcherScroll)
+    window.addEventListener('resize', handleSwitcherScroll)
+  }
+})
+
+onUnmounted(() => {
+  const container = switchersRef.value;
+  if (container) {
+    container.removeEventListener('scroll', handleSwitcherScroll)
+    window.removeEventListener('resize', handleSwitcherScroll)
+  }
 })
 </script>
 
@@ -58,7 +70,6 @@ onMounted(() => {
       <div 
         class="signal2-cafe-switchers" 
         ref="switchersRef"
-        @scroll="handleSwitcherScroll"
       >
         <a
           v-for="item in cafeItems"
@@ -83,17 +94,18 @@ onMounted(() => {
         class="signal2-switchers-gradient signal2-switchers-gradient-left"
         :class="{ 'signal2-gradient-visible': showLeftGradient }"
       >
-        <div class="signal2-gradient-arrow signal2-gradient-arrow-left">
+        <div class="signal2-gradient-arrow">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 18 9 12 15 6"></polyline>
           </svg>
         </div>
       </div>
+
       <div 
         class="signal2-switchers-gradient signal2-switchers-gradient-right"
         :class="{ 'signal2-gradient-visible': showRightGradient }"
       >
-        <div class="signal2-gradient-arrow signal2-gradient-arrow-right">
+        <div class="signal2-gradient-arrow">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="9 18 15 12 9 6"></polyline>
           </svg>
@@ -121,25 +133,11 @@ onMounted(() => {
   flex-wrap: nowrap; 
   overflow-x: auto; 
   -webkit-overflow-scrolling: touch; 
-  scrollbar-width: thin; 
-  scrollbar-color: rgba(70, 70, 70, 0.8) transparent; 
+  scrollbar-width: none; /* Firefox */
 }
 
 .signal2-cafe-switchers::-webkit-scrollbar { 
-  height: 2px; 
-}
-
-.signal2-cafe-switchers::-webkit-scrollbar-track { 
-  background: transparent; 
-}
-
-.signal2-cafe-switchers::-webkit-scrollbar-thumb { 
-  background-color: rgba(70, 70, 70, 0.8); 
-  border-radius: 10px; 
-}
-
-.signal2-cafe-switchers::-webkit-scrollbar-thumb:hover { 
-  background-color: rgba(85, 85, 85, 0.9); 
+  display: none; /* Safari and Chrome */
 }
 
 .signal2-switcher { 
@@ -148,7 +146,7 @@ onMounted(() => {
   font-size: 15px; 
   cursor: pointer; 
   border: none; 
-  transition: background 0.5s ease, box-shadow 0.5s ease; 
+  transition: background 0.3s ease, box-shadow 0.3s ease; 
   white-space: nowrap; 
   display: flex; 
   flex-direction: column;
@@ -159,15 +157,27 @@ onMounted(() => {
   width: 150px;
   position: relative; 
   overflow: hidden; 
-  background: rgba(70, 70, 70, 0.3); 
+  background: rgba(55, 55, 55, 0.75); 
   color: rgba(255, 255, 255, 0.9); 
   text-decoration: none;
   height: 120px;
 }
 
 .signal2-switcher:hover { 
-  background: rgba(75, 75, 75, 0.4); 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+  background: rgba(75, 75, 75, 0.85); 
+}
+
+.signal2-switcher-icon,
+.signal2-switcher-title,
+.signal2-switcher-subtitle {
+  transition: all 0.3s ease;
+}
+
+.signal2-switcher:hover .signal2-switcher-icon,
+.signal2-switcher:hover .signal2-switcher-title,
+.signal2-switcher:hover .signal2-switcher-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  opacity: 1;
 }
 
 .signal2-switcher-icon { 
@@ -177,7 +187,6 @@ onMounted(() => {
   display: flex; 
   align-items: center; 
   justify-content: center; 
-  transition: none;
 }
 
 .signal2-switcher-text {
@@ -193,7 +202,6 @@ onMounted(() => {
   font-weight: 400;
   line-height: 1.2;
   color: rgba(255, 255, 255, 1);
-  transition: none;
 }
 
 .signal2-switcher-subtitle {
@@ -202,19 +210,18 @@ onMounted(() => {
   opacity: 0.7;
   line-height: 1.3;
   white-space: normal;
-  max-width: 130px;
-  transition: none;
+  max-width: 120px;
 }
 
 .signal2-switchers-gradient { 
   position: absolute; 
   top: 0; 
   bottom: 12px; 
-  width: 80px; 
+  width: 60px; 
   pointer-events: none; 
   z-index: 2; 
   opacity: 0; 
-  transition: opacity 0.6s ease; 
+  transition: opacity 0.4s ease; 
   display: flex;
   align-items: center;
 }
@@ -224,50 +231,35 @@ onMounted(() => {
 }
 
 .signal2-switchers-gradient-left { 
-  left: 0; 
+  left: -1px; 
+  justify-content: flex-start;
   background: linear-gradient(
     to right, 
     #1b1b1f 0%, 
-    #1b1b1f 20%, 
-    rgba(27, 27, 31, 0.95) 40%, 
-    rgba(27, 27, 31, 0.8) 60%, 
-    rgba(27, 27, 31, 0.5) 80%, 
-    transparent 100%
-  );
-  justify-content: flex-start;
-  padding-left: 15px;
+    #1b1b1f 30%, 
+    rgba(27, 27, 31, 0) 100%
+  ); 
 }
 
 .signal2-switchers-gradient-right { 
   right: 0; 
+  justify-content: flex-end;
   background: linear-gradient(
     to left, 
     #1b1b1f 0%, 
     #1b1b1f 30%, 
-    rgba(27, 27, 31, 0.95) 50%, 
-    rgba(27, 27, 31, 0.8) 70%, 
-    rgba(27, 27, 31, 0.5) 85%, 
-    transparent 100%
-  );
-  justify-content: flex-end;
-  padding-right: 15px;
+    rgba(27, 27, 31, 0) 100%
+  ); 
 }
 
 .signal2-gradient-arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.signal2-gradient-arrow svg {
+  width: 20px;
+  height: 20px;
   color: rgba(255, 255, 255, 0.5);
+  margin: 0 10px;
 }
 
 @media (max-width: 768px) {
-  .signal2-widget-content { 
-    padding: 10px 0; 
-  }
-
   .signal2-switcher {
     height: 110px;
     padding: 14px 16px;
@@ -275,27 +267,9 @@ onMounted(() => {
     max-width: 140px;
     width: 140px;
   }
-
-  .signal2-switcher-icon {
-    width: 28px;
-    height: 28px;
-  }
-
-  .signal2-switcher-title {
-    font-size: 12px;
-  }
-
-  .signal2-switcher-subtitle {
-    font-size: 10px;
-    max-width: 120px;
-  }
 }
 
 @media (max-width: 480px) {
-  .signal2-widget-content { 
-    padding: 8px 0; 
-  }
-
   .signal2-switcher {
     height: 100px;
     padding: 12px 14px;
@@ -303,25 +277,6 @@ onMounted(() => {
     min-width: 130px;
     max-width: 130px;
     width: 130px;
-  }
-
-  .signal2-switcher-icon {
-    width: 26px;
-    height: 26px;
-  }
-
-  .signal2-switcher-title {
-    font-size: 11px;
-  }
-
-  .signal2-switcher-subtitle {
-    font-size: 9px;
-    max-width: 110px;
-  }
-
-  .signal2-gradient-arrow svg {
-    width: 18px;
-    height: 18px;
   }
 }
 </style>
