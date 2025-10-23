@@ -102,6 +102,31 @@ onUnmounted(() => {
         <stop offset="75%" style="stop-color:#747474;stop-opacity:1" />
         <stop offset="100%" style="stop-color:#7c7c7c;stop-opacity:1" />
       </linearGradient>
+      
+      <!-- Фильтр для создания эффекта объема -->
+      <filter id="depth-effect">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+        <feOffset dx="0" dy="2" result="offsetblur"/>
+        <feComponentTransfer>
+          <feFuncA type="linear" slope="0.4"/>
+        </feComponentTransfer>
+        <feMerge>
+          <feMergeNode/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      
+      <filter id="depth-effect-hover">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+        <feOffset dx="0" dy="3" result="offsetblur"/>
+        <feComponentTransfer>
+          <feFuncA type="linear" slope="0.5"/>
+        </feComponentTransfer>
+        <feMerge>
+          <feMergeNode/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
     </defs>
   </svg>
 
@@ -117,11 +142,9 @@ onUnmounted(() => {
           :href="item.url"
           class="signal2-switcher"
         >
-          <div class="signal2-icon-wrapper">
-            <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" :stroke="`url(#${item.gradientId})`" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path :d="item.icon"/>
-            </svg>
-          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" :stroke="`url(#${item.gradientId})`" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#depth-effect)">
+            <path :d="item.icon"/>
+          </svg>
           <div class="signal2-switcher-text">
             <div class="signal2-switcher-title">{{ item.name }}</div>
             <div class="signal2-switcher-subtitle">{{ item.subtitle }}</div>
@@ -206,67 +229,6 @@ onUnmounted(() => {
   background: rgba(75, 75, 75, 0.85); 
 }
 
-.signal2-icon-wrapper {
-  position: relative;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  background: linear-gradient(135deg, rgba(40, 40, 40, 0.9) 0%, rgba(35, 35, 35, 0.95) 100%);
-  border: 1px solid rgba(60, 60, 60, 0.4);
-  box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.3),
-    0 4px 8px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.signal2-icon-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(255, 255, 255, 0.1) 50%, 
-    transparent 100%
-  );
-  opacity: 0.6;
-}
-
-.signal2-icon-wrapper::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 10px;
-  padding: 1px;
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.08) 0%, 
-    transparent 50%, 
-    rgba(255, 255, 255, 0.03) 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-.signal2-switcher:hover .signal2-icon-wrapper {
-  background: linear-gradient(135deg, rgba(50, 50, 50, 0.95) 0%, rgba(45, 45, 45, 1) 100%);
-  border-color: rgba(70, 70, 70, 0.6);
-  box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.4),
-    0 8px 16px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  transform: translateY(-2px) scale(1.05);
-}
-
 .signal2-switcher-icon {
   width: 32px; 
   height: 32px; 
@@ -274,12 +236,13 @@ onUnmounted(() => {
   display: flex; 
   align-items: center; 
   justify-content: center; 
-  transition: all 0.3s ease;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: url(#depth-effect) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .signal2-switcher:hover .signal2-switcher-icon {
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+  filter: url(#depth-effect-hover) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+  transform: translateY(-2px) scale(1.08);
 }
 
 .signal2-switcher-text {
