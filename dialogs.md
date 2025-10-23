@@ -9,24 +9,11 @@ notification: brew
 
 <SignalProductsSlider />
 
-<style>
-.responsive-heading {
-  font-size: 80px;
-  line-height: 1.2;
-}
+<div align="center">
 
-@media screen and (max-width: 768px) {
-  .responsive-heading {
-    font-size: 40px;
-  }
-}
-</style>
-
-<h1 style="font-size: 80px !important;">Сигнал<br>для бизнеса</h1>
+<h1 style="font-size: 80px !important; line-height: 1.3;">Сигнал<br>для бизнеса</h1>
 
 <br>
-
-<div align="center">
 
 <h1>
   <span>Решить любую проблему</span><br class="mobile-break"> <span>клиента за 24 часа.</span>
@@ -101,6 +88,19 @@ notification: brew
     onmouseout="this.style.transform='scale(1)'"
   />
 </div>
+
+<style>
+.responsive-heading {
+  font-size: 80px;
+  line-height: 1.2;
+}
+
+@media screen and (max-width: 768px) {
+  .responsive-heading {
+    font-size: 40px;
+  }
+}
+</style>
 
 <style>
 /* Checkup CTA Section - Perfect Single Line */
