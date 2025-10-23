@@ -11,7 +11,7 @@ notification: brew
 
 <div align="center">
 
-<h1 style="font-size: 80px !important; line-height: 0.9;">Сигнал<br>для бизнеса</h1>
+<h1 class="responsive-heading">Сигнал<br>для бизнеса</h1>
 
 <br>
 
@@ -76,12 +76,20 @@ notification: brew
 <style>
 .responsive-heading {
   font-size: 80px;
-  line-height: 1.2;
+  line-height: 0.9;
 }
 
 @media screen and (max-width: 768px) {
   .responsive-heading {
+    font-size: 50px;
+    line-height: 0.9;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .responsive-heading {
     font-size: 32px;
+    line-height: 0.9;
   }
 }
 </style>
