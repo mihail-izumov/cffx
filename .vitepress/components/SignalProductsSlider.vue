@@ -12,7 +12,7 @@ const cafeItems = [
     name: 'Система',
     subtitle: 'Поток связи → метрики и рост',
     url: '/sistema',
-    active: true
+    active: false
   },
   {
     name: 'Настроить Сигнал',
@@ -28,7 +28,7 @@ const cafeItems = [
   }
 ]
 
-const selectedCafe = ref('Система')
+const selectedCafe = ref(null)
 const showLeftGradient = ref(false)
 const showRightGradient = ref(false)
 const switchersRef = ref(null)
@@ -65,8 +65,7 @@ onMounted(() => {
           :key="item.name"
           :href="item.url"
           class="signal2-switcher"
-          :class="{ active: item.active, disabled: !item.active && item.name === 'Диалоги' }"
-          @click.prevent="item.active && (selectedCafe = item.name)"
+          :class="{ disabled: item.name === 'Диалоги' }"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/>
@@ -95,12 +94,12 @@ onMounted(() => {
 
 <style scoped>
 .signal2-widget-content { 
-  padding: 24px 0; 
+  padding: 12px 0; 
 }
 
 .signal2-cafe-switchers-container { 
   position: relative; 
-  margin-bottom: 24px; 
+  margin-bottom: 16px; 
 }
 
 .signal2-cafe-switchers { 
@@ -141,46 +140,35 @@ onMounted(() => {
   transition: all 0.3s ease; 
   white-space: nowrap; 
   display: flex; 
+  flex-direction: column;
   align-items: center; 
-  gap: 16px; 
+  gap: 12px; 
   min-width: fit-content; 
+  max-width: 180px;
   position: relative; 
   overflow: hidden; 
-  background: rgba(70, 70, 70, 0.6); 
+  background: rgba(70, 70, 70, 0.65); 
   color: rgba(255, 255, 255, 0.9); 
   text-decoration: none;
-  height: 80px;
+  height: 120px;
 }
 
-.signal2-switcher::before { 
-  content: ''; 
-  position: absolute; 
-  left: -200%; 
-  top: 0; 
-  width: 200%; 
-  height: 100%; 
-  background: linear-gradient(90deg, transparent 0%, transparent 30%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.08) 60%, transparent 70%, transparent 100%); 
-  transition: all 1.2s ease; 
-}
-
-.signal2-switcher:hover::before { 
-  left: 100%; 
-}
-
-.signal2-switcher.active { 
+.signal2-switcher:hover { 
   background: rgba(255, 255, 255, 0.95); 
   color: #333; 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
-}
-
-.signal2-switcher.active::before { 
-  display: none; 
 }
 
 .signal2-switcher.disabled {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+.signal2-switcher.disabled:hover {
+  background: rgba(70, 70, 70, 0.65);
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow: none;
 }
 
 .signal2-switcher-icon { 
@@ -195,27 +183,32 @@ onMounted(() => {
 .signal2-switcher-text {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 4px;
-  text-align: left;
+  text-align: center;
 }
 
 .signal2-switcher-title {
   font-size: 15px;
   font-weight: 700;
   line-height: 1.2;
+  color: rgba(255, 255, 255, 1);
+}
+
+.signal2-switcher:hover .signal2-switcher-title {
+  color: #333;
 }
 
 .signal2-switcher-subtitle {
   font-size: 12px;
   font-weight: 400;
   opacity: 0.7;
-  line-height: 1.2;
+  line-height: 1.3;
   white-space: normal;
-  max-width: 200px;
+  max-width: 160px;
 }
 
-.signal2-switcher.active .signal2-switcher-subtitle {
+.signal2-switcher:hover .signal2-switcher-subtitle {
   opacity: 0.6;
 }
 
@@ -261,18 +254,14 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .signal2-switcher::before, 
-  .signal2-switcher:hover::before { 
-    display: none; 
-  }
-  
   .signal2-widget-content { 
-    padding: 20px 0; 
+    padding: 10px 0; 
   }
 
   .signal2-switcher {
-    height: 70px;
-    padding: 12px 16px;
+    height: 110px;
+    padding: 14px 18px;
+    max-width: 160px;
   }
 
   .signal2-switcher-icon {
@@ -280,21 +269,26 @@ onMounted(() => {
     height: 28px;
   }
 
+  .signal2-switcher-title {
+    font-size: 14px;
+  }
+
   .signal2-switcher-subtitle {
     font-size: 11px;
-    max-width: 180px;
+    max-width: 140px;
   }
 }
 
 @media (max-width: 480px) {
   .signal2-widget-content { 
-    padding: 16px 0; 
+    padding: 8px 0; 
   }
 
   .signal2-switcher {
-    height: 65px;
-    padding: 10px 14px;
-    gap: 12px;
+    height: 100px;
+    padding: 12px 16px;
+    gap: 10px;
+    max-width: 140px;
   }
 
   .signal2-switcher-icon {
@@ -303,12 +297,12 @@ onMounted(() => {
   }
 
   .signal2-switcher-title {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .signal2-switcher-subtitle {
     font-size: 10px;
-    max-width: 160px;
+    max-width: 120px;
   }
 }
 </style>
