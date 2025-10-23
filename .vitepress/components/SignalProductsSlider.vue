@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 
 const cafeItems = [
   {
@@ -7,28 +7,28 @@ const cafeItems = [
     subtitle: 'Окупается с первых Сигналов',
     url: '/dialogi',
     icon: 'M16 10a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 14.286V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z M20 9a2 2 0 0 1 2 2v10.286a.71.71 0 0 1-1.212.502l-2.202-2.202A2 2 0 0 0 17.172 19H10a2 2 0 0 1-2-2v-1',
-    gradient: 'icon-gradient-1'
+    gradientId: 'gradient-1'
   },
   {
     name: 'Система',
     subtitle: 'Поток связи → метрики и рост',
     url: '/sistema',
     icon: 'M19.07 4.93A10 10 0 0 0 6.99 3.34 M4 6h.01 M2.29 9.62A10 10 0 1 0 21.31 8.35 M16.24 7.76A6 6 0 1 0 8.23 16.67 M12 18h.01 M17.99 11.66A6 6 0 0 1 15.77 16.67 M12 12 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0 M13.41 10.59l5.66-5.66',
-    gradient: 'icon-gradient-2'
+    gradientId: 'gradient-2'
   },
   {
     name: 'Настроить Сигнал',
     subtitle: 'Старт за 48 часов. Бесплатно.',
     url: '/nastroit-signal',
     icon: 'M4 10a7.31 7.31 0 0 0 10 10Z M9 15l3-3 M17 13a6 6 0 0 0-6-6 M21 13A10 10 0 0 0 11 3',
-    gradient: 'icon-gradient-3'
+    gradientId: 'gradient-3'
   },
   {
     name: 'Спецификация',
     subtitle: 'Дьявол в деталях',
     url: '/specifikacija',
     icon: 'M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z M20 2v4 M22 4h-4 M4 20 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0',
-    gradient: 'icon-gradient-4'
+    gradientId: 'gradient-4'
   }
 ]
 
@@ -69,6 +69,42 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <linearGradient id="gradient-1" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#4a4a4a;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#525252;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#5a5a5a;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#626262;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#6a6a6a;stop-opacity:1" />
+      </linearGradient>
+      
+      <linearGradient id="gradient-2" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#505050;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#585858;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#606060;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#686868;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#707070;stop-opacity:1" />
+      </linearGradient>
+      
+      <linearGradient id="gradient-3" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#484848;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#505050;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#585858;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#606060;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#686868;stop-opacity:1" />
+      </linearGradient>
+      
+      <linearGradient id="gradient-4" x1="50%" y1="0%" x2="50%" y2="100%">
+        <stop offset="0%" style="stop-color:#4c4c4c;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#545454;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#5c5c5c;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#646464;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#6c6c6c;stop-opacity:1" />
+      </linearGradient>
+    </defs>
+  </svg>
+
   <div class="signal2-widget-content">
     <div class="signal2-cafe-switchers-container">
       <div 
@@ -81,7 +117,7 @@ onUnmounted(() => {
           :href="item.url"
           class="signal2-switcher"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" :class="['signal2-switcher-icon', item.gradient]" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" :stroke="`url(#${item.gradientId})`" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path :d="item.icon"/>
           </svg>
           <div class="signal2-switcher-text">
@@ -176,22 +212,6 @@ onUnmounted(() => {
   align-items: center; 
   justify-content: center; 
   transition: all 0.3s ease;
-}
-
-.icon-gradient-1 {
-  stroke: url(#gradient-1);
-}
-
-.icon-gradient-2 {
-  stroke: url(#gradient-2);
-}
-
-.icon-gradient-3 {
-  stroke: url(#gradient-3);
-}
-
-.icon-gradient-4 {
-  stroke: url(#gradient-4);
 }
 
 .signal2-switcher:hover .signal2-switcher-icon,
@@ -295,46 +315,3 @@ onUnmounted(() => {
   }
 }
 </style>
-
-<style>
-/* SVG градиенты для иконок - должны быть глобальными */
-svg defs {
-  position: absolute;
-}
-</style>
-
-<svg width="0" height="0" style="position: absolute;">
-  <defs>
-    <linearGradient id="gradient-1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#4a4a4a;stop-opacity:1" />
-      <stop offset="25%" style="stop-color:#525252;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#5a5a5a;stop-opacity:1" />
-      <stop offset="75%" style="stop-color:#626262;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#6a6a6a;stop-opacity:1" />
-    </linearGradient>
-    
-    <linearGradient id="gradient-2" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#505050;stop-opacity:1" />
-      <stop offset="25%" style="stop-color:#585858;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#606060;stop-opacity:1" />
-      <stop offset="75%" style="stop-color:#686868;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#707070;stop-opacity:1" />
-    </linearGradient>
-    
-    <linearGradient id="gradient-3" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#484848;stop-opacity:1" />
-      <stop offset="25%" style="stop-color:#505050;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#585858;stop-opacity:1" />
-      <stop offset="75%" style="stop-color:#606060;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#686868;stop-opacity:1" />
-    </linearGradient>
-    
-    <linearGradient id="gradient-4" x1="50%" y1="0%" x2="50%" y2="100%">
-      <stop offset="0%" style="stop-color:#4c4c4c;stop-opacity:1" />
-      <stop offset="25%" style="stop-color:#545454;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#5c5c5c;stop-opacity:1" />
-      <stop offset="75%" style="stop-color:#646464;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#6c6c6c;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-</svg>
