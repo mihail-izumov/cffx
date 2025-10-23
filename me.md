@@ -4,7 +4,7 @@ prev: false
 next: false
 pageClass: centered-page
 notification: brew
-title: Отправьте Умный Отзыв – Корж, Skuratov, Surf, Mosaic, Белотурка, Кэрри
+title: Отправьте Сигнал – Корж, Skuratov, Surf, Mosaic, Белотурка, Кэрри
 description: Где Начинается Ваша Кофейня
 ---
 <div align="center">
