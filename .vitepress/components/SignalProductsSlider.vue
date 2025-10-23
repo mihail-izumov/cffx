@@ -82,12 +82,18 @@ onMounted(() => {
       <div 
         class="signal2-switchers-gradient signal2-switchers-gradient-left"
         :class="{ 'signal2-gradient-visible': showLeftGradient }"
-      ></div>
+      >
+        <div class="signal2-gradient-arrow signal2-gradient-arrow-left">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </div>
+      </div>
       <div 
         class="signal2-switchers-gradient signal2-switchers-gradient-right"
         :class="{ 'signal2-gradient-visible': showRightGradient }"
       >
-        <div class="signal2-gradient-arrow">
+        <div class="signal2-gradient-arrow signal2-gradient-arrow-right">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="9 18 15 12 9 6"></polyline>
           </svg>
@@ -148,20 +154,20 @@ onMounted(() => {
   flex-direction: column;
   align-items: center; 
   gap: 12px; 
-  min-width: 140px;
-  max-width: 140px;
-  width: 140px;
+  min-width: 150px;
+  max-width: 150px;
+  width: 150px;
   position: relative; 
   overflow: hidden; 
-  background: rgba(70, 70, 70, 0.65); 
+  background: rgba(70, 70, 70, 0.3); 
   color: rgba(255, 255, 255, 0.9); 
   text-decoration: none;
   height: 120px;
 }
 
 .signal2-switcher:hover { 
-  background: rgba(90, 90, 90, 0.85); 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+  background: rgba(75, 75, 75, 0.4); 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
 }
 
 .signal2-switcher-icon { 
@@ -171,6 +177,7 @@ onMounted(() => {
   display: flex; 
   align-items: center; 
   justify-content: center; 
+  transition: none;
 }
 
 .signal2-switcher-text {
@@ -186,6 +193,7 @@ onMounted(() => {
   font-weight: 400;
   line-height: 1.2;
   color: rgba(255, 255, 255, 1);
+  transition: none;
 }
 
 .signal2-switcher-subtitle {
@@ -194,7 +202,8 @@ onMounted(() => {
   opacity: 0.7;
   line-height: 1.3;
   white-space: normal;
-  max-width: 120px;
+  max-width: 130px;
+  transition: none;
 }
 
 .signal2-switchers-gradient { 
@@ -206,6 +215,8 @@ onMounted(() => {
   z-index: 2; 
   opacity: 0; 
   transition: opacity 0.6s ease; 
+  display: flex;
+  align-items: center;
 }
 
 .signal2-switchers-gradient.signal2-gradient-visible { 
@@ -222,7 +233,9 @@ onMounted(() => {
     rgba(27, 27, 31, 0.8) 60%, 
     rgba(27, 27, 31, 0.5) 80%, 
     transparent 100%
-  ); 
+  );
+  justify-content: flex-start;
+  padding-left: 15px;
 }
 
 .signal2-switchers-gradient-right { 
@@ -236,26 +249,17 @@ onMounted(() => {
     rgba(27, 27, 31, 0.5) 85%, 
     transparent 100%
   );
-  display: flex;
-  align-items: center;
   justify-content: flex-end;
   padding-right: 15px;
 }
 
 .signal2-gradient-arrow {
-  width: 2px;
-  height: 60%;
-  background: rgba(255, 255, 255, 0.4);
-  border-radius: 1px;
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .signal2-gradient-arrow svg {
-  position: absolute;
-  right: -9px;
   color: rgba(255, 255, 255, 0.5);
 }
 
@@ -267,9 +271,9 @@ onMounted(() => {
   .signal2-switcher {
     height: 110px;
     padding: 14px 16px;
-    min-width: 130px;
-    max-width: 130px;
-    width: 130px;
+    min-width: 140px;
+    max-width: 140px;
+    width: 140px;
   }
 
   .signal2-switcher-icon {
@@ -283,7 +287,7 @@ onMounted(() => {
 
   .signal2-switcher-subtitle {
     font-size: 10px;
-    max-width: 110px;
+    max-width: 120px;
   }
 }
 
@@ -296,9 +300,9 @@ onMounted(() => {
     height: 100px;
     padding: 12px 14px;
     gap: 10px;
-    min-width: 120px;
-    max-width: 120px;
-    width: 120px;
+    min-width: 130px;
+    max-width: 130px;
+    width: 130px;
   }
 
   .signal2-switcher-icon {
@@ -312,7 +316,7 @@ onMounted(() => {
 
   .signal2-switcher-subtitle {
     font-size: 9px;
-    max-width: 100px;
+    max-width: 110px;
   }
 
   .signal2-gradient-arrow svg {
