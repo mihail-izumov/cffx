@@ -81,15 +81,15 @@ notification: brew
 
 @media screen and (max-width: 768px) {
   .responsive-heading {
-    font-size: 50px !important;
-    line-height: 0.9 !important;
+    font-size: 65px !important;
+    line-height: 1.1 !important;
   }
 }
 
 @media screen and (max-width: 480px) {
   .responsive-heading {
-    font-size: 32px !important;
-    line-height: 0.9 !important;
+    font-size: 50px !important;
+    line-height: 1.1 !important;
   }
 }
 </style>
