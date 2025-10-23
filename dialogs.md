@@ -22,13 +22,15 @@ notification: brew
 }
 </style>
 
-<h1 class="responsive-heading">Сигнал<br>для бизнеса</h1>
+<h1 style="font-size: 80px !important;">Сигнал<br>для бизнеса</h1>
+
+<br>
+
+<div align="center">
 
 <h1>
   <span>Решить любую проблему</span><br class="mobile-break"> <span>клиента за 24 часа.</span>
 </h1>
-
-<div align="center">
 
 <p>
   <strong>From sleep and recovery to what’s happening inside your body</strong><br class="mobile-break"> WHOOP brings it all together — make smarter choices today that add more years to your life.
