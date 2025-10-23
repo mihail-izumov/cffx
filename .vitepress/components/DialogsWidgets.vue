@@ -2,8 +2,8 @@
   <div class="essential-apps">
     <div class="header">
       <div class="title-section">
-        <h2>Виджет Сигнала</h2>
-        <p class="subtitle">Ваша система обратной связи может быть какой угодно. Даже чатом в Телеграм.</p>
+        <h2>Специализация решает.</h2>
+        <p class="subtitle">Профессиональные решения от и до. Потому что знаем бизнес фитнеса и ресторанов.</p>
       </div>
       <div class="actions">
         <a href="https://example.com" class="btn-create">
