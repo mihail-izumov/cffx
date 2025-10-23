@@ -1,9 +1,34 @@
 <script setup>
 import { ref, nextTick, onMounted } from 'vue'
 
-const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка', 'Кэрри']
+const cafeItems = [
+  {
+    name: 'Диалоги',
+    subtitle: 'Окупается с первых Сигналов',
+    url: '/dialogi',
+    active: false
+  },
+  {
+    name: 'Система',
+    subtitle: 'Поток связи → метрики и рост',
+    url: '/sistema',
+    active: true
+  },
+  {
+    name: 'Настроить Сигнал',
+    subtitle: 'Старт за 48 часов. Бесплатно.',
+    url: '/nastroit-signal',
+    active: false
+  },
+  {
+    name: 'Спецификация',
+    subtitle: 'Дьявол в деталях',
+    url: '/specifikacija',
+    active: false
+  }
+]
 
-const selectedCafe = ref(cafeNames[0] || 'Корж')
+const selectedCafe = ref('Система')
 const showLeftGradient = ref(false)
 const showRightGradient = ref(false)
 const switchersRef = ref(null)
@@ -35,56 +60,25 @@ onMounted(() => {
         ref="switchersRef"
         @scroll="handleSwitcherScroll"
       >
-        <button
+        <a
+          v-for="item in cafeItems"
+          :key="item.name"
+          :href="item.url"
           class="signal2-switcher"
-          :class="{ active: selectedCafe === 'Корж' }"
-          @click="selectedCafe = 'Корж'"
+          :class="{ active: item.active, disabled: !item.active && item.name === 'Диалоги' }"
+          @click.prevent="item.active && (selectedCafe = item.name)"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/>
+            <path d="M8 12h.01"/>
+            <path d="M12 12h.01"/>
+            <path d="M16 12h.01"/>
           </svg>
-          Корж
-        </button>
-        <button
-          class="signal2-switcher"
-          :class="{ active: selectedCafe === 'MOSAIC' }"
-          @click="selectedCafe = 'MOSAIC'"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg>
-          MOSAIC
-        </button>
-        <button
-          class="signal2-switcher"
-          :class="{ active: selectedCafe === 'Surf' }"
-          @click="selectedCafe = 'Surf'"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg>
-          Surf
-        </button>
-        <button
-          class="signal2-switcher"
-          :class="{ active: selectedCafe === 'Skuratov' }"
-          @click="selectedCafe = 'Skuratov'"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
-          Skuratov
-        </button>
-        <button
-          class="signal2-switcher"
-          :class="{ active: selectedCafe === 'Белотурка' }"
-          @click="selectedCafe = 'Белотурка'"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
-          Белотурка
-        </button>
-        <button
-          class="signal2-switcher"
-          :class="{ active: selectedCafe === 'Кэрри' }"
-          @click="selectedCafe = 'Кэрри'"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
-          Кэрри
-        </button>
+          <div class="signal2-switcher-text">
+            <div class="signal2-switcher-title">{{ item.name }}</div>
+            <div class="signal2-switcher-subtitle">{{ item.subtitle }}</div>
+          </div>
+        </a>
       </div>
       
       <div 
@@ -101,12 +95,12 @@ onMounted(() => {
 
 <style scoped>
 .signal2-widget-content { 
-  padding: 32px 0; 
+  padding: 24px 0; 
 }
 
 .signal2-cafe-switchers-container { 
   position: relative; 
-  margin-bottom: 32px; 
+  margin-bottom: 24px; 
 }
 
 .signal2-cafe-switchers { 
@@ -138,8 +132,8 @@ onMounted(() => {
 }
 
 .signal2-switcher { 
-  border-radius: 50px; 
-  padding: 12px 20px; 
+  border-radius: 5px; 
+  padding: 16px 20px; 
   font-size: 15px; 
   font-weight: 700; 
   cursor: pointer; 
@@ -148,12 +142,14 @@ onMounted(() => {
   white-space: nowrap; 
   display: flex; 
   align-items: center; 
-  gap: 8px; 
+  gap: 16px; 
   min-width: fit-content; 
   position: relative; 
   overflow: hidden; 
   background: rgba(70, 70, 70, 0.6); 
   color: rgba(255, 255, 255, 0.9); 
+  text-decoration: none;
+  height: 80px;
 }
 
 .signal2-switcher::before { 
@@ -181,13 +177,46 @@ onMounted(() => {
   display: none; 
 }
 
+.signal2-switcher.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .signal2-switcher-icon { 
-  width: 16px; 
-  height: 16px; 
+  width: 32px; 
+  height: 32px; 
   flex-shrink: 0; 
   display: flex; 
   align-items: center; 
   justify-content: center; 
+}
+
+.signal2-switcher-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  text-align: left;
+}
+
+.signal2-switcher-title {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.signal2-switcher-subtitle {
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.7;
+  line-height: 1.2;
+  white-space: normal;
+  max-width: 200px;
+}
+
+.signal2-switcher.active .signal2-switcher-subtitle {
+  opacity: 0.6;
 }
 
 .signal2-switchers-gradient { 
@@ -238,13 +267,48 @@ onMounted(() => {
   }
   
   .signal2-widget-content { 
-    padding: 24px 0; 
+    padding: 20px 0; 
+  }
+
+  .signal2-switcher {
+    height: 70px;
+    padding: 12px 16px;
+  }
+
+  .signal2-switcher-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .signal2-switcher-subtitle {
+    font-size: 11px;
+    max-width: 180px;
   }
 }
 
 @media (max-width: 480px) {
   .signal2-widget-content { 
-    padding: 20px 0; 
+    padding: 16px 0; 
+  }
+
+  .signal2-switcher {
+    height: 65px;
+    padding: 10px 14px;
+    gap: 12px;
+  }
+
+  .signal2-switcher-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .signal2-switcher-title {
+    font-size: 14px;
+  }
+
+  .signal2-switcher-subtitle {
+    font-size: 10px;
+    max-width: 160px;
   }
 }
 </style>
