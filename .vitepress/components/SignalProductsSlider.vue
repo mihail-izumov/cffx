@@ -6,25 +6,25 @@ const cafeItems = [
     name: 'Диалоги',
     subtitle: 'Окупается с первых Сигналов',
     url: '/dialogi',
-    active: true
+    icon: 'M16 10a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 14.286V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z M20 9a2 2 0 0 1 2 2v10.286a.71.71 0 0 1-1.212.502l-2.202-2.202A2 2 0 0 0 17.172 19H10a2 2 0 0 1-2-2v-1'
   },
   {
     name: 'Система',
     subtitle: 'Поток связи → метрики и рост',
     url: '/sistema',
-    active: true
+    icon: 'M19.07 4.93A10 10 0 0 0 6.99 3.34 M4 6h.01 M2.29 9.62A10 10 0 1 0 21.31 8.35 M16.24 7.76A6 6 0 1 0 8.23 16.67 M12 18h.01 M17.99 11.66A6 6 0 0 1 15.77 16.67 M12 12 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0 M13.41 10.59l5.66-5.66'
   },
   {
     name: 'Настроить Сигнал',
     subtitle: 'Старт за 48 часов. Бесплатно.',
     url: '/nastroit-signal',
-    active: true
+    icon: 'M4 10a7.31 7.31 0 0 0 10 10Z M9 15l3-3 M17 13a6 6 0 0 0-6-6 M21 13A10 10 0 0 0 11 3'
   },
   {
     name: 'Спецификация',
     subtitle: 'Дьявол в деталях',
     url: '/specifikacija',
-    active: true
+    icon: 'M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z M20 2v4 M22 4h-4 M4 20 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0'
   }
 ]
 
@@ -78,10 +78,7 @@ onUnmounted(() => {
           class="signal2-switcher"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/>
-            <path d="M8 12h.01"/>
-            <path d="M12 12h.01"/>
-            <path d="M16 12h.01"/>
+            <path :d="item.icon"/>
           </svg>
           <div class="signal2-switcher-text">
             <div class="signal2-switcher-title">{{ item.name }}</div>
@@ -133,11 +130,11 @@ onUnmounted(() => {
   flex-wrap: nowrap; 
   overflow-x: auto; 
   -webkit-overflow-scrolling: touch; 
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none; 
 }
 
 .signal2-cafe-switchers::-webkit-scrollbar { 
-  display: none; /* Safari and Chrome */
+  display: none; 
 }
 
 .signal2-switcher { 
@@ -152,9 +149,9 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center; 
   gap: 12px; 
-  min-width: 150px;
-  max-width: 150px;
-  width: 150px;
+  min-width: 160px;
+  max-width: 160px;
+  width: 160px;
   position: relative; 
   overflow: hidden; 
   background: rgba(55, 55, 55, 0.75); 
@@ -168,16 +165,13 @@ onUnmounted(() => {
 }
 
 .signal2-switcher-icon,
-.signal2-switcher-title,
-.signal2-switcher-subtitle {
+.signal2-switcher-title {
   transition: all 0.3s ease;
 }
 
 .signal2-switcher:hover .signal2-switcher-icon,
-.signal2-switcher:hover .signal2-switcher-title,
-.signal2-switcher:hover .signal2-switcher-subtitle {
+.signal2-switcher:hover .signal2-switcher-title {
   color: rgba(255, 255, 255, 0.9);
-  opacity: 1;
 }
 
 .signal2-switcher-icon { 
@@ -207,10 +201,10 @@ onUnmounted(() => {
 .signal2-switcher-subtitle {
   font-size: 11px;
   font-weight: 400;
-  opacity: 0.7;
+  color: #d4ff6b;
   line-height: 1.3;
   white-space: normal;
-  max-width: 120px;
+  max-width: 130px;
 }
 
 .signal2-switchers-gradient { 
@@ -263,9 +257,9 @@ onUnmounted(() => {
   .signal2-switcher {
     height: 110px;
     padding: 14px 16px;
-    min-width: 140px;
-    max-width: 140px;
-    width: 140px;
+    min-width: 150px;
+    max-width: 150px;
+    width: 150px;
   }
 }
 
@@ -274,9 +268,9 @@ onUnmounted(() => {
     height: 100px;
     padding: 12px 14px;
     gap: 10px;
-    min-width: 130px;
-    max-width: 130px;
-    width: 130px;
+    min-width: 140px;
+    max-width: 140px;
+    width: 140px;
   }
 }
 </style>
