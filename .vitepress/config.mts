@@ -433,21 +433,12 @@ function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Кофейни', link: '/me' },
     {
-      text: 'Инвестиции',
-      items: [
-        { text: 'Пульс', link: '/invest/pulse' },
-        { text: 'Индекс', link: '/invest/smr' },
-        { text: 'Прогноз Выручки', link: '/invest/calc' },
-        { text: 'Симулятор Самары', link: '/invest/sim' },
-        { text: 'Кофейни // Россия', link: '/invest/vision' }
-      ]
-    },
-    {
       text: 'Для Бизнеса',
       items: [
         { text: '→ Начать', link: '/pro' },  
         { text: 'Диалоги', link: '/pro/dialogs' },
-        { text: 'Радар', link: '/pro/radar' }
+        { text: 'Радар', link: '/pro/radar' },
+        { text: 'Инвестиции в кофейни', link: '/invest/pulse' }
       ]
     }
   ]
