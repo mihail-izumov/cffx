@@ -9,8 +9,6 @@ notification: brew
 
 <SignalProductsSlider />
 
-<div align="center">
-
 <style>
 .responsive-heading {
   font-size: 80px;
@@ -29,6 +27,8 @@ notification: brew
 <h1>
   <span>Решить любую проблему</span><br class="mobile-break"> <span>клиента за 24 часа.</span>
 </h1>
+
+<div align="center">
 
 <p>
   <strong>From sleep and recovery to what’s happening inside your body</strong><br class="mobile-break"> WHOOP brings it all together — make smarter choices today that add more years to your life.
