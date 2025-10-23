@@ -6,11 +6,25 @@ title: Диалоги Сигнала
 description: Где Начинается Ваш Бизнес
 notification: brew
 ---
-<SignalProductsSliders />
 
-<h1 style="font-size: 80px;">Сигнал для бизнеса</h1>
+<SignalProductsSlider />
 
 <div align="center">
+
+<style>
+.responsive-heading {
+  font-size: 80px;
+  line-height: 1.2;
+}
+
+@media screen and (max-width: 768px) {
+  .responsive-heading {
+    font-size: 40px;
+  }
+}
+</style>
+
+<h1 class="responsive-heading">Сигнал<br>для бизнеса</h1>
 
 <h1>
   <span>Решить любую проблему</span><br class="mobile-break"> <span>клиента за 24 часа.</span>
