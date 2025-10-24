@@ -11,6 +11,10 @@ notification: brew
 
 <div align="center">
 
+<span class="signal-badge">Обновление: Октябрь 2025</span> <br>
+
+<br>
+
 <h1 class="responsive-heading">Анна</h1>
 
 <br>
