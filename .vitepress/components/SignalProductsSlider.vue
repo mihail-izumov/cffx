@@ -41,11 +41,18 @@ const cafeItems = [
     gradientId: 'gradient-3'
   },
   {
-    name: 'Тикет-система',
-    subtitle: '', // Пустая строка — title будет центрирован
+    name: 'Тикеты',
+    subtitle: '',
     url: '/pro/tickets',
     icon: 'M3 3 h18 v18 h-18 z M3 3 a2 2 0 0 1 2 -2 M21 3 a2 2 0 0 0 -2 -2 M3 21 a2 2 0 0 0 2 2 M21 21 a2 2 0 0 1 -2 2 M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21',
     gradientId: 'gradient-6'
+  },
+  {
+    name: 'Аналитика',
+    subtitle: '',
+    url: '/pro/analytics',
+    icon: 'M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3-4.03 2.42Z M7 16.5l-4.74-2.85 M7 16.5l5-3 M7 16.5v5.17 M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z M17 16.5l-5-3 M17 16.5l4.74-2.85 M17 16.5v5.17 M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z M12 8L7.26 5.15 M12 8l4.74-2.85 M12 13.5V8',
+    gradientId: 'gradient-7'
   },
   {
     name: 'Спецификация',
@@ -166,6 +173,14 @@ onUnmounted(() => {
         <stop offset="50%" style="stop-color:#606060;stop-opacity:1" />
         <stop offset="75%" style="stop-color:#686868;stop-opacity:1" />
         <stop offset="100%" style="stop-color:#707070;stop-opacity:1" />
+      </linearGradient>
+      
+      <linearGradient id="gradient-7" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#4e4e4e;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#565656;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#5e5e5e;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#666666;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#6e6e6e;stop-opacity:1" />
       </linearGradient>
       
       <!-- Фильтр для создания эффекта объема -->
