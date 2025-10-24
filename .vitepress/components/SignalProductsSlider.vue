@@ -8,7 +8,7 @@ const cafeItems = [
   {
     name: 'Сигнал для Бизнеса',
     subtitle: 'Лучше с каждым днем',
-    url: '/pro1',
+    url: '/dialogs',
     icon: 'M12 5 m-9 0 a9 3 0 1 0 18 0 a9 3 0 1 0 -18 0 M3 5V19A9 3 0 0 0 15 21.84 M21 5V8 M21 12L18 17H22L19 22 M3 12A9 3 0 0 0 14.59 14.87',
     gradientId: 'gradient-0'
   },
@@ -32,6 +32,13 @@ const cafeItems = [
     url: '/pro/anna',
     icon: 'M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z M20 2v4 M22 4h-4 M4 20 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0',
     gradientId: 'gradient-3'
+  },
+  {
+    name: 'Тикет-система',
+    subtitle: '', // Пустая строка — title будет центрирован
+    url: '/pro/tickets',
+    icon: 'M3 3 h18 v18 h-18 z M3 3 a2 2 0 0 1 2 -2 M21 3 a2 2 0 0 0 -2 -2 M3 21 a2 2 0 0 0 2 2 M21 21 a2 2 0 0 1 -2 2 M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21',
+    gradientId: 'gradient-6'
   },
   {
     name: 'Настроить Сигнал',
@@ -153,6 +160,14 @@ onUnmounted(() => {
         <stop offset="100%" style="stop-color:#727272;stop-opacity:1" />
       </linearGradient>
       
+      <linearGradient id="gradient-6" x1="100%" y1="100%" x2="0%" y2="0%">
+        <stop offset="0%" style="stop-color:#505050;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#585858;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#606060;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#686868;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#707070;stop-opacity:1" />
+      </linearGradient>
+      
       <!-- Фильтр для создания эффекта объема -->
       <filter id="depth-effect">
         <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
@@ -192,7 +207,8 @@ onUnmounted(() => {
           :href="isActive(item.url) ? undefined : item.url"
           :class="[
             'signal2-switcher',
-            { 'signal2-switcher-active': isActive(item.url) }
+            { 'signal2-switcher-active': isActive(item.url) },
+            { 'signal2-switcher-no-subtitle': !item.subtitle }
           ]"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" :stroke="`url(#${item.gradientId})`" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#depth-effect)">
@@ -200,7 +216,7 @@ onUnmounted(() => {
           </svg>
           <div class="signal2-switcher-text">
             <div class="signal2-switcher-title">{{ item.name }}</div>
-            <div class="signal2-switcher-subtitle">{{ item.subtitle }}</div>
+            <div v-if="item.subtitle" class="signal2-switcher-subtitle">{{ item.subtitle }}</div>
           </div>
         </a>
       </div>
@@ -289,6 +305,11 @@ onUnmounted(() => {
   color: rgba(255, 255, 255, 0.9);
   cursor: default;
   pointer-events: none;
+}
+
+/* Карточка без подзаголовка - центрируем контент */
+.signal2-switcher-no-subtitle {
+  justify-content: center;
 }
 
 .signal2-switcher-icon {
