@@ -39,9 +39,18 @@ const showLeftGradient = ref(false)
 const showRightGradient = ref(false)
 const switchersRef = ref(null)
 
-// Проверяем активную страницу
+// Проверяем активную страницу (более гибкое сравнение)
 const isActive = (url) => {
-  return route.path === url || route.path.startsWith(url + '/')
+  const currentPath = route.path
+  // Убираем расширение .html если есть
+  const normalizedCurrent = currentPath.replace(/\.html$/, '')
+  const normalizedUrl = url.replace(/\.html$/, '')
+  
+  // Точное совпадение или начало пути
+  return normalizedCurrent === normalizedUrl || 
+         normalizedCurrent.startsWith(normalizedUrl + '/') ||
+         normalizedCurrent + '.html' === normalizedUrl ||
+         normalizedCurrent === normalizedUrl + '.html'
 }
 
 const handleSwitcherScroll = () => {
@@ -65,6 +74,9 @@ onMounted(() => {
     container.addEventListener('scroll', handleSwitcherScroll)
     window.addEventListener('resize', handleSwitcherScroll)
   }
+  
+  // Отладка - покажет текущий путь в консоли
+  console.log('Current route path:', route.path)
 })
 
 onUnmounted(() => {
