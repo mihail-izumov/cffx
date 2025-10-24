@@ -20,7 +20,7 @@ notification: brew
 </h1>
 
 <p>
-  <strong>From sleep and recovery to what’s happening inside your body</strong><br class="mobile-break"> WHOOP brings it all together — make smarter choices today that add more years to your life.
+  <strong>From sleeep and recovery to what’s happening inside your body</strong><br class="mobile-break"> WHOOP brings it all together — make smarter choices today that add more years to your life.
 </p>
 
 <div class="checkup-cta-section">
