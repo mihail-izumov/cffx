@@ -11,7 +11,7 @@ notification: brew
 
 <div align="center">
 
-<h1 class="responsive-heading">Настройка<br>Сигнала</h1>
+<h1 class="responsive-heading">Мы собрали.<br>Вы управляете.</h1>
 
 <br>
 
@@ -20,7 +20,7 @@ notification: brew
 </h1>
 
 <p>
-  <strong>From sleep and recovery to what’s happening inside your body</strong><br class="mobile-break"> WHOOP brings it all together — make smarter choices today that add more years to your life.
+  <strong>Каждый владелец бизнеса заслуживает системы сервиса, которая работает как он сам.</strong><br class="mobile-break">Но стандартные решения не созданы для тех, кто хочет контроля без микроменеджмента (мы уважаем тех, кто копается в деталях, но ведь есть дела поважнее). Поэтому мы всё изменили.​
 </p>
 
 <div class="checkup-cta-section">
@@ -28,9 +28,6 @@ notification: brew
   <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
 
-# Мы собрали. Вы управляете.
-
-Каждый владелец бизнеса заслуживает системы сервиса, которая работает как он сам. Но стандартные решения не созданы для тех, кто хочет контроля без микроменеджмента (мы уважаем тех, кто копается в деталях, но ведь есть дела поважнее). Поэтому мы всё изменили.​
 
 <div class="button-group">
   <a href="/pro/dialogs#начать-сегодня" class="btn btn-primary" rel="noopener noreferrer"><strong>Начать бесплатно</strong></a>
@@ -51,33 +48,11 @@ notification: brew
 
 <SignalConstructorModules />
 
-## Система подсказок
+## Начать Сегодня
 
-<div style="text-align: center; margin: 2rem 0;">
-  <img 
-    src="/SignalVSReview.jpg" 
-    alt="BREW intro"
-    style="
-      width: 100%;
-      max-width: 800px;
-      height: auto;
-      border-radius: max(12px, min(24px, 3vw));
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-    "
-    onmouseover="this.style.transform='scale(1.02)'"
-    onmouseout="this.style.transform='scale(1)'"
-  />
 </div>
 
-### Сигнал собирает детализированную обратную связь от гостей кофеен
-
-**Все данные из реальных инцидентов Регламента:** информация основана на реальных случаях и анализе происшествий.
-
-<br>
-
-<DialogsTestT9 />
-<DialogsT9 />
+<DialogsForm />
 
 <style>
 /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
