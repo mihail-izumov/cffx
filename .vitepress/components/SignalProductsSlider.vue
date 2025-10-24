@@ -321,6 +321,8 @@ onUnmounted(() => {
   line-height: 1.3;
   white-space: normal;
   max-width: 135px;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
 }
 
 .signal2-switcher-active .signal2-switcher-subtitle {
