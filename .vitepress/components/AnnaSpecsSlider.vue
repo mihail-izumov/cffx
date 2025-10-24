@@ -311,31 +311,31 @@ const scrollPrev = () => {
   color: #ffffff !important;
 }
 
-/* Выделение текста - в пассивном режиме прозрачное, при hover лаймовое */
+/* Выделение маркером - видно в обоих режимах */
 .anna-control-highlight {
-  background: linear-gradient(90deg, #C5F946 0%, #C5F946 50%, transparent 50%) !important;
-  background-size: 200% 100% !important;
-  background-position: 100% 0 !important;
-  color: #ffffff !important; /* Белый текст в пассивном режиме */
+  background-color: rgba(197, 249, 70, 0.15) !important; /* Приглушённый лаймовый в пассивном режиме */
+  color: #ffffff !important;
   padding: 2px 6px !important;
   border-radius: 3px !important;
-  transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important;
+  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important;
   position: relative !important;
   display: inline !important;
   z-index: 1 !important;
 }
 
-/* При наведении на карточку - лаймовое выделение и тёмный текст */
+/* При наведении - яркий лаймовый фон с тёмным текстом */
 .anna-step-card:hover .anna-control-highlight {
-  background-position: 0 0 !important;
-  color: #2a2a2a !important; /* Тёмный текст для контраста с лаймовым */
+  background-color: #C5F946 !important; /* Яркий лаймовый */
+  color: #2a2a2a !important; /* Тёмный текст для контраста */
 }
 
 :root.dark .anna-control-highlight {
+  background-color: rgba(197, 249, 70, 0.2) !important;
   color: #ffffff !important;
 }
 
 :root.dark .anna-step-card:hover .anna-control-highlight {
+  background-color: #C5F946 !important;
   color: #2a2a2a !important;
 }
 
