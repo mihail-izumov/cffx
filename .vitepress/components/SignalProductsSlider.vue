@@ -1,428 +1,457 @@
+<script setup>
+import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vitepress'
+
+const route = useRoute()
+
+const cafeItems = [
+  {
+    name: 'Сигнал для Бизнеса',
+    subtitle: 'Лучше с каждым днем',
+    url: '/dialogs',
+    icon: 'M12 5 m-9 0 a9 3 0 1 0 18 0 a9 3 0 1 0 -18 0 M3 5V19A9 3 0 0 0 15 21.84 M21 5V8 M21 12L18 17H22L19 22 M3 12A9 3 0 0 0 14.59 14.87',
+    gradientId: 'gradient-0'
+  },
+  {
+    name: 'Сигнал Диалоги',
+    subtitle: 'Окупается с первых Сигналов',
+    url: '/pro/dialogs1',
+    icon: 'M16 10a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 14.286V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z M20 9a2 2 0 0 1 2 2v10.286a.71.71 0 0 1-1.212.502l-2.202-2.202A2 2 0 0 0 17.172 19H10a2 2 0 0 1-2-2v-1',
+    gradientId: 'gradient-1'
+  },
+  {
+    name: 'Сигнал Система',
+    subtitle: 'Поток связи → метрики и рост',
+    url: '/pro/system',
+    icon: 'M19.07 4.93A10 10 0 0 0 6.99 3.34 M4 6h.01 M2.29 9.62A10 10 0 1 0 21.31 8.35 M16.24 7.76A6 6 0 1 0 8.23 16.67 M12 18h.01 M17.99 11.66A6 6 0 0 1 15.77 16.67 M12 12 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0 M13.41 10.59l5.66-5.66',
+    gradientId: 'gradient-2'
+  },
+  {
+    name: 'Настроить Сигнал',
+    subtitle: 'Старт за 48 часов. Бесплатно.',
+    url: '/pro/customize',
+    icon: 'M4 10a7.31 7.31 0 0 0 10 10Z M9 15l3-3 M17 13a6 6 0 0 0-6-6 M21 13A10 10 0 0 0 11 3',
+    gradientId: 'gradient-4'
+  },
+  {
+    name: 'Анна',
+    subtitle: 'Просто скажите что не так',
+    url: '/pro/anna',
+    icon: 'M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z M20 2v4 M22 4h-4 M4 20 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0',
+    gradientId: 'gradient-3'
+  },
+  {
+    name: 'Тикет-система',
+    subtitle: '',
+    url: '/pro/tickets',
+    icon: 'M3 3 h18 v18 h-18 z M3 3 a2 2 0 0 1 2 -2 M21 3 a2 2 0 0 0 -2 -2 M3 21 a2 2 0 0 0 2 2 M21 21 a2 2 0 0 1 -2 2 M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21',
+    gradientId: 'gradient-6'
+  },
+  {
+    name: 'Аналитика',
+    subtitle: 'Данные и инсайты',
+    url: '/pro/analytics',
+    icon: 'M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3-4.03 2.42Z M7 16.5l-4.74-2.85 M7 16.5l5-3 M7 16.5v5.17 M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z M17 16.5l-5-3 M17 16.5l4.74-2.85 M17 16.5v5.17 M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z M12 8L7.26 5.15 M12 8l4.74-2.85 M12 13.5V8',
+    gradientId: 'gradient-7'
+  },
+  {
+    name: 'Спецификация',
+    subtitle: 'Дьявол в деталях',
+    url: '/pro/specs',
+    icon: 'M12 20v2 M12 2v2 M17 20v2 M17 2v2 M2 12h2 M2 17h2 M2 7h2 M20 12h2 M20 17h2 M20 7h2 M7 20v2 M7 2v2 M4 4 h16 v16 h-16 z M4 4 a2 2 0 0 1 2 -2 M20 4 a2 2 0 0 0 -2 -2 M4 20 a2 2 0 0 0 2 2 M20 20 a2 2 0 0 1 -2 2 M8 8 h8 v8 h-8 z M8 8 a1 1 0 0 1 1 -1 M16 8 a1 1 0 0 0 -1 -1 M8 16 a1 1 0 0 0 1 1 M16 16 a1 1 0 0 1 -1 1',
+    gradientId: 'gradient-5'
+  }
+]
+
+const showLeftGradient = ref(false)
+const showRightGradient = ref(false)
+const switchersRef = ref(null)
+
+// Проверяем активную страницу (более гибкое сравнение)
+const isActive = (url) => {
+  const currentPath = route.path
+  // Убираем расширение .html если есть
+  const normalizedCurrent = currentPath.replace(/\.html$/, '')
+  const normalizedUrl = url.replace(/\.html$/, '')
+  
+  // Точное совпадение или начало пути
+  return normalizedCurrent === normalizedUrl || 
+         normalizedCurrent.startsWith(normalizedUrl + '/') ||
+         normalizedCurrent + '.html' === normalizedUrl ||
+         normalizedCurrent === normalizedUrl + '.html'
+}
+
+const handleSwitcherScroll = () => {
+  if (!switchersRef.value) return
+  
+  const container = switchersRef.value
+  const scrollLeft = container.scrollLeft
+  const scrollWidth = container.scrollWidth
+  const clientWidth = container.clientWidth
+  
+  showLeftGradient.value = scrollLeft > 10
+  showRightGradient.value = scrollLeft < (scrollWidth - clientWidth - 10)
+}
+
+onMounted(() => {
+  const container = switchersRef.value
+  if (container) {
+    nextTick(() => {
+      handleSwitcherScroll()
+    })
+    container.addEventListener('scroll', handleSwitcherScroll)
+    window.addEventListener('resize', handleSwitcherScroll)
+  }
+  
+  // Отладка - покажет текущий путь в консоли
+  console.log('Current route path:', route.path)
+})
+
+onUnmounted(() => {
+  const container = switchersRef.value;
+  if (container) {
+    container.removeEventListener('scroll', handleSwitcherScroll)
+    window.removeEventListener('resize', handleSwitcherScroll)
+  }
+})
+</script>
+
 <template>
-  <div class="anna-slider-wrapper">
-    <div class="anna-brands-container" ref="sliderContainer">
-      <!-- СЛАЙД 1 -->
-      <div class="anna-brand-card anna-step-card">
-        <div class="anna-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>
-        </div>
-        <h3 class="anna-title">Поток Общения</h3>
-        <p class="anna-description-main">Пять шагов от первого сообщения до оценки опыта: приветствие и приём → диалоги → задание для решения → доставка результата → оценка.</p>
-        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Настройте формулировки и точки контроля под свой стиль общения.</span></p>
-        <p class="anna-description-goals anna-step-goals">Понятный путь к результату без лишних кругов переписки.</p>
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <linearGradient id="gradient-0" x1="50%" y1="100%" x2="50%" y2="0%">
+        <stop offset="0%" style="stop-color:#545454;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#5c5c5c;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#646464;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#6c6c6c;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#747474;stop-opacity:1" />
+      </linearGradient>
+      
+      <linearGradient id="gradient-1" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#585858;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#606060;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#686868;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#707070;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#787878;stop-opacity:1" />
+      </linearGradient>
+      
+      <linearGradient id="gradient-2" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#5a5a5a;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#626262;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#6a6a6a;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#727272;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#7a7a7a;stop-opacity:1" />
+      </linearGradient>
+      
+      <linearGradient id="gradient-3" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#565656;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#5e5e5e;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#666666;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#6e6e6e;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#767676;stop-opacity:1" />
+      </linearGradient>
+      
+      <linearGradient id="gradient-4" x1="50%" y1="0%" x2="50%" y2="100%">
+        <stop offset="0%" style="stop-color:#5c5c5c;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#646464;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#6c6c6c;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#747474;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#7c7c7c;stop-opacity:1" />
+      </linearGradient>
+      
+      <linearGradient id="gradient-5" x1="0%" y1="50%" x2="100%" y2="50%">
+        <stop offset="0%" style="stop-color:#525252;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#5a5a5a;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#626262;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#6a6a6a;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#727272;stop-opacity:1" />
+      </linearGradient>
+      
+      <linearGradient id="gradient-6" x1="100%" y1="100%" x2="0%" y2="0%">
+        <stop offset="0%" style="stop-color:#505050;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#585858;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#606060;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#686868;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#707070;stop-opacity:1" />
+      </linearGradient>
+      
+      <linearGradient id="gradient-7" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#4e4e4e;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#565656;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#5e5e5e;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#666666;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#6e6e6e;stop-opacity:1" />
+      </linearGradient>
+      
+      <!-- Фильтр для создания эффекта объема -->
+      <filter id="depth-effect">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+        <feOffset dx="0" dy="2" result="offsetblur"/>
+        <feComponentTransfer>
+          <feFuncA type="linear" slope="0.4"/>
+        </feComponentTransfer>
+        <feMerge>
+          <feMergeNode/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      
+      <filter id="depth-effect-hover">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+        <feOffset dx="0" dy="3" result="offsetblur"/>
+        <feComponentTransfer>
+          <feFuncA type="linear" slope="0.5"/>
+        </feComponentTransfer>
+        <feMerge>
+          <feMergeNode/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+  </svg>
+
+  <div class="signal2-widget-content">
+    <div class="signal2-cafe-switchers-container">
+      <div 
+        class="signal2-cafe-switchers" 
+        ref="switchersRef"
+      >
+        <a
+          v-for="item in cafeItems"
+          :key="item.name"
+          :href="isActive(item.url) ? undefined : item.url"
+          :class="[
+            'signal2-switcher',
+            { 'signal2-switcher-active': isActive(item.url) },
+            { 'signal2-switcher-no-subtitle': !item.subtitle }
+          ]"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" :stroke="`url(#${item.gradientId})`" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#depth-effect)">
+            <path :d="item.icon"/>
+          </svg>
+          <div class="signal2-switcher-text">
+            <div class="signal2-switcher-title">{{ item.name }}</div>
+            <div v-if="item.subtitle" class="signal2-switcher-subtitle">{{ item.subtitle }}</div>
+          </div>
+        </a>
       </div>
       
-      <!-- СЛАЙД 2 -->
-      <div class="anna-brand-card anna-step-card">
-        <div class="anna-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>
+      <div 
+        class="signal2-switchers-gradient signal2-switchers-gradient-left"
+        :class="{ 'signal2-gradient-visible': showLeftGradient }"
+      >
+        <div class="signal2-gradient-arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
         </div>
-        <h3 class="anna-title">Матрица Эскалации</h3>
-        <p class="anna-description-main">Правила приоритетов А–Г: система автоматически определяет, кто берёт задачу и за сколько времени должна быть первая реакция.</p>
-        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Адаптируйте приоритеты под специфику вашего бизнеса и команды.</span></p>
-        <p class="anna-description-goals anna-step-goals">Честные сроки и предсказуемость реакции на любую критичность ситуации.</p>
       </div>
-      
-      <!-- СЛАЙД 3 -->
-      <div class="anna-brand-card anna-step-card">
-        <div class="anna-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>
+
+      <div 
+        class="signal2-switchers-gradient signal2-switchers-gradient-right"
+        :class="{ 'signal2-gradient-visible': showRightGradient }"
+      >
+        <div class="signal2-gradient-arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
         </div>
-        <h3 class="anna-title">Первый Контакт</h3>
-        <p class="anna-description-main">Чёткие правила приёма, обязательные вопросы и прозрачные сроки ответа — с первого касания собирается достаточно информации для решения.</p>
-        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Укажите, какие вопросы и детали критичны для вашей специфики.</span></p>
-        <p class="anna-description-goals anna-step-goals">Сбор нужных фактов с первого раза и меньше задержек.</p>
       </div>
-      
-      <!-- СЛАЙД 4 -->
-      <div class="anna-brand-card anna-step-card">
-        <div class="anna-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>
-        </div>
-        <h3 class="anna-title">Доставка Решения</h3>
-        <p class="anna-description-main">Форматы честного финала: что проверено, что изменили или почему невозможно и какая альтернатива предложена.</p>
-        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Настройте шаблоны финальных ответов под ваш стиль и практики.</span></p>
-        <p class="anna-description-goals anna-step-goals">Реальные изменения, а не общие формулировки.</p>
-      </div>
-      
-      <!-- СЛАЙД 5 -->
-      <div class="anna-brand-card anna-step-card">
-        <div class="anna-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>
-        </div>
-        <h3 class="anna-title">Классификация Ситуаций</h3>
-        <p class="anna-description-main">Разделение ситуаций на компенсируемые (разовая ошибка) и системные (требует изменения процесса или инфраструктуры).</p>
-        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Настройте категории под специфику вашего сервиса.</span></p>
-        <p class="anna-description-goals anna-step-goals">Верные ожидания: когда уместна компенсация, когда — изменения.</p>
-      </div>
-      
-      <!-- СЛАЙД 6 -->
-      <div class="anna-brand-card anna-step-card">
-        <div class="anna-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>
-        </div>
-        <h3 class="anna-title">Тикеты</h3>
-        <p class="anna-description-main">Задания с полным контекстом: краткая суть, эмоция клиента, рекомендации к действию, ответственные, история переписки и поле оперативных обновлений.</p>
-        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Добавьте свои обязательные поля или адаптируйте рекомендации.</span></p>
-        <p class="anna-description-goals anna-step-goals">Быстрое начало работ и прозрачность хода решения.</p>
-      </div>
-      
-      <!-- СЛАЙД 7 -->
-      <div class="anna-brand-card anna-step-card">
-        <div class="anna-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>
-        </div>
-        <h3 class="anna-title">Правила Диалогов</h3>
-        <p class="anna-description-main">Короткие, уважительные и понятные обновления с прозрачными сроками. Каждое сообщение — по делу, без шаблонных повторов и канцелярщины.</p>
-        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Настройте тон: более формальный или дружелюбный, под ваш бренд.</span></p>
-        <p class="anna-description-goals anna-step-goals">Ощущение движения и контроля у клиента, меньше поводов для напряжения.</p>
-      </div>
-      
-      <!-- СЛАЙД 8 -->
-      <div class="anna-brand-card anna-step-card">
-        <div class="anna-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>
-        </div>
-        <h3 class="anna-title">Единый Язык</h3>
-        <p class="anna-description-main">Словарь формулировок: простота, тёплая забота и понимание с первого прочтения вместо канцелярщины.</p>
-        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Настройте словарь под ценности и тон голоса вашего бренда.</span></p>
-        <p class="anna-description-goals anna-step-goals">Понимание «с первого прочтения» и уважение к времени клиента.</p>
-      </div>
-      
-      <!-- СЛАЙД 9 -->
-      <div class="anna-brand-card anna-step-card">
-        <div class="anna-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>
-        </div>
-        <h3 class="anna-title">Самопроверки</h3>
-        <p class="anna-description-main">Чек-лист качества перед каждой отправкой: тон, конкретика, прозрачность и честность обещаний.</p>
-        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Добавьте свои критерии и требования к текстам.</span></p>
-        <p class="anna-description-goals anna-step-goals">Стабильный тон, честные обещания, меньше ошибок.</p>
-      </div>
-      
-      <!-- СЛАЙД 10 -->
-      <div class="anna-brand-card anna-step-card">
-        <div class="anna-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>
-        </div>
-        <h3 class="anna-title">Сертификаты</h3>
-        <p class="anna-description-main">Фиксированные номиналы и простая логическая цепочка: решение → номер → сообщение клиенту → активация.</p>
-        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Установите свои номиналы и правила утверждения.</span></p>
-        <p class="anna-description-goals anna-step-goals">Быстрая компенсация без «торга» и путаницы.</p>
-      </div>
-      
-      <!-- СЛАЙД 11 -->
-      <div class="anna-brand-card anna-step-card">
-        <div class="anna-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>
-        </div>
-        <h3 class="anna-title">Готовые Сценарии</h3>
-        <p class="anna-description-main">Пошаговые алгоритмы для типовых ситуаций: качество, сервис, инфраструктура, безопасность.</p>
-        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Адаптируйте сценарии под частые темы вашего бизнеса.</span></p>
-        <p class="anna-description-goals anna-step-goals">Быстрая и точная реакция без изобретения велосипеда.</p>
-      </div>
-      
-      <!-- СЛАЙД 12 -->
-      <div class="anna-brand-card anna-step-card">
-        <div class="anna-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>
-        </div>
-        <h3 class="anna-title">Оценка Опыта</h3>
-        <p class="anna-description-main">Короткий запрос обратной связи в конце каждого цикла: вовремя, без лишних вопросов, с благодарностью за вклад.</p>
-        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Решите, как и когда собирать оценки под ваши метрики.</span></p>
-        <p class="anna-description-goals anna-step-goals">Регулярная обратная связь для улучшений и ощущение значимости у клиентов.</p>
-      </div>
-    </div>
-    
-    <!-- Кнопки навигации внизу справа -->
-    <div class="anna-nav-buttons">
-      <button class="anna-nav-btn anna-nav-prev" @click="scrollPrev" aria-label="Предыдущий слайд">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <button class="anna-nav-btn anna-nav-next" @click="scrollNext" aria-label="Следующий слайд">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-
-const sliderContainer = ref(null)
-
-const scrollNext = () => {
-  if (sliderContainer.value) {
-    sliderContainer.value.scrollBy({ left: 336, behavior: 'smooth' })
-  }
-}
-
-const scrollPrev = () => {
-  if (sliderContainer.value) {
-    sliderContainer.value.scrollBy({ left: -336, behavior: 'smooth' })
-  }
-}
-</script>
-
 <style scoped>
-/* ВСЕ СТИЛИ ПОЛНОСТЬЮ ИЗОЛИРОВАНЫ С УНИКАЛЬНЫМИ КЛАССАМИ */
-/* Обёртка для слайдера и кнопок */
-.anna-slider-wrapper {
-  position: relative !important;
-  margin: 24px 0 !important;
+.signal2-widget-content { 
+  padding: 12px 0; 
 }
 
-/* Контейнер для горизонтальной прокрутки */
-.anna-brands-container {
-  display: flex !important;
-  overflow-x: auto !important;
-  gap: 16px !important;
-  padding: 4px 0 12px 4px !important;
-  scroll-behavior: smooth !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-  margin-bottom: 16px !important;
+.signal2-cafe-switchers-container { 
+  position: relative; 
+  margin-bottom: 16px; 
 }
 
-/* Скрываем скроллбар */
-.anna-brands-container::-webkit-scrollbar {
-  display: none !important;
+.signal2-cafe-switchers { 
+  display: flex; 
+  gap: 12px; 
+  padding-bottom: 12px;
+  padding-right: 12px;
+  flex-wrap: nowrap; 
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch; 
+  scrollbar-width: none; 
 }
 
-.anna-brand-card {
-  flex: 0 0 320px !important;
-  border-radius: 12px !important;
-  padding: 48px 24px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 16px !important;
-  border-style: solid !important;
-  border-width: 1px !important;
-  border-top-width: 4px !important;
-  position: relative !important;
-  min-height: 360px !important;
-  overflow: hidden !important;
-  transition: border-top-color 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+.signal2-cafe-switchers::-webkit-scrollbar { 
+  display: none; 
 }
 
-/* Приглушённая лаймовая полоска по умолчанию */
-.anna-step-card {
-  background-color: #4a4a4a !important;
-  border-color: #555 !important;
-  border-top-color: rgba(197, 249, 70, 0.3) !important;
+.signal2-switcher { 
+  border-radius: 12px; 
+  padding: 16px 16px; 
+  font-size: 15px; 
+  cursor: pointer; 
+  border: none; 
+  transition: all 0.3s ease; 
+  white-space: nowrap; 
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  gap: 12px; 
+  min-width: 145px;
+  max-width: 145px;
+  width: 145px;
+  position: relative; 
+  overflow: hidden; 
+  background: rgba(40, 40, 40, 0.6); 
+  color: rgba(255, 255, 255, 0.6); 
+  text-decoration: none;
+  height: 120px;
 }
 
-/* Яркая лаймовая полоска при наведении */
-.anna-step-card:hover {
-  border-top-color: #C5F946 !important;
+.signal2-switcher:hover:not(.signal2-switcher-active) { 
+  background: rgba(50, 50, 50, 0.95); 
+  color: rgba(255, 255, 255, 0.9);
 }
 
-/* Фоновая иконка - сильно приглушённая */
-.anna-card-background-icon {
-  position: absolute !important;
-  bottom: -90px !important;
-  right: -90px !important;
-  width: 300px !important;
-  height: 300px !important;
-  opacity: 0.04 !important; /* Уменьшена прозрачность с 0.08 до 0.04 */
-  pointer-events: none !important;
-  z-index: 0 !important;
+/* Активная карточка */
+.signal2-switcher-active {
+  background: rgba(40, 40, 40, 0.85);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: default;
+  pointer-events: none;
 }
 
-.anna-card-background-icon svg {
-  width: 100% !important;
-  height: 100% !important;
-  stroke: currentColor !important;
+/* Карточка без подзаголовка - центрируем контент */
+.signal2-switcher-no-subtitle {
+  justify-content: center;
 }
 
-.anna-step-card .anna-card-background-icon {
-  color: #ffffff !important;
+.signal2-switcher-icon {
+  width: 32px; 
+  height: 32px; 
+  flex-shrink: 0; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: url(#depth-effect) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  opacity: 0.5;
 }
 
-/* ТЕМНАЯ ТЕМА */
-:root.dark .anna-step-card {
-  background-color: #2a2a2a !important;
-  border-color: #3a3a3a !important;
-  border-top-color: rgba(197, 249, 70, 0.3) !important;
+.signal2-switcher-active .signal2-switcher-icon {
+  opacity: 1;
 }
 
-:root.dark .anna-step-card:hover {
-  border-top-color: #C5F946 !important;
+.signal2-switcher:hover:not(.signal2-switcher-active) .signal2-switcher-icon {
+  filter: url(#depth-effect-hover) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+  transform: translateY(-2px) scale(1.08);
+  opacity: 1;
 }
 
-:root.dark .anna-step-card .anna-card-background-icon {
-  color: #cccccc !important;
-  opacity: 0.03 !important; /* Ещё более приглушённая в тёмной теме */
+.signal2-switcher-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
 }
 
-/* Заголовки */
-.anna-title {
-  font-size: 16px !important;
-  line-height: 1.4 !important;
-  margin: 0 !important;
-  font-weight: 700 !important;
-  border: none !important;
-  padding: 0 !important;
-  color: #ffffff !important;
-  position: relative !important;
-  z-index: 1 !important;
+.signal2-switcher-title {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: inherit;
+  transition: color 0.3s ease;
 }
 
-:root.dark .anna-title {
-  color: #ffffff !important;
+.signal2-switcher-subtitle {
+  font-size: 11px;
+  font-weight: 400;
+  color: #d4ff6b;
+  line-height: 1.3;
+  white-space: normal;
+  max-width: 115px;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
 }
 
-/* Основной текст */
-.anna-description-main {
-  color: #e0e0e0 !important;
-  font-size: 16px !important;
-  font-weight: 400 !important;
-  line-height: 1.65 !important;
-  margin: 0 !important;
-  position: relative !important;
-  z-index: 1 !important;
+.signal2-switcher-active .signal2-switcher-subtitle {
+  opacity: 1;
 }
 
-:root.dark .anna-description-main {
-  color: #d0d0d0 !important;
+.signal2-switcher:hover:not(.signal2-switcher-active) .signal2-switcher-subtitle {
+  opacity: 1;
 }
 
-/* Дополнительный текст */
-.anna-description-secondary {
-  color: #b0b0b0 !important;
-  font-size: 13px !important;
-  line-height: 1.6 !important;
-  margin: 0 !important;
-  flex-grow: 1 !important;
-  position: relative !important;
-  z-index: 1 !important;
+.signal2-switchers-gradient { 
+  position: absolute; 
+  top: 0; 
+  bottom: 12px; 
+  width: 60px; 
+  pointer-events: none; 
+  z-index: 2; 
+  opacity: 0; 
+  transition: opacity 0.4s ease; 
+  display: flex;
+  align-items: center;
 }
 
-:root.dark .anna-description-secondary {
-  color: #a0a0a0 !important;
+.signal2-switchers-gradient.signal2-gradient-visible { 
+  opacity: 1; 
 }
 
-/* "Ваш контроль:" белым цветом */
-.anna-control-label {
-  color: #ffffff !important;
-  font-weight: 700 !important;
+.signal2-switchers-gradient-left { 
+  left: -1px; 
+  justify-content: flex-start;
+  background: linear-gradient(
+    to right, 
+    #1b1b1f 0%, 
+    #1b1b1f 30%, 
+    rgba(27, 27, 31, 0) 100%
+  ); 
 }
 
-:root.dark .anna-control-label {
-  color: #ffffff !important;
+.signal2-switchers-gradient-right { 
+  right: 0; 
+  justify-content: flex-end;
+  background: linear-gradient(
+    to left, 
+    #1b1b1f 0%, 
+    #1b1b1f 30%, 
+    rgba(27, 27, 31, 0) 100%
+  ); 
 }
 
-/* Выделение маркером с минимальным скруглением, меньшей высотой и приглушённым цветом */
-.anna-control-highlight {
-  background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.08) 50%) !important;
-  background-size: 200% 100% !important;
-  background-position: 100% 0 !important;
-  background-color: rgba(197, 249, 70, 0.08) !important;
-  color: #ffffff !important;
-  padding: 1px 5px !important;
-  margin: 0 !important;
-  border-radius: 1px !important;
-  transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important;
-  position: relative !important;
-  display: inline !important;
-  z-index: 1 !important;
-  box-decoration-break: clone !important;
-  -webkit-box-decoration-break: clone !important;
-  line-height: 1.5 !important;
-  vertical-align: baseline !important;
+.signal2-gradient-arrow {
+  width: 20px;
+  height: 20px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 10px;
 }
 
-/* При наведении - заполнение лаймовым слева направо с тёмным текстом */
-.anna-step-card:hover .anna-control-highlight {
-  background-position: 0 0 !important;
-  color: #1a1a1a !important;
+@media (max-width: 768px) {
+  .signal2-switcher {
+    height: 130px;
+    padding: 16px 14px;
+    min-width: 145px;
+    max-width: 145px;
+    width: 145px;
+  }
 }
 
-:root.dark .anna-control-highlight {
-  background-color: rgba(197, 249, 70, 0.1) !important;
-  color: #ffffff !important;
-}
-
-:root.dark .anna-step-card:hover .anna-control-highlight {
-  background-position: 0 0 !important;
-  color: #1a1a1a !important;
-}
-
-/* Цели */
-.anna-step-goals {
-  color: #C5F946 !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  line-height: 1.65 !important;
-  margin: 0 !important;
-  position: relative !important;
-  z-index: 1 !important;
-}
-
-:root.dark .anna-step-goals {
-  color: #C5F946 !important;
-}
-
-/* Кнопки навигации внизу справа */
-.anna-nav-buttons {
-  display: flex !important;
-  gap: 8px !important;
-  justify-content: flex-end !important;
-  margin-right: 0 !important;
-  padding-right: 4px !important;
-}
-
-.anna-nav-btn {
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 50% !important;
-  border: none !important;
-  cursor: pointer !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 0.3s ease !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-}
-
-/* Кнопка "Назад" */
-.anna-nav-prev {
-  background-color: #e8e8e8 !important;
-  color: #4a4a4a !important;
-}
-
-.anna-nav-prev:hover {
-  background-color: #d0d0d0 !important;
-  transform: scale(1.05) !important;
-}
-
-/* Кнопка "Вперёд" - белый фон */
-.anna-nav-next {
-  background-color: #ffffff !important;
-  color: #2a2a2a !important;
-}
-
-.anna-nav-next:hover {
-  background-color: #f5f5f5 !important;
-  transform: scale(1.05) !important;
-}
-
-/* ТЕМНАЯ ТЕМА для кнопок */
-:root.dark .anna-nav-prev {
-  background-color: #3a3a3a !important;
-  color: #e0e0e0 !important;
-}
-
-:root.dark .anna-nav-prev:hover {
-  background-color: #4a4a4a !important;
-}
-
-:root.dark .anna-nav-next {
-  background-color: #ffffff !important;
-  color: #2a2a2a !important;
-}
-
-:root.dark .anna-nav-next:hover {
-  background-color: #f0f0f0 !important;
+@media (max-width: 480px) {
+  .signal2-switcher {
+    height: 125px;
+    padding: 14px 12px;
+    gap: 10px;
+    min-width: 145px;
+    max-width: 145px;
+    width: 145px;
+  }
+  
+  .signal2-switcher-subtitle {
+    max-width: 115px;
+  }
 }
 </style>
