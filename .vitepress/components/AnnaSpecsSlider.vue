@@ -311,34 +311,34 @@ const scrollPrev = () => {
   color: #ffffff !important;
 }
 
-/* Выделение маркером с анимацией слева направо и одинаковыми отступами */
+/* Выделение маркером с минимальным скруглением, меньшей высотой и приглушённым цветом */
 .anna-control-highlight {
-  background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.15) 50%) !important;
+  background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.08) 50%) !important;
   background-size: 200% 100% !important;
   background-position: 100% 0 !important;
-  background-color: rgba(197, 249, 70, 0.15) !important;
+  background-color: rgba(197, 249, 70, 0.08) !important; /* Приглушённый цвет в пассивном режиме */
   color: #ffffff !important;
-  padding: 3px 6px !important; /* Одинаковые отступы по вертикали */
+  padding: 1px 5px !important; /* Уменьшены отступы по вертикали для меньшей высоты */
   margin: 0 !important;
-  border-radius: 4px !important;
+  border-radius: 1px !important; /* Минимальное скругление */
   transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important;
   position: relative !important;
   display: inline !important;
   z-index: 1 !important;
   box-decoration-break: clone !important;
   -webkit-box-decoration-break: clone !important;
-  line-height: 1.6 !important; /* Контроль межстрочного расстояния */
-  vertical-align: baseline !important; /* Выравнивание по базовой линии */
+  line-height: 1.5 !important;
+  vertical-align: baseline !important;
 }
 
 /* При наведении - заполнение лаймовым слева направо с тёмным текстом */
 .anna-step-card:hover .anna-control-highlight {
   background-position: 0 0 !important;
-  color: #1a1a1a !important; /* Тёмный текст для контраста */
+  color: #1a1a1a !important;
 }
 
 :root.dark .anna-control-highlight {
-  background-color: rgba(197, 249, 70, 0.2) !important;
+  background-color: rgba(197, 249, 70, 0.1) !important;
   color: #ffffff !important;
 }
 
