@@ -16,18 +16,12 @@ notification: brew
 <br>
 
 <h1>
-  <span>Решить любую проблему</span><br class="mobile-break"> <span>клиента за 24 часа.</span>
+  <span>Покажем, как Сигнал</span><br class="mobile-break"> <span>усилит ваш сервис.</span>
 </h1>
 
 <p>
-  <strong>Каждый владелец бизнеса заслуживает системы сервиса, которая работает как он сам.</strong><br class="mobile-break">Но стандартные решения не созданы для тех, кто хочет контроля без микроменеджмента (мы уважаем тех, кто копается в деталях, но ведь есть дела поважнее). Поэтому мы всё изменили.​
+  Анализ и первая настройка <br class="mobile-break"><strong>за 48 часов. Бесплатно.</strong>
 </p>
-
-<div class="checkup-cta-section">
-  <div class="checkup-price">От ₽90,000/мес.</div>
-  <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
-</div>
-
 
 <div class="button-group">
   <a href="/pro/dialogs#начать-сегодня" class="btn btn-primary" rel="noopener noreferrer"><strong>Начать бесплатно</strong></a>
