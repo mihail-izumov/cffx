@@ -28,35 +28,13 @@ notification: brew
   <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
 
-## Тотальная эффективность каждого процесса.
+## Специализация решает.
 
-</div>
+### Профессиональные решения от и до. Потому что знаем бизнес фитнеса и ресторанов.
 
-<Dialogs3Cards />
+<DialogsWidgets />
 
-## От Диалогов к безупречной Системе сервиса.
 
-<SignalProductsCards />
-
-# Недовольные сервисом клиенты стали слишком дорогими.
-
-### Мы это изменили.
-
-<DialogsSteps />
-
-## 94% проблем решаются до публикации в Яндекс/2ГИС.
-
-<SignalAbout3Cards />
-
-<div class="checkup-cta-section">
-  <div class="checkup-price">От ₽90,000/мес.</div>
-  <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
-</div>
-
-<div style="background-color: #2d2d2d; border: 0px solid #404040; border-radius: 8px; padding: 7px 10px; font-size: 13px; color: #a8a8a8; margin: 8px 0; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 500; line-height: 1.2;">
-  <span>Проведем аналитику отзывов и <a href="/pro/dialogs#быстрыи-старт" style="color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; text-decoration-skip-ink: auto; border-bottom: none; box-shadow: none; font-weight: 500;">разработаем SLA для старта</a></span>
-  <Badge type="tip" text="Бесплатно за 5 дней" style="position: relative; top: 2px;" />
-</div>
 
 ## 7 уровней вашего контроля.
 
@@ -73,14 +51,6 @@ notification: brew
 Автоматизация управления репутацией и персональная поддержка связи с клиентами.
 
 <DialogsFeatures />
-
-
-## Специализация решает.
-
-### Профессиональные решения от и до. Потому что знаем бизнес фитнеса и ресторанов.
-
-<DialogsWidgets />
-
 
 <style>
 .responsive-heading {
