@@ -27,3 +27,5 @@ notification: brew
   <div class="checkup-price">От ₽90,000/мес.</div>
   <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
+
+</div>
