@@ -103,6 +103,7 @@ import SignalAbout3Cards from '../components/SignalAbout3Cards.vue'
 import DialogsWidgets from '../components/DialogsWidgets.vue'
 import SignalProductsSlider from '../components/SignalProductsSlider.vue'
 import SignalProductsCards from '../components/SignalProductsCards.vue'
+import AnnaSpecsSlider from '../components/AnnaSpecsSlider.vue'
 
 export default {
   extends: DefaultTheme,
@@ -211,5 +212,6 @@ export default {
     app.component('DialogsWidgets', DialogsWidgets)
     app.component('SignalProductsSlider', SignalProductsSlider)
     app.component('SignalProductsCards', SignalProductsCards)
+    app.component('AnnaSpecsSlider', AnnaSpecsSlider)
   },
 }
