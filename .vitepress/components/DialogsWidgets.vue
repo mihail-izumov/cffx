@@ -1,10 +1,6 @@
 <template>
   <div class="essential-apps">
     <div class="header">
-      <div class="title-section">
-        <h2>Специализация решает.</h2>
-        <p class="subtitle">Профессиональные решения от и до. Потому что знаем бизнес фитнеса и ресторанов.</p>
-      </div>
       <div class="actions">
         <a href="https://example.com" class="btn-create">
           Настроить Свой Сигнал
@@ -94,23 +90,6 @@
 
 .header {
   margin-bottom: 40px;
-}
-
-.title-section {
-  margin-bottom: 24px;
-}
-
-.title-section h2 {
-  border-top: none !important;
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
-
-.subtitle {
-  font-size: 18px;
-  color: #9e9e9e;
-  margin: 0;
-  font-weight: 400;
 }
 
 .actions {
