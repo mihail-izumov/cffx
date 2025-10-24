@@ -16,7 +16,7 @@ notification: brew
 <br>
 
 <h1>
-  <span>Решить любую проблему</span><br class="mobile-break"> <span>клиента за 24 часа.</span>
+  <span>???</span><br class="mobile-break"> <span>???</span>
 </h1>
 
 <p>
