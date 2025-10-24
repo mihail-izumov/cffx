@@ -311,24 +311,30 @@ const scrollPrev = () => {
   color: #ffffff !important;
 }
 
-/* Выделение маркером с плавной анимацией и скруглёнными углами */
+/* Выделение маркером с анимацией слева направо и одинаковыми отступами */
 .anna-control-highlight {
-  background-color: rgba(197, 249, 70, 0.15) !important; /* Приглушённый лаймовый в пассивном режиме */
+  background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.15) 50%) !important;
+  background-size: 200% 100% !important;
+  background-position: 100% 0 !important;
+  background-color: rgba(197, 249, 70, 0.15) !important;
   color: #ffffff !important;
-  padding: 2px 6px !important;
-  border-radius: 4px !important; /* Скруглённые углы */
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Более плавная анимация */
+  padding: 3px 6px !important; /* Одинаковые отступы по вертикали */
+  margin: 0 !important;
+  border-radius: 4px !important;
+  transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important;
   position: relative !important;
   display: inline !important;
   z-index: 1 !important;
-  box-decoration-break: clone !important; /* Сохраняет стили при переносе строк */
+  box-decoration-break: clone !important;
   -webkit-box-decoration-break: clone !important;
+  line-height: 1.6 !important; /* Контроль межстрочного расстояния */
+  vertical-align: baseline !important; /* Выравнивание по базовой линии */
 }
 
-/* При наведении - яркий лаймовый с белым текстом */
+/* При наведении - заполнение лаймовым слева направо с тёмным текстом */
 .anna-step-card:hover .anna-control-highlight {
-  background-color: #C5F946 !important; /* Полностью лаймовый без прозрачности */
-  color: #ffffff !important; /* Белый текст */
+  background-position: 0 0 !important;
+  color: #1a1a1a !important; /* Тёмный текст для контраста */
 }
 
 :root.dark .anna-control-highlight {
@@ -337,8 +343,8 @@ const scrollPrev = () => {
 }
 
 :root.dark .anna-step-card:hover .anna-control-highlight {
-  background-color: #C5F946 !important;
-  color: #ffffff !important;
+  background-position: 0 0 !important;
+  color: #1a1a1a !important;
 }
 
 /* Цели */
