@@ -143,9 +143,7 @@
   gap: 16px !important;
   padding: 4px 0 12px 4px !important;
   margin: 24px 0 !important;
-  background-color: #3a3a3a !important; /* Графитовый фон слайдера */
-  padding: 20px !important;
-  border-radius: 8px !important;
+  /* Убраны все фоны и дополнительные отступы */
 }
 
 /* Стилизация скроллбара */
@@ -154,7 +152,7 @@
 }
 
 .anna-brands-container::-webkit-scrollbar-thumb {
-  background-color: #555 !important; /* Графитовый скроллбар */
+  background-color: var(--vp-c-divider);
   border-radius: 3px;
 }
 
@@ -168,18 +166,18 @@
   border-width: 1px !important;
   border-top-width: 4px !important;
   position: relative !important;
-  min-height: 336px !important; /* Увеличено на 20% (280 * 1.2 = 336) */
+  min-height: 336px !important;
   overflow: hidden !important;
 }
 
-/* Фоновая иконка */
+/* Фоновая иконка - увеличена видимость */
 .anna-card-background-icon {
   position: absolute !important;
-  bottom: -90px !important; /* Увеличено для большей иконки */
-  right: -90px !important; /* Увеличено для большей иконки */
-  width: 300px !important; /* Увеличено в 1.5 раза (200 * 1.5 = 300) */
-  height: 300px !important; /* Увеличено в 1.5 раза */
-  opacity: 0.03 !important; /* Чуть меньше для графитового фона */
+  bottom: -90px !important;
+  right: -90px !important;
+  width: 300px !important;
+  height: 300px !important;
+  opacity: 0.08 !important; /* Увеличена видимость с 0.03 до 0.08 */
   pointer-events: none !important;
   z-index: 0 !important;
 }
@@ -192,24 +190,24 @@
 
 /* СВЕТЛАЯ ТЕМА - графитовая гамма */
 .anna-step-card {
-  background-color: #4a4a4a !important; /* Графитовый фон карточки */
-  border-color: #555 !important; /* Графитовая граница */
-  border-top-color: #C5F946 !important; /* Лаймовый акцент сверху */
+  background-color: #4a4a4a !important;
+  border-color: #555 !important;
+  border-top-color: #C5F946 !important;
 }
 
 .anna-step-card .anna-card-background-icon {
-  color: #999 !important; /* Графитовая иконка */
+  color: #ffffff !important; /* Белый для лучшей видимости */
 }
 
 /* ТЕМНАЯ ТЕМА - графитовая гамма */
 :root.dark .anna-step-card {
-  background-color: #2a2a2a !important; /* Тёмно-графитовый фон */
-  border-color: #3a3a3a !important; /* Тёмно-графитовая граница */
-  border-top-color: #C5F946 !important; /* Лаймовый акцент */
+  background-color: #2a2a2a !important;
+  border-color: #3a3a3a !important;
+  border-top-color: #C5F946 !important;
 }
 
 :root.dark .anna-step-card .anna-card-background-icon {
-  color: #666 !important; /* Тёмно-графитовая иконка */
+  color: #cccccc !important; /* Светло-серый для лучшей видимости */
 }
 
 /* Заголовки */
@@ -221,7 +219,7 @@
   font-weight: 700 !important;
   border: none !important;
   padding: 0 !important;
-  color: #ffffff !important; /* Белый текст для контраста */
+  color: #ffffff !important;
   position: relative !important;
   z-index: 1 !important;
 }
@@ -232,9 +230,9 @@
 
 /* Основной текст - размер как у заголовка, но normal */
 .anna-description-main {
-  color: #e0e0e0 !important; /* Светло-серый для читаемости */
-  font-size: 16px !important; /* Размер как у заголовка */
-  font-weight: 400 !important; /* Normal вес */
+  color: #e0e0e0 !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
   line-height: 1.65 !important;
   margin: 0 0 10px 0 !important;
   position: relative !important;
@@ -247,7 +245,7 @@
 
 /* Дополнительный текст */
 .anna-description-secondary {
-  color: #b0b0b0 !important; /* Средне-серый */
+  color: #b0b0b0 !important;
   font-size: 13px !important;
   line-height: 1.6 !important;
   margin: 0 0 12px 0 !important;
@@ -260,9 +258,10 @@
   color: #a0a0a0 !important;
 }
 
-/* Выделение текста после "Ваш контроль:" */
+/* Выделение текста после "Ваш контроль:" - белый текст */
 .anna-control-highlight {
-  background-color: rgba(100, 150, 200, 0.15) !important; /* Голубоватый полупрозрачный маркер */
+  background-color: rgba(100, 150, 200, 0.15) !important;
+  color: #ffffff !important; /* Белый цвет текста */
   padding: 2px 4px !important;
   border-radius: 3px !important;
   box-decoration-break: clone !important;
@@ -270,12 +269,13 @@
 }
 
 :root.dark .anna-control-highlight {
-  background-color: rgba(80, 130, 180, 0.2) !important; /* Чуть ярче для тёмной темы */
+  background-color: rgba(80, 130, 180, 0.2) !important;
+  color: #ffffff !important; /* Белый цвет текста */
 }
 
 /* Цели */
 .anna-step-goals {
-  color: #C5F946 !important; /* Лаймовый для акцента */
+  color: #C5F946 !important;
   font-size: 14px !important;
   font-weight: 500 !important;
   line-height: 1.65 !important;
