@@ -311,21 +311,21 @@ const scrollPrev = () => {
   color: #ffffff !important;
 }
 
-/* Выделение маркером - скруглённые края и плавная анимация */
+/* Выделение маркером с плавной анимацией и скруглёнными углами */
 .anna-control-highlight {
   background-color: rgba(197, 249, 70, 0.15) !important; /* Приглушённый лаймовый в пассивном режиме */
   color: #ffffff !important;
-  padding: 3px 6px !important;
+  padding: 2px 6px !important;
   border-radius: 4px !important; /* Скруглённые углы */
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Более плавная анимация */
   position: relative !important;
   display: inline !important;
   z-index: 1 !important;
-  box-decoration-break: clone !important; /* Скруглённые углы при переносе строк */
+  box-decoration-break: clone !important; /* Сохраняет стили при переносе строк */
   -webkit-box-decoration-break: clone !important;
 }
 
-/* При наведении - яркий лаймовый без прозрачности с белым текстом */
+/* При наведении - яркий лаймовый с белым текстом */
 .anna-step-card:hover .anna-control-highlight {
   background-color: #C5F946 !important; /* Полностью лаймовый без прозрачности */
   color: #ffffff !important; /* Белый текст */
