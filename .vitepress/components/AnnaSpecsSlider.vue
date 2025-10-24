@@ -311,21 +311,24 @@ const scrollPrev = () => {
   color: #ffffff !important;
 }
 
-/* Выделение маркером - видно в обоих режимах */
+/* Выделение маркером с анимацией заполнения слева направо */
 .anna-control-highlight {
-  background-color: rgba(197, 249, 70, 0.15) !important; /* Приглушённый лаймовый в пассивном режиме */
+  background: linear-gradient(to right, #C5F946 0%, #C5F946 0%, rgba(197, 249, 70, 0.15) 0%) !important;
+  background-size: 0% 100% !important;
+  background-repeat: no-repeat !important;
+  background-color: rgba(197, 249, 70, 0.15) !important; /* Приглушённый фон в пассивном режиме */
   color: #ffffff !important;
   padding: 2px 6px !important;
   border-radius: 3px !important;
-  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important;
+  transition: background-size 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important;
   position: relative !important;
   display: inline !important;
   z-index: 1 !important;
 }
 
-/* При наведении - яркий лаймовый фон с тёмным текстом */
+/* При наведении - заполнение лаймовым слева направо */
 .anna-step-card:hover .anna-control-highlight {
-  background-color: #C5F946 !important; /* Яркий лаймовый */
+  background-size: 100% 100% !important;
   color: #2a2a2a !important; /* Тёмный текст для контраста */
 }
 
@@ -335,7 +338,7 @@ const scrollPrev = () => {
 }
 
 :root.dark .anna-step-card:hover .anna-control-highlight {
-  background-color: #C5F946 !important;
+  background-size: 100% 100% !important;
   color: #2a2a2a !important;
 }
 
