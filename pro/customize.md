@@ -1,3 +1,33 @@
+---
+outline: false
+prev: false
+next: false
+title: Настройка Сигнала
+description: Где Начинается Ваш Бизнес
+notification: brew
+---
+
+<SignalProductsSlider />
+
+<div align="center">
+
+<h1 class="responsive-heading">Настройка<br>Сигнала</h1>
+
+<br>
+
+<h1>
+  <span>Решить любую проблему</span><br class="mobile-break"> <span>клиента за 24 часа.</span>
+</h1>
+
+<p>
+  <strong>From sleep and recovery to what’s happening inside your body</strong><br class="mobile-break"> WHOOP brings it all together — make smarter choices today that add more years to your life.
+</p>
+
+<div class="checkup-cta-section">
+  <div class="checkup-price">От ₽90,000/мес.</div>
+  <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
+</div>
+
 # Мы собрали. Вы управляете.
 
 Каждый владелец бизнеса заслуживает системы сервиса, которая работает как он сам. Но стандартные решения не созданы для тех, кто хочет контроля без микроменеджмента (мы уважаем тех, кто копается в деталях, но ведь есть дела поважнее). Поэтому мы всё изменили.​
@@ -5,6 +35,8 @@
 <div class="button-group">
   <a href="/pro/dialogs#начать-сегодня" class="btn btn-primary" rel="noopener noreferrer"><strong>Начать бесплатно</strong></a>
   <a href="/pro/dialogs#тарифы" class="btn btn-secondary" rel="noopener noreferrer">Тарифы и спецификация</a>
+</div>
+
 </div>
 
 ## Быстрый Старт
