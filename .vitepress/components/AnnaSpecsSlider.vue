@@ -217,14 +217,14 @@ const scrollPrev = () => {
   border-top-color: #C5F946 !important;
 }
 
-/* Фоновая иконка */
+/* Фоновая иконка - сильно приглушённая */
 .anna-card-background-icon {
   position: absolute !important;
   bottom: -90px !important;
   right: -90px !important;
   width: 300px !important;
   height: 300px !important;
-  opacity: 0.08 !important;
+  opacity: 0.04 !important; /* Уменьшена прозрачность с 0.08 до 0.04 */
   pointer-events: none !important;
   z-index: 0 !important;
 }
@@ -252,6 +252,7 @@ const scrollPrev = () => {
 
 :root.dark .anna-step-card .anna-card-background-icon {
   color: #cccccc !important;
+  opacity: 0.03 !important; /* Ещё более приглушённая в тёмной теме */
 }
 
 /* Заголовки */
@@ -316,11 +317,11 @@ const scrollPrev = () => {
   background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.08) 50%) !important;
   background-size: 200% 100% !important;
   background-position: 100% 0 !important;
-  background-color: rgba(197, 249, 70, 0.08) !important; /* Приглушённый цвет в пассивном режиме */
+  background-color: rgba(197, 249, 70, 0.08) !important;
   color: #ffffff !important;
-  padding: 1px 5px !important; /* Уменьшены отступы по вертикали для меньшей высоты */
+  padding: 1px 5px !important;
   margin: 0 !important;
-  border-radius: 1px !important; /* Минимальное скругление */
+  border-radius: 1px !important;
   transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important;
   position: relative !important;
   display: inline !important;
