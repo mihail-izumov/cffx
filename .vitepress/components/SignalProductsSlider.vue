@@ -1,5 +1,8 @@
 <script setup>
-import { ref, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vitepress'
+
+const route = useRoute()
 
 const cafeItems = [
   {
@@ -35,6 +38,11 @@ const cafeItems = [
 const showLeftGradient = ref(false)
 const showRightGradient = ref(false)
 const switchersRef = ref(null)
+
+// Проверяем активную страницу
+const isActive = (url) => {
+  return route.path === url || route.path.startsWith(url + '/')
+}
 
 const handleSwitcherScroll = () => {
   if (!switchersRef.value) return
@@ -139,8 +147,11 @@ onUnmounted(() => {
         <a
           v-for="item in cafeItems"
           :key="item.name"
-          :href="item.url"
-          class="signal2-switcher"
+          :href="isActive(item.url) ? undefined : item.url"
+          :class="[
+            'signal2-switcher',
+            { 'signal2-switcher-active': isActive(item.url) }
+          ]"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" :stroke="`url(#${item.gradientId})`" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#depth-effect)">
             <path :d="item.icon"/>
@@ -208,7 +219,7 @@ onUnmounted(() => {
   font-size: 15px; 
   cursor: pointer; 
   border: none; 
-  transition: background 0.3s ease, box-shadow 0.3s ease; 
+  transition: all 0.3s ease; 
   white-space: nowrap; 
   display: flex; 
   flex-direction: column;
@@ -219,14 +230,23 @@ onUnmounted(() => {
   width: 175px;
   position: relative; 
   overflow: hidden; 
-  background: rgba(40, 40, 40, 0.85); 
-  color: rgba(255, 255, 255, 0.9); 
+  background: rgba(40, 40, 40, 0.6); 
+  color: rgba(255, 255, 255, 0.6); 
   text-decoration: none;
   height: 120px;
 }
 
-.signal2-switcher:hover { 
+.signal2-switcher:hover:not(.signal2-switcher-active) { 
   background: rgba(50, 50, 50, 0.95); 
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Активная карточка */
+.signal2-switcher-active {
+  background: rgba(40, 40, 40, 0.85);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: default;
+  pointer-events: none;
 }
 
 .signal2-switcher-icon {
@@ -238,11 +258,17 @@ onUnmounted(() => {
   justify-content: center; 
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   filter: url(#depth-effect) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  opacity: 0.5;
 }
 
-.signal2-switcher:hover .signal2-switcher-icon {
+.signal2-switcher-active .signal2-switcher-icon {
+  opacity: 1;
+}
+
+.signal2-switcher:hover:not(.signal2-switcher-active) .signal2-switcher-icon {
   filter: url(#depth-effect-hover) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
   transform: translateY(-2px) scale(1.08);
+  opacity: 1;
 }
 
 .signal2-switcher-text {
@@ -257,7 +283,7 @@ onUnmounted(() => {
   font-size: 13px;
   font-weight: 400;
   line-height: 1.2;
-  color: rgba(255, 255, 255, 1);
+  color: inherit;
   transition: color 0.3s ease;
 }
 
@@ -268,6 +294,15 @@ onUnmounted(() => {
   line-height: 1.3;
   white-space: normal;
   max-width: 145px;
+  opacity: 0.5;
+}
+
+.signal2-switcher-active .signal2-switcher-subtitle {
+  opacity: 1;
+}
+
+.signal2-switcher:hover:not(.signal2-switcher-active) .signal2-switcher-subtitle {
+  opacity: 1;
 }
 
 .signal2-switchers-gradient { 
