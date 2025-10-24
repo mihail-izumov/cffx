@@ -28,6 +28,8 @@ notification: brew
   <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
 
+# Решить любую проблему клиента за 24 часа.
+
 </div>
 
 <Dialogs3Cards />
