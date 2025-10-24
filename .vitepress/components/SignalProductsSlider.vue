@@ -7,7 +7,7 @@ const route = useRoute()
 const cafeItems = [
   {
     name: 'Сигнал для Бизнеса',
-    subtitle: 'Лучше с каждым днем',
+    subtitle: '',
     url: '/dialogs',
     icon: 'M12 5 m-9 0 a9 3 0 1 0 18 0 a9 3 0 1 0 -18 0 M3 5V19A9 3 0 0 0 15 21.84 M21 5V8 M21 12L18 17H22L19 22 M3 12A9 3 0 0 0 14.59 14.87',
     gradientId: 'gradient-0'
@@ -34,7 +34,7 @@ const cafeItems = [
     gradientId: 'gradient-3'
   },
   {
-    name: 'Тикет-система',
+    name: 'Тикеты',
     subtitle: '', // Пустая строка — title будет центрирован
     url: '/pro/tickets',
     icon: 'M3 3 h18 v18 h-18 z M3 3 a2 2 0 0 1 2 -2 M21 3 a2 2 0 0 0 -2 -2 M3 21 a2 2 0 0 0 2 2 M21 21 a2 2 0 0 1 -2 2 M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21',
@@ -273,7 +273,7 @@ onUnmounted(() => {
 
 .signal2-switcher { 
   border-radius: 12px; 
-  padding: 16px 18px; 
+  padding: 16px 16px; 
   font-size: 15px; 
   cursor: pointer; 
   border: none; 
@@ -283,9 +283,9 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center; 
   gap: 12px; 
-  min-width: 155px;
-  max-width: 155px;
-  width: 155px;
+  min-width: 145px;
+  max-width: 145px;
+  width: 145px;
   position: relative; 
   overflow: hidden; 
   background: rgba(40, 40, 40, 0.6); 
@@ -356,7 +356,7 @@ onUnmounted(() => {
   color: #d4ff6b;
   line-height: 1.3;
   white-space: normal;
-  max-width: 125px;
+  max-width: 115px;
   opacity: 0.4;
   transition: opacity 0.3s ease;
 }
@@ -418,25 +418,25 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .signal2-switcher {
     height: 130px;
-    padding: 16px 16px;
-    min-width: 155px;
-    max-width: 155px;
-    width: 155px;
+    padding: 16px 14px;
+    min-width: 145px;
+    max-width: 145px;
+    width: 145px;
   }
 }
 
 @media (max-width: 480px) {
   .signal2-switcher {
     height: 125px;
-    padding: 14px 14px;
+    padding: 14px 12px;
     gap: 10px;
-    min-width: 155px;
-    max-width: 155px;
-    width: 155px;
+    min-width: 145px;
+    max-width: 145px;
+    width: 145px;
   }
   
   .signal2-switcher-subtitle {
-    max-width: 125px;
+    max-width: 115px;
   }
 }
 </style>
