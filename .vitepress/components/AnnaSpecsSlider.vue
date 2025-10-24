@@ -8,7 +8,7 @@
         </div>
         <h3 class="anna-title">Поток Общения</h3>
         <p class="anna-description-main">Пять шагов от первого сообщения до оценки опыта: приветствие и приём → диалоги → задание для решения → доставка результата → оценка.</p>
-        <p class="anna-description-secondary"><strong>Ваш контроль:</strong> <span class="anna-control-highlight">Настройте формулировки и точки контроля под свой стиль общения.</span></p>
+        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Настройте формулировки и точки контроля под свой стиль общения.</span></p>
         <p class="anna-description-goals anna-step-goals">Понятный путь к результату без лишних кругов переписки.</p>
       </div>
       
@@ -19,7 +19,7 @@
         </div>
         <h3 class="anna-title">Матрица Эскалации</h3>
         <p class="anna-description-main">Правила приоритетов А–Г: система автоматически определяет, кто берёт задачу и за сколько времени должна быть первая реакция.</p>
-        <p class="anna-description-secondary"><strong>Ваш контроль:</strong> <span class="anna-control-highlight">Адаптируйте приоритеты под специфику вашего бизнеса и команды.</span></p>
+        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Адаптируйте приоритеты под специфику вашего бизнеса и команды.</span></p>
         <p class="anna-description-goals anna-step-goals">Честные сроки и предсказуемость реакции на любую критичность ситуации.</p>
       </div>
       
@@ -30,7 +30,7 @@
         </div>
         <h3 class="anna-title">Первый Контакт</h3>
         <p class="anna-description-main">Чёткие правила приёма, обязательные вопросы и прозрачные сроки ответа — с первого касания собирается достаточно информации для решения.</p>
-        <p class="anna-description-secondary"><strong>Ваш контроль:</strong> <span class="anna-control-highlight">Укажите, какие вопросы и детали критичны для вашей специфики.</span></p>
+        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Укажите, какие вопросы и детали критичны для вашей специфики.</span></p>
         <p class="anna-description-goals anna-step-goals">Сбор нужных фактов с первого раза и меньше задержек.</p>
       </div>
       
@@ -41,7 +41,7 @@
         </div>
         <h3 class="anna-title">Доставка Решения</h3>
         <p class="anna-description-main">Форматы честного финала: что проверено, что изменили или почему невозможно и какая альтернатива предложена.</p>
-        <p class="anna-description-secondary"><strong>Ваш контроль:</strong> <span class="anna-control-highlight">Настройте шаблоны финальных ответов под ваш стиль и практики.</span></p>
+        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Настройте шаблоны финальных ответов под ваш стиль и практики.</span></p>
         <p class="anna-description-goals anna-step-goals">Реальные изменения, а не общие формулировки.</p>
       </div>
       
@@ -52,7 +52,7 @@
         </div>
         <h3 class="anna-title">Классификация Ситуаций</h3>
         <p class="anna-description-main">Разделение ситуаций на компенсируемые (разовая ошибка) и системные (требует изменения процесса или инфраструктуры).</p>
-        <p class="anna-description-secondary"><strong>Ваш контроль:</strong> <span class="anna-control-highlight">Настройте категории под специфику вашего сервиса.</span></p>
+        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Настройте категории под специфику вашего сервиса.</span></p>
         <p class="anna-description-goals anna-step-goals">Верные ожидания: когда уместна компенсация, когда — изменения.</p>
       </div>
       
@@ -63,7 +63,7 @@
         </div>
         <h3 class="anna-title">Тикеты</h3>
         <p class="anna-description-main">Задания с полным контекстом: краткая суть, эмоция клиента, рекомендации к действию, ответственные, история переписки и поле оперативных обновлений.</p>
-        <p class="anna-description-secondary"><strong>Ваш контроль:</strong> <span class="anna-control-highlight">Добавьте свои обязательные поля или адаптируйте рекомендации.</span></p>
+        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Добавьте свои обязательные поля или адаптируйте рекомендации.</span></p>
         <p class="anna-description-goals anna-step-goals">Быстрое начало работ и прозрачность хода решения.</p>
       </div>
       
@@ -74,7 +74,7 @@
         </div>
         <h3 class="anna-title">Правила Диалогов</h3>
         <p class="anna-description-main">Короткие, уважительные и понятные обновления с прозрачными сроками. Каждое сообщение — по делу, без шаблонных повторов и канцелярщины.</p>
-        <p class="anna-description-secondary"><strong>Ваш контроль:</strong> <span class="anna-control-highlight">Настройте тон: более формальный или дружелюбный, под ваш бренд.</span></p>
+        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Настройте тон: более формальный или дружелюбный, под ваш бренд.</span></p>
         <p class="anna-description-goals anna-step-goals">Ощущение движения и контроля у клиента, меньше поводов для напряжения.</p>
       </div>
       
@@ -85,7 +85,7 @@
         </div>
         <h3 class="anna-title">Единый Язык</h3>
         <p class="anna-description-main">Словарь формулировок: простота, тёплая забота и понимание с первого прочтения вместо канцелярщины.</p>
-        <p class="anna-description-secondary"><strong>Ваш контроль:</strong> <span class="anna-control-highlight">Настройте словарь под ценности и тон голоса вашего бренда.</span></p>
+        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Настройте словарь под ценности и тон голоса вашего бренда.</span></p>
         <p class="anna-description-goals anna-step-goals">Понимание «с первого прочтения» и уважение к времени клиента.</p>
       </div>
       
@@ -96,7 +96,7 @@
         </div>
         <h3 class="anna-title">Самопроверки</h3>
         <p class="anna-description-main">Чек-лист качества перед каждой отправкой: тон, конкретика, прозрачность и честность обещаний.</p>
-        <p class="anna-description-secondary"><strong>Ваш контроль:</strong> <span class="anna-control-highlight">Добавьте свои критерии и требования к текстам.</span></p>
+        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Добавьте свои критерии и требования к текстам.</span></p>
         <p class="anna-description-goals anna-step-goals">Стабильный тон, честные обещания, меньше ошибок.</p>
       </div>
       
@@ -107,7 +107,7 @@
         </div>
         <h3 class="anna-title">Сертификаты</h3>
         <p class="anna-description-main">Фиксированные номиналы и простая логическая цепочка: решение → номер → сообщение клиенту → активация.</p>
-        <p class="anna-description-secondary"><strong>Ваш контроль:</strong> <span class="anna-control-highlight">Установите свои номиналы и правила утверждения.</span></p>
+        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Установите свои номиналы и правила утверждения.</span></p>
         <p class="anna-description-goals anna-step-goals">Быстрая компенсация без «торга» и путаницы.</p>
       </div>
       
@@ -118,7 +118,7 @@
         </div>
         <h3 class="anna-title">Готовые Сценарии</h3>
         <p class="anna-description-main">Пошаговые алгоритмы для типовых ситуаций: качество, сервис, инфраструктура, безопасность.</p>
-        <p class="anna-description-secondary"><strong>Ваш контроль:</strong> <span class="anna-control-highlight">Адаптируйте сценарии под частые темы вашего бизнеса.</span></p>
+        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Адаптируйте сценарии под частые темы вашего бизнеса.</span></p>
         <p class="anna-description-goals anna-step-goals">Быстрая и точная реакция без изобретения велосипеда.</p>
       </div>
       
@@ -129,12 +129,12 @@
         </div>
         <h3 class="anna-title">Оценка Опыта</h3>
         <p class="anna-description-main">Короткий запрос обратной связи в конце каждого цикла: вовремя, без лишних вопросов, с благодарностью за вклад.</p>
-        <p class="anna-description-secondary"><strong>Ваш контроль:</strong> <span class="anna-control-highlight">Решите, как и когда собирать оценки под ваши метрики.</span></p>
+        <p class="anna-description-secondary"><span class="anna-control-label">Ваш контроль:</span> <span class="anna-control-highlight">Решите, как и когда собирать оценки под ваши метрики.</span></p>
         <p class="anna-description-goals anna-step-goals">Регулярная обратная связь для улучшений и ощущение значимости у клиентов.</p>
       </div>
     </div>
     
-    <!-- Кнопки навигации -->
+    <!-- Кнопки навигации внизу справа -->
     <div class="anna-nav-buttons">
       <button class="anna-nav-btn anna-nav-prev" @click="scrollPrev" aria-label="Предыдущий слайд">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -179,11 +179,12 @@ const scrollPrev = () => {
   gap: 16px !important;
   padding: 4px 0 12px 4px !important;
   scroll-behavior: smooth !important;
-  scrollbar-width: none !important; /* Скрываем скроллбар в Firefox */
-  -ms-overflow-style: none !important; /* Скрываем скроллбар в IE/Edge */
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  margin-bottom: 16px !important; /* Отступ для кнопок */
 }
 
-/* Скрываем скроллбар в Chrome/Safari */
+/* Скрываем скроллбар */
 .anna-brands-container::-webkit-scrollbar {
   display: none !important;
 }
@@ -191,28 +192,33 @@ const scrollPrev = () => {
 .anna-brand-card {
   flex: 0 0 320px !important;
   border-radius: 12px !important;
-  padding: 24px 18px !important;
+  padding: 48px 24px !important; /* Увеличены отступы сверху и снизу в 2 раза (24→48), слева и справа немного увеличены для баланса (18→24) */
   display: flex !important;
   flex-direction: column !important;
+  gap: 16px !important; /* Добавлен gap между элементами для лучшего дыхания */
   border-style: solid !important;
   border-width: 1px !important;
   border-top-width: 4px !important;
   position: relative !important;
-  min-height: 336px !important;
+  min-height: 360px !important; /* Немного увеличена высота для больших отступов */
   overflow: hidden !important;
-  transition: border-top-color 0.3s ease !important; /* Плавная анимация для полоски */
+  transition: border-top-color 0.3s ease !important;
 }
 
 /* Приглушённая лаймовая полоска по умолчанию */
 .anna-step-card {
   background-color: #4a4a4a !important;
   border-color: #555 !important;
-  border-top-color: rgba(197, 249, 70, 0.3) !important; /* Приглушённый лаймовый */
+  border-top-color: rgba(197, 249, 70, 0.3) !important;
 }
 
-/* Яркая лаймовая полоска при наведении */
+/* Яркая подсветка при наведении - синхронизация полоски и маркера */
 .anna-step-card:hover {
-  border-top-color: #C5F946 !important; /* Яркий лаймовый */
+  border-top-color: #C5F946 !important;
+}
+
+.anna-step-card:hover .anna-control-highlight {
+  background-color: rgba(197, 249, 70, 0.35) !important; /* Синхронизированная яркая подсветка */
 }
 
 /* Фоновая иконка */
@@ -248,6 +254,10 @@ const scrollPrev = () => {
   border-top-color: #C5F946 !important;
 }
 
+:root.dark .anna-step-card:hover .anna-control-highlight {
+  background-color: rgba(197, 249, 70, 0.35) !important;
+}
+
 :root.dark .anna-step-card .anna-card-background-icon {
   color: #cccccc !important;
 }
@@ -256,8 +266,7 @@ const scrollPrev = () => {
 .anna-title {
   font-size: 16px !important;
   line-height: 1.4 !important;
-  margin-top: 0 !important;
-  margin-bottom: 10px !important;
+  margin: 0 !important;
   font-weight: 700 !important;
   border: none !important;
   padding: 0 !important;
@@ -276,7 +285,7 @@ const scrollPrev = () => {
   font-size: 16px !important;
   font-weight: 400 !important;
   line-height: 1.65 !important;
-  margin: 0 0 10px 0 !important;
+  margin: 0 !important;
   position: relative !important;
   z-index: 1 !important;
 }
@@ -290,7 +299,7 @@ const scrollPrev = () => {
   color: #b0b0b0 !important;
   font-size: 13px !important;
   line-height: 1.6 !important;
-  margin: 0 0 12px 0 !important;
+  margin: 0 !important;
   flex-grow: 1 !important;
   position: relative !important;
   z-index: 1 !important;
@@ -300,18 +309,29 @@ const scrollPrev = () => {
   color: #a0a0a0 !important;
 }
 
-/* Выделение текста после "Ваш контроль:" - в лаймовой гамме */
+/* "Ваш контроль:" белым цветом */
+.anna-control-label {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+:root.dark .anna-control-label {
+  color: #ffffff !important;
+}
+
+/* Выделение текста после "Ваш контроль:" - очень прозрачное в пассивном состоянии */
 .anna-control-highlight {
-  background-color: rgba(197, 249, 70, 0.15) !important; /* Лаймовый полупрозрачный */
+  background-color: rgba(197, 249, 70, 0.05) !important; /* Очень прозрачное, чтобы видеть иконку */
   color: #ffffff !important;
   padding: 2px 4px !important;
   border-radius: 3px !important;
   box-decoration-break: clone !important;
   -webkit-box-decoration-break: clone !important;
+  transition: background-color 0.3s ease !important; /* Плавная анимация синхронизированная с полоской */
 }
 
 :root.dark .anna-control-highlight {
-  background-color: rgba(197, 249, 70, 0.2) !important;
+  background-color: rgba(197, 249, 70, 0.05) !important;
   color: #ffffff !important;
 }
 
@@ -322,7 +342,6 @@ const scrollPrev = () => {
   font-weight: 500 !important;
   line-height: 1.65 !important;
   margin: 0 !important;
-  padding-top: 4px !important;
   position: relative !important;
   z-index: 1 !important;
 }
@@ -331,14 +350,13 @@ const scrollPrev = () => {
   color: #C5F946 !important;
 }
 
-/* Кнопки навигации */
+/* Кнопки навигации внизу справа */
 .anna-nav-buttons {
   display: flex !important;
   gap: 8px !important;
-  position: absolute !important;
-  top: 12px !important;
-  right: 12px !important;
-  z-index: 10 !important;
+  justify-content: flex-end !important; /* Выравнивание справа */
+  margin-right: 0 !important; /* Без отступа справа */
+  padding-right: 4px !important; /* Совпадает с padding слайдера */
 }
 
 .anna-nav-btn {
