@@ -16,11 +16,11 @@ notification: brew
 <br>
 
 <h1>
-  <span>???</span><br class="mobile-break"> <span>???</span>
+  <span>Ваша система обратной связи может быть какой угодно.</span><br class="mobile-break"> <span>Даже чатом в Телеграм.</span>
 </h1>
 
 <p>
-  <strong>From sleeep and recovery to what’s happening inside your body</strong><br class="mobile-break"> WHOOP brings it all together — make smarter choices today that add more years to your life.
+  <strong>???</strong><br class="mobile-break">???
 </p>
 
 <div class="checkup-cta-section">
@@ -32,9 +32,12 @@ notification: brew
 
 <div align="center">
 
-## Ваша система обратной связи может быть какой угодно. Даже чатом в Телеграм.
+## Недовольные сервисом клиенты стали слишком дорогими.
+### Недовольные сервисом клиенты стали слишком дорогими.
 
 </div>
+
+<DialogsSteps />
 
 # ИИ-ассистент Анна.
 
@@ -45,12 +48,6 @@ notification: brew
 ## Не просто возвращает клиента — делает его лояльным
 
 <DialogsAnnaWorks />
-
-# Недовольные сервисом клиенты стали слишком дорогими.
-
-### Мы это изменили.
-
-<DialogsSteps />
 
 ## 94% проблем решаются до публикации в Яндекс/2ГИС.
 
