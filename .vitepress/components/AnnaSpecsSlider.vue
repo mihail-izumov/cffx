@@ -181,7 +181,7 @@ const scrollPrev = () => {
   scroll-behavior: smooth !important;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
-  margin-bottom: 16px !important; /* Отступ для кнопок */
+  margin-bottom: 16px !important;
 }
 
 /* Скрываем скроллбар */
@@ -192,33 +192,43 @@ const scrollPrev = () => {
 .anna-brand-card {
   flex: 0 0 320px !important;
   border-radius: 12px !important;
-  padding: 48px 24px !important; /* Увеличены отступы сверху и снизу в 2 раза (24→48), слева и справа немного увеличены для баланса (18→24) */
+  padding: 48px 24px !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 16px !important; /* Добавлен gap между элементами для лучшего дыхания */
+  gap: 16px !important;
   border-style: solid !important;
   border-width: 1px !important;
   border-top-width: 4px !important;
   position: relative !important;
-  min-height: 360px !important; /* Немного увеличена высота для больших отступов */
+  min-height: 360px !important;
   overflow: hidden !important;
-  transition: border-top-color 0.3s ease !important;
 }
 
-/* Приглушённая лаймовая полоска по умолчанию */
+/* Приглушённая лаймовая полоска по умолчанию с псевдоэлементом для анимации */
 .anna-step-card {
   background-color: #4a4a4a !important;
   border-color: #555 !important;
   border-top-color: rgba(197, 249, 70, 0.3) !important;
 }
 
-/* Яркая подсветка при наведении - синхронизация полоски и маркера */
-.anna-step-card:hover {
-  border-top-color: #C5F946 !important;
+/* Псевдоэлемент для анимированной верхней полоски */
+.anna-step-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 0 !important;
+  height: 4px !important;
+  background-color: #C5F946 !important;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Плавная анимация с откатом */
+  z-index: 1 !important;
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
 }
 
-.anna-step-card:hover .anna-control-highlight {
-  background-color: rgba(197, 249, 70, 0.35) !important; /* Синхронизированная яркая подсветка */
+/* Заполнение полоски слева направо при наведении */
+.anna-step-card:hover::before {
+  width: 100% !important;
 }
 
 /* Фоновая иконка */
@@ -250,12 +260,8 @@ const scrollPrev = () => {
   border-top-color: rgba(197, 249, 70, 0.3) !important;
 }
 
-:root.dark .anna-step-card:hover {
-  border-top-color: #C5F946 !important;
-}
-
-:root.dark .anna-step-card:hover .anna-control-highlight {
-  background-color: rgba(197, 249, 70, 0.35) !important;
+:root.dark .anna-step-card::before {
+  background-color: #C5F946 !important;
 }
 
 :root.dark .anna-step-card .anna-card-background-icon {
@@ -319,20 +325,36 @@ const scrollPrev = () => {
   color: #ffffff !important;
 }
 
-/* Выделение текста после "Ваш контроль:" - очень прозрачное в пассивном состоянии */
+/* Выделение текста с анимацией заполнения слева направо */
 .anna-control-highlight {
-  background-color: rgba(197, 249, 70, 0.05) !important; /* Очень прозрачное, чтобы видеть иконку */
+  background: linear-gradient(to right, #C5F946 0%, #C5F946 0%, transparent 0%) !important;
+  background-size: 0% 100% !important;
+  background-repeat: no-repeat !important;
+  background-position: left center !important;
   color: #ffffff !important;
   padding: 2px 4px !important;
   border-radius: 3px !important;
   box-decoration-break: clone !important;
   -webkit-box-decoration-break: clone !important;
-  transition: background-color 0.3s ease !important; /* Плавная анимация синхронизированная с полоской */
+  transition: background-size 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Плавная анимация с откатом */
+  position: relative !important;
+}
+
+/* Яркое лаймовое выделение маркера при наведении на карточку */
+.anna-step-card:hover .anna-control-highlight {
+  background-size: 100% 100% !important;
 }
 
 :root.dark .anna-control-highlight {
-  background-color: rgba(197, 249, 70, 0.05) !important;
+  background: linear-gradient(to right, #C5F946 0%, #C5F946 0%, transparent 0%) !important;
+  background-size: 0% 100% !important;
+  background-repeat: no-repeat !important;
+  background-position: left center !important;
   color: #ffffff !important;
+}
+
+:root.dark .anna-step-card:hover .anna-control-highlight {
+  background-size: 100% 100% !important;
 }
 
 /* Цели */
@@ -354,9 +376,9 @@ const scrollPrev = () => {
 .anna-nav-buttons {
   display: flex !important;
   gap: 8px !important;
-  justify-content: flex-end !important; /* Выравнивание справа */
-  margin-right: 0 !important; /* Без отступа справа */
-  padding-right: 4px !important; /* Совпадает с padding слайдера */
+  justify-content: flex-end !important;
+  margin-right: 0 !important;
+  padding-right: 4px !important;
 }
 
 .anna-nav-btn {
