@@ -202,7 +202,7 @@ const scrollPrev = () => {
   position: relative !important;
   min-height: 360px !important;
   overflow: hidden !important;
-  transition: border-top-color 0.3s ease !important;
+  transition: border-top-color 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Приглушённая лаймовая полоска по умолчанию */
@@ -311,25 +311,24 @@ const scrollPrev = () => {
   color: #ffffff !important;
 }
 
-/* Выделение маркером с анимацией заполнения слева направо */
+/* Выделение маркером - скруглённые края и плавная анимация */
 .anna-control-highlight {
-  background: linear-gradient(to right, #C5F946 0%, #C5F946 0%, rgba(197, 249, 70, 0.15) 0%) !important;
-  background-size: 0% 100% !important;
-  background-repeat: no-repeat !important;
-  background-color: rgba(197, 249, 70, 0.15) !important; /* Приглушённый фон в пассивном режиме */
+  background-color: rgba(197, 249, 70, 0.15) !important; /* Приглушённый лаймовый в пассивном режиме */
   color: #ffffff !important;
-  padding: 2px 6px !important;
-  border-radius: 3px !important;
-  transition: background-size 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important;
+  padding: 3px 6px !important;
+  border-radius: 4px !important; /* Скруглённые углы */
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Более плавная анимация */
   position: relative !important;
   display: inline !important;
   z-index: 1 !important;
+  box-decoration-break: clone !important; /* Скруглённые углы при переносе строк */
+  -webkit-box-decoration-break: clone !important;
 }
 
-/* При наведении - заполнение лаймовым слева направо */
+/* При наведении - яркий лаймовый без прозрачности с белым текстом */
 .anna-step-card:hover .anna-control-highlight {
-  background-size: 100% 100% !important;
-  color: #2a2a2a !important; /* Тёмный текст для контраста */
+  background-color: #C5F946 !important; /* Полностью лаймовый без прозрачности */
+  color: #ffffff !important; /* Белый текст */
 }
 
 :root.dark .anna-control-highlight {
@@ -338,8 +337,8 @@ const scrollPrev = () => {
 }
 
 :root.dark .anna-step-card:hover .anna-control-highlight {
-  background-size: 100% 100% !important;
-  color: #2a2a2a !important;
+  background-color: #C5F946 !important;
+  color: #ffffff !important;
 }
 
 /* Цели */
