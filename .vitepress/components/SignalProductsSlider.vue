@@ -6,6 +6,13 @@ const route = useRoute()
 
 const cafeItems = [
   {
+    name: 'Сигнал для Бизнеса',
+    subtitle: 'Лучше с каждым днем',
+    url: '/dialogs',
+    icon: 'M12 5 m-9 0 a9 3 0 1 0 18 0 a9 3 0 1 0 -18 0 M3 5V19A9 3 0 0 0 15 21.84 M21 5V8 M21 12L18 17H22L19 22 M3 12A9 3 0 0 0 14.59 14.87',
+    gradientId: 'gradient-0'
+  },
+  {
     name: 'Сигнал Диалоги',
     subtitle: 'Окупается с первых Сигналов',
     url: '/pro/dialogs1',
@@ -91,6 +98,14 @@ onUnmounted(() => {
 <template>
   <svg width="0" height="0" style="position: absolute;">
     <defs>
+      <linearGradient id="gradient-0" x1="50%" y1="100%" x2="50%" y2="0%">
+        <stop offset="0%" style="stop-color:#545454;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#5c5c5c;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#646464;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#6c6c6c;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#747474;stop-opacity:1" />
+      </linearGradient>
+      
       <linearGradient id="gradient-1" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" style="stop-color:#585858;stop-opacity:1" />
         <stop offset="25%" style="stop-color:#606060;stop-opacity:1" />
@@ -237,9 +252,9 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center; 
   gap: 12px; 
-  min-width: 175px;
-  max-width: 175px;
-  width: 175px;
+  min-width: 165px;
+  max-width: 165px;
+  width: 165px;
   position: relative; 
   overflow: hidden; 
   background: rgba(40, 40, 40, 0.6); 
@@ -305,8 +320,7 @@ onUnmounted(() => {
   color: #d4ff6b;
   line-height: 1.3;
   white-space: normal;
-  max-width: 145px;
-  opacity: 0.5;
+  max-width: 135px;
 }
 
 .signal2-switcher-active .signal2-switcher-subtitle {
@@ -367,9 +381,9 @@ onUnmounted(() => {
   .signal2-switcher {
     height: 130px;
     padding: 16px 18px;
-    min-width: 175px;
-    max-width: 175px;
-    width: 175px;
+    min-width: 165px;
+    max-width: 165px;
+    width: 165px;
   }
 }
 
@@ -378,13 +392,13 @@ onUnmounted(() => {
     height: 125px;
     padding: 14px 16px;
     gap: 10px;
-    min-width: 175px;
-    max-width: 175px;
-    width: 175px;
+    min-width: 165px;
+    max-width: 165px;
+    width: 165px;
   }
   
   .signal2-switcher-subtitle {
-    max-width: 145px;
+    max-width: 135px;
   }
 }
 </style>
