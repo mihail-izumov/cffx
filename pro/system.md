@@ -3,7 +3,7 @@ outline: false
 prev: false
 next: false
 title: Сигнал Система
-description: Где Начинается Ваш Бизнес
+description: Тотальная эффективность клиентского сервиса
 notification: brew
 ---
 
@@ -16,7 +16,7 @@ notification: brew
 <br>
 
 <h1>
-  <span>Решить любую проблему</span><br class="mobile-break"> <span>клиента за 24 часа.</span>
+  <span>Тотальная эффективность</span><br class="mobile-break"> <span>каждого процесса.</span>
 </h1>
 
 <p>
@@ -24,28 +24,11 @@ notification: brew
 </p>
 
 <div class="checkup-cta-section">
-  <div class="checkup-price">От ₽90,000/мес.</div>
+  <div class="checkup-price">От ₽275,000/мес.</div>
   <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
 
-## Тотальная эффективность каждого процесса.
-
 </div>
 
-<div align="center">
-  
-## Тарифы
 
-**Разовый платеж за внедрение – ₽150,000**
 
-</div>
-
-<FitnessTarifs />
-
-<div align="center">
-
-## Начать Сегодня
-
-</div>
-
-<DialogsForm />
