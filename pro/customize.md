@@ -50,8 +50,6 @@ notification: brew
 
 ## Начать Сегодня
 
-</div>
-
 <DialogsForm />
 
 <style>
