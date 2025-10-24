@@ -196,22 +196,14 @@ const scrollPrev = () => {
   display: flex !important;
   flex-direction: column !important;
   gap: 16px !important;
-  border-style: solid !important;
-  border-width: 1px !important;
-  border-top-width: 4px !important;
+  border: 1px solid #555 !important; /* Обычная граница без border-top */
   position: relative !important;
   min-height: 360px !important;
   overflow: hidden !important;
-}
-
-/* Приглушённая лаймовая полоска по умолчанию с псевдоэлементом для анимации */
-.anna-step-card {
   background-color: #4a4a4a !important;
-  border-color: #555 !important;
-  border-top-color: rgba(197, 249, 70, 0.3) !important;
 }
 
-/* Псевдоэлемент для анимированной верхней полоски */
+/* Псевдоэлемент для анимированной верхней полоски - ЕДИНСТВЕННАЯ полоска */
 .anna-step-card::before {
   content: '' !important;
   position: absolute !important;
@@ -220,10 +212,9 @@ const scrollPrev = () => {
   width: 0 !important;
   height: 4px !important;
   background-color: #C5F946 !important;
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Плавная анимация с откатом */
-  z-index: 1 !important;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  z-index: 2 !important;
   border-top-left-radius: 12px !important;
-  border-top-right-radius: 12px !important;
 }
 
 /* Заполнение полоски слева направо при наведении */
@@ -257,7 +248,6 @@ const scrollPrev = () => {
 :root.dark .anna-step-card {
   background-color: #2a2a2a !important;
   border-color: #3a3a3a !important;
-  border-top-color: rgba(197, 249, 70, 0.3) !important;
 }
 
 :root.dark .anna-step-card::before {
@@ -325,36 +315,27 @@ const scrollPrev = () => {
   color: #ffffff !important;
 }
 
-/* Выделение текста с анимацией заполнения слева направо */
+/* Выделение текста с анимацией заполнения - ИСПРАВЛЕНО */
 .anna-control-highlight {
-  background: linear-gradient(to right, #C5F946 0%, #C5F946 0%, transparent 0%) !important;
-  background-size: 0% 100% !important;
-  background-repeat: no-repeat !important;
-  background-position: left center !important;
-  color: #ffffff !important;
-  padding: 2px 4px !important;
+  background: linear-gradient(90deg, #C5F946 0%, #C5F946 50%, transparent 50%) !important;
+  background-size: 200% 100% !important;
+  background-position: 100% 0 !important;
+  color: #2a2a2a !important; /* Тёмный текст для контраста с лаймовым фоном */
+  padding: 2px 6px !important;
   border-radius: 3px !important;
-  box-decoration-break: clone !important;
-  -webkit-box-decoration-break: clone !important;
-  transition: background-size 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Плавная анимация с откатом */
+  transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
   position: relative !important;
+  display: inline !important;
+  z-index: 1 !important;
 }
 
-/* Яркое лаймовое выделение маркера при наведении на карточку */
+/* Заполнение маркера слева направо при наведении на карточку */
 .anna-step-card:hover .anna-control-highlight {
-  background-size: 100% 100% !important;
+  background-position: 0 0 !important;
 }
 
 :root.dark .anna-control-highlight {
-  background: linear-gradient(to right, #C5F946 0%, #C5F946 0%, transparent 0%) !important;
-  background-size: 0% 100% !important;
-  background-repeat: no-repeat !important;
-  background-position: left center !important;
-  color: #ffffff !important;
-}
-
-:root.dark .anna-step-card:hover .anna-control-highlight {
-  background-size: 100% 100% !important;
+  color: #2a2a2a !important;
 }
 
 /* Цели */
