@@ -27,18 +27,25 @@ const cafeItems = [
     gradientId: 'gradient-2'
   },
   {
+    name: 'Анна',
+    subtitle: 'Просто скажите что не так',
+    url: '/pro/anna',
+    icon: 'M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z M20 2v4 M22 4h-4 M4 20 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0',
+    gradientId: 'gradient-3'
+  },
+  {
     name: 'Настроить Сигнал',
     subtitle: 'Старт за 48 часов. Бесплатно.',
     url: '/pro/customize',
     icon: 'M4 10a7.31 7.31 0 0 0 10 10Z M9 15l3-3 M17 13a6 6 0 0 0-6-6 M21 13A10 10 0 0 0 11 3',
-    gradientId: 'gradient-3'
+    gradientId: 'gradient-4'
   },
   {
     name: 'Спецификация',
     subtitle: 'Дьявол в деталях',
     url: '/pro/specs',
-    icon: 'M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z M20 2v4 M22 4h-4 M4 20 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0',
-    gradientId: 'gradient-4'
+    icon: 'M12 20v2 M12 2v2 M17 20v2 M17 2v2 M2 12h2 M2 17h2 M2 7h2 M20 12h2 M20 17h2 M20 7h2 M7 20v2 M7 2v2 M4 4 h16 v16 h-16 z M4 4 a2 2 0 0 1 2 -2 M20 4 a2 2 0 0 0 -2 -2 M4 20 a2 2 0 0 0 2 2 M20 20 a2 2 0 0 1 -2 2 M8 8 h8 v8 h-8 z M8 8 a1 1 0 0 1 1 -1 M16 8 a1 1 0 0 0 -1 -1 M8 16 a1 1 0 0 0 1 1 M16 16 a1 1 0 0 1 -1 1',
+    gradientId: 'gradient-5'
   }
 ]
 
@@ -136,6 +143,14 @@ onUnmounted(() => {
         <stop offset="50%" style="stop-color:#6c6c6c;stop-opacity:1" />
         <stop offset="75%" style="stop-color:#747474;stop-opacity:1" />
         <stop offset="100%" style="stop-color:#7c7c7c;stop-opacity:1" />
+      </linearGradient>
+      
+      <linearGradient id="gradient-5" x1="0%" y1="50%" x2="100%" y2="50%">
+        <stop offset="0%" style="stop-color:#525252;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#5a5a5a;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#626262;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#6a6a6a;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#727272;stop-opacity:1" />
       </linearGradient>
       
       <!-- Фильтр для создания эффекта объема -->
@@ -242,7 +257,7 @@ onUnmounted(() => {
 
 .signal2-switcher { 
   border-radius: 12px; 
-  padding: 16px 20px; 
+  padding: 16px 18px; 
   font-size: 15px; 
   cursor: pointer; 
   border: none; 
@@ -252,9 +267,9 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center; 
   gap: 12px; 
-  min-width: 165px;
-  max-width: 165px;
-  width: 165px;
+  min-width: 155px;
+  max-width: 155px;
+  width: 155px;
   position: relative; 
   overflow: hidden; 
   background: rgba(40, 40, 40, 0.6); 
@@ -320,7 +335,7 @@ onUnmounted(() => {
   color: #d4ff6b;
   line-height: 1.3;
   white-space: normal;
-  max-width: 135px;
+  max-width: 125px;
   opacity: 0.4;
   transition: opacity 0.3s ease;
 }
@@ -382,25 +397,25 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .signal2-switcher {
     height: 130px;
-    padding: 16px 18px;
-    min-width: 165px;
-    max-width: 165px;
-    width: 165px;
+    padding: 16px 16px;
+    min-width: 155px;
+    max-width: 155px;
+    width: 155px;
   }
 }
 
 @media (max-width: 480px) {
   .signal2-switcher {
     height: 125px;
-    padding: 14px 16px;
+    padding: 14px 14px;
     gap: 10px;
-    min-width: 165px;
-    max-width: 165px;
-    width: 165px;
+    min-width: 155px;
+    max-width: 155px;
+    width: 155px;
   }
   
   .signal2-switcher-subtitle {
-    max-width: 135px;
+    max-width: 125px;
   }
 }
 </style>
