@@ -16,7 +16,7 @@ notification: brew
 <br>
 
 <h1>
-  <span>Тотальная эффективность</span><br class="mobile-break"> <span>каждого процесса.</span>
+  <span>Тотальная эффективность</span><br class="mobile-break"> <span>клиентского сервиса.</span>
 </h1>
 
 <p>
