@@ -31,7 +31,66 @@ notification: brew
 </div>
 
 <div align="center">
+
+## Тотальная эффективность каждого процесса.
+
+</div>
+
+<Dialogs3Cards />
+
+## От Диалогов к безупречной Системе сервиса.
+
+<SignalProductsCards />
+
+# Недовольные сервисом клиенты стали слишком дорогими.
+
+### Мы это изменили.
+
+<DialogsSteps />
+
+## 94% проблем решаются до публикации в Яндекс/2ГИС.
+
+<SignalAbout3Cards />
+
+<div class="checkup-cta-section">
+  <div class="checkup-price">От ₽90,000/мес.</div>
+  <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
+</div>
+
+<div style="background-color: #2d2d2d; border: 0px solid #404040; border-radius: 8px; padding: 7px 10px; font-size: 13px; color: #a8a8a8; margin: 8px 0; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 500; line-height: 1.2;">
+  <span>Проведем аналитику отзывов и <a href="/pro/dialogs#быстрыи-старт" style="color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; text-decoration-skip-ink: auto; border-bottom: none; box-shadow: none; font-weight: 500;">разработаем SLA для старта</a></span>
+  <Badge type="tip" text="Бесплатно за 5 дней" style="position: relative; top: 2px;" />
+</div>
   
+## Система подсказок
+
+<div style="text-align: center; margin: 2rem 0;">
+  <img 
+    src="/SignalVSReview.jpg" 
+    alt="BREW intro"
+    style="
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      border-radius: max(12px, min(24px, 3vw));
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    "
+    onmouseover="this.style.transform='scale(1.02)'"
+    onmouseout="this.style.transform='scale(1)'"
+  />
+</div>
+
+### Сигнал собирает детализированную обратную связь от гостей кофеен
+
+**Все данные из реальных инцидентов Регламента:** информация основана на реальных случаях и анализе происшествий.
+
+<br>
+
+<DialogsTestT9 />
+<DialogsT9 />
+
+
 ## Тарифы
 
 **Разовый платеж за внедрение – ₽150,000**
@@ -42,8 +101,3 @@ notification: brew
 
 <div align="center">
 
-## Начать Сегодня
-
-</div>
-
-<DialogsForm />
