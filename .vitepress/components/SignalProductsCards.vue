@@ -89,9 +89,13 @@
         <li class="feature-item">
           <CheckIcon />
           <span>
-            <button class="feature-link" @click="openModal('max', 'annaWidget')">
-              Анна и Виджет (продвинутая настройка)
+            <button class="feature-link" @click="openModal('max', 'annaMax')">
+              Анна
+            </button> и 
+            <button class="feature-link" @click="openModal('max', 'widgetMax')">
+              Виджет
             </button>
+            (продвинутая настройка)
           </span>
         </li>
         <li class="feature-item">
@@ -124,10 +128,29 @@
             </button>
             <div class="modal-header">{{ currentModal.tariff }}</div>
             <h2 class="modal-title">{{ currentModal.title }}</h2>
-            <div class="modal-body" v-html="currentModal.content"></div>
-            <a v-if="currentModal.link" :href="currentModal.link" class="modal-link">
-              Подробнее <ArrowIcon />
-            </a>
+            <div class="modal-body">
+              <div 
+                v-for="(point, index) in currentModal.points" 
+                :key="index" 
+                class="modal-accordion-item"
+              >
+                <button 
+                  class="modal-accordion-header" 
+                  @click="toggleAccordion(index)"
+                  :class="{ 'is-open': openAccordions.includes(index) }"
+                >
+                  <span class="accordion-icon">{{ point.icon }}</span>
+                  <span class="accordion-title">{{ point.title }}</span>
+                  <ChevronIcon :class="{ 'is-rotated': openAccordions.includes(index) }" />
+                </button>
+                <div 
+                  v-if="openAccordions.includes(index)" 
+                  class="modal-accordion-content"
+                >
+                  {{ point.text }}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Transition>
@@ -178,10 +201,11 @@ const CloseIcon = () =>
     ]
   )
 
-const ArrowIcon = () =>
+const ChevronIcon = () =>
   h(
     'svg',
     {
+      class: 'chevron-icon',
       xmlns: 'http://www.w3.org/2000/svg',
       viewBox: '0 0 24 24',
       fill: 'none',
@@ -189,11 +213,11 @@ const ArrowIcon = () =>
       'stroke-width': '2',
       'stroke-linecap': 'round',
       'stroke-linejoin': 'round',
-      width: '16',
-      height: '16'
+      width: '20',
+      height: '20'
     },
     [
-      h('polyline', { points: '9 18 15 12 9 6' })
+      h('polyline', { points: '6 9 12 15 18 9' })
     ]
   )
 
@@ -201,188 +225,224 @@ const ArrowIcon = () =>
 const isModalOpen = ref(false)
 const currentTariff = ref('')
 const currentFeature = ref('')
+const openAccordions = ref([])
 
 /* Данные для модальных окон */
 const modalData = {
   dialogs: {
-    tariff: 'ТАРИФ "ДИАЛОГИ"',
+    tariff: 'СИГНАЛ ДИАЛОГИ',
     ticketing: {
       title: 'Тикет-система',
-      content: `
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Приём обращений 24/7</div>
-          <div class="modal-point-text">Клиенты отправляют сигналы в любое время через виджет. Система присваивает номер, фиксирует время и передаёт оператору в рабочие часы.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Преднастроенная система для оператора</div>
-          <div class="modal-point-text">Вы не получаете доступ к SaaS-платформе. Оператор Сигнала работает в настроенной тикет-системе за вас. Вы видите только результат: тикеты и уведомления в Telegram-чате вашей команды.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Контроль сроков и напоминания</div>
-          <div class="modal-point-text">Автоматические уведомления команде: за 30 минут до срока и при просрочке. Ни один тикет не теряется.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Полная история обращений</div>
-          <div class="modal-point-text">Каждый тикет хранит всю переписку и изменения. Любой исполнитель входит в контекст за секунды.</div>
-        </div>
-      `
+      points: [
+        {
+          icon: '✓',
+          title: 'Приём обращений 24/7',
+          text: 'Клиенты отправляют сигналы в любое время через виджет. Система присваивает номер, фиксирует время и передаёт оператору в рабочие часы.'
+        },
+        {
+          icon: '✓',
+          title: 'Преднастроенная система для оператора',
+          text: 'Вы не получаете доступ к SaaS-платформе. Оператор Сигнала работает в настроенной тикет-системе за вас. Вы видите только результат: тикеты и уведомления в Telegram-чате вашей команды.'
+        },
+        {
+          icon: '✓',
+          title: 'Контроль сроков и напоминания',
+          text: 'Автоматические уведомления команде: за 30 минут до срока и при просрочке. Ни один тикет не теряется.'
+        },
+        {
+          icon: '✓',
+          title: 'Полная история обращений',
+          text: 'Каждый тикет хранит всю переписку и изменения. Любой исполнитель входит в контекст за секунды.'
+        }
+      ]
     },
     anna: {
       title: 'Анна (базовая версия)',
-      content: `
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Стандартные сценарии для вашей ниши</div>
-          <div class="modal-point-text">Анна ведёт диалог с клиентом, собирает факты и передаёт готовое задание команде. Работает сразу после подключения.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Работает сразу после подключения</div>
-          <div class="modal-point-text">Универсальные настройки под гостиницы, рестораны, фитнес-клубы. Не требует дополнительной настройки.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">⚙ Персональная настройка — за доп. плату (4 недели, от ₽150,000)</div>
-          <div class="modal-point-text">Адаптируем Анну под ваш тон, продукты и особые ситуации. Это глубокая интеграция в ваш бизнес, а не просто изменение текста в чат-боте.</div>
-        </div>
-      `
+      points: [
+        {
+          icon: '✓',
+          title: 'Стандартные сценарии для вашей ниши',
+          text: 'Анна ведёт диалог с клиентом, собирает факты и передаёт готовое задание команде. Работает сразу после подключения.'
+        },
+        {
+          icon: '✓',
+          title: 'Работает сразу после подключения',
+          text: 'Универсальные настройки под гостиницы, рестораны, фитнес-клубы. Не требует дополнительной настройки.'
+        },
+        {
+          icon: '⚙',
+          title: 'Персональная настройка — за доп. плату (4 недели, от ₽150,000)',
+          text: 'Адаптируем Анну под ваш тон, продукты и особые ситуации. Это глубокая интеграция в ваш бизнес, а не просто изменение текста в чат-боте.'
+        }
+      ]
     },
     support: {
       title: 'Поддержка оператора (будни, 9-18)',
-      content: `
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Аналитик Сигнала обрабатывает каждый сигнал</div>
-          <div class="modal-point-text">Не бот, а профессиональный оператор. Каждое обращение проходит через руки человека — проверка фактов, контроль качества, координация команды.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Сигналы принимаются 24/7 через виджет</div>
-          <div class="modal-point-text">Клиенты отправляют сигналы круглосуточно. Оператор обрабатывает их в рабочее время — так вы получаете решение, а не автоответ.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Гарантия решения за 24 часа</div>
-          <div class="modal-point-text">Мы не гонимся за скоростью ответа. Мы гарантируем качество закрытия: решение за 24 часа, без исключений.</div>
-        </div>
-      `
+      points: [
+        {
+          icon: '✓',
+          title: 'Аналитик Сигнала обрабатывает каждый сигнал',
+          text: 'Не бот, а профессиональный оператор. Каждое обращение проходит через руки человека — проверка фактов, контроль качества, координация команды.'
+        },
+        {
+          icon: '✓',
+          title: 'Сигналы принимаются 24/7 через виджет',
+          text: 'Клиенты отправляют сигналы круглосуточно. Оператор обрабатывает их в рабочее время — так вы получаете решение, а не автоответ.'
+        },
+        {
+          icon: '✓',
+          title: 'Гарантия решения за 24 часа',
+          text: 'Мы не гонимся за скоростью ответа. Мы гарантируем качество закрытия: решение за 24 часа, без исключений.'
+        }
+      ]
     },
     widget: {
       title: 'Виджет',
-      content: `
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Публичная страница для каждой локации</div>
-          <div class="modal-point-text">Клиенты видят рейтинг, отзывы и могут отправить сигнал прямо с вашего сайта. Брендирование под ваш бизнес: логотип, цвета, название.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Быстрый отзыв в Яндекс/2ГИС (2 клика)</div>
-          <div class="modal-point-text">Клиенту не нужно искать вашу локацию на картах и переходить во вкладку отзывов. Прямо из виджета — выбрал платформу, оставил оценку, готово.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Бейдж "Репутация под защитой"</div>
-          <div class="modal-point-text">Статус, который видят все: "Сигнал работает" = ваша репутация под контролем.</div>
-        </div>
-      `
+      points: [
+        {
+          icon: '✓',
+          title: 'Публичная страница для каждой локации',
+          text: 'Клиенты видят рейтинг, отзывы и могут отправить сигнал прямо с вашего сайта. Брендирование под ваш бизнес: логотип, цвета, название.'
+        },
+        {
+          icon: '✓',
+          title: 'Быстрый отзыв в Яндекс/2ГИС (2 клика)',
+          text: 'Клиенту не нужно искать вашу локацию на картах и переходить во вкладку отзывов. Прямо из виджета — выбрал платформу, оставил оценку, готово.'
+        },
+        {
+          icon: '✓',
+          title: 'Бейдж "Репутация под защитой"',
+          text: 'Статус, который видят все: "Сигнал работает" = ваша репутация под контролем.'
+        }
+      ]
     },
     stats: {
       title: 'Ежемесячная статистика',
-      content: `
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Автоматическая сводка за месяц</div>
-          <div class="modal-point-text">Система формирует отчёт: сколько сигналов принято, сколько закрыто, средняя скорость реакции, распределение по категориям А–Г.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Метрики качества работы системы</div>
-          <div class="modal-point-text">Время от обращения до тикета (норматив ≤ 15 мин), доля просрочек (≤ 5%), средняя оценка опыта (≥ 8 из 10), доля повторных обращений (≤ 3%).</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Без глубокой аналитики</div>
-          <div class="modal-point-text">Вы видите цифры и тренды, но не получаете рекомендаций по улучшению процессов. Это чистая статистика, без стратегического разбора.</div>
-        </div>
-      `
+      points: [
+        {
+          icon: '✓',
+          title: 'Автоматическая сводка за месяц',
+          text: 'Система формирует отчёт: сколько сигналов принято, сколько закрыто, средняя скорость реакции, распределение по категориям А–Г.'
+        },
+        {
+          icon: '✓',
+          title: 'Метрики качества работы системы',
+          text: 'Время от обращения до тикета (норматив ≤ 15 мин), доля просрочек (≤ 5%), средняя оценка опыта (≥ 8 из 10), доля повторных обращений (≤ 3%).'
+        },
+        {
+          icon: '✓',
+          title: 'Без глубокой аналитики',
+          text: 'Вы видите цифры и тренды, но не получаете рекомендаций по улучшению процессов. Это чистая статистика, без стратегического разбора.'
+        }
+      ]
     }
   },
   max: {
-    tariff: 'ТАРИФ "МАКС"',
+    tariff: 'СИГНАЛ МАКС',
     analytics: {
       title: 'Аналитика 360° и еженедельные отчёты',
-      content: `
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Ежемесячная статистика + стратегический разбор</div>
-          <div class="modal-point-text">Не просто цифры (как в тарифе Диалоги), а детальная аналитика: динамика качества за 3 месяца, топ-5 повторяющихся проблем, эффективность компенсаций, анализ повторных обращений.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Глубокий разбор при отклонениях</div>
-          <div class="modal-point-text">Резкий рост просрочек? Повторяющиеся жалобы на одну тему? Мы проводим детальный разбор каждого проблемного тикета и даём рекомендации: добавить смену, изменить процесс, обучить команду.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Еженедельные сводные отчёты (каждые 2 недели)</div>
-          <div class="modal-point-text">Динамика метрик, предложения по улучшению процессов, выводы о тренде качества. Решения принимаются на основе фактов, а не ощущений.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Метрики качества с нормативами</div>
-          <div class="modal-point-text">Время «обращение → тикет» (≤ 15 мин), время «тикет → ответ команды» (по категории А–Г), доля просрочек (≤ 5%), средняя оценка опыта (≥ 8 из 10), доля повторных обращений (≤ 3%).</div>
-        </div>
-      `
+      points: [
+        {
+          icon: '✓',
+          title: 'Ежемесячная статистика + стратегический разбор',
+          text: 'Не просто цифры (как в тарифе Диалоги), а детальная аналитика: динамика качества за 3 месяца, топ-5 повторяющихся проблем, эффективность компенсаций, анализ повторных обращений.'
+        },
+        {
+          icon: '✓',
+          title: 'Глубокий разбор при отклонениях',
+          text: 'Резкий рост просрочек? Повторяющиеся жалобы на одну тему? Мы проводим детальный разбор каждого проблемного тикета и даём рекомендации: добавить смену, изменить процесс, обучить команду.'
+        },
+        {
+          icon: '✓',
+          title: 'Еженедельные сводные отчёты (каждые 2 недели)',
+          text: 'Динамика метрик, предложения по улучшению процессов, выводы о тренде качества. Решения принимаются на основе фактов, а не ощущений.'
+        },
+        {
+          icon: '✓',
+          title: 'Метрики качества с нормативами',
+          text: 'Время «обращение → тикет» (≤ 15 мин), время «тикет → ответ команды» (по категории А–Г), доля просрочек (≤ 5%), средняя оценка опыта (≥ 8 из 10), доля повторных обращений (≤ 3%).'
+        }
+      ]
     },
-    annaWidget: {
+    annaMax: {
       title: 'Анна (продвинутая настройка)',
-      content: `
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Всё из базовой + персональная адаптация включена</div>
-          <div class="modal-point-text">Анна говорит вашими словами, знает ваши продукты, меню, услуги. Настройка занимает 4 недели — это часть тарифа.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Анна знает ваш тон, продукты, особые ситуации</div>
-          <div class="modal-point-text">Не универсальные шаблоны, а глубокая интеграция в ваш бизнес. Анна — ваш виртуальный сотрудник, а не чат-бот.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Постоянная калибровка под изменения в бизнесе</div>
-          <div class="modal-point-text">Меню изменилось? Новая услуга? Мы обновляем Анну без дополнительной платы. Система растёт вместе с вами.</div>
-        </div>
-        <div class="modal-divider"></div>
-        <h3 class="modal-subtitle">Виджет (расширенная версия)</h3>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Всё из тарифа Диалоги</div>
-          <div class="modal-point-text">Публичная страница, брендирование, быстрый отзыв в Яндекс/2ГИС (2 клика), бейдж "Репутация под защитой".</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Мультилокационность</div>
-          <div class="modal-point-text">Отдельные виджеты для каждой точки сети. Клиенты видят оценки конкретного ресторана или клуба, а не усреднённый рейтинг по сети.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Расширенная аналитика публичной страницы</div>
-          <div class="modal-point-text">Сколько людей видели виджет, сколько оставили сигналы, какая конверсия. Контроль репутации в реальном времени.</div>
-        </div>
-      `
+      points: [
+        {
+          icon: '✓',
+          title: 'Всё из базовой + персональная адаптация включена',
+          text: 'Анна говорит вашими словами, знает ваши продукты, меню, услуги. Настройка занимает 4 недели — это часть тарифа.'
+        },
+        {
+          icon: '✓',
+          title: 'Анна знает ваш тон, продукты, особые ситуации',
+          text: 'Не универсальные шаблоны, а глубокая интеграция в ваш бизнес. Анна — ваш виртуальный сотрудник, а не чат-бот.'
+        },
+        {
+          icon: '✓',
+          title: 'Постоянная калибровка под изменения в бизнесе',
+          text: 'Меню изменилось? Новая услуга? Мы обновляем Анну без дополнительной платы. Система растёт вместе с вами.'
+        }
+      ]
+    },
+    widgetMax: {
+      title: 'Виджет (расширенная версия)',
+      points: [
+        {
+          icon: '✓',
+          title: 'Всё из тарифа Диалоги',
+          text: 'Публичная страница, брендирование, быстрый отзыв в Яндекс/2ГИС (2 клика), бейдж "Репутация под защитой".'
+        },
+        {
+          icon: '✓',
+          title: 'Мультилокационность',
+          text: 'Отдельные виджеты для каждой точки сети. Клиенты видят оценки конкретного ресторана или клуба, а не усреднённый рейтинг по сети.'
+        },
+        {
+          icon: '✓',
+          title: 'Расширенная аналитика публичной страницы',
+          text: 'Сколько людей видели виджет, сколько оставили сигналы, какая конверсия. Контроль репутации в реальном времени.'
+        }
+      ]
     },
     priority: {
       title: 'Приоритетная поддержка',
-      content: `
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Выделенный оператор для ваших локаций</div>
-          <div class="modal-point-text">Не общий пул операторов — персональный специалист, который знает вашу сеть, ваши стандарты, вашу команду.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Расширенный график (опция 24/7 для сетей)</div>
-          <div class="modal-point-text">Для сетей с высокой нагрузкой мы можем выделить команду операторов и обеспечить обработку сигналов круглосуточно. Стоимость рассчитывается индивидуально.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Гарантия решения за 12 часов</div>
-          <div class="modal-point-text">Приоритетная обработка = в 2 раза быстрее. Критичные сигналы решаются ещё быстрее (категория Г — первое обновление за 15 минут).</div>
-        </div>
-      `
+      points: [
+        {
+          icon: '✓',
+          title: 'Выделенный оператор для ваших локаций',
+          text: 'Не общий пул операторов — персональный специалист, который знает вашу сеть, ваши стандарты, вашу команду.'
+        },
+        {
+          icon: '✓',
+          title: 'Расширенный график (опция 24/7 для сетей)',
+          text: 'Для сетей с высокой нагрузкой мы можем выделить команду операторов и обеспечить обработку сигналов круглосуточно. Стоимость рассчитывается индивидуально.'
+        },
+        {
+          icon: '✓',
+          title: 'Гарантия решения за 12 часов',
+          text: 'Приоритетная обработка = в 2 раза быстрее. Критичные сигналы решаются ещё быстрее (категория Г — первое обновление за 15 минут).'
+        }
+      ]
     },
     analyst: {
       title: 'Персональный аналитик и стратегические сессии',
-      content: `
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Аналитик Сигнала на связи</div>
-          <div class="modal-point-text">Не просто отчёты — специалист, который разбирает ваши данные, видит тренды и предлагает решения.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Стратегические сессии (90 минут, раз в 2 недели)</div>
-          <div class="modal-point-text">Разбор метрик, обсуждение узких мест, план улучшений на следующие 2 недели. Непрерывный рост качества без застоя.</div>
-        </div>
-        <div class="modal-point">
-          <div class="modal-point-title">✓ Рекомендации по системным изменениям</div>
-          <div class="modal-point-text">Много обращений по одной теме? Аналитик предложит: изменить процесс, автоматизировать, обучить команду. Не тушение пожаров, а устранение причин.</div>
-        </div>
-      `
+      points: [
+        {
+          icon: '✓',
+          title: 'Аналитик Сигнала на связи',
+          text: 'Не просто отчёты — специалист, который разбирает ваши данные, видит тренды и предлагает решения.'
+        },
+        {
+          icon: '✓',
+          title: 'Стратегические сессии (90 минут, раз в 2 недели)',
+          text: 'Разбор метрик, обсуждение узких мест, план улучшений на следующие 2 недели. Непрерывный рост качества без застоя.'
+        },
+        {
+          icon: '✓',
+          title: 'Рекомендации по системным изменениям',
+          text: 'Много обращений по одной теме? Аналитик предложит: изменить процесс, автоматизировать, обучить команду. Не тушение пожаров, а устранение причин.'
+        }
+      ]
     }
   }
 }
@@ -402,13 +462,24 @@ const currentModal = computed(() => {
 const openModal = (tariff, feature) => {
   currentTariff.value = tariff
   currentFeature.value = feature
+  openAccordions.value = [0] // Открываем первый пункт по умолчанию
   isModalOpen.value = true
   document.body.style.overflow = 'hidden'
 }
 
 const closeModal = () => {
   isModalOpen.value = false
+  openAccordions.value = []
   document.body.style.overflow = ''
+}
+
+const toggleAccordion = (index) => {
+  const idx = openAccordions.value.indexOf(index)
+  if (idx > -1) {
+    openAccordions.value.splice(idx, 1)
+  } else {
+    openAccordions.value.push(index)
+  }
 }
 </script>
 
@@ -536,7 +607,7 @@ const closeModal = () => {
   flex-shrink: 0;
 }
 
-/* ССЫЛКИ ФУНКЦИЙ С ПУНКТИРОМ ---------------------------------------------- */
+/* ССЫЛКИ ФУНКЦИЙ С ДЕФИСНЫМ ПОДЧЕРКИВАНИЕМ -------------------------------- */
 .feature-link {
   background: none;
   border: none;
@@ -545,16 +616,12 @@ const closeModal = () => {
   color: #e0e0e0;
   cursor: pointer;
   text-decoration: underline;
-  text-decoration-style: dotted;
-  text-decoration-color: #c5f946;
+  text-decoration-style: dashed;
+  text-decoration-color: #e0e0e0;
   text-underline-offset: 3px;
-  transition: all 0.2s ease;
+  text-decoration-thickness: 1px;
+  transition: none;
   text-align: left;
-}
-
-.feature-link:hover {
-  color: #c5f946;
-  text-decoration-style: solid;
 }
 
 /* КНОПКИ ------------------------------------------------------------------ */
@@ -609,17 +676,18 @@ const closeModal = () => {
   justify-content: center;
   z-index: 10000;
   padding: 20px;
-  overflow-y: auto;
 }
 
 .modal-content {
   background: #f5f5f7;
   border-radius: 28px;
-  max-width: 920px;
-  width: 100%;
-  padding: 60px 80px;
+  width: 920px;
+  height: 720px;
   position: relative;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .modal-close {
@@ -637,6 +705,7 @@ const closeModal = () => {
   justify-content: center;
   transition: all 0.2s ease;
   color: #f5f5f7;
+  z-index: 10;
 }
 
 .modal-close:hover {
@@ -645,70 +714,113 @@ const closeModal = () => {
 }
 
 .modal-header {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #6e6e73;
   margin-bottom: 12px;
   font-weight: 500;
   letter-spacing: 0.08em;
+  padding: 60px 80px 0;
 }
 
 .modal-title {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 600;
   color: #1d1d1f;
   margin: 0 0 32px 0;
   line-height: 1.1;
+  padding: 0 80px;
 }
 
 .modal-body {
-  color: #1d1d1f;
-  line-height: 1.6;
+  padding: 0 80px 60px;
+  overflow-y: auto;
+  flex: 1;
 }
 
-.modal-point {
-  margin-bottom: 24px;
+/* АККОРДЕОН --------------------------------------------------------------- */
+.modal-accordion-item {
+  margin-bottom: 12px;
+  background: #e8e8ed;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.modal-point-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #1d1d1f;
-  margin-bottom: 8px;
-}
-
-.modal-point-text {
-  font-size: 1rem;
-  color: #6e6e73;
-  line-height: 1.6;
-}
-
-.modal-divider {
-  height: 1px;
-  background: #d2d2d7;
-  margin: 32px 0;
-}
-
-.modal-subtitle {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #1d1d1f;
-  margin: 0 0 24px 0;
-}
-
-.modal-link {
-  display: inline-flex;
+.modal-accordion-header {
+  width: 100%;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  color: #0066cc;
-  font-size: 1.0625rem;
-  text-decoration: none;
-  margin-top: 24px;
-  transition: all 0.2s ease;
+  gap: 12px;
+  padding: 18px 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease;
 }
 
-.modal-link:hover {
-  color: #0077ed;
-  text-decoration: underline;
+.modal-accordion-header:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.accordion-icon {
+  font-size: 1.25rem;
+  color: #1d1d1f;
+  flex-shrink: 0;
+}
+
+.accordion-title {
+  flex: 1;
+  font-size: 1.2rem;
+  font-weight: 550;
+  color: #1d1d1f;
+  line-height: 1.4;
+}
+
+.chevron-icon {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  color: #6e6e73;
+}
+
+.chevron-icon.is-rotated {
+  transform: rotate(180deg);
+}
+
+.modal-accordion-content {
+  padding: 0 20px 20px 20px;
+  font-size: 1.125rem;
+  color: #6e6e73;
+  line-height: 1.65;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* КАСТОМНЫЙ СКРОЛЛБАР ------------------------------------------------------ */
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #d1d1d6;
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #b8b8bd;
 }
 
 /* АНИМАЦИЯ МОДАЛЬНОГО ОКНА ------------------------------------------------ */
@@ -757,30 +869,31 @@ const closeModal = () => {
   }
 
   .modal-content {
-    padding: 40px 24px;
+    width: 100%;
+    height: 90vh;
     border-radius: 20px;
-    margin: 20px 0;
+  }
+
+  .modal-header {
+    padding: 40px 24px 0;
+    font-size: 0.875rem;
   }
 
   .modal-title {
-    font-size: 1.75rem;
+    font-size: 2rem;
+    padding: 0 24px;
   }
 
-  .modal-subtitle {
-    font-size: 1.375rem;
+  .modal-body {
+    padding: 0 24px 40px;
   }
 
-  .modal-point-title {
+  .accordion-title {
+    font-size: 1.0625rem;
+  }
+
+  .modal-accordion-content {
     font-size: 1rem;
-  }
-
-  .modal-point-text {
-    font-size: 0.9375rem;
-  }
-
-  .modal-overlay {
-    align-items: flex-start;
-    padding: 0;
   }
 }
 
@@ -791,11 +904,19 @@ const closeModal = () => {
   }
 
   .modal-content {
-    padding: 32px 20px;
+    height: 95vh;
   }
 
   .modal-title {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+  }
+
+  .accordion-title {
+    font-size: 1rem;
+  }
+
+  .modal-accordion-content {
+    font-size: 0.9375rem;
   }
 }
 </style>
