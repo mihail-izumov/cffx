@@ -363,6 +363,7 @@ onUnmounted(() => {
   line-height: 1.2;
   color: inherit;
   transition: color 0.3s ease;
+  white-space: normal;
 }
 
 .signal2-switcher-subtitle {
