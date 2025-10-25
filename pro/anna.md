@@ -348,8 +348,9 @@ const sections = [
   background: rgba(100, 100, 100, 0.08) !important;
 }
 
-  /* Конец блока аккордеонов */
+/* Конец */
 </style>
+
 
 <style>
 .responsive-heading {
