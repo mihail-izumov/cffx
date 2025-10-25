@@ -2,7 +2,7 @@
 outline: false
 prev: false
 next: false
-title: Сигнал Система
+title: Сигнал Макс
 description: Тотальная эффективность клиентского сервиса
 notification: brew
 ---
@@ -11,7 +11,7 @@ notification: brew
 
 <div align="center">
 
-<h1 class="responsive-heading">Сигнал<br>Система</h1>
+<h1 class="responsive-heading">Сигнал Макс</h1>
 
 <br>
 
