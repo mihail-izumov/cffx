@@ -140,7 +140,9 @@
                   @click="toggleAccordion(index)"
                   :class="{ 'is-open': openAccordions.includes(index) }"
                 >
-                  <span class="pricing-accordion-icon">{{ point.icon }}</span>
+                  <span class="pricing-accordion-icon">
+                    <CheckLineIcon />
+                  </span>
                   <span class="pricing-accordion-title">{{ point.title }}</span>
                   <ChevronIcon :class="{ 'is-rotated': openAccordions.includes(index) }" />
                 </button>
@@ -167,6 +169,7 @@
 import { h, ref, computed } from 'vue'
 
 /* SVG иконки */
+// СТАРАЯ ИКОНКА ДЛЯ КАРТОЧЕК (круглая галочка)
 const CheckIcon = () =>
   h(
     'svg',
@@ -176,9 +179,31 @@ const CheckIcon = () =>
       viewBox: '0 0 24 24',
       fill: 'none',
       stroke: 'currentColor',
-      'stroke-width': '2',
+      'stroke-width': '2.5',
       'stroke-linecap': 'round',
       'stroke-linejoin': 'round'
+    },
+    [
+      h('path', { d: 'M22 11.08V12a10 10 0 1 1-5.93-9.14' }),
+      h('polyline', { points: '22 4 12 14.01 9 11.01' })
+    ]
+  )
+
+// НОВАЯ ИКОНКА ДЛЯ МОДАЛЬНОГО ОКНА (галочка с линиями)
+const CheckLineIcon = () =>
+  h(
+    'svg',
+    {
+      class: 'checkline-icon',
+      xmlns: 'http://www.w3.org/2000/svg',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      'stroke-width': '2',
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round',
+      width: '20',
+      height: '20'
     },
     [
       h('path', { d: 'M20 4L9 15' }),
@@ -797,7 +822,15 @@ const toggleAccordion = (index) => {
 }
 
 .pricing-accordion-icon {
-  font-size: 1.25rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.checkline-icon {
+  width: 20px !important;
+  height: 20px !important;
   color: #1d1d1f !important;
   flex-shrink: 0 !important;
 }
