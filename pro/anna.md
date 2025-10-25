@@ -264,13 +264,28 @@ const sections = [
   transition: none !important;
 }
 
-.anna-summary::-webkit-details-marker {
-  display: none !important;
-}
-
-.anna-summary::marker {
+/* Убираем ВСЕ маркеры - включая VitePress */
+.anna-summary::-webkit-details-marker,
+.anna-summary::marker,
+.anna-summary::before,
+.anna-summary::after {
   display: none !important;
   content: '' !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.anna-instruction-block::-webkit-details-marker,
+.anna-instruction-block::marker,
+.anna-instruction-block::before,
+.anna-instruction-block::after {
+  display: none !important;
+  content: '' !important;
+}
+
+/* Дополнительная защита от VitePress */
+.anna-summary > *:not(.anna-title):not(.anna-arrow) {
+  display: none !important;
 }
 
 .anna-title {
@@ -281,6 +296,12 @@ const sections = [
   color: #ffffff !important;
   border: none !important;
   line-height: 1.4 !important;
+}
+
+.anna-title::before,
+.anna-title::after {
+  display: none !important;
+  content: '' !important;
 }
 
 .anna-arrow {
@@ -347,10 +368,8 @@ const sections = [
 .anna-content :deep(tr:hover) {
   background: rgba(100, 100, 100, 0.08) !important;
 }
-
 /* Конец */
 </style>
-
 
 <style>
 .responsive-heading {
