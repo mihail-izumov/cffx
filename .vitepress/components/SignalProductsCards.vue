@@ -18,8 +18,8 @@
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>Тикет-система</span></li>
         <li class="feature-item"><CheckIcon /><span>Анна (базовая версия)</span></li>
-        <li class="feature-item"><CheckIcon /><span>Поддержка оператора (будни, 9-18)</span></li>
-        <li class="feature-item"><CheckIcon /><span>Персональный виджет</span></li>
+        <li class="feature-item"><CheckIcon /><span>Поддержка оператора <br>(будни, 9-18)</span></li>
+        <li class="feature-item"><CheckIcon /><span>Виджет и Умная форма</span></li>
         <li class="feature-item"><CheckIcon /><span>Базовая статистика</span></li>
       </ul>
       <a href="/pro/dialogs" class="card-button card-button--secondary">
