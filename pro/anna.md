@@ -368,6 +368,7 @@ const sections = [
 .anna-content :deep(tr:hover) {
   background: rgba(100, 100, 100, 0.08) !important;
 }
+
 /* Конец */
 </style>
 
