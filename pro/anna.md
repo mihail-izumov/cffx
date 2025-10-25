@@ -31,11 +31,15 @@ notification: brew
 
 ## Сборка Октябрь 2025
 
-### Инструкции Анны
-
 <template>
   <div class="anna-instructions-wrapper">
-    <details v-for="(section, index) in sections" :key="index" class="anna-instruction-block">
+    <details 
+      v-for="(section, index) in sections" 
+      :key="index" 
+      class="anna-instruction-block"
+      :ref="el => { if (el) detailsRefs[index] = el }"
+      @toggle="handleToggle(index)"
+    >
       <summary class="anna-summary">
         <h3 class="anna-title">{{ section.title }}</h3>
         <span class="anna-arrow">▼</span>
@@ -46,6 +50,23 @@ notification: brew
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
+const detailsRefs = ref([]);
+
+const handleToggle = (index) => {
+  const currentDetails = detailsRefs.value[index];
+  
+  if (currentDetails && currentDetails.open) {
+    // Закрываем все остальные аккордеоны
+    detailsRefs.value.forEach((details, i) => {
+      if (i !== index && details && details.open) {
+        details.open = false;
+      }
+    });
+  }
+};
+
 const sections = [
   {
     title: 'Инструкции Анны',
@@ -226,6 +247,7 @@ const sections = [
   margin-bottom: 12px !important;
   overflow: hidden !important;
   box-shadow: none !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .anna-summary {
@@ -236,10 +258,10 @@ const sections = [
   cursor: pointer !important;
   list-style: none !important;
   user-select: none !important;
-  transition: background 0.2s ease !important;
   background: transparent !important;
   border: none !important;
   margin: 0 !important;
+  transition: none !important;
 }
 
 .anna-summary::-webkit-details-marker {
@@ -251,16 +273,12 @@ const sections = [
   content: '' !important;
 }
 
-.anna-summary:hover {
-  background: rgba(255, 255, 255, 0.05) !important;
-}
-
 .anna-title {
   margin: 0 !important;
   padding: 0 !important;
   font-size: 18px !important;
   font-weight: 600 !important;
-  color: #e5e7eb !important;
+  color: #ffffff !important;
   border: none !important;
   line-height: 1.4 !important;
 }
@@ -268,7 +286,7 @@ const sections = [
 .anna-arrow {
   font-size: 14px !important;
   color: #9ca3af !important;
-  transition: transform 0.3s ease !important;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
   flex-shrink: 0 !important;
   margin-left: 16px !important;
 }
@@ -279,15 +297,27 @@ const sections = [
 
 .anna-content {
   padding: 0 24px 20px !important;
-  color: #9ca3af !important;
+  color: #ffffff !important;
   line-height: 1.7 !important;
   background: transparent !important;
   border: none !important;
+  animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .anna-content :deep(p) {
   margin: 0 0 16px !important;
-  color: #9ca3af !important;
+  color: #ffffff !important;
 }
 
 .anna-content :deep(table) {
@@ -299,31 +329,27 @@ const sections = [
 }
 
 .anna-content :deep(th) {
-  background: rgba(255, 255, 255, 0.05) !important;
+  background: rgba(100, 100, 100, 0.15) !important;
   padding: 12px !important;
   text-align: left !important;
   font-weight: 600 !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #e5e7eb !important;
+  border: 1px solid rgba(120, 120, 120, 0.2) !important;
+  color: #ffffff !important;
 }
 
 .anna-content :deep(td) {
   padding: 12px !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #9ca3af !important;
+  border: 1px solid rgba(100, 100, 100, 0.15) !important;
+  color: #ffffff !important;
   background: transparent !important;
 }
 
 .anna-content :deep(tr:hover) {
-  background: rgba(255, 255, 255, 0.02) !important;
+  background: rgba(100, 100, 100, 0.08) !important;
 }
+
+  /* Конец блока аккордеонов */
 </style>
-
-
-
-**Анна — это не просто «ответы», а управляемый путь от обращения до результата: правильные вопросы в начале, прозрачные шаги, понятные сроки, аккуратные задания для команды, честная доставка решения и короткая оценка в конце.**
-
-**После запуска вы получаете готовую систему общения, которую можно сразу применять и масштабировать под ваш бизнес.**
 
 <style>
 .responsive-heading {
