@@ -228,7 +228,7 @@ const sections = [
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 16px 24px;
   cursor: pointer;
   list-style: none;
   user-select: none;
@@ -255,7 +255,6 @@ const sections = [
   color: var(--vp-c-text-2);
   transition: transform 0.3s;
   flex-shrink: 0;
-  margin-left: 12px;
 }
 
 .instruction-block[open] .arrow {
@@ -263,7 +262,7 @@ const sections = [
 }
 
 .instruction-block .content {
-  padding: 0 20px 16px;
+  padding: 0 24px 20px;
   color: var(--vp-c-text-2);
   line-height: 1.7;
 }
@@ -296,7 +295,6 @@ const sections = [
   background: rgba(255, 255, 255, 0.02);
 }
 </style>
-
 
 
 **Анна — это не просто «ответы», а управляемый путь от обращения до результата: правильные вопросы в начале, прозрачные шаги, понятные сроки, аккуратные задания для команды, честная доставка решения и короткая оценка в конце.**
