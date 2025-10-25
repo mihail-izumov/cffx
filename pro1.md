@@ -11,16 +11,16 @@ notification: brew
 
 <div align="center">
 
-<h1 class="responsive-heading">Сигнал<br>для бизнеса</h1>
+<h1 class="responsive-heading">Сигнал<br>Штаб</h1>
 
 <br>
 
 <h1>
-  <span>Автоматизация управления репутацией и </span><br class="mobile-break"> <span>персональная поддержка связи с клиентами.</span>
+  <span>Командный центр управления репутацией</span><br class="mobile-break"> <span>для ресторанов, кафе и фитнес-клубов.</span>
 </h1>
 
 <p>
-  <strong>From sleep and recovery to what’s happening inside your body</strong><br class="mobile-break"> WHOOP brings it all together — make smarter choices today that add more years to your life.
+  <strong>Вся система в одном месте:</strong><br class="mobile-break">тикеты, ИИ-ассистент Анна, аналитика и поддержка.
 </p>
 
 <div class="checkup-cta-section">
