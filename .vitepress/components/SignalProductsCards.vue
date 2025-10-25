@@ -3,7 +3,7 @@
     <!-- КАРТОЧКА: ДИАЛОГИ -->
     <div class="pricing-card">
       <h3 class="card-title card-title--simulator">ДИАЛОГИ</h3>
-      <p class="card-subtitle">Автоматизация управления репутацией</p>
+      <p class="card-subtitle">Для малого бизнеса (1-3 точки)</p>
       <div class="card-image-wrapper">
         <img
           src="/simulator-ban.svg"
@@ -16,10 +16,11 @@
         <div class="payment-type">Окупается с первого Сигнала</div>
       </div>
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Перехват негатива 24/5</span></li>
-        <li class="feature-item"><CheckIcon /><span>Персональный виджет и форма</span></li>
-        <li class="feature-item"><CheckIcon /><span>Статистика за месяц</span></li>
-        <li class="feature-item"><CheckIcon /><span>Работа оператора и настройка "Анны"</span></li>
+        <li class="feature-item"><CheckIcon /><span>Тикет-система</span></li>
+        <li class="feature-item"><CheckIcon /><span>Анна (базовая версия)</span></li>
+        <li class="feature-item"><CheckIcon /><span>Персональный виджет</span></li>
+        <li class="feature-item"><CheckIcon /><span>Базовая статистика</span></li>
+        <li class="feature-item"><CheckIcon /><span>Поддержка оператора 9/5"</span></li>
       </ul>
       <a href="/pro/dialogs" class="card-button card-button--secondary">
         Начать с Диалогов
@@ -27,8 +28,8 @@
     </div>
     <!-- КАРТОЧКА: СИСТЕМА (ПЛАТНО) -->
     <div class="pricing-card pricing-card--featured">
-      <h3 class="card-title card-title--insider">СИСТЕМА</h3>
-      <p class="card-subtitle">Стратегическое управление репутацией</p>
+      <h3 class="card-title card-title--insider">МАКС</h3>
+      <p class="card-subtitle">Для сетей (4+ точки)</p>
       <div class="card-image-wrapper">
         <img
           src="/insider-ban.svg"
@@ -40,13 +41,14 @@
         <strong>от ₽225,000/мес</strong>
         <div class="payment-type">Превращаем данные в рост</div>
       </div>
-      <p class="includes-all">Всё из «Диалогов», а также:</p>
+      <p class="includes-all">Всё из Диалогов, а также:</p>
       <ul class="feature-list">
-        <li class="feature-item"><CheckIcon /><span>Глубокая аналитика и еженедельные отчеты</span></li>
-        <li class="feature-item"><CheckIcon /><span>Продвинутый конструктор виджетов и форм</span></li>
+        <li class="feature-item"><CheckIcon /><span>Аналитика 360° и еженедельные отчеты</span></li>
+        <li class="feature-item"><CheckIcon /><span>Продвинутый конструктор виджета</span></li>
+        <li class="feature-item"><CheckIcon /><span>Приоритетная поддержка</span></li>
         <li class="feature-item"><CheckIcon /><span>Персональный аналитик и стратегические сессии</span></li>
       </ul>
-      <a href="/pro/sistema" class="card-button">Запустить Систему</a>
+      <a href="/pro/sistema" class="card-button">Перейти на Макс</a>
     </div>
   </div>
 </template>
