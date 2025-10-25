@@ -42,7 +42,11 @@ notification: brew
     >
       <summary class="anna-summary">
         <h3 class="anna-title">{{ section.title }}</h3>
-        <span class="anna-arrow">▼</span>
+        <span class="anna-arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </span>
       </summary>
       <div class="anna-content" v-html="section.content"></div>
     </details>
@@ -58,7 +62,6 @@ const handleToggle = (index) => {
   const currentDetails = detailsRefs.value[index];
   
   if (currentDetails && currentDetails.open) {
-    // Закрываем все остальные аккордеоны
     detailsRefs.value.forEach((details, i) => {
       if (i !== index && details && details.open) {
         details.open = false;
@@ -233,7 +236,6 @@ const sections = [
 </script>
 
 <style scoped>
-/* Изолированные стили с уникальными классами */
 .anna-instructions-wrapper {
   max-width: 1200px !important;
   margin: 0 auto !important;
@@ -264,7 +266,6 @@ const sections = [
   transition: none !important;
 }
 
-/* Убираем ВСЕ маркеры - включая VitePress */
 .anna-summary::-webkit-details-marker,
 .anna-summary::marker,
 .anna-summary::before,
@@ -283,7 +284,6 @@ const sections = [
   content: '' !important;
 }
 
-/* Дополнительная защита от VitePress */
 .anna-summary > *:not(.anna-title):not(.anna-arrow) {
   display: none !important;
 }
@@ -305,11 +305,19 @@ const sections = [
 }
 
 .anna-arrow {
-  font-size: 14px !important;
-  color: #9ca3af !important;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   flex-shrink: 0 !important;
   margin-left: 16px !important;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  color: #9ca3af !important;
+}
+
+.anna-arrow svg {
+  display: block !important;
+  width: 20px !important;
+  height: 20px !important;
 }
 
 .anna-instruction-block[open] .anna-arrow {
@@ -368,8 +376,7 @@ const sections = [
 .anna-content :deep(tr:hover) {
   background: rgba(100, 100, 100, 0.08) !important;
 }
-
-/* Конец */
+/* конец */
 </style>
 
 <style>
