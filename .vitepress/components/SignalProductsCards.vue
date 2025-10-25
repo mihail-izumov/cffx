@@ -36,8 +36,8 @@
           <CheckIcon />
           <span>
             <button class="feature-link" @click="openModal('dialogs', 'support')">
-              Поддержка оператора <br>(будни, 9-18)
-            </button>
+              Поддержка оператора
+            </button> (будни, 9-18)
           </span>
         </li>
         <li class="feature-item">
@@ -150,6 +150,10 @@
                   {{ point.text }}
                 </div>
               </div>
+              <a :href="currentModal.link" class="modal-learn-more">
+                Узнать больше
+                <ArrowRightIcon />
+              </a>
             </div>
           </div>
         </div>
@@ -221,6 +225,27 @@ const ChevronIcon = () =>
     ]
   )
 
+const ArrowRightIcon = () =>
+  h(
+    'svg',
+    {
+      class: 'arrow-right-icon',
+      xmlns: 'http://www.w3.org/2000/svg',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      'stroke-width': '2',
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round',
+      width: '18',
+      height: '18'
+    },
+    [
+      h('line', { x1: '5', y1: '12', x2: '19', y2: '12' }),
+      h('polyline', { points: '12 5 19 12 12 19' })
+    ]
+  )
+
 /* Состояние модального окна */
 const isModalOpen = ref(false)
 const currentTariff = ref('')
@@ -233,6 +258,7 @@ const modalData = {
     tariff: 'СИГНАЛ ДИАЛОГИ',
     ticketing: {
       title: 'Тикет-система',
+      link: '/pro1',
       points: [
         {
           icon: '✓',
@@ -258,6 +284,7 @@ const modalData = {
     },
     anna: {
       title: 'Анна (базовая версия)',
+      link: '/pro1',
       points: [
         {
           icon: '✓',
@@ -278,6 +305,7 @@ const modalData = {
     },
     support: {
       title: 'Поддержка оператора (будни, 9-18)',
+      link: '/pro1',
       points: [
         {
           icon: '✓',
@@ -298,6 +326,7 @@ const modalData = {
     },
     widget: {
       title: 'Виджет',
+      link: '/pro1',
       points: [
         {
           icon: '✓',
@@ -318,6 +347,7 @@ const modalData = {
     },
     stats: {
       title: 'Ежемесячная статистика',
+      link: '/pro1',
       points: [
         {
           icon: '✓',
@@ -341,6 +371,7 @@ const modalData = {
     tariff: 'СИГНАЛ МАКС',
     analytics: {
       title: 'Аналитика 360° и еженедельные отчёты',
+      link: '/pro1',
       points: [
         {
           icon: '✓',
@@ -366,6 +397,7 @@ const modalData = {
     },
     annaMax: {
       title: 'Анна (продвинутая настройка)',
+      link: '/pro1',
       points: [
         {
           icon: '✓',
@@ -386,6 +418,7 @@ const modalData = {
     },
     widgetMax: {
       title: 'Виджет (расширенная версия)',
+      link: '/pro1',
       points: [
         {
           icon: '✓',
@@ -406,6 +439,7 @@ const modalData = {
     },
     priority: {
       title: 'Приоритетная поддержка',
+      link: '/pro1',
       points: [
         {
           icon: '✓',
@@ -426,6 +460,7 @@ const modalData = {
     },
     analyst: {
       title: 'Персональный аналитик и стратегические сессии',
+      link: '/pro1',
       points: [
         {
           icon: '✓',
@@ -474,11 +509,11 @@ const closeModal = () => {
 }
 
 const toggleAccordion = (index) => {
-  const idx = openAccordions.value.indexOf(index)
-  if (idx > -1) {
-    openAccordions.value.splice(idx, 1)
+  // Закрываем все остальные аккордеоны, открываем только выбранный
+  if (openAccordions.value.includes(index)) {
+    openAccordions.value = []
   } else {
-    openAccordions.value.push(index)
+    openAccordions.value = [index]
   }
 }
 </script>
@@ -669,13 +704,20 @@ const toggleAccordion = (index) => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10000;
   padding: 20px;
+  transition: background 0.5s ease, backdrop-filter 0.5s ease;
+}
+
+.modal-overlay.modal-enter-active,
+.modal-overlay.modal-leave-active {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
 }
 
 .modal-content {
@@ -755,11 +797,7 @@ const toggleAccordion = (index) => {
   border: none;
   cursor: pointer;
   text-align: left;
-  transition: background 0.2s ease;
-}
-
-.modal-accordion-header:hover {
-  background: rgba(0, 0, 0, 0.03);
+  transition: none;
 }
 
 .accordion-icon {
@@ -805,6 +843,40 @@ const toggleAccordion = (index) => {
   }
 }
 
+/* ССЫЛКА "УЗНАТЬ БОЛЬШЕ" -------------------------------------------------- */
+.modal-learn-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #0066cc;
+  font-size: 1.125rem;
+  font-weight: 500;
+  text-decoration: none;
+  margin-top: 32px;
+  transition: color 0.2s ease;
+}
+
+.modal-learn-more:hover {
+  color: #0077ed;
+}
+
+.modal-learn-more:hover .arrow-right-icon {
+  animation: arrowSlide 0.6s ease;
+}
+
+@keyframes arrowSlide {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
+
+.arrow-right-icon {
+  flex-shrink: 0;
+}
+
 /* КАСТОМНЫЙ СКРОЛЛБАР ------------------------------------------------------ */
 .modal-body::-webkit-scrollbar {
   width: 8px;
@@ -826,17 +898,18 @@ const toggleAccordion = (index) => {
 /* АНИМАЦИЯ МОДАЛЬНОГО ОКНА ------------------------------------------------ */
 .modal-enter-active,
 .modal-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.5s ease, backdrop-filter 0.5s ease;
 }
 
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
+  backdrop-filter: blur(0px);
 }
 
 .modal-enter-active .modal-content,
 .modal-leave-active .modal-content {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-enter-from .modal-content {
@@ -893,6 +966,10 @@ const toggleAccordion = (index) => {
   }
 
   .modal-accordion-content {
+    font-size: 1rem;
+  }
+
+  .modal-learn-more {
     font-size: 1rem;
   }
 }
