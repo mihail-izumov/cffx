@@ -41,7 +41,7 @@
         <strong>от ₽225,000/мес</strong>
         <div class="payment-type">Превращаем данные в рост</div>
       </div>
-      <p class="includes-all">Всё из Диалогов, а также:</p>
+      <p class="includes-all">Всё из Диалогов, плюс:</p>
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>Аналитика 360° и еженедельные отчеты</span></li>
         <li class="feature-item"><CheckIcon /><span>Продвинутый конструктор ИИ-ассистента и виджета</span></li>
