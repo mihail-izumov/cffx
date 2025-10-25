@@ -61,6 +61,7 @@
         Запустить Диалоги
       </a>
     </div>
+    
     <!-- КАРТОЧКА: МАКС -->
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title card-title--insider">МАКС</h3>
@@ -175,13 +176,14 @@ const CheckIcon = () =>
       viewBox: '0 0 24 24',
       fill: 'none',
       stroke: 'currentColor',
-      'stroke-width': '2.5',
+      'stroke-width': '2',
       'stroke-linecap': 'round',
       'stroke-linejoin': 'round'
     },
     [
-      h('path', { d: 'M22 11.08V12a10 10 0 1 1-5.93-9.14' }),
-      h('polyline', { points: '22 4 12 14.01 9 11.01' })
+      h('path', { d: 'M20 4L9 15' }),
+      h('path', { d: 'M21 19L3 19' }),
+      h('path', { d: 'M9 15L4 10' })
     ]
   )
 
@@ -252,7 +254,7 @@ const currentTariff = ref('')
 const currentFeature = ref('')
 const openAccordions = ref([])
 
-/* Данные для модальных окон - без изменений */
+/* Данные для модальных окон */
 const modalData = {
   dialogs: {
     tariff: 'СИГНАЛ ДИАЛОГИ',
