@@ -20,7 +20,7 @@
         <li class="feature-item"><CheckIcon /><span>Анна (базовая версия)</span></li>
         <li class="feature-item"><CheckIcon /><span>Персональный виджет</span></li>
         <li class="feature-item"><CheckIcon /><span>Базовая статистика</span></li>
-        <li class="feature-item"><CheckIcon /><span>Поддержка оператора 9/5"</span></li>
+        <li class="feature-item"><CheckIcon /><span>Поддержка оператора в будние дни</span></li>
       </ul>
       <a href="/pro/dialogs" class="card-button card-button--secondary">
         Начать с Диалогов
