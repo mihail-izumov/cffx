@@ -34,13 +34,13 @@ notification: brew
 ### Инструкции Анны
 
 <template>
-  <div class="anna-instructions">
-    <details v-for="(section, index) in sections" :key="index" class="instruction-block">
-      <summary>
-        <h3>{{ section.title }}</h3>
-        <span class="arrow">▼</span>
+  <div class="anna-instructions-wrapper">
+    <details v-for="(section, index) in sections" :key="index" class="anna-instruction-block">
+      <summary class="anna-summary">
+        <h3 class="anna-title">{{ section.title }}</h3>
+        <span class="anna-arrow">▼</span>
       </summary>
-      <div class="content" v-html="section.content"></div>
+      <div class="anna-content" v-html="section.content"></div>
     </details>
   </div>
 </template>
@@ -212,89 +212,113 @@ const sections = [
 </script>
 
 <style scoped>
-.anna-instructions {
-  max-width: 1200px;
-  margin: 0 auto;
+/* Изолированные стили с уникальными классами */
+.anna-instructions-wrapper {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
 }
 
-.instruction-block {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
-  margin-bottom: 12px;
-  overflow: hidden;
+.anna-instruction-block {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  margin-bottom: 12px !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
 }
 
-.instruction-block summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px;
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-  transition: background 0.2s;
+.anna-summary {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 16px 24px !important;
+  cursor: pointer !important;
+  list-style: none !important;
+  user-select: none !important;
+  transition: background 0.2s ease !important;
+  background: transparent !important;
+  border: none !important;
+  margin: 0 !important;
 }
 
-.instruction-block summary::-webkit-details-marker {
-  display: none;
+.anna-summary::-webkit-details-marker {
+  display: none !important;
 }
 
-.instruction-block summary:hover {
-  background: rgba(255, 255, 255, 0.05);
+.anna-summary::marker {
+  display: none !important;
+  content: '' !important;
 }
 
-.instruction-block summary h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--vp-c-text-1);
+.anna-summary:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
 }
 
-.instruction-block .arrow {
-  font-size: 14px;
-  color: var(--vp-c-text-2);
-  transition: transform 0.3s;
-  flex-shrink: 0;
+.anna-title {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #e5e7eb !important;
+  border: none !important;
+  line-height: 1.4 !important;
 }
 
-.instruction-block[open] .arrow {
-  transform: rotate(180deg);
+.anna-arrow {
+  font-size: 14px !important;
+  color: #9ca3af !important;
+  transition: transform 0.3s ease !important;
+  flex-shrink: 0 !important;
+  margin-left: 16px !important;
 }
 
-.instruction-block .content {
-  padding: 0 24px 20px;
-  color: var(--vp-c-text-2);
-  line-height: 1.7;
+.anna-instruction-block[open] .anna-arrow {
+  transform: rotate(180deg) !important;
 }
 
-.instruction-block .content :deep(p) {
-  margin: 0 0 16px;
+.anna-content {
+  padding: 0 24px 20px !important;
+  color: #9ca3af !important;
+  line-height: 1.7 !important;
+  background: transparent !important;
+  border: none !important;
 }
 
-.instruction-block .content :deep(table) {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 16px 0;
-  font-size: 14px;
+.anna-content :deep(p) {
+  margin: 0 0 16px !important;
+  color: #9ca3af !important;
 }
 
-.instruction-block .content :deep(th) {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 12px;
-  text-align: left;
-  font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.anna-content :deep(table) {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 16px 0 !important;
+  font-size: 14px !important;
+  background: transparent !important;
 }
 
-.instruction-block .content :deep(td) {
-  padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.anna-content :deep(th) {
+  background: rgba(255, 255, 255, 0.05) !important;
+  padding: 12px !important;
+  text-align: left !important;
+  font-weight: 600 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #e5e7eb !important;
 }
 
-.instruction-block .content :deep(tr:hover) {
-  background: rgba(255, 255, 255, 0.02);
+.anna-content :deep(td) {
+  padding: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #9ca3af !important;
+  background: transparent !important;
+}
+
+.anna-content :deep(tr:hover) {
+  background: rgba(255, 255, 255, 0.02) !important;
 }
 </style>
+
 
 
 **Анна — это не просто «ответы», а управляемый путь от обращения до результата: правильные вопросы в начале, прозрачные шаги, понятные сроки, аккуратные задания для команды, честная доставка решения и короткая оценка в конце.**
