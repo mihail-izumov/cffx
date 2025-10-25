@@ -23,10 +23,10 @@
         <li class="feature-item"><CheckIcon /><span>Поддержка оператора в будние дни</span></li>
       </ul>
       <a href="/pro/dialogs" class="card-button card-button--secondary">
-        Начать с Диалогов
+        Запустить Диалоги
       </a>
     </div>
-    <!-- КАРТОЧКА: СИСТЕМА (ПЛАТНО) -->
+    <!-- КАРТОЧКА: МАКС -->
     <div class="pricing-card pricing-card--featured">
       <h3 class="card-title card-title--insider">МАКС</h3>
       <p class="card-subtitle">Для сетей (4+ точки)</p>
@@ -48,7 +48,7 @@
         <li class="feature-item"><CheckIcon /><span>Приоритетная поддержка</span></li>
         <li class="feature-item"><CheckIcon /><span>Персональный аналитик и стратегические сессии</span></li>
       </ul>
-      <a href="/pro/sistema" class="card-button">Перейти на Макс</a>
+      <a href="/pro/sistema" class="card-button">Подключить Макс</a>
     </div>
   </div>
 </template>
