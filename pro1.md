@@ -11,16 +11,16 @@ notification: brew
 
 <div align="center">
 
-<h1 class="responsive-heading">Сигнал<br>Штаб</h1>
+<h1 class="responsive-heading">Сигнал Штаб</h1>
 
 <br>
 
 <h1>
-  <span>Командный центр управления репутацией</span><br class="mobile-break"> <span>для ресторанов, кафе и фитнес-клубов.</span>
+  <span>Командный центр управления</span><br class="mobile-break"><span>репутацией для ресторанов,</span><br class="mobile-break"><span>кафе и фитнес-клубов.</span>
 </h1>
 
 <p>
-  <strong>Вся система в одном месте:</strong><br class="mobile-break">тикеты, ИИ-ассистент Анна, аналитика и поддержка.
+  <strong>Вся система в одном месте: </strong><br class="mobile-break">тикеты, ИИ-ассистент Анна, аналитика и поддержка.
 </p>
 
 <div class="checkup-cta-section">
