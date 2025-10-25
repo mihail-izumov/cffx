@@ -151,7 +151,7 @@
                 </div>
               </div>
               <a :href="currentModal.link" class="modal-learn-more">
-                Узнать больше
+                Узнать Больше
                 <ArrowRightIcon />
               </a>
             </div>
@@ -848,7 +848,7 @@ const toggleAccordion = (index) => {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #0066cc;
+  color: #1d1d1f;
   font-size: 1.125rem;
   font-weight: 500;
   text-decoration: none;
@@ -857,24 +857,16 @@ const toggleAccordion = (index) => {
 }
 
 .modal-learn-more:hover {
-  color: #0077ed;
+  color: #6e6e73;
 }
 
 .modal-learn-more:hover .arrow-right-icon {
-  animation: arrowSlide 0.6s ease;
-}
-
-@keyframes arrowSlide {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(6px);
-  }
+  transform: translateX(6px);
 }
 
 .arrow-right-icon {
   flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
 
 /* КАСТОМНЫЙ СКРОЛЛБАР ------------------------------------------------------ */
