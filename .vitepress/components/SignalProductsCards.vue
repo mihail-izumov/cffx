@@ -37,7 +37,7 @@
           <span>
             <button class="feature-link" @click="openModal('dialogs', 'support')">
               Поддержка оператора
-            </button> (будни, 9-18)
+            </button> <br>(будни, 9-18)
           </span>
         </li>
         <li class="feature-item">
