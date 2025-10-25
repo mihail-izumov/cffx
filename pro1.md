@@ -16,7 +16,7 @@ notification: brew
 <br>
 
 <h1>
-  <span>Командный центр управления</span><br class="mobile-break"><span>репутацией для ресторанов,</span><br class="mobile-break"><span>кафе и фитнес-клубов.</span>
+  <span>Командный центр управления </span><br class="mobile-break"><span>репутацией для ресторанов, </span><br class="mobile-break"><span>и фитнес-клубов.</span>
 </h1>
 
 <p>
