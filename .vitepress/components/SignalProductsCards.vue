@@ -3,7 +3,7 @@
     <!-- КАРТОЧКА: ДИАЛОГИ -->
     <div class="pricing-card">
       <h3 class="card-title card-title--simulator">ДИАЛОГИ</h3>
-      <p class="card-subtitle">Для малого бизнеса (1-3 точки)</p>
+      <p class="card-subtitle">Для старта (1-3 точки)</p>
       <div class="card-image-wrapper">
         <img
           src="/simulator-ban.svg"
@@ -13,7 +13,7 @@
       </div>
       <div class="card-price">
         <strong>₽64,000/мес</strong>
-        <div class="payment-type">Окупается с первого Сигнала</div>
+        <div class="payment-type">Окупается с первых Сигналов</div>
       </div>
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>Тикет-система</span></li>
@@ -44,7 +44,7 @@
       <p class="includes-all">Всё из Диалогов, а также:</p>
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>Аналитика 360° и еженедельные отчеты</span></li>
-        <li class="feature-item"><CheckIcon /><span>Продвинутый конструктор виджета</span></li>
+        <li class="feature-item"><CheckIcon /><span>Продвинутый конструктор ИИ-ассистента и виджета</span></li>
         <li class="feature-item"><CheckIcon /><span>Приоритетная поддержка</span></li>
         <li class="feature-item"><CheckIcon /><span>Персональный аналитик и стратегические сессии</span></li>
       </ul>
