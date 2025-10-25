@@ -18,9 +18,9 @@
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>Тикет-система</span></li>
         <li class="feature-item"><CheckIcon /><span>Анна (базовая версия)</span></li>
+        <li class="feature-item"><CheckIcon /><span>Поддержка оператора (будни, 9-18)</span></li>
         <li class="feature-item"><CheckIcon /><span>Персональный виджет</span></li>
         <li class="feature-item"><CheckIcon /><span>Базовая статистика</span></li>
-        <li class="feature-item"><CheckIcon /><span>Поддержка оператора в будние дни</span></li>
       </ul>
       <a href="/pro/dialogs" class="card-button card-button--secondary">
         Запустить Диалоги
@@ -44,7 +44,7 @@
       <p class="includes-all">Всё из Диалогов, плюс:</p>
       <ul class="feature-list">
         <li class="feature-item"><CheckIcon /><span>Аналитика 360° и еженедельные отчеты</span></li>
-        <li class="feature-item"><CheckIcon /><span>Продвинутый конструктор ИИ-ассистента и виджета</span></li>
+        <li class="feature-item"><CheckIcon /><span>Анна и Виджет (продвинутая настройка)</span></li>
         <li class="feature-item"><CheckIcon /><span>Приоритетная поддержка</span></li>
         <li class="feature-item"><CheckIcon /><span>Персональный аналитик и стратегические сессии</span></li>
       </ul>
