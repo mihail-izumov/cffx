@@ -746,6 +746,7 @@ const toggleAccordion = (index) => {
   width: 920px !important;
   height: 720px !important;
   max-width: 100% !important;
+  max-height: 90vh !important;
   position: relative !important;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
   display: flex !important;
@@ -783,6 +784,7 @@ const toggleAccordion = (index) => {
   font-weight: 500 !important;
   letter-spacing: 0.08em !important;
   padding: 60px 80px 0 !important;
+  flex-shrink: 0 !important;
 }
 
 .pricing-modal-title {
@@ -792,12 +794,14 @@ const toggleAccordion = (index) => {
   margin: 0 0 32px 0 !important;
   line-height: 1.1 !important;
   padding: 0 80px !important;
+  flex-shrink: 0 !important;
 }
 
 .pricing-modal-body {
   padding: 0 80px 60px !important;
   overflow-y: auto !important;
   flex: 1 !important;
+  min-height: 0 !important;
 }
 
 /* АККОРДЕОН --------------------------------------------------------------- */
@@ -972,7 +976,8 @@ const toggleAccordion = (index) => {
 
   .pricing-modal-window {
     width: 100% !important;
-    height: 90vh !important;
+    height: auto !important;
+    max-height: 90vh !important;
     border-radius: 20px !important;
   }
 
@@ -1010,7 +1015,8 @@ const toggleAccordion = (index) => {
   }
 
   .pricing-modal-window {
-    height: 95vh !important;
+    height: auto !important;
+    max-height: 95vh !important;
   }
 
   .pricing-modal-title {
