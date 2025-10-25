@@ -11,7 +11,7 @@ notification: brew
 
 <div align="center">
 
-<h1 class="responsive-heading">Сигнал Штаб</h1>
+<h1 class="responsive-heading">Сигнал<br>для Бизнеса</h1>
 
 <br>
 
