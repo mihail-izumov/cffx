@@ -32,14 +32,15 @@ notification: brew
 
 <DialogsWidgets />
 
+## В каждом Сигнале
+
+
+
 ## От диалогов к безупречной системе сервиса.
 
 </div>
 
 <SignalProductsCards />
-
-## В каждом Сигнале
-
 
 <style>
 .responsive-heading {
