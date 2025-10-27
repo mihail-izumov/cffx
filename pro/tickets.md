@@ -10,6 +10,17 @@ description: Где Начинается Ваш Бизнес
 
 <h1 class="responsive-heading">Тикет-система<br>Сигнала</h1>
 
+<br>
+
+<h1>
+  <span>???</span><br class="mobile-break"> <span>???</span>
+</h1>
+
+<p>
+  Разгружает команду и <br class="mobile-break"> <strong>гарантирует быструю доставку лучшего решения.</strong>
+</p>
+
+</div>
 
 <style>
 .responsive-heading {
