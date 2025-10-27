@@ -20,7 +20,7 @@ notification: brew
 </h1>
 
 <p>
-  <strong>From sleep and recovery to what’s happening inside your body</strong><br class="mobile-break"> WHOOP brings it all together — make smarter choices today that add more years to your life.
+  <strong>Глубокая система контроля качества обслуживания клиентов.</strong><br class="mobile-break"> Превращает каждый тикет в данные для управления скоростью, точностью и результатом команды.
 </p>
 
 <div class="checkup-cta-section">
@@ -30,13 +30,11 @@ notification: brew
 
 # ???
 
-Глубокая система контроля качества обслуживания клиентов. Превращает каждый тикет в данные для управления скоростью, точностью и результатом команды. 
-
 ## Полный обзор: какие метрики считает система, что даёт ежедневная, еженедельная и ежемесячная аналитика, и синхронизация с работой Анны и тикет‑системы.
 
 </div>
 
-# ???
+
 
 <style>
 .responsive-heading {
