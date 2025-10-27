@@ -24,6 +24,10 @@ description: Где Начинается Ваш Бизнес
 
 </div>
 
+## Создана, чтобы быть мощной для нас и простой для вас.
+
+<TicketsAccordion />
+
 <style>
 .responsive-heading {
   font-size: 80px !important;
