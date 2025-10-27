@@ -8,6 +8,8 @@ description: Где Начинается Ваш Бизнес
 
 <SignalProductsSlider />
 
+<div align="center">
+
 <h1 class="responsive-heading">Тикет-система<br>Сигнала</h1>
 
 <br>
