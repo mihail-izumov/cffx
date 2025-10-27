@@ -13,7 +13,7 @@ description: Где Начинается Ваш Бизнес
 <br>
 
 <h1>
-  <span>???</span><br class="mobile-break"> <span>???</span>
+  <span>Ваша система обратной связи может быть какой угодно. </span><br class="mobile-break"> <span>Даже чатом в Телеграм.</span>
 </h1>
 
 <p>
