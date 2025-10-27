@@ -34,7 +34,7 @@ notification: brew
 
 </div>
 
-
+<AnalyticsAccordion />
 
 <style>
 .responsive-heading {
