@@ -106,6 +106,7 @@ import SignalProductsCards from '../components/SignalProductsCards.vue'
 import AnnaSpecsSlider from '../components/AnnaSpecsSlider.vue'
 import AnnaAccordion from '../components/AnnaAccordion.vue'
 import TicketsAccordion from '../components/TicketsAccordion.vue'
+import AnalyticsAccordion from '../components/AnalyticsAccordion.vue'
 
 export default {
   extends: DefaultTheme,
@@ -217,5 +218,6 @@ export default {
     app.component('AnnaSpecsSlider', AnnaSpecsSlider)
     app.component('AnnaAccordion', AnnaAccordion)
     app.component('TicketsAccordion', TicketsAccordion)
+    app.component('AnalyticsAccordion', AnalyticsAccordion)
   },
 }
