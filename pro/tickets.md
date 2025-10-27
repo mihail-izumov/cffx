@@ -31,6 +31,14 @@ description: Где Начинается Ваш Бизнес
 
 </div>
 
+<TicketsSpecsSlider />
+
+<div align="center">
+
+## ???
+
+</div>
+
 <TicketsAccordion />
 
 <style>
