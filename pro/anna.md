@@ -29,6 +29,8 @@ notification: brew
 
 </div>
 
+<AnnaSpecsSlider />
+
 ## Сборка Октябрь 2025
 
 <AnnaAccordion />
