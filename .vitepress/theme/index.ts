@@ -107,6 +107,7 @@ import AnnaSpecsSlider from '../components/AnnaSpecsSlider.vue'
 import AnnaAccordion from '../components/AnnaAccordion.vue'
 import TicketsAccordion from '../components/TicketsAccordion.vue'
 import AnalyticsAccordion from '../components/AnalyticsAccordion.vue'
+import TicketsSpecsSlider from '../components/TicketsSpecsSlider.vue'
 
 export default {
   extends: DefaultTheme,
@@ -219,5 +220,6 @@ export default {
     app.component('AnnaAccordion', AnnaAccordion)
     app.component('TicketsAccordion', TicketsAccordion)
     app.component('AnalyticsAccordion', AnalyticsAccordion)
+    app.component('TicketsSpecsSlider', TicketsSpecsSlider)
   },
 }
