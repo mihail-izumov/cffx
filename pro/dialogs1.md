@@ -20,7 +20,7 @@ notification: brew
 </h1>
 
 <p>
-  <strong>???</strong><br class="mobile-break">???
+  <strong>??</strong><br class="mobile-break">???
 </p>
 
 <div class="checkup-cta-section">
