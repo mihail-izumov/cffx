@@ -27,7 +27,7 @@ const cafeItems = [
     gradientId: 'gradient-2'
   },
   {
-    name: 'Тест-драйв',
+    name: 'Настроить Сигнал',
     subtitle: 'Старт Бесплатно',
     url: '/pro/customize',
     icon: 'M4 10a7.31 7.31 0 0 0 10 10Z M9 15l3-3 M17 13a6 6 0 0 0-6-6 M21 13A10 10 0 0 0 11 3',
