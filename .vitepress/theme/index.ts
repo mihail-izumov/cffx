@@ -110,6 +110,7 @@ import AnalyticsAccordion from '../components/AnalyticsAccordion.vue'
 import TicketsSpecsSlider from '../components/TicketsSpecsSlider.vue'
 import AnaliticsSpecsSlider from '../components/AnaliticsSpecsSlider.vue'
 import SignalSuperSpecsSlider from '../components/SignalSuperSpecsSlider.vue'
+import TicketsExamples from '../components/TicketsExamples.vue'
 
 export default {
   extends: DefaultTheme,
@@ -225,5 +226,6 @@ export default {
     app.component('TicketsSpecsSlider', TicketsSpecsSlider)
     app.component('AnaliticsSpecsSlider', AnaliticsSpecsSlider)
     app.component('SignalSuperSpecsSlider', SignalSuperSpecsSlider)
+    app.component('TicketsExamples', TicketsExamples)
   },
 }
