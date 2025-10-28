@@ -225,9 +225,30 @@ const scrollPrev = () => {
 .sss-step-card:hover, .sss-brand-card.active {
   border-top-color: #C5F946 !important;
 }
-.sss-card-background-icon { position: absolute !important; bottom: -90px !important; right: -90px !important; width: 300px !important; height: 300px !important; opacity: 0.045 !important; pointer-events: none !important; z-index: 0 !important;}
-.sss-card-background-icon svg { width: 100% !important; height: 100% !important; stroke: currentColor !important;}
-.sss-step-card .sss-card-background-icon { color: #fff !important;}
+.sss-card-background-icon {
+  position: absolute !important;
+  bottom: -90px !important;
+  right: -90px !important;
+  width: 300px !important;
+  height: 300px !important;
+  opacity: 0.12 !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  color: #C5F946 !important;
+  filter: drop-shadow(0 0 8px rgba(197, 249, 70, 0.15)) !important;
+  transition: opacity 0.4s ease, transform 0.4s ease !important;
+}
+.sss-card-background-icon svg {
+  width: 100% !important;
+  height: 100% !important;
+  stroke: currentColor !important;
+  stroke-width: 1.5 !important;
+}
+.sss-step-card:hover .sss-card-background-icon,
+.sss-brand-card.active .sss-card-background-icon {
+  opacity: 0.18 !important;
+  transform: scale(1.05) !important;
+}
 .sss-title { font-size: 24px !important; line-height: 1.22 !important; margin: 0 !important; font-weight: 700 !important; border: none !important; padding: 0 !important; color: #ffffff !important; position: relative !important; z-index: 1 !important;}
 .sss-step-goals { color: #C5F946 !important; font-size: 16px !important; font-weight: 500 !important; line-height: 1.65 !important; margin: 0 !important; position: relative !important; z-index: 1 !important; }
 .sss-description-secondary { color: #b0b0b0 !important; font-size: 16px !important; line-height: 1.6 !important; margin: 0 !important; flex-grow: 1 !important; position: relative !important; z-index: 1 !important;}
