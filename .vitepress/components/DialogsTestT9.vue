@@ -153,11 +153,10 @@
           :class="[
             selectedSection === 'emotions' ? 'signal-emotion-copy' : '',
             selectedSection === 'facts' ? 'signal-fact-copy' : '',
-            selectedSection === 'solutions' ? 'signal-solution-copy' : '',
-            !hasAnyText ? 'signal-copy-disabled' : ''
+            selectedSection === 'solutions' ? 'signal-solution-copy' : ''
           ]"
-          @click="hasAnyText ? copyCurrentSectionText() : null"
-          :disabled="copyStatus.main === 'copying' || !hasAnyText"
+          @click="copyCurrentSectionText()"
+          :disabled="copyStatus.main === 'copying'"
         >
           <!-- SVG иконка буфера обмена -->
           <svg class="signal-copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -169,7 +168,6 @@
           
           <span class="signal-liquid-copy-text">
             {{ 
-              !hasAnyText ? 'Введите текст для копирования' :
               copyStatus.main === 'copied' ? 'Скопировано' : 
               copyStatus.main === 'copying' ? 'Копирование...' : 
               'Скопировать' 
@@ -204,15 +202,8 @@ const sections = [
 const selectedSection = ref('emotions');
 const isActive = (id) => id === selectedSection.value;
 
-// Проверяем, есть ли текст в любом из полей
-const hasAnyText = computed(() => {
-  return form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim();
-});
-
 // Функция копирования текста текущей секции
 const copyCurrentSectionText = async () => {
-  if (!hasAnyText.value) return;
-  
   let textToCopy = '';
   
   if (selectedSection.value === 'emotions' && form.emotionalRelease.trim()) {
@@ -768,139 +759,101 @@ textarea:focus {
   letter-spacing: 0.05em;
 }
 
-/* НЕАКТИВНОЕ СОСТОЯНИЕ КНОПКИ */
-.signal-copy-disabled {
-  --accent-color: #666;
-  opacity: 0.5;
-  cursor: not-allowed !important;
-}
-
-.signal-copy-disabled .signal-copy-icon,
-.signal-copy-disabled .signal-liquid-copy-text {
-  color: #666 !important;
-}
-
-.signal-copy-disabled::before {
-  background: linear-gradient(135deg, #666, rgba(102, 102, 102, 0.3)) !important;
-}
-
-.signal-copy-disabled::after {
-  background: radial-gradient(circle at 30% 30%, rgba(102, 102, 102, 0.1) 0%, transparent 70%),
-              #2a2a2e !important;
-}
-
-.signal-copy-disabled:hover::before {
-  filter: none !important;
-}
-
-.signal-copy-disabled:hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(102, 102, 102, 0.1) 0%, transparent 70%),
-              #2a2a2e !important;
-}
-
-.signal-copy-disabled:hover .signal-copy-icon {
-  transform: none !important;
-}
-
-.signal-copy-disabled:hover .signal-liquid-copy-text {
-  color: #666 !important;
-}
-
 /* Цветовые вариации для разных секций */
-.signal-emotion-copy:not(.signal-copy-disabled) {
+.signal-emotion-copy {
   --accent-color: #A972FF;
 }
 
-.signal-emotion-copy:not(.signal-copy-disabled) .signal-copy-icon,
-.signal-emotion-copy:not(.signal-copy-disabled) .signal-liquid-copy-text {
+.signal-emotion-copy .signal-copy-icon,
+.signal-emotion-copy .signal-liquid-copy-text {
   color: #A972FF;
 }
 
-.signal-emotion-copy:not(.signal-copy-disabled):hover::before {
+.signal-emotion-copy:hover::before {
   filter: brightness(1.5) saturate(1.3);
 }
 
-.signal-emotion-copy:not(.signal-copy-disabled):hover::after {
+.signal-emotion-copy:hover::after {
   background: radial-gradient(circle at 30% 30%, rgba(169, 114, 255, 0.2) 0%, rgba(169, 114, 255, 0.05) 100%),
               #2a2a2e;
 }
 
-.signal-emotion-copy:not(.signal-copy-disabled):hover .signal-copy-icon {
+.signal-emotion-copy:hover .signal-copy-icon {
   transform: scale(1.2);
 }
 
-.signal-emotion-copy:not(.signal-copy-disabled):hover .signal-liquid-copy-text {
+.signal-emotion-copy:hover .signal-liquid-copy-text {
   color: rgba(169, 114, 255, 0.9);
 }
 
-.signal-fact-copy:not(.signal-copy-disabled) {
+.signal-fact-copy {
   --accent-color: #3DDC84;
 }
 
-.signal-fact-copy:not(.signal-copy-disabled) .signal-copy-icon,
-.signal-fact-copy:not(.signal-copy-disabled) .signal-liquid-copy-text {
+.signal-fact-copy .signal-copy-icon,
+.signal-fact-copy .signal-liquid-copy-text {
   color: #3DDC84;
 }
 
-.signal-fact-copy:not(.signal-copy-disabled):hover::before {
+.signal-fact-copy:hover::before {
   filter: brightness(1.5) saturate(1.3);
 }
 
-.signal-fact-copy:not(.signal-copy-disabled):hover::after {
+.signal-fact-copy:hover::after {
   background: radial-gradient(circle at 30% 30%, rgba(61, 220, 132, 0.2) 0%, rgba(61, 220, 132, 0.05) 100%),
               #2a2a2e;
 }
 
-.signal-fact-copy:not(.signal-copy-disabled):hover .signal-copy-icon {
+.signal-fact-copy:hover .signal-copy-icon {
   transform: scale(1.2);
 }
 
-.signal-fact-copy:not(.signal-copy-disabled):hover .signal-liquid-copy-text {
+.signal-fact-copy:hover .signal-liquid-copy-text {
   color: rgba(61, 220, 132, 0.9);
 }
 
-.signal-solution-copy:not(.signal-copy-disabled) {
+.signal-solution-copy {
   --accent-color: #FFB800;
 }
 
-.signal-solution-copy:not(.signal-copy-disabled) .signal-copy-icon,
-.signal-solution-copy:not(.signal-copy-disabled) .signal-liquid-copy-text {
+.signal-solution-copy .signal-copy-icon,
+.signal-solution-copy .signal-liquid-copy-text {
   color: #FFB800;
 }
 
-.signal-solution-copy:not(.signal-copy-disabled):hover::before {
+.signal-solution-copy:hover::before {
   filter: brightness(1.5) saturate(1.3);
 }
 
-.signal-solution-copy:not(.signal-copy-disabled):hover::after {
+.signal-solution-copy:hover::after {
   background: radial-gradient(circle at 30% 30%, rgba(255, 184, 0, 0.2) 0%, rgba(255, 184, 0, 0.05) 100%),
               #2a2a2e;
 }
 
-.signal-solution-copy:not(.signal-copy-disabled):hover .signal-copy-icon {
+.signal-solution-copy:hover .signal-copy-icon {
   transform: scale(1.2);
 }
 
-.signal-solution-copy:not(.signal-copy-disabled):hover .signal-liquid-copy-text {
+.signal-solution-copy:hover .signal-liquid-copy-text {
   color: rgba(255, 184, 0, 0.9);
 }
 
 /* Состояние disabled для процесса копирования */
-.signal-liquid-copy-btn:disabled:not(.signal-copy-disabled) {
+.signal-liquid-copy-btn:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-.signal-liquid-copy-btn:disabled:not(.signal-copy-disabled)::before {
+.signal-liquid-copy-btn:disabled::before {
   filter: grayscale(1);
 }
 
-.signal-liquid-copy-btn:disabled:not(.signal-copy-disabled):hover::after {
+.signal-liquid-copy-btn:disabled:hover::after {
   background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 70%),
               #2a2a2e;
 }
 
-.signal-liquid-copy-btn:disabled:not(.signal-copy-disabled):hover .signal-copy-icon {
+.signal-liquid-copy-btn:disabled:hover .signal-copy-icon {
   transform: none;
 }
 
