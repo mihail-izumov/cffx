@@ -1,23 +1,29 @@
 <template>
   <div class="signal-demo-wrapper">
-    <!-- Переключатель тем (Общепит / Фитнес) -->
-    <div class="signal-demo__theme-switch">
+    <!-- Tesla-style переключатель: Общепит / Фитнес -->
+    <div class="signal-theme-toggle">
       <button
-        v-for="theme in themes"
-        :key="theme.id"
-        class="signal-demo__theme-btn"
-        :class="{ 'is-active': selectedTheme === theme.id }"
-        @click="selectedTheme = theme.id"
+        class="signal-theme-btn"
+        :class="{ active: selectedTheme === 'cafe' }"
+        @click="selectedTheme = 'cafe'"
       >
-        {{ theme.title }}
+        Общепит
       </button>
+      <button
+        class="signal-theme-btn"
+        :class="{ active: selectedTheme === 'fitness' }"
+        @click="selectedTheme = 'fitness'"
+      >
+        Фитнес
+      </button>
+      <div class="signal-theme-slider" :style="{ left: sliderLeft }"></div>
     </div>
 
-    <!-- Переключатель секций внутри темы -->
+    <!-- Твой родной переключатель секций -->
     <div class="signal-demo__header">
       <div class="signal-demo__switch" role="tablist">
         <button
-          v-for="section in currentSections"
+          v-for="section in sections"
           :key="section.id"
           class="signal-demo__switch-btn"
           :class="[isActive(section.id) ? 'is-active' : '', section.id]"
@@ -31,11 +37,11 @@
       </div>
     </div>
 
-    <!-- Контейнер с формой -->
+    <!-- Форма -->
     <div class="signal-demo__form-container">
-      <!-- Секция "Эмоции и чувства" -->
+      <!-- Эмоции -->
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
-        <div class="signal-question-block" :style="{ '--accent-color': currentThemeConfig.colors.emotions }">
+        <div class="signal-question-block" :style="{ '--accent-color': colors.emotions }">
           <p class="signal-direction-label">Эмоции и чувства</p>
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
@@ -46,7 +52,7 @@
             v-model="form.emotionalRelease"
             @focus="startRotation(1)"
             rows="3"
-            :placeholder="currentThemeConfig.placeholders.emotions"
+            :placeholder="placeholders.emotions"
             required>
           </textarea>
           <div class="signal-suggestions-container">
@@ -66,13 +72,13 @@
               ← Ещё варианты
             </div>
           </div>
-          <p class="signal-example-hint" v-html="currentThemeConfig.examples.emotions"></p>
+          <p class="signal-example-hint" v-html="examples.emotions"></p>
         </div>
       </div>
 
-      <!-- Секция "Детали проблемы" -->
+      <!-- Факты -->
       <div v-if="selectedSection === 'facts'" class="signal-form-section">
-        <div class="signal-question-block" :style="{ '--accent-color': currentThemeConfig.colors.facts }">
+        <div class="signal-question-block" :style="{ '--accent-color': colors.facts }">
           <p class="signal-direction-label">Детали проблемы</p>
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
@@ -83,7 +89,7 @@
             v-model="form.factualAnalysis"
             @focus="startRotation(2)"
             rows="3"
-            :placeholder="currentThemeConfig.placeholders.facts"
+            :placeholder="placeholders.facts"
             required>
           </textarea>
           <div class="signal-suggestions-container">
@@ -103,13 +109,13 @@
               ← Ещё варианты
             </div>
           </div>
-          <p class="signal-example-hint" v-html="currentThemeConfig.examples.facts"></p>
+          <p class="signal-example-hint" v-html="examples.facts"></p>
         </div>
       </div>
 
-      <!-- Секция "Предложение решения" -->
+      <!-- Решение -->
       <div v-if="selectedSection === 'solutions'" class="signal-form-section">
-        <div class="signal-question-block" :style="{ '--accent-color': currentThemeConfig.colors.solutions }">
+        <div class="signal-question-block" :style="{ '--accent-color': colors.solutions }">
           <p class="signal-direction-label">Предложение решения</p>
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
@@ -120,7 +126,7 @@
             v-model="form.constructiveSuggestions"
             @focus="startRotation(3)"
             rows="3"
-            :placeholder="currentThemeConfig.placeholders.solutions"
+            :placeholder="placeholders.solutions"
             required>
           </textarea>
           <div class="signal-suggestions-container">
@@ -140,7 +146,7 @@
               ← Ещё варианты
             </div>
           </div>
-          <p class="signal-example-hint" v-html="currentThemeConfig.examples.solutions"></p>
+          <p class="signal-example-hint" v-html="examples.solutions"></p>
         </div>
       </div>
     </div>
@@ -148,35 +154,22 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed, watch, onUnmounted } from 'vue';
+import { reactive, ref, computed, watch, onMounted, onUnmounted } from 'vue';
 
-// === Темы ===
-const themes = [
-  { id: 'cafe', title: 'Общепит' },
-  { id: 'fitness', title: 'Фитнес' }
-];
-const selectedTheme = ref('cafe');
+// === Режимы ===
+const selectedTheme = ref('cafe'); // 'cafe' | 'fitness'
 
-// === Секции ===
-const baseSections = [
+// === Секции (общие) ===
+const sections = [
   { id: 'emotions', title: 'Эмоции' },
   { id: 'facts', title: 'Факты' },
   { id: 'solutions', title: 'Решение' }
 ];
-const currentSections = computed(() => baseSections);
-
 const selectedSection = ref('emotions');
 const isActive = (id) => id === selectedSection.value;
 
-// === Форма ===
-const form = reactive({
-  emotionalRelease: '',
-  factualAnalysis: '',
-  constructiveSuggestions: ''
-});
-
 // === Конфиги по темам ===
-const themeConfigs = {
+const configs = {
   cafe: {
     colors: { emotions: '#A972FF', facts: '#3DDC84', solutions: '#FFB800' },
     placeholders: {
@@ -226,38 +219,41 @@ const themeConfigs = {
 };
 
 // === Текущая конфигурация ===
-const currentThemeConfig = computed(() => themeConfigs[selectedTheme.value]);
+const currentConfig = computed(() => configs[selectedTheme.value]);
+const colors = computed(() => currentConfig.value.colors);
+const placeholders = computed(() => currentConfig.value.placeholders);
+const examples = computed(() => currentConfig.value.examples);
 
-// === Подсказки ===
-const suggestions = reactive({
-  emotions: { ...themeConfigs.cafe.suggestions.emotions },
-  facts: { ...themeConfigs.cafe.suggestions.facts },
-  solutions: { ...themeConfigs.cafe.suggestions.solutions }
+// === Форма ===
+const form = reactive({
+  emotionalRelease: '',
+  factualAnalysis: '',
+  constructiveSuggestions: ''
 });
 
+// === Подсказки ===
+const suggestions = reactive({});
 const currentSuggestions = reactive({
   emotions: [],
   facts: [],
   solutions: []
 });
 
-const selectedSuggestions = reactive({
-  emotions: [], facts: [], solutions: []
-});
-
-const branchCounters = reactive({
-  emotions: 0, facts: 0, solutions: 0
-});
+const selectedSuggestions = reactive({ emotions: [], facts: [], solutions: [] });
+const branchCounters = reactive({ emotions: 0, facts: 0, solutions: 0 });
 
 // === Вопросы ===
 const currentQuestion1 = ref('');
 const currentQuestion2 = ref('');
 const currentQuestion3 = ref('');
-
-let rotationInterval = null;
 const currentQuestionIndex1 = ref(0);
 const currentQuestionIndex2 = ref(0);
 const currentQuestionIndex3 = ref(0);
+
+let rotationInterval = null;
+
+// === Слайдер для Tesla-переключателя ===
+const sliderLeft = computed(() => selectedTheme.value === 'cafe' ? '0%' : '50%');
 
 // === Инициализация ===
 watch(selectedTheme, () => {
@@ -265,20 +261,21 @@ watch(selectedTheme, () => {
 }, { immediate: true });
 
 function resetAll() {
-  // Сброс формы
-  form.emotionalRelease = '';
-  form.factualAnalysis = '';
-  form.constructiveSuggestions = '';
+  const cfg = currentConfig.value;
 
-  // Сброс подсказок
-  const config = currentThemeConfig.value;
-  suggestions.emotions = { ...config.suggestions.emotions };
-  suggestions.facts = { ...config.suggestions.facts };
-  suggestions.solutions = { ...config.suggestions.solutions };
+  // Форма
+  Object.keys(form).forEach(k => form[k] = '');
 
-  currentSuggestions.emotions = [...config.suggestions.emotions.initial];
-  currentSuggestions.facts = [...config.suggestions.facts.initial];
-  currentSuggestions.solutions = [...config.suggestions.solutions.initial];
+  // Подсказки
+  Object.assign(suggestions, {
+    emotions: { ...cfg.suggestions.emotions },
+    facts: { ...cfg.suggestions.facts },
+    solutions: { ...cfg.suggestions.solutions }
+  });
+
+  currentSuggestions.emotions = [...cfg.suggestions.emotions.initial];
+  currentSuggestions.facts = [...cfg.suggestions.facts.initial];
+  currentSuggestions.solutions = [...cfg.suggestions.solutions.initial];
 
   selectedSuggestions.emotions = [];
   selectedSuggestions.facts = [];
@@ -288,10 +285,10 @@ function resetAll() {
   branchCounters.facts = 0;
   branchCounters.solutions = 0;
 
-  // Сброс вопросов
-  currentQuestion1.value = config.questions[1][0];
-  currentQuestion2.value = config.questions[2][0];
-  currentQuestion3.value = config.questions[3][0];
+  // Вопросы
+  currentQuestion1.value = cfg.questions[1][0];
+  currentQuestion2.value = cfg.questions[2][0];
+  currentQuestion3.value = cfg.questions[3][0];
 
   currentQuestionIndex1.value = 0;
   currentQuestionIndex2.value = 0;
@@ -301,7 +298,7 @@ function resetAll() {
   clearInterval(rotationInterval);
 }
 
-// === Логика подсказок ===
+// === Логика ===
 function isInitialSuggestions(type) {
   return JSON.stringify(currentSuggestions[type]) === JSON.stringify(suggestions[type].initial);
 }
@@ -313,15 +310,9 @@ function resetSuggestions(type) {
 function selectSuggestion(field, suggestion, type) {
   const text = form[field].trim();
   const isNew = isInitialSuggestions(type);
-  const capitalized = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-
-  if (text) {
-    form[field] = isNew ? `${text}. ${capitalized}` : `${text} ${suggestion}`;
-  } else {
-    form[field] = capitalized;
-    branchCounters[type] = 1;
-  }
-
+  const cap = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+  form[field] = text ? (isNew ? `${text}. ${cap}` : `${text} ${suggestion}`) : cap;
+  if (!text) branchCounters[type] = 1;
   selectedSuggestions[type].push(suggestion);
   updateSuggestions(type, suggestion);
 }
@@ -331,21 +322,19 @@ function updateSuggestions(type, word) {
   currentSuggestions[type] = next && next.length > 0 ? [...next] : [...suggestions[type].initial];
 }
 
-// === Вращение вопросов ===
 function startRotation(num) {
   clearInterval(rotationInterval);
-  const questions = currentThemeConfig.value.questions[num];
+  const questions = currentConfig.value.questions[num];
   let index = num === 1 ? currentQuestionIndex1 : num === 2 ? currentQuestionIndex2 : currentQuestionIndex3;
-  const setQuestion = (i) => {
+  const set = (i) => {
     if (num === 1) currentQuestion1.value = questions[i];
     if (num === 2) currentQuestion2.value = questions[i];
     if (num === 3) currentQuestion3.value = questions[i];
   };
-
-  setQuestion(index.value);
+  set(index.value);
   rotationInterval = setInterval(() => {
     index.value = (index.value + 1) % questions.length;
-    setQuestion(index.value);
+    set(index.value);
   }, 3000);
 }
 
@@ -357,35 +346,76 @@ onUnmounted(() => clearInterval(rotationInterval));
 
 .signal-demo-wrapper { font-family: var(--signal-font-sans); width: 100%; margin: 0; }
 
-/* Темы */
-.signal-demo__theme-switch {
+/* Tesla-style переключатель */
+.signal-theme-toggle {
+  position: relative;
   display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-.signal-demo__theme-btn {
-  padding: 10px 20px;
-  border: 2px solid #444;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto 24px;
   background: #2a2a2e;
-  color: #ccc;
-  border-radius: 12px;
+  border-radius: 16px;
+  padding: 6px;
+  border: 1px solid #3a3a3e;
+  overflow: hidden;
+}
+.signal-theme-btn {
+  flex: 1;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.3s ease;
+  z-index: 2;
+  position: relative;
 }
-.signal-demo__theme-btn.is-active {
-  background: #3a3a3e;
-  border-color: #666;
+.signal-theme-btn.active {
   color: #fff;
+  font-weight: 700;
+}
+.signal-theme-slider {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  width: 50%;
+  background: linear-gradient(135deg, #A972FF, #7B52CC);
+  border-radius: 12px;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  box-shadow: 0 4px 12px rgba(169, 114, 255, 0.3);
 }
 
-/* Остальные стили — как в оригинале */
+/* Твой родной дизайн — без изменений */
 .signal-demo__header { display: flex; justify-content: center; margin-bottom: 16px; }
 .signal-demo__switch { display: flex; gap: 8px; }
-.signal-demo__switch-btn { /* ... оригинал ... */ }
+.signal-demo__switch-btn { 
+  appearance: none; border: 2px solid #2c2c2f; background: transparent; color: #f0f0f0; 
+  padding: 8px 14px; border-radius: 10px; font-size: 0.95em; font-weight: 500; 
+  cursor: pointer; transition: all 0.15s ease; 
+}
+.signal-demo__switch-btn.emotions.is-active { background: rgba(169,114,255,0.14); border-color: #A972FF; color: #A972FF; font-weight: 700; }
+.signal-demo__switch-btn.facts.is-active { background: rgba(61,220,132,0.14); border-color: #3DDC84; color: #3DDC84; font-weight: 700; }
+.signal-demo__switch-btn.solutions.is-active { background: rgba(255,184,0,0.14); border-color: #FFB800; color: #FFB800; font-weight: 700; }
+
 .signal-demo__form-container { background: #1E1E20; border-radius: 24px; padding: 2rem; border: 1px solid #2c2c2f; box-shadow: 0 20px 40px rgba(0,0,0,0.2); color: #f0f0f0; }
-/* ... остальные стили без изменений ... */
 .signal-question-block { background: #2a2a2e; border-radius: 16px; padding: 1.25rem; border: 1px solid #3a3a3e; border-left: 4px solid var(--accent-color, #444); }
-/* ... и так далее — копируй из оригинала ... */
+/* ... остальное — как в твоём оригинале ... */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+textarea { width: 100%; background: #242426; border: 1px solid #444; border-radius: 10px; padding: 0.75rem 1rem; color: #f0f0f0; font-size: 0.95rem; resize: vertical; }
+textarea:focus { outline: none; border-color: var(--accent-color); background: #2a2a2e; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); }
+.signal-suggestions-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0 0.5rem; }
+.signal-suggestion-bubble { padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500; cursor: pointer; border: 1px solid transparent; user-select: none; transition: all 0.2s ease; }
+.signal-emotion-bubble { background: rgba(169,114,255,0.1); border-color: rgba(169,114,255,0.3); color: #A972FF; }
+.signal-emotion-bubble:hover { background: #A972FF; color: #000; }
+.signal-fact-bubble { background: rgba(61,220,132,0.1); border-color: rgba(61,220,132,0.3); color: #3DDC84; }
+.signal-fact-bubble:hover { background: #3DDC84; color: #000; }
+.signal-solution-bubble { background: rgba(255,184,0,0.1); border-color: rgba(255,184,0,0.3); color: #FFB800; }
+.signal-solution-bubble:hover { background: #FFB800; color: #000; }
+.signal-reset-bubble { font-weight: 600; opacity: 0.8; font-size: 0.75rem; border-style: dashed !important; }
+.signal-example-hint { font-size: 0.8rem; color: #777; margin: 0.5rem 0 0 0.25rem; line-height: 1.2; }
+.signal-example-hint b { color: #aaa; font-weight: 600; }
 </style>
