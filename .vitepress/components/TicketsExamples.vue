@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 
 const activeTicket = ref('negative-1')
+const isMobile = ref(false)
 
 const tickets = [
   {
@@ -15,54 +16,12 @@ const tickets = [
     contact: '@username',
     sla: '4 часа (дедлайн: 20:00)',
     compensation: 'Извинения + Сертификат 500₽',
-    problem: 'Гостья посетила кофейню и столкнулась с долгим ожиданием при пустой кофейне. Видя отсутствие других посетителей, ситуация вызвала недоумение и расстройство.',
-    updates: [
+    problem: [
+      'Гостья посетила кофейню и столкнулась с долгим ожиданием при пустой кофейне. Видя отсутствие других посетителей, ситуация вызвала недоумение и расстройство.',
       { label: 'Тип сигнала:', value: 'КОМПЕНСИРУЕМЫЙ' },
-      { label: 'Категория:', value: 'А (Операционная ошибка — ошибка в заказе)' },
-      { label: 'UPD (27.10.2025 16:35):', value: 'Выдан сертификат №75303 номиналом 500₽' },
-      { label: '', value: 'Финальное сообщение отправлено гостю' }
-    ],
-    emotion: 'Умеренное волнение. Гостья расстроена долгим ожиданием в пустой кофейне, но конструктивна — предлагает решение в виде обучения персонала.',
-    guestProposal: 'Обучение персонала',
-    promised: [
-      'Информация передана управляющему для разбора ситуации',
-      'Гостю сообщат результат после получения ответа от управляющего',
-      'Предложение по обучению персонала включено в отчёт'
-    ],
-    actions: [
-      'Связаться с Татьяной и принести искренние извинения за ожидание 10-15 минут в пустой кофейне',
-      'Предложить компенсацию (сертификат 500₽ по категории А)',
-      'Провести разбор с персоналом: почему 09.10 около 14:00 в пустой кофейне гость ждал 10-15 минут латте и пончик',
-      'Выяснить, кто был на смене в это время и почему не обслужил гостя оперативно'
-    ]
-  },
-  {
-    id: 'order-error',
-    title: 'Ошибка в заказе',
-    signal: 'СИГНАЛ 971-484',
-    status: '✅ Компенсация выдана',
-    date: '27.10.2025 12:49',
-    location: 'Космическая, Самарская 101',
-    guest: 'Мария',
-    contact: '@username',
-    sla: '4 часа (дедлайн: 16:49)',
-    compensation: 'Сертификат 500₽ (№75303)',
-    problem: 'Гость расстроена из-за ошибки в заказе. Обратилась 27 октября 2025 года в 12:49. Детали уточняются у гостя: точная дата и время заказа, характер ошибки (что именно было не так), формат заказа (на месте/с собой).',
-    updates: [
-      { label: 'Тип сигнала:', value: 'КОМПЕНСИРУЕМЫЙ' },
-      { label: 'Категория:', value: 'А (Операционная ошибка — ошибка в заказе)' },
-      { label: 'UPD (27.10.2025 16:35):', value: 'Выдан сертификат №75303 номиналом 500₽' },
-      { label: '', value: 'Финальное сообщение отправлено гостю' }
-    ],
-    emotion: 'Расстроена (разочарована) — требуется проявление эмпатии и конкретные действия для восстановления доверия',
-    guestProposal: 'Исключить повторение ошибок в заказах',
-    promised: [
-      'Отправлено приветствие с благодарностью за обратную связь',
-      'Выражена эмпатия и признание недопустимости ситуации',
-      'Заданы уточняющие вопросы о деталях',
-      'Отправлен сертификат 500₽ (№75303)',
-      'Сообщены условия использования: в любой кофейне «Космическая», без ограничений по сроку',
-      'Через 3 дня (30.10.2025) будет сделан запрос о факте использования сертификата'
+      { label: 'Категория:', value: 'A (Операционная ошибка — ошибка в заказе)' },
+      'UPD (27.10.2025 16:35): Выдан сертификат №75303 номиналом 500₽',
+      'Финальное сообщение отправлено гостю'
     ],
     actions: [
       'Провести внутреннее расследование: выяснить обстоятельства ошибки, причины и ответственных',
@@ -70,34 +29,57 @@ const tickets = [
       'Принять меры для исключения повторения ситуации',
       'Контроль использования сертификата №75303'
     ]
+  },
+  {
+    id: 'quality-violation',
+    title: 'Нарушение качества',
+    signal: 'СИГНАЛ 476-102',
+    status: '⚠️ SLA нарушен',
+    date: '21.10.2025 10:56',
+    location: 'Космическая, Тверская 101',
+    guest: 'Ольга',
+    contact: '@username',
+    sla: '2 часа (дедлайн: 12:56) — НАРУШЕН',
+    compensation: 'Сертификат 1000₽',
+    problem: [
+      'Гостья получила черствую выпечку. Выразила удивление таким сервисом, отметив, что столкнулась с подобным впервые.',
+      { label: 'Тип сигнала:', value: 'КОМПЕНСИРУЕМЫЙ' },
+      { label: 'Категория:', value: 'Б (нарушение качества продукта)' }
+    ],
+    actions: [
+      'Провести проверку контроля свежести выпечки в кофейне',
+      'Проверить процедуры ротации выпечки и списания несвежих позиций',
+      'Рассмотреть компенсацию: сертификат 1000₽ (категория Б — нарушение качества продукта)'
+    ]
   }
-  // Добавь остальные тикеты по образцу выше...
+  // ... остальное тикеты аналогично (добавьте свои по необходимости)
 ]
 
 const currentTicket = computed(() =>
   tickets.find(t => t.id === activeTicket.value)
 )
 
-const detailsRefs = ref([])
-const handleToggle = (index) => {
-  const currentDetails = detailsRefs.value[index]
-  if (currentDetails && currentDetails.open) {
-    detailsRefs.value.forEach((details, i) => {
-      if (i !== index && details && details.open) {
-        details.open = false
-      }
-    })
-  }
+function handleResize() {
+  isMobile.value = window.innerWidth <= 780
 }
 
-const windowWidth = ref(window.innerWidth)
-window.addEventListener('resize', () => windowWidth.value = window.innerWidth)
-const isMobile = computed(() => windowWidth.value <= 768)
+if (typeof window !== 'undefined') {
+  window.addEventListener('resize', handleResize)
+  handleResize()
+}
 </script>
 
 <template>
   <div class="tkt-root">
-    <div class="tkt-sidebar" v-if="!isMobile">
+    <!-- Мобильный dropdown -->
+    <div v-if="isMobile" class="tkt-mobile-select">
+      <select v-model="activeTicket">
+        <option v-for="ticket in tickets" :value="ticket.id">{{ ticket.title }}</option>
+      </select>
+    </div>
+
+    <!-- Desktop sidebar -->
+    <div v-if="!isMobile" class="tkt-sidebar">
       <nav class="tkt-nav" role="tablist">
         <button
           v-for="ticket in tickets"
@@ -105,17 +87,12 @@ const isMobile = computed(() => windowWidth.value <= 768)
           :class="['tkt-nav-item', { active: activeTicket === ticket.id }]"
           @click="activeTicket = ticket.id"
           role="tab"
-          :aria-selected="activeTicket === ticket.id"
         >
           <span class="tkt-title">{{ ticket.title }}</span>
         </button>
       </nav>
     </div>
-    <div v-else class="tkt-mobile-select-wrapper">
-      <select v-model="activeTicket" class="tkt-mobile-select">
-        <option v-for="ticket in tickets" :key="ticket.id" :value="ticket.id">{{ ticket.title }}</option>
-      </select>
-    </div>
+
     <!-- Основной контент -->
     <div class="tkt-content" role="tabpanel">
       <div v-if="currentTicket" class="tkt-details">
@@ -124,110 +101,64 @@ const isMobile = computed(() => windowWidth.value <= 768)
           <span class="tkt-status">{{ currentTicket.status }}</span>
         </div>
         <div class="tkt-summary">
-          <div class="tkt-summary-row">
-            <div class="tkt-summary-item">
-              <span class="tkt-label">ДАТА:</span>
-              <span class="tkt-value">{{ currentTicket.date }}</span>
-            </div>
-            <div class="tkt-summary-item">
-              <span class="tkt-label">КОФЕЙНЯ:</span>
-              <span class="tkt-value">{{ currentTicket.location }}</span>
-            </div>
+          <div>
+            <span class="tkt-label">ДАТА:</span>
+            <span class="tkt-value">{{ currentTicket.date }}</span>
           </div>
-          <div class="tkt-summary-row">
-            <div class="tkt-summary-item">
-              <span class="tkt-label">ГОСТЬ:</span>
-              <span class="tkt-value">{{ currentTicket.guest }}</span>
-            </div>
-            <div class="tkt-summary-item">
-              <span class="tkt-label">КОНТАКТ:</span>
-              <span class="tkt-value">{{ currentTicket.contact }}</span>
-            </div>
+          <div>
+            <span class="tkt-label">КОФЕЙНЯ:</span>
+            <span class="tkt-value">{{ currentTicket.location }}</span>
           </div>
-          <div class="tkt-summary-row">
-            <div class="tkt-summary-item">
-              <span class="tkt-label">SLA:</span>
-              <span class="tkt-value">{{ currentTicket.sla }}</span>
-            </div>
-            <div class="tkt-summary-item">
-              <span class="tkt-label">КОМПЕНСАЦИЯ:</span>
-              <span class="tkt-value">{{ currentTicket.compensation }}</span>
-            </div>
+          <div>
+            <span class="tkt-label">ГОСТЬ:</span>
+            <span class="tkt-value">{{ currentTicket.guest }}</span>
+          </div>
+          <div>
+            <span class="tkt-label">КОНТАКТ:</span>
+            <span class="tkt-value">{{ currentTicket.contact }}</span>
+          </div>
+          <div>
+            <span class="tkt-label">SLA:</span>
+            <span class="tkt-value">{{ currentTicket.sla }}</span>
+          </div>
+          <div>
+            <span class="tkt-label">КОМПЕНСАЦИЯ:</span>
+            <span class="tkt-value">{{ currentTicket.compensation }}</span>
           </div>
         </div>
-        <!-- Аккордеоны -->
+
         <div class="tkt-sections">
-          <details
-            class="tkt-section"
-            :ref="el => { if (el) detailsRefs[0] = el }"
-            @toggle="handleToggle(0)"
-            open
-          >
+          <!-- Аккордеон 1 -->
+          <details class="tkt-section" open>
             <summary class="tkt-section-header">
-              <h3 class="tkt-section-title">Суть проблемы</h3>
+              <span class="tkt-section-title">Суть проблемы</span>
               <span class="tkt-arrow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </span>
             </summary>
             <div class="tkt-section-content">
-              <p>{{ currentTicket.problem }}</p>
-              <div v-if="currentTicket.updates && currentTicket.updates.length">
-                <div v-for="(upd, idx) in currentTicket.updates" :key="idx" class="tkt-update-row">
-                  <span v-if="upd.label" class="tkt-update-label">{{ upd.label }}</span>
-                  <span class="tkt-update-value">{{ upd.value }}</span>
+              <template v-for="(item, idx) in currentTicket.problem" :key="idx">
+                <div v-if="typeof item === 'string'" class="tkt-text-row">{{ item }}</div>
+                <div v-else class="tkt-bold-row">
+                  <span class="tkt-bold-label">{{ item.label }}</span> <span>{{ item.value }}</span>
                 </div>
-              </div>
+              </template>
             </div>
           </details>
-          <details
-            class="tkt-section"
-            :ref="el => { if (el) detailsRefs[1] = el }"
-            @toggle="handleToggle(1)"
-          >
+
+          <!-- Аккордеон 2 -->
+          <details class="tkt-section">
             <summary class="tkt-section-header">
-              <h3 class="tkt-section-title">Эмоциональное состояние</h3>
+              <span class="tkt-section-title">Рекомендации для команды</span>
               <span class="tkt-arrow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </span>
             </summary>
             <div class="tkt-section-content">
-              <p>{{ currentTicket.emotion }}</p>
-              <div class="tkt-proposal">
-                <span class="tkt-update-label">Предложение гостя:</span> {{ currentTicket.guestProposal }}
-              </div>
-            </div>
-          </details>
-          <details
-            class="tkt-section"
-            :ref="el => { if (el) detailsRefs[2] = el }"
-            @toggle="handleToggle(2)"
-          >
-            <summary class="tkt-section-header">
-              <h3 class="tkt-section-title">Что обещано гостю</h3>
-              <span class="tkt-arrow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-              </span>
-            </summary>
-            <div class="tkt-section-content">
-              <ul class="tkt-list">
-                <li v-for="(item, idx) in currentTicket.promised" :key="idx">{{ item }}</li>
-              </ul>
-            </div>
-          </details>
-          <details
-            class="tkt-section"
-            :ref="el => { if (el) detailsRefs[3] = el }"
-            @toggle="handleToggle(3)"
-          >
-            <summary class="tkt-section-header">
-              <h3 class="tkt-section-title">Рекомендации для команды</h3>
-              <span class="tkt-arrow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-              </span>
-            </summary>
-            <div class="tkt-section-content">
-              <ol v-if="currentTicket.actions && currentTicket.actions.length" class="tkt-actions-list">
-                <li v-for="(action, idx) in currentTicket.actions" :key="idx">{{ action }}</li>
+              <ol class="tkt-list" v-if="currentTicket.actions.length">
+                <li v-for="(action, idx) in currentTicket.actions" :key="idx">
+                  {{ action }}
+                </li>
               </ol>
             </div>
           </details>
@@ -240,309 +171,216 @@ const isMobile = computed(() => windowWidth.value <= 768)
 <style scoped>
 .tkt-root {
   display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 0;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
+  grid-template-columns: 170px 1fr;
+  border-radius: 14px;
   overflow: hidden;
-  background: rgba(255,255,255,0.02);
-  margin: 24px 0;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: #17181c;
 }
-
+.tkt-mobile-select {
+  padding: 16px 16px 0 16px;
+  background: #17181c;
+}
+.tkt-mobile-select select {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: #232329;
+  color: #fafafa;
+  margin-bottom: 2px;
+}
 .tkt-sidebar {
-  background: rgba(255,255,255,0.03);
-  border-right: 1px solid rgba(255,255,255,0.08);
-  overflow-y: auto;
-  max-height: 600px;
+  background: #17181c;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  min-width: 170px;
+  max-width: 170px;
+  padding-top: 0;
 }
-
 .tkt-nav {
   padding: 0;
   margin: 0;
 }
-
 .tkt-nav-item {
+  display: block;
   width: 100%;
-  padding: 12px 14px;
+  padding: 12px 16px 8px 16px;
+  font-size: 15px;
   border: none;
   background: transparent;
   text-align: left;
   cursor: pointer;
-  transition: all 0.2s ease;
-  display: block;
   border-left: 3px solid transparent;
-  font-size: 13px;
-}
-
-.tkt-nav-item:hover {
-  background: rgba(255,255,255,0.06);
-}
-
-.tkt-nav-item.active {
-  background: rgba(200,255,90,0.08);
-  border-left-color: #c8ff5a;
-}
-
-.tkt-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.90);
+  color: #fafafa;
+  font-weight: 500;
   line-height: 1.2;
-  display: block;
+  transition: background 0.2s, border-left-color 0.2s, color 0.2s;
 }
-
-.tkt-nav-item.active .tkt-title {
+.tkt-nav-item:hover {
+  background: #232329;
+}
+.tkt-nav-item.active {
+  background: #232329;
+  border-left-color: #c8ff5a;
   color: #c8ff5a;
 }
-
-.tkt-mobile-select-wrapper {
-  padding: 8px 12px;
-  background: rgba(255,255,255,0.03);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-.tkt-mobile-select {
-  width: 100%;
-  padding: 8px 12px;
+.tkt-title {
   font-size: 15px;
-  border-radius: 8px;
-  border: 1px solid rgba(200,255,90,0.18);
-  background: rgba(255,255,255,0.04);
-  color: #fff;
+  font-weight: 500;
+  color: inherit;
+  display: block;
+  line-height: 1.22;
 }
-
 .tkt-content {
-  padding: 20px;
+  padding: 24px 24px 32px 24px;
   overflow-y: auto;
-  max-height: 600px;
 }
-
 .tkt-details {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
-
 .tkt-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  margin-bottom: 12px;
 }
-
 .tkt-signal {
   font-family: 'SF Mono', Monaco, 'Courier New', monospace;
   font-size: 15px;
-  font-weight: 700;
-  color: #c8ff5a;
-  letter-spacing: 0.02em;
-}
-
-.tkt-status {
-  font-size: 12px;
-  color: rgba(255,255,255,0.6);
-  font-weight: 600;
-}
-
-.tkt-summary {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  padding: 14px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-}
-
-.tkt-summary-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.tkt-summary-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.tkt-label {
-  font-size: 11px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.45);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  line-height: 1.1;
-}
-
-.tkt-value {
-  font-size: 13px;
-  color: rgba(255,255,255,0.92);
   font-weight: 500;
+  color: #c8ff5a;
+  letter-spacing: 0.01em;
+}
+.tkt-status {
+  font-size: 13px;
+  color: #c2c2cb;
+  font-weight: 500;
+}
+.tkt-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  padding: 12px 10px 8px 10px;
+  background: #222229;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 14px;
   line-height: 1.2;
 }
-
+.tkt-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #a0a0aa;
+  margin-bottom: 1px;
+  letter-spacing: 0.04em;
+}
+.tkt-value {
+  font-size: 14px;
+  color: #f7f7f7;
+  font-weight: 500;
+}
 .tkt-sections {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 7px;
+  margin-top: 0;
 }
-
 .tkt-section {
-  background: rgba(255, 255, 255, 0.03);
-  border: none;
+  background: #222229;
   border-radius: 12px;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  margin-bottom: 0;
+  box-shadow: none;
+  transition: background 0.2s;
 }
-
 .tkt-section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 13px 16px 13px 16px;
-  cursor: pointer;
   list-style: none;
   user-select: none;
   background: transparent;
-  margin: 0;
+  border: none;
+  cursor: pointer;
+  padding: 18px 24px 7px 21px;
+  margin-bottom: 0;
 }
-
-.tkt-section-header::-webkit-details-marker,
-.tkt-section-header::marker {
-  display: none !important;
-}
-
 .tkt-section-title {
-  margin: 0;
-  padding: 0;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: #fff;
-  border: none;
-  line-height: 1.3;
+  margin: 0;
 }
-
 .tkt-arrow {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #9ca3af;
-  margin-left: 12px;
+  margin-left: 18px;
+  color: #7e818c;
+  transition: transform 0.3s;
 }
-
-.tkt-arrow svg {
-  display: block;
-  width: 18px;
-  height: 18px;
-}
-
 .tkt-section[open] .tkt-arrow {
   transform: rotate(180deg);
 }
-
 .tkt-section-content {
-  padding: 16px 16px 10px 16px;
-  color: #fff;
-  line-height: 1.5;
-  font-size: 13px;
-  animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 16px 21px 13px 21px;
+  color: #f7f7f7;
+  font-size: 14px;
+  line-height: 1.32;
 }
-
-.tkt-section-content p {
-  margin: 0 0 9px 0;
-  line-height: 1.5;
-  font-size: 13px;
+.tkt-text-row {
+  margin-bottom: 7px;
 }
-
-.tkt-update-row {
-  margin-bottom: 5px;
-  line-height: 1.4;
-  word-break: break-word;
-  display: flex;
-  gap: 7px;
-}
-
-.tkt-update-label {
-  font-size: 13px;
+.tkt-bold-row {
+  margin-bottom: 7px;
   font-weight: 500;
-  color: #c8ff5a;
-  margin-right: 6px;
-  letter-spacing: 0.05em;
+  color: #fafafa;
 }
-
-.tkt-update-value {
-  font-size: 13px;
-  color: #fff;
-  font-weight: 400;
+.tkt-bold-label {
+  font-weight: 600;
+  color: #e3e3e5;
+  margin-right: 5px;
 }
-
-.tkt-proposal {
-  margin-top: 8px;
-  padding: 8px 10px;
-  background: rgba(200,255,90,0.06);
-  border-left: 3px solid #c8ff5a;
-  border-radius: 6px;
-  font-size: 13px;
-  color: rgba(255,255,255,0.88);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.tkt-list, .tkt-actions-list {
+.tkt-list {
   margin: 0;
-  padding-left: 22px;
-  list-style-position: outside;
+  padding-left: 24px;
+  font-size: 14px;
 }
-
-.tkt-list li, .tkt-actions-list li {
-  margin-bottom: 3px;
-  line-height: 1.45;
-  color: #fff;
-  font-size: 13px;
+.tkt-list li {
+  margin-bottom: 7px;
+  line-height: 1.35;
+  color: #fafafa;
   font-weight: 400;
-  position: relative;
-  background: none;
-  border: none;
+  padding-left: 0;
 }
 
-/* Compact mode for mobile */
-@media (max-width: 768px) {
+/* MOBILE STYLES */
+@media (max-width: 780px) {
   .tkt-root {
     grid-template-columns: 1fr;
   }
-  .tkt-sidebar {
-    display: none;
-  }
   .tkt-content {
-    max-height: none;
-    padding: 10px;
+    padding: 14px 7px 24px 7px;
   }
-  .tkt-summary-row {
+  .tkt-summary {
     grid-template-columns: 1fr;
-    gap: 7px;
+    gap: 5px;
+    padding: 10px 6px 6px 6px;
+    font-size: 13px;
   }
-}
-
-.tkt-sidebar::-webkit-scrollbar,
-.tkt-content::-webkit-scrollbar {
-  width: 6px;
-}
-.tkt-sidebar::-webkit-scrollbar-track,
-.tkt-content::-webkit-scrollbar-track {
-  background: rgba(255,255,255,0.02);
-}
-.tkt-sidebar::-webkit-scrollbar-thumb,
-.tkt-content::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.1);
-  border-radius: 3px;
-}
-.tkt-sidebar::-webkit-scrollbar-thumb:hover,
-.tkt-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(255,255,255,0.15);
+  .tkt-header {
+    padding-bottom: 7px;
+    margin-bottom: 10px;
+  }
+  .tkt-section-header {
+    padding: 14px 12px 5px 12px;
+  }
+  .tkt-section-content {
+    padding: 12px 12px 7px 12px;
+  }
 }
 </style>
