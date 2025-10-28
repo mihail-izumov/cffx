@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <!-- ГЛАВНЫЙ КОНТЕЙНЕР — НА ВСЮ ШИРИНУ, БЕЗ МАТРЁШКИ -->
+    <!-- ГЛАВНЫЙ КОНТЕНТ — НА ВСЮ ШИРИНУ -->
     <div class="signal-form-content">
       <!-- Эмоции -->
       <div v-if="selectedSection === 'emotions'" class="signal-question-block" :style="{ '--accent-color': colors.emotions }">
@@ -583,10 +583,12 @@ function resetSuggestions(type) {
 }
 
 function selectSuggestion(field, suggestion, type) {
-  const cap = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+  // Добавляем слово с маленькой буквы
+  const text = form[field].trim();
+  const word = suggestion.toLowerCase();
 
-  // Добавляем слово БЕЗ точки
-  form[field] = form[field] ? `${form[field]} ${cap}` : cap;
+  // Добавляем слово
+  form[field] = text ? `${text} ${word}` : word;
 
   if (!selectedSuggestions[type].includes(suggestion)) {
     selectedSuggestions[type].push(suggestion);
@@ -600,16 +602,14 @@ function updateSuggestions(type, word) {
   const next = suggestions[type][word];
   if (next && next.length > 0) {
     currentSuggestions[type] = next.filter(item => !selectedSuggestions[type].includes(item));
-    // Точка — только если это конец цепочки
-    if (!suggestions[type][currentSuggestions[type][0]]) {
-      const lastField = type === 'emotions' ? 'emotionalRelease' :
-                        type === 'facts' ? 'factualAnalysis' : 'constructiveSuggestions';
-      const text = form[lastField].trim();
-      if (text && !text.endsWith('.')) {
-        form[lastField] = `${text}.`;
-      }
-    }
   } else {
+    // КОНЕЦ ЦЕПОЧКИ — СТАВИМ ТОЧКУ
+    const lastField = type === 'emotions' ? 'emotionalRelease' :
+                      type === 'facts' ? 'factualAnalysis' : 'constructiveSuggestions';
+    const text = form[lastField].trim();
+    if (text && !text.endsWith('.')) {
+      form[lastField] = `${text}.`;
+    }
     resetSuggestions(type);
   }
 }
@@ -635,12 +635,13 @@ onUnmounted(() => clearInterval(rotationInterval));
 </script>
 
 <style scoped>
+/* РАСТЯНУТО НА ВСЮ ШИРИНУ VITEPRESS */
 .signal-demo-wrapper {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 1rem;
   width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 1rem 0;
 }
 
 /* Отступ между переключателями */
@@ -716,7 +717,7 @@ onUnmounted(() => clearInterval(rotationInterval));
 .signal-demo__switch-btn.facts.is-active { background: rgba(61,220,132,0.14); border-color: #3DDC84; color: #3DDC84; }
 .signal-demo__switch-btn.solutions.is-active { background: rgba(255,184,0,0.14); border-color: #FFB800; color: #FFB800; }
 
-/* ГЛАВНЫЙ КОНТЕНТ — НА ВСЮ ШИРИНУ */
+/* ГЛАВНЫЙ КОНТЕНТ */
 .signal-form-content {
   width: 100%;
   display: flex;
