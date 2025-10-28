@@ -15,18 +15,14 @@ const tickets = [
     contact: '@username',
     sla: '4 часа (дедлайн: 20:00)',
     compensation: 'Извинения + Сертификат 500₽',
-    problem: [
-      { type: 'text', value: 'Гостья посетила кофейню и столкнулась с долгим ожиданием при пустой кофейне. Видя отсутствие других посетителей, ситуация вызвала недоумение и расстройство.' },
-      { type: 'meta', label: 'Тип сигнала:', value: 'КОМПЕНСИРУЕМЫЙ' },
-      { type: 'meta', label: 'Категория:', value: 'А (негативный опыт обслуживания — долгое ожидание при низкой загрузке)' }
-    ],
+    problem: 'Гостья посетила кофейню и столкнулась с долгим ожиданием при пустой кофейне. Видя отсутствие других посетителей, ситуация вызвала недоумение и расстройство.',
     updates: [
-      { type: 'meta', label: 'UPD (09.10.2025 16:12):', value: 'Получены уточнения от гостя:' },
-      { type: 'bulleted', value: 'Время визита: 09.10.2025 около 14:00' },
-      { type: 'bulleted', value: 'Длительность ожидания: 10-15 минут' },
-      { type: 'bulleted', value: 'Заказ: латте среднего объема и пончик' }
+      '<span class="tkt-bold">Тип сигнала:</span> КОМПЕНСИРУЕМЫЙ',
+      '<span class="tkt-bold">Категория:</span> А (Операционная ошибка — ошибка в заказе)',
+      'UPD (27.10.2025 16:35): Выдан сертификат №75303 номиналом 500₽',
+      'Финальное сообщение отправлено гостю'
     ],
-    emotion: 'Умеренное волнение. Гостья расстроена, но конструктивна — предлагает решение в виде обучения персонала.',
+    emotion: 'Умеренное волнение. Гостья расстроена долгим ожиданием в пустой кофейне, но конструктивна — предлагает решение в виде обучения персонала.',
     guestProposal: 'Обучение персонала',
     promised: [
       'Информация передана управляющему для разбора ситуации',
@@ -34,12 +30,104 @@ const tickets = [
       'Предложение по обучению персонала включено в отчёт'
     ],
     actions: [
-      'Связаться с Татьяной и принести искренние извинения',
-      'Провести разбор с персоналом',
-      'Выяснить почему была задержка',
-      'Проверить распределение зон ответственности',
-      'Усилить контроль за временем обслуживания',
-      'Рассмотреть обучение персонала'
+      'Провести внутреннее расследование: выяснить обстоятельства ошибки, причины и ответственных',
+      'Связаться с гостем по Telegram для уточнения деталей',
+      'Принять меры для исключения повторения ситуации',
+      'Контроль использования сертификата №75303'
+    ]
+  },
+  {
+    id: 'educational',
+    title: 'Образовательный',
+    signal: 'СИГНАЛ 876-456',
+    status: '✅ Передано команде',
+    date: '21.10.2025 17:13',
+    location: 'Космическая, Самарская 101',
+    guest: 'Елена',
+    contact: '@username',
+    sla: 'Не применимо',
+    compensation: 'Не требуется',
+    problem: 'Гость сообщил, что кофе был слишком горячим.',
+    updates: [
+      '<span class="tkt-bold">Тип сигнала:</span> ОБРАЗОВАТЕЛЬНЫЙ',
+      '<span class="tkt-bold">Категория:</span> Не применимо (образовательный момент)',
+      'Компенсация НЕ требуется: ситуация не относится к категории Б'
+    ],
+    emotion: 'Спокойный (конструктивная обратная связь).',
+    guestProposal: 'Информирование о возможности настройки температуры',
+    promised: [
+      'Чат запущен (✅)',
+      'Ответ Анны отправлен через оператора: гостю объяснена возможность попросить лёд или охлаждение напитка',
+      'Запрошено уточнение даты и времени визита для передачи обратной связи команде кофейни'
+    ],
+    actions: [
+      'Провести инструктаж с командой бариста о важности проактивного предложения льда или охлаждения напитка гостям',
+      'Рассмотреть возможность добавления информации о настройке температуры напитков в меню или на стойке',
+      'Передать команде обратную связь: гость не был осведомлён о возможности скорректировать температуру'
+    ]
+  },
+  {
+    id: 'chat-not-started',
+    title: 'Чат не запущен',
+    signal: 'СИГНАЛ 787-294',
+    status: '❌ Чат не запущен',
+    date: '09.10.2025 19:04',
+    location: 'Космическая, Самарская 101',
+    guest: 'Лиза',
+    contact: '@username',
+    sla: '2 часа',
+    compensation: 'Сертификат 500₽',
+    problem: 'Гостю не доложили один сырник в заказе. Расстроена.',
+    updates: [
+      '<span class="tkt-bold">Категория:</span> Б (Существенная)',
+      '<span class="tkt-bold">Эмоциональное состояние:</span> Разочарование/расстройство',
+      'Важно: Так как чат Telegram не запущен гостем, прямой ответ невозможен'
+    ],
+    emotion: 'Разочарование/расстройство',
+    guestProposal: 'Контроль комплектности заказов',
+    promised: [
+      'Компенсацию можно предложить при следующем визите',
+      'Альтернативный канал связи при возможности'
+    ],
+    actions: [
+      'Уточнить количество: сколько сырников было заказано и сколько получено',
+      'Уточнить время визита',
+      'Выяснить, обращался ли гость к персоналу на месте',
+      'Разобрать ситуацию с бариста/поваром',
+      'Усилить контроль качества при сборке заказов',
+      'Проверить комплектность блюд перед выдачей'
+    ]
+  },
+  {
+    id: 'quality-violation',
+    title: 'Нарушение качества',
+    signal: 'СИГНАЛ 476-102',
+    status: '⚠️ SLA нарушен',
+    date: '21.10.2025 10:56',
+    location: 'Космическая, Тверская 101',
+    guest: 'Ольга',
+    contact: '@username',
+    sla: '2 часа (дедлайн: 12:56) — НАРУШЕН',
+    compensation: 'Сертификат 1000₽',
+    problem: 'Гостья получила черствую выпечку. Выразила удивление таким сервисом, отметив, что столкнулась с подобным впервые.',
+    updates: [
+      '<span class="tkt-bold">Тип сигнала:</span> КОМПЕНСИРУЕМЫЙ',
+      '<span class="tkt-bold">Категория:</span> Б (нарушение качества продукта)',
+      'Время реакции: 2 часа 30 минут от первого обращения',
+      'Гость не ответил на запрос уточнений'
+    ],
+    emotion: 'Разочарованный (мягкий негатив, без агрессии)',
+    guestProposal: 'Контроль качества и свежести продуктов',
+    promised: [
+      'Выражена эмпатия, признание недопустимости ситуации',
+      'Запрошены уточнения о дате и времени визита',
+      'Обещано связаться после получения ответа от директ-менеджера',
+      'Уведомление о начале проверки директ-менеджером'
+    ],
+    actions: [
+      'Провести проверку контроля свежести выпечки в кофейне',
+      'Проверить процедуры ротации выпечки и списания несвежих позиций',
+      'Рассмотреть компенсацию: сертификат 1000₽ (категория Б — нарушение качества продукта)'
     ]
   },
   {
@@ -53,23 +141,22 @@ const tickets = [
     contact: '@username',
     sla: '4 часа (дедлайн: 16:49)',
     compensation: 'Сертификат 500₽ (№75303)',
-    problem: [
-      { type: 'text', value: 'Гость расстроена из-за ошибки в заказе. Обратилась 27 октября 2025 года в 12:49. Детали уточняются у гостя: точная дата и время заказа, характер ошибки (что именно было не так), формат заказа (на месте/с собой).' },
-      { type: 'meta', label: 'Тип сигнала:', value: 'КОМПЕНСИРУЕМЫЙ' },
-      { type: 'meta', label: 'Категория:', value: 'А (Операционная ошибка — ошибка в заказе)' }
-    ],
+    problem: 'Гость расстроена из-за ошибки в заказе. Обратилась 27 октября 2025 года в 12:49. Детали уточняются у гостя: точная дата и время заказа, характер ошибки (что именно было не так), формат заказа (на месте/с собой).',
     updates: [
-      { type: 'meta', label: 'UPD (27.10.2025 16:35):', value: 'Выдан сертификат №75303 номиналом 500₽' },
-      { type: 'meta', label: '', value: 'Финальное сообщение отправлено гостю' }
+      '<span class="tkt-bold">Тип сигнала:</span> КОМПЕНСИРУЕМЫЙ',
+      '<span class="tkt-bold">Категория:</span> А (Операционная ошибка — ошибка в заказе)',
+      'UPD (27.10.2025 16:35): Выдан сертификат №75303 номиналом 500₽',
+      'Финальное сообщение отправлено гостю'
     ],
-    emotion: 'Расстроена — требуется эмпатия и действия для восстановления доверия.',
+    emotion: 'Расстроена (разочарована) — требуется проявление эмпатии и конкретные действия для восстановления доверия',
     guestProposal: 'Исключить повторение ошибок в заказах',
     promised: [
-      'Отправлено приветствие с благодарностью',
-      'Выражена эмпатия, заданы уточняющие вопросы',
+      'Отправлено приветствие с благодарностью за обратную связь',
+      'Выражена эмпатия и признание недопустимости ситуации',
+      'Заданы уточняющие вопросы о деталях',
       'Отправлен сертификат 500₽ (№75303)',
-      'Сообщены условия использования',
-      'Контроль использования сертификата'
+      'Сообщены условия использования: в любой кофейне «Космическая», без ограничений по сроку',
+      'Через 3 дня (30.10.2025) будет сделан запрос о факте использования сертификата'
     ],
     actions: [
       'Провести внутреннее расследование: выяснить обстоятельства ошибки, причины и ответственных',
@@ -96,18 +183,24 @@ const handleToggle = (index) => {
   }
 }
 
-// Мобильная версия — выпадающий список
+// Определить мобильный режим (до 768px)
 const isMobile = ref(false)
 if (typeof window !== 'undefined') {
-  const updateMobile = () => isMobile.value = window.innerWidth < 768
-  updateMobile()
-  window.addEventListener('resize', updateMobile)
+  const checkMobile = () => isMobile.value = window.innerWidth <= 768
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
 }
 </script>
 
 <template>
   <div class="tkt-root">
-    <!-- Sidebar -->
+    <!-- Мобильный выпадающий список -->
+    <div class="tkt-mobile-select" v-if="isMobile">
+      <select v-model="activeTicket" class="tkt-select">
+        <option v-for="ticket in tickets" :key="ticket.id" :value="ticket.id">{{ ticket.title }}</option>
+      </select>
+    </div>
+    <!-- Боковая навигация на десктопе -->
     <div class="tkt-sidebar" v-if="!isMobile">
       <nav class="tkt-nav" role="tablist">
         <button
@@ -122,21 +215,17 @@ if (typeof window !== 'undefined') {
         </button>
       </nav>
     </div>
-    <!-- Мобильный селектор -->
-    <div class="tkt-selector" v-else>
-      <select v-model="activeTicket" aria-label="Выберите тикет">
-        <option v-for="ticket in tickets" :key="ticket.id" :value="ticket.id">{{ ticket.title }}</option>
-      </select>
-    </div>
-    <!-- Content -->
+
+    <!-- Основной контент -->
     <div class="tkt-content" role="tabpanel">
       <div v-if="currentTicket" class="tkt-details">
-        <!-- Header -->
+        <!-- Заголовок тикета -->
         <div class="tkt-header">
           <span class="tkt-signal">{{ currentTicket.signal }}</span>
           <span class="tkt-status">{{ currentTicket.status }}</span>
         </div>
-        <!-- Summary -->
+
+        <!-- Краткая сводка -->
         <div class="tkt-summary">
           <div class="tkt-summary-row">
             <div class="tkt-summary-item">
@@ -169,85 +258,91 @@ if (typeof window !== 'undefined') {
             </div>
           </div>
         </div>
-        <!-- Accordions -->
+
+        <!-- Аккордеоны -->
         <div class="tkt-sections">
-          <details class="tkt-section" :ref="el => { if(el) detailsRefs[0] = el }" @toggle="handleToggle(0)" open>
+          <details 
+            class="tkt-section"
+            :ref="el => { if (el) detailsRefs[0] = el }"
+            @toggle="handleToggle(0)"
+            open
+          >
             <summary class="tkt-section-header">
               <h3 class="tkt-section-title">Суть проблемы</h3>
               <span class="tkt-arrow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m6 9 6 6 6-6"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </span>
             </summary>
             <div class="tkt-section-content">
-              <p v-for="part in currentTicket.problem" :key="part.label+part.value" :class="part.type==='meta' ? 'tkt-uxmeta' : ''">
-                <span v-if="part.type === 'meta'" class="tkt-meta-label">{{ part.label }}</span>
-                {{ part.value }}
-              </p>
-              <div v-if="currentTicket.updates.length" class="tkt-updates">
-                <p v-for="(upd, idx) in currentTicket.updates" :key="idx" :class="upd.type==='meta' ? 'tkt-uxmeta' : ''">
-                  <span v-if="upd.type === 'meta'" class="tkt-meta-label">{{ upd.label }}</span>
-                  {{ upd.value }}
-                </p>
-                <ul v-if="currentTicket.updates.some(u => u.type === 'bulleted')" class="tkt-bulleted">
-                  <li v-for="upd in currentTicket.updates.filter(u => u.type==='bulleted')" :key="upd.value">{{ upd.value }}</li>
-                </ul>
+              <p>{{ currentTicket.problem }}</p>
+              <div v-if="currentTicket.updates" class="tkt-updates">
+                <p v-for="(update, idx) in currentTicket.updates" :key="idx" v-html="update"></p>
               </div>
             </div>
           </details>
-          <details class="tkt-section" :ref="el => { if(el) detailsRefs[1] = el }" @toggle="handleToggle(1)">
+
+          <details 
+            class="tkt-section"
+            :ref="el => { if (el) detailsRefs[1] = el }"
+            @toggle="handleToggle(1)"
+          >
             <summary class="tkt-section-header">
               <h3 class="tkt-section-title">Эмоциональное состояние</h3>
               <span class="tkt-arrow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m6 9 6 6 6-6"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </span>
             </summary>
             <div class="tkt-section-content">
               <p>{{ currentTicket.emotion }}</p>
               <div class="tkt-proposal">
-                <span class="tkt-meta-label">Предложение гостя:</span> {{ currentTicket.guestProposal }}
+                <span class="tkt-bold">Предложение гостя:</span> {{ currentTicket.guestProposal }}
               </div>
             </div>
           </details>
-          <details class="tkt-section" :ref="el => { if(el) detailsRefs[2] = el }" @toggle="handleToggle(2)">
+
+          <details 
+            class="tkt-section"
+            :ref="el => { if (el) detailsRefs[2] = el }"
+            @toggle="handleToggle(2)"
+          >
             <summary class="tkt-section-header">
               <h3 class="tkt-section-title">Что обещано гостю</h3>
               <span class="tkt-arrow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m6 9 6 6 6-6"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </span>
             </summary>
             <div class="tkt-section-content">
-              <ul class="tkt-list">
-                <li v-for="(item, idx) in currentTicket.promised" :key="idx">{{ item }}</li>
+              <ul v-if="!currentTicket.actions[0].startsWith('1.')" class="tkt-list tkt-check-list">
+                <li v-for="(item, idx) in currentTicket.promised" :key="idx">
+                  <span class="tkt-check"></span>{{ item }}
+                </li>
               </ul>
+              <ol v-else class="tkt-list tkt-num-list">
+                <li v-for="(item, idx) in currentTicket.promised" :key="idx">{{ item }}</li>
+              </ol>
             </div>
           </details>
-          <details class="tkt-section" :ref="el => { if(el) detailsRefs[3] = el }" @toggle="handleToggle(3)">
+
+          <details 
+            class="tkt-section"
+            :ref="el => { if (el) detailsRefs[3] = el }"
+            @toggle="handleToggle(3)"
+          >
             <summary class="tkt-section-header">
               <h3 class="tkt-section-title">Рекомендации для команды</h3>
               <span class="tkt-arrow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m6 9 6 6 6-6"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </span>
             </summary>
             <div class="tkt-section-content">
-              <ol v-if="currentTicket.actions.length" class="tkt-list">
-                <li v-for="(action, idx) in currentTicket.actions" :key="idx" class="tkt-compact-list">{{ action }}</li>
+              <ol v-if="currentTicket.actions.length && currentTicket.actions.length <= 8" class="tkt-list tkt-num-list">
+                <li v-for="(item, idx) in currentTicket.actions" :key="idx">{{ item }}</li>
               </ol>
-              <!-- Если нужен чеклист вместо нумерации, используйте ниже -->
-              <!--
-              <ul v-if="false" class="tkt-checklist">
-                <li v-for="(action, idx) in currentTicket.actions" :key="idx">
-                  <span class="tkt-checkmark"></span>{{ action }}
+              <ul v-else class="tkt-list tkt-check-list">
+                <li v-for="(item, idx) in currentTicket.actions" :key="idx">
+                  <span class="tkt-check"></span>{{ item }}
                 </li>
               </ul>
-              -->
             </div>
           </details>
         </div>
@@ -263,14 +358,15 @@ if (typeof window !== 'undefined') {
   gap: 0;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
+  overflow: hidden;
   background: rgba(255,255,255,0.02);
   margin: 24px 0;
-  overflow: hidden;
 }
 .tkt-sidebar {
   background: rgba(255,255,255,0.03);
   border-right: 1px solid rgba(255,255,255,0.08);
-  min-width: 200px;
+  overflow-y: auto;
+  max-height: 600px;
 }
 .tkt-nav {
   padding: 0;
@@ -278,108 +374,76 @@ if (typeof window !== 'undefined') {
 }
 .tkt-nav-item {
   width: 100%;
-  padding: 10px 14px;
+  padding: 13px 14px 11px 18px;
   border: none;
   background: transparent;
   text-align: left;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
+  display: block;
   border-left: 3px solid transparent;
-  font-size: 14px;
-  line-height: 1.2;
+  line-height: 1.07;
 }
-.tkt-nav-item:hover { background: rgba(255,255,255,0.06); }
+.tkt-nav-item:hover {
+  background: rgba(255,255,255,0.06);
+}
 .tkt-nav-item.active {
   background: rgba(200,255,90,0.08);
   border-left-color: #c8ff5a;
+}
+.tkt-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.89);
+  display: block;
+}
+.tkt-nav-item.active .tkt-title {
   color: #c8ff5a;
 }
-.tkt-title { font-weight: 600; color: inherit; }
+.tkt-mobile-select {
+  padding: 12px 12px 4px 12px;
+  background: rgba(255,255,255,0.025);
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+.tkt-select {
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 15px;
+  border-radius: 8px;
+  background: #262626;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.16);
+  outline: none;
+  font-weight: 500;
+}
 .tkt-content {
-  padding: 18px;
+  padding: 19px;
   overflow-y: auto;
-  min-width: 0;
   max-height: 600px;
 }
-.tkt-details { display: flex; flex-direction: column; gap: 14px; }
+
+.tkt-details {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
 .tkt-header {
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: 13.5px; font-weight: 600; color: #c8ff5a; padding-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 2px;
 }
-.tkt-summary {
-  display: flex; flex-direction: column; gap: 6px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px; padding: 12px; font-size: 13px;
+.tkt-signal {
+  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: #c8ff5a;
+  letter-spacing: 0.01em;
 }
-.tkt-summary-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.tkt-summary-item { display: flex; flex-direction: column; gap: 2px; }
-.tkt-label {
-  font-size: 10px; font-weight: 700;
-  color: rgba(255,255,255,0.45); text-transform: uppercase;
-  letter-spacing: 0.05em; margin-bottom: 1px;
-}
-.tkt-value { font-size: 13px; color: rgba(255,255,255,0.92); font-weight: 500; line-height: 1.2; }
-.tkt-sections { display: flex; flex-direction: column; gap: 6px; }
-.tkt-section {
-  background: rgba(255,255,255,0.03); border: none; border-radius: 12px;
-  overflow: hidden; transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-}
-.tkt-section-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 14px; cursor: pointer; user-select: none; margin: 0;
-  background: transparent; border-radius: 12px 12px 0 0; font-size:15px;
-  font-weight: 600; color: #fff; min-height: 38px;
-}
-.tkt-section-title { font-size: 15px; font-weight: 600; color: #fff; margin: 0; padding: 0; }
-.tkt-arrow { display: flex; align-items: center; justify-content: center; margin-left: 12px; color: #aaa; transition: transform 0.25s; }
-.tkt-section[open] .tkt-arrow { transform: rotate(180deg); }
-.tkt-section-content {
-  padding: 10px 14px 8px; color: #ffffff; line-height: 1.4; font-size: 13px;
-  animation: slideDown 0.4s cubic-bezier(0.4,0,0.2,1);
-}
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.tkt-section-content p, .tkt-section-content ul, .tkt-section-content ol {
-  margin-bottom: 5px;
-}
-.tkt-section-content .tkt-uxmeta {
-  font-size: 13px; font-weight: 500; color: #d7ff81; margin-bottom: 4px;
-}
-.tkt-meta-label {
-  font-weight: 500;
-  color: #d7ff81;
-  margin-right: 4px;
-}
-.tkt-updates { margin-top: 5px; }
-.tkt-bulleted { list-style: disc inside; margin-left: 0; }
-.tkt-bulleted li { font-size: 13px; color: #fff; line-height: 1.3; margin-bottom: 3px; padding-left: 0; }
-.tkt-list, .tkt-checklist { margin: 0; padding-left: 20px; }
-.tkt-list li, .tkt-checklist li { margin-bottom: 6px; line-height: 1.3; font-size: 13px; color: #fff; }
-.tkt-compact-list { font-size: 13px; color: #fff; margin-bottom: 4px; }
-.tkt-checkmark {
-  display: inline-block; min-width: 16px; margin-right: 7px; color: #d7ff81;
-  font-weight: bold; font-size: 14px; vertical-align: middle;
-}
-.tkt-proposal { margin-top: 9px; padding: 8px 10px; background: rgba(200,255,90,0.07);
-  border-left: 3px solid #c8ff5a; border-radius: 6px; font-size: 13px; color: #fff; font-weight: 500;
-}
-.tkt-selector { width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.tkt-selector select {
-  width: 100%; font-size: 15px; padding: 7px 12px; border-radius: 8px; border: 1px solid #222;
-  background: #181818; color: #eaff9a; font-weight: 600; cursor: pointer;
-}
-@media (max-width: 768px) {
-  .tkt-root { grid-template-columns: 1fr; }
-  .tkt-sidebar { display: none; }
-  .tkt-content { padding: 10px; max-height: none; }
-  .tkt-section-content { padding: 7px 10px 5px; font-size: 12px; }
-  .tkt-summary-row { grid-template-columns: 1fr; gap: 4px; }
-}
-</style>
+.tkt-status {
+  font-size: 13px;
+  color: rgba(255,255,
