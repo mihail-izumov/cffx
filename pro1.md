@@ -28,6 +28,8 @@ notification: brew
   <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
 
+</div>
+
 ## Забота о клиентах начинается здесь.
 
 <DialogsWidgets />
@@ -37,8 +39,6 @@ notification: brew
 <SignalSuperSpecsSlider />
 
 ## От диалогов к безупречной системе сервиса.
-
-</div>
 
 <SignalProductsCards />
 
