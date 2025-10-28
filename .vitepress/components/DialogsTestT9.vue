@@ -37,8 +37,8 @@
       </div>
     </div>
 
-    <!-- Форма (БЕЗ МАТРЁШКИ) -->
-    <div class="signal-demo__form-container">
+    <!-- ГЛАВНЫЙ КОНТЕЙНЕР — НА ВСЮ ШИРИНУ, БЕЗ МАТРЁШКИ -->
+    <div class="signal-form-content">
       <!-- Эмоции -->
       <div v-if="selectedSection === 'emotions'" class="signal-question-block" :style="{ '--accent-color': colors.emotions }">
         <p class="signal-direction-label">Эмоции и чувства</p>
@@ -463,7 +463,7 @@ const configs = {
   facts: {
     initial: ['опоздание тренера', 'переполненный зал', 'грязь в раздевалке', 'неисправное оборудование', 'ошибка в абонементе'],
 
-    'опоздание тренера': ['на 10 минут', 'не пришла совсем', 'опоздала и не извинилась', 'опоздала второй раз'],
+    'опоздание тренера': ['на 10 минут', 'на 20 минут', 'не пришла совсем', 'опоздала и не извинилась', 'опоздала второй раз'],
     'переполненный зал': ['30 человек на группу', 'негде встать', 'очередь на дорожку', '10 человек на коврик', 'не протолкнуться'],
     'грязь в раздевалке': ['волосы в душе', 'вода на полу', 'грязные шкафчики', 'нет бумаги', 'воняет'],
     'неисправное оборудование': ['беговая дорожка не включается', 'трос порвался', 'дисплей мигает', 'гантели отсутствуют', 'сиденье сломано'],
@@ -532,13 +532,10 @@ const form = reactive({
 
 // === Подсказки ===
 const suggestions = reactive({ emotions: {}, facts: {}, solutions: {} });
-const currentSuggestions = reactive({
-  emotions: [],
-  facts: [],
-  solutions: []
-});
+const currentSuggestions = reactive({ emotions: [], facts: [], solutions: [] });
 const selectedSuggestions = reactive({ emotions: [], facts: [], solutions: [] });
 const initialFiltered = reactive({ emotions: [], facts: [], solutions: [] });
+const isAtInitial = reactive({ emotions: true, facts: true, solutions: true });
 
 // === Вопросы ===
 const currentQuestion1 = ref('');
@@ -558,12 +555,13 @@ function resetAll() {
   const cfg = currentConfig.value;
   Object.keys(form).forEach(k => form[k] = '');
 
-  // Копируем suggestions
   Object.keys(suggestions).forEach(type => {
     suggestions[type] = { ...cfg.suggestions[type] };
-    initialFiltered[type] = [...(cfg.suggestions[type].initial || [])];
-    currentSuggestions[type] = [...initialFiltered[type]];
+    const init = cfg.suggestions[type]?.initial || [];
+    initialFiltered[type] = [...init];
+    currentSuggestions[type] = [...init];
     selectedSuggestions[type] = [];
+    isAtInitial[type] = true;
   });
 
   currentQuestion1.value = cfg.questions[1][0];
@@ -575,25 +573,26 @@ function resetAll() {
 
 // === Логика подсказок ===
 function showResetButton(type) {
-  return currentSuggestions[type].length > 0 && 
-         JSON.stringify(currentSuggestions[type]) !== JSON.stringify(initialFiltered[type]);
+  return !isAtInitial[type] && currentSuggestions[type].length > 0;
 }
 
 function resetSuggestions(type) {
   const filtered = initialFiltered[type].filter(word => !selectedSuggestions[type].includes(word));
   currentSuggestions[type] = filtered.length > 0 ? [...filtered] : [...initialFiltered[type]];
+  isAtInitial[type] = true;
 }
 
 function selectSuggestion(field, suggestion, type) {
-  const text = form[field].trim();
   const cap = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
 
-  form[field] = text ? `${text}. ${cap}` : cap;
+  // Добавляем слово БЕЗ точки
+  form[field] = form[field] ? `${form[field]} ${cap}` : cap;
 
   if (!selectedSuggestions[type].includes(suggestion)) {
     selectedSuggestions[type].push(suggestion);
   }
 
+  isAtInitial[type] = false;
   updateSuggestions(type, suggestion);
 }
 
@@ -601,6 +600,15 @@ function updateSuggestions(type, word) {
   const next = suggestions[type][word];
   if (next && next.length > 0) {
     currentSuggestions[type] = next.filter(item => !selectedSuggestions[type].includes(item));
+    // Точка — только если это конец цепочки
+    if (!suggestions[type][currentSuggestions[type][0]]) {
+      const lastField = type === 'emotions' ? 'emotionalRelease' :
+                        type === 'facts' ? 'factualAnalysis' : 'constructiveSuggestions';
+      const text = form[lastField].trim();
+      if (text && !text.endsWith('.')) {
+        form[lastField] = `${text}.`;
+      }
+    }
   } else {
     resetSuggestions(type);
   }
@@ -627,11 +635,12 @@ onUnmounted(() => clearInterval(rotationInterval));
 </script>
 
 <style scoped>
-.signal-demo-wrapper { 
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+.signal-demo-wrapper {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   max-width: 600px;
   margin: 0 auto;
   padding: 1rem;
+  width: 100%;
 }
 
 /* Отступ между переключателями */
@@ -679,10 +688,10 @@ onUnmounted(() => clearInterval(rotationInterval));
 }
 
 /* Переключатель Эмоции/Факты/Решение */
-.signal-demo__header { 
-  display: flex; 
-  justify-content: center; 
-  margin-bottom: 1.5rem; 
+.signal-demo__header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
 }
 .signal-demo__switch {
   display: flex;
@@ -707,14 +716,9 @@ onUnmounted(() => clearInterval(rotationInterval));
 .signal-demo__switch-btn.facts.is-active { background: rgba(61,220,132,0.14); border-color: #3DDC84; color: #3DDC84; }
 .signal-demo__switch-btn.solutions.is-active { background: rgba(255,184,0,0.14); border-color: #FFB800; color: #FFB800; }
 
-/* Форма (БЕЗ МАТРЁШКИ) */
-.signal-demo__form-container {
-  background-color: #1E1E20;
-  border-radius: 24px;
-  padding: 2rem;
-  color: #f0f0f0;
-  border: 1px solid #2c2c2f;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+/* ГЛАВНЫЙ КОНТЕНТ — НА ВСЮ ШИРИНУ */
+.signal-form-content {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -728,25 +732,25 @@ onUnmounted(() => clearInterval(rotationInterval));
   border-left: 4px solid var(--accent-color);
 }
 
-.signal-direction-label { 
-  font-weight: 600; 
-  font-size: 0.75rem; 
-  color: #888; 
-  text-transform: uppercase; 
-  letter-spacing: 0.05em; 
-  margin-bottom: 0.5rem; 
+.signal-direction-label {
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
 }
-.signal-rotating-phrase-container { 
-  height: 52px; 
-  margin-bottom: 0.75rem; 
-  overflow: hidden; 
+.signal-rotating-phrase-container {
+  height: 52px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
 }
-.signal-question-label { 
-  font-weight: 500; 
-  font-size: 1rem; 
-  margin: 0; 
-  color: #f0f0f0; 
-  line-height: 1.3; 
+.signal-question-label {
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0;
+  color: #f0f0f0;
+  line-height: 1.3;
 }
 
 textarea {
@@ -768,11 +772,11 @@ textarea:focus {
 }
 ::placeholder { color: #666; }
 
-.signal-suggestions-container { 
-  display: flex; 
-  flex-wrap: wrap; 
-  gap: 0.5rem; 
-  margin: 0.75rem 0 0.5rem; 
+.signal-suggestions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0 0.5rem;
 }
 .signal-suggestion-bubble {
   padding: 0.35rem 0.85rem;
@@ -792,11 +796,11 @@ textarea:focus {
 .signal-reset-bubble { font-weight: 600; opacity: 0.8; font-size: 0.75rem; border-style: dashed !important; }
 .signal-reset-bubble:hover { opacity: 1; }
 
-.signal-example-hint { 
-  font-size: 0.8rem; 
-  color: #777; 
-  margin: 0.5rem 0 0 0.25rem; 
-  line-height: 1.2; 
+.signal-example-hint {
+  font-size: 0.8rem;
+  color: #777;
+  margin: 0.5rem 0 0 0.25rem;
+  line-height: 1.2;
 }
 .signal-example-hint b { color: #aaa; font-weight: 600; }
 
