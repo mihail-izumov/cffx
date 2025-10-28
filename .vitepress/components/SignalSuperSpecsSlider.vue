@@ -21,33 +21,47 @@
             stroke-width="1.8"
             stroke-linecap="round"
             stroke-linejoin="round"
-            :class="['icon-volume', { 'filter-hover': activeSlide === idx }]"
+            class="icon-volume"
+            :class="{ active: activeSlide === idx }"
           >
             <!-- DEFS -->
             <defs>
-              <linearGradient :id="'grad-' + idx" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#585858"/>
+              <!-- УНИКАЛЬНЫЙ ID ДЛЯ ГРАДИЕНТА -->
+              <linearGradient :id="`grad-${idx}`" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#484848"/>
                 <stop offset="50%" stop-color="#686868"/>
-                <stop offset="100%" stop-color="#787878"/>
+                <stop offset="100%" stop-color="#888888"/>
               </linearGradient>
 
-              <filter id="depth" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
-                <feOffset dx="0" dy="2"/>
-                <feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>
-                <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+              <!-- СИЛЬНАЯ ТЕНЬ (пассив) -->
+              <filter id="depth" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+                <feOffset dx="0" dy="3" result="offset"/>
+                <feComponentTransfer>
+                  <feFuncA type="linear" slope="0.5"/>
+                </feComponentTransfer>
+                <feMerge>
+                  <feMergeNode/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
               </filter>
 
-              <filter id="depth-hover" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-                <feOffset dx="0" dy="3"/>
-                <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
-                <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+              <!-- ЕЩЁ СИЛЬНЕЕ (hover) -->
+              <filter id="depth-hover" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="5"/>
+                <feOffset dx="0" dy="5" result="offset"/>
+                <feComponentTransfer>
+                  <feFuncA type="linear" slope="0.7"/>
+                </feComponentTransfer>
+                <feMerge>
+                  <feMergeNode/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
               </filter>
             </defs>
 
             <!-- ИКОНКА -->
-            <g :stroke="'url(#' + 'grad-' + idx + ')'" filter="url(#depth)" class="icon-path">
+            <g :stroke="`url(#grad-${idx})`" filter="url(#depth)" class="icon-path">
               <path v-for="path in slide.paths" :d="path"/>
               <circle v-if="slide.circle" :cx="slide.circle.cx" :cy="slide.circle.cy" :r="slide.circle.r"/>
               <rect v-if="slide.rect" :width="slide.rect.w" :height="slide.rect.h" :x="slide.rect.x" :y="slide.rect.y" :rx="slide.rect.rx" :ry="slide.rect.ry"/>
@@ -216,28 +230,28 @@ const scrollPrev = () => {
   right: 16px !important;
   width: 280px !important;
   height: 280px !important;
-  opacity: 0.12 !important;
+  opacity: 0.18 !important; /* Увеличил видимость */
   pointer-events: none !important;
   z-index: 0 !important;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .icon-volume {
   width: 100% !important;
   height: 100% !important;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* HOVER: УСИЛЕННЫЙ ОБЪЁМ */
-.filter-hover .icon-path,
+/* HOVER: СИЛЬНЫЙ ПОДЪЁМ + ТЕНЬ */
+.icon-volume.active,
+.sss-brand-card:hover .icon-volume {
+  opacity: 0.35 !important;
+  transform: translateY(-4px) scale(1.12) !important;
+}
+
+.icon-volume.active .icon-path,
 .sss-brand-card:hover .icon-path {
   filter: url(#depth-hover) !important;
-}
-
-.filter-hover,
-.sss-brand-card:hover .icon-volume {
-  opacity: 0.22 !important;
-  transform: translateY(-2px) scale(1.08) !important;
 }
 
 /* ТЕКСТ */
