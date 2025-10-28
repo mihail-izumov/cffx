@@ -6,15 +6,15 @@ const activeTicket = ref('negative-1')
 const tickets = [
   {
     id: 'negative-1',
-    emoji: '⚡️',
-    title: 'Долгое ожидание',
-    category: 'Категория А',
+    title: 'Негативный опыт',
     signal: 'СИГНАЛ 654-867',
     status: '✅ Обработан',
     date: '09.10.2025 16:00',
     location: 'Космическая, Пензенская 101',
     guest: 'Татьяна',
     contact: '@username',
+    sla: '4 часа (дедлайн: 20:00)',
+    compensation: 'Извинения + Сертификат 500₽',
     problem: 'Гостья посетила кофейню и столкнулась с долгим ожиданием при пустой кофейне. Видя отсутствие других посетителей, ситуация вызвала недоумение и расстройство.',
     updates: [
       'UPD 09.10.2025 16:12 — Получены уточнения от гостя:',
@@ -25,89 +25,150 @@ const tickets = [
     ],
     emotion: 'Умеренное волнение. Гостья расстроена долгим ожиданием в пустой кофейне, но конструктивна — предлагает решение в виде обучения персонала.',
     guestProposal: 'Обучение персонала',
-    sla: '4 часа (дедлайн: 20:00)',
-    compensation: 'Извинения + Сертификат 500₽',
     promised: [
       'Информация передана управляющему для разбора ситуации',
-      'Гостю предоставлена обратная связь о принятых мерах',
-      'Сертификат 500₽ как извинение за неудобство'
+      'Гостю сообщат результат после получения ответа от управляющего',
+      'Предложение по обучению персонала включено в отчёт'
     ],
     actions: [
-      'Запросить у управляющего объяснение причин задержки',
-      'Проверить наличие персонала в смене и распределение обязанностей',
-      'Оценить, была ли проблема в приоритизации задач бариста',
-      'Провести беседу о важности скорости обслуживания при низкой загрузке',
-      'Рассмотреть необходимость дополнительного обучения команды'
+      'Связаться с Татьяной и принести искренние извинения за ожидание 10-15 минут в пустой кофейне',
+      'Предложить компенсацию (сертификат 500₽ по категории А)',
+      'Провести разбор с персоналом: почему 09.10 около 14:00 в пустой кофейне гость ждал 10-15 минут латте и пончик',
+      'Выяснить, кто был на смене в это время и почему не обслужил гостя оперативно',
+      'Проверить распределение зон ответственности между сотрудниками в дневное время',
+      'Усилить контроль за временем обслуживания, особенно в периоды низкой загрузки',
+      'Проверить, есть ли процесс встречи гостей при входе (особенно когда зал пустой)',
+      'Рассмотреть предложение гостя по обучению персонала — возможно, есть пробелы в стандартах работы или внимательности к гостям',
+      'Тон ответа: искренние извинения + благодарность за обратную связь + акцент на важности каждого визита для улучшения сервиса'
     ]
   },
   {
-    id: 'negative-2',
-    emoji: '⚡️',
-    title: 'Холодный капучино',
-    category: 'Категория Б',
-    signal: 'СИГНАЛ 655-001',
-    status: '✅ Обработан',
-    date: '10.10.2025 12:30',
-    location: 'Молодогвардейская, 151',
-    guest: 'Дмитрий',
-    contact: '@dmitry_user',
-    problem: 'Гость получил холодный капучино. Проблема повторяется уже не первый раз в этой локации.',
-    updates: [
-      'UPD 10.10.2025 12:45 — Получены уточнения:',
-      '• Время визита: 10.10.2025 около 11:00',
-      '• Температура напитка: едва теплый',
-      '• Заказ: капучино большой',
-      '• Обращение к персоналу: пожаловался бариста'
-    ],
-    emotion: 'Сильное недовольство. Гость разочарован повторяющейся проблемой и потерей доверия к заведению.',
-    guestProposal: 'Системный контроль качества напитков',
-    sla: '8 часов (дедлайн: 20:30)',
-    compensation: 'Переделка напитка + Сертификат 300₽',
-    promised: [
-      'Напиток переделан немедленно',
-      'Проведена проверка оборудования',
-      'Сертификат на следующий визит'
-    ],
-    actions: [
-      'Проверить исправность кофемашины и термометров',
-      'Убедиться в правильности настроек температуры молока',
-      'Провести дополнительное обучение бариста стандартам температуры',
-      'Внедрить контрольные точки проверки температуры напитков'
-    ]
-  },
-  {
-    id: 'positive-1',
-    emoji: '💚',
-    title: 'Отличный сервис',
-    category: 'Позитивный опыт',
-    signal: 'СИГНАЛ 655-102',
-    status: '✅ Зафиксирован',
-    date: '11.10.2025 15:20',
-    location: 'Космическая, Пензенская 101',
-    guest: 'Анна',
-    contact: '@anna_smile',
-    problem: 'Гостья оставила восторженный отзыв о работе бариста Марии. Отметила профессионализм, внимательность и создание уютной атмосферы.',
-    updates: [
-      'Детали позитивного опыта:',
-      '• Бариста запомнила предпочтения гостя',
-      '• Порекомендовала новый десерт',
-      '• Создала теплую дружескую атмосферу',
-      '• Напиток был приготовлен идеально'
-    ],
-    emotion: 'Восторг и благодарность. Гостья планирует возвращаться именно к этому бариста.',
-    guestProposal: 'Благодарность команде',
-    sla: 'Без дедлайна',
+    id: 'educational',
+    title: 'Образовательный',
+    signal: 'СИГНАЛ 876-456',
+    status: '✅ Передано команде',
+    date: '21.10.2025 17:13',
+    location: 'Космическая, Самарская 101',
+    guest: 'Елена',
+    contact: '@username',
+    sla: 'Не применимо',
     compensation: 'Не требуется',
+    problem: 'Гость сообщил, что кофе был слишком горячим.',
+    updates: [
+      'Тип сигнала: ОБРАЗОВАТЕЛЬНЫЙ',
+      'Категория: Не применимо (образовательный момент)',
+      'Компенсация НЕ требуется: ситуация не относится к категории Б'
+    ],
+    emotion: 'Спокойный (конструктивная обратная связь).',
+    guestProposal: 'Информирование о возможности настройки температуры',
     promised: [
-      'Благодарность передана бариста Марии',
-      'Отзыв добавлен в портфолио сотрудника',
-      'Информация учтена при оценке эффективности'
+      'Чат запущен (✅)',
+      'Ответ Анны отправлен через оператора: гостю объяснена возможность попросить лёд или охлаждение напитка',
+      'Запрошено уточнение даты и времени визита для передачи обратной связи команде кофейни'
     ],
     actions: [
-      'Поблагодарить Марию за отличную работу',
-      'Зафиксировать кейс как best practice',
-      'Использовать пример на обучении команды',
-      'Рассмотреть возможность поощрения сотрудника'
+      'Провести инструктаж с командой бариста о важности проактивного предложения льда или охлаждения напитка гостям',
+      'Рассмотреть возможность добавления информации о настройке температуры напитков в меню или на стойке',
+      'Передать команде обратную связь: гость не был осведомлён о возможности скорректировать температуру'
+    ]
+  },
+  {
+    id: 'chat-not-started',
+    title: 'Чат не запущен',
+    signal: 'СИГНАЛ 787-294',
+    status: '❌ Чат не запущен',
+    date: '09.10.2025 19:04',
+    location: 'Космическая, Самарская 101',
+    guest: 'Лиза',
+    contact: '@username',
+    sla: '2 часа',
+    compensation: 'Сертификат 500₽',
+    problem: 'Гостю не доложили один сырник в заказе. Расстроена.',
+    updates: [
+      'Категория: Б (Существенная)',
+      'Эмоциональное состояние: Разочарование/расстройство',
+      'Важно: Так как чат Telegram не запущен гостем, прямой ответ невозможен'
+    ],
+    emotion: 'Разочарование/расстройство',
+    guestProposal: 'Контроль комплектности заказов',
+    promised: [
+      'Компенсацию можно предложить при следующем визите',
+      'Альтернативный канал связи при возможности'
+    ],
+    actions: [
+      'Уточнить количество: сколько сырников было заказано и сколько получено',
+      'Уточнить время визита',
+      'Выяснить, обращался ли гость к персоналу на месте',
+      'Разобрать ситуацию с бариста/поваром',
+      'Усилить контроль качества при сборке заказов',
+      'Проверить комплектность блюд перед выдачей'
+    ]
+  },
+  {
+    id: 'quality-violation',
+    title: 'Нарушение качества',
+    signal: 'СИГНАЛ 476-102',
+    status: '⚠️ SLA нарушен',
+    date: '21.10.2025 10:56',
+    location: 'Космическая, Тверская 101',
+    guest: 'Ольга',
+    contact: '@username',
+    sla: '2 часа (дедлайн: 12:56) — НАРУШЕН',
+    compensation: 'Сертификат 1000₽',
+    problem: 'Гостья получила черствую выпечку. Выразила удивление таким сервисом, отметив, что столкнулась с подобным впервые.',
+    updates: [
+      'Тип сигнала: КОМПЕНСИРУЕМЫЙ',
+      'Категория: Б (нарушение качества продукта)',
+      'Время реакции: 2 часа 30 минут от первого обращения',
+      'Гость не ответил на запрос уточнений'
+    ],
+    emotion: 'Разочарованный (мягкий негатив, без агрессии)',
+    guestProposal: 'Контроль качества и свежести продуктов',
+    promised: [
+      'Выражена эмпатия, признание недопустимости ситуации',
+      'Запрошены уточнения о дате и времени визита',
+      'Обещано связаться после получения ответа от директ-менеджера',
+      'Уведомление о начале проверки директ-менеджером'
+    ],
+    actions: [
+      'Провести проверку контроля свежести выпечки в кофейне',
+      'Проверить процедуры ротации выпечки и списания несвежих позиций',
+      'Рассмотреть компенсацию: сертификат 1000₽ (категория Б — нарушение качества продукта)'
+    ]
+  },
+  {
+    id: 'order-error',
+    title: 'Ошибка в заказе',
+    signal: 'СИГНАЛ 971-484',
+    status: '✅ Компенсация выдана',
+    date: '27.10.2025 12:49',
+    location: 'Космическая, Самарская 101',
+    guest: 'Мария',
+    contact: '@username',
+    sla: '4 часа (дедлайн: 16:49)',
+    compensation: 'Сертификат 500₽ (№75303)',
+    problem: 'Гость расстроена из-за ошибки в заказе. Обратилась 27 октября 2025 года в 12:49. Детали уточняются у гостя: точная дата и время заказа, характер ошибки (что именно было не так), формат заказа (на месте/с собой).',
+    updates: [
+      'Тип сигнала: КОМПЕНСИРУЕМЫЙ',
+      'Категория: А (Операционная ошибка — ошибка в заказе)',
+      'UPD (27.10.2025 16:35): Выдан сертификат №75303 номиналом 500₽',
+      'Финальное сообщение отправлено гостю'
+    ],
+    emotion: 'Расстроена (разочарована) — требуется проявление эмпатии и конкретные действия для восстановления доверия',
+    guestProposal: 'Исключить повторение ошибок в заказах',
+    promised: [
+      'Отправлено приветствие с благодарностью за обратную связь',
+      'Выражена эмпатия и признание недопустимости ситуации',
+      'Заданы уточняющие вопросы о деталях',
+      'Отправлен сертификат 500₽ (№75303)',
+      'Сообщены условия использования: в любой кофейне «Космическая», без ограничений по сроку',
+      'Через 3 дня (30.10.2025) будет сделан запрос о факте использования сертификата'
+    ],
+    actions: [
+      'Провести внутреннее расследование: выяснить обстоятельства ошибки, причины и ответственных',
+      'Связаться с гостем по Telegram для уточнения деталей',
+      'Принять меры для исключения повторения ситуации',
+      'Контроль использования сертификата №75303'
     ]
   }
 ]
@@ -115,16 +176,25 @@ const tickets = [
 const currentTicket = computed(() => 
   tickets.find(t => t.id === activeTicket.value)
 )
+
+const detailsRefs = ref([])
+const handleToggle = (index) => {
+  const currentDetails = detailsRefs.value[index]
+  if (currentDetails && currentDetails.open) {
+    detailsRefs.value.forEach((details, i) => {
+      if (i !== index && details && details.open) {
+        details.open = false
+      }
+    })
+  }
+}
 </script>
 
 <template>
-  <div class="tkt-root" data-component="tickets-showcase">
+  <div class="tkt-root">
     <!-- Боковая навигация -->
     <div class="tkt-sidebar">
-      <div class="tkt-sidebar-header">
-        <h3>Примеры тикетов</h3>
-      </div>
-      <nav class="tkt-nav" role="tablist" aria-label="Список тикетов">
+      <nav class="tkt-nav" role="tablist">
         <button
           v-for="ticket in tickets"
           :key="ticket.id"
@@ -133,9 +203,7 @@ const currentTicket = computed(() =>
           role="tab"
           :aria-selected="activeTicket === ticket.id"
         >
-          <span class="tkt-emoji">{{ ticket.emoji }}</span>
           <span class="tkt-title">{{ ticket.title }}</span>
-          <span class="tkt-category">{{ ticket.category }}</span>
         </button>
       </nav>
     </div>
@@ -149,38 +217,56 @@ const currentTicket = computed(() =>
           <span class="tkt-status">{{ currentTicket.status }}</span>
         </div>
 
-        <!-- Краткая сводка (всегда видна) -->
+        <!-- Краткая сводка -->
         <div class="tkt-summary">
-          <div class="tkt-summary-item">
-            <span class="tkt-label">Дата:</span>
-            <span class="tkt-value">{{ currentTicket.date }}</span>
+          <div class="tkt-summary-row">
+            <div class="tkt-summary-item">
+              <span class="tkt-label">ДАТА:</span>
+              <span class="tkt-value">{{ currentTicket.date }}</span>
+            </div>
+            <div class="tkt-summary-item">
+              <span class="tkt-label">КОФЕЙНЯ:</span>
+              <span class="tkt-value">{{ currentTicket.location }}</span>
+            </div>
           </div>
-          <div class="tkt-summary-item">
-            <span class="tkt-label">Кофейня:</span>
-            <span class="tkt-value">{{ currentTicket.location }}</span>
+          <div class="tkt-summary-row">
+            <div class="tkt-summary-item">
+              <span class="tkt-label">ГОСТЬ:</span>
+              <span class="tkt-value">{{ currentTicket.guest }}</span>
+            </div>
+            <div class="tkt-summary-item">
+              <span class="tkt-label">КОНТАКТ:</span>
+              <span class="tkt-value">{{ currentTicket.contact }}</span>
+            </div>
           </div>
-          <div class="tkt-summary-item">
-            <span class="tkt-label">Гость:</span>
-            <span class="tkt-value">{{ currentTicket.guest }}</span>
-          </div>
-          <div class="tkt-summary-item">
-            <span class="tkt-label">Контакт:</span>
-            <span class="tkt-value">{{ currentTicket.contact }}</span>
-          </div>
-          <div class="tkt-summary-item">
-            <span class="tkt-label">SLA:</span>
-            <span class="tkt-value">{{ currentTicket.sla }}</span>
-          </div>
-          <div class="tkt-summary-item">
-            <span class="tkt-label">Компенсация:</span>
-            <span class="tkt-value">{{ currentTicket.compensation }}</span>
+          <div class="tkt-summary-row">
+            <div class="tkt-summary-item">
+              <span class="tkt-label">SLA:</span>
+              <span class="tkt-value">{{ currentTicket.sla }}</span>
+            </div>
+            <div class="tkt-summary-item">
+              <span class="tkt-label">КОМПЕНСАЦИЯ:</span>
+              <span class="tkt-value">{{ currentTicket.compensation }}</span>
+            </div>
           </div>
         </div>
 
         <!-- Раскрывающиеся секции -->
         <div class="tkt-sections">
-          <details class="tkt-section" open>
-            <summary class="tkt-section-header">Суть проблемы</summary>
+          <details 
+            class="tkt-section" 
+            :ref="el => { if (el) detailsRefs[0] = el }"
+            @toggle="handleToggle(0)"
+            open
+          >
+            <summary class="tkt-section-header">
+              <h3 class="tkt-section-title">Суть проблемы</h3>
+              <span class="tkt-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </span>
+            </summary>
             <div class="tkt-section-content">
               <p>{{ currentTicket.problem }}</p>
               <div v-if="currentTicket.updates" class="tkt-updates">
@@ -189,8 +275,19 @@ const currentTicket = computed(() =>
             </div>
           </details>
 
-          <details class="tkt-section">
-            <summary class="tkt-section-header">Эмоциональное состояние</summary>
+          <details 
+            class="tkt-section"
+            :ref="el => { if (el) detailsRefs[1] = el }"
+            @toggle="handleToggle(1)"
+          >
+            <summary class="tkt-section-header">
+              <h3 class="tkt-section-title">Эмоциональное состояние</h3>
+              <span class="tkt-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </span>
+            </summary>
             <div class="tkt-section-content">
               <p>{{ currentTicket.emotion }}</p>
               <div class="tkt-proposal">
@@ -199,8 +296,19 @@ const currentTicket = computed(() =>
             </div>
           </details>
 
-          <details class="tkt-section">
-            <summary class="tkt-section-header">Что обещано гостю</summary>
+          <details 
+            class="tkt-section"
+            :ref="el => { if (el) detailsRefs[2] = el }"
+            @toggle="handleToggle(2)"
+          >
+            <summary class="tkt-section-header">
+              <h3 class="tkt-section-title">Что обещано гостю</h3>
+              <span class="tkt-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </span>
+            </summary>
             <div class="tkt-section-content">
               <ul class="tkt-list">
                 <li v-for="(item, idx) in currentTicket.promised" :key="idx">{{ item }}</li>
@@ -208,8 +316,19 @@ const currentTicket = computed(() =>
             </div>
           </details>
 
-          <details class="tkt-section">
-            <summary class="tkt-section-header">Рекомендации для команды</summary>
+          <details 
+            class="tkt-section"
+            :ref="el => { if (el) detailsRefs[3] = el }"
+            @toggle="handleToggle(3)"
+          >
+            <summary class="tkt-section-header">
+              <h3 class="tkt-section-title">Рекомендации для команды</h3>
+              <span class="tkt-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </span>
+            </summary>
             <div class="tkt-section-content">
               <ol class="tkt-list">
                 <li v-for="(action, idx) in currentTicket.actions" :key="idx">{{ action }}</li>
@@ -223,10 +342,9 @@ const currentTicket = computed(() =>
 </template>
 
 <style scoped>
-/* Корневой контейнер */
 .tkt-root {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 200px 1fr;
   gap: 0;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
@@ -235,7 +353,6 @@ const currentTicket = computed(() =>
   margin: 24px 0;
 }
 
-/* Боковая панель навигации */
 .tkt-sidebar {
   background: rgba(255,255,255,0.03);
   border-right: 1px solid rgba(255,255,255,0.08);
@@ -243,27 +360,9 @@ const currentTicket = computed(() =>
   max-height: 600px;
 }
 
-.tkt-sidebar-header {
-  padding: 20px 16px 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  position: sticky;
-  top: 0;
-  background: rgba(255,255,255,0.03);
-  backdrop-filter: blur(8px);
-  z-index: 10;
-}
-
-.tkt-sidebar-header h3 {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.92);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
 .tkt-nav {
-  padding: 4px 0;
+  padding: 0;
+  margin: 0;
 }
 
 .tkt-nav-item {
@@ -274,9 +373,7 @@ const currentTicket = computed(() =>
   text-align: left;
   cursor: pointer;
   transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  display: block;
   border-left: 3px solid transparent;
 }
 
@@ -289,29 +386,18 @@ const currentTicket = computed(() =>
   border-left-color: #c8ff5a;
 }
 
-.tkt-emoji {
-  font-size: 18px;
-  line-height: 1;
-}
-
 .tkt-title {
   font-size: 14px;
   font-weight: 600;
   color: rgba(255,255,255,0.92);
   line-height: 1.3;
+  display: block;
 }
 
 .tkt-nav-item.active .tkt-title {
   color: #c8ff5a;
 }
 
-.tkt-category {
-  font-size: 12px;
-  color: rgba(255,255,255,0.5);
-  font-weight: 500;
-}
-
-/* Основной контент */
 .tkt-content {
   padding: 24px;
   overflow-y: auto;
@@ -321,21 +407,20 @@ const currentTicket = computed(() =>
 .tkt-details {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
-/* Заголовок тикета */
 .tkt-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 16px;
+  padding-bottom: 12px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .tkt-signal {
   font-family: 'SF Mono', Monaco, 'Courier New', monospace;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #c8ff5a;
   letter-spacing: 0.02em;
@@ -347,15 +432,20 @@ const currentTicket = computed(() =>
   font-weight: 600;
 }
 
-/* Краткая сводка */
 .tkt-summary {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 10px;
+}
+
+.tkt-summary-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
 .tkt-summary-item {
@@ -365,87 +455,101 @@ const currentTicket = computed(() =>
 }
 
 .tkt-label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.45);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 
 .tkt-value {
   font-size: 14px;
-  color: rgba(255,255,255,0.88);
+  color: rgba(255,255,255,0.92);
   font-weight: 500;
+  line-height: 1.4;
 }
 
-/* Раскрывающиеся секции */
 .tkt-sections {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
 }
 
 .tkt-section {
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: none;
+  border-radius: 12px;
   overflow: hidden;
-  background: rgba(255,255,255,0.02);
-  transition: all 0.2s ease;
-}
-
-.tkt-section:hover {
-  border-color: rgba(255,255,255,0.12);
-}
-
-.tkt-section[open] {
-  background: rgba(255,255,255,0.04);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tkt-section-header {
-  padding: 14px 18px;
-  background: rgba(255,255,255,0.04);
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.92);
-  list-style: none;
-  transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  padding: 14px 20px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  background: transparent;
+  margin: 0;
 }
 
-.tkt-section-header::-webkit-details-marker {
+.tkt-section-header::-webkit-details-marker,
+.tkt-section-header::marker {
   display: none;
 }
 
-.tkt-section-header::before {
-  content: "▶";
-  font-size: 11px;
-  color: rgba(255,255,255,0.5);
-  transition: transform 0.2s ease;
+.tkt-section-title {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  border: none;
+  line-height: 1.4;
+}
+
+.tkt-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #9ca3af;
 }
 
-.tkt-section[open] .tkt-section-header::before {
-  transform: rotate(90deg);
-  color: #c8ff5a;
+.tkt-arrow svg {
+  display: block;
+  width: 20px;
+  height: 20px;
 }
 
-.tkt-section-header:hover {
-  background: rgba(255,255,255,0.06);
-  color: #c8ff5a;
+.tkt-section[open] .tkt-arrow {
+  transform: rotate(180deg);
 }
 
 .tkt-section-content {
-  padding: 18px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 0 20px 16px;
+  color: #ffffff;
+  line-height: 1.7;
+  animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .tkt-section-content p {
-  margin: 0 0 12px 0;
-  line-height: 1.6;
-  color: rgba(255,255,255,0.88);
+  margin: 0 0 12px;
+  color: #ffffff;
   font-size: 14px;
 }
 
@@ -454,8 +558,8 @@ const currentTicket = computed(() =>
 }
 
 .tkt-updates {
-  margin-top: 16px;
-  padding-top: 16px;
+  margin-top: 12px;
+  padding-top: 12px;
   border-top: 1px solid rgba(255,255,255,0.06);
 }
 
@@ -467,7 +571,7 @@ const currentTicket = computed(() =>
 
 .tkt-proposal {
   margin-top: 12px;
-  padding: 12px;
+  padding: 10px 12px;
   background: rgba(200,255,90,0.06);
   border-left: 3px solid #c8ff5a;
   border-radius: 6px;
@@ -487,7 +591,7 @@ const currentTicket = computed(() =>
 }
 
 .tkt-list li {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   line-height: 1.6;
   color: rgba(255,255,255,0.88);
   font-size: 14px;
@@ -497,11 +601,9 @@ const currentTicket = computed(() =>
   margin-bottom: 0;
 }
 
-/* Мобильная адаптация */
 @media (max-width: 768px) {
   .tkt-root {
     grid-template-columns: 1fr;
-    max-height: none;
   }
   
   .tkt-sidebar {
@@ -515,21 +617,11 @@ const currentTicket = computed(() =>
     overflow-x: auto;
     gap: 8px;
     padding: 8px;
-    scrollbar-width: thin;
-  }
-  
-  .tkt-nav::-webkit-scrollbar {
-    height: 4px;
-  }
-  
-  .tkt-nav::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.2);
-    border-radius: 2px;
   }
   
   .tkt-nav-item {
     flex: 0 0 auto;
-    min-width: 160px;
+    min-width: 140px;
     border-radius: 10px;
     border-left: none;
     border-bottom: 3px solid transparent;
@@ -544,12 +636,12 @@ const currentTicket = computed(() =>
     max-height: none;
   }
   
-  .tkt-summary {
+  .tkt-summary-row {
     grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
-/* Скроллбар для десктопа */
 .tkt-sidebar::-webkit-scrollbar,
 .tkt-content::-webkit-scrollbar {
   width: 6px;
