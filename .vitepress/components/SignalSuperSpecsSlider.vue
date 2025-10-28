@@ -24,7 +24,7 @@
             class="icon-volume"
             :class="{ active: activeSlide === idx }"
           >
-            <!-- DEFS -->
+            <!-- DEFS С УНИКАЛЬНЫМИ ID -->
             <defs>
               <linearGradient :id="`grad-${idx}`" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#505050"/>
@@ -32,14 +32,14 @@
                 <stop offset="100%" stop-color="#909090"/>
               </linearGradient>
 
-              <filter id="depth" x="-100%" y="-100%" width="300%" height="300%">
+              <filter :id="`depth-${idx}`" x="-100%" y="-100%" width="300%" height="300%">
                 <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
                 <feOffset dx="0" dy="3"/>
                 <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
                 <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
               </filter>
 
-              <filter id="depth-hover" x="-100%" y="-100%" width="300%" height="300%">
+              <filter :id="`depth-hover-${idx}`" x="-100%" y="-100%" width="300%" height="300%">
                 <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
                 <feOffset dx="0" dy="6"/>
                 <feComponentTransfer><feFuncA type="linear" slope="0.7"/></feComponentTransfer>
@@ -47,8 +47,12 @@
               </filter>
             </defs>
 
-            <!-- ИКОНКА -->
-            <g :stroke="`url(#grad-${idx})`" filter="url(#depth)" class="icon-path">
+            <!-- ГРАДИЕНТ + ФИЛЬТР С ./# -->
+            <g
+              :stroke="`url(./#grad-${idx})`"
+              :filter="activeSlide === idx ? `url(./#depth-hover-${idx})` : `url(./#depth-${idx})`"
+              class="icon-path"
+            >
               <path v-for="path in slide.paths" :d="path"/>
               <circle v-if="slide.circle" :cx="slide.circle.cx" :cy="slide.circle.cy" :r="slide.circle.r"/>
               <rect v-if="slide.rect" :width="slide.rect.w" :height="slide.rect.h" :x="slide.rect.x" :y="slide.rect.y" :rx="slide.rect.rx" :ry="slide.rect.ry"/>
@@ -169,7 +173,7 @@ const slides = [
     details: 'Команда аналитиков Сигнала отслеживает время реакции, причины проблем, рост качества сервиса, оценки, NPS, повторные случаи — всё под запрос бизнеса. Мы формируем управленческие отчёты на реальных данных, визуализируем рост и точки развития.',
     paths: [
       'M12 16v5','M16 14v7','M20 10v11',
-      'm22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15',
+      'm22 3–8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15',
       'M4 18v3','M8 14v7'
     ]
   },
@@ -202,108 +206,97 @@ const scrollPrev = () => {
 }
 </script>
 
-<style scoped>
-/* ГЛОБАЛЬНЫЕ СТИЛИ С ::v-deep И !important */
-::v-deep .sss-slider-wrapper { position: relative !important; margin: 24px 0 !important; }
-::v-deep .sss-brands-container {
-  display: flex !important;
-  overflow-x: auto !important;
-  gap: 16px !important;
-  padding: 4px 0 12px 4px !important;
-  scroll-behavior: smooth !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-  margin-bottom: 16px !important;
+<!-- ГЛОБАЛЬНЫЕ СТИЛИ (БЕЗ scoped) -->
+<style>
+.sss-slider-wrapper { position: relative; margin: 24px 0; }
+.sss-brands-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 4px 0 12px 4px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin-bottom: 16px;
 }
-::v-deep .sss-brands-container::-webkit-scrollbar { display: none !important; }
+.sss-brands-container::-webkit-scrollbar { display: none; }
 
-::v-deep .sss-brand-card {
-  flex: 0 0 320px !important;
-  border-radius: 12px !important;
-  padding: 48px 24px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 16px !important;
-  border: 1px solid #333 !important;
-  border-top: 4px solid rgba(197, 249, 70, 0.28) !important;
-  position: relative !important;
-  min-height: 360px !important;
-  overflow: hidden !important;
-  transition: border-top-color 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  background-color: #232323 !important;
-  text-decoration: none !important;
-  cursor: pointer !important;
+.sss-brand-card {
+  flex: 0 0 320px;
+  border-radius: 12px;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid #333;
+  border-top: 4px solid rgba(197, 249, 70, 0.28);
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+  transition: border-top-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: #232323;
+  text-decoration: none;
+  cursor: pointer;
 }
-::v-deep .sss-step-card:hover,
-::v-deep .sss-brand-card.active { border-top-color: #C5F946 !important; }
+.sss-step-card:hover, .sss-brand-card.active { border-top-color: #C5F946; }
 
-/* ИКОНКИ: 260px + ЯРЧЕ */
-::v-deep .sss-card-background-icon {
-  position: absolute !important;
-  bottom: 16px !important;
-  right: 16px !important;
-  width: 260px !important;
-  height: 260px !important;
-  opacity: 0.22 !important;
-  pointer-events: none !important;
-  z-index: 0 !important;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+.sss-card-background-icon {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 260px;
+  height: 260px;
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: 0;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-::v-deep .icon-volume {
-  width: 100% !important;
-  height: 100% !important;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+.icon-volume {
+  width: 100%;
+  height: 100%;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* HOVER: ЯРЧЕ + ПОДЪЁМ */
-::v-deep .icon-volume.active,
-::v-deep .sss-brand-card:hover .icon-volume {
-  opacity: 0.45 !important;
-  transform: translateY(-6px) scale(1.15) !important;
+.icon-volume.active,
+.sss-brand-card:hover .icon-volume {
+  opacity: 0.45;
+  transform: translateY(-6px) scale(1.15);
 }
 
-::v-deep .icon-volume.active .icon-path,
-::v-deep .sss-brand-card:hover .icon-path {
-  filter: url(#depth-hover) !important;
+.sss-title { font-size: 24px; line-height: 1.22; margin: 0; font-weight: 700; color: #ffffff; position: relative; z-index: 1; }
+.sss-step-goals { color: #C5F946; font-size: 16px; font-weight: 500; line-height: 1.65; margin: 0; position: relative; z-index: 1; }
+.sss-description-secondary { color: #b0b0b0; font-size: 16px; line-height: 1.6; margin: 0; flex-grow: 1; position: relative; z-index: 1; }
+.sss-control-label { color: #ffffff; font-weight: 700; font-size: 16px; }
+.sss-control-highlight {
+  background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.08) 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  color: #ffffff;
+  padding: 1px 5px;
+  border-radius: 1px;
+  transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+  display: inline;
+  z-index: 1;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  font-size: 16px;
 }
-
-/* ТЕКСТ */
-::v-deep .sss-title { font-size: 24px !important; line-height: 1.22 !important; margin: 0 !important; font-weight: 700 !important; color: #ffffff !important; position: relative !important; z-index: 1 !important; }
-::v-deep .sss-step-goals { color: #C5F946 !important; font-size: 16px !important; font-weight: 500 !important; line-height: 1.65 !important; margin: 0 !important; position: relative !important; z-index: 1 !important; }
-::v-deep .sss-description-secondary { color: #b0b0b0 !important; font-size: 16px !important; line-height: 1.6 !important; margin: 0 !important; flex-grow: 1 !important; position: relative !important; z-index: 1 !important; }
-::v-deep .sss-control-label { color: #ffffff !important; font-weight: 700 !important; font-size: 16px !important; }
-::v-deep .sss-control-highlight {
-  background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.08) 50%) !important;
-  background-size: 200% 100% !important;
-  background-position: 100% 0 !important;
-  color: #ffffff !important;
-  padding: 1px 5px !important;
-  border-radius: 1px !important;
-  transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important;
-  display: inline !important;
-  z-index: 1 !important;
-  box-decoration-break: clone !important;
-  -webkit-box-decoration-break: clone !important;
-  font-size: 16px !important;
+.sss-step-card:hover .sss-control-highlight,
+.sss-brand-card.active .sss-control-highlight {
+  background-position: 0 0;
+  color: #1a1a1a;
 }
-::v-deep .sss-step-card:hover .sss-control-highlight,
-::v-deep .sss-brand-card.active .sss-control-highlight {
-  background-position: 0 0 !important;
-  color: #1a1a1a !important;
-}
-::v-deep .sss-description-main { color: #b0b0b0 !important; font-size: 13px !important; line-height: 1.62 !important; margin-top: auto !important; margin-bottom: 9px !important; position: relative !important; z-index: 1 !important; }
-::v-deep .sss-more-link-area { margin-top: 16px !important; margin-bottom: 4px !important; }
-::v-deep .sss-more-link { font-size: 15px !important; color: #b0b0b0 !important; font-weight: 500 !important; display: flex !important; align-items: center !important; gap: 6px !important; transition: color 0.3s !important; }
-::v-deep .sss-more-link:hover,
-::v-deep .sss-brand-card.active .sss-more-link { color: #C5F946 !important; }
-::v-deep .sss-arrow { font-size: 19px !important; margin-left: 2px !important; transition: transform 0.25s !important; }
-::v-deep .sss-brand-card.active .sss-arrow,
-::v-deep .sss-more-link:hover .sss-arrow { transform: translateX(9px) !important; }
-::v-deep .sss-nav-buttons { display: flex !important; gap: 8px !important; justify-content: flex-end !important; margin-right: 0 !important; padding-right: 4px !important; }
-::v-deep .sss-nav-btn { width: 40px !important; height: 40px !important; border-radius: 50% !important; border: none !important; cursor: pointer !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: all 0.3s ease !important; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important; }
-::v-deep .sss-nav-prev { background-color: #e8e8e8 !important; color: #232323 !important; }
-::v-deep .sss-nav-prev:hover { background-color: #d0d0d0 !important; transform: scale(1.05) !important; }
-::v-deep .sss-nav-next { background-color: #ffffff !important; color: #232323 !important; }
-::v-deep .sss-nav-next:hover { background-color: #f5f5f5 !important; transform: scale(1.05) !important; }
+.sss-description-main { color: #b0b0b0; font-size: 13px; line-height: 1.62; margin-top: auto; margin-bottom: 9px; position: relative; z-index: 1; }
+.sss-more-link-area { margin-top: 16px; margin-bottom: 4px; }
+.sss-more-link { font-size: 15px; color: #b0b0b0; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: color 0.3s; }
+.sss-more-link:hover, .sss-brand-card.active .sss-more-link { color: #C5F946; }
+.sss-arrow { font-size: 19px; margin-left: 2px; transition: transform 0.25s; }
+.sss-brand-card.active .sss-arrow, .sss-more-link:hover .sss-arrow { transform: translateX(9px); }
+.sss-nav-buttons { display: flex; gap: 8px; justify-content: flex-end; margin-right: 0; padding-right: 4px; }
+.sss-nav-btn { width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); }
+.sss-nav-prev { background-color: #e8e8e8; color: #232323; }
+.sss-nav-prev:hover { background-color: #d0d0d0; transform: scale(1.05); }
+.sss-nav-next { background-color: #ffffff; color: #232323; }
+.sss-nav-next:hover { background-color: #f5f5f5; transform: scale(1.05); }
 </style>
