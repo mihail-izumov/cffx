@@ -21,10 +21,9 @@
             stroke-width="1.8"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="icon-volume"
-            :class="{ 'filter-hover': activeSlide === idx }"
+            :class="['icon-volume', { 'filter-hover': activeSlide === idx }]"
           >
-            <!-- DEFS ДЛЯ КАЖДОЙ ИКОНКИ -->
+            <!-- DEFS -->
             <defs>
               <linearGradient :id="'grad-' + idx" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#585858"/>
@@ -48,7 +47,7 @@
             </defs>
 
             <!-- ИКОНКА -->
-            <g :stroke="'url(#grad-' + idx)" filter="url(#depth)" class="icon-path">
+            <g :stroke="'url(#' + 'grad-' + idx + ')'" filter="url(#depth)" class="icon-path">
               <path v-for="path in slide.paths" :d="path"/>
               <circle v-if="slide.circle" :cx="slide.circle.cx" :cy="slide.circle.cy" :r="slide.circle.r"/>
               <rect v-if="slide.rect" :width="slide.rect.w" :height="slide.rect.h" :x="slide.rect.x" :y="slide.rect.y" :rx="slide.rect.rx" :ry="slide.rect.ry"/>
@@ -235,7 +234,7 @@ const scrollPrev = () => {
   filter: url(#depth-hover) !important;
 }
 
-.icon-volume.filter-hover,
+.filter-hover,
 .sss-brand-card:hover .icon-volume {
   opacity: 0.22 !important;
   transform: translateY(-2px) scale(1.08) !important;
