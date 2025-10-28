@@ -37,117 +37,111 @@
       </div>
     </div>
 
-    <!-- Форма (на всю ширину, без матрёшки) -->
+    <!-- Форма (БЕЗ МАТРЁШКИ) -->
     <div class="signal-demo__form-container">
       <!-- Эмоции -->
-      <div v-if="selectedSection === 'emotions'" class="signal-form-section">
-        <div class="signal-question-block" :style="{ '--accent-color': colors.emotions }">
-          <p class="signal-direction-label">Эмоции и чувства</p>
-          <div class="signal-rotating-phrase-container">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
-            </transition>
-          </div>
-          <textarea
-            v-model="form.emotionalRelease"
-            @focus="startRotation(1)"
-            rows="3"
-            :placeholder="placeholders.emotions"
-            required>
-          </textarea>
-          <div class="signal-suggestions-container">
-            <div
-              v-for="suggestion in currentSuggestions.emotions"
-              :key="suggestion"
-              class="signal-suggestion-bubble signal-emotion-bubble"
-              @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
-            >
-              {{ suggestion }}
-            </div>
-            <div
-              v-if="!isInitialSuggestions('emotions')"
-              class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
-              @click="resetSuggestions('emotions')"
-            >
-              ← Ещё варианты
-            </div>
-          </div>
-          <p class="signal-example-hint" v-html="examples.emotions"></p>
+      <div v-if="selectedSection === 'emotions'" class="signal-question-block" :style="{ '--accent-color': colors.emotions }">
+        <p class="signal-direction-label">Эмоции и чувства</p>
+        <div class="signal-rotating-phrase-container">
+          <transition name="fade" mode="out-in">
+            <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
+          </transition>
         </div>
+        <textarea
+          v-model="form.emotionalRelease"
+          @focus="startRotation(1)"
+          rows="3"
+          :placeholder="placeholders.emotions"
+          required>
+        </textarea>
+        <div class="signal-suggestions-container">
+          <div
+            v-for="suggestion in currentSuggestions.emotions"
+            :key="suggestion"
+            class="signal-suggestion-bubble signal-emotion-bubble"
+            @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
+          >
+            {{ suggestion }}
+          </div>
+          <div
+            v-if="showResetButton('emotions')"
+            class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
+            @click="resetSuggestions('emotions')"
+          >
+            ← Ещё варианты
+          </div>
+        </div>
+        <p class="signal-example-hint" v-html="examples.emotions"></p>
       </div>
 
       <!-- Факты -->
-      <div v-if="selectedSection === 'facts'" class="signal-form-section">
-        <div class="signal-question-block" :style="{ '--accent-color': colors.facts }">
-          <p class="signal-direction-label">Детали проблемы</p>
-          <div class="signal-rotating-phrase-container">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
-            </transition>
-          </div>
-          <textarea
-            v-model="form.factualAnalysis"
-            @focus="startRotation(2)"
-            rows="3"
-            :placeholder="placeholders.facts"
-            required>
-          </textarea>
-          <div class="signal-suggestions-container">
-            <div
-              v-for="suggestion in currentSuggestions.facts"
-              :key="suggestion"
-              class="signal-suggestion-bubble signal-fact-bubble"
-              @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
-            >
-              {{ suggestion }}
-            </div>
-            <div
-              v-if="!isInitialSuggestions('facts')"
-              class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
-              @click="resetSuggestions('facts')"
-            >
-              ← Ещё варианты
-            </div>
-          </div>
-          <p class="signal-example-hint" v-html="examples.facts"></p>
+      <div v-if="selectedSection === 'facts'" class="signal-question-block" :style="{ '--accent-color': colors.facts }">
+        <p class="signal-direction-label">Детали проблемы</p>
+        <div class="signal-rotating-phrase-container">
+          <transition name="fade" mode="out-in">
+            <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
+          </transition>
         </div>
+        <textarea
+          v-model="form.factualAnalysis"
+          @focus="startRotation(2)"
+          rows="3"
+          :placeholder="placeholders.facts"
+          required>
+        </textarea>
+        <div class="signal-suggestions-container">
+          <div
+            v-for="suggestion in currentSuggestions.facts"
+            :key="suggestion"
+            class="signal-suggestion-bubble signal-fact-bubble"
+            @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
+          >
+            {{ suggestion }}
+          </div>
+          <div
+            v-if="showResetButton('facts')"
+            class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
+            @click="resetSuggestions('facts')"
+          >
+            ← Ещё варианты
+          </div>
+        </div>
+        <p class="signal-example-hint" v-html="examples.facts"></p>
       </div>
 
       <!-- Решение -->
-      <div v-if="selectedSection === 'solutions'" class="signal-form-section">
-        <div class="signal-question-block" :style="{ '--accent-color': colors.solutions }">
-          <p class="signal-direction-label">Предложение решения</p>
-          <div class="signal-rotating-phrase-container">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
-            </transition>
-          </div>
-          <textarea
-            v-model="form.constructiveSuggestions"
-            @focus="startRotation(3)"
-            rows="3"
-            :placeholder="placeholders.solutions"
-            required>
-          </textarea>
-          <div class="signal-suggestions-container">
-            <div
-              v-for="suggestion in currentSuggestions.solutions"
-              :key="suggestion"
-              class="signal-suggestion-bubble signal-solution-bubble"
-              @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
-            >
-              {{ suggestion }}
-            </div>
-            <div
-              v-if="!isInitialSuggestions('solutions')"
-              class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
-              @click="resetSuggestions('solutions')"
-            >
-              ← Ещё варианты
-            </div>
-          </div>
-          <p class="signal-example-hint" v-html="examples.solutions"></p>
+      <div v-if="selectedSection === 'solutions'" class="signal-question-block" :style="{ '--accent-color': colors.solutions }">
+        <p class="signal-direction-label">Предложение решения</p>
+        <div class="signal-rotating-phrase-container">
+          <transition name="fade" mode="out-in">
+            <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
+          </transition>
         </div>
+        <textarea
+          v-model="form.constructiveSuggestions"
+          @focus="startRotation(3)"
+          rows="3"
+          :placeholder="placeholders.solutions"
+          required>
+        </textarea>
+        <div class="signal-suggestions-container">
+          <div
+            v-for="suggestion in currentSuggestions.solutions"
+            :key="suggestion"
+            class="signal-suggestion-bubble signal-solution-bubble"
+            @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
+          >
+            {{ suggestion }}
+          </div>
+          <div
+            v-if="showResetButton('solutions')"
+            class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
+            @click="resetSuggestions('solutions')"
+          >
+            ← Ещё варианты
+          </div>
+        </div>
+        <p class="signal-example-hint" v-html="examples.solutions"></p>
       </div>
     </div>
   </div>
@@ -168,12 +162,12 @@ const sections = [
 const selectedSection = ref('emotions');
 const isActive = (id) => id === selectedSection.value;
 
-// === Конфиги ===
+// === Конфиги (БЕЗ suggestions) ===
 const configs = {
   cafe: {
     colors: { emotions: '#A972FF', facts: '#3DDC84', solutions: '#FFB800' },
     placeholders: {
-      emotions: 'Разочарован ожиданиями...',
+      emotions: 'Разочарована ожиданием...',
       facts: 'Опишите факты: что, когда и где произошло...',
       solutions: 'Предложите, как это можно исправить...'
     },
@@ -187,7 +181,7 @@ const configs = {
       2: ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'],
       3: ['Как бы вы это исправили?', 'Что могло бы предотвратить эту ситуацию?', 'Какое одно изменение сделало бы ваш опыт идеальным?']
     },
-suggestions: {
+    suggestions: {
   emotions: {
     initial: ['довольна', 'восхищена', 'благодарна', 'спокойна', 'удивлена', 'расстроена', 'разочарована', 'недовольна', 'возмущена'],
 
@@ -369,19 +363,19 @@ suggestions: {
 }
   },
   fitness: {
-    colors: { emotions: '#A972FF', facts: '#3DDC84', solutions: '#FFB800' }, // Вернул оригинальные цвета
+    colors: { emotions: '#A972FF', facts: '#3DDC84', solutions: '#FFB800' },
     placeholders: {
-  emotions: 'Разочарована тренировкой...',
-  facts: 'Опишите факты: что, когда и где произошло...',
-  solutions: 'Предложите, как это можно исправить...'
-},
+      emotions: 'Разочарована тренировкой...',
+      facts: 'Опишите факты: что, когда и где произошло...',
+      solutions: 'Предложите, как это можно исправить...'
+    },
     examples: {
-  emotions: 'Пример: «Тренажёр <b>сломан</b>, а администратор <b>не помог</b>»',
-  facts: 'Пример: «Тренер опоздал на <b>15 минут</b>, группа ждала у двери»',
-  solutions: 'Пример: «Поставить <b>таймер на двери</b>, чтобы опоздания были видны всем»'
-},
+      emotions: 'Пример: «Тренажёр <b>сломан</b>, а администратор <b>не помог</b>»',
+      facts: 'Пример: «Тренер опоздал на <b>15 минут</b>, группа ждала у двери»',
+      solutions: 'Пример: «Поставить <b>таймер на двери</b>, чтобы опоздания были видны всем»'
+    },
     questions: {
-      1: ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'],
+      1: ['Что вас расстроило сегодня?', 'Какое впечатление осталось после тренировки?', 'Оправдались ли ваши ожидания?'],
       2: ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'],
       3: ['Как бы вы это исправили?', 'Что могло бы предотвратить эту ситуацию?', 'Какое одно изменение сделало бы ваш опыт идеальным?']
     },
@@ -537,13 +531,14 @@ const form = reactive({
 });
 
 // === Подсказки ===
-const suggestions = reactive({});
+const suggestions = reactive({ emotions: {}, facts: {}, solutions: {} });
 const currentSuggestions = reactive({
   emotions: [],
   facts: [],
   solutions: []
 });
 const selectedSuggestions = reactive({ emotions: [], facts: [], solutions: [] });
+const initialFiltered = reactive({ emotions: [], facts: [], solutions: [] });
 
 // === Вопросы ===
 const currentQuestion1 = ref('');
@@ -561,58 +556,57 @@ watch(selectedTheme, () => {
 
 function resetAll() {
   const cfg = currentConfig.value;
-
   Object.keys(form).forEach(k => form[k] = '');
 
-  Object.assign(suggestions, {
-    emotions: { ...cfg.suggestions.emotions },
-    facts: { ...cfg.suggestions.facts },
-    solutions: { ...cfg.suggestions.solutions }
+  // Копируем suggestions
+  Object.keys(suggestions).forEach(type => {
+    suggestions[type] = { ...cfg.suggestions[type] };
+    initialFiltered[type] = [...(cfg.suggestions[type].initial || [])];
+    currentSuggestions[type] = [...initialFiltered[type]];
+    selectedSuggestions[type] = [];
   });
-
-  currentSuggestions.emotions = [...cfg.suggestions.emotions.initial];
-  currentSuggestions.facts = [...cfg.suggestions.facts.initial];
-  currentSuggestions.solutions = [...cfg.suggestions.solutions.initial];
-
-  selectedSuggestions.emotions = [];
-  selectedSuggestions.facts = [];
-  selectedSuggestions.solutions = [];
 
   currentQuestion1.value = cfg.questions[1][0];
   currentQuestion2.value = cfg.questions[2][0];
   currentQuestion3.value = cfg.questions[3][0];
-
   selectedSection.value = 'emotions';
   clearInterval(rotationInterval);
 }
 
-// === Логика (1:1 как в исходном) ===
-function isInitialSuggestions(type) {
-  return JSON.stringify(currentSuggestions[type]) === JSON.stringify(suggestions[type].initial);
+// === Логика подсказок ===
+function showResetButton(type) {
+  return currentSuggestions[type].length > 0 && 
+         JSON.stringify(currentSuggestions[type]) !== JSON.stringify(initialFiltered[type]);
 }
 
 function resetSuggestions(type) {
-  currentSuggestions[type] = [...suggestions[type].initial];
+  const filtered = initialFiltered[type].filter(word => !selectedSuggestions[type].includes(word));
+  currentSuggestions[type] = filtered.length > 0 ? [...filtered] : [...initialFiltered[type]];
 }
 
 function selectSuggestion(field, suggestion, type) {
   const text = form[field].trim();
-  const isNew = isInitialSuggestions(type);
   const cap = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-  form[field] = text ? (isNew ? `${text}. ${cap}` : `${text} ${suggestion}`) : cap;
-  selectedSuggestions[type].push(suggestion);
+
+  form[field] = text ? `${text}. ${cap}` : cap;
+
+  if (!selectedSuggestions[type].includes(suggestion)) {
+    selectedSuggestions[type].push(suggestion);
+  }
+
   updateSuggestions(type, suggestion);
 }
 
 function updateSuggestions(type, word) {
   const next = suggestions[type][word];
   if (next && next.length > 0) {
-    currentSuggestions[type] = [...next];
+    currentSuggestions[type] = next.filter(item => !selectedSuggestions[type].includes(item));
   } else {
-    currentSuggestions[type] = [...suggestions[type].initial];
+    resetSuggestions(type);
   }
 }
 
+// === Ротация вопросов ===
 function startRotation(num) {
   clearInterval(rotationInterval);
   const questions = currentConfig.value.questions[num];
@@ -633,7 +627,17 @@ onUnmounted(() => clearInterval(rotationInterval));
 </script>
 
 <style scoped>
-.signal-demo-wrapper { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+.signal-demo-wrapper { 
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Отступ между переключателями */
+.signal-theme-toggle {
+  margin-bottom: 1.5rem;
+}
 
 /* Tesla-style переключатель */
 .signal-theme-toggle {
@@ -675,7 +679,11 @@ onUnmounted(() => clearInterval(rotationInterval));
 }
 
 /* Переключатель Эмоции/Факты/Решение */
-.signal-demo__header { display: flex; justify-content: center; margin-bottom: 16px; }
+.signal-demo__header { 
+  display: flex; 
+  justify-content: center; 
+  margin-bottom: 1.5rem; 
+}
 .signal-demo__switch {
   display: flex;
   gap: 8px;
@@ -699,7 +707,7 @@ onUnmounted(() => clearInterval(rotationInterval));
 .signal-demo__switch-btn.facts.is-active { background: rgba(61,220,132,0.14); border-color: #3DDC84; color: #3DDC84; }
 .signal-demo__switch-btn.solutions.is-active { background: rgba(255,184,0,0.14); border-color: #FFB800; color: #FFB800; }
 
-/* Форма */
+/* Форма (БЕЗ МАТРЁШКИ) */
 .signal-demo__form-container {
   background-color: #1E1E20;
   border-radius: 24px;
@@ -707,8 +715,11 @@ onUnmounted(() => clearInterval(rotationInterval));
   color: #f0f0f0;
   border: 1px solid #2c2c2f;
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
-.signal-form-section { display: flex; flex-direction: column; gap: 1.5rem; }
+
 .signal-question-block {
   background-color: #2a2a2e;
   border-radius: 16px;
@@ -716,9 +727,27 @@ onUnmounted(() => clearInterval(rotationInterval));
   border: 1px solid #3a3a3e;
   border-left: 4px solid var(--accent-color);
 }
-.signal-direction-label { font-weight: 600; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
-.signal-rotating-phrase-container { height: 52px; margin-bottom: 0.75rem; overflow: hidden; }
-.signal-question-label { font-weight: 500; font-size: 1rem; margin: 0; color: #f0f0f0; line-height: 1.3; }
+
+.signal-direction-label { 
+  font-weight: 600; 
+  font-size: 0.75rem; 
+  color: #888; 
+  text-transform: uppercase; 
+  letter-spacing: 0.05em; 
+  margin-bottom: 0.5rem; 
+}
+.signal-rotating-phrase-container { 
+  height: 52px; 
+  margin-bottom: 0.75rem; 
+  overflow: hidden; 
+}
+.signal-question-label { 
+  font-weight: 500; 
+  font-size: 1rem; 
+  margin: 0; 
+  color: #f0f0f0; 
+  line-height: 1.3; 
+}
 
 textarea {
   width: 100%;
@@ -739,7 +768,12 @@ textarea:focus {
 }
 ::placeholder { color: #666; }
 
-.signal-suggestions-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0 0.5rem; }
+.signal-suggestions-container { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 0.5rem; 
+  margin: 0.75rem 0 0.5rem; 
+}
 .signal-suggestion-bubble {
   padding: 0.35rem 0.85rem;
   border-radius: 20px;
@@ -758,7 +792,12 @@ textarea:focus {
 .signal-reset-bubble { font-weight: 600; opacity: 0.8; font-size: 0.75rem; border-style: dashed !important; }
 .signal-reset-bubble:hover { opacity: 1; }
 
-.signal-example-hint { font-size: 0.8rem; color: #777; margin: 0.5rem 0 0 0.25rem; line-height: 1.2; }
+.signal-example-hint { 
+  font-size: 0.8rem; 
+  color: #777; 
+  margin: 0.5rem 0 0 0.25rem; 
+  line-height: 1.2; 
+}
 .signal-example-hint b { color: #aaa; font-weight: 600; }
 
 .fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
