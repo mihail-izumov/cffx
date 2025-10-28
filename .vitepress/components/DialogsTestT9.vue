@@ -1,6 +1,6 @@
 <template>
   <div class="signal-demo-wrapper">
-    <!-- Tesla-style переключатель: Общепит / Фитнес -->
+    <!-- Tesla-style переключатель: Общепит /Фитнес -->
     <div class="signal-theme-toggle">
       <button
         class="signal-theme-btn"
