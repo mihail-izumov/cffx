@@ -34,7 +34,7 @@ notification: brew
 
 <DialogsWidgets />
 
-## С каждым Сигналом.
+## В каждом Сигнале.
 
 <SignalSuperSpecsSlider />
 
