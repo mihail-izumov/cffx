@@ -92,6 +92,9 @@ notification: brew
 <DialogsTestT9 />
 <DialogsT9 />
 
+## Тикеты в Телеграм
+
+<TicketsExamples />
 
 ## Тарифы
 
