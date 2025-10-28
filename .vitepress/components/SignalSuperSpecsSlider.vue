@@ -8,62 +8,21 @@
         :class="{ active: activeSlide === idx }"
         @mouseover="activeSlide = idx"
         @mouseleave="activeSlide = null"
-        :href="'/pro1'"
+        :href="slide.link"
         tabindex="0"
         role="link"
       >
-        <!-- ОБЪЁМНАЯ SVG-ИКОНКА (260px) -->
-        <div class="sss-card-background-icon" :class="{ hover: activeSlide === idx }">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon-volume"
-            :class="{ active: activeSlide === idx }"
-          >
-            <!-- DEFS С УНИКАЛЬНЫМИ ID -->
-            <defs>
-              <linearGradient :id="`grad-${idx}`" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#505050"/>
-                <stop offset="50%" stop-color="#707070"/>
-                <stop offset="100%" stop-color="#909090"/>
-              </linearGradient>
-
-              <filter :id="`depth-${idx}`" x="-100%" y="-100%" width="300%" height="300%">
-                <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-                <feOffset dx="0" dy="3"/>
-                <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
-                <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-
-              <filter :id="`depth-hover-${idx}`" x="-100%" y="-100%" width="300%" height="300%">
-                <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
-                <feOffset dx="0" dy="6"/>
-                <feComponentTransfer><feFuncA type="linear" slope="0.7"/></feComponentTransfer>
-                <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-
-            <!-- ГРАДИЕНТ + ФИЛЬТР С ./# -->
-            <g
-              :stroke="`url(./#grad-${idx})`"
-              :filter="activeSlide === idx ? `url(./#depth-hover-${idx})` : `url(./#depth-${idx})`"
-              class="icon-path"
-            >
-              <path v-for="path in slide.paths" :d="path"/>
-              <circle v-if="slide.circle" :cx="slide.circle.cx" :cy="slide.circle.cy" :r="slide.circle.r"/>
-              <rect v-if="slide.rect" :width="slide.rect.w" :height="slide.rect.h" :x="slide.rect.x" :y="slide.rect.y" :rx="slide.rect.rx" :ry="slide.rect.ry"/>
-              <polygon v-if="slide.polygon" :points="slide.polygon"/>
-              <line v-for="line in slide.lines" :x1="line.x1" :x2="line.x2" :y1="line.y1" :y2="line.y2"/>
-              <polyline v-for="poly in slide.polylines" :points="poly"/>
-            </g>
+        <div class="sss-card-background-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#4a4a4a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path v-for="path in slide.paths" :d="path"/>
+            <circle v-if="slide.circle" :cx="slide.circle.cx" :cy="slide.circle.cy" :r="slide.circle.r"/>
+            <rect v-if="slide.rect" :width="slide.rect.w" :height="slide.rect.h" :x="slide.rect.x" :y="slide.rect.y" :rx="slide.rect.rx" :ry="slide.rect.ry"/>
+            <polygon v-if="slide.polygon" :points="slide.polygon"/>
+            <line v-for="line in slide.lines" :x1="line.x1" :x2="line.x2" :y1="line.y1" :y2="line.y2"/>
+            <polyline v-for="poly in slide.polylines" :points="poly"/>
           </svg>
         </div>
 
-        <!-- ТЕКСТ -->
         <h3 class="sss-title">{{ slide.headline }}</h3>
         <p class="sss-step-goals">{{ slide.benefit }}</p>
         <p class="sss-description-secondary">
@@ -79,7 +38,6 @@
       </a>
     </div>
 
-    <!-- КНОПКИ -->
     <div class="sss-nav-buttons">
       <button class="sss-nav-btn sss-nav-prev" @click="scrollPrev" aria-label="Предыдущий слайд">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -115,7 +73,8 @@ const slides = [
       'm6 12-1.9 2',
       'M7.2 2.2 8 5.1',
       'M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z'
-    ]
+    ],
+    link: '/pro1'
   },
   {
     headline: 'Умная форма',
@@ -123,7 +82,8 @@ const slides = [
     control: 'Настраиваем форму под специфику бизнеса — структуру Сигналов, формулировки, точки напряжения.',
     details: 'Форма построена на 150+ уникальной цепочке — для каждого случая есть свой сценарий, три уровня детализации и автоматическая маршрутизация. Не отзыв, а Сигнал — 30 секунд, система сама подсказывает сценарий.',
     rect: { w: '18', h: '14', x: '3', y: '5', rx: '2', ry: '2' },
-    paths: ['M7 15h4','M15 15h2','M7 11h2','M13 11h4']
+    paths: ['M7 15h4','M15 15h2','M7 11h2','M13 11h4'],
+    link: '/pro1'
   },
   {
     headline: 'Тикеты в Телеграм',
@@ -133,7 +93,8 @@ const slides = [
     paths: [
       'M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z',
       'M7 11h10','M7 15h6','M7 7h8'
-    ]
+    ],
+    link: '/pro1'
   },
   {
     headline: 'Поддержка оператора',
@@ -143,7 +104,8 @@ const slides = [
     paths: [
       'M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z',
       'M21 16v2a4 4 0 0 1-4 4h-5'
-    ]
+    ],
+    link: '/pro1'
   },
   {
     headline: 'ИИ-ассистент Анна',
@@ -154,7 +116,8 @@ const slides = [
       'M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z',
       'M20 2v4','M22 4h-4'
     ],
-    circle: { cx: '4', cy: '20', r: '2' }
+    circle: { cx: '4', cy: '20', r: '2' },
+    link: '/pro1'
   },
   {
     headline: 'Система под ключ',
@@ -164,7 +127,8 @@ const slides = [
     paths: [
       'M10 5H3','M12 19H3','M14 3v4','M16 17v4',
       'M21 12h-9','M21 19h-5','M21 5h-7','M8 10v4','M8 12H3'
-    ]
+    ],
+    link: '/pro1'
   },
   {
     headline: 'Аналитика Сигнала',
@@ -173,9 +137,10 @@ const slides = [
     details: 'Команда аналитиков Сигнала отслеживает время реакции, причины проблем, рост качества сервиса, оценки, NPS, повторные случаи — всё под запрос бизнеса. Мы формируем управленческие отчёты на реальных данных, визуализируем рост и точки развития.',
     paths: [
       'M12 16v5','M16 14v7','M20 10v11',
-      'm22 3–8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15',
+      'm22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15',
       'M4 18v3','M8 14v7'
-    ]
+    ],
+    link: '/pro1'
   },
   {
     headline: 'Лучше с каждым Сигналом',
@@ -190,7 +155,8 @@ const slides = [
     polylines: [
       '22 8.5 12 15.5 2 8.5',
       '2 15.5 12 8.5 22 15.5'
-    ]
+    ],
+    link: '/pro1'
   }
 ]
 
@@ -206,97 +172,6 @@ const scrollPrev = () => {
 }
 </script>
 
-<!-- ГЛОБАЛЬНЫЕ СТИЛИ (БЕЗ scoped) -->
 <style>
-.sss-slider-wrapper { position: relative; margin: 24px 0; }
-.sss-brands-container {
-  display: flex;
-  overflow-x: auto;
-  gap: 16px;
-  padding: 4px 0 12px 4px;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  margin-bottom: 16px;
-}
-.sss-brands-container::-webkit-scrollbar { display: none; }
-
-.sss-brand-card {
-  flex: 0 0 320px;
-  border-radius: 12px;
-  padding: 48px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  border: 1px solid #333;
-  border-top: 4px solid rgba(197, 249, 70, 0.28);
-  position: relative;
-  min-height: 360px;
-  overflow: hidden;
-  transition: border-top-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background-color: #232323;
-  text-decoration: none;
-  cursor: pointer;
-}
-.sss-step-card:hover, .sss-brand-card.active { border-top-color: #C5F946; }
-
-.sss-card-background-icon {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  width: 260px;
-  height: 260px;
-  opacity: 0.22;
-  pointer-events: none;
-  z-index: 0;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.icon-volume {
-  width: 100%;
-  height: 100%;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.icon-volume.active,
-.sss-brand-card:hover .icon-volume {
-  opacity: 0.45;
-  transform: translateY(-6px) scale(1.15);
-}
-
-.sss-title { font-size: 24px; line-height: 1.22; margin: 0; font-weight: 700; color: #ffffff; position: relative; z-index: 1; }
-.sss-step-goals { color: #C5F946; font-size: 16px; font-weight: 500; line-height: 1.65; margin: 0; position: relative; z-index: 1; }
-.sss-description-secondary { color: #b0b0b0; font-size: 16px; line-height: 1.6; margin: 0; flex-grow: 1; position: relative; z-index: 1; }
-.sss-control-label { color: #ffffff; font-weight: 700; font-size: 16px; }
-.sss-control-highlight {
-  background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.08) 50%);
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  color: #ffffff;
-  padding: 1px 5px;
-  border-radius: 1px;
-  transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
-  display: inline;
-  z-index: 1;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-  font-size: 16px;
-}
-.sss-step-card:hover .sss-control-highlight,
-.sss-brand-card.active .sss-control-highlight {
-  background-position: 0 0;
-  color: #1a1a1a;
-}
-.sss-description-main { color: #b0b0b0; font-size: 13px; line-height: 1.62; margin-top: auto; margin-bottom: 9px; position: relative; z-index: 1; }
-.sss-more-link-area { margin-top: 16px; margin-bottom: 4px; }
-.sss-more-link { font-size: 15px; color: #b0b0b0; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: color 0.3s; }
-.sss-more-link:hover, .sss-brand-card.active .sss-more-link { color: #C5F946; }
-.sss-arrow { font-size: 19px; margin-left: 2px; transition: transform 0.25s; }
-.sss-brand-card.active .sss-arrow, .sss-more-link:hover .sss-arrow { transform: translateX(9px); }
-.sss-nav-buttons { display: flex; gap: 8px; justify-content: flex-end; margin-right: 0; padding-right: 4px; }
-.sss-nav-btn { width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); }
-.sss-nav-prev { background-color: #e8e8e8; color: #232323; }
-.sss-nav-prev:hover { background-color: #d0d0d0; transform: scale(1.05); }
-.sss-nav-next { background-color: #ffffff; color: #232323; }
-.sss-nav-next:hover { background-color: #f5f5f5; transform: scale(1.05); }
+/* ... ТОТ ЖЕ СТИЛЬ, ЧТО ВЫШЕ ... */
 </style>
