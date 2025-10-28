@@ -24,7 +24,6 @@
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #A972FF;">
           <p class="signal-direction-label">Эмоции и чувства</p>
-          
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
@@ -37,7 +36,6 @@
             placeholder="Разочарован ожиданиями..." 
             required>
           </textarea>
-          
           <!-- Подсказки-баблы для эмоций -->
           <div class="signal-suggestions-container">
             <div 
@@ -57,7 +55,6 @@
               ← Ещё варианты
             </div>
           </div>
-          
           <p class="signal-example-hint" v-html="'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»'"></p>
         </div>
       </div>
@@ -66,7 +63,6 @@
       <div v-if="selectedSection === 'facts'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #3DDC84;">
           <p class="signal-direction-label">Детали проблемы</p>
-          
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
@@ -79,7 +75,6 @@
             placeholder="Опишите факты: что, когда и где произошло..." 
             required>
           </textarea>
-          
           <!-- Подсказки-баблы для деталей -->
           <div class="signal-suggestions-container">
             <div 
@@ -90,7 +85,6 @@
             >
               {{ suggestion }}
             </div>
-            <!-- Кнопка возврата к начальным вариантам -->
             <div 
               v-if="!isInitialSuggestions('facts')"
               class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
@@ -99,7 +93,6 @@
               ← Ещё варианты
             </div>
           </div>
-          
           <p class="signal-example-hint" v-html="'Пример: «Заказ на два капучино <b>ждал 22 минуты</b>, хотя в кафе был почти один»'"></p>
         </div>
       </div>
@@ -108,7 +101,6 @@
       <div v-if="selectedSection === 'solutions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #FFB800;">
           <p class="signal-direction-label">Предложение решения</p>
-          
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
@@ -121,7 +113,6 @@
             placeholder="Предложите, как это можно исправить..." 
             required>
           </textarea>
-          
           <!-- Подсказки-баблы для решений -->
           <div class="signal-suggestions-container">
             <div 
@@ -132,7 +123,6 @@
             >
               {{ suggestion }}
             </div>
-            <!-- Кнопка возврата к начальным вариантам -->
             <div 
               v-if="!isInitialSuggestions('solutions')"
               class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
@@ -141,56 +131,21 @@
               ← Ещё варианты
             </div>
           </div>
-          
           <p class="signal-example-hint" v-html="'Пример: «Добавить на кассе <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
         </div>
       </div>
-
-      <!-- БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ ВНИЗУ - ВСЕГДА ВИДНА -->
-      <div class="signal-copy-button-container">
-        <button 
-          class="signal-liquid-copy-btn signal-main-copy"
-          :class="[
-            selectedSection === 'emotions' ? 'signal-emotion-copy' : '',
-            selectedSection === 'facts' ? 'signal-fact-copy' : '',
-            selectedSection === 'solutions' ? 'signal-solution-copy' : ''
-          ]"
-          @click="copyCurrentSectionText()"
-          :disabled="copyStatus.main === 'copying'"
-        >
-          <!-- SVG иконка буфера обмена -->
-          <svg class="signal-copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <rect x="8" y="2" width="8" height="4" rx="1" ry="1" stroke="currentColor" stroke-width="2" fill="none"/>
-            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" stroke="currentColor" stroke-width="2" fill="none"/>
-            <path v-if="copyStatus.main === 'copied'" d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
-            <path v-else-if="copyStatus.main === 'copying'" d="M12 6v6l4-4-4-4" stroke="currentColor" stroke-width="2" fill="none"/>
-          </svg>
-          
-          <span class="signal-liquid-copy-text">
-            {{ 
-              copyStatus.main === 'copied' ? 'Скопировано' : 
-              copyStatus.main === 'copying' ? 'Копирование...' : 
-              'Скопировать' 
-            }}
-          </span>
-        </button>
-      </div>
+      <!-- Никакого блока ниже -->
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref, onUnmounted, computed } from 'vue';
+import { reactive, ref, onUnmounted } from 'vue';
 
 const form = reactive({ 
   emotionalRelease: '',
   factualAnalysis: '',
   constructiveSuggestions: ''
-});
-
-// Состояние кнопок копирования
-const copyStatus = reactive({
-  main: 'idle', // 'idle', 'copying', 'copied'
 });
 
 const sections = [
@@ -202,71 +157,15 @@ const sections = [
 const selectedSection = ref('emotions');
 const isActive = (id) => id === selectedSection.value;
 
-// Функция копирования текста текущей секции
-const copyCurrentSectionText = async () => {
-  let textToCopy = '';
-  
-  if (selectedSection.value === 'emotions' && form.emotionalRelease.trim()) {
-    textToCopy = form.emotionalRelease.trim();
-  } else if (selectedSection.value === 'facts' && form.factualAnalysis.trim()) {
-    textToCopy = form.factualAnalysis.trim();
-  } else if (selectedSection.value === 'solutions' && form.constructiveSuggestions.trim()) {
-    textToCopy = form.constructiveSuggestions.trim();
-  }
-  
-  if (!textToCopy) return;
-  
-  copyStatus.main = 'copying';
-  
-  try {
-    await navigator.clipboard.writeText(textToCopy);
-    copyStatus.main = 'copied';
-    
-    // Сброс статуса через 2 секунды
-    setTimeout(() => {
-      copyStatus.main = 'idle';
-    }, 2000);
-  } catch (err) {
-    console.error('Ошибка копирования:', err);
-    copyStatus.main = 'idle';
-    
-    // Fallback для старых браузеров
-    try {
-      const textArea = document.createElement('textarea');
-      textArea.value = textToCopy;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-999999px';
-      textArea.style.top = '-999999px';
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      document.execCommand('copy');
-      textArea.remove();
-      
-      copyStatus.main = 'copied';
-      setTimeout(() => {
-        copyStatus.main = 'idle';
-      }, 2000);
-    } catch (fallbackError) {
-      console.error('Fallback копирование не удалось:', fallbackError);
-    }
-  }
-};
-
-// Обновленная 3-уровневая система подсказок из файла
+// Подсказки
 const suggestions = reactive({
   emotions: {
-    // УРОВЕНЬ 1: Основные эмоции
     initial: ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'],
-    
-    // УРОВЕНЬ 2: Причины эмоций
     'расстроен': ['долго ждал', 'грязная посуда', 'холодный кофе', 'грубый персонал', 'забыли заказ'],
     'разочарован': ['качеством', 'сервисом', 'ожиданиями', 'атмосферой', 'чистотой'],
     'недоволен': ['обслуживанием', 'очередью', 'ошибкой в заказе', 'температурой блюд', 'упаковкой'],
     'возмущён': ['антисанитарией', 'хамством', 'обманом', 'некачественной едой', 'инородными предметами'],
     'удивлён': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком', 'отношением'],
-    
-    // УРОВЕНЬ 3: Детали эмоциональных переживаний
     'долго ждал': ['20 минут', '30 минут', 'более часа', 'без объяснений', 'видя пустую кофейню'],
     'грязная посуда': ['следы помады', 'остатки еды', 'жирные пятна', 'засохший кофе', 'странный запах'],
     'холодный кофе': ['едва теплый', 'совсем остыл', 'подали холодным', 'остыл пока ждал', 'температура комнатная'],
@@ -293,19 +192,13 @@ const suggestions = reactive({
     'беспорядком': ['хаос', 'непорядок', 'бардак', 'неорганизованность', 'суета'],
     'отношением': ['пренебрежение', 'высокомерие', 'равнодушие', 'неуважение', 'хамство']
   },
-  
   facts: {
-    // УРОВЕНЬ 1: Основные категории проблем
     initial: ['ожидание', 'ошибка в заказе', 'качество блюд', 'чистота', 'персонал'],
-    
-    // УРОВЕНЬ 2: Детали проблем
     'ожидание': ['20 минут', '30 минут', 'более часа', 'забыли заказ', 'очередь не двигалась'],
     'ошибка в заказе': ['не тот напиток', 'не доложили позицию', 'неправильный соус', 'перепутали объём', 'другое молоко'],
     'качество блюд': ['холодный кофе', 'невкусная еда', 'недоваренный рис', 'комочки в матче', 'чёрствая выпечка'],
     'чистота': ['грязная посуда', 'волосы в еде', 'грязная уборная', 'насекомые', 'пластик в круассане'],
     'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились'],
-    
-    // УРОВЕНЬ 3: Конкретные детали инцидентов
     '20 минут': ['засекал по часам', 'спросил у соседнего стола', 'заказал в 14:30, получил в 14:50', 'долгое ожидание для простого заказа', 'других обслужили быстрее'],
     '30 минут': ['полчаса точно', 'с 15:00 до 15:30', 'дважды подходил узнать', 'время на телефоне показало', 'успел прочитать новости'],
     'более часа': ['час и 10 минут', 'полтора часа ждал', 'с 12:00 до 13:15', 'весь обед потратил', 'опоздал на встречу'],
@@ -332,19 +225,13 @@ const suggestions = reactive({
     'трогали еду руками': ['трогали трубочку грязными руками', 'лапали булочки', 'без перчаток', 'грязными руками', 'неаккуратно'],
     'не извинились': ['даже не извинились', 'было все равно', 'сделали вид что нормально', 'проигнорировали', 'сказали что так и надо']
   },
-  
   solutions: {
-    // УРОВЕНЬ 1: Основные направления решений
     initial: ['таймер ожидания', 'обучение персонала', 'контроль качества', 'система проверки', 'стандарты сервиса'],
-    
-    // УРОВЕНЬ 2: Конкретные решения
     'таймер ожидания': ['визуальный контроль бариста/старшего бариста', 'с номерами заказов', 'видимый гостям', 'контроль времени', 'сигналы на баре', 'обратная связь от гостей'],
     'обучение персонала': ['по сервису', 'по санитарии', 'по качеству', 'по коммуникации', 'регулярные тренинги'],
     'контроль качества': ['проверка блюд', 'температурный контроль', 'свежесть продуктов', 'упаковка', 'дегустация'],
     'система проверки': ['чек-лист качества', 'двойная проверка', 'контроль чистоты', 'стандарты подачи', 'фото блюд'],
     'стандарты сервиса': ['вежливость', 'скорость', 'точность', 'чистота', 'профессионализм'],
-    
-    // УРОВЕНЬ 3: Детальные технические решения
     'визуальный контроль бариста/старшего бариста': ['песочные часы на стойке', 'отчёты по среднему времени заказа', 'замеры скорости обслуживания менеджером', 'сравнение с нормой', 'обсуждение на пятиминутке'],
     'с номерами заказов': ['в мобильном приложении', 'на чеке QR-код', 'на чеке номер заказа'],
     'видимый гостям': ['в мобильном приложении', 'на чеке QR-код', 'на чеке номер заказа'],
@@ -374,21 +261,18 @@ const suggestions = reactive({
   }
 });
 
-// Текущие подсказки для каждого поля
 const currentSuggestions = reactive({
   emotions: [...suggestions.emotions.initial],
   facts: [...suggestions.facts.initial],
   solutions: [...suggestions.solutions.initial]
 });
 
-// Выбранные подсказки (для построения цепочек)
 const selectedSuggestions = reactive({
   emotions: [],
   facts: [],
   solutions: []
 });
 
-// Счетчики веток для улучшенного разделения текста
 const branchCounters = reactive({
   emotions: 0,
   facts: 0,
@@ -408,56 +292,37 @@ let currentQuestionIndex1 = 0;
 let currentQuestionIndex2 = 0;
 let currentQuestionIndex3 = 0;
 
-// Проверка, являются ли текущие подсказки начальными
 function isInitialSuggestions(suggestionType) {
   return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(suggestions[suggestionType].initial);
 }
-
-// Сброс подсказок к начальным вариантам
 function resetSuggestions(suggestionType) {
   currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
 }
-
-// УЛУЧШЕННАЯ функция выбора подсказки с разделением веток
 function selectSuggestion(fieldName, suggestion, suggestionType) {
   const currentText = form[fieldName].trim();
-  
-  // Определяем, начинается ли новая ветка
   const isNewBranch = isInitialSuggestions(suggestionType);
-  
   if (currentText) {
     if (isNewBranch) {
-      // Новая ветка - добавляем с точкой и заглавной буквы
       form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
       branchCounters[suggestionType]++;
     } else {
-      // Продолжение ветки - добавляем через пробел
       form[fieldName] = currentText + ' ' + suggestion;
     }
   } else {
-    // Первый выбор
     form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
     branchCounters[suggestionType] = 1;
   }
-  
-  // Сохраняем выбранную подсказку
   selectedSuggestions[suggestionType].push(suggestion);
-  
-  // Обновляем доступные подсказки на основе выбора
   updateSuggestions(suggestionType, suggestion);
 }
-
-// Обновление подсказок на основе выбора
 function updateSuggestions(suggestionType, selectedWord) {
   const nextSuggestions = suggestions[suggestionType][selectedWord];
   if (nextSuggestions && nextSuggestions.length > 0) {
     currentSuggestions[suggestionType] = [...nextSuggestions];
   } else {
-    // Если нет продолжения цепочки, показываем начальные подсказки
     currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
   }
 }
-
 function startRotation(questionNum) {
   clearInterval(rotationInterval);
   rotationInterval = setInterval(() => {
@@ -473,7 +338,6 @@ function startRotation(questionNum) {
     }
   }, 3000);
 }
-
 onUnmounted(() => {
   clearInterval(rotationInterval);
 });
@@ -687,174 +551,12 @@ textarea:focus {
   font-size: 0.8rem;
   color: #777;
   margin: 0.5rem 0 0 0.25rem;
-  line-height: 1.2; /* Уменьшено с обычного 1.4-1.5 до 1.2 для более плотного расположения строк */
+  line-height: 1.2;
 }
 
 .signal-example-hint b {
   color: #aaa;
   font-weight: 600;
-}
-
-/* БОЛЬШАЯ LIQUID BUBBLE КНОПКА КОПИРОВАНИЯ ВНИЗУ - ВСЕГДА ВИДНА */
-.signal-copy-button-container {
-  margin-top: 2rem;
-}
-
-.signal-liquid-copy-btn.signal-main-copy {
-  position: relative;
-  width: 100%;
-  height: 56px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  font-family: var(--signal-font-sans);
-  white-space: nowrap;
-}
-
-.signal-liquid-copy-btn.signal-main-copy::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  padding: 2px;
-  background: linear-gradient(135deg, var(--accent-color), rgba(255, 255, 255, 0.2));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  transition: filter 0.4s ease;
-  z-index: 1;
-}
-
-.signal-liquid-copy-btn.signal-main-copy::after {
-  content: '';
-  position: absolute;
-  inset: 2px;
-  border-radius: 18px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 70%),
-              #2a2a2e;
-  z-index: 2;
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.signal-copy-icon {
-  position: relative;
-  z-index: 3;
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
-}
-
-.signal-liquid-copy-text {
-  position: relative;
-  z-index: 3;
-  font-size: 16px;
-  font-weight: 600;
-  transition: color 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Цветовые вариации для разных секций */
-.signal-emotion-copy {
-  --accent-color: #A972FF;
-}
-
-.signal-emotion-copy .signal-copy-icon,
-.signal-emotion-copy .signal-liquid-copy-text {
-  color: #A972FF;
-}
-
-.signal-emotion-copy:hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-emotion-copy:hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(169, 114, 255, 0.2) 0%, rgba(169, 114, 255, 0.05) 100%),
-              #2a2a2e;
-}
-
-.signal-emotion-copy:hover .signal-copy-icon {
-  transform: scale(1.2);
-}
-
-.signal-emotion-copy:hover .signal-liquid-copy-text {
-  color: rgba(169, 114, 255, 0.9);
-}
-
-.signal-fact-copy {
-  --accent-color: #3DDC84;
-}
-
-.signal-fact-copy .signal-copy-icon,
-.signal-fact-copy .signal-liquid-copy-text {
-  color: #3DDC84;
-}
-
-.signal-fact-copy:hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-fact-copy:hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(61, 220, 132, 0.2) 0%, rgba(61, 220, 132, 0.05) 100%),
-              #2a2a2e;
-}
-
-.signal-fact-copy:hover .signal-copy-icon {
-  transform: scale(1.2);
-}
-
-.signal-fact-copy:hover .signal-liquid-copy-text {
-  color: rgba(61, 220, 132, 0.9);
-}
-
-.signal-solution-copy {
-  --accent-color: #FFB800;
-}
-
-.signal-solution-copy .signal-copy-icon,
-.signal-solution-copy .signal-liquid-copy-text {
-  color: #FFB800;
-}
-
-.signal-solution-copy:hover::before {
-  filter: brightness(1.5) saturate(1.3);
-}
-
-.signal-solution-copy:hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(255, 184, 0, 0.2) 0%, rgba(255, 184, 0, 0.05) 100%),
-              #2a2a2e;
-}
-
-.signal-solution-copy:hover .signal-copy-icon {
-  transform: scale(1.2);
-}
-
-.signal-solution-copy:hover .signal-liquid-copy-text {
-  color: rgba(255, 184, 0, 0.9);
-}
-
-/* Состояние disabled для процесса копирования */
-.signal-liquid-copy-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.signal-liquid-copy-btn:disabled::before {
-  filter: grayscale(1);
-}
-
-.signal-liquid-copy-btn:disabled:hover::after {
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 70%),
-              #2a2a2e;
-}
-
-.signal-liquid-copy-btn:disabled:hover .signal-copy-icon {
-  transform: none;
 }
 
 @media (max-width: 768px) {
@@ -883,39 +585,17 @@ textarea:focus {
     font-size: 0.85em;
     padding: 6px 10px;
   }
-  .signal-copy-button-container {
-    margin-top: 1.5rem;
-  }
-  .signal-liquid-copy-btn.signal-main-copy {
-    height: 52px;
-    gap: 10px;
-  }
-  .signal-copy-icon {
-    width: 16px;
-    height: 16px;
-  }
-  .signal-liquid-copy-text {
-    font-size: 15px;
-  }
-  .signal-example-hint {
-    line-height: 1.1; /* Еще более плотно на мобильных */
-  }
 }
 
 @media (max-width: 480px) {
-  .signal-liquid-copy-btn.signal-main-copy {
-    height: 48px;
-    gap: 8px;
+  .signal-question-block {
+    padding: 1rem;
   }
-  .signal-copy-icon {
-    width: 15px;
-    height: 15px;
-  }
-  .signal-liquid-copy-text {
-    font-size: 14px;
+  .signal-rotating-phrase-container {
+    height: 44px;
   }
   .signal-example-hint {
-    line-height: 1.05; /* Минимальное межстрочное расстояние на очень маленьких экранах */
+    line-height: 1.05;
   }
 }
 </style>
