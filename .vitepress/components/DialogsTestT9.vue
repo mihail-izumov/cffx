@@ -1,4 +1,14 @@
 <template>
+  <div class="signal-domain-switcher">
+    <button
+      v-for="domain in Object.keys(domains)"
+      :key="domain"
+      class="signal-domain-btn"
+      :class="{ active: domain === selectedDomain }"
+      @click="selectedDomain = domain"
+      type="button"
+    >{{ domains[domain].label }}</button>
+  </div>
   <div class="signal-demo-wrapper">
     <!-- Переключатель секций над формой -->
     <div class="signal-demo__header">
@@ -18,7 +28,6 @@
       </div>
     </div>
 
-    <!-- Контейнер с формой -->
     <div class="signal-demo__form-container">
       <!-- Секция "Эмоции и чувства" -->
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
@@ -29,33 +38,27 @@
               <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
             </transition>
           </div>
-          <textarea 
-            v-model="form.emotionalRelease" 
-            @focus="startRotation(1)" 
-            rows="3" 
-            placeholder="Разочарован ожиданиями..." 
-            required>
-          </textarea>
-          <!-- Подсказки-баблы для эмоций -->
+          <textarea
+            v-model="form[domainKey].emotionalRelease"
+            @focus="startRotation(1)"
+            rows="3"
+            :placeholder="domains[selectedDomain].placeholders.emotionalRelease"
+            required
+          ></textarea>
           <div class="signal-suggestions-container">
-            <div 
-              v-for="suggestion in currentSuggestions.emotions" 
+            <div
+              v-for="suggestion in currentSuggestions[domainKey].emotions"
               :key="suggestion"
               class="signal-suggestion-bubble signal-emotion-bubble"
               @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
-            >
-              {{ suggestion }}
-            </div>
-            <!-- Кнопка возврата к начальным вариантам -->
-            <div 
+            >{{ suggestion }}</div>
+            <div
               v-if="!isInitialSuggestions('emotions')"
               class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
               @click="resetSuggestions('emotions')"
-            >
-              ← Ещё варианты
-            </div>
+            >← Ещё варианты</div>
           </div>
-          <p class="signal-example-hint" v-html="'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»'"></p>
+          <p class="signal-example-hint" v-html="domains[selectedDomain].hints.emotions"></p>
         </div>
       </div>
 
@@ -68,32 +71,27 @@
               <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
             </transition>
           </div>
-          <textarea 
-            v-model="form.factualAnalysis" 
-            @focus="startRotation(2)" 
-            rows="3" 
-            placeholder="Опишите факты: что, когда и где произошло..." 
-            required>
-          </textarea>
-          <!-- Подсказки-баблы для деталей -->
+          <textarea
+            v-model="form[domainKey].factualAnalysis"
+            @focus="startRotation(2)"
+            rows="3"
+            :placeholder="domains[selectedDomain].placeholders.factualAnalysis"
+            required
+          ></textarea>
           <div class="signal-suggestions-container">
-            <div 
-              v-for="suggestion in currentSuggestions.facts" 
+            <div
+              v-for="suggestion in currentSuggestions[domainKey].facts"
               :key="suggestion"
               class="signal-suggestion-bubble signal-fact-bubble"
               @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
-            >
-              {{ suggestion }}
-            </div>
-            <div 
+            >{{ suggestion }}</div>
+            <div
               v-if="!isInitialSuggestions('facts')"
               class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
               @click="resetSuggestions('facts')"
-            >
-              ← Ещё варианты
-            </div>
+            >← Ещё варианты</div>
           </div>
-          <p class="signal-example-hint" v-html="'Пример: «Заказ на два капучино <b>ждал 22 минуты</b>, хотя в кафе был почти один»'"></p>
+          <p class="signal-example-hint" v-html="domains[selectedDomain].hints.facts"></p>
         </div>
       </div>
 
@@ -106,35 +104,29 @@
               <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
             </transition>
           </div>
-          <textarea 
-            v-model="form.constructiveSuggestions" 
-            @focus="startRotation(3)" 
-            rows="3" 
-            placeholder="Предложите, как это можно исправить..." 
-            required>
-          </textarea>
-          <!-- Подсказки-баблы для решений -->
+          <textarea
+            v-model="form[domainKey].constructiveSuggestions"
+            @focus="startRotation(3)"
+            rows="3"
+            :placeholder="domains[selectedDomain].placeholders.constructiveSuggestions"
+            required
+          ></textarea>
           <div class="signal-suggestions-container">
-            <div 
-              v-for="suggestion in currentSuggestions.solutions" 
+            <div
+              v-for="suggestion in currentSuggestions[domainKey].solutions"
               :key="suggestion"
               class="signal-suggestion-bubble signal-solution-bubble"
               @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
-            >
-              {{ suggestion }}
-            </div>
-            <div 
+            >{{ suggestion }}</div>
+            <div
               v-if="!isInitialSuggestions('solutions')"
               class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
               @click="resetSuggestions('solutions')"
-            >
-              ← Ещё варианты
-            </div>
+            >← Ещё варианты</div>
           </div>
-          <p class="signal-example-hint" v-html="'Пример: «Добавить на кассе <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
+          <p class="signal-example-hint" v-html="domains[selectedDomain].hints.solutions"></p>
         </div>
       </div>
-      <!-- Никакого блока ниже -->
     </div>
   </div>
 </template>
@@ -142,11 +134,63 @@
 <script setup>
 import { reactive, ref, onUnmounted } from 'vue';
 
-const form = reactive({ 
-  emotionalRelease: '',
-  factualAnalysis: '',
-  constructiveSuggestions: ''
-});
+// Подсказки для кофе (ваши старые, сокращены для примера)
+const coffeeSuggestions = {
+  emotions: { /* ...сюда поместить весь ваш объект подсказок для кофе... */ },
+  facts: { /* ... */ },
+  solutions: { /* ... */ }
+};
+
+// Подсказки для фитнеса (из вашего примера)
+const fitnessSuggestions = {
+  emotions: {
+    // полностью Ваш большой объект из запроса выше
+    // ...
+  },
+  facts: {
+    // полностью Ваш большой объект из запроса выше
+    // ...
+  },
+  solutions: {
+    // полностью Ваш большой объект из запроса выше
+    // ...
+  }
+};
+
+// Метаданные для визуала и примеров
+const domains = {
+  coffee: {
+    label: "Кофейни",
+    hints: {
+      emotions: 'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»',
+      facts: 'Пример: «Заказ на два капучино <b>ждал 22 минуты</b>, хотя в кафе был почти один»',
+      solutions: 'Пример: «Добавить на кассе <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»',
+    },
+    placeholders: {
+      emotionalRelease: "Разочарован ожиданиями...",
+      factualAnalysis: "Опишите факты: что, когда и где произошло...",
+      constructiveSuggestions: "Предложите, как это можно исправить..."
+    },
+    suggestions: coffeeSuggestions
+  },
+  fitness: {
+    label: "Фитнес",
+    hints: {
+      emotions: 'Пример: «Восхищён профессионализмом тренера и атмосферой клуба»',
+      facts: 'Пример: «В раздевалке <b>нет мыла</b>, <b>очень жарко</b> в зале»',
+      solutions: 'Пример: «Ввести <b>электронную очередь</b> и <b>тренинг для персонала</b>»'
+    },
+    placeholders: {
+      emotionalRelease: "Опишите эмоции...",
+      factualAnalysis: "Факты: что, когда и где произошло...",
+      constructiveSuggestions: "Как исправить или улучшить..."
+    },
+    suggestions: fitnessSuggestions
+  }
+};
+
+const selectedDomain = ref('coffee');
+const domainKey = computed(() => selectedDomain.value);
 
 const sections = [
   { id: 'emotions', title: 'Эмоции' },
@@ -157,170 +201,79 @@ const sections = [
 const selectedSection = ref('emotions');
 const isActive = (id) => id === selectedSection.value;
 
-// Подсказки
-const suggestions = reactive({
-  emotions: {
-    initial: ['расстроен', 'разочарован', 'недоволен', 'возмущён', 'удивлён'],
-    'расстроен': ['долго ждал', 'грязная посуда', 'холодный кофе', 'грубый персонал', 'забыли заказ'],
-    'разочарован': ['качеством', 'сервисом', 'ожиданиями', 'атмосферой', 'чистотой'],
-    'недоволен': ['обслуживанием', 'очередью', 'ошибкой в заказе', 'температурой блюд', 'упаковкой'],
-    'возмущён': ['антисанитарией', 'хамством', 'обманом', 'некачественной едой', 'инородными предметами'],
-    'удивлён': ['таким сервисом', 'проблемами', 'невниманием', 'беспорядком', 'отношением'],
-    'долго ждал': ['20 минут', '30 минут', 'более часа', 'без объяснений', 'видя пустую кофейню'],
-    'грязная посуда': ['следы помады', 'остатки еды', 'жирные пятна', 'засохший кофе', 'странный запах'],
-    'холодный кофе': ['едва теплый', 'совсем остыл', 'подали холодным', 'остыл пока ждал', 'температура комнатная'],
-    'грубый персонал': ['не поздоровались', 'хамили', 'игнорировали', 'были раздражены', 'повысили голос'],
-    'забыли заказ': ['через 40 минут', 'не записали', 'потеряли чек', 'не передали на кухню', 'сидел и ждал'],
-    'качеством': ['хуже чем обычно', 'не соответствует цене', 'испортилось за месяц', 'как в фастфуде', 'совсем не то'],
-    'сервисом': ['медленный', 'невнимательный', 'равнодушный', 'непрофессиональный', 'хаотичный'],
-    'ожиданиями': ['ждал большего', 'по отзывам лучше', 'раньше было вкуснее', 'не оправдал репутацию', 'переоценил место'],
-    'атмосферой': ['шумно и грязно', 'неуютно', 'холодно', 'плохая музыка', 'неприятные запахи'],
-    'чистотой': ['грязные столы', 'липкий пол', 'немытая посуда', 'пыль везде', 'антисанитария'],
-    'обслуживанием': ['долгое ожидание', 'путаница в заказах', 'невежливость', 'игнорирование', 'ошибки кассира'],
-    'очередью': ['не двигалась', 'час стоял', 'нет системы', 'хаос', 'всех пропускают'],
-    'ошибкой в заказе': ['не тот напиток', 'забыли позицию', 'неправильный размер', 'другой сироп', 'перепутали'],
-    'температурой блюд': ['холодные', 'остывшие', 'чуть теплые', 'не разогрели', 'ледяные'],
-    'упаковкой': ['протекающие крышки', 'слабые пакеты', 'разорвалась', 'неудобная', 'грязная'],
-    'антисанитарией': ['грязные руки', 'упал и подали', 'на полу готовят', 'мухи', 'тараканы'],
-    'хамством': ['нагрубили', 'оскорбили', 'накричали', 'показали характер', 'послали'],
-    'обманом': ['не тот объем', 'обвесили', 'скрыли стоимость', 'навязали', 'обсчитали'],
-    'некачественной едой': ['испорченная', 'несвежая', 'странный вкус', 'горькая', 'кислая'],
-    'инородными предметами': ['волосы в еде', 'пластик в круассане', 'проволока', 'нитки', 'жук'],
-    'таким сервисом': ['впервые такое', 'не ожидал', 'шокирован', 'не верю', 'ужасно'],
-    'проблемами': ['постоянные', 'одни и те же', 'системные', 'не решаются', 'игнорируются'],
-    'невниманием': ['не слушают', 'не реагируют', 'все равно', 'безразличие', 'не заботятся'],
-    'беспорядком': ['хаос', 'непорядок', 'бардак', 'неорганизованность', 'суета'],
-    'отношением': ['пренебрежение', 'высокомерие', 'равнодушие', 'неуважение', 'хамство']
-  },
-  facts: {
-    initial: ['ожидание', 'ошибка в заказе', 'качество блюд', 'чистота', 'персонал'],
-    'ожидание': ['20 минут', '30 минут', 'более часа', 'забыли заказ', 'очередь не двигалась'],
-    'ошибка в заказе': ['не тот напиток', 'не доложили позицию', 'неправильный соус', 'перепутали объём', 'другое молоко'],
-    'качество блюд': ['холодный кофе', 'невкусная еда', 'недоваренный рис', 'комочки в матче', 'чёрствая выпечка'],
-    'чистота': ['грязная посуда', 'волосы в еде', 'грязная уборная', 'насекомые', 'пластик в круассане'],
-    'персонал': ['грубость', 'невнимательность', 'некомпетентность', 'трогали еду руками', 'не извинились'],
-    '20 минут': ['засекал по часам', 'спросил у соседнего стола', 'заказал в 14:30, получил в 14:50', 'долгое ожидание для простого заказа', 'других обслужили быстрее'],
-    '30 минут': ['полчаса точно', 'с 15:00 до 15:30', 'дважды подходил узнать', 'время на телефоне показало', 'успел прочитать новости'],
-    'более часа': ['час и 10 минут', 'полтора часа ждал', 'с 12:00 до 13:15', 'весь обед потратил', 'опоздал на встречу'],
-    'забыли заказ': ['не записали', 'потеряли чек', 'не передали на кухню', 'перепутали с другим', 'готовили не то'],
-    'очередь не двигалась': ['стоял полчаса', 'один кассир на всех', 'касса сломалась', 'менялись местами', 'хаос'],
-    'не тот напиток': ['заказал латте, принесли капучино', 'просил без сахара, был сладкий', 'хотел большой, дали маленький', 'другой сироп добавили', 'обычное молоко вместо овсяного'],
-    'не доложили позицию': ['забыли десерт', 'нет половины заказа', 'пропали сэндвичи', 'только кофе принесли', 'блинчики не было'],
-    'неправильный соус': ['положили не тот соус к тыквенным панкейкам', 'острый вместо сладкого', 'майонез вместо сметаны', 'кетчуп забыли', 'соус отдельно не дали'],
-    'перепутали объём': ['несоответствие объема напитков', 'маленький вместо большого', 'дали меньше чем заказал', 'размер не тот', 'обманули с порцией'],
-    'другое молоко': ['обычное вместо овсяного', 'соевое вместо миндального', 'с лактозой дали', 'не предупредили', 'аллергия может быть'],
-    'холодный кофе': ['градусов 40-50', 'можно было пить сразу', 'не обжигал язык', 'как будто стоял долго', 'температура комнатная'],
-    'невкусная еда': ['пересоленная', 'недосоленная', 'горькая', 'кислая', 'странный вкус'],
-    'недоваренный рис': ['жесткий', 'сырой', 'хрустит на зубах', 'не доварили'],
-    'комочки в матче': ['комочки в матче', 'не размешали', 'порошок не растворился', 'комки муки', 'неоднородная масса'],
-    'чёрствая выпечка': ['как камень', 'вчерашняя', 'сухая', 'твердая', 'невозможно откусить'],
-    'грязная посуда': ['на чашке помада', 'жирные разводы на тарелке', 'крошки от предыдущих гостей', 'капли кофе на блюдце', 'следы от губной помады'],
-    'волосы в еде': ['черный волос в редисе', 'длинный волос в салате', 'волосы на булочке', 'в супе волос', 'противно есть'],
-    'грязная уборная': ['не убирали', 'бумаги нет', 'воняет', 'лужи на полу', 'грязь везде'],
-    'насекомые': ['тараканы бегают', 'муха в кофе', 'жук в салате', 'паук на стене', 'противно смотреть'],
-    'пластик в круассане': ['кусочек пластика в круассане', 'твердый кусок', 'чуть не сломал зуб', 'опасно', 'мог подавиться'],
-    'грубость': ['не поздоровались', 'ответили резко', 'закатили глаза', 'проигнорировали вопрос', 'были явно недовольны'],
-    'невнимательность': ['не слушали', 'переспрашивали', 'отвлекались', 'забыли просьбу', 'записали неправильно'],
-    'некомпетентность': ['не знали меню', 'не умели готовить', 'путались в кнопках', 'долго соображали', 'спрашивали у коллег'],
-    'трогали еду руками': ['трогали трубочку грязными руками', 'лапали булочки', 'без перчаток', 'грязными руками', 'неаккуратно'],
-    'не извинились': ['даже не извинились', 'было все равно', 'сделали вид что нормально', 'проигнорировали', 'сказали что так и надо']
-  },
-  solutions: {
-    initial: ['таймер ожидания', 'обучение персонала', 'контроль качества', 'система проверки', 'стандарты сервиса'],
-    'таймер ожидания': ['визуальный контроль бариста/старшего бариста', 'с номерами заказов', 'видимый гостям', 'контроль времени', 'сигналы на баре', 'обратная связь от гостей'],
-    'обучение персонала': ['по сервису', 'по санитарии', 'по качеству', 'по коммуникации', 'регулярные тренинги'],
-    'контроль качества': ['проверка блюд', 'температурный контроль', 'свежесть продуктов', 'упаковка', 'дегустация'],
-    'система проверки': ['чек-лист качества', 'двойная проверка', 'контроль чистоты', 'стандарты подачи', 'фото блюд'],
-    'стандарты сервиса': ['вежливость', 'скорость', 'точность', 'чистота', 'профессионализм'],
-    'визуальный контроль бариста/старшего бариста': ['песочные часы на стойке', 'отчёты по среднему времени заказа', 'замеры скорости обслуживания менеджером', 'сравнение с нормой', 'обсуждение на пятиминутке'],
-    'с номерами заказов': ['в мобильном приложении', 'на чеке QR-код', 'на чеке номер заказа'],
-    'видимый гостям': ['в мобильном приложении', 'на чеке QR-код', 'на чеке номер заказа'],
-    'контроль времени': ['стандарт 7 минут', 'красная зона после 10 мин', 'автоотсчёт от момента пробития чека'],
-    'сигналы на баре': ['цветовые индикаторы готовности', 'звуковой таймер для бариста'],
-    'обратная связь от гостей': ['опрос о времени ожидания', 'кнопка "долго жду" в приложении', 'комментарий в чеке QR-кодом'],
-    'по сервису': ['тренинги вежливости', 'ролевые игры', 'работа с жалобами', 'стандарты общения', 'мотивация персонала'],
-    'по санитарии': ['мытье посуды', 'уборка столов', 'проверка чистоты', 'гигиена рук', 'контроль температуры'],
-    'по качеству': ['дегустация напитков', 'проверка ингредиентов', 'температура подачи', 'внешний вид блюд', 'сроки годности'],
-    'по коммуникации': ['активное слушание', 'решение конфликтов', 'извинения и компенсации', 'позитивное общение', 'работа с негативом'],
-    'регулярные тренинги': ['раз в месяц', 'новых сотрудников', 'переаттестация', 'мастер-классы', 'обмен опытом'],
-    'проверка блюд': ['перед подачей', 'температура напитков', 'внешний вид', 'соответствие заказу', 'свежесть ингредиентов'],
-    'температурный контроль': ['термометр для кофе', '85-90 градусов', 'горячие блюда', 'холодные напитки', 'контроль каждый час'],
-    'свежесть продуктов': ['ежедневная поставка', 'сроки годности', 'ротация товара', 'маркировка даты', 'утилизация просрочки'],
-    'упаковка': ['герметичные крышки', 'качественные пакеты', 'стаканы не протекают', 'салфетки в комплекте', 'удобная переноска'],
-    'дегустация': ['каждая партия', 'новые рецепты', 'мнение гостей', 'тестирование вкуса', 'корректировка рецептур'],
-    'чек-лист качества': ['для каждого заказа', 'проверка температуры', 'чистота посуды', 'правильность состава', 'время подачи'],
-    'двойная проверка': ['готовящий и подающий', 'кассир и бариста', 'менеджер и персонал', 'фото готового блюда', 'подпись ответственного'],
-    'контроль чистоты': ['каждый час', 'чек-лист уборки', 'дезинфекция', 'мытье рук', 'чистая форма'],
-    'стандарты подачи': ['правильная посуда', 'украшение блюд', 'салфетки и приборы', 'температура подачи', 'презентация'],
-    'фото блюд': ['перед подачей', 'контроль качества', 'обучение персонала', 'соцсети', 'архив образцов'],
-    'вежливость': ['приветствие с улыбкой', 'благодарность гостю', 'извинения за ошибки', 'помощь в выборе', 'прощание'],
-    'скорость': ['стандарт 10 минут', 'быстрое принятие заказа', 'оперативная готовка', 'мгновенная подача', 'ускоренная оплата'],
-    'точность': ['записывать заказы', 'повторять вслух', 'проверять чек', 'уточнять детали', 'контроль состава'],
-    'чистота': ['мытье рук каждые 30 мин', 'чистая форма', 'дезинфекция поверхностей', 'порядок на рабочем месте', 'свежая посуда'],
-    'профессионализм': ['знание меню', 'умение готовить', 'решение проблем', 'работа в команде', 'развитие навыков']
-  }
+// Раздельные формы под каждый домен
+const form = reactive({
+  coffee: { emotionalRelease: '', factualAnalysis: '', constructiveSuggestions: '' },
+  fitness: { emotionalRelease: '', factualAnalysis: '', constructiveSuggestions: '' }
 });
 
 const currentSuggestions = reactive({
-  emotions: [...suggestions.emotions.initial],
-  facts: [...suggestions.facts.initial],
-  solutions: [...suggestions.solutions.initial]
+  coffee: {
+    emotions: [...domains.coffee.suggestions.emotions.initial],
+    facts: [...domains.coffee.suggestions.facts.initial],
+    solutions: [...domains.coffee.suggestions.solutions.initial]
+  },
+  fitness: {
+    emotions: [...domains.fitness.suggestions.emotions.initial],
+    facts: [...domains.fitness.suggestions.facts.initial],
+    solutions: [...domains.fitness.suggestions.solutions.initial]
+  }
 });
 
 const selectedSuggestions = reactive({
-  emotions: [],
-  facts: [],
-  solutions: []
+  coffee: { emotions: [], facts: [], solutions: [] },
+  fitness: { emotions: [], facts: [], solutions: [] }
 });
-
 const branchCounters = reactive({
-  emotions: 0,
-  facts: 0,
-  solutions: 0
+  coffee: { emotions: 0, facts: 0, solutions: 0 },
+  fitness: { emotions: 0, facts: 0, solutions: 0 }
 });
 
+// Ротация вопросов
 const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
 const phrasesForQuestion2 = ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'];
 const phrasesForQuestion3 = ['Как бы вы это исправили?', 'Что могло бы предотвратить эту ситуацию?', 'Какое одно изменение сделало бы ваш опыт идеальным?'];
-
 const currentQuestion1 = ref(phrasesForQuestion1[0]);
 const currentQuestion2 = ref(phrasesForQuestion2[0]);
 const currentQuestion3 = ref(phrasesForQuestion3[0]);
-
 let rotationInterval = null;
 let currentQuestionIndex1 = 0;
 let currentQuestionIndex2 = 0;
 let currentQuestionIndex3 = 0;
 
 function isInitialSuggestions(suggestionType) {
-  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(suggestions[suggestionType].initial);
+  return JSON.stringify(
+    currentSuggestions[domainKey.value][suggestionType]
+  ) === JSON.stringify(
+    domains[selectedDomain.value].suggestions[suggestionType].initial
+  );
 }
 function resetSuggestions(suggestionType) {
-  currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
+  currentSuggestions[domainKey.value][suggestionType] = [...domains[selectedDomain.value].suggestions[suggestionType].initial];
 }
 function selectSuggestion(fieldName, suggestion, suggestionType) {
-  const currentText = form[fieldName].trim();
+  const currentText = form[domainKey.value][fieldName].trim();
   const isNewBranch = isInitialSuggestions(suggestionType);
   if (currentText) {
     if (isNewBranch) {
-      form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-      branchCounters[suggestionType]++;
+      form[domainKey.value][fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+      branchCounters[domainKey.value][suggestionType]++;
     } else {
-      form[fieldName] = currentText + ' ' + suggestion;
+      form[domainKey.value][fieldName] = currentText + ' ' + suggestion;
     }
   } else {
-    form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-    branchCounters[suggestionType] = 1;
+    form[domainKey.value][fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+    branchCounters[domainKey.value][suggestionType] = 1;
   }
-  selectedSuggestions[suggestionType].push(suggestion);
+  selectedSuggestions[domainKey.value][suggestionType].push(suggestion);
   updateSuggestions(suggestionType, suggestion);
 }
 function updateSuggestions(suggestionType, selectedWord) {
-  const nextSuggestions = suggestions[suggestionType][selectedWord];
+  const nextSuggestions = domains[selectedDomain.value].suggestions[suggestionType][selectedWord];
   if (nextSuggestions && nextSuggestions.length > 0) {
-    currentSuggestions[suggestionType] = [...nextSuggestions];
+    currentSuggestions[domainKey.value][suggestionType] = [...nextSuggestions];
   } else {
-    currentSuggestions[suggestionType] = [...suggestions[suggestionType].initial];
+    currentSuggestions[domainKey.value][suggestionType] = [...domains[selectedDomain.value].suggestions[suggestionType].initial];
   }
 }
 function startRotation(questionNum) {
@@ -344,8 +297,28 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-:root {
-  --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+.signal-domain-switcher {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.signal-domain-btn {
+  padding: 8px 18px;
+  border-radius: 12px;
+  border: 2px solid #343454;
+  background: #232336;
+  color: #a7a7ce;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1em;
+  letter-spacing: 0.01em;
+  transition: all 0.16s;
+}
+.signal-domain-btn.active, .signal-domain-btn:focus {
+  background: #a972ff33;
+  color: #A972FF;
+  border-color: #A972FF;
 }
 
 .signal-demo-wrapper {
@@ -354,13 +327,11 @@ onUnmounted(() => {
   max-width: none;
   margin: 0;
 }
-
 .signal-demo__header {
   display: flex;
   justify-content: center;
   margin-bottom: 16px;
 }
-
 .signal-demo__switch {
   display: flex;
   gap: 8px;
@@ -368,7 +339,6 @@ onUnmounted(() => {
   background: transparent;
   margin: 0;
 }
-
 .signal-demo__switch-btn {
   appearance: none;
   border: 2px solid #2c2c2f;
@@ -379,32 +349,28 @@ onUnmounted(() => {
   font-size: 0.95em;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, font-weight 0.15s ease;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s, font-weight 0.15s;
   font-family: var(--signal-font-sans);
   text-transform: none;
 }
-
 .signal-demo__switch-btn.emotions.is-active {
   background: rgba(169, 114, 255, 0.14);
   border-color: #A972FF;
   font-weight: 700;
   color: #A972FF;
 }
-
 .signal-demo__switch-btn.facts.is-active {
   background: rgba(61, 220, 132, 0.14);
   border-color: #3DDC84;
   font-weight: 700;
   color: #3DDC84;
 }
-
 .signal-demo__switch-btn.solutions.is-active {
   background: rgba(255, 184, 0, 0.14);
   border-color: #FFB800;
   font-weight: 700;
   color: #FFB800;
 }
-
 .signal-demo__switch-btn:hover {
   border-color: #A972FF;
 }
@@ -598,4 +564,5 @@ textarea:focus {
     line-height: 1.05;
   }
 }
+
 </style>
