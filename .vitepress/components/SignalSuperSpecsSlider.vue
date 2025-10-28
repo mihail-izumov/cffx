@@ -12,7 +12,7 @@
         tabindex="0"
         role="link"
       >
-        <!-- ОБЪЁМНАЯ SVG-ИКОНКА (МЕНЬШЕ НА 20px) -->
+        <!-- ОБЪЁМНАЯ SVG-ИКОНКА (260px) -->
         <div class="sss-card-background-icon" :class="{ hover: activeSlide === idx }">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -27,9 +27,9 @@
             <!-- DEFS -->
             <defs>
               <linearGradient :id="`grad-${idx}`" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#484848"/>
-                <stop offset="50%" stop-color="#686868"/>
-                <stop offset="100%" stop-color="#888888"/>
+                <stop offset="0%" stop-color="#505050"/>
+                <stop offset="50%" stop-color="#707070"/>
+                <stop offset="100%" stop-color="#909090"/>
               </linearGradient>
 
               <filter id="depth" x="-100%" y="-100%" width="300%" height="300%">
@@ -40,8 +40,8 @@
               </filter>
 
               <filter id="depth-hover" x="-100%" y="-100%" width="300%" height="300%">
-                <feGaussianBlur in="SourceAlpha" stdDeviation="5"/>
-                <feOffset dx="0" dy="5"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+                <feOffset dx="0" dy="6"/>
                 <feComponentTransfer><feFuncA type="linear" slope="0.7"/></feComponentTransfer>
                 <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
               </filter>
@@ -49,7 +49,6 @@
 
             <!-- ИКОНКА -->
             <g :stroke="`url(#grad-${idx})`" filter="url(#depth)" class="icon-path">
-              <!-- ВСЕ ЭЛЕМЕНТЫ ВОССТАНОВЛЕНЫ -->
               <path v-for="path in slide.paths" :d="path"/>
               <circle v-if="slide.circle" :cx="slide.circle.cx" :cy="slide.circle.cy" :r="slide.circle.r"/>
               <rect v-if="slide.rect" :width="slide.rect.w" :height="slide.rect.h" :x="slide.rect.x" :y="slide.rect.y" :rx="slide.rect.rx" :ry="slide.rect.ry"/>
@@ -204,8 +203,9 @@ const scrollPrev = () => {
 </script>
 
 <style scoped>
-.sss-slider-wrapper { position: relative !important; margin: 24px 0 !important; }
-.sss-brands-container {
+/* ГЛОБАЛЬНЫЕ СТИЛИ С ::v-deep И !important */
+::v-deep .sss-slider-wrapper { position: relative !important; margin: 24px 0 !important; }
+::v-deep .sss-brands-container {
   display: flex !important;
   overflow-x: auto !important;
   gap: 16px !important;
@@ -215,78 +215,95 @@ const scrollPrev = () => {
   -ms-overflow-style: none !important;
   margin-bottom: 16px !important;
 }
-.sss-brands-container::-webkit-scrollbar { display: none !important; }
+::v-deep .sss-brands-container::-webkit-scrollbar { display: none !important; }
 
-.sss-brand-card {
+::v-deep .sss-brand-card {
   flex: 0 0 320px !important;
   border-radius: 12px !important;
   padding: 48px 24px !important;
   display: flex !important;
   flex-direction: column !important;
   gap: 16px !important;
-  border-style: solid !important;
-  border-width: 1px !important;
-  border-top-width: 4px !important;
+  border: 1px solid #333 !important;
+  border-top: 4px solid rgba(197, 249, 70, 0.28) !important;
   position: relative !important;
   min-height: 360px !important;
   overflow: hidden !important;
   transition: border-top-color 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
   background-color: #232323 !important;
-  border-color: #333 !important;
-  border-top-color: rgba(197, 249, 70, 0.28) !important;
   text-decoration: none !important;
   cursor: pointer !important;
 }
-.sss-step-card:hover, .sss-brand-card.active { border-top-color: #C5F946 !important; }
+::v-deep .sss-step-card:hover,
+::v-deep .sss-brand-card.active { border-top-color: #C5F946 !important; }
 
-/* ИКОНКИ: МЕНЬШЕ НА 20px */
-.sss-card-background-icon {
+/* ИКОНКИ: 260px + ЯРЧЕ */
+::v-deep .sss-card-background-icon {
   position: absolute !important;
   bottom: 16px !important;
   right: 16px !important;
-  width: 260px !important;   /* Было 280px */
-  height: 260px !important;  /* Было 280px */
-  opacity: 0.18 !important;
+  width: 260px !important;
+  height: 260px !important;
+  opacity: 0.22 !important;
   pointer-events: none !important;
   z-index: 0 !important;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-.icon-volume {
+::v-deep .icon-volume {
   width: 100% !important;
   height: 100% !important;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* HOVER: ЯРЧЕ, НЕ ТУСКНЕЕ */
-.icon-volume.active,
-.sss-brand-card:hover .icon-volume {
-  opacity: 0.38 !important;   /* Было 0.35 → ярче */
-  transform: translateY(-4px) scale(1.12) !important;
+/* HOVER: ЯРЧЕ + ПОДЪЁМ */
+::v-deep .icon-volume.active,
+::v-deep .sss-brand-card:hover .icon-volume {
+  opacity: 0.45 !important;
+  transform: translateY(-6px) scale(1.15) !important;
 }
 
-.icon-volume.active .icon-path,
-.sss-brand-card:hover .icon-path {
+::v-deep .icon-volume.active .icon-path,
+::v-deep .sss-brand-card:hover .icon-path {
   filter: url(#depth-hover) !important;
 }
 
 /* ТЕКСТ */
-.sss-title { font-size: 24px !important; line-height: 1.22 !important; margin: 0 !important; font-weight: 700 !important; color: #ffffff !important; position: relative !important; z-index: 1 !important; }
-.sss-step-goals { color: #C5F946 !important; font-size: 16px !important; font-weight: 500 !important; line-height: 1.65 !important; margin: 0 !important; position: relative !important; z-index: 1 !important; }
-.sss-description-secondary { color: #b0b0b0 !important; font-size: 16px !important; line-height: 1.6 !important; margin: 0 !important; flex-grow: 1 !important; position: relative !important; z-index: 1 !important; }
-.sss-control-label { color: #ffffff !important; font-weight: 700 !important; font-size: 16px !important; }
-.sss-control-highlight { background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.08) 50%) !important; background-size: 200% 100% !important; background-position: 100% 0 !important; background-color: rgba(197, 249, 70, 0.08) !important; color: #ffffff !important; padding: 1px 5px !important; margin: 0 !important; border-radius: 1px !important; transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important; position: relative !important; display: inline !important; z-index: 1 !important; box-decoration-break: clone !important; -webkit-box-decoration-break: clone !important; line-height: 1.5 !important; vertical-align: baseline !important; font-size: 16px !important; }
-.sss-step-card:hover .sss-control-highlight, .sss-brand-card.active .sss-control-highlight { background-position: 0 0 !important; color: #1a1a1a !important; }
-.sss-description-main { color: #b0b0b0 !important; font-size: 13px !important; line-height: 1.62 !important; margin-top: auto !important; margin-bottom: 9px !important; position: relative !important; z-index: 1 !important; }
-.sss-more-link-area { margin-top: 16px !important; margin-bottom: 4px !important; }
-.sss-more-link { font-size: 15px !important; color: #b0b0b0 !important; font-weight: 500 !important; background: none !important; cursor: pointer !important; text-decoration: none !important; display: flex !important; align-items: center !important; gap: 6px !important; transition: color 0.3s !important; }
-.sss-more-link:hover, .sss-brand-card.active .sss-more-link { color: #C5F946 !important; }
-.sss-arrow { font-size: 19px !important; margin-left: 2px !important; transition: transform 0.25s !important; }
-.sss-brand-card.active .sss-arrow, .sss-more-link:hover .sss-arrow { transform: translateX(9px) !important; }
-.sss-nav-buttons { display: flex !important; gap: 8px !important; justify-content: flex-end !important; margin-right: 0 !important; padding-right: 4px !important; }
-.sss-nav-btn { width: 40px !important; height: 40px !important; border-radius: 50% !important; border: none !important; cursor: pointer !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: all 0.3s ease !important; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important; }
-.sss-nav-prev { background-color: #e8e8e8 !important; color: #232323 !important; }
-.sss-nav-prev:hover { background-color: #d0d0d0 !important; transform: scale(1.05) !important; }
-.sss-nav-next { background-color: #ffffff !important; color: #232323 !important; }
-.sss-nav-next:hover { background-color: #f5f5f5 !important; transform: scale(1.05) !important; }
+::v-deep .sss-title { font-size: 24px !important; line-height: 1.22 !important; margin: 0 !important; font-weight: 700 !important; color: #ffffff !important; position: relative !important; z-index: 1 !important; }
+::v-deep .sss-step-goals { color: #C5F946 !important; font-size: 16px !important; font-weight: 500 !important; line-height: 1.65 !important; margin: 0 !important; position: relative !important; z-index: 1 !important; }
+::v-deep .sss-description-secondary { color: #b0b0b0 !important; font-size: 16px !important; line-height: 1.6 !important; margin: 0 !important; flex-grow: 1 !important; position: relative !important; z-index: 1 !important; }
+::v-deep .sss-control-label { color: #ffffff !important; font-weight: 700 !important; font-size: 16px !important; }
+::v-deep .sss-control-highlight {
+  background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.08) 50%) !important;
+  background-size: 200% 100% !important;
+  background-position: 100% 0 !important;
+  color: #ffffff !important;
+  padding: 1px 5px !important;
+  border-radius: 1px !important;
+  transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important;
+  display: inline !important;
+  z-index: 1 !important;
+  box-decoration-break: clone !important;
+  -webkit-box-decoration-break: clone !important;
+  font-size: 16px !important;
+}
+::v-deep .sss-step-card:hover .sss-control-highlight,
+::v-deep .sss-brand-card.active .sss-control-highlight {
+  background-position: 0 0 !important;
+  color: #1a1a1a !important;
+}
+::v-deep .sss-description-main { color: #b0b0b0 !important; font-size: 13px !important; line-height: 1.62 !important; margin-top: auto !important; margin-bottom: 9px !important; position: relative !important; z-index: 1 !important; }
+::v-deep .sss-more-link-area { margin-top: 16px !important; margin-bottom: 4px !important; }
+::v-deep .sss-more-link { font-size: 15px !important; color: #b0b0b0 !important; font-weight: 500 !important; display: flex !important; align-items: center !important; gap: 6px !important; transition: color 0.3s !important; }
+::v-deep .sss-more-link:hover,
+::v-deep .sss-brand-card.active .sss-more-link { color: #C5F946 !important; }
+::v-deep .sss-arrow { font-size: 19px !important; margin-left: 2px !important; transition: transform 0.25s !important; }
+::v-deep .sss-brand-card.active .sss-arrow,
+::v-deep .sss-more-link:hover .sss-arrow { transform: translateX(9px) !important; }
+::v-deep .sss-nav-buttons { display: flex !important; gap: 8px !important; justify-content: flex-end !important; margin-right: 0 !important; padding-right: 4px !important; }
+::v-deep .sss-nav-btn { width: 40px !important; height: 40px !important; border-radius: 50% !important; border: none !important; cursor: pointer !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: all 0.3s ease !important; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important; }
+::v-deep .sss-nav-prev { background-color: #e8e8e8 !important; color: #232323 !important; }
+::v-deep .sss-nav-prev:hover { background-color: #d0d0d0 !important; transform: scale(1.05) !important; }
+::v-deep .sss-nav-next { background-color: #ffffff !important; color: #232323 !important; }
+::v-deep .sss-nav-next:hover { background-color: #f5f5f5 !important; transform: scale(1.05) !important; }
 </style>
