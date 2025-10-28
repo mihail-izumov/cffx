@@ -54,7 +54,7 @@
 <script setup>
 import { ref, h } from 'vue'
 
-/* ---------- SVG‑компоненты (Lucide) ---------- */
+/* ---------- SVG‑компоненты (Luc 24×24) ---------- */
 const createSvg = (paths, extra = []) => {
   const children = paths.map(p => h('path', { d: p }))
   extra.forEach(el => children.push(el))
@@ -201,7 +201,7 @@ const scrollPrev = () => {
   border-top-width: 4px !important;
   position: relative !important;
   min-height: 360px !important;
-  overflow: hidden !important;
+  overflow: visible !important; /* КЛЮЧЕВОЕ: чтобы иконка выходила за пределы */
   transition: border-top-color 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
   background-color: #232323 !important;
   border-color: #333 !important;
@@ -211,31 +211,33 @@ const scrollPrev = () => {
 }
 .sss-step-card:hover, .sss-brand-card.active { border-top-color: #C5F946 !important; }
 
-/* ---------- Фоновые иконки (большие, в углу) ---------- */
+/* ---------- ФОНОВЫЕ ИКОНКИ (БОЛЬШИЕ, ВЫХОДЯТ ЗА КАРТОЧКУ) ---------- */
 .sss-card-background-icon {
   position: absolute !important;
   bottom: -90px !important;
   right: -90px !important;
   width: 300px !important;
   height: 300px !important;
-  opacity: 0.18 !important;               /* видимая, но не агрессивная */
+  opacity: 0.18 !important;
   pointer-events: none !important;
   z-index: 0 !important;
   color: #C5F946 !important;
   transition: opacity 0.4s ease, transform 0.4s ease !important;
 }
-.sss-card-background-icon svg {
+
+/* УБИРАЕМ width/height из svg — теперь размер задаётся контейнером */
+.sss-card-background-icon :deep(svg) {
   width: 100% !important;
   height: 100% !important;
   stroke: currentColor !important;
-  stroke-width: 1.8 !important;          /* чуть толще для масштаба */
+  stroke-width: 1.8 !important;
 }
 
-/* hover / active */
+/* Hover / Active */
 .sss-step-card:hover .sss-card-background-icon,
 .sss-brand-card.active .sss-card-background-icon {
   opacity: 0.25 !important;
-  transform: translate(10px, -10px) !important;   /* «выдвигается» в угол */
+  transform: translate(15px, -15px) !important;
 }
 
 /* ---------- Текст ---------- */
