@@ -582,12 +582,14 @@ function resetSuggestions(type) {
   isAtInitial[type] = true;
 }
 
+// === ВЫБОР ПОДСКАЗКИ: ПЕРВОЕ СЛОВО — ЗАГЛАВНАЯ ===
 function selectSuggestion(field, suggestion, type) {
-  // Добавляем слово с маленькой буквы
   const text = form[field].trim();
-  const word = suggestion.toLowerCase();
+  const isFirstWord = !text;
+  const word = isFirstWord 
+    ? suggestion.charAt(0).toUpperCase() + suggestion.slice(1).toLowerCase()
+    : suggestion.toLowerCase();
 
-  // Добавляем слово
   form[field] = text ? `${text} ${word}` : word;
 
   if (!selectedSuggestions[type].includes(suggestion)) {
@@ -598,6 +600,7 @@ function selectSuggestion(field, suggestion, type) {
   updateSuggestions(type, suggestion);
 }
 
+// === ОБНОВЛЕНИЕ ПОДСКАЗОК: ПОСЛЕ ТОЧКИ — ЗАГЛАВНАЯ ===
 function updateSuggestions(type, word) {
   const next = suggestions[type][word];
   if (next && next.length > 0) {
@@ -612,6 +615,21 @@ function updateSuggestions(type, word) {
     }
     resetSuggestions(type);
   }
+
+  // СЛЕДУЮЩЕЕ ПРЕДЛОЖЕНИЕ — ПЕРВАЯ ПОДСКАЗКА С ЗАГЛАВНОЙ
+  setTimeout(() => {
+    if (currentSuggestions[type].length > 0) {
+      const first = currentSuggestions[type][0];
+      const isAfterDot = form[
+        type === 'emotions' ? 'emotionalRelease' :
+        type === 'facts' ? 'factualAnalysis' : 'constructiveSuggestions'
+      ].trim().endsWith('.');
+      
+      if (isAfterDot && first === first.toLowerCase()) {
+        currentSuggestions[type][0] = first.charAt(0).toUpperCase() + first.slice(1);
+      }
+    }
+  }, 0);
 }
 
 // === Ротация вопросов ===
