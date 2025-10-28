@@ -191,20 +191,20 @@ const handleToggle = (index) => {
 
 <template>
   <div class="tkt-root">
-    <!-- Мобильный селект сверху -->
+    <!-- Мобильный селект (лаймовый) -->
     <div class="tkt-mobile-select">
-      <select
-        v-model="activeTicket"
-        class="tkt-select"
-      >
-        <option
-          v-for="ticket in tickets"
-          :key="ticket.id"
-          :value="ticket.id"
-        >
-          {{ ticket.title }}
-        </option>
-      </select>
+      <div class="tkt-select-wrapper">
+        <select v-model="activeTicket" class="tkt-select">
+          <option v-for="ticket in tickets" :key="ticket.id" :value="ticket.id">
+            {{ ticket.title }}
+          </option>
+        </select>
+        <span class="tkt-select-arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </span>
+      </div>
     </div>
 
     <!-- Боковая навигация (только десктоп) -->
@@ -229,7 +229,23 @@ const handleToggle = (index) => {
         <!-- Заголовок тикета -->
         <div class="tkt-header">
           <span class="tkt-signal">{{ currentTicket.signal }}</span>
-          <span class="tkt-status">{{ currentTicket.status }}</span>
+          <span class="tkt-status">
+            <template v-if="currentTicket.status.includes('Обработан')">
+              Обработан
+            </template>
+            <template v-else-if="currentTicket.status.includes('Передано')">
+              Передано команде
+            </template>
+            <template v-else-if="currentTicket.status.includes('Чат не запущен')">
+              Чат не запущен
+            </template>
+            <template v-else-if="currentTicket.status.includes('SLA')">
+              SLA нарушен
+            </template>
+            <template v-else>
+              {{ currentTicket.status }}
+            </template>
+          </span>
         </div>
 
         <!-- Краткая сводка -->
@@ -266,7 +282,7 @@ const handleToggle = (index) => {
           </div>
         </div>
 
-        <!-- Раскрывающиеся секции -->
+        <!-- Аккордеоны -->
         <div class="tkt-sections">
           <details
             class="tkt-section"
@@ -276,6 +292,11 @@ const handleToggle = (index) => {
           >
             <summary class="tkt-section-header">
               <h3 class="tkt-section-title">Суть проблемы</h3>
+              <span class="tkt-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </span>
             </summary>
             <div class="tkt-section-content">
               <p>{{ currentTicket.problem }}</p>
@@ -292,6 +313,11 @@ const handleToggle = (index) => {
           >
             <summary class="tkt-section-header">
               <h3 class="tkt-section-title">Эмоциональное состояние</h3>
+              <span class="tkt-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </span>
             </summary>
             <div class="tkt-section-content">
               <p>{{ currentTicket.emotion }}</p>
@@ -308,6 +334,11 @@ const handleToggle = (index) => {
           >
             <summary class="tkt-section-header">
               <h3 class="tkt-section-title">Что обещано гостю</h3>
+              <span class="tkt-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </span>
             </summary>
             <div class="tkt-section-content">
               <ul class="tkt-list tkt-list-check">
@@ -323,6 +354,11 @@ const handleToggle = (index) => {
           >
             <summary class="tkt-section-header">
               <h3 class="tkt-section-title">Рекомендации для команды</h3>
+              <span class="tkt-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </span>
             </summary>
             <div class="tkt-section-content">
               <ol class="tkt-list tkt-list-num">
@@ -349,26 +385,43 @@ const handleToggle = (index) => {
   position: relative;
 }
 
-/* Мобильный селект */
+/* Мобильный селект — лаймовый */
 .tkt-mobile-select {
   display: none;
   padding: 12px 16px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(200, 255, 90, 0.15);
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
+.tkt-select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 .tkt-select {
+  appearance: none;
   width: 100%;
-  padding: 8px 12px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.15);
+  padding: 8px 32px 8px 12px;
+  background: transparent;
+  border: none;
   border-radius: 8px;
-  color: #fff;
+  color: #c8ff5a;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  cursor: pointer;
 }
 .tkt-select:focus {
   outline: none;
-  border-color: #c8ff5a;
+}
+.tkt-select-arrow {
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
+  color: #c8ff5a;
+  transition: transform 0.2s ease;
+}
+.tkt-select:focus + .tkt-select-arrow,
+.tkt-select:active + .tkt-select-arrow {
+  transform: rotate(180deg);
 }
 
 /* Сайдбар */
@@ -384,7 +437,7 @@ const handleToggle = (index) => {
 }
 .tkt-nav-item {
   width: 100%;
-  padding: 12px 16px;
+  padding: 11px 16px;
   border: none;
   background: transparent;
   text-align: left;
@@ -439,7 +492,22 @@ const handleToggle = (index) => {
   font-size: 12px;
   color: rgba(255,255,255,0.6);
   font-weight: 600;
+  display: flex;
+  align-items: center;
 }
+.tkt-status::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+.tkt-status:contains('Обработан')::before { background: #4ade80; }
+.tkt-status:contains('Передано')::before { background: #60a5fa; }
+.tkt-status:contains('Чат не запущен')::before { background: #f87171; }
+.tkt-status:contains('SLA')::before { background: #fb923c; }
 
 /* Сводка */
 .tkt-summary {
@@ -475,11 +543,11 @@ const handleToggle = (index) => {
   line-height: 1.3;
 }
 
-/* Секции */
+/* Аккордеоны — минимальные отступы */
 .tkt-sections {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px; /* минимальный зазор */
 }
 .tkt-section {
   background: rgba(255, 255, 255, 0.03);
@@ -488,11 +556,14 @@ const handleToggle = (index) => {
   overflow: hidden;
   transition: all 0.3s ease;
 }
+.tkt-section + .tkt-section {
+  margin-top: 0;
+}
 .tkt-section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
+  padding: 9px 16px;
   cursor: pointer;
   list-style: none;
   user-select: none;
@@ -500,8 +571,9 @@ const handleToggle = (index) => {
   margin: 0;
 }
 .tkt-section-header::-webkit-details-marker,
-.tkt-section-header::marker {
-  display: none;
+.tkt-section-header::marker,
+.tkt-section-header::after {
+  display: none !important;
 }
 .tkt-section-title {
   margin: 0;
@@ -510,14 +582,7 @@ const handleToggle = (index) => {
   color: #ffffff;
   line-height: 1.3;
 }
-
-/* Убираем дублирующую стрелку от VitePress */
-.tkt-section-header::after {
-  content: none !important;
-}
-
-/* Наша стрелка */
-.tkt-section-header .tkt-arrow {
+.tkt-arrow {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -527,45 +592,41 @@ const handleToggle = (index) => {
   width: 20px;
   height: 20px;
 }
-.tkt-section-header .tkt-arrow svg {
-  width: 18px;
-  height: 18px;
+.tkt-arrow svg {
+  width: 16px;
+  height: 16px;
 }
 .tkt-section[open] .tkt-arrow {
   transform: rotate(180deg);
 }
 
 .tkt-section-content {
-  padding: 8px 16px 12px;
+  padding: 8px 16px 10px;
   color: #ffffff;
   line-height: 1.4;
   font-size: 13px;
 }
-.tkt-section-content > :first-child {
-  margin-top: 0;
-}
-.tkt-section-content > :last-child {
-  margin-bottom: 0;
-}
+.tkt-section-content > :first-child { margin-top: 0; }
+.tkt-section-content > :last-child { margin-bottom: 0; }
 .tkt-section-content p {
-  margin: 0 0 6px;
+  margin: 0 0 5px;
   font-size: 13px;
   line-height: 1.4;
 }
 .tkt-updates {
-  margin-top: 8px;
-  padding-top: 8px;
+  margin-top: 6px;
+  padding-top: 6px;
   border-top: 1px solid rgba(255,255,255,0.06);
 }
 .tkt-updates p {
   font-size: 12px;
   color: rgba(255,255,255,0.75);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   line-height: 1.3;
 }
 .tkt-proposal {
-  margin-top: 8px;
-  padding: 8px 10px;
+  margin-top: 6px;
+  padding: 6px 10px;
   background: rgba(200,255,90,0.06);
   border-left: 3px solid #c8ff5a;
   border-radius: 6px;
@@ -575,7 +636,7 @@ const handleToggle = (index) => {
 }
 .tkt-proposal strong {
   color: #c8ff5a;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* Списки */
@@ -585,16 +646,14 @@ const handleToggle = (index) => {
   list-style: none;
 }
 .tkt-list li {
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   line-height: 1.4;
   color: rgba(255,255,255,0.88);
   font-size: 13px;
   position: relative;
   padding-left: 4px;
 }
-.tkt-list li:last-child {
-  margin-bottom: 0;
-}
+.tkt-list li:last-child { margin-bottom: 0; }
 
 /* Чекмарки */
 .tkt-list-check li::before {
@@ -622,7 +681,7 @@ const handleToggle = (index) => {
   top: 0;
 }
 
-/* Выделение фраз с двоеточием */
+/* Фразы с двоеточием — средняя жирность */
 .tkt-section-content strong {
   font-weight: 600;
 }
@@ -651,12 +710,8 @@ const handleToggle = (index) => {
     align-items: flex-start;
     gap: 4px;
   }
-  .tkt-signal {
-    font-size: 14px;
-  }
-  .tkt-status {
-    font-size: 11px;
-  }
+  .tkt-signal { font-size: 14px; }
+  .tkt-status { font-size: 11px; }
 }
 
 /* Скроллбары */
