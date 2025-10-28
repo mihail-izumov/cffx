@@ -2,41 +2,61 @@
   <div class="sss-slider-wrapper">
     <div class="sss-brands-container" ref="sliderContainer">
       <div
-        class="sss-brand-card sss-step-card"
         v-for="(slide, idx) in slides"
         :key="idx"
+        class="sss-brand-card sss-step-card"
+        :class="{ active: activeSlide === idx }"
         @mouseover="activeSlide = idx"
         @mouseleave="activeSlide = null"
-        :class="{active: activeSlide === idx}"
+        @click="onMoreClick(slide)"
+        tabindex="0"
+        role="button"
       >
+        <!-- Иконка заднего фона -->
+        <div class="sss-card-background-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="16" x="2" y="4" rx="2"/>
+            <path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/>
+          </svg>
+        </div>
+        <!-- Заголовок -->
         <h3 class="sss-title">{{ slide.headline }}</h3>
+        <!-- Акцентная выгода (лаймовый цвет, жирно) -->
         <div class="sss-main-benefit">{{ slide.benefit }}</div>
-        <div class="sss-control-area">
+        <!-- "Ваш контроль" -->
+        <div class="sss-control-block">
           <span class="sss-control-label">Ваш контроль:</span>
           <span
             class="sss-control-highlight"
-            :class="{animated: activeSlide === idx}"
+            :class="{ animated: activeSlide === idx }"
           >{{ slide.control }}</span>
         </div>
+        <!-- Подробности (внизу, приглушённо, меньше) -->
         <div class="sss-description-details">{{ slide.details }}</div>
+        <!-- Кнопка "Узнать больше" -->
         <div class="sss-more-link-area">
-          <a
-            href="#"
+          <span
             class="sss-more-link"
-            :class="{active: activeSlide === idx}"
+            :class="{ active: activeSlide === idx }"
           >
-            Узнать больше
-            <span class="sss-arrow" :class="{move: activeSlide === idx}">→</span>
-          </a>
+            Узнать больше <span class="sss-arrow" :class="{ move: activeSlide === idx }">→</span>
+          </span>
         </div>
       </div>
     </div>
     <div class="sss-nav-buttons">
       <button class="sss-nav-btn sss-nav-prev" @click="scrollPrev" aria-label="Предыдущий слайд">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
       </button>
       <button class="sss-nav-btn sss-nav-next" @click="scrollNext" aria-label="Следующий слайд">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
       </button>
     </div>
   </div>
@@ -94,7 +114,7 @@ const slides = [
     headline: 'Лучше с каждым Сигналом',
     benefit: 'Система непрерывно растёт и одновременно адаптируется к изменениям вашего бизнеса.',
     control: 'Прозрачный процесс на основе данных и вашей обратной связи.',
-    details: 'Все элементы системы — форма, Анна, тикет-система, платформа — постоянно обновляются и улучшаются на основе непрерывной аналитики. Команда Сигнала следит за процессами и результатами, слушает вашу команду и гостей, суммирует опыт и оперативно вносит улучшения. Вы направляете развитие, получаете отчёты об обновлениях и изменениях, команда Сигнала делает систему лучше.' 
+    details: 'Все элементы системы — форма, Анна, тикет-система, платформа — постоянно обновляются и улучшаются на основе непрерывной аналитики. Команда Сигнала следит за процессами и результатами, слушает вашу команду и гостей, суммирует опыт и оперативно вносит улучшения. Вы направляете развитие, получаете отчёты об обновлениях и изменениях, команда Сигнала делает систему лучше.'
   }
 ]
 
@@ -108,6 +128,9 @@ const scrollPrev = () => {
     sliderContainer.value.scrollBy({ left: -336, behavior: 'smooth' })
   }
 }
+const onMoreClick = (slide) => {
+  // Логика перехода к подробной странице или всплывающей информации
+}
 </script>
 
 <style scoped>
@@ -118,32 +141,60 @@ const scrollPrev = () => {
   flex: 0 0 320px;
   border-radius: 12px;
   padding: 48px 24px;
-  display: flex; flex-direction: column; gap: 16px;
-  border-style: solid; border-width: 1px; border-top-width: 4px;
+  display: flex; flex-direction: column;
+  gap: 16px;
+  border-style: solid;
+  border-width: 1px; border-top-width: 4px;
   position: relative; min-height: 360px; overflow: hidden;
-  transition: border-top-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background-color: #4a4a4a; border-color: #555; border-top-color: rgba(197, 249, 70, 0.3);
+  transition: border-top-color 0.4s cubic-bezier(0.4,0,0.2,1),
+              box-shadow 0.3s;
+  background-color: #4a4a4a;
+  border-color: #555; border-top-color: rgba(197,249,70,0.3);
+  outline: none;
+  cursor: pointer;
 }
-.sss-brand-card.active { border-top-color: #C5F946; }
-.sss-title { font-size: 16px; font-weight: 700; color: #fff; }
+.sss-brand-card:focus, .sss-brand-card.active {
+  border-top-color: #C5F946;
+  box-shadow: 0 0 24px 0 rgba(197,249,70,0.13);
+}
+
+.sss-card-background-icon {
+  position: absolute;
+  bottom: -90px;
+  right: -90px;
+  width: 300px; height: 300px;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+}
+.sss-card-background-icon svg {
+  width: 100%; height: 100%; stroke: currentColor;
+}
+.sss-step-card .sss-card-background-icon { color: #fff; }
+
+.sss-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 0; }
 .sss-main-benefit {
   color: #C5F946; font-size: 16px; font-weight: 500; margin-bottom: 0; margin-top: 0;
 }
-.sss-control-area { display: flex; align-items: center; gap: 8px; }
+.sss-control-block { display: flex; align-items: center; gap: 8px; }
 .sss-control-label { color: #fff; font-weight: 700; font-size: 16px; }
 .sss-control-highlight {
   background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197,249,70,0.08) 50%);
-  background-size: 200% 100%; background-position: 100% 0;
-  background-color: rgba(197,249,70,0.08); color: #fff;
-  padding: 1px 5px; border-radius: 1px; transition: background-position 0.4s, color 0.3s;
+  background-size: 200% 100%; background-position: 100% 0; background-color: rgba(197,249,70,0.08);
+  color: #fff; padding: 1px 5px; border-radius: 1px;
+  transition: background-position 0.4s, color 0.3s;
   font-size: 16px; font-weight: 500; line-height: 1.55;
 }
 .sss-control-highlight.animated { background-position: 0 0; color: #1a1a1a; }
+
 .sss-description-details {
-  color: #b0b0b0; font-size: 13px; line-height: 1.6; margin-top: auto;
+  color: #b0b0b0; font-size: 13px; line-height: 1.6;
+  margin-top: auto; margin-bottom: 8px;
 }
+
 .sss-more-link-area {
-  margin-top: 16px;
+  margin-bottom: 2px;
+  margin-top: 8px;
   display: flex; justify-content: flex-start;
 }
 .sss-more-link {
@@ -157,6 +208,7 @@ const scrollPrev = () => {
   margin-left: 2px;
 }
 .sss-arrow.move { transform: translateX(8px); }
+
 .sss-nav-buttons { display: flex; gap: 8px; justify-content: flex-end; margin-right: 0; padding-right: 4px; }
 .sss-nav-btn { width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
 .sss-nav-prev { background-color: #e8e8e8; color: #4a4a4a; }
