@@ -43,8 +43,8 @@
       <div class="sss-brand-card sss-step-card">
         <div class="sss-card-background-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg></div>
         <h3 class="sss-title">ИИ-ассистент Анна</h3>
-        <p class="sss-description-main">Анна — не бот, а безупречный ИИ-ассистент, который ведёт индивидуальный диалог с гостем. Она задаёт уточняющие вопросы, разбирается в эмоциях, предлагает решение и сопровождает до результата — без шаблонов и формальных ответов.
-        Анна работает вместе с оператором и обеспечивает персональный подход к каждому клиенту и к каждой ситуации в строгом соответствии со стандартами компании.</p>
+        <p class="sss-description-main">Анна — не бот, а безупречный ИИ-ассистент, который ведёт индивидуальный диалог с гостем. Задаёт уточняющие вопросы, разбирается в эмоциях, предлагает решение и сопровождает до результата — без шаблонов и формальных ответов.
+        Персональный подход к каждому клиенту и к каждой ситуации.</p>
         <p class="sss-description-secondary"><span class="sss-control-label">Ваш контроль:</span> <span class="sss-control-highlight">Управляете сценариями и стандартами Анны — она действует строго в рамках ваших правил.</span></p>
         <p class="sss-description-goals sss-step-goals">Каждый гость получает заботу и реальное решение, а бизнес — рост лояльности.</p>
       </div>
@@ -68,9 +68,9 @@
       <div class="sss-brand-card sss-step-card">
         <div class="sss-card-background-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg></div>
         <h3 class="sss-title">Лучше с каждым Сигналом</h3>
-        <p class="sss-description-main">Все элементы системы — форма, Анна, тикет-система, платформа — постоянно обновляются и улучшаются на основе непрерывной аналитики. Команда Сигнала следит за процессами и результатами, слушает вашу команду и гостей, суммирует опыт и оперативно вносит улучшения.
-        Вы направляете развитие, получаете отчёты об обновлениях и изменениях, команда Сигнала делает систему лучше.</p>
-        <p class="sss-description-secondary"><span class="sss-control-label">Ваш контроль:</span> <span class="sss-control-highlight">Прозрачный процесс на основе данных и вашей обратной связи.</span></p>
+        <p class="sss-description-main">Все элементы системы — виджет, Анна, тикет-система — постоянно обновляются на основе непрерывной аналитики. Команда Сигнала следит за процессами и результатами, слушает вашу команду и гостей, суммирует опыт и оперативно вносит улучшения.
+        </p>
+        <p class="sss-description-secondary"><span class="sss-control-label">Ваш контроль:</span> <span class="sss-control-highlight">Вы направляете развитие, получаете отчёты об обновлениях и изменениях, команда Сигнала делает систему лучше.</span></p>
         <p class="sss-description-goals sss-step-goals">Система непрерывно растёт и одновременно адаптируется к изменениям вашего бизнеса.</p>
       </div>
     </div>
