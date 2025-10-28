@@ -12,9 +12,9 @@
         tabindex="0"
         role="link"
       >
-        <!-- SVG ВСТРОЕННЫЙ В ШАБЛОН — ГАРАНТИРОВАННО ВИДЕН -->
+        <!-- SVG встроенный — ЯРКИЙ -->
         <div class="sss-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#3a3a3a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#4a4a4a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path v-for="path in slide.paths" :d="path"/>
             <circle v-if="slide.circle" :cx="slide.circle.cx" :cy="slide.circle.cy" :r="slide.circle.r"/>
             <rect v-if="slide.rect" :width="slide.rect.w" :height="slide.rect.h" :x="slide.rect.x" :y="slide.rect.y" :rx="slide.rect.rx" :ry="slide.rect.ry"/>
@@ -195,14 +195,14 @@ const scrollPrev = () => {
 }
 .sss-step-card:hover, .sss-brand-card.active { border-top-color: #C5F946 !important; }
 
-/* ИКОНКИ — ВИДНЫ, ВНУТРИ, БОЛЬШИЕ */
+/* ЯРКИЕ ФОНОВЫЕ ИКОНКИ */
 .sss-card-background-icon {
   position: absolute !important;
   bottom: 16px !important;
   right: 16px !important;
   width: 280px !important;
   height: 280px !important;
-  opacity: 0.045 !important;
+  opacity: 0.12 !important; /* ЯРЧЕ */
   pointer-events: none !important;
   z-index: 0 !important;
   transition: opacity 0.4s ease, transform 0.4s ease !important;
@@ -210,19 +210,19 @@ const scrollPrev = () => {
 .sss-card-background-icon svg {
   width: 100% !important;
   height: 100% !important;
-  stroke: #3a3a3a !important; /* Чуть светлее фона */
+  stroke: #4a4a4a !important; /* СВЕТЛЕЕ ФОНА */
   stroke-width: 1.8 !important;
   fill: none !important;
 }
 
-/* Hover */
+/* АКТИВНОЕ СОСТОЯНИЕ — ЕЩЁ ЯРЧЕ */
 .sss-step-card:hover .sss-card-background-icon,
 .sss-brand-card.active .sss-card-background-icon {
-  opacity: 0.08 !important;
+  opacity: 0.22 !important;
   transform: scale(1.03) !important;
 }
 
-/* Текст */
+/* Остальные стили без изменений */
 .sss-title { font-size: 24px !important; line-height: 1.22 !important; margin: 0 !important; font-weight: 700 !important; color: #ffffff !important; position: relative !important; z-index: 1 !important; }
 .sss-step-goals { color: #C5F946 !important; font-size: 16px !important; font-weight: 500 !important; line-height: 1.65 !important; margin: 0 !important; position: relative !important; z-index: 1 !important; }
 .sss-description-secondary { color: #b0b0b0 !important; font-size: 16px !important; line-height: 1.6 !important; margin: 0 !important; flex-grow: 1 !important; position: relative !important; z-index: 1 !important; }
