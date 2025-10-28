@@ -34,6 +34,12 @@ description: Где Начинается Ваш Бизнес
 
 </div>
 
+## Тикеты в Телеграм
+
+<TicketsExamples />
+
+## Базовый функционал
+
 <TicketsAccordion />
 
 <style>
