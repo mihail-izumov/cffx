@@ -131,34 +131,34 @@ const scrollPrev = () => {
   min-height: 360px !important;
   overflow: hidden !important;
   transition: border-top-color 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  background-color: #4a4a4a !important;
-  border-color: #555 !important;
-  border-top-color: rgba(197, 249, 70, 0.3) !important;
+  background-color: #232323 !important;
+  border-color: #333 !important;
+  border-top-color: rgba(197, 249, 70, 0.28) !important;
   text-decoration: none !important;
   cursor: pointer !important;
 }
 .sss-step-card:hover, .sss-brand-card.active {
   border-top-color: #C5F946 !important;
 }
-.sss-card-background-icon { position: absolute !important; bottom: -90px !important; right: -90px !important; width: 300px !important; height: 300px !important; opacity: 0.04 !important; pointer-events: none !important; z-index: 0 !important;}
+.sss-card-background-icon { position: absolute !important; bottom: -90px !important; right: -90px !important; width: 300px !important; height: 300px !important; opacity: 0.045 !important; pointer-events: none !important; z-index: 0 !important;}
 .sss-card-background-icon svg { width: 100% !important; height: 100% !important; stroke: currentColor !important;}
-.sss-step-card .sss-card-background-icon { color: #ffffff !important;}
-.sss-title { font-size: 28px !important; line-height: 1.2 !important; margin: 0 !important; font-weight: 700 !important; border: none !important; padding: 0 !important; color: #ffffff !important; position: relative !important; z-index: 1 !important;}
+.sss-step-card .sss-card-background-icon { color: #fff !important;}
+.sss-title { font-size: 24px !important; line-height: 1.22 !important; margin: 0 !important; font-weight: 700 !important; border: none !important; padding: 0 !important; color: #ffffff !important; position: relative !important; z-index: 1 !important;}
 .sss-step-goals { color: #C5F946 !important; font-size: 16px !important; font-weight: 500 !important; line-height: 1.65 !important; margin: 0 !important; position: relative !important; z-index: 1 !important; }
 .sss-description-secondary { color: #b0b0b0 !important; font-size: 16px !important; line-height: 1.6 !important; margin: 0 !important; flex-grow: 1 !important; position: relative !important; z-index: 1 !important;}
 .sss-control-label { color: #ffffff !important; font-weight: 700 !important; font-size: 16px !important; }
 .sss-control-highlight { background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.08) 50%) !important; background-size: 200% 100% !important; background-position: 100% 0 !important; background-color: rgba(197, 249, 70, 0.08) !important; color: #ffffff !important; padding: 1px 5px !important; margin: 0 !important; border-radius: 1px !important; transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important; position: relative !important; display: inline !important; z-index: 1 !important; box-decoration-break: clone !important; -webkit-box-decoration-break: clone !important; line-height: 1.5 !important; vertical-align: baseline !important; font-size: 16px !important;}
 .sss-step-card:hover .sss-control-highlight, .sss-brand-card.active .sss-control-highlight { background-position: 0 0 !important; color: #1a1a1a !important;}
-.sss-description-main { color: #e0e0e0 !important; font-size: 16px !important; font-weight: 400 !important; line-height: 1.65 !important; margin: 0 !important; position: relative !important; z-index: 1 !important;}
-.sss-more-link-area { margin-top: 16px; margin-bottom: 4px; }
+.sss-description-main { color: #b0b0b0 !important; font-size: 13px !important; line-height: 1.62 !important; margin-top: auto !important; margin-bottom: 9px !important; position: relative !important; z-index: 1 !important;}
+.sss-more-link-area { margin-top: 16px !important; margin-bottom: 4px !important;}
 .sss-more-link { font-size: 15px !important; color: #b0b0b0 !important; font-weight: 500 !important; background: none !important; cursor: pointer !important; text-decoration: none !important; display: flex !important; align-items: center !important; gap: 6px !important; transition: color 0.3s !important;}
 .sss-more-link:hover, .sss-brand-card.active .sss-more-link { color: #C5F946 !important;}
 .sss-arrow { font-size: 19px !important; margin-left: 2px !important; transition: transform 0.25s !important;}
 .sss-brand-card.active .sss-arrow, .sss-more-link:hover .sss-arrow { transform: translateX(9px) !important;}
 .sss-nav-buttons { display: flex !important; gap: 8px !important; justify-content: flex-end !important; margin-right: 0 !important; padding-right: 4px !important;}
 .sss-nav-btn { width: 40px !important; height: 40px !important; border-radius: 50% !important; border: none !important; cursor: pointer !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: all 0.3s ease !important; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;}
-.sss-nav-prev { background-color: #e8e8e8 !important; color: #4a4a4a !important;}
+.sss-nav-prev { background-color: #e8e8e8 !important; color: #232323 !important;}
 .sss-nav-prev:hover { background-color: #d0d0d0 !important; transform: scale(1.05) !important;}
-.sss-nav-next { background-color: #ffffff !important; color: #2a2a2a !important;}
+.sss-nav-next { background-color: #ffffff !important; color: #232323 !important;}
 .sss-nav-next:hover { background-color: #f5f5f5 !important; transform: scale(1.05) !important;}
 </style>
