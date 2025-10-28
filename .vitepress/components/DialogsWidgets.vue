@@ -2,7 +2,7 @@
   <div class="essential-apps">
     <div class="header">
       <div class="actions">
-        <a href="https://example.com" class="btn-create">
+        <a href="/pro/customize" class="btn-create">
           Настроить Свой Сигнал
           <span class="icon-circle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -11,7 +11,7 @@
             </svg>
           </span>
         </a>
-        <a href="https://example.com" class="btn-see-all">
+        <a href="/pro/specs" class="btn-see-all">
           Спецификации и цены
           <span class="icon-circle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -26,9 +26,9 @@
     <div class="apps-grid">
       <div class="app-card">
         <div class="card-header">
-          <span class="app-name">РЕСТОРАНЫ/КОФЕЙНИ</span>
+          <span class="app-name">ОБЩЕПИТ</span>
           <div class="like-info">
-            <span class="like-count">[840]</span>
+            <span class="like-count">[Корж]</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
             </svg>
@@ -42,7 +42,7 @@
         </div>
         <p class="card-description">Не говорим вам, как варить кофе.</p>
         <div class="card-footer">
-          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Сигнал в Корж</a>
+          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Тест-драйв</a>
         </div>
       </div>
 
@@ -50,7 +50,7 @@
         <div class="card-header">
           <span class="app-name">ФИТНЕС</span>
           <div class="like-info">
-            <span class="like-count">[612]</span>
+            <span class="like-count">[Демо]</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
             </svg>
