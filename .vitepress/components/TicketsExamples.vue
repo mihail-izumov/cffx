@@ -2,85 +2,174 @@
 import { ref, computed } from 'vue'
 
 const activeTicket = ref('negative-1')
-const isMobile = ref(false)
-
 const tickets = [
   {
     id: 'negative-1',
     title: 'Негативный опыт',
     signal: 'СИГНАЛ 654-867',
-    status: '✅ Обработан',
+    status: 'Обработан',
     date: '09.10.2025 16:00',
     location: 'Космическая, Пензенская 101',
     guest: 'Татьяна',
     contact: '@username',
     sla: '4 часа (дедлайн: 20:00)',
     compensation: 'Извинения + Сертификат 500₽',
-    problem: [
-      'Гостья посетила кофейню и столкнулась с долгим ожиданием при пустой кофейне. Видя отсутствие других посетителей, ситуация вызвала недоумение и расстройство.',
-      { label: 'Тип сигнала:', value: 'КОМПЕНСИРУЕМЫЙ' },
-      { label: 'Категория:', value: 'А (негативный опыт обслуживания — долгое ожидание при низкой загрузке)' },
-      { label: 'UPD (09.10.2025 16:12):', value: 'Получены уточнения от гостя...' }
+    problem: 'Гостья посетила кофейню и столкнулась с долгим ожиданием при пустой кофейне. Видя отсутствие других посетителей, ситуация вызвала недоумение и расстройство.',
+    updates: [
+      'UPD 09.10.2025 16:12 — Получены уточнения от гостя:',
+      '• Время визита: 09.10.2025 около 14:00',
+      '• Длительность ожидания: 10-15 минут',
+      '• Заказ: латте среднего объема и пончик',
+      '• Обращение к персоналу: не обращалась'
     ],
-    emotion: [
-      'Умеренное волнение. Гостья расстроена долгим ожиданием в пустой кофейне, но конструктивна — предлагает решение в виде обучения персонала.',
-      { label: 'Предложение гостя:', value: 'Обучение персонала' }
-    ],
+    emotion: 'Умеренное волнение. Гостья расстроена долгим ожиданием в пустой кофейне, но конструктивна — предлагает решение в виде обучения персонала.',
+    guestProposal: 'Обучение персонала',
     promised: [
       'Информация передана управляющему для разбора ситуации',
       'Гостю сообщат результат после получения ответа от управляющего',
       'Предложение по обучению персонала включено в отчёт'
     ],
     actions: [
-      'Связаться с Татьяной и принести искренние извинения за ожидание',
+      'Связаться с Татьяной и принести искренние извинения за ожидание 10-15 минут в пустой кофейне',
       'Предложить компенсацию (сертификат 500₽ по категории А)',
-      'Провести разбор с персоналом',
-      'Выяснить, кто был на смене',
-      'Проверить распределение зон ответственности',
-      'Усилить контроль за временем обслуживания',
-      'Проверить процесс встречи гостей при входе',
-      'Рассмотреть предложение по обучению персонала',
-      'Тон ответа: искренние извинения + благодарность'
+      'Провести разбор с персоналом: почему 09.10 около 14:00 в пустой кофейне гость ждал 10-15 минут латте и пончик',
+      'Выяснить, кто был на смене в это время и почему не обслужил гостя оперативно',
+      'Проверить распределение зон ответственности между сотрудниками в дневное время',
+      'Усилить контроль за временем обслуживания, особенно в периоды низкой загрузки',
+      'Проверить, есть ли процесс встречи гостей при входе (особенно когда зал пустой)',
+      'Рассмотреть предложение гостя по обучению персонала — возможно, есть пробелы в стандартах работы или внимательности к гостям',
+      'Тон ответа: искренние извинения + благодарность за обратную связь + акцент на важности каждого визита для улучшения сервиса'
+    ]
+  },
+  {
+    id: 'educational',
+    title: 'Образовательный',
+    signal: 'СИГНАЛ 876-456',
+    status: 'Передано команде',
+    date: '21.10.2025 17:13',
+    location: 'Космическая, Самарская 101',
+    guest: 'Елена',
+    contact: '@username',
+    sla: 'Не применимо',
+    compensation: 'Не требуется',
+    problem: 'Гость сообщил, что кофе был слишком горячим.',
+    updates: [
+      'Тип сигнала: ОБРАЗОВАТЕЛЬНЫЙ',
+      'Категория: Не применимо (образовательный момент)',
+      'Компенсация НЕ требуется: ситуация не относится к категории Б'
+    ],
+    emotion: 'Спокойный (конструктивная обратная связь).',
+    guestProposal: 'Информирование о возможности настройки температуры',
+    promised: [
+      'Чат запущен',
+      'Ответ Анны отправлен через оператора: гостю объяснена возможность попросить лёд или охлаждение напитка',
+      'Запрошено уточнение даты и времени визита для передачи обратной связи команде кофейни'
+    ],
+    actions: [
+      'Провести инструктаж с командой бариста о важности проактивного предложения льда или охлаждения напитка гостям',
+      'Рассмотреть возможность добавления информации о настройке температуры напитков в меню или на стойке',
+      'Передать команде обратную связь: гость не был осведомлён о возможности скорректировать температуру'
+    ]
+  },
+  {
+    id: 'chat-not-started',
+    title: 'Чат не запущен',
+    signal: 'СИГНАЛ 787-294',
+    status: 'Чат не запущен',
+    date: '09.10.2025 19:04',
+    location: 'Космическая, Самарская 101',
+    guest: 'Лиза',
+    contact: '@username',
+    sla: '2 часа',
+    compensation: 'Сертификат 500₽',
+    problem: 'Гостю не доложили один сырник в заказе. Расстроена.',
+    updates: [
+      'Категория: Б (Существенная)',
+      'Эмоциональное состояние: Разочарование/расстройство',
+      'Важно: Так как чат Telegram не запущен гостем, прямой ответ невозможен'
+    ],
+    emotion: 'Разочарование/расстройство',
+    guestProposal: 'Контроль комплектности заказов',
+    promised: [
+      'Компенсацию можно предложить при следующем визите',
+      'Альтернативный канал связи при возможности'
+    ],
+    actions: [
+      'Уточнить количество: сколько сырников было заказано и сколько получено',
+      'Уточнить время визита',
+      'Выяснить, обращался ли гость к персоналу на месте',
+      'Разобрать ситуацию с бариста/поваром',
+      'Усилить контроль качества при сборке заказов',
+      'Проверить комплектность блюд перед выдачей'
+    ]
+  },
+  {
+    id: 'quality-violation',
+    title: 'Нарушение качества',
+    signal: 'СИГНАЛ 476-102',
+    status: 'SLA нарушен',
+    date: '21.10.2025 10:56',
+    location: 'Космическая, Тверская 101',
+    guest: 'Ольга',
+    contact: '@username',
+    sla: '2 часа (дедлайн: 12:56) — НАРУШЕН',
+    compensation: 'Сертификат 1000₽',
+    problem: 'Гостья получила черствую выпечку. Выразила удивление таким сервисом, отметив, что столкнулась с подобным впервые.',
+    updates: [
+      'Тип сигнала: КОМПЕНСИРУЕМЫЙ',
+      'Категория: Б (нарушение качества продукта)',
+      'Время реакции: 2 часа 30 минут от первого обращения',
+      'Гость не ответил на запрос уточнений'
+    ],
+    emotion: 'Разочарованный (мягкий негатив, без агрессии)',
+    guestProposal: 'Контроль качества и свежести продуктов',
+    promised: [
+      'Выражена эмпатия, признание недопустимости ситуации',
+      'Запрошены уточнения о дате и времени визита',
+      'Обещано связаться после получения ответа от директ-менеджера',
+      'Уведомление о начале проверки директ-менеджером'
+    ],
+    actions: [
+      'Провести проверку контроля свежести выпечки в кофейне',
+      'Проверить процедуры ротации выпечки и списания несвежих позиций',
+      'Рассмотреть компенсацию: сертификат 1000₽ (категория Б — нарушение качества продукта)'
     ]
   },
   {
     id: 'order-error',
     title: 'Ошибка в заказе',
     signal: 'СИГНАЛ 971-484',
-    status: '✅ Компенсация выдана',
+    status: 'Компенсация выдана',
     date: '27.10.2025 12:49',
     location: 'Космическая, Самарская 101',
     guest: 'Мария',
     contact: '@username',
     sla: '4 часа (дедлайн: 16:49)',
     compensation: 'Сертификат 500₽ (№75303)',
-    problem: [
-      'Гость расстроена из-за ошибки в заказе. Обратилась 27 октября 2025 года в 12:49. Детали уточняются: дата и время заказа, характер ошибки, формат заказа.',
-      { label: 'Тип сигнала:', value: 'КОМПЕНСИРУЕМЫЙ' },
-      { label: 'Категория:', value: 'А (Операционная ошибка — ошибка в заказе)' },
-      { label: 'UPD (27.10.2025 16:35):', value: 'Выдан сертификат №75303 номиналом 500₽' },
+    problem: 'Гость расстроена из-за ошибки в заказе. Обратилась 27 октября 2025 года в 12:49. Детали уточняются у гостя: точная дата и время заказа, характер ошибки (что именно было не так), формат заказа (на месте/с собой).',
+    updates: [
+      'Тип сигнала: КОМПЕНСИРУЕМЫЙ',
+      'Категория: А (Операционная ошибка — ошибка в заказе)',
+      'UPD (27.10.2025 16:35): Выдан сертификат №75303 номиналом 500₽',
       'Финальное сообщение отправлено гостю'
     ],
-    emotion: [
-      'Расстроена (разочарована) — требуется проявление эмпатии и действия для восстановления доверия',
-      { label: 'Предложение гостя:', value: 'Исключить повторение ошибок в заказах' }
-    ],
+    emotion: 'Расстроена (разочарована) — требуется проявление эмпатии и конкретные действия для восстановления доверия',
+    guestProposal: 'Исключить повторение ошибок в заказах',
     promised: [
       'Отправлено приветствие с благодарностью за обратную связь',
-      'Выражена эмпатия',
-      'Заданы уточняющие вопросы',
+      'Выражена эмпатия и признание недопустимости ситуации',
+      'Заданы уточняющие вопросы о деталях',
       'Отправлен сертификат 500₽ (№75303)',
-      'Сообщены условия использования',
-      'Запрос о факте использования сертификата через 3 дня'
+      'Сообщены условия использования: в любой кофейне «Космическая», без ограничений по сроку',
+      'Через 3 дня (30.10.2025) будет сделан запрос о факте использования сертификата'
     ],
     actions: [
-      'Провести внутреннее расследование: выяснить обстоятельства ошибки',
+      'Провести внутреннее расследование: выяснить обстоятельства ошибки, причины и ответственных',
       'Связаться с гостем по Telegram для уточнения деталей',
       'Принять меры для исключения повторения ситуации',
       'Контроль использования сертификата №75303'
     ]
   }
-  // Другие тикеты добавь по аналогии
 ]
 
 const currentTicket = computed(() =>
@@ -98,26 +187,28 @@ const handleToggle = (index) => {
     })
   }
 }
-
-// Мобильный детект (можно улучшить)
-if (typeof window !== 'undefined') {
-  isMobile.value = window.innerWidth <= 768
-  window.addEventListener('resize', () => {
-    isMobile.value = window.innerWidth <= 768
-  })
-}
 </script>
 
 <template>
   <div class="tkt-root">
-    <!-- Моб. версия: выпадающий список -->
-    <div v-if="isMobile" class="tkt-dropdown-mobile">
-      <select v-model="activeTicket" class="tkt-select-mobile">
-        <option v-for="ticket in tickets" :key="ticket.id" :value="ticket.id">{{ ticket.title }}</option>
+    <!-- Мобильный селект сверху -->
+    <div class="tkt-mobile-select">
+      <select
+        v-model="activeTicket"
+        class="tkt-select"
+      >
+        <option
+          v-for="ticket in tickets"
+          :key="ticket.id"
+          :value="ticket.id"
+        >
+          {{ ticket.title }}
+        </option>
       </select>
     </div>
-    <!-- Десктоп навигация -->
-    <div v-else class="tkt-sidebar">
+
+    <!-- Боковая навигация (только десктоп) -->
+    <div class="tkt-sidebar">
       <nav class="tkt-nav" role="tablist">
         <button
           v-for="ticket in tickets"
@@ -132,10 +223,10 @@ if (typeof window !== 'undefined') {
       </nav>
     </div>
 
-    <!-- Контент -->
+    <!-- Основной контент -->
     <div class="tkt-content" role="tabpanel">
       <div v-if="currentTicket" class="tkt-details">
-        <!-- Заголовок -->
+        <!-- Заголовок тикета -->
         <div class="tkt-header">
           <span class="tkt-signal">{{ currentTicket.signal }}</span>
           <span class="tkt-status">{{ currentTicket.status }}</span>
@@ -175,9 +266,8 @@ if (typeof window !== 'undefined') {
           </div>
         </div>
 
-        <!-- Аккордеоны -->
+        <!-- Раскрывающиеся секции -->
         <div class="tkt-sections">
-          <!-- Суть проблемы -->
           <details
             class="tkt-section"
             :ref="el => { if (el) detailsRefs[0] = el }"
@@ -185,83 +275,57 @@ if (typeof window !== 'undefined') {
             open
           >
             <summary class="tkt-section-header">
-              <span class="tkt-section-title">Суть проблемы</span>
-              <span class="tkt-arrow">
-                <svg width="20" height="20" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-              </span>
+              <h3 class="tkt-section-title">Суть проблемы</h3>
             </summary>
             <div class="tkt-section-content">
-              <template v-for="item in currentTicket.problem">
-                <p v-if="typeof item === 'string'" class="tkt-p">
-                  {{ item }}
-                </p>
-                <p v-else class="tkt-p">
-                  <span class="tkt-em-label">{{ item.label }}</span>
-                  {{ item.value }}
-                </p>
-              </template>
+              <p>{{ currentTicket.problem }}</p>
+              <div v-if="currentTicket.updates" class="tkt-updates">
+                <p v-for="(update, idx) in currentTicket.updates" :key="idx">{{ update }}</p>
+              </div>
             </div>
           </details>
 
-          <!-- Эмоциональное состояние -->
           <details
             class="tkt-section"
             :ref="el => { if (el) detailsRefs[1] = el }"
             @toggle="handleToggle(1)"
           >
             <summary class="tkt-section-header">
-              <span class="tkt-section-title">Эмоциональное состояние</span>
-              <span class="tkt-arrow">
-                <svg width="20" height="20" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-              </span>
+              <h3 class="tkt-section-title">Эмоциональное состояние</h3>
             </summary>
             <div class="tkt-section-content">
-              <template v-for="item in currentTicket.emotion">
-                <p v-if="typeof item === 'string'" class="tkt-p">{{ item }}</p>
-                <p v-else class="tkt-p">
-                  <span class="tkt-em-label">{{ item.label }}</span>
-                  {{ item.value }}
-                </p>
-              </template>
+              <p>{{ currentTicket.emotion }}</p>
+              <div class="tkt-proposal">
+                <strong>Предложение гостя:</strong> {{ currentTicket.guestProposal }}
+              </div>
             </div>
           </details>
 
-          <!-- Что обещано гостю -->
           <details
             class="tkt-section"
             :ref="el => { if (el) detailsRefs[2] = el }"
             @toggle="handleToggle(2)"
           >
             <summary class="tkt-section-header">
-              <span class="tkt-section-title">Что обещано гостю</span>
-              <span class="tkt-arrow">
-                <svg width="20" height="20" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-              </span>
+              <h3 class="tkt-section-title">Что обещано гостю</h3>
             </summary>
             <div class="tkt-section-content">
-              <ul class="tkt-list checker" v-if="!isMobile">
-                <li v-for="item in currentTicket.promised" class="tkt-list-chek">{{ item }}</li>
-              </ul>
-              <ul class="tkt-list dot" v-if="isMobile">
-                <li v-for="item in currentTicket.promised">{{ item }}</li>
+              <ul class="tkt-list tkt-list-check">
+                <li v-for="(item, idx) in currentTicket.promised" :key="idx">{{ item }}</li>
               </ul>
             </div>
           </details>
 
-          <!-- Рекомендации для команды -->
           <details
             class="tkt-section"
             :ref="el => { if (el) detailsRefs[3] = el }"
             @toggle="handleToggle(3)"
           >
             <summary class="tkt-section-header">
-              <span class="tkt-section-title">Рекомендации для команды</span>
-              <span class="tkt-arrow">
-                <svg width="20" height="20" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-              </span>
+              <h3 class="tkt-section-title">Рекомендации для команды</h3>
             </summary>
             <div class="tkt-section-content">
-              <ol class="tkt-list numbered">
+              <ol class="tkt-list tkt-list-num">
                 <li v-for="(action, idx) in currentTicket.actions" :key="idx">{{ action }}</li>
               </ol>
             </div>
@@ -282,65 +346,335 @@ if (typeof window !== 'undefined') {
   overflow: hidden;
   background: rgba(255,255,255,0.02);
   margin: 24px 0;
+  position: relative;
 }
 
-.tkt-sidebar { background: rgba(255,255,255,0.03); border-right: 1px solid rgba(255,255,255,0.08); overflow-y: auto; max-height: 600px; }
-.tkt-nav { padding: 0; margin: 0; }
-.tkt-nav-item { width: 100%; padding: 12px 14px; border: none; background: transparent; text-align: left; cursor: pointer; transition: all 0.2s; display: block; border-left: 3px solid transparent; font-size: 14px; font-weight: 500; }
-.tkt-nav-item:hover { background: rgba(255,255,255,0.06); }
-.tkt-nav-item.active { background: rgba(200,255,90,0.08); border-left-color: #c8ff5a; }
-.tkt-title { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.92); display: block; line-height: 1.3; }
-.tkt-nav-item.active .tkt-title { color: #c8ff5a; }
+/* Мобильный селект */
+.tkt-mobile-select {
+  display: none;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.tkt-select {
+  width: 100%;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+.tkt-select:focus {
+  outline: none;
+  border-color: #c8ff5a;
+}
 
-.tkt-dropdown-mobile { width: 100%; padding: 12px 10px 8px 10px; background: rgba(255,255,255,0.03); }
-.tkt-select-mobile { width: 100%; padding: 9px 12px; font-size: 15px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #fff; font-weight: 500; }
+/* Сайдбар */
+.tkt-sidebar {
+  background: rgba(255,255,255,0.03);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  overflow-y: auto;
+  max-height: 600px;
+}
+.tkt-nav {
+  padding: 0;
+  margin: 0;
+}
+.tkt-nav-item {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: block;
+  border-left: 3px solid transparent;
+  font-size: 14px;
+}
+.tkt-nav-item:hover {
+  background: rgba(255,255,255,0.06);
+}
+.tkt-nav-item.active {
+  background: rgba(200,255,90,0.08);
+  border-left-color: #c8ff5a;
+}
+.tkt-title {
+  font-weight: 600;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.3;
+}
+.tkt-nav-item.active .tkt-title {
+  color: #c8ff5a;
+}
 
-.tkt-content { padding: 16px; overflow-y: auto; max-height: 600px; }
-.tkt-details { display: flex; flex-direction: column; gap: 12px; }
+/* Контент */
+.tkt-content {
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 600px;
+}
+.tkt-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.tkt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.tkt-signal {
+  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: #c8ff5a;
+  letter-spacing: 0.02em;
+}
+.tkt-status {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 600;
+}
 
-.tkt-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-.tkt-signal { font-family: 'SF Mono', Monaco, 'Courier New', monospace; font-size: 15px; font-weight: 700; color: #c8ff5a; letter-spacing: 0.02em; }
-.tkt-status { font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 600; }
+/* Сводка */
+.tkt-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+}
+.tkt-summary-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.tkt-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tkt-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.tkt-value {
+  font-size: 13px;
+  color: rgba(255,255,255,0.92);
+  font-weight: 500;
+  line-height: 1.3;
+}
 
-.tkt-summary { display: flex; flex-direction: column; gap: 5px; padding: 12px; background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.075); border-radius: 10px; margin-bottom: 0; }
-.tkt-summary-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.tkt-summary-item { display: flex; flex-direction: column; gap: 2px; }
-.tkt-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.41); text-transform: uppercase; letter-spacing: 0.05em; }
-.tkt-value { font-size: 13.5px; color: rgba(255,255,255,0.92); font-weight: 500; line-height: 1.3; }
+/* Секции */
+.tkt-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tkt-section {
+  background: rgba(255, 255, 255, 0.03);
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.tkt-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  background: transparent;
+  margin: 0;
+}
+.tkt-section-header::-webkit-details-marker,
+.tkt-section-header::marker {
+  display: none;
+}
+.tkt-section-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.3;
+}
 
-.tkt-sections { display: flex; flex-direction: column; gap: 6px; }
+/* Убираем дублирующую стрелку от VitePress */
+.tkt-section-header::after {
+  content: none !important;
+}
 
-.tkt-section { background: rgba(255,255,255,0.03); border: none; border-radius: 12px; overflow: hidden; transition: all 0.4s; }
-.tkt-section-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 18px; cursor: pointer; list-style: none; user-select: none; background: transparent; margin: 0; }
-.tkt-section-title { font-size: 15px; font-weight: 600; color: #ffffff; }
-.tkt-arrow { display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.4s; color: #9ca3af; }
-.tkt-arrow svg { width: 18px; height: 18px; }
-.tkt-section[open] .tkt-arrow { transform: rotate(180deg); }
-.tkt-section-content { padding: 10px 18px 6px 18px; color: #fff; line-height: 1.45; margin-top: 6px; }
+/* Наша стрелка */
+.tkt-section-header .tkt-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  color: #9ca3af;
+  width: 20px;
+  height: 20px;
+}
+.tkt-section-header .tkt-arrow svg {
+  width: 18px;
+  height: 18px;
+}
+.tkt-section[open] .tkt-arrow {
+  transform: rotate(180deg);
+}
 
-.tkt-p { margin: 0 0 3px !important; font-size: 13.5px; color: #fff; line-height: 1.45; }
-.tkt-em-label { font-weight: 500; color: #c8ff5a; margin-right: 5px; }
-.tkt-proposal { margin-top: 11px; padding: 8px 10px; background: rgba(200,255,90,0.07); border-left: 3px solid #c8ff5a; border-radius: 6px; font-size: 13px; color: rgba(255,255,255,0.88); }
+.tkt-section-content {
+  padding: 8px 16px 12px;
+  color: #ffffff;
+  line-height: 1.4;
+  font-size: 13px;
+}
+.tkt-section-content > :first-child {
+  margin-top: 0;
+}
+.tkt-section-content > :last-child {
+  margin-bottom: 0;
+}
+.tkt-section-content p {
+  margin: 0 0 6px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.tkt-updates {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.tkt-updates p {
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.tkt-proposal {
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(200,255,90,0.06);
+  border-left: 3px solid #c8ff5a;
+  border-radius: 6px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.3;
+}
+.tkt-proposal strong {
+  color: #c8ff5a;
+  font-weight: 700;
+}
 
-.tkt-list { margin: 0; list-style-position: outside; padding-left: 22px; }
-.tkt-list.dot li { list-style-type: disc; font-size: 13px; margin-bottom: 3px; }
-.tkt-list.numbered li { list-style-type: decimal; font-size: 13px; margin-bottom: 3px; }
+/* Списки */
+.tkt-list {
+  margin: 0;
+  padding-left: 16px;
+  list-style: none;
+}
+.tkt-list li {
+  margin-bottom: 4px;
+  line-height: 1.4;
+  color: rgba(255,255,255,0.88);
+  font-size: 13px;
+  position: relative;
+  padding-left: 4px;
+}
+.tkt-list li:last-child {
+  margin-bottom: 0;
+}
 
-.tkt-list.checker { list-style: none; padding: 0; }
-.tkt-list-chek { font-size: 13px; color: #fff; margin-bottom: 3px; position: relative; padding-left: 18px; }
-.tkt-list-chek:before { content: ''; display: inline-block; position: absolute; left: 0; top: 3px; width: 10px; height: 10px; background: #c8ff5a; border-radius: 50%; }
+/* Чекмарки */
+.tkt-list-check li::before {
+  content: '✓';
+  color: #c8ff5a;
+  font-weight: bold;
+  position: absolute;
+  left: -16px;
+  top: 0;
+}
 
-.tkt-list-dot { margin-bottom: 0; }
+/* Нумерация */
+.tkt-list-num {
+  counter-reset: num;
+}
+.tkt-list-num li {
+  counter-increment: num;
+}
+.tkt-list-num li::before {
+  content: counter(num) '.';
+  color: rgba(255,255,255,0.6);
+  font-weight: 600;
+  position: absolute;
+  left: -16px;
+  top: 0;
+}
 
+/* Выделение фраз с двоеточием */
+.tkt-section-content strong {
+  font-weight: 600;
+}
+
+/* Мобильная версия */
 @media (max-width: 768px) {
-  .tkt-root { grid-template-columns: 1fr; }
-  .tkt-sidebar { display: none; }
-  .tkt-content { max-height: none; padding: 10px; }
-  .tkt-summary-row { grid-template-columns: 1fr; gap: 5px; }
-  .tkt-section-header { font-size: 14px; padding: 14px 12px; }
-  .tkt-section-content { padding: 8px 11px 4px 11px; font-size: 13px; }
+  .tkt-root {
+    grid-template-columns: 1fr;
+  }
+  .tkt-mobile-select {
+    display: block;
+  }
+  .tkt-sidebar {
+    display: none;
+  }
+  .tkt-content {
+    max-height: none;
+    padding: 16px;
+  }
+  .tkt-summary-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .tkt-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .tkt-signal {
+    font-size: 14px;
+  }
+  .tkt-status {
+    font-size: 11px;
+  }
 }
 
-/* Видимая стрелка только справа, без повторов */
-.tkt-section-header::marker, .tkt-section-header::-webkit-details-marker { display: none; }
+/* Скроллбары */
+.tkt-sidebar::-webkit-scrollbar,
+.tkt-content::-webkit-scrollbar {
+  width: 6px;
+}
+.tkt-sidebar::-webkit-scrollbar-track,
+.tkt-content::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.02);
+}
+.tkt-sidebar::-webkit-scrollbar-thumb,
+.tkt-content::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+}
+.tkt-sidebar::-webkit-scrollbar-thumb:hover,
+.tkt-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.15);
+}
 </style>
