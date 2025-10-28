@@ -34,7 +34,7 @@ notification: brew
 
 <DialogsWidgets />
 
-## Сервис лучше с каждым Сигналом.
+## С каждым Сигналом.
 
 <SignalSuperSpecsSlider />
 
