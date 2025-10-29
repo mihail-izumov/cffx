@@ -9,11 +9,14 @@
         </svg>
       </button>
     </transition>
-    <!-- Десктоп: основной flex-контейнер -->
     <div class="content-wrapper">
+      <!-- Зарезервированное место и стрелки, прижатые влево -->
       <div class="nav-placeholder">
         <transition name="slide-in">
-          <div v-if="activeIndex !== null" class="nav-arrows">
+          <div 
+            v-if="activeIndex !== null" 
+            class="nav-arrows"
+          >
             <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
@@ -23,14 +26,16 @@
           </div>
         </transition>
       </div>
+      <!-- Список элементов -->
       <div class="feature-list">
-        <div
-          v-for="(item, index) in items"
-          :key="item.id"
+        <div 
+          v-for="(item, index) in items" 
+          :key="item.id" 
           class="feature-item-wrapper"
           ref="itemRefs"
         >
           <transition name="item-swap" mode="out-in">
+            <!-- Кнопка-пилюля -->
             <button
               v-if="activeIndex !== index"
               class="pill-button"
@@ -41,20 +46,26 @@
               </div>
               <span class="pill-title">{{ item.title }}</span>
             </button>
-            <div v-else class="content-box" v-html="item.content"></div>
+            <!-- Блок с контентом -->
+            <div
+              v-else
+              class="content-box"
+              v-html="item.content"
+            >
+            </div>
           </transition>
         </div>
       </div>
-      <!-- Десктоп: чашка fixed справа -->
-      <div class="cup-image" aria-hidden="true"></div>
+      <!-- Десктоп: чашка справа, абсолютная, не зависит от высоты -->
+      <div class="cup-image desktop"></div>
     </div>
-    <!-- Мобильная версия: картинка под переключателями -->
-    <div class="cup-image-mobile" aria-hidden="true"></div>
+    <!-- Мобильная версия: чашка внизу, по центру, вне .content-wrapper -->
+    <div class="cup-image mobile"></div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, nextTick, onMounted } from 'vue'
+import { ref, watch, nextTick } from 'vue';
 
 const activeIndex = ref(null);
 const containerHeight = ref(650);
@@ -70,23 +81,20 @@ const items = ref([
   { id: 7, title: 'Метрики Успеха', content: '<strong>Метрики Успеха.</strong> Вы получаете доступ к дашборду, где в реальном времени отслеживаются ключевые показатели: среднее время решения проблемы, уровень удовлетворённости (NPS) после диалога, самые частые типы проблем. Вы управляете репутацией на основе данных, а не интуиции.' }
 ]);
 
-// Динамический расчет высоты только по содержимому переключателей
 watch(activeIndex, async () => {
-  await nextTick()
+  await nextTick();
   let totalHeight = 80;
   const gap = 12;
   if (itemRefs.value.length > 0) {
     itemRefs.value.forEach((el, index) => {
       if (el) {
         totalHeight += el.offsetHeight;
-        if (index < itemRefs.value.length - 1) {
-          totalHeight += gap;
-        }
+        if (index < itemRefs.value.length - 1) totalHeight += gap;
       }
-    })
+    });
   }
   containerHeight.value = Math.max(650, totalHeight);
-})
+});
 
 function setActive(index) {
   activeIndex.value = index;
@@ -112,91 +120,13 @@ function closeAll() {
   overflow: hidden;
   transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* Основной flex-контейнер. На десктопе — слева элементы, справа чашка */
 .content-wrapper {
   position: relative;
   display: flex;
   align-items: flex-start;
   height: 100%;
-  z-index: 1;
   padding: 40px 0;
 }
-
-.nav-placeholder {
-  position: relative;
-  width: 52px;
-  height: 100%;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2;
-}
-.nav-arrows {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.arrow-button {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background-color: #000;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.arrow-button svg { pointer-events: none; }
-.arrow-button:hover:not(:disabled) { background-color: #1a1a1a; }
-.arrow-button:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.feature-list {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 2;
-}
-.feature-item-wrapper {
-  width: max-content;
-  max-width: 450px;
-}
-.pill-button {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background-color: #000;
-  border: none;
-  border-radius: 24px;
-  padding: 14px 20px;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.pill-button:hover { background-color: #111; }
-.pill-icon-wrapper { color: #8A8A8E; flex-shrink: 0; }
-.pill-icon-wrapper svg { width: 24px; height: 24px; }
-.pill-title { color: #F2F2F7; font-size: 17px; font-weight: 600; white-space: nowrap; }
-
-.content-box {
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-radius: 24px;
-  padding: 22px 28px;
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #EAEAEB;
-  font-size: 17px;
-  line-height: 1.5;
-  font-weight: 500;
-}
-:deep(.content-box strong) { font-weight: 700; color: #fff; }
-
 .close-all-btn {
   position: absolute;
   top: 20px;
@@ -215,31 +145,126 @@ function closeAll() {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.close-all-btn:hover { background-color: #111; color: #fff; }
+.close-all-btn:hover {
+  background-color: #111;
+  color: #fff;
+}
+.nav-placeholder {
+  position: relative;
+  width: 52px;
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+.nav-arrows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.arrow-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #000;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.arrow-button svg {
+  pointer-events: none;
+}
+.arrow-button:hover:not(:disabled) {
+  background-color: #1a1a1a;
+}
+.arrow-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 
-/* Десктоп: чашка фиксирована справа вне контента */
+.feature-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1;
+}
+.feature-item-wrapper {
+  width: max-content;
+  max-width: 450px;
+}
+.pill-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #000;
+  border: none;
+  border-radius: 24px;
+  padding: 14px 20px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.pill-button:hover {
+  background-color: #111;
+}
+.pill-icon-wrapper {
+  color: #8A8A8E;
+  flex-shrink: 0;
+}
+.pill-icon-wrapper svg {
+  width: 24px;
+  height: 24px;
+}
+.pill-title {
+  color: #F2F2F7;
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.content-box {
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 24px;
+  padding: 22px 28px;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #EAEAEB;
+  font-size: 17px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+:deep(.content-box strong) {
+  font-weight: 700;
+  color: #fff;
+}
+
 .cup-image {
+  background-image: url('/cffx-cup.png');
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  background-position: center;
+  pointer-events: none;
+}
+.cup-image.desktop {
   display: block;
   position: absolute;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 50%;
-  height: 70%;
-  min-width: 260px;
-  max-width: 520px;
-  min-height: 220px;
-  max-height: 540px;
-  background-image: url('/cffx-cup.png');
-  background-size: contain;
-  background-position: right center;
-  background-repeat: no-repeat;
-  pointer-events: none;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  width: 44%;
+  max-width: 480px;
+  height: 90%;
   z-index: 0;
 }
-
-/* Мобильная версия: чашка под блоком переключателей, всегда по центру */
-.cup-image-mobile {
+.cup-image.mobile {
   display: none;
 }
 
@@ -252,34 +277,27 @@ function closeAll() {
 .item-swap-enter-active, .item-swap-leave-active { transition: all 0.3s ease-in-out; }
 .item-swap-enter-from, .item-swap-leave-to { opacity: 0; transform: scale(0.95); }
 
-/* Мобильные стили */
+/* Адаптация для мобильных */
 @media (max-width: 768px) {
   .content-wrapper {
     flex-direction: column;
-    padding: 40px 8px 0 8px;
-    align-items: flex-start;
+    align-items: stretch;
+    padding: 32px 12px 0 12px;
+    min-height: 350px;
   }
-  .cup-image {
-    display: none;
-  }
-  .cup-image-mobile {
+  .nav-placeholder { width: 52px; }
+  .feature-item-wrapper { max-width: 100%; }
+  .cup-image.desktop { display: none; }
+  .cup-image.mobile {
     display: block;
-    margin: 28px auto 0 auto;
-    width: 85vw;
-    max-width: 380px;
-    min-width: 180px;
-    height: 28vw;
-    max-height: 220px;
-    min-height: 88px;
-    background-image: url('/cffx-cup.png');
+    position: static;
+    width: 92vw;
+    max-width: 360px;
+    height: 120px;
+    margin: 32px auto 14px auto;
     background-size: contain;
-    background-position: center center;
-    background-repeat: no-repeat;
-    pointer-events: none;
-    z-index: 11;
-  }
-  .feature-item-wrapper {
-    max-width: 100%;
+    background-position: center bottom;
+    z-index: 10;
   }
 }
 </style>
