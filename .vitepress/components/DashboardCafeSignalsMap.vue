@@ -1,24 +1,89 @@
 <template>
-  <div class="treemap-full">
-    <div
-      v-for="(cat, idx) in categories"
-      :key="cat.category"
-      class="treemap-card"
-      :class="cardClass(cat.percent)"
-      :style="cardStyle(cat.percent, idx)"
-      @mouseenter="activeIdx = idx"
-      @mouseleave="activeIdx = -1"
-      tabindex="0"
-    >
-      <div class="card-content">
-        <div class="card-title">{{ cat.category }}</div>
-        <div class="card-percent">{{ cat.percent }}%</div>
-      </div>
-      <transition name="fade">
-        <div v-if="activeIdx === idx" class="card-tooltip">
-          <div class="tooltip-text">{{ cat.desc }}</div>
+  <div class="clean-treemap">
+    <!-- 2 ряда по 2 крупные карточки -->
+    <div class="row">
+      <div
+        v-for="(cat, i) in categories.slice(0,2)"
+        :key="cat.category"
+        class="card card-large"
+        @mouseenter="activeIdx = i"
+        @mouseleave="activeIdx = -1"
+        tabindex="0"
+      >
+        <div class="card-inner">
+          <div class="card-problem">{{ cat.category }}</div>
+          <div class="card-percent">{{ cat.percent }}%</div>
         </div>
-      </transition>
+        <transition name="fade">
+          <div v-if="activeIdx === i" class="card-tooltip card-tooltip-large">
+            <div class="tooltip-text">{{ cat.desc }}</div>
+          </div>
+        </transition>
+      </div>
+    </div>
+    <div class="row">
+      <div
+        v-for="(cat, i) in categories.slice(2,4)"
+        :key="cat.category"
+        class="card card-large"
+        @mouseenter="activeIdx = i+2"
+        @mouseleave="activeIdx = -1"
+        tabindex="0"
+      >
+        <div class="card-inner">
+          <div class="card-problem">{{ cat.category }}</div>
+          <div class="card-percent">{{ cat.percent }}%</div>
+        </div>
+        <transition name="fade">
+          <div v-if="activeIdx === i+2" class="card-tooltip card-tooltip-large">
+            <div class="tooltip-text">{{ cat.desc }}</div>
+          </div>
+        </transition>
+      </div>
+    </div>
+    <!-- Ряд из трех средних карточек -->
+    <div class="row row-three">
+      <div
+        v-for="(cat, i) in categories.slice(4,7)"
+        :key="cat.category"
+        class="card card-medium"
+        @mouseenter="activeIdx = i+4"
+        @mouseleave="activeIdx = -1"
+        tabindex="0"
+      >
+        <div class="card-inner">
+          <div class="card-problem">{{ cat.category }}</div>
+          <div class="card-percent">{{ cat.percent }}%</div>
+        </div>
+        <transition name="fade">
+          <div v-if="activeIdx === i+4" class="card-tooltip card-tooltip-medium">
+            <div class="tooltip-text">{{ cat.desc }}</div>
+          </div>
+        </transition>
+      </div>
+    </div>
+    <!-- Остальные карточки — одна в строке -->
+    <div
+      v-for="(cat, i) in categories.slice(7)"
+      :key="cat.category"
+      class="row"
+    >
+      <div
+        class="card card-long"
+        @mouseenter="activeIdx = i+7"
+        @mouseleave="activeIdx = -1"
+        tabindex="0"
+      >
+        <div class="card-inner">
+          <div class="card-problem">{{ cat.category }}</div>
+          <div class="card-percent">{{ cat.percent }}%</div>
+        </div>
+        <transition name="fade">
+          <div v-if="activeIdx === i+7" class="card-tooltip card-tooltip-long">
+            <div class="tooltip-text">{{ cat.desc }}</div>
+          </div>
+        </transition>
+      </div>
     </div>
   </div>
 </template>
@@ -28,164 +93,160 @@ import { ref } from 'vue'
 const activeIdx = ref(-1)
 
 const categories = [
-  { category: 'Долгое ожидание заказа', percent: 18.3, desc: 'Жалобы на задержку более 10-20 минут, очереди, забыли заказ.' },
-  { category: 'Ошибки в заказе', percent: 12.5, desc: 'Неправильный напиток, забытая позиция, перепутали сироп или размер, неверный счет.' },
-  { category: 'Качество блюд/напитков', percent: 13.3, desc: 'Кофе невкусный или остыл, еда несвежая или странная, комочки, недоварено.' },
-  { category: 'Чистота зала/посуды/уборной', percent: 10.8, desc: 'Грязные столы, волосы в еде, грязная уборная, насекомые.' },
-  { category: 'Грубость и невнимательность персонала', percent: 10.0, desc: 'Официанты хамят, не обращают внимания, игнорируют просьбы.' },
+  { category: 'Качество блюд/напитков', percent: 13.3, desc: 'Кофе невкусный или остыл, еда несвежая, странный привкус, комочки.' },
+  { category: 'Чистота зала/посуды/уборной', percent: 10.8, desc: 'Грязные столы, посуда, волосы в еде, уборная, насекомые.' },
+  { category: 'Грубость и невнимательность персонала', percent: 10.0, desc: 'Официанты хамят, не обращают внимания, невежливы.' },
+  { category: 'Ошибки в заказе', percent: 12.5, desc: 'Неправильный напиток, забытая позиция, перепутали сироп или размер.' },
   { category: 'Антисанитария/инородные предметы', percent: 6.7, desc: 'Волосы, пластик, грязные руки, тараканы.' },
-  { category: 'Проблемы с очередями и обслуживанием', percent: 5.8, desc: 'Нет системы очереди, путаница заказов, хаос.' },
-  { category: 'Неуютная атмосфера/музыка/запах', percent: 5.0, desc: 'Шумно, неприятный запах, плохая музыка, неуютно.' },
+  { category: 'Проблемы с очередями и обслуживанием', percent: 5.8, desc: 'Нет системы очереди, путаница, хаос.' },
+  { category: 'Неуютная атмосфера/музыка/запах', percent: 5.0, desc: 'Шумно, неприятный запах, громкая музыка, неуютно.' },
   { category: 'Упаковка и напитки на вынос', percent: 4.2, desc: 'Проблемы с упаковкой, неудобные стаканы, проливается.' },
   { category: 'Отсутствие внимания/коммуникации', percent: 4.2, desc: 'Не объяснили детали, не помогли с выбором.' },
-  { category: 'Цена/акции/выгода', percent: 3.3, desc: 'Дорого, не действует акция или скидка.' },
-  { category: 'Профессионализм персонала', percent: 2.5, desc: 'Не знают меню, не разбираются в кофе.' },
+  { category: 'Цена/акции/выгода', percent: 3.3, desc: 'Дорого, не действует акция.' },
+  { category: 'Профессионализм персонала', percent: 2.5, desc: 'Не знают меню, не различают сорта кофе.' },
   { category: 'Дизайн и интерьер', percent: 1.7, desc: 'Не понравился интерьер, мало света, неудобная мебель.' },
-  { category: 'Парковка и доступность', percent: 1.7, desc: 'Нет парковки, проблемно добраться или попасть в кафе.' },
+  { category: 'Парковка и доступность', percent: 1.7, desc: 'Нет парковки, сложно добраться.' },
 ]
-
-function cardClass(percent) {
-  if (percent >= 12.5) return 'large-card'
-  if (percent >= 7) return 'medium-card'
-  return 'small-card'
-}
-
-function cardStyle(percent, idx) {
-  // Размер карточки: крупные 50%, средние 30%, мелкие 20% визуально по площади
-  let size, base;
-  if (percent >= 12.5) { size = 'calc((100% - 32px) / 3 * 1.07)'; base = 0.07 }
-  else if (percent >= 7) { size = 'calc((100% - 32px) / 3 * 0.86)'; base = 0.13 }
-  else { size = 'calc((100% - 32px) / 3 * 0.65)'; base = 0.23 }
-  // Градиент: умеренно-графитовый, легкий оттенок lime для акцентов
-  const gradient = idx % 3 === 0
-    ? 'linear-gradient(135deg, #323339 66%, #43434a 100%)'
-    : idx % 5 === 0
-    ? 'linear-gradient(135deg, #232423 60%, #4b4e50 100%)'
-    : 'linear-gradient(120deg, #2e3034 70%, #37393a 100%)'
-  return {
-    width: size,
-    minWidth: '120px',
-    maxWidth: '360px',
-    aspectRatio: '1/1',
-    background: gradient,
-    color: '#f2f2f2',
-    margin: '10px',
-    borderRadius: '18px',
-    boxShadow: '0 3px 18px 0 rgba(30,30,30,0.10)',
-    transition: 'all 0.32s cubic-bezier(.63,.31,.53,1.02)',
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: idx < 3 ? '2.4px solid #A5FF34' : '1.2px solid #2f2f34',
-    outline: idx < 2 ? '1.8px solid #cdf95544' : 'none',
-    zIndex: 1
-  }
-}
 </script>
 
 <style scoped>
-.treemap-full {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
+.clean-treemap {
   width: 100%;
-  max-width: 1080px; /* stretch all */
+  max-width: 960px;
   margin: 0 auto;
-  gap: 0;
-  min-height: 520px;
-  background: linear-gradient(124deg, #232426 0%, #303134 100%);
-  padding: 18px 2px 32px 2px;
-}
-.treemap-card {
-  box-sizing: border-box;
-  cursor: pointer;
-  overflow: visible;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  min-height: 120px;
-}
-
-.large-card .card-content { font-size: 1.33rem; font-weight: 700 }
-.medium-card .card-content { font-size: 1.08rem; font-weight: 600 }
-.small-card .card-content { font-size: 0.97rem; font-weight: 550 }
-
-.card-content {
-  width: 100%;
-  text-align: center;
-  max-width: 210px;
-  padding: 0 11px 0 11px;
-  line-height: 1.23;
-  letter-spacing: 0.01em;
+  padding: 24px 12px 32px 12px;
+  background: #222324;
+  border-radius: 22px;
+  box-shadow: 0 5px 50px #2223241a;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  gap: 0;
 }
-.card-title {
-  font-weight: 700;
-  font-size: 1em;
-  margin-bottom: 2px;
-  color: #e9e9e9;
-  line-height: 1.21;
-  text-shadow: 0 1px 4px #23232330;
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+.row-three {justify-content: space-between;}
+
+.card {
+  background: #292b2d;
+  color: #eaeaea;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px #2d2d2d1c;
+  transition: box-shadow 0.18s cubic-bezier(.55,.18,1,.7), transform 0.22s;
+  cursor: pointer;
+  min-height: 64px;
+  min-width: 0;
+  width: 100%;
+  max-width: none;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: visible;
+  transition: background .16s;
+}
+
+.card-large {
+  height: 120px;
+  font-size: 1.53rem;
+  min-width: 0;
+}
+.card-medium {
+  height: 94px;
+  font-size: 1.23rem;
+  min-width: 0;
+}
+.card-long {
+  width: 100%;
+  height: 72px;
+  font-size: 1.08rem;
+  margin-bottom: 13px;
+}
+
+.card-inner {
+  width: 100%;
+  padding: 0 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-problem {
+  font-weight: 500;
+  text-align: left;
+  flex: 1;
+  font-size: inherit;
+  letter-spacing: 0.01em;
+  line-height: 1.13;
 }
 
 .card-percent {
-  font-size: 1.05em;
-  color: #A5FF34;
-  letter-spacing: 0.03em;
-  font-weight: 680;
-  margin-top: 2.5px;
-  margin-bottom: 0;
-  opacity: 0.9;
-  text-shadow: 0 1.8px 11px #23232317;
+  font-weight: 400;
+  text-align: right;
+  font-size: 1em;
+  margin-left: 14px;
+  color: #eaeaea;
+  opacity: 0.58;
+  letter-spacing: 0.02em;
+  min-width: 54px;
 }
 
 .card-tooltip {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  width: 101.6%;
-  height: 101.6%;
-  background: linear-gradient(135deg, #30343a 70%, #232926 100%);
+  width: 100%;
+  height: 100%;
+  background: #232426fd;
+  color: #ededed;
   border-radius: 16px;
-  color: #F2FFEF;
+  z-index: 120;
+  box-shadow: 0 4px 32px #16171724;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 8px 38px #2f2f3455;
-  z-index: 180;
-  text-align: center;
-  animation: tooltipPop 0.25s cubic-bezier(.61,.49,.98,.95);
-  border: 2.8px solid #A5FF34cc;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 18px 32px 18px 28px;
+  animation: tooltipPop 0.22s cubic-bezier(.62,.54,.78,.99);
 }
 .tooltip-text {
-  max-width: 410px;
-  padding: 28px 12px;
-  font-size: 1.18rem;
-  line-height: 1.45;
-  font-weight: 600;
-  color: #D6FFD7;
+  font-size: 1.15rem;
+  font-weight: 430;
+  color: #ededed;
+  line-height: 1.42;
+  text-align: left;
   letter-spacing: 0.01em;
-  filter: drop-shadow(0 3px 16px #74db4440);
+  padding: 0;
+  max-width: 90%;
+  margin: 0;
 }
 
-.fade-enter-active, .fade-leave-active { transition: opacity 0.27s }
+.card-tooltip-large {padding-top: 32px;}
+.card-tooltip-medium {padding-top: 18px;}
+.card-tooltip-long {padding-top: 10px;}
+
+.fade-enter-active, .fade-leave-active { transition: opacity 0.28s }
 .fade-enter-from, .fade-leave-to { opacity: 0 }
-@media (max-width: 720px) {
-  .treemap-full { max-width: 99vw; padding: 9px 0 18px 0; min-height: 350px; }
-  .treemap-card { min-width: 98px; min-height: 76px }
-  .large-card .card-content { font-size: 1em }
-  .medium-card .card-content { font-size: 0.87em }
-  .small-card .card-content { font-size: 0.77em }
-  .card-tooltip { padding: 0 }
-}
 @keyframes tooltipPop {
-  0% { opacity: 0.5; transform: scale(0.98); }
+  0% { opacity: 0.7; transform: scale(0.98); }
   100% { opacity: 1; transform: scale(1); }
 }
+
+/* Мобильная адаптация */
+@media (max-width: 720px) {
+  .clean-treemap { padding: 9px 2vw 14vw 2vw; max-width: 99vw; }
+  .row { gap: 6px; margin-bottom: 9px; }
+  .card-large {height: 84px; font-size: 1.1rem;}
+  .card-medium {height: 74px; font-size: 0.93rem;}
+  .card-long {height: 56px; font-size: 0.83rem;}
+  .card-inner {padding: 0 7vw;}
+  .card-tooltip, .card-tooltip-large, .card-tooltip-medium, .card-tooltip-long {
+    padding: 6vw 8vw;
+    font-size: 1.03rem;
+  }
+}
+
 </style>
