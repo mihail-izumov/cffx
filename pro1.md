@@ -32,6 +32,10 @@ notification: brew
 
 ## Забота о клиентах начинается здесь.
 
+<SignalDashboardSwitcher />
+
+## Виджеты Сигнала.
+
 <DialogsWidgets />
 
 ## В каждом Сигнале.
