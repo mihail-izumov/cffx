@@ -1,7 +1,6 @@
 <template>
-  <div class="feature-selector-container" :style="{ height: containerHeight + 'px' }">
-    
-    <!-- Кнопка "Закрыть всё" -->
+  <!-- Важно: этот div оборачивает в markdown как <div class="vp-full-width"><Dialogs7LevelsControl /></div> -->
+  <div class="feature-selector-container">
     <transition name="fade">
       <button v-if="activeIndex !== null" class="close-all-btn" @click="closeAll">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -11,15 +10,11 @@
       </button>
     </transition>
 
-    <!-- Основной контейнер с элементами -->
+    <!-- основной flex-контент -->
     <div class="content-wrapper">
-      <!-- Зарезервированное место и стрелки, прижатые влево -->
       <div class="nav-placeholder">
         <transition name="slide-in">
-          <div 
-            v-if="activeIndex !== null" 
-            class="nav-arrows"
-          >
+          <div v-if="activeIndex !== null" class="nav-arrows">
             <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
@@ -30,7 +25,6 @@
         </transition>
       </div>
       
-      <!-- Список элементов -->
       <div class="feature-list">
         <div 
           v-for="(item, index) in items" 
@@ -39,7 +33,6 @@
           ref="itemRefs"
         >
           <transition name="item-swap" mode="out-in">
-            <!-- Кнопка-пилюля -->
             <button
               v-if="activeIndex !== index"
               class="pill-button"
@@ -50,31 +43,26 @@
               </div>
               <span class="pill-title">{{ item.title }}</span>
             </button>
-
-            <!-- Блок с контентом -->
             <div
               v-else
               class="content-box"
               v-html="item.content"
-            >
-            </div>
+            ></div>
           </transition>
         </div>
       </div>
-
-      <!-- Зафиксированное изображение чашки справа на десктопе -->
-      <div class="cup-image desktop-img"></div>
+      <!-- Абсолютная чашка справа, только десктоп -->
+      <div class="cup-image cup-image-desktop"></div>
     </div>
-    <!-- Изображение чашки внизу на мобильной версии -->
-    <div class="cup-image mobile-img"></div>
+    <!-- Чашка снизу, только мобильная -->
+    <div class="cup-image cup-image-mobile"></div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, nextTick, onMounted } from 'vue';
+import { ref, watch, nextTick } from 'vue';
 
 const activeIndex = ref(null);
-const containerHeight = ref(650); // Начальная и минимальная высота
 const itemRefs = ref([]);
 
 const items = ref([
@@ -87,29 +75,10 @@ const items = ref([
   { id: 7, title: 'Метрики Успеха', content: '<strong>Метрики Успеха.</strong> Вы получаете доступ к дашборду, где в реальном времени отслеживаются ключевые показатели: среднее время решения проблемы, уровень удовлетворённости (NPS) после диалога, самые частые типы проблем. Вы управляете репутацией на основе данных, а не интуиции.' }
 ]);
 
-// Динамический расчет высоты контейнера только для контента
-watch(activeIndex, async () => {
-  await nextTick();
-  
-  let totalHeight = 80; // Верхний + нижний padding блока
-  const gap = 12;
-
-  if (itemRefs.value.length > 0) {
-    itemRefs.value.forEach((el, index) => {
-      if (el) {
-        totalHeight += el.offsetHeight;
-        if (index < itemRefs.value.length - 1) {
-          totalHeight += gap;
-        }
-      }
-    });
-  }
-  containerHeight.value = Math.max(650, totalHeight);
-});
-
 function setActive(index) {
   activeIndex.value = index;
 }
+
 function navigate(direction) {
   if (activeIndex.value === null) return;
   const newIndex = activeIndex.value + direction;
@@ -117,196 +86,169 @@ function navigate(direction) {
     activeIndex.value = newIndex;
   }
 }
+
 function closeAll() {
   activeIndex.value = null;
 }
+
+// Динамический расчёт НЕ требуется: высота авто по содержимому, max-width управляет только шириной контента.
 </script>
 
 <style scoped>
+/* --- Глобальное решение для всей ширины (vp-full-width) --- */
 .feature-selector-container {
   position: relative;
-  width: 100%;
-  background-color: transparent;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  overflow: hidden;
-  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  max-width: 100vw;
+  box-sizing: border-box;
+  background: none;
+  overflow: visible;
+  padding: 0;
 }
 
-/* Контент + навигация */
+/* --- Основной flex-контейнер --- */
 .content-wrapper {
-  position: relative;
   display: flex;
   align-items: flex-start;
-  height: 100%;
+  gap: 0;
+  width: 100%;
   padding: 40px 0;
+  min-height: 0;
+  position: relative;
+  box-sizing: border-box;
 }
 
-/* Стрелки слева */
+/* --- Левый блок: стрелки без отступа --- */
 .nav-placeholder {
   position: relative;
   width: 52px;
-  height: 100%;
+  min-width: 52px;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
+  z-index: 3;
 }
+
 .nav-arrows {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 .arrow-button {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background-color: #000;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  width: 44px; height: 44px;
+  border-radius: 50%; background: #000;
+  border: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background 0.2s;
 }
 .arrow-button svg { pointer-events: none; }
-.arrow-button:hover:not(:disabled) { background-color: #1a1a1a; }
-.arrow-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
+.arrow-button:disabled { opacity: 0.4; cursor: not-allowed;}
+.arrow-button:hover:not(:disabled) { background: #1a1a1a; }
+
+/* --- Контент без отступа слева --- */
 .feature-list {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  z-index: 2;
+  width: auto;
+  z-index: 3;
 }
 .feature-item-wrapper {
-  width: max-content;
   max-width: 450px;
+  width: 100%;
 }
 .pill-button {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background-color: #000;
-  border: none;
-  border-radius: 24px;
-  padding: 14px 20px;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  display: flex; align-items: center; gap: 12px;
+  background: #000; border: none; border-radius: 24px; padding: 14px 20px;
+  width: 100%; text-align: left; cursor: pointer;
+  transition: background 0.2s;
 }
-.pill-button:hover { background-color: #111; }
-.pill-icon-wrapper {
-  color: #8A8A8E;
-  flex-shrink: 0;
-}
-.pill-icon-wrapper svg {
-  width: 24px;
-  height: 24px;
-}
-.pill-title {
-  color: #F2F2F7;
-  font-size: 17px;
-  font-weight: 600;
-  white-space: nowrap;
-}
+.pill-button:hover { background: #111; }
+.pill-icon-wrapper { color: #8A8A8E; flex-shrink: 0;}
+.pill-icon-wrapper svg { width: 24px; height: 24px; }
+.pill-title { color: #F2F2F7; font-size: 17px; font-weight: 600; white-space: nowrap;}
+
 .content-box {
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-radius: 24px;
-  padding: 22px 28px;
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #EAEAEB;
-  font-size: 17px;
-  line-height: 1.5;
-  font-weight: 500;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+  border-radius: 24px; padding: 22px 28px; border: 1px solid rgba(255,255,255,0.1);
+  color: #EAEAEB; font-size: 17px; line-height: 1.5; font-weight: 500;
 }
-:deep(.content-box strong) {
-  font-weight: 700;
-  color: #fff;
-}
+:deep(.content-box strong) { font-weight: 700; color: #fff; }
 
-/* Кнопка "Закрыть всё" */
+/* --- Кнопка закрытия --- */
 .close-all-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 100;
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #8A8A8E;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  position: absolute; top: 20px; right: 20px; z-index: 100;
+  background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px);
+  border: none; border-radius: 50%; width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  color: #8A8A8E; cursor: pointer; transition: all 0.2s;
 }
-.close-all-btn:hover { background-color: #111; color: #fff; }
+.close-all-btn:hover { background: #111; color: #fff; }
 
-/* Изображение чашки справа фиксировано — только на десктопе */
-.cup-image.desktop-img {
+/* --- Абсолютная чашка ДЕСКТОП --- */
+.cup-image-desktop {
+  display: block;
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 52%;
+  top: 0; right: 0; bottom: 0;
+  width: 52vw;
+  min-width: 350px;
   height: 100%;
   background-image: url('/cffx-cup.png');
   background-size: contain;
-  background-position: right center;
   background-repeat: no-repeat;
+  background-position: right center;
   z-index: 1;
   pointer-events: none;
-  transition: none;
-  display: block;
 }
-.cup-image.mobile-img { display: none; }
 
-/* Анимации */
-.fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
-.slide-in-enter-active { transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
-.slide-in-leave-active { transition: all 0.3s cubic-bezier(0.5, 0, 0.75, 0); }
-.slide-in-enter-from, .slide-in-leave-to { opacity: 0; transform: translateX(-20px); }
-.item-swap-enter-active, .item-swap-leave-active { transition: all 0.3s ease-in-out; }
+/* --- Мобильная чашка только снизу, не внутри flex --- */
+.cup-image-mobile { display: none; }
+
+/* --- Анимации --- */
+.fade-enter-active, .fade-leave-active {transition: opacity 0.3s;}
+.fade-enter-from, .fade-leave-to {opacity: 0;}
+.slide-in-enter-active {transition: all 0.4s cubic-bezier(0.25,1,0.5,1);}
+.slide-in-leave-active {transition: all 0.3s cubic-bezier(0.5,0,0.75,0);}
+.slide-in-enter-from, .slide-in-leave-to {opacity: 0; transform: translateX(-20px);}
+.item-swap-enter-active, .item-swap-leave-active {transition: all 0.3s;}
 .item-swap-enter-from, .item-swap-leave-to { opacity: 0; transform: scale(0.95); }
 
-/* Мобильная версия — изображение внизу под переключателями, по центру экрана */
+/* ===== Мобильная адаптация ===== */
 @media (max-width: 768px) {
-  .feature-selector-container { transition: none; }
+  .feature-selector-container {
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    min-width: 0;
+  }
   .content-wrapper {
-    padding: 40px 16px 8px 16px;
     flex-direction: column;
     align-items: stretch;
+    padding: 32px 7vw 0 7vw;
     min-height: 0;
     height: auto;
   }
-  .nav-placeholder { width: 52px; height: auto; margin-bottom: 8px; }
+  .nav-placeholder { width: 52px; min-width: 52px; margin-bottom: 8px; }
   .feature-list { gap: 12px; }
-  .feature-item-wrapper { max-width: 100%; }
-  /* desktop-img прячем на мобильных */
-  .cup-image.desktop-img { display: none !important; }
-  /* mobile-img показываем, делаем центровку и фиксируем положение внизу */
-  .cup-image.mobile-img {
+  .feature-item-wrapper { max-width: 100vw; width: 100%; }
+  
+  .cup-image-desktop { display: none !important; }
+  .cup-image-mobile {
     display: block;
-    width: 90vw;
+    position: relative;
+    width: 92vw;
     max-width: 320px;
-    margin: 28px auto 8px auto;
+    margin: 24px auto 10px auto;
     height: 120px;
     background-image: url('/cffx-cup.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: 1;
+    z-index: 2;
     pointer-events: none;
   }
 }
