@@ -9,7 +9,7 @@ description: Просто скажите что не так
 ---
 <div align="center">
 
-<span class="signal-badge">Для любящих кофе</span> <br>
+<span class="signal-badge">Просто скажите что не так</span> <br>
 
 <h1>
   <span>Ваш Сигнал — тому,</span><br class="mobile-break"> <span>кто решает.</span>
