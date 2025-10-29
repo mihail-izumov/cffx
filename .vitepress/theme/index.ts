@@ -114,6 +114,7 @@ import TicketsExamples from '../components/TicketsExamples.vue'
 import DashboardCafeSignalsMap from '../components/DashboardCafeSignalsMap.vue'
 import DashboardGymSignalsMap from '../components/DashboardGymSignalsMap.vue'
 import SignalDashboardSwitcher from '../components/SignalDashboardSwitcher.vue'
+import AnnaQuotes from '../components/AnnaQuotes.vue'
 
 export default {
   extends: DefaultTheme,
@@ -233,6 +234,7 @@ export default {
     app.component('DashboardCafeSignalsMap', DashboardCafeSignalsMap)
     app.component('DashboardGymSignalsMap', DashboardGymSignalsMap)
     app.component('SignalDashboardSwitcher', SignalDashboardSwitcher)
+    app.component('AnnaQuotes', AnnaQuotes)
   
   },
 }
