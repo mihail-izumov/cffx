@@ -1,3 +1,9 @@
+<script setup>
+import { ref } from 'vue'
+const activeTab = ref('dolhoe-ohidanie')
+
+</script>
+
 <template>
   <div class="tabs-mr">
     <button :class="{ active: activeTab === 'dolhoe-ohidanie' }" @click="activeTab = 'dolhoe-ohidanie'">
