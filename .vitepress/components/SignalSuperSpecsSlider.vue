@@ -12,8 +12,18 @@
         tabindex="0"
         role="link"
       >
+        <!-- ПРОСТАЯ ИКОНКА — КАК В РАБОЧЕЙ ВЕРСИИ -->
         <div class="sss-card-background-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#4a4a4a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="#4a4a4a" 
+            stroke-width="1.8" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+            class="icon-volume"
+          >
             <path v-for="path in slide.paths" :d="path"/>
             <circle v-if="slide.circle" :cx="slide.circle.cx" :cy="slide.circle.cy" :r="slide.circle.r"/>
             <rect v-if="slide.rect" :width="slide.rect.w" :height="slide.rect.h" :x="slide.rect.x" :y="slide.rect.y" :rx="slide.rect.rx" :ry="slide.rect.ry"/>
@@ -23,6 +33,7 @@
           </svg>
         </div>
 
+        <!-- ТЕКСТ -->
         <h3 class="sss-title">{{ slide.headline }}</h3>
         <p class="sss-step-goals">{{ slide.benefit }}</p>
         <p class="sss-description-secondary">
@@ -38,6 +49,7 @@
       </a>
     </div>
 
+    <!-- КНОПКИ -->
     <div class="sss-nav-buttons">
       <button class="sss-nav-btn sss-nav-prev" @click="scrollPrev" aria-label="Предыдущий слайд">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -137,7 +149,7 @@ const slides = [
     details: 'Команда аналитиков Сигнала отслеживает время реакции, причины проблем, рост качества сервиса, оценки, NPS, повторные случаи — всё под запрос бизнеса. Мы формируем управленческие отчёты на реальных данных, визуализируем рост и точки развития.',
     paths: [
       'M12 16v5','M16 14v7','M20 10v11',
-      'm22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15',
+      'm22 3–8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15',
       'M4 18v3','M8 14v7'
     ],
     link: '/pro1'
@@ -146,7 +158,7 @@ const slides = [
     headline: 'Лучше с каждым Сигналом',
     benefit: 'Система непрерывно растёт и одновременно адаптируется к изменениям вашего бизнеса.',
     control: 'Прозрачный процесс на основе данных и вашей обратной связи.',
-    details: 'Все элементы системы — форма, Анна, тикет-система, платформа — постоянно обновляются и улучшаются на основе непрерывной аналитики. Команда Сигнала следит за процессами и результатами, слушает вашу команду и гостей, суммирует опыт и оперативно вносит улучшения. Вы направляете развитие, получаете отчёты об обновлениях и изменениях, команда Сигнала делает систему лучше.',
+    details: 'Все элементы системы — форма, Анна, тикет-система, платформа — постоянно обновляются и улучшаются на основе непрерывной анал824итики. Команда Сигнала следит за процессами и результатами, слушает вашу команду и гостей, суммирует опыт и оперативно вносит улучшения. Вы направляете развитие, получаете отчёты об обновлениях и изменениях, команда Сигнала делает систему лучше.',
     polygon: '12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2',
     lines: [
       { x1: '12', x2: '12', y1: '22', y2: '15.5' },
@@ -173,5 +185,87 @@ const scrollPrev = () => {
 </script>
 
 <style>
-/* ... ТОТ ЖЕ СТИЛЬ, ЧТО ВЫШЕ ... */
+.sss-slider-wrapper { position: relative; margin: 24px 0; }
+.sss-brands-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 4px 0 12px 4px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin-bottom: 16px;
+}
+.sss-brands-container::-webkit-scrollbar { display: none; }
+
+.sss-brand-card {
+  flex: 0 0 320px;
+  border-radius: 12px;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid #333;
+  border-top: 4px solid rgba(197, 249, 70, 0.28);
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+  transition: border-top-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: #232323;
+  text-decoration: none;
+  cursor: pointer;
+}
+.sss-step-card:hover, .sss-brand-card.active { border-top-color: #C5F946; }
+
+.sss-card-background-icon {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 260px;
+  height: 260px;
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.icon-volume {
+  width: 100%;
+  height: 100%;
+}
+
+.sss-title { font-size: 24px; line-height: 1.22; margin: 0; font-weight: 700; color: #ffffff; position: relative; z-index: 1; }
+.sss-step-goals { color: #C5F946; font-size: 16px; font-weight: 500; line-height: 1.65; margin: 0; position: relative; z-index: 1; }
+.sss-description-secondary { color: #b0b0b0; font-size: 16px; line-height: 1.6; margin: 0; flex-grow: 1; position: relative; z-index: 1; }
+.sss-control-label { color: #ffffff; font-weight: 700; font-size: 16px; }
+.sss-control-highlight {
+  background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.08) 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  color: #ffffff;
+  padding: 1px 5px;
+  border-radius: 1px;
+  transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+  display: inline;
+  z-index: 1;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  font-size: 16px;
+}
+.sss-step-card:hover .sss-control-highlight,
+.sss-brand-card.active .sss-control-highlight {
+  background-position: 0 0;
+  color: #1a1a1a;
+}
+.sss-description-main { color: #b0b0b0; font-size: 13px; line-height: 1.62; margin-top: auto; margin-bottom: 9px; position: relative; z-index: 1; }
+.sss-more-link-area { margin-top: 16px; margin-bottom: 4px; }
+.sss-more-link { font-size: 15px; color: #b0b0b0; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: color 0.3s; }
+.sss-more-link:hover, .sss-brand-card.active .sss-more-link { color: #C5F946; }
+.sss-arrow { font-size: 19px; margin-left: 2px; transition: transform 0.25s; }
+.sss-brand-card.active .sss-arrow, .sss-more-link:hover .sss-arrow { transform: translateX(9px); }
+.sss-nav-buttons { display: flex; gap: 8px; justify-content: flex-end; margin-right: 0; padding-right: 4px; }
+.sss-nav-btn { width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); }
+.sss-nav-prev { background-color: #e8e8e8; color: #232323; }
+.sss-nav-prev:hover { background-color: #d0d0d0; transform: scale(1.05); }
+.sss-nav-next { background-color: #ffffff; color: #232323; }
+.sss-nav-next:hover { background-color: #f5f5f5; transform: scale(1.05); }
 </style>
