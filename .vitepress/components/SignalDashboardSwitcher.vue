@@ -125,3 +125,4 @@ const sliderLeft = computed(() => {
   }
 }
 </style>
+
