@@ -1,5 +1,5 @@
 <template>
-  <div class="feature-selector-container" :style="{ height: containerHeight + 'px' }">
+  <div class="feature-selector-container" :style="{ minHeight: containerHeight + 'px' }">
     
     <!-- Кнопка "Закрыть всё" -->
     <transition name="fade">
@@ -11,18 +11,13 @@
       </button>
     </transition>
 
-    <!-- Основной контейнер с фоном и элементами -->
-    <div 
-      class="content-wrapper" 
-      :style="{ backgroundImage: `url('/cffx-cup.png')` }"
-    >
-      <!-- Зарезервированное место и стрелки, прижатые влево -->
+    <!-- Основной контейнер -->
+    <div class="content-wrapper">
+      
+      <!-- Навигационные стрелки (прижаты к левому краю) -->
       <div class="nav-placeholder">
         <transition name="slide-in">
-          <div 
-            v-if="activeIndex !== null" 
-            class="nav-arrows"
-          >
+          <div v-if="activeIndex !== null" class="nav-arrows">
             <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
@@ -32,7 +27,7 @@
           </div>
         </transition>
       </div>
-      
+
       <!-- Список элементов -->
       <div class="feature-list">
         <div 
@@ -59,10 +54,14 @@
               v-else
               class="content-box"
               v-html="item.content"
-            >
-            </div>
+            ></div>
           </transition>
         </div>
+      </div>
+
+      <!-- Фиксированное изображение чашки справа -->
+      <div class="cup-image-wrapper">
+        <img src="/cffx-cup.png" alt="Cup" class="cup-image" />
       </div>
     </div>
   </div>
@@ -72,7 +71,7 @@
 import { ref, watch, nextTick, onMounted } from 'vue';
 
 const activeIndex = ref(null);
-const containerHeight = ref(650); // Начальная и минимальная высота
+const containerHeight = ref(650); // Минимальная высота
 const itemRefs = ref([]);
 
 const items = ref([
@@ -85,12 +84,12 @@ const items = ref([
   { id: 7, title: 'Метрики Успеха', content: '<strong>Метрики Успеха.</strong> Вы получаете доступ к дашборду, где в реальном времени отслеживаются ключевые показатели: среднее время решения проблемы, уровень удовлетворённости (NPS) после диалога, самые частые типы проблем. Вы управляете репутацией на основе данных, а не интуиции.' }
 ]);
 
-// Динамический расчет высоты контейнера
+// Динамическая высота
 watch(activeIndex, async () => {
   await nextTick();
   
-  let totalHeight = 80; // Сумма верхнего и нижнего padding (40px + 40px)
-  const gap = 12; // Отступ между элементами
+  let totalHeight = 0;
+  const gap = 12;
 
   if (itemRefs.value.length > 0) {
     itemRefs.value.forEach((el, index) => {
@@ -102,10 +101,12 @@ watch(activeIndex, async () => {
       }
     });
   }
-  
-  // Устанавливаем высоту, но не меньше минимального значения
+
+  // Добавляем padding сверху и снизу (по 40px)
+  totalHeight += 80;
+
   containerHeight.value = Math.max(650, totalHeight);
-});
+}, { immediate: true });
 
 function setActive(index) {
   activeIndex.value = index;
@@ -125,63 +126,45 @@ function closeAll() {
 </script>
 
 <style scoped>
-/* Главный контейнер на всю ширину */
+/* Главный контейнер — на всю ширину VitePress */
 .feature-selector-container {
   position: relative;
   width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
   background-color: transparent;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  overflow: hidden;
-  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
+  transition: min-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Контейнер с фоновым изображением и элементами */
+/* Обертка контента */
 .content-wrapper {
+  position: relative;
   display: flex;
   align-items: flex-start;
-  height: 100%;
-  padding: 40px 0; /* Сдвигает все влево */
-  background-size: auto 50%;
-  background-position: right center;
-  background-repeat: no-repeat;
+  width: 100%;
+  padding: 40px 0;
+  gap: 0;
 }
 
-/* Кнопка "Закрыть всё" */
-.close-all-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 100;
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #8A8A8E;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.close-all-btn:hover {
-  background-color: #111;
-  color: #fff;
-}
-
-/* Пустое место для стрелок, прижатое влево и центрирующее их */
+/* Навигационные стрелки — прижаты к левому краю */
 .nav-placeholder {
-  position: relative;
   width: 52px;
-  height: 100%;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-left: 16px; /* Минимальный отступ на мобильных */
 }
 
-/* Навигационные стрелки */
+@media (min-width: 768px) {
+  .nav-placeholder {
+    padding-left: 0; /* Без отступа на десктопе */
+  }
+}
+
+/* Стрелки */
 .nav-arrows {
   display: flex;
   flex-direction: column;
@@ -200,7 +183,7 @@ function closeAll() {
   transition: background-color 0.2s ease;
 }
 .arrow-button svg {
-  pointer-events: none; /* Клик проходит сквозь SVG на кнопку */
+  pointer-events: none;
 }
 .arrow-button:hover:not(:disabled) {
   background-color: #1a1a1a;
@@ -210,19 +193,28 @@ function closeAll() {
   cursor: not-allowed;
 }
 
-/* Список элементов */
+/* Список элементов — прижат влево */
 .feature-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding-left: 16px;
+  flex: 1;
+  max-width: 500px;
+}
+
+@media (min-width: 768px) {
+  .feature-list {
+    padding-left: 0; /* Без отступа на десктопе */
+  }
 }
 
 .feature-item-wrapper {
   width: max-content;
-  max-width: 450px;
+  max-width: 100%;
 }
 
-/* Стили кнопки-пилюли */
+/* Пилюля */
 .pill-button {
   display: flex;
   align-items: center;
@@ -254,7 +246,7 @@ function closeAll() {
   white-space: nowrap;
 }
 
-/* Стили блока с контентом */
+/* Контент */
 .content-box {
   background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(15px);
@@ -266,9 +258,72 @@ function closeAll() {
   font-size: 17px;
   line-height: 1.5;
   font-weight: 500;
+  max-width: 100%;
 }
 :deep(.content-box strong) {
   font-weight: 700;
+  color: #fff;
+}
+
+/* Изображение чашки — фиксировано справа */
+.cup-image-wrapper {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40%;
+  max-width: 500px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cup-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+}
+
+@media (max-width: 1024px) {
+  .cup-image-wrapper {
+    width: 35%;
+  }
+}
+
+@media (max-width: 768px) {
+  .cup-image-wrapper {
+    width: 40%;
+    right: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cup-image-wrapper {
+    display: none; /* Скрываем на очень маленьких экранах */
+  }
+}
+
+/* Кнопка закрытия */
+.close-all-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8A8A8E;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.close-all-btn:hover {
+  background-color: #111;
   color: #fff;
 }
 
