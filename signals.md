@@ -5,7 +5,7 @@ next: false
 pageClass: centered-page
 notification: brew
 title: Как работает Сигнал
-description: Просто скажите, что не так
+description: Просто скажите что не так
 ---
 <div align="center">
 
