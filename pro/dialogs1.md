@@ -38,8 +38,6 @@ notification: brew
 
 <DialogsSteps />
 
-<SignalDashboardSwitcher />
-
 # ИИ-ассистент Анна.
 
 ## Внимательный и точный ассистент, который ведёт до результата. Понимает с полуслова.
