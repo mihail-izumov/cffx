@@ -7,7 +7,7 @@
           <strong>Ваши отзывы меняют всё.</strong>
         </p>
         <p class="user-card-highlight">
-          Каждый Сигнал помогает любимым кофейням стать лучше уже сегодня.
+          Каждый Сигнал помогает бизнесу стать лучше уже сегодня.
         </p>
       </div>
       <button @click="openModal" class="user-card-button">
@@ -17,7 +17,7 @@
     
     <div class="user-coffee-card">
       <div class="user-card-content">
-        <h3 class="user-card-title">Для Кофейни</h3>
+        <h3 class="user-card-title">Для Бизнеса</h3>
         <p class="user-card-description">
           <strong>Настоящая аналитика для роста.</strong>
         </p>
