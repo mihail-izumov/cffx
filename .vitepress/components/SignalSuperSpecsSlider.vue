@@ -12,18 +12,9 @@
         tabindex="0"
         role="link"
       >
-        <!-- ПРОСТАЯ ИКОНКА — КАК В РАБОЧЕЙ ВЕРСИИ -->
+        <!-- SVG встроенный — ЯРКИЙ -->
         <div class="sss-card-background-icon">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="#4a4a4a" 
-            stroke-width="1.8" 
-            stroke-linecap="round" 
-            stroke-linejoin="round"
-            class="icon-volume"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#4a4a4a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path v-for="path in slide.paths" :d="path"/>
             <circle v-if="slide.circle" :cx="slide.circle.cx" :cy="slide.circle.cy" :r="slide.circle.r"/>
             <rect v-if="slide.rect" :width="slide.rect.w" :height="slide.rect.h" :x="slide.rect.x" :y="slide.rect.y" :rx="slide.rect.rx" :ry="slide.rect.ry"/>
@@ -33,7 +24,6 @@
           </svg>
         </div>
 
-        <!-- ТЕКСТ -->
         <h3 class="sss-title">{{ slide.headline }}</h3>
         <p class="sss-step-goals">{{ slide.benefit }}</p>
         <p class="sss-description-secondary">
@@ -49,7 +39,6 @@
       </a>
     </div>
 
-    <!-- КНОПКИ -->
     <div class="sss-nav-buttons">
       <button class="sss-nav-btn sss-nav-prev" @click="scrollPrev" aria-label="Предыдущий слайд">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -75,40 +64,38 @@ const sliderContainer = ref(null)
 
 const slides = [
   {
+    link: '/pro/feedback',
     headline: 'Обратная связь за пару кликов',
     benefit: 'Гость легко и быстро сообщает о проблеме, а вы получаете все обращения точно и вовремя.',
     control: 'Виджет работает на сайте, в приложении или в любом формате для сферы услуг.',
     details: 'Любой клиент фитнеса или гость ресторана оставляет обратную связь за пару кликов — Сигнал или отзыв в Яндекс/2ГИС. Если гость недоволен, Сигнал сразу идёт команде, а не в открытые рейтинги. Положительные отклики легко отправляются на агрегаторы.',
     paths: [
-      'M14 4.1 12 6',
-      'm5.1 8-2.9-.8',
-      'm6 12-1.9 2',
-      'M7.2 2.2 8 5.1',
+      'M14 4.1 12 6', 'm5.1 8-2.9-.8', 'm6 12-1.9 2', 'M7.2 2.2 8 5.1',
       'M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z'
-    ],
-    link: '/pro1'
+    ]
   },
   {
+    link: '/pro/smart-form',
     headline: 'Умная форма',
     benefit: 'Вы получаете готовую форму с цепочками сценариев, согласование — 1 день, без погружения в технологию.',
     control: 'Настраиваем форму под специфику бизнеса — структуру Сигналов, формулировки, точки напряжения.',
     details: 'Форма построена на 150+ уникальной цепочке — для каждого случая есть свой сценарий, три уровня детализации и автоматическая маршрутизация. Не отзыв, а Сигнал — 30 секунд, система сама подсказывает сценарий.',
     rect: { w: '18', h: '14', x: '3', y: '5', rx: '2', ry: '2' },
-    paths: ['M7 15h4','M15 15h2','M7 11h2','M13 11h4'],
-    link: '/pro1'
+    paths: ['M7 15h4', 'M15 15h2', 'M7 11h2', 'M13 11h4']
   },
   {
+    link: '/pro/tickets',
     headline: 'Тикеты в Телеграм',
     benefit: 'Все задачи решаются вовремя, рекомендации работают, ошибки исключены.',
     control: 'Видите статус, сроки, причину проблемы и итог — система концентрируется на пользу для гостя.',
     details: 'Каждый Сигнал превращается в тикет с рекомендацией, маршрутом и сроком решения. Тикеты хранят всю историю коммуникации, решение и удовлетворённость гостя. Вместо CRM — удобные тикеты в Телеграм: 1 Сигнал = 1 тикет, всё на своем месте, это комфортно для команды.',
     paths: [
       'M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z',
-      'M7 11h10','M7 15h6','M7 7h8'
-    ],
-    link: '/pro1'
+      'M7 11h10', 'M7 15h6', 'M7 7h8'
+    ]
   },
   {
+    link: '/pro/operator',
     headline: 'Поддержка оператора',
     benefit: 'Ваша команда не теряет время на рутину — оператор берёт на себя обработку, координацию и контроль, вы фокусируетесь на развитии сервиса.',
     control: 'Оператор работает по правилам и срокам вашего бизнеса.',
@@ -116,49 +103,46 @@ const slides = [
     paths: [
       'M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z',
       'M21 16v2a4 4 0 0 1-4 4h-5'
-    ],
-    link: '/pro1'
+    ]
   },
   {
+    link: '/pro/anna',
     headline: 'ИИ-ассистент Анна',
     benefit: 'Каждый гость получает заботу и реальное решение, а бизнес — рост лояльности.',
     control: 'Управляете сценариями и стандартами Анны — она действует строго в рамках ваших правил.',
     details: 'Анна — не бот, а безупречный ИИ-ассистент, который ведёт индивидуальный диалог с гостем. Она задаёт уточняющие вопросы, разбирается в эмоциях, предлагает решение и сопровождает до результата — без шаблонов и формальных ответов. Анна работает вместе с оператором и обеспечивает персональный подход к каждому клиенту и к каждой ситуации в строгом соответствии со стандартами компании.',
     paths: [
       'M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z',
-      'M20 2v4','M22 4h-4'
+      'M20 2v4', 'M22 4h-4'
     ],
-    circle: { cx: '4', cy: '20', r: '2' },
-    link: '/pro1'
+    circle: { cx: '4', cy: '20', r: '2' }
   },
   {
+    link: '/pro/turnkey',
     headline: 'Система под ключ',
     benefit: 'В работе всегда порядок и прозрачность, никакой путаницы или ручных настроек.',
     control: 'Внедрение за 2 недели, обучение команды, настройка под специфику бизнеса.',
     details: 'Сигнал строит и управляет всей инфраструктурой работы с обратной связью: виджет, форма, оператор, платформа, аналитика — всё готово под ключ. Система фиксирует причины проблем, выстраивает стандарты, управляет компенсациями и SLA/NPS — всё чётко под ваши стратегические цели.',
     paths: [
-      'M10 5H3','M12 19H3','M14 3v4','M16 17v4',
-      'M21 12h-9','M21 19h-5','M21 5h-7','M8 10v4','M8 12H3'
-    ],
-    link: '/pro1'
+      'M10 5H3', 'M12 19H3', 'M14 3v4', 'M16 17v4', 'M21 12h-9', 'M21 19h-5', 'M21 5h-7', 'M8 10v4', 'M8 12H3'
+    ]
   },
   {
+    link: '/pro/analytics',
     headline: 'Аналитика Сигнала',
     benefit: 'Принимаете уверенные решения на основе проверенных данных.',
     control: 'Получаете готовые управленческие отчёты с фактами — видите причины проблем, рост качества, зоны для развития.',
     details: 'Команда аналитиков Сигнала отслеживает время реакции, причины проблем, рост качества сервиса, оценки, NPS, повторные случаи — всё под запрос бизнеса. Мы формируем управленческие отчёты на реальных данных, визуализируем рост и точки развития.',
     paths: [
-      'M12 16v5','M16 14v7','M20 10v11',
-      'm22 3–8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15',
-      'M4 18v3','M8 14v7'
-    ],
-    link: '/pro1'
+      'M12 16v5', 'M16 14v7', 'M20 10v11', 'm22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15', 'M4 18v3', 'M8 14v7'
+    ]
   },
   {
+    link: '/pro/improvement',
     headline: 'Лучше с каждым Сигналом',
     benefit: 'Система непрерывно растёт и одновременно адаптируется к изменениям вашего бизнеса.',
     control: 'Прозрачный процесс на основе данных и вашей обратной связи.',
-    details: 'Все элементы системы — форма, Анна, тикет-система, платформа — постоянно обновляются и улучшаются на основе непрерывной анал824итики. Команда Сигнала следит за процессами и результатами, слушает вашу команду и гостей, суммирует опыт и оперативно вносит улучшения. Вы направляете развитие, получаете отчёты об обновлениях и изменениях, команда Сигнала делает систему лучше.',
+    details: 'Все элементы системы — форма, Анна, тикет-система, платформа — постоянно обновляются и улучшаются на основе непрерывной аналитики. Команда Сигнала следит за процессами и результатами, слушает вашу команду и гостей, суммирует опыт и оперативно вносит улучшения. Вы направляете развитие, получаете отчёты об обновлениях и изменениях, команда Сигнала делает систему лучше.',
     polygon: '12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2',
     lines: [
       { x1: '12', x2: '12', y1: '22', y2: '15.5' },
@@ -167,8 +151,7 @@ const slides = [
     polylines: [
       '22 8.5 12 15.5 2 8.5',
       '2 15.5 12 8.5 22 15.5'
-    ],
-    link: '/pro1'
+    ]
   }
 ]
 
@@ -184,88 +167,86 @@ const scrollPrev = () => {
 }
 </script>
 
-<style>
-.sss-slider-wrapper { position: relative; margin: 24px 0; }
+<style scoped>
+.sss-slider-wrapper { position: relative !important; margin: 24px 0 !important; }
 .sss-brands-container {
-  display: flex;
-  overflow-x: auto;
-  gap: 16px;
-  padding: 4px 0 12px 4px;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  margin-bottom: 16px;
+  display: flex !important;
+  overflow-x: auto !important;
+  gap: 16px !important;
+  padding: 4px 0 12px 4px !important;
+  scroll-behavior: smooth !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  margin-bottom: 16px !important;
 }
-.sss-brands-container::-webkit-scrollbar { display: none; }
+.sss-brands-container::-webkit-scrollbar { display: none !important; }
 
 .sss-brand-card {
-  flex: 0 0 320px;
-  border-radius: 12px;
-  padding: 48px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  border: 1px solid #333;
-  border-top: 4px solid rgba(197, 249, 70, 0.28);
-  position: relative;
-  min-height: 360px;
-  overflow: hidden;
-  transition: border-top-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background-color: #232323;
-  text-decoration: none;
-  cursor: pointer;
+  flex: 0 0 320px !important;
+  border-radius: 12px !important;
+  padding: 48px 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+  border-style: solid !important;
+  border-width: 1px !important;
+  border-top-width: 4px !important;
+  position: relative !important;
+  min-height: 360px !important;
+  overflow: hidden !important;
+  transition: border-top-color 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  background-color: #232323 !important;
+  border-color: #333 !important;
+  border-top-color: rgba(197, 249, 70, 0.28) !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
 }
-.sss-step-card:hover, .sss-brand-card.active { border-top-color: #C5F946; }
+.sss-step-card:hover, .sss-brand-card.active { border-top-color: #C5F946 !important; }
 
+/* ЯРКИЕ ФОНОВЫЕ ИКОНКИ */
 .sss-card-background-icon {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  width: 260px;
-  height: 260px;
-  opacity: 0.22;
-  pointer-events: none;
-  z-index: 0;
+  position: absolute !important;
+  bottom: 16px !important;
+  right: 16px !important;
+  width: 280px !important;
+  height: 280px !important;
+  opacity: 0.12 !important; /* ЯРЧЕ */
+  pointer-events: none !important;
+  z-index: 0 !important;
+  transition: opacity 0.4s ease, transform 0.4s ease !important;
+}
+.sss-card-background-icon svg {
+  width: 100% !important;
+  height: 100% !important;
+  stroke: #4a4a4a !important; /* СВЕТЛЕЕ ФОНА */
+  stroke-width: 1.8 !important;
+  fill: none !important;
 }
 
-.icon-volume {
-  width: 100%;
-  height: 100%;
+/* АКТИВНОЕ СОСТОЯНИЕ — ЕЩЁ ЯРЧЕ */
+.sss-step-card:hover .sss-card-background-icon,
+.sss-brand-card.active .sss-card-background-icon {
+  opacity: 0.22 !important;
+  transform: scale(1.03) !important;
 }
 
-.sss-title { font-size: 24px; line-height: 1.22; margin: 0; font-weight: 700; color: #ffffff; position: relative; z-index: 1; }
-.sss-step-goals { color: #C5F946; font-size: 16px; font-weight: 500; line-height: 1.65; margin: 0; position: relative; z-index: 1; }
-.sss-description-secondary { color: #b0b0b0; font-size: 16px; line-height: 1.6; margin: 0; flex-grow: 1; position: relative; z-index: 1; }
-.sss-control-label { color: #ffffff; font-weight: 700; font-size: 16px; }
-.sss-control-highlight {
-  background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.08) 50%);
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  color: #ffffff;
-  padding: 1px 5px;
-  border-radius: 1px;
-  transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
-  display: inline;
-  z-index: 1;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-  font-size: 16px;
-}
-.sss-step-card:hover .sss-control-highlight,
-.sss-brand-card.active .sss-control-highlight {
-  background-position: 0 0;
-  color: #1a1a1a;
-}
-.sss-description-main { color: #b0b0b0; font-size: 13px; line-height: 1.62; margin-top: auto; margin-bottom: 9px; position: relative; z-index: 1; }
-.sss-more-link-area { margin-top: 16px; margin-bottom: 4px; }
-.sss-more-link { font-size: 15px; color: #b0b0b0; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: color 0.3s; }
-.sss-more-link:hover, .sss-brand-card.active .sss-more-link { color: #C5F946; }
-.sss-arrow { font-size: 19px; margin-left: 2px; transition: transform 0.25s; }
-.sss-brand-card.active .sss-arrow, .sss-more-link:hover .sss-arrow { transform: translateX(9px); }
-.sss-nav-buttons { display: flex; gap: 8px; justify-content: flex-end; margin-right: 0; padding-right: 4px; }
-.sss-nav-btn { width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); }
-.sss-nav-prev { background-color: #e8e8e8; color: #232323; }
-.sss-nav-prev:hover { background-color: #d0d0d0; transform: scale(1.05); }
-.sss-nav-next { background-color: #ffffff; color: #232323; }
-.sss-nav-next:hover { background-color: #f5f5f5; transform: scale(1.05); }
+/* Остальные стили без изменений */
+.sss-title { font-size: 24px !important; line-height: 1.22 !important; margin: 0 !important; font-weight: 700 !important; color: #ffffff !important; position: relative !important; z-index: 1 !important; }
+.sss-step-goals { color: #C5F946 !important; font-size: 16px !important; font-weight: 500 !important; line-height: 1.65 !important; margin: 0 !important; position: relative !important; z-index: 1 !important; }
+.sss-description-secondary { color: #b0b0b0 !important; font-size: 16px !important; line-height: 1.6 !important; margin: 0 !important; flex-grow: 1 !important; position: relative !important; z-index: 1 !important; }
+.sss-control-label { color: #ffffff !important; font-weight: 700 !important; font-size: 16px !important; }
+.sss-control-highlight { background: linear-gradient(to right, #C5F946 0%, #C5F946 50%, rgba(197, 249, 70, 0.08) 50%) !important; background-size: 200% 100% !important; background-position: 100% 0 !important; background-color: rgba(197, 249, 70, 0.08) !important; color: #ffffff !important; padding: 1px 5px !important; margin: 0 !important; border-radius: 1px !important; transition: background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease !important; position: relative !important; display: inline !important; z-index: 1 !important; box-decoration-break: clone !important; -webkit-box-decoration-break: clone !important; line-height: 1.5 !important; vertical-align: baseline !important; font-size: 16px !important; }
+.sss-step-card:hover .sss-control-highlight, .sss-brand-card.active .sss-control-highlight { background-position: 0 0 !important; color: #1a1a1a !important; }
+.sss-description-main { color: #b0b0b0 !important; font-size: 13px !important; line-height: 1.62 !important; margin-top: auto !important; margin-bottom: 9px !important; position: relative !important; z-index: 1 !important; }
+.sss-more-link-area { margin-top: 16px !important; margin-bottom: 4px !important; }
+.sss-more-link { font-size: 15px !important; color: #b0b0b0 !important; font-weight: 500 !important; background: none !important; cursor: pointer !important; text-decoration: none !important; display: flex !important; align-items: center !important; gap: 6px !important; transition: color 0.3s !important; }
+.sss-more-link:hover, .sss-brand-card.active .sss-more-link { color: #C5F946 !important; }
+.sss-arrow { font-size: 19px !important; margin-left: 2px !important; transition: transform 0.25s !important; }
+.sss-brand-card.active .sss-arrow, .sss-more-link:hover .sss-arrow { transform: translateX(9px) !important; }
+.sss-nav-buttons { display: flex !important; gap: 8px !important; justify-content: flex-end !important; margin-right: 0 !important; padding-right: 4px !important; }
+.sss-nav-btn { width: 40px !important; height: 40px !important; border-radius: 50% !important; border: none !important; cursor: pointer !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: all 0.3s ease !important; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important; }
+.sss-nav-prev { background-color: #e8e8e8 !important; color: #232323 !important; }
+.sss-nav-prev:hover { background-color: #d0d0d0 !important; transform: scale(1.05) !important; }
+.sss-nav-next { background-color: #ffffff !important; color: #232323 !important; }
+.sss-nav-next:hover { background-color: #f5f5f5 !important; transform: scale(1.05) !important; }
 </style>
