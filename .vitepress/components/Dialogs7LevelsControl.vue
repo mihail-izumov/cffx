@@ -11,8 +11,12 @@
       </button>
     </transition>
 
-    <!-- ДЕСКТОП: ЧАШКА ПО ЦЕНТРУ, НОРМАЛЬНЫЙ РАЗМЕР -->
-    <div class="content-wrapper-desktop">
+    <!-- ДЕСКТОП: ЧАШКА КАК В ИСХОДНИКЕ -->
+    <div 
+      class="content-wrapper" 
+      :style="{ backgroundImage: `url('/cffx-cup.png')` }"
+    >
+      <!-- Стрелки слева -->
       <div class="nav-placeholder">
         <transition name="slide-in">
           <div v-if="activeIndex !== null" class="nav-arrows">
@@ -26,6 +30,7 @@
         </transition>
       </div>
 
+      <!-- Список -->
       <div class="feature-list">
         <div v-for="(item, index) in items" :key="item.id" class="feature-item-wrapper" ref="itemRefs">
           <transition name="item-swap" mode="out-in">
@@ -39,9 +44,6 @@
           </transition>
         </div>
       </div>
-
-      <!-- ЧАШКА ПО ЦЕНТРУ, НЕ ПРЫГАЕТ -->
-      <div class="image-placeholder-desktop"></div>
     </div>
 
     <!-- МОБИЛЬНАЯ: ЧАШКА ПО ЦЕНТРУ -->
@@ -71,7 +73,6 @@
         </div>
       </div>
 
-      <!-- ЧАШКА ПО ЦЕНТРУ -->
       <div class="image-mobile">
         <img src="/cffx-cup.png" alt="Чашка" />
       </div>
@@ -98,44 +99,50 @@ const items = ref([
 
 watch(activeIndex, async () => {
   await nextTick();
-  let total = 80;
+  let totalHeight = 80;
   const gap = 12;
-  itemRefs.value.forEach((el, i) => {
-    if (el) {
-      total += el.offsetHeight;
-      if (i < itemRefs.value.length - 1) total += gap;
-    }
-  });
-  containerHeight.value = Math.max(650, total);
+  if (itemRefs.value.length > 0) {
+    itemRefs.value.forEach((el, index) => {
+      if (el) {
+        totalHeight += el.offsetHeight;
+        if (index < itemRefs.value.length - 1) totalHeight += gap;
+      }
+    });
+  }
+  containerHeight.value = Math.max(650, totalHeight);
 }, { immediate: true });
 
-function setActive(i) { activeIndex.value = i; }
-function navigate(dir) {
+function setActive(index) { activeIndex.value = index; }
+function navigate(direction) {
   if (activeIndex.value === null) return;
-  const n = activeIndex.value + dir;
-  if (n >= 0 && n < items.value.length) activeIndex.value = n;
+  const newIndex = activeIndex.value + direction;
+  if (newIndex >= 0 && newIndex < items.value.length) activeIndex.value = newIndex;
 }
 function closeAll() { activeIndex.value = null; }
 </script>
 
 <style scoped>
-/* === КОНТЕЙНЕР === */
+/* === ГЛАВНЫЙ КОНТЕЙНЕР === */
 .feature-selector-container {
+  position: relative;
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
+  background-color: transparent;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow: hidden;
   transition: min-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
 }
 
-/* === ДЕСКТОП: ЧАШКА ПО ЦЕНТРУ, НЕ ПРЫГАЕТ === */
-.content-wrapper-desktop {
+/* === ДЕСКТОП: КАК В ИСХОДНИКЕ === */
+.content-wrapper {
   display: flex;
   align-items: flex-start;
   width: 100%;
   padding: 40px 0;
+  background-size: auto 60%;
+  background-position: right center;
+  background-repeat: no-repeat;
   box-sizing: border-box;
   min-height: 650px;
 }
@@ -150,12 +157,11 @@ function closeAll() { activeIndex.value = null; }
 }
 
 .feature-list {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex: 1;
   max-width: 500px;
-  padding-right: 40px;
 }
 
 .feature-item-wrapper {
@@ -163,14 +169,7 @@ function closeAll() { activeIndex.value = null; }
   max-width: 100%;
 }
 
-/* ЧАШКА ПО ЦЕНТРУ, РАЗМЕР КАК БЫЛ */
-.image-placeholder-desktop {
-  flex: 1;
-  min-height: 650px;
-  background: url('/cffx-cup.png') 50% center / 65% no-repeat;
-}
-
-/* === МОБИЛЬНАЯ: ЧАШКА ПО ЦЕНТРУ === */
+/* === МОБИЛЬНАЯ === */
 .content-wrapper-mobile {
   display: none;
   flex-direction: column;
@@ -204,24 +203,33 @@ function closeAll() { activeIndex.value = null; }
 
 /* === ПЕРЕКЛЮЧЕНИЕ === */
 @media (max-width: 768px) {
-  .content-wrapper-desktop { display: none; }
+  .content-wrapper { display: none; }
   .content-wrapper-mobile { display: flex; }
   .feature-item-wrapper { width: 100%; }
 }
 
-/* === ПИЛЮЛЯ, КОНТЕНТ, СТРЕЛКИ, КНОПКА — БЕЗ ИЗМЕНЕНИЙ === */
-.pill-button { 
-  display: flex; align-items: center; gap: 12px; background: #000; border: none; 
-  border-radius: 24px; padding: 14px 20px; width: 100%; text-align: left; 
-  cursor: pointer; transition: background 0.2s; box-sizing: border-box; 
+/* === ПИЛЮЛЯ === */
+.pill-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #000;
+  border: none;
+  border-radius: 24px;
+  padding: 14px 20px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
-.pill-button:hover { background: #111; }
+.pill-button:hover { background-color: #111; }
 .pill-icon-wrapper { color: #8A8A8E; flex-shrink: 0; }
 .pill-icon-wrapper svg { width: 24px; height: 24px; }
 .pill-title { color: #F2F2F7; font-size: 17px; font-weight: 600; white-space: nowrap; }
 
+/* === КОНТЕНТ === */
 .content-box {
-  background: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-radius: 24px;
@@ -236,32 +244,59 @@ function closeAll() { activeIndex.value = null; }
 }
 :deep(.content-box strong) { font-weight: 700; color: #fff; }
 
-.nav-arrows, .nav-arrows-mobile { display: flex; flex-direction: column; gap: 16px; }
+/* === СТРЕЛКИ === */
+.nav-arrows, .nav-arrows-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 .nav-arrows-mobile { flex-direction: row; }
 
 .arrow-button {
-  width: 44px; height: 44px; border-radius: 50%; background: #000; border: none;
-  display: flex; align-items: center; justify-content: center; cursor: pointer;
-  transition: all 0.2s;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #000;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 .arrow-button svg { pointer-events: none; }
-.arrow-button:hover:not(:disabled) { background: #1a1a1a; }
-.arrow-button:disabled { background: #000; opacity: 0.6; cursor: not-allowed; }
+.arrow-button:hover:not(:disabled) { background-color: #1a1a1a; }
+.arrow-button:disabled { opacity: 0.6; cursor: not-allowed; }
 
+/* === КНОПКА ЗАКРЫТИЯ === */
 .close-all-btn {
-  position: absolute; top: 20px; right: 20px; z-index: 100;
-  background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); border: none;
-  border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center;
-  justify-content: center; color: #8A8A8E; cursor: pointer; transition: all 0.2s;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8A8A8E;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
-.close-all-btn:hover { background: #111; color: #fff; }
+.close-all-btn:hover { background-color: #111; color: #fff; }
 
 /* === АНИМАЦИИ === */
-.fade-enter-active, .fade-leave-active { transition: opacity 0.3s; }
+.fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
 .slide-in-enter-active { transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
 .slide-in-leave-active { transition: all 0.3s cubic-bezier(0.5, 0, 0.75, 0); }
 .slide-in-enter-from, .slide-in-leave-to { opacity: 0; transform: translateX(-20px); }
+
 .item-swap-enter-active, .item-swap-leave-active { transition: all 0.3s ease-in-out; }
 .item-swap-enter-from, .item-swap-leave-to { opacity: 0; transform: scale(0.95); }
 </style>
