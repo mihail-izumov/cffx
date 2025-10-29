@@ -11,7 +11,7 @@
       </button>
     </transition>
 
-    <!-- ДЕСКТОП: ЧАШКА ВИДНА -->
+    <!-- ДЕСКТОП: ЧАШКА ПО ЦЕНТРУ, НОРМАЛЬНЫЙ РАЗМЕР -->
     <div class="content-wrapper-desktop">
       <div class="nav-placeholder">
         <transition name="slide-in">
@@ -40,11 +40,11 @@
         </div>
       </div>
 
-      <!-- ЧАШКА ВИДНА -->
+      <!-- ЧАШКА ПО ЦЕНТРУ, НЕ ПРЫГАЕТ -->
       <div class="image-placeholder-desktop"></div>
     </div>
 
-    <!-- МОБИЛЬНАЯ: как было -->
+    <!-- МОБИЛЬНАЯ: ЧАШКА ПО ЦЕНТРУ -->
     <div class="content-wrapper-mobile">
       <transition name="slide-in">
         <div v-if="activeIndex !== null" class="nav-arrows-mobile">
@@ -71,6 +71,7 @@
         </div>
       </div>
 
+      <!-- ЧАШКА ПО ЦЕНТРУ -->
       <div class="image-mobile">
         <img src="/cffx-cup.png" alt="Чашка" />
       </div>
@@ -129,7 +130,7 @@ function closeAll() { activeIndex.value = null; }
   position: relative;
 }
 
-/* === ДЕСКТОП: ЧАШКА ВИДНА === */
+/* === ДЕСКТОП: ЧАШКА ПО ЦЕНТРУ, НЕ ПРЫГАЕТ === */
 .content-wrapper-desktop {
   display: flex;
   align-items: flex-start;
@@ -154,7 +155,7 @@ function closeAll() { activeIndex.value = null; }
   flex-direction: column;
   gap: 12px;
   max-width: 500px;
-  padding-right: 80px; /* ДАЁМ МЕСТО ЧАШКЕ */
+  padding-right: 40px;
 }
 
 .feature-item-wrapper {
@@ -162,15 +163,14 @@ function closeAll() { activeIndex.value = null; }
   max-width: 100%;
 }
 
-/* ЧАШКА — ВИДНА НА 100% */
+/* ЧАШКА ПО ЦЕНТРУ, РАЗМЕР КАК БЫЛ */
 .image-placeholder-desktop {
   flex: 1;
   min-height: 650px;
-  background: url('/cffx-cup.png') 90% center / contain no-repeat;
-  background-size: 70%;
+  background: url('/cffx-cup.png') 50% center / 65% no-repeat;
 }
 
-/* === МОБИЛЬНАЯ === */
+/* === МОБИЛЬНАЯ: ЧАШКА ПО ЦЕНТРУ === */
 .content-wrapper-mobile {
   display: none;
   flex-direction: column;
@@ -198,6 +198,8 @@ function closeAll() { activeIndex.value = null; }
 .image-mobile img {
   max-width: 70%;
   height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 /* === ПЕРЕКЛЮЧЕНИЕ === */
@@ -208,7 +210,11 @@ function closeAll() { activeIndex.value = null; }
 }
 
 /* === ПИЛЮЛЯ, КОНТЕНТ, СТРЕЛКИ, КНОПКА — БЕЗ ИЗМЕНЕНИЙ === */
-.pill-button { display: flex; align-items: center; gap: 12px; background: #000; border: none; border-radius: 24px; padding: 14px 20px; width: 100%; text-align: left; cursor: pointer; transition: background 0.2s; box-sizing: border-box; }
+.pill-button { 
+  display: flex; align-items: center; gap: 12px; background: #000; border: none; 
+  border-radius: 24px; padding: 14px 20px; width: 100%; text-align: left; 
+  cursor: pointer; transition: background 0.2s; box-sizing: border-box; 
+}
 .pill-button:hover { background: #111; }
 .pill-icon-wrapper { color: #8A8A8E; flex-shrink: 0; }
 .pill-icon-wrapper svg { width: 24px; height: 24px; }
