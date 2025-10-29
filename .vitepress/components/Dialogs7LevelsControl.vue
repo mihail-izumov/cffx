@@ -1,4 +1,3 @@
-<DOCUMENT filename="Dialogs7LevelsControl.vue">
 <template>
   <div class="feature-selector-container" :style="{ minHeight: containerHeight + 'px' }">
     
@@ -330,4 +329,3 @@ function closeAll() {
 .item-swap-enter-active, .item-swap-leave-active { transition: all 0.3s ease-in-out; }
 .item-swap-enter-from, .item-swap-leave-to { opacity: 0; transform: scale(0.95); }
 </style>
-</DOCUMENT>
