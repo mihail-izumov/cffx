@@ -58,12 +58,16 @@ description: Просто скажите что не так
 
 ### Ваш Сигнал – это команда к действию для кофейни и видимый результат для вас
 
-<SignalSteps />
-<SignalSendButton />
-
 </div>
 
+<SignalSteps />
+
+<div align="center">
+  
+<SignalSendButton />
+
 ### Не просто мнение или жалоба – импульс к реальным улучшениям 
+</div>
 <br>
 <SignalsYandexVSSignal />
 
