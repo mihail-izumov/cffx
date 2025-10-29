@@ -1,6 +1,5 @@
 <template>
   <div class="signal-treemap-fix">
-    <!-- 2 ряда по 2 крупных карточки -->
     <div class="row row-2">
       <div v-for="(cat, i) in categories.slice(0,2)" :key="cat.category"
            class="card card-large"
@@ -11,7 +10,7 @@
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade">
+        <transition name="fade-smooth">
           <div v-if="activeIdx === i" class="card-tooltip"><div class="tooltip-text">{{ cat.desc }}</div></div>
         </transition>
       </div>
@@ -26,15 +25,14 @@
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade">
+        <transition name="fade-smooth">
           <div v-if="activeIdx === i+2" class="card-tooltip"><div class="tooltip-text">{{ cat.desc }}</div></div>
         </transition>
       </div>
     </div>
-    <!-- 3 в ряд (gap одинаковый) -->
     <div class="row row-3">
       <div v-for="(cat, i) in categories.slice(4,7)" :key="cat.category"
-           class="card card-mid"
+           class="card card-mid card-higher"
            @mouseenter="activeIdx = i+4"
            @mouseleave="activeIdx = -1"
            tabindex="0">
@@ -42,15 +40,14 @@
           <span class="card-problem card-mediumweight">{{ cat.category }}</span>
           <span class="card-percent card-mediumweight">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade">
+        <transition name="fade-smooth">
           <div v-if="activeIdx === i+4" class="card-tooltip"><div class="tooltip-text">{{ cat.desc }}</div></div>
         </transition>
       </div>
     </div>
-    <!-- 3 по ширине -->
     <div class="row row-3">
       <div v-for="(cat, i) in categories.slice(7,10)" :key="cat.category"
-           class="card card-mid"
+           class="card card-mid card-higher"
            @mouseenter="activeIdx = i+7"
            @mouseleave="activeIdx = -1"
            tabindex="0">
@@ -58,12 +55,11 @@
           <span class="card-problem card-mediumweight">{{ cat.category }}</span>
           <span class="card-percent card-mediumweight">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade">
+        <transition name="fade-smooth">
           <div v-if="activeIdx === i+7" class="card-tooltip"><div class="tooltip-text">{{ cat.desc }}</div></div>
         </transition>
       </div>
     </div>
-    <!-- по одной карточке (максимальная ширина, минимальная высота, одинаковый отступ) -->
     <div class="column-center">
       <div v-for="(cat, i) in categories.slice(10)" :key="cat.category"
            class="card card-wide"
@@ -74,7 +70,7 @@
           <span class="card-problem card-mediumweight">{{ cat.category }}</span>
           <span class="card-percent card-mediumweight">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade">
+        <transition name="fade-smooth">
           <div v-if="activeIdx === i+10" class="card-tooltip"><div class="tooltip-text">{{ cat.desc }}</div></div>
         </transition>
       </div>
@@ -117,10 +113,15 @@ const categories = [
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 6px;
-  gap: 6px;
+  gap: 0;
 }
-.row-2 {gap: 6px;}
-.row-3 {gap: 6px;}
+.row-2, .row-3 {gap: 0;}
+.row-2 > .card, .row-3 > .card {
+  margin-right: 6px;
+}
+.row-2 > .card:last-child, .row-3 > .card:last-child {
+  margin-right: 0;
+}
 .column-center { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
 
 .card {
@@ -137,11 +138,13 @@ const categories = [
   margin: 0;
   word-break: break-word;
   box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
 }
 
+/* Карточки: 2 в ряд большие, 3 в ряд средние, 1 в ряд широкие */
 .card-large {
   flex: 1 1 0px;
-  width: 100%;
   min-width: 120px;
   max-width: 100%;
   height: 76px;
@@ -149,17 +152,19 @@ const categories = [
 }
 .card-mid {
   flex: 1 1 0px;
-  width: 100%;
   min-width: 86px;
   max-width: 100%;
-  height: 48px;
+  height: 52px;
   font-size: clamp(0.88rem, .88vw, 0.97rem);
+}
+.card-higher { /* увеличение высоты для 3 в ряд */
+  height: 68px;
 }
 .card-wide {
   width: 100%;
   max-width: 100%;
   min-width: 140px;
-  height: 38px;
+  height: 42px;
   font-size: clamp(0.88rem, .88vw, 0.97rem);
   display: flex;
 }
@@ -172,7 +177,7 @@ const categories = [
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 8px;
+  padding: 0 5px;
   gap: 0;
   min-height: inherit;
   box-sizing: border-box;
@@ -187,22 +192,22 @@ const categories = [
   line-height: 1.11;
   font-size: 1em;
   flex: 4 1 0;
+  padding-left: 1px;
 }
 .card-percent {
   font-weight: 500;
   text-align: right;
   font-size: 0.93em;
-  margin-left: 8px;
+  margin-left: 6px;
   color: #eaeaea;
   opacity: 0.48;
   min-width: 38px;
   max-width: 70px;
   white-space: nowrap;
   flex: 1 1 0;
+  padding-right: 2px;
 }
-.card-mediumweight {
-  font-weight: 500 !important;
-}
+.card-mediumweight { font-weight: 500 !important; }
 .card-tooltip {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -210,8 +215,8 @@ const categories = [
   border-radius: 12px; z-index: 120;
   box-shadow: 0 4px 16px #16171724;
   display: flex; align-items: flex-start; justify-content: flex-start;
-  padding: 11px 8px 8px 13px;
-  animation: tooltipPop 0.18s;
+  padding: 10px 5px 8px 4px;
+  animation: tooltipPop 0.34s;
 }
 .tooltip-text {
   font-size: 0.88rem;
@@ -224,30 +229,39 @@ const categories = [
   white-space: pre-line;
   overflow-wrap: break-word;
   word-break: break-word;
+  padding-left: 1px;
 }
+/* Fade плавнее */
+.fade-smooth-enter-active, .fade-smooth-leave-active {
+  transition: opacity 0.44s cubic-bezier(.55,0,.2,1);
+}
+.fade-smooth-enter-from, .fade-smooth-leave-to { opacity: 0 }
 
-/* Анимации и мобильная адаптация */
-.fade-enter-active, .fade-leave-active { transition: opacity 0.19s }
-.fade-enter-from, .fade-leave-to { opacity: 0 }
 @keyframes tooltipPop {
-  0% { opacity: 0.7; transform: scale(0.96); }
+  0% { opacity: 0.5; transform: scale(0.98); }
   100% { opacity: 1; transform: scale(1); }
 }
 
 @media (max-width: 700px) {
-  .signal-treemap-fix, .row {max-width: 99vw; width: 99vw;}
-  .row, .row-2, .row-3, .column-center {gap: 3px; margin-bottom: 3px;}
-  .card-large {height: 21vw;font-size:0.92rem;}
-  .card-mid {height:12vw;font-size:0.79rem;}
-  .card-wide {height:8vw;font-size:0.79rem;}
-  .card-inner, .card-inner-large, .card-inner-mid, .card-inner-wide {padding: 0 4px;}
-  .tooltip-text {font-size:0.78rem;}
+  .signal-treemap-fix, .row {max-width: 100vw; width: 100vw; box-sizing: border-box;}
+  .row,
+  .row-2,
+  .row-3,
+  .column-center {gap: 0;margin-bottom: 3.5px;}
+  .row-2 > .card, .row-3 > .card {margin-right: 3px;}
+  .row-2 > .card:last-child, .row-3 > .card:last-child {margin-right: 0;}
+  .card-large {height: 24vw;font-size:0.93rem;}
+  .card-mid {height:18vw;font-size:0.82rem;}
+  .card-higher {height:26vw;}
+  .card-wide {height:12vw;font-size:0.82rem;}
+  .card-inner, .card-inner-large, .card-inner-mid, .card-inner-wide, .card-tooltip {.padding-left: 3px; .padding-right: 3px;}
+  .tooltip-text {font-size:0.76rem;}
 }
 
 @media (max-width: 420px) {
   .card-large {font-size:0.75rem;}
-  .card-mid, .card-wide {font-size:0.70rem;}
-  .card-inner, .card-inner-large, .card-inner-mid, .card-inner-wide {padding: 0 1px;}
-  .tooltip-text {font-size:0.75rem;}
+  .card-mid, .card-wide {font-size:0.66rem;}
+  .card-inner, .card-inner-large, .card-inner-mid, .card-inner-wide, .card-tooltip {padding-left: 1px; padding-right: 1px;}
+  .tooltip-text {font-size:0.67rem;}
 }
 </style>
