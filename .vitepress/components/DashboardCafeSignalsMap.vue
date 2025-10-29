@@ -1,7 +1,6 @@
 <template>
   <div class="signal-treemap">
-    <!-- 2 ряда по 2 крупных -->
-    <div class="row row-2">
+    <div class="row">
       <div
         v-for="(cat, i) in categories.slice(0,2)"
         :key="cat.category"
@@ -18,7 +17,7 @@
         </transition>
       </div>
     </div>
-    <div class="row row-2">
+    <div class="row">
       <div
         v-for="(cat, i) in categories.slice(2,4)"
         :key="cat.category"
@@ -35,7 +34,6 @@
         </transition>
       </div>
     </div>
-    <!-- 3 в ряд -->
     <div class="row row-3">
       <div
         v-for="(cat, i) in categories.slice(4,7)"
@@ -53,7 +51,6 @@
         </transition>
       </div>
     </div>
-    <!-- 3 по ширине -->
     <div class="row row-3">
       <div
         v-for="(cat, i) in categories.slice(7,10)"
@@ -71,7 +68,7 @@
         </transition>
       </div>
     </div>
-    <!-- по одной карточке, шире, ниже, центр -->
+    <!-- Одинарные карточки: всегда во всю ширину, по одному в строке -->
     <div class="column-center">
       <div v-for="(cat, i) in categories.slice(10)" :key="cat.category"
            class="card card-wide"
@@ -114,23 +111,23 @@ const categories = [
 <style scoped>
 .signal-treemap {
   width: 100%;
-  max-width: 900px;
+  max-width: 880px;
   min-width: 300px;
   margin: 0 auto;
+  padding: 0;
   display: flex; flex-direction: column;
-  gap: 0; padding: 0; background: none;
+  gap: 0;
+  box-sizing: border-box;
 }
 .row {
   display: flex;
   width: 100%;
-  box-sizing: border-box;
+  gap: 8px;
   margin-bottom: 8px;
-  gap: 12px;
+  box-sizing: border-box;
 }
-.row-2 {gap: 12px;}
-.row-3 {gap: 12px;}
-.column-center { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-/* Одинаковые параметры для всех карточек внутри группы */
+.row-3 > .card { flex: 1 1 0; }
+.column-center { display: flex; flex-direction: column; gap: 8px; }
 .card {
   background: #232427;
   color: #eaeaea;
@@ -139,100 +136,88 @@ const categories = [
   transition: box-shadow 0.14s, transform 0.14s;
   cursor: pointer;
   min-width: 0;
-  display: flex;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  margin: 0;
-}
-/* Размеры карточек для разных типов */
-.card-large {
-  flex: 1 1 0;
-  min-width: 210px;
-  max-width: 100%;
-  height: 86px;
-  font-size: clamp(0.93rem, 2vw, 1.18rem);
-}
-.card-mid {
-  flex: 1 1 0;
-  min-width: 130px;
-  max-width: 100%;
-  height: 57px;
-  font-size: 1rem;
-}
-.card-wide {
   width: 100%;
   max-width: 100%;
-  min-width: 210px;
-  height: 48px;
-  font-size: 1rem;
-  margin-bottom: 0;
+  box-sizing: border-box;
   display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
-/* Внутри карточки строгий паддинг и центр/medium weight */
-.card-inner,
-.card-inner-large,
-.card-inner-mid,
-.card-inner-wide {
+.card-large {
+  height: 82px;
+  font-size: clamp(1rem, 2vw, 1.18rem);
+}
+.card-mid {
+  height: 48px;
+  font-size: clamp(0.90rem, 1vw, 1rem);
+}
+.card-wide {
+  height: 42px;
+  font-size: clamp(0.90rem, 1vw, 1rem);
+  width: 100%;
+  max-width: 100%;
+}
+
+.card-inner, .card-inner-large, .card-inner-mid, .card-inner-wide {
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
   box-sizing: border-box;
+  padding: 0 7px;
   min-height: inherit;
   gap: 0;
+  overflow: hidden;
 }
-.card-inner-wide {justify-content: center;}
+.card-inner-wide { justify-content: center; }
 .card-problem {
   font-weight: 500;
   text-align: left;
   white-space: pre-line;
   overflow-wrap: break-word;
-  word-break: break-word;
+  word-break: normal;
   line-height: 1.13;
   font-size: 1em;
   flex: 4 1 0;
 }
 .card-percent {
-  font-weight: 400;
+  font-weight: 500;
   text-align: right;
   font-size: 0.91em;
-  margin-left: 8px;
+  margin-left: 6px;
   color: #eaeaea;
   opacity: 0.47;
-  min-width: 42px;
+  min-width: 40px;
   max-width: 70px;
   white-space: nowrap;
   flex: 1 1 0;
 }
-.card-mediumweight {
-  font-weight: 500 !important;
-}
+.card-mediumweight { font-weight: 500 !important; }
 .card-tooltip {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   background: #161719ee; color: #ededed;
   border-radius: 13px; z-index: 120;
   box-shadow: 0 4px 16px #16171724;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  display: flex; align-items: flex-start; justify-content: flex-start;
   padding: 12px 10px 10px 14px;
   animation: tooltipPop 0.18s;
 }
 .tooltip-text {
-  font-size: 0.93rem;
+  font-size: 0.92rem;
   font-weight: 400;
   color: #ededed;
   line-height: 1.31;
   text-align: left;
   letter-spacing: 0.01em;
   max-width: 98%;
-  margin: 0; white-space: pre-line;
+  margin: 0;
+  white-space: pre-line;
   overflow-wrap: break-word;
-  word-break: break-word;
+  word-break: normal;
 }
 .fade-enter-active, .fade-leave-active { transition: opacity 0.19s }
 .fade-enter-from, .fade-leave-to { opacity: 0 }
@@ -241,24 +226,21 @@ const categories = [
   100% { opacity: 1; transform: scale(1); }
 }
 
+/* MOBILE ADAPTIVE */
 @media (max-width: 800px) {
-  .signal-treemap, .row {max-width: 99vw; width: 99vw;}
-  .row, .row-2, .row-3, .column-center {gap: 5px; margin-bottom: 5px;}
-  .card-large {height: 15vw;font-size:0.95rem;}
-  .card-mid {height: 8.5vw;font-size:0.90rem;}
-  .card-wide {height: 7vw;font-size:0.90rem;}
-  .card-inner,
-  .card-inner-large,
-  .card-inner-mid,
-  .card-inner-wide {padding: 0 7px;}
-  .tooltip-text {font-size:0.88rem;}
-}
-
-@media (max-width: 520px) {
-  .card-large {height: 37vw;font-size:0.84rem;}
-  .card-mid {height: 23vw;font-size:0.76rem;}
-  .card-wide {height:19vw;font-size:0.78rem;}
+  .signal-treemap, .row {max-width: 100vw; width: 100vw;}
+  .row, .column-center { gap: 5px; margin-bottom: 5px;}
+  .card-large {height: 15vw; font-size:0.93rem;}
+  .card-mid, .card-wide {height: 9vw; font-size:0.83rem;}
   .card-inner, .card-inner-large, .card-inner-mid, .card-inner-wide {padding: 0 3px;}
-  .tooltip-text {font-size:0.78rem;}
+  .tooltip-text {font-size:0.83rem;}
+}
+@media (max-width: 480px) {
+  .signal-treemap {max-width:100vw;}
+  .row, .column-center { gap: 3px; margin-bottom: 3px;}
+  .card-large {height: 19vw; font-size:0.79rem;}
+  .card-mid, .card-wide {height:13vw; font-size:0.74rem;}
+  .card-inner, .card-inner-large, .card-inner-mid, .card-inner-wide {padding: 0 1vw;}
+  .tooltip-text {font-size:0.72rem;}
 }
 </style>
