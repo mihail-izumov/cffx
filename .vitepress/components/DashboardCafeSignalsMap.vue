@@ -224,7 +224,7 @@ const categories = [
   font-size: clamp(0.92rem, 1.75vw, 1.12rem);
 }
 
-/* 3 средние карточки — шрифт меньше */
+/* 3 средние карточки */
 .card-mid {
   flex: 1 1 calc(33.333% - 4px);
   min-width: 0;
@@ -233,21 +233,21 @@ const categories = [
   font-size: clamp(0.78rem, 1.5vw, 0.92rem);
 }
 
-/* Нижние — очень компактные */
+/* Нижние — УМЕНЬШЕНА ВЫСОТА НА 10px */
 .card-wide {
   flex: 1 1 100%;
   min-width: 0;
-  min-height: 38px;
+  min-height: 28px; /* было 38px */
   height: auto;
   font-size: clamp(0.76rem, 1.45vw, 0.90rem);
 }
 
-/* === Внутренний контент === */
+/* === Внутренний контент — ОТСТУП СЛЕВА УМЕНЬШЕН НА 15px === */
 .card-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 10px;
+  padding: 8px 5px; /* было 8px 10px → 8px 5px */
   gap: 6px;
   width: 100%;
   box-sizing: border-box;
@@ -273,7 +273,7 @@ const categories = [
   text-align: right;
 }
 
-/* === Тултип — 100% непрозрачный === */
+/* === Тултип — 100% непрозрачный, тот же отступ слева === */
 .card-tooltip {
   position: absolute;
   inset: 0;
@@ -281,7 +281,7 @@ const categories = [
   color: #ededed;
   border-radius: 11px;
   z-index: 10;
-  padding: 8px 10px;
+  padding: 8px 5px; /* было 8px 10px */
   display: flex;
   align-items: flex-start;
   animation: tooltipPop 0.28s ease-out;
@@ -319,8 +319,7 @@ const categories = [
   .row, .row-2, .row-3 { gap: 5px; }
   .card-large { flex: 1 1 calc(50% - 2.5px); min-height: 66px; }
   .card-mid { flex: 1 1 calc(50% - 2.5px); min-height: 50px; }
-  .card-inner, .card-tooltip { padding: 7px 9px; }
-  .card-percent { font-size: 0.82em; min-width: 32px; }
+  .card-inner, .card-tooltip { padding: 7px 4px; } /* -15px слева */
 }
 
 @media (max-width: 480px) {
@@ -330,8 +329,8 @@ const categories = [
     min-height: 58px;
     font-size: clamp(0.78rem, 2.1vw, 0.88rem);
   }
-  .card-wide { min-height: 36px; }
-  .card-inner, .card-tooltip { padding: 7px 8px; gap: 5px; }
+  .card-wide { min-height: 26px; } /* -10px */
+  .card-inner, .card-tooltip { padding: 7px 4px; gap: 5px; }
   .card-percent { font-size: 0.80em; min-width: 30px; }
   .tooltip-text { font-size: 0.80rem; }
 }
