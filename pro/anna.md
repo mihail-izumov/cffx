@@ -9,8 +9,6 @@ notification: brew
 
 <SignalProductsSlider />
 
-<AnnaQuotes />
-
 <div align="center">
 
 <span class="signal-badge">Обновление: Октябрь 2025</span> <br>
@@ -32,6 +30,10 @@ notification: brew
 </div>
 
 <AnnaSpecsSlider />
+
+## Диалоги с Анной
+
+<AnnaQuotes />
 
 ## Сборка Октябрь 2025
 
