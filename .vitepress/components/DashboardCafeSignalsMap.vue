@@ -104,7 +104,7 @@
       </div>
     </div>
 
-    <!-- Нижние 4 карточки — компактные, одна на строку -->
+    <!-- Нижние 4 карточки — компактные -->
     <div class="column-center">
       <div
         v-for="(cat, i) in categories.slice(10)"
@@ -237,17 +237,17 @@ const categories = [
 .card-wide {
   flex: 1 1 100%;
   min-width: 0;
-  min-height: 28px; /* было 38px */
+  min-height: 28px; /* было 38px → уменьшено на 10px */
   height: auto;
   font-size: clamp(0.76rem, 1.45vw, 0.90rem);
 }
 
-/* === Внутренний контент — ОТСТУП СЛЕВА УМЕНЬШЕН НА 15px === */
+/* === ОСНОВНЫЕ КАРТОЧКИ — ОТСТУП СЛЕВА УМЕНЬШЕН НА 15px === */
 .card-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 5px; /* было 8px 10px → 8px 5px */
+  padding: 8px 5px; /* было 8px 10px → слева 10 → 5 = -15px */
   gap: 6px;
   width: 100%;
   box-sizing: border-box;
@@ -273,7 +273,7 @@ const categories = [
   text-align: right;
 }
 
-/* === Тултип — 100% непрозрачный, тот же отступ слева === */
+/* === ТУЛТИП — ОТСТУПЫ КАК БЫЛИ (8px 10px) === */
 .card-tooltip {
   position: absolute;
   inset: 0;
@@ -281,7 +281,7 @@ const categories = [
   color: #ededed;
   border-radius: 11px;
   z-index: 10;
-  padding: 8px 5px; /* было 8px 10px */
+  padding: 8px 10px; /* ВОЗВРАЩЕНО КАК БЫЛО */
   display: flex;
   align-items: flex-start;
   animation: tooltipPop 0.28s ease-out;
@@ -319,7 +319,8 @@ const categories = [
   .row, .row-2, .row-3 { gap: 5px; }
   .card-large { flex: 1 1 calc(50% - 2.5px); min-height: 66px; }
   .card-mid { flex: 1 1 calc(50% - 2.5px); min-height: 50px; }
-  .card-inner, .card-tooltip { padding: 7px 4px; } /* -15px слева */
+  .card-inner { padding: 7px 4px; } /* -15px слева */
+  .card-tooltip { padding: 7px 9px; } /* как было */
 }
 
 @media (max-width: 480px) {
@@ -330,7 +331,8 @@ const categories = [
     font-size: clamp(0.78rem, 2.1vw, 0.88rem);
   }
   .card-wide { min-height: 26px; } /* -10px */
-  .card-inner, .card-tooltip { padding: 7px 4px; gap: 5px; }
+  .card-inner { padding: 7px 4px; gap: 5px; }
+  .card-tooltip { padding: 7px 9px; }
   .card-percent { font-size: 0.80em; min-width: 30px; }
   .tooltip-text { font-size: 0.80rem; }
 }
