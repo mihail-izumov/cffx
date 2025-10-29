@@ -1,32 +1,43 @@
 <script setup>
 import { ref } from 'vue'
-const activeTab = ref('day-1')
+const activeTab = ref('dolhoe-ohidanie') // фикс: старт всегда с первой вкладки!
 </script>
 
 <template>
   <div class="signal-mr-tabs">
-    <button :class="{ 'signal-mr-active': activeTab === 'dolhoe-ohidanie' }" @click="activeTab = 'dolhoe-ohidanie'">
-      Долгое ожидание
-    </button>
-    <button :class="{ 'signal-mr-active': activeTab === 'bally' }" @click="activeTab = 'bally'">
-      Начисление баллов
-    </button>
-    <button :class="{ 'signal-mr-active': activeTab === 'oshibka' }" @click="activeTab = 'oshibka'">
-      Ошибка в заказе
-    </button>
-    <button :class="{ 'signal-mr-active': activeTab === 'nekomplektnost' }" @click="activeTab = 'nekomplektnost'">
-      Некомплектность
-    </button>
-    <button :class="{ 'signal-mr-active': activeTab === 'sertifikat' }" @click="activeTab = 'sertifikat'">
-      Сертификат
-    </button>
-    <button :class="{ 'signal-mr-active': activeTab === 'izmeneniya' }" @click="activeTab = 'izmeneniya'">
-      Реальные изменения
-    </button>
+    <button
+      :class="['signal-mr-btn', { 'signal-mr-active': activeTab === 'dolhoe-ohidanie' }]"
+      @click="activeTab = 'dolhoe-ohidanie'"
+      type="button"
+    >Долгое ожидание</button>
+    <button
+      :class="['signal-mr-btn', { 'signal-mr-active': activeTab === 'bally' }]"
+      @click="activeTab = 'bally'"
+      type="button"
+    >Начисление баллов</button>
+    <button
+      :class="['signal-mr-btn', { 'signal-mr-active': activeTab === 'oshibka' }]"
+      @click="activeTab = 'oshibka'"
+      type="button"
+    >Ошибка в заказе</button>
+    <button
+      :class="['signal-mr-btn', { 'signal-mr-active': activeTab === 'nekomplektnost' }]"
+      @click="activeTab = 'nekomplektnost'"
+      type="button"
+    >Некомплектность</button>
+    <button
+      :class="['signal-mr-btn', { 'signal-mr-active': activeTab === 'sertifikat' }]"
+      @click="activeTab = 'sertifikat'"
+      type="button"
+    >Сертификат</button>
+    <button
+      :class="['signal-mr-btn', { 'signal-mr-active': activeTab === 'izmeneniya' }]"
+      @click="activeTab = 'izmeneniya'"
+      type="button"
+    >Реальные изменения</button>
   </div>
 
   <div class="signal-mr-panel">
-    <!-- Долгое ожидание -->
     <div v-show="activeTab === 'dolhoe-ohidanie'" class="signal-mr-content">
       <h3>Долгое ожидание</h3>
       <h4>СИГНАЛ 201-883</h4>
@@ -46,7 +57,6 @@ const activeTab = ref('day-1')
       </div>
     </div>
 
-    <!-- Начисление баллов -->
     <div v-show="activeTab === 'bally'" class="signal-mr-content">
       <h3>Начисление баллов</h3>
       <h4>СИГНАЛ 994-569</h4>
@@ -64,7 +74,6 @@ const activeTab = ref('day-1')
       </div>
     </div>
 
-    <!-- Ошибка в заказе -->
     <div v-show="activeTab === 'oshibka'" class="signal-mr-content">
       <h3>Ошибка в заказе</h3>
       <h4>СИГНАЛ 971-484</h4>
@@ -82,7 +91,6 @@ const activeTab = ref('day-1')
       </div>
     </div>
 
-    <!-- Некомплектность -->
     <div v-show="activeTab === 'nekomplektnost'" class="signal-mr-content">
       <h3>Некомплектность</h3>
       <h4>СИГНАЛ 500-794</h4>
@@ -98,7 +106,6 @@ const activeTab = ref('day-1')
       </div>
     </div>
 
-    <!-- Сертификат -->
     <div v-show="activeTab === 'sertifikat'" class="signal-mr-content">
       <h3>Сертификат</h3>
       <h4>СИГНАЛ 978-746</h4>
@@ -111,7 +118,6 @@ const activeTab = ref('day-1')
       </div>
     </div>
 
-    <!-- Реальные изменения -->
     <div v-show="activeTab === 'izmeneniya'" class="signal-mr-content">
       <h3>Реальные изменения</h3>
       <h4>СИГНАЛ 978-746</h4>
@@ -132,37 +138,47 @@ const activeTab = ref('day-1')
 .signal-mr-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 20px 18px;
   margin-bottom: 14px;
 }
-.signal-mr-tabs button {
+.signal-mr-btn {
   appearance: none;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.92);
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 1;
+  border: 2px solid rgba(255,255,255,0.19);
+  background: none;
+  color: rgba(255,255,255,0.93);
+  padding: 15px 28px;
+  border-radius: 18px;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.04;
   cursor: pointer;
-  transition: all .2s ease;
+  transition: 
+    background .18s cubic-bezier(.51,.01,.34,1.02),
+    border-color .18s cubic-bezier(.51,.01,.34,1.02), 
+    color .18s cubic-bezier(.51,.01,.34,1.02), 
+    box-shadow .18s cubic-bezier(.51,.01,.34,1.02);
+  box-shadow: none;
+  outline: none;
+  position: relative;
 }
-.signal-mr-tabs button:hover {
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.18);
+.signal-mr-btn:hover {
+  background: rgba(200,255,90,0.07);
+  border-color: #aadc47;
+  color: #fbfffc;
+  box-shadow: 0 0 0 2px #c8ff5a6e inset;
 }
-.signal-mr-tabs .signal-mr-active {
-  color: #0a0a0a;
+.signal-mr-active {
+  color: #151a06 !important;
   background: #c8ff5a;
-  border-color: #c8ff5a;
-  box-shadow: 0 0 0 2px rgba(200,255,90,0.25) inset;
+  border-color: #c8ff5a !important;
+  box-shadow: 0 0 0 2px #b8f35bce inset;
+  z-index: 2;
 }
 .signal-mr-panel {
   border: 1px solid rgba(255,255,255,0.08);
   background: rgba(255,255,255,0.03);
-  border-radius: 12px;
-  padding: 15px 16px;
+  border-radius: 16px;
+  padding: 26px 20px;
 }
 .signal-mr-content {
   color: rgba(255,255,255,0.92);
@@ -170,28 +186,29 @@ const activeTab = ref('day-1')
   line-height: 1.46;
 }
 .signal-mr-p {
-  margin: 0 0 12px 0;
+  margin: 0 0 14px 0;
   font-size: 15px;
-  color: rgba(255,255,255,0.95);
+  color: rgba(255,255,255,0.96);
   line-height: 1.7;
 }
 .signal-mr-intro {
   font-size: 16px;
   line-height: 1.5;
-  margin-bottom: 14px;
+  margin-bottom: 17px;
+  color: #f3fbe4;
 }
 .signal-mr-content h3 {
-  margin: 0 0 12px;
-  font-size: 16px;
+  margin: 0 0 13px;
+  font-size: 21px;
   font-weight: 700;
   letter-spacing: 0.01em;
-  color: rgba(255,255,255,0.9);
+  color: #d9f89c;
 }
 .signal-mr-content h4 {
-  margin: 13px 0 8px;
+  margin: 15px 0 10px;
   font-size: 13px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.6);
   letter-spacing: 0.04em;
   font-weight: 600;
 }
@@ -206,21 +223,21 @@ const activeTab = ref('day-1')
 }
 .signal-mr-content ul:not(:last-child),
 .signal-mr-content ol:not(:last-child) {
-    margin-bottom: 15px;
+    margin-bottom: 16px;
 }
 .signal-mr-content li {
   position: relative;
   padding-left: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 9px;
   font-size: 15px;
-  color: rgba(255,255,255,0.88);
+  color: rgba(255,255,255,0.89);
   line-height: 1.4;
 }
 .signal-mr-content ul > li::before {
   content: '•';
   position: absolute;
   left: 0;
-  color: rgba(200,255,90,0.7);
+  color: #bce256;
 }
 .signal-mr-content ol {
   padding-left: 18px;
@@ -230,10 +247,10 @@ const activeTab = ref('day-1')
     padding-left: 5px;
 }
 .signal-mr-result {
-    background-color: rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 12px 14px;
-    border-radius: 8px;
+    background-color: rgba(200,255,90,0.06);
+    border: 1px solid rgba(200,255,90,0.13);
+    padding: 13px 15px;
+    border-radius: 10px;
     margin-top: 20px;
 }
 .signal-mr-result p {
