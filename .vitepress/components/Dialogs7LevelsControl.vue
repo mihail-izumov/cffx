@@ -11,11 +11,9 @@
       </button>
     </transition>
 
-    <!-- Основной контейнер -->
-    <div class="content-wrapper">
-      
-      <!-- ДЕСКТОП: стрелки слева -->
-      <div class="nav-placeholder-desktop">
+    <!-- ДЕСКТОП: стрелки слева + контент -->
+    <div class="content-wrapper-desktop">
+      <div class="nav-placeholder">
         <transition name="slide-in">
           <div v-if="activeIndex !== null" class="nav-arrows">
             <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
@@ -32,24 +30,7 @@
         </transition>
       </div>
 
-      <!-- Список элементов -->
       <div class="feature-list">
-        <!-- МОБИЛЬНЫЕ СТРЕЛКИ — сверху -->
-        <transition name="slide-in">
-          <div v-if="activeIndex !== null" class="nav-arrows-mobile">
-            <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <button class="arrow-button" @click="navigate(1)" :disabled="activeIndex === items.length - 1">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M6 9L12 15L18 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
-        </transition>
-
         <div 
           v-for="(item, index) in items" 
           :key="item.id" 
@@ -81,13 +62,63 @@
         </div>
       </div>
 
-      <!-- ЧАШКА — только на десктопе, справа -->
-      <div class="image-placeholder-desktop"></div>
+      <!-- Чашка справа (десктоп) -->
+      <div class="image-placeholder"></div>
     </div>
 
-    <!-- ЧАШКА НА МОБИЛЬНЫХ — внизу -->
-    <div class="image-placeholder-mobile">
-      <img src="/cffx-cup.png" alt="Чашка" />
+    <!-- МОБИЛЬНАЯ ВЕРСИЯ -->
+    <div class="content-wrapper-mobile">
+      <transition name="slide-in">
+        <div v-if="activeIndex !== null" class="nav-arrows-mobile">
+          <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="arrow-button" @click="navigate(1)" :disabled="activeIndex === items.length - 1">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9L12 15L18 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </transition>
+
+      <div class="feature-list-mobile">
+        <div 
+          v-for="(item, index) in items" 
+          :key="item.id" 
+          class="feature-item-wrapper"
+          ref="itemRefs"
+        >
+          <transition name="item-swap" mode="out-in">
+            <button
+              v-if="activeIndex !== index"
+              class="pill-button"
+              @click="setActive(index)"
+            >
+              <div class="pill-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M8 12h8"/>
+                  <path d="M12 8v8"/>
+                </svg>
+              </div>
+              <span class="pill-title">{{ item.title }}</span>
+            </button>
+
+            <div
+              v-else
+              class="content-box"
+              v-html="item.content"
+            ></div>
+          </transition>
+        </div>
+      </div>
+
+      <!-- Чашка по центру внизу (мобильная) -->
+      <div class="image-mobile">
+        <img src="/cffx-cup.png" alt="Чашка" />
+      </div>
     </div>
   </div>
 </template>
@@ -132,7 +163,7 @@ function closeAll() { activeIndex.value = null; }
 </script>
 
 <style scoped>
-/* === КОНТЕЙНЕР === */
+/* === ОБЩЕЕ === */
 .feature-selector-container {
   width: 100%;
   max-width: 100%;
@@ -141,11 +172,10 @@ function closeAll() { activeIndex.value = null; }
   overflow: hidden;
   transition: min-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  background: transparent;
 }
 
-/* === ОСНОВНАЯ ОБЕРТКА === */
-.content-wrapper {
+/* === ДЕСКТОП === */
+.content-wrapper-desktop {
   display: flex;
   align-items: flex-start;
   width: 100%;
@@ -153,8 +183,7 @@ function closeAll() { activeIndex.value = null; }
   box-sizing: border-box;
 }
 
-/* === ДЕСКТОП: СТРЕЛКИ СЛЕВА === */
-.nav-placeholder-desktop {
+.nav-placeholder {
   width: 52px;
   flex-shrink: 0;
   display: flex;
@@ -163,7 +192,6 @@ function closeAll() { activeIndex.value = null; }
   padding-left: 0;
 }
 
-/* === СПИСОК === */
 .feature-list {
   flex: 1;
   display: flex;
@@ -174,8 +202,51 @@ function closeAll() { activeIndex.value = null; }
 }
 
 .feature-item-wrapper {
-  width: 100%;
+  width: max-content;
   max-width: 100%;
+}
+
+.image-placeholder {
+  flex: 1;
+  background: url('/cffx-cup.png') right center / auto 65% no-repeat;
+  min-height: 100%;
+}
+
+/* === МОБИЛЬНАЯ === */
+.content-wrapper-mobile {
+  display: none;
+  flex-direction: column;
+  padding: 20px 16px;
+  gap: 12px;
+}
+
+.nav-arrows-mobile {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.feature-list-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.image-mobile {
+  margin-top: 32px;
+  text-align: center;
+}
+.image-mobile img {
+  max-width: 70%;
+  height: auto;
+}
+
+/* === ПЕРЕКЛЮЧЕНИЕ === */
+@media (max-width: 768px) {
+  .content-wrapper-desktop { display: none; }
+  .content-wrapper-mobile { display: flex; }
+  .feature-item-wrapper { width: 100%; }
 }
 
 /* === ПИЛЮЛЯ === */
@@ -216,19 +287,14 @@ function closeAll() { activeIndex.value = null; }
 }
 :deep(.content-box strong) { font-weight: 700; color: #fff; }
 
-/* === ЧАШКА ДЕСКТОП === */
-.image-placeholder-desktop {
-  flex: 1;
-  background: url('/cffx-cup.png') right center / auto 65% no-repeat;
-  min-height: 100%;
-}
-
 /* === СТРЕЛКИ === */
 .nav-arrows, .nav-arrows-mobile {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
+.nav-arrows-mobile { flex-direction: row; }
+
 .arrow-button {
   width: 44px;
   height: 44px;
@@ -247,50 +313,6 @@ function closeAll() { activeIndex.value = null; }
   background: #000; 
   opacity: 0.6; 
   cursor: not-allowed; 
-}
-
-/* === МОБИЛЬНАЯ ВЕРСИЯ === */
-@media (max-width: 768px) {
-  .content-wrapper {
-    flex-direction: column;
-    padding: 20px 16px;
-  }
-  .nav-placeholder-desktop { display: none; }
-  .image-placeholder-desktop { display: none; }
-
-  .feature-list {
-    max-width: 100%;
-    padding: 0;
-    gap: 12px;
-  }
-
-  .nav-arrows-mobile {
-    flex-direction: row;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 8px;
-  }
-
-  .pill-button, .content-box {
-    width: 100%;
-  }
-
-  .image-placeholder-mobile {
-    margin-top: 32px;
-    text-align: center;
-  }
-  .image-placeholder-mobile img {
-    max-width: 80%;
-    height: auto;
-  }
-}
-
-/* === ЧАШКА МОБИЛЬНАЯ === */
-.image-placeholder-mobile {
-  display: none;
-}
-@media (max-width: 768px) {
-  .image-placeholder-mobile { display: block; }
 }
 
 /* === КНОПКА ЗАКРЫТИЯ === */
