@@ -84,7 +84,7 @@
       </div>
     </div>
     <!-- Оставшиеся в столбик по центру -->
-    <div class="row column-center">
+    <div class="column-center">
       <div
         v-for="(cat, i) in categories.slice(10)"
         :key="cat.category"
@@ -93,7 +93,7 @@
         @mouseleave="activeIdx = -1"
         tabindex="0"
       >
-        <div class="card-inner">
+        <div class="card-inner card-inner-center">
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
@@ -130,26 +130,26 @@ const categories = [
 
 <style scoped>
 .signal-treemap {
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
+  max-width: 1196px;
+  margin: 0 auto;
   min-width: 320px;
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding: 0; background: none;
+  padding: 0;
+  background: none;
 }
-
 .row {
   display: flex;
   width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 2px;
 }
-
-.row-2 { justify-content: flex-start; gap: 14px; margin-bottom: 6px; }
-.row-3 { justify-content: center; gap: 10px; margin-bottom: 5px; }
-.center-row { justify-content: center; }
-.column-center { flex-direction: column; align-items: center; margin-top: 2px; gap: 4px; }
-
+.row-2 { justify-content: flex-start; gap: 9px; }
+.row-3, .center-row { justify-content: center; gap: 7px; margin-bottom: 2px; }
+.center-row {justify-content: center;}
+.column-center { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .card {
   background: #232427;
   color: #eaeaea;
@@ -168,68 +168,77 @@ const categories = [
 
 .card-large {
   flex: 1 1 0;
-  min-width: 170px;
-  max-width: 440px;
-  height: 82px;
-  font-size: clamp(0.91rem, 2vw, 1.27rem);
+  min-width: 200px;
+  max-width: 550px;
+  min-height: 88px;
+  height: auto;
+  font-size: clamp(0.88rem, 2vw, 1.25rem);
+  display: flex;
 }
 .card-medium {
   flex: 1 1 0;
-  min-width: 110px;
-  max-width: 320px;
-  height: 62px;
-  font-size: clamp(0.8rem, 1.5vw, 1.06rem);
+  min-width: 120px;
+  max-width: 365px;
+  min-height: 72px;
+  height: auto;
+  font-size: clamp(0.76rem, 1.6vw, 1rem);
+  display: flex;
 }
 .card-mini {
   flex: 1 1 0;
-  min-width: 90px;
-  max-width: 210px;
-  height: 48px;
-  font-size: clamp(0.77rem, 1.3vw, 0.97rem);
+  min-width: 110px;
+  max-width: 230px;
+  min-height: 47px;
+  height: auto;
+  font-size: clamp(0.75rem, 1.15vw, 0.91rem);
+  display: flex;
 }
 .card-line {
-  min-width: 150px;
-  max-width: 460px;
-  width: 44vw;
-  font-size: clamp(0.79rem, 1.3vw, 1.07rem);
-  height: 41px;
+  min-width: 180px;
+  max-width: 622px;
+  width: 62vw;
+  height: auto;
+  min-height: 43px;
   margin-bottom: 2px;
+  font-size: clamp(0.79rem, 1.2vw, 1.07rem);
+  display: flex;
 }
-
+/* card-inner для длинных карточек c центрированием */
+.card-inner-center {
+  justify-content: center !important;
+  gap: 10vw;
+}
 .card-inner {
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
-  height: 100%;
+  padding: 0 11px;
+  min-height: inherit;
   box-sizing: border-box;
 }
-
 .card-problem {
   font-weight: 500;
   text-align: left;
-  flex: 1 1 auto;
+  flex: 2 1 0;
   white-space: pre-line;
   overflow-wrap: break-word;
   word-break: break-word;
-  line-height: 1.2;
+  line-height: 1.17;
   font-size: 1em;
 }
-
 .card-percent {
   font-weight: 400;
   text-align: right;
-  font-size: 0.95em;
-  margin-left: 8px;
+  font-size: 0.96em;
+  margin-left: 11px;
   color: #eaeaea;
   opacity: 0.47;
   min-width: 44px;
   line-height: 1.21;
   white-space: nowrap;
 }
-
 .card-tooltip {
   position: absolute;
   inset: 0;
@@ -243,7 +252,7 @@ const categories = [
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 14px 18px 14px 16px;
+  padding: 17px 18px 14px 16px;
   animation: tooltipPop 0.18s;
 }
 .tooltip-text {
@@ -268,16 +277,25 @@ const categories = [
 }
 
 /* Мобайл и tablet адаптация */
-@media (max-width: 680px) {
-  .signal-treemap, .signal-treemap .row {max-width: 100vw; width: 100vw;}
+@media (max-width: 900px) {
+  .signal-treemap, .signal-treemap .row {max-width: 99vw; width: 99vw;}
   .signal-treemap {margin-left: 0;}
-  .row-2 {gap: 6px;}
-  .row-3, .center-row {gap: 5px;}
-  .card-large {height: 52vw; font-size: 1rem; min-width: 42vw;}
-  .card-medium {height: 38vw; font-size: 0.92rem; min-width: 27vw;}
-  .card-mini {height: 27vw; font-size: 0.88rem; min-width: 18vw;}
-  .card-line {height: 14vw; min-width: 110px; width: 90vw; font-size: 0.9rem;}
-  .card-inner {padding: 0 8px;}
-  .card-tooltip {font-size: 1.01rem; padding: 2.5vw 2vw;}
+  .row-2 {gap: 4px;}
+  .row-3, .center-row {gap: 4px;}
+  .card-large {min-height: 21vw;font-size: 1.02rem; min-width: 39vw;}
+  .card-medium {min-height: 16vw;font-size: 0.9rem;min-width: 24vw;}
+  .card-mini {min-height: 11vw;font-size: 0.82rem;min-width: 12vw;}
+  .card-line {min-height: 10vw;min-width: 44vw;width:98vw;font-size:0.92rem;}
+  .card-inner, .card-inner-center {padding: 0 7px;}
+  .card-tooltip {font-size: 1.01rem; padding: 2vw 2vw;}
+}
+
+@media (max-width: 520px) {
+  .card-large {font-size:0.83rem;}
+  .card-medium {font-size:0.76rem;}
+  .card-mini {font-size:0.7rem;}
+  .card-line {font-size:0.77rem;}
+  .card-inner, .card-inner-center {padding: 0 2px;}
+  .card-tooltip {font-size: 0.92rem; padding: 3vw 1vw;}
 }
 </style>
