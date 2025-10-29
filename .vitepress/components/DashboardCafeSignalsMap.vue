@@ -1,5 +1,5 @@
 <template>
-  <div class="signal-treemap-flex">
+  <div class="signal-treemap-reset">
     <div class="row row-2">
       <div v-for="(cat, i) in categories.slice(0,2)" :key="cat.category" class="card card-large" @mouseenter="activeIdx = i" @mouseleave="activeIdx = -1" tabindex="0">
         <div class="card-inner">
@@ -79,169 +79,140 @@ const categories = [
 </script>
 
 <style scoped>
-.signal-treemap-flex {
+.signal-treemap-reset {
   width: 100%;
-  max-width: 920px;
-  min-width: 260px;
+  max-width: 900px;
+  min-width: 300px;
   margin: 0 auto;
-  box-sizing: border-box;
-  display: flex; flex-direction: column; gap: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 0; padding: 0; background: none;
 }
 .row {
   display: flex;
-  flex-wrap: wrap;
   width: 100%;
-  box-sizing: border-box;
-  margin-bottom: 8px;
-  gap: 8px;
+  gap: 12px;
+  margin-bottom: 7px;
 }
-.row-2 .card {
-  flex: 1 1 350px;
-  min-width: 220px;
-  max-width: 100%;
-  height: auto;
-}
-.row-3 .card {
-  flex: 1 1 220px;
-  min-width: 180px;
-  max-width: calc(33% - 10px);
-  height: auto;
-}
-.column-center { display: flex; flex-direction: column; align-items: stretch; gap: 10px; }
+.row-3 {margin-bottom:4px;}
+.column-center { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .card {
   background: #232427;
   color: #eaeaea;
-  border-radius: 12px;
+  border-radius: 13px;
   box-shadow: 0 1px 6px #18181a13;
   cursor: pointer;
   min-width: 0;
-  display: flex;
-  align-items: center;
+  display: flex; align-items: center;
   position: relative;
   overflow: hidden;
   margin: 0;
   word-break: break-word;
   box-sizing: border-box;
-  width: 100%;
-  max-width: 100%;
 }
 .card-large {
-  font-size: clamp(0.96rem, 1vw, 1.18rem);
-  min-height: 84px;
-  padding: 8px 0;
+  flex: 1 1 0;
+  min-width: 210px;
+  max-width: 100%;
+  height: 86px;
+  font-size: clamp(0.93rem, 2vw, 1.18rem);
 }
 .card-mid {
-  font-size: 0.98rem;
-  min-height: 72px;
-  padding: 7px 0;
+  flex: 1 1 0;
+  min-width: 130px;
+  max-width: 100%;
+  height: 57px;
+  font-size: 1rem;
 }
 .card-wide {
-  font-size: 0.98rem;
   width: 100%;
   max-width: 100%;
-  min-width: 180px;
-  min-height: 52px;
-  padding: 5px 0;
+  min-width: 210px;
+  height: 48px;
+  font-size: 1rem;
+  margin-bottom: 0;
   display: flex;
 }
-.card-inner {
+.card-inner,
+.card-inner-large,
+.card-inner-mid,
+.card-inner-wide {
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
-  gap: 0;
+  padding: 0 14px;
   min-height: inherit;
   box-sizing: border-box;
+  gap: 0;
 }
-.card-inner-wide {justify-content: space-between;}
+.card-inner-wide {justify-content: center;}
 .card-problem {
   font-weight: 500;
   text-align: left;
-  white-space: normal;
+  white-space: pre-line;
   overflow-wrap: break-word;
   word-break: break-word;
   line-height: 1.13;
   font-size: 1em;
   flex: 4 1 0;
-  padding-left: 0;
 }
 .card-percent {
-  font-weight: 500;
+  font-weight: 400;
   text-align: right;
-  font-size: 0.93em;
-  margin-left: 6px;
+  font-size: 0.91em;
+  margin-left: 8px;
   color: #eaeaea;
-  opacity: 0.48;
-  min-width: 45px;
+  opacity: 0.47;
+  min-width: 42px;
   max-width: 70px;
   white-space: nowrap;
   flex: 1 1 0;
-  padding-right: 0;
 }
 .card-mediumweight { font-weight: 500 !important; }
 .card-tooltip {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   background: #161719ee; color: #ededed;
-  border-radius: 12px; z-index: 120;
+  border-radius: 13px; z-index: 120;
   box-shadow: 0 4px 16px #16171724;
   display: flex; align-items: flex-start; justify-content: flex-start;
-  padding: 14px 10px 10px 10px;
-  animation: tooltipPop 0.65s;
+  padding: 12px 10px 10px 14px;
+  animation: tooltipPop 0.34s;
 }
 .tooltip-text {
-  font-size: 0.97rem;
+  font-size: 0.93rem;
   font-weight: 400;
   color: #ededed;
-  line-height: 1.33;
+  line-height: 1.31;
   text-align: left;
-  max-width: 96%;
-  margin: 0;
-  white-space: pre-line;
+  max-width: 98%;
+  margin: 0; white-space: pre-line;
   overflow-wrap: break-word;
   word-break: break-word;
-  padding-left: 0;
 }
-/* Fade плавнее */
 .fade-smooth-enter-active, .fade-smooth-leave-active {
-  transition: opacity 0.65s cubic-bezier(.49,0,.14,1);
+  transition: opacity 0.44s cubic-bezier(.55,0,.2,1);
 }
 .fade-smooth-enter-from, .fade-smooth-leave-to { opacity: 0 }
 @keyframes tooltipPop {
-  0% { opacity: 0.4; transform: scale(0.98); }
+  0% { opacity: 0.7; transform: scale(0.96); }
   100% { opacity: 1; transform: scale(1); }
 }
-
-/* Мобильная адаптация: перенос карточек, уменьшение min-width, авто-высота */
-@media(max-width: 800px){
-  .signal-treemap-flex,
-  .row,
-  .card {
-    max-width: 100vw;
-    width: 100vw;
-    box-sizing: border-box;
-  }
-  .row-2 .card, .row-3 .card {
-    flex-basis: 100%;
-    min-width: 80vw;
-    max-width: 100vw;
-  }
-  .card-large {min-height: 17vw;}
-  .card-mid {min-height: 15vw;}
-  .card-wide {min-height:13vw;}
-  .card-inner, .card-tooltip {padding: 2vw;}
-  .tooltip-text {font-size:0.89rem;}
+@media (max-width: 700px) {
+  .signal-treemap-reset, .row {max-width: 99vw; width: 99vw;}
+  .row, .row-2, .row-3, .column-center {gap: 4px; margin-bottom: 5px;}
+  .card-large {height: 15vw; font-size:0.92rem;}
+  .card-mid {height: 10vw; font-size:0.87rem;}
+  .card-wide {height:8vw; font-size:0.87rem;}
+  .card-inner, .card-inner-large, .card-inner-mid, .card-inner-wide {padding: 0 6px;}
+  .card-tooltip {padding: 10px 3vw;}
+  .tooltip-text {font-size:0.82rem;}
 }
-
-/* Очень маленькие экраны: карточки 1 в строку */
-@media(max-width: 520px){
-  .row {margin-bottom: 5px; gap: 5px;}
-  .card-large,
-  .card-mid,
-  .card-wide {font-size:0.82rem;}
-  .card-inner, .card-tooltip{padding:1vw;}
-  .tooltip-text{font-size:0.82rem;}
+@media (max-width: 420px) {
+  .card-large {font-size:0.77rem;}
+  .card-mid, .card-wide {font-size:0.70rem;}
+  .card-inner, .card-inner-large, .card-inner-mid, .card-inner-wide {padding: 0 2px;}
+  .card-tooltip {padding: 5px 2vw;}
+  .tooltip-text {font-size:0.72rem;}
 }
 </style>
