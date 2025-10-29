@@ -1,7 +1,7 @@
 <template>
-  <div class="clean-treemap">
-    <!-- 2 ряда по 2 крупные карточки -->
-    <div class="row">
+  <div class="signal-treemap">
+    <!-- 2 ряда по 2 крупных карточки -->
+    <div class="row row-2">
       <div
         v-for="(cat, i) in categories.slice(0,2)"
         :key="cat.category"
@@ -11,17 +11,17 @@
         tabindex="0"
       >
         <div class="card-inner">
-          <div class="card-problem">{{ cat.category }}</div>
-          <div class="card-percent">{{ cat.percent }}%</div>
+          <span class="card-problem">{{ cat.category }}</span>
+          <span class="card-percent">{{ cat.percent }}%</span>
         </div>
         <transition name="fade">
-          <div v-if="activeIdx === i" class="card-tooltip card-tooltip-large">
+          <div v-if="activeIdx === i" class="card-tooltip">
             <div class="tooltip-text">{{ cat.desc }}</div>
           </div>
         </transition>
       </div>
     </div>
-    <div class="row">
+    <div class="row row-2">
       <div
         v-for="(cat, i) in categories.slice(2,4)"
         :key="cat.category"
@@ -31,18 +31,18 @@
         tabindex="0"
       >
         <div class="card-inner">
-          <div class="card-problem">{{ cat.category }}</div>
-          <div class="card-percent">{{ cat.percent }}%</div>
+          <span class="card-problem">{{ cat.category }}</span>
+          <span class="card-percent">{{ cat.percent }}%</span>
         </div>
         <transition name="fade">
-          <div v-if="activeIdx === i+2" class="card-tooltip card-tooltip-large">
+          <div v-if="activeIdx === i+2" class="card-tooltip">
             <div class="tooltip-text">{{ cat.desc }}</div>
           </div>
         </transition>
       </div>
     </div>
-    <!-- Ряд из трех средних карточек -->
-    <div class="row row-three">
+    <!-- Средние и центровка -->
+    <div class="row row-3">
       <div
         v-for="(cat, i) in categories.slice(4,7)"
         :key="cat.category"
@@ -52,34 +52,53 @@
         tabindex="0"
       >
         <div class="card-inner">
-          <div class="card-problem">{{ cat.category }}</div>
-          <div class="card-percent">{{ cat.percent }}%</div>
+          <span class="card-problem">{{ cat.category }}</span>
+          <span class="card-percent">{{ cat.percent }}%</span>
         </div>
         <transition name="fade">
-          <div v-if="activeIdx === i+4" class="card-tooltip card-tooltip-medium">
+          <div v-if="activeIdx === i+4" class="card-tooltip">
             <div class="tooltip-text">{{ cat.desc }}</div>
           </div>
         </transition>
       </div>
     </div>
-    <!-- Остальные карточки — одна в строке -->
-    <div
-      v-for="(cat, i) in categories.slice(7)"
-      :key="cat.category"
-      class="row"
-    >
+    <!-- Компактный блок из трех карточек в ряд по центру -->
+    <div class="row row-3 center-row">
       <div
-        class="card card-long"
+        v-for="(cat, i) in categories.slice(7, 10)"
+        :key="cat.category"
+        class="card card-mini"
         @mouseenter="activeIdx = i+7"
         @mouseleave="activeIdx = -1"
         tabindex="0"
       >
         <div class="card-inner">
-          <div class="card-problem">{{ cat.category }}</div>
-          <div class="card-percent">{{ cat.percent }}%</div>
+          <span class="card-problem">{{ cat.category }}</span>
+          <span class="card-percent">{{ cat.percent }}%</span>
         </div>
         <transition name="fade">
-          <div v-if="activeIdx === i+7" class="card-tooltip card-tooltip-long">
+          <div v-if="activeIdx === i+7" class="card-tooltip">
+            <div class="tooltip-text">{{ cat.desc }}</div>
+          </div>
+        </transition>
+      </div>
+    </div>
+    <!-- Оставшиеся в столбик по центру -->
+    <div class="row column-center">
+      <div
+        v-for="(cat, i) in categories.slice(10)"
+        :key="cat.category"
+        class="card card-line"
+        @mouseenter="activeIdx = i+10"
+        @mouseleave="activeIdx = -1"
+        tabindex="0"
+      >
+        <div class="card-inner">
+          <span class="card-problem">{{ cat.category }}</span>
+          <span class="card-percent">{{ cat.percent }}%</span>
+        </div>
+        <transition name="fade">
+          <div v-if="activeIdx === i+10" class="card-tooltip">
             <div class="tooltip-text">{{ cat.desc }}</div>
           </div>
         </transition>
@@ -110,143 +129,155 @@ const categories = [
 </script>
 
 <style scoped>
-.clean-treemap {
-  width: 100%;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 24px 12px 32px 12px;
-  background: #222324;
-  border-radius: 22px;
-  box-shadow: 0 5px 50px #2223241a;
+.signal-treemap {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  min-width: 320px;
   display: flex;
   flex-direction: column;
   gap: 0;
+  padding: 0; background: none;
 }
+
 .row {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
   width: 100%;
-  gap: 24px;
-  margin-bottom: 16px;
 }
-.row-three {justify-content: space-between;}
+
+.row-2 { justify-content: flex-start; gap: 14px; margin-bottom: 6px; }
+.row-3 { justify-content: center; gap: 10px; margin-bottom: 5px; }
+.center-row { justify-content: center; }
+.column-center { flex-direction: column; align-items: center; margin-top: 2px; gap: 4px; }
 
 .card {
-  background: #292b2d;
+  background: #232427;
   color: #eaeaea;
-  border-radius: 18px;
-  box-shadow: 0 2px 12px #2d2d2d1c;
-  transition: box-shadow 0.18s cubic-bezier(.55,.18,1,.7), transform 0.22s;
+  border-radius: 13px;
+  box-shadow: 0 1px 6px #18181a13;
+  transition: box-shadow 0.14s, transform 0.14s;
   cursor: pointer;
-  min-height: 64px;
   min-width: 0;
-  width: 100%;
-  max-width: none;
   display: flex;
   align-items: center;
   position: relative;
-  overflow: visible;
-  transition: background .16s;
+  overflow: hidden;
+  transition: background .10s;
+  margin: 0;
 }
 
 .card-large {
-  height: 120px;
-  font-size: 1.53rem;
-  min-width: 0;
+  flex: 1 1 0;
+  min-width: 170px;
+  max-width: 440px;
+  height: 82px;
+  font-size: clamp(0.91rem, 2vw, 1.27rem);
 }
 .card-medium {
-  height: 94px;
-  font-size: 1.23rem;
-  min-width: 0;
+  flex: 1 1 0;
+  min-width: 110px;
+  max-width: 320px;
+  height: 62px;
+  font-size: clamp(0.8rem, 1.5vw, 1.06rem);
 }
-.card-long {
-  width: 100%;
-  height: 72px;
-  font-size: 1.08rem;
-  margin-bottom: 13px;
+.card-mini {
+  flex: 1 1 0;
+  min-width: 90px;
+  max-width: 210px;
+  height: 48px;
+  font-size: clamp(0.77rem, 1.3vw, 0.97rem);
+}
+.card-line {
+  min-width: 150px;
+  max-width: 460px;
+  width: 44vw;
+  font-size: clamp(0.79rem, 1.3vw, 1.07rem);
+  height: 41px;
+  margin-bottom: 2px;
 }
 
 .card-inner {
   width: 100%;
-  padding: 0 28px;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  padding: 0 14px;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .card-problem {
   font-weight: 500;
   text-align: left;
-  flex: 1;
-  font-size: inherit;
-  letter-spacing: 0.01em;
-  line-height: 1.13;
+  flex: 1 1 auto;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.2;
+  font-size: 1em;
 }
 
 .card-percent {
   font-weight: 400;
   text-align: right;
-  font-size: 1em;
-  margin-left: 14px;
+  font-size: 0.95em;
+  margin-left: 8px;
   color: #eaeaea;
-  opacity: 0.58;
-  letter-spacing: 0.02em;
-  min-width: 54px;
+  opacity: 0.47;
+  min-width: 44px;
+  line-height: 1.21;
+  white-space: nowrap;
 }
 
 .card-tooltip {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
-  background: #232426fd;
+  background: #161719ee;
   color: #ededed;
-  border-radius: 16px;
+  border-radius: 13px;
   z-index: 120;
-  box-shadow: 0 4px 32px #16171724;
+  box-shadow: 0 4px 16px #16171724;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 18px 32px 18px 28px;
-  animation: tooltipPop 0.22s cubic-bezier(.62,.54,.78,.99);
+  padding: 14px 18px 14px 16px;
+  animation: tooltipPop 0.18s;
 }
 .tooltip-text {
-  font-size: 1.15rem;
-  font-weight: 430;
+  font-size: clamp(0.92rem, 1.16vw, 1.09rem);
+  font-weight: 400;
   color: #ededed;
-  line-height: 1.42;
+  line-height: 1.34;
   text-align: left;
   letter-spacing: 0.01em;
   padding: 0;
-  max-width: 90%;
+  max-width: 98%;
   margin: 0;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
-
-.card-tooltip-large {padding-top: 32px;}
-.card-tooltip-medium {padding-top: 18px;}
-.card-tooltip-long {padding-top: 10px;}
-
-.fade-enter-active, .fade-leave-active { transition: opacity 0.28s }
+.fade-enter-active, .fade-leave-active { transition: opacity 0.19s }
 .fade-enter-from, .fade-leave-to { opacity: 0 }
 @keyframes tooltipPop {
-  0% { opacity: 0.7; transform: scale(0.98); }
+  0% { opacity: 0.6; transform: scale(0.96); }
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* Мобильная адаптация */
-@media (max-width: 720px) {
-  .clean-treemap { padding: 9px 2vw 14vw 2vw; max-width: 99vw; }
-  .row { gap: 6px; margin-bottom: 9px; }
-  .card-large {height: 84px; font-size: 1.1rem;}
-  .card-medium {height: 74px; font-size: 0.93rem;}
-  .card-long {height: 56px; font-size: 0.83rem;}
-  .card-inner {padding: 0 7vw;}
-  .card-tooltip, .card-tooltip-large, .card-tooltip-medium, .card-tooltip-long {
-    padding: 6vw 8vw;
-    font-size: 1.03rem;
-  }
+/* Мобайл и tablet адаптация */
+@media (max-width: 680px) {
+  .signal-treemap, .signal-treemap .row {max-width: 100vw; width: 100vw;}
+  .signal-treemap {margin-left: 0;}
+  .row-2 {gap: 6px;}
+  .row-3, .center-row {gap: 5px;}
+  .card-large {height: 52vw; font-size: 1rem; min-width: 42vw;}
+  .card-medium {height: 38vw; font-size: 0.92rem; min-width: 27vw;}
+  .card-mini {height: 27vw; font-size: 0.88rem; min-width: 18vw;}
+  .card-line {height: 14vw; min-width: 110px; width: 90vw; font-size: 0.9rem;}
+  .card-inner {padding: 0 8px;}
+  .card-tooltip {font-size: 1.01rem; padding: 2.5vw 2vw;}
 }
-
 </style>
