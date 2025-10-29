@@ -52,6 +52,8 @@ description: Просто скажите что не так
   />
 </div>
 
+<div align="center">
+  
 ## Что Сигнал делает для вас?
 
 ### Ваш Сигнал – это команда к действию для кофейни и видимый результат для вас
@@ -59,11 +61,17 @@ description: Просто скажите что не так
 <SignalSteps />
 <SignalSendButton />
 
+</div>
+
 ### Не просто мнение или жалоба – импульс к реальным улучшениям 
 <br>
 <SignalsYandexVSSignal />
 
+<div align="center">
+  
 ## Решаем любые проблемы в фитнесе и общепите
+
+</div>
 
 <SignalDashboardSwitcher />
 
