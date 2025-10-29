@@ -9,58 +9,56 @@
         </svg>
       </button>
     </transition>
+
+    <!-- Основной контейнер с контентом -->
     <div class="content-wrapper">
-      <!-- Зарезервированное место и стрелки, прижатые влево -->
-      <div class="nav-placeholder">
-        <transition name="slide-in">
-          <div 
-            v-if="activeIndex !== null" 
-            class="nav-arrows"
-          >
-            <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-            <button class="arrow-button" @click="navigate(1)" :disabled="activeIndex === items.length - 1">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
-        </transition>
-      </div>
-      <!-- Список элементов -->
-      <div class="feature-list">
-        <div 
-          v-for="(item, index) in items" 
-          :key="item.id" 
-          class="feature-item-wrapper"
-          ref="itemRefs"
-        >
-          <transition name="item-swap" mode="out-in">
-            <!-- Кнопка-пилюля -->
-            <button
-              v-if="activeIndex !== index"
-              class="pill-button"
-              @click="setActive(index)"
-            >
-              <div class="pill-icon-wrapper">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
-              </div>
-              <span class="pill-title">{{ item.title }}</span>
-            </button>
-            <!-- Блок с контентом -->
-            <div
-              v-else
-              class="content-box"
-              v-html="item.content"
-            >
+      <!-- Навигационные стрелки и список -->
+      <div class="left-panel">
+        <div class="nav-placeholder">
+          <transition name="slide-in">
+            <div v-if="activeIndex !== null" class="nav-arrows">
+              <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="arrow-button" @click="navigate(1)" :disabled="activeIndex === items.length - 1">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
             </div>
           </transition>
         </div>
+        <!-- Список элементов -->
+        <div class="feature-list">
+          <div 
+            v-for="(item, index) in items" 
+            :key="item.id" 
+            class="feature-item-wrapper"
+            ref="itemRefs"
+          >
+            <transition name="item-swap" mode="out-in">
+              <button
+                v-if="activeIndex !== index"
+                class="pill-button"
+                @click="setActive(index)"
+              >
+                <div class="pill-icon-wrapper">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+                </div>
+                <span class="pill-title">{{ item.title }}</span>
+              </button>
+              <div
+                v-else
+                class="content-box"
+                v-html="item.content"
+              />
+            </transition>
+          </div>
+        </div>
       </div>
-      <!-- Десктоп: чашка справа, абсолютная, не зависит от высоты -->
-      <div class="cup-image desktop"></div>
+      <!-- Фиксированная чашка справа (десктоп) -->
+      <div class="cup-image-desktop"></div>
     </div>
-    <!-- Мобильная версия: чашка внизу, по центру, вне .content-wrapper -->
-    <div class="cup-image mobile"></div>
+    <!-- Мобильная чашка по центру экрана снизу -->
+    <div class="cup-image-mobile"></div>
   </div>
 </template>
 
@@ -68,7 +66,7 @@
 import { ref, watch, nextTick } from 'vue';
 
 const activeIndex = ref(null);
-const containerHeight = ref(650);
+const containerHeight = ref(650); // Начальная и минимальная высота
 const itemRefs = ref([]);
 
 const items = ref([
@@ -83,13 +81,15 @@ const items = ref([
 
 watch(activeIndex, async () => {
   await nextTick();
-  let totalHeight = 80;
+  let totalHeight = 80; // padding сверху и снизу
   const gap = 12;
   if (itemRefs.value.length > 0) {
     itemRefs.value.forEach((el, index) => {
       if (el) {
         totalHeight += el.offsetHeight;
-        if (index < itemRefs.value.length - 1) totalHeight += gap;
+        if (index < itemRefs.value.length - 1) {
+          totalHeight += gap;
+        }
       }
     });
   }
@@ -117,38 +117,25 @@ function closeAll() {
   width: 100%;
   background-color: transparent;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  overflow: hidden;
+  overflow: visible;
   transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* Контент и панели */
 .content-wrapper {
-  position: relative;
   display: flex;
   align-items: flex-start;
   height: 100%;
   padding: 40px 0;
 }
-.close-all-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 100;
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
+.left-panel {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #8A8A8E;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  align-items: flex-start;
+  /* Без отступа слева на десктопе */
+  padding-left: 0;
+  z-index: 1;
 }
-.close-all-btn:hover {
-  background-color: #111;
-  color: #fff;
-}
+
 .nav-placeholder {
   position: relative;
   width: 52px;
@@ -157,8 +144,8 @@ function closeAll() {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
 }
+
 .nav-arrows {
   display: flex;
   flex-direction: column;
@@ -188,11 +175,9 @@ function closeAll() {
 }
 
 .feature-list {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  z-index: 1;
 }
 .feature-item-wrapper {
   width: max-content;
@@ -231,7 +216,6 @@ function closeAll() {
 .content-box {
   background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
   border-radius: 24px;
   padding: 22px 28px;
   border: 1px solid rgba(255,255,255,0.1);
@@ -245,59 +229,73 @@ function closeAll() {
   color: #fff;
 }
 
-.cup-image {
-  background-image: url('/cffx-cup.png');
-  background-repeat: no-repeat;
-  background-size: auto 100%;
-  background-position: center;
-  pointer-events: none;
-}
-.cup-image.desktop {
-  display: block;
+/* Чашка справа - фиксированно, вне потока, не зависит от высоты */
+.cup-image-desktop {
   position: absolute;
+  top: 50%;
   right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
-  width: 44%;
-  max-width: 480px;
-  height: 90%;
+  width: 50%;
+  height: 70%;
+  transform: translateY(-50%);
+  background-image: url('/cffx-cup.png');
+  background-size: auto 100%;
+  background-position: right center;
+  background-repeat: no-repeat;
+  pointer-events: none;
   z-index: 0;
+  display: block;
 }
-.cup-image.mobile {
+
+/* Мобильная чашка (под блоком, центр, фиксированная ширина) */
+.cup-image-mobile {
   display: none;
 }
 
 /* Анимации */
 .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
 .slide-in-enter-active { transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
 .slide-in-leave-active { transition: all 0.3s cubic-bezier(0.5, 0, 0.75, 0); }
 .slide-in-enter-from, .slide-in-leave-to { opacity: 0; transform: translateX(-20px); }
+
 .item-swap-enter-active, .item-swap-leave-active { transition: all 0.3s ease-in-out; }
 .item-swap-enter-from, .item-swap-leave-to { opacity: 0; transform: scale(0.95); }
 
-/* Адаптация для мобильных */
+/* Мобильная версия: левый отступ, чашка внизу по центру, убираем правую чашку */
 @media (max-width: 768px) {
+  .feature-selector-container {
+    overflow: visible;
+  }
   .content-wrapper {
     flex-direction: column;
     align-items: stretch;
-    padding: 32px 12px 0 12px;
-    min-height: 350px;
+    padding: 40px 12px 0 12px; /* минимальные боковые отступы */
   }
-  .nav-placeholder { width: 52px; }
-  .feature-item-wrapper { max-width: 100%; }
-  .cup-image.desktop { display: none; }
-  .cup-image.mobile {
+  .left-panel {
+    width: 100%;
+    padding-left: 0;
+    justify-content: flex-start;
+  }
+  .cup-image-desktop {
+    display: none;
+  }
+  .cup-image-mobile {
     display: block;
-    position: static;
-    width: 92vw;
-    max-width: 360px;
-    height: 120px;
-    margin: 32px auto 14px auto;
+    margin: 32px auto 10px auto;
+    width: 100%;
+    max-width: 340px;
+    min-width: 180px;
+    height: 110px;
+    background-image: url('/cffx-cup.png');
     background-size: contain;
-    background-position: center bottom;
-    z-index: 10;
+    background-position: center center;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .feature-item-wrapper {
+    max-width: 100%;
   }
 }
 </style>
