@@ -104,7 +104,7 @@
       </div>
     </div>
 
-    <!-- Нижние 3 карточки — в колонке, компактные -->
+    <!-- Нижние 4 карточки — компактные, одна на строку -->
     <div class="column-center">
       <div
         v-for="(cat, i) in categories.slice(10)"
@@ -138,24 +138,34 @@ import { ref } from 'vue'
 const activeIdx = ref(-1)
 
 const categories = [
-  { category: 'Качество блюд/напитков', percent: 13.3, desc: 'Кофе невкусный или остыл, еда несвежая, странный привкус, комочки.' },
-  { category: 'Чистота зала/посуды/уборной', percent: 10.8, desc: 'Грязные столы, посуда, волосы в еде, уборная, насекомые.' },
-  { category: 'Грубость и невнимательность персонала', percent: 10.0, desc: 'Официанты хамят, не обращают внимания, невежливы.' },
-  { category: 'Ошибки в заказе', percent: 12.5, desc: 'Неправильный напиток, забытая позиция, перепутали сироп или размер.' },
-  { category: 'Антисанитария/инородные предметы', percent: 6.7, desc: 'Волосы, пластик, грязные руки, тараканы.' },
-  { category: 'Проблемы с очередями и обслуживанием', percent: 5.8, desc: 'Нет системы очереди, путаница, хаос.' },
-  { category: 'Неуютная атмосфера/музыка/запах', percent: 5.0, desc: 'Шумно, неприятный запах, громкая музыка, неуютно.' },
-  { category: 'Упаковка и напитки на вынос', percent: 4.2, desc: 'Проблемы с упаковкой, неудобные стаканы, проливается.' },
-  { category: 'Отсутствие внимания/коммуникации', percent: 4.2, desc: 'Не объяснили детали, не помогли с выбором.' },
-  { category: 'Цена/акции/выгода', percent: 3.3, desc: 'Дорого, не действует акция.' },
-  { category: 'Профессионализм персонала', percent: 2.5, desc: 'Не знают меню, не различают сорта кофе.' },
-  { category: 'Дизайн и интерьер', percent: 1.7, desc: 'Не понравился интерьер, мало света, неудобная мебель.' },
-  { category: 'Парковка и доступность', percent: 1.7, desc: 'Нет парковки, сложно добраться.' },
+  // 1 строка
+  { category: 'Качество блюд/напитков', percent: 13.3, desc: 'Неудовлетворительный вкус и температура кофе или еды, несвежий продукт, комочки, странный привкус, блюда не соответствуют стандарту.' },
+  { category: 'Чистота зала/посуды/уборной', percent: 10.8, desc: 'Грязные столы, посуда, мусор на полу, волосы или насекомые в еде, неубранная уборная.' },
+
+  // 2 строка
+  { category: 'Долгое ожидание заказа', percent: 18.3, desc: 'Слишком долгое приготовление, очереди, заказ забыли, выдача затянулась на 10–20 минут и более.' },
+  { category: 'Ошибки в заказе', percent: 12.5, desc: 'Выдан не тот напиток или блюдо, забыли позицию, перепутали размер или ингредиент, заказ собрали с ошибками.' },
+
+  // 3 строка
+  { category: 'Грубость и невнимательность персонала', percent: 10.0, desc: 'Персонал был невежлив, не поздоровался, игнорировал просьбы, проявил хамство или раздражение.' },
+  { category: 'Антисанитария/инородные предметы', percent: 6.7, desc: 'Волосы, пластик, нитки, мухи или тараканы в еде, плохо вымытые руки персонала.' },
+  { category: 'Проблемы с очередями и обслуживанием', percent: 5.8, desc: 'Путаница чей заказ, нет системы, хаотичная очередь — кто-то нарушает порядок, кассир путается.' },
+
+  // 4 строка
+  { category: 'Неуютная атмосфера/музыка/запах', percent: 5.0, desc: 'Шум, некомфортная посадка, неприятный запах, неудачная музыка, слишком громко или холодно.' },
+  { category: 'Упаковка и напитки на вынос', percent: 4.2, desc: 'Неудобная упаковка, напитки проливаются, крышки неплотно закрыты, сложно унести.' },
+  { category: 'Отсутствие внимания/коммуникации', percent: 4.2, desc: 'Сотрудник ничего не объяснил, не помог с выбором, не рассказал про меню или не предложил помощь.' },
+
+  // Нижние (4 шт.)
+  { category: 'Цена/акции/выгода', percent: 3.3, desc: 'Цены высокие, акции не работают, скидку не предоставили, обманули с ценой.' },
+  { category: 'Профессионализм персонала', percent: 2.5, desc: 'Сотрудник не знал меню, не разбирался в кофе, ошибки в приготовлении.' },
+  { category: 'Дизайн и интерьер', percent: 1.7, desc: 'Скучный, неуютный интерьер, неудобная мебель, плохое освещение.' },
+  { category: 'Парковка и доступность', percent: 1.7, desc: 'Отсутствие парковки, сложно найти вход, неудобная локация.' },
 ]
 </script>
 
 <style scoped>
-/* === Общие стили === */
+/* === Контейнер === */
 .signal-treemap-reset {
   width: 100%;
   max-width: 900px;
@@ -163,11 +173,12 @@ const categories = [
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 0 6px;
+  padding: 0 4px;
   box-sizing: border-box;
   font-family: inherit;
 }
 
+/* === Ряды === */
 .row,
 .row-2,
 .row-3 {
@@ -189,46 +200,46 @@ const categories = [
 .card {
   background: #232427;
   color: #eaeaea;
-  border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(24, 24, 26, 0.08);
+  border-radius: 11px;
+  box-shadow: 0 1px 3px rgba(24, 24, 26, 0.1);
   cursor: pointer;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
 }
 
 .card:hover,
 .card:focus {
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(24, 24, 26, 0.15);
+  box-shadow: 0 3px 8px rgba(24, 24, 26, 0.18);
 }
 
-/* 2 крупные карточки в ряд */
+/* 2 крупные карточки */
 .card-large {
   flex: 1 1 calc(50% - 3px);
   min-width: 0;
-  min-height: 76px;
+  min-height: 74px;
   height: auto;
-  font-size: clamp(0.94rem, 1.8vw, 1.14rem);
+  font-size: clamp(0.92rem, 1.75vw, 1.12rem);
 }
 
-/* 3 средние карточки в ряд */
+/* 3 средние карточки — шрифт меньше */
 .card-mid {
   flex: 1 1 calc(33.333% - 4px);
   min-width: 0;
-  min-height: 56px;
+  min-height: 54px;
   height: auto;
-  font-size: clamp(0.84rem, 1.6vw, 0.98rem);
+  font-size: clamp(0.78rem, 1.5vw, 0.92rem);
 }
 
-/* Нижние — компактные, одна на строку */
+/* Нижние — очень компактные */
 .card-wide {
   flex: 1 1 100%;
   min-width: 0;
-  min-height: 42px;
+  min-height: 38px;
   height: auto;
-  font-size: clamp(0.84rem, 1.6vw, 0.98rem);
+  font-size: clamp(0.76rem, 1.45vw, 0.90rem);
 }
 
 /* === Внутренний контент === */
@@ -236,8 +247,8 @@ const categories = [
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 11px;
-  gap: 8px;
+  padding: 8px 10px;
+  gap: 6px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -245,7 +256,7 @@ const categories = [
 .card-problem {
   font-weight: 500;
   font-size: 1em;
-  line-height: 1.2;
+  line-height: 1.18;
   white-space: normal;
   overflow-wrap: anywhere;
   flex: 1;
@@ -254,11 +265,11 @@ const categories = [
 
 .card-percent {
   font-weight: 400;
-  font-size: 0.88em;
+  font-size: 0.86em;
   color: #eaeaea;
-  opacity: 0.55;
+  opacity: 0.58;
   white-space: nowrap;
-  min-width: 38px;
+  min-width: 34px;
   text-align: right;
 }
 
@@ -268,19 +279,19 @@ const categories = [
   inset: 0;
   background: #161719;
   color: #ededed;
-  border-radius: 12px;
+  border-radius: 11px;
   z-index: 10;
-  padding: 10px 11px;
+  padding: 8px 10px;
   display: flex;
   align-items: flex-start;
-  animation: tooltipPop 0.3s ease-out;
-  box-shadow: 0 4px 12px rgba(22, 23, 25, 0.3);
+  animation: tooltipPop 0.28s ease-out;
+  box-shadow: 0 3px 10px rgba(22, 23, 25, 0.32);
 }
 
 .tooltip-text {
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   font-weight: 400;
-  line-height: 1.35;
+  line-height: 1.32;
   white-space: normal;
   overflow-wrap: anywhere;
   max-width: 100%;
@@ -289,7 +300,7 @@ const categories = [
 /* === Анимации === */
 .fade-smooth-enter-active,
 .fade-smooth-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.28s ease;
 }
 
 .fade-smooth-enter-from,
@@ -298,29 +309,30 @@ const categories = [
 }
 
 @keyframes tooltipPop {
-  0% { opacity: 0.9; transform: scale(0.97); }
+  0% { opacity: 0.92; transform: scale(0.97); }
   100% { opacity: 1; transform: scale(1); }
 }
 
 /* === Адаптивность === */
 @media (max-width: 720px) {
-  .signal-treemap-reset { padding: 0 4px; }
+  .signal-treemap-reset { padding: 0 3px; }
   .row, .row-2, .row-3 { gap: 5px; }
-  .card-large { flex: 1 1 calc(50% - 2.5px); min-height: 68px; }
-  .card-mid { flex: 1 1 calc(50% - 2.5px); min-height: 54px; }
-  .card-inner, .card-tooltip { padding: 9px 10px; }
+  .card-large { flex: 1 1 calc(50% - 2.5px); min-height: 66px; }
+  .card-mid { flex: 1 1 calc(50% - 2.5px); min-height: 50px; }
+  .card-inner, .card-tooltip { padding: 7px 9px; }
+  .card-percent { font-size: 0.82em; min-width: 32px; }
 }
 
 @media (max-width: 480px) {
   .card-large,
   .card-mid {
     flex: 1 1 100%;
-    min-height: 62px;
-    font-size: clamp(0.82rem, 2.3vw, 0.9rem);
+    min-height: 58px;
+    font-size: clamp(0.78rem, 2.1vw, 0.88rem);
   }
-  .card-wide { min-height: 40px; }
-  .card-inner, .card-tooltip { padding: 8px 9px; gap: 6px; }
-  .card-percent { font-size: 0.84em; min-width: 34px; }
-  .tooltip-text { font-size: 0.82rem; }
+  .card-wide { min-height: 36px; }
+  .card-inner, .card-tooltip { padding: 7px 8px; gap: 5px; }
+  .card-percent { font-size: 0.80em; min-width: 30px; }
+  .tooltip-text { font-size: 0.80rem; }
 }
 </style>
