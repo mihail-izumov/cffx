@@ -38,7 +38,7 @@ notification: brew
 
 <DialogsSteps />
 
-<DashboardCafeSignalsMap />
+<SignalDashboardSwitcher />
 
 # ИИ-ассистент Анна.
 
