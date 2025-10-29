@@ -11,9 +11,6 @@
       </button>
     </transition>
 
-    <!-- Зафиксированное изображение чашки - только для десктопа -->
-    <div class="cup-image desktop-only"></div>
-
     <!-- Основной контейнер с элементами -->
     <div class="content-wrapper">
       <!-- Зарезервированное место и стрелки, прижатые влево -->
@@ -65,9 +62,11 @@
         </div>
       </div>
 
-      <!-- Изображение чашки для мобильной версии -->
-      <div class="cup-image mobile-only"></div>
+      <!-- Зафиксированное изображение чашки справа на десктопе -->
+      <div class="cup-image desktop-img"></div>
     </div>
+    <!-- Изображение чашки внизу на мобильной версии -->
+    <div class="cup-image mobile-img"></div>
   </div>
 </template>
 
@@ -88,12 +87,12 @@ const items = ref([
   { id: 7, title: 'Метрики Успеха', content: '<strong>Метрики Успеха.</strong> Вы получаете доступ к дашборду, где в реальном времени отслеживаются ключевые показатели: среднее время решения проблемы, уровень удовлетворённости (NPS) после диалога, самые частые типы проблем. Вы управляете репутацией на основе данных, а не интуиции.' }
 ]);
 
-// Динамический расчет высоты контейнера
+// Динамический расчет высоты контейнера только для контента
 watch(activeIndex, async () => {
   await nextTick();
   
-  let totalHeight = 80; // Сумма верхнего и нижнего padding (40px + 40px)
-  const gap = 12; // Отступ между элементами
+  let totalHeight = 80; // Верхний + нижний padding блока
+  const gap = 12;
 
   if (itemRefs.value.length > 0) {
     itemRefs.value.forEach((el, index) => {
@@ -105,15 +104,12 @@ watch(activeIndex, async () => {
       }
     });
   }
-  
-  // Устанавливаем высоту, но не меньше минимального значения
   containerHeight.value = Math.max(650, totalHeight);
 });
 
 function setActive(index) {
   activeIndex.value = index;
 }
-
 function navigate(direction) {
   if (activeIndex.value === null) return;
   const newIndex = activeIndex.value + direction;
@@ -121,14 +117,12 @@ function navigate(direction) {
     activeIndex.value = newIndex;
   }
 }
-
 function closeAll() {
   activeIndex.value = null;
 }
 </script>
 
 <style scoped>
-/* Главный контейнер на всю ширину */
 .feature-selector-container {
   position: relative;
   width: 100%;
@@ -138,50 +132,103 @@ function closeAll() {
   transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Контейнер с элементами */
+/* Контент + навигация */
 .content-wrapper {
   position: relative;
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
   height: 100%;
   padding: 40px 0;
 }
 
-/* Общие стили для изображения чашки */
-.cup-image {
-  background-image: url('/cffx-cup.png');
-  background-repeat: no-repeat;
-  pointer-events: none;
+/* Стрелки слева */
+.nav-placeholder {
+  position: relative;
+  width: 52px;
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
 }
-
-/* Изображение чашки для десктопа - зафиксировано относительно viewport */
-.cup-image.desktop-only {
-  position: fixed;
-  top: 50vh;
-  right: 5%;
-  width: 300px;
-  height: 300px;
-  transform: translateY(-50%);
-  background-size: contain;
-  background-position: center;
-  z-index: 0;
+.nav-arrows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
-
-/* Изображение чашки для мобильной версии */
-.cup-image.mobile-only {
-  display: none;
-  width: 200px;
-  height: 200px;
-  background-size: contain;
-  background-position: center;
-  margin: 20px auto 0;
+.arrow-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #000;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.arrow-button svg { pointer-events: none; }
+.arrow-button:hover:not(:disabled) { background-color: #1a1a1a; }
+.arrow-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.feature-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 2;
+}
+.feature-item-wrapper {
+  width: max-content;
+  max-width: 450px;
+}
+.pill-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #000;
+  border: none;
+  border-radius: 24px;
+  padding: 14px 20px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.pill-button:hover { background-color: #111; }
+.pill-icon-wrapper {
+  color: #8A8A8E;
   flex-shrink: 0;
 }
-
-/* Контент на десктопе */
-.content-main {
-  display: flex;
-  align-items: flex-start;
+.pill-icon-wrapper svg {
+  width: 24px;
+  height: 24px;
+}
+.pill-title {
+  color: #F2F2F7;
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.content-box {
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 24px;
+  padding: 22px 28px;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #EAEAEB;
+  font-size: 17px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+:deep(.content-box strong) {
+  font-weight: 700;
+  color: #fff;
 }
 
 /* Кнопка "Закрыть всё" */
@@ -203,163 +250,64 @@ function closeAll() {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.close-all-btn:hover {
-  background-color: #111;
-  color: #fff;
-}
+.close-all-btn:hover { background-color: #111; color: #fff; }
 
-/* Пустое место для стрелок, прижатое влево и центрирующее их */
-.nav-placeholder {
-  position: relative;
-  width: 52px;
+/* Изображение чашки справа фиксировано — только на десктопе */
+.cup-image.desktop-img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 52%;
   height: 100%;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-image: url('/cffx-cup.png');
+  background-size: contain;
+  background-position: right center;
+  background-repeat: no-repeat;
   z-index: 1;
-}
-
-/* Навигационные стрелки */
-.nav-arrows {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.arrow-button {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background-color: #000;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.arrow-button svg {
   pointer-events: none;
+  transition: none;
+  display: block;
 }
-.arrow-button:hover:not(:disabled) {
-  background-color: #1a1a1a;
-}
-.arrow-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-/* Список элементов */
-.feature-list {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 1;
-}
-
-.feature-item-wrapper {
-  width: max-content;
-  max-width: 450px;
-}
-
-/* Стили кнопки-пилюли */
-.pill-button {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background-color: #000;
-  border: none;
-  border-radius: 24px;
-  padding: 14px 20px;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.pill-button:hover {
-  background-color: #111;
-}
-.pill-icon-wrapper {
-  color: #8A8A8E;
-  flex-shrink: 0;
-}
-.pill-icon-wrapper svg {
-  width: 24px;
-  height: 24px;
-}
-.pill-title {
-  color: #F2F2F7;
-  font-size: 17px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-/* Стили блока с контентом */
-.content-box {
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-radius: 24px;
-  padding: 22px 28px;
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #EAEAEB;
-  font-size: 17px;
-  line-height: 1.5;
-  font-weight: 500;
-}
-:deep(.content-box strong) {
-  font-weight: 700;
-  color: #fff;
-}
+.cup-image.mobile-img { display: none; }
 
 /* Анимации */
 .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
-
 .slide-in-enter-active { transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
 .slide-in-leave-active { transition: all 0.3s cubic-bezier(0.5, 0, 0.75, 0); }
 .slide-in-enter-from, .slide-in-leave-to { opacity: 0; transform: translateX(-20px); }
-
 .item-swap-enter-active, .item-swap-leave-active { transition: all 0.3s ease-in-out; }
 .item-swap-enter-from, .item-swap-leave-to { opacity: 0; transform: scale(0.95); }
 
-/* Десктопная версия */
-@media (min-width: 769px) {
-  .content-wrapper {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-  
-  .cup-image.desktop-only {
-    display: block;
-  }
-  
-  .cup-image.mobile-only {
-    display: none;
-  }
-}
-
-/* Мобильная версия */
+/* Мобильная версия — изображение внизу под переключателями, по центру экрана */
 @media (max-width: 768px) {
+  .feature-selector-container { transition: none; }
   .content-wrapper {
-    padding: 40px 16px;
+    padding: 40px 16px 8px 16px;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+    height: auto;
   }
-  
-  .cup-image.desktop-only {
-    display: none;
-  }
-  
-  .cup-image.mobile-only {
+  .nav-placeholder { width: 52px; height: auto; margin-bottom: 8px; }
+  .feature-list { gap: 12px; }
+  .feature-item-wrapper { max-width: 100%; }
+  /* desktop-img прячем на мобильных */
+  .cup-image.desktop-img { display: none !important; }
+  /* mobile-img показываем, делаем центровку и фиксируем положение внизу */
+  .cup-image.mobile-img {
     display: block;
-  }
-  
-  .feature-item-wrapper {
-    max-width: 100%;
-  }
-  
-  .nav-placeholder {
-    align-self: flex-start;
+    width: 90vw;
+    max-width: 320px;
+    margin: 28px auto 8px auto;
+    height: 120px;
+    background-image: url('/cffx-cup.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+    pointer-events: none;
   }
 }
 </style>
