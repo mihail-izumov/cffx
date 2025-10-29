@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-const activeTab = ref('dolhoe-ohidanie') // фикс: старт всегда с первой вкладки!
+const activeTab = ref('dolhoe-ohidanie')
 </script>
 
 <template>
@@ -138,44 +138,44 @@ const activeTab = ref('dolhoe-ohidanie') // фикс: старт всегда с
 .signal-mr-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px 18px;
+  gap: 24px 18px;
   margin-bottom: 14px;
 }
 .signal-mr-btn {
   appearance: none;
-  border: 2px solid rgba(255,255,255,0.19);
-  background: none;
-  color: rgba(255,255,255,0.93);
-  padding: 15px 28px;
-  border-radius: 18px;
+  border: 2px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.04);
+  color: #fafafc;
+  padding: 14px 26px;
+  border-radius: 20px;
   font-weight: 700;
-  font-size: 22px;
-  line-height: 1.04;
+  font-size: 24px;
+  line-height: 1.05;
   cursor: pointer;
-  transition: 
-    background .18s cubic-bezier(.51,.01,.34,1.02),
-    border-color .18s cubic-bezier(.51,.01,.34,1.02), 
-    color .18s cubic-bezier(.51,.01,.34,1.02), 
-    box-shadow .18s cubic-bezier(.51,.01,.34,1.02);
+  transition:
+    border-color .22s cubic-bezier(.51,.01,.34,1.02),
+    background .22s cubic-bezier(.51,.01,.34,1.02),
+    color .22s cubic-bezier(.51,.01,.34,1.02),
+    box-shadow .2s;
   box-shadow: none;
   outline: none;
   position: relative;
 }
 .signal-mr-btn:hover {
-  background: rgba(200,255,90,0.07);
-  border-color: #aadc47;
-  color: #fbfffc;
-  box-shadow: 0 0 0 2px #c8ff5a6e inset;
+  border-color: #b8fa46;
+  background: rgba(255,255,255,0.10);
+  color: #fafdfe;
+  box-shadow: 0 0 0 2px #c8ff5a40 inset;
 }
 .signal-mr-active {
-  color: #151a06 !important;
-  background: #c8ff5a;
   border-color: #c8ff5a !important;
-  box-shadow: 0 0 0 2px #b8f35bce inset;
+  background: rgba(255,255,255,0.10);
+  color: #111a13 !important;
+  box-shadow: 0 0 0 4px #c8ff5a7e inset;
   z-index: 2;
 }
 .signal-mr-panel {
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.10);
   background: rgba(255,255,255,0.03);
   border-radius: 16px;
   padding: 26px 20px;
@@ -247,8 +247,8 @@ const activeTab = ref('dolhoe-ohidanie') // фикс: старт всегда с
     padding-left: 5px;
 }
 .signal-mr-result {
-    background-color: rgba(200,255,90,0.06);
-    border: 1px solid rgba(200,255,90,0.13);
+    background-color: rgba(18,18,22,0.15); /* очень тёмный, не зелёный */
+    border: 1px solid rgba(255,255,255,0.11);
     padding: 13px 15px;
     border-radius: 10px;
     margin-top: 20px;
