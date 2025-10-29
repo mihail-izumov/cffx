@@ -4,44 +4,32 @@ const activeTab = ref('dolhoe-ohidanie')
 </script>
 
 <template>
-  <div class="signal-mr-tabs">
-    <button
-      :class="['signal-mr-btn', { 'signal-mr-active': activeTab === 'dolhoe-ohidanie' }]"
-      @click="activeTab = 'dolhoe-ohidanie'"
-      type="button"
-    >Долгое ожидание</button>
-    <button
-      :class="['signal-mr-btn', { 'signal-mr-active': activeTab === 'bally' }]"
-      @click="activeTab = 'bally'"
-      type="button"
-    >Начисление баллов</button>
-    <button
-      :class="['signal-mr-btn', { 'signal-mr-active': activeTab === 'oshibka' }]"
-      @click="activeTab = 'oshibka'"
-      type="button"
-    >Ошибка в заказе</button>
-    <button
-      :class="['signal-mr-btn', { 'signal-mr-active': activeTab === 'nekomplektnost' }]"
-      @click="activeTab = 'nekomplektnost'"
-      type="button"
-    >Некомплектность</button>
-    <button
-      :class="['signal-mr-btn', { 'signal-mr-active': activeTab === 'sertifikat' }]"
-      @click="activeTab = 'sertifikat'"
-      type="button"
-    >Сертификат</button>
-    <button
-      :class="['signal-mr-btn', { 'signal-mr-active': activeTab === 'izmeneniya' }]"
-      @click="activeTab = 'izmeneniya'"
-      type="button"
-    >Реальные изменения</button>
+  <div class="tabs-mr">
+    <button :class="{ active: activeTab === 'dolhoe-ohidanie' }" @click="activeTab = 'dolhoe-ohidanie'">
+      Долгое ожидание
+    </button>
+    <button :class="{ active: activeTab === 'bally' }" @click="activeTab = 'bally'">
+      Начисление баллов
+    </button>
+    <button :class="{ active: activeTab === 'oshibka' }" @click="activeTab = 'oshibka'">
+      Ошибка в заказе
+    </button>
+    <button :class="{ active: activeTab === 'nekomplektnost' }" @click="activeTab = 'nekomplektnost'">
+      Некомплектность
+    </button>
+    <button :class="{ active: activeTab === 'sertifikat' }" @click="activeTab = 'sertifikat'">
+      Сертификат
+    </button>
+    <button :class="{ active: activeTab === 'izmeneniya' }" @click="activeTab = 'izmeneniya'">
+      Реальные изменения
+    </button>
   </div>
 
-  <div class="signal-mr-panel">
-    <div v-show="activeTab === 'dolhoe-ohidanie'" class="signal-mr-content">
+  <div class="panel-mr">
+    <div v-show="activeTab === 'dolhoe-ohidanie'" class="content-mr">
       <h3>Долгое ожидание</h3>
       <h4>СИГНАЛ 201-883</h4>
-      <p class="signal-mr-intro">Алина, здравствуйте 👋</p>
+      <p class="intro-p">Алина, здравствуйте 👋</p>
       <p class="signal-mr-p">Понимаю ваше разочарование. Долгое ожидание без объяснений создаёт дискомфорт, особенно когда непонятно, сколько ещё ждать.</p>
       <h4>Помогите уточнить детали:</h4>
       <ul>
@@ -57,10 +45,10 @@ const activeTab = ref('dolhoe-ohidanie')
       </div>
     </div>
 
-    <div v-show="activeTab === 'bally'" class="signal-mr-content">
+    <div v-show="activeTab === 'bally'" class="content-mr">
       <h3>Начисление баллов</h3>
       <h4>СИГНАЛ 994-569</h4>
-      <p class="signal-mr-intro">Виктория, здравствуйте! 👋</p>
+      <p class="intro-p">Виктория, здравствуйте! 👋</p>
       <p class="signal-mr-p">Понимаю, насколько неприятно, когда возникают проблемы с баллами — это ваше вознаграждение за лояльность. Проблемы с начислением баллов — это недопустимо.</p>
       <h4>Чтобы точно разобраться:</h4>
       <ul>
@@ -74,10 +62,10 @@ const activeTab = ref('dolhoe-ohidanie')
       </div>
     </div>
 
-    <div v-show="activeTab === 'oshibka'" class="signal-mr-content">
+    <div v-show="activeTab === 'oshibka'" class="content-mr">
       <h3>Ошибка в заказе</h3>
       <h4>СИГНАЛ 971-484</h4>
-      <p class="signal-mr-intro">Ольга, здравствуйте! 👋<br>Спасибо за обратную связь.</p>
+      <p class="intro-p">Ольга, здравствуйте! 👋<br>Спасибо за обратную связь.</p>
       <p class="signal-mr-p">Понимаю ваше разочарование и сожалею о доставленных неудобствах. Ошибка в заказе — это недопустимо.</p>
       <h4>Чтобы точно разобраться:</h4>
       <ul>
@@ -91,10 +79,10 @@ const activeTab = ref('dolhoe-ohidanie')
       </div>
     </div>
 
-    <div v-show="activeTab === 'nekomplektnost'" class="signal-mr-content">
+    <div v-show="activeTab === 'nekomplektnost'" class="content-mr">
       <h3>Некомплектность</h3>
       <h4>СИГНАЛ 500-794</h4>
-      <p class="signal-mr-intro">Лера, здравствуйте! 👋</p>
+      <p class="intro-p">Лера, здравствуйте! 👋</p>
       <p class="signal-mr-p">
         Спасибо, что поделились впечатлениями, это очень ценно для нас.<br>
         Очень жаль, что в круассане оказалось меньше крема, чем вы ожидали. Понимаю, как это могло испортить впечатление от десерта.<br>
@@ -106,10 +94,10 @@ const activeTab = ref('dolhoe-ohidanie')
       </div>
     </div>
 
-    <div v-show="activeTab === 'sertifikat'" class="signal-mr-content">
+    <div v-show="activeTab === 'sertifikat'" class="content-mr">
       <h3>Сертификат</h3>
       <h4>СИГНАЛ 978-746</h4>
-      <p class="signal-mr-intro">Ирина, добрый вечер! 👋</p>
+      <p class="intro-p">Ирина, добрый вечер! 👋</p>
       <p class="signal-mr-p">Управляющий кофейни разобрался с ситуацией и принял решение. В качестве компенсации за дискомфорт во время визита отправляю сертификат номиналом 500₽, номер 99282.</p>
       <p class="signal-mr-p">Сертификат можно использовать в любой кофейне «Космическая» без ограничений по сроку действия.</p>
       <p class="signal-mr-p">Приносим извинения за неудобства и благодарим за обратную связь — она помогает нам становиться лучше. Будем рады видеть снова!</p>
@@ -118,10 +106,10 @@ const activeTab = ref('dolhoe-ohidanie')
       </div>
     </div>
 
-    <div v-show="activeTab === 'izmeneniya'" class="signal-mr-content">
+    <div v-show="activeTab === 'izmeneniya'" class="content-mr">
       <h3>Реальные изменения</h3>
       <h4>СИГНАЛ 978-746</h4>
-      <p class="signal-mr-intro">Елена, Поняла вас! 👍 Реальные изменения важнее сертификатов.</p>
+      <p class="intro-p">Елена, Поняла вас! 👍 Реальные изменения важнее сертификатов.</p>
       <h4>Что уже сделано:</h4>
       <p class="signal-mr-p">Ваш Сигнал передан управляющему как приоритетный — требует его личного решения, а не стандартного ответа. Это значит: проверка климат-контроля в зоне у окна за дальним столиком выполняется человеком, который может изменить ситуацию.</p>
       <h4>Что будет дальше:</h4>
@@ -135,55 +123,54 @@ const activeTab = ref('dolhoe-ohidanie')
 </template>
 
 <style scoped>
-.signal-mr-tabs {
+.tabs-mr {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px 18px;
+  gap: 8px;
   margin-bottom: 14px;
 }
-.signal-mr-btn {
+.tabs-mr button {
   appearance: none;
-  border: 2px solid rgba(255,255,255,0.22);
+  border: 1px solid rgba(255,255,255,0.12);
   background: rgba(255,255,255,0.04);
-  color: #fafafc;
-  padding: 14px 26px;
-  border-radius: 20px;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 1.05;
+  color: rgba(255,255,255,0.92);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
   cursor: pointer;
-  transition:
-    border-color .22s cubic-bezier(.51,.01,.34,1.02),
-    background .22s cubic-bezier(.51,.01,.34,1.02),
-    color .22s cubic-bezier(.51,.01,.34,1.02),
-    box-shadow .2s;
-  box-shadow: none;
-  outline: none;
-  position: relative;
+  transition: all .2s ease;
 }
-.signal-mr-btn:hover {
-  border-color: #b8fa46;
-  background: rgba(255,255,255,0.10);
-  color: #fafdfe;
-  box-shadow: 0 0 0 2px #c8ff5a40 inset;
+.tabs-mr button:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.18);
 }
-.signal-mr-active {
-  border-color: #c8ff5a !important;
-  background: rgba(255,255,255,0.10);
-  color: #111a13 !important;
-  box-shadow: 0 0 0 4px #c8ff5a7e inset;
-  z-index: 2;
+.tabs-mr button.active {
+  color: #0a0a0a;
+  background: #c8ff5a;
+  border-color: #c8ff5a;
+  box-shadow: 0 0 0 2px rgba(200,255,90,0.25) inset;
 }
-.signal-mr-panel {
-  border: 1px solid rgba(255,255,255,0.10);
+.panel-mr {
+  border: 1px solid rgba(255,255,255,0.08);
   background: rgba(255,255,255,0.03);
-  border-radius: 16px;
-  padding: 26px 20px;
+  border-radius: 12px;
+  padding: 15px 16px;
 }
-.signal-mr-content {
+.content-mr {
   color: rgba(255,255,255,0.92);
   font-size: 13px;
   line-height: 1.46;
+}
+.content-mr p {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.46;
+}
+.content-mr p:not(.intro-p):not(:last-child) {
+  margin-bottom: 12px;
 }
 .signal-mr-p {
   margin: 0 0 14px 0;
@@ -191,66 +178,62 @@ const activeTab = ref('dolhoe-ohidanie')
   color: rgba(255,255,255,0.96);
   line-height: 1.7;
 }
-.signal-mr-intro {
-  font-size: 16px;
-  line-height: 1.5;
-  margin-bottom: 17px;
-  color: #f3fbe4;
+.content-mr .intro-p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 14px;
 }
-.signal-mr-content h3 {
-  margin: 0 0 13px;
-  font-size: 21px;
+.content-mr h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.01em;
-  color: #d9f89c;
+  color: rgba(255,255,255,0.9);
 }
-.signal-mr-content h4 {
-  margin: 15px 0 10px;
+.content-mr h4 {
+  margin: 13px 0 8px;
   font-size: 13px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.7);
   letter-spacing: 0.04em;
   font-weight: 600;
 }
-.signal-mr-content strong {
+.content-mr strong {
   font-weight: 600;
   color: #fff;
 }
-.signal-mr-content ul, .signal-mr-content ol {
+.content-mr ul, .content-mr ol {
   list-style: none;
   padding: 0;
   margin: 0 0 10px 0;
 }
-.signal-mr-content ul:not(:last-child),
-.signal-mr-content ol:not(:last-child) {
-    margin-bottom: 16px;
+.content-mr ul:not(:last-child),
+.content-mr ol:not(:last-child) {
+    margin-bottom: 15px;
 }
-.signal-mr-content li {
+.content-mr li {
   position: relative;
   padding-left: 16px;
-  margin-bottom: 9px;
-  font-size: 15px;
-  color: rgba(255,255,255,0.89);
-  line-height: 1.4;
+  margin-bottom: 8px;
 }
-.signal-mr-content ul > li::before {
+.content-mr ul > li::before {
   content: '•';
   position: absolute;
   left: 0;
-  color: #bce256;
+  color: rgba(200,255,90,0.7);
 }
-.signal-mr-content ol {
+.content-mr ol {
   padding-left: 18px;
   list-style: decimal;
 }
-.signal-mr-content ol li {
+.content-mr ol li {
     padding-left: 5px;
 }
 .signal-mr-result {
-    background-color: rgba(18,18,22,0.15); /* очень тёмный, не зелёный */
-    border: 1px solid rgba(255,255,255,0.11);
-    padding: 13px 15px;
-    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 14px;
+    border-radius: 8px;
     margin-top: 20px;
 }
 .signal-mr-result p {
