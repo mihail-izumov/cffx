@@ -112,7 +112,8 @@ import AnaliticsSpecsSlider from '../components/AnaliticsSpecsSlider.vue'
 import SignalSuperSpecsSlider from '../components/SignalSuperSpecsSlider.vue'
 import TicketsExamples from '../components/TicketsExamples.vue'
 import DashboardCafeSignalsMap from '../components/DashboardCafeSignalsMap.vue'
-import DashboardGymSignalsMap from '../components/DashboardGymSignalsMap.vue.vue'
+import DashboardGymSignalsMap from '../components/DashboardGymSignalsMap.vue'
+import SignalDashboardSwitcher from '../components/SignalDashboardSwitcher.vue'
 
 export default {
   extends: DefaultTheme,
@@ -231,5 +232,7 @@ export default {
     app.component('TicketsExamples', TicketsExamples)
     app.component('DashboardCafeSignalsMap', DashboardCafeSignalsMap)
     app.component('DashboardGymSignalsMap', DashboardGymSignalsMap)
+    app.component('SignalDashboardSwitcher', SignalDashboardSwitcher)
+  
   },
 }
