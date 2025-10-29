@@ -609,8 +609,8 @@ async function submitForm() {
 }
 
 onMounted(() => {
-  rawTicketNumber.value = String(Date.now()).slice(-6);
-  formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
+rawTicketNumber.value = String(Math.floor(Math.random() * 900000) + 100000);
+formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3)}`;
   
   const now = new Date();
   const day = String(now.getDate()).padStart(2, '0');
