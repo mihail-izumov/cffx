@@ -112,6 +112,7 @@ import AnaliticsSpecsSlider from '../components/AnaliticsSpecsSlider.vue'
 import SignalSuperSpecsSlider from '../components/SignalSuperSpecsSlider.vue'
 import TicketsExamples from '../components/TicketsExamples.vue'
 import DashboardCafeSignalsMap from '../components/DashboardCafeSignalsMap.vue'
+import DashboardGymSignalsMap from '../components/DashboardGymSignalsMap.vue.vue'
 
 export default {
   extends: DefaultTheme,
@@ -229,5 +230,6 @@ export default {
     app.component('SignalSuperSpecsSlider', SignalSuperSpecsSlider)
     app.component('TicketsExamples', TicketsExamples)
     app.component('DashboardCafeSignalsMap', DashboardCafeSignalsMap)
+    app.component('DashboardGymSignalsMap', DashboardGymSignalsMap)
   },
 }
