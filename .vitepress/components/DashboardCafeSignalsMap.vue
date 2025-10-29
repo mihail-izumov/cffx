@@ -1,5 +1,5 @@
 <template>
-  <div class="signal-treemap-fix">
+  <div class="signal-treemap-adaptive">
     <div class="row row-2">
       <div v-for="(cat, i) in categories.slice(0,2)" :key="cat.category"
            class="card card-large"
@@ -34,9 +34,9 @@
         </transition>
       </div>
     </div>
-    <div class="row row-3">
+    <div class="row row-3 flex-wrap">
       <div v-for="(cat, i) in categories.slice(4,7)" :key="cat.category"
-           class="card card-mid card-higher"
+           class="card card-mid"
            @mouseenter="activeIdx = i+4"
            @mouseleave="activeIdx = -1"
            tabindex="0">
@@ -51,9 +51,9 @@
         </transition>
       </div>
     </div>
-    <div class="row row-3">
+    <div class="row row-3 flex-wrap">
       <div v-for="(cat, i) in categories.slice(7,10)" :key="cat.category"
-           class="card card-mid card-higher"
+           class="card card-mid"
            @mouseenter="activeIdx = i+7"
            @mouseleave="activeIdx = -1"
            tabindex="0">
@@ -109,9 +109,9 @@ const categories = [
 </script>
 
 <style scoped>
-.signal-treemap-fix {
+.signal-treemap-adaptive {
   width: 100%;
-  max-width: 920px;
+  max-width: 900px;
   min-width: 260px;
   margin: 0 auto;
   box-sizing: border-box;
@@ -120,19 +120,37 @@ const categories = [
 }
 .row {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   box-sizing: border-box;
-  margin-bottom: 6px;
-  gap: 0;
+  margin-bottom: 10px;
+  gap: 10px;
 }
-.row-2, .row-3 {gap: 0;}
-.row-2 > .card, .row-3 > .card {
-  margin-right: 6px;
+
+/* 2 в ряд */
+.row-2 .card {
+  flex: 1 1 360px;
+  min-width: 220px;
+  max-width: calc(50% - 10px);
+  height: auto;
 }
-.row-2 > .card:last-child, .row-3 > .card:last-child {
-  margin-right: 0;
+
+/* 3 в ряд (адаптив!) */
+.row-3 .card {
+  flex: 1 1 260px;
+  min-width: 180px;
+  max-width: calc(33.333% - 10px);
+  height: auto;
 }
-.column-center { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
+
+/* wide */
+.column-center .card {
+  width: 100%;
+  min-width: 200px;
+  max-width: 100%;
+  margin-bottom: 10px;
+  height: auto;
+}
 
 .card {
   background: #232427;
@@ -144,79 +162,44 @@ const categories = [
   align-items: center;
   position: relative;
   overflow: hidden;
-  margin: 0;
   word-break: break-word;
   box-sizing: border-box;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
+  min-height: 60px;
 }
 
-.card-large {
-  flex: 1 1 0px;
-  min-width: 180px;
-  max-width: 100%;
-  height: 82px;
-  font-size: clamp(0.88rem, 1vw, 1.12rem);
-}
-.card-mid {
-  flex: 1 1 0px;
-  min-width: 31%;
-  max-width: 33.33%;
-  height: 72px;
-  font-size: clamp(0.88rem, .90vw, 1.0rem);
-}
-.card-higher { /* для 3 в ряд — еще выше */
-  height: 88px;
-}
-.card-wide {
-  width: 100%;
-  max-width: 100%;
-  min-width: 180px;
-  height: 62px;
-  font-size: clamp(0.88rem, .90vw, 1.0rem);
-  display: flex;
-}
 .card-inner,
-.card-inner-large,
-.card-inner-mid,
 .card-inner-wide {
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 4px;
-  gap: 0;
+  padding: 0 12px;
   min-height: inherit;
   box-sizing: border-box;
 }
-.card-inner-wide {justify-content: space-between;}
 .card-problem {
   font-weight: 500;
   text-align: left;
-  white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
-  line-height: 1.13;
+  line-height: 1.15;
   font-size: 1em;
   flex: 4 1 0;
-  padding-left: 4px;
 }
 .card-percent {
   font-weight: 500;
   text-align: right;
   font-size: 0.93em;
-  margin-left: 6px;
+  margin-left: 10px;
   color: #eaeaea;
   opacity: 0.48;
   min-width: 38px;
-  max-width: 70px;
   white-space: nowrap;
   flex: 1 1 0;
-  padding-right: 4px;
 }
 .card-mediumweight { font-weight: 500 !important; }
+
 .card-tooltip {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -224,7 +207,7 @@ const categories = [
   border-radius: 12px; z-index: 120;
   box-shadow: 0 4px 16px #16171724;
   display: flex; align-items: flex-start; justify-content: flex-start;
-  padding: 10px 4px 10px 4px;
+  padding: 10px 12px;
   animation: tooltipPop 0.65s;
 }
 .tooltip-text {
@@ -238,9 +221,8 @@ const categories = [
   white-space: pre-line;
   overflow-wrap: break-word;
   word-break: break-word;
-  padding-left: 4px;
 }
-/* Fade плавнее */
+
 .fade-smooth-enter-active, .fade-smooth-leave-active {
   transition: opacity 0.65s cubic-bezier(.49,0,.14,1);
 }
@@ -251,36 +233,20 @@ const categories = [
   100% { opacity: 1; transform: scale(1); }
 }
 
-@media (max-width: 700px) {
-  .signal-treemap-fix,
-  .row,
-  .card {max-width: 100vw; width: 100vw; box-sizing: border-box;}
-  .row,
-  .row-2,
-  .row-3,
-  .column-center {gap: 0;margin-bottom: 2px;}
-  .row-2 > .card, .row-3 > .card {margin-right: 2.5px;}
-  .row-2 > .card:last-child, .row-3 > .card:last-child {margin-right: 0;}
-  .card-large {height: 22vw;font-size:0.89rem;}
-  .card-mid {min-width:32vw;max-width:33vw;height:15vw;font-size:0.84rem;}
-  .card-higher {height:19vw;}
-  .card-wide {height:13vw;font-size:0.92rem;}
-  .card-inner, .card-inner-large, .card-inner-mid, .card-inner-wide, .card-tooltip {padding-left:2.5vw;padding-right:2.5vw;}
-  .card-problem, .card-percent, .tooltip-text {padding-left:2.5vw;padding-right:2.5vw;}
+/* Mobile: 2 в ряд, потом 1 в ряд */
+@media (max-width: 800px) {
+  .signal-treemap-adaptive, .row, .card {max-width: 100vw; width: 100vw; box-sizing: border-box;}
+  .row {gap: 7px; margin-bottom: 7px;}
+  .row-2 .card, .row-3 .card {min-width: 44vw; max-width: 49vw; flex: 1 1 49vw;}
+  .column-center .card {margin-bottom: 7px;}
+  .card-inner, .card-inner-wide, .card-tooltip, .tooltip-text {padding-left: 5vw; padding-right: 5vw;}
+  .card-problem, .card-percent {font-size: 0.89rem;}
   .tooltip-text {font-size:0.84rem;}
 }
-
-@media (max-width: 420px) {
-  .card-large {font-size:0.75rem;}
-  .card-mid, .card-wide {font-size:0.70rem;}
-  .card-inner,
-  .card-inner-large,
-  .card-inner-mid,
-  .card-inner-wide,
-  .card-tooltip,
-  .card-problem,
-  .card-percent,
-  .tooltip-text {padding-left:1vw;padding-right:1vw;}
-  .tooltip-text {font-size:0.74rem;}
+@media (max-width: 520px) {
+  .row-2 .card, .row-3 .card {min-width: 96vw; max-width: 100vw; flex: 1 1 100vw;}
+  .card-inner, .card-inner-wide, .card-tooltip, .tooltip-text {padding-left: 3vw; padding-right: 3vw;}
+  .card-problem, .card-percent {font-size: 0.82rem;}
+  .tooltip-text {font-size:0.75rem;}
 }
 </style>
