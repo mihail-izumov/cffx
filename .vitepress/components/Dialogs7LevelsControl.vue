@@ -11,110 +11,61 @@
       </button>
     </transition>
 
-    <!-- ДЕСКТОП -->
+    <!-- ДЕСКТОП: как было в исходнике -->
     <div class="content-wrapper-desktop">
-      <!-- Стрелки слева, по центру -->
       <div class="nav-placeholder">
         <transition name="slide-in">
           <div v-if="activeIndex !== null" class="nav-arrows">
             <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
             <button class="arrow-button" @click="navigate(1)" :disabled="activeIndex === items.length - 1">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M6 9L12 15L18 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
           </div>
         </transition>
       </div>
 
-      <!-- Список -->
       <div class="feature-list">
-        <div 
-          v-for="(item, index) in items" 
-          :key="item.id" 
-          class="feature-item-wrapper"
-          ref="itemRefs"
-        >
+        <div v-for="(item, index) in items" :key="item.id" class="feature-item-wrapper" ref="itemRefs">
           <transition name="item-swap" mode="out-in">
-            <button
-              v-if="activeIndex !== index"
-              class="pill-button"
-              @click="setActive(index)"
-            >
+            <button v-if="activeIndex !== index" class="pill-button" @click="setActive(index)">
               <div class="pill-icon-wrapper">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M8 12h8"/>
-                  <path d="M12 8v8"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
               </div>
               <span class="pill-title">{{ item.title }}</span>
             </button>
-
-            <div
-              v-else
-              class="content-box"
-              v-html="item.content"
-            ></div>
+            <div v-else class="content-box" v-html="item.content"></div>
           </transition>
         </div>
       </div>
 
-      <!-- Чашка справа -->
-      <div class="image-placeholder"></div>
+      <div class="image-placeholder-desktop"></div>
     </div>
 
-    <!-- МОБИЛЬНАЯ -->
+    <!-- МОБИЛЬНАЯ: как на твоём скриншоте -->
     <div class="content-wrapper-mobile">
-      <!-- Стрелки сверху -->
       <transition name="slide-in">
         <div v-if="activeIndex !== null" class="nav-arrows-mobile">
           <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <button class="arrow-button" @click="navigate(1)" :disabled="activeIndex === items.length - 1">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M6 9L12 15L18 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
       </transition>
 
-      <!-- Список -->
       <div class="feature-list-mobile">
-        <div 
-          v-for="(item, index) in items" 
-          :key="item.id" 
-          class="feature-item-wrapper"
-          ref="itemRefs"
-        >
+        <div v-for="(item, index) in items" :key="item.id" class="feature-item-wrapper" ref="itemRefs">
           <transition name="item-swap" mode="out-in">
-            <button
-              v-if="activeIndex !== index"
-              class="pill-button"
-              @click="setActive(index)"
-            >
+            <button v-if="activeIndex !== index" class="pill-button" @click="setActive(index)">
               <div class="pill-icon-wrapper">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M8 12h8"/>
-                  <path d="M12 8v8"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
               </div>
               <span class="pill-title">{{ item.title }}</span>
             </button>
-
-            <div
-              v-else
-              class="content-box"
-              v-html="item.content"
-            ></div>
+            <div v-else class="content-box" v-html="item.content"></div>
           </transition>
         </div>
       </div>
@@ -178,7 +129,7 @@ function closeAll() { activeIndex.value = null; }
   position: relative;
 }
 
-/* === ДЕСКТОП === */
+/* === ДЕСКТОП: как в исходнике === */
 .content-wrapper-desktop {
   display: flex;
   align-items: flex-start;
@@ -210,13 +161,13 @@ function closeAll() { activeIndex.value = null; }
   max-width: 100%;
 }
 
-.image-placeholder {
+.image-placeholder-desktop {
   flex: 1;
   background: url('/cffx-cup.png') right center / auto 65% no-repeat;
   min-height: 100%;
 }
 
-/* === МОБИЛЬНАЯ === */
+/* === МОБИЛЬНАЯ: как на скриншоте === */
 .content-wrapper-mobile {
   display: none;
   flex-direction: column;
@@ -269,7 +220,6 @@ function closeAll() { activeIndex.value = null; }
   box-sizing: border-box;
 }
 .pill-button:hover { background: #111; }
-
 .pill-icon-wrapper { color: #8A8A8E; flex-shrink: 0; }
 .pill-icon-wrapper svg { width: 24px; height: 24px; }
 .pill-title { color: #F2F2F7; font-size: 17px; font-weight: 600; white-space: nowrap; }
