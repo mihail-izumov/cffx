@@ -11,12 +11,13 @@
       </button>
     </transition>
 
-    <!-- Основной контейнер с фоном и элементами -->
+    <!-- Основной контейнер -->
     <div class="content-wrapper">
       
-      <!-- Левая часть: стрелки и список -->
+      <!-- Левая часть: стрелки + список -->
       <div class="left-panel">
-        <!-- Зарезервированное место для стрелок -->
+        
+        <!-- Стрелки -->
         <div class="nav-placeholder">
           <transition name="slide-in">
             <div v-if="activeIndex !== null" class="nav-arrows">
@@ -43,7 +44,7 @@
             ref="itemRefs"
           >
             <transition name="item-swap" mode="out-in">
-              <!-- Кнопка-пилюля -->
+              <!-- Пилюля -->
               <button
                 v-if="activeIndex !== index"
                 class="pill-button"
@@ -59,7 +60,7 @@
                 <span class="pill-title">{{ item.title }}</span>
               </button>
 
-              <!-- Блок с контентом -->
+              <!-- Контент -->
               <div
                 v-else
                 class="content-box"
@@ -70,17 +71,17 @@
         </div>
       </div>
 
-      <!-- Правая часть: фиксированное изображение чашки -->
+      <!-- Правая часть: фиксированная чашка -->
       <div class="image-placeholder"></div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, nextTick, onMounted } from 'vue';
+import { ref, watch, nextTick } from 'vue';
 
 const activeIndex = ref(null);
-const containerHeight = ref(650); // Минимальная высота
+const containerHeight = ref(650);
 const itemRefs = ref([]);
 
 const items = ref([
@@ -93,85 +94,75 @@ const items = ref([
   { id: 7, title: 'Метрики Успеха', content: '<strong>Метрики Успеха.</strong> Вы получаете доступ к дашборду, где в реальном времени отслеживаются ключевые показатели: среднее время решения проблемы, уровень удовлетворённости (NPS) после диалога, самые частые типы проблем. Вы управляете репутацией на основе данных, а не интуиции.' }
 ]);
 
-// Динамический расчет высоты
+// Динамическая высота
 watch(activeIndex, async () => {
   await nextTick();
-  
-  let totalHeight = 80; // padding-top + padding-bottom
+  let total = 80; // padding
   const gap = 12;
 
-  if (itemRefs.value.length > 0) {
-    itemRefs.value.forEach((el, index) => {
-      if (el) {
-        totalHeight += el.offsetHeight;
-        if (index < itemRefs.value.length - 1) {
-          totalHeight += gap;
-        }
-      }
-    });
-  }
-  
-  containerHeight.value = Math.max(650, totalHeight);
+  itemRefs.value.forEach((el, i) => {
+    if (el) {
+      total += el.offsetHeight;
+      if (i < itemRefs.value.length - 1) total += gap;
+    }
+  });
+
+  containerHeight.value = Math.max(650, total);
 }, { immediate: true });
 
-function setActive(index) {
-  activeIndex.value = index;
-}
-
-function navigate(direction) {
+function setActive(i) { activeIndex.value = i; }
+function navigate(dir) {
   if (activeIndex.value === null) return;
-  const newIndex = activeIndex.value + direction;
-  if (newIndex >= 0 && newIndex < items.value.length) {
-    activeIndex.value = newIndex;
-  }
+  const n = activeIndex.value + dir;
+  if (n >= 0 && n < items.value.length) activeIndex.value = n;
 }
-
-function closeAll() {
-  activeIndex.value = null;
-}
+function closeAll() { activeIndex.value = null; }
 </script>
 
 <style scoped>
-/* Главный контейнер — на всю ширину VitePress */
+/* === КОНТЕЙНЕР === */
 .feature-selector-container {
-  position: relative;
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow: hidden;
   transition: min-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background-color: transparent;
+  position: relative;
 }
 
-/* Обертка с двумя колонками */
+/* === ОБЕРТКА === */
 .content-wrapper {
   display: flex;
   width: 100%;
-  height: 100%;
   padding: 40px 0;
-  gap: 0;
+  box-sizing: border-box;
 }
 
-/* Левая панель — прижата влево */
+/* === ЛЕВАЯ ПАНЕЛЬ === */
 .left-panel {
   display: flex;
   flex-direction: column;
-  width: auto;
-  max-width: 500px;
-  padding-left: 0;
-  padding-right: 40px;
+  width: 100%;
+  max-width: 520px;
+  padding-left: 0; /* Без отступа слева на десктопе */
+  padding-right: 32px;
+  box-sizing: border-box;
 }
 
-/* Мобильный отступ слева */
+/* Мобильный отступ */
 @media (max-width: 768px) {
   .left-panel {
     padding-left: 16px;
-    padding-right: 20px;
+    padding-right: 16px;
+  }
+  .content-wrapper {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
-/* Стрелки — центрированы по вертикали */
+/* === СТРЕЛКИ === */
 .nav-placeholder {
   width: 52px;
   flex-shrink: 0;
@@ -181,36 +172,30 @@ function closeAll() {
   padding-top: 4px;
 }
 
-/* Навигационные стрелки */
 .nav-arrows {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
+
 .arrow-button {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: #000;
+  background: #000;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.arrow-button svg {
-  pointer-events: none;
-}
-.arrow-button:hover:not(:disabled) {
-  background-color: #1a1a1a;
-}
-.arrow-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+  transition: background 0.2s;
 }
 
-/* Список элементов */
+.arrow-button:hover:not(:disabled) { background: #1a1a1a; }
+.arrow-button:disabled { opacity: 0.4; cursor: not-allowed; }
+.arrow-button svg { pointer-events: none; }
+
+/* === СПИСОК === */
 .feature-list {
   display: flex;
   flex-direction: column;
@@ -219,45 +204,50 @@ function closeAll() {
 }
 
 .feature-item-wrapper {
-  width: max-content;
-  max-width: 100%;
+  width: 100%; /* Важно! */
+  box-sizing: border-box;
 }
 
-/* Кнопка-пилюля */
+/* === ПИЛЮЛЯ === */
 .pill-button {
   display: flex;
   align-items: center;
   gap: 12px;
-  background-color: #000;
+  background: #000;
   border: none;
   border-radius: 24px;
   padding: 14px 20px;
   width: 100%;
   text-align: left;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background 0.2s;
+  box-sizing: border-box;
 }
-.pill-button:hover {
-  background-color: #111;
-}
+
+.pill-button:hover { background: #111; }
+
 .pill-icon-wrapper {
   color: #8A8A8E;
   flex-shrink: 0;
 }
+
 .pill-icon-wrapper svg {
   width: 24px;
   height: 24px;
 }
+
 .pill-title {
   color: #F2F2F7;
   font-size: 17px;
   font-weight: 600;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Блок контента */
+/* === КОНТЕНТ === */
 .content-box {
-  background-color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-radius: 24px;
@@ -267,40 +257,35 @@ function closeAll() {
   font-size: 17px;
   line-height: 1.5;
   font-weight: 500;
+  width: 100%;
+  box-sizing: border-box;
 }
+
 :deep(.content-box strong) {
   font-weight: 700;
   color: #fff;
 }
 
-/* Фиксированное изображение чашки — справа, не двигается */
+/* === ЧАШКА === */
 .image-placeholder {
   flex: 1;
+  background: url('/cffx-cup.png') right center / auto 65% no-repeat;
   min-height: 100%;
-  background-image: url('/cffx-cup.png');
-  background-size: auto 60%;
-  background-position: right center;
-  background-repeat: no-repeat;
+  pointer-events: none;
 }
 
-/* Мобильная версия — изображение скрывается */
+/* Скрываем чашку на мобильных */
 @media (max-width: 768px) {
-  .image-placeholder {
-    display: none;
-  }
-  .content-wrapper {
-    padding-left: 0;
-    padding-right: 0;
-  }
+  .image-placeholder { display: none; }
 }
 
-/* Кнопка закрытия */
+/* === КНОПКА ЗАКРЫТИЯ === */
 .close-all-btn {
   position: absolute;
   top: 20px;
   right: 20px;
   z-index: 100;
-  background-color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(10px);
   border: none;
   border-radius: 50%;
@@ -311,15 +296,16 @@ function closeAll() {
   justify-content: center;
   color: #8A8A8E;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
+
 .close-all-btn:hover {
-  background-color: #111;
+  background: #111;
   color: #fff;
 }
 
-/* Анимации */
-.fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
+/* === АНИМАЦИИ === */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.3s; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
 
 .slide-in-enter-active { transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
