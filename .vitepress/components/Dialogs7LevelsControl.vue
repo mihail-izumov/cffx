@@ -11,23 +11,25 @@
     </transition>
 
     <div class="content-wrapper">
-      <!-- Навигационные стрелки отдельно слева -->
-      <div class="nav-placeholder">
-        <transition name="slide-in">
-          <div 
-            v-if="activeIndex !== null" 
-            class="nav-arrows"
-          >
-            <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-            <button class="arrow-button" @click="navigate(1)" :disabled="activeIndex === items.length - 1">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
-        </transition>
+      <!-- Навигация всегда фиксирована слева -->
+      <div class="nav-fixed">
+        <div class="nav-placeholder">
+          <transition name="slide-in">
+            <div 
+              v-if="activeIndex !== null" 
+              class="nav-arrows"
+            >
+              <button class="arrow-button" @click="navigate(-1)" :disabled="activeIndex === 0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 15L12 9L6 15" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="arrow-button" @click="navigate(1)" :disabled="activeIndex === items.length - 1">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </transition>
+        </div>
       </div>
-      
+
       <!-- Список элементов -->
       <div class="feature-list">
         <div 
@@ -37,43 +39,38 @@
           ref="itemRefs"
         >
           <transition name="item-swap" mode="out-in">
-            <!-- Кнопка-пилюля -->
             <button
               v-if="activeIndex !== index"
               class="pill-button"
-              @click="setActive(index)"
-            >
+              @click="setActive(index)">
               <div class="pill-icon-wrapper">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/>
+                </svg>
               </div>
               <span class="pill-title">{{ item.title }}</span>
             </button>
 
-            <!-- Блок с контентом -->
             <div
               v-else
               class="content-box"
-              v-html="item.content"
-            >
+              v-html="item.content">
             </div>
           </transition>
         </div>
       </div>
 
-      <!-- Десктоп: изображение чашки фиксировано справа -->
-      <div class="cup-image desktop"></div>
+      <!-- Зафиксированное изображение чашки: справа на десктопе, снизу и по центру — на мобильных -->
+      <div class="cup-fixed"></div>
     </div>
-    
-    <!-- Мобильная версия: изображение чашки внизу, вне content-wrapper -->
-    <div class="cup-image mobile"></div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, nextTick, onMounted } from 'vue';
+import { ref, watch, nextTick } from 'vue';
 
 const activeIndex = ref(null);
-const containerHeight = ref(650); // Начальная и минимальная высота
+const containerHeight = ref(650);
 const itemRefs = ref([]);
 
 const items = ref([
@@ -86,39 +83,29 @@ const items = ref([
   { id: 7, title: 'Метрики Успеха', content: '<strong>Метрики Успеха.</strong> Вы получаете доступ к дашборду, где в реальном времени отслеживаются ключевые показатели: среднее время решения проблемы, уровень удовлетворённости (NPS) после диалога, самые частые типы проблем. Вы управляете репутацией на основе данных, а не интуиции.' }
 ]);
 
-// Динамический расчет высоты контейнера
 watch(activeIndex, async () => {
   await nextTick();
-  
-  let totalHeight = 80; // Сумма верхнего и нижнего padding (40px + 40px)
-  const gap = 12; // Отступ между элементами
-
+  let totalHeight = 80;
+  const gap = 12;
   if (itemRefs.value.length > 0) {
     itemRefs.value.forEach((el, index) => {
       if (el) {
         totalHeight += el.offsetHeight;
-        if (index < itemRefs.value.length - 1) {
-          totalHeight += gap;
-        }
+        if (index < itemRefs.value.length - 1) totalHeight += gap;
       }
     });
   }
-  
   containerHeight.value = Math.max(650, totalHeight);
 });
 
 function setActive(index) {
   activeIndex.value = index;
 }
-
 function navigate(direction) {
   if (activeIndex.value === null) return;
   const newIndex = activeIndex.value + direction;
-  if (newIndex >= 0 && newIndex < items.value.length) {
-    activeIndex.value = newIndex;
-  }
+  if (newIndex >= 0 && newIndex < items.value.length) activeIndex.value = newIndex;
 }
-
 function closeAll() {
   activeIndex.value = null;
 }
@@ -133,16 +120,133 @@ function closeAll() {
   overflow: hidden;
   transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* Контейнер контента, навигация и блоки */
 .content-wrapper {
-  position: relative;
   display: flex;
   align-items: flex-start;
-  height: 100%;
-  padding: 40px 0;
+  min-height: 100%;
+  width: 100%;
+  position: relative;
 }
 
+.nav-fixed {
+  position: sticky;
+  top: 0;
+  left: 0;
+  align-self: flex-start;
+  height: 100vh;
+  z-index: 2;
+}
+.nav-placeholder {
+  width: 52px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav-arrows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.arrow-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #000;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.arrow-button svg {
+  pointer-events: none;
+}
+.arrow-button:hover:not(:disabled) {
+  background-color: #1a1a1a;
+}
+.arrow-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Левый список всегда прижат к левому краю десктопа, с отступом на мобиле */
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1;
+  margin-left: 0;
+  padding-left: 0;
+}
+.feature-item-wrapper {
+  width: max-content;
+  max-width: 450px;
+}
+/* Кнопка-пилюля */
+.pill-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #000;
+  border: none;
+  border-radius: 24px;
+  padding: 14px 20px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.pill-button:hover {
+  background-color: #111;
+}
+.pill-icon-wrapper {
+  color: #8A8A8E;
+  flex-shrink: 0;
+}
+.pill-icon-wrapper svg {
+  width: 24px;
+  height: 24px;
+}
+.pill-title {
+  color: #F2F2F7;
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.content-box {
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 24px;
+  padding: 22px 28px;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #EAEAEB;
+  font-size: 17px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+:deep(.content-box strong) {
+  font-weight: 700;
+  color: #fff;
+}
+/* Фиксированное изображение */
+.cup-fixed {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50%;
+  height: 65%;
+  background-image: url('/cffx-cup.png');
+  background-size: contain;
+  background-position: right center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+/* Кнопка "Закрыть всё" */
 .close-all-btn {
   position: absolute;
   top: 20px;
@@ -166,135 +270,6 @@ function closeAll() {
   color: #fff;
 }
 
-.nav-placeholder {
-  position: relative;
-  width: 52px;
-  height: 100%;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-}
-
-.nav-arrows {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.arrow-button {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background-color: #000;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.arrow-button svg { pointer-events: none; }
-.arrow-button:hover:not(:disabled) { background-color: #1a1a1a; }
-.arrow-button:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.feature-list {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 1;
-}
-
-.feature-item-wrapper {
-  width: max-content;
-  max-width: 450px;
-}
-
-.pill-button {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background-color: #000;
-  border: none;
-  border-radius: 24px;
-  padding: 14px 20px;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.pill-button:hover { background-color: #111; }
-.pill-icon-wrapper {
-  color: #8A8A8E;
-  flex-shrink: 0;
-}
-.pill-icon-wrapper svg { width: 24px; height: 24px; }
-.pill-title {
-  color: #F2F2F7;
-  font-size: 17px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.content-box {
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(15px);
-  border-radius: 24px;
-  padding: 22px 28px;
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #EAEAEB;
-  font-size: 17px;
-  line-height: 1.5;
-  font-weight: 500;
-}
-:deep(.content-box strong) { font-weight: 700; color: #fff; }
-
-/* Изображение чашки — десктоп и мобильные версии */
-.cup-image {
-  background-image: url('/cffx-cup.png');
-  background-repeat: no-repeat;
-  background-size: auto 100%;
-  background-position: center center;
-  pointer-events: none;
-  transition: none;
-}
-/* Десктоп: чашка справа, не двигается при изменении высоты */
-.cup-image.desktop {
-  display: block;
-  position: absolute;
-  top: 50%;
-  right: 0;
-  width: 50%;
-  height: 60%;
-  transform: translateY(-50%);
-  z-index: 0;
-}
-.cup-image.mobile { display: none; }
-
-@media (max-width: 768px) {
-  .content-wrapper {
-    padding: 40px 8px 16px 8px;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .cup-image.desktop { display: none; }
-  .cup-image.mobile {
-    display: block;
-    position: static;
-    margin: 24px auto 0 auto;
-    width: 100%;
-    max-width: 320px;
-    height: 120px;
-    background-size: contain;
-    background-position: center center;
-    border-radius: 20px;
-    z-index: 2;
-  }
-  .feature-list { max-width: 100%; }
-  .feature-item-wrapper { max-width: 100%; }
-}
-
 /* Анимации */
 .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
@@ -303,4 +278,50 @@ function closeAll() {
 .slide-in-enter-from, .slide-in-leave-to { opacity: 0; transform: translateX(-20px); }
 .item-swap-enter-active, .item-swap-leave-active { transition: all 0.3s ease-in-out; }
 .item-swap-enter-from, .item-swap-leave-to { opacity: 0; transform: scale(0.95); }
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 32px 8px 0 8px;
+    min-height: 100%;
+  }
+  .nav-fixed {
+    position: static;
+    width: 100%;
+    height: auto;
+    top: unset;
+    left: unset;
+    z-index: 2;
+  }
+  .nav-placeholder {
+    width: 100%;
+    height: auto;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .cup-fixed {
+    position: relative;
+    left: 50%;
+    top: unset;
+    right: unset;
+    transform: translateX(-50%);
+    width: 80vw;
+    height: 120px;
+    margin: 24px auto 8px auto;
+    background-position: center center;
+  }
+  .feature-list {
+    max-width: 100vw;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    align-items: stretch;
+  }
+  .feature-item-wrapper {
+    max-width: 98vw;
+    width: 100%;
+  }
+}
 </style>
