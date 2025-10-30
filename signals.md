@@ -71,8 +71,6 @@ description: Просто скажите что не так
 <br>
 <SignalsYandexVSSignal />
 
-<div align="center">
-
 ## Ваш персональный ИИ-ассистент Анна.
 
 **Позвольте помощнику ИИ заняться вашими проблемами с кофейнями.**
@@ -92,8 +90,6 @@ description: Просто скажите что не так
 <AnnaSpecsSignal />
 
 ## От Сигнала до решения – 24 часа.
-
-</div>
 
 <SignalDashboardSwitcher />
 
