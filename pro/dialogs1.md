@@ -86,6 +86,8 @@ notification: brew
 <DialogsWidgets />
 
 <DialogsFeatures />
+
+
 <style>
 .responsive-heading {
   font-size: 80px !important;
