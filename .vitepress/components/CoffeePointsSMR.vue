@@ -12,7 +12,7 @@ const cafes = {
     yandex2gisPercent: 94,
     smartReviews: 0,
     smartReviewsPercent: 0,
-    signals: '0',
+    signals: '2',
     signalsPercent: 0,
     isConnected: true,
     branches: [
