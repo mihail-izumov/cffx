@@ -115,6 +115,7 @@ import DashboardCafeSignalsMap from '../components/DashboardCafeSignalsMap.vue'
 import DashboardGymSignalsMap from '../components/DashboardGymSignalsMap.vue'
 import SignalDashboardSwitcher from '../components/SignalDashboardSwitcher.vue'
 import AnnaQuotes from '../components/AnnaQuotes.vue'
+import DialogsStatisticsSlider from '../components/DialogsStatisticsSlider.vue'
 
 export default {
   extends: DefaultTheme,
@@ -235,6 +236,7 @@ export default {
     app.component('DashboardGymSignalsMap', DashboardGymSignalsMap)
     app.component('SignalDashboardSwitcher', SignalDashboardSwitcher)
     app.component('AnnaQuotes', AnnaQuotes)
+    app.component('DialogsStatisticsSlider', DialogsStatisticsSlider)
   
   },
 }
