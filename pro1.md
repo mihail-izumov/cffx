@@ -2,7 +2,7 @@
 outline: false
 prev: false
 next: false
-title: Диалоги Сигнала
+title: Сигнал для Бизнеса
 description: Где Начинается Ваш Бизнес
 notification: brew
 ---
@@ -30,11 +30,9 @@ notification: brew
 
 </div>
 
-## Забота о клиентах начинается здесь.
-
-<SignalDashboardSwitcher />
-
 ## Виджеты Сигнала.
+
+Ценная обратная связь за пару кликов. Работает на сайте, в приложении или в любом формате для сферы услуг.
 
 <DialogsWidgets />
 
@@ -45,6 +43,10 @@ notification: brew
 ## От диалогов к безупречной системе сервиса.
 
 <SignalProductsCards />
+
+## Забота о клиентах начинается здесь.
+
+<SignalDashboardSwitcher />
 
 <style>
 .responsive-heading {
