@@ -38,7 +38,11 @@ notification: brew
 
 <DialogsWidgets />
 
+<div align="center">
+
 ## В каждом Сигнале.
+
+</div>
 
 <SignalSuperSpecsSlider />
 
