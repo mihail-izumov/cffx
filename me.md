@@ -83,7 +83,11 @@ description: Где Начинается Ваша Кофейня
 
 <AnnaSpecsSignal />
 
+<div align="center">
+
 ## От Сигнала до решения – 24 часа.
+
+</div>
 
 <SignalDashboardSwitcher />
 
