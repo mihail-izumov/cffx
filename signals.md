@@ -89,10 +89,18 @@ description: Просто скажите что не так
 
 <AnnaSpecsSignal />
 
+<div align="center">
+
 ## От Сигнала до решения – 24 часа.
+
+</div>
 
 <SignalDashboardSwitcher />
 
+<div align="center">
+
 ## Анна ждёт вас там, где слушают.
+
+</div>
 
 <AnnaFeelThePower />
