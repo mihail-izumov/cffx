@@ -19,12 +19,6 @@ notification: brew
   <span>Ваша система обратной связи может быть какой угодно.</span><br class="mobile-break"> <span>Даже чатом в Телеграм.</span>
 </h1>
 
-<p>
-  <strong>Решить любую проблему клиента за 24 часа.</strong>
-</p>
-
-</div>
-
 <div class="checkup-cta-section">
   <div class="checkup-price">От ₽90,000/мес.</div>
   <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
@@ -35,11 +29,15 @@ notification: brew
   <Badge type="tip" text="Бесплатно за 5 дней" style="position: relative; top: 2px;" />
 </div>
 
+<br>
+
 ---
 
 <br>
 
 # Недовольные сервисом клиенты стали слишком дорогими. Мы это изменили.
+
+</div>
 
 <DialogsSteps />
 <br>
