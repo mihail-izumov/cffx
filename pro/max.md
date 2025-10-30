@@ -19,10 +19,6 @@ notification: brew
   <span>Решить любую проблему клиента за 24 часа.</span>
 </h1>
 
-<p>
-  <strong>Тотальная эффективность клиентского сервиса.</strong>
-</p>
-
 <div class="checkup-cta-section">
   <div class="checkup-price">От ₽275,000/мес.</div>
   <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
@@ -31,6 +27,10 @@ notification: brew
 </div>
 
 # 94% проблем решаются до публикации в Яндекс/2ГИС.
+
+<p>
+  <strong>Тотальная эффективность клиентского сервиса.</strong>
+</p>
 <br>
 <Dialogs3Cards />
 
