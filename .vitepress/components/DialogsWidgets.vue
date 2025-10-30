@@ -40,7 +40,7 @@
             <div class="eye"></div>
           </div>
         </div>
-        <p class="card-description">Не говорим вам, как варить кофе.</p>
+        <p class="card-description">Не говорим вам, как варить кофе. Даем умную систему, чтобы ваша кофейня стала прибыльным и предсказуемым активом.</p>
         <div class="card-footer">
           <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Тест-драйв</a>
         </div>
@@ -50,7 +50,7 @@
         <div class="card-header">
           <span class="app-name">ФИТНЕС</span>
           <div class="like-info">
-            <span class="like-count">[Демо]</span>
+            <span class="like-count">[СуперСпорт]</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
             </svg>
