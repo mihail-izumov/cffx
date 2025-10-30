@@ -386,7 +386,6 @@ export default defineConfig({
     },
     
     sidebar: {
-      '/pro/': { items: sidebarBrew() },
       '/invest/': { items: sidebarPulse() },
       '/terms/': { items: sidebarTerms() },
       '/system/': { items: sidebarSystem() }
@@ -439,20 +438,6 @@ function nav(): DefaultTheme.NavItem[] {
         { text: 'Радар', link: '/pro/radar' },
         { text: 'Сигнал для кофейни', link: '/pro/dialogs' },
         { text: 'Инвестиции в кофейни', link: '/invest/pulse' }
-      ]
-    }
-  ]
-}
-
-function sidebarBrew(): DefaultTheme.SidebarItem[] {
-  return [
-    {
-      text: 'Умная Кофейня',
-      collapsed: false,
-      items: [
-        { text: '→ Начать', link: '/pro' },  
-        { text: 'Диалоги', link: '/pro/dialogs' },
-        { text: 'Радар', link: '/pro/radar' }
       ]
     }
   ]
