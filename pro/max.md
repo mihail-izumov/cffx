@@ -16,11 +16,11 @@ notification: brew
 <br>
 
 <h1>
-  <span>Тотальная эффективность</span><br class="mobile-break"> <span>клиентского сервиса.</span>
+  <span>Решить любую проблему клиента за 24 часа.</span>
 </h1>
 
 <p>
-  <strong>From sleep and recovery to what’s happening inside your body</strong><br class="mobile-break"> WHOOP brings it all together — make smarter choices today that add more years to your life.
+  <strong>Тотальная эффективность клиентского сервиса.
 </p>
 
 <div class="checkup-cta-section">
@@ -29,6 +29,10 @@ notification: brew
 </div>
 
 </div>
+
+## 94% проблем решаются до публикации в Яндекс/2ГИС.
+
+<Dialogs3Cards />
 
 ## 7 уровней вашего контроля.
 
