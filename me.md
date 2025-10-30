@@ -91,6 +91,10 @@ description: Где Начинается Ваша Кофейня
 
 <SignalDashboardSwitcher />
 
+<div align="center">
+
 ## Анна ждёт вас там, где слушают.
+
+</div>
 
 <AnnaFeelThePower />
