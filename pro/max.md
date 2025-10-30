@@ -20,7 +20,7 @@ notification: brew
 </h1>
 
 <p>
-  <strong>Тотальная эффективность клиентского сервиса.
+  <strong>Тотальная эффективность клиентского сервиса.</strong>
 </p>
 
 <div class="checkup-cta-section">
