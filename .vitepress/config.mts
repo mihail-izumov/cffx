@@ -435,9 +435,9 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Для Бизнеса',
       items: [
-        { text: '→ Начать', link: '/pro' },  
-        { text: 'Диалоги', link: '/pro/dialogs' },
+        { text: '→ Система Сигнала', link: '/pro' },  
         { text: 'Радар', link: '/pro/radar' },
+        { text: 'Сигнал для кофейни', link: '/pro/dialogs' },
         { text: 'Инвестиции в кофейни', link: '/invest/pulse' }
       ]
     }
