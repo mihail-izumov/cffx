@@ -96,15 +96,13 @@ notification: brew
 
 <TicketsExamples />
 
-## Тарифы
+## Виджет Сигнала
 
-**Разовый платеж за внедрение – ₽150,000**
+<p>
+<strong>Если клиент недоволен, Сигнал сразу идёт команде, а не в открытые рейтинги. </strong> Работает на сайте, в приложении или в любом формате для сферы услуг.
+</p>
 
-</div>
-
-<FitnessTarifs />
-
-<div align="center">
+<DialogsWidgets />
 
 <style>
 .responsive-heading {
