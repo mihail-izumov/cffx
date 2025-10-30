@@ -2,11 +2,11 @@
 outline: false
 prev: false
 next: false
-title: Диалоги
+title: Сигнал для кофейни
 notification: brew
 ---
 
-# Диалоги
+# Сигнал для кофейни
 
 ## В 5-8 раз больше обратной связи
 
