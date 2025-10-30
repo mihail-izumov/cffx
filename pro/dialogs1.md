@@ -29,7 +29,7 @@ notification: brew
   <Badge type="tip" text="Бесплатно за 5 дней" style="position: relative; top: 2px;" />
 </div>
 
-<br><br>
+<br>
 
 ---
 
