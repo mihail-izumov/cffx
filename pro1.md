@@ -28,13 +28,13 @@ notification: brew
   <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
 
-</div>
-
 ## Виджет Сигнала.
 
 <p>
 <strong>Ценная обратная связь за пару кликов — Сигнал или отзыв в Яндекс/2ГИС. </strong>Если клиент недоволен, Сигнал сразу идёт команде, а не в открытые рейтинги. <br><br class="mobile-break"> Работает на сайте, в приложении или в любом формате для сферы услуг.
 </p>
+
+</div>
 
 <DialogsWidgets />
 
@@ -42,13 +42,13 @@ notification: brew
 
 <SignalSuperSpecsSlider />
 
-## От диалогов к безупречной системе сервиса.
-
-<SignalProductsCards />
-
 ## Забота о клиентах начинается здесь.
 
 <SignalDashboardSwitcher />
+
+## От диалогов к безупречной системе сервиса.
+
+<SignalProductsCards />
 
 <style>
 .responsive-heading {
