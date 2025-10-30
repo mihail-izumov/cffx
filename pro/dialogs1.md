@@ -20,7 +20,7 @@ notification: brew
 </h1>
 
 <p>
-  <strong>??</strong><br class="mobile-break">???
+  <strong>Решить любую проблему клиента за 24 часа.</strong>
 </p>
 
 <div class="checkup-cta-section">
@@ -31,8 +31,8 @@ notification: brew
 </div>
 
 <div align="center">
-
-# Решить любую проблему клиента за 24 часа.
+ 
+## 94% проблем решаются до публикации в Яндекс/2ГИС.
 
 </div>
 
@@ -48,13 +48,9 @@ notification: brew
 
 <AnnaSpecsSlider />
 
-## Не просто возвращает клиента — делает его лояльным
+## Не просто возвращает клиента — делает его лояльным.
 
 <DialogsAnnaWorks />
-
-## 94% проблем решаются до публикации в Яндекс/2ГИС.
-
-<SignalAbout3Cards />
 
 <DialogsFeatures />
 
