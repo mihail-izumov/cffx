@@ -31,7 +31,7 @@ notification: brew
 </div>
 
 ## 94% проблем решаются до публикации в Яндекс/2ГИС.
-
+<br>
 <Dialogs3Cards />
 
 ## 7 уровней вашего контроля.
@@ -42,11 +42,6 @@ notification: brew
 
 <Dialogs7LevelsControl />
 
-## Тарифы
-
-**Разовый платеж за внедрение – ₽150,000**
-
-<FitnessTarifs />
 
 <style>
 .responsive-heading {
