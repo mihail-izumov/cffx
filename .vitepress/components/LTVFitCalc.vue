@@ -5,7 +5,7 @@ import { ref, computed } from 'vue'
 const retentionCurveBase = [1, 0.76, 0.62, 0.53, 0.44, 0.38, 0.35, 0.29, 0.25, 0.21, 0.17, 0.13];
 const retentionCurveSignals = [1, 0.86, 0.75, 0.67, 0.58, 0.51, 0.47, 0.41, 0.36, 0.31, 0.26, 0.22];
 
-const systemMonthlyCost = ref(27500);
+const systemMonthlyCost = ref(275000);
 
 const clubsStr = ref('10');
 const membersStr = ref('600');
