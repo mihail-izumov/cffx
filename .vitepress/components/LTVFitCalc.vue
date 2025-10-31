@@ -440,66 +440,6 @@ function showTooltip(id) { activeTooltip.value = activeTooltip.value === id ? nu
 function closeTooltip() { activeTooltip.value = null; }
 function toggleWhy() { whyOpen.value = !whyOpen.value; }
 
-
-const currentTooltip = computed(() => {
-  if (!activeTooltip.value) return { title: '', description: '', formula: '' };
-  const months = constants.periodMonths[periodType.value];
-  const clubs = clubsNum.value || 10;
-  const members = membersNum.value || 600;
-  const price = priceNum.value || 12000;
-  const freqBase = constants.freqBase;
-  const freqSignals = constants.freqSignals;
-  const clientsBaseClub = Math.round(members * constants.baseRetentionRate);
-  const clientsSignalsClub = Math.round(members * constants.signalsRetentionRate);
-  const ltvBase = price  * months;
-  const ltvSignals = price * months;
-  const ltvDiff = ltvSignals - ltvBase;
-  const additionalRevenueClub = (ltvSignals - ltvBase) * (clientsSignalsClub - clientsBaseClub);
-  const additionalRevenueNetwork = additionalRevenueClub * clubs;
-  switch (activeTooltip.value) {
-    case 'clientsRetained':
-      return {
-        title: 'Удержанные клиенты',
-        formula: members + ' × ' + formatNumber(constants.baseRetentionRate*100) + '% = <b>' + formatNumber(clientsBaseClub) + '</b><br>' +
-          members + ' × ' + formatNumber(constants.signalsRetentionRate*100) + '% = <b>' + formatNumber(clientsSignalsClub) + '</b>',
-        description: 'Разница: <b>+' + formatNumber(clientsSignalsClub - clientsBaseClub) + '</b> удержанных (на 1 клуб).'
-      };
-    case 'frequency':
-      return {
-        title: 'Частота посещений',
-        formula: `Без сигналов: <b>${freqBase} раз/мес</b><br>С сигналами: <b>${freqSignals} раз/мес</b>`,
-        description: 'Реальный рост частоты после обработки негатива и диалога.'
-      };
-    case 'ltv':
-  return {
-    title: `LTV клиента (${months} мес)`,
-    formula:
-      `${formatNumber(price)} × ${freqBase} × ${months} = <b>₽${formatNumber(ltvBase)}</b><br>` +
-      `${formatNumber(price)} × ${freqSignals} × ${months} = <b>₽${formatNumber(ltvSignals)}</b>`,
-    description: `Δ LTV на одного клиента за период: <b>+₽${formatNumber(ltvDiff)}</b>`
-  };
-    case 'additionalRevenueClub':
-      return {
-        title: 'Доп. выручка на клуб/мес',
-        formula: `Δ LTV × доп. удержанные = <br>₽${formatNumber(ltvDiff)} × ${formatNumber(clientsSignalsClub - clientsBaseClub)} = <b>₽${formatNumber(additionalRevenueClub)}</b>`,
-        description: 'Доп. выручка за счёт доп. retention — по 1 клубу за месяц.'
-      };
-    case 'additionalRevenueNetwork':
-      return {
-        title: 'Доп. выручка на сеть/мес',
-        formula: `${clubs} клуба × <b>₽${formatNumber(additionalRevenueClub)}</b> = <b>₽${formatNumber(additionalRevenueNetwork)}</b>`,
-        description: 'Доп. выручка за весь месяц на всю сеть.'
-      };
-    case 'paybackSignals':
-      return {
-        title: 'Окупаемость сигнала',
-        formula: 'Система окупается после возврата 1–2 клиентов<br>1 сигнал = возврат клиента, средний чек = LTV',
-        description: 'После 1–2 сигналов — дальше только чистая прибыль, модель рассчитана по фактическим loss cases.'
-      };
-    default:
-      return { title: '', description: '', formula: '' };
-  }
-});
 </script>
 
 <style scoped>
