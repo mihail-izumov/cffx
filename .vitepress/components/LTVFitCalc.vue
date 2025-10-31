@@ -405,9 +405,6 @@ function calcFitnessLTV({ clubs, members, price, freq, periodType }) {
   };
 }
 
-const calculatedResult = ref({});
-const hasCalculated = ref(false);
-
 const displayResult = computed(() => {
   if (!hasCalculated.value) {
     // стартовые значения для пустого экрана
