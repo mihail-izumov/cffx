@@ -218,7 +218,7 @@
         <!-- CTA / Info -->
         <div class="cffx-roi-calc-cta-block">
           <p class="cffx-roi-calc-cta-text"><strong>Главное:</strong> Система окупается мгновенно, а каждый месяц приносит стабильный рост выручки в ₽{{ dynamicRevenueMillion }}+ млн.</p>
-          <p class="cffx-roi-calc-cta-text">Следующий шаг → <a href="https://cffx.ru/brew/membership.html" class="cffx-roi-calc-cta-link">Получить QR-код</a></p>
+          <p class="cffx-roi-calc-cta-text">Следующий шаг → <a href="/pro" class="cffx-roi-calc-cta-link">Получить QR-код</a></p>
         </div>
 
         <div class="cffx-roi-calc-warning-block">
