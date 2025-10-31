@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-// --- Продвинутая retention curve из SM Stretching (жизненный цикл 8,0-9,5 мес)
+// --- Продвинутая retention curve (жизненный цикл 8,0-9,5 мес)
 const retentionCurveBase = [1, 0.76, 0.62, 0.53, 0.44, 0.38, 0.35, 0.29, 0.25, 0.21, 0.17, 0.13];
 const retentionCurveSignals = [1, 0.86, 0.75, 0.67, 0.58, 0.51, 0.47, 0.41, 0.36, 0.31, 0.26, 0.22];
 
@@ -402,85 +402,77 @@ function toggleWhy() { whyOpen.value = !whyOpen.value; }
       </span>
     </div>
 
-    <!-- "Почему всё получится" блок: ДАЛЕЕ -->
     <transition name="fitltv-calc-collapse">
-      <div v-if="whyOpen" class="fitltv-calc-container fitltv-calc-content">
-          <!-- Янтарные -->
-<div class="fitltv-calc-signal-block">
-  <h4 class="fitltv-calc-signal-title">Каждый Сигнал = возможность вернуть клиента:</h4>
-  <div class="fitltv-chip-grid">
-    <div class="fitltv-chip fitltv-chip--amber">
-      <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-      <span>Недовольство тренера/группы</span>
-    </div>
-    <div class="fitltv-chip fitltv-chip--amber">
-      <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-      <span>Жалоба на сервис/чистоту</span>
-    </div>
-    <div class="fitltv-chip fitltv-chip--amber">
-      <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-      <span>Комментарий о расписании</span>
-    </div>
-    <div class="fitltv-chip fitltv-chip--amber">
-      <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-      <span>Проблема с оплатой/тарифом</span>
-    </div>
-  </div>
-</div>
-
-<!-- Серые -->
-<div class="fitltv-calc-factors-block">
-  <h4 class="fitltv-calc-factors-title">Почему фитнес отличается:</h4>
-  <div class="fitltv-chip-grid">
-    <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Высокая стоимость удержания</span></div>
-    <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Решающий фактор — лояльность</span></div>
-    <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Сарафанное радио работает медленно</span></div>
-    <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Частые возвраты после жалоб</span></div>
-  </div>
-</div>
-
-<!-- Синие -->
-<div class="fitltv-calc-payback-explanation">
-  <h4 class="fitltv-calc-payback-title">Все сигналы после 2-го = чистая прибыль:</h4>
-  <div class="fitltv-chip-grid">
-    <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Стоимость системы: от ₽{{ displayResult.systemMonthlyCostDisplay }}/мес</span></div>
-    <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Прирост жизненного цикла клиента: +{{ displayResult.retentionBoostDisplay }}%</span></div>
-    <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Система окупается после {{ displayResult.paybackSignals }}</span></div>
-  </div>
-</div>
-
-<!-- Зеленые -->
-<div class="fitltv-calc-success-factors">
-  <h4 class="fitltv-calc-success-title">Ключевые факторы успеха:</h4>
-  <div class="fitltv-chip-grid">
-    <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Время ответа на жалобу &lt; 30 мин</span></div>
-    <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Персонализация предложений</span></div>
-    <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Мониторинг качества сервиса</span></div>
-    <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Нематериальная компенсация</span></div>
-  </div>
-</div>
-
-<!-- Желтый CTA -->
-<div class="fitltv-calc-cta-block">
-  <p class="fitltv-calc-cta-text"><strong>Главное:</strong> Окупаемость наступает сразу — каждый месяц приносит стабильный рост за счет дополнительного retention.</p>
-</div>
-
-<div class="fitltv-calc-warning-block">
-  <p class="fitltv-calc-warning-text"><strong>Внимание:</strong> Результат зависит от качества внедрения и обучения команды.</p>
-</div>
-
-<div class="fitltv-calc-info-block">
-  <p class="fitltv-calc-info-text"><strong>Как работает расчет:</strong> Оперативное закрытие проблем и предоставление ценности увеличивают retention и LTV клиентов.</p>
-  <p class="fitltv-calc-info-text"><strong>Основа расчетов:</strong> Используются реальные отраслевые метрики с учетом типа абонемента и тарифов.</p>
-</div>
-
-
+  <div v-if="whyOpen" class="fitltv-calc-container fitltv-calc-content">
+    <!-- Янтарные -->
+    <div class="fitltv-calc-signal-block">
+      <h4 class="fitltv-calc-signal-title">Каждый Сигнал = возможность вернуть клиента:</h4>
+      <div class="fitltv-chip-grid">
+        <div class="fitltv-chip fitltv-chip--amber">
+          <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+          <span>Недовольство тренера/группы</span>
+        </div>
+        <div class="fitltv-chip fitltv-chip--amber">
+          <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+          <span>Жалоба на сервис/чистоту</span>
+        </div>
+        <div class="fitltv-chip fitltv-chip--amber">
+          <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+          <span>Комментарий о расписании</span>
+        </div>
+        <div class="fitltv-chip fitltv-chip--amber">
+          <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+          <span>Проблема с оплатой/тарифом</span>
+        </div>
       </div>
-    </transition>
+    </div>
+    <!-- Серые -->
+    <div class="fitltv-calc-factors-block">
+      <h4 class="fitltv-calc-factors-title">Почему фитнес отличается:</h4>
+      <div class="fitltv-chip-grid">
+        <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Высокая стоимость удержания</span></div>
+        <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Решающий фактор — лояльность</span></div>
+        <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Сарафанное радио работает медленно</span></div>
+        <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Частые возвраты после жалоб</span></div>
+      </div>
+    </div>
+    <!-- Синие -->
+    <div class="fitltv-calc-payback-explanation">
+      <h4 class="fitltv-calc-payback-title">Все сигналы после 2-го = чистая прибыль:</h4>
+      <div class="fitltv-chip-grid">
+        <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Стоимость системы: от ₽{{ displayResult.systemMonthlyCostDisplay }}/мес</span></div>
+        <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Прирост жизненного цикла клиента: +{{ displayResult.retentionBoostDisplay }}%</span></div>
+        <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Система окупается после {{ displayResult.paybackSignals }}</span></div>
+      </div>
+    </div>
+    <!-- Зеленые -->
+    <div class="fitltv-calc-success-factors">
+      <h4 class="fitltv-calc-success-title">Ключевые факторы успеха:</h4>
+      <div class="fitltv-chip-grid">
+        <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Время ответа на жалобу &lt; 30 мин</span></div>
+        <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Персонализация предложений</span></div>
+        <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Мониторинг качества сервиса</span></div>
+        <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Нематериальная компенсация</span></div>
+      </div>
+    </div>
+    <!-- Желтый CTA -->
+    <div class="fitltv-calc-cta-block">
+      <p class="fitltv-calc-cta-text"><strong>Главное:</strong> Окупаемость наступает сразу — каждый месяц приносит стабильный рост за счет дополнительного retention.</p>
+    </div>
+    <div class="fitltv-calc-warning-block">
+      <p class="fitltv-calc-warning-text"><strong>Внимание:</strong> Результат зависит от качества внедрения и обучения команды.</p>
+    </div>
+    <div class="fitltv-calc-info-block">
+      <p class="fitltv-calc-info-text"><strong>Как работает расчет:</strong> Оперативное закрытие проблем и предоставление ценности увеличивают retention и LTV клиентов.</p>
+      <p class="fitltv-calc-info-text"><strong>Основа расчетов:</strong> Используются реальные отраслевые метрики с учетом типа абонемента и тарифов.</p>
+    </div>
+  </div>
+</transition>
+
 
     <!-- Тултипы -->
     <transition name="fitltv-calc-tooltip-anim">
