@@ -21,8 +21,9 @@ notification: brew
 
 </div>
 
-<LTVFitCalc />
+<br><br>
 
+<LTVFitCalc />
 
 <style>
 .responsive-heading {
