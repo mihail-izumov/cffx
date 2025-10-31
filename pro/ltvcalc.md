@@ -27,8 +27,6 @@ notification: brew
 
 ## От диалогов к безупречной системе сервиса.
 
-</div>
-
 <SignalProductsCards />
 
 
