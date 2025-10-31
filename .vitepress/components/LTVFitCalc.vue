@@ -257,29 +257,21 @@
 <script setup>
 import { ref, computed } from 'vue'
 
+// Исходные retention-curve (примерно как в smstretching, поправь по реальным данным!)
+const retentionCurveBase = [1, 0.5, 0.25, 0.12, 0.08, 0.04];
+const retentionCurveSignals = [1, 0.66, 0.39, 0.22, 0.15, 0.08];
+
 const clubsStr = ref('10');
 const membersStr = ref('600');
 const priceStr = ref('12000');
-const freqStr = ref('6');
-const periodType = ref('month');
 const activeTooltip = ref(null);
 const hoverIcon = ref(null);
 const clubsError = ref('');
 const membersError = ref('');
 const priceError = ref('');
-const freqError = ref('');
 const calculatedResult = ref({});
 const hasCalculated = ref(false);
 const whyOpen = ref(false);
-const systemMonthlyCost = ref(27500);
-
-const constants = {
-  baseRetentionRate: 0.62,
-  signalsRetentionRate: 0.74,
-  freqBase: 6,
-  freqSignals: 8,
-  periodMonths: { month: 10, year: 12 }
-};
 
 function validateClubs(v) {
   if (v < 1) return 'Минимум 1 клуб';
@@ -294,11 +286,6 @@ function validateMembers(v) {
 function validatePrice(v) {
   if (v < 4000) return 'Минимальная цена абонемента 4 000 ₽';
   if (v > 80000) return 'Максимальная цена абонемента 80 000 ₽';
-  return '';
-}
-function validateFreq(v) {
-  if (v < 2) return 'Минимум 2 посещения/мес';
-  if (v > 30) return 'Максимум 30 посещений/мес';
   return '';
 }
 
@@ -323,71 +310,65 @@ function onPriceInput(e) {
   priceError.value = digits ? validatePrice(num) : '';
   activeTooltip.value = null;
 }
-function onFreqInput(e) {
-  const digits = e.target.value.replace(/\D/g, '');
-  const num = Number(digits);
-  freqStr.value = digits ? num.toLocaleString('ru-RU') : '';
-  freqError.value = digits ? validateFreq(num) : '';
-  activeTooltip.value = null;
-}
 
 const clubsNum = computed(() => Number(clubsStr.value.replace(/\s|,/g, '')));
 const membersNum = computed(() => Number(membersStr.value.replace(/\s|,/g, '')));
 const priceNum = computed(() => Number(priceStr.value.replace(/\s|,/g, '')));
-const freqNum = computed(() => Number(freqStr.value.replace(/\s|,/g, '')));
-const systemMonthlyCostDisplay = computed(() => formatNumber(systemMonthlyCost.value));
-const retentionBoostDisplay = computed(() => Math.round((constants.signalsRetentionRate - constants.baseRetentionRate) * 100));
 const canCalculate = computed(() =>
   clubsNum.value >= 1 && clubsNum.value <= 25 &&
   membersNum.value >= 50 && membersNum.value <= 4000 &&
   priceNum.value >= 4000 && priceNum.value <= 80000 &&
-  freqNum.value >= 2 && freqNum.value <= 30 &&
-  !clubsError.value && !membersError.value && !priceError.value && !freqError.value
+  !clubsError.value && !membersError.value && !priceError.value
 );
 
 function formatNumber(n) {
   return new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Math.round(n)).replace(/\s/g, '.');
 }
 
-function calcFitnessLTV({ clubs, members, price, freq, periodType }) {
-  const months = constants.periodMonths[periodType];
-  const clientsBase = Math.round(members * constants.baseRetentionRate * clubs);
-  const clientsSignals = Math.round(members * constants.signalsRetentionRate * clubs);
+function averageRetention(curve) {
+  // Среднее время жизни клиента в месяцах (геометрическая сумма retention curve)
+  let sum = 0;
+  for (let i = 0; i < curve.length; i++) sum += curve[i];
+  return sum;
+}
 
-  const retentionBoost = Math.round(((clientsSignals - clientsBase) / clientsBase) * 100);
+function calcFitnessLTV({ clubs, members, price }) {
+  // retention curves (примерная отрасль! настройте под свой кейс)
+  const baseMonths = averageRetention(retentionCurveBase);
+  const signalsMonths = averageRetention(retentionCurveSignals);
 
-  const freqBase = constants.freqBase;
-  const freqSignals = constants.freqSignals;
-
-  const ltvBase = price * freqBase * months;
-  const ltvSignals = price * freqSignals * months;
+  // LTV (money per client за цикл retention)
+  const ltvBase = price * baseMonths;
+  const ltvSignals = price * signalsMonths;
   const ltvDiff = ltvSignals - ltvBase;
 
-  const clientsBaseClub = Math.round(members * constants.baseRetentionRate);
-  const clientsSignalsClub = Math.round(members * constants.signalsRetentionRate);
-  const additionalRevenueClub = (ltvSignals - ltvBase) * (clientsSignalsClub - clientsBaseClub);
-  const additionalRevenueNetwork = additionalRevenueClub * clubs;
-  const paybackSignals = "1–2 сигнала";
+  // Удержанные клиенты на клуб (по retention curve первого месяца)
+  const clubBase = Math.round(members * retentionCurveBase[1]); // через месяц
+  const clubSignals = Math.round(members * retentionCurveSignals[1]);
 
+  // Дополнительная выручка на 1 клуб и сеть
+  const additionalRevenueClub = Math.round(ltvDiff * (clubSignals - clubBase));
+  const additionalRevenueNetwork = additionalRevenueClub * clubs;
+
+  // Для мониторов: все значения округлять/форматировать
   return {
-    clientsBase: formatNumber(clientsBase),
-    clientsWithSignals: formatNumber(clientsSignals),
-    retentionBoostPercent: retentionBoost,
-    frequencyBase: freqBase + " раз/мес",
-    frequencyWith: freqSignals + " раз/мес",
-    frequencyBoostPercent: Math.round(((freqSignals - freqBase) / freqBase) * 100),
+    clientsBase: formatNumber(clubBase),
+    clientsWithSignals: formatNumber(clubSignals),
+    retentionBoostPercent: Math.round((clubSignals - clubBase) / clubBase * 100),
     ltvBase: formatNumber(ltvBase),
     ltvWithSignals: formatNumber(ltvSignals),
     ltvDiff: formatNumber(ltvDiff),
     additionalRevenueClub: formatNumber(additionalRevenueClub),
     additionalRevenueNetwork: formatNumber(additionalRevenueNetwork),
-    paybackSignals
+    paybackSignals: ltvDiff > 0 ? Math.max(1, Math.round(systemMonthlyCost.value / ltvDiff)) + " сигналов" : "—",
+    ltvBaseMonths: baseMonths,
+    ltvSignalsMonths: signalsMonths
   };
 }
 
 const displayResult = computed(() => {
   if (!hasCalculated.value) {
-    return calcFitnessLTV({ clubs: 10, members: 600, price: 12000, freq: 6, periodType: 'month' });
+    return calcFitnessLTV({ clubs: 10, members: 600, price: 12000 });
   }
   return calculatedResult.value;
 });
@@ -397,17 +378,68 @@ function calculate() {
   calculatedResult.value = calcFitnessLTV({
     clubs: clubsNum.value,
     members: membersNum.value,
-    price: priceNum.value,
-    freq: freqNum.value,
-    periodType: periodType.value
+    price: priceNum.value
   });
   hasCalculated.value = true;
   activeTooltip.value = null;
 }
 
+const currentTooltip = computed(() => {
+  if (!activeTooltip.value) return { title: '', description: '', formula: '' };
+  const clubs = clubsNum.value || 10;
+  const members = membersNum.value || 600;
+  const price = priceNum.value || 12000;
+  const ltvBaseMonths = displayResult.value.ltvBaseMonths;
+  const ltvSignalsMonths = displayResult.value.ltvSignalsMonths;
+  const ltvBase = price * ltvBaseMonths;
+  const ltvSignals = price * ltvSignalsMonths;
+  const ltvDiff = ltvSignals - ltvBase;
+  const clubBase = Math.round(members * retentionCurveBase[1]);
+  const clubSignals = Math.round(members * retentionCurveSignals[1]);
+  const additionalRevenueClub = ltvDiff * (clubSignals - clubBase);
+  const additionalRevenueNetwork = additionalRevenueClub * clubs;
+  switch (activeTooltip.value) {
+    case 'clientsRetained':
+      return {
+        title: 'Удержанные клиенты через 1 месяц',
+        formula: `${members} × ${retentionCurveBase[1] * 100}% = <b>${formatNumber(clubBase)}</b><br>`
+          + `${members} × ${retentionCurveSignals[1] * 100}% = <b>${formatNumber(clubSignals)}</b>`,
+        description: `Разница: <b>+${formatNumber(clubSignals - clubBase)}</b> удержанных (на 1 клуб через месяц)`
+      };
+    case 'ltv':
+      return {
+        title: `LTV клиента за жизненный цикл`,
+        formula:
+          `${formatNumber(price)} × ${ltvBaseMonths.toFixed(2)} мес ≈ <b>₽${formatNumber(ltvBase)}</b><br>` +
+          `${formatNumber(price)} × ${ltvSignalsMonths.toFixed(2)} мес ≈ <b>₽${formatNumber(ltvSignals)}</b>`,
+        description: `Разница: <b>+₽${formatNumber(ltvDiff)}</b> на клиента за цикл retention.`
+      };
+    case 'additionalRevenueClub':
+      return {
+        title: 'Доп. выручка на клуб',
+        formula: `Δ LTV × доп. удержанные =<br>₽${formatNumber(ltvDiff)} × ${formatNumber(clubSignals-clubBase)} = <b>₽${formatNumber(additionalRevenueClub)}</b>`,
+        description: 'Доп. выручка за счет удержания в 1 клубе на цикл retention.'
+      };
+    case 'additionalRevenueNetwork':
+      return {
+        title: 'Доп. выручка на сеть',
+        formula: `${clubs} клуба × <b>₽${formatNumber(additionalRevenueClub)}</b> = <b>₽${formatNumber(additionalRevenueNetwork)}</b>`,
+        description: 'Доп. выручка суммарно по всей сети за цикл удержания.'
+      };
+    case 'paybackSignals':
+      return {
+        title: 'Окупаемость сигнала',
+        formula: `system cost / ΔLTV = ${systemMonthlyCost.value} / ${formatNumber(ltvDiff)} ≈ <b>${displayResult.value.paybackSignals}</b>`,
+        description: 'Примерное число сигналов, после которых окупается система.'
+      };
+    default:
+      return { title: '', description: '', formula: '' };
+  }
+});
 function showTooltip(id) { activeTooltip.value = activeTooltip.value === id ? null : id; }
 function closeTooltip() { activeTooltip.value = null; }
 function toggleWhy() { whyOpen.value = !whyOpen.value; }
+
 
 const currentTooltip = computed(() => {
   if (!activeTooltip.value) return { title: '', description: '', formula: '' };
