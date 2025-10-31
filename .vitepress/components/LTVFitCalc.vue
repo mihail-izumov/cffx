@@ -116,10 +116,18 @@ function calcFitnessLTV({ clubs, members, price }) {
   const additionalRevenueNetwork = additionalRevenueClub * clubs;
 
   // Окупаемость
-  let realSystemMonthlyCostPerClub = systemMonthlyCost.value / clubs;
-  let paybackMin = Math.max(1, Math.floor(realSystemMonthlyCostPerClub / ltvDiff));
-  let paybackMax = Math.max(1, Math.ceil(realSystemMonthlyCostPerClub / ltvDiff));
-  let paybackSignals = (ltvDiff > 0) ? `${paybackMin}–${paybackMax} ${pluralS(paybackMax)}` : '—';
+  let realSystemMonthlyCostPerClub = systemMonthlyCost.value / clubs; // clubs = clubsNum.value
+let paybackMin = Math.max(1, Math.floor(realSystemMonthlyCostPerClub / ltvDiff));
+let paybackMax = Math.max(1, Math.ceil(realSystemMonthlyCostPerClub / ltvDiff));
+let paybackSignals;
+if (ltvDiff <= 0) {
+  paybackSignals = '—';
+} else if (paybackMin === paybackMax) {
+  paybackSignals = `${paybackMin} ${pluralS(paybackMin)}`;
+} else {
+  paybackSignals = `${paybackMin}–${paybackMax} ${pluralS(paybackMax)}`;
+}
+;
 
   return {
     clientsBase: formatNumber(clubBase),
@@ -218,9 +226,10 @@ const currentTooltip = computed(() => {
     description: 'Суммарно по всем клубам за retention-цикл.'
   };
     case 'paybackSignals':
+  const realSystemMonthlyCostPerClub = Math.round(systemMonthlyCost.value / clubsNum.value);
   return {
     title: 'Окупаемость сигнала',
-    formula: `Стоимость системы / ∆LTV = ${displayResult.value.systemMonthlyCostDisplay} / ${displayResult.value.ltvDiff} ≈ <b>${displayResult.value.paybackSignals}</b>`,
+    formula: `Стоимость системы на клуб / ∆LTV = ${realSystemMonthlyCostPerClub} / ${displayResult.value.ltvDiff} ≈ <b>${displayResult.value.paybackSignals}</b>`,
     description: 'Сколько сигналов нужно, чтобы окупить систему на клуб. Всегда дается диапазон.'
   };
     default:
