@@ -11,12 +11,12 @@ notification: brew
 
 <div align="center">
 
-<h1 class="responsive-heading">LTV<br>Калькулятор</h1>
+<h1 class="responsive-heading">Ваш плюс к выручке</h1>
 
 <br>
 
 <h2>
-  Ваш плюс к выручке – <br> посчитайте ежемесячный прирост от Сигнала.
+  LTV Калькулятор – <br> посчитайте ежемесячный прирост от Сигнала.
 </h2>
 
 </div>
