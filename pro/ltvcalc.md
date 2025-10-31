@@ -28,7 +28,6 @@ notification: brew
 <LTVFitCalc />
 
 
-
 <style>
 .responsive-heading {
   font-size: 80px !important;
