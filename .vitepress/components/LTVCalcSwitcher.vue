@@ -22,10 +22,10 @@
     <!-- ДЭШБОРД: Показываем только выбранный -->
     <transition name="fade" mode="out-in">
       <div v-if="selectedTheme === 'cafe'" key="cafe">
-        <DashboardCafeSignalsMap />
+        <LTVCalc.vue />
       </div>
       <div v-else key="fitness">
-        <DashboardGymSignalsMap />
+        <LTVFitCalc />
       </div>
     </transition>
   </div>
