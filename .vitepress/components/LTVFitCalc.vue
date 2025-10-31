@@ -467,3 +467,95 @@ function toggleWhy() { whyOpen.value = !whyOpen.value; }
   </div>
 </template>
 
+<style scoped>
+.fitltv-calc-wrapper{width:100%;max-width:1200px;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff}
+.fitltv-calc-container{margin:0 0 20px;padding:24px;background:#1e1e1e;border:1px solid #2b2b2b;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+.fitltv-calc-container.fitltv-calc-content{margin-top:0;border-top:none;border-top-left-radius:0;border-top-right-radius:0}
+.fitltv-calc-input-row{display:flex;gap:20px;margin-bottom:16px}
+.fitltv-calc-input-group{flex:1;position:relative}
+.fitltv-calc-label{display:flex;align-items:center;gap:8px;margin-bottom:6px;font:600 14px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff}
+.fitltv-calc-info-icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:#666;border-radius:50%;cursor:pointer;transition:all .2s;font-size:12px;font-weight:600;color:#fff;flex-shrink:0}
+.fitltv-calc-info-icon.hover{background:#999}
+.fitltv-calc-info-icon-table{border:none}
+.fitltv-calc-input{width:100%;height:44px;padding:0 14px;font:500 15px/44px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#141414;border:1px solid #333;border-radius:8px;color:#fff;transition:border-color .25s;box-sizing:border-box}
+.fitltv-calc-input:focus{border-color:#c5f946;outline:0}
+.fitltv-calc-input.fitltv-calc-error{border-color:#ef4444}
+.fitltv-calc-input::placeholder{color:#888}
+.fitltv-calc-error-message{position:absolute;top:100%;left:0;margin-top:4px;font-size:12px;color:#ef4444}
+.fitltv-calc-btn{width:100%;height:44px;margin-top:12px;font:700 16px/44px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;text-transform:uppercase;color:#fff;background:#347b6c;border:none;border-radius:8px;cursor:pointer;transition:background .2s,transform .2s,color .2s}
+.fitltv-calc-btn:disabled{background:#555;color:#ccc;cursor:not-allowed;transform:none}
+.fitltv-calc-btn:not(:disabled):hover{background:#c5f946;color:#000;transform:translateY(-2px)}
+.fitltv-calc-header{margin:0 0 20px 0;padding:0}
+.fitltv-calc-title{margin:0;padding:16px 0;font:600 18px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;text-align:center;color:#c5f946}
+.fitltv-calc-title-mobile{display:none}
+.fitltv-calc-table-container{margin:0 0 20px 0;overflow:hidden;border-radius:8px;border:1px solid #2b2b2b}
+.fitltv-calc-table{width:100%;border-collapse:separate;border-spacing:0;background:#141414;table-layout:auto;margin:0;padding:0}
+.fitltv-calc-table tr{position:relative}
+.fitltv-calc-table tbody tr::after{content:"";position:absolute;left:16px;right:16px;bottom:0;height:1px;background:#2b2b2b;transform:translateZ(0)}
+.fitltv-calc-table tbody tr:last-child::after{display:none}
+.fitltv-calc-th,.fitltv-calc-td,.fitltv-calc-metric-cell{border:0;padding:10px 16px;vertical-align:middle;line-height:1.35}
+.fitltv-calc-th{font:600 14px/1.35 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#c5f946;background:#1a1a1a;text-align:left;white-space:nowrap}
+.fitltv-calc-th:nth-child(1){width:45%}
+.fitltv-calc-th:nth-child(2){width:27.5%}
+.fitltv-calc-th:nth-child(3){width:27.5%}
+.fitltv-calc-td{font:400 14px/1.35 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;white-space:nowrap}
+.fitltv-calc-metric-cell{display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:nowrap}
+.fitltv-calc-metric-text{cursor:pointer;transition:color .2s;user-select:none;flex:1}
+.fitltv-calc-metric-text:hover{color:rgba(197,249,70,.8)}
+.fitltv-calc-metric-text.fitltv-calc-active{color:#c5f946}
+.fitltv-calc-highlight{color:#c5f946;font-weight:600}
+.fitltv-calc-growth-secondary{color:#888;font-weight:400;font-size:.9em}
+.fitltv-calc-tooltip-popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:flex;justify-content:center;align-items:center;z-index:1000;cursor:pointer}
+.fitltv-calc-tooltip-content{max-width:400px;padding:20px;background:#2a2a2a;border:1px solid #404040;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.4);cursor:default}
+.fitltv-calc-tooltip-title{margin:0 0 12px 0;font:600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#c5f946}
+.fitltv-calc-formula{margin:0 0 12px 0;padding:8px 12px;background:#1a1a1a;border:1px solid #333;border-radius:6px;font:500 14px/1.4 'SF Mono','Monaco','Inconsolata','Roboto Mono',monospace;color:#22c55e;text-align:center;letter-spacing:.025em}
+.fitltv-calc-tooltip-desc{margin:0;font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#ccc}
+.fitltv-calc-tooltip-anim-enter-active,.fitltv-calc-tooltip-anim-leave-active{transition:opacity .25s}
+.fitltv-calc-tooltip-anim-enter-from,.fitltv-calc-tooltip-anim-leave-to{opacity:0}
+.fitltv-calc-collapse-enter-active,.fitltv-calc-collapse-leave-active{transition:all .3s ease-in-out;overflow:hidden}
+.fitltv-calc-collapse-enter-from,.fitltv-calc-collapse-leave-to{max-height:0;opacity:0}
+.fitltv-calc-collapse-enter-to,.fitltv-calc-collapse-leave-from{max-height:2000px;opacity:1}
+/* Блоки почему получится — чипы и цвета */
+.fitltv-calc-signal-block{margin:16px 0;padding:16px;background:#1f1a0f;border:1px solid #3a2e1e;border-radius:8px}
+.fitltv-calc-factors-block{margin:16px 0;padding:16px;background:#1a1a1a;border:1px solid #2b2b2b;border-radius:8px}
+.fitltv-calc-payback-explanation{margin:16px 0;padding:16px;background:#0f1a2a;border:1px solid #1e3a4a;border-radius:8px}
+.fitltv-calc-success-factors{margin:16px 0;padding:16px;background:#0f2a1e;border:1px solid #1e4a32;border-radius:8px}
+.fitltv-calc-signal-title{margin:0 0 12px;font:600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fbbf24}
+.fitltv-calc-factors-title{margin:0 0 12px;font:600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#d97706}
+.fitltv-calc-payback-title{margin:0 0 12px;font:600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#60a5fa}
+.fitltv-calc-success-title{margin:0 0 12px;font:600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#22c55e}
+.fitltv-chip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.fitltv-chip{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;color:#fff;font:500 14px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;border:1px solid transparent}
+.fitltv-chip-icon{width:18px;height:18px;opacity:.9}
+.fitltv-chip--amber{background:#2b220f;border-color:#3a2e1e}
+.fitltv-chip--slate{background:#1f1f1f;border-color:#2b2b2b}
+.fitltv-chip--blue{background:#0e2138;border-color:#1e3a4a}
+.fitltv-chip--green{background:#0f271e;border-color:#1e4a32}
+.fitltv-calc-cta-block{margin:16px 0;padding:16px;background:#1e1e1e;border:1px solid #c5f946;border-radius:8px}
+.fitltv-calc-cta-text{margin:0 0 8px 0;font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff}
+.fitltv-calc-warning-block{margin:16px 0;padding:16px;background:#2a1f0f;border:1px solid #4a3c1e;border-radius:8px}
+.fitltv-calc-warning-text{margin:0;font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fbbf24}
+.fitltv-calc-info-block{margin:16px 0;padding:16px;background:#141414;border:1px solid #2b2b2b;border-radius:8px}
+.fitltv-calc-info-text{margin:0 0 12px 0;font:400 13px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#ccc}
+.fitltv-calc-info-text:last-child{margin-bottom:0}
+@media (max-width:768px){
+  .fitltv-calc-container{padding:16px;margin-bottom:12px}
+  .fitltv-calc-input-row{flex-direction:column;gap:12px;margin-bottom:12px}
+  .fitltv-calc-btn{height:48px;font-size:16px;line-height:48px;margin-top:8px}
+  .fitltv-calc-title-desktop{display:none}
+  .fitltv-calc-title-mobile{display:block;font-size:16px}
+  .fitltv-calc-title{padding:12px 0}
+  .fitltv-calc-header{margin:0 0 12px 0}
+  .fitltv-calc-table-container{margin-bottom:12px;border-radius:6px}
+  .fitltv-calc-th,.fitltv-calc-td,.fitltv-calc-metric-cell{padding:8px 10px;white-space:normal}
+  .fitltv-calc-th:nth-child(1){width:50%}
+  .fitltv-calc-th:nth-child(2),.fitltv-calc-th:nth-child(3){width:25%}
+  .fitltv-calc-metric-cell{gap:6px;align-items:flex-start}
+  .fitltv-calc-info-icon{width:16px;height:16px;font-size:10px;margin-top:2px}
+  .fitltv-calc-table tbody tr::after{left:10px;right:10px}
+}
+@media (min-width:769px){
+  .fitltv-calc-title-mobile{display:none}
+  .fitltv-calc-title-desktop{display:block}
+}
+</style>
