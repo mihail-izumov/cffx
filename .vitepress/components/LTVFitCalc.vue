@@ -419,8 +419,8 @@ const currentTooltip = computed(() => {
   const freqSignals = constants.freqSignals;
   const clientsBaseClub = Math.round(members * constants.baseRetentionRate);
   const clientsSignalsClub = Math.round(members * constants.signalsRetentionRate);
-  const ltvBase = price * freqBase * months;
-  const ltvSignals = price * freqSignals * months;
+  const ltvBase = price  * months;
+  const ltvSignals = price * months;
   const ltvDiff = ltvSignals - ltvBase;
   const additionalRevenueClub = (ltvSignals - ltvBase) * (clientsSignalsClub - clientsBaseClub);
   const additionalRevenueNetwork = additionalRevenueClub * clubs;
@@ -439,11 +439,13 @@ const currentTooltip = computed(() => {
         description: 'Реальный рост частоты после обработки негатива и диалога.'
       };
     case 'ltv':
-      return {
-        title: `LTV клиента (${months} мес)`,
-        formula: `Без сигналов: <b>₽${formatNumber(ltvBase)}</b><br>С сигналами: <b>₽${formatNumber(ltvSignals)}</b>`,
-        description: `Δ LTV на одного клиента за период: <b>+₽${formatNumber(ltvDiff)}</b>`
-      };
+  return {
+    title: `LTV клиента (${months} мес)`,
+    formula:
+      `${formatNumber(price)} × ${freqBase} × ${months} = <b>₽${formatNumber(ltvBase)}</b><br>` +
+      `${formatNumber(price)} × ${freqSignals} × ${months} = <b>₽${formatNumber(ltvSignals)}</b>`,
+    description: `Δ LTV на одного клиента за период: <b>+₽${formatNumber(ltvDiff)}</b>`
+  };
     case 'additionalRevenueClub':
       return {
         title: 'Доп. выручка на клуб/мес',
