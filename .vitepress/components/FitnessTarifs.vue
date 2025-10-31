@@ -1,14 +1,17 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-// SVG: точка (dot)
-const iconDot = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.1 2.18a9.93 9.93 0 0 1 3.8 0"/><path d="M17.6 3.71a9.95 9.95 0 0 1 2.69 2.7"/><path d="M21.82 10.1a9.93 9.93 0 0 1 0 3.8"/><path d="M20.29 17.6a9.95 9.95 0 0 1-2.7 2.69"/><path d="M13.9 21.82a9.94 9.94 0 0 1-3.8 0"/><path d="M6.4 20.29a9.95 9.95 0 0 1-2.69-2.7"/><path d="M2.18 13.9a9.93 9.93 0 0 1 0-3.8"/><path d="M3.71 6.4a9.95 9.95 0 0 1 2.7-2.69"/><circle cx="12" cy="12" r="1"/></svg>`
-const iconDashed = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.1 2.182a10 10 0 0 1 3.8 0"/><path d="M13.9 21.818a10 10 0 0 1-3.8 0"/><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/><path d="M2.182 13.9a10 10 0 0 1 0-3.8"/><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/><path d="M21.818 10.1a10 10 0 0 1 0 3.8"/><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/></svg>`
+const IconCheck = `
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dot-dashed-icon lucide-circle-dot-dashed"><path d="M10.1 2.18a9.93 9.93 0 0 1 3.8 0"/><path d="M17.6 3.71a9.95 9.95 0 0 1 2.69 2.7"/><path d="M21.82 10.1a9.93 9.93 0 0 1 0 3.8"/><path d="M20.29 17.6a9.95 9.95 0 0 1-2.7 2.69"/><path d="M13.9 21.82a9.94 9.94 0 0 1-3.8 0"/><path d="M6.4 20.29a9.95 9.95 0 0 1-2.69-2.7"/><path d="M2.18 13.9a9.93 9.93 0 0 1 0-3.8"/><path d="M3.71 6.4a9.95 9.95 0 0 1 2.7-2.69"/><circle cx="12" cy="12" r="1"/></svg>
+`
+const IconDash = `
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed-icon lucide-circle-dashed"><path d="M10.1 2.182a10 10 0 0 1 3.8 0"/><path d="M13.9 21.818a10 10 0 0 1-3.8 0"/><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/><path d="M2.182 13.9a10 10 0 0 1 0-3.8"/><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/><path d="M21.818 10.1a10 10 0 0 1 0 3.8"/><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/></svg>
+`
 
 function renderIcon(val) {
-  if (val === '✓') return iconDot
-  if (val === '—') return iconDashed
-  return ''
+  if (val === '✓') return IconCheck
+  if (val === '—') return IconDash
+  return val
 }
 
 const tariffs = ref([
@@ -111,7 +114,6 @@ const isActive = d => d === selected.value
             <span class="brp__desc">{{ tariff.description }}</span>
           </div>
         </div>
-
         <!-- Цены абонплаты -->
         <div class="brp__cell brp__cell--label brp--no-bg brp--top-sep">
           {{ currentLabel }}
@@ -130,7 +132,6 @@ const isActive = d => d === selected.value
             {{ tariff.prices[selected].total }}
           </span>
         </div>
-
         <!-- Внедрение и настройка -->
         <div class="brp__cell brp__cell--label brp--no-bg brp--top-sep">
           Внедрение и настройка
@@ -146,9 +147,7 @@ const isActive = d => d === selected.value
         >
           <span class="brp__price-main">{{ tariff.setup[selected] }}</span>
         </div>
-
         <div class="brp__row-sep"></div>
-
         <!-- Особенности -->
         <template v-for="(feature, featureIndex) in ['Тикет-система','ИИ-ассистент «Анна»','Виджет и Умная форма','Статистика','Поддержка оператора','Аналитика и отчёты','Персональный аналитик','Стратегические сессии']" :key="feature">
           <div
@@ -157,7 +156,6 @@ const isActive = d => d === selected.value
           >
             {{ feature }}
           </div>
-
           <div
             v-for="(tariff, colIndex) in tariffs"
             :key="tariff.title + feature"
@@ -168,9 +166,7 @@ const isActive = d => d === selected.value
               'brp--last-col': colIndex === tariffs.length - 1
             }"
           >
-            <span v-if="tariff.features[feature] === '✓'" v-html="iconDot"></span>
-            <span v-else-if="tariff.features[feature] === '—'" v-html="iconDashed"></span>
-            <span v-else>{{ tariff.features[feature] }}</span>
+            <span v-html="renderIcon(tariff.features[feature])"></span>
           </div>
         </template>
       </div>
@@ -179,5 +175,141 @@ const isActive = d => d === selected.value
 </template>
 
 <style scoped>
-/* Стили остаются прежними */
+/* Внешний обёртчик без бордюра */
+.brp {
+  margin: 24px 0;
+}
+
+/* Хедер с переключателями над таблицей */
+.brp__header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+/* Переключатель по центру, без фоновой плашки */
+.brp__switch {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 0;
+  background: transparent;
+  margin: 0;
+}
+.brp__switch-btn {
+  appearance: none;
+  border: 1px solid var(--vp-c-divider);
+  background: transparent;
+  color: var(--vp-c-text-1);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.95em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease, font-weight .15s ease;
+}
+.brp__switch-btn:hover { border-color: var(--vp-c-brand-1); }
+.brp__switch-btn.is-active {
+  background: color-mix(in oklab, var(--vp-c-brand-1) 14%, transparent);
+  border-color: var(--vp-c-brand-1);
+  font-weight: 700;
+}
+
+/* Контейнер таблицы с бордюром и прокруткой */
+.brp__table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+}
+
+/* Сетка */
+.brp__grid {
+  display: grid;
+  grid-template-columns: 1fr repeat(3, 1fr);
+  align-items: stretch;
+}
+
+/* Базовые ячейки */
+.brp__cell {
+  position: relative;
+  border-bottom: 1px solid var(--vp-c-divider);
+  border-right: 1px solid var(--vp-c-divider);
+  min-height: 52px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+}
+.brp--last-col { border-right: none; }
+
+/* Шапка */
+.brp__cell--header {
+  border-bottom: 2px solid var(--vp-c-divider);
+  background-color: var(--vp-c-bg-soft);
+  min-height: 120px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+.brp__cell--header-placeholder { background-color: transparent; }
+
+/* Выравнивание заголовков */
+.brp__title-wrap {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.brp__desc-wrap {
+  min-height: 46px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+}
+.brp__title { font-weight: 600; font-size: 1.12em; color: var(--vp-c-text-1); }
+.brp__desc  { margin-top: 4px; font-size: 0.92em; color: var(--vp-c-text-2); line-height: 1.3; }
+
+/* Левая колонка */
+.brp__cell--label {
+  padding: 12px 16px;
+  justify-content: center;
+  align-items: flex-start;
+  font-size: 0.95em;
+  font-weight: 500;
+  background-color: var(--vp-c-bg-soft);
+}
+.brp--no-bg { background-color: transparent; }
+
+/* Значения */
+.brp__cell--price,
+.brp__cell--value {
+  padding: 12px 16px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+.brp__price-main { font-weight: 600; font-size: 1.05em; }
+.brp__price-sub  { font-size: 0.85em; color: var(--vp-c-text-2); margin-top: 2px; }
+
+/* Разделители */
+.brp--top-sep { border-top: 1px solid var(--vp-c-divider); }
+.brp__row-sep  { height: 2px; background-color: var(--vp-c-divider); grid-column: 1 / -1; border: none; }
+.brp__cell--last { border-bottom: none; }
+
+/* Рамка вокруг второго тарифа */
+.brp--highlight {
+  border-left: 2px solid var(--vp-c-brand-1);
+  border-right: 2px solid var(--vp-c-brand-1);
+}
+.brp__cell--header.brp--highlight {
+  border-top: 2px solid var(--vp-c-brand-1);
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+.brp__cell--last.brp--highlight {
+  border-bottom: 2px solid var(--vp-c-brand-1);
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
 </style>
