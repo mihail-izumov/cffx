@@ -390,6 +390,12 @@ function toggleWhy() { whyOpen.value = !whyOpen.value; }
       </table>
     </div>
 
+    <div class="scroll-down-arrow">
+  <svg width="80" height="80" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="16,32 40,56 64,32"></polyline>
+  </svg>
+</div>
+
     <!-- Триггер открытия и раскрывашка -->
 <div class="fitltv-calc-why-toggle" :class="{ open: whyOpen }" @click="toggleWhy"
      :aria-expanded="whyOpen.toString()" role="button" tabindex="0">
@@ -616,6 +622,18 @@ function toggleWhy() { whyOpen.value = !whyOpen.value; }
 .fitltv-calc-info-block{margin:16px 0;padding:16px;background:#141414;border:1px solid #2b2b2b;border-radius:8px}
 .fitltv-calc-info-text{margin:0 0 12px 0;font:400 13px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#ccc}
 .fitltv-calc-info-text:last-child{margin-bottom:0}
+/* --- стрелка вниз под таблицей --- */
+.scroll-down-arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 24px 0 24px 0;
+  pointer-events: none;
+  user-select: none;
+}
+.scroll-down-arrow svg {
+  display: block;
+}
 @media (max-width:768px){
   .fitltv-calc-container{padding:16px;margin-bottom:12px}
   .fitltv-calc-input-row{flex-direction:column;gap:12px;margin-bottom:12px}
@@ -637,4 +655,5 @@ function toggleWhy() { whyOpen.value = !whyOpen.value; }
   .fitltv-calc-title-desktop{display:block}
 }
 </style>
+
 
