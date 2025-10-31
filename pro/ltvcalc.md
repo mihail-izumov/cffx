@@ -23,6 +23,8 @@ notification: brew
 
 <br><br>
 
+<LTVCalcSwitcher />
+
 <LTVFitCalc />
 
 <style>
