@@ -4,17 +4,17 @@
     <div class="signal-theme-toggle">
       <button
         class="signal-theme-btn"
-        :class="{ active: selectedTheme === 'cafe' }"
-        @click="selectedTheme = 'cafe'"
-      >
-        Общепит
-      </button>
-      <button
-        class="signal-theme-btn"
         :class="{ active: selectedTheme === 'fitness' }"
         @click="selectedTheme = 'fitness'"
       >
         Фитнес
+      </button>
+      <button
+        class="signal-theme-btn"
+        :class="{ active: selectedTheme === 'cafe' }"
+        @click="selectedTheme = 'cafe'"
+      >
+        Общепит
       </button>
       <div class="signal-theme-slider" :style="{ left: sliderLeft }"></div>
     </div>
@@ -37,10 +37,12 @@ import { ref, computed } from 'vue'
 import LTVCalc from './LTVCalc.vue'
 import LTVFitCalc from './LTVFitCalc.vue'
 
-const selectedTheme = ref('cafe') // 'cafe' | 'fitness'
+// Начальное состояние изменено на 'fitness'
+const selectedTheme = ref('fitness') // 'fitness' | 'cafe'
 
+// Логика слайдера обновлена под новый порядок
 const sliderLeft = computed(() => {
-  return selectedTheme.value === 'cafe' ? '6px' : 'calc(50% + 6px)'
+  return selectedTheme.value === 'fitness' ? '6px' : 'calc(50% + 6px)'
 })
 </script>
 
