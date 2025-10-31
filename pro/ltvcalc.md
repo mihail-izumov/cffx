@@ -25,7 +25,11 @@ notification: brew
 
 <LTVCalcSwitcher />
 
-<LTVFitCalc />
+## От диалогов к безупречной системе сервиса.
+
+</div>
+
+<SignalProductsCards />
 
 <style>
 .responsive-heading {
