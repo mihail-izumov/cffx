@@ -390,73 +390,57 @@ function toggleWhy() { whyOpen.value = !whyOpen.value; }
       </table>
     </div>
 
-    <!-- Триггер раскрытия -->
-    <div class="fitltv-calc-why-toggle" :class="{ open: whyOpen }" @click="toggleWhy"
-         :aria-expanded="whyOpen.toString()" role="button" tabindex="0">
-      <span class="fitltv-calc-why-text">Почему все получится</span>
-      <span class="fitltv-calc-why-icon" aria-hidden="true">
-        <svg class="fitltv-calc-why-icon-svg" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 9l6 6 6-6"></path>
-        </svg>
-      </span>
-    </div>
+    <!-- Триггер открытия и раскрывашка -->
+<div class="fitltv-calc-why-toggle" :class="{ open: whyOpen }" @click="toggleWhy"
+     :aria-expanded="whyOpen.toString()" role="button" tabindex="0">
+  <span class="fitltv-calc-why-text">Почему все получится</span>
+  <span class="fitltv-calc-why-icon" aria-hidden="true">
+    <svg class="fitltv-calc-why-icon-svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 9l6 6 6-6"></path>
+    </svg>
+  </span>
+</div>
 
-    <transition name="fitltv-calc-collapse">
+<transition name="fitltv-calc-collapse">
   <div v-if="whyOpen" class="fitltv-calc-container fitltv-calc-content">
     <!-- Янтарные -->
     <div class="fitltv-calc-signal-block">
       <h4 class="fitltv-calc-signal-title">Каждый Сигнал = возможность вернуть клиента:</h4>
       <div class="fitltv-chip-grid">
-        <div class="fitltv-chip fitltv-chip--amber">
-          <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-          <span>Недовольство тренера/группы</span>
-        </div>
-        <div class="fitltv-chip fitltv-chip--amber">
-          <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-          <span>Жалоба на сервис/чистоту</span>
-        </div>
-        <div class="fitltv-chip fitltv-chip--amber">
-          <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-          <span>Комментарий о расписании</span>
-        </div>
-        <div class="fitltv-chip fitltv-chip--amber">
-          <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-          <span>Проблема с оплатой/тарифом</span>
-        </div>
+        <div class="fitltv-chip fitltv-chip--amber"><svg class="fitltv-chip-icon" ...></svg><span>Недовольство тренера/группы</span></div>
+        <div class="fitltv-chip fitltv-chip--amber"><svg class="fitltv-chip-icon" ...></svg><span>Жалоба на сервис/чистоту</span></div>
+        <div class="fitltv-chip fitltv-chip--amber"><svg class="fitltv-chip-icon" ...></svg><span>Комментарий о расписании</span></div>
+        <div class="fitltv-chip fitltv-chip--amber"><svg class="fitltv-chip-icon" ...></svg><span>Проблема с оплатой/тарифом</span></div>
       </div>
     </div>
     <!-- Серые -->
     <div class="fitltv-calc-factors-block">
       <h4 class="fitltv-calc-factors-title">Почему фитнес отличается:</h4>
       <div class="fitltv-chip-grid">
-        <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Высокая стоимость удержания</span></div>
-        <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Решающий фактор — лояльность</span></div>
-        <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Сарафанное радио работает медленно</span></div>
-        <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Частые возвраты после жалоб</span></div>
+        <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" ...></svg><span>Высокая стоимость удержания</span></div>
+        <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" ...></svg><span>Решающий фактор — лояльность</span></div>
+        <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" ...></svg><span>Сарафанное радио работает медленно</span></div>
+        <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" ...></svg><span>Частые возвраты после жалоб</span></div>
       </div>
     </div>
     <!-- Синие -->
     <div class="fitltv-calc-payback-explanation">
       <h4 class="fitltv-calc-payback-title">Все сигналы после 2-го = чистая прибыль:</h4>
       <div class="fitltv-chip-grid">
-        <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Стоимость системы: от ₽{{ displayResult.systemMonthlyCostDisplay }}/мес</span></div>
-        <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Прирост жизненного цикла клиента: +{{ displayResult.retentionBoostDisplay }}%</span></div>
-        <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Система окупается после {{ displayResult.paybackSignals }}</span></div>
+        <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" ...></svg><span>Стоимость системы: от ₽{{ displayResult.systemMonthlyCostDisplay }}/мес</span></div>
+        <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" ...></svg><span>Прирост жизненного цикла клиента: +{{ displayResult.retentionBoostDisplay }}%</span></div>
+        <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" ...></svg><span>Система окупается после {{ displayResult.paybackSignals }}</span></div>
       </div>
     </div>
     <!-- Зеленые -->
     <div class="fitltv-calc-success-factors">
       <h4 class="fitltv-calc-success-title">Ключевые факторы успеха:</h4>
       <div class="fitltv-chip-grid">
-        <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Время ответа на жалобу &lt; 30 мин</span></div>
-        <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Персонализация предложений</span></div>
-        <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Мониторинг качества сервиса</span></div>
-        <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg><span>Нематериальная компенсация</span></div>
+        <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" ...></svg><span>Время ответа на жалобу &lt; 30 мин</span></div>
+        <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" ...></svg><span>Персонализация предложений</span></div>
+        <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" ...></svg><span>Мониторинг качества сервиса</span></div>
+        <div class="fitltv-chip fitltv-chip--green"><svg class="fitltv-chip-icon" ...></svg><span>Нематериальная компенсация</span></div>
       </div>
     </div>
     <!-- Желтый CTA -->
@@ -472,7 +456,6 @@ function toggleWhy() { whyOpen.value = !whyOpen.value; }
     </div>
   </div>
 </transition>
-
 
     <!-- Тултипы -->
     <transition name="fitltv-calc-tooltip-anim">
