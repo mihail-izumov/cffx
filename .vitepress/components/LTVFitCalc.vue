@@ -669,4 +669,3 @@ function calculate() {
   .fitltv-calc-why-text { font-size: 14px }
 }
 </style>
-
