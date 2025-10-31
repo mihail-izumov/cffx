@@ -117,6 +117,7 @@ import SignalDashboardSwitcher from '../components/SignalDashboardSwitcher.vue'
 import AnnaQuotes from '../components/AnnaQuotes.vue'
 import DialogsStatisticsSlider from '../components/DialogsStatisticsSlider.vue'
 import LTVFitCalc from '../components/LTVFitCalc.vue'
+import LTVCalcSwitcher from '../components/LTVCalcSwitcher.vue'
 
 export default {
   extends: DefaultTheme,
@@ -239,6 +240,7 @@ export default {
     app.component('AnnaQuotes', AnnaQuotes)
     app.component('DialogsStatisticsSlider', DialogsStatisticsSlider)
     app.component('LTVFitCalc', LTVFitCalc)
+    app.component('LTVCalcSwitcher', LTVCalcSwitcher)
   
   },
 }
