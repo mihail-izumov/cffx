@@ -1,6 +1,6 @@
 <template>
   <div class="signal-dashboard-wrapper">
-    <!-- Tesla-style переключатель: Общепит / Фитнес -->
+    <!-- Переключатель -->
     <div class="signal-theme-toggle">
       <button
         class="signal-theme-btn"
@@ -19,10 +19,10 @@
       <div class="signal-theme-slider" :style="{ left: sliderLeft }"></div>
     </div>
 
-    <!-- ДЭШБОРД: Показываем только выбранный -->
+    <!-- ДЭШБОРД -->
     <transition name="fade" mode="out-in">
       <div v-if="selectedTheme === 'cafe'" key="cafe">
-        <LTVCalc.vue />
+        <LTVCalc />
       </div>
       <div v-else key="fitness">
         <LTVFitCalc />
@@ -30,6 +30,7 @@
     </transition>
   </div>
 </template>
+
 
 <script setup>
 import { ref, computed } from 'vue'
