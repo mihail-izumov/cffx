@@ -191,13 +191,11 @@ const currentTooltip = computed(() => {
 
   switch (activeTooltip.value) {
     case 'clientsRetained':
-      return {
-        title: 'Удержанные клиенты (через 2 мес)',
-        formula:
-          `${members} × ${(retentionCurveBase[1]*100).toFixed(1)}% = <b>${formatNumber(clubBase)}</b><br>`
-          + `${members} × ${(retentionCurveSignals[1]*100).toFixed(1)}% = <b>${formatNumber(clubSignals)}</b>`,
-        description: `Считается по retention curve — % клиентов, оставшихся после 2 мес работы клуба.`
-      };
+  return {
+    title: 'Удержанные клиенты (через 2 мес)',
+    formula: `Базовый: <b>${displayResult.value.clientsBase}</b><br>С сигналами: <b>${displayResult.value.clientsWithSignals}</b>`,
+    description: 'Количество удержанных клиентов на второй месяц для текущих параметров.'
+  };
     case 'ltv':
   return {
     title: 'LTV клиента за жизненный цикл (12 месяцев)',
@@ -208,31 +206,22 @@ const currentTooltip = computed(() => {
     <b>Кривая удержания:</b> в 1-й месяц платит 100%, во 2-м — 50%, в 3-м — 25%, затем пауза 3 месяца. Цикл повторяется. С Сигналами кривая выше: цепляешь клиента быстрее и держишь дольше.`
   };
     case 'additionalRevenueClub':
-      return {
-        title: 'Доп. выручка на клуб',
-        formula: `Δ LTV × доп. удержанные =<br>₽${formatNumber(ltvDiff)} × ${formatNumber(clubSignals-clubBase)} = <b>₽${formatNumber(additionalRevenueClub)}</b>`,
-        description: 'Разница за полный retention-цикл на 1 клуб.'
-      };
+  return {
+    title: 'Доп. выручка на клуб',
+    formula: `Δ LTV × доп. удержанные =<br>₽${displayResult.value.ltvDiff} × ${displayResult.value.clientsWithSignals - displayResult.value.clientsBase} = <b>₽${displayResult.value.additionalRevenueClub}</b>`,
+    description: 'Разница за полный retention-цикл на 1 клуб.'
+  };
     case 'additionalRevenueNetwork':
-      return {
-        title: 'Доп. выручка на сеть',
-        formula: `${clubs} клуба × <b>₽${formatNumber(additionalRevenueClub)}</b> = <b>₽${formatNumber(additionalRevenueNetwork)}</b>`,
-        description: 'Суммарно по всем клубам за retention-цикл.'
-      };
+  return {
+    title: 'Доп. выручка на сеть',
+    formula: `${clubsNum.value} клуба × <b>₽${displayResult.value.additionalRevenueClub}</b> = <b>₽${displayResult.value.additionalRevenueNetwork}</b>`,
+    description: 'Суммарно по всем клубам за retention-цикл.'
+  };
     case 'paybackSignals':
-  const clubs_tb = clubsNum.value || 10;
-  const ltvBaseMonths_tb = displayResult.value.ltvBaseMonths;
-  const ltvSignalsMonths_tb = displayResult.value.ltvSignalsMonths;
-  const price_tb = priceNum.value || 12000;
-  const ltvDiff_tb = price_tb * (ltvSignalsMonths_tb - ltvBaseMonths_tb);
-  const realSystemMonthlyCostPerClub_tb = systemMonthlyCost.value / clubs_tb;
-  const paybackMin_tb = Math.max(1, Math.floor(realSystemMonthlyCostPerClub_tb / ltvDiff_tb));
-  const paybackMax_tb = Math.max(1, Math.ceil(realSystemMonthlyCostPerClub_tb / ltvDiff_tb));
-  
   return {
     title: 'Окупаемость сигнала',
-    formula: `${formatNumber(realSystemMonthlyCostPerClub_tb)} / ${formatNumber(ltvDiff_tb)} ≈ <b>${paybackMin_tb}–${paybackMax_tb} ${pluralS(paybackMax_tb)}</b>`,
-    description: 'Сколько сигналов (клиентов, вернувшихся благодаря системе) нужно, чтобы окупить стоимость системы на этот клуб. Всегда дается диапазон.'
+    formula: `Стоимость системы / ∆LTV = ${displayResult.value.systemMonthlyCostDisplay} / ${displayResult.value.ltvDiff} ≈ <b>${displayResult.value.paybackSignals}</b>`,
+    description: 'Сколько сигналов нужно, чтобы окупить систему на клуб. Всегда дается диапазон.'
   };
     default:
       return { title: '', description: '', formula: '' };
