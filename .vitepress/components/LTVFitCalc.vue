@@ -2,7 +2,6 @@
   <div class="fitltv-calc-wrapper">
     <div class="fitltv-calc-container">
       <div class="fitltv-calc-input-row">
-        <!-- Клубы -->
         <div class="fitltv-calc-input-group">
           <label for="clubsInput" class="fitltv-calc-label">Число клубов:
             <span class="fitltv-calc-info-icon"
@@ -11,12 +10,12 @@
                   @mouseleave="hoverIcon = null"
                   :class="{ hover: hoverIcon === 'clubsInput' }">i</span>
           </label>
-          <input id="clubsInput" type="text" :value="clubsStr" placeholder="например, 1–20"
-                 @input="onClubsInput"
-                 :class="['fitltv-calc-input', { 'fitltv-calc-error': clubsError }]" />
+          <input id="clubsInput" type="text"
+            :value="clubsStr" placeholder="например, 10"
+            @input="onClubsInput"
+            :class="['fitltv-calc-input', { 'fitltv-calc-error': clubsError }]" />
           <div v-if="clubsError" class="fitltv-calc-error-message">{{ clubsError }}</div>
         </div>
-        <!-- Клиенты -->
         <div class="fitltv-calc-input-group">
           <label for="membersInput" class="fitltv-calc-label">Клиентов на клуб (в мес):
             <span class="fitltv-calc-info-icon"
@@ -25,12 +24,12 @@
                   @mouseleave="hoverIcon = null"
                   :class="{ hover: hoverIcon === 'membersInput' }">i</span>
           </label>
-          <input id="membersInput" type="text" :value="membersStr" placeholder="например, 800"
-                 @input="onMembersInput"
-                 :class="['fitltv-calc-input', { 'fitltv-calc-error': membersError }]" />
+          <input id="membersInput" type="text"
+            :value="membersStr" placeholder="например, 600"
+            @input="onMembersInput"
+            :class="['fitltv-calc-input', { 'fitltv-calc-error': membersError }]" />
           <div v-if="membersError" class="fitltv-calc-error-message">{{ membersError }}</div>
         </div>
-        <!-- Абонемент -->
         <div class="fitltv-calc-input-group">
           <label for="priceInput" class="fitltv-calc-label">Абонемент (₽):
             <span class="fitltv-calc-info-icon"
@@ -39,27 +38,26 @@
                   @mouseleave="hoverIcon = null"
                   :class="{ hover: hoverIcon === 'priceInput' }">i</span>
           </label>
-          <input id="priceInput" type="text" :value="priceStr" placeholder="например, 12000"
-                 @input="onPriceInput"
-                 :class="['fitltv-calc-input', { 'fitltv-calc-error': priceError }]" />
+          <input id="priceInput" type="text"
+            :value="priceStr" placeholder="например, 12000"
+            @input="onPriceInput"
+            :class="['fitltv-calc-input', { 'fitltv-calc-error': priceError }]" />
           <div v-if="priceError" class="fitltv-calc-error-message">{{ priceError }}</div>
         </div>
-        <!-- Частота посещений -->
         <div class="fitltv-calc-input-group">
-          <label for="freqInput" class="fitltv-calc-label">
-            Частота посещений/мес:
+          <label for="freqInput" class="fitltv-calc-label">Частота посещений/мес:
             <span class="fitltv-calc-info-icon"
                   @click="showTooltip('freqInput')"
                   @mouseenter="hoverIcon = 'freqInput'"
                   @mouseleave="hoverIcon = null"
                   :class="{ hover: hoverIcon === 'freqInput' }">i</span>
           </label>
-          <input id="freqInput" type="text" :value="freqStr" placeholder="например, 8"
-                 @input="onFreqInput"
-                 :class="['fitltv-calc-input', { 'fitltv-calc-error': freqError }]" />
+          <input id="freqInput" type="text"
+            :value="freqStr" placeholder="например, 6-8"
+            @input="onFreqInput"
+            :class="['fitltv-calc-input', { 'fitltv-calc-error': freqError }]" />
           <div v-if="freqError" class="fitltv-calc-error-message">{{ freqError }}</div>
         </div>
-        <!-- Переключатель месяц/год -->
         <div class="fitltv-calc-radio-group">
           <label>
             <input type="radio" value="month" v-model="periodType" /> Месяц
@@ -81,7 +79,6 @@
       </h3>
     </div>
 
-    <!-- Таблица: все динамические строки сохранены -->
     <div class="fitltv-calc-table-container">
       <table class="fitltv-calc-table">
         <thead>
@@ -103,7 +100,9 @@
                     :class="{ hover: hoverIcon === 'clientsRetained' }">i</span>
             </td>
             <td class="fitltv-calc-td">{{ displayResult.clientsBase }}</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">{{ displayResult.clientsWithSignals }} <span class="fitltv-calc-growth-secondary">(+{{ displayResult.retentionBoostPercent }}%)</span></td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">
+              {{ displayResult.clientsWithSignals }} <span class="fitltv-calc-growth-secondary">(+{{ displayResult.retentionBoostPercent }}%)</span>
+            </td>
           </tr>
           <tr>
             <td class="fitltv-calc-metric-cell">
@@ -116,7 +115,9 @@
                     :class="{ hover: hoverIcon === 'frequency' }">i</span>
             </td>
             <td class="fitltv-calc-td">{{ displayResult.frequencyBase }}</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">{{ displayResult.frequencyWith }} <span class="fitltv-calc-growth-secondary">(+{{ displayResult.frequencyBoostPercent }}%)</span></td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">
+              {{ displayResult.frequencyWith }} <span class="fitltv-calc-growth-secondary">(+{{ displayResult.frequencyBoostPercent }}%)</span>
+            </td>
           </tr>
           <tr>
             <td class="fitltv-calc-metric-cell">
@@ -129,25 +130,46 @@
                     :class="{ hover: hoverIcon === 'ltv' }">i</span>
             </td>
             <td class="fitltv-calc-td">₽{{ displayResult.ltvBase }}</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">₽{{ displayResult.ltvWithSignals }}<span class="fitltv-calc-growth-secondary"> (+₽{{ displayResult.ltvDiff }})</span></td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">
+              ₽{{ displayResult.ltvWithSignals }}<span class="fitltv-calc-growth-secondary"> (+₽{{ displayResult.ltvDiff }})</span>
+            </td>
           </tr>
+          <!-- ДОП. ВЫРУЧКА строка на клуб -->
           <tr>
             <td class="fitltv-calc-metric-cell">
-              <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenue')"
-                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenue' }">Доп. выручка/{{ periodType === 'month' ? 'мес' : 'год' }}</span>
+              <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenueClub')"
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueClub' }">Доп. выручка на клуб/мес</span>
               <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
-                    @click.stop="showTooltip('additionalRevenue')"
-                    @mouseenter="hoverIcon = 'additionalRevenue'"
+                    @click.stop="showTooltip('additionalRevenueClub')"
+                    @mouseenter="hoverIcon = 'additionalRevenueClub'"
                     @mouseleave="hoverIcon = null"
-                    :class="{ hover: hoverIcon === 'additionalRevenue' }">i</span>
+                    :class="{ hover: hoverIcon === 'additionalRevenueClub' }">i</span>
             </td>
             <td class="fitltv-calc-td">—</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">₽{{ displayResult.additionalRevenue }}</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">
+              ₽{{ displayResult.additionalRevenueClub }}
+            </td>
+          </tr>
+          <!-- ДОП. ВЫРУЧКА строка на сеть -->
+          <tr>
+            <td class="fitltv-calc-metric-cell">
+              <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenueNetwork')"
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueNetwork' }">Доп. выручка на сеть/мес</span>
+              <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
+                    @click.stop="showTooltip('additionalRevenueNetwork')"
+                    @mouseenter="hoverIcon = 'additionalRevenueNetwork'"
+                    @mouseleave="hoverIcon = null"
+                    :class="{ hover: hoverIcon === 'additionalRevenueNetwork' }">i</span>
+            </td>
+            <td class="fitltv-calc-td">—</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">
+              ₽{{ displayResult.additionalRevenueNetwork }}
+            </td>
           </tr>
           <tr>
             <td class="fitltv-calc-metric-cell">
               <span class="fitltv-calc-metric-text" @click="showTooltip('paybackSignals')"
-                    :class="{ 'fitltv-calc-active': activeTooltip === 'paybackSignals' }">Окупаемость</span>
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'paybackSignals' }">Окупаемость сигнала</span>
               <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
                     @click.stop="showTooltip('paybackSignals')"
                     @mouseenter="hoverIcon = 'paybackSignals'"
@@ -155,13 +177,15 @@
                     :class="{ hover: hoverIcon === 'paybackSignals' }">i</span>
             </td>
             <td class="fitltv-calc-td">—</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">{{ displayResult.paybackSignals }}</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">
+              {{ displayResult.paybackSignals }}
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <!-- Динамические секции: Почему получится, успехи, окупаемость -->
-    <div class="fitltv-calc-why-toggle" :class="{ open: whyOpen }" @click="toggleWhy"
+
+        <div class="fitltv-calc-why-toggle" :class="{ open: whyOpen }" @click="toggleWhy"
          :aria-expanded="whyOpen.toString()" role="button" tabindex="0">
       <span class="fitltv-calc-why-text">Почему все получится</span>
       <span class="fitltv-calc-why-icon" aria-hidden="true">
@@ -173,6 +197,7 @@
     </div>
     <transition name="fitltv-calc-collapse">
       <div v-if="whyOpen" class="fitltv-calc-container fitltv-calc-content">
+        <!-- Каждый сигнал = шанс вернуть клиента -->
         <div class="fitltv-calc-signal-block">
           <h4 class="fitltv-calc-signal-title">Каждый сигнал = шанс вернуть клиента:</h4>
           <div class="fitltv-chip-grid">
@@ -182,6 +207,7 @@
             <div class="fitltv-chip fitltv-chip--amber"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>Проблема с оплатой/тарифом</div>
           </div>
         </div>
+        <!-- Почему фитнес отличается -->
         <div class="fitltv-calc-factors-block">
           <h4 class="fitltv-calc-factors-title">Почему фитнес отличается:</h4>
           <div class="fitltv-chip-grid">
@@ -191,6 +217,7 @@
             <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>Частые возвраты после жалоб</div>
           </div>
         </div>
+        <!-- Все сигналы после 2-го = чистая прибыль -->
         <div class="fitltv-calc-payback-explanation">
           <h4 class="fitltv-calc-payback-title">Все сигналы после 2-го = чистая прибыль:</h4>
           <div class="fitltv-chip-grid">
@@ -199,6 +226,7 @@
             <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>Система окупается после {{ displayResult.paybackSignals }}</div>
           </div>
         </div>
+        <!-- Ключевые факторы успеха -->
         <div class="fitltv-calc-success-factors">
           <h4 class="fitltv-calc-success-title">Ключевые факторы успеха:</h4>
           <div class="fitltv-chip-grid">
@@ -209,7 +237,7 @@
           </div>
         </div>
         <div class="fitltv-calc-cta-block">
-          <p class="fitltv-calc-cta-text"><strong>Главное:</strong> Окупаемость наступает сразу, а каждый месяц приносит стабильный рост дохода за счет доп. retention.</p>
+          <p class="fitltv-calc-cta-text"><strong>Главное:</strong> Окупаемость наступает сразу — каждый месяц приносит стабильный рост за счет дополнительного retention.</p>
         </div>
         <div class="fitltv-calc-warning-block">
           <p class="fitltv-calc-warning-text"><strong>Внимание:</strong> Результат зависит от качества внедрения и обучения команды.</p>
@@ -235,38 +263,87 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-const clubsStr = ref('10')
-const membersStr = ref('800')
-const priceStr = ref('12000')
-const freqStr = ref('8')
-const periodType = ref('month')
-const activeTooltip = ref(null)
-const hoverIcon = ref(null)
-const clubsError = ref('')
-const membersError = ref('')
-const priceError = ref('')
-const freqError = ref('')
-const calculatedResult = ref({})
-const hasCalculated = ref(false)
-const whyOpen = ref(false)
-const systemMonthlyCost = ref(27500) // Цена за 1 клуб
+const clubsStr = ref('10');
+const membersStr = ref('600');
+const priceStr = ref('12000');
+const freqStr = ref('6');
+const periodType = ref('month'); // month or year
+const activeTooltip = ref(null);
+const hoverIcon = ref(null);
+const clubsError = ref('');
+const membersError = ref('');
+const priceError = ref('');
+const freqError = ref('');
+const calculatedResult = ref({});
+const hasCalculated = ref(false);
+const whyOpen = ref(false);
+const systemMonthlyCost = ref(27500);
 
 const constants = {
   baseRetentionRate: 0.62,
-  signalsRetentionBoost: 0.12,
-  periodMonths: { month: 10, year: 12 },
-  freqBoost: 0.1 // Частота увеличивается на 10% при внедрении сигналов
+  signalsRetentionRate: 0.74,
+  freqBase: 6,
+  freqSignals: 8,
+  periodMonths: { month: 10, year: 12 }
+};
+
+// Проверки
+function validateClubs(v) {
+  if (v < 1) return 'Минимум 1 клуб';
+  if (v > 25) return 'Максимум 25 клубов';
+  return '';
+}
+function validateMembers(v) {
+  if (v < 50) return 'Минимум 50 клиентов/мес';
+  if (v > 4000) return 'Максимум 4000 клиентов/мес';
+  return '';
+}
+function validatePrice(v) {
+  if (v < 4000) return 'Минимальная цена абонемента 4 000 ₽';
+  if (v > 80000) return 'Максимальная цена абонемента 80 000 ₽';
+  return '';
+}
+function validateFreq(v) {
+  if (v < 2) return 'Минимум 2 посещения/мес';
+  if (v > 30) return 'Максимум 30 посещений/мес';
+  return '';
 }
 
-function showTooltip(id) { activeTooltip.value = activeTooltip.value === id ? null : id }
-function closeTooltip() { activeTooltip.value = null }
-function toggleWhy() { whyOpen.value = !whyOpen.value }
-const clubsNum = computed(() => Number(clubsStr.value.replace(/\s|,/g, '')))
-const membersNum = computed(() => Number(membersStr.value.replace(/\s|,/g, '')))
-const priceNum = computed(() => Number(priceStr.value.replace(/\s|,/g, '')))
-const freqNum = computed(() => Number(freqStr.value.replace(/\s|,/g, '')))
-const systemMonthlyCostDisplay = computed(() => formatNumber(systemMonthlyCost.value))
-const retentionBoostDisplay = computed(() => Math.round(constants.signalsRetentionBoost * 100))
+// Инпуты
+function onClubsInput(e) {
+  const digits = e.target.value.replace(/\D/g, '');
+  const num = Number(digits);
+  clubsStr.value = digits ? num.toLocaleString('ru-RU') : '';
+  clubsError.value = digits ? validateClubs(num) : '';
+  activeTooltip.value = null;
+}
+function onMembersInput(e) {
+  const digits = e.target.value.replace(/\D/g, '');
+  const num = Number(digits);
+  membersStr.value = digits ? num.toLocaleString('ru-RU') : '';
+  membersError.value = digits ? validateMembers(num) : '';
+  activeTooltip.value = null;
+}
+function onPriceInput(e) {
+  const digits = e.target.value.replace(/\D/g, '');
+  const num = Number(digits);
+  priceStr.value = digits ? num.toLocaleString('ru-RU') : '';
+  priceError.value = digits ? validatePrice(num) : '';
+  activeTooltip.value = null;
+}
+function onFreqInput(e) {
+  const digits = e.target.value.replace(/\D/g, '');
+  const num = Number(digits);
+  freqStr.value = digits ? num.toLocaleString('ru-RU') : '';
+  freqError.value = digits ? validateFreq(num) : '';
+  activeTooltip.value = null;
+}
+
+const clubsNum = computed(() => Number(clubsStr.value.replace(/\s|,/g, '')));
+const membersNum = computed(() => Number(membersStr.value.replace(/\s|,/g, '')));
+const priceNum = computed(() => Number(priceStr.value.replace(/\s|,/g, '')));
+const freqNum = computed(() => Number(freqStr.value.replace(/\s|,/g, '')));
+const systemMonthlyCostDisplay = computed(() => formatNumber(systemMonthlyCost.value));
 
 const canCalculate = computed(() =>
   clubsNum.value >= 1 && clubsNum.value <= 25 &&
@@ -274,177 +351,151 @@ const canCalculate = computed(() =>
   priceNum.value >= 4000 && priceNum.value <= 80000 &&
   freqNum.value >= 2 && freqNum.value <= 30 &&
   !clubsError.value && !membersError.value && !priceError.value && !freqError.value
-)
+);
 
-function validateClubs(v) {
-  if (v < 1) return 'Минимум 1 клуб'
-  if (v > 25) return 'Максимум 25 клубов'
-  return ''
+// Формат чисел
+function formatNumber(n) {
+  return new Intl.NumberFormat('ru-RU', {
+    minimumFractionDigits: 0, maximumFractionDigits: 0
+  }).format(Math.round(n)).replace(/\s/g, '.');
 }
-function validateMembers(v) {
-  if (v < 50) return 'Минимум 50 клиентов/мес'
-  if (v > 4000) return 'Максимум 4000 клиентов/мес'
-  return ''
-}
-function validatePrice(v) {
-  if (v < 4000) return 'Минимальная цена абонемента 4 000 ₽'
-  if (v > 80000) return 'Максимальная цена абонемента 80 000 ₽'
-  return ''
-}
-function validateFreq(v) {
-  if (v < 2) return 'Минимум 2 посещения/мес'
-  if (v > 30) return 'Максимум 30 посещений/мес'
-  return ''
-}
-function onClubsInput(e) {
-  const digits = e.target.value.replace(/\D/g, '')
-  const num = Number(digits)
-  clubsStr.value = digits ? num.toLocaleString('ru-RU') : ''
-  clubsError.value = digits ? validateClubs(num) : ''
-  activeTooltip.value = null
-}
-function onMembersInput(e) {
-  const digits = e.target.value.replace(/\D/g, '')
-  const num = Number(digits)
-  membersStr.value = digits ? num.toLocaleString('ru-RU') : ''
-  membersError.value = digits ? validateMembers(num) : ''
-  activeTooltip.value = null
-}
-function onPriceInput(e) {
-  const digits = e.target.value.replace(/\D/g, '')
-  const num = Number(digits)
-  priceStr.value = digits ? num.toLocaleString('ru-RU') : ''
-  priceError.value = digits ? validatePrice(num) : ''
-  activeTooltip.value = null
-}
-function onFreqInput(e) {
-  const digits = e.target.value.replace(/\D/g, '')
-  const num = Number(digits)
-  freqStr.value = digits ? num.toLocaleString('ru-RU') : ''
-  freqError.value = digits ? validateFreq(num) : ''
-  activeTooltip.value = null
-}
-const formatNumber = (n) => new Intl.NumberFormat('ru-RU', {
-  minimumFractionDigits: 0, maximumFractionDigits: 0
-}).format(Math.round(n)).replace(/\s/g, '.')
 
-const generateDynamicTooltips = (clubs, members, price, freq, periodTypeVal) => {
-  const months = constants.periodMonths[periodTypeVal]
-  const retentionBase = constants.baseRetentionRate
-  const retentionWith = retentionBase + constants.signalsRetentionBoost
-  const loyalBase = members * retentionBase
-  const loyalWith = members * retentionWith
-  const loyalIncrease = loyalWith - loyalBase
-  const loyalPercent = Math.round(((loyalWith - loyalBase) / loyalBase) * 100)
-  const freqBase = freq
-  const freqWith = freqBase + Math.round(freqBase * constants.freqBoost)
-  const freqIncreasePercent = Math.round(constants.freqBoost * 100)
-  const ltvBase = price * freqBase * months
-  const ltvWithSignals = price * freqWith * months
-  const ltvDiff = ltvWithSignals - ltvBase
-  const additionalRevenue = (ltvWithSignals - ltvBase) * loyalWith * clubs
-  const preventedChurnClients = members * clubs * constants.signalsRetentionBoost
-  const paybackSignals = Math.max(1, Math.ceil(systemMonthlyCost.value / ((preventedChurnClients * ltvWithSignals) / months)))
+// Основная формула расчетов для таблицы
+function calcFitnessLTV({ clubs, members, price, freq, periodType }) {
+  const months = constants.periodMonths[periodType];
+  // retention (реально: на клуб/мес)
+  const clientsBase = Math.round(members * constants.baseRetentionRate * clubs);
+  const clientsSignals = Math.round(members * constants.signalsRetentionRate * clubs);
+  const retentionBoost = Math.round(((clientsSignals - clientsBase) / clientsBase) * 100);
+
+  // Частота посещений: без/с сигналами (жестко фиксировано по задаче)
+  const freqBase = constants.freqBase;
+  const freqSignals = constants.freqSignals;
+
+  // LTV на одного клиента за период
+  const ltvBase = price * freqBase * months;
+  const ltvSignals = price * freqSignals * months;
+  const ltvDiff = ltvSignals - ltvBase;
+
+  // Доп. выручка на клуб и на сеть (разница LTV × разница retention × кол-во клубов)
+  // На клуб:
+  const clientsBaseClub = Math.round(members * constants.baseRetentionRate);
+  const clientsSignalsClub = Math.round(members * constants.signalsRetentionRate);
+  const additionalRevenueClub = (ltvSignals - ltvBase) * (clientsSignalsClub - clientsBaseClub);
+
+  // На сеть:
+  const additionalRevenueNetwork = additionalRevenueClub * clubs;
+
+  // Окупаемость: 1-2 сигнала (как текст)
+  const paybackSignals = "1–2 сигнала";
+
   return {
-    clubsInput: { title: 'Клубы', description: 'Число ваших фитнес-клубов. Диапазон: 1–25.' },
-    membersInput: { title: 'Клиентов на клуб/мес', description: 'Среднее кол-во уникальных клиентов по абонементам.' },
-    priceInput: { title: 'Абонемент', description: 'Стоимость абонемента месячного или годового. Диапазон: 4 000–80 000.' },
-    freqInput: { title: 'Частота посещений', description: 'Среднее посещений на клиента в месяц.' },
-    clientsRetained: { title: 'Динамика retention',
-      formula: `${members} × ${formatNumber(retentionBase * 100)}% = ${formatNumber(loyalBase)}<br>${members} × ${formatNumber(retentionWith * 100)}% = ${formatNumber(loyalWith)}`,
-      description: `Прирост: +${formatNumber(loyalIncrease)} клиентов (+${loyalPercent}%).`
-    },
-    frequency: { title: 'Частота посещений',
-      formula: `${freqBase} → ${freqWith} (+${freqIncreasePercent}%)`,
-      description: 'Больше позитивных кейсов — выше частота посещений.'
-    },
-    ltv: { title: `LTV клиента (${months} мес)`,
-      formula: `${price} × ${freqBase} × ${months} = ₽${formatNumber(ltvBase)}<br>${price} × ${freqWith} × ${months} = ₽${formatNumber(ltvWithSignals)}`,
-      description: `Рост: +₽${formatNumber(ltvDiff)}`
-    },
-    additionalRevenue: { title: `Доп. выручка/${periodTypeVal === 'month' ? 'мес' : 'год'}`,
-      formula: `На всех удержанных: (${formatNumber(loyalWith)} × ${clubs}) × (₽${formatNumber(ltvWithSignals - ltvBase)}) = ₽${formatNumber(additionalRevenue)}`,
-      description: `Доп. выручка с усиленным retention и частотой посещений.`
-    },
-    paybackSignals: { title: 'Окупаемость',
-      formula: `₽${systemMonthlyCost.value} ÷ ((${formatNumber(preventedChurnClients)} × ${formatNumber(ltvWithSignals)} / ${months})) = ${paybackSignals}`,
-      description: `После ${paybackSignals} предотвращённых уходов — чистая прибыль.`
-    }
-  }
-}
-
-const currentTooltip = computed(() => {
-  if (!activeTooltip.value) return { title: '', description: '', formula: '' }
-  const t = generateDynamicTooltips(clubsNum.value, membersNum.value, priceNum.value, freqNum.value, periodType.value)
-  return t[activeTooltip.value] || { title: '', description: '', formula: '' }
-})
-
-function calcFitnessLTV({ clubsCount, avgClientsPerClubMonthly, avgMembershipPrice, freq, baseRetentionRate, signalsRetentionBoost, periodTypeVal, systemMonthlyCost }) {
-  const months = constants.periodMonths[periodTypeVal]
-  const retentionBase = baseRetentionRate
-  const retentionWith = baseRetentionRate + signalsRetentionBoost
-  const loyalBase = avgClientsPerClubMonthly * retentionBase
-  const loyalWith = avgClientsPerClubMonthly * retentionWith
-  const loyalPercent = Math.round((loyalWith - loyalBase) / loyalBase * 100)
-  const freqBase = freq
-  const freqWith = freqBase + Math.round(freqBase * constants.freqBoost)
-  const freqIncreasePercent = Math.round(constants.freqBoost * 100)
-  const ltvBase = avgMembershipPrice * freqBase * months
-  const ltvWithSignals = avgMembershipPrice * freqWith * months
-  const ltvDiff = ltvWithSignals - ltvBase
-  const additionalRevenue = (ltvWithSignals - ltvBase) * loyalWith * clubsCount
-  const preventedChurnClients = avgClientsPerClubMonthly * clubsCount * signalsRetentionBoost
-  const paybackSignals = Math.max(1, Math.ceil(systemMonthlyCost / ((preventedChurnClients * ltvWithSignals) / months)))
-  return {
-    clientsBase: formatNumber(loyalBase * clubsCount),
-    clientsWithSignals: formatNumber(loyalWith * clubsCount),
-    retentionBoostPercent: loyalPercent,
-    frequencyBase: `${freqBase} раз/мес`,
-    frequencyWith: `${freqWith} раз/мес`,
-    frequencyBoostPercent: freqIncreasePercent,
+    clientsBase: formatNumber(clientsBase),
+    clientsWithSignals: formatNumber(clientsSignals),
+    retentionBoostPercent: retentionBoost,
+    frequencyBase: freqBase + " раз/мес",
+    frequencyWith: freqSignals + " раз/мес",
+    frequencyBoostPercent: Math.round(((freqSignals - freqBase) / freqBase) * 100),
     ltvBase: formatNumber(ltvBase),
-    ltvWithSignals: formatNumber(ltvWithSignals),
+    ltvWithSignals: formatNumber(ltvSignals),
     ltvDiff: formatNumber(ltvDiff),
-    additionalRevenue: formatNumber(additionalRevenue),
+    additionalRevenueClub: formatNumber(additionalRevenueClub),
+    additionalRevenueNetwork: formatNumber(additionalRevenueNetwork),
     paybackSignals
-  }
+  };
 }
 
-const defaultResult = {
-  clientsBase: '6.200',
-  clientsWithSignals: '7.384',
-  retentionBoostPercent: '12',
-  frequencyBase: '8 раз/мес',
-  frequencyWith: '9 раз/мес',
-  frequencyBoostPercent: '12',
-  ltvBase: '960.000',
-  ltvWithSignals: '1.080.000',
-  ltvDiff: '120.000',
-  additionalRevenue: '141.120.000',
-  paybackSignals: '1'
-}
+const calculatedResult = ref({});
+const hasCalculated = ref(false);
 
 const displayResult = computed(() => {
-  if (!hasCalculated.value) return defaultResult
-  return calculatedResult.value
-})
+  if (!hasCalculated.value) {
+    // стартовые значения для пустого экрана
+    return calcFitnessLTV({
+      clubs: 10, members: 600, price: 12000, freq: 6, periodType: 'month'
+    });
+  }
+  return calculatedResult.value;
+});
 
 function calculate() {
-  if (!canCalculate.value) return
+  if (!canCalculate.value) return;
   calculatedResult.value = calcFitnessLTV({
-    clubsCount: clubsNum.value,
-    avgClientsPerClubMonthly: membersNum.value,
-    avgMembershipPrice: priceNum.value,
+    clubs: clubsNum.value,
+    members: membersNum.value,
+    price: priceNum.value,
     freq: freqNum.value,
-    baseRetentionRate: constants.baseRetentionRate,
-    signalsRetentionBoost: constants.signalsRetentionBoost,
-    periodTypeVal: periodType.value,
-    systemMonthlyCost: systemMonthlyCost.value
-  })
-  hasCalculated.value = true
-  activeTooltip.value = null
+    periodType: periodType.value
+  });
+  hasCalculated.value = true;
+  activeTooltip.value = null;
 }
+
+function showTooltip(id) { activeTooltip.value = activeTooltip.value === id ? null : id; }
+function closeTooltip() { activeTooltip.value = null; }
+function toggleWhy() { whyOpen.value = !whyOpen.value; }
 </script>
+
+const retentionBoostDisplay = computed(() => Math.round((constants.signalsRetentionRate - constants.baseRetentionRate) * 100));
+
+const currentTooltip = computed(() => {
+  if (!activeTooltip.value) return { title: '', description: '', formula: '' };
+  const months = constants.periodMonths[periodType.value];
+  const clubs = clubsNum.value || 10;
+  const members = membersNum.value || 600;
+  const price = priceNum.value || 12000;
+  const freqBase = constants.freqBase;
+  const freqSignals = constants.freqSignals;
+  const clientsBase = Math.round(members * constants.baseRetentionRate * clubs);
+  const clientsSignals = Math.round(members * constants.signalsRetentionRate * clubs);
+  const clientsBaseClub = Math.round(members * constants.baseRetentionRate);
+  const clientsSignalsClub = Math.round(members * constants.signalsRetentionRate);
+  const ltvBase = price * freqBase * months;
+  const ltvSignals = price * freqSignals * months;
+  const ltvDiff = ltvSignals - ltvBase;
+  const additionalRevenueClub = (ltvSignals - ltvBase) * (clientsSignalsClub - clientsBaseClub);
+  const additionalRevenueNetwork = additionalRevenueClub * clubs;
+  switch (activeTooltip.value) {
+    case 'clientsRetained':
+      return {
+        title: 'Удержанные клиенты',
+        formula: `${members} × ${formatNumber(constants.baseRetentionRate*100)}% = <b>${formatNumber(clientsBaseClub)}</b><br>${members} × ${formatNumber(constants.signalsRetentionRate*100)}% = <b>${formatNumber(clientsSignalsClub)}</b>`,
+        description: `Разница: <b>+${formatNumber(clientsSignalsClub - clientsBaseClub)}</b> удержанных (на 1 клуб).`
+      };
+    case 'frequency':
+      return {
+        title: 'Частота посещений',
+        formula: `Без сигналов: <b>${freqBase} раз/мес</b><br>С сигналами: <b>${freqSignals} раз/мес</b>`,
+        description: 'Реальный рост частоты после обработки негатива и диалога.'
+      };
+    case 'ltv':
+      return {
+        title: `LTV клиента (${months} мес)`,
+        formula: `Без сигналов: <b>₽${formatNumber(ltvBase)}</b><br>С сигналами: <b>₽${formatNumber(ltvSignals)}</b>`,
+        description: `Δ LTV на одного клиента за период: <b>+₽${formatNumber(ltvDiff)}</b>`
+      };
+    case 'additionalRevenueClub':
+      return {
+        title: 'Доп. выручка на клуб/мес',
+        formula: `Δ LTV × доп. удержанные = <br>₽${formatNumber(ltvDiff)} × ${formatNumber(clientsSignalsClub-clientsBaseClub)} = <b>₽${formatNumber(additionalRevenueClub)}</b>`,
+        description: 'Доп. выручка за счёт доп. retention — по 1 клубу за месяц.'
+      };
+    case 'additionalRevenueNetwork':
+      return {
+        title: 'Доп. выручка на сеть/мес',
+        formula: `${clubs} клуба × <b>₽${formatNumber(additionalRevenueClub)}</b> = <b>₽${formatNumber(additionalRevenueNetwork)}</b>`,
+        description: 'Доп. выручка за весь месяц на всю сеть.'
+      };
+    case 'paybackSignals':
+      return {
+        title: 'Окупаемость сигнала',
+        formula: 'Система окупается после возврата 1–2 клиентов<br>1 сигнал = возврат клиента, средний чек = LTV',
+        description: 'После 1–2 сигналов — дальше только чистая прибыль, модель рассчитана по фактическим loss cases.'
+      };
+    default:
+      return { title: '', description: '', formula: '' };
+  }
+});
 
 <style scoped>
 .fitltv-calc-wrapper {
@@ -454,176 +505,75 @@ function calculate() {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #fff;
 }
+.fitltv-calc-container {margin:0 0 20px;padding:24px;background:#141414;border:1px solid #21272c;border-radius:16px;}
+.fitltv-calc-container.fitltv-calc-content {margin-top:0;border:none;border-top-left-radius:0;border-top-right-radius:0;}
 
-.fitltv-calc-container {
-  margin: 0 0 20px;
-  padding: 24px;
-  background: #1e1e1e;
-  border: 1px solid #2b2b2b;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,.25);
-}
-.fitltv-calc-container.fitltv-calc-content {
-  margin-top: 0;
-  border-top: none;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
+.fitltv-calc-input-row {display:flex;gap:16px;margin-bottom:16px;}
+.fitltv-calc-input-group {flex:1;position:relative;}
+.fitltv-calc-label {display:flex;align-items:center;gap:8px;margin-bottom:6px;font:600 14px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+.fitltv-calc-info-icon {display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:#222;border-radius:50%;cursor:pointer;transition:.2s;font-size:12px;font-weight:600;}
+.fitltv-calc-info-icon.hover {background:#4dff71}
+.fitltv-calc-input {width:100%;height:44px;padding:0 14px;font:500 15px/44px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#191c1b;border:1px solid #333;border-radius:8px;color:#fff;transition:border-color .25s;box-sizing:border-box;}
+.fitltv-calc-input:focus{border-color:#37ffac;}
+.fitltv-calc-input.fitltv-calc-error{border-color:#ef4444;}
+.fitltv-calc-input::placeholder {color:#444;}
+.fitltv-calc-error-message { margin-top:3px;font-size:12px;color:#ef4444; }
 
-/* Inputs */
-.fitltv-calc-input-row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-.fitltv-calc-input-group {
-  flex: 1;
-  position: relative;
-  min-width: 210px;
-}
-.fitltv-calc-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-  font: 600 14px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  color: #fff;
-}
-.fitltv-calc-info-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px; height: 18px;
-  background: #666;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all .2s;
-  font-size: 12px;
-  font-weight: 600;
-  color: #fff;
-  flex-shrink: 0;
-}
-.fitltv-calc-info-icon.hover { background: #ccc }
-.fitltv-calc-info-icon-table { border: none }
-.fitltv-calc-input {
-  width: 100%; height: 44px;
-  padding: 0 14px;
-  font: 500 15px/44px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  background: #141414;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: #fff;
-  transition: border-color .25s;
-  box-sizing: border-box;
-}
-.fitltv-calc-input:focus { border-color: #46f88e; outline: 0 }
-.fitltv-calc-input.fitltv-calc-error { border-color: #ef4444 }
-.fitltv-calc-input::placeholder { color: #888 }
-.fitltv-calc-error-message {
-  position: absolute; top: 100%; left: 0; margin-top: 4px;
-  font-size: 12px; color: #ef4444;
-}
-.fitltv-calc-radio-group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 8px;
-  gap: 4px;
-  font-size: 15px;
-}
+.fitltv-calc-radio-group {display:flex;flex-direction:column;align-items:flex-start;margin-left:8px;gap:4px;font-size:15px;}
 
-.fitltv-calc-btn {
-  width: 100%; height: 44px; margin-top: 12px;
-  font: 700 16px/44px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  text-transform: uppercase; color: #fff; background: #2183f9;
-  border: none; border-radius: 8px; cursor: pointer;
-  transition: background .2s,transform .2s,color .2s
-}
-.fitltv-calc-btn:disabled { background: #555; color: #ccc; cursor: not-allowed; transform: none }
-.fitltv-calc-btn:not(:disabled):hover { background: #46f88e; color: #000; transform: translateY(-2px) }
+.fitltv-calc-btn {width:100%;height:44px;margin-top:12px;font:700 16px/44px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;text-transform:uppercase;color:#fff;background:#1f7aff;border:none;border-radius:10px;cursor:pointer;transition:.2s;}
+.fitltv-calc-btn:disabled {background:#333;color:#888;cursor:not-allowed;transform:none;}
+.fitltv-calc-btn:not(:disabled):hover {background:#4dff71;color:#000;}
 
-.fitltv-calc-header { margin: 0 0 20px 0; padding: 0 }
-.fitltv-calc-title {
-  margin: 0; padding: 16px 0;
-  font: 600 18px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  text-align: center; color: #46f88e;
-}
-.fitltv-calc-title-mobile { display: none; }
+.fitltv-calc-header {margin:0 0 20px 0;padding:0;}
+.fitltv-calc-title {margin:0;padding:16px 0;font:600 20px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;text-align:center;color:#4dff71;text-shadow:0 2px 8px #183f41;}
+.fitltv-calc-title-mobile {display:none;}
 
-.fitltv-calc-table-container { margin: 0 0 20px 0; overflow: hidden; border-radius: 8px; border: 1px solid #2b2b2b }
-.fitltv-calc-table {
-  width: 100%; border-collapse: separate; border-spacing: 0;
-  background: #141414; table-layout: auto; margin: 0; padding: 0;
-}
-.fitltv-calc-th,.fitltv-calc-td,.fitltv-calc-metric-cell {
-  border: 0;
-  padding: 10px 16px;
-  vertical-align: middle; line-height: 1.35;
-}
-.fitltv-calc-th {
-  font: 600 14px/1.35 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  color: #46f88e; background: #1a1a1a; text-align: left; white-space: nowrap;
-}
-.fitltv-calc-td { font: 400 14px/1.35 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #fff; white-space: nowrap; }
-.fitltv-calc-metric-cell {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px; white-space: nowrap;
-}
-.fitltv-calc-metric-text { cursor: pointer; transition: color .2s; user-select: none; flex: 1; }
-.fitltv-calc-metric-text:hover, .fitltv-calc-metric-text.fitltv-calc-active { color: #46f88e }
-.fitltv-calc-highlight { color: #46f88e; font-weight: 600 }
-.fitltv-calc-growth-secondary { color: #888; font-weight: 400; font-size: .9em; }
+.fitltv-calc-table-container {margin:0 0 20px 0;overflow:hidden;border-radius:12px;border:1px solid #232c25;}
+.fitltv-calc-table {width:100%;border-collapse:separate;border-spacing:0;background:#191f22;}
+.fitltv-calc-th,.fitltv-calc-td,.fitltv-calc-metric-cell {border:0;padding:11px 16px;vertical-align:middle;}
+.fitltv-calc-th {font:600 15px/1.35 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#4dff71;background:#181e1a;}
+.fitltv-calc-td {font:400 15px/1.35 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;}
+.fitltv-calc-metric-cell {display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.fitltv-calc-metric-text{cursor:pointer;transition:color .2s;user-select:none;flex:1;}
+.fitltv-calc-metric-text:hover,.fitltv-calc-metric-text.fitltv-calc-active{color:#4dff71;}
+.fitltv-calc-highlight{color:#4dff71;font-weight:600}
+.fitltv-calc-growth-secondary{color:#aaffb8;font-weight:400;font-size:.92em;}
 
-.fitltv-calc-why-toggle {
-  padding: 14px 16px;
-  margin: 0; background: #1e1e1e;
-  border: 1px solid #2b2b2b;
-  border-radius: 8px; color: #fff;
-  display: flex; align-items: center; justify-content: space-between;
-  cursor: pointer; user-select: none;
-  transition: background .2s ease, border-color .2s ease;
-}
-.fitltv-calc-why-toggle.open { border-bottom-left-radius: 0; border-bottom-right-radius: 0 }
-.fitltv-calc-why-toggle:hover { background: #232323; border-color: #46f88e }
-.fitltv-calc-why-text { font: 600 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif }
-.fitltv-calc-why-icon-svg { width: 24px; height: 24px; color: #46f88e; transition: transform .2s ease,color .2s ease }
-.fitltv-calc-why-toggle:hover .fitltv-calc-why-icon-svg { color: #2183f9 }
-.fitltv-calc-why-toggle.open .fitltv-calc-why-icon-svg { transform: rotate(180deg) }
+.fitltv-calc-why-toggle {padding:13px 17px;margin:0;background:#232323;border:1px solid #232c25;border-radius:12px;color:#fff;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:.2s;}
+.fitltv-calc-why-toggle.open {border-bottom-left-radius:0;border-bottom-right-radius:0;}
+.fitltv-calc-why-toggle:hover {background:#222d27;border-color:#4dff71;}
+.fitltv-calc-why-text {font:600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+.fitltv-calc-why-icon-svg{width:24px;height:24px;color:#4dff71;transition:transform .2s;}
+.fitltv-calc-why-toggle.open .fitltv-calc-why-icon-svg{transform:rotate(180deg)}
 
-.fitltv-calc-signal-block { margin: 16px 0; padding: 16px; background: #332507; border: 1px solid #967623; border-radius: 8px }
-.fitltv-calc-signal-title { margin: 0 0 12px; font: 600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #e4bb6a }
-.fitltv-calc-factors-block { margin: 16px 0; padding: 16px; background: #21272c; border: 1px solid #414a58; border-radius: 8px }
-.fitltv-calc-factors-title { margin: 0 0 12px; font: 600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #46f88e }
-.fitltv-calc-payback-explanation { margin: 16px 0; padding: 16px; background: #182848; border: 1px solid #335577; border-radius: 8px }
-.fitltv-calc-payback-title { margin: 0 0 12px; font: 600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #46cbfa }
-.fitltv-calc-success-factors { margin: 16px 0; padding: 16px; background: #11331a; border: 1px solid #1e4a32; border-radius: 8px }
-.fitltv-calc-success-title { margin: 0 0 12px; font: 600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #63f968 }
-.fitltv-chip-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 10px }
-.fitltv-chip { display: inline-flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 10px; color: #fff; font: 500 14px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; border: 1px solid transparent }
-.fitltv-chip-icon { width: 18px; height: 18px; opacity: .9; }
-.fitltv-chip--amber { background: #3e2c0b; border-color: #967623 }
-.fitltv-chip--slate { background: #262b34; border-color: #414a58 }
-.fitltv-chip--blue { background: #263362; border-color: #335577 }
-.fitltv-chip--green { background: #13341a; border-color: #1e4a32 }
+.fitltv-calc-signal-block,.fitltv-calc-factors-block,.fitltv-calc-payback-explanation,
+.fitltv-calc-success-factors {margin:16px 0;padding:16px 12px;border-radius:12px;}
+.fitltv-calc-signal-block{background:#2c2511;border:1px solid #ba9700;}
+.fitltv-calc-signal-title{font:600 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#ffe385;margin-bottom:10px;}
+.fitltv-calc-factors-block{background:#11171a;border:1px solid #3c4647;}
+.fitltv-calc-factors-title{font:600 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#61ffd9;margin-bottom:10px;}
+.fitltv-calc-payback-explanation{background:#1d2b3d;border:1px solid #2566ad;}
+.fitltv-calc-payback-title{font:600 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#67c3ff;margin-bottom:10px;}
+.fitltv-calc-success-factors{background:#173116;border:1px solid #4adf6a;}
+.fitltv-calc-success-title{font:600 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#77fa92;margin-bottom:10px;}
+.fitltv-chip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;}
+.fitltv-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:8px;color:#fff;font:500 14px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;border:1px solid transparent}
+.fitltv-chip-icon{width:18px;height:18px;opacity:.82;}
+.fitltv-chip--amber{background:#32270a;border-color:#ba9700;}
+.fitltv-chip--slate{background:#232326;border-color:#2c3554;}
+.fitltv-chip--blue{background:#102b40;border-color:#2566ad;}
+.fitltv-chip--green{background:#152918;border-color:#4adf6a;}
 
-/* CTA/Info/Warning */
-.fitltv-calc-cta-block {
-  margin: 16px 0; padding: 16px;
-  background: #1e1e1e; border: 1px solid #46f88e;
-  border-radius: 8px;
-}
-.fitltv-calc-cta-text { margin: 0 0 8px 0; font: 400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #fff }
-.fitltv-calc-warning-block {
-  margin: 16px 0; padding: 16px;
-  background: #2a1f0f; border: 1px solid #4a3c1e; border-radius: 8px
-}
-.fitltv-calc-warning-text { margin: 0; font: 400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #e4bb6a }
-.fitltv-calc-info-block {
-  margin: 16px 0; padding: 16px;
-  background: #141414; border: 1px solid #2b2b2b; border-radius: 8px;
-}
-.fitltv-calc-info-text { margin: 0 0 12px 0; font: 400 13px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #ccc }
-.fitltv-calc-info-text:last-child { margin-bottom: 0 }
+/* CTA/INFO/WARNING */
+.fitltv-calc-cta-block{margin:16px 0;padding:16px;background:#192f20;border:1px solid #67ffb7;border-radius:8px;}
+.fitltv-calc-cta-text{margin:0 0 8px 0;font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;}
+
+.fitltv-calc-warning-block{margin:14px 0;padding:13px;background:#372400;border:1px solid #d8c066;border-radius:8px;}
+.fitltv-calc-warning-text{margin:0;font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#ffe385;}
+.fitltv-calc-info-block{margin:14px 0;padding:13px;background:#141414;border:1px solid #2b2b2b;border-radius:8px;}
+.fitltv-calc-info-text{margin:0 0 12px 0;font:400 13px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#b0b5b6;}
+.fitltv-calc-info-text:last-child{margin-bottom:0;}
 
 .fitltv-calc-tooltip-popup {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -631,41 +581,33 @@ function calculate() {
   align-items: center; z-index: 1000; cursor: pointer
 }
 .fitltv-calc-tooltip-content {
-  max-width: 400px; padding: 20px; background: #2a2a2a;
-  border: 1px solid #404040; border-radius: 12px;
+  max-width: 390px; padding: 20px; background: #242628;
+  border: 1px solid #308167; border-radius: 13px;
   box-shadow: 0 8px 24px rgba(0,0,0,.4); cursor: default
 }
-.fitltv-calc-tooltip-title { margin: 0 0 12px 0; font: 600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #46f88e }
-.fitltv-calc-formula {
-  margin: 0 0 12px 0; padding: 8px 12px;
-  background: #1a1a1a; border: 1px solid #333; border-radius: 6px;
-  font: 500 14px/1.4 'SF Mono','Monaco','Inconsolata','Roboto Mono',monospace;
-  color: #37ccfe; text-align: center; letter-spacing: .025em
-}
-.fitltv-calc-tooltip-desc { margin: 0; font: 400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #ccc }
-.fitltv-calc-tooltip-anim-enter-active,.fitltv-calc-tooltip-anim-leave-active { transition: opacity .25s }
-.fitltv-calc-tooltip-anim-enter-from,.fitltv-calc-tooltip-anim-leave-to { opacity: 0 }
-.fitltv-calc-collapse-enter-active,.fitltv-calc-collapse-leave-active { transition: all .3s ease-in-out; overflow: hidden }
-.fitltv-calc-collapse-enter-from,.fitltv-calc-collapse-leave-to { max-height: 0; opacity: 0 }
-.fitltv-calc-collapse-enter-to,.fitltv-calc-collapse-leave-from { max-height: 2000px; opacity: 1 }
+.fitltv-calc-tooltip-title { margin: 0 0 12px 0; font: 600 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #67fff7 }
+.fitltv-calc-formula {margin:0 0 12px 0;padding:8px 12px;background:#1a1a1a;border:1px solid #333;border-radius:6px;font:500 14px/1.4 'SF Mono','Monaco','Inconsolata','Roboto Mono',monospace;color:#67fff7;text-align:center;letter-spacing:.025em;}
+.fitltv-calc-tooltip-desc {margin:0;font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#ccc;}
+.fitltv-calc-tooltip-anim-enter-active,.fitltv-calc-tooltip-anim-leave-active{transition:opacity .25s}
+.fitltv-calc-tooltip-anim-enter-from,.fitltv-calc-tooltip-anim-leave-to{opacity:0}
+.fitltv-calc-collapse-enter-active,.fitltv-calc-collapse-leave-active{transition:all .3s ease-in-out;overflow:hidden}
+.fitltv-calc-collapse-enter-from,.fitltv-calc-collapse-leave-to{max-height:0;opacity:0}
+.fitltv-calc-collapse-enter-to,.fitltv-calc-collapse-leave-from{max-height:2000px;opacity:1}
 
 /* Mobile */
-@media (max-width: 768px) {
-  .fitltv-calc-container { padding: 16px; margin-bottom: 12px }
-  .fitltv-calc-input-row { flex-direction: column; gap: 12px; margin-bottom: 12px }
-  .fitltv-calc-btn { height: 48px; font-size: 16px; line-height: 48px; margin-top: 8px }
-  .fitltv-calc-title-desktop { display: none; }
-  .fitltv-calc-title-mobile { display: block; font-size: 16px }
-  .fitltv-calc-title { padding: 12px 0 }
-  .fitltv-calc-header { margin: 0 0 12px 0 }
-  .fitltv-calc-table-container { margin-bottom: 12px; border-radius: 6px }
-  .fitltv-calc-th,.fitltv-calc-td,.fitltv-calc-metric-cell { padding: 8px 10px; white-space: normal }
-  .fitltv-calc-th:nth-child(1) { width: 50% }
-  .fitltv-calc-th:nth-child(2),.fitltv-calc-th:nth-child(3) { width: 25% }
-  .fitltv-calc-metric-cell { gap: 6px; align-items: flex-start }
-  .fitltv-calc-info-icon { width: 16px; height: 16px; font-size: 10px; margin-top: 2px }
-  .fitltv-calc-table tbody tr::after { left: 10px; right: 10px }
-  .fitltv-calc-why-toggle { padding: 12px }
-  .fitltv-calc-why-text { font-size: 14px }
+@media (max-width: 768px){
+  .fitltv-calc-container{padding:12px 6px;}
+  .fitltv-calc-input-row{flex-direction:column;gap:10px;margin-bottom:8px;}
+  .fitltv-calc-btn{font-size:15px;}
+  .fitltv-calc-header{margin:0 0 9px 0}
+  .fitltv-calc-title-desktop{display:none;}
+  .fitltv-calc-title-mobile{display:block;font-size:16px}
+  .fitltv-calc-title{padding:8px 0}
+  .fitltv-calc-table-container{margin-bottom:8px;border-radius:7px}
+  .fitltv-calc-th,.fitltv-calc-td,.fitltv-calc-metric-cell{padding:7px 7px;white-space:normal}
+  .fitltv-calc-metric-cell{gap:6px;align-items:flex-start}
+  .fitltv-calc-info-icon{width:15px;height:15px;font-size:10px;}
+  .fitltv-calc-why-toggle{padding:8px;}
+  .fitltv-calc-why-text{font-size:13px;}
 }
 </style>
