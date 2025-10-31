@@ -2,8 +2,8 @@
 outline: false
 prev: false
 next: false
-title: LTV Калькулятор 
-description: Ваш плюс к выручке: посчитайте ежемесячный прирост от Сигнала
+title: LTV Калькулятор
+description: Ваш плюс к выручке – посчитайте ежемесячный прирост от Сигнала
 notification: brew
 ---
 
