@@ -3,57 +3,45 @@ import { ref, computed } from 'vue'
 
 const tariffs = ref([
   {
-    title: '«Радар»',
-    description: 'Реакция на отзывы',
+    title: 'Сигнал Диалоги',
+    description: 'Для старта (1-3 точки)',
     isHighlighted: false,
     prices: {
-      '1 месяц': { perMonth: '₽90,000/мес', total: '' },
-      '3 месяца': { perMonth: '₽80,000/мес', total: '(₽240,000 итого)' },
-      '6 месяцев': { perMonth: '₽75,000/мес', total: '(₽450,000 итого)' }
+      '1 месяц': { perMonth: '₽72,500/мес', total: '' },
+      '3 месяца': { perMonth: '₽69,000/мес', total: '(₽207,000 итого)' },
+      '6 месяцев': { perMonth: '₽65,500/мес', total: '(₽393,000 итого)' }
     },
     features: {
-      'Перехват негатива': '24/5',
-      'Виджет': 'Базовый',
-      'Форма': 'Базовый',
-      'Статистика': 'Ежемесячно',
-      'Аналитика': 'Базовая',
-      'Поддержка': 'Стандартная'
+      'Внедрение и настройка': '', // будет вычисляться по сроку ниже
+      'Тикет-система': '✓',
+      'ИИ-ассистент «Анна»': 'Базовая версия',
+      'Виджет и Умная форма': 'Базовая версия',
+      'Статистика': 'Базовая',
+      'Поддержка оператора': 'Будни, с 9:00 до 18:00',
+      'Аналитика и отчеты': '-',
+      'Персональный аналитик': '-',
+      'Стратегические сессии': '-'
     }
   },
   {
-    title: '«Система Управления»',
-    description: 'Предвосхищение проблем',
+    title: 'Сигнал Макс',
+    description: 'Для сетей (4+ точки)',
     isHighlighted: true,
     prices: {
-      '1 месяц': { perMonth: '₽250,000/мес', total: '' },
-      '3 месяца': { perMonth: '₽225,000/мес', total: '(₽675,000 итого)' },
-      '6 месяцев': { perMonth: '₽200,000/мес', total: '(₽1,200,000 итого)' }
+      '1 месяц': { perMonth: '₽275,000/мес', total: '' },
+      '3 месяца': { perMonth: '₽261,500/мес', total: '(₽784,500 итого)' },
+      '6 месяцев': { perMonth: '₽247,500/мес', total: '(₽1,485,000 итого)' }
     },
     features: {
-      'Перехват негатива': '24/5',
-      'Виджет': 'Конструктор',
-      'Форма': 'Конструктор',
-      'Статистика': 'Ежемесячно',
-      'Аналитика': 'Базовая',
-      'Поддержка': 'Стандартная'
-    }
-  },
-  {
-    title: '«Стратегическое Партнёрство»',
-    description: 'Стратегическое управление репутацией',
-    isHighlighted: false,
-    prices: {
-      '1 месяц': { perMonth: 'от ₽500,000/мес', total: '' },
-      '3 месяца': { perMonth: 'Индивидуально', total: '' },
-      '6 месяцев': { perMonth: 'Индивидуально', total: '' }
-    },
-    features: {
-      'Перехват негатива': '24/7',
-      'Виджет': 'Конструктор',
-      'Форма': 'Конструктор',
-      'Статистика': '1 раз/нед.',
-      'Аналитика': 'Расширенная',
-      'Поддержка': 'Приоритетная'
+      'Внедрение и настройка': '', // будет вычисляться по сроку ниже
+      'Тикет-система': '✓',
+      'ИИ-ассистент «Анна»': 'Продвинутая настройка',
+      'Виджет и Умная форма': 'Продвинутая настройка',
+      'Статистика': '✓',
+      'Поддержка оператора': 'Приоритетная',
+      'Аналитика и отчеты': 'Аналитика 360° и еженедельные отчеты',
+      'Персональный аналитик': '✓',
+      'Стратегические сессии': '✓'
     }
   }
 ])
@@ -61,16 +49,44 @@ const tariffs = ref([
 const durations = ['1 месяц', '3 месяца', '6 месяцев']
 const selected = ref('1 месяц')
 const currentLabel = computed(() => {
-  if (selected.value === '3 месяца') return '3 месяца (скидка ~10%)'
-  if (selected.value === '6 месяцев') return '6 месяцев (скидка ~20%)'
+  if (selected.value === '3 месяца') return '3 месяца (скидка)'
+  if (selected.value === '6 месяцев') return '6 месяцев (скидка)'
   return '1 месяц'
 })
 const isActive = d => d === selected.value
+
+// Обновляем поле "Внедрение и настройка" по сроку
+tariffs.value.forEach((tariff, idx) => {
+  let value = ''
+  if (idx === 0) {
+    // Диалоги
+    if (selected.value === '1 месяц') value = '₽50,000'
+    else value = 'Бесплатно'
+  } else {
+    // Макс
+    if (selected.value === '1 месяц') value = '₽150,000'
+    else value = 'Бесплатно'
+  }
+  tariff.features['Внедрение и настройка'] = value
+})
+
+watch(selected, () => {
+  tariffs.value.forEach((tariff, idx) => {
+    let value = ''
+    if (idx === 0) {
+      if (selected.value === '1 месяц') value = '₽50,000'
+      else value = 'Бесплатно'
+    } else {
+      if (selected.value === '1 месяц') value = '₽150,000'
+      else value = 'Бесплатно'
+    }
+    tariff.features['Внедрение и настройка'] = value
+  })
+})
 </script>
 
 <template>
   <div class="brp">
-    <!-- Переключатели над таблицей, вне бордюра -->
     <div class="brp__header">
       <div class="brp__switch" role="tablist" aria-label="Срок подписки">
         <button
@@ -87,14 +103,9 @@ const isActive = d => d === selected.value
         </button>
       </div>
     </div>
-
-    <!-- Отдельный контейнер с бордюром и скруглением только для таблицы -->
     <div class="brp__table">
       <div class="brp__grid">
-        <!-- Пустая шапка -->
         <div class="brp__cell brp__cell--header brp__cell--header-placeholder"></div>
-
-        <!-- Заголовки тарифов -->
         <div
           v-for="(tariff, colIndex) in tariffs"
           :key="tariff.title"
@@ -111,8 +122,6 @@ const isActive = d => d === selected.value
             <span class="brp__desc">{{ tariff.description }}</span>
           </div>
         </div>
-
-        <!-- Одна строка цен (по выбранному сроку) -->
         <div class="brp__cell brp__cell--label brp--no-bg brp--top-sep">
           {{ currentLabel }}
         </div>
@@ -130,25 +139,30 @@ const isActive = d => d === selected.value
             {{ tariff.prices[selected].total }}
           </span>
         </div>
-
-        <!-- Разделитель -->
         <div class="brp__row-sep"></div>
-
-        <!-- Особенности -->
-        <template v-for="(feature, featureIndex) in ['Перехват негатива','Виджет','Форма','Статистика','Аналитика','Поддержка']" :key="feature">
+        <template v-for="(feature, featureIndex) in [
+          'Внедрение и настройка',
+          'Тикет-система',
+          'ИИ-ассистент «Анна»',
+          'Виджет и Умная форма',
+          'Статистика',
+          'Поддержка оператора',
+          'Аналитика и отчеты',
+          'Персональный аналитик',
+          'Стратегические сессии'
+        ]" :key="feature">
           <div
             class="brp__cell brp__cell--label"
-            :class="{ 'brp__cell--last': featureIndex === 5 }"
+            :class="{ 'brp__cell--last': featureIndex === 8 }"
           >
             {{ feature }}
           </div>
-
           <div
             v-for="(tariff, colIndex) in tariffs"
             :key="tariff.title + feature"
             class="brp__cell brp__cell--value"
             :class="{
-              'brp__cell--last': featureIndex === 5,
+              'brp__cell--last': featureIndex === 8,
               'brp--highlight': tariff.isHighlighted,
               'brp--last-col': colIndex === tariffs.length - 1
             }"
@@ -166,15 +180,12 @@ const isActive = d => d === selected.value
 .brp {
   margin: 24px 0;
 }
-
 /* Хедер с переключателями над таблицей */
 .brp__header {
   display: flex;
   justify-content: center;
   margin-bottom: 16px;
 }
-
-/* Переключатель по центру, без фоновой плашки */
 .brp__switch {
   display: flex;
   justify-content: center;
@@ -201,23 +212,17 @@ const isActive = d => d === selected.value
   border-color: var(--vp-c-brand-1);
   font-weight: 700;
 }
-
-/* Контейнер таблицы с бордюром и прокруткой */
 .brp__table {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   border: 1px solid var(--vp-c-divider);
   border-radius: 8px;
 }
-
-/* Сетка */
 .brp__grid {
   display: grid;
-  grid-template-columns: 1fr repeat(3, 1fr);
+  grid-template-columns: 1fr repeat(2, 1fr);
   align-items: stretch;
 }
-
-/* Базовые ячейки */
 .brp__cell {
   position: relative;
   border-bottom: 1px solid var(--vp-c-divider);
@@ -228,8 +233,6 @@ const isActive = d => d === selected.value
   padding: 0 16px;
 }
 .brp--last-col { border-right: none; }
-
-/* Шапка */
 .brp__cell--header {
   border-bottom: 2px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-soft);
@@ -238,8 +241,6 @@ const isActive = d => d === selected.value
   padding-bottom: 16px;
 }
 .brp__cell--header-placeholder { background-color: transparent; }
-
-/* Выравнивание заголовков */
 .brp__title-wrap {
   min-height: 56px;
   display: flex;
@@ -256,8 +257,6 @@ const isActive = d => d === selected.value
 }
 .brp__title { font-weight: 600; font-size: 1.12em; color: var(--vp-c-text-1); }
 .brp__desc  { margin-top: 4px; font-size: 0.92em; color: var(--vp-c-text-2); line-height: 1.3; }
-
-/* Левая колонка */
 .brp__cell--label {
   padding: 12px 16px;
   justify-content: center;
@@ -267,8 +266,6 @@ const isActive = d => d === selected.value
   background-color: var(--vp-c-bg-soft);
 }
 .brp--no-bg { background-color: transparent; }
-
-/* Значения */
 .brp__cell--price,
 .brp__cell--value {
   padding: 12px 16px;
@@ -278,13 +275,9 @@ const isActive = d => d === selected.value
 }
 .brp__price-main { font-weight: 600; font-size: 1.05em; }
 .brp__price-sub  { font-size: 0.85em; color: var(--vp-c-text-2); margin-top: 2px; }
-
-/* Разделители */
 .brp--top-sep { border-top: 1px solid var(--vp-c-divider); }
 .brp__row-sep  { height: 2px; background-color: var(--vp-c-divider); grid-column: 1 / -1; border: none; }
 .brp__cell--last { border-bottom: none; }
-
-/* Рамка вокруг второго тарифа */
 .brp--highlight {
   border-left: 2px solid var(--vp-c-brand-1);
   border-right: 2px solid var(--vp-c-brand-1);
