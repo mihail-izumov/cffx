@@ -226,7 +226,7 @@ const currentTooltip = computed(() => {
     description: 'Суммарно по всем клубам за retention-цикл.'
   };
     case 'paybackSignals':
-  const realSystemMonthlyCostPerClub = Math.round(systemMonthlyCost.value / clubsNum.value);
+  const realSystemMonthlyCostPerClub = systemMonthlyCost.value;
   return {
     title: 'Окупаемость сигнала',
     formula: `Стоимость системы на клуб / ∆LTV = ${realSystemMonthlyCostPerClub} / ${displayResult.value.ltvDiff} ≈ <b>${displayResult.value.paybackSignals}</b>`,
