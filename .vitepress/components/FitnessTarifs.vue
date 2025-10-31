@@ -32,13 +32,14 @@ const tariffs = ref([
       '3 месяца': 'Бесплатно',
       '6 месяцев': 'Бесплатно'
     },
-    features: {
-      'Тикет-система': '✓',
+    features_text: {
       'ИИ-ассистент «Анна»': 'Базовая версия',
       'Виджет и Умная форма': 'Базовая версия',
-      'Статистика': 'Базовая',
       'Поддержка оператора': 'Будни, 9:00–18:00',
-      'Аналитика и отчёты': '—',
+      'Аналитика и отчёты': 'Базовая статистика'
+    },
+    features_icon: {
+      'Тикет-система': '✓',
       'Персональный аналитик': '—',
       'Стратегические сессии': '—'
     }
@@ -57,13 +58,14 @@ const tariffs = ref([
       '3 месяца': 'Бесплатно',
       '6 месяцев': 'Бесплатно'
     },
-    features: {
-      'Тикет-система': '✓',
+    features_text: {
       'ИИ-ассистент «Анна»': 'Продвинутая настройка',
       'Виджет и Умная форма': 'Продвинутая настройка',
-      'Статистика': '✓',
       'Поддержка оператора': 'Приоритетная',
-      'Аналитика и отчёты': 'Аналитика 360° и еженедельные отчёты',
+      'Аналитика и отчёты': 'Аналитика 360° и еженедельные отчёты'
+    },
+    features_icon: {
+      'Тикет-система': '✓',
       'Персональный аналитик': '✓',
       'Стратегические сессии': '✓'
     }
@@ -78,6 +80,10 @@ const currentLabel = computed(() => {
   return '1 месяц'
 })
 const isActive = d => d === selected.value
+
+// Списки для порядка — сначала текст, потом иконки
+const textFeatures = ['ИИ-ассистент «Анна»','Виджет и Умная форма','Поддержка оператора','Аналитика и отчёты']
+const iconFeatures = ['Тикет-система','Персональный аналитик','Стратегические сессии']
 </script>
 
 <template>
@@ -119,7 +125,7 @@ const isActive = d => d === selected.value
             <span class="brp__desc">{{ tariff.description }}</span>
           </div>
         </div>
-        <!-- Одна строка цен (по выбранному сроку) -->
+        <!-- Цены абонплаты -->
         <div class="brp__cell brp__cell--label brp--no-bg brp--top-sep">
           {{ currentLabel }}
         </div>
@@ -152,13 +158,12 @@ const isActive = d => d === selected.value
         >
           <span class="brp__price-main">{{ tariff.setup[selected] }}</span>
         </div>
-
-        <div class="brp__row-sep"></div>
-        <!-- Особенности -->
-        <template v-for="(feature, featureIndex) in ['Тикет-система','ИИ-ассистент «Анна»','Виджет и Умная форма','Статистика','Поддержка оператора','Аналитика и отчёты','Персональный аналитик','Стратегические сессии']" :key="feature">
+        
+        <!-- Строки TEXT -->
+        <template v-for="(feature, featureIndex) in textFeatures" :key="'ftxt-'+feature">
           <div
             class="brp__cell brp__cell--label"
-            :class="{ 'brp__cell--last': featureIndex === 7 }"
+            :class="{ 'brp__cell--last': false }"
           >
             {{ feature }}
           </div>
@@ -167,12 +172,34 @@ const isActive = d => d === selected.value
             :key="tariff.title + feature"
             class="brp__cell brp__cell--value"
             :class="{
-              'brp__cell--last': featureIndex === 7,
+              'brp__cell--last': false,
               'brp--highlight': tariff.isHighlighted,
               'brp--last-col': colIndex === tariffs.length - 1
             }"
           >
-            <span v-html="renderIcon(tariff.features[feature])"></span>
+            <span>{{ tariff.features_text[feature] }}</span>
+          </div>
+        </template>
+
+        <!-- Строки ICON -->
+        <template v-for="(feature, featureIndex) in iconFeatures" :key="'ficon-'+feature">
+          <div
+            class="brp__cell brp__cell--label"
+            :class="{ 'brp__cell--last': featureIndex === iconFeatures.length - 1 }"
+          >
+            {{ feature }}
+          </div>
+          <div
+            v-for="(tariff, colIndex) in tariffs"
+            :key="tariff.title + feature"
+            class="brp__cell brp__cell--value"
+            :class="{
+              'brp__cell--last': featureIndex === iconFeatures.length - 1,
+              'brp--highlight': tariff.isHighlighted,
+              'brp--last-col': colIndex === tariffs.length - 1
+            }"
+          >
+            <span v-html="renderIcon(tariff.features_icon[feature])"></span>
           </div>
         </template>
       </div>
@@ -304,3 +331,4 @@ const isActive = d => d === selected.value
   border-bottom-right-radius: 6px;
 }
 </style>
+
