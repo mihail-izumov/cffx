@@ -569,3 +569,4 @@ function toggleWhy() { whyOpen.value = !whyOpen.value; }
   .fitltv-calc-title-desktop{display:block}
 }
 </style>
+
