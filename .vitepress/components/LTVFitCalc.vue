@@ -23,7 +23,7 @@ const whyOpen = ref(false);
 
 function validateClubs(v) {
   if (v < 1) return 'Минимум 1 клуб';
-  if (v > 25) return 'Максимум 25 клубов';
+  if (v > 99) return 'Максимум 99 клубов';
   return '';
 }
 function validateMembers(v) {
@@ -35,6 +35,14 @@ function validatePrice(v) {
   if (v < 4000) return 'Минимальная цена абонемента 4 000 ₽';
   if (v > 80000) return 'Максимальная цена абонемента 80 000 ₽';
   return '';
+}
+function pluralS(n) {
+  n = Math.abs(n) % 100;
+  let n1 = n % 10;
+  if (n > 10 && n < 20) return 'Сигналов';
+  if (n1 > 1 && n1 < 5) return 'Сигнала';
+  if (n1 == 1) return 'Сигнал';
+  return 'Сигналов';
 }
 
 // --- Обработчики инпутов (с очищением ошибок)
@@ -97,9 +105,11 @@ function calcFitnessLTV({ clubs, members, price }) {
   const additionalRevenueNetwork = additionalRevenueClub * clubs;
 
   // Окупаемость (через тире) — например, 2–3 сигнала
-  let paybackMin = Math.max(1, Math.floor(systemMonthlyCost.value / ltvDiff));
-  let paybackMax = Math.max(1, Math.ceil(systemMonthlyCost.value / ltvDiff));
-  let paybackSignals = (ltvDiff > 0) ? `${paybackMin}-${paybackMax} сигналов` : '—';
+  let realSystemMonthlyCostPerClub = systemMonthlyCost.value / clubsNum.value;
+  let paybackMin = Math.max(1, Math.floor(realSystemMonthlyCostPerClub / ltvDiff));
+  let paybackMax = Math.max(1, Math.ceil(realSystemMonthlyCostPerClub / ltvDiff));
+  let paybackSignals = (ltvDiff > 0) ? `${paybackMin}-${paybackMax} ${pluralS(paybackMax)}` : '—';
+
 
   return {
     clientsBase: formatNumber(clubBase),
@@ -185,7 +195,7 @@ const currentTooltip = computed(() => {
           `${formatNumber(price)} × ${ltvBaseMonths.toFixed(2)} мес ≈ <b>₽${formatNumber(ltvBase)}</b><br>` +
           `${formatNumber(price)} × ${ltvSignalsMonths.toFixed(2)} мес ≈ <b>₽${formatNumber(ltvSignals)}</b>`,
         description: `Жизненный цикл: ${ltvBaseMonths.toFixed(2)}–${ltvSignalsMonths.toFixed(2)} мес.<br>
-        <b>Жизненный цикл</b> — сумма retention curve (см. исходные данные SM Stretching). Формула: сумма процентных остатков клиентов по каждому месяцу (например, 0 мес: 100%, 1 мес: 76%, 2 мес: 62% ...).`
+        <b>Жизненный цикл</b> — это среднее количество месяцев, в течение которых клиент платит абонемент. Считается на основе статистики удержания: например, при 10% оставшихся к концу года, суммарно получается около 8–9 месяцев активных платежей за год.`
       };
     case 'additionalRevenueClub':
       return {
@@ -202,8 +212,8 @@ const currentTooltip = computed(() => {
     case 'paybackSignals':
       return {
         title: 'Окупаемость сигнала',
-        formula: `Стоимость / ΔLTV = ${displayResult.value.systemMonthlyCostDisplay} / ${formatNumber(ltvDiff)} ≈ <b>${displayResult.value.paybackSignals}</b>`,
-        description: 'Число сигналов, окупающих систему, зависит от разницы LTV. Всегда считано через диапазон (округление вниз — вверх).'
+        formula: `Стоимость / ΔLTV = ${formatNumber(realSystemMonthlyCostPerClub)} / ${formatNumber(ltvDiff)} ≈ <b>${paybackSignals}</b>`,
+        description: 'Число сигналов, окупающих систему, определяется исходя из затрат на клуб и прироста LTV. Всегда считается как диапазон — от минимального до максимального значения (округление вниз — вверх).'
       };
     default:
       return { title: '', description: '', formula: '' };
