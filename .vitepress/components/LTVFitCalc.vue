@@ -134,7 +134,6 @@
               ₽{{ displayResult.ltvWithSignals }}<span class="fitltv-calc-growth-secondary"> (+₽{{ displayResult.ltvDiff }})</span>
             </td>
           </tr>
-          <!-- ДОП. ВЫРУЧКА строка на клуб -->
           <tr>
             <td class="fitltv-calc-metric-cell">
               <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenueClub')"
@@ -150,7 +149,6 @@
               ₽{{ displayResult.additionalRevenueClub }}
             </td>
           </tr>
-          <!-- ДОП. ВЫРУЧКА строка на сеть -->
           <tr>
             <td class="fitltv-calc-metric-cell">
               <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenueNetwork')"
@@ -197,7 +195,6 @@
     </div>
     <transition name="fitltv-calc-collapse">
       <div v-if="whyOpen" class="fitltv-calc-container fitltv-calc-content">
-        <!-- Каждый сигнал = шанс вернуть клиента -->
         <div class="fitltv-calc-signal-block">
           <h4 class="fitltv-calc-signal-title">Каждый сигнал = шанс вернуть клиента:</h4>
           <div class="fitltv-chip-grid">
@@ -207,7 +204,6 @@
             <div class="fitltv-chip fitltv-chip--amber"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>Проблема с оплатой/тарифом</div>
           </div>
         </div>
-        <!-- Почему фитнес отличается -->
         <div class="fitltv-calc-factors-block">
           <h4 class="fitltv-calc-factors-title">Почему фитнес отличается:</h4>
           <div class="fitltv-chip-grid">
@@ -217,7 +213,6 @@
             <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>Частые возвраты после жалоб</div>
           </div>
         </div>
-        <!-- Все сигналы после 2-го = чистая прибыль -->
         <div class="fitltv-calc-payback-explanation">
           <h4 class="fitltv-calc-payback-title">Все сигналы после 2-го = чистая прибыль:</h4>
           <div class="fitltv-chip-grid">
@@ -226,7 +221,6 @@
             <div class="fitltv-chip fitltv-chip--blue"><svg class="fitltv-chip-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>Система окупается после {{ displayResult.paybackSignals }}</div>
           </div>
         </div>
-        <!-- Ключевые факторы успеха -->
         <div class="fitltv-calc-success-factors">
           <h4 class="fitltv-calc-success-title">Ключевые факторы успеха:</h4>
           <div class="fitltv-chip-grid">
@@ -267,7 +261,7 @@ const clubsStr = ref('10');
 const membersStr = ref('600');
 const priceStr = ref('12000');
 const freqStr = ref('6');
-const periodType = ref('month'); // month or year
+const periodType = ref('month');
 const activeTooltip = ref(null);
 const hoverIcon = ref(null);
 const clubsError = ref('');
@@ -287,7 +281,6 @@ const constants = {
   periodMonths: { month: 10, year: 12 }
 };
 
-// Проверки
 function validateClubs(v) {
   if (v < 1) return 'Минимум 1 клуб';
   if (v > 25) return 'Максимум 25 клубов';
@@ -309,7 +302,6 @@ function validateFreq(v) {
   return '';
 }
 
-// Инпуты
 function onClubsInput(e) {
   const digits = e.target.value.replace(/\D/g, '');
   const num = Number(digits);
@@ -344,7 +336,7 @@ const membersNum = computed(() => Number(membersStr.value.replace(/\s|,/g, '')))
 const priceNum = computed(() => Number(priceStr.value.replace(/\s|,/g, '')));
 const freqNum = computed(() => Number(freqStr.value.replace(/\s|,/g, '')));
 const systemMonthlyCostDisplay = computed(() => formatNumber(systemMonthlyCost.value));
-
+const retentionBoostDisplay = computed(() => Math.round((constants.signalsRetentionRate - constants.baseRetentionRate) * 100));
 const canCalculate = computed(() =>
   clubsNum.value >= 1 && clubsNum.value <= 25 &&
   membersNum.value >= 50 && membersNum.value <= 4000 &&
@@ -353,40 +345,28 @@ const canCalculate = computed(() =>
   !clubsError.value && !membersError.value && !priceError.value && !freqError.value
 );
 
-// Формат чисел
 function formatNumber(n) {
-  return new Intl.NumberFormat('ru-RU', {
-    minimumFractionDigits: 0, maximumFractionDigits: 0
-  }).format(Math.round(n)).replace(/\s/g, '.');
+  return new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Math.round(n)).replace(/\s/g, '.');
 }
 
-// Основная формула расчетов для таблицы
 function calcFitnessLTV({ clubs, members, price, freq, periodType }) {
   const months = constants.periodMonths[periodType];
-  // retention (реально: на клуб/мес)
   const clientsBase = Math.round(members * constants.baseRetentionRate * clubs);
   const clientsSignals = Math.round(members * constants.signalsRetentionRate * clubs);
+
   const retentionBoost = Math.round(((clientsSignals - clientsBase) / clientsBase) * 100);
 
-  // Частота посещений: без/с сигналами (жестко фиксировано по задаче)
   const freqBase = constants.freqBase;
   const freqSignals = constants.freqSignals;
 
-  // LTV на одного клиента за период
   const ltvBase = price * freqBase * months;
   const ltvSignals = price * freqSignals * months;
   const ltvDiff = ltvSignals - ltvBase;
 
-  // Доп. выручка на клуб и на сеть (разница LTV × разница retention × кол-во клубов)
-  // На клуб:
   const clientsBaseClub = Math.round(members * constants.baseRetentionRate);
   const clientsSignalsClub = Math.round(members * constants.signalsRetentionRate);
   const additionalRevenueClub = (ltvSignals - ltvBase) * (clientsSignalsClub - clientsBaseClub);
-
-  // На сеть:
   const additionalRevenueNetwork = additionalRevenueClub * clubs;
-
-  // Окупаемость: 1-2 сигнала (как текст)
   const paybackSignals = "1–2 сигнала";
 
   return {
@@ -407,10 +387,7 @@ function calcFitnessLTV({ clubs, members, price, freq, periodType }) {
 
 const displayResult = computed(() => {
   if (!hasCalculated.value) {
-    // стартовые значения для пустого экрана
-    return calcFitnessLTV({
-      clubs: 10, members: 600, price: 12000, freq: 6, periodType: 'month'
-    });
+    return calcFitnessLTV({ clubs: 10, members: 600, price: 12000, freq: 6, periodType: 'month' });
   }
   return calculatedResult.value;
 });
@@ -431,9 +408,6 @@ function calculate() {
 function showTooltip(id) { activeTooltip.value = activeTooltip.value === id ? null : id; }
 function closeTooltip() { activeTooltip.value = null; }
 function toggleWhy() { whyOpen.value = !whyOpen.value; }
-</script>
-
-const retentionBoostDisplay = computed(() => Math.round((constants.signalsRetentionRate - constants.baseRetentionRate) * 100));
 
 const currentTooltip = computed(() => {
   if (!activeTooltip.value) return { title: '', description: '', formula: '' };
@@ -443,8 +417,6 @@ const currentTooltip = computed(() => {
   const price = priceNum.value || 12000;
   const freqBase = constants.freqBase;
   const freqSignals = constants.freqSignals;
-  const clientsBase = Math.round(members * constants.baseRetentionRate * clubs);
-  const clientsSignals = Math.round(members * constants.signalsRetentionRate * clubs);
   const clientsBaseClub = Math.round(members * constants.baseRetentionRate);
   const clientsSignalsClub = Math.round(members * constants.signalsRetentionRate);
   const ltvBase = price * freqBase * months;
@@ -456,8 +428,9 @@ const currentTooltip = computed(() => {
     case 'clientsRetained':
       return {
         title: 'Удержанные клиенты',
-        formula: `${members} × ${formatNumber(constants.baseRetentionRate*100)}% = <b>${formatNumber(clientsBaseClub)}</b><br>${members} × ${formatNumber(constants.signalsRetentionRate*100)}% = <b>${formatNumber(clientsSignalsClub)}</b>`,
-        description: `Разница: <b>+${formatNumber(clientsSignalsClub - clientsBaseClub)}</b> удержанных (на 1 клуб).`
+        formula: members + ' × ' + formatNumber(constants.baseRetentionRate*100) + '% = <b>' + formatNumber(clientsBaseClub) + '</b><br>' +
+          members + ' × ' + formatNumber(constants.signalsRetentionRate*100) + '% = <b>' + formatNumber(clientsSignalsClub) + '</b>',
+        description: 'Разница: <b>+' + formatNumber(clientsSignalsClub - clientsBaseClub) + '</b> удержанных (на 1 клуб).'
       };
     case 'frequency':
       return {
@@ -474,7 +447,7 @@ const currentTooltip = computed(() => {
     case 'additionalRevenueClub':
       return {
         title: 'Доп. выручка на клуб/мес',
-        formula: `Δ LTV × доп. удержанные = <br>₽${formatNumber(ltvDiff)} × ${formatNumber(clientsSignalsClub-clientsBaseClub)} = <b>₽${formatNumber(additionalRevenueClub)}</b>`,
+        formula: `Δ LTV × доп. удержанные = <br>₽${formatNumber(ltvDiff)} × ${formatNumber(clientsSignalsClub - clientsBaseClub)} = <b>₽${formatNumber(additionalRevenueClub)}</b>`,
         description: 'Доп. выручка за счёт доп. retention — по 1 клубу за месяц.'
       };
     case 'additionalRevenueNetwork':
@@ -493,6 +466,7 @@ const currentTooltip = computed(() => {
       return { title: '', description: '', formula: '' };
   }
 });
+</script>
 
 <style scoped>
 .fitltv-calc-wrapper {
@@ -562,7 +536,6 @@ const currentTooltip = computed(() => {
 .fitltv-chip--blue{background:#102b40;border-color:#2566ad;}
 .fitltv-chip--green{background:#152918;border-color:#4adf6a;}
 
-/* CTA/INFO/WARNING */
 .fitltv-calc-cta-block{margin:16px 0;padding:16px;background:#192f20;border:1px solid #67ffb7;border-radius:8px;}
 .fitltv-calc-cta-text{margin:0 0 8px 0;font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;}
 
