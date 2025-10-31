@@ -85,9 +85,60 @@
               {{ displayResult.clientsWithSignals }} <span class="fitltv-calc-growth-secondary">(+{{ displayResult.retentionBoostPercent }}%)</span>
             </td>
           </tr>
-
-          <!-- остальные строки таблицы оставлены без изменений -->
-          <!-- (в оригинальном коде их много – они полностью сохранены) -->
+          <tr>
+            <td class="fitltv-calc-metric-cell">
+              <span class="fitltv-calc-metric-text" @click="showTooltip('ltv')"
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'ltv' }">LTV клиента (жизненный цикл)</span>
+              <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
+                    @click.stop="showTooltip('ltv')"
+                    @mouseenter="hoverIcon = 'ltv'"
+                    @mouseleave="hoverIcon = null"
+                    :class="{ hover: hoverIcon === 'ltv' }">i</span>
+            </td>
+            <td class="fitltv-calc-td">₽{{ displayResult.ltvBase }}</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">
+              ₽{{ displayResult.ltvWithSignals }} <span class="fitltv-calc-growth-secondary">(+{{ displayResult.retentionBoostDisplay }}%)</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="fitltv-calc-metric-cell">
+              <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenueClub')"
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueClub' }">Доп. выручка на клуб</span>
+              <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
+                    @click.stop="showTooltip('additionalRevenueClub')"
+                    @mouseenter="hoverIcon = 'additionalRevenueClub'"
+                    @mouseleave="hoverIcon = null"
+                    :class="{ hover: hoverIcon === 'additionalRevenueClub' }">i</span>
+            </td>
+            <td class="fitltv-calc-td">—</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">₽{{ displayResult.additionalRevenueClub }}</td>
+          </tr>
+          <tr>
+            <td class="fitltv-calc-metric-cell">
+              <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenueNetwork')"
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueNetwork' }">Доп. выручка на сеть</span>
+              <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
+                    @click.stop="showTooltip('additionalRevenueNetwork')"
+                    @mouseenter="hoverIcon = 'additionalRevenueNetwork'"
+                    @mouseleave="hoverIcon = null"
+                    :class="{ hover: hoverIcon === 'additionalRevenueNetwork' }">i</span>
+            </td>
+            <td class="fitltv-calc-td">—</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">₽{{ displayResult.additionalRevenueNetwork }}</td>
+          </tr>
+          <tr>
+            <td class="fitltv-calc-metric-cell">
+              <span class="fitltv-calc-metric-text" @click="showTooltip('paybackSignals')"
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'paybackSignals' }">Окупаемость сигнала</span>
+              <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
+                    @click.stop="showTooltip('paybackSignals')"
+                    @mouseenter="hoverIcon = 'paybackSignals'"
+                    @mouseleave="hoverIcon = null"
+                    :class="{ hover: hoverIcon === 'paybackSignals' }">i</span>
+            </td>
+            <td class="fitltv-calc-td">—</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">{{ displayResult.paybackSignals }}</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -221,7 +272,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-// --- Продвинутая retention curve (жизненный цикл 8,0-9,5 мес)
+// --- Продвинутый retention curve (жизненный цикл 8,0-9,5 мес)
 const retentionCurveBase = [1, 0.76, 0.62, 0.53, 0.44, 0.38, 0.35, 0.29, 0.25, 0.21, 0.17, 0.13];
 const retentionCurveSignals = [1, 0.86, 0.75, 0.67, 0.58, 0.51, 0.47, 0.41, 0.36, 0.31, 0.26, 0.22];
 
