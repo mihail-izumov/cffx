@@ -4,7 +4,6 @@ import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
 import Layout from './Layout.vue'
-import YandexMetrika from './YandexMetrika.vue' // <-- 1. Импортируем компонент счетчика
 
 // Ваши импорты компонентов
 import SimulatorCards from '../components/SimulatorCards.vue'
@@ -122,6 +121,7 @@ import AnnaQuotes from '../components/AnnaQuotes.vue'
 import DialogsStatisticsSlider from '../components/DialogsStatisticsSlider.vue'
 import LTVFitCalc from '../components/LTVFitCalc.vue'
 import LTVCalcSwitcher from '../components/LTVCalcSwitcher.vue'
+import YandexMetrika from '../components/YandexMetrika.vue'
 
 export default {
   extends: DefaultTheme,
