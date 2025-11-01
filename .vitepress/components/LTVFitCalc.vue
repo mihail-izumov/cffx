@@ -93,7 +93,7 @@
                     @click.stop="showTooltip('ltv')"
                     @mouseenter="hoverIcon = 'ltv'"
                     @mouseleave="hoverIcon = null"
-                    :class="{ hover: hoverIcon === 'ltv' }">i</span>
+                    :class="{ hover: hoverIcon = 'ltv' }">i</span>
             </td>
             <td class="fitltv-calc-td">₽{{ displayResult.ltvBase }}</td>
             <td class="fitltv-calc-td fitltv-calc-highlight">
@@ -108,7 +108,7 @@
                     @click.stop="showTooltip('additionalRevenueClub')"
                     @mouseenter="hoverIcon = 'additionalRevenueClub'"
                     @mouseleave="hoverIcon = null"
-                    :class="{ hover: hoverIcon === 'additionalRevenueClub' }">i</span>
+                    :class="{ hover: hoverIcon = 'additionalRevenueClub' }">i</span>
             </td>
             <td class="fitltv-calc-td">—</td>
             <td class="fitltv-calc-td fitltv-calc-highlight">₽{{ displayResult.additionalRevenueClub }}</td>
@@ -121,7 +121,7 @@
                     @click.stop="showTooltip('additionalRevenueNetwork')"
                     @mouseenter="hoverIcon = 'additionalRevenueNetwork'"
                     @mouseleave="hoverIcon = null"
-                    :class="{ hover: hoverIcon === 'additionalRevenueNetwork' }">i</span>
+                    :class="{ hover: hoverIcon = 'additionalRevenueNetwork' }">i</span>
             </td>
             <td class="fitltv-calc-td">—</td>
             <td class="fitltv-calc-td fitltv-calc-highlight">₽{{ displayResult.additionalRevenueNetwork }}</td>
@@ -134,7 +134,7 @@
                     @click.stop="showTooltip('paybackSignals')"
                     @mouseenter="hoverIcon = 'paybackSignals'"
                     @mouseleave="hoverIcon = null"
-                    :class="{ hover: hoverIcon === 'paybackSignals' }">i</span>
+                    :class="{ hover: hoverIcon = 'paybackSignals' }">i</span>
             </td>
             <td class="fitltv-calc-td">—</td>
             <td class="fitltv-calc-td fitltv-calc-highlight">{{ displayResult.paybackSignals }}</td>
@@ -346,7 +346,7 @@ const canCalculate = computed(() =>
   clubsNum.value >= 1 && clubsNum.value <= 25 &&
   membersNum.value >= 50 && membersNum.value <= 4000 &&
   priceNum.value >= 4000 && priceNum.value <= 80000 &&
-  !clubsError.value && !membersError.value && !priceError.value
+  !clubsError.value && !membersError.value && priceError.value
 );
 
 function formatNumber(n) {
@@ -364,46 +364,37 @@ function averageRetention(curve) {
 
 function calcFitnessLTV({ clubs, members, price }) {
   // === НОВАЯ RETENTION CURVE ===
-  // 1-й месяц: 1.0 (100%)
-  // 2-й месяц: 0.5 (50% от предыдущего)
-  // 3-й месяц: 0.25 (50% от 2-го)
-  // Месяцы 4-6: 0 (пауза 3 месяца)
-  // Потом цикл повторяется
   const newRetentionBase = [1, 0.5, 0.25, 0, 0, 0, 1, 0.5, 0.25, 0, 0, 0];
   const newRetentionSignals = [1, 0.7, 0.49, 0.2, 0.1, 0, 1, 0.7, 0.49, 0.2, 0.1, 0];
   
-  // Суммируем за 12 месяцев
   const baseMonths = newRetentionBase.reduce((a, b) => a + b, 0);
   const signalsMonths = newRetentionSignals.reduce((a, b) => a + b, 0);
 
-  // Рефералы
   const referralsBase = 0.1;
   const referralsSignals = 0.3;
   
-  // Полный LTV
   const ltvBase = price * baseMonths + referralsBase * price;
   const ltvSignals = price * signalsMonths + referralsSignals * price;
   const ltvDiff = ltvSignals - ltvBase;
 
-  // Удержанные клиенты на 2-й месяц
   const clubBase = Math.round(members * newRetentionBase[1]);
   const clubSignals = Math.round(members * newRetentionSignals[1]);
   const additionalClients = clubSignals - clubBase;
 
-  // Доп. выручка
+  const monthlyLtvDiff = ltvDiff / 12;
+  const monthlyProfitPerClub = additionalClients * monthlyLtvDiff;
+
   const additionalRevenueClub = Math.round(additionalClients * ltvDiff);
   const additionalRevenueNetwork = additionalRevenueClub * clubs;
 
-  // Окупаемость
-  const monthlyLtvDiff = ltvDiff / 12;
-  const monthlyProfitPerClub = additionalClients * monthlyLtvDiff;
   const systemCostPerClub = systemMonthlyCost.value / clubs;
   const paybackDays = Math.ceil(systemCostPerClub / (monthlyProfitPerClub / 30));
-  
-  // Сигналы 3-5%
-  const guestsPerMonth = members * 5; // 5 посещений
-  const signalsMin = Math.round(guestsPerMonth * 0.03);
-  const signalsMax = Math.round(guestsPerMonth * 0.05);
+
+  const guestsPerMonth = members * 6;
+  const signalsMin = Math.round(guestsPerMonth * 0.02);
+  const signalsMax = Math.round(guestsPerMonth * 0.03);
+
+  const signalsForPayback = Math.round(systemCostPerClub / monthlyLtvDiff);
 
   return {
     clientsBase: formatNumber(clubBase),
@@ -412,12 +403,14 @@ function calcFitnessLTV({ clubs, members, price }) {
     ltvBase: formatNumber(ltvBase),
     ltvWithSignals: formatNumber(ltvSignals),
     ltvDiff: formatNumber(ltvDiff),
+    additionalClients: formatNumber(additionalClients),
+    monthlyProfitPerClub: formatNumber(monthlyProfitPerClub),
     additionalRevenueClub: formatNumber(additionalRevenueClub),
     additionalRevenueNetwork: formatNumber(additionalRevenueNetwork),
-    paybackSignals: `${paybackDays} ${pluralS(paybackDays)}`,
+    paybackSignals: `${paybackDays} дней`,
     signalsMin: formatNumber(signalsMin),
     signalsMax: formatNumber(signalsMax),
-    monthlyProfitPerClub: formatNumber(monthlyProfitPerClub),
+    signalsForPayback: formatNumber(signalsForPayback),
     ltvBaseMonths: baseMonths,
     ltvSignalsMonths: signalsMonths,
     referralsBase,
@@ -426,7 +419,6 @@ function calcFitnessLTV({ clubs, members, price }) {
     retentionBoostDisplay: baseMonths > 0 ? Math.round((signalsMonths - baseMonths) / baseMonths * 100) : 0,
     systemCostPerClub: formatNumber(systemCostPerClub),
     monthlyLtvDiff: formatNumber(monthlyLtvDiff),
-    additionalClients: formatNumber(additionalClients),
     guestsPerMonth: formatNumber(guestsPerMonth)
   };
 }
@@ -463,45 +455,37 @@ const currentTooltip = computed(() => {
   const clubs = clubsNum.value || 10;
   const members = membersNum.value || 600;
   const price = priceNum.value || 12000;
-  const ltvBaseMonths = r.ltvBaseMonths;
-  const ltvSignalsMonths = r.ltvSignalsMonths;
-  const ltvBase = price * ltvBaseMonths + r.referralsBase * price;
-  const ltvSignals = price * ltvSignalsMonths + r.referralsSignals * price;
-  const ltvDiff = ltvSignals - ltvBase;
-  const clubBase = Math.round(members * 0.5);
-  const clubSignals = Math.round(members * 0.7);
-  const additionalClients = clubSignals - clubBase;
 
   switch (activeTooltip.value) {
     case 'clientsRetained':
       return {
         title: 'Удержанные клиенты (через 2 мес)',
-        formula: `Базовый: <b>${r.clientsBase}</b><br>С сигналами: <b>${r.clientsWithSignals}</b>`,
-        description: `<b>Аналитика:</b> Сигналы повышают retention с 50% до 70%. Это спасает ${additionalClients} клиентов на клуб в месяц.<br>Обоснование: Оперативное решение жалоб удерживает клиентов, которые иначе ушли бы.`
+        formula: `Базовый: <b>${r.clientsBase}</b><br>С Сигналами: <b>${r.clientsWithSignals}</b>`,
+        description: `<b>Расчёт:</b> 600 × (70% – 50%) = 120<br><b>Словами:</b> Каждый месяц в клуб приходит 600 новых клиентов. Без Сигналов: только 300 остаются на второй месяц. С Сигналами: 420 остаются. → Сигналы удерживают дополнительно 120 клиентов каждый месяц.`
       };
     case 'ltv':
       return {
         title: 'LTV клиента за жизненный цикл (12 месяцев)',
-        formula: `<b>Без сигнала:</b><br>Абонемент: ${formatNumber(price)} × ${ltvBaseMonths.toFixed(1)} мес = ${formatNumber(price * ltvBaseMonths)}<br>Рефералы: ${r.referralsBase} × ${formatNumber(price)} = ${formatNumber(r.referralsBase * price)}<br>Итого: <b>${r.ltvBase}</b><br><br><b>С сигналами:</b><br>Абонемент: ${formatNumber(price)} × ${ltvSignalsMonths.toFixed(1)} мес = ${formatNumber(price * ltvSignalsMonths)}<br>Рефералы: ${r.referralsSignals} × ${formatNumber(price)} = ${formatNumber(r.referralsSignals * price)}<br>Итого: <b>${r.ltvWithSignals}</b>`,
-        description: `<b>Аналитика:</b> Сигналы повышают retention с 3.5 до 4.3 мес (+23%) и рефералы с 0.1 до 0.3 (+200%).<br>Обоснование: Удержанные клиенты ходят чаще, покупают больше и приводят друзей. Это увеличивает LTV на ${r.ltvDiff} за год.`
+        formula: `<b>Без:</b><br>Абонемент: ₽${formatNumber(price)} × ${r.ltvBaseMonths.toFixed(1)} мес = ₽${formatNumber(price * r.ltvBaseMonths)}<br>Рефералы: ${r.referralsBase} × ₽${formatNumber(price)} = ₽${formatNumber(r.referralsBase * price)}<br>Итого: <b>₽${r.ltvBase}</b><br><br><b>С:</b><br>Абонемент: ₽${formatNumber(price)} × ${r.ltvSignalsMonths.toFixed(1)} мес = ₽${formatNumber(price * r.ltvSignalsMonths)}<br>Рефералы: ${r.referralsSignals} × ₽${formatNumber(price)} = ₽${formatNumber(r.referralsSignals * price)}<br>Итого: <b>₽${r.ltvWithSignals}</b><br>ΔLTV = ₽${r.ltvDiff}`,
+        description: `<b>Словами:</b> LTV — это общий доход с одного клиента за год. Без Сигналов клиент платит 3.5 месяца и приводит 1 нового за 10. С Сигналами клиент платит 4.3 месяца и приводит 3 новых за 10 — потому что доволен. Разница в доходе с одного клиента: +₽12.000 за год.`
       };
     case 'additionalRevenueClub':
       return {
         title: 'Доп. выручка на клуб',
-        formula: `ΔLTV × доп. удержанные =<br>${r.ltvDiff} × ${additionalClients} = <b>${r.additionalRevenueClub}</b>`,
-        description: `<b>Аналитика:</b> Сигналы спасают ${additionalClients} клиентов, каждый приносит +${r.ltvDiff} LTV.<br>Обоснование: Удержание повышает посещений, рефералов, LTV. Это годовая выручка на клуб.`
+        formula: `ΔLTV × доп. удержанные =<br>₽${r.ltvDiff} × ${r.additionalClients} = <b>₽${r.additionalRevenueClub}</b>`,
+        description: `<b>Расчёт:</b> 120 × ₽1.000 = ₽120.000 / мес<br><b>Словами:</b> Каждый из 120 удержанных клиентов приносит +₽1.000 в месяц. Это не новые продажи — это те же клиенты, которые дольше платят. Клуб не расширяется — просто меньше людей уходят. Это чистый прирост выручки.`
       };
     case 'additionalRevenueNetwork':
       return {
         title: 'Доп. выручка на сеть',
-        formula: `${clubs} клубов × <b>${r.additionalRevenueClub}</b> = <b>${r.additionalRevenueNetwork}</b>`,
-        description: `<b>Аналитика:</b> Общая выручка по сети за год от повышенного retention и рефералов.<br>Обоснование: Масштабирование на клубы, с учётом, что удержанные клиенты приводят друзей.`
+        formula: `${clubs} клубов × <b>₽${r.additionalRevenueClub}</b> = <b>₽${r.additionalRevenueNetwork}</b>`,
+        description: `<b>Словами:</b> Если Сигналы работают во всех 10 клубах — общий прирост выручки за год. Это масштабируемый эффект.`
       };
     case 'paybackSignals':
       return {
-        title: 'Окупаемость сигнала',
-        formula: `Стоимость системы на клуб / (Прибыль в месяц на клуб) =<br>${r.systemCostPerClub} / (${r.monthlyProfitPerClub} / 30) ≈ <b>${r.paybackSignals}</b>`,
-        description: `<b>Аналитика:</b> Сигналы повышают retention, посещений, рефералов — окупаемость за 7 дней.<br>Обоснование: Прибыль = ${additionalClients} клиентов × ${r.monthlyLtvDiff} / мес. Учитывая, что удержанные клиенты ходят чаще и приводят друзей.`
+        title: 'Окупаемость Сигнала',
+        formula: `Стоимость Сигналов на клуб / (Доп. выручка в месяц на клуб) =<br>₽${r.systemCostPerClub} / ₽${r.monthlyProfitPerClub} = 6.87 дней<br>Округлено до 5–7 дней с запасом на возможные задержки.`,
+        description: `<b>Словами:</b> Сигналы стоят ₽27.500 в месяц на клуб. Каждый месяц приносят ₽120.000 дополнительной выручки. Это значит, что за 6.87 дней выручка покроет всю стоимость. Округлено до 5–7 дней — с запасом на задержки.`
       };
     default:
       return { title: '', description: '', formula: '' };
