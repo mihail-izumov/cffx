@@ -44,52 +44,52 @@ export default defineConfig({
   
   head: [
     [
-  'link', { rel: 'preconnect', href: 'https://mc.yandex.ru' }
-],
-[
-  'noscript',
-  {},
-  '<div><img src="https://mc.yandex.ru/watch/104275636" style="position:absolute; left:-9999px;" alt="" /></div>'
-],
-[
-  'script',
-  { src: 'https://mc.yandex.ru/metrika/tag.js', async: 'true' }
-],
-[
-  'script',
-  {},
-  `
-  document.addEventListener('DOMContentLoaded', function() {
-    try {
-      ym(104275636, "init", {
-        ssr: true,
-        webvisor: true,
-        clickmap: true,
-        ecommerce: "dataLayer",
-        accurateTrackBounce: true,
-        trackLinks: true
-      });
-      ym(104275636, 'hit', location.pathname, {
-        title: document.title,
-        referer: document.referrer
-      });
-    } catch(e) {}
+  ['link', { rel: 'preconnect', href: 'https://mc.yandex.ru' }],
+  [
+    'noscript',
+    {},
+    '<div><img src="https://mc.yandex.ru/watch/104275636" style="position:absolute; left:-9999px;" alt="" /></div>'
+  ],
+  [
+    'script',
+    { src: 'https://mc.yandex.ru/metrika/tag.js', async: 'true' }
+  ],
+  [
+    'script',
+    {},
+    `
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        ym(104275636, "init", {
+          ssr: true,
+          webvisor: true,
+          clickmap: true,
+          ecommerce: "dataLayer",
+          accurateTrackBounce: true,
+          trackLinks: true
+        });
+        ym(104275636, 'hit', location.pathname, {
+          title: document.title,
+          referer: document.referrer
+        });
+      } catch(e) {}
 
-    let lastPath = location.pathname;
-    const observer = new MutationObserver(function() {
-      if (location.pathname !== lastPath) {
-        lastPath = location.pathname;
-        try {
-          ym(104275636, 'hit', location.pathname, {
-            title: document.title,
-            referer: document.referrer
-          });
-        } catch(e) {}
-      }
+      let lastPath = location.pathname;
+      const observer = new MutationObserver(function() {
+        if (location.pathname !== lastPath) {
+          lastPath = location.pathname;
+          try {
+            ym(104275636, 'hit', location.pathname, {
+              title: document.title,
+              referer: document.referrer
+            });
+          } catch(e) {}
+        }
+      });
+      if(document.body) observer.observe(document.body, { childList: true, subtree: true });
     });
-    if(document.body) observer.observe(document.body, { childList: true, subtree: true });
-  });
-  `
+    `
+  ]
 ]    
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Сигнал' }],
