@@ -1,8 +1,12 @@
+// .vitepress/theme/index.ts
 import { h } from 'vue'
+import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
 import Layout from './Layout.vue'
+import YandexMetrika from './YandexMetrika.vue' // <-- 1. Импортируем компонент счетчика
 
+// Ваши импорты компонентов
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
 import FeaturesGrid from '../components/FeaturesGrid.vue'
@@ -122,10 +126,15 @@ import LTVCalcSwitcher from '../components/LTVCalcSwitcher.vue'
 export default {
   extends: DefaultTheme,
 
-  // Используем Layout напрямую (модальное окно добавлено в Layout.vue)
-  Layout: Layout,
+  // <-- 2. Модифицируем Layout, чтобы добавить YandexMetrika
+  Layout: h(Layout, null, {
+    // Используем слот 'layout-bottom', чтобы вставить компонент 
+    // после основного контента и перед закрывающим тегом </body>
+    'layout-bottom': () => h(YandexMetrika),
+  }),
 
   enhanceApp({ app }) {
+    // Ваша существующая регистрация компонентов остается без изменений
     app.component('SimulatorCards', SimulatorCards)
     app.component('BrandCards', BrandCards)
     app.component('FeaturesGrid', FeaturesGrid)
@@ -184,18 +193,18 @@ export default {
     app.component('DialogsAnnaWorks', DialogsAnnaWorks)
     app.component('DialogsSteps', DialogsSteps)
     app.component('Dialogs3Cards', Dialogs3Cards)
-    app.component('DialogsFirst5Days', DialogsFirst5Days) 
+    app.component('DialogsFirst5Days', DialogsFirst5Days)
     app.component('DialogsFeatures', DialogsFeatures)
     app.component('DialogsTarifs', DialogsTarifs)
-    app.component('DialogsForm', DialogsForm)   
-    app.component('RadarStrategyTabs', RadarStrategyTabs)   
-    app.component('DialogsHowItWorks', DialogsHowItWorks) 
-    app.component('RadarForm', RadarForm) 
+    app.component('DialogsForm', DialogsForm)
+    app.component('RadarStrategyTabs', RadarStrategyTabs)
+    app.component('DialogsHowItWorks', DialogsHowItWorks)
+    app.component('RadarForm', RadarForm)
     app.component('RadarFeatures', RadarFeatures)
     app.component('RadarTarifs', RadarTarifs)
-    app.component('Products', Products) 
-    app.component('AllFeatures', AllFeatures) 
-    app.component('SignalFormKorzh1', SignalFormKorzh1) 
+    app.component('Products', Products)
+    app.component('AllFeatures', AllFeatures)
+    app.component('SignalFormKorzh1', SignalFormKorzh1)
     app.component('DialogsT9', DialogsT9)
     app.component('DialogsTestT9', DialogsTestT9)
     app.component('SignalT9Configurator', SignalT9Configurator)
@@ -205,10 +214,10 @@ export default {
     app.component('FestProgram', FestProgram)
     app.component('VideoPlayer', VideoPlayer)
     app.component('PDFButton', PDFButton)
-    app.component('SmartReview3Cards', SmartReview3Cards)    
-    app.component('SignalWidget', SignalWidget)  
-    app.component('SignalCafeCard', SignalCafeCard)  
-    app.component('SignalBranchSelector', SignalBranchSelector)  
+    app.component('SmartReview3Cards', SmartReview3Cards)
+    app.component('SignalWidget', SignalWidget)
+    app.component('SignalCafeCard', SignalCafeCard)
+    app.component('SignalBranchSelector', SignalBranchSelector)
     app.component('SignalModalWrapper', SignalModalWrapper)
     app.component('SignalSendButton', SignalSendButton)
     app.component('CupFillIcon', CupFillIcon)
@@ -241,7 +250,6 @@ export default {
     app.component('DialogsStatisticsSlider', DialogsStatisticsSlider)
     app.component('LTVFitCalc', LTVFitCalc)
     app.component('LTVCalcSwitcher', LTVCalcSwitcher)
-  
   },
-}
+} satisfies Theme
 
