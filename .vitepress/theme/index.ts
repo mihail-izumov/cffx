@@ -242,12 +242,12 @@ export default {
     app.component('LTVCalcSwitcher', LTVCalcSwitcher)
 
     if (typeof window !== 'undefined' && router) {
-  router.onAfterRouteChanged = (to) => {
-    window.gtag && window.gtag('config', 'G-CWXESJNZH5', {
-      page_path: to,
-      page_title: document.title
-    })
-  }
-}
+      router.onAfterRouteChanged = (to) => {
+        window.gtag && window.gtag('config', 'G-CWXESJNZH5', {
+          page_path: to,
+          page_title: document.title
+        })
+      }
+    }
   }
 }
