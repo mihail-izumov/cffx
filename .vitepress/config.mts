@@ -43,8 +43,7 @@ export default defineConfig({
   },
   
   head: [
-    [
-  ['link', { rel: 'preconnect', href: 'https://mc.yandex.ru' }],
+    ['link', { rel: 'preconnect', href: 'https://mc.yandex.ru' }],
   [
     'noscript',
     {},
@@ -89,7 +88,7 @@ export default defineConfig({
       if(document.body) observer.observe(document.body, { childList: true, subtree: true });
     });
     `
-  ]
+  ],
 ]    
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Сигнал' }],
