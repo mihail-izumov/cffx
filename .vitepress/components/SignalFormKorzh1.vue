@@ -595,8 +595,12 @@ async function submitForm() {
     
     const result = await response.json();
     
-    if (result.status === 'success' && result.processed) { console.log('✅ Сигнал успешно отправлен'); formSubmitted.value = true; if (typeof window !== 'undefined' && typeof window.plausible === 'function') { window.plausible('FormSubmission', {props: {form: 'signal'}}); } }
-
+    if (result.status === 'success' && result.processed) {
+  console.log('✅ Сигнал успешно отправлен');
+  formSubmitted.value = true;
+  if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
+    window.plausible('FormSubmission', {props: {form: 'signal'}});
+  }
 } else {
   throw new Error(result.message || 'Ошибка обработки данных');
 }
