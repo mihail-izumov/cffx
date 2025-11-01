@@ -5,7 +5,7 @@
       <div class="signal-success-text">
         <h3>Сигнал отправлен ⚡</h3>
         <p>Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
-        <a :href="`https://t.me/Anna_Signal?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="signal-telegram-button">Получить ответ</a>
+        <a :href="`https://t.me/Anna_Signal?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="signal-telegram-button" @click="window.plausible && window.plausible('TelegramSignalClick', {props: {placement: 'success-modal'}})">Получить ответ</a>
         <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link">Кто Анна и как работает</a>
       </div>
     </div>
@@ -236,6 +236,12 @@
 <script setup>
 import { reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue';
 
+function trackTelegramClick() {
+  if (window.plausible) {
+    window.plausible('TelegramSignalClick', {props: {placement: 'success-modal'}})
+  }
+}
+  
 const form = reactive({ 
   coffeeShopAddress: '',
   emotionalRelease: '', 
