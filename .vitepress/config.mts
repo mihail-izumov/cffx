@@ -52,7 +52,6 @@ export default defineConfig({
   '<div><img src="https://mc.yandex.ru/watch/104275636" style="position:absolute; left:-9999px;" alt="" /></div>'
 ],
 [
-  // -- Яндекс.Метрика: только внешний скрипт и инициализация (никаких циклов/inline обработчиков!) --
   'script',
   { src: 'https://mc.yandex.ru/metrika/tag.js', async: 'true' }
 ],
@@ -60,32 +59,32 @@ export default defineConfig({
   'script',
   {},
   `
-  try {
-    ym(104275636, "init", {
-      ssr: true,
-      webvisor: true,
-      clickmap: true,
-      ecommerce: "dataLayer",
-      accurateTrackBounce: true,
-      trackLinks: true
-    });
-    ym(104275636, 'hit', location.pathname, {
-      title: document.title,
-      referer: document.referrer
-    });
-  } catch(e) {}
-  // SPA-переходы
   document.addEventListener('DOMContentLoaded', function() {
+    try {
+      ym(104275636, "init", {
+        ssr: true,
+        webvisor: true,
+        clickmap: true,
+        ecommerce: "dataLayer",
+        accurateTrackBounce: true,
+        trackLinks: true
+      });
+      ym(104275636, 'hit', location.pathname, {
+        title: document.title,
+        referer: document.referrer
+      });
+    } catch(e) {}
+
     let lastPath = location.pathname;
     const observer = new MutationObserver(function() {
       if (location.pathname !== lastPath) {
         lastPath = location.pathname;
-        if (typeof ym === 'function') {
+        try {
           ym(104275636, 'hit', location.pathname, {
             title: document.title,
             referer: document.referrer
           });
-        }
+        } catch(e) {}
       }
     });
     if(document.body) observer.observe(document.body, { childList: true, subtree: true });
