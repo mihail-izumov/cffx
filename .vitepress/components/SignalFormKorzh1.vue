@@ -590,11 +590,16 @@ async function submitForm() {
     const result = await response.json();
     
     if (result.status === 'success' && result.processed) {
-      console.log('✅ Отзыв успешно отправлен');
-      formSubmitted.value = true;
-    } else {
-      throw new Error(result.message || 'Ошибка обработки данных');
-    }
+  console.log('✅ Сигнал успешно отправлен');
+  formSubmitted.value = true;
+  // Plausible goal tracking
+  if (window.plausible) {
+    window.plausible('FormSubmission', {props: {form: 'signal'}})
+  }
+} else {
+  throw new Error(result.message || 'Ошибка обработки данных');
+}
+
   } catch (error) {
     console.error('❌ Ошибка отправки:', error);
     
