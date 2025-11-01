@@ -45,7 +45,7 @@ export default defineConfig({
   head: [
     [
     'script',
-    { async: true, src: 'https://www.googletagmanager.com/gtag/js?id=G-4PVFFLFV0D' }
+    { async: true, src: 'https://www.googletagmanager.com/gtag/js?id=G-CWXESJNZH5' }
   ],
   [
     'script',
@@ -54,7 +54,7 @@ export default defineConfig({
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-4PVFFLFV0D');
+    gtag('config', 'G-CWXESJNZH5');
     `
   ],   
     ['meta', { property: 'og:type', content: 'website' }],
