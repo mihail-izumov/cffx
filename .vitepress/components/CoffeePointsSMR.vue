@@ -8,11 +8,11 @@ const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка
 const cafes = {
   'Корж': {
     name: 'Корж',
-    yandex2gis: 24,
+    yandex2gis: 1,
     yandex2gisPercent: 94,
     smartReviews: 0,
     smartReviewsPercent: 0,
-    signals: '2',
+    signals: '1',
     signalsPercent: 100,
     isConnected: true,
     branches: [
@@ -28,7 +28,7 @@ const cafes = {
   },
   'MOSAIC': {
     name: 'MOSAIC',
-    yandex2gis: 116,
+    yandex2gis: 3,
     yandex2gisPercent: 42,
     smartReviews: 0,
     smartReviewsPercent: 0,
