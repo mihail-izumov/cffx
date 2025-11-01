@@ -3,7 +3,6 @@ import DefaultTheme from 'vitepress/theme'
 import './custom.css'
 import Layout from './Layout.vue'
 
-// --- список ваших компонентов ---
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
 import FeaturesGrid from '../components/FeaturesGrid.vue'
@@ -122,9 +121,11 @@ import LTVCalcSwitcher from '../components/LTVCalcSwitcher.vue'
 
 export default {
   extends: DefaultTheme,
+
+  // Используем Layout напрямую (модальное окно добавлено в Layout.vue)
   Layout: Layout,
 
-  enhanceApp({ app, router }) {
+  enhanceApp({ app }) {
     app.component('SimulatorCards', SimulatorCards)
     app.component('BrandCards', BrandCards)
     app.component('FeaturesGrid', FeaturesGrid)
@@ -240,31 +241,7 @@ export default {
     app.component('DialogsStatisticsSlider', DialogsStatisticsSlider)
     app.component('LTVFitCalc', LTVFitCalc)
     app.component('LTVCalcSwitcher', LTVCalcSwitcher)
-
-    // ✅ GA4 БЕЗ eval, БЕЗ inline-скриптов
-    if (typeof window !== 'undefined') {
-      // Ждём загрузку gtag.js
-      const gtagTimeout = setInterval(() => {
-        if (window.gtag) {
-          clearInterval(gtagTimeout)
-          
-          // Первый pageview
-          window.gtag('config', 'G-CWXESJNZH5', {
-            page_path: window.location.pathname,
-            page_title: document.title
-          })
-          
-          // SPA-переходы
-          if (router) {
-            router.onAfterRouteChanged = (to) => {
-              window.gtag('config', 'G-CWXESJNZH5', {
-                page_path: to,
-                page_title: document.title
-              })
-            }
-          }
-        }
-      }, 100)
-    }
-  }
+  
+  },
 }
+
