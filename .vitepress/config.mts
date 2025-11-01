@@ -50,40 +50,60 @@ export default defineConfig({
     '<div><img src="https://mc.yandex.ru/watch/104275636" style="position:absolute; left:-9999px;" alt="" /></div>'
   ],
   ['script', {}, `
-    (function(m,e,t,r,i,k,a){
-      m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-      m[i].l=1*new Date();
-      for (var j = 0; j < document.scripts.length; j++) {
-        if (document.scripts[j].src === r) { return; }
-      }
-      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+  (function(m,e,t,r,i,k,a){
+    m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j = 0; j < document.scripts.length; j++) {
+      if (document.scripts[j].src === r) { return; }
+    }
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+  })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-    ym(104275636, "init", {
-      ssr: true,
-      webvisor: true,
-      clickmap: true,
-      ecommerce: "dataLayer",
-      accurateTrackBounce: true,
-      trackLinks: true
-    });
+  ym(104275636, "init", {
+    ssr: true,
+    webvisor: true,
+    clickmap: true,
+    ecommerce: "dataLayer",
+    accurateTrackBounce: true,
+    trackLinks: true
+  });
 
-    (function() {
-      let lastPath = location.pathname;
-      const observer = new MutationObserver(function() {
-        if (location.pathname !== lastPath) {
-          lastPath = location.pathname;
-          if (typeof ym === 'function') {
-            ym(104275636, 'hit', location.pathname, {
-              title: document.title,
-              referer: document.referrer
-            });
-          }
-        }
+  function sendFirstHit() {
+    if (typeof ym === 'function') {
+      ym(104275636, 'hit', location.pathname, {
+        title: document.title,
+        referer: document.referrer
       });
-      observer.observe(document.body, { childList: true, subtree: true });
-    })();
-  `],    
+      window.__ym_first_hit_sent = true;
+    }
+  }
+
+  // Гарантированно отправляем первый просмотр!
+  (function checkYandexReady() {
+    if (typeof ym === 'function' && !window.__ym_first_hit_sent) {
+      sendFirstHit();
+    } else {
+      setTimeout(checkYandexReady, 200);
+    }
+  })();
+
+  // SPA-переходы отслеживаем как раньше
+  (function() {
+    let lastPath = location.pathname;
+    const observer = new MutationObserver(function() {
+      if (location.pathname !== lastPath) {
+        lastPath = location.pathname;
+        if (typeof ym === 'function') {
+          ym(104275636, 'hit', location.pathname, {
+            title: document.title,
+            referer: document.referrer
+          });
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  })();
+`],    
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Сигнал' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
