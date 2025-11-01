@@ -5,7 +5,7 @@
       <div class="signal-success-text">
         <h3>Сигнал отправлен ⚡</h3>
         <p>Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
-        <a :href="`https://t.me/Anna_Signal?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="signal-telegram-button" @click="typeof window !== 'undefined' && typeof window.plausible === 'function' && window.plausible('TelegramSignalClick', {props: {placement: 'success-modal'}})">Получить ответ</a>
+        <a :href="`https://t.me/Anna_Signal?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="signal-telegram-button">Получить ответ</a>
         <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link">Кто Анна и как работает</a>
       </div>
     </div>
@@ -236,12 +236,6 @@
 <script setup>
 import { reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue';
 
-function trackTelegramClick() {
-  if (window.plausible) {
-    window.plausible('TelegramSignalClick', {props: {placement: 'success-modal'}})
-  }
-}
-  
 const form = reactive({ 
   coffeeShopAddress: '',
   emotionalRelease: '', 
@@ -596,15 +590,11 @@ async function submitForm() {
     const result = await response.json();
     
     if (result.status === 'success' && result.processed) {
-  console.log('✅ Сигнал успешно отправлен');
-  formSubmitted.value = true;
-  if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
-    window.plausible('FormSubmission', {props: {form: 'signal'}});
-  }
-} else {
-  throw new Error(result.message || 'Ошибка обработки данных');
-}
-
+      console.log('✅ Отзыв успешно отправлен');
+      formSubmitted.value = true;
+    } else {
+      throw new Error(result.message || 'Ошибка обработки данных');
+    }
   } catch (error) {
     console.error('❌ Ошибка отправки:', error);
     
