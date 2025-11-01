@@ -241,13 +241,30 @@ export default {
     app.component('LTVFitCalc', LTVFitCalc)
     app.component('LTVCalcSwitcher', LTVCalcSwitcher)
 
-    if (typeof window !== 'undefined' && router) {
-      router.onAfterRouteChanged = (to) => {
-        window.gtag && window.gtag('config', 'G-CWXESJNZH5', {
-          page_path: to,
-          page_title: document.title
-        })
-      }
+    // ✅ GA4 БЕЗ eval, БЕЗ inline-скриптов
+    if (typeof window !== 'undefined') {
+      // Ждём загрузку gtag.js
+      const gtagTimeout = setInterval(() => {
+        if (window.gtag) {
+          clearInterval(gtagTimeout)
+          
+          // Первый pageview
+          window.gtag('config', 'G-CWXESJNZH5', {
+            page_path: window.location.pathname,
+            page_title: document.title
+          })
+          
+          // SPA-переходы
+          if (router) {
+            router.onAfterRouteChanged = (to) => {
+              window.gtag('config', 'G-CWXESJNZH5', {
+                page_path: to,
+                page_title: document.title
+              })
+            }
+          }
+        }
+      }, 100)
     }
   }
 }
