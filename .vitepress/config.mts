@@ -88,8 +88,7 @@ export default defineConfig({
       if(document.body) observer.observe(document.body, { childList: true, subtree: true });
     });
     `
-  ],
-]    
+  ],   
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Сигнал' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
