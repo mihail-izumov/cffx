@@ -243,21 +243,28 @@ export default {
 
     // --- Автособытие pageview для GA4 ---
     if (typeof window !== 'undefined') {
-      // Первый pageview при загрузке
-      window.gtag?.('config', 'G-CWXESJNZH5', {
-        page_path: window.location.pathname,
-        page_title: document.title,
-      })
-
-      // На каждый SPA-переход
-      if (router) {
-        router.onAfterRouteChanged = (to) => {
-          window.gtag?.('config', 'G-CWXESJNZH5', {
-            page_path: to,
+      // Ждём готовности gtag (max 2 секунды)
+      const initGA = () => {
+        if (window.gtag) {
+          window.gtag('config', 'G-CWXESJNZH5', {
+            page_path: window.location.pathname,
             page_title: document.title,
           })
+
+          // На каждый SPA-переход
+          if (router) {
+            router.onAfterRouteChanged = (to) => {
+              window.gtag('config', 'G-CWXESJNZH5', {
+                page_path: to,
+                page_title: document.title,
+              })
+            }
+          }
+        } else {
+          setTimeout(initGA, 50) // пробуем через 50ms
         }
       }
+      initGA()
     }
   },
 }
