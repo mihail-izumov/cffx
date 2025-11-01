@@ -46,8 +46,9 @@ export default defineConfig({
     ['script', { 
       async: '', 
       defer: '',
-      src: 'https://plausible.io/js/pa-GZym3tSctCWqxZsu-39bo.js' 
-    }],  
+      'data-domain': 'cffx.ru',
+      src: 'https://plausible.io/js/script.js' 
+    }], 
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Сигнал' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
