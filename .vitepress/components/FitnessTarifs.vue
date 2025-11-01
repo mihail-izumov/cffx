@@ -1,9 +1,21 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-const IconCheck = `<svg class="checkmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
-const IconDash = `<svg class="checkmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-dasharray="2 4"/></svg>`
-const ArrowRightIcon = `<svg class="arrow-right-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`
+// SVG-иконка для чекмарка (dot)
+const IconCheck = `
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dot-dashed-icon lucide-circle-dot-dashed"><path d="M10.1 2.18a9.93 9.93 0 0 1 3.8 0"/><path d="M17.6 3.71a9.95 9.95 0 0 1 2.69 2.7"/><path d="M21.82 10.1a9.93 9.93 0 0 1 0 3.8"/><path d="M20.29 17.6a9.95 9.95 0 0 1-2.7 2.69"/><path d="M13.9 21.82a9.94 9.94 0 0 1-3.8 0"/><path d="M6.4 20.29a9.95 9.95 0 0 1-2.69-2.7"/><path d="M2.18 13.9a9.93 9.93 0 0 1 0-3.8"/><path d="M3.71 6.4a9.95 9.95 0 0 1 2.7-2.69"/><circle cx="12" cy="12" r="1"/></svg>
+`
+
+// SVG-иконка для прочерка (dashed)
+const IconDash = `
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed-icon lucide-circle-dashed"><path d="M10.1 2.182a10 10 0 0 1 3.8 0"/><path d="M13.9 21.818a10 10 0 0 1-3.8 0"/><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/><path d="M2.182 13.9a10 10 0 0 1 0-3.8"/><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/><path d="M21.818 10.1a10 10 0 0 1 0 3.8"/><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/></svg>
+`
+
+function renderIcon(val) {
+  if (val === '✓') return IconCheck
+  if (val === '—') return IconDash
+  return val
+}
 
 const tariffs = ref([
   {
@@ -20,15 +32,17 @@ const tariffs = ref([
       '3 месяца': 'Бесплатно',
       '6 месяцев': 'Бесплатно'
     },
-    features: [
-      { icon: IconCheck, label: 'Тикет-система', tooltipKey: 'ticket' },
-      { icon: IconCheck, label: 'Анна (базовая версия)', tooltipKey: 'anna' },
-      { icon: IconCheck, label: 'Виджет и Умная форма', tooltipKey: 'widget' },
-      { icon: IconCheck, label: 'Поддержка оператора (будни, 9-18)', tooltipKey: 'support' },
-      { icon: IconCheck, label: 'Базовая статистика', tooltipKey: 'stats' },
-      { icon: IconDash, label: 'Персональный аналитик', tooltipKey: null },
-      { icon: IconDash, label: 'Стратегические сессии', tooltipKey: null }
-    ]
+    features_text: {
+      'ИИ-ассистент «Анна»': 'Базовая версия',
+      'Виджет и Умная форма': 'Базовая версия',
+      'Поддержка оператора': 'Будни, 9:00–18:00',
+      'Аналитика и отчёты': 'Базовая статистика'
+    },
+    features_icon: {
+      'Тикет-система': '✓',
+      'Персональный аналитик': '—',
+      'Стратегические сессии': '—'
+    }
   },
   {
     title: '«Сигнал Макс»',
@@ -44,14 +58,17 @@ const tariffs = ref([
       '3 месяца': 'Бесплатно',
       '6 месяцев': 'Бесплатно'
     },
-    features: [
-      { icon: IconCheck, label: 'Тикет-система', tooltipKey: 'ticket' },
-      { icon: IconCheck, label: 'Анна (продвинутая настройка)', tooltipKey: 'annaMax' },
-      { icon: IconCheck, label: 'Виджет и Умная форма (расширенная)', tooltipKey: 'widgetMax' },
-      { icon: IconCheck, label: 'Приоритетная поддержка', tooltipKey: 'priority' },
-      { icon: IconCheck, label: 'Аналитика 360° и еженедельные отчёты', tooltipKey: 'analytics' },
-      { icon: IconCheck, label: 'Персональный аналитик и стратегические сессии', tooltipKey: 'analyst' }
-    ]
+    features_text: {
+      'ИИ-ассистент «Анна»': 'Продвинутая настройка',
+      'Виджет и Умная форма': 'Продвинутая настройка',
+      'Поддержка оператора': 'Приоритетная',
+      'Аналитика и отчёты': 'Аналитика 360° и еженедельные отчёты'
+    },
+    features_icon: {
+      'Тикет-система': '✓',
+      'Персональный аналитик': '✓',
+      'Стратегические сессии': '✓'
+    }
   }
 ])
 
@@ -64,79 +81,13 @@ const currentLabel = computed(() => {
 })
 const isActive = d => d === selected.value
 
-const isModalOpen = ref(false)
-const currentTariff = ref('')
-const currentFeatureKey = ref('')
-const modalContent = ref({ title: '', text: '', link: '' })
-const tooltipData = {
-  ticket: {
-    title: 'Тикет-система',
-    text: 'Приём обращений 24/7. Фиксация, история решений, уведомления.',
-    link: '/pro/dialogs'
-  },
-  anna: {
-    title: 'Анна (базовая версия)',
-    text: 'Автоматический диалог, сбор информации и тикетизация.',
-    link: '/pro/dialogs'
-  },
-  widget: {
-    title: 'Виджет и Умная форма',
-    text: 'Публичная страница, быстрый отзыв в Яндекс/2ГИС, брендинг.',
-    link: '/pro/dialogs'
-  },
-  support: {
-    title: 'Поддержка оператора (будни, 9-18)',
-    text: 'Реальные люди обрабатывают тикеты в рабочие часы.',
-    link: '/pro/dialogs'
-  },
-  stats: {
-    title: 'Базовая статистика',
-    text: 'Ежемесячная сводка и простая аналитика.',
-    link: '/pro/dialogs'
-  },
-  analytics: {
-    title: 'Аналитика 360° и еженедельные отчёты',
-    text: 'Глубокий разбор кейсов и стратегические выводы.',
-    link: '/pro/sistema'
-  },
-  annaMax: {
-    title: 'Анна (продвинутая настройка)',
-    text: 'Тон, продукты, кейсы — персонализация без доплат.',
-    link: '/pro/sistema'
-  },
-  widgetMax: {
-    title: 'Виджет и Умная форма (расширенная)',
-    text: 'Мультивиджеты и аналитика конверсии.',
-    link: '/pro/sistema'
-  },
-  priority: {
-    title: 'Приоритетная поддержка',
-    text: 'Выделенный оператор и индивидуальные графики.',
-    link: '/pro/sistema'
-  },
-  analyst: {
-    title: 'Персональный аналитик и стратегические сессии',
-    text: 'Регулярные встречи и системные рекомендации.',
-    link: '/pro/sistema'
-  }
-}
-
-function openModal(tariff, key) {
-  currentTariff.value = tariff
-  currentFeatureKey.value = key
-  modalContent.value = tooltipData[key] || { title: '', text: '', link: '' }
-  isModalOpen.value = true
-  document.body.style.overflow = 'hidden'
-}
-function closeModal() {
-  isModalOpen.value = false
-  document.body.style.overflow = ''
-}
+// Списки для порядка — сначала текст, потом иконки
+const textFeatures = ['ИИ-ассистент «Анна»','Виджет и Умная форма','Поддержка оператора','Аналитика и отчёты']
+const iconFeatures = ['Тикет-система','Персональный аналитик','Стратегические сессии']
 </script>
 
 <template>
   <div class="brp">
-    <!-- Переключатели -->
     <div class="brp__header">
       <div class="brp__switch" role="tablist" aria-label="Срок подписки">
         <button
@@ -157,7 +108,7 @@ function closeModal() {
       <div class="brp__grid">
         <!-- Пустая шапка -->
         <div class="brp__cell brp__cell--header brp__cell--header-placeholder"></div>
-        <!-- Тарифы -->
+        <!-- Заголовки тарифов -->
         <div
           v-for="(tariff, colIndex) in tariffs"
           :key="tariff.title"
@@ -174,7 +125,7 @@ function closeModal() {
             <span class="brp__desc">{{ tariff.description }}</span>
           </div>
         </div>
-        <!-- Цены -->
+        <!-- Цены абонплаты -->
         <div class="brp__cell brp__cell--label brp--no-bg brp--top-sep">
           {{ currentLabel }}
         </div>
@@ -207,170 +158,177 @@ function closeModal() {
         >
           <span class="brp__price-main">{{ tariff.setup[selected] }}</span>
         </div>
-        <!-- Строки с фичами -->
-        <template v-for="featureIndex in Math.max(tariffs[0].features.length, tariffs[1].features.length)" :key="'row-'+featureIndex">
-          <div class="brp__cell brp__cell--label"
-            :class="{ 'brp__cell--last': featureIndex === Math.max(tariffs[0].features.length, tariffs[1].features.length) - 1 }"
+        
+        <!-- Строки TEXT -->
+        <template v-for="(feature, featureIndex) in textFeatures" :key="'ftxt-'+feature">
+          <div
+            class="brp__cell brp__cell--label"
+            :class="{ 'brp__cell--last': false }"
           >
-            <span>
-              {{ tariffs[0].features[featureIndex]?.label || tariffs[1].features[featureIndex]?.label }}
-            </span>
+            {{ feature }}
           </div>
           <div
             v-for="(tariff, colIndex) in tariffs"
-            :key="tariff.title + '-' + featureIndex"
+            :key="tariff.title + feature"
             class="brp__cell brp__cell--value"
             :class="{
-              'brp__cell--last': featureIndex === Math.max(tariffs[0].features.length, tariffs[1].features.length) - 1,
+              'brp__cell--last': false,
               'brp--highlight': tariff.isHighlighted,
               'brp--last-col': colIndex === tariffs.length - 1
             }"
           >
-            <!-- Если есть tooltipKey то кнопка и иконка, иначе просто иконка + текст -->
-            <button
-              v-if="tariff.features[featureIndex]?.tooltipKey"
-              class="feature-link"
-              @click="openModal(tariff.title, tariff.features[featureIndex].tooltipKey)"
-            >
-              <span v-html="tariff.features[featureIndex].icon" />
-              {{ tariff.features[featureIndex].label }}
-            </button>
-            <span v-else>
-              <span v-html="tariff.features[featureIndex].icon" />
-              <span>{{ tariff.features[featureIndex].label }}</span>
-            </span>
+            <span>{{ tariff.features_text[feature] }}</span>
+          </div>
+        </template>
+
+        <!-- Строки ICON -->
+        <template v-for="(feature, featureIndex) in iconFeatures" :key="'ficon-'+feature">
+          <div
+            class="brp__cell brp__cell--label"
+            :class="{ 'brp__cell--last': featureIndex === iconFeatures.length - 1 }"
+          >
+            {{ feature }}
+          </div>
+          <div
+            v-for="(tariff, colIndex) in tariffs"
+            :key="tariff.title + feature"
+            class="brp__cell brp__cell--value"
+            :class="{
+              'brp__cell--last': featureIndex === iconFeatures.length - 1,
+              'brp--highlight': tariff.isHighlighted,
+              'brp--last-col': colIndex === tariffs.length - 1
+            }"
+          >
+            <span v-html="renderIcon(tariff.features_icon[feature])"></span>
           </div>
         </template>
       </div>
     </div>
-    <!-- МОДАЛКА -->
-    <Teleport to="body">
-      <Transition name="pricing-modal">
-        <div v-if="isModalOpen" class="pricing-modal-overlay" @click="closeModal">
-          <div class="pricing-modal-window" @click.stop>
-            <button class="pricing-modal-close" @click="closeModal" aria-label="Закрыть">✕</button>
-            <div class="pricing-modal-header">{{ currentTariff }}</div>
-            <h2 class="pricing-modal-title">{{ modalContent.title }}</h2>
-            <div class="pricing-modal-body">
-              {{ modalContent.text }}
-              <a v-if="modalContent.link" :href="modalContent.link" class="pricing-modal-link" target="_blank">
-                Узнать больше
-                <span v-html="ArrowRightIcon" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </Transition>
-    </Teleport>
   </div>
 </template>
 
 <style scoped>
-.feature-link {
-  background: none;
-  border: none;
-  color: inherit;
-  text-decoration: underline dotted;
-  cursor: pointer;
-  font: inherit;
+.brp {
+  margin: 24px 0;
+}
+.brp__header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.brp__switch {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
   padding: 0;
+  background: transparent;
+  margin: 0;
 }
-.checkmark-icon {
-  width: 1.4em;
-  height: 1.4em;
-  vertical-align: middle;
-  margin-right: 6px;
+.brp__switch-btn {
+  appearance: none;
+  border: 1px solid var(--vp-c-divider);
+  background: transparent;
+  color: var(--vp-c-text-1);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.95em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease, font-weight .15s ease;
 }
-.arrow-right-icon {
-  width: 18px;
-  height: 18px;
-  vertical-align: middle;
-  margin-left: 7px;
-  color: #1d1d1f;
+.brp__switch-btn:hover { border-color: var(--vp-c-brand-1); }
+.brp__switch-btn.is-active {
+  background: color-mix(in oklab, var(--vp-c-brand-1) 14%, transparent);
+  border-color: var(--vp-c-brand-1);
+  font-weight: 700;
 }
-.pricing-modal-overlay {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  background: rgba(0, 0, 0, 0.75) !important;
-  backdrop-filter: blur(10px) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  z-index: 10000 !important;
-  padding: 20px !important;
+.brp__table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
 }
-.pricing-modal-window {
-  background: #f5f5f7 !important;
-  border-radius: 28px !important;
-  width: 420px !important;
-  max-width: 96vw !important;
-  max-height: 88vh !important;
-  position: relative !important;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+.brp__grid {
+  display: grid;
+  grid-template-columns: 1fr repeat(2, 1fr);
+  align-items: stretch;
+}
+.brp__cell {
+  position: relative;
+  border-bottom: 1px solid var(--vp-c-divider);
+  border-right: 1px solid var(--vp-c-divider);
+  min-height: 52px;
   display: flex;
   flex-direction: column;
+  padding: 0 16px;
 }
-.pricing-modal-close {
-  position: absolute !important;
-  top: 16px !important;
-  right: 16px !important;
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 50% !important;
-  background: #1d1d1f !important;
-  border: none !important;
-  color: #f5f5f7 !important;
-  font-size: 2rem !important;
-  cursor: pointer !important;
-  display: flex !important;
+.brp--last-col { border-right: none; }
+.brp__cell--header {
+  border-bottom: 2px solid var(--vp-c-divider);
+  background-color: var(--vp-c-bg-soft);
+  min-height: 120px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+.brp__cell--header-placeholder { background-color: transparent; }
+.brp__title-wrap {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.brp__desc-wrap {
+  min-height: 46px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+}
+.brp__title { font-weight: 600; font-size: 1.12em; color: var(--vp-c-text-1); }
+.brp__desc  { margin-top: 4px; font-size: 0.92em; color: var(--vp-c-text-2); line-height: 1.3; }
+.brp__cell--label {
+  padding: 12px 16px;
+  justify-content: center;
+  align-items: flex-start;
+  font-size: 0.95em;
+  font-weight: 500;
+  background-color: var(--vp-c-bg-soft);
+}
+.brp--no-bg { background-color: transparent; }
+.brp__cell--price,
+.brp__cell--value {
+  padding: 12px 16px;
+  text-align: center;
   align-items: center;
   justify-content: center;
 }
-.pricing-modal-header {
-  font-size: 1rem !important;
-  color: #6e6e73 !important;
-  margin-bottom: 12px !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.08em !important;
-  margin-top: 44px !important;
-  padding: 0 32px !important;
-  flex-shrink: 0 !important;
+/* svg в таблице */
+.brp__cell--value svg {
+  display: inline-block;
+  vertical-align: middle;
+  height: 1.5em;
+  width: 1.5em;
+  stroke: var(--vp-c-brand-1);
 }
-.pricing-modal-title {
-  font-size: 1.5rem !important;
-  font-weight: 600 !important;
-  color: #1d1d1f !important;
-  margin: 0 0 24px 0 !important;
-  line-height: 1.1 !important;
-  padding: 0 32px !important;
-  flex-shrink: 0 !important;
+.brp__price-main { font-weight: 600; font-size: 1.05em; }
+.brp__price-sub  { font-size: 0.85em; color: var(--vp-c-text-2); margin-top: 2px; }
+.brp--top-sep { border-top: 1px solid var(--vp-c-divider); }
+.brp__row-sep  { height: 2px; background-color: var(--vp-c-divider); grid-column: 1 / -1; border: none; }
+.brp__cell--last { border-bottom: none; }
+.brp--highlight {
+  border-left: 2px solid var(--vp-c-brand-1);
+  border-right: 2px solid var(--vp-c-brand-1);
 }
-.pricing-modal-body {
-  padding: 0 32px 32px !important;
-  overflow-y: auto !important;
-  font-size: 1.125rem !important;
-  color: #444 !important;
+.brp__cell--header.brp--highlight {
+  border-top: 2px solid var(--vp-c-brand-1);
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 }
-.pricing-modal-link {
-  margin-top: 1.5em !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  color: #1d1d1f !important;
-  font-size: 1.125rem !important;
-  font-weight: 500 !important;
-  text-decoration: none !important;
-  transition: color 0.2s ease !important;
-}
-.pricing-modal-enter-active,
-.pricing-modal-leave-active {
-  transition: opacity .3s;
-}
-.pricing-modal-enter-from,
-.pricing-modal-leave-to {
-  opacity: 0;
+.brp__cell--last.brp--highlight {
+  border-bottom: 2px solid var(--vp-c-brand-1);
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 </style>
+
