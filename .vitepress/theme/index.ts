@@ -3,6 +3,7 @@ import DefaultTheme from 'vitepress/theme'
 import './custom.css'
 import Layout from './Layout.vue'
 
+// --- список ваших компонентов ---
 import SimulatorCards from '../components/SimulatorCards.vue'
 import BrandCards from '../components/BrandCards.vue'
 import FeaturesGrid from '../components/FeaturesGrid.vue'
@@ -121,11 +122,9 @@ import LTVCalcSwitcher from '../components/LTVCalcSwitcher.vue'
 
 export default {
   extends: DefaultTheme,
-
-  // Используем Layout напрямую (модальное окно добавлено в Layout.vue)
   Layout: Layout,
 
-  enhanceApp({ app }) {
+  enhanceApp({ app, router }) {
     app.component('SimulatorCards', SimulatorCards)
     app.component('BrandCards', BrandCards)
     app.component('FeaturesGrid', FeaturesGrid)
@@ -241,6 +240,14 @@ export default {
     app.component('DialogsStatisticsSlider', DialogsStatisticsSlider)
     app.component('LTVFitCalc', LTVFitCalc)
     app.component('LTVCalcSwitcher', LTVCalcSwitcher)
-  
+
+    // --- Автособытие pageview для GA4 ---
+    if (typeof window !== 'undefined' && router && router.onAfterRouteChanged) {
+      router.onAfterRouteChanged = (to) => {
+        if (window.gtag) {
+          window.gtag('config', 'G-CWXESJNZH5', { page_path: to })
+        }
+      }
+    }
   },
 }
