@@ -242,7 +242,7 @@ export default {
     app.component('LTVCalcSwitcher', LTVCalcSwitcher)
 
     // --- Автособытие pageview для GA4 ---
-    if (typeof window !== 'undefined' && router && router.onAfterRouteChanged) {
+    if (typeof window !== 'undefined' && router && router.onAfterRouteChanged !== undefined) {
       router.onAfterRouteChanged = (to) => {
         if (window.gtag) {
           window.gtag('config', 'G-CWXESJNZH5', { page_path: to })
