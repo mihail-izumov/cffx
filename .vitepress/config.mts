@@ -50,59 +50,52 @@ export default defineConfig({
     '<div><img src="https://mc.yandex.ru/watch/104275636" style="position:absolute; left:-9999px;" alt="" /></div>'
   ],
   ['script', {}, `
-  (function(m,e,t,r,i,k,a){
-    m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-    m[i].l=1*new Date();
-    for (var j = 0; j < document.scripts.length; j++) {
-      if (document.scripts[j].src === r) { return; }
-    }
-    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-  })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-  ym(104275636, "init", {
-    ssr: true,
-    webvisor: true,
-    clickmap: true,
-    ecommerce: "dataLayer",
-    accurateTrackBounce: true,
-    trackLinks: true
-  });
-
-  function sendFirstHit() {
-    if (typeof ym === 'function') {
-      ym(104275636, 'hit', location.pathname, {
-        title: document.title,
-        referer: document.referrer
-      });
-      window.__ym_first_hit_sent = true;
-    }
+(function(m,e,t,r,i,k,a){
+  m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+  m[i].l=1*new Date();
+  for (var j = 0; j < document.scripts.length; j++) {
+    if (document.scripts[j].src === r) { return; }
   }
+  k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-  // Гарантированно отправляем первый просмотр!
-  (function checkYandexReady() {
-    if (typeof ym === 'function' && !window.__ym_first_hit_sent) {
-      sendFirstHit();
-    } else {
-      setTimeout(checkYandexReady, 200);
-    }
-  })();
+ym(104275636, "init", {
+  ssr: true,
+  webvisor: true,
+  clickmap: true,
+  ecommerce: "dataLayer",
+  accurateTrackBounce: true,
+  trackLinks: true
+});
 
-  // SPA-переходы отслеживаем как раньше
-  (function() {
-    let lastPath = location.pathname;
-    const observer = new MutationObserver(function() {
-      if (location.pathname !== lastPath) {
-        lastPath = location.pathname;
-        if (typeof ym === 'function') {
-          ym(104275636, 'hit', location.pathname, {
-            title: document.title,
-            referer: document.referrer
-          });
-        }
-      }
+// Эта функция гарантирует отправку хита, даже если ym инициализируется с задержкой
+(function waitAndSendHit() {
+  if (typeof ym === 'function') {
+    ym(104275636, 'hit', location.pathname, {
+      title: document.title,
+      referer: document.referrer
     });
-    observer.observe(document.body, { childList: true, subtree: true });
-  })();
+  } else {
+    setTimeout(waitAndSendHit, 300);
+  }
+})();
+
+// SPA-переходы, как раньше
+(function() {
+  let lastPath = location.pathname;
+  const observer = new MutationObserver(function() {
+    if (location.pathname !== lastPath) {
+      lastPath = location.pathname;
+      if (typeof ym === 'function') {
+        ym(104275636, 'hit', location.pathname, {
+          title: document.title,
+          referer: document.referrer
+        });
+      }
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+})();
 `],    
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Сигнал' }],
