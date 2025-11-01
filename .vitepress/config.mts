@@ -43,6 +43,12 @@ export default defineConfig({
   },
   
   head: [
+    ['link', { rel: 'preconnect', href: 'https://mc.yandex.ru' }],
+      [
+        'noscript',
+        {},
+        '<div><img src="https://mc.yandex.ru/watch/104275636" style="position:absolute; left:-9999px;" alt="" /></div>'
+      ],    
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Сигнал' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
