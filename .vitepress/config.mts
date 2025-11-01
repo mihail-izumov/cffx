@@ -68,20 +68,28 @@ ym(104275636, "init", {
   trackLinks: true
 });
 
-// Эта функция гарантирует отправку хита, даже если ym инициализируется с задержкой
-(function waitAndSendHit() {
+// Безопасная функция (не использует eval)
+function sendHitWhenReady() {
   if (typeof ym === 'function') {
     ym(104275636, 'hit', location.pathname, {
       title: document.title,
       referer: document.referrer
     });
   } else {
-    setTimeout(waitAndSendHit, 300);
+    setTimeout(sendHitWhenReady, 300);
   }
-})();
+}
 
-// SPA-переходы, как раньше
-(function() {
+sendHitWhenReady();
+
+// SPA-отслеживание с защитой от ошибок
+if (document.body) {
+  setupMutationObserver();
+} else {
+  document.addEventListener('DOMContentLoaded', setupMutationObserver);
+}
+
+function setupMutationObserver() {
   let lastPath = location.pathname;
   const observer = new MutationObserver(function() {
     if (location.pathname !== lastPath) {
@@ -94,8 +102,10 @@ ym(104275636, "init", {
       }
     }
   });
-  observer.observe(document.body, { childList: true, subtree: true });
-})();
+  if (document.body) {
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+}
 `],    
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Сигнал' }],
