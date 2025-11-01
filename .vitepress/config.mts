@@ -43,7 +43,6 @@ export default defineConfig({
   },
   
   head: [
-    head: [
   ['script', { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-CWXESJNZH5' }],
   ['script', {}, `
     window.dataLayer = window.dataLayer || [];
