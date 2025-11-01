@@ -48,7 +48,10 @@ export default defineConfig({
       defer: '',
       'data-domain': 'cffx.ru',
       src: 'https://plausible.io/js/script.js' 
-    }], 
+    }],
+    ['script', {}, `
+    window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); }
+  `],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Сигнал' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
