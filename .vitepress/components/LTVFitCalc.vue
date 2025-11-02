@@ -4,7 +4,7 @@
     <div class="fitltv-calc-container">
       <div class="fitltv-calc-input-row">
         <div class="fitltv-calc-input-group">
-          <label for="clubsInput" class="fitltv-calc-label">Число клубов:
+          <label for="clubsInput" class="fitltv-calc-label">Кол-во клубов:
             <span class="fitltv-calc-info-icon"
                   @click="showTooltip('clubsInput')"
                   @mouseenter="hoverIcon = 'clubsInput'"
@@ -18,7 +18,7 @@
           <div v-if="clubsError" class="fitltv-calc-error-message">{{ clubsError }}</div>
         </div>
         <div class="fitltv-calc-input-group">
-          <label for="membersInput" class="fitltv-calc-label">Клиентов на клуб (в мес):
+          <label for="membersInput" class="fitltv-calc-label">Клиенты/мес):
             <span class="fitltv-calc-info-icon"
                   @click="showTooltip('membersInput')"
                   @mouseenter="hoverIcon = 'membersInput'"
@@ -32,7 +32,7 @@
           <div v-if="membersError" class="fitltv-calc-error-message">{{ membersError }}</div>
         </div>
         <div class="fitltv-calc-input-group">
-          <label for="priceInput" class="fitltv-calc-label">Абонемент (₽):
+          <label for="priceInput" class="fitltv-calc-label">Абонемент/мес (₽):
             <span class="fitltv-calc-info-icon"
                   @click="showTooltip('priceInput')"
                   @mouseenter="hoverIcon = 'priceInput'"
@@ -116,7 +116,7 @@
           <tr>
             <td class="fitltv-calc-metric-cell">
               <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenueMonthClub')"
-                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueMonthClub' }">Доп. выручка / мес / клуб</span>
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueMonthClub' }">Доп. выручка / клуб</span>
               <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
                     @click.stop="showTooltip('additionalRevenueMonthClub')"
                     @mouseenter="hoverIcon = 'additionalRevenueMonthClub'"
@@ -129,7 +129,7 @@
           <tr>
             <td class="fitltv-calc-metric-cell">
               <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenueYearClub')"
-                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueYearClub' }">Доп. выручка / клуб / год</span>
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueYearClub' }">Доп. выручка / клуб </span>
               <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
                     @click.stop="showTooltip('additionalRevenueYearClub')"
                     @mouseenter="hoverIcon = 'additionalRevenueYearClub'"
@@ -142,7 +142,7 @@
           <tr>
             <td class="fitltv-calc-metric-cell">
               <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenueYearNetwork')"
-                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueYearNetwork' }">Доп. выручка / сеть / год</span>
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueYearNetwork' }">Доп. выручка / сеть </span>
               <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
                     @click.stop="showTooltip('additionalRevenueYearNetwork')"
                     @mouseenter="hoverIcon = 'additionalRevenueYearNetwork'"
@@ -493,49 +493,49 @@ const currentTooltip = computed(() => {
       return {
         title: 'Retention',
         formula: `<b>Расчёт:</b><br>Без: 1 + 0.5 + 0.25 + 1 + 0.5 + 0.25 = 3.5 мес<br>С: 1 + 0.7 + 0.49 + 0.2 + 0.1 + 1 + 0.7 + 0.49 = 4.3 мес<br>Δ = +23%`,
-        description: `Это среднее количество месяцев, которое клиент платит за год.<br>Без Сигналов клиент остаётся ${r.retentionBase} месяца.<br>С Сигналами — ${r.retentionSignals} месяца.<br>Это означает, что каждый клиент платит на 0.8 месяца дольше.<br>Разница в 23% — это результат оперативного реагирования на Сигналы.`
+        description: `Среднее количество месяцев, которое клиент платит за год.<br>Без Сигналов клиент остаётся ${r.retentionBase} месяца.<br>С Сигналами — ${r.retentionSignals} месяца.<br>Это означает, что каждый клиент платит на 0.8 месяца дольше.<br>Разница в 23% — это результат оперативного реагирования на Сигналы.`
       };
     case 'ltv':
       return {
         title: 'LTV клиента',
         formula: `<b>Без:</b><br>Абонемент: ₽${formatNumber(price)} × 3.5 мес = ₽${formatNumber(price * 3.5)}<br>Рефералы: 0.1 × ₽${formatNumber(price)} = ₽${formatNumber(price * 0.1)}<br>→ LTV = ₽${r.ltvBase}<br><br><b>С:</b><br>Абонемент: ₽${formatNumber(price)} × 4.3 мес = ₽${formatNumber(price * 4.3)}<br>Рефералы: 0.3 × ₽${formatNumber(price)} = ₽${formatNumber(price * 0.3)}<br>→ LTV = ₽${r.ltvWithSignals}<br><br>ΔLTV = ₽${r.ltvDiff}`,
-        description: `<b>Словами:</b><br>LTV — это общий доход с одного клиента за год.<br>Без Сигналов клиент платит 3.5 месяца и приводит 1 нового за 10.<br>С Сигналами клиент платит 4.3 месяца и приводит 3 новых за 10 — потому что доволен.<br>Разница в доходе с одного клиента: +₽${r.ltvDiff} за год.`
+        description: `LTV — это общий доход с одного клиента за год.<br>Без Сигналов клиент платит 3.5 месяца и приводит 1 нового за 10.<br>С Сигналами клиент платит 4.3 месяца и приводит 3 новых за 10 — потому что доволен.<br>Разница в доходе с одного клиента: +₽${r.ltvDiff} за год.`
       };
     case 'additionalClients':
       return {
         title: 'Доп. клиенты',
         formula: `${members} × (70% – 50%) = ${r.additionalClients}`,
-        description: `<b>Словами:</b><br>Каждый месяц в клуб приходит ${members} новых клиентов.<br>Без Сигналов: только ${Math.round(members * 0.5)} остаются на второй месяц.<br>С Сигналами: ${Math.round(members * 0.7)} остаются.<br>→ Сигналы удерживают дополнительно ${r.additionalClients} клиентов каждый месяц.`
+        description: `Каждый месяц в клуб приходит ${members} новых клиентов.<br>Без Сигналов: только ${Math.round(members * 0.5)} остаются на второй месяц.<br>С Сигналами: ${Math.round(members * 0.7)} остаются.<br>→ Сигналы удерживают дополнительно ${r.additionalClients} клиентов каждый месяц.`
       };
     case 'additionalRevenueMonthClub':
       return {
         title: 'Доп. выручка / мес / клуб',
         formula: `${r.additionalClients} × ${r.monthlyLtvBoost} = ₽${r.additionalRevenueMonthClub}`,
-        description: `<b>Словами:</b><br>Каждый из ${r.additionalClients} удержанных клиентов приносит +₽${r.monthlyLtvBoost} в месяц.<br>Это не новые продажи — это те же клиенты, которые дольше платят.<br>Клуб не расширяется — просто меньше людей уходят.<br>Это чистый прирост выручки.`
+        description: `Каждый из ${r.additionalClients} удержанных клиентов приносит +₽${r.monthlyLtvBoost} в месяц.<br>Это не новые продажи — это те же клиенты, которые дольше платят.<br>Клуб не расширяется — просто меньше людей уходят.<br>Это чистый прирост выручки.`
       };
     case 'additionalRevenueYearClub':
       return {
         title: 'Доп. выручка / клуб / год',
         formula: `₽${r.additionalRevenueMonthClub} × 12 = ₽${r.additionalRevenueYearClub}`,
-        description: `<b>Словами:</b><br>За год накопленная дополнительная выручка от удержания ${r.additionalClients} клиентов в месяц.<br>Это не разовая акция — это постоянный эффект.`
+        description: `За год накопленная дополнительная выручка от удержания ${r.additionalClients} клиентов в месяц.<br>Это не разовая акция — это постоянный эффект.`
       };
     case 'additionalRevenueYearNetwork':
       return {
         title: 'Доп. выручка / сеть / год',
         formula: `${clubs} × ₽${r.additionalRevenueYearClub} = ₽${r.additionalRevenueYearNetwork}`,
-        description: `<b>Словами:</b><br>Если Сигналы работают во всех ${clubs} клубах — общий прирост выручки за год.<br>Это масштабируемый эффект.`
+        description: `Если Сигналы работают во всех ${clubs} клубах — общий прирост выручки за год.<br>Это масштабируемый эффект.`
       };
     case 'signalsPerMonth':
       return {
         title: 'Сигналы / мес / клуб',
         formula: `Гостей: ${members} × 6 = ${r.guestsPerMonth}<br>2% = ${r.signalsMin} Сигнала<br>3% = ${r.signalsMax} Сигналов<br>→ ${r.signalsRange} Сигналов`,
-        description: `<b>Словами:</b><br>Каждый клиент ходит в среднем 6 раз в месяц — это 1.5 тренировки в неделю.<br>Всего посещений: ${r.guestsPerMonth}.<br>2-3% гостей отправляют Сигнал: пропуск, жалоба, запрос на звонок или оценка.<br>Каждый Сигнал = гарантированное решение проблемы за 24 часа.`
+        description: `Каждый клиент ходит в среднем 6 раз в месяц — это 1.5 тренировки в неделю.<br>Всего посещений: ${r.guestsPerMonth}.<br>2-3% гостей отправляют Сигнал: пропуск, жалоба, запрос на звонок или оценка.<br>Каждый Сигнал = гарантированное решение проблемы за 24 часа.`
       };
     case 'paybackSignals':
       return {
         title: 'Сигналы для окупаемости',
         formula: `Стоимость Сигналов на клуб: ₽${formatNumber(systemMonthlyCost.value)} / ${clubs} = ₽${r.systemCostPerClub}<br>ΔLTV в месяц = ₽${r.monthlyLtvBoost}<br>Сигналов нужно: ₽${r.systemCostPerClub} / ₽${r.monthlyLtvBoost} ≈ ${r.paybackSignals}`,
-        description: `<b>Словами:</b><br>Сигналы стоят ₽${r.systemCostPerClub} в месяц на клуб.<br>Каждый удержанный клиент приносит +₽${r.monthlyLtvBoost} в месяц.<br>Чтобы окупить стоимость, нужно удержать ${r.paybackSignals} клиентов.<br>При ${r.signalsMin} Сигналах в месяц — нужно удержать ${Math.round(parseFloat(r.paybackSignals.replace(/\./g, '')) / r.signalsMin * 100)}%.<br>При ${r.signalsMax} — всего ${Math.round(parseFloat(r.paybackSignals.replace(/\./g, '')) / r.signalsMax * 100)}%.<br>Это реально. Окупаемость: 5-7 дней.`
+        description: `Сигналы стоят ₽${r.systemCostPerClub} в месяц на клуб.<br>Каждый удержанный клиент приносит +₽${r.monthlyLtvBoost} в месяц.<br>Чтобы окупить стоимость, нужно удержать ${r.paybackSignals} клиентов.<br>При ${r.signalsMin} Сигналах в месяц — нужно удержать ${Math.round(parseFloat(r.paybackSignals.replace(/\./g, '')) / r.signalsMin * 100)}%.<br>При ${r.signalsMax} — всего ${Math.round(parseFloat(r.paybackSignals.replace(/\./g, '')) / r.signalsMax * 100)}%.<br>Это реально. Окупаемость: 5-7 дней.`
       };
     default:
       return { title: '', description: '', formula: '' };
