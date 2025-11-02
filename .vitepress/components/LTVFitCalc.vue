@@ -18,7 +18,7 @@
           <div v-if="clubsError" class="fitltv-calc-error-message">{{ clubsError }}</div>
         </div>
         <div class="fitltv-calc-input-group">
-          <label for="membersInput" class="fitltv-calc-label">Клиенты/мес):
+          <label for="membersInput" class="fitltv-calc-label">Клиенты/мес:
             <span class="fitltv-calc-info-icon"
                   @click="showTooltip('membersInput')"
                   @mouseenter="hoverIcon = 'membersInput'"
