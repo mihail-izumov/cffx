@@ -65,7 +65,7 @@
         <thead>
           <tr>
             <th class="fitltv-calc-th">Показатель</th>
-            <th class="fitltv-calc-th">Без Сигнала</th>
+            <th class="fitltv-calc-th">Без Сигналов</th>
             <th class="fitltv-calc-th">С Сигналами</th>
           </tr>
         </thead>
@@ -80,8 +80,10 @@
                     @mouseleave="hoverIcon = null"
                     :class="{ hover: hoverIcon === 'retention' }">i</span>
             </td>
-            <td class="fitltv-calc-td">3.5 мес</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">4.3 мес (+23%)</td>
+            <td class="fitltv-calc-td">{{ displayResult.retentionBase }} мес</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">
+              {{ displayResult.retentionSignals }} мес <span class="fitltv-calc-growth-secondary">(+{{ displayResult.retentionBoostPercent }}%)</span>
+            </td>
           </tr>
           <tr>
             <td class="fitltv-calc-metric-cell">
@@ -91,10 +93,12 @@
                     @click.stop="showTooltip('ltv')"
                     @mouseenter="hoverIcon = 'ltv'"
                     @mouseleave="hoverIcon = null"
-                    :class="{ hover: hoverIcon = 'ltv' }">i</span>
+                    :class="{ hover: hoverIcon === 'ltv' }">i</span>
             </td>
-            <td class="fitltv-calc-td">₽43.200</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">₽55.200 (+₽12.000)</td>
+            <td class="fitltv-calc-td">₽{{ displayResult.ltvBase }}</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">
+              ₽{{ displayResult.ltvWithSignals }} <span class="fitltv-calc-growth-secondary">(+₽{{ displayResult.ltvDiff }})</span>
+            </td>
           </tr>
           <tr>
             <td class="fitltv-calc-metric-cell">
@@ -104,49 +108,49 @@
                     @click.stop="showTooltip('additionalClients')"
                     @mouseenter="hoverIcon = 'additionalClients'"
                     @mouseleave="hoverIcon = null"
-                    :class="{ hover: hoverIcon = 'additionalClients' }">i</span>
+                    :class="{ hover: hoverIcon === 'additionalClients' }">i</span>
             </td>
             <td class="fitltv-calc-td">—</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">120</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">{{ displayResult.additionalClients }}</td>
           </tr>
           <tr>
             <td class="fitltv-calc-metric-cell">
-              <span class="fitltv-calc-metric-text" @click="showTooltip('revenuePerMonth')"
-                    :class="{ 'fitltv-calc-active': activeTooltip === 'revenuePerMonth' }">Доп. выручка / мес / клуб</span>
+              <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenueMonthClub')"
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueMonthClub' }">Доп. выручка / мес / клуб</span>
               <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
-                    @click.stop="showTooltip('revenuePerMonth')"
-                    @mouseenter="hoverIcon = 'revenuePerMonth'"
+                    @click.stop="showTooltip('additionalRevenueMonthClub')"
+                    @mouseenter="hoverIcon = 'additionalRevenueMonthClub'"
                     @mouseleave="hoverIcon = null"
-                    :class="{ hover: hoverIcon = 'revenuePerMonth' }">i</span>
+                    :class="{ hover: hoverIcon === 'additionalRevenueMonthClub' }">i</span>
             </td>
             <td class="fitltv-calc-td">—</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">₽{{ displayResult.monthlyProfitPerClub }} / мес</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">₽{{ displayResult.additionalRevenueMonthClub }} / мес</td>
           </tr>
           <tr>
             <td class="fitltv-calc-metric-cell">
-              <span class="fitltv-calc-metric-text" @click="showTooltip('revenuePerClubYear')"
-                    :class="{ 'fitltv-calc-active': activeTooltip === 'revenuePerClubYear' }">Доп. выручка / клуб / год</span>
+              <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenueYearClub')"
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueYearClub' }">Доп. выручка / клуб / год</span>
               <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
-                    @click.stop="showTooltip('revenuePerClubYear')"
-                    @mouseenter="hoverIcon = 'revenuePerClubYear'"
+                    @click.stop="showTooltip('additionalRevenueYearClub')"
+                    @mouseenter="hoverIcon = 'additionalRevenueYearClub'"
                     @mouseleave="hoverIcon = null"
-                    :class="{ hover: hoverIcon = 'revenuePerClubYear' }">i</span>
+                    :class="{ hover: hoverIcon === 'additionalRevenueYearClub' }">i</span>
             </td>
             <td class="fitltv-calc-td">—</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">₽{{ displayResult.additionalRevenueClub }} / год</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">₽{{ displayResult.additionalRevenueYearClub }} / год</td>
           </tr>
           <tr>
             <td class="fitltv-calc-metric-cell">
-              <span class="fitltv-calc-metric-text" @click="showTooltip('revenueNetworkYear')"
-                    :class="{ 'fitltv-calc-active': activeTooltip === 'revenueNetworkYear' }">Доп. выручка / сеть / год</span>
+              <span class="fitltv-calc-metric-text" @click="showTooltip('additionalRevenueYearNetwork')"
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'additionalRevenueYearNetwork' }">Доп. выручка / сеть / год</span>
               <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
-                    @click.stop="showTooltip('revenueNetworkYear')"
-                    @mouseenter="hoverIcon = 'revenueNetworkYear'"
+                    @click.stop="showTooltip('additionalRevenueYearNetwork')"
+                    @mouseenter="hoverIcon = 'additionalRevenueYearNetwork'"
                     @mouseleave="hoverIcon = null"
-                    :class="{ hover: hoverIcon = 'revenueNetworkYear' }">i</span>
+                    :class="{ hover: hoverIcon === 'additionalRevenueYearNetwork' }">i</span>
             </td>
             <td class="fitltv-calc-td">—</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">₽{{ displayResult.additionalRevenueNetwork }} / год</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">₽{{ displayResult.additionalRevenueYearNetwork }} / год</td>
           </tr>
           <tr>
             <td class="fitltv-calc-metric-cell">
@@ -156,23 +160,23 @@
                     @click.stop="showTooltip('signalsPerMonth')"
                     @mouseenter="hoverIcon = 'signalsPerMonth'"
                     @mouseleave="hoverIcon = null"
-                    :class="{ hover: hoverIcon = 'signalsPerMonth' }">i</span>
+                    :class="{ hover: hoverIcon === 'signalsPerMonth' }">i</span>
             </td>
             <td class="fitltv-calc-td">—</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">{{ displayResult.signalsMonth }}</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">{{ displayResult.signalsRange }} (2-3% гостей)</td>
           </tr>
           <tr>
             <td class="fitltv-calc-metric-cell">
-              <span class="fitltv-calc-metric-text" @click="showTooltip('signalsForPayback')"
-                    :class="{ 'fitltv-calc-active': activeTooltip === 'signalsForPayback' }">Сигналы для окупаемости</span>
+              <span class="fitltv-calc-metric-text" @click="showTooltip('paybackSignals')"
+                    :class="{ 'fitltv-calc-active': activeTooltip === 'paybackSignals' }">Сигналы для окупаемости</span>
               <span class="fitltv-calc-info-icon fitltv-calc-info-icon-table"
-                    @click.stop="showTooltip('signalsForPayback')"
-                    @mouseenter="hoverIcon = 'signalsForPayback'"
+                    @click.stop="showTooltip('paybackSignals')"
+                    @mouseenter="hoverIcon = 'paybackSignals'"
                     @mouseleave="hoverIcon = null"
-                    :class="{ hover: hoverIcon = 'signalsForPayback' }">i</span>
+                    :class="{ hover: hoverIcon === 'paybackSignals' }">i</span>
             </td>
             <td class="fitltv-calc-td">—</td>
-            <td class="fitltv-calc-td fitltv-calc-highlight">{{ displayResult.signalsForPayback }}</td>
+            <td class="fitltv-calc-td fitltv-calc-highlight">{{ displayResult.paybackSignals }} / 5-7 дней</td>
           </tr>
         </tbody>
       </table>
@@ -208,19 +212,19 @@
           <div class="fitltv-chip-grid">
             <div class="fitltv-chip fitltv-chip--amber">
               <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-              <span>Недовольный отзыв в 2ГИС/Google до публикации</span>
+              <span>{{ displayResult.membersNum }} × 6 = {{ displayResult.guestsPerMonth }} гостей</span>
             </div>
             <div class="fitltv-chip fitltv-chip--amber">
               <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-              <span>Жалоба в социальных сетях</span>
+              <span>2–3% = {{ displayResult.signalsRange }} Сигналов</span>
             </div>
             <div class="fitltv-chip fitltv-chip--amber">
               <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-              <span>Негативный комментарий о сервисе</span>
+              <span>+{{ displayResult.additionalClients }} удержанных</span>
             </div>
             <div class="fitltv-chip fitltv-chip--amber">
               <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-              <span>Проблема с качеством продукта</span>
+              <span>+₽{{ displayResult.ltvDiff }} LTV</span>
             </div>
           </div>
         </div>
@@ -229,39 +233,27 @@
         <div class="fitltv-calc-factors-block">
           <h4 class="fitltv-calc-factors-title">Почему фитнес-клубы особенные:</h4>
           <div class="fitltv-chip-grid">
-            <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Высокая частота посещений</span></div>
-            <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Сарафанное радио работает медленно</span></div>
-            <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Частые возвраты после жалоб</span></div>
+            <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Высокая частота посещений (6 раз/мес)</span></div>
+            <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>70% retention вместо 50%</span></div>
+            <div class="fitltv-chip fitltv-chip--slate"><svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span>Оперативное решение жалоб</span></div>
           </div>
         </div>
 
         <!-- Синие -->
         <div class="fitltv-calc-payback-explanation">
-          <h4 class="fitltv-calc-payback-title">Все Сигналы после 2-го = чистая прибыль:</h4>
+          <h4 class="fitltv-calc-payback-title">Окупаемость системы Сигналов:</h4>
           <div class="fitltv-chip-grid">
             <div class="fitltv-chip fitltv-chip--blue">
               <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-              <span>600 × 6 = 3.600 гостей</span>
+              <span>{{ displayResult.paybackSignals }} Сигналов = окупаемость</span>
             </div>
             <div class="fitltv-chip fitltv-chip--blue">
               <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-              <span>2–3% = 72–108 Сигналов</span>
+              <span>Стоимость: ₽{{ displayResult.systemCostPerClub }}/мес на клуб</span>
             </div>
             <div class="fitltv-chip fitltv-chip--blue">
               <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-              <span>+120 удержанных клиентов</span>
-            </div>
-            <div class="fitltv-chip fitltv-chip--blue">
-              <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-              <span>+₽12.000 LTV на клиента</span>
-            </div>
-            <div class="fitltv-chip fitltv-chip--blue">
-              <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-              <span>28 Сигналов = окупаемость</span>
-            </div>
-            <div class="fitltv-chip fitltv-chip--blue">
-              <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-              <span>Решение за 24 часа</span>
+              <span>Окупаемость: 5-7 дней</span>
             </div>
           </div>
         </div>
@@ -272,7 +264,7 @@
           <div class="fitltv-chip-grid">
             <div class="fitltv-chip fitltv-chip--green">
               <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-              <span>Время ответа на жалобу less than 30 мин</span>
+              <span>Решение за 24 часа</span>
             </div>
             <div class="fitltv-chip fitltv-chip--green">
               <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
@@ -284,21 +276,21 @@
             </div>
             <div class="fitltv-chip fitltv-chip--green">
               <svg class="fitltv-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-              <span>Нематериальная компенсация</span>
+              <span>+₽{{ displayResult.ltvDiff }} LTV на клиента</span>
             </div>
           </div>
         </div>
 
         <!-- CTA / Info -->
         <div class="fitltv-calc-cta-block">
-          <p class="fitltv-calc-cta-text"><strong>Главное:</strong> Окупаемость наступает сразу — каждый месяц приносит стабильный рост за счет дополнительного retention.</p>
+          <p class="fitltv-calc-cta-text"><strong>Главное:</strong> Система окупается за 5-7 дней. Каждый месяц приносит стабильный рост за счет повышения retention с 50% до 70%.</p>
         </div>
         <div class="fitltv-calc-warning-block">
           <p class="fitltv-calc-warning-text"><strong>Внимание:</strong> Результат зависит от качества внедрения и обучения команды.</p>
         </div>
         <div class="fitltv-calc-info-block">
-          <p class="fitltv-calc-info-text"><strong>Как работает расчет:</strong> Оперативное закрытие проблем и предоставление ценности увеличивают retention и LTV клиентов.</p>
-          <p class="fitltv-calc-info-text"><strong>Основа расчетов:</strong> Используются реальные отраслевые метрики с учетом типа абонемента и тарифов.</p>
+          <p class="fitltv-calc-info-text"><strong>Как работает расчет:</strong> Оперативное закрытие Сигналов (жалоб, пропусков, запросов) увеличивает retention и LTV клиентов. Клиенты платят дольше и приводят больше друзей.</p>
+          <p class="fitltv-calc-info-text"><strong>Основа расчетов:</strong> Реальные отраслевые метрики с учетом типа абонемента, частоты посещений и рефералов.</p>
         </div>
       </div>
     </transition>
@@ -350,14 +342,6 @@ function validatePrice(v) {
   if (v > 80000) return 'Максимальная цена абонемента 80 000 ₽';
   return '';
 }
-function pluralS(n) {
-  n = Math.abs(n) % 100;
-  let n1 = n % 10;
-  if (n > 10 && n < 20) return 'Сигналов';
-  if (n1 > 1 && n1 < 5) return 'Сигнала';
-  if (n1 == 1) return 'Сигнал';
-  return 'Сигналов';
-}
 
 // --- Обработчики инпутов (с очищением ошибок)
 function onClubsInput(e) {
@@ -386,7 +370,7 @@ const clubsNum = computed(() => Number(clubsStr.value.replace(/\s|,/g, '')));
 const membersNum = computed(() => Number(membersStr.value.replace(/\s|,/g, '')));
 const priceNum = computed(() => Number(priceStr.value.replace(/\s|,/g, '')));
 const canCalculate = computed(() =>
-  clubsNum.value >= 1 && clubsNum.value <= 25 &&
+  clubsNum.value >= 1 && clubsNum.value <= 99 &&
   membersNum.value >= 50 && membersNum.value <= 4000 &&
   priceNum.value >= 4000 && priceNum.value <= 80000 &&
   !clubsError.value && !membersError.value && !priceError.value
@@ -399,58 +383,66 @@ function formatNumber(n) {
 }
 
 function calcFitnessLTV({ clubs, members, price }) {
-  const baseMonths = 3.5;
-  const signalsMonths = 4.3;
+  // Retention curve из документа:
+  // Без: 1 + 0.5 + 0.25 + 1 + 0.5 + 0.25 = 3.5 мес
+  // С: 1 + 0.7 + 0.49 + 0.2 + 0.1 + 1 + 0.7 + 0.49 = 4.3 мес
+  const retentionBase = 3.5;
+  const retentionSignals = 4.3;
+  const retentionBoostPercent = 23;
 
+  // Рефералы
   const referralsBase = 0.1;
   const referralsSignals = 0.3;
-
-  const ltvBase = price * baseMonths + referralsBase * price;
-  const ltvSignals = price * signalsMonths + referralsSignals * price;
+  
+  // LTV = абонемент × retention + рефералы × цена
+  const ltvBase = price * retentionBase + referralsBase * price;
+  const ltvSignals = price * retentionSignals + referralsSignals * price;
   const ltvDiff = ltvSignals - ltvBase;
 
-  const clubBase = Math.round(members * 0.5);
-  const clubSignals = Math.round(members * 0.7);
-  const additionalClients = clubSignals - clubBase;
+  // Доп. клиенты: 600 × (70% – 50%) = 120
+  const additionalClients = Math.round(members * 0.20); // 20% = 70% - 50%
 
-  const monthlyLtvDiff = ltvDiff / 12;
-  const monthlyProfitPerClub = additionalClients * monthlyLtvDiff;
+  // Доп. выручка / мес / клуб: 120 × 1.000 = 120.000
+  const monthlyLtvBoost = ltvDiff / 12;
+  const additionalRevenueMonthClub = Math.round(additionalClients * monthlyLtvBoost);
+  
+  // Доп. выручка / клуб / год: 120.000 × 12 = 1.440.000
+  const additionalRevenueYearClub = additionalRevenueMonthClub * 12;
+  
+  // Доп. выручка / сеть / год: 10 × 1.440.000 = 14.400.000
+  const additionalRevenueYearNetwork = additionalRevenueYearClub * clubs;
 
-  const additionalRevenueClub = additionalClients * ltvDiff;
-  const additionalRevenueNetwork = additionalRevenueClub * clubs;
-
-  const systemCostPerClub = systemMonthlyCost.value / clubs;
-  const paybackDays = Math.ceil(systemCostPerClub / (monthlyProfitPerClub / 30));
-
+  // Сигналы / мес / клуб: гостей = 600 × 6 = 3.600
   const guestsPerMonth = members * 6;
-  const signalsMin = Math.round(guestsPerMonth * 0.02);
-  const signalsMax = Math.round(guestsPerMonth * 0.03);
+  const signalsMin = Math.round(guestsPerMonth * 0.02); // 2%
+  const signalsMax = Math.round(guestsPerMonth * 0.03); // 3%
+  const signalsRange = `${signalsMin}-${signalsMax}`;
 
-  const signalsForPayback = Math.round(systemCostPerClub / monthlyLtvDiff);
+  // Окупаемость: стоимость на клуб / прибыль = 27.500 / 1.000 = 28 Сигналов
+  const systemCostPerClub = systemMonthlyCost.value / clubs;
+  const paybackSignals = Math.round(systemCostPerClub / monthlyLtvBoost);
 
   return {
-    clientsBase: formatNumber(clubBase),
-    clientsWithSignals: formatNumber(clubSignals),
-    retentionBoostPercent: clubBase > 0 ? Math.round((clubSignals - clubBase) / clubBase * 100) : 0,
+    retentionBase: retentionBase.toFixed(1),
+    retentionSignals: retentionSignals.toFixed(1),
+    retentionBoostPercent,
     ltvBase: formatNumber(ltvBase),
     ltvWithSignals: formatNumber(ltvSignals),
     ltvDiff: formatNumber(ltvDiff),
     additionalClients: formatNumber(additionalClients),
-    monthlyProfitPerClub: formatNumber(monthlyProfitPerClub),
-    additionalRevenueClub: formatNumber(additionalRevenueClub),
-    additionalRevenueNetwork: formatNumber(additionalRevenueNetwork),
-    paybackSignals: `${paybackDays} дней`,
-    signalsMonth: `${formatNumber(signalsMin)}–${formatNumber(signalsMax)} (2–3% гостей)`,
-    signalsForPayback: `${formatNumber(signalsForPayback)} / 5–7 дней`,
-    ltvBaseMonths: baseMonths,
-    ltvSignalsMonths: signalsMonths,
-    referralsBase,
-    referralsSignals,
-    systemMonthlyCostDisplay: formatNumber(systemMonthlyCost.value),
-    retentionBoostDisplay: baseMonths > 0 ? Math.round((signalsMonths - baseMonths) / baseMonths * 100) : 0,
+    additionalRevenueMonthClub: formatNumber(additionalRevenueMonthClub),
+    additionalRevenueYearClub: formatNumber(additionalRevenueYearClub),
+    additionalRevenueYearNetwork: formatNumber(additionalRevenueYearNetwork),
+    guestsPerMonth: formatNumber(guestsPerMonth),
+    signalsRange,
+    signalsMin,
+    signalsMax,
+    paybackSignals: formatNumber(paybackSignals),
     systemCostPerClub: formatNumber(systemCostPerClub),
-    monthlyLtvDiff: formatNumber(monthlyLtvDiff),
-    guestsPerMonth: formatNumber(guestsPerMonth)
+    monthlyLtvBoost: formatNumber(monthlyLtvBoost),
+    membersNum: formatNumber(members),
+    referralsBase,
+    referralsSignals
   };
 }
 
@@ -474,79 +466,89 @@ function calculate() {
 
 // --- TOOLTIP-логика
 const tooltipHelpers = {
-  clubsInput: { title: 'Число клубов', description: 'Число действующих клубов <b>в сети</b>. Диапазон: от 1 до 25.' },
-  membersInput: { title: 'Клиентов на клуб (в мес)', description: 'Среднее количество активных клиентов на 1 клуб в месяц (режим SM Stretching). Диапазон: от 50 до 4000.' },
-  priceInput: { title: 'Абонемент (₽)', description: 'Средняя цена абонемента (руб./мес) на 1 месяц. Диапазон: 4 000 — 80 000 ₽.' }
+  clubsInput: { 
+    title: 'Число клубов', 
+    description: 'Число действующих клубов <b>в сети</b>. Диапазон: от 1 до 99.' 
+  },
+  membersInput: { 
+    title: 'Клиентов на клуб (в мес)', 
+    description: 'Среднее количество новых клиентов на 1 клуб в месяц. Диапазон: от 50 до 4000.' 
+  },
+  priceInput: { 
+    title: 'Абонемент (₽)', 
+    description: 'Средняя цена абонемента (руб./мес) на 1 месяц. Диапазон: 4 000 — 80 000 ₽.' 
+  }
 };
 
 const currentTooltip = computed(() => {
   if (tooltipHelpers[activeTooltip.value]) return tooltipHelpers[activeTooltip.value];
 
-  const r = displayResult.value
-  const clubs = clubsNum.value || 10;
+  const r = displayResult.value;
   const members = membersNum.value || 600;
   const price = priceNum.value || 12000;
+  const clubs = clubsNum.value || 10;
 
   switch (activeTooltip.value) {
     case 'retention':
       return {
         title: 'Retention',
-        formula: `<b>Без:</b><br>1 + 0.5 + 0.25 + 1 + 0.5 + 0.25 = <b>3.5 мес</b><br><b>С:</b><br>1 + 0.7 + 0.49 + 0.2 + 0.1 + 1 + 0.7 + 0.49 = <b>4.3 мес</b><br>Δ = +23%`,
-        description: `<b>Retention — это среднее количество месяцев, которое клиент платит за год.</b><br><b>Словами:</b> Без Сигналов клиент остаётся 3.5 месяца. С Сигналами — 4.3 месяца. Это означает, что каждый клиент платит на 0.8 месяца дольше. Разница в 23% — это результат оперативного реагирования на Сигналы.`
+        formula: `<b>Расчёт:</b><br>Без: 1 + 0.5 + 0.25 + 1 + 0.5 + 0.25 = 3.5 мес<br>С: 1 + 0.7 + 0.49 + 0.2 + 0.1 + 1 + 0.7 + 0.49 = 4.3 мес<br>Δ = +23%`,
+        description: `<b>Словами:</b><br>Это среднее количество месяцев, которое клиент платит за год.<br>Без Сигналов клиент остаётся ${r.retentionBase} месяца.<br>С Сигналами — ${r.retentionSignals} месяца.<br>Это означает, что каждый клиент платит на 0.8 месяца дольше.<br>Разница в 23% — это результат оперативного реагирования на Сигналы.`
       };
     case 'ltv':
       return {
         title: 'LTV клиента',
-        formula: `<b>Без:</b><br>Абонемент: ₽ ${formatNumber(price)} × 3.5 мес = ₽ ${formatNumber(price * 3.5)}<br>Рефералы: 0.1 × ₽ ${formatNumber(price)} = ₽ ${formatNumber(price * 0.1)}<br>Итого: ₽ ${r.ltvBase}<br><b>С:</b><br>Абонемент: ₽ ${formatNumber(price)} × 4.3 мес = ₽ ${formatNumber(price * 4.3)}<br>Рефералы: 0.3 × ₽ ${formatNumber(price)} = ₽ ${formatNumber(price * 0.3)}<br>Итого: ₽ ${r.ltvWithSignals}<br>ΔLTV = ₽ ${r.ltvDiff}`,
-        description: `<b>LTV — это общий доход с одного клиента за год.</b><br><b>Словами:</b> Без Сигналов клиент платит 3.5 месяца и приводит 1 нового за 10. С Сигналами клиент платит 4.3 месяца и приводит 3 новых за 10 — потому что доволен. Разница в доходе с одного клиента: +₽ 12.000 за год.`
+        formula: `<b>Без:</b><br>Абонемент: ₽${formatNumber(price)} × 3.5 мес = ₽${formatNumber(price * 3.5)}<br>Рефералы: 0.1 × ₽${formatNumber(price)} = ₽${formatNumber(price * 0.1)}<br>→ LTV = ₽${r.ltvBase}<br><br><b>С:</b><br>Абонемент: ₽${formatNumber(price)} × 4.3 мес = ₽${formatNumber(price * 4.3)}<br>Рефералы: 0.3 × ₽${formatNumber(price)} = ₽${formatNumber(price * 0.3)}<br>→ LTV = ₽${r.ltvWithSignals}<br><br>ΔLTV = ₽${r.ltvDiff}`,
+        description: `<b>Словами:</b><br>LTV — это общий доход с одного клиента за год.<br>Без Сигналов клиент платит 3.5 месяца и приводит 1 нового за 10.<br>С Сигналами клиент платит 4.3 месяца и приводит 3 новых за 10 — потому что доволен.<br>Разница в доходе с одного клиента: +₽${r.ltvDiff} за год.`
       };
     case 'additionalClients':
       return {
         title: 'Доп. клиенты',
-        formula: `600 × (70% – 50%) = 120`,
-        description: `<b>Доп. клиенты — это дополнительно удержанные клиенты в месяц.</b><br><b>Словами:</b> Каждый месяц в клуб приходит 600 новых клиентов. Без Сигналов: только 300 остаются на второй месяц. С Сигналами: 420 остаются. → Сигналы удерживают дополнительно 120 клиентов каждый месяц.`
+        formula: `${members} × (70% – 50%) = ${r.additionalClients}`,
+        description: `<b>Словами:</b><br>Каждый месяц в клуб приходит ${members} новых клиентов.<br>Без Сигналов: только ${Math.round(members * 0.5)} остаются на второй месяц.<br>С Сигналами: ${Math.round(members * 0.7)} остаются.<br>→ Сигналы удерживают дополнительно ${r.additionalClients} клиентов каждый месяц.`
       };
-    case 'revenuePerMonth':
+    case 'additionalRevenueMonthClub':
       return {
         title: 'Доп. выручка / мес / клуб',
-        formula: `120 × ₽ 1.000 = ₽ 120.000`,
-        description: `<b>Доп. выручка / мес / клуб — это дополнительная выручка в месяц на клуб от удержания 120 клиентов.</b><b>Словами:</b> Каждый из 120 удержанных клиентов приносит +₽ 1.000 в месяц. Это не новые продажи — это те же клиенты, которые дольше платят. Клуб не расширяется — просто меньше людей уходят. Это чистый прирост выручки.`
+        formula: `${r.additionalClients} × ${r.monthlyLtvBoost} = ₽${r.additionalRevenueMonthClub}`,
+        description: `<b>Словами:</b><br>Каждый из ${r.additionalClients} удержанных клиентов приносит +₽${r.monthlyLtvBoost} в месяц.<br>Это не новые продажи — это те же клиенты, которые дольше платят.<br>Клуб не расширяется — просто меньше людей уходят.<br>Это чистый прирост выручки.`
       };
-    case 'revenuePerClubYear':
+    case 'additionalRevenueYearClub':
       return {
         title: 'Доп. выручка / клуб / год',
-        formula: `₽ 120.000 × 12 = ₽ 1.440.000`,
-        description: `<b>Доп. выручка / клуб / год — это дополнительная выручка за год на клуб от удержания 120 клиентов в месяц.</b><b>Словами:</b> За год накопленная дополнительная выручка от удержания 120 клиентов в месяц. Это не разовая акция — это постоянный эффект.`
+        formula: `₽${r.additionalRevenueMonthClub} × 12 = ₽${r.additionalRevenueYearClub}`,
+        description: `<b>Словами:</b><br>За год накопленная дополнительная выручка от удержания ${r.additionalClients} клиентов в месяц.<br>Это не разовая акция — это постоянный эффект.`
       };
-    case 'revenueNetworkYear':
+    case 'additionalRevenueYearNetwork':
       return {
         title: 'Доп. выручка / сеть / год',
-        formula: `10 × ₽ 1.440.000 = ₽ 14.400.000`,
-        description: `<b>Доп. выручка / сеть / год — это дополнительная выручка за год на сеть из 10 клубов.</b><b>Словами:</b> Если Сигналы работают во всех 10 клубах — общий прирост выручки за год. Это масштабируемый эффект.`
+        formula: `${clubs} × ₽${r.additionalRevenueYearClub} = ₽${r.additionalRevenueYearNetwork}`,
+        description: `<b>Словами:</b><br>Если Сигналы работают во всех ${clubs} клубах — общий прирост выручки за год.<br>Это масштабируемый эффект.`
       };
     case 'signalsPerMonth':
       return {
         title: 'Сигналы / мес / клуб',
-        formula: `600 × 6 = 3.600 гостей<br>2% = 72 Сигнала<br>3% = 108 Сигналов<br>→ 72–108 Сигналов`,
-        description: `<b>Сигналы / мес / клуб — это количество Сигналов в месяц на клуб.</b><b>Словами:</b> Каждый клиент ходит в среднем 6 раз в месяц — это 1.5 тренировки в неделю. Всего посещений: 3.600. 2–3% гостей отправляют Сигнал: пропуск, жалоба, запрос на звонок или оценка. Каждый Сигнал = гарантированное решение проблемы за 24 часа.`
+        formula: `Гостей: ${members} × 6 = ${r.guestsPerMonth}<br>2% = ${r.signalsMin} Сигнала<br>3% = ${r.signalsMax} Сигналов<br>→ ${r.signalsRange} Сигналов`,
+        description: `<b>Словами:</b><br>Каждый клиент ходит в среднем 6 раз в месяц — это 1.5 тренировки в неделю.<br>Всего посещений: ${r.guestsPerMonth}.<br>2-3% гостей отправляют Сигнал: пропуск, жалоба, запрос на звонок или оценка.<br>Каждый Сигнал = гарантированное решение проблемы за 24 часа.`
       };
-    case 'signalsForPayback':
+    case 'paybackSignals':
       return {
         title: 'Сигналы для окупаемости',
-        formula: `ΔLTV в месяц = ₽ 1.000<br>Стоимость Сигналов = ₽ 27.500<br>Сигналов нужно: ₽ 27.500 / ₽ 1.000 = 27.5 → 28`,
-        description: `<b>Сигналы для окупаемости — это количество Сигналов, необходимых для окупаемости за 5–7 дней.</b><b>Словами:</b> Сигналы стоят ₽ 27.500 в месяц на клуб. Каждый удержанный клиент приносит +₽ 1.000 в месяц. Чтобы окупить стоимость, нужно удержать 28 клиентов. При 72 Сигналах в месяц — нужно удержать 39%. При 108 — всего 26%. Это реально. Окупаемость: 5–7 дней.`
+        formula: `Стоимость Сигналов на клуб: ₽${formatNumber(systemMonthlyCost.value)} / ${clubs} = ₽${r.systemCostPerClub}<br>ΔLTV в месяц = ₽${r.monthlyLtvBoost}<br>Сигналов нужно: ₽${r.systemCostPerClub} / ₽${r.monthlyLtvBoost} ≈ ${r.paybackSignals}`,
+        description: `<b>Словами:</b><br>Сигналы стоят ₽${r.systemCostPerClub} в месяц на клуб.<br>Каждый удержанный клиент приносит +₽${r.monthlyLtvBoost} в месяц.<br>Чтобы окупить стоимость, нужно удержать ${r.paybackSignals} клиентов.<br>При ${r.signalsMin} Сигналах в месяц — нужно удержать ${Math.round(parseFloat(r.paybackSignals.replace(/\./g, '')) / r.signalsMin * 100)}%.<br>При ${r.signalsMax} — всего ${Math.round(parseFloat(r.paybackSignals.replace(/\./g, '')) / r.signalsMax * 100)}%.<br>Это реально. Окупаемость: 5-7 дней.`
       };
     default:
       return { title: '', description: '', formula: '' };
   }
 });
+
 function showTooltip(id) { activeTooltip.value = activeTooltip.value === id ? null : id; }
 function closeTooltip() { activeTooltip.value = null; }
 function toggleWhy() { whyOpen.value = !whyOpen.value; }
 </script>
 
 <style scoped>
-/* [ВСЕ СТИЛИ ИЗ ПРЕДЫДУЩЕЙ ВЕРСИИ — БЕЗ ИЗМЕНЕНИЙ] */
+/* ---------------------- ВСЁ, ЧТО НЕ КАСАЕТСЯ ТОГГЛА ---------------------- */
 .fitltv-calc-wrapper { width:100%; max-width:1200px; margin:0 auto; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:#fff }
 .fitltv-calc-container { margin:0 0 20px; padding:24px; background:#1e1e1e; border:1px solid #2b2b2b; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,.25) }
 .fitltv-calc-container.fitltv-calc-content { margin-top:0; border-top:none; border-top-left-radius:0; border-top-right-radius:0 }
@@ -585,22 +587,56 @@ function toggleWhy() { whyOpen.value = !whyOpen.value; }
 .fitltv-calc-highlight { color:#c5f946; font-weight:600 }
 .fitltv-calc-growth-secondary { color:#888; font-weight:400; font-size:.9em }
 .fitltv-calc-tooltip-popup { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.8); display:flex; justify-content:center; align-items:center; z-index:1000; cursor:pointer }
-.fitltv-calc-tooltip-content { max-width:400px; padding:20px; background:#2a2a2a; border:1px solid #404040; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.4); cursor:default }
+.fitltv-calc-tooltip-content { max-width:500px; padding:20px; background:#2a2a2a; border:1px solid #404040; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.4); cursor:default }
 .fitltv-calc-tooltip-title { margin:0 0 12px 0; font:600 16px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:#c5f946 }
-.fitltv-calc-formula { margin:0 0 12px 0; padding:8px 12px; background:#1a1a1a; border:1px solid #333; border-radius:6px; font:500 14px/1.4 'SF Mono','Monaco','Inconsolata','Roboto Mono',monospace; color:#22c55e; text-align:left; letter-spacing:.025em }
-.fitltv-calc-tooltip-desc { margin:0; font:400 14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:#ccc }
+.fitltv-calc-formula { margin:0 0 12px 0; padding:8px 12px; background:#1a1a1a; border:1px solid #333; border-radius:6px; font:500 13px/1.6 'SF Mono','Monaco','Inconsolata','Roboto Mono',monospace; color:#22c55e; text-align:left; letter-spacing:.025em }
+.fitltv-calc-tooltip-desc { margin:0; font:400 14px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:#ccc }
 .fitltv-calc-tooltip-anim-enter-active, .fitltv-calc-tooltip-anim-leave-active { transition:opacity .25s }
 .fitltv-calc-tooltip-anim-enter-from, .fitltv-calc-tooltip-anim-leave-to { opacity:0 }
 .fitltv-calc-collapse-enter-active, .fitltv-calc-collapse-leave-active { transition:all .3s ease-in-out; overflow:hidden }
 .fitltv-calc-collapse-enter-from, .fitltv-calc-collapse-leave-to { max-height:0; opacity:0 }
 .fitltv-calc-collapse-enter-to, .fitltv-calc-collapse-leave-from { max-height:2000px; opacity:1 }
-.fitltv-calc-why-toggle { padding:14px 16px; margin:0; background:#1e1e1e; border:1px solid #2b2b2b; border-radius:8px; color:#fff; display:flex; align-items:center; justify-content:space-between; cursor:pointer; user-select:none; transition:background .2s ease,border-color .2s ease }
-.fitltv-calc-why-toggle.open { border-bottom-left-radius:0; border-bottom-right-radius:0 }
-.fitltv-calc-why-toggle:hover { background:#232323; border-color:#3a3a3a }
-.fitltv-calc-why-text { font:600 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif }
-.fitltv-calc-why-icon-svg { width:24px; height:24px; color:#9ca3af; transition:transform .2s ease,color .2s ease }
-.fitltv-calc-why-toggle:hover .fitltv-calc-why-icon-svg { color:#b0b7c3 }
-.fitltv-calc-why-toggle.open .fitltv-calc-why-icon-svg { transform:rotate(180deg) }
+
+/* ---------------------- ТОЛЬКО ТОГГЛ И СТРЕЛКА ---------------------- */
+.fitltv-calc-why-toggle {
+  padding:14px 16px;
+  margin:0;
+  background:#1e1e1e;
+  border:1px solid #2b2b2b;
+  border-radius:8px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  cursor:pointer;
+  user-select:none;
+  transition:background .2s ease,border-color .2s ease;
+}
+.fitltv-calc-why-toggle.open {
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
+}
+.fitltv-calc-why-toggle:hover {
+  background:#232323;
+  border-color:#3a3a3a;
+}
+.fitltv-calc-why-text {
+  font:600 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+.fitltv-calc-why-icon-svg {
+  width:24px;
+  height:24px;
+  color:#9ca3af;
+  transition:transform .2s ease,color .2s ease;
+}
+.fitltv-calc-why-toggle:hover .fitltv-calc-why-icon-svg {
+  color:#b0b7c3;
+}
+.fitltv-calc-why-toggle.open .fitltv-calc-why-icon-svg {
+  transform:rotate(180deg);
+}
+
+/* ---------------------- ОСТАЛЬНЫЕ БЛОКИ (чипы, CTA и т.д.) ---------------------- */
 .fitltv-calc-signal-block { margin:16px 0; padding:16px; background:#1f1a0f; border:1px solid #3a2e1e; border-radius:8px }
 .fitltv-calc-factors-block { margin:16px 0; padding:16px; background:#1a1a1a; border:1px solid #2b2b2b; border-radius:8px }
 .fitltv-calc-payback-explanation { margin:16px 0; padding:16px; background:#0f1a2a; border:1px solid #1e3a4a; border-radius:8px }
