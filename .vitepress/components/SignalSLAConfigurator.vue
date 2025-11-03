@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
 
-/* ===== Константы отраслей (без desc), локально, без синхронизаций ===== */
+/* ===== Локальные константы (без export), тёмная тема и никакой синхронизации ===== */
 type Topic = { category: string; percent: number }
 
 const CAFE_CATEGORIES: Topic[] = [
@@ -36,8 +36,9 @@ const FITNESS_CATEGORIES: Topic[] = [
   { category: 'Проблемы с договором и отменой', percent: 0.5 },
 ]
 
-const INDUSTRY_PRESETS = {
+const WIDGETS = {
   cafe: {
+    title: 'Общепит',
     topics: CAFE_CATEGORIES,
     scripts: [
       'Жалоба на вкус',
@@ -47,8 +48,14 @@ const INDUSTRY_PRESETS = {
       'Проблемы с чистотой',
       'Жалоба на температуру и проч.',
     ],
+    benefits: [
+      'Готовый словарь жалоб по кофейням',
+      'Подсказки умной формы',
+      'Стандартные компенсации',
+    ],
   },
   fitness: {
+    title: 'Фитнес',
     topics: FITNESS_CATEGORIES,
     scripts: [
       'Переполненность/очереди',
@@ -58,17 +65,27 @@ const INDUSTRY_PRESETS = {
       'Расписание занятий',
       'Температура/вентиляция',
     ],
+    benefits: [
+      'Словарь жалоб по фитнес‑сетям',
+      'Подсказки умной формы',
+      'Стандартные эскалации',
+    ],
   },
 } as const
 
-type IndustryKey = keyof typeof INDUSTRY_PRESETS
+type WidgetKey = keyof typeof WIDGETS
 
-/* ===== Справочники UI ===== */
+/* ===== Базовые поля тикета из SLA (русские метки) ===== */
 const BASE_TICKET_FIELDS = [
-  'code', 'datetime', 'guest', 'contact', 'location', 'category', 'problem', 'recommendation'
+  { key: 'code', label: 'Код тикета' },
+  { key: 'datetime', label: 'Дата и время' },
+  { key: 'guest', label: 'Имя гостя' },
+  { key: 'contact', label: 'Контакт' },
+  { key: 'location', label: 'Локация' },
+  { key: 'category', label: 'Категория' },
+  { key: 'problem', label: 'Описание проблемы' },
+  { key: 'recommendation', label: 'Рекомендуемое решение' },
 ] as const
-
-const NPS_OPTIONS = ['60m','1d','3d','custom'] as const
 
 const ESCALATION_CODES = [
   { code: 'health_threat', label: 'Угроза здоровью' },
@@ -77,7 +94,7 @@ const ESCALATION_CODES = [
   { code: 'mass_complaints', label: 'Массовые жалобы' },
 ] as const
 
-/* ===== Состояние формы ===== */
+/* ===== Состояние ===== */
 const state = reactive({
   company: {
     name: '',
@@ -87,25 +104,24 @@ const state = reactive({
     ltv_tool_other: '',
   },
   standards_source: 'signal' as 'internal'|'signal',
-  industry: 'cafe' as IndustryKey,
+  widget: 'cafe' as WidgetKey,
 
-  topicAssignments: {} as Record<string, 'A'|'B'|'C'|'D'|''>,
-
+  // назначения тем в категориях
   categories_map: {
-    A: { owner: 'team' as 'team'|'manager'|'custom', contact: '', notes: '' },
-    B: { owner: 'manager' as 'team'|'manager'|'custom', contact: '', notes: '' },
-    C: { owner: 'manager' as 'team'|'manager'|'custom', contact: '', notes: '' },
-    D: { owner: 'manager' as 'team'|'manager'|'custom', contact: '', notes: '' },
+    A: { owner: 'team' as 'team'|'manager'|'custom', contact: '', notes: '', topics: [] as string[] },
+    B: { owner: 'manager' as 'team'|'manager'|'custom', contact: '', notes: '', topics: [] as string[] },
+    C: { owner: 'manager' as 'team'|'manager'|'custom', contact: '', notes: '', topics: [] as string[] },
+    D: { owner: 'manager' as 'team'|'manager'|'custom', contact: '', notes: '', topics: [] as string[] },
   },
 
   ticket_template: {
-    base_fields: [...BASE_TICKET_FIELDS],
+    base_fields: BASE_TICKET_FIELDS.map(f => f.key),
     extra_groups_enabled: false,
     extra_groups_topics: [] as string[],
   },
 
-  nps_timer: '60m' as typeof NPS_OPTIONS[number],
-  nps_timer_custom: '',
+  // NPS таймер как ползунок в минутах (60, 1440, 4320 или любое)
+  nps_minutes: 60,
 
   work_hours: {
     mode: 'wk_9_18' as 'wk_9_18'|'wk_9_18_we'|'extended',
@@ -135,31 +151,42 @@ const state = reactive({
 })
 
 /* ===== Вычисления ===== */
-const topics = computed<Topic[]>(() => INDUSTRY_PRESETS[state.industry].topics)
-const unassignedTopics = computed(() =>
-  topics.value.map(t => t.category).filter(name => (state.topicAssignments[name] ?? '') === '')
-)
+const topics = computed<Topic[]>(() => WIDGETS[state.widget].topics)
+const chosen = computed<string[]>(() => [
+  ...state.categories_map.A.topics,
+  ...state.categories_map.B.topics,
+  ...state.categories_map.C.topics,
+  ...state.categories_map.D.topics,
+])
 
-function categoryTopics(key: 'A'|'B'|'C'|'D') {
-  return topics.value.map(t => t.category).filter(name => state.topicAssignments[name] === key)
+function availableFor(cat: 'A'|'B'|'C'|'D') {
+  // доступные = все темы минус выбранные в других категориях, плюс уже выбранные в текущей
+  const mine = new Set(state.categories_map[cat].topics)
+  return topics.value
+    .map(t => t.category)
+    .filter(name => mine.has(name) || !chosen.value.includes(name))
 }
 
-function canAssignTo(cat: 'A'|'B'|'C'|'D') {
-  return categoryTopics(cat).length < 4
+function toggleTopic(cat: 'A'|'B'|'C'|'D', name: string) {
+  const arr = state.categories_map[cat].topics
+  const idx = arr.indexOf(name)
+  if (idx >= 0) {
+    arr.splice(idx, 1)
+  } else {
+    if (arr.length >= 4) return
+    // убрать тему из других категорий, чтобы не дублировалась
+    ;(['A','B','C','D'] as const).forEach(k => {
+      if (k !== cat) {
+        const i = state.categories_map[k].topics.indexOf(name)
+        if (i >= 0) state.categories_map[k].topics.splice(i, 1)
+      }
+    })
+    arr.push(name)
+  }
 }
 
-function assignTopic(name: string, cat: 'A'|'B'|'C'|'D') {
-  if (!canAssignTo(cat)) return
-  const prev = state.topicAssignments[name]
-  if (prev) state.topicAssignments[name] = ''
-  state.topicAssignments[name] = cat
-}
-
-function removeFrom(cat: 'A'|'B'|'C'|'D', name: string) {
-  if (state.topicAssignments[name] === cat) state.topicAssignments[name] = ''
-}
-
-const availableScripts = computed<string[]>(() => INDUSTRY_PRESETS[state.industry].scripts)
+const availableScripts = computed<string[]>(() => WIDGETS[state.widget].scripts)
+const widgetBenefits = computed<string[]>(() => WIDGETS[state.widget].benefits)
 
 /* ===== Валидация ===== */
 const errors = ref<string[]>([])
@@ -172,41 +199,23 @@ function validate(): boolean {
   ;(['A','B','C','D'] as const).forEach(k => {
     const c = state.categories_map[k]
     if (c.owner === 'custom' && !c.contact.trim()) errors.value.push(`Категория ${k}: укажите контакт для пользовательской роли`)
+    if (c.topics.length > 4) errors.value.push(`Категория ${k}: выбрано больше 4 тем`)
   })
   if (state.work_hours.mode === 'extended') {
     const {from: wf, to: wt} = state.work_hours.weekdays
     const {from: sf, to: st} = state.work_hours.weekends
-    if (wf >= wt) errors.value.push('Будни: время "от" должно быть меньше "до"')
-    if (sf >= st) errors.value.push('Выходные: время "от" должно быть меньше "до"')
+    if (wf >= wt) errors.value.push('Будни: «от» меньше «до»')
+    if (sf >= st) errors.value.push('Выходные: «от» меньше «до»')
   }
   return errors.value.length === 0
 }
 
-/* ===== Payload ===== */
+/* ===== Payload (исправлен: widget вместо industry, nps_minutes вместо строк) ===== */
 const payload = computed(() => {
-  const categories_map = {
-    A: { ...state.categories_map.A, topics: categoryTopics('A') },
-    B: { ...state.categories_map.B, topics: categoryTopics('B') },
-    C: { ...state.categories_map.C, topics: categoryTopics('C') },
-    D: { ...state.categories_map.D, topics: categoryTopics('D') },
-  }
-
-  const nps_timer =
-    state.nps_timer === 'custom' && state.nps_timer_custom.trim()
-      ? `custom:${state.nps_timer_custom}`
-      : state.nps_timer
-
-  const work_hours = {
-    mode: state.work_hours.mode,
-    weekdays: state.work_hours.weekdays,
-    weekends: state.work_hours.weekends,
-  }
-
   const escalation = [
     ...state.escalation_immediate,
     ...(state.escalation_other.trim() ? ['other'] : []),
   ]
-
   return {
     company: {
       name: state.company.name,
@@ -216,16 +225,25 @@ const payload = computed(() => {
         ? `Other: ${state.company.ltv_tool_other}`
         : state.company.ltv_tool,
     },
-    standards_source: state.standards_source,
-    industry: state.industry,
-    categories_map,
+    standards_source: state.standards_source, // 'signal' | 'internal'
+    widget: state.widget,                      // 'cafe' | 'fitness'
+    categories_map: {
+      A: { ...state.categories_map.A },
+      B: { ...state.categories_map.B },
+      C: { ...state.categories_map.C },
+      D: { ...state.categories_map.D },
+    },
     ticket_template: {
-      base_fields: BASE_TICKET_FIELDS,
+      base_fields: state.ticket_template.base_fields,
       extra_groups_enabled: state.ticket_template.extra_groups_enabled,
       extra_groups_topics: state.ticket_template.extra_groups_topics,
     },
-    nps_timer,
-    work_hours,
+    nps_minutes: state.nps_minutes,            // целое число минут
+    work_hours: {
+      mode: state.work_hours.mode,
+      weekdays: state.work_hours.weekdays,
+      weekends: state.work_hours.weekends,
+    },
     client_scripts: { has: state.client_scripts.has },
     has_full_classification: state.has_full_classification,
     escalation_immediate: escalation,
@@ -237,13 +255,23 @@ const payload = computed(() => {
 const submitted = ref(false)
 async function onSubmit() {
   if (!validate()) return
+  // здесь интеграция с backend/email; в v1 просто лог
   console.log('SLA configurator payload:', JSON.stringify(payload.value, null, 2))
   submitted.value = true
 }
+
+/* ===== Утилиты отображения ===== */
+function npsLabel(mins: number) {
+  if (mins < 120) return `${mins} минут`
+  const days = Math.round(mins / 1440)
+  if (days < 1) return `${Math.round(mins/60)} часов`
+  return `${days} дн.`
+}
+
 </script>
 
 <template>
-  <section class="signal-sla">
+  <section class="signal-sla dark">
     <h2>Конфигуратор Сигнала</h2>
     <p class="subtitle">
       После отправки мы выпустим черновик вашего SLA в тот же день и пришлём на согласование.
@@ -253,22 +281,22 @@ async function onSubmit() {
     <div class="card">
       <h3>О компании</h3>
       <div class="grid2">
-        <label>
-          Название компании
+        <label class="left">
+          <span>Название компании</span>
           <input v-model="state.company.name" type="text" placeholder="ООО Пример" />
         </label>
-        <label>
-          Локаций к подключению
+        <label class="left">
+          <span>Локаций к подключению</span>
           <input v-model.number="state.company.locations_connected" type="number" min="1" />
         </label>
       </div>
       <div class="grid2">
-        <label>
-          Текущий retention: {{ state.company.retention_pct }}%
+        <label class="left">
+          <span>Текущий retention: {{ state.company.retention_pct }}%</span>
           <input v-model.number="state.company.retention_pct" type="range" min="50" max="100" step="5" />
         </label>
-        <label>
-          Инструмент контроля LTV
+        <label class="left">
+          <span>Инструмент контроля LTV</span>
           <select v-model="state.company.ltv_tool">
             <option value="">Выберите…</option>
             <option>CRM</option>
@@ -287,140 +315,165 @@ async function onSubmit() {
     <!-- 1. Источник стандартов -->
     <div class="card">
       <h3>Источник стандартов</h3>
-      <label><input type="radio" value="signal" v-model="state.standards_source" /> Стандарты Сигнала</label>
-      <label><input type="radio" value="internal" v-model="state.standards_source" /> Внутренние стандарты</label>
+      <div class="grid2 radio-left">
+        <label class="left"><input type="radio" value="signal" v-model="state.standards_source" /> Стандарты Сигнала</label>
+        <label class="left"><input type="radio" value="internal" v-model="state.standards_source" /> Внутренние стандарты</label>
+      </div>
     </div>
 
-    <!-- 2. Отрасль -->
+    <!-- 2. Виджеты (кликабельные карточки вместо радио) -->
     <div class="card">
-      <h3>Отрасль</h3>
-      <label><input type="radio" value="cafe" v-model="state.industry" /> Общепит</label>
-      <label><input type="radio" value="fitness" v-model="state.industry" /> Фитнес</label>
-      <p class="hint">Справочники жалоб и подсказок формы подстроятся автоматически.</p>
+      <h3>Выберите виджет</h3>
+      <div class="widgets">
+        <div
+          class="widget-card"
+          :class="{ active: state.widget === 'cafe' }"
+          @click="state.widget = 'cafe'"
+          tabindex="0"
+        >
+          <div class="w-title">Общепит</div>
+          <ul class="checks">
+            <li v-for="b in WIDGETS.cafe.benefits" :key="b"><span class="check">✔</span><span>{{ b }}</span></li>
+          </ul>
+        </div>
+        <div
+          class="widget-card"
+          :class="{ active: state.widget === 'fitness' }"
+          @click="state.widget = 'fitness'"
+          tabindex="0"
+        >
+          <div class="w-title">Фитнес</div>
+          <ul class="checks">
+            <li v-for="b in WIDGETS.fitness.benefits" :key="b"><span class="check">✔</span><span>{{ b }}</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="hint">Справочники жалоб, скрипты и эскалации подстроятся под ваш виджет автоматически.</p>
     </div>
 
-    <!-- 3. Категории A–Г -->
+    <!-- 3. Категории A–Г (две колонки; внутри карточки выбор тем, сетка 3 на строку) -->
     <div class="card">
       <h3>Категории A–Г</h3>
       <div class="hint">Сроки ответа фиксированы: A — 4ч, Б — 2ч, В — 1ч, Г — 15м.</div>
 
-      <div class="owners">
+      <div class="owners owners-2col">
         <div class="owner-col" v-for="k in ['A','B','C','D']" :key="k">
-          <h4>Категория {{ k }}</h4>
-          <div class="sla-label">
-            <span v-if="k==='A'">4 часа</span>
-            <span v-else-if="k==='B'">2 часа</span>
-            <span v-else-if="k==='C'">1 час</span>
-            <span v-else>15 минут</span>
+          <div class="header-row">
+            <h4>Категория {{ k }}</h4>
+            <div class="sla-label">
+              <span v-if="k==='A'">4 часа</span>
+              <span v-else-if="k==='B'">2 часа</span>
+              <span v-else-if="k==='C'">1 час</span>
+              <span v-else>15 минут</span>
+            </div>
           </div>
-          <label>
-            Ответственный
-            <select v-model="(state.categories_map as any)[k].owner">
-              <option value="team">Команда</option>
-              <option value="manager">Управляющий</option>
-              <option value="custom">Другое</option>
-            </select>
-          </label>
-          <label v-if="(state.categories_map as any)[k].owner === 'custom'">
-            Контакт роли
-            <input v-model="(state.categories_map as any)[k].contact" type="text" placeholder="@handle или телефон" />
-          </label>
-          <label>
-            Комментарий (границы)
+
+          <div class="grid2">
+            <label class="left">
+              <span>Ответственный</span>
+              <select v-model="(state.categories_map as any)[k].owner">
+                <option value="team">Команда</option>
+                <option value="manager">Управляющий</option>
+                <option value="custom">Другое</option>
+              </select>
+            </label>
+            <label v-if="(state.categories_map as any)[k].owner === 'custom'" class="left">
+              <span>Контакт роли</span>
+              <input v-model="(state.categories_map as any)[k].contact" type="text" placeholder="@handle или телефон" />
+            </label>
+          </div>
+
+          <label class="left">
+            <span>Комментарий (границы)</span>
             <input v-model="(state.categories_map as any)[k].notes" type="text" maxlength="200" placeholder="Коротко: чем эта категория отличается" />
           </label>
 
-          <div class="chips">
-            <div class="chip" v-for="t in categoryTopics(k as any)" :key="t">
-              <span>{{ t }}</span>
-              <button type="button" @click="removeFrom(k as any, t)">×</button>
-            </div>
+          <div class="topics-grid">
+            <button
+              v-for="name in availableFor(k as any)"
+              :key="name"
+              type="button"
+              class="topic-card"
+              :class="{ selected: (state.categories_map as any)[k].topics.includes(name) }"
+              @click="toggleTopic(k as any, name)"
+            >
+              <span class="check">{{ (state.categories_map as any)[k].topics.includes(name) ? '✔' : '' }}</span>
+              <span class="t-name">{{ name }}</span>
+            </button>
           </div>
-          <div class="hint small">До 4 тем на категорию.</div>
-        </div>
-      </div>
 
-      <div class="topics-pool">
-        <h4>Список проблем (назначьте в A–Г)</h4>
-        <div class="chips">
-          <div class="chip pool" v-for="name in unassignedTopics" :key="name">
-            <span>{{ name }}</span>
-            <div class="assigners">
-              <button type="button" :disabled="!canAssignTo('A')" @click="assignTopic(name,'A')">A</button>
-              <button type="button" :disabled="!canAssignTo('B')" @click="assignTopic(name,'B')">Б</button>
-              <button type="button" :disabled="!canAssignTo('C')" @click="assignTopic(name,'C')">В</button>
-              <button type="button" :disabled="!canAssignTo('D')" @click="assignTopic(name,'D')">Г</button>
-            </div>
-          </div>
+          <div class="hint small">До 4 тем в каждой категории; выбранные темы автоматически скрываются в других категориях.</div>
         </div>
       </div>
     </div>
 
-    <!-- 4. Базовый тикет -->
+    <!-- 4. Базовый тикет (русские метки), чеклисты компактно в несколько колонок -->
     <div class="card">
       <h3>Базовый шаблон тикета</h3>
-      <div class="grid4">
-        <label v-for="f in BASE_TICKET_FIELDS" :key="f" class="disabled">
-          <input type="checkbox" :checked="true" disabled /> {{ f }}
+      <div class="checks-grid">
+        <label v-for="f in BASE_TICKET_FIELDS" :key="f.key" class="left disabled">
+          <input type="checkbox" :checked="true" disabled />
+          <span>{{ f.label }}</span>
         </label>
       </div>
+
       <div class="extras">
-        <label>
-          Добавить дополнительные группы?
+        <label class="left">
+          <span>Добавить дополнительные группы?</span>
           <select v-model="state.ticket_template.extra_groups_enabled">
             <option :value="false">Нет</option>
             <option :value="true">Да</option>
           </select>
         </label>
+
         <div v-if="state.ticket_template.extra_groups_enabled">
           <p class="hint">Выберите темы, для которых при внедрении добавим специальные поля тикета.</p>
-          <div class="grid3">
-            <label v-for="t in topics" :key="t.category">
+          <div class="checks-grid">
+            <label v-for="t in topics" :key="t.category" class="left">
               <input type="checkbox"
                      :value="t.category"
                      v-model="state.ticket_template.extra_groups_topics" />
-              {{ t.category }}
+              <span>{{ t.category }}</span>
             </label>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 5. Таймер NPS -->
+    <!-- 5. Таймер NPS (ползунок) -->
     <div class="card">
       <h3>Таймер запроса NPS</h3>
-      <div class="grid4">
-        <label><input type="radio" value="60m" v-model="state.nps_timer" /> 60 минут</label>
-        <label><input type="radio" value="1d" v-model="state.nps_timer" /> 1 день</label>
-        <label><input type="radio" value="3d" v-model="state.nps_timer" /> 3 дня</label>
-        <label><input type="radio" value="custom" v-model="state.nps_timer" /> Другое</label>
-      </div>
-      <div v-if="state.nps_timer === 'custom'">
-        <input v-model="state.nps_timer_custom" type="text" placeholder="например 90m или 2d" />
-      </div>
+      <label class="left">
+        <span>Интервал после сообщения гостю: {{ npsLabel(state.nps_minutes) }}</span>
+        <input type="range" min="60" max="4320" step="30" v-model.number="state.nps_minutes" />
+      </label>
+      <div class="hint">Диапазон 60 минут — 3 дня, шаг 30 минут.</div>
     </div>
 
     <!-- 6. Режим работы -->
     <div class="card">
       <h3>Режим работы</h3>
-      <label><input type="radio" value="wk_9_18" v-model="state.work_hours.mode" /> Будни 9–18 МСК</label>
-      <label><input type="radio" value="wk_9_18_we" v-model="state.work_hours.mode" /> 9–18 МСК + выходные</label>
-      <label><input type="radio" value="extended" v-model="state.work_hours.mode" /> Расширенный</label>
+      <div class="radio-left grid3">
+        <label class="left"><input type="radio" value="wk_9_18" v-model="state.work_hours.mode" /> Будни 9–18 МСК</label>
+        <label class="left"><input type="radio" value="wk_9_18_we" v-model="state.work_hours.mode" /> 9–18 МСК + выходные</label>
+        <label class="left"><input type="radio" value="extended" v-model="state.work_hours.mode" /> Расширенный</label>
+      </div>
 
       <div v-if="state.work_hours.mode === 'extended'" class="grid4">
-        <label>Будни от <input v-model="state.work_hours.weekdays.from" type="time" /></label>
-        <label>Будни до <input v-model="state.work_hours.weekdays.to" type="time" /></label>
-        <label>Выходные от <input v-model="state.work_hours.weekends.from" type="time" /></label>
-        <label>Выходные до <input v-model="state.work_hours.weekends.to" type="time" /></label>
+        <label class="left">Будни от <input v-model="state.work_hours.weekdays.from" type="time" /></label>
+        <label class="left">Будни до <input v-model="state.work_hours.weekdays.to" type="time" /></label>
+        <label class="left">Выходные от <input v-model="state.work_hours.weekends.from" type="time" /></label>
+        <label class="left">Выходные до <input v-model="state.work_hours.weekends.to" type="time" /></label>
       </div>
     </div>
 
     <!-- 7. Скрипты клиента -->
     <div class="card">
       <h3>Скрипты клиента (есть и можем предоставить)</h3>
-      <div class="grid3">
-        <label v-for="s in availableScripts" :key="s">
-          <input type="checkbox" :value="s" v-model="state.client_scripts.has" /> {{ s }}
+      <div class="checks-grid">
+        <label v-for="s in availableScripts" :key="s" class="left">
+          <input type="checkbox" :value="s" v-model="state.client_scripts.has" />
+          <span>{{ s }}</span>
         </label>
       </div>
     </div>
@@ -428,18 +481,19 @@ async function onSubmit() {
     <!-- 8. Полная классификация -->
     <div class="card">
       <h3>Полная классификация проблем</h3>
-      <label><input type="checkbox" v-model="state.has_full_classification" /> Есть собственная полная классификация</label>
+      <label class="left"><input type="checkbox" v-model="state.has_full_classification" /> <span>Есть собственная полная классификация</span></label>
     </div>
 
     <!-- 9. Немедленная эскалация -->
     <div class="card">
       <h3>Критерии немедленной эскалации (до 30 минут)</h3>
-      <div class="grid3">
-        <label v-for="e in ESCALATION_CODES" :key="e.code">
-          <input type="checkbox" :value="e.code" v-model="state.escalation_immediate" /> {{ e.label }}
+      <div class="checks-grid">
+        <label v-for="e in ESCALATION_CODES" :key="e.code" class="left">
+          <input type="checkbox" :value="e.code" v-model="state.escalation_immediate" />
+          <span>{{ e.label }}</span>
         </label>
-        <label class="row">
-          Другое
+        <label class="left row">
+          <span>Другое</span>
           <input v-model="state.escalation_other" type="text" placeholder="Коротко опишите" />
         </label>
       </div>
@@ -450,35 +504,35 @@ async function onSubmit() {
       <h3>Цели метрик</h3>
       <div class="metrics">
         <div class="metric">
-          <label>Принятие тикетов без доработки: {{ state.metrics_targets.tickets_accepted_pct }}%</label>
+          <label class="left">Принятие тикетов без доработки: {{ state.metrics_targets.tickets_accepted_pct }}%</label>
           <input type="range" min="0" max="100" v-model.number="state.metrics_targets.tickets_accepted_pct" />
         </div>
         <div class="metric">
-          <label>Соответствие рекомендаций решениям: {{ state.metrics_targets.reco_alignment_pct }}%</label>
+          <label class="left">Соответствие рекомендаций решениям: {{ state.metrics_targets.reco_alignment_pct }}%</label>
           <input type="range" min="0" max="100" v-model.number="state.metrics_targets.reco_alignment_pct" />
         </div>
         <div class="metric">
-          <label>Получение NPS оценки: {{ state.metrics_targets.nps_collected_pct }}%</label>
+          <label class="left">Получение NPS оценки: {{ state.metrics_targets.nps_collected_pct }}%</label>
           <input type="range" min="0" max="100" v-model.number="state.metrics_targets.nps_collected_pct" />
         </div>
         <div class="metric">
-          <label>Средний NPS: {{ state.metrics_targets.nps_avg }}</label>
+          <label class="left">Средний NPS: {{ state.metrics_targets.nps_avg }}</label>
           <input type="range" min="1" max="10" v-model.number="state.metrics_targets.nps_avg" />
         </div>
         <div class="metric">
-          <label>Возврат гостей после жалобы: {{ state.metrics_targets.returns_after_complaint_pct }}%</label>
+          <label class="left">Возврат гостей после жалобы: {{ state.metrics_targets.returns_after_complaint_pct }}%</label>
           <input type="range" min="0" max="100" v-model.number="state.metrics_targets.returns_after_complaint_pct" />
         </div>
         <div class="metric">
-          <label>Средняя стоимость компенсации (₽): {{ state.metrics_targets.avg_compensation_rub }}</label>
+          <label class="left">Средняя стоимость компенсации (₽): {{ state.metrics_targets.avg_compensation_rub }}</label>
           <input type="number" min="0" step="10" v-model.number="state.metrics_targets.avg_compensation_rub" />
         </div>
         <div class="metric">
-          <label>Время полного закрытия (часы): {{ state.metrics_targets.full_close_time_hours }}</label>
+          <label class="left">Время полного закрытия (часы): {{ state.metrics_targets.full_close_time_hours }}</label>
           <input type="number" min="0" step="1" v-model.number="state.metrics_targets.full_close_time_hours" />
         </div>
         <div class="metric">
-          <label>Решены без эскалации: {{ state.metrics_targets.resolved_without_escalation_pct }}%</label>
+          <label class="left">Решены без эскалации: {{ state.metrics_targets.resolved_without_escalation_pct }}%</label>
           <input type="range" min="0" max="100" v-model.number="state.metrics_targets.resolved_without_escalation_pct" />
         </div>
       </div>
@@ -505,12 +559,12 @@ async function onSubmit() {
 
           <h4>Операции</h4>
           <ul>
-            <li>Отрасль: {{ state.industry === 'cafe' ? 'Общепит' : 'Фитнес' }}</li>
-            <li>A: {{ categoryTopics('A').join(', ') || '—' }} · роль: {{ state.categories_map.A.owner }} · контакт: {{ state.categories_map.A.contact || '—' }}</li>
-            <li>Б: {{ categoryTopics('B').join(', ') || '—' }} · роль: {{ state.categories_map.B.owner }} · контакт: {{ state.categories_map.B.contact || '—' }}</li>
-            <li>В: {{ categoryTopics('C').join(', ') || '—' }} · роль: {{ state.categories_map.C.owner }} · контакт: {{ state.categories_map.C.contact || '—' }}</li>
-            <li>Г: {{ categoryTopics('D').join(', ') || '—' }} · роль: {{ state.categories_map.D.owner }} · контакт: {{ state.categories_map.D.contact || '—' }}</li>
-            <li>NPS таймер: {{ state.nps_timer === 'custom' ? state.nps_timer_custom : state.nps_timer }}</li>
+            <li>Виджет: {{ WIDGETS[state.widget].title }}</li>
+            <li>A: {{ state.categories_map.A.topics.join(', ') || '—' }} · роль: {{ state.categories_map.A.owner }} · контакт: {{ state.categories_map.A.contact || '—' }}</li>
+            <li>Б: {{ state.categories_map.B.topics.join(', ') || '—' }} · роль: {{ state.categories_map.B.owner }} · контакт: {{ state.categories_map.B.contact || '—' }}</li>
+            <li>В: {{ state.categories_map.C.topics.join(', ') || '—' }} · роль: {{ state.categories_map.C.owner }} · контакт: {{ state.categories_map.C.contact || '—' }}</li>
+            <li>Г: {{ state.categories_map.D.topics.join(', ') || '—' }} · роль: {{ state.categories_map.D.owner }} · контакт: {{ state.categories_map.D.contact || '—' }}</li>
+            <li>NPS таймер: {{ npsLabel(state.nps_minutes) }}</li>
             <li>Режим: {{
               state.work_hours.mode === 'wk_9_18'
                 ? 'Будни 9–18'
@@ -535,24 +589,10 @@ async function onSubmit() {
             }}</li>
           </ul>
 
-          <h4>Метрики (цели)</h4>
-          <ul>
-            <li>Принятие без доработки: {{ state.metrics_targets.tickets_accepted_pct }}%</li>
-            <li>Соответствие рекомендаций: {{ state.metrics_targets.reco_alignment_pct }}%</li>
-            <li>Доля полученных NPS: {{ state.metrics_targets.nps_collected_pct }}%</li>
-            <li>Средний NPS: {{ state.metrics_targets.nps_avg }}</li>
-            <li>Возврат после жалобы: {{ state.metrics_targets.returns_after_complaint_pct }}%</li>
-            <li>Средняя компенсация: {{ state.metrics_targets.avg_compensation_rub }} ₽</li>
-            <li>Полное закрытие: {{ state.metrics_targets.full_close_time_hours }} ч</li>
-            <li>Без эскалации: {{ state.metrics_targets.resolved_without_escalation_pct }}%</li>
-          </ul>
+          <h4>JSON payload</h4>
+          <textarea class="payload" readonly rows="18">{{ JSON.stringify(payload, null, 2) }}</textarea>
         </div>
       </div>
-
-      <details>
-        <summary>JSON payload</summary>
-        <pre>{{ JSON.stringify(payload, null, 2) }}</pre>
-      </details>
 
       <div v-if="errors.length" class="errors">
         <div v-for="e in errors" :key="e" class="error">{{ e }}</div>
@@ -567,34 +607,67 @@ async function onSubmit() {
 </template>
 
 <style scoped>
-.signal-sla { max-width: 980px; margin: 0 auto; }
-.subtitle { margin-top: -6px; color: #666; }
-.card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 18px 16px; margin: 14px 0; }
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
-input[type="text"], input[type="number"], input[type="time"], select { padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
-.hint { color: #666; font-size: 13px; }
+/* ===== Тёмная тема в духе Tesla ===== */
+.signal-sla.dark { 
+  --bg:#0e0f10; --card:#151719; --muted:#9aa3ad; --text:#e8eaed; --line:#2a2d31; --accent:#e6e6e6; --primary:#e3e6eb; 
+  background: var(--bg); color: var(--text); padding-bottom: 20px; user-select: text;
+}
+.signal-sla.dark input, .signal-sla.dark select, .signal-sla.dark textarea { background:#0d0f12; color:var(--text); border:1px solid var(--line); }
+.signal-sla.dark .primary { background:#ffffff; color:#111; border:1px solid #fff; }
+.subtitle { margin-top:-6px; color: var(--muted); }
+
+.card { background: var(--card); border:1px solid var(--line); border-radius: 12px; padding: 18px 16px; margin: 14px 0; }
+h3 { margin: 0 0 8px; }
+.grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid3 { display:grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.grid4 { display:grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+
+.left { display:flex; flex-direction:column; align-items:flex-start; }
+label.left input[type="checkbox"] { margin-right: 8px; }
+.radio-left label { display:flex; align-items:center; gap:8px; justify-content:flex-start; }
+
+input[type="text"], input[type="number"], input[type="time"], select, textarea { padding: 10px 12px; border-radius: 10px; }
+textarea.payload { width:100%; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:12px; border-radius:10px; background:#0b0c0e; }
+
+.disabled { opacity:.8; cursor:not-allowed; }
+
+/* Виджеты */
+.widgets { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+.widget-card { border:1px solid var(--line); border-radius:12px; padding:14px; cursor:pointer; transition: border-color .2s, background .2s; }
+.widget-card.active { border-color:#fff; background:#1a1d20; }
+.w-title { font-weight:600; margin-bottom:8px; }
+.checks { list-style:none; padding:0; margin:0; }
+.checks li { display:flex; align-items:center; gap:8px; margin:4px 0; }
+.check { color:#8fe38f; }
+
+/* Категории */
+.owners-2col { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+.owner-col { border:1px dashed var(--line); border-radius:12px; padding:12px; }
+.header-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.sla-label { color: var(--muted); font-size: 12px; }
+
+/* Темы внутри карточки: 3 на строку */
+.topics-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-top:8px; }
+.topic-card { display:flex; align-items:center; gap:8px; padding:10px; border:1px solid var(--line); border-radius:10px; background:#0d0f12; color:var(--text); text-align:left; }
+.topic-card.selected { border-color:#8fe38f; background:#102114; }
+.topic-card .check { width:14px; }
+
+.hint { color: var(--muted); font-size: 13px; }
 .hint.small { font-size: 12px; }
-.disabled { opacity: .7; cursor: not-allowed; }
-.owners { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.owner-col { border: 1px dashed #e6e6e6; border-radius: 8px; padding: 10px; }
-.sla-label { color: #555; font-size: 12px; margin-bottom: 6px; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px; background: #f4f6f8; border-radius: 14px; }
-.chip.pool { background: #eef6ff; }
-.chip button { border: none; background: transparent; cursor: pointer; font-size: 14px; }
-.assigners button { margin-left: 4px; padding: 2px 6px; border: 1px solid #cfe3ff; border-radius: 6px; background: #fff; }
-.topics-pool { margin-top: 10px; }
-.extras { margin-top: 8px; }
-.metrics .metric { margin: 8px 0; }
-.summary-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.errors { margin-top: 10px; }
-.error { background: #fff4f4; color: #b30000; padding: 8px; border-radius: 6px; margin-bottom: 6px; }
-button.primary { margin-top: 10px; padding: 10px 14px; border-radius: 8px; background: #1a73e8; color: #fff; border: none; cursor: pointer; }
-.after { color: #2c7a2c; margin-top: 8px; }
-@media (max-width: 960px) {
-  .grid2, .grid3, .grid4, .owners, .summary-cols { grid-template-columns: 1fr; }
+
+/* Чеклисты компактно: несколько колонок */
+.checks-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; }
+.checks-grid label { display:flex; align-items:center; gap:8px; }
+
+/* Метрики */
+.metrics .metric { margin: 10px 0; }
+
+/* Саммари */
+.summary-cols { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+.errors { margin-top:10px; }
+.error { background:#2a1212; color:#ffb3b3; padding:8px; border-radius:8px; margin-bottom:6px; border:1px solid #472222; }
+button.primary { margin-top: 12px; padding: 12px 16px; border-radius: 12px; border:none; cursor:pointer; }
+@media (max-width: 1024px) {
+  .grid2, .grid3, .grid4, .owners-2col, .summary-cols, .widgets, .topics-grid, .checks-grid { grid-template-columns: 1fr; }
 }
 </style>
