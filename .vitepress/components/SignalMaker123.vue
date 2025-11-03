@@ -39,7 +39,7 @@ const nowMonth = MONTHS[new Date().getMonth()];
 
 const cards = [
   {
-    title: '1. Сейчас: зарезервируйте место',
+    title: '1. Сейчас: резерв места',
     // description заменяем ниже!
     description: '', 
     imgSrc: '/benefits-*.*-ban.svg',
