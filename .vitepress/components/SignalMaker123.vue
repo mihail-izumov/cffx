@@ -1,7 +1,7 @@
 <template>
   <div class="features-container-pro">
     <div 
-      v-for="card in cards" 
+      v-for="(card, index) in cards" 
       :key="card.title" 
       class="feature-card-pro"
     >
@@ -11,6 +11,13 @@
       <div class="card-content">
         <h4>{{ card.title }}</h4>
         <p>{{ card.description }}</p>
+        <!-- Ссылка только в первой карточке -->
+        <a v-if="index === 0" href="/pro/customize" class="card-link">
+          Настроить Свой Сигнал
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
       </div>
     </div>
   </div>
@@ -20,7 +27,7 @@
 const cards = [
   {
     title: '1. Сейчас: зарезервируйте место.',
-    description: 'Ꝑ30,000 (полностью возмещаемый) занимайте свое место в очереди – больше не нужно ничего настраивать. Вы сообщим, когда придет время для теста.',
+    description: 'Ꝑ30,000 (полностью возмещаемый) занимайте свое место в очереди – больше не нужно ничего настраивать. Вы сообщим, когда придет время для теста.',
     imgSrc: '/benefits-*.*-ban.svg',
     imgAlt: 'Зарезервируйте место'
   },
@@ -85,6 +92,8 @@ const cards = [
 .card-content {
   padding: 16px 20px 24px;
   flex-grow: 1; /* Позволяет блоку растягиваться, если карточки разной высоты */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Заголовок h4 в новой карточке */
@@ -103,6 +112,36 @@ const cards = [
   font-size: 12px;
   line-height: 1.5;
   margin: 0;
+  flex-grow: 1; /* Позволяет тексту растягиваться, а ссылке оставаться внизу */
+}
+
+/* Ссылка в карточке */
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.card-link:hover {
+  color: var(--vp-c-brand-2);
+  gap: 8px; /* Стрелка "уезжает" вправо при наведении */
+}
+
+/* Иконка стрелки */
+.arrow-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.card-link:hover .arrow-icon {
+  transform: translateX(2px); /* Стрелка двигается вправо */
 }
 
 /* Мобильная адаптация */
