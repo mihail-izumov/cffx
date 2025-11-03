@@ -95,21 +95,26 @@ const cards = [
   flex-direction: column !important;
   text-align: left !important;
 }
-.feature-card-pro h4 {
+
+/* Измени межстрочное расстояние заголовка h3 и увеличь отступ вниз */
+.feature-card-pro h3 {
   color: var(--vp-c-text-1) !important;
   font-size: 15px !important;
-  line-height: 1.3 !important;
+  line-height: 1.2 !important;
   margin-top: 0 !important;
-  margin-bottom: 8px !important;
+  margin-bottom: 14px !important; /* увеличенный отступ */
   font-weight: 600 !important;
 }
+
+/* Описание */
 .feature-card-pro p {
   color: var(--vp-c-text-2) !important; 
-  font-size: 12px !important;
-  line-height: 1.5 !important;
+  font-size: 13px !important;
+  line-height: 1.54 !important;
   margin: 0 !important;
   flex-grow: 1 !important;
 }
+
 .card-link-custom {
   display: inline-block !important;
   text-align: left !important;
