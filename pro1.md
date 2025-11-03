@@ -48,6 +48,14 @@ notification: brew
 
 <div align="center">
 
+## Ваш Безупречный Сигнал просто как 1-2-3.
+
+</div>
+
+<SignalMaker123 />
+
+<div align="center">
+
 ## Забота о клиентах начинается здесь.
 
 </div>
