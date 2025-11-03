@@ -16,11 +16,11 @@ notification: brew
 <br>
 
 <h1>
-  <span>Покажем, как Сигнал</span><br class="mobile-break"> <span>усилит ваш сервис.</span>
+  <span>Ваш Сигнал. </span><br class="mobile-break"> <span>Не коробка, а конструктор. </span>
 </h1>
 
 <p>
-  Анализ и первая настройка <br class="mobile-break"><strong>за 48 часов. Бесплатно.</strong>
+  Адаптируем систему под ваши правила, а не наоборот. Просто скажите да/нет или измените модули системы.
 </p>
 
 <div class="button-group">
