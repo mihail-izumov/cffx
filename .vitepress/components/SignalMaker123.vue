@@ -99,7 +99,7 @@ const cards = [
 /* Измени межстрочное расстояние заголовка h3 и увеличь отступ вниз */
 .feature-card-pro h3 {
   color: var(--vp-c-text-1) !important;
-  font-size: 15px !important;
+  font-size: 17px !important;
   line-height: 1.2 !important;
   margin-top: 0 !important;
   margin-bottom: 14px !important; /* увеличенный отступ */
@@ -119,7 +119,7 @@ const cards = [
   display: inline-block !important;
   text-align: left !important;
   margin-top: 18px !important;
-  font-size: 16px !important;
+  font-size: 14px !important;
   font-weight: 700 !important;
   line-height: 1.15 !important;
   color: #c5f946 !important;
