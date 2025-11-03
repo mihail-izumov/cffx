@@ -10,8 +10,8 @@
       </div>
       <div class="card-content">
         <h3>{{ card.title }}</h3>
-        <p>{{ card.description }}</p>
-        <!-- Ссылка только в первой карточке -->
+        <p v-if="index === 0">{{ descriptionWithMonth }}</p>
+        <p v-else>{{ card.description }}</p>
         <a
           v-if="index === 0"
           href="/pro/customize"
@@ -31,10 +31,17 @@
 </template>
 
 <script setup>
+const MONTHS = [
+  'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+  'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+];
+const nowMonth = MONTHS[new Date().getMonth()];
+
 const cards = [
   {
     title: '1. Сейчас: зарезервируйте место',
-    description: '₽30,000 (полностью возмещаемый) занимайте свое место в очереди – больше не нужно ничего настраивать. Мы сообщим, когда придет время для теста.',
+    // description заменяем ниже!
+    description: '', 
     imgSrc: '/benefits-*.*-ban.svg',
     imgAlt: 'Зарезервируйте место'
   },
@@ -51,6 +58,9 @@ const cards = [
     imgAlt: 'Уточнить настройки'
   }
 ];
+
+// Формируем автоматическую подстановку названия месяца для первой карточки
+const descriptionWithMonth = `₽30,000 (полностью возмещаемый) занимайте свое место на ${nowMonth} – больше не нужно ничего настраивать. Мы сообщим, когда придет время для теста.`;
 </script>
 
 <style scoped>
@@ -60,7 +70,6 @@ const cards = [
   gap: 16px !important;
   margin: 32px 0 !important;
 }
-
 .feature-card-pro {
   background-color: #f6f6f7 !important;
   border-radius: 14px !important;
@@ -69,11 +78,9 @@ const cards = [
   flex-direction: column !important;
   border: none !important;
 }
-
 :root.dark .feature-card-pro {
   background-color: var(--vp-c-bg-soft) !important;
 }
-
 .card-image-wrapper {
   width: 100% !important;
   aspect-ratio: 16 / 9 !important;
@@ -96,13 +103,13 @@ const cards = [
   text-align: left !important;
 }
 
-/* Измени межстрочное расстояние заголовка h3 и увеличь отступ вниз */
+/* Межстрочное расстояние title и увеличенный отступ вниз */
 .feature-card-pro h3 {
   color: var(--vp-c-text-1) !important;
   font-size: 17px !important;
   line-height: 1.2 !important;
   margin-top: 0 !important;
-  margin-bottom: 14px !important; /* увеличенный отступ */
+  margin-bottom: 14px !important;
   font-weight: 600 !important;
 }
 
