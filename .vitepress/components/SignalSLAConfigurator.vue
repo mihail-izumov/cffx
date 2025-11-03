@@ -4,7 +4,7 @@ import { reactive, ref, computed } from 'vue'
 /* ===== Константы отраслей (без desc), локально, без синхронизаций ===== */
 type Topic = { category: string; percent: number }
 
-export const CAFE_CATEGORIES: Topic[] = [
+const CAFE_CATEGORIES: Topic[] = [
   { category: 'Качество блюд/напитков', percent: 13.3 },
   { category: 'Чистота зала/посуды/уборной', percent: 10.8 },
   { category: 'Долгое ожидание заказа', percent: 18.3 },
@@ -21,7 +21,7 @@ export const CAFE_CATEGORIES: Topic[] = [
   { category: 'Парковка и доступность', percent: 1.7 },
 ]
 
-export const FITNESS_CATEGORIES: Topic[] = [
+const FITNESS_CATEGORIES: Topic[] = [
   { category: 'Переполненность зала/очереди на тренажёры', percent: 22.0 },
   { category: 'Чистота раздевалок/душевых', percent: 16.0 },
   { category: 'Грубость и непрофессионализм персонала', percent: 14.0 },
@@ -89,7 +89,6 @@ const state = reactive({
   standards_source: 'signal' as 'internal'|'signal',
   industry: 'cafe' as IndustryKey,
 
-  // Назначения тем в категории A–D (по 4 макс)
   topicAssignments: {} as Record<string, 'A'|'B'|'C'|'D'|''>,
 
   categories_map: {
@@ -151,10 +150,8 @@ function canAssignTo(cat: 'A'|'B'|'C'|'D') {
 
 function assignTopic(name: string, cat: 'A'|'B'|'C'|'D') {
   if (!canAssignTo(cat)) return
-  // снять предыдущую категорию
   const prev = state.topicAssignments[name]
   if (prev) state.topicAssignments[name] = ''
-  // не давать теме быть в двух категориях
   state.topicAssignments[name] = cat
 }
 
@@ -164,7 +161,7 @@ function removeFrom(cat: 'A'|'B'|'C'|'D', name: string) {
 
 const availableScripts = computed<string[]>(() => INDUSTRY_PRESETS[state.industry].scripts)
 
-/* ===== Валидация простая ===== */
+/* ===== Валидация ===== */
 const errors = ref<string[]>([])
 
 function validate(): boolean {
@@ -185,7 +182,7 @@ function validate(): boolean {
   return errors.value.length === 0
 }
 
-/* ===== Формирование payload ===== */
+/* ===== Payload ===== */
 const payload = computed(() => {
   const categories_map = {
     A: { ...state.categories_map.A, topics: categoryTopics('A') },
@@ -240,7 +237,6 @@ const payload = computed(() => {
 const submitted = ref(false)
 async function onSubmit() {
   if (!validate()) return
-  // Здесь можно отправить payload на бэкенд; в v1 просто выводим в консоль
   console.log('SLA configurator payload:', JSON.stringify(payload.value, null, 2))
   submitted.value = true
 }
@@ -306,7 +302,7 @@ async function onSubmit() {
     <!-- 3. Категории A–Г -->
     <div class="card">
       <h3>Категории A–Г</h3>
-      <div class="hint">Сроки ответа фиксированы: A — 4ч, Б — 2ч, В — 1ч, Г — 15м; редактирование в форме отключено.</div>
+      <div class="hint">Сроки ответа фиксированы: A — 4ч, Б — 2ч, В — 1ч, Г — 15м.</div>
 
       <div class="owners">
         <div class="owner-col" v-for="k in ['A','B','C','D']" :key="k">
@@ -345,7 +341,7 @@ async function onSubmit() {
       </div>
 
       <div class="topics-pool">
-        <h4>Список проблем (перетащите в A–Г)</h4>
+        <h4>Список проблем (назначьте в A–Г)</h4>
         <div class="chips">
           <div class="chip pool" v-for="name in unassignedTopics" :key="name">
             <span>{{ name }}</span>
