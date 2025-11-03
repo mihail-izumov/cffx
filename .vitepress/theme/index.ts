@@ -119,6 +119,7 @@ import DialogsStatisticsSlider from '../components/DialogsStatisticsSlider.vue'
 import LTVFitCalc from '../components/LTVFitCalc.vue'
 import LTVCalcSwitcher from '../components/LTVCalcSwitcher.vue'
 import SignalMaker123 from '../components/SignalMaker123.vue'
+import SignalSLAConfigurator from '../components/SignalSLAConfigurator.vue'
 
 export default {
   extends: DefaultTheme,
@@ -243,7 +244,7 @@ export default {
     app.component('LTVFitCalc', LTVFitCalc)
     app.component('LTVCalcSwitcher', LTVCalcSwitcher)
     app.component('SignalMaker123', SignalMaker123)
-  
+    app.component('SignalSLAConfigurator', SignalSLAConfigurator)
   },
 }
 
