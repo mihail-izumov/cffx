@@ -63,7 +63,7 @@ const cards = [
 
 .feature-card-pro {
   background-color: #f6f6f7 !important;
-  border-radius: 12px !important;
+  border-radius: 14px !important;
   overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
