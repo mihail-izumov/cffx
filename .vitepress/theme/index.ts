@@ -247,4 +247,3 @@ export default {
     app.component('SignalSLAConfigurator', SignalSLAConfigurator)
   },
 }
-
