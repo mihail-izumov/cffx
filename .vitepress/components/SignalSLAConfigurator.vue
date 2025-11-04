@@ -33,14 +33,28 @@ const SLA_READY_ITEMS=[
   {title:'Виджет Сигнала (базовая версия)',desc:'Публичная страница, живой рейтинг, метрики, брендирование, быстрый отзыв в Яндекс/2ГИС, бейдж «Репутация под защитой»'},
   {title:'Умная форма',desc:'150 цепочек с подсказками, рендер вопросов, переключение гендеров'},
   {title:'Анна (базовая версия)',desc:'Адаптация под ваш тон, продукты и особые ситуации из стандартов (если предоставлено)'},
-  {title:'Тикет-система',desc:'Настройка шаблонов тикетов, адаптация под стандарты'},
+  {title:'Тикет-система',desc:'Настройка шаблонов тикетов, адаптация по дстандарты'},
   {title:'Соглашение об уровне обслуживания (SLA)',desc:''}
 ]
-const SLA_READY_SLA=[
-  'Общие положения','Клиентское соглашение','Общие принципы','Алгоритм работы ИИ‑ассистента (10 этапов)','Классификация проблем и рекомендации','Шаблоны тикетов','Расширенные фразы‑шаблоны','Метрики успеха','Технические требования','Приложения'
+
+const SLA_READY_DETAILS=[
+  'Версия документа с общими положениями и регламентом работы ИИ-ассистента',
+  '10-этапный алгоритм обработки негативной обратной связи (от приветствия до NPS)',
+  'Типология сигналов: КОМПЕНСИРУЕМЫЙ (разовые проблемы) и СИСТЕМНЫЙ (требует физических изменений)',
+  'Матрица эскалации по категориям A-Г с полномочиями команды и управляющего',
+  'SLA параметры (Service Level Agreement): сроки обработки, каналы связи, метрики качества',
+  'Шаблоны фраз и скрипты для работы ИИ-ассистента Анна',
+  'Расширенные рекомендации по каждой категории жалоб',
+  'Метрики успеха: скорость ответа, процент разрешения без эскалации, целевой NPS',
+  'Технические требования к интеграции с тикет-системой',
+  'Приложения и примеры реальных обращений с разбором'
 ]
-const SLA_LATER=[
-  'Полные скрипты по категориям','Контакты ответственных','Эскалационная матрица','Примеры и кейсы'
+
+const SLA_LATER_DETAILS=[
+  'Полные скрипты ответов для каждой категории жалоб (A, Б, В, Г)',
+  'Контакты ответственных лиц и команды по направлениям',
+  'Эскалационная матрица с условиями передачи на более высокий уровень',
+  'Примеры обработки реальных кейсов и кейсов с разбором решений'
 ]
 
 const state = reactive({
@@ -73,7 +87,7 @@ const plannedRetentionText=computed(()=>{
   const planned=Math.round(current*(1+mult))
   return `Плановый рост с Сигналом: ${current} × ${Math.round(mult*100)}% = ${planned}%`
 })
-const slaTitle=computed(()=>`Сборка Сигнала для ${state.company.name||'компании'}`)
+const slaTitle=computed(()=>`Сборка Сигнала`)
 const testDate=computed(()=>{
   const d=new Date()
   d.setDate(d.getDate()+4)
@@ -230,20 +244,20 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
         <div class="mini-badge">Кат. В — 1 час<div class="mini-sub">{{ownerLabel(getCategoryData('C').owner)}}</div></div>
         <div class="mini-badge">Кат. Г — 15 минут<div class="mini-sub">{{ownerLabel(getCategoryData('D').owner)}}</div></div>
       </div>
-      <button class="linklike same" @click="openModal('categories')">Изменить роли и темы</button>
+      <button class="linklike same" @click="openModal('categories')" style="margin-top:12px">Изменить роли и темы</button>
     </div>
 
     <div class="card">
       <h3>Шаблон тикета</h3>
-      <div class="goal-line">Базовые поля: {{state.ticket_template.base_fields_ru.join(', ')}}</div>
-      <div class="goal-line">Дополнительные поля: {{state.ticket_template.extra_fields.join(', ')||'не выбрано'}}</div>
-      <button class="linklike same" @click="openModal('ticket')">Изменить шаблон</button>
+      <div class="goal-line"><span class="field-label">Базовые поля:</span> {{state.ticket_template.base_fields_ru.join(', ')}}</div>
+      <div class="goal-line"><span class="field-label">Дополнительные поля:</span> {{state.ticket_template.extra_fields.join(', ')||'не выбрано'}}</div>
+      <button class="linklike same" @click="openModal('ticket')" style="margin-top:12px">Изменить шаблон</button>
     </div>
 
     <div class="card summary onecol lime-outline">
-      <h2 class="sla-title lime">{{slaTitle}}</h2>
+      <h2 class="sla-title lime" style="border:none">{{slaTitle}}</h2>
       <h2 class="price">₽50.000</h2>
-      <div class="price-note">Плановый тест системы {{state.company.name||'[название компании]'}}: {{testDate}}</div>
+      <div class="price-note">Плановый тест системы: {{testDate}}</div>
 
       <div class="sla-cards">
         <div v-for="(item,i) in SLA_READY_ITEMS" :key="i" class="sla-card">
@@ -274,7 +288,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 
       <div class="cta-row">
         <button class="primary full strong lime-btn" @click="submitForm">Отправить на сборку</button>
-        <button class="primary full strong white-btn" type="button">Save for later</button>
+        <button class="primary full strong white-btn" type="button">Обсудить позже</button>
       </div>
     </div>
 
@@ -349,13 +363,13 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 
             <template v-else-if="modalKind==='sla_ready'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Почти готово</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards">
-                <div v-for="(item,i) in SLA_READY_SLA" :key="i" class="sla-detail-card">{{item}}</div>
+                <div v-for="(item,i) in SLA_READY_DETAILS" :key="i" class="sla-detail-card">{{item}}</div>
               </div></div>
             </template>
 
             <template v-else-if="modalKind==='sla_later'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Доработать и согласовать</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards">
-                <div v-for="(item,i) in SLA_LATER" :key="i" class="sla-detail-card">{{item}}</div>
+                <div v-for="(item,i) in SLA_LATER_DETAILS" :key="i" class="sla-detail-card">{{item}}</div>
               </div></div>
             </template>
 
@@ -384,7 +398,7 @@ h2,h3,h4{margin:0 0 6px}h2{font-size:22px}h3{font-size:16px}h4{font-size:14px}
 .row{display:flex;align-items:center;gap:10px}.row span{min-width:max-content}
 input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10px;border-radius:10px;background:#0b0c0e;color:var(--text);border:1px solid var(--line);font-size:14px}
 .time-white{color:#fff !important}
-.select-arrow{appearance:auto;padding-right:24px !important}
+.select-arrow{appearance:auto;padding-right:32px !important}
 .company.big{font-size:18px}.fullwidth{width:100%}
 .range.white{width:100%;-webkit-appearance:none;background:transparent;height:24px}
 .range.white::-webkit-slider-runnable-track{height:4px;background:#fff;border-radius:999px}
@@ -423,9 +437,10 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .mini-ag{display:flex;gap:8px;flex-wrap:wrap}
 .mini-badge{background:#0b0c0e;border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:12px}
 .mini-sub{color:#9aa3ad;font-size:11px;margin-top:2px}
+.field-label{color:#fff;font-weight:700}
 .lime{color:var(--lime)}
 .lime-outline{border-color:var(--lime)!important;background:var(--green-10)}
-.sla-title{margin:0 0 6px}.price{margin:0;color:#fff}.price-note{color:#c0c0c0;font-size:14px;margin-bottom:16px}
+.sla-title{margin:0 0 6px;border-bottom:none !important}.price{margin:0;color:#fff}.price-note{color:#c0c0c0;font-size:14px;margin-bottom:16px}
 .sla-cards{display:grid;gap:12px;margin-top:12px}
 .sla-card{background:rgba(12,12,14,0.7);border:1px solid var(--line);border-radius:12px;padding:14px}
 .sla-card-title{font-size:16px;font-weight:700;margin:0 0 6px}
@@ -435,7 +450,7 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .contact-in-summary{background:rgba(12,12,14,0.7);border:1px solid var(--line);margin:16px 0 12px}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .terms-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:13px}
-.terms-row input[type="checkbox"]{accent-color:var(--green);width:18px;height:18px}
+.terms-row input[type="checkbox"]{accent-color:var(--lime);width:18px;height:18px}
 .terms-row a{color:var(--lime);text-decoration:underline}
 button.primary{padding:14px 16px;border-radius:12px;border:1px solid #fff;cursor:pointer}
 button.full{width:100%}button.strong{font-weight:700;font-size:18px}
@@ -464,11 +479,11 @@ button.full{width:100%}button.strong{font-weight:700;font-size:18px}
 .extra-card.active{border-color:var(--lime);background:#dcfce7}
 .spaced-large{display:grid;grid-template-columns:1fr;gap:18px}
 .radio-left .row,.radio-left{display:flex;align-items:center;gap:12px}
-.radio-left input[type="radio"],.radio-big{accent-color:var(--green);width:18px;height:18px;border-radius:50%}
+.radio-left input[type="radio"],.radio-big{accent-color:var(--lime);width:18px;height:18px;border-radius:50%}
 .checks-grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .checks-grid-2col input[type="checkbox"]{accent-color:var(--lime)}
 .sla-detail-cards{display:grid;gap:10px}
-.sla-detail-card{background:#edeef0;border-radius:10px;padding:12px;color:#1d1d1f;font-size:13px}
+.sla-detail-card{background:#edeef0;border-radius:10px;padding:12px;color:#1d1d1f;font-size:13px;line-height:1.5}
 @media(max-width:1024px){
   .widget-row,.ltv-grid,.nps-cards{grid-template-columns:1fr}
   .contact-grid{grid-template-columns:1fr}
