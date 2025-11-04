@@ -12,7 +12,7 @@
         />
       </div>
       <div class="card-price">
-        <strong>₽64,000/мес</strong>
+        <strong>₽65,500/мес</strong>
         <div class="payment-type">Окупается с первых Сигналов</div>
       </div>
       <ul class="feature-list">
@@ -74,7 +74,7 @@
         />
       </div>
       <div class="card-price">
-        <strong>от ₽225,000/мес</strong>
+        <strong>от ₽247,500/мес</strong>
         <div class="payment-type">Превращаем данные в рост</div>
       </div>
       <p class="includes-all">Всё из Диалогов, плюс:</p>
