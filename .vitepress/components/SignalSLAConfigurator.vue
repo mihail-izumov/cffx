@@ -4,35 +4,35 @@ import { reactive, ref, computed } from 'vue'
 type Topic = { category: string; percent: number }
 
 const CAFE_CATEGORIES: Topic[] = [
-  { category: 'Качество блюд/напитков', percent: 13.3 },
-  { category: 'Чистота зала/посуды/уборной', percent: 10.8 },
-  { category: 'Долгое ожидание заказа', percent: 18.3 },
+  { category: 'Вкус', percent: 13.3 },
+  { category: 'Чистота', percent: 10.8 },
+  { category: 'Долгое ожидание', percent: 18.3 },
   { category: 'Ошибки в заказе', percent: 12.5 },
-  { category: 'Грубость и невнимательность персонала', percent: 10.0 },
-  { category: 'Антисанитария/инородные предметы', percent: 6.7 },
-  { category: 'Проблемы с очередями и обслуживанием', percent: 5.8 },
-  { category: 'Неуютная атмосфера/музыка/запах', percent: 5.0 },
-  { category: 'Упаковка и напитки на вынос', percent: 4.2 },
-  { category: 'Отсутствие внимания/коммуникации', percent: 4.2 },
-  { category: 'Цена/акции/выгода', percent: 3.3 },
-  { category: 'Профессионализм персонала', percent: 2.5 },
-  { category: 'Дизайн и интерьер', percent: 1.7 },
-  { category: 'Парковка и доступность', percent: 1.7 },
+  { category: 'Поведение персонала', percent: 10.0 },
+  { category: 'Инородные предметы', percent: 6.7 },
+  { category: 'Очереди', percent: 5.8 },
+  { category: 'Атмосфера', percent: 5.0 },
+  { category: 'Упаковка', percent: 4.2 },
+  { category: 'Коммуникация', percent: 4.2 },
+  { category: 'Цена', percent: 3.3 },
+  { category: 'Профессионализм', percent: 2.5 },
+  { category: 'Дизайн', percent: 1.7 },
+  { category: 'Парковка', percent: 1.7 },
 ]
 
 const FITNESS_CATEGORIES: Topic[] = [
-  { category: 'Переполненность зала/очереди на тренажёры', percent: 22.0 },
-  { category: 'Чистота раздевалок/душевых', percent: 16.0 },
-  { category: 'Грубость и непрофессионализм персонала', percent: 14.0 },
-  { category: 'Проблемы с оборудованием', percent: 12.0 },
-  { category: 'Цена/ошибки в оплате абонемента', percent: 11.0 },
-  { category: 'Неудобное расписание занятий', percent: 8.0 },
-  { category: 'Температура и вентиляция в зале', percent: 6.0 },
-  { category: 'Качество и уровень тренировок', percent: 4.0 },
-  { category: 'Опоздание/отсутствие тренера', percent: 3.0 },
-  { category: 'Дискомфорт и токсичная атмосфера', percent: 2.0 },
-  { category: 'Отсутствие удобств (Wi‑Fi, парковка)', percent: 1.5 },
-  { category: 'Проблемы с договором и отменой', percent: 0.5 },
+  { category: 'Переполненность', percent: 22.0 },
+  { category: 'Чистота', percent: 16.0 },
+  { category: 'Поведение персонала', percent: 14.0 },
+  { category: 'Оборудование', percent: 12.0 },
+  { category: 'Цена', percent: 11.0 },
+  { category: 'Расписание', percent: 8.0 },
+  { category: 'Температура', percent: 6.0 },
+  { category: 'Качество тренировок', percent: 4.0 },
+  { category: 'Опоздание тренера', percent: 3.0 },
+  { category: 'Атмосфера', percent: 2.0 },
+  { category: 'Удобства', percent: 1.5 },
+  { category: 'Договор и отмена', percent: 0.5 },
 ]
 
 const WIDGETS = {
@@ -40,12 +40,12 @@ const WIDGETS = {
     title: 'Общепит',
     topics: CAFE_CATEGORIES,
     scripts: [
-      'Жалоба на вкус',
-      'Жалоба на долгую подачу',
-      'Инородный предмет в блюде',
-      'Жалоба на поведение персонала',
-      'Проблемы с чистотой',
-      'Жалоба на температуру и проч.',
+      'Вкус',
+      'Долгую подачу',
+      'Инородный предмет',
+      'Поведение персонала',
+      'Чистоту',
+      'Температуру',
     ],
     benefits: [
       'Готовый словарь жалоб по кофейням',
@@ -58,11 +58,11 @@ const WIDGETS = {
     topics: FITNESS_CATEGORIES,
     scripts: [
       'Переполненность/очереди',
-      'Чистота раздевалок/душевых',
+      'Чистоту раздевалок',
       'Оборудование/ремонт',
-      'Поведение/профессионализм персонала',
+      'Поведение персонала',
       'Расписание занятий',
-      'Температура/вентиляция',
+      'Температуру/вентиляцию',
     ],
     benefits: [
       'Словарь жалоб по фитнес‑сетям',
@@ -109,13 +109,17 @@ type NpsStep = typeof NPS_STEPS[number]
 const state = reactive({
   company: {
     name: '',
-    locations_connected: 1,
+    locations_str: '',
+    guests_or_clients: '',
+    avg_check_or_subscription: '',
     retention_pct: 50,
     ltv_tool: '',
     ltv_tool_other: '',
   },
   standards_source: 'internal' as 'internal'|'signal',
   widget: 'cafe' as WidgetKey,
+  has_full_classification: false,
+  client_scripts: [] as string[],
 
   categories_map: {
     A: { owner: 'team' as 'team'|'manager'|'custom', contact: '', topics: [] as string[] },
@@ -126,7 +130,7 @@ const state = reactive({
 
   ticket_template: {
     base_fields: BASE_TICKET_FIELDS.map(f => f.key),
-    extra_groups_topics: [] as string[], // лимит 3
+    extra_groups: ['', '', ''] as string[], // 3 селекта для доп. групп
   },
 
   nps_step: 60 as NpsStep,
@@ -138,22 +142,26 @@ const state = reactive({
     weekends: { from: '10:00', to: '17:00' },
   },
 
-  client_scripts: { has: [] as string[] },
-  has_full_classification: false,
-
   metrics_targets: {
-    tickets_accepted_pct: 90,
-    full_close_time_hours: 24,
+    full_close_time_hours: 18,
     resolved_without_escalation_pct: 75,
-    reco_alignment_pct: 80,
+    reco_accuracy_pct: 80,
     nps_collected_pct: 95,
     nps_avg: 8,
     returns_after_complaint_pct: 70,
     avg_compensation_rub: 500,
+  },
+
+  contact: {
+    name: '',
+    phone: '',
   }
 })
 
 const topics = computed<Topic[]>(() => WIDGETS[state.widget].topics)
+const availableScripts = computed<string[]>(() => WIDGETS[state.widget].scripts)
+const widgetBenefits = computed<string[]>(() => WIDGETS[state.widget].benefits)
+
 const allChosen = computed<string[]>(() => [
   ...state.categories_map.A.topics,
   ...state.categories_map.B.topics,
@@ -180,25 +188,20 @@ function toggleTopic(cat: 'A'|'B'|'C'|'D', name: string) {
   arr.push(name)
 }
 
-const availableScripts = computed<string[]>(() => WIDGETS[state.widget].scripts)
-const widgetBenefits = computed<string[]>(() => WIDGETS[state.widget].benefits)
-
-function toggleExtra(name: string, checked: boolean) {
-  const arr = state.ticket_template.extra_groups_topics
-  if (checked) {
-    if (arr.includes(name)) return
-    if (arr.length >= 3) return
-    arr.push(name)
-  } else {
-    const i = arr.indexOf(name); if (i>=0) arr.splice(i,1)
-  }
+/* Функция для фильтрации доступных групп в селектах доп. полей */
+function getAvailableGroupsFor(index: number): string[] {
+  const chosen = state.ticket_template.extra_groups.filter((g, i) => i !== index && g)
+  return topics.value
+    .map(t => t.category)
+    .filter(name => !chosen.includes(name))
 }
 
 const errors = ref<string[]>([])
 function validate(): boolean {
   errors.value = []
   if (!state.company.name.trim()) errors.value.push('Укажите название компании')
-  if (state.company.locations_connected < 1) errors.value.push('Минимум 1 локация')
+  if (!state.contact.name.trim()) errors.value.push('Укажите имя контактного лица')
+  if (!state.contact.phone.trim()) errors.value.push('Укажите телефон')
   ;(['A','B','C','D'] as const).forEach(k => {
     const c = state.categories_map[k]
     if (c.owner === 'custom' && !c.contact.trim()) errors.value.push(`Категория ${k}: укажите контакт роли`)
@@ -216,7 +219,7 @@ function validate(): boolean {
 const submitted = ref(false)
 async function onSubmit() {
   if (!validate()) return
-  console.log('SLA form submitted v1 (no external links)')
+  console.log('SLA form submitted v2')
   submitted.value = true
 }
 
@@ -239,120 +242,17 @@ function npsLabel(): string {
       После отправки — черновик вашего SLA в тот же день, на согласование без звонков.
     </p>
 
-    <div class="card">
-      <h3>Стандарты и материалы</h3>
-      <div>
-        <h4>Источник стандартов</h4>
-        <div class="radio-left">
-          <label class="row"><input type="radio" value="internal" v-model="state.standards_source" /><span>Внутренние стандарты</span></label>
-          <label class="row"><input type="radio" value="signal" v-model="state.standards_source" /><span>Стандарты Сигнала</span></label>
-        </div>
-        <h4 style="margin-top:10px;">Скрипты клиента (есть и можем предоставить)</h4>
-        <div class="checks-grid">
-          <label v-for="s in availableScripts" :key="s" class="row"><input type="checkbox" :value="s" v-model="state.client_scripts.has" /><span>{{ s }}</span></label>
-        </div>
-        <label class="row">
-          <input type="checkbox" v-model="state.has_full_classification" />
-          <span>Есть собственная полная классификация</span>
-        </label>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>Цели</h3>
-      <div class="grid3">
-        <div>
-          <h4>Операционные</h4>
-          <div class="metric">
-            <label class="row"><input style="display:none" /><span>Принятие без доработки: <strong>{{ state.metrics_targets.tickets_accepted_pct }}%</strong></span></label>
-            <input class="range long" type="range" min="0" max="100" v-model.number="state.metrics_targets.tickets_accepted_pct" />
-          </div>
-          <div class="metric">
-            <label class="row"><input style="display:none" /><span>Полное закрытие (ч): <strong>{{ state.metrics_targets.full_close_time_hours }}</strong></span></label>
-            <input class="range long" type="range" min="0" max="168" step="1" v-model.number="state.metrics_targets.full_close_time_hours" />
-          </div>
-          <div class="metric">
-            <label class="row"><input style="display:none" /><span>Без эскалации: <strong>{{ state.metrics_targets.resolved_without_escalation_pct }}%</strong></span></label>
-            <input class="range long" type="range" min="0" max="100" v-model.number="state.metrics_targets.resolved_without_escalation_pct" />
-          </div>
-        </div>
-        <div>
-          <h4>Качество</h4>
-          <div class="metric">
-            <label class="row"><input style="display:none" /><span>Соответствие рекомендаций: <strong>{{ state.metrics_targets.reco_alignment_pct }}%</strong></span></label>
-            <input class="range long" type="range" min="0" max="100" v-model.number="state.metrics_targets.reco_alignment_pct" />
-          </div>
-          <div class="metric">
-            <label class="row"><input style="display:none" /><span>Получение NPS: <strong>{{ state.metrics_targets.nps_collected_pct }}%</strong></span></label>
-            <input class="range long" type="range" min="0" max="100" v-model.number="state.metrics_targets.nps_collected_pct" />
-          </div>
-          <div class="metric">
-            <label class="row"><input style="display:none" /><span>Средний NPS: <strong>{{ state.metrics_targets.nps_avg }}</strong></span></label>
-            <input class="range long" type="range" min="1" max="10" v-model.number="state.metrics_targets.nps_avg" />
-          </div>
-        </div>
-        <div>
-          <h4>Бизнес</h4>
-          <div class="metric">
-            <label class="row"><input style="display:none" /><span>Возврат после жалобы: <strong>{{ state.metrics_targets.returns_after_complaint_pct }}%</strong></span></label>
-            <input class="range long" type="range" min="0" max="100" v-model.number="state.metrics_targets.returns_after_complaint_pct" />
-          </div>
-          <div class="metric">
-            <label class="row"><input style="display:none" /><span>Средняя компенсация (₽): <strong>{{ state.metrics_targets.avg_compensation_rub }}</strong></span></label>
-            <input class="range long" type="range" min="0" max="5000" step="10" v-model.number="state.metrics_targets.avg_compensation_rub" />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>О компании</h3>
-      <div class="grid2">
-        <div>
-          <label class="row big-input">
-            <input style="display:none" />
-            <span>Название компании</span>
-          </label>
-          <input class="company big" v-model="state.company.name" type="text" placeholder="СуперСпорт" />
-          <label class="row">
-            <input style="display:none" />
-            <span>Инструмент контроля LTV</span>
-            <select v-model="state.company.ltv_tool" class="select-arrow">
-              <option value="">Выберите…</option>
-              <option>CRM</option>
-              <option>BI/Дашборды</option>
-              <option>1C</option>
-              <option>Google Sheets</option>
-              <option value="other">Другое</option>
-            </select>
-          </label>
-          <input v-if="state.company.ltv_tool==='other'" v-model="state.company.ltv_tool_other" type="text" placeholder="Опишите инструмент" />
-        </div>
-        <div>
-          <label class="row">
-            <input style="display:none" />
-            <span>Локаций к подключению: <strong>{{ state.company.locations_connected }}</strong></span>
-          </label>
-          <input class="range long" v-model.number="state.company.locations_connected" type="range" min="1" max="30" step="1" />
-          <label class="row">
-            <input style="display:none" />
-            <span>Текущий retention: <strong>{{ state.company.retention_pct }}%</strong></span>
-          </label>
-          <input class="range long" v-model.number="state.company.retention_pct" type="range" min="50" max="100" step="5" />
-        </div>
-      </div>
-    </div>
-
+    <!-- 1. Выбор виджета вверху -->
     <div class="card">
       <h3>Выберите виджет</h3>
       <div class="widgets">
-        <div class="widget-card" :class="{ active: state.widget==='cafe' }" @click="state.widget='cafe'">
+        <div class="widget-card" :class="{ active: state.widget==='cafe' }" @click="state.widget='cafe'; state.company.name=''">
           <div class="w-title">Общепит</div>
           <ul v-if="state.widget==='cafe'" class="checks">
             <li v-for="b in widgetBenefits" :key="'c'+b"><input type="checkbox" checked disabled /><span>{{ b }}</span></li>
           </ul>
         </div>
-        <div class="widget-card" :class="{ active: state.widget==='fitness' }" @click="state.widget='fitness'">
+        <div class="widget-card" :class="{ active: state.widget==='fitness' }" @click="state.widget='fitness'; state.company.name=''">
           <div class="w-title">Фитнес</div>
           <ul v-if="state.widget==='fitness'" class="checks">
             <li v-for="b in widgetBenefits" :key="'f'+b"><input type="checkbox" checked disabled /><span>{{ b }}</span></li>
@@ -362,8 +262,180 @@ function npsLabel(): string {
       <p class="hint bigger">Справочники жалоб, скрипты и эскалации подстроятся под выбранный виджет автоматически.</p>
     </div>
 
+    <!-- 2. Блок компании (разные поля в зависимости от выбора) -->
+    <div class="card">
+      <h3>О компании</h3>
+      <div class="grid1">
+        <label class="row big-input">
+          <input style="display:none" />
+          <span>Название компании</span>
+        </label>
+        <input 
+          class="company big" 
+          v-model="state.company.name" 
+          type="text" 
+          :placeholder="state.widget === 'cafe' ? 'СуперФуд' : 'SuperFitness'" 
+        />
+        
+        <label class="row">
+          <input style="display:none" />
+          <span>Локаций к подключению</span>
+          <input v-model="state.company.locations_str" type="text" placeholder="2" />
+        </label>
+
+        <label class="row">
+          <input style="display:none" />
+          <span v-if="state.widget === 'cafe'">Гости/мес</span>
+          <span v-else>Клиенты/мес</span>
+          <input v-model="state.company.guests_or_clients" type="text" placeholder="0" />
+        </label>
+
+        <label class="row">
+          <input style="display:none" />
+          <span v-if="state.widget === 'cafe'">Средний чек (₽)</span>
+          <span v-else>Абонемент/мес (₽)</span>
+          <input v-model="state.company.avg_check_or_subscription" type="text" placeholder="0" />
+        </label>
+
+        <label class="row">
+          <input style="display:none" />
+          <span>Текущий retention: <strong>{{ state.company.retention_pct }}%</strong></span>
+          <input class="range long" type="range" min="0" max="100" v-model.number="state.company.retention_pct" />
+        </label>
+
+        <label class="row">
+          <input style="display:none" />
+          <span>Инструмент контроля LTV</span>
+          <select v-model="state.company.ltv_tool" class="select-arrow">
+            <option value="">Выберите…</option>
+            <option>CRM</option>
+            <option>BI/Дашборды</option>
+            <option>Google Sheets</option>
+            <option value="other">Другое</option>
+          </select>
+        </label>
+        <input v-if="state.company.ltv_tool==='other'" v-model="state.company.ltv_tool_other" type="text" class="fullwidth" placeholder="Опишите инструмент" />
+      </div>
+    </div>
+
+    <!-- 3. Стандарты и материалы -->
+    <div class="card">
+      <h3>Стандарты и материалы</h3>
+      <div>
+        <h4>Источник стандартов</h4>
+        <div class="radio-left">
+          <label class="row"><input type="radio" value="internal" v-model="state.standards_source" /><span>Внутренние стандарты</span></label>
+          <label class="row"><input type="radio" value="signal" v-model="state.standards_source" /><span>Стандарты Сигнала</span></label>
+        </div>
+
+        <h4 style="margin-top:12px;">Скрипты</h4>
+        <p class="hint sub">Да = есть и можем предоставить</p>
+        <label class="row">
+          <input type="checkbox" v-model="state.has_full_classification" />
+          <span>Есть собственная полная классификация</span>
+        </label>
+
+        <div v-if="state.has_full_classification" class="checks-grid-2col">
+          <label v-for="s in availableScripts" :key="s" class="row"><input type="checkbox" :value="s" v-model="state.client_scripts" /><span>{{ s }}</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4–6. Три блока целей (Операционные, Качество, Бизнес) -->
+    <div class="card">
+      <h3>Цели</h3>
+    </div>
+
+    <div class="card">
+      <h4 style="margin:0 0 10px;">Операционные</h4>
+      <div class="metric">
+        <label class="row"><input style="display:none" /><span>Полное закрытие (ч): <strong>{{ state.metrics_targets.full_close_time_hours }}</strong></span></label>
+        <input class="range long" type="range" min="1" max="24" v-model.number="state.metrics_targets.full_close_time_hours" />
+      </div>
+      <div class="metric">
+        <label class="row"><input style="display:none" /><span>Без эскалации: <strong>{{ state.metrics_targets.resolved_without_escalation_pct }}%</strong></span></label>
+        <input class="range long" type="range" min="0" max="100" v-model.number="state.metrics_targets.resolved_without_escalation_pct" />
+      </div>
+    </div>
+
+    <div class="card">
+      <h4 style="margin:0 0 10px;">Качество</h4>
+      <div class="metric">
+        <label class="row"><input style="display:none" /><span>Точность рекомендаций: <strong>{{ state.metrics_targets.reco_accuracy_pct }}%</strong></span></label>
+        <input class="range long" type="range" min="0" max="100" v-model.number="state.metrics_targets.reco_accuracy_pct" />
+      </div>
+      <div class="metric">
+        <label class="row"><input style="display:none" /><span>Получение NPS: <strong>{{ state.metrics_targets.nps_collected_pct }}%</strong></span></label>
+        <input class="range long" type="range" min="0" max="100" v-model.number="state.metrics_targets.nps_collected_pct" />
+      </div>
+      <div class="metric">
+        <label class="row"><input style="display:none" /><span>Средний NPS: <strong>{{ state.metrics_targets.nps_avg }}</strong></span></label>
+        <input class="range long" type="range" min="1" max="10" v-model.number="state.metrics_targets.nps_avg" />
+      </div>
+    </div>
+
+    <div class="card">
+      <h4 style="margin:0 0 10px;">Бизнес</h4>
+      <div class="metric">
+        <label class="row"><input style="display:none" /><span>Возврат после жалобы: <strong>{{ state.metrics_targets.returns_after_complaint_pct }}%</strong></span></label>
+        <input class="range long" type="range" min="0" max="100" v-model.number="state.metrics_targets.returns_after_complaint_pct" />
+      </div>
+      <div class="metric">
+        <label class="row"><input style="display:none" /><span>Средняя компенсация (₽): <strong>{{ state.metrics_targets.avg_compensation_rub }}</strong></span></label>
+        <input class="range long" type="range" min="0" max="5000" step="10" v-model.number="state.metrics_targets.avg_compensation_rub" />
+      </div>
+    </div>
+
+    <!-- 7. Таймер NPS -->
+    <div class="card">
+      <h3>Таймер запроса NPS</h3>
+      <label class="row">
+        <input style="display:none" />
+        <span>Интервал после сообщения гостю: <strong>{{ npsLabel() }}</strong></span>
+      </label>
+      <input
+        class="range long"
+        type="range"
+        :min="0" :max="3" step="1"
+        :value="[60, 1440, 4320, -1].indexOf(state.nps_step)"
+        @input="(e:any)=>{ const idx=Number(e.target.value); state.nps_step=[60, 1440, 4320, -1][idx] }"
+      />
+      <div class="ticks spaced">
+        <span>60м</span><span>1д</span><span>3д</span><span>Другое</span>
+      </div>
+      <div v-if="state.nps_step === -1" class="grid1">
+        <label class="row">
+          <input style="display:none" />
+          <span>Своё значение (в часах)</span>
+          <input type="number" min="1" step="1" v-model.number="state.nps_custom_hours" />
+        </label>
+      </div>
+    </div>
+
+    <!-- 8. Режим работы -->
+    <div class="card">
+      <h3>Режим работы</h3>
+      <div class="radio-left grid2">
+        <div class="row"><input type="radio" value="wk_9_18" v-model="state.work_hours.mode" /><span>Будни 9–18 МСК</span></div>
+        <div class="row"><input type="radio" value="wk_9_18_we" v-model="state.work_hours.mode" /><span>9–18 МСК + выходные</span></div>
+      </div>
+      <div class="row" style="margin-top:8px;">
+        <input type="radio" value="extended" v-model="state.work_hours.mode" />
+        <span>Расширенный режим</span>
+      </div>
+      <div v-if="state.work_hours.mode === 'extended'" class="grid4">
+        <label class="row"> <input style="display:none" /> <span>Будни от</span> <input v-model="state.work_hours.weekdays.from" type="time" /> </label>
+        <label class="row"> <input style="display:none" /> <span>Будни до</span> <input v-model="state.work_hours.weekdays.to" type="time" /> </label>
+        <label class="row"> <input style="display:none" /> <span>Выходные от</span> <input v-model="state.work_hours.weekends.from" type="time" /> </label>
+        <label class="row"> <input style="display:none" /> <span>Выходные до</span> <input v-model="state.work_hours.weekends.to" type="time" /> </label>
+      </div>
+    </div>
+
+    <!-- 9. Категории A–Г -->
     <div class="card">
       <h3>Категории A–Г</h3>
+      <div class="hint small" style="margin-bottom:10px;">До 4 тем в каждой категории; выбранные темы автоматически скрываются в других категориях.</div>
+      
       <div class="owners owners-1col">
         <div class="owner-col" v-for="k in ['A','B','C','D']" :key="k">
           <div class="header-row">
@@ -406,88 +478,72 @@ function npsLabel(): string {
               <span class="t-name">{{ name }}</span>
             </button>
           </div>
-          <div class="hint small">До 4 тем в каждой категории; выбранные темы автоматически скрываются в других категориях.</div>
         </div>
       </div>
     </div>
 
+    <!-- 10–11. Шаблон тикета (базовые + доп. группы) -->
     <div class="card">
       <h3>Шаблон тикета</h3>
-      <h4>Базовые поля</h4>
+    </div>
+
+    <div class="card">
+      <h4 style="margin:0 0 10px;">Базовые поля</h4>
       <div class="checks-grid">
         <label v-for="f in BASE_TICKET_FIELDS" :key="f.key" class="row disabled">
           <input type="checkbox" :checked="true" disabled />
           <span>{{ f.label }}</span>
         </label>
       </div>
-
-      <h4 style="margin-top:10px;">Дополнительные группы (до 3)</h4>
-      <div class="checks-grid">
-        <label v-for="t in topics" :key="t.category" class="row">
-          <input
-            type="checkbox"
-            :checked="state.ticket_template.extra_groups_topics.includes(t.category)"
-            @change="toggleExtra(t.category, ($event.target as HTMLInputElement).checked)"
-          />
-          <span>{{ t.category }}</span>
-        </label>
-      </div>
     </div>
 
     <div class="card">
-      <h3>Таймер запроса NPS</h3>
-      <label class="row">
-        <input style="display:none" />
-        <span>Интервал после сообщения гостю: <strong>{{ npsLabel() }}</strong></span>
-      </label>
-      <input
-        class="range long"
-        type="range"
-        :min="0" :max="3" step="1"
-        :value="NPS_STEPS.indexOf(state.nps_step)"
-        @input="(e:any)=>{ const idx=Number(e.target.value); state.nps_step=NPS_STEPS[idx] }"
-      />
-      <div class="ticks spaced">
-        <span>60м</span><span>1д</span><span>3д</span><span>Другое</span>
+      <h4 style="margin:0 0 10px;">Дополнительные группы (до 3)</h4>
+      <div class="grid1">
+        <div v-for="(_, idx) in 3" :key="'extra-'+idx" class="select-wrapper">
+          <label class="row">
+            <input style="display:none" />
+            <span>Группа {{ idx + 1 }}</span>
+            <select v-model="state.ticket_template.extra_groups[idx]" class="select-arrow">
+              <option value="">Не выбрано</option>
+              <option v-for="grp in getAvailableGroupsFor(idx)" :key="grp" :value="grp">{{ grp }}</option>
+            </select>
+          </label>
+        </div>
       </div>
-      <div v-if="state.nps_step === -1" class="grid2">
+    </div>
+
+    <!-- 12. Контактные данные -->
+    <div class="card">
+      <h3>Контактные данные</h3>
+      <div class="grid2">
         <label class="row">
           <input style="display:none" />
-          <span>Своё значение (в часах)</span>
-          <input type="number" min="1" step="1" v-model.number="state.nps_custom_hours" />
+          <span>Имя</span>
+          <input v-model="state.contact.name" type="text" placeholder="Иван Петров" />
+        </label>
+        <label class="row">
+          <input style="display:none" />
+          <span>Телефон</span>
+          <input v-model="state.contact.phone" type="text" placeholder="+7 (999) 123-45-67" />
         </label>
       </div>
     </div>
 
+    <!-- 13. Саммари -->
     <div class="card summary onecol">
       <h3>Саммари: стартовая конфигурация</h3>
 
       <h4>О компании</h4>
       <ul class="ul">
         <li>Название: {{ state.company.name || '—' }}</li>
-        <li>Локаций к подключению: {{ state.company.locations_connected }}</li>
+        <li>Локаций: {{ state.company.locations_str || '—' }}</li>
+        <li v-if="state.widget === 'cafe'">Гости/мес: {{ state.company.guests_or_clients || '—' }}</li>
+        <li v-else>Клиенты/мес: {{ state.company.guests_or_clients || '—' }}</li>
+        <li v-if="state.widget === 'cafe'">Средний чек: {{ state.company.avg_check_or_subscription || '—' }} ₽</li>
+        <li v-else>Абонемент: {{ state.company.avg_check_or_subscription || '—' }} ₽</li>
         <li>Retention: {{ state.company.retention_pct }}%</li>
         <li>LTV tool: {{ state.company.ltv_tool === 'other' ? state.company.ltv_tool_other : state.company.ltv_tool || '—' }}</li>
-      </ul>
-
-      <h4>Операции</h4>
-      <ul class="ul">
-        <li>Виджет: {{ WIDGETS[state.widget].title }}</li>
-        <li>NPS таймер: {{ npsLabel() }}</li>
-        <li>Режим: {{
-          state.work_hours.mode === 'wk_9_18'
-            ? 'Будни 9–18'
-            : state.work_hours.mode === 'wk_9_18_we'
-              ? '9–18 + выходные'
-              : `Будни ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}; Выходные ${state.work_hours.weekends.from}-${state.work_hours.weekends.to}`
-        }}</li>
-      </ul>
-
-      <h4>Контроль</h4>
-      <ul class="ul">
-        <li>Источник стандартов: {{ state.standards_source === 'signal' ? 'Стандарты Сигнала' : 'Внутренние' }}</li>
-        <li>Скрипты клиента: {{ state.client_scripts.has.join(', ') || '—' }}</li>
-        <li>Полная классификация: {{ state.has_full_classification ? 'Да' : 'Нет' }}</li>
       </ul>
 
       <h4>Категории и роли</h4>
@@ -500,12 +556,12 @@ function npsLabel(): string {
 
       <div class="sla-include">
         <h4>Что включит ваш SLA</h4>
-        <ul class="ul checks">
-          <li v-for="it in SLA_OVERVIEW" :key="it.title">
-            <input type="checkbox" checked disabled />
-            <span><strong>{{ it.title }}:</strong> {{ it.note }}</span>
-          </li>
-        </ul>
+        <div class="sla-cards">
+          <div v-for="it in SLA_OVERVIEW" :key="it.title" class="sla-card">
+            <div class="sla-title">{{ it.title }}</div>
+            <div class="sla-note">{{ it.note }}</div>
+          </div>
+        </div>
       </div>
 
       <div v-if="errors.length" class="errors">
@@ -522,7 +578,8 @@ function npsLabel(): string {
 
 <style scoped>
 .signal-sla.dark { 
-  --bg:#0e0f10; --card:#151719; --muted:#9aa3ad; --text:#e8eaed; --line:#2a2d31; --accent:#e6e6e6; 
+  --bg:transparent; --card:#151719; --muted:#9aa3ad; --text:#e8eaed; --line:#2a2d31; --accent:#e6e6e6;
+  --green-check:#4ade80; --green-dark:#166534;
   background: var(--bg); color: var(--text); padding-bottom: 20px; user-select: text; font-size: 14px;
   max-width: 980px; margin: 0 auto; overflow-wrap: anywhere; word-break: normal;
 }
@@ -535,17 +592,18 @@ h4 { font-size: 14px; margin: 0 0 6px; }
 .subtitle.big { font-size: 14px; }
 
 .card { background: var(--card); border:1px solid var(--line); border-radius: 12px; padding: 16px 14px; margin: 12px 0; }
+.grid1 { display:grid; grid-template-columns: 1fr; gap: 10px; }
 .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.grid3 { display:grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
 .grid4 { display:grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
 
 .row { display:flex; align-items:center; gap:10px; justify-content:flex-start; }
 .row span { min-width: max-content; }
 
-input[type="text"], input[type="number"], input[type="time"], select { padding: 8px 10px; border-radius: 10px; background:#0b0c0e; color:var(--text); border:1px solid var(--line); }
+input[type="text"], input[type="number"], input[type="time"], select { padding: 8px 10px; border-radius: 10px; background:#0b0c0e; color:var(--text); border:1px solid var(--line); font-size: 14px; }
 .select-arrow { appearance: auto; }
 .company.big { font-size: 18px; padding: 12px 14px; border-radius: 12px; }
 .big-input span { font-size: 13px; color: var(--muted); }
+.fullwidth { width: 100%; }
 
 .range { width: 100%; }
 .range.long { width: 100%; }
@@ -556,32 +614,48 @@ input[type="text"], input[type="number"], input[type="time"], select { padding: 
 .w-title { font-weight:600; margin-bottom:4px; }
 .checks { list-style:none; padding:0; margin:0; }
 .checks li { display:flex; align-items:center; gap:8px; margin:4px 0; }
-.checks input { pointer-events:none; }
+.checks input { pointer-events:none; accent-color: var(--green-check); width:16px; height:16px; }
+.checks span { font-size: 12px; }
+
 .hint { color: var(--muted); font-size: 12px; }
+.hint.sub { font-size: 11px; margin-top: -4px; margin-bottom: 4px; }
 .hint.bigger { font-size: 15px; }
+.hint.small { font-size: 12px; }
 
 .owners-1col { display:grid; grid-template-columns: 1fr; gap:10px; }
 .owner-col { border:1px dashed var(--line); border-radius:12px; padding:12px; }
 .header-row { display:flex; align-items:center; justify-content:space-between; }
-.badge { background:#0b0c0e; border:1px solid var(--line); border-radius: 999px; padding: 6px 10px; font-weight:600; }
+.badge { background:#0b0c0e; border:1px solid var(--line); border-radius: 999px; padding: 6px 10px; font-weight:600; font-size: 12px; }
 
 .topics-grid.compact3 { display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-top:8px; }
 .topic-card { display:flex; align-items:center; gap:8px; padding:8px; border:1px solid var(--line); border-radius:10px; background:#0d0f12; color:var(--text); text-align:left; }
 .topic-card.small { padding:6px 8px; }
-.topic-card.selected { border-color:#8fe38f; background:#102114; }
+.topic-card.selected { border-color: var(--green-check); background:#102114; }
 .topic-card .t-name { font-size: 12px; line-height: 1.2; white-space: normal; }
+.topic-card input[type="checkbox"] { accent-color: var(--green-check); width:14px; height:14px; }
 
 .checks-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:6px 10px; }
-.checks-grid .row { align-items:center; }
+.checks-grid-2col { display:grid; grid-template-columns: repeat(2, 1fr); gap:6px 10px; }
+.checks-grid .row, .checks-grid-2col .row { align-items:center; }
+.checks-grid input[type="checkbox"], .checks-grid-2col input[type="checkbox"] { accent-color: var(--green-check); width:16px; height:16px; }
 
-.metrics .metric { margin: 8px 0; }
+.metric { margin: 8px 0; }
 .ticks { display:flex; justify-content:space-between; color:var(--muted); font-size: 12px; margin-top: 4px; }
 .ticks.spaced span { flex:1; text-align:center; }
+
+.select-wrapper { display: grid; grid-template-columns: 1fr; gap: 10px; }
+
+.radio-left .row, .radio-left { display: flex; align-items: center; gap: 12px; }
+.radio-left input[type="radio"] { accent-color: var(--green-check); width: 16px; height: 16px; }
 
 .ul { list-style: none; padding-left: 0; }
 .ul li { margin: 4px 0; display:flex; align-items:center; gap:8px; }
 
 .sla-include { border-top:1px solid var(--line); margin-top:10px; padding-top:10px; }
+.sla-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.sla-card { background:#0d0f12; border:1px solid var(--line); border-radius:10px; padding:12px; }
+.sla-title { color: #fff; font-weight: 500; font-size: 13px; margin-bottom: 4px; }
+.sla-note { color: rgba(255,255,255,0.5); font-size: 11px; line-height: 1.3; }
 
 .errors { margin-top:10px; }
 .error { background:#2a1212; color:#ffb3b3; padding:8px; border-radius:8px; margin-bottom:6px; border:1px solid #472222; }
@@ -590,11 +664,12 @@ button.primary { margin-top: 12px; padding: 14px 16px; border-radius: 12px; back
 button.full { width: 100%; }
 button.strong { font-weight: 700; font-size: 18px; }
 
-.after { color:#8fe38f; margin-top:8px; }
+.after { color: var(--green-check); margin-top:8px; }
 
 @media (max-width: 1024px) {
-  .grid2, .grid3, .grid4, .widgets { grid-template-columns: 1fr; }
+  .grid2, .grid4, .widgets { grid-template-columns: 1fr; }
   .topics-grid.compact3 { grid-template-columns: repeat(2, 1fr); }
   .checks-grid { grid-template-columns: 1fr 1fr; }
+  .sla-cards { grid-template-columns: 1fr; }
 }
 </style>
