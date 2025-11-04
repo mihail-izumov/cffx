@@ -1,315 +1,426 @@
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue'
-import { Teleport } from 'vue'
+import { reactive, ref, computed, h, watch } from 'vue'
 
-type Widget = 'cafe' | 'fitness'
-type Owner = 'team' | 'manager' | 'custom'
+const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
+
+type Topic = { category: string }
+type CategoryKey = 'A'|'B'|'C'|'D'
+type Owner = 'team'|'manager'|'custom'
+
+const CAFE_TOPICS: Topic[] = [{category:'Вкус'},{category:'Чистота'},{category:'Долгое ожидание'},{category:'Ошибки в заказе'},{category:'Поведение персонала'},{category:'Инородные предметы'},{category:'Очереди'},{category:'Атмосфера'},{category:'Упаковка'},{category:'Коммуникация'},{category:'Цена'},{category:'Профессионализм'},{category:'Дизайн'},{category:'Парковка'}]
+const FITNESS_TOPICS: Topic[] = [{category:'Переполненность'},{category:'Чистота'},{category:'Поведение персонала'},{category:'Оборудование'},{category:'Цена'},{category:'Расписание'},{category:'Температура'},{category:'Качество тренировок'},{category:'Опоздание тренера'},{category:'Атмосфера'},{category:'Удобства'},{category:'Договор и отмена'}]
+
+const WIDGETS = {
+  cafe: {
+    title:'Общепит', icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56"><text y="40" font-size="40">🍔</text></svg>', topics:CAFE_TOPICS,
+    benefits:['Словарь жалоб','Умная форма','Компенсации'],
+    scripts:['Вкус','Долгая подача','Инородный предмет','Поведение персонала','Чистота','Температура'],
+    defaultOwners:{A:'team' as Owner,B:'team' as Owner,C:'manager' as Owner,D:'manager' as Owner},
+    defaultTopics:{A:['Ошибки в заказе','Коммуникация','Цена','Упаковка'],B:['Долгое ожидание','Вкус','Чистота'],C:['Инородные предметы','Профессионализм','Атмосфера'],D:['Договор и отмена','Поведение персонала']},
+    defaultCompany:'СуперФуд', defaultRetention:50, plannedActualPct:55
+  },
+  fitness: {
+    title:'Фитнес', icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56"><text y="40" font-size="40">💪</text></svg>', topics:FITNESS_TOPICS,
+    benefits:['Словарь жалоб','Умная форма','Эскалации'],
+    scripts:['Переполненность/очереди','Чистота раздевалок','Оборудование/ремонт','Поведение персонала','Расписание занятий','Температура/вентиляция'],
+    defaultOwners:{A:'team' as Owner,B:'team' as Owner,C:'manager' as Owner,D:'manager' as Owner},
+    defaultTopics:{A:['Цена','Расписание','Коммуникация'],B:['Чистота','Переполненность','Температура'],C:['Оборудование','Поведение персонала'],D:['Договор и отмена','Поведение персонала']},
+    defaultCompany:'СуперСпорт', defaultRetention:70, plannedActualPct:23
+  }
+} as const
+
+type WidgetKey = keyof typeof WIDGETS
+const SLA_READY=['Общие положения','Клиентское соглашение','Общие принципы','Алгоритм работы ИИ‑ассистента (10 этапов)','Классификация проблем и рекомендации','Шаблоны тикетов','Расширенные фразы‑шаблоны','Метрики успеха','Технические требования','Приложения']
+const SLA_LATER=['Полные скрипты по категориям','Контакты ответственных','Эскалационная матрица','Примеры и кейсы']
 
 const state = reactive({
-  widget: 'cafe' as Widget,
-  company: { name: '', locations: 2, guests: 3000, check: 550, retention: 50, ltv: [] as string[], other: '' },
-  nps: 60 as 60 | 1440 | 4320 | -1,
-  customHours: 2,
-  workMode: 'wk_9_18' as 'wk_9_18' | 'wk_9_18_we' | 'extended',
-  hours: { week: { from: '09:00', to: '18:00' }, weekend: { from: '10:00', to: '17:00' } },
-  categories: { A: 'team', B: 'team', C: 'manager', D: 'manager' } as Record<'A'|'B'|'C'|'D', Owner>,
-  extraFields: ['', ''] as string[],
-  contact: { name: '', phone: '' },
+  widget:'cafe' as WidgetKey,
+  company:{name:'',locations:2,guests_or_clients:3000,avg_check_or_subscription:550,retention_pct:50,ltv_cards:[] as string[],ltv_tool_other:''},
+  standards_source:'internal' as 'internal'|'signal',
+  has_full_classification:false,
+  client_scripts:[] as string[],
+  categories_map:{A:{owner:'team' as Owner,contact:'',topics:[] as string[]},B:{owner:'team' as Owner,contact:'',topics:[] as string[]},C:{owner:'manager' as Owner,contact:'',topics:[] as string[]},D:{owner:'manager' as Owner,contact:'',topics:[] as string[]}},
+  ticket_template:{base_fields_ru:['Код тикета','Дата и время','Имя гостя','Контакт','Локация','Категория','Описание проблемы','Рекомендуемое решение','UPD после рекомендации'],extra_fields:[] as string[]},
+  goals:{full_close_time_hours:18,resolved_without_escalation_pct:75,reco_accuracy_pct:80,nps_collected_pct:95,nps_avg:8,returns_after_complaint_pct:70,avg_compensation_rub:500},
+  nps:{step:60 as 60|1440|4320|-1,custom_hours:2},
+  work_hours:{mode:'wk_9_18' as 'wk_9_18'|'wk_9_18_we'|'extended',weekdays:{from:'09:00',to:'18:00'},weekends:{from:'10:00',to:'17:00'}},
+  contact:{name:'',phone:''}
 })
 
-const widgetData = {
-  cafe: { icon: 'cafe', name: 'СуперФуд', retentionNow: 55, topics: ['Ошибки в заказе','Чистота','Долгое ожидание','Вкус'] },
-  fitness: { icon: 'fitness', name: 'СуперСпорт', retentionNow: 23, topics: ['Чистота','Переполненность','Оборудование','Поведение персонала'] },
-}
+const isCafe=computed(()=>state.widget==='cafe')
+const sliderGuestsMin=computed(()=>isCafe.value?500:200)
+const sliderGuestsMax=computed(()=>5000)
+const sliderGuestsStep=computed(()=>isCafe.value?500:200)
+const sliderMoneyMin=computed(()=>isCafe.value?250:1000)
+const sliderMoneyMax=computed(()=>isCafe.value?5000:15000)
+const sliderMoneyStep=computed(()=>isCafe.value?50:1000)
+const ltvOptions=['CRM','BI/Дашборды','Google Sheets','Другое']
+const npsCards=[{label:'60м',value:60},{label:'1д',value:1440},{label:'3д',value:4320},{label:'Другое',value:-1}]
+const plannedText=computed(()=>`Плановый рост с Сигналом · актуальный показатель ${WIDGETS[state.widget].plannedActualPct}%`)
+const slaTitle=computed(()=>`SLA Сигнала для ${state.company.name||'компании'}`)
+const availableScripts=computed(()=>WIDGETS[state.widget].scripts)
+const currentTopics=computed(()=>WIDGETS[state.widget].topics.map(t=>t.category))
 
-const allTopics = computed(() => state.widget === 'cafe'
-  ? ['Вкус','Чистота','Долгое ожидание','Ошибки в заказе','Поведение персонала','Инородные предметы','Очереди','Атмосфера','Упаковка','Коммуникация','Цена','Профессионализм','Дизайн','Парковка']
-  : ['Переполненность','Чистота','Поведение персонала','Оборудование','Цена','Расписание','Температура','Качество тренировок','Опоздание тренера','Атмосфера','Удобства','Договор и отмена']
-)
+function getCategoryData(k:string){return state.categories_map[k as CategoryKey]}
+function setCategoryOwner(k:string,val:Owner){state.categories_map[k as CategoryKey].owner=val}
+function setCategoryContact(k:string,val:string){state.categories_map[k as CategoryKey].contact=val}
+function getCategoryTopics(k:string):string[]{return state.categories_map[k as CategoryKey].topics}
+function toggleCategoryTopic(k:string,name:string){const arr=state.categories_map[k as CategoryKey].topics,i=arr.indexOf(name);if(i>=0)arr.splice(i,1);else arr.push(name)}
 
-const availableTopics = computed(() => allTopics.value.filter(t => !state.extraFields.includes(t)))
+function applyWidgetDefaults(){const w=WIDGETS[state.widget];state.company.name=w.defaultCompany;state.company.retention_pct=w.defaultRetention;(['A','B','C','D'] as CategoryKey[]).forEach(k=>{state.categories_map[k].owner=w.defaultOwners[k];state.categories_map[k].topics=[...w.defaultTopics[k]]});state.client_scripts=[]}
+applyWidgetDefaults()
 
-const modal = ref<null | 'categories' | 'ticket' | 'nps' | 'work' | 'goals' | 'sla_ready' | 'sla_later'>(null)
-const open = (m: typeof modal.value) => { modal.value = m; document.body.style.overflow = 'hidden' }
-const close = () => { modal.value = null; document.body.style.overflow = '' }
-
-const toggleLtv = (v: string) => {
-  const i = state.company.ltv.indexOf(v)
-  i === -1 ? state.company.ltv.push(v) : state.company.ltv.splice(i, 1)
-}
-
-const submit = () => console.log('SLA:', JSON.parse(JSON.stringify(state)))
+function onWidgetChange(key:WidgetKey){state.widget=key;applyWidgetDefaults()}
+function toggleLtvCard(name:string){const i=state.company.ltv_cards.indexOf(name);if(i>=0)state.company.ltv_cards.splice(i,1);else state.company.ltv_cards.push(name)}
+function availableExtraFields():string[]{return WIDGETS[state.widget].topics.map(t=>t.category)}
+function toggleExtraField(name:string){const arr=state.ticket_template.extra_fields,i=arr.indexOf(name);if(i>=0)arr.splice(i,1);else if(arr.length<2)arr.push(name)}
+function selectNps(v:number){state.nps.step=v as any}
+const isModalOpen=ref(false)
+const modalKind=ref<'categories'|'ticket'|'goals_ops'|'goals_quality'|'goals_business'|'sla_ready'|'sla_later'|'workhours'>('categories')
+function openModal(kind:typeof modalKind.value){modalKind.value=kind;isModalOpen.value=true;if(typeof document!=='undefined')document.body.style.overflow='hidden'}
+function closeModal(){isModalOpen.value=false;if(typeof document!=='undefined')document.body.style.overflow=''}
+function ownerLabel(o:Owner){return o==='team'?'Команда':o==='manager'?'Управляющий':'Другое'}
+function submitForm(){console.log('SLA build request',JSON.parse(JSON.stringify(state)))}
+watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 </script>
 
 <template>
-  <div class="configurator">
-
-    <!-- Виджеты -->
-    <div class="widgets">
-      <button @click="state.widget='cafe'" :class="{active: state.widget==='cafe'}" class="card">
-        <div class="icon">Cafe</div>
-        <div class="title">Общепит</div>
-        <div class="checks">
-          <div v-for="b in ['Словарь жалоб','Умная форма','Компенсации']" :key="b" class="check">Check {{ b }}</div>
-        </div>
-      </button>
-      <button @click="state.widget='fitness'" :class="{active: state.widget==='fitness'}" class="card">
-        <div class="icon">Fitness</div>
-        <div class="title">Фитнес</div>
-        <div class="checks">
-          <div v-for="b in ['Словарь жалоб','Умная форма','Эскалации']" :key="b" class="check">Check {{ b }}</div>
-        </div>
-      </button>
-    </div>
-
-    <!-- Компания -->
-    <div class="section">
-      <h2>Компания</h2>
-      <input v-model="state.company.name" :placeholder="widgetData[state.widget].name" class="title-input" />
-      <div class="grid">
-        <div class="field">
-          <label>Локаций</label>
-          <input type="range" v-model.number="state.company.locations" min="1" max="50" />
-          <span>{{ state.company.locations }}</span>
-        </div>
-        <div class="field">
-          <label>{{ state.widget === 'cafe' ? 'Гости/мес' : 'Клиенты/мес' }}</label>
-          <input type="range" :min="state.widget==='cafe'?500:200" :max="5000" :step="state.widget==='cafe'?500:200" v-model.number="state.company.guests" />
-          <span>{{ state.company.guests }}</span>
-        </div>
-        <div class="field">
-          <label>{{ state.widget === 'cafe' ? 'Средний чек' : 'Абонемент' }} ₽</label>
-          <input type="range" :min="state.widget==='cafe'?250:1000" :max="state.widget==='cafe'?5000:15000" :step="state.widget==='cafe'?50:1000" v-model.number="state.company.check" />
-          <span>{{ state.company.check }} ₽</span>
-        </div>
-        <div class="field full">
-          <label>Retention</label>
-          <input type="range" v-model.number="state.company.retention" min="0" max="100" />
-          <span>{{ state.company.retention }}%</span>
-          <div class="hint">Плановый рост с Сигналом ({{ widgetData[state.widget].retentionNow }}%)</div>
-        </div>
+  <section class="signal-sla dark compact">
+    <div class="card">
+      <div class="widget-row">
+        <button class="widget-card" :class="{active:state.widget==='cafe'}" @click="onWidgetChange('cafe')">
+          <div class="widget-head">
+            <img :src="WIDGETS.cafe.icon" alt="Общепит" class="widget-icon"/>
+            <div><div class="w-title">Общепит</div>
+              <ul class="checks" v-if="state.widget==='cafe'">
+                <li v-for="b in WIDGETS.cafe.benefits" :key="'c'+b"><input type="checkbox" checked disabled/><span>{{b}}</span></li>
+              </ul>
+            </div>
+          </div>
+        </button>
+        <button class="widget-card" :class="{active:state.widget==='fitness'}" @click="onWidgetChange('fitness')">
+          <div class="widget-head">
+            <img :src="WIDGETS.fitness.icon" alt="Фитнес" class="widget-icon"/>
+            <div><div class="w-title">Фитнес</div>
+              <ul class="checks" v-if="state.widget==='fitness'">
+                <li v-for="b in WIDGETS.fitness.benefits" :key="'f'+b"><input type="checkbox" checked disabled/><span>{{b}}</span></li>
+              </ul>
+            </div>
+          </div>
+        </button>
       </div>
 
-      <div class="ltv">
-        <h3>LTV‑инструмент</h3>
-        <div class="chips">
-          <button v-for="o in ['CRM','BI/Дашборды','Google Sheets','Другое']" @click="toggleLtv(o)" :class="{on: state.company.ltv.includes(o)}">{{ o }}</button>
-        </div>
-        <input v-if="state.company.ltv.includes('Другое')" v-model="state.company.other" placeholder="Опишите" class="other" />
-      </div>
-    </div>
+      <div class="company-fields">
+        <label class="row big-input"><input style="display:none"/><span>Название компании</span></label>
+        <input class="company big" v-model="state.company.name" type="text" :placeholder="WIDGETS[state.widget].defaultCompany"/>
 
-    <!-- Цели -->
-    <div class="section">
-      <h2>Цели</h2>
-      <div class="goal" @click="open('goals')">
-        <div>Операционные: 18 ч, 75 % без эскалации</div>
-        <div>Изменить</div>
-      </div>
-      <div class="goal" @click="open('goals')">
-        <div>Качество: 80 % точность, NPS 8</div>
-        <div>Изменить</div>
-      </div>
-      <div class="goal" @click="open('goals')">
-        <div>Бизнес: 70 % возврат, 500 ₽ компенсация</div>
-        <div>Изменить</div>
+        <label class="row"><input style="display:none"/><span>Кол-во локаций</span>
+          <input class="range long white" type="range" min="1" max="50" step="1" v-model.number="state.company.locations"/>
+          <span class="inline-value">{{state.company.locations}}</span>
+        </label>
+
+        <label class="row"><input style="display:none"/>
+          <span v-if="isCafe">Гости/мес</span><span v-else>Клиенты/мес</span>
+          <input class="range long white" type="range" :min="sliderGuestsMin" :max="sliderGuestsMax" :step="sliderGuestsStep" v-model.number="state.company.guests_or_clients"/>
+          <span class="inline-value">{{state.company.guests_or_clients}}</span>
+        </label>
+
+        <label class="row"><input style="display:none"/>
+          <span v-if="isCafe">Средний чек (₽)</span><span v-else>Абонемент/мес (₽)</span>
+          <input class="range long white" type="range" :min="sliderMoneyMin" :max="sliderMoneyMax" :step="sliderMoneyStep" v-model.number="state.company.avg_check_or_subscription"/>
+          <span class="inline-value">{{state.company.avg_check_or_subscription}} ₽</span>
+        </label>
+
+        <div class="ltv-ret-block">
+          <div class="ret-block">
+            <label class="row"><input style="display:none"/><span>Текущий retention: <strong>{{state.company.retention_pct}}%</strong></span></label>
+            <input class="range long white" type="range" min="0" max="100" v-model.number="state.company.retention_pct"/>
+            <div class="hint small">{{plannedText}}</div>
+            <a class="linklike same" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем</a>
+          </div>
+
+          <div class="ltv-block">
+            <div class="ltv-title">Инструмент контроля LTV</div>
+            <div class="ltv-grid">
+              <button v-for="opt in ltvOptions" :key="opt" class="ltv-card" :class="{active:state.company.ltv_cards.includes(opt)}" type="button" @click="toggleLtvCard(opt)">{{opt}}</button>
+            </div>
+            <input v-if="state.company.ltv_cards.includes('Другое')" v-model="state.company.ltv_tool_other" type="text" class="fullwidth ltv-other" placeholder="Опишите инструмент"/>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- NPS -->
-    <div class="section">
-      <h2>Таймер NPS</h2>
-      <div class="nps">
-        <button v-for="{v,l} in [{v:60,l:'60 мин'},{v:1440,l:'1 день'},{v:4320,l:'3 дня'},{v:-1,l:'Другое'}]" @click="state.nps=v" :class="{on: state.nps===v}">{{ l }}</button>
+    <div class="card">
+      <h3>Источники стандартов для Сигнала</h3>
+      <div class="radio-left">
+        <label class="row"><input type="radio" value="internal" v-model="state.standards_source"/><span>Внутренние стандарты</span></label>
+        <label class="row"><input type="radio" value="signal" v-model="state.standards_source"/><span>Стандарты Сигнала</span></label>
       </div>
-      <input v-if="state.nps===-1" v-model.number="state.customHours" type="number" min="1" placeholder="Часы" class="small" />
-    </div>
-
-    <!-- Режим -->
-    <div class="section">
-      <h2>Режим работы</h2>
-      <div class="radio">
-        <label><input type="radio" v-model="state.workMode" value="wk_9_18"> Будни 9–18 МСК</label>
-        <label><input type="radio" v-model="state.workMode" value="wk_9_18_we"> + выходные</label>
-        <label><input type="radio" v-model="state.workMode" value="extended"> Расширенный (<a @click.prevent="open('work')">Настроить</a>)</label>
+      <div class="divider"></div>
+      <label class="row"><input type="checkbox" v-model="state.has_full_classification"/><span>Собственная классификация: скрипты</span></label>
+      <div v-if="state.has_full_classification" class="checks-grid-2col">
+        <label v-for="s in availableScripts" :key="s" class="row">
+          <input type="checkbox" :value="s" v-model="state.client_scripts"/><span>{{s}}</span>
+        </label>
       </div>
     </div>
 
-    <!-- Категории -->
-    <div class="section">
-      <h2>Категории A–Г</h2>
-      <div class="badges">
-        <div v-for="k in ['A','B','C','D']" class="badge">
-          <div>Кат. {{ k==='A'?'А':k==='B'?'Б':k==='C'?'В':'Г' }}</div>
-          <div>{{ k==='A'?'4 ч':k==='B'?'2 ч':k==='C'?'1 ч':'15 мин' }}</div>
-          <div class="owner">{{ state.categories[k] === 'team' ? 'Команда' : 'Управляющий' }}</div>
+    <div class="card">
+      <h3>Цели</h3>
+      <div class="goals-row"><div><div class="goal-title">Операционные</div>
+        <div class="goal-line">Полное закрытие: {{state.goals.full_close_time_hours}} ч; Без эскалации: {{state.goals.resolved_without_escalation_pct}}%</div></div>
+        <button class="linklike same" @click="openModal('goals_ops')">Изменить</button></div>
+      <div class="goals-row"><div><div class="goal-title">Качество</div>
+        <div class="goal-line">Точность: {{state.goals.reco_accuracy_pct}}%; Получение NPS: {{state.goals.nps_collected_pct}}%; NPS: {{state.goals.nps_avg}}</div></div>
+        <button class="linklike same" @click="openModal('goals_quality')">Изменить</button></div>
+      <div class="goals-row"><div><div class="goal-title">Бизнес</div>
+        <div class="goal-line">Возврат: {{state.goals.returns_after_complaint_pct}}%; Компенсация: {{state.goals.avg_compensation_rub}} ₽</div></div>
+        <button class="linklike same" @click="openModal('goals_business')">Изменить</button></div>
+    </div>
+
+    <div class="card">
+      <h3>Таймер запроса NPS</h3>
+      <div class="nps-cards">
+        <button v-for="c in npsCards" :key="c.value" class="nps-card" :class="{active:state.nps.step===c.value}" @click="selectNps(c.value)">{{c.label}}</button>
+      </div>
+      <div v-if="state.nps.step===-1" class="grid1">
+        <label class="row"><input style="display:none"/><span>Своё (ч)</span><input type="number" min="1" step="1" v-model.number="state.nps.custom_hours"/></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Режим работы</h3>
+      <div class="radio-left grid2">
+        <div class="row"><input type="radio" value="wk_9_18" v-model="state.work_hours.mode"/><span>Будни 9–18 МСК</span></div>
+        <div class="row"><input type="radio" value="wk_9_18_we" v-model="state.work_hours.mode"/><span>9–18 МСК + выходные</span></div>
+      </div>
+      <div class="row" style="margin-top:8px;">
+        <input class="radio-big" type="radio" value="extended" v-model="state.work_hours.mode"/>
+        <span>Расширенный режим — <button class="linklike same" type="button" @click="openModal('workhours')">Настроить</button></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Категории A–Г</h3>
+      <div class="mini-ag">
+        <div class="mini-badge">Кат. А — 4 часа<div class="mini-sub">{{ownerLabel(getCategoryData('A').owner)}}</div></div>
+        <div class="mini-badge">Кат. Б — 2 часа<div class="mini-sub">{{ownerLabel(getCategoryData('B').owner)}}</div></div>
+        <div class="mini-badge">Кат. В — 1 час<div class="mini-sub">{{ownerLabel(getCategoryData('C').owner)}}</div></div>
+        <div class="mini-badge">Кат. Г — 15 минут<div class="mini-sub">{{ownerLabel(getCategoryData('D').owner)}}</div></div>
+      </div>
+      <button class="linklike same" @click="openModal('categories')">Изменить роли и темы</button>
+    </div>
+
+    <div class="card">
+      <h3>Шаблон тикета</h3>
+      <div class="goal-line">Базовые поля: {{state.ticket_template.base_fields_ru.join(', ')}}</div>
+      <div class="goal-line">Дополнительные поля: {{state.ticket_template.extra_fields.join(', ')||'не выбрано'}}</div>
+      <button class="linklike same" @click="openModal('ticket')">Изменить шаблон</button>
+    </div>
+
+    <div class="card">
+      <h3>Контактные данные</h3>
+      <div class="grid2">
+        <label class="row"><input style="display:none"/><span>Имя</span><input v-model="state.contact.name" type="text" placeholder="Иван Петров"/></label>
+        <label class="row"><input style="display:none"/><span>Телефон</span><input v-model="state.contact.phone" type="text" placeholder="+7 (999) 123-45-67"/></label>
+      </div>
+    </div>
+
+    <div class="card summary onecol lime-outline">
+      <h2 class="sla-title lime">{{slaTitle}}</h2>
+      <h2 class="price">₽30.000</h2>
+      <div class="price-note">One-time payment</div>
+      <div class="sla-groups no-checks">
+        <div class="sla-group">
+          <div class="sla-group-title">Почти готово</div>
+          <div class="sla-text">{{SLA_READY.join(', ')}}</div>
+          <button class="linklike same" @click="openModal('sla_ready')">Почти готово</button>
+        </div>
+        <div class="sla-group">
+          <div class="sla-group-title">потом</div>
+          <div class="sla-text">{{SLA_LATER.join(', ')}}</div>
+          <button class="linklike same" @click="openModal('sla_later')">Доработать и согласовать</button>
         </div>
       </div>
-      <button @click="open('categories')" class="link">Изменить</button>
-    </div>
-
-    <!-- Тикет -->
-    <div class="section">
-      <h2>Шаблон тикета</h2>
-      <div class="text">Базовые: Код тикета, Дата и время, Имя гостя, Контакт, Локация, Категория, Описание проблемы, Рекомендуемое решение, UPD после рекомендации</div>
-      <div class="text">Доп. поля: {{ state.extraFields.filter(Boolean).join(', ') || '—' }}</div>
-      <button @click="open('ticket')" class="link">Изменить</button>
-    </div>
-
-    <!-- Контакт -->
-    <div class="section">
-      <h2>Контакт</h2>
-      <input v-model="state.contact.name" placeholder="Иван" />
-      <input v-model="state.contact.phone" placeholder="+7 (999) 123-45-67" />
-    </div>
-
-    <!-- SLA -->
-    <div class="sla">
-      <h1>SLA Сигнала для {{ state.company.name || 'компании' }}</h1>
-      <div class="price">₽30.000</div>
-      <div class="note">One‑time payment</div>
-
-      <div class="blocks">
-        <div class="block">
-          <h3>Почти готово</h3>
-          <div class="list">Общие положения, Клиентское соглашение, Общие принципы, Алгоритм работы ИИ‑ассистента (10 этапов), Классификация проблем и рекомендации, Шаблоны тикетов, Расширенные фразы‑шаблоны, Метрики успеха, Технические требования, Приложения</div>
-          <button @click="open('sla_ready')" class="link">Почти готово</button>
-        </div>
-        <div class="block">
-          <h3>Потом</h3>
-          <div class="list">Полные скрипты по категориям, Контакты ответственных, Эскалационная матрица, Примеры и кейсы</div>
-          <button @click="open('sla_later')" class="link">Доработать</button>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button @click="submit" class="primary">Отправить на сборку</button>
-        <button class="secondary">Save for later</button>
+      <div class="cta-row">
+        <button class="primary full strong lime-btn" @click="submitForm">Отправить на сборку</button>
+        <button class="primary full strong white-btn" type="button">Save for later</button>
       </div>
     </div>
 
-    <!-- МОДАЛКИ — Apple Style -->
     <Teleport to="body">
-      <div v-if="modal" class="modal-overlay" @click="close">
-        <div class="modal" @click.stop>
-          <button class="close" @click="close">Close</button>
-          <div class="modal-content">
+      <Transition name="pricing-modal">
+        <div v-if="isModalOpen" class="pricing-modal-overlay" @click="closeModal">
+          <div class="pricing-modal-window" @click.stop>
+            <button class="pricing-modal-close" @click="closeModal" aria-label="Закрыть"><CloseIcon/></button>
 
-            <!-- Категории -->
-            <template v-if="modal==='categories'">
-              <h2>Категории A–Г</h2>
-              <div class="modal-grid">
-                <div v-for="k in ['A','B','C','D']" class="cat">
-                  <h3>Кат. {{ k==='A'?'А':k==='B'?'Б':k==='C'?'В':'Г' }}</h3>
-                  <div class="time">{{ k==='A'?'4 ч':k==='B'?'2 ч':k==='C'?'1 ч':'15 мин' }}</div>
-                  <select v-model="state.categories[k]">
-                    <option value="team">Команда</option>
-                    <option value="manager">Управляющий</option>
-                  </select>
-                  <div class="topics">
-                    <button v-for="t in allTopics" @click="console.log(t)" class="topic">{{ t }}</button>
+            <template v-if="modalKind==='categories'">
+              <div class="pricing-modal-header">НАСТРОЙКИ</div>
+              <h2 class="pricing-modal-title">Категории А/Б/В/Г</h2>
+              <div class="pricing-modal-body">
+                <div class="owner-grid spaced">
+                  <div v-for="k in ['A','B','C','D']" :key="k" class="owner-col surface">
+                    <h2 class="cat-h2">Категория {{k==='A'?'А':k==='B'?'Б':k==='C'?'В':'Г'}}</h2>
+                    <label class="row surface"><input style="display:none"/><span>Ответственный</span>
+                      <select :value="getCategoryData(k).owner" @input="(e:any)=>setCategoryOwner(k,e.target.value)" class="select-arrow">
+                        <option value="team">Команда</option><option value="manager">Управляющий</option><option value="custom">Другое</option>
+                      </select>
+                    </label>
+                    <label v-if="getCategoryData(k).owner==='custom'" class="row surface"><input style="display:none"/><span>Контакт</span>
+                      <input :value="getCategoryData(k).contact" @input="(e:any)=>setCategoryContact(k,e.target.value)" type="text" placeholder="@handle или телефон"/>
+                    </label>
+                    <div class="hint small black">Темы (без ограничений)</div>
+                    <div class="topics-grid compact3">
+                      <button v-for="name in currentTopics" :key="name" type="button" class="topic-card small" :class="{selected:getCategoryTopics(k).includes(name)}" @click="toggleCategoryTopic(k,name)">
+                        <input type="checkbox" :checked="getCategoryTopics(k).includes(name)"/><span class="t-name black">{{name}}</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </template>
 
-            <!-- Остальные модалки -->
-            <template v-else-if="modal==='ticket'">
-              <h2>Дополнительные поля (макс. 2)</h2>
-              <div class="topics">
-                <button v-for="t in availableTopics" @click="state.extraFields.length<2 && !state.extraFields.includes(t) && state.extraFields.push(t); state.extraFields.length>2 && state.extraFields.splice(0,1)"
-                        :class="{on: state.extraFields.includes(t), disabled: state.extraFields.length>=2 && !state.extraFields.includes(t)}">{{ t }}</button>
+            <template v-else-if="modalKind==='ticket'">
+              <div class="pricing-modal-header">ШАБЛОН</div><h2 class="pricing-modal-title">Тикет</h2>
+              <div class="pricing-modal-body">
+                <h2 class="section-h2">Базовые поля</h2>
+                <div class="surface pad black">{{state.ticket_template.base_fields_ru.join(', ')}}</div>
+                <h2 class="section-h2" style="margin-top:16px;">Дополнительные поля</h2>
+                <div class="extras-grid">
+                  <button v-for="f in availableExtraFields()" :key="f" type="button" class="extra-card" :class="{active:state.ticket_template.extra_fields.includes(f)}" @click="toggleExtraField(f)">{{f}}</button>
+                </div>
+                <div class="hint small black">Можно выбрать не более 2 полей</div>
               </div>
             </template>
 
-            <template v-else>
-              <h2>{{ modal === 'sla_ready' ? 'Почти готово' : 'Доработать позже' }}</h2>
-              <div class="list">...</div>
+            <template v-else-if="modalKind==='goals_ops'">
+              <div class="pricing-modal-header">ЦЕЛИ</div><h2 class="pricing-modal-title">Операционные</h2>
+              <div class="pricing-modal-body spaced-large">
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Полное закрытие (ч): <strong>{{state.goals.full_close_time_hours}}</strong></span></label><input class="range long white" type="range" min="1" max="24" v-model.number="state.goals.full_close_time_hours"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Без эскалации: <strong>{{state.goals.resolved_without_escalation_pct}}%</strong></span></label><input class="range long white" type="range" min="0" max="100" v-model.number="state.goals.resolved_without_escalation_pct"/></div>
+              </div>
             </template>
+
+            <template v-else-if="modalKind==='goals_quality'">
+              <div class="pricing-modal-header">ЦЕЛИ</div><h2 class="pricing-modal-title">Качество</h2>
+              <div class="pricing-modal-body spaced-large">
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Точность рекомендаций: <strong>{{state.goals.reco_accuracy_pct}}%</strong></span></label><input class="range long white" type="range" min="0" max="100" v-model.number="state.goals.reco_accuracy_pct"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Получение NPS: <strong>{{state.goals.nps_collected_pct}}%</strong></span></label><input class="range long white" type="range" min="0" max="100" v-model.number="state.goals.nps_collected_pct"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Средний NPS: <strong>{{state.goals.nps_avg}}</strong></span></label><input class="range long white" type="range" min="1" max="10" v-model.number="state.goals.nps_avg"/></div>
+              </div>
+            </template>
+
+            <template v-else-if="modalKind==='goals_business'">
+              <div class="pricing-modal-header">ЦЕЛИ</div><h2 class="pricing-modal-title">Бизнес</h2>
+              <div class="pricing-modal-body spaced-large">
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Возврат после жалобы: <strong>{{state.goals.returns_after_complaint_pct}}%</strong></span></label><input class="range long white" type="range" min="0" max="100" v-model.number="state.goals.returns_after_complaint_pct"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Средняя компенсация (₽): <strong>{{state.goals.avg_compensation_rub}}</strong></span></label><input class="range long white" type="range" min="0" max="5000" step="10" v-model.number="state.goals.avg_compensation_rub"/></div>
+              </div>
+            </template>
+
+            <template v-else-if="modalKind==='sla_ready'"><div class="pricing-modal-header">СТРУКТУРА</div><h2 class="pricing-modal-title">Почти готово</h2><div class="pricing-modal-body"><div class="surface pad black">{{SLA_READY.join(', ')}}</div></div></template>
+            <template v-else-if="modalKind==='sla_later'"><div class="pricing-modal-header">СТРУКТУРА</div><h2 class="pricing-modal-title">потом</h2><div class="pricing-modal-body"><div class="surface pad black">{{SLA_LATER.join(', ')}}</div></div></template>
+
+            <template v-else>
+              <div class="pricing-modal-header">ГРАФИК</div><h2 class="pricing-modal-title">Расширенный режим</h2>
+              <div class="pricing-modal-body spaced-large">
+                <div class="grid2">
+                  <div class="surface pad black"><h4>Будни</h4><label class="row surface"><input style="display:none"/><span>От</span><input v-model="state.work_hours.weekdays.from" type="time"/></label><label class="row surface"><input style="display:none"/><span>До</span><input v-model="state.work_hours.weekdays.to" type="time"/></label></div>
+                  <div class="surface pad black"><h4>Выходные</h4><label class="row surface"><input style="display:none"/><span>От</span><input v-model="state.work_hours.weekends.from" type="time"/></label><label class="row surface"><input style="display:none"/><span>До</span><input v-model="state.work_hours.weekends.to" type="time"/></label></div>
+                </div>
+              </div>
+            </template>
+
           </div>
         </div>
-      </div>
+      </Transition>
     </Teleport>
-  </div>
+  </section>
 </template>
 
 <style scoped>
-.configurator { max-width: 960px; margin: auto; padding: 2rem; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; background: #000; color: #fff; }
-h1, h2, h3 { font-weight: 600; margin: 0; }
-h1 { font-size: 2.5rem; color: #a3e9b8; }
-h2 { font-size: 1.8rem; margin: 2rem 0 1rem; }
-h3 { font-size: 1.1rem; }
-
-.widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 3rem; }
-.card { background: #111; border-radius: 1.5rem; padding: 1.5rem; text-align: center; cursor: pointer; transition: all .3s; }
-.card.active { background: #1a1a1a; box-shadow: 0 0 30px rgba(163,233,184,.3); }
-.icon { font-size: 3rem; margin-bottom: .5rem; }
-.title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; }
-.checks { display: flex; flex-direction: column; gap: .5rem; }
-.check { font-size: .9rem; opacity: .8; }
-
-.title-input { font-size: 2rem; background: transparent; border: none; color: #fff; width: 100%; padding: .5rem 0; border-bottom: 2px solid #333; }
-
-.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-.field { display: flex; flex-direction: column; }
-.field label { font-size: .9rem; opacity: .7; margin-bottom: .5rem; }
-.field input[type=range] { -webkit-appearance: none; height: 8px; background: #333; border-radius: 4px; }
-.field input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; background: #fff; border-radius: 50%; }
-.field span { align-self: flex-end; font-size: 1.5rem; font-weight: 600; margin-top: .5rem; }
-.full { grid-column: span 2; }
-
-.hint { font-size: .85rem; opacity: .7; margin-top: .5rem; }
-
-.ltv h3 { margin: 2rem 0 1rem; }
-.chips { display: flex; flex-wrap: wrap; gap: .75rem; }
-.chips button { padding: .75rem 1.2rem; background: #222; border-radius: 2rem; font-size: .9rem; }
-.chips button.on { background: #a3e9b8; color: #000; }
-.other { margin-top: 1rem; padding: 1rem; background: #111; border-radius: 1rem; width: 100%; }
-
-.goal { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #222; cursor: pointer; }
-.goal:last-child { border: none; }
-
-.nps { display: flex; gap: 1rem; flex-wrap: wrap; }
-.nps button { padding: .75rem 1.5rem; background: #111; border-radius: 2rem; }
-.nps button.on { background: #a3e9b8; color: #000; }
-
-.radio label { display: block; margin: 1rem 0; }
-.radio a { color: #a3e9b8; text-decoration: underline; cursor: pointer; }
-
-.badges { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
-.badge { background: #111; padding: 1rem; border-radius: 1.5rem; text-align: center; min-width: 120px; }
-.badge .owner { font-size: .8rem; opacity: .7; margin-top: .5rem; }
-
-.link { color: #a3e9b8; text-decoration: underline; font-size: .9rem; cursor: pointer; }
-
-.sla { background: linear-gradient(135deg, #0a0a0a, #111); border: 2px solid #a3e9b8; border-radius: 2rem; padding: 3rem; text-align: center; margin-top: 4rem; }
-.price { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
-.note { font-size: 1.1rem; opacity: .8; }
-.blocks { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 3rem 0; }
-.block { background: #000; padding: 2rem; border-radius: 1.5rem; }
-.block h3 { color: #a3e9b8; margin-bottom: 1rem; }
-.list { font-size: .9rem; line-height: 1.6; opacity: .8; }
-
-.actions { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
-.primary { background: #a3e9b8; color: #000; padding: 1.2rem; border-radius: 2rem; font-size: 1.3rem; font-weight: 600; }
-.secondary { background: #fff; color: #000; padding: 1.2rem; border-radius: 2rem; }
-
-/* МОДАЛКИ — Apple */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.8); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-.modal { background: #f5f5f7; color: #000; border-radius: 2rem; width: 90%; max-width: 800px; max-height: 90vh; overflow: hidden; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
-.close { position: absolute; top: 1.5rem; right: 1.5rem; width: 44px; height: 44px; background: #000; color: #fff; border-radius: 50%; font-size: 1.5rem; }
-.modal-content { padding: 4rem 3rem 3rem; overflow-y: auto; }
-.modal-content h2 { font-size: 2.2rem; margin-bottom: 2rem; text-align: center; }
-.modal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
-.cat { background: #e5e5ea; padding: 1.5rem; border-radius: 1.5rem; }
-.time { background: #000; color: #fff; padding: .5rem 1rem; border-radius: 1rem; font-size: .8rem; width: fit-content; margin: 1rem 0; }
-select { width: 100%; padding: 1rem; border-radius: 1rem; margin: 1rem 0; }
-.topics { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
-.topic { padding: .75rem; background: #fff; border-radius: 1rem; font-size: .9rem; }
-.topic.on { background: #000; color: #fff; }
-
-@media (max-width: 768px) {
-  .widgets, .grid, .blocks { grid-template-columns: 1fr; }
-  .modal-content { padding: 2rem; }
+.signal-sla.dark{--bg:transparent;--card:#151719;--muted:#9aa3ad;--text:#e8eaed;--line:#2a2d31;--green:#4ade80;--green-10:rgba(77,222,128,0.05);--lime:#c5f946;background:var(--bg);color:var(--text);padding-bottom:20px;font-size:14px;max-width:980px;margin:0 auto;overflow-wrap:anywhere}
+h2,h3,h4{margin:0 0 6px}h2{font-size:22px}h3{font-size:16px}h4{font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 14px;margin:12px 0}
+.grid1{display:grid;grid-template-columns:1fr;gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row{display:flex;align-items:center;gap:10px}.row span{min-width:max-content}
+input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10px;border-radius:10px;background:#0b0c0e;color:var(--text);border:1px solid var(--line);font-size:14px}
+.select-arrow{appearance:auto}.company.big{font-size:18px}.fullwidth{width:100%}
+.range.white{width:100%;-webkit-appearance:none;background:transparent;height:24px}
+.range.white::-webkit-slider-runnable-track{height:4px;background:#fff;border-radius:999px}
+.range.white::-moz-range-track{height:4px;background:#fff;border-radius:999px}
+.range.white::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;margin-top:-7px;border:none}
+.range.white::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#fff;border:none}
+.inline-value{color:#fff;font-size:13px;min-width:40px;text-align:right}
+.widget-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.widget-card{border:1px solid var(--line);border-radius:12px;padding:12px;background:#0d0f12;text-align:left;cursor:pointer}
+.widget-card.active{border-color:#fff;background:#1a1d20}
+.widget-head{display:flex;gap:12px;align-items:flex-start}
+.widget-icon{width:56px;height:56px;object-fit:contain;flex-shrink:0}
+.w-title{font-weight:700;margin:0 0 4px}
+.checks{list-style:none;padding:0;margin:0}.checks li{display:flex;align-items:center;gap:8px;margin:2px 0}
+.checks input{pointer-events:none;accent-color:var(--green);width:16px;height:16px}
+.checks span{font-size:13px;color:#e0e0e0}
+.company-fields{display:grid;grid-template-columns:1fr;gap:10px}
+.ltv-ret-block{display:grid;grid-template-columns:1fr;gap:16px;margin-top:6px}
+.ltv-title{font-weight:600;margin-bottom:6px}
+.ltv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.ltv-card{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#0d0f12;text-align:left;cursor:pointer}
+.ltv-card.active{border-color:#fff;background:#1a1d20}
+.ltv-other{margin-top:10px}
+.linklike{background:transparent;border:none;color:#fff;text-decoration:underline;text-decoration-style:dashed;cursor:pointer;padding:0}
+.linklike.same{font-size:13px}
+.hint{color:var(--muted);font-size:12px}.divider{height:1px;background:var(--line);margin:10px 0}
+.goal-title{font-weight:700;color:#fff;font-size:14px;margin-bottom:2px}
+.goal-line{font-size:13px;color:#c0c0c0}
+.goals-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line)}
+.goals-row:first-of-type{border-top:none}
+.nps-cards{display:flex;gap:8px;flex-wrap:wrap}
+.nps-card{border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:#0d0f12;color:#e8eaed;cursor:pointer}
+.nps-card.active{border-color:#fff;background:#1a1d20}
+.mini-ag{display:flex;gap:8px;flex-wrap:wrap}
+.mini-badge{background:#0b0c0e;border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:12px}
+.mini-sub{color:#9aa3ad;font-size:11px;margin-top:2px}
+.lime{color:var(--lime)}
+.lime-outline{border-color:var(--lime)!important;background:var(--green-10)}
+.sla-title{margin:0 0 6px}.price{margin:0;color:#fff}.price-note{color:#c0c0c0;font-size:16px;margin-bottom:8px}
+.sla-groups{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.sla-group{background:rgba(12,12,14,0.7);border:1px solid var(--line);border-radius:12px;padding:12px}
+.sla-group-title{font-weight:700;margin-bottom:6px}
+.no-checks .sla-text{font-size:13px;color:#e0e0e0}
+button.primary{padding:14px 16px;border-radius:12px;border:1px solid #fff;cursor:pointer}
+button.full{width:100%}button.strong{font-weight:700;font-size:18px}
+.lime-btn{background:var(--lime);color:#000;border-color:var(--lime)}
+.white-btn{background:#fff;color:#000;border-color:#fff}
+.cta-row{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
+.pricing-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px}
+.pricing-modal-window{background:#f5f5f7;border-radius:28px;width:880px;max-width:100%;max-height:90vh;box-shadow:0 20px 60px rgba(0,0,0,0.5);display:flex;flex-direction:column;overflow:hidden;position:relative}
+.pricing-modal-close{position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#1d1d1f;border:none;color:#f5f5f7;cursor:pointer;z-index:11}
+.pricing-modal-header{font-size:1rem;color:#6e6e73;margin:60px 80px 12px 80px;font-weight:500;letter-spacing:0.08em}
+.pricing-modal-title{font-size:2.135rem;font-weight:600;color:#1d1d1f;margin:0 80px 24px 80px}
+.pricing-modal-body{padding:0 80px 60px;overflow-y:auto;max-height:calc(90vh - 200px)}
+.surface{background:#edeef0;border-radius:12px;padding:8px 10px}
+.pad{padding:14px 12px}.black{color:#1d1d1f!important}
+.owner-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.owner-grid.spaced{gap:24px}
+.owner-col{display:grid;gap:10px}
+.cat-h2,.section-h2{font-size:19px;font-weight:600;color:#1d1d1f;margin:0 0 10px 0}
+.hint.small.black{color:#6e6e73}
+.topics-grid.compact3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.topic-card{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #d2d3d6;border-radius:10px;background:#f1f2f4;cursor:pointer}
+.topic-card.small{padding:6px 8px}
+.topic-card.selected{border-color:#86efac;background:#e7f7ee}
+.topic-card input[type="checkbox"]{accent-color:var(--green);width:16px;height:16px;pointer-events:none}
+.extras-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.extra-card{border:1px solid #d2d3d6;border-radius:10px;padding:10px;background:#f1f2f4;color:#1d1d1f;cursor:pointer;text-align:center}
+.extra-card.active{border-color:#16a34a;background:#dcfce7}
+.spaced-large{display:grid;grid-template-columns:1fr;gap:18px}
+.radio-left .row,.radio-left{display:flex;align-items:center;gap:12px}
+.radio-left input[type="radio"],.radio-big{accent-color:var(--green);width:16px;height:16px}
+.checks-grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+@media(max-width:1024px){
+  .widget-row,.sla-groups,.owner-grid,.ltv-grid,.nps-cards{grid-template-columns:1fr}
+  .pricing-modal-header,.pricing-modal-title,.pricing-modal-body{margin-left:24px;margin-right:24px;padding-left:0;padding-right:0}
+  .extras-grid,.topics-grid.compact3{grid-template-columns:1fr 1fr}
 }
 </style>
