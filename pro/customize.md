@@ -87,8 +87,8 @@ notification: brew
   color: #000 !important;
 }
 .btn-primary:hover {
-  background-color: #347b6c;
-  color: white !important;
+  background-color: #fff;
+  color: #000 !important;
 }
 
 .btn-secondary {
