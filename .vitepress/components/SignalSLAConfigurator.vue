@@ -101,13 +101,10 @@ const ltvOptions=['CRM','BI/Дашборды','Google Sheets','Другое']
 const npsCards=[{label:'60 мин.',value:60},{label:'1 день',value:1440},{label:'3 дня',value:4320},{label:'Другое',value:-1}]
 
 const ltcGrowthCalc=computed(()=>{
-  const months=10
   const total_guests=state.company.guests_or_clients*state.company.locations
-  const guest_per_day=total_guests/30
-  const guest_months=guest_per_day*30*months
-  const without_signal=Math.round(guest_months*(state.company.retention_pct/100))
+  const without_signal=Math.round(total_guests*(state.company.retention_pct/100))
   const mult=WIDGETS[state.widget].growthMultiplier
-  const with_signal=Math.round(guest_months*((state.company.retention_pct/100)*(1+mult)))
+  const with_signal=Math.round(without_signal*(1+mult))
   const growth_pct=Math.round(((with_signal-without_signal)/without_signal)*100)
   return {without_signal,with_signal,growth_pct}
 })
