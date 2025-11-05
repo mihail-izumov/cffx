@@ -342,7 +342,6 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           <div v-if="item.desc" class="sla-card-desc">{{item.desc}}</div>
           
           <template v-if="item.title.includes('Расчет')">
-            <div class="sla-card-calc" v-if="state.widget==='cafe'">Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)</div>
             <div class="sla-card-calc">
   Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)
 </div>
