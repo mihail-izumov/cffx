@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref, computed, h, watch, nextTick } from 'vue'
 
-// === КОНФИГ TELEGRAM ===
 const TELEGRAM_BOT_TOKEN = '8291628689:AAFOA4-OQR1Qor-Zu45r60x4_mmtp0fuSDc'
 const TELEGRAM_CHAT_ID = '7999126446'
 
@@ -46,7 +45,7 @@ const WIDGETS = {
 type WidgetKey = keyof typeof WIDGETS
 
 const SLA_READY_ITEMS=[
-  {title:'Виджет Сигнала (базовая версия)',desc:'Публичная страница, живой рейтинг, метрики, брендирование, быстрый отзыв в Яндекс/2ГИС, бейдж «Репутация под защитой»'},
+  {title:'Виджет Сигнала (базовая версия)',desc:'Публичная страница, живой рейтинг, метрики, брендирование, быстрый отзыв в Яндекс/2ГИС, бейдж Репутация под защитой'},
   {title:'Умная форма',desc:'150 цепочек с подсказками, рендер вопросов, переключение гендеров'},
   {title:'Анна (базовая версия)',desc:'Адаптация под ваш тон, продукты и особые ситуации из стандартов (если предоставлено)'},
   {title:'Тикет-система',desc:'Настройка шаблонов тикетов, адаптация по дстандарты'},
@@ -101,7 +100,8 @@ const npsCards=[{label:'60 мин.',value:60},{label:'1 день',value:1440},{l
 
 const ltcGrowthCalc=computed(()=>{
   const months=10
-  const guest_per_day=state.company.guests_or_clients/30
+  const total_guests=state.company.guests_or_clients*state.company.locations
+  const guest_per_day=total_guests/30
   const guest_months=guest_per_day*30*months
   const without_signal=Math.round(guest_months*(state.company.retention_pct/100))
   const mult=WIDGETS[state.widget].growthMultiplier
@@ -124,6 +124,7 @@ const allSelectedTopics=computed(()=>{
   return all
 })
 const isSubmitting=ref(false)
+const submitAction=ref<'submit'|'discuss'|null>(null)
 const submitMessage=ref<{type:'success'|'error', text:string} | null>(null)
 
 function getCategoryData(k:string){return state.categories_map[k as CategoryKey]}
@@ -169,58 +170,53 @@ function closeModal(){isModalOpen.value=false;if(typeof document!=='undefined')d
 function ownerLabel(o:Owner){return o==='team'?'Команда':o==='manager'?'Управляющий':'Другое'}
 
 function validateForm():boolean{
-  if(!state.company.name.trim()){submitMessage.value={type:'error',text:'✗ Укажите название компании'};return false}
-  if(!state.contact.name.trim()){submitMessage.value={type:'error',text:'✗ Укажите имя'};return false}
-  if(!state.contact.phone.trim()){submitMessage.value={type:'error',text:'✗ Укажите телефон'};return false}
-  if(!state.terms_accepted){submitMessage.value={type:'error',text:'✗ Подтвердите согласие с Условиями использования'};return false}
+  if(!state.company.name.trim()){submitMessage.value={type:'error',text:'Укажите название компании'};return false}
+  if(!state.contact.name.trim()){submitMessage.value={type:'error',text:'Укажите имя'};return false}
+  if(!state.contact.phone.trim()){submitMessage.value={type:'error',text:'Укажите телефон'};return false}
+  if(!state.terms_accepted){submitMessage.value={type:'error',text:'Подтвердите согласие с Условиями использования'};return false}
   return true
 }
 
-// === ОТПРАВКА В TELEGRAM БОТ ===
 function submitToFormspree(action:'submit'|'discuss'){
   if(!validateForm())return
   if(isSubmitting.value)return
 
   isSubmitting.value=true
-  submitMessage.value=null
+  submitAction.value=action
 
-  // Форматируем сообщение для Telegram
-  const messageText=`🔔 <b>Новая заявка Signal!</b>\n\n<b>Контакты:</b>\n👤 ${state.contact.name}\n📱 ${state.contact.phone}\n\n<b>Компания:</b>\n🏢 ${state.company.name}\n📊 Тип: ${state.widget==='cafe'?'Общепит':'Фитнес'}\n📍 Локаций: ${state.company.locations}\n👥 Гостей/клиентов: ${state.company.guests_or_clients}\n💰 Средний чек: ${state.company.avg_check_or_subscription}₽\n📈 Retention: ${state.company.retention_pct}%\n\n<b>LTV расчет:</b>\n📉 Сейчас: ${ltcGrowthCalc.value.without_signal} клиентов/мес\n📈 С Сигналом: ${ltcGrowthCalc.value.with_signal} клиентов/мес\n🚀 Рост: +${ltcGrowthCalc.value.growth_pct}%\n\n<b>Стандарты:</b>\n${state.standards_source==='internal'?'Внутренние':'Сигнала'}\n\n<b>Матрица эскалации:</b>\nКат. А: ${getCategoryData('A').topics.join(', ')}\nКат. Б: ${getCategoryData('B').topics.join(', ')}\nКат. В: ${getCategoryData('C').topics.join(', ')}\nКат. Г: ${getCategoryData('D').topics.join(', ')}\n\n<b>Действие:</b>\n${action==='submit'?'✅ Отправить на сборку':'💬 Обсудить позже'}`
+  const messageText=`Новая ${action==='submit'?'сборка':'обсудить позже'}: ${state.company.name}\n\nКонтакты:\nИмя: ${state.contact.name}\nТелефон: ${state.contact.phone}\nУсловия: ${state.terms_accepted?'Согласен':'Не согласен'}\n\nКомпания:\nНазвание: ${state.company.name}\nТип: ${state.widget==='cafe'?'Общепит':'Фитнес'}\nЛокаций: ${state.company.locations}\nГостей/клиентов (за период): ${state.company.guests_or_clients*state.company.locations}\nСредний чек/абонемент: ${state.company.avg_check_or_subscription}\nRetention: ${state.company.retention_pct}%\n\nLTV расчет:\nСейчас: ${ltcGrowthCalc.value.without_signal} клиентов/мес\nС Сигналом: ${ltcGrowthCalc.value.with_signal} клиентов/мес\nРост: +${ltcGrowthCalc.value.growth_pct}%\nИнструменты: ${state.company.ltv_cards.join(', ')||'не выбраны'}\n${state.company.ltv_tool_other?`Другое: ${state.company.ltv_tool_other}`:''}\n\nСтандарты и скрипты:\nСтандарты: ${state.standards_source==='internal'?'Внутренние':'Сигнала'}\nСкрипты: ${state.client_scripts.length>0?state.client_scripts.join(', '):'не выбраны'}\n\nМатрица эскалации:\nКат. А (4ч): ${getCategoryData('A').owner===`team`?'Команда':getCategoryData('A').owner===`manager`?'Управляющий':''+getCategoryData('A').contact}\n  Темы: ${getCategoryData('A').topics.join(', ')}\nКат. Б (2ч): ${getCategoryData('B').owner===`team`?'Команда':getCategoryData('B').owner===`manager`?'Управляющий':''+getCategoryData('B').contact}\n  Темы: ${getCategoryData('B').topics.join(', ')}\nКат. В (1ч): ${getCategoryData('C').owner===`team`?'Команда':getCategoryData('C').owner===`manager`?'Управляющий':''+getCategoryData('C').contact}\n  Темы: ${getCategoryData('C').topics.join(', ')}\nКат. Г (15м): ${getCategoryData('D').owner===`team`?'Команда':getCategoryData('D').owner===`manager`?'Управляющий':''+getCategoryData('D').contact}\n  Темы: ${getCategoryData('D').topics.join(', ')}\n\nТикет-система:\nБазовые: ${state.ticket_template.base_fields_ru.join(', ')}\nДоп. поля: ${state.ticket_template.extra_fields.join(', ')||'нет'}\n\nЦели (операционные):\nПолное закрытие: ${state.goals.full_close_time_hours}ч\nБез эскалации: ${state.goals.resolved_without_escalation_pct}%\n\nЦели (качество):\nТочность рекомендаций: ${state.goals.reco_accuracy_pct}%\nПолучение NPS: ${state.goals.nps_collected_pct}%\nСредний NPS: ${state.goals.nps_avg}/10\n\nЦели (бизнес):\nВозврат после жалобы: ${state.goals.returns_after_complaint_pct}%\nСредняя компенсация: ${state.goals.avg_compensation_rub}\n\nNPS таймер:\n${state.nps.step===-1?`${state.nps.custom_hours}ч (свой)`:state.nps.step===60?'60 минут':state.nps.step===1440?'1 день':'3 дня'}\n\nРежим работы:\n${state.work_hours.mode==='wk_9_18'?'Будни 9–18 МСК':state.work_hours.mode==='wk_9_18_we'?'9–18 МСК + выходные':`Расш.: Будни ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}, Вых. ${state.work_hours.weekends.from}-${state.work_hours.weekends.to}`}\n\nДействие:\n${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
 
-  // Отправляем в Telegram
   fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
       chat_id:TELEGRAM_CHAT_ID,
-      text:messageText,
-      parse_mode:'HTML'
+      text:messageText
     })
   })
   .then(response=>{
     if(!response.ok)throw new Error('Telegram error')
     
-    // Показываем успех
     submitMessage.value={
       type:'success',
       text:action==='submit'
-        ?'✓ Отправлено в Telegram! Мы свяжемся с вами в течение 2 часов.'
-        :'✓ Спасибо! Обсудим детали позже.'
+        ?'Отправлено! Мы свяжемся с вами в течение 2 часов.'
+        :'Спасибо! Обсудим детали позже.'
     }
     
-    // Очищаем контакты
     state.contact.name=''
     state.contact.phone=''
     
-    console.log('✓ Заявка успешно отправлена в Telegram')
+    console.log('Заявка успешно отправлена в Telegram')
   })
   .catch(error=>{
     console.error('Ошибка при отправке в Telegram:',error)
-    submitMessage.value={type:'error',text:'✗ Ошибка при отправке. Попробуйте ещё раз.'}
+    submitMessage.value={type:'error',text:'Ошибка при отправке. Попробуйте ещё раз.'}
   })
   .finally(()=>{
     setTimeout(()=>{
       submitMessage.value=null
+      submitAction.value=null
       isSubmitting.value=false
     },15000)
   })
@@ -393,11 +389,11 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 
       <div class="cta-row">
         <button class="primary full strong lime-btn" @click="submitToFormspree('submit')" :disabled="isSubmitting">
-          <span class="btn-text">{{ isSubmitting ? 'Отправляю...' : 'Отправить на сборку' }}</span>
+          <span class="btn-text">{{ isSubmitting && submitAction==='submit' ? 'Отправляю...' : 'Отправить на сборку' }}</span>
           <component :is="ArrowRight" class="btn-icon"/>
         </button>
         <button class="primary full strong white-btn" @click="submitToFormspree('discuss')" :disabled="isSubmitting">
-          <span class="btn-text">{{ isSubmitting ? 'Отправляю...' : 'Обсудить позже' }}</span>
+          <span class="btn-text">{{ isSubmitting && submitAction==='discuss' ? 'Отправляю...' : 'Обсудить позже' }}</span>
           <component :is="ArrowUpRight" class="btn-icon"/>
         </button>
       </div>
@@ -411,7 +407,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 
             <template v-if="modalKind==='categories'">
               <div class="pricing-modal-header">НАСТРОЙКИ</div>
-              <h2 class="pricing-modal-title">Матрица эскалации</h2>
+              <h2 class="pricing-modal-title modal-title-headline">Матрица<br/>эскалации</h2>
               <div class="pricing-modal-body">
                 <div class="owner-col-single">
                   <div v-for="k in ['A','B','C','D']" :key="k" class="owner-block surface">
@@ -473,7 +469,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
               </div>
             </template>
 
-            <template v-else-if="modalKind==='sla_ready'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Почти готово</h2>
+            <template v-else-if="modalKind==='sla_ready'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title modal-title-headline">Почти<br/>готово</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards">
                 <div v-for="(item,i) in SLA_READY_DETAILS" :key="i" class="sla-detail-card">
                   <component :is="CircleDot" class="detail-check"/>{{item}}
@@ -481,7 +477,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
               </div></div>
             </template>
 
-            <template v-else-if="modalKind==='sla_later'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Доработать и согласовать</h2>
+            <template v-else-if="modalKind==='sla_later'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title modal-title-headline">Доработать и<br/>согласовать</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards line-height-fix">
                 <div v-for="(item,i) in SLA_LATER_DETAILS" :key="i" class="sla-detail-card">
                   <component :is="CircleDotDashed" class="detail-check"/>{{item}}
@@ -490,10 +486,10 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
             </template>
 
             <template v-else>
-              <div class="pricing-modal-header">ГРАФИК</div><h2 class="pricing-modal-title">Расширенный режим</h2>
+              <div class="pricing-modal-header">ГРАФИК</div><h2 class="pricing-modal-title modal-title-headline">Расширенный<br/>режим</h2>
               <div class="pricing-modal-body spaced-large-full">
-                <div class="surface pad black"><h4>Будни</h4><label class="row surface"><input style="display:none"/><span>От</span><input v-model="state.work_hours.weekdays.from" type="time" class="time-white"/></label><label class="row surface"><input style="display:none"/><span>До</span><input v-model="state.work_hours.weekdays.to" type="time" class="time-white"/></label></div>
-                <div class="surface pad black fullwidth-mobile"><h4>Выходные</h4><label class="row surface"><input style="display:none"/><span>От</span><input v-model="state.work_hours.weekends.from" type="time" class="time-white"/></label><label class="row surface"><input style="display:none"/><span>До</span><input v-model="state.work_hours.weekends.to" type="time" class="time-white"/></label></div>
+                <div class="surface pad black"><h4>Будни</h4><label class="row surface"><input style="display:none"/><span>От</span><input v-model="state.work_hours.weekdays.from" type="time" class="time-input"/></label><label class="row surface"><input style="display:none"/><span>До</span><input v-model="state.work_hours.weekdays.to" type="time" class="time-input"/></label></div>
+                <div class="surface pad black fullwidth-mobile"><h4>Выходные</h4><label class="row surface"><input style="display:none"/><span>От</span><input v-model="state.work_hours.weekends.from" type="time" class="time-input"/></label><label class="row surface"><input style="display:none"/><span>До</span><input v-model="state.work_hours.weekends.to" type="time" class="time-input"/></label></div>
               </div>
             </template>
 
@@ -512,7 +508,7 @@ h2,h3,h4{margin:0 0 6px}h2{font-size:22px}h3{font-size:16px}h4{font-size:14px}
 .grid1{display:grid;grid-template-columns:1fr;gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .row{display:flex;align-items:center;gap:8px}.row span{min-width:max-content}
 input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10px;border-radius:10px;background:#0b0c0e;color:var(--text);border:1px solid var(--line);font-size:13px;flex:1}
-.time-white{color:#fff !important}
+.time-input{color:#fff !important}
 .select-wrapper{position:relative;flex:1;display:flex;align-items:center}
 .select-arrow{appearance:none;width:100%;padding:8px 28px 8px 10px !important;background:#0b0c0e;padding-right:28px !important;cursor:pointer}
 .chevron-icon{position:absolute;right:8px;pointer-events:none;color:#999;flex-shrink:0}
@@ -551,8 +547,8 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .goal-line{font-size:13px;color:#c0c0c0}
 .goals-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);gap:8px}
 .goals-row:first-of-type{border-top:none}
-.nps-cards{display:flex;gap:8px;flex-wrap:wrap}
-.nps-card{border:1px solid var(--line);border-radius:12px;padding:10px 16px;background:#0d0f12;color:#e8eaed;cursor:pointer;flex:1;text-align:center;font-size:13px}
+.nps-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.nps-card{border:1px solid var(--line);border-radius:12px;padding:10px 16px;background:#0d0f12;color:#e8eaed;cursor:pointer;text-align:center;font-size:13px}
 .nps-card.active{border-color:var(--lime);background:#1a1d20}
 .mini-ag{display:flex;gap:8px;flex-wrap:wrap}
 .mini-badge{background:#0b0c0e;border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:12px}
@@ -569,9 +565,9 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .sla-card-calc{font-size:13px;color:#fff;margin-bottom:6px;font-weight:600}
 .sla-subgroup{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
 .sla-subgroup-title{font-weight:600;font-size:13px}
-.contact-in-summary{background:rgba(12,12,14,0.7);border:1px solid var(--line);margin:16px 0 12px}
+.contact-in-summary{background:rgba(12,12,14,0.7);border:1px solid var(--line);margin:16px 0 20px}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.terms-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:12px;line-height:1.4}
+.terms-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:20px;font-size:12px;line-height:1.4}
 .terms-row input[type="checkbox"]{accent-color:var(--lime);width:16px;height:16px;margin-top:2px;flex-shrink:0}
 .terms-row a{color:var(--lime);text-decoration:underline}
 .submit-message{padding:12px 16px;border-radius:12px;margin-bottom:10px;font-size:13px;font-weight:600;text-align:center;animation:slideDown 0.3s ease}
@@ -590,14 +586,15 @@ button.primary:hover .btn-icon{transform:translateX(3px)}
 .pricing-modal-close{position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#1d1d1f;border:none;color:#f5f5f7;cursor:pointer;z-index:11;display:flex;align-items:center;justify-content:center}
 .pricing-modal-header{font-size:1rem;color:#6e6e73;margin:60px 80px 12px 80px;font-weight:500;letter-spacing:0.08em}
 .pricing-modal-title{font-size:2.135rem;font-weight:600;color:#1d1d1f;margin:0 80px 24px 80px}
+.modal-title-headline{line-height:1.2}
 .pricing-modal-body{padding:0 80px 60px;overflow-y:auto;max-height:calc(90vh - 200px)}
 .surface{background:#edeef0;border-radius:12px;padding:8px 10px}
 .pad{padding:14px 12px}.black{color:#1d1d1f!important}
 .owner-col-single{display:grid;gap:20px}
 .owner-block{padding:16px}
-.cat-h2,.section-h2{font-size:19px;font-weight:600;color:#1d1d1f;margin:0 0 10px 0}
+.cat-h2,.section-h2{font-size:19px;font-weight:600;color:#1d1d1f;margin:0 0 10px 0;line-height:1.2}
 .topics-grid.compact3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.topic-card{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #d2d3d6;border-radius:10px;background:#f1f2f4;cursor:pointer;font-size:11px}
+.topic-card{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #d2d3d6;border-radius:10px;background:#f1f2f4;cursor:pointer;font-size:11px;line-height:1.2}
 .topic-card.small{padding:6px 8px}
 .topic-card.selected{border-color:var(--lime);background:#e7f7ee}
 .topic-card:disabled{opacity:0.4;cursor:not-allowed}
@@ -620,7 +617,8 @@ button.primary:hover .btn-icon{transform:translateX(3px)}
 button:disabled{opacity:0.6;cursor:not-allowed}
 @media(max-width:1024px){
   .signal-sla.dark{font-size:13px}
-  .widget-row,.ltv-grid,.nps-cards{grid-template-columns:1fr}
+  .widget-row,.ltv-grid{grid-template-columns:1fr}
+  .nps-cards{grid-template-columns:repeat(2,1fr)}
   .contact-grid{grid-template-columns:1fr}
   .goals-row{gap:4px}
   .linklike.same{font-size:11px}
@@ -631,5 +629,8 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .sla-cards{gap:10px;margin-top:10px}
   .spaced-large-full{grid-template-columns:1fr}
   .fullwidth-mobile{width:100%}
+  .radio-left{flex-direction:column;align-items:flex-start}
+  .contact-in-summary{margin:16px 0 12px}
+  .terms-row{margin-bottom:12px}
 }
 </style>
