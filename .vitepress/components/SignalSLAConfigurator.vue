@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, computed, h, watch, onMounted } from 'vue'
+import { reactive, ref, computed, h, watch } from 'vue'
 
 const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
 
@@ -69,8 +69,6 @@ const SLA_LATER_DETAILS=[
   'Эскалационная матрица с условиями передачи на более высокий уровень',
   'Примеры обработки реальных кейсов и кейсов с разбором решений'
 ]
-
-const formspreeEndpoint = 'https://formspree.io/f/mdkzjopz'
 
 const state = reactive({
   widget:'cafe' as WidgetKey,
@@ -174,8 +172,11 @@ function validateForm():boolean{
   return true
 }
 
-async function submitToFormspree(action:'submit'|'discuss'){
+// ТОЧНЫЙ ПАТТЕРН ИЗ ТВОЕГО РАБОЧЕГО КОДА
+function submitToFormspree(action:'submit'|'discuss'){
   if(!validateForm())return
+  
+  if(isSubmitting.value)return
   
   isSubmitting.value=true
   submitMessage.value=null
@@ -220,46 +221,37 @@ async function submitToFormspree(action:'submit'|'discuss'){
       :`[SIGNAL] Уточнить позже: ${state.company.name}`
   }
   
-  try{
-    const response=await fetch(formspreeEndpoint,{
-      method:'POST',
-      headers:{
-        'Accept':'application/json',
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify(formData)
-    })
+  fetch('https://formspree.io/f/mdkzjopz',{
+    method:'POST',
+    headers:{
+      'Accept':'application/json',
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify(formData)
+  })
+  .then(response=>{
+    if(!response.ok)throw new Error('Ошибка сервера')
     
-    if(response.ok){
-      submitMessage.value={
-        type:'success',
-        text:action==='submit'
-          ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
-          :'✓ Спасибо! Обсудим детали позже.'
-      }
-      setTimeout(()=>{
-        state.contact.name=''
-        state.contact.phone=''
-        submitMessage.value=null
-      },3000)
-    }else{
-      throw new Error(`HTTP ${response.status}`)
-    }
-  }catch(error){
-    console.error('Formspree error:',error)
-    
-    // Резервная отправка через mailto
-    const mailtoBody=`Компания: ${state.company.name}%0AИмя: ${state.contact.name}%0AТелефон: ${state.contact.phone}%0AТип: ${state.widget==='cafe'?'Общепит':'Фитнес'}%0AДействие: ${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
-    
-    window.location.href=`mailto:info@signal.local?subject=[SIGNAL] ${action==='submit'?'Новая сборка':'Уточнить позже'}: ${state.company.name}&body=${mailtoBody}`
-    
+    state.contact.name=''
+    state.contact.phone=''
     submitMessage.value={
-      type:'error',
-      text:'⚠ Открыт почтовый клиент. Если он не откроется, свяжитесь: +7 (999) 000-00-00'
+      type:'success',
+      text:action==='submit'
+        ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
+        :'✓ Спасибо! Обсудим детали позже.'
     }
-  }finally{
-    isSubmitting.value=false
-  }
+  })
+  .catch(error=>{
+    console.error('Error:',error)
+    const mailtoBody=`Компания: ${formData.company}%0AИмя: ${formData.name}%0AТелефон: ${formData.phone}%0AТип: ${formData.type}%0AДействие: ${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
+    window.location.href=`mailto:info@signal.local?subject=[SIGNAL] ${action==='submit'?'Новая сборка':'Уточнить позже'}: ${formData.company}&body=${mailtoBody}`
+  })
+  .finally(()=>{
+    setTimeout(()=>{
+      submitMessage.value=null
+      isSubmitting.value=false
+    },15000)
+  })
 }
 
 watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
