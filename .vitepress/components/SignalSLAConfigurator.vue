@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, computed, h, watch, onMounted } from 'vue'
+import { reactive, ref, computed, h, watch } from 'vue'
 
 const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
 
@@ -98,13 +98,18 @@ const ltvOptions=['CRM','BI/Дашборды','Google Sheets','Другое']
 const npsCards=[{label:'60 мин.',value:60},{label:'1 день',value:1440},{label:'3 дня',value:4320},{label:'Другое',value:-1}]
 
 const ltcGrowthCalc=computed(()=>{
-  const months=10
-  const guest_months=state.company.guests_or_clients * state.company.locations * months
-  const without_signal=Math.round(guest_months*(state.company.retention_pct/100))
-  const mult=WIDGETS[state.widget].growthMultiplier
-  const with_signal=Math.round(guest_months*((state.company.retention_pct/100)*(1+mult)))
-  const growth_pct=Math.round(((with_signal-without_signal)/without_signal)*100)
-  return {without_signal,with_signal,growth_pct}
+  const current_guests = state.company.guests_or_clients
+  const retention_rate = state.company.retention_pct / 100
+  
+  const now = Math.round(current_guests * retention_rate)
+  
+  const multiplier = WIDGETS[state.widget].growthMultiplier
+  const with_signal_retention = Math.min(1, retention_rate * (1 + multiplier))
+  const with_signal = Math.round(current_guests * with_signal_retention)
+  
+  const growth = now > 0 ? Math.round(((with_signal - now) / now) * 100) : 0
+  
+  return { now, with_signal, growth }
 })
 
 const slaTitle=computed(()=>`Сборка Сигнала ${state.company.name||''}`)
@@ -179,7 +184,7 @@ async function submitToFormspree(action:'submit'|'discuss'){
   isSubmitting.value=true
   submitMessage.value=null
   
-  const formData={
+  const formPayload={
     name:state.contact.name,
     phone:state.contact.phone,
     company:state.company.name,
@@ -188,9 +193,9 @@ async function submitToFormspree(action:'submit'|'discuss'){
     guests_clients:state.company.guests_or_clients,
     avg_check_abonement:state.company.avg_check_or_subscription,
     retention:state.company.retention_pct,
-    ltv_now:ltcGrowthCalc.value.without_signal,
+    ltv_now:ltcGrowthCalc.value.now,
     ltv_with_signal:ltcGrowthCalc.value.with_signal,
-    ltv_growth:ltcGrowthCalc.value.growth_pct,
+    ltv_growth:ltcGrowthCalc.value.growth,
     standards:state.standards_source==='internal'?'Внутренние':'Сигнала',
     scripts:state.client_scripts.join(', ')||'нет',
     ltv_tools:state.company.ltv_cards.join(', ')||'нет',
@@ -227,30 +232,31 @@ async function submitToFormspree(action:'submit'|'discuss'){
         'Accept':'application/json',
         'Content-Type':'application/json'
       },
-      body:JSON.stringify(formData)
+      body:JSON.stringify(formPayload)
     })
     
-    if(!response.ok) throw new Error('Ошибка сервера')
-    
-    submitMessage.value={
-      type:'success',
-      text:action==='submit'
-        ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
-        :'✓ Спасибо! Обсудим детали позже.'
+    if(response.ok){
+      submitMessage.value={
+        type:'success',
+        text:action==='submit'
+          ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
+          :'✓ Спасибо! Обсудим детали позже.'
+      }
+      setTimeout(()=>{
+        state.contact.name=''
+        state.contact.phone=''
+        submitMessage.value=null
+      },3000)
+    }else{
+      throw new Error('Server error')
     }
-    
-    setTimeout(()=>{
-      state.contact.name=''
-      state.contact.phone=''
-      state.terms_accepted=false
-      submitMessage.value=null
-    },15000)
   }catch(error){
     console.error('Formspree error:',error)
     
+    // Резервная отправка через mailto
     const mailtoBody=`Компания: ${state.company.name}%0AИмя: ${state.contact.name}%0AТелефон: ${state.contact.phone}%0AТип: ${state.widget==='cafe'?'Общепит':'Фитнес'}%0AДействие: ${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
     
-    window.location.href=`mailto:info@signal.local?subject=[SIGNAL] ${action==='submit'?'Новая сборка':'Уточнить позже'}: ${state.company.name}&body=${mailtoBody}`
+    window.location.href=`mailto:theorchestramanco@gmail.com?subject=[SIGNAL] ${action==='submit'?'Новая сборка':'Уточнить позже'}: ${state.company.name}&body=${mailtoBody}`
     
     submitMessage.value={
       type:'error',
@@ -324,7 +330,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
       </div>
       <div class="divider"></div>
       <label class="row"><input type="radio" :checked="state.has_full_classification" @click="state.has_full_classification=!state.has_full_classification"/><span>Скрипты (есть в наличии)</span></label>
-      <div v-if="state.has_full_classification" class="checks-grid-1col">
+      <div v-if="state.has_full_classification" class="checks-grid">
         <label v-for="s in availableScripts" :key="s" class="row">
           <input type="checkbox" :value="s" v-model="state.client_scripts"/><span>{{s}}</span>
         </label>
@@ -333,15 +339,27 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 
     <div class="card">
       <h3>Цели</h3>
-      <div class="goals-row"><div class="goal-text"><div class="goal-title">Операционные</div>
-        <div class="goal-line">Полное закрытие: {{state.goals.full_close_time_hours}} ч; Без эскалации: {{state.goals.resolved_without_escalation_pct}}%</div></div>
-        <button class="linklike same" @click="openModal('goals_ops')">Изменить</button></div>
-      <div class="goals-row"><div class="goal-text"><div class="goal-title">Качество</div>
-        <div class="goal-line">Точность рекомендаций: {{state.goals.reco_accuracy_pct}}%; Получение NPS: {{state.goals.nps_collected_pct}}%; Средний NPS: {{state.goals.nps_avg}}</div></div>
-        <button class="linklike same" @click="openModal('goals_quality')">Изменить</button></div>
-      <div class="goals-row"><div class="goal-text"><div class="goal-title">Бизнес</div>
-        <div class="goal-line">Возврат после жалобы: {{state.goals.returns_after_complaint_pct}}%; Средняя компенсация: {{state.goals.avg_compensation_rub}} ₽</div></div>
-        <button class="linklike same" @click="openModal('goals_business')">Изменить</button></div>
+      <div class="goals-row">
+        <div>
+          <div class="goal-title">Операционные</div>
+          <div class="goal-line">Полное закрытие: {{state.goals.full_close_time_hours}} ч; Без эскалации: {{state.goals.resolved_without_escalation_pct}}%</div>
+        </div>
+        <button class="linklike same" @click="openModal('goals_ops')">Изменить</button>
+      </div>
+      <div class="goals-row">
+        <div>
+          <div class="goal-title">Качество</div>
+          <div class="goal-line">Точность рекомендаций: {{state.goals.reco_accuracy_pct}}%; Получение NPS: {{state.goals.nps_collected_pct}}%; Средний NPS: {{state.goals.nps_avg}}</div>
+        </div>
+        <button class="linklike same" @click="openModal('goals_quality')">Изменить</button>
+      </div>
+      <div class="goals-row">
+        <div>
+          <div class="goal-title">Бизнес</div>
+          <div class="goal-line">Возврат после жалобы: {{state.goals.returns_after_complaint_pct}}%; Средняя компенсация: {{state.goals.avg_compensation_rub}} ₽</div>
+        </div>
+        <button class="linklike same" @click="openModal('goals_business')">Изменить</button>
+      </div>
     </div>
 
     <div class="card">
@@ -395,7 +413,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           <div v-if="item.desc" class="sla-card-desc">{{item.desc}}</div>
           
           <template v-if="item.title.includes('Расчет')">
-            <div class="sla-card-calc">Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)</div>
+            <div class="sla-card-calc">Сейчас: {{ltcGrowthCalc.now}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth}}%)</div>
             <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем <component :is="SquareArrowOut" class="ext-icon"/></a>
           </template>
           
@@ -457,10 +475,10 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
                       </select>
                       <component :is="ChevronUpDown" class="chevron-icon"/>
                     </div>
-                    <label v-if="getCategoryData(k).owner==='custom'" class="row surface"><input style="display:none"/><span class="black">Контакт</span>
+                    <label v-if="getCategoryData(k).owner==='custom'" class="row surface custom-contact"><input style="display:none"/><span class="black">Контакт</span>
                       <input :value="getCategoryData(k).contact" @input="(e:any)=>setCategoryContact(k,e.target.value)" type="text" placeholder="@handle или телефон"/>
                     </label>
-                    <div class="topics-grid compact3">
+                    <div class="topics-grid">
                       <button v-for="name in currentTopics" :key="name" type="button" class="topic-card small" :class="{selected:getCategoryTopics(k).includes(name)}" :disabled="!isTopicAvailable(k,name)" @click="toggleCategoryTopic(k,name)">
                         <input type="checkbox" :checked="getCategoryTopics(k).includes(name)"/><span class="t-name black">{{name}}</span>
                       </button>
@@ -508,7 +526,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
               </div>
             </template>
 
-            <template v-else-if="modalKind==='sla_ready'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title modal-title-tight">Почти готово</h2>
+            <template v-else-if="modalKind==='sla_ready'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Почти готово</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards">
                 <div v-for="(item,i) in SLA_READY_DETAILS" :key="i" class="sla-detail-card">
                   <component :is="CircleDot" class="detail-check"/>{{item}}
@@ -516,7 +534,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
               </div></div>
             </template>
 
-            <template v-else-if="modalKind==='sla_later'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title modal-title-tight">Доработать и согласовать</h2>
+            <template v-else-if="modalKind==='sla_later'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Доработать и согласовать</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards">
                 <div v-for="(item,i) in SLA_LATER_DETAILS" :key="i" class="sla-detail-card">
                   <component :is="CircleDotDashed" class="detail-check"/>{{item}}
@@ -527,7 +545,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
             <template v-else>
               <div class="pricing-modal-header">ГРАФИК</div><h2 class="pricing-modal-title">Расширенный режим</h2>
               <div class="pricing-modal-body spaced-large">
-                <div class="worktime-grid">
+                <div class="workhours-grid">
                   <div class="surface pad black"><h4>Будни</h4><label class="row surface"><input style="display:none"/><span>От</span><input v-model="state.work_hours.weekdays.from" type="time" class="time-white"/></label><label class="row surface"><input style="display:none"/><span>До</span><input v-model="state.work_hours.weekdays.to" type="time" class="time-white"/></label></div>
                   <div class="surface pad black"><h4>Выходные</h4><label class="row surface"><input style="display:none"/><span>От</span><input v-model="state.work_hours.weekends.from" type="time" class="time-white"/></label><label class="row surface"><input style="display:none"/><span>До</span><input v-model="state.work_hours.weekends.to" type="time" class="time-white"/></label></div>
                 </div>
@@ -547,12 +565,12 @@ h2,h3,h4{margin:0 0 6px}h2{font-size:22px}h3{font-size:16px}h4{font-size:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 14px;margin:12px 0}
 .required{color:var(--lime);font-weight:700}
 .grid1{display:grid;grid-template-columns:1fr;gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.row{display:flex;align-items:center;gap:10px}.row span{min-width:max-content}
+.row{display:flex;align-items:center;gap:8px}.row span{min-width:max-content}
 input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10px;border-radius:10px;background:#0b0c0e;color:var(--text);border:1px solid var(--line);font-size:14px;flex:1}
 .time-white{color:#fff !important}
 .select-wrapper{position:relative;flex:1;display:flex;align-items:center}
 .select-arrow{appearance:none;width:100%;padding:8px 32px 8px 10px !important;background:#0b0c0e;padding-right:32px !important;cursor:pointer}
-.chevron-icon{position:absolute;right:10px;pointer-events:none;color:#999;flex-shrink:0}
+.chevron-icon{position:absolute;right:8px;pointer-events:none;color:#999;flex-shrink:0}
 .company.big{font-size:18px}.fullwidth{width:100%}
 .range.white{width:100%;-webkit-appearance:none;background:transparent;height:24px}
 .range.white::-webkit-slider-runnable-track{height:4px;background:#fff;border-radius:999px}
@@ -566,60 +584,59 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .range.black::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#1a1a1a;border:none}
 .inline-value{color:#fff;font-size:13px;min-width:40px;text-align:right}
 .widget-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-.widget-card{border:1px solid var(--line);border-radius:12px;padding:12px;background:#0d0f12;text-align:left;cursor:pointer;display:flex;align-items:center;gap:12px}
+.widget-card{border:1px solid var(--line);border-radius:12px;padding:12px;background:#0d0f12;text-align:left;cursor:pointer;display:flex;align-items:center;gap:12px;font-size:14px}
 .widget-card.active{border-color:var(--lime);background:#1a1d20}
 .widget-icon{width:56px;height:56px;object-fit:contain;flex-shrink:0}
 .w-title{font-weight:700}
 .company-fields{display:grid;grid-template-columns:1fr;gap:10px}
 .retention-block{display:grid;gap:4px}
-.ltv-block{margin-top:6px}
-.ltv-title{font-weight:600;margin-bottom:6px}
+.ltv-block{margin-top:8px}
+.ltv-title{font-weight:600;margin-bottom:6px;font-size:13px}
 .ltv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.ltv-card{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#0d0f12;text-align:left;cursor:pointer}
+.ltv-card{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#0d0f12;text-align:left;cursor:pointer;font-size:13px}
 .ltv-card.active{border-color:var(--lime);background:#1a1d20}
-.ltv-other{margin-top:10px}
+.ltv-other{margin-top:10px;font-size:13px}
 .linklike{background:transparent;border:none;color:#fff;text-decoration:underline;text-decoration-style:dashed;cursor:pointer;padding:0;font-size:inherit}
-.linklike.same{font-size:13px;white-space:nowrap}
+.linklike.same{font-size:13px}
 .linklike-calc{background:transparent;border:none;color:var(--lime);text-decoration:none;cursor:pointer;padding:0;font-size:13px;display:inline-flex;align-items:center;gap:4px;margin-top:6px}
 .linklike-calc:hover{text-decoration:underline}
-.ext-icon{width:12px;height:12px}
+.ext-icon{width:13px;height:13px}
 .hint{color:var(--muted);font-size:12px}.divider{height:1px;background:var(--line);margin:10px 0}
 .goal-title{font-weight:700;color:#fff;font-size:14px;margin-bottom:2px}
 .goal-line{font-size:13px;color:#c0c0c0}
-.goal-text{flex:1;min-width:0}
-.goals-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.goals-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
 .goals-row:first-of-type{border-top:none}
-.nps-cards{display:flex;gap:8px}
-.nps-card{border:1px solid var(--line);border-radius:12px;padding:10px 16px;background:#0d0f12;color:#e8eaed;cursor:pointer;flex:1;text-align:center}
+.nps-cards{display:flex;gap:8px;flex-wrap:wrap}
+.nps-card{border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:#0d0f12;color:#e8eaed;cursor:pointer;flex:1;min-width:70px;text-align:center;font-size:13px}
 .nps-card.active{border-color:var(--lime);background:#1a1d20}
 .mini-ag{display:flex;gap:8px;flex-wrap:wrap}
 .mini-badge{background:#0b0c0e;border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:12px}
 .mini-sub{color:#9aa3ad;font-size:11px;margin-top:2px}
-.field-label{color:#fff;font-weight:700}
+.field-label{color:#fff;font-weight:700;font-size:13px}
 .lime{color:var(--lime)}
 .lime-outline{border-color:var(--lime)!important;background:var(--green-10)}
-.sla-title{margin:0 0 6px;border-bottom:none !important}.price{margin:0;color:#fff}.price-note{color:#c0c0c0;font-size:14px;margin-bottom:16px}
+.sla-title{margin:0 0 6px;border-bottom:none !important}.price{margin:0;color:#fff;font-size:22px}.price-note{color:#c0c0c0;font-size:13px;margin-bottom:14px}
 .sla-cards{display:grid;gap:12px;margin-top:12px}
-.sla-card{background:rgba(12,12,14,0.7);border:1px solid var(--line);border-radius:12px;padding:14px}
+.sla-card{background:rgba(12,12,14,0.7);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:14px}
 .sla-card.dashed{border:2px dashed var(--lime);background:transparent}
-.sla-card-title{font-size:16px;font-weight:700;margin:0 0 6px}
+.sla-card-title{font-size:15px;font-weight:700;margin:0 0 6px}
 .sla-card-desc{font-size:12px;color:rgba(255,255,255,0.7);line-height:1.4}
 .sla-card-calc{font-size:13px;color:#fff;margin-bottom:6px;font-weight:600}
 .sla-subgroup{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
 .sla-subgroup-title{font-weight:600;font-size:13px}
-.contact-in-summary{background:rgba(12,12,14,0.7);border:1px solid var(--line);margin:16px 0 12px}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.terms-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:12px;font-size:13px;line-height:1.3}
+.contact-in-summary{background:rgba(12,12,14,0.7);border:1px solid var(--line);margin:14px 0 12px}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.terms-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:12px;font-size:13px}
 .terms-row input[type="checkbox"]{accent-color:var(--lime);width:18px;height:18px;margin-top:2px;flex-shrink:0}
 .terms-row a{color:var(--lime);text-decoration:underline}
-.submit-message{padding:12px 16px;border-radius:12px;margin-bottom:12px;font-size:14px;font-weight:600;text-align:center;animation:slideDown 0.3s ease}
+.submit-message{padding:12px 14px;border-radius:12px;margin-bottom:12px;font-size:13px;font-weight:600;text-align:center;animation:slideDown 0.3s ease}
 .submit-message.success{background:rgba(74,222,128,0.15);color:#4ade80;border:1px solid rgba(74,222,128,0.3)}
 .submit-message.error{background:rgba(255,71,87,0.15);color:#ff4757;border:1px solid rgba(255,71,87,0.3)}
-button.primary{padding:14px 16px;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:flex-start;gap:12px;font-size:16px}
+button.primary{padding:14px 16px;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:flex-start;gap:12px;font-size:14px}
 button.full{width:100%}button.strong{font-weight:700}
 .btn-text{flex:1;text-align:left}
 .btn-icon{transition:transform 0.2s ease;flex-shrink:0}
-button.primary:hover .btn-icon{transform:translateX(3px)}
+button.primary:hover .btn-icon{transform:translateX(2px)}
 .lime-btn{background:var(--lime);color:#000}
 .white-btn{background:#fff;color:#000}
 .cta-row{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
@@ -628,48 +645,46 @@ button.primary:hover .btn-icon{transform:translateX(3px)}
 .pricing-modal-close{position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#1d1d1f;border:none;color:#f5f5f7;cursor:pointer;z-index:11;display:flex;align-items:center;justify-content:center}
 .pricing-modal-header{font-size:1rem;color:#6e6e73;margin:60px 80px 12px 80px;font-weight:500;letter-spacing:0.08em}
 .pricing-modal-title{font-size:2.135rem;font-weight:600;color:#1d1d1f;margin:0 80px 24px 80px}
-.modal-title-tight{line-height:1.15;margin-bottom:20px}
 .pricing-modal-body{padding:0 80px 60px;overflow-y:auto;max-height:calc(90vh - 200px)}
 .surface{background:#edeef0;border-radius:12px;padding:8px 10px}
 .pad{padding:14px 12px}.black{color:#1d1d1f!important}
 .owner-col-single{display:grid;gap:20px}
 .owner-block{padding:16px}
+.custom-contact{margin-top:8px}
 .cat-h2,.section-h2{font-size:19px;font-weight:600;color:#1d1d1f;margin:0 0 10px 0}
-.topics-grid.compact3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.topic-card{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #d2d3d6;border-radius:10px;background:#f1f2f4;cursor:pointer;text-align:left}
+.topics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.topic-card{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #d2d3d6;border-radius:10px;background:#f1f2f4;cursor:pointer;font-size:13px}
 .topic-card.small{padding:6px 8px}
 .topic-card.selected{border-color:var(--lime);background:#e7f7ee}
 .topic-card:disabled{opacity:0.4;cursor:not-allowed}
 .topic-card input[type="checkbox"]{accent-color:var(--green);width:16px;height:16px;pointer-events:none}
 .extras-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.extra-card{border:1px solid #d2d3d6;border-radius:10px;padding:10px;background:#f1f2f4;color:#1d1d1f;cursor:pointer;text-align:center}
+.extra-card{border:1px solid #d2d3d6;border-radius:10px;padding:10px;background:#f1f2f4;color:#1d1d1f;cursor:pointer;text-align:center;font-size:13px}
 .extra-card.active{border-color:var(--lime);background:#dcfce7}
 .spaced-large{display:grid;grid-template-columns:1fr;gap:18px}
-.worktime-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .radio-left .row,.radio-left{display:flex;align-items:center;gap:12px}
 .radio-left input[type="radio"],.radio-big{accent-color:var(--lime);width:18px;height:18px;border-radius:50%}
-.checks-grid-1col{display:grid;grid-template-columns:1fr;gap:6px;margin-top:8px}
-.checks-grid-1col input[type="checkbox"]{accent-color:var(--lime)}
+.checks-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px}
 .sla-detail-cards{display:grid;gap:10px}
 .sla-detail-card{background:#edeef0;border-radius:10px;padding:12px;color:#1d1d1f;font-size:13px;line-height:1.5;display:flex;align-items:flex-start;gap:10px}
 .detail-check{flex-shrink:0;margin-top:2px}
 @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 button:disabled{opacity:0.6;cursor:not-allowed}
-@media(max-width:1024px){
-  .signal-sla.dark{font-size:12px}
-  h3{font-size:14px}
-  .card{padding:12px 10px;margin:10px 0}
+@media(max-width:768px){
+  .signal-sla.dark{font-size:13px}
   .widget-row,.ltv-grid,.nps-cards{grid-template-columns:1fr}
   .contact-grid{grid-template-columns:1fr}
-  .goal-title{font-size:13px}
-  .goal-line{font-size:11px}
-  .goals-row{padding:8px 0}
-  .pricing-modal-header,.pricing-modal-title,.pricing-modal-body{margin-left:20px;margin-right:20px;padding-left:0;padding-right:0}
-  .pricing-modal-title{font-size:1.8rem;margin-bottom:18px}
-  .extras-grid,.topics-grid.compact3{grid-template-columns:1fr 1fr}
-  .worktime-grid{grid-template-columns:1fr;gap:12px}
-  button.primary{padding:12px 14px;font-size:14px;gap:10px}
+  .pricing-modal-header,.pricing-modal-title,.pricing-modal-body{margin-left:24px;margin-right:24px;padding-left:0;padding-right:0}
+  .extras-grid,.topics-grid{grid-template-columns:1fr 1fr}
+  button.primary{padding:12px 14px;font-size:13px;gap:10px}
+  .card{padding:14px 12px;margin:10px 0}
   .sla-cards{gap:10px;margin-top:10px}
-  .terms-row{font-size:11px;line-height:1.35}
+  .goals-row{grid-template-columns:1fr;text-align:center}
+  .goals-row .linklike{margin-top:4px}
+  .owner-col-single{text-align:left}
+  .pricing-modal-title{line-height:1.2}
+  .workhours-grid{display:grid;grid-template-columns:1fr;gap:12px}
+  .terms-row{line-height:1.3}
 }
+@media(min-width:769px){.contact-grid{grid-template-columns:1fr 1fr}}
 </style>
