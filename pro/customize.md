@@ -54,7 +54,7 @@ notification: brew
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 15vh; /* Меньше отступы сверху/снизу */
+  min-height: 5vh; /* Меньше отступы сверху/снизу */
   padding: 0;
 }
 
@@ -127,8 +127,8 @@ notification: brew
     width: 100%;
   }
   .centered-buttons {
-    min-height: 20vh;    /* Было 40vh, теперь меньше */
-    padding: 7.5px 0;    /* Было 15px, теперь вдвое меньше */
+    min-height: 5vh;
+    padding: 7.5px 0;
   }
 }
 </style>
