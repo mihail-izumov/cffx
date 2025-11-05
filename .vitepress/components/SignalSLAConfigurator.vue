@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, computed, h, watch, nextTick } from 'vue'
 
-const TELEGRAM_BOT_TOKEN = '8291628689:AAFOA4-OQR1Qor-Zu45r60x4_mmtp0fuSDc'
+const TELEGRAM_BOT_TOKEN = '8502233692:AAGfzrlanIRPO_GKIlSAZHI65bmHPf7y0Lk'
 const TELEGRAM_CHAT_ID = '7999126446'
 
 const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
