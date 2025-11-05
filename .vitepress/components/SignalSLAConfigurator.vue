@@ -80,13 +80,17 @@ const sliderMoneyStep=computed(()=>isCafe.value?50:1000)
 const ltvOptions=['CRM','BI/Дашборды','Google Sheets','Другое']
 const npsCards=[{label:'60 мин.',value:60},{label:'1 день',value:1440},{label:'3 дня',value:4320},{label:'Другое',value:-1}]
 
-const ltcGrowthCalc=computed(()=>{
-  const total_guests=state.company.guests_or_clients*state.company.locations
-  const without_signal=Math.round(total_guests*(state.company.retention_pct/100))
-  const mult=WIDGETS[state.widget].growthMultiplier
-  const with_signal=Math.round(without_signal*(1+mult))
-  const growth_pct=Math.round(((with_signal-without_signal)/without_signal)*100)
-  return {without_signal,with_signal,growth_pct}
+const ltcGrowthCalc = computed(() => {
+  const total = state.company.locations * state.company.guests_or_clients
+  const retention = state.company.retention_pct / 100
+  const without = Math.round(total * retention)
+  const multiplier = WIDGETS[state.widget].growthMultiplier || 0.23
+  const with_signal = Math.round(without * (1 + multiplier))
+  return {
+    without_signal: without,
+    with_signal: with_signal,
+    growth_pct: Math.round((with_signal - without) / without * 100)
+  }
 })
 
 const slaTitle=computed(()=>`Сборка Сигнала ${state.company.name||''}`)
@@ -342,11 +346,14 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           <div v-if="item.desc" class="sla-card-desc">{{item.desc}}</div>
           
           <template v-if="item.title.includes('Расчет')">
-            <div class="sla-card-calc">
-  Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)
-</div>
-            <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем <component :is="SquareArrowOut" class="ext-icon"/></a>
-          </template>
+  <div 
+    :key="`calc-${state.company.locations}-${state.company.guests_or_clients}-${state.company.retention_pct}-${state.widget}`" 
+    class="sla-card-calc"
+  >
+    Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)
+  </div>
+  <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем <component :is="SquareArrowOut" class="ext-icon"/></a>
+</template>
           
           <template v-if="item.title.includes('Соглашение')">
             <div class="sla-subgroup">
