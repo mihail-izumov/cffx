@@ -18,6 +18,8 @@ const CircleDot = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0
 
 const CircleDotDashed = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'#999','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'18',height:'18'},[h('path',{d:'M10.1 2.18a9.93 9.93 0 0 1 3.8 0'}),h('path',{d:'M17.6 3.71a9.95 9.95 0 0 1 2.69 2.7'}),h('path',{d:'M21.82 10.1a9.93 9.93 0 0 1 0 3.8'}),h('path',{d:'M20.29 17.6a9.95 9.95 0 0 1-2.7 2.69'}),h('path',{d:'M13.9 21.82a9.94 9.94 0 0 1-3.8 0'}),h('path',{d:'M6.4 20.29a9.95 9.95 0 0 1-2.69-2.7'}),h('path',{d:'M2.18 13.9a9.93 9.93 0 0 1 0-3.8'}),h('path',{d:'M3.71 6.4a9.95 9.95 0 0 1 2.7-2.69'}),h('circle',{cx:'12',cy:'12',r:'1'})])
 
+const ClockIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'16',height:'16'},[h('circle',{cx:'12',cy:'12',r:'10'}),h('polyline',{points:'12 6 12 12 16 14'})])
+
 type Topic = { category: string }
 type CategoryKey = 'A'|'B'|'C'|'D'
 type Owner = 'team'|'manager'|'custom'
@@ -184,7 +186,8 @@ function submitToFormspree(action:'submit'|'discuss'){
   isSubmitting.value=true
   submitAction.value=action
 
-  const messageText=`Новая ${action==='submit'?'сборка':'обсудить позже'}: ${state.company.name}\n\nКонтакты:\nИмя: ${state.contact.name}\nТелефон: ${state.contact.phone}\nУсловия: ${state.terms_accepted?'Согласен':'Не согласен'}\n\nКомпания:\nНазвание: ${state.company.name}\nТип: ${state.widget==='cafe'?'Общепит':'Фитнес'}\nЛокаций: ${state.company.locations}\nГостей/клиентов (за период): ${state.company.guests_or_clients*state.company.locations}\nСредний чек/абонемент: ${state.company.avg_check_or_subscription}\nRetention: ${state.company.retention_pct}%\n\nLTV расчет:\nСейчас: ${ltcGrowthCalc.value.without_signal} клиентов/мес\nС Сигналом: ${ltcGrowthCalc.value.with_signal} клиентов/мес\nРост: +${ltcGrowthCalc.value.growth_pct}%\nИнструменты: ${state.company.ltv_cards.join(', ')||'не выбраны'}\n${state.company.ltv_tool_other?`Другое: ${state.company.ltv_tool_other}`:''}\n\nСтандарты и скрипты:\nСтандарты: ${state.standards_source==='internal'?'Внутренние':'Сигнала'}\nСкрипты: ${state.client_scripts.length>0?state.client_scripts.join(', '):'не выбраны'}\n\nМатрица эскалации:\nКат. А (4ч): ${getCategoryData('A').owner===`team`?'Команда':getCategoryData('A').owner===`manager`?'Управляющий':''+getCategoryData('A').contact}\n  Темы: ${getCategoryData('A').topics.join(', ')}\nКат. Б (2ч): ${getCategoryData('B').owner===`team`?'Команда':getCategoryData('B').owner===`manager`?'Управляющий':''+getCategoryData('B').contact}\n  Темы: ${getCategoryData('B').topics.join(', ')}\nКат. В (1ч): ${getCategoryData('C').owner===`team`?'Команда':getCategoryData('C').owner===`manager`?'Управляющий':''+getCategoryData('C').contact}\n  Темы: ${getCategoryData('C').topics.join(', ')}\nКат. Г (15м): ${getCategoryData('D').owner===`team`?'Команда':getCategoryData('D').owner===`manager`?'Управляющий':''+getCategoryData('D').contact}\n  Темы: ${getCategoryData('D').topics.join(', ')}\n\nТикет-система:\nБазовые: ${state.ticket_template.base_fields_ru.join(', ')}\nДоп. поля: ${state.ticket_template.extra_fields.join(', ')||'нет'}\n\nЦели (операционные):\nПолное закрытие: ${state.goals.full_close_time_hours}ч\nБез эскалации: ${state.goals.resolved_without_escalation_pct}%\n\nЦели (качество):\nТочность рекомендаций: ${state.goals.reco_accuracy_pct}%\nПолучение NPS: ${state.goals.nps_collected_pct}%\nСредний NPS: ${state.goals.nps_avg}/10\n\nЦели (бизнес):\nВозврат после жалобы: ${state.goals.returns_after_complaint_pct}%\nСредняя компенсация: ${state.goals.avg_compensation_rub}\n\nNPS таймер:\n${state.nps.step===-1?`${state.nps.custom_hours}ч (свой)`:state.nps.step===60?'60 минут':state.nps.step===1440?'1 день':'3 дня'}\n\nРежим работы:\n${state.work_hours.mode==='wk_9_18'?'Будни 9–18 МСК':state.work_hours.mode==='wk_9_18_we'?'9–18 МСК + выходные':`Расш.: Будни ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}, Вых. ${state.work_hours.weekends.from}-${state.work_hours.weekends.to}`}\n\nДействие:\n${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
+  const actionText=action==='submit'?'Новая сборка':'Обсудить позже'
+  const messageText=`🔔 ${actionText}: ${state.company.name}\n\nКонтакты:\nИмя: ${state.contact.name}\nТелефон: ${state.contact.phone}\nУсловия: ${state.terms_accepted?'Согласен':'Не согласен'}\n\nКомпания:\nНазвание: ${state.company.name}\nТип: ${state.widget==='cafe'?'Общепит':'Фитнес'}\nЛокаций: ${state.company.locations}\nГостей/клиентов (за период): ${state.company.guests_or_clients*state.company.locations}\nСредний чек/абонемент: ${state.company.avg_check_or_subscription}\nRetention: ${state.company.retention_pct}%\n\nLTV расчет:\nСейчас: ${ltcGrowthCalc.value.without_signal} клиентов/мес\nС Сигналом: ${ltcGrowthCalc.value.with_signal} клиентов/мес\nРост: +${ltcGrowthCalc.value.growth_pct}%\nИнструменты: ${state.company.ltv_cards.join(', ')||'не выбраны'}\n${state.company.ltv_tool_other?`Другое: ${state.company.ltv_tool_other}`:''}\n\nСтандарты и скрипты:\nСтандарты: ${state.standards_source==='internal'?'Внутренние':'Сигнала'}\nСкрипты: ${state.client_scripts.length>0?state.client_scripts.join(', '):'не выбраны'}\n\nМатрица эскалации:\nКат. А (4ч): ${getCategoryData('A').owner===`team`?'Команда':getCategoryData('A').owner===`manager`?'Управляющий':''+getCategoryData('A').contact}\n  Темы: ${getCategoryData('A').topics.join(', ')}\nКат. Б (2ч): ${getCategoryData('B').owner===`team`?'Команда':getCategoryData('B').owner===`manager`?'Управляющий':''+getCategoryData('B').contact}\n  Темы: ${getCategoryData('B').topics.join(', ')}\nКат. В (1ч): ${getCategoryData('C').owner===`team`?'Команда':getCategoryData('C').owner===`manager`?'Управляющий':''+getCategoryData('C').contact}\n  Темы: ${getCategoryData('C').topics.join(', ')}\nКат. Г (15м): ${getCategoryData('D').owner===`team`?'Команда':getCategoryData('D').owner===`manager`?'Управляющий':''+getCategoryData('D').contact}\n  Темы: ${getCategoryData('D').topics.join(', ')}\n\nТикет-система:\nБазовые: ${state.ticket_template.base_fields_ru.join(', ')}\nДоп. поля: ${state.ticket_template.extra_fields.join(', ')||'нет'}\n\nЦели (операционные):\nПолное закрытие: ${state.goals.full_close_time_hours}ч\nБез эскалации: ${state.goals.resolved_without_escalation_pct}%\n\nЦели (качество):\nТочность рекомендаций: ${state.goals.reco_accuracy_pct}%\nПолучение NPS: ${state.goals.nps_collected_pct}%\nСредний NPS: ${state.goals.nps_avg}/10\n\nЦели (бизнес):\nВозврат после жалобы: ${state.goals.returns_after_complaint_pct}%\nСредняя компенсация: ${state.goals.avg_compensation_rub}\n\nNPS таймер:\n${state.nps.step===-1?`${state.nps.custom_hours}ч (свой)`:state.nps.step===60?'60 минут':state.nps.step===1440?'1 день':'3 дня'}\n\nРежим работы:\n${state.work_hours.mode==='wk_9_18'?'Будни 9–18 МСК':state.work_hours.mode==='wk_9_18_we'?'9–18 МСК + выходные':`Расш.: Будни ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}, Вых. ${state.work_hours.weekends.from}-${state.work_hours.weekends.to}`}\n\nДействие:\n${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
 
   fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{
     method:'POST',
@@ -294,13 +297,13 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 
     <div class="card">
       <h3>Цели</h3>
-      <div class="goals-row"><div><div class="goal-title">Операционные</div>
+      <div class="goals-row"><div class="goals-col"><div class="goal-title">Операционные</div>
         <div class="goal-line">Полное закрытие: {{state.goals.full_close_time_hours}} ч; Без эскалации: {{state.goals.resolved_without_escalation_pct}}%</div></div>
         <button class="linklike same" @click="openModal('goals_ops')">Изменить</button></div>
-      <div class="goals-row"><div><div class="goal-title">Качество</div>
+      <div class="goals-row"><div class="goals-col"><div class="goal-title">Качество</div>
         <div class="goal-line">Точность рекомендаций: {{state.goals.reco_accuracy_pct}}%; Получение NPS: {{state.goals.nps_collected_pct}}%; Средний NPS: {{state.goals.nps_avg}}</div></div>
         <button class="linklike same" @click="openModal('goals_quality')">Изменить</button></div>
-      <div class="goals-row"><div><div class="goal-title">Бизнес</div>
+      <div class="goals-row"><div class="goals-col"><div class="goal-title">Бизнес</div>
         <div class="goal-line">Возврат после жалобы: {{state.goals.returns_after_complaint_pct}}%; Средняя компенсация: {{state.goals.avg_compensation_rub}} ₽</div></div>
         <button class="linklike same" @click="openModal('goals_business')">Изменить</button></div>
     </div>
@@ -407,10 +410,10 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 
             <template v-if="modalKind==='categories'">
               <div class="pricing-modal-header">НАСТРОЙКИ</div>
-              <h2 class="pricing-modal-title modal-title-headline">Матрица<br/>эскалации</h2>
+              <h2 class="pricing-modal-title">Матрица эскалации</h2>
               <div class="pricing-modal-body">
                 <div class="owner-col-single">
-                  <div v-for="k in ['A','B','C','D']" :key="k" class="owner-block surface">
+                  <div v-for="k in ['A','B','C','D']" :key="k" class="owner-block surface owner-block-full">
                     <h2 class="cat-h2">Категория {{k==='A'?'А':k==='B'?'Б':k==='C'?'В':'Г'}}</h2>
                     <div class="select-wrapper">
                       <select :value="getCategoryData(k).owner" @input="(e:any)=>setCategoryOwner(k,e.target.value)" class="select-arrow">
@@ -469,27 +472,27 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
               </div>
             </template>
 
-            <template v-else-if="modalKind==='sla_ready'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title modal-title-headline">Почти<br/>готово</h2>
+            <template v-else-if="modalKind==='sla_ready'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Почти готово</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards">
                 <div v-for="(item,i) in SLA_READY_DETAILS" :key="i" class="sla-detail-card">
-                  <component :is="CircleDot" class="detail-check"/>{{item}}
+                  <component :is="CircleDot" class="detail-check"/><span><strong>{{ item.split(':')[0] }}:</strong>{{ item.includes(':') ? item.slice(item.indexOf(':')) : item }}</span>
                 </div>
               </div></div>
             </template>
 
-            <template v-else-if="modalKind==='sla_later'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title modal-title-headline">Доработать и<br/>согласовать</h2>
+            <template v-else-if="modalKind==='sla_later'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Доработать и согласовать</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards line-height-fix">
                 <div v-for="(item,i) in SLA_LATER_DETAILS" :key="i" class="sla-detail-card">
-                  <component :is="CircleDotDashed" class="detail-check"/>{{item}}
+                  <component :is="CircleDotDashed" class="detail-check"/><span><strong>{{ item.split(':')[0] }}:</strong>{{ item.includes(':') ? item.slice(item.indexOf(':')) : item }}</span>
                 </div>
               </div></div>
             </template>
 
             <template v-else>
-              <div class="pricing-modal-header">ГРАФИК</div><h2 class="pricing-modal-title modal-title-headline">Расширенный<br/>режим</h2>
+              <div class="pricing-modal-header">ГРАФИК</div><h2 class="pricing-modal-title">Расширенный режим</h2>
               <div class="pricing-modal-body spaced-large-full">
-                <div class="surface pad black"><h4>Будни</h4><label class="row surface"><input style="display:none"/><span>От</span><input v-model="state.work_hours.weekdays.from" type="time" class="time-input"/></label><label class="row surface"><input style="display:none"/><span>До</span><input v-model="state.work_hours.weekdays.to" type="time" class="time-input"/></label></div>
-                <div class="surface pad black fullwidth-mobile"><h4>Выходные</h4><label class="row surface"><input style="display:none"/><span>От</span><input v-model="state.work_hours.weekends.from" type="time" class="time-input"/></label><label class="row surface"><input style="display:none"/><span>До</span><input v-model="state.work_hours.weekends.to" type="time" class="time-input"/></label></div>
+                <div class="surface pad black"><h4>Будни</h4><label class="row surface time-row"><input style="display:none"/><span>От</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekdays.from" type="time" class="time-input"/></div></label><label class="row surface time-row"><input style="display:none"/><span>До</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekdays.to" type="time" class="time-input"/></div></label></div>
+                <div class="surface pad black fullwidth-mobile"><h4>Выходные</h4><label class="row surface time-row"><input style="display:none"/><span>От</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekends.from" type="time" class="time-input"/></div></label><label class="row surface time-row"><input style="display:none"/><span>До</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekends.to" type="time" class="time-input"/></div></label></div>
               </div>
             </template>
 
@@ -508,7 +511,10 @@ h2,h3,h4{margin:0 0 6px}h2{font-size:22px}h3{font-size:16px}h4{font-size:14px}
 .grid1{display:grid;grid-template-columns:1fr;gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .row{display:flex;align-items:center;gap:8px}.row span{min-width:max-content}
 input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10px;border-radius:10px;background:#0b0c0e;color:var(--text);border:1px solid var(--line);font-size:13px;flex:1}
-.time-input{color:#fff !important}
+.time-input{color:#fff !important}.time-row{flex-wrap:wrap}
+.time-input-wrapper{position:relative;display:flex;align-items:center;width:100%}
+.clock-icon{position:absolute;left:10px;color:#999;flex-shrink:0;pointer-events:none}
+.time-input-wrapper input[type="time"]{padding-left:32px !important}
 .select-wrapper{position:relative;flex:1;display:flex;align-items:center}
 .select-arrow{appearance:none;width:100%;padding:8px 28px 8px 10px !important;background:#0b0c0e;padding-right:28px !important;cursor:pointer}
 .chevron-icon{position:absolute;right:8px;pointer-events:none;color:#999;flex-shrink:0}
@@ -547,6 +553,7 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .goal-line{font-size:13px;color:#c0c0c0}
 .goals-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);gap:8px}
 .goals-row:first-of-type{border-top:none}
+.goals-col{min-width:0;flex:1}
 .nps-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .nps-card{border:1px solid var(--line);border-radius:12px;padding:10px 16px;background:#0d0f12;color:#e8eaed;cursor:pointer;text-align:center;font-size:13px}
 .nps-card.active{border-color:var(--lime);background:#1a1d20}
@@ -567,13 +574,13 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .sla-subgroup-title{font-weight:600;font-size:13px}
 .contact-in-summary{background:rgba(12,12,14,0.7);border:1px solid var(--line);margin:16px 0 20px}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.terms-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:20px;font-size:12px;line-height:1.4}
+.terms-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:15px;font-size:12px;line-height:1.4}
 .terms-row input[type="checkbox"]{accent-color:var(--lime);width:16px;height:16px;margin-top:2px;flex-shrink:0}
 .terms-row a{color:var(--lime);text-decoration:underline}
 .submit-message{padding:12px 16px;border-radius:12px;margin-bottom:10px;font-size:13px;font-weight:600;text-align:center;animation:slideDown 0.3s ease}
 .submit-message.success{background:rgba(74,222,128,0.15);color:#4ade80;border:1px solid rgba(74,222,128,0.3)}
 .submit-message.error{background:rgba(255,71,87,0.15);color:#ff4757;border:1px solid rgba(255,71,87,0.3)}
-button.primary{padding:14px 16px;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:flex-start;gap:10px;font-size:14px}
+button.primary{padding:14px 16px;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:flex-start;gap:10px;font-size:16px}
 button.full{width:100%}button.strong{font-weight:700}
 .btn-text{flex:1;text-align:left}
 .btn-icon{transition:transform 0.2s ease;flex-shrink:0;width:22px;height:22px}
@@ -585,14 +592,14 @@ button.primary:hover .btn-icon{transform:translateX(3px)}
 .pricing-modal-window{background:#f5f5f7;border-radius:28px;width:880px;max-width:100%;max-height:90vh;box-shadow:0 20px 60px rgba(0,0,0,0.5);display:flex;flex-direction:column;overflow:hidden;position:relative}
 .pricing-modal-close{position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#1d1d1f;border:none;color:#f5f5f7;cursor:pointer;z-index:11;display:flex;align-items:center;justify-content:center}
 .pricing-modal-header{font-size:1rem;color:#6e6e73;margin:60px 80px 12px 80px;font-weight:500;letter-spacing:0.08em}
-.pricing-modal-title{font-size:2.135rem;font-weight:600;color:#1d1d1f;margin:0 80px 24px 80px}
-.modal-title-headline{line-height:1.2}
+.pricing-modal-title{font-size:2.135rem;font-weight:600;color:#1d1d1f;margin:0 80px 24px 80px;line-height:1.15}
 .pricing-modal-body{padding:0 80px 60px;overflow-y:auto;max-height:calc(90vh - 200px)}
 .surface{background:#edeef0;border-radius:12px;padding:8px 10px}
 .pad{padding:14px 12px}.black{color:#1d1d1f!important}
 .owner-col-single{display:grid;gap:20px}
 .owner-block{padding:16px}
-.cat-h2,.section-h2{font-size:19px;font-weight:600;color:#1d1d1f;margin:0 0 10px 0;line-height:1.2}
+.owner-block-full{width:100%}
+.cat-h2,.section-h2{font-size:19px;font-weight:600;color:#1d1d1f;margin:0 0 10px 0;line-height:1.15}
 .topics-grid.compact3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .topic-card{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #d2d3d6;border-radius:10px;background:#f1f2f4;cursor:pointer;font-size:11px;line-height:1.2}
 .topic-card.small{padding:6px 8px}
@@ -617,20 +624,24 @@ button.primary:hover .btn-icon{transform:translateX(3px)}
 button:disabled{opacity:0.6;cursor:not-allowed}
 @media(max-width:1024px){
   .signal-sla.dark{font-size:13px}
+  button.primary{font-size:15px}
   .widget-row,.ltv-grid{grid-template-columns:1fr}
   .nps-cards{grid-template-columns:repeat(2,1fr)}
   .contact-grid{grid-template-columns:1fr}
-  .goals-row{gap:4px}
+  .goals-row{gap:4px;flex-wrap:wrap}
+  .goals-col{flex-basis:100%}
   .linklike.same{font-size:11px}
   .pricing-modal-header,.pricing-modal-title,.pricing-modal-body{margin-left:24px;margin-right:24px;padding-left:0;padding-right:0}
   .extras-grid,.topics-grid.compact3{grid-template-columns:1fr 1fr}
-  button.primary{padding:13px 14px;font-size:13px;gap:8px}
   .card{padding:14px 12px;margin:10px 0}
   .sla-cards{gap:10px;margin-top:10px}
   .spaced-large-full{grid-template-columns:1fr}
   .fullwidth-mobile{width:100%}
   .radio-left{flex-direction:column;align-items:flex-start}
   .contact-in-summary{margin:16px 0 12px}
-  .terms-row{margin-bottom:12px}
+  .terms-row{margin-bottom:15px}
+  .pricing-modal-title{font-size:1.6rem}
+  .cat-h2,.section-h2{font-size:16px;line-height:1.1}
+  .owner-block-full{width:100%;max-width:100%}
 }
 </style>
