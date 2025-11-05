@@ -54,7 +54,7 @@ notification: brew
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 0;
+  padding: 15px 0;
 }
 
 /* Группа кнопок по центру */
@@ -113,6 +113,7 @@ notification: brew
   }
   .centered-buttons {
     min-height: 40vh;
+    padding: 15px 0;
   }
 }
 </style>
