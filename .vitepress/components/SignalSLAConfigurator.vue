@@ -15,6 +15,9 @@ const CircleDot = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0
 
 const CircleDotDashed = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'#999','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'18',height:'18'},[h('path',{d:'M10.1 2.18a9.93 9.93 0 0 1 3.8 0'}),h('path',{d:'M17.6 3.71a9.95 9.95 0 0 1 2.69 2.7'}),h('path',{d:'M21.82 10.1a9.93 9.93 0 0 1 0 3.8'}),h('path',{d:'M20.29 17.6a9.95 9.95 0 0 1-2.7 2.69'}),h('path',{d:'M13.9 21.82a9.94 9.94 0 0 1-3.8 0'}),h('path',{d:'M6.4 20.29a9.95 9.95 0 0 1-2.69-2.7'}),h('path',{d:'M2.18 13.9a9.93 9.93 0 0 1 0-3.8'}),h('path',{d:'M3.71 6.4a9.95 9.95 0 0 1 2.7-2.69'}),h('circle',{cx:'12',cy:'12',r:'1'})])
 
+// === REF ДЛЯ СКРЫТОЙ ФОРМЫ ===
+const signalForm = ref<HTMLFormElement | null>(null)
+
 type Topic = { category: string }
 type CategoryKey = 'A'|'B'|'C'|'D'
 type Owner = 'team'|'manager'|'custom'
@@ -70,9 +73,6 @@ const SLA_LATER_DETAILS=[
   'Примеры обработки реальных кейсов и кейсов с разбором решений'
 ]
 
-// ✅ ДОБАВЛЕНО: ref для формы
-const signalForm=ref<HTMLFormElement|null>(null)
-
 const state = reactive({
   widget:'cafe' as WidgetKey,
   company:{name:'',locations:5,guests_or_clients:3000,avg_check_or_subscription:550,retention_pct:40,ltv_cards:[] as string[],ltv_tool_other:''},
@@ -124,8 +124,8 @@ const allSelectedTopics=computed(()=>{
 })
 
 const isSubmitting=ref(false)
-const submitMessage=ref<{type:'success'|'error', text:string}|null>(null)
-const formspreeData=ref<Record<string,string>>({})
+const submitMessage=ref<{type:'success'|'error', text:string} | null>(null)
+const formspreeData=ref<Record<string, string>>({})
 
 function getCategoryData(k:string){return state.categories_map[k as CategoryKey]}
 function setCategoryOwner(k:string,val:Owner){state.categories_map[k as CategoryKey].owner=val}
@@ -177,7 +177,7 @@ function validateForm():boolean{
   return true
 }
 
-// ✅ ПОЛНОСТЬЮ ПЕРЕПИСАНО: использует Vue ref вместо querySelector
+// === ИСПРАВЛЕННАЯ ФУНКЦИЯ С REF ===
 function submitToFormspree(action:'submit'|'discuss'){
   if(!validateForm())return
   if(isSubmitting.value)return
@@ -185,7 +185,7 @@ function submitToFormspree(action:'submit'|'discuss'){
   isSubmitting.value=true
   submitMessage.value=null
 
-  // Собираем данные
+  // Собираем ВСЕ данные для Formspree
   formspreeData.value={
     name:state.contact.name,
     phone:state.contact.phone,
@@ -231,14 +231,14 @@ function submitToFormspree(action:'submit'|'discuss'){
       :`[SIGNAL] Уточнить позже: ${state.company.name||'Без названия'}`
   }
 
-  // ✅ Отправляем через ref вместо querySelector
+  // Даем Vue обновить DOM, ПОТОМ отправляем
   nextTick(()=>{
     if(signalForm.value){
       signalForm.value.submit()
     }
   })
 
-  // Успех
+  // Показываем успех
   submitMessage.value={
     type:'success',
     text:action==='submit'
@@ -246,11 +246,11 @@ function submitToFormspree(action:'submit'|'discuss'){
       :'✓ Спасибо! Обсудим детали позже.'
   }
 
-  // Очистка
+  // Очищаем контакт
   state.contact.name=''
   state.contact.phone=''
 
-  // Сброс
+  // Сбрасываем флаг через 15 сек
   setTimeout(()=>{
     submitMessage.value=null
     isSubmitting.value=false
@@ -425,7 +425,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
       <div class="cta-row">
         <button class="primary full strong lime-btn" @click="submitToFormspree('submit')" :disabled="isSubmitting">
           <span class="btn-text">{{ isSubmitting ? 'Отправляю...' : 'Отправить на сборку' }}</span>
-          omponentnt :is="ArrowRight" class="btn-icon"/>
+          omponent :is="ArrowRight" class="btn-iconon"/>
         </button>
         <button class="primary full strong white-btn" @click="submitToFormspree('discuss')" :disabled="isSubmitting">
           <span class="btn-text">{{ isSubmitting ? 'Отправляю...' : 'Обсудить позже' }}</span>
@@ -451,7 +451,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
                       <select :value="getCategoryData(k).owner" @input="(e:any)=>setCategoryOwner(k,e.target.value)" class="select-arrow">
                         <option value="team">Команда</option><option value="manager">Управляющий</option><option value="custom">Другое</option>
                       </select>
-                      omponent :is="ChevronUpDown" class="chevevron-icon"/>
+                      omponent :is="ChevronUpDown" class="chevron-iconon"/>
                     </div>
                     <label v-if="getCategoryData(k).owner==='custom'" class="row surface"><input style="display:none"/><span class="black">Контакт</span>
                       <input :value="getCategoryData(k).contact" @input="(e:any)=>setCategoryContact(k,e.target.value)" type="text" placeholder="@handle или телефон"/>
@@ -533,7 +533,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
       </Transition>
     </Teleport>
 
-    <!-- ✅ СКРЫТАЯ ФОРМА ДЛЯ FORMSPREE (с Vue ref) -->
+    <!-- === СКРЫТАЯ ФОРМА ДЛЯ FORMSPREE === -->
     <form
       ref="signalForm"
       action="https://formspree.io/f/mdkzjopz"
