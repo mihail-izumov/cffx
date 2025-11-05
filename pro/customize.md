@@ -47,7 +47,20 @@ notification: brew
 <DialogsForm />
 
 <style>
-/* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КНОПОК --- */
+.centered-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh; /* Центрирование по вертикали */
+}
+
+/* Группа кнопок по центру */
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
+/* Кнопки */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -59,24 +72,22 @@ notification: brew
   transition: all 0.3s ease;
   cursor: pointer;
   border: none;
-  margin: 10px 0;
 }
+
 .btn:hover {
   transform: translateY(-2px);
   text-decoration: none !important;
 }
 
-/* --- СТИЛЬ ОСНОВНОЙ КНОПКИ (ЯРКАЯ) --- */
 .btn-primary {
-  background-color: #C5F946; /* Яркий лаймовый */
+  background-color: #C5F946;
   color: #000 !important;
 }
 .btn-primary:hover {
-  background-color: #347b6c; /* Темный при наведении */
+  background-color: #347b6c;
   color: white !important;
 }
 
-/* --- СТИЛЬ ВТОРИЧНОЙ КНОПКИ --- */
 .btn-secondary {
   background-color: #f8f9fa;
   color: #333 !important;
@@ -87,38 +98,19 @@ notification: brew
   border-color: #adb5bd;
 }
 
-/* --- КОНТЕЙНЕР ДЛЯ ГРУППЫ КНОПОК --- */
-.button-group {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.button-group .btn {
-  margin: 0; /* Убираем margin, используем gap */
-}
-
-/* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
+/* Адаптив для мобильных */
 @media (max-width: 768px) {
   .button-group {
     flex-direction: column;
-    align-items: stretch; /* Кнопки занимают всю ширину */
+    align-items: stretch;
     gap: 10px;
   }
-  
   .button-group .btn {
-    width: 100%; /* Кнопки на всю ширину на мобильных */
+    width: 100%;
   }
-}
-
-/* --- Контейнер для отдельной кнопки --- */
-.start-button-container {
-  margin: 20px 0;
-  text-align: left;
-}
-.start-button-container .btn {
-  display: inline-block;
-  margin: 0;
+  .centered-buttons {
+    min-height: 40vh;
+  }
 }
 </style>
 
