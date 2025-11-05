@@ -36,20 +36,29 @@ notification: brew
 <br>
 
 <div align="center">
-# Модули Сигнала подстраиваются под вашу уникальность.
+
+  # Модули Сигнала подстраиваются под вашу уникальность.
+  
 </div>
+
 <SignalConstructorModules />
 
 <div align="center">
+  
 ## Быстрый Старт
+
 </div>
+
 <DialogsFirst5Days />
 
 <br>
 
 <div align="center">
+  
 ## Настройте сейчас. Запустите потом.
+
 </div>
+
 <!-- Блок кнопок по центру экрана -->
 <div class="centered-buttons">
   <div class="button-group">
