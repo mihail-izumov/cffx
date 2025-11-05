@@ -3,6 +3,14 @@ import { reactive, ref, computed, h, watch } from 'vue'
 
 const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
 
+const ArrowRight = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'18',height:'18'},[h('line',{x1:'5',y1:'12',x2:'19',y2:'12'}), h('polyline',{points:'12 5 19 12 12 19'})])
+
+const ArrowUpRight = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'18',height:'18'},[h('line',{x1:'7',y1:'17',x2:'17',y2:'7'}), h('polyline',{points:'7 7 17 7 17 17'})])
+
+const CheckFilled = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'#4ade80',width:'16',height:'16'},[h('path',{d:'M9 16.2L4.8 12m-0 0l-1.4 1.4L9 19 21 7'})])
+
+const CheckEmpty = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'#999',stroke:'2',width:'16',height:'16'},[h('rect',{x:'3',y:'3',width:'18',height:'18',rx:'2'})])
+
 type Topic = { category: string }
 type CategoryKey = 'A'|'B'|'C'|'D'
 type Owner = 'team'|'manager'|'custom'
@@ -16,14 +24,14 @@ const WIDGETS = {
     scripts:['Вкус','Долгая подача','Инородный предмет','Поведение персонала','Чистота','Температура'],
     defaultOwners:{A:'team' as Owner,B:'team' as Owner,C:'manager' as Owner,D:'manager' as Owner},
     defaultTopics:{A:['Ошибки в заказе','Коммуникация','Цена','Упаковка'],B:['Долгое ожидание','Вкус','Чистота'],C:['Инородные предметы','Профессионализм','Атмосфера'],D:['Договор и отмена','Поведение персонала']},
-    defaultCompany:'СуперФуд', defaultRetention:50, growthMultiplier:0.55
+    defaultCompany:'СуперФуд', defaultLocations:5, defaultGuests:3000, defaultRetention:40, growthMultiplier:0.55
   },
   fitness: {
     title:'Фитнес', icon:'/widget-fitness-icon.svg', topics:FITNESS_TOPICS,
     scripts:['Переполненность/очереди','Чистота раздевалок','Оборудование/ремонт','Поведение персонала','Расписание занятий','Температура/вентиляция'],
     defaultOwners:{A:'team' as Owner,B:'team' as Owner,C:'manager' as Owner,D:'manager' as Owner},
     defaultTopics:{A:['Цена','Расписание','Коммуникация'],B:['Чистота','Переполненность','Температура'],C:['Оборудование','Поведение персонала'],D:['Договор и отмена','Поведение персонала']},
-    defaultCompany:'СуперСпорт', defaultRetention:70, growthMultiplier:0.23
+    defaultCompany:'СуперСпорт', defaultLocations:7, defaultGuests:600, defaultAbonement:9500, defaultRetention:50, growthMultiplier:0.23
   }
 } as const
 
@@ -34,6 +42,7 @@ const SLA_READY_ITEMS=[
   {title:'Умная форма',desc:'150 цепочек с подсказками, рендер вопросов, переключение гендеров'},
   {title:'Анна (базовая версия)',desc:'Адаптация под ваш тон, продукты и особые ситуации из стандартов (если предоставлено)'},
   {title:'Тикет-система',desc:'Настройка шаблонов тикетов, адаптация по дстандарты'},
+  {title:'Расчет роста LTV (индивидуально)',desc:''},
   {title:'Соглашение об уровне обслуживания (SLA)',desc:''}
 ]
 
@@ -57,9 +66,11 @@ const SLA_LATER_DETAILS=[
   'Примеры обработки реальных кейсов и кейсов с разбором решений'
 ]
 
+const formspreeEndpoint = 'https://formspree.io/f/YOUR_FORM_ID'
+
 const state = reactive({
   widget:'cafe' as WidgetKey,
-  company:{name:'',locations:2,guests_or_clients:3000,avg_check_or_subscription:550,retention_pct:50,ltv_cards:[] as string[],ltv_tool_other:''},
+  company:{name:'',locations:5,guests_or_clients:3000,avg_check_or_subscription:0,retention_pct:40,ltv_cards:[] as string[],ltv_tool_other:''},
   standards_source:'internal' as 'internal'|'signal',
   has_full_classification:false,
   client_scripts:[] as string[],
@@ -73,21 +84,26 @@ const state = reactive({
 })
 
 const isCafe=computed(()=>state.widget==='cafe')
-const sliderGuestsMin=computed(()=>isCafe.value?500:200)
+const sliderGuestsMin=computed(()=>isCafe.value?200:100)
 const sliderGuestsMax=computed(()=>5000)
-const sliderGuestsStep=computed(()=>isCafe.value?500:200)
+const sliderGuestsStep=computed(()=>isCafe.value?100:50)
 const sliderMoneyMin=computed(()=>isCafe.value?250:1000)
 const sliderMoneyMax=computed(()=>isCafe.value?5000:15000)
 const sliderMoneyStep=computed(()=>isCafe.value?50:1000)
 const ltvOptions=['CRM','BI/Дашборды','Google Sheets','Другое']
 const npsCards=[{label:'60 мин.',value:60},{label:'1 день',value:1440},{label:'3 дня',value:4320},{label:'Другое',value:-1}]
-const plannedRetentionText=computed(()=>{
-  const current=state.company.retention_pct
+
+const ltcGrowthCalc=computed(()=>{
+  const months=10
+  const guest_months=state.company.guests_or_clients / 30 * months
+  const without_signal=Math.round(guest_months*(state.company.retention_pct/100))
   const mult=WIDGETS[state.widget].growthMultiplier
-  const planned=Math.round(current*(1+mult))
-  return `Плановый рост с Сигналом: ${current} × ${Math.round(mult*100)}% = ${planned}%`
+  const with_signal=Math.round(guest_months*((state.company.retention_pct/100)*(1+mult)))
+  const growth_pct=Math.round(((with_signal-without_signal)/without_signal)*100)
+  return {without_signal,with_signal,growth_pct}
 })
-const slaTitle=computed(()=>`Сборка Сигнала`)
+
+const slaTitle=computed(()=>`Сборка Сигнала ${state.company.name||''}`)
 const testDate=computed(()=>{
   const d=new Date()
   d.setDate(d.getDate()+4)
@@ -100,6 +116,8 @@ const allSelectedTopics=computed(()=>{
   ;(['A','B','C','D'] as CategoryKey[]).forEach(k=>all.push(...state.categories_map[k].topics))
   return all
 })
+const isSubmitting=ref(false)
+const submitMessage=ref<{type:'success'|'error', text:string} | null>(null)
 
 function getCategoryData(k:string){return state.categories_map[k as CategoryKey]}
 function setCategoryOwner(k:string,val:Owner){state.categories_map[k as CategoryKey].owner=val}
@@ -116,7 +134,19 @@ function toggleCategoryTopic(k:string,name:string){
   if(i>=0)arr.splice(i,1);else arr.push(name)
 }
 
-function applyWidgetDefaults(){const w=WIDGETS[state.widget];state.company.name=w.defaultCompany;state.company.retention_pct=w.defaultRetention;(['A','B','C','D'] as CategoryKey[]).forEach(k=>{state.categories_map[k].owner=w.defaultOwners[k];state.categories_map[k].topics=[...w.defaultTopics[k]]});state.client_scripts=[]}
+function applyWidgetDefaults(){
+  const w=WIDGETS[state.widget]
+  state.company.name=w.defaultCompany
+  state.company.locations=w.defaultLocations
+  state.company.guests_or_clients=w.defaultGuests
+  state.company.retention_pct=w.defaultRetention
+  state.company.avg_check_or_subscription=isCafe.value?0:w.defaultAbonement!
+  ;(['A','B','C','D'] as CategoryKey[]).forEach(k=>{
+    state.categories_map[k].owner=w.defaultOwners[k]
+    state.categories_map[k].topics=[...w.defaultTopics[k]]
+  })
+  state.client_scripts=[]
+}
 applyWidgetDefaults()
 
 function onWidgetChange(key:WidgetKey){state.widget=key;applyWidgetDefaults()}
@@ -124,12 +154,107 @@ function toggleLtvCard(name:string){const i=state.company.ltv_cards.indexOf(name
 function availableExtraFields():string[]{return WIDGETS[state.widget].topics.map(t=>t.category)}
 function toggleExtraField(name:string){const arr=state.ticket_template.extra_fields,i=arr.indexOf(name);if(i>=0)arr.splice(i,1);else if(arr.length<2)arr.push(name)}
 function selectNps(v:number){state.nps.step=v as any}
+
 const isModalOpen=ref(false)
 const modalKind=ref<'categories'|'ticket'|'goals_ops'|'goals_quality'|'goals_business'|'sla_ready'|'sla_later'|'workhours'>('categories')
 function openModal(kind:typeof modalKind.value){modalKind.value=kind;isModalOpen.value=true;if(typeof document!=='undefined')document.body.style.overflow='hidden'}
 function closeModal(){isModalOpen.value=false;if(typeof document!=='undefined')document.body.style.overflow=''}
 function ownerLabel(o:Owner){return o==='team'?'Команда':o==='manager'?'Управляющий':'Другое'}
-function submitForm(){if(!state.terms_accepted){alert('Подтвердите согласие с Условиями использования');return}console.log('SLA build request',JSON.parse(JSON.stringify(state)))}
+
+async function submitToFormspree(action:'submit'|'discuss'){
+  if(!state.terms_accepted){
+    submitMessage.value={type:'error',text:'✗ Подтвердите согласие с Условиями использования'}
+    return
+  }
+  
+  isSubmitting.value=true
+  submitMessage.value=null
+  
+  try{
+    const formData=new FormData()
+    
+    formData.append('_subject',action==='submit'
+      ?`[SIGNAL] Новая сборка: ${state.company.name||'Компания'}`
+      :`[SIGNAL] Уточнить позже: ${state.company.name||'Компания'}`
+    )
+    
+    formData.append('_replyto',state.contact.phone||'info@signal.local')
+    
+    formData.append('Тип',state.widget==='cafe'?'Общепит':'Фитнес')
+    formData.append('Компания',state.company.name||'—')
+    formData.append('Локации',state.company.locations.toString())
+    formData.append('Гости/Клиенты мес',state.company.guests_or_clients.toString())
+    if(!isCafe.value)formData.append('Абонемент',`${state.company.avg_check_or_subscription}₽`)
+    formData.append('Retention %',state.company.retention_pct.toString())
+    formData.append('LTV Рост без',ltcGrowthCalc.value.without_signal.toString())
+    formData.append('LTV Рост с',ltcGrowthCalc.value.with_signal.toString())
+    formData.append('LTV Рост %',ltcGrowthCalc.value.growth_pct.toString())
+    
+    formData.append('Источник стандартов',state.standards_source==='internal'?'Внутренние':'Сигнала')
+    formData.append('Скрипты',state.client_scripts.join(', ')||'нет')
+    formData.append('LTV инструменты',state.company.ltv_cards.join(', ')||'—')
+    
+    ;(['A','B','C','D'] as CategoryKey[]).forEach(k=>{
+      const data=getCategoryData(k)
+      formData.append(`Кат. ${k} Ответственный`,ownerLabel(data.owner))
+      if(data.contact)formData.append(`Кат. ${k} Контакт`,data.contact)
+      formData.append(`Кат. ${k} Темы`,data.topics.join(', ')||'—')
+    })
+    
+    formData.append('Базовые поля',state.ticket_template.base_fields_ru.join(', '))
+    formData.append('Дополнительные поля',state.ticket_template.extra_fields.join(', ')||'нет')
+    
+    formData.append('Полное закрытие ч',state.goals.full_close_time_hours.toString())
+    formData.append('Без эскалации %',state.goals.resolved_without_escalation_pct.toString())
+    formData.append('Точность %',state.goals.reco_accuracy_pct.toString())
+    formData.append('Получение NPS %',state.goals.nps_collected_pct.toString())
+    formData.append('NPS avg',state.goals.nps_avg.toString())
+    formData.append('Возврат %',state.goals.returns_after_complaint_pct.toString())
+    formData.append('Компенсация ₽',state.goals.avg_compensation_rub.toString())
+    
+    formData.append('NPS таймер',state.nps.step===-1?`${state.nps.custom_hours}ч`:state.nps.step===60?'60м':state.nps.step===1440?'1д':'3д')
+    
+    formData.append('Режим работы',state.work_hours.mode==='wk_9_18'?'Будни 9-18':state.work_hours.mode==='wk_9_18_we'?'9-18+выходные':`Расш. ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}`)
+    
+    formData.append('Имя',state.contact.name||'—')
+    formData.append('Телефон',state.contact.phone||'—')
+    formData.append('Действие',action==='submit'?'Отправить на сборку':'Обсудить позже')
+    formData.append('Дата',new Date().toISOString())
+    
+    formData.append('_template','table')
+    formData.append('_captcha','false')
+    
+    const response=await fetch(formspreeEndpoint,{
+      method:'POST',
+      body:formData,
+      headers:{'Accept':'application/json'}
+    })
+    
+    if(response.ok){
+      submitMessage.value={
+        type:'success',
+        text:action==='submit'
+          ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
+          :'✓ Спасибо! Обсудим детали позже.'
+      }
+      setTimeout(()=>{
+        state.contact.name=''
+        state.contact.phone=''
+        submitMessage.value=null
+      },3000)
+    }else{
+      throw new Error('Server error')
+    }
+  }catch(error){
+    submitMessage.value={
+      type:'error',
+      text:'✗ Ошибка отправки. Попробуйте ещё раз или свяжитесь с нами.'
+    }
+  }finally{
+    isSubmitting.value=false
+  }
+}
+
 watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 </script>
 
@@ -157,13 +282,19 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
         </label>
 
         <label class="row"><input style="display:none"/>
-          <span v-if="isCafe">Гости/мес</span><span v-else>Клиенты/мес</span>
+          <span v-if="isCafe">Гости/локация/мес</span><span v-else>Клиенты/клуб/мес</span>
           <input class="range long white" type="range" :min="sliderGuestsMin" :max="sliderGuestsMax" :step="sliderGuestsStep" v-model.number="state.company.guests_or_clients"/>
           <span class="inline-value">{{state.company.guests_or_clients}}</span>
         </label>
 
-        <label class="row"><input style="display:none"/>
-          <span v-if="isCafe">Средний чек (₽)</span><span v-else>Абонемент/мес (₽)</span>
+        <label v-if="isCafe" class="row"><input style="display:none"/>
+          <span>Средний чек (₽)</span>
+          <input class="range long white" type="range" :min="sliderMoneyMin" :max="sliderMoneyMax" :step="sliderMoneyStep" v-model.number="state.company.avg_check_or_subscription"/>
+          <span class="inline-value">{{state.company.avg_check_or_subscription}} ₽</span>
+        </label>
+
+        <label v-else class="row"><input style="display:none"/>
+          <span>Абонемент/мес (₽)</span>
           <input class="range long white" type="range" :min="sliderMoneyMin" :max="sliderMoneyMax" :step="sliderMoneyStep" v-model.number="state.company.avg_check_or_subscription"/>
           <span class="inline-value">{{state.company.avg_check_or_subscription}} ₽</span>
         </label>
@@ -173,7 +304,6 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
             <input class="range long white" type="range" min="0" max="100" v-model.number="state.company.retention_pct"/>
             <span class="inline-value">{{state.company.retention_pct}}%</span>
           </label>
-          <div class="hint small">{{plannedRetentionText}} <a class="linklike same" href="/pro/ltvcalc" target="_blank" rel="noopener">(как считаем)</a></div>
         </div>
 
         <div class="ltv-block">
@@ -193,7 +323,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
         <label class="row"><input type="radio" value="signal" v-model="state.standards_source"/><span>Стандарты Сигнала</span></label>
       </div>
       <div class="divider"></div>
-      <label class="row"><input type="radio" :checked="state.has_full_classification" @click="state.has_full_classification=!state.has_full_classification"/><span>Собственная классификация: скрипты</span></label>
+      <label class="row"><input type="radio" :checked="state.has_full_classification" @click="state.has_full_classification=!state.has_full_classification"/><span>Скрипты (есть в наличии)</span></label>
       <div v-if="state.has_full_classification" class="checks-grid-2col">
         <label v-for="s in availableScripts" :key="s" class="row">
           <input type="checkbox" :value="s" v-model="state.client_scripts"/><span>{{s}}</span>
@@ -257,13 +387,19 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
     <div class="card summary onecol lime-outline">
       <h2 class="sla-title lime" style="border:none">{{slaTitle}}</h2>
       <h2 class="price">₽50.000</h2>
-      <div class="price-note">Плановый тест системы: {{testDate}}</div>
+      <div class="price-note">Плановый тест системы: {{testDate}} (3 дня)</div>
 
       <div class="sla-cards">
-        <div v-for="(item,i) in SLA_READY_ITEMS" :key="i" class="sla-card">
+        <div v-for="(item,i) in SLA_READY_ITEMS" :key="i" class="sla-card" :class="{dashed:item.title.includes('Расчет')||item.title.includes('Соглашение')}">
           <h3 class="sla-card-title">{{item.title}}</h3>
           <div v-if="item.desc" class="sla-card-desc">{{item.desc}}</div>
-          <template v-if="item.title.includes('SLA')">
+          
+          <template v-if="item.title.includes('Расчет')">
+            <div class="sla-card-calc">Без: {{ltcGrowthCalc.without_signal}} мес × гость → С: {{ltcGrowthCalc.with_signal}} мес × гость (Δ +{{ltcGrowthCalc.growth_pct}}%)</div>
+            <a class="linklike same" href="/pro/ltvcalc" target="_blank" rel="noopener">(как считаем)</a>
+          </template>
+          
+          <template v-if="item.title.includes('Соглашение')">
             <div class="sla-subgroup">
               <div class="sla-subgroup-title">Почти готово</div>
               <button class="linklike same" @click="openModal('sla_ready')">Детали</button>
@@ -286,9 +422,19 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 
       <label class="terms-row"><input type="checkbox" v-model="state.terms_accepted"/><span>Подтверждаю согласие с <a href="/terms" target="_blank" rel="noopener">Условиями использования</a></span></label>
 
+      <div v-if="submitMessage" class="submit-message" :class="submitMessage.type">
+        {{submitMessage.text}}
+      </div>
+
       <div class="cta-row">
-        <button class="primary full strong lime-btn" @click="submitForm">Отправить на сборку</button>
-        <button class="primary full strong white-btn" type="button">Обсудить позже</button>
+        <button class="primary full strong lime-btn" @click="submitToFormspree('submit')" :disabled="isSubmitting">
+          <span>{{ isSubmitting ? 'Отправляю...' : 'Отправить на сборку' }}</span>
+          <component :is="ArrowRight" class="btn-icon"/>
+        </button>
+        <button class="primary full strong white-btn" @click="submitToFormspree('discuss')" :disabled="isSubmitting">
+          <span>{{ isSubmitting ? 'Отправляю...' : 'Обсудить позже' }}</span>
+          <component :is="ArrowUpRight" class="btn-icon"/>
+        </button>
       </div>
     </div>
 
@@ -305,11 +451,11 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
                 <div class="owner-col-single">
                   <div v-for="k in ['A','B','C','D']" :key="k" class="owner-block surface">
                     <h2 class="cat-h2">Категория {{k==='A'?'А':k==='B'?'Б':k==='C'?'В':'Г'}}</h2>
-                    <label class="row surface"><input style="display:none"/><span class="black">Ответственный</span>
+                    <div class="select-wrapper">
                       <select :value="getCategoryData(k).owner" @input="(e:any)=>setCategoryOwner(k,e.target.value)" class="select-arrow">
                         <option value="team">Команда</option><option value="manager">Управляющий</option><option value="custom">Другое</option>
                       </select>
-                    </label>
+                    </div>
                     <label v-if="getCategoryData(k).owner==='custom'" class="row surface"><input style="display:none"/><span class="black">Контакт</span>
                       <input :value="getCategoryData(k).contact" @input="(e:any)=>setCategoryContact(k,e.target.value)" type="text" placeholder="@handle или телефон"/>
                     </label>
@@ -339,37 +485,41 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
             <template v-else-if="modalKind==='goals_ops'">
               <div class="pricing-modal-header">ЦЕЛИ</div><h2 class="pricing-modal-title">Операционные</h2>
               <div class="pricing-modal-body spaced-large">
-                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Полное закрытие (ч): <strong>{{state.goals.full_close_time_hours}}</strong></span></label><input class="range long gray" type="range" min="1" max="24" v-model.number="state.goals.full_close_time_hours"/></div>
-                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Без эскалации: <strong>{{state.goals.resolved_without_escalation_pct}}%</strong></span></label><input class="range long gray" type="range" min="0" max="100" v-model.number="state.goals.resolved_without_escalation_pct"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Полное закрытие (ч): <strong>{{state.goals.full_close_time_hours}}</strong></span></label><input class="range long black" type="range" min="1" max="24" v-model.number="state.goals.full_close_time_hours"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Без эскалации: <strong>{{state.goals.resolved_without_escalation_pct}}%</strong></span></label><input class="range long black" type="range" min="0" max="100" v-model.number="state.goals.resolved_without_escalation_pct"/></div>
               </div>
             </template>
 
             <template v-else-if="modalKind==='goals_quality'">
               <div class="pricing-modal-header">ЦЕЛИ</div><h2 class="pricing-modal-title">Качество</h2>
               <div class="pricing-modal-body spaced-large">
-                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Точность рекомендаций: <strong>{{state.goals.reco_accuracy_pct}}%</strong></span></label><input class="range long gray" type="range" min="0" max="100" v-model.number="state.goals.reco_accuracy_pct"/></div>
-                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Получение NPS: <strong>{{state.goals.nps_collected_pct}}%</strong></span></label><input class="range long gray" type="range" min="0" max="100" v-model.number="state.goals.nps_collected_pct"/></div>
-                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Средний NPS: <strong>{{state.goals.nps_avg}}</strong></span></label><input class="range long gray" type="range" min="1" max="10" v-model.number="state.goals.nps_avg"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Точность рекомендаций: <strong>{{state.goals.reco_accuracy_pct}}%</strong></span></label><input class="range long black" type="range" min="0" max="100" v-model.number="state.goals.reco_accuracy_pct"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Получение NPS: <strong>{{state.goals.nps_collected_pct}}%</strong></span></label><input class="range long black" type="range" min="0" max="100" v-model.number="state.goals.nps_collected_pct"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Средний NPS: <strong>{{state.goals.nps_avg}}</strong></span></label><input class="range long black" type="range" min="1" max="10" v-model.number="state.goals.nps_avg"/></div>
               </div>
             </template>
 
             <template v-else-if="modalKind==='goals_business'">
               <div class="pricing-modal-header">ЦЕЛИ</div><h2 class="pricing-modal-title">Бизнес</h2>
               <div class="pricing-modal-body spaced-large">
-                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Возврат после жалобы: <strong>{{state.goals.returns_after_complaint_pct}}%</strong></span></label><input class="range long gray" type="range" min="0" max="100" v-model.number="state.goals.returns_after_complaint_pct"/></div>
-                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Средняя компенсация (₽): <strong>{{state.goals.avg_compensation_rub}}</strong></span></label><input class="range long gray" type="range" min="0" max="5000" step="10" v-model.number="state.goals.avg_compensation_rub"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Возврат после жалобы: <strong>{{state.goals.returns_after_complaint_pct}}%</strong></span></label><input class="range long black" type="range" min="0" max="100" v-model.number="state.goals.returns_after_complaint_pct"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Средняя компенсация (₽): <strong>{{state.goals.avg_compensation_rub}}</strong></span></label><input class="range long black" type="range" min="0" max="5000" step="10" v-model.number="state.goals.avg_compensation_rub"/></div>
               </div>
             </template>
 
             <template v-else-if="modalKind==='sla_ready'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Почти готово</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards">
-                <div v-for="(item,i) in SLA_READY_DETAILS" :key="i" class="sla-detail-card">{{item}}</div>
+                <div v-for="(item,i) in SLA_READY_DETAILS" :key="i" class="sla-detail-card">
+                  <component :is="CheckFilled" class="detail-check"/>{{item}}
+                </div>
               </div></div>
             </template>
 
             <template v-else-if="modalKind==='sla_later'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Доработать и согласовать</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards">
-                <div v-for="(item,i) in SLA_LATER_DETAILS" :key="i" class="sla-detail-card">{{item}}</div>
+                <div v-for="(item,i) in SLA_LATER_DETAILS" :key="i" class="sla-detail-card">
+                  <component :is="CheckEmpty" class="detail-check"/>{{item}}
+                </div>
               </div></div>
             </template>
 
@@ -398,18 +548,20 @@ h2,h3,h4{margin:0 0 6px}h2{font-size:22px}h3{font-size:16px}h4{font-size:14px}
 .row{display:flex;align-items:center;gap:10px}.row span{min-width:max-content}
 input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10px;border-radius:10px;background:#0b0c0e;color:var(--text);border:1px solid var(--line);font-size:14px}
 .time-white{color:#fff !important}
-.select-arrow{appearance:auto;padding-right:32px !important}
+.select-wrapper{position:relative;flex:1}
+.select-arrow{appearance:none;width:100%;padding:8px 32px 8px 10px !important;background:#0b0c0e url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M1 4l5 4 5-4'/%3E%3C/svg%3E") no-repeat;background-position:right 8px center;cursor:pointer}
+.select-wrapper select:hover{background-position:right 8px center}
 .company.big{font-size:18px}.fullwidth{width:100%}
 .range.white{width:100%;-webkit-appearance:none;background:transparent;height:24px}
 .range.white::-webkit-slider-runnable-track{height:4px;background:#fff;border-radius:999px}
 .range.white::-moz-range-track{height:4px;background:#fff;border-radius:999px}
 .range.white::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;margin-top:-7px;border:none}
 .range.white::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#fff;border:none}
-.range.gray{width:100%;-webkit-appearance:none;background:transparent;height:24px}
-.range.gray::-webkit-slider-runnable-track{height:4px;background:#888;border-radius:999px}
-.range.gray::-moz-range-track{height:4px;background:#888;border-radius:999px}
-.range.gray::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#666;margin-top:-7px;border:none}
-.range.gray::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#666;border:none}
+.range.black{width:100%;-webkit-appearance:none;background:transparent;height:24px}
+.range.black::-webkit-slider-runnable-track{height:4px;background:#555;border-radius:999px}
+.range.black::-moz-range-track{height:4px;background:#555;border-radius:999px}
+.range.black::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#1a1a1a;margin-top:-7px;border:none}
+.range.black::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#1a1a1a;border:none}
 .inline-value{color:#fff;font-size:13px;min-width:40px;text-align:right}
 .widget-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 .widget-card{border:1px solid var(--line);border-radius:12px;padding:12px;background:#0d0f12;text-align:left;cursor:pointer;display:flex;align-items:center;gap:12px}
@@ -443,8 +595,10 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .sla-title{margin:0 0 6px;border-bottom:none !important}.price{margin:0;color:#fff}.price-note{color:#c0c0c0;font-size:14px;margin-bottom:16px}
 .sla-cards{display:grid;gap:12px;margin-top:12px}
 .sla-card{background:rgba(12,12,14,0.7);border:1px solid var(--line);border-radius:12px;padding:14px}
+.sla-card.dashed{border:2px dashed var(--lime);background:transparent}
 .sla-card-title{font-size:16px;font-weight:700;margin:0 0 6px}
 .sla-card-desc{font-size:12px;color:rgba(255,255,255,0.7);line-height:1.4}
+.sla-card-calc{font-size:13px;color:#fff;margin-bottom:6px;font-weight:600}
 .sla-subgroup{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
 .sla-subgroup-title{font-weight:600;font-size:13px}
 .contact-in-summary{background:rgba(12,12,14,0.7);border:1px solid var(--line);margin:16px 0 12px}
@@ -452,10 +606,15 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .terms-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:13px}
 .terms-row input[type="checkbox"]{accent-color:var(--lime);width:18px;height:18px}
 .terms-row a{color:var(--lime);text-decoration:underline}
-button.primary{padding:14px 16px;border-radius:12px;border:1px solid #fff;cursor:pointer}
+.submit-message{padding:12px 16px;border-radius:12px;margin-bottom:12px;font-size:14px;font-weight:600;text-align:center;animation:slideDown 0.3s ease}
+.submit-message.success{background:rgba(74,222,128,0.15);color:#4ade80;border:1px solid rgba(74,222,128,0.3)}
+.submit-message.error{background:rgba(255,71,87,0.15);color:#ff4757;border:1px solid rgba(255,71,87,0.3)}
+button.primary{padding:14px 16px;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px}
 button.full{width:100%}button.strong{font-weight:700;font-size:18px}
-.lime-btn{background:var(--lime);color:#000;border-color:var(--lime)}
-.white-btn{background:#fff;color:#000;border-color:#fff}
+.lime-btn{background:var(--lime);color:#000}
+.white-btn{background:#fff;color:#000}
+.btn-icon{transition:transform 0.2s ease}
+button.primary:hover .btn-icon{transform:translateX(3px)}
 .cta-row{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
 .pricing-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px}
 .pricing-modal-window{background:#f5f5f7;border-radius:28px;width:880px;max-width:100%;max-height:90vh;box-shadow:0 20px 60px rgba(0,0,0,0.5);display:flex;flex-direction:column;overflow:hidden;position:relative}
@@ -483,7 +642,10 @@ button.full{width:100%}button.strong{font-weight:700;font-size:18px}
 .checks-grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .checks-grid-2col input[type="checkbox"]{accent-color:var(--lime)}
 .sla-detail-cards{display:grid;gap:10px}
-.sla-detail-card{background:#edeef0;border-radius:10px;padding:12px;color:#1d1d1f;font-size:13px;line-height:1.5}
+.sla-detail-card{background:#edeef0;border-radius:10px;padding:12px;color:#1d1d1f;font-size:13px;line-height:1.5;display:flex;align-items:flex-start;gap:10px}
+.detail-check{flex-shrink:0;margin-top:2px}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+button:disabled{opacity:0.6;cursor:not-allowed}
 @media(max-width:1024px){
   .widget-row,.ltv-grid,.nps-cards{grid-template-columns:1fr}
   .contact-grid{grid-template-columns:1fr}
