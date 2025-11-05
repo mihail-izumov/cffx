@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, computed, h, watch, nextTick } from 'vue'
 
-const TELEGRAM_BOT_TOKEN = '8502233692:AAGfzrlanIRPO_GKIlSAZHI65bmHPf7y0Lk'
+const TELEGRAM_BOT_TOKEN = '8291628689:AAFOA4-OQR1Qor-Zu45r60x4_mmtp0fuSDc'
 const TELEGRAM_CHAT_ID = '7999126446'
 
 const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
@@ -533,8 +533,8 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
             <template v-else>
               <div class="pricing-modal-header">ГРАФИК</div><h2 class="pricing-modal-title">Расширенный режим</h2>
               <div class="pricing-modal-body spaced-large-full">
-                <div class="surface pad"><h4>Будни</h4><label class="row surface time-row"><input style="display:none"/><span>От</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekdays.from" type="time" class="time-input"/></div></label><label class="row surface time-row"><input style="display:none"/><span>До</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekdays.to" type="time" class="time-input"/></div></label></div>
-                <div class="surface pad fullwidth-mobile"><h4>Выходные</h4><label class="row surface time-row"><input style="display:none"/><span>От</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekends.from" type="time" class="time-input"/></div></label><label class="row surface time-row"><input style="display:none"/><span>До</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekends.to" type="time" class="time-input"/></div></label></div>
+                <div class="surface pad workhours-block"><h4 class="workhours-title">Будни</h4><label class="row surface time-row"><input style="display:none"/><span class="workhours-label">От</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekdays.from" type="time" class="time-input"/></div></label><label class="row surface time-row"><input style="display:none"/><span class="workhours-label">До</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekdays.to" type="time" class="time-input"/></div></label></div>
+                <div class="surface pad workhours-block"><h4 class="workhours-title">Выходные</h4><label class="row surface time-row"><input style="display:none"/><span class="workhours-label">От</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekends.from" type="time" class="time-input"/></div></label><label class="row surface time-row"><input style="display:none"/><span class="workhours-label">До</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekends.to" type="time" class="time-input"/></div></label></div>
               </div>
             </template>
 
@@ -662,6 +662,9 @@ button.primary:hover .btn-icon{transform:translateX(3px)}
 .sla-detail-cards{display:grid;gap:10px}
 .sla-detail-card{background:#edeef0;border-radius:10px;padding:12px;color:#1d1d1f;font-size:12px;line-height:1.5;display:flex;align-items:flex-start;gap:8px}
 .detail-check{flex-shrink:0;margin-top:2px}
+.workhours-block{display:flex;flex-direction:column;gap:12px}
+.workhours-title{color:#1d1d1f;margin:0 0 8px 0;font-size:15px;font-weight:600}
+.workhours-label{color:#1d1d1f;font-weight:500}
 @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 button:disabled{opacity:0.6;cursor:not-allowed}
 @media(max-width:1024px){
@@ -683,10 +686,16 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .contact-in-summary{margin:16px 0 12px}
   .terms-row{margin-bottom:20px}
   .pricing-modal-title{font-size:1.6rem}
+  .pricing-modal-header{margin:40px 24px 10px}
   .cat-h2,.section-h2{font-size:16px;line-height:1.1}
   .owner-block-full{width:100%;max-width:100%}
   .mini-ag.full-width{grid-template-columns:repeat(2,1fr);gap:8px}
-  .time-input-wrapper input[type="time"]{appearance:none;-webkit-appearance:none;background:transparent;border:none;color:#fff;cursor:pointer}
+  .time-input-wrapper input[type="time"]{appearance:none;-webkit-appearance:none;background:transparent;border:none;color:#fff;cursor:pointer;font-size:14px}
   .time-input-wrapper input[type="time"]::-webkit-calendar-picker-indicator{display:none}
+  .workhours-block{gap:10px;padding:12px}
+  .workhours-title{margin:0 0 6px;font-size:14px}
+  .workhours-label{font-size:12px}
+  .time-row{gap:6px}
+  .time-row span{min-width:auto}
 }
 </style>
