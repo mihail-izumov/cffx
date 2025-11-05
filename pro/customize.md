@@ -54,7 +54,7 @@ notification: brew
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 15vh; /* Было 30vh, стало в 2 раза меньше */
+  min-height: 15vh; /* Меньше отступы сверху/снизу */
   padding: 0;
 }
 
@@ -96,8 +96,13 @@ notification: brew
   color: #000 !important;
   border: none;
 }
+.btn-primary:hover strong,
+.btn-primary:focus strong,
+.btn-primary:active strong {
+  color: #000 !important;
+}
 
-/* Вторая кнопка (серая) */
+/* Вторая кнопка (нейтральная) */
 .btn-secondary {
   background-color: #f8f9fa;
   color: #333 !important;
@@ -122,8 +127,8 @@ notification: brew
     width: 100%;
   }
   .centered-buttons {
-    min-height: 20vh;      /* Было 40vh, стало в 2 раза меньше */
-    padding: 7.5px 0;      /* Было 15px 0, теперь 7.5px 0 */
+    min-height: 20vh;    /* Было 40vh, теперь меньше */
+    padding: 7.5px 0;    /* Было 15px, теперь вдвое меньше */
   }
 }
 </style>
