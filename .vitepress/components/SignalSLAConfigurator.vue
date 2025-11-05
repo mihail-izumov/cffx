@@ -179,59 +179,55 @@ async function submitToFormspree(action:'submit'|'discuss'){
   isSubmitting.value=true
   submitMessage.value=null
   
-  try{
-    const formData=new FormData()
-    
-    formData.append('_subject',action==='submit'
+  const formPayload={
+    name:state.contact.name,
+    phone:state.contact.phone,
+    company:state.company.name,
+    type:state.widget==='cafe'?'Общепит':'Фитнес',
+    locations:state.company.locations,
+    guests_clients:state.company.guests_or_clients,
+    avg_check_abonement:state.company.avg_check_or_subscription,
+    retention:state.company.retention_pct,
+    ltv_now:ltcGrowthCalc.value.without_signal,
+    ltv_with_signal:ltcGrowthCalc.value.with_signal,
+    ltv_growth:ltcGrowthCalc.value.growth_pct,
+    standards:state.standards_source==='internal'?'Внутренние':'Сигнала',
+    scripts:state.client_scripts.join(', ')||'нет',
+    ltv_tools:state.company.ltv_cards.join(', ')||'нет',
+    cat_a_owner:ownerLabel(getCategoryData('A').owner),
+    cat_a_topics:getCategoryData('A').topics.join(', ')||'нет',
+    cat_b_owner:ownerLabel(getCategoryData('B').owner),
+    cat_b_topics:getCategoryData('B').topics.join(', ')||'нет',
+    cat_c_owner:ownerLabel(getCategoryData('C').owner),
+    cat_c_topics:getCategoryData('C').topics.join(', ')||'нет',
+    cat_d_owner:ownerLabel(getCategoryData('D').owner),
+    cat_d_topics:getCategoryData('D').topics.join(', ')||'нет',
+    base_fields:state.ticket_template.base_fields_ru.join(', '),
+    extra_fields:state.ticket_template.extra_fields.join(', ')||'нет',
+    full_close_hours:state.goals.full_close_time_hours,
+    no_escalation:state.goals.resolved_without_escalation_pct,
+    accuracy:state.goals.reco_accuracy_pct,
+    nps_collection:state.goals.nps_collected_pct,
+    nps_avg:state.goals.nps_avg,
+    returns:state.goals.returns_after_complaint_pct,
+    compensation:state.goals.avg_compensation_rub,
+    nps_timer:state.nps.step===-1?`${state.nps.custom_hours}ч`:state.nps.step===60?'60м':state.nps.step===1440?'1д':'3д',
+    work_mode:state.work_hours.mode==='wk_9_18'?'Будни 9-18':state.work_hours.mode==='wk_9_18_we'?'9-18+выходные':`Расш. ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}`,
+    action:action==='submit'?'Отправить на сборку':'Обсудить позже',
+    consent:'Да',
+    _subject:action==='submit'
       ?`[SIGNAL] Новая сборка: ${state.company.name}`
       :`[SIGNAL] Уточнить позже: ${state.company.name}`
-    )
-    
-    formData.append('_replyto',state.contact.phone)
-    formData.append('email',state.contact.phone)
-    
-    formData.append('Компания',state.company.name)
-    formData.append('Имя',state.contact.name)
-    formData.append('Телефон',state.contact.phone)
-    formData.append('Тип',state.widget==='cafe'?'Общепит':'Фитнес')
-    formData.append('Локации',state.company.locations.toString())
-    formData.append('Гости/Клиенты мес',state.company.guests_or_clients.toString())
-    formData.append('Средний чек/Абонемент ₽',state.company.avg_check_or_subscription.toString())
-    formData.append('Retention %',state.company.retention_pct.toString())
-    formData.append('LTV Сейчас',ltcGrowthCalc.value.without_signal.toString())
-    formData.append('LTV С Сигналом',ltcGrowthCalc.value.with_signal.toString())
-    formData.append('LTV Прирост %',ltcGrowthCalc.value.growth_pct.toString())
-    formData.append('Источник стандартов',state.standards_source==='internal'?'Внутренние':'Сигнала')
-    formData.append('Скрипты',state.client_scripts.join(', ')||'нет')
-    formData.append('LTV инструменты',state.company.ltv_cards.join(', ')||'нет')
-    
-    ;(['A','B','C','D'] as CategoryKey[]).forEach(k=>{
-      const data=getCategoryData(k)
-      formData.append(`Кат. ${k} Ответственный`,ownerLabel(data.owner))
-      if(data.contact)formData.append(`Кат. ${k} Контакт`,data.contact)
-      formData.append(`Кат. ${k} Темы`,data.topics.join(', ')||'нет')
-    })
-    
-    formData.append('Базовые поля тикета',state.ticket_template.base_fields_ru.join(', '))
-    formData.append('Доп. поля тикета',state.ticket_template.extra_fields.join(', ')||'нет')
-    
-    formData.append('Полное закрытие ч',state.goals.full_close_time_hours.toString())
-    formData.append('Без эскалации %',state.goals.resolved_without_escalation_pct.toString())
-    formData.append('Точность рекомендаций %',state.goals.reco_accuracy_pct.toString())
-    formData.append('Получение NPS %',state.goals.nps_collected_pct.toString())
-    formData.append('Средний NPS',state.goals.nps_avg.toString())
-    formData.append('Возврат после жалобы %',state.goals.returns_after_complaint_pct.toString())
-    formData.append('Средняя компенсация ₽',state.goals.avg_compensation_rub.toString())
-    
-    formData.append('Таймер NPS',state.nps.step===-1?`${state.nps.custom_hours}ч`:state.nps.step===60?'60м':state.nps.step===1440?'1д':'3д')
-    
-    formData.append('Режим работы',state.work_hours.mode==='wk_9_18'?'Будни 9-18':state.work_hours.mode==='wk_9_18_we'?'9-18+выходные':`Расш. ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}`)
-    
-    formData.append('Действие',action==='submit'?'Отправить на сборку':'Обсудить позже')
-    
+  }
+  
+  try{
     const response=await fetch(formspreeEndpoint,{
       method:'POST',
-      body:formData
+      headers:{
+        'Accept':'application/json',
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify(formPayload)
     })
     
     if(response.ok){
@@ -250,9 +246,16 @@ async function submitToFormspree(action:'submit'|'discuss'){
       throw new Error('Server error')
     }
   }catch(error){
+    console.error('Formspree error:',error)
+    
+    // Резервная отправка через mailto
+    const mailtoBody=`Компания: ${state.company.name}%0AИмя: ${state.contact.name}%0AТелефон: ${state.contact.phone}%0AТип: ${state.widget==='cafe'?'Общепит':'Фитнес'}%0AДействие: ${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
+    
+    window.location.href=`mailto:info@signal.local?subject=[SIGNAL] ${action==='submit'?'Новая сборка':'Уточнить позже'}: ${state.company.name}&body=${mailtoBody}`
+    
     submitMessage.value={
       type:'error',
-      text:'✗ Ошибка отправки. Попробуйте ещё раз или свяжитесь с нами.'
+      text:'⚠ Открыт почтовый клиент. Если он не откроется, свяжитесь: +7 (999) 000-00-00'
     }
   }finally{
     isSubmitting.value=false
