@@ -1,3 +1,550 @@
+<script setup lang="ts">
+import { reactive, ref, computed, h, watch, nextTick } from 'vue'
+
+const TELEGRAM_BOT_TOKEN = '8291628689:AAFOA4-OQR1Qor-Zu45r60x4_mmtp0fuSDc'
+const TELEGRAM_CHAT_ID = '7999126446'
+
+const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
+
+const ArrowRight = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'22',height:'22'},[h('line',{x1:'5',y1:'12',x2:'19',y2:'12'}), h('polyline',{points:'12 5 19 12 12 19'})])
+
+const ArrowUpRight = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'22',height:'22'},[h('line',{x1:'7',y1:'17',x2:'17',y2:'7'}), h('polyline',{points:'7 7 17 7 17 17'})])
+
+const ChevronUpDown = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'16',height:'16'},[h('path',{d:'m7 15 5 5 5-5'}),h('path',{d:'m7 9 5-5 5 5'})])
+
+const SquareArrowOut = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'14',height:'14'},[h('path',{d:'M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6'}),h('path',{d:'m21 3-9 9'}),h('path',{d:'M15 3h6v6'})])
+
+const CircleDot = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'#4ade80','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'18',height:'18'},[h('circle',{cx:'12',cy:'12',r:'10'}),h('circle',{cx:'12',cy:'12',r:'1',fill:'#4ade80'})])
+
+const CircleDotDashed = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'#999','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'18',height:'18'},[h('path',{d:'M10.1 2.18a9.93 9.93 0 0 1 3.8 0'}),h('path',{d:'M17.6 3.71a9.95 9.95 0 0 1 2.69 2.7'}),h('path',{d:'M21.82 10.1a9.93 9.93 0 0 1 0 3.8'}),h('path',{d:'M20.29 17.6a9.95 9.95 0 0 1-2.7 2.69'}),h('path',{d:'M13.9 21.82a9.94 9.94 0 0 1-3.8 0'}),h('path',{d:'M6.4 20.29a9.95 9.95 0 0 1-2.69-2.7'}),h('path',{d:'M2.18 13.9a9.93 9.93 0 0 1 0-3.8'}),h('path',{d:'M3.71 6.4a9.95 9.95 0 0 1 2.7-2.69'}),h('circle',{cx:'12',cy:'12',r:'1'})])
+
+const ClockIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'16',height:'16'},[h('circle',{cx:'12',cy:'12',r:'10'}),h('polyline',{points:'12 6 12 12 16 14'})])
+
+type Topic = { category: string }
+type CategoryKey = 'A'|'B'|'C'|'D'
+type Owner = 'team'|'manager'|'custom'
+
+const CAFE_TOPICS: Topic[] = [{category:'Вкус'},{category:'Чистота'},{category:'Долгое ожидание'},{category:'Ошибки в заказе'},{category:'Поведение персонала'},{category:'Инородные предметы'},{category:'Очереди'},{category:'Атмосфера'},{category:'Упаковка'},{category:'Коммуникация'},{category:'Цена'},{category:'Профессионализм'},{category:'Дизайн'},{category:'Парковка'}]
+const FITNESS_TOPICS: Topic[] = [{category:'Переполненность'},{category:'Чистота'},{category:'Поведение персонала'},{category:'Оборудование'},{category:'Цена'},{category:'Расписание'},{category:'Температура'},{category:'Качество тренировок'},{category:'Опоздание тренера'},{category:'Атмосфера'},{category:'Удобства'},{category:'Договор и отмена'}]
+
+const WIDGETS = {
+  cafe: {
+    title:'Общепит', icon:'/widget-cafe-icon.svg', topics:CAFE_TOPICS,
+    scripts:['Вкус','Долгая подача','Инородный предмет','Поведение персонала','Чистота','Температура'],
+    defaultOwners:{A:'team' as Owner,B:'team' as Owner,C:'manager' as Owner,D:'manager' as Owner},
+    defaultTopics:{A:['Ошибки в заказе','Коммуникация','Цена','Упаковка'],B:['Долгое ожидание','Вкус','Чистота'],C:['Инородные предметы','Профессионализм','Атмосфера'],D:['Договор и отмена','Поведение персонала']},
+    defaultCompany:'СуперФуд', defaultLocations:5, defaultGuests:3000, defaultAbonement:550, defaultRetention:40, growthMultiplier:0.55
+  },
+  fitness: {
+    title:'Фитнес', icon:'/widget-fitness-icon.svg', topics:FITNESS_TOPICS,
+    scripts:['Переполненность/очереди','Чистота раздевалок','Оборудование/ремонт','Поведение персонала','Расписание занятий','Температура/вентиляция'],
+    defaultOwners:{A:'team' as Owner,B:'team' as Owner,C:'manager' as Owner,D:'manager' as Owner},
+    defaultTopics:{A:['Цена','Расписание','Коммуникация'],B:['Чистота','Переполненность','Температура'],C:['Оборудование','Поведение персонала'],D:['Договор и отмена','Поведение персонала']},
+    defaultCompany:'СуперСпорт', defaultLocations:7, defaultGuests:600, defaultAbonement:9500, defaultRetention:50, growthMultiplier:0.23
+  }
+} as const
+
+type WidgetKey = keyof typeof WIDGETS
+
+const SLA_READY_ITEMS=[
+  {title:'Виджет Сигнала (базовая версия)',desc:'Публичная страница, живой рейтинг, метрики, брендирование, быстрый отзыв в Яндекс/2ГИС, бейдж Репутация под защитой'},
+  {title:'Умная форма',desc:'150 цепочек с подсказками, рендер вопросов, переключение гендеров'},
+  {title:'Анна (базовая версия)',desc:'Адаптация под ваш тон, продукты и особые ситуации из стандартов (если предоставлено)'},
+  {title:'Тикет-система',desc:'Настройка шаблонов тикетов, адаптация по дстандарты'},
+  {title:'Расчет роста LTV (индивидуально)',desc:''},
+  {title:'Соглашение об уровне обслуживания (SLA)',desc:''}
+]
+
+const state = reactive({
+  widget:'cafe' as WidgetKey,
+  company:{name:'',locations:5,guests_or_clients:3000,avg_check_or_subscription:550,retention_pct:40,ltv_cards:[] as string[],ltv_tool_other:''},
+  standards_source:'internal' as 'internal'|'signal',
+  has_full_classification:false,
+  client_scripts:[] as string[],
+  categories_map:{A:{owner:'team' as Owner,contact:'',topics:[] as string[]},B:{owner:'team' as Owner,contact:'',topics:[] as string[]},C:{owner:'manager' as Owner,contact:'',topics:[] as string[]},D:{owner:'manager' as Owner,contact:'',topics:[] as string[]}},
+  ticket_template:{base_fields_ru:['Код тикета','Дата и время','Имя гостя','Контакт','Локация','Категория','Описание проблемы','Рекомендуемое решение','UPD после доставки Сигнала'],extra_fields:[] as string[]},
+  goals:{full_close_time_hours:18,resolved_without_escalation_pct:75,reco_accuracy_pct:80,nps_collected_pct:95,nps_avg:8,returns_after_complaint_pct:70,avg_compensation_rub:500},
+  nps:{step:60 as 60|1440|4320|-1,custom_hours:2},
+  work_hours:{mode:'wk_9_18' as 'wk_9_18'|'wk_9_18_we'|'extended',weekdays:{from:'09:00',to:'18:00'},weekends:{from:'10:00',to:'17:00'}},
+  contact:{name:'',phone:''},
+  terms_accepted:false
+})
+
+const isCafe=computed(()=>state.widget==='cafe')
+const sliderGuestsMin=computed(()=>isCafe.value?200:100)
+const sliderGuestsMax=computed(()=>5000)
+const sliderGuestsStep=computed(()=>isCafe.value?100:50)
+const sliderMoneyMin=computed(()=>isCafe.value?250:1000)
+const sliderMoneyMax=computed(()=>isCafe.value?5000:15000)
+const sliderMoneyStep=computed(()=>isCafe.value?50:1000)
+const ltvOptions=['CRM','BI/Дашборды','Google Sheets','Другое']
+const npsCards=[{label:'60 мин.',value:60},{label:'1 день',value:1440},{label:'3 дня',value:4320},{label:'Другое',value:-1}]
+
+const ltcGrowthCalc=computed(()=>{
+  const total_guests=state.company.guests_or_clients*state.company.locations
+  const without_signal=Math.round(total_guests*(state.company.retention_pct/100))
+  const mult=WIDGETS[state.widget].growthMultiplier
+  const with_signal=Math.round(without_signal*(1+mult))
+  const growth_pct=Math.round(((with_signal-without_signal)/without_signal)*100)
+  return {without_signal,with_signal,growth_pct}
+})
+
+const slaTitle=computed(()=>`Сборка Сигнала ${state.company.name||''}`)
+const testDate=computed(()=>{
+  const d=new Date()
+  d.setDate(d.getDate()+4)
+  return d.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'})
+})
+const availableScripts=computed(()=>WIDGETS[state.widget].scripts)
+const currentTopics=computed(()=>WIDGETS[state.widget].topics.map(t=>t.category))
+const allSelectedTopics=computed(()=>{
+  const all:string[]=[]
+  ;(['A','B','C','D'] as CategoryKey[]).forEach(k=>all.push(...state.categories_map[k].topics))
+  return all
+})
+const isSubmitting=ref(false)
+const submitAction=ref<'submit'|'discuss'|null>(null)
+const submitMessage=ref<{type:'success'|'error', text:string, time:number} | null>(null)
+
+function getCategoryData(k:string){return state.categories_map[k as CategoryKey]}
+function setCategoryOwner(k:string,val:Owner){state.categories_map[k as CategoryKey].owner=val}
+function setCategoryContact(k:string,val:string){state.categories_map[k as CategoryKey].contact=val}
+function getCategoryTopics(k:string):string[]{return state.categories_map[k as CategoryKey].topics}
+function isTopicAvailable(k:string,name:string){
+  const current=state.categories_map[k as CategoryKey].topics
+  if(current.includes(name))return true
+  return!allSelectedTopics.value.includes(name)
+}
+function toggleCategoryTopic(k:string,name:string){
+  const arr=state.categories_map[k as CategoryKey].topics
+  const i=arr.indexOf(name)
+  if(i>=0)arr.splice(i,1);else arr.push(name)
+}
+
+function applyWidgetDefaults(){
+  const w=WIDGETS[state.widget]
+  state.company.name=w.defaultCompany
+  state.company.locations=w.defaultLocations
+  state.company.guests_or_clients=w.defaultGuests
+  state.company.retention_pct=w.defaultRetention
+  state.company.avg_check_or_subscription=w.defaultAbonement!
+  ;(['A','B','C','D'] as CategoryKey[]).forEach(k=>{
+    state.categories_map[k].owner=w.defaultOwners[k]
+    state.categories_map[k].topics=[...w.defaultTopics[k]]
+  })
+  state.client_scripts=[]
+}
+applyWidgetDefaults()
+
+function onWidgetChange(key:WidgetKey){state.widget=key;applyWidgetDefaults()}
+function toggleLtvCard(name:string){const i=state.company.ltv_cards.indexOf(name);if(i>=0)state.company.ltv_cards.splice(i,1);else state.company.ltv_cards.push(name)}
+function availableExtraFields():string[]{return WIDGETS[state.widget].topics.map(t=>t.category)}
+function toggleExtraField(name:string){const arr=state.ticket_template.extra_fields,i=arr.indexOf(name);if(i>=0)arr.splice(i,1);else if(arr.length<2)arr.push(name)}
+function selectNps(v:number){state.nps.step=v as any}
+
+const isModalOpen=ref(false)
+const modalKind=ref<'categories'|'ticket'|'goals_ops'|'goals_quality'|'goals_business'|'sla_ready'|'sla_later'|'workhours'>('categories')
+function openModal(kind:typeof modalKind.value){modalKind.value=kind;isModalOpen.value=true;if(typeof document!=='undefined')document.body.style.overflow='hidden'}
+function closeModal(){isModalOpen.value=false;if(typeof document!=='undefined')document.body.style.overflow=''}
+function ownerLabel(o:Owner){return o==='team'?'Команда':o==='manager'?'Управляющий':'Другое'}
+
+function validateForm():boolean{
+  if(!state.company.name.trim()){submitMessage.value={type:'error',text:'Укажите название компании',time:Date.now()};return false}
+  if(!state.contact.name.trim()){submitMessage.value={type:'error',text:'Укажите имя',time:Date.now()};return false}
+  if(!state.contact.phone.trim()){submitMessage.value={type:'error',text:'Укажите телефон',time:Date.now()};return false}
+  if(!state.terms_accepted){submitMessage.value={type:'error',text:'Подтвердите согласие с Условиями использования',time:Date.now()};return false}
+  return true
+}
+
+function submitToFormspree(action:'submit'|'discuss'){
+  if(!validateForm())return
+  if(isSubmitting.value)return
+
+  isSubmitting.value=true
+  submitAction.value=action
+
+  const actionText=action==='submit'?'Новая сборка':'Обсудить позже'
+  const messageText=`🔔 ${actionText}: ${state.company.name}\n\nКонтакты:\nИмя: ${state.contact.name}\nТелефон: ${state.contact.phone}\nУсловия: ${state.terms_accepted?'Согласен':'Не согласен'}\n\nКомпания:\nНазвание: ${state.company.name}\nТип: ${state.widget==='cafe'?'Общепит':'Фитнес'}\nЛокаций: ${state.company.locations}\nГостей/клиентов (за период): ${state.company.guests_or_clients*state.company.locations}\nСредний чек/абонемент: ${state.company.avg_check_or_subscription}\nRetention: ${state.company.retention_pct}%\n\nLTV расчет:\nСейчас: ${ltcGrowthCalc.value.without_signal} клиентов/мес\nС Сигналом: ${ltcGrowthCalc.value.with_signal} клиентов/мес\nРост: +${ltcGrowthCalc.value.growth_pct}%\nИнструменты: ${state.company.ltv_cards.join(', ')||'не выбраны'}\n${state.company.ltv_tool_other?`Другое: ${state.company.ltv_tool_other}`:''}\n\nСтандарты и скрипты:\nСтандарты: ${state.standards_source==='internal'?'Внутренние':'Сигнала'}\nСкрипты: ${state.client_scripts.length>0?state.client_scripts.join(', '):'не выбраны'}\n\nМатрица эскалации:\nКат. А (4ч): ${getCategoryData('A').owner===`team`?'Команда':getCategoryData('A').owner===`manager`?'Управляющий':''+getCategoryData('A').contact}\n  Темы: ${getCategoryData('A').topics.join(', ')}\nКат. Б (2ч): ${getCategoryData('B').owner===`team`?'Команда':getCategoryData('B').owner===`manager`?'Управляющий':''+getCategoryData('B').contact}\n  Темы: ${getCategoryData('B').topics.join(', ')}\nКат. В (1ч): ${getCategoryData('C').owner===`team`?'Команда':getCategoryData('C').owner===`manager`?'Управляющий':''+getCategoryData('C').contact}\n  Темы: ${getCategoryData('C').topics.join(', ')}\nКат. Г (15м): ${getCategoryData('D').owner===`team`?'Команда':getCategoryData('D').owner===`manager`?'Управляющий':''+getCategoryData('D').contact}\n  Темы: ${getCategoryData('D').topics.join(', ')}\n\nТикет-система:\nБазовые: ${state.ticket_template.base_fields_ru.join(', ')}\nДоп. поля: ${state.ticket_template.extra_fields.join(', ')||'нет'}\n\nЦели (операционные):\nПолное закрытие: ${state.goals.full_close_time_hours}ч\nБез эскалации: ${state.goals.resolved_without_escalation_pct}%\n\nЦели (качество):\nТочность рекомендаций: ${state.goals.reco_accuracy_pct}%\nПолучение NPS: ${state.goals.nps_collected_pct}%\nСредний NPS: ${state.goals.nps_avg}/10\n\nЦели (бизнес):\nВозврат после жалобы: ${state.goals.returns_after_complaint_pct}%\nСредняя компенсация: ${state.goals.avg_compensation_rub}\n\nNPS таймер:\n${state.nps.step===-1?`${state.nps.custom_hours}ч (свой)`:state.nps.step===60?'60 минут':state.nps.step===1440?'1 день':'3 дня'}\n\nРежим работы:\n${state.work_hours.mode==='wk_9_18'?'Будни 9–18 МСК':state.work_hours.mode==='wk_9_18_we'?'9–18 МСК + выходные':`Расш.: Будни ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}, Вых. ${state.work_hours.weekends.from}-${state.work_hours.weekends.to}`}\n\nДействие:\n${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
+
+  fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      chat_id:TELEGRAM_CHAT_ID,
+      text:messageText
+    })
+  })
+  .then(response=>{
+    if(!response.ok)throw new Error('Telegram error')
+    
+    setTimeout(()=>{
+      submitMessage.value={
+        type:'success',
+        text:action==='submit'
+          ?'Отправлено! Мы свяжемся с вами в течение 2 часов.'
+          :'Спасибо! Обсудим детали позже.',
+        time:Date.now()
+      }
+      
+      isSubmitting.value=false
+      submitAction.value=null
+      
+      setTimeout(()=>{
+        submitMessage.value=null
+      },3000)
+    },400)
+    
+    state.contact.name=''
+    state.contact.phone=''
+    
+    console.log('Заявка успешно отправлена в Telegram')
+  })
+  .catch(error=>{
+    console.error('Ошибка при отправке в Telegram:',error)
+    isSubmitting.value=false
+    submitAction.value=null
+    submitMessage.value={type:'error',text:'Ошибка при отправке. Попробуйте ещё раз.',time:Date.now()}
+    setTimeout(()=>{submitMessage.value=null},3000)
+  })
+}
+
+watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
+</script>
+
+<template>
+  <section class="signal-sla dark compact">
+    <div class="card">
+      <div class="widget-row">
+        <button class="widget-card" :class="{active:state.widget==='cafe'}" @click="onWidgetChange('cafe')">
+          <img :src="WIDGETS.cafe.icon" alt="Общепит" class="widget-icon"/>
+          <div class="w-title">Общепит</div>
+        </button>
+        <button class="widget-card" :class="{active:state.widget==='fitness'}" @click="onWidgetChange('fitness')">
+          <img :src="WIDGETS.fitness.icon" alt="Фитнес" class="widget-icon"/>
+          <div class="w-title">Фитнес</div>
+        </button>
+      </div>
+
+      <div class="company-fields">
+        <label class="row big-input"><input style="display:none"/><span>Название компании <span class="required">*</span></span></label>
+        <input class="company big" v-model="state.company.name" type="text" :placeholder="WIDGETS[state.widget].defaultCompany" required/>
+
+        <label class="row"><input style="display:none"/><span>Кол-во локаций</span>
+          <input class="range long white" type="range" min="1" max="50" step="1" v-model.number="state.company.locations"/>
+          <span class="inline-value">{{state.company.locations}}</span>
+        </label>
+
+        <label class="row"><input style="display:none"/>
+          <span v-if="isCafe">Гости/локация/мес</span><span v-else>Клиенты/клуб/мес</span>
+          <input class="range long white" type="range" :min="sliderGuestsMin" :max="sliderGuestsMax" :step="sliderGuestsStep" v-model.number="state.company.guests_or_clients"/>
+          <span class="inline-value">{{state.company.guests_or_clients}}</span>
+        </label>
+
+        <label class="row"><input style="display:none"/>
+          <span v-if="isCafe">Средний чек (₽)</span><span v-else>Абонемент/мес (₽)</span>
+          <input class="range long white" type="range" :min="sliderMoneyMin" :max="sliderMoneyMax" :step="sliderMoneyStep" v-model.number="state.company.avg_check_or_subscription"/>
+          <span class="inline-value">{{state.company.avg_check_or_subscription}} ₽</span>
+        </label>
+
+        <div class="retention-block">
+          <label class="row"><input style="display:none"/><span>Retention</span>
+            <input class="range long white" type="range" min="0" max="100" v-model.number="state.company.retention_pct"/>
+            <span class="inline-value">{{state.company.retention_pct}}%</span>
+          </label>
+        </div>
+
+        <div class="ltv-block">
+          <div class="ltv-title">Инструмент контроля LTV</div>
+          <div class="ltv-grid">
+            <button v-for="opt in ltvOptions" :key="opt" class="ltv-card" :class="{active:state.company.ltv_cards.includes(opt)}" type="button" @click="toggleLtvCard(opt)">{{opt}}</button>
+          </div>
+          <input v-if="state.company.ltv_cards.includes('Другое')" v-model="state.company.ltv_tool_other" type="text" class="fullwidth ltv-other" placeholder="Как контролируете LTV?"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Источники стандартов для Сигнала</h3>
+      <div class="radio-left">
+        <label class="row"><input type="radio" value="internal" v-model="state.standards_source"/><span>Внутренние стандарты</span></label>
+        <label class="row"><input type="radio" value="signal" v-model="state.standards_source"/><span>Стандарты Сигнала</span></label>
+      </div>
+      <div class="divider"></div>
+      <label class="row"><input type="radio" :checked="state.has_full_classification" @click="state.has_full_classification=!state.has_full_classification"/><span>Скрипты (есть в наличии)</span></label>
+      <div v-if="state.has_full_classification" class="checks-grid-full">
+        <label v-for="s in availableScripts" :key="s" class="row">
+          <input type="checkbox" :value="s" v-model="state.client_scripts"/><span>{{s}}</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Цели</h3>
+      <div class="goals-row"><div class="goals-col"><div class="goal-title">Операционные</div>
+        <div class="goal-line">Полное закрытие: {{state.goals.full_close_time_hours}} ч; Без эскалации: {{state.goals.resolved_without_escalation_pct}}%</div></div>
+        <button class="linklike" @click="openModal('goals_ops')">Изменить</button></div>
+      <div class="goals-row"><div class="goals-col"><div class="goal-title">Качество</div>
+        <div class="goal-line">Точность рекомендаций: {{state.goals.reco_accuracy_pct}}%; Получение NPS: {{state.goals.nps_collected_pct}}%; Средний NPS: {{state.goals.nps_avg}}</div></div>
+        <button class="linklike" @click="openModal('goals_quality')">Изменить</button></div>
+      <div class="goals-row"><div class="goals-col"><div class="goal-title">Бизнес</div>
+        <div class="goal-line">Возврат после жалобы: {{state.goals.returns_after_complaint_pct}}%; Средняя компенсация: {{state.goals.avg_compensation_rub}} ₽</div></div>
+        <button class="linklike" @click="openModal('goals_business')">Изменить</button></div>
+    </div>
+
+    <div class="card">
+      <h3>Таймер запроса NPS</h3>
+      <div class="nps-cards">
+        <button v-for="c in npsCards" :key="c.value" class="nps-card" :class="{active:state.nps.step===c.value}" @click="selectNps(c.value)">{{c.label}}</button>
+      </div>
+      <div v-if="state.nps.step===-1" class="grid1" style="margin-top:12px">
+        <label class="row"><input style="display:none"/><span>Своё (ч)</span><input type="number" min="1" step="1" v-model.number="state.nps.custom_hours"/></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Режим работы</h3>
+      <div class="radio-left grid2">
+        <div class="row"><input type="radio" value="wk_9_18" v-model="state.work_hours.mode"/><span>Будни 9–18 МСК</span></div>
+        <div class="row"><input type="radio" value="wk_9_18_we" v-model="state.work_hours.mode"/><span>9–18 МСК + выходные</span></div>
+      </div>
+      <div class="row" style="margin-top:8px;">
+        <input class="radio-big" type="radio" value="extended" v-model="state.work_hours.mode"/>
+        <span>Расширенный режим — <button class="linklike" type="button" @click="openModal('workhours')">Настроить</button></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Матрица эскалации</h3>
+      <div class="mini-ag full-width">
+        <div class="mini-badge">Кат. А — 4 часа<div class="mini-sub">{{ownerLabel(getCategoryData('A').owner)}}</div></div>
+        <div class="mini-badge">Кат. Б — 2 часа<div class="mini-sub">{{ownerLabel(getCategoryData('B').owner)}}</div></div>
+        <div class="mini-badge">Кат. В — 1 час<div class="mini-sub">{{ownerLabel(getCategoryData('C').owner)}}</div></div>
+        <div class="mini-badge">Кат. Г — 15 минут<div class="mini-sub">{{ownerLabel(getCategoryData('D').owner)}}</div></div>
+      </div>
+      <button class="linklike" @click="openModal('categories')" style="margin-top:8px">Изменить роли и темы</button>
+    </div>
+
+    <div class="card">
+      <h3>Шаблон тикета</h3>
+      <div class="goal-line"><span class="field-label">Базовые поля:</span> {{state.ticket_template.base_fields_ru.join(', ')}}</div>
+      <div class="goal-line"><span class="field-label">Дополнительные поля:</span> {{state.ticket_template.extra_fields.join(', ')||'не выбрано'}}</div>
+      <button class="linklike" @click="openModal('ticket')" style="margin-top:8px">Изменить шаблон</button>
+    </div>
+
+    <div class="card summary onecol lime-outline">
+      <h2 class="sla-title lime" style="border:none">{{slaTitle}}</h2>
+      <h2 class="price">₽50.000</h2>
+      <div class="price-note">Доставка Сигнала и первый тест: {{testDate}} (3 дня)</div>
+
+      <div class="sla-cards">
+        <div v-for="(item,i) in SLA_READY_ITEMS" :key="i" class="sla-card" :class="{dashed:item.title.includes('Расчет')||item.title.includes('Соглашение')}">
+          <h3 class="sla-card-title">{{item.title}}</h3>
+          <div v-if="item.desc" class="sla-card-desc">{{item.desc}}</div>
+          
+          <template v-if="item.title.includes('Расчет')">
+            <div class="sla-card-calc" v-if="state.widget==='cafe'">Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)</div>
+            <div class="sla-card-calc" v-else>Сейчас: 2100 клиентов/мес → С Сигналом: 2583 клиентов/мес (Δ +23%)</div>
+            <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем <component :is="SquareArrowOut" class="ext-icon"/></a>
+          </template>
+          
+          <template v-if="item.title.includes('Соглашение')">
+            <div class="sla-subgroup">
+              <div class="sla-subgroup-title">Почти готово</div>
+              <button class="linklike" @click="openModal('sla_ready')">Детали</button>
+            </div>
+            <div class="sla-subgroup">
+              <div class="sla-subgroup-title">Доработать и согласовать</div>
+              <button class="linklike" @click="openModal('sla_later')">Детали</button>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <div class="card contact-in-summary">
+        <h3>Контактные данные</h3>
+        <div class="contact-grid">
+          <label class="row"><input style="display:none"/><span>Имя <span class="required">*</span></span><input v-model="state.contact.name" type="text" placeholder="Иван Петров" required/></label>
+          <label class="row"><input style="display:none"/><span>Телефон <span class="required">*</span></span><input v-model="state.contact.phone" type="text" placeholder="+7 (999) 123-45-67" required/></label>
+        </div>
+      </div>
+
+      <label class="terms-row"><input type="checkbox" v-model="state.terms_accepted"/><span>Подтверждаю согласие с <a href="/terms" target="_blank" rel="noopener">Условиями использования</a> <span class="required">*</span></span></label>
+
+      <div v-if="submitMessage" class="submit-message" :class="submitMessage.type">
+        {{submitMessage.text}}
+      </div>
+
+      <div class="cta-row">
+        <button class="primary full strong lime-btn" @click="submitToFormspree('submit')" :disabled="isSubmitting">
+          <span class="btn-text">{{ isSubmitting && submitAction==='submit' ? 'Отправляю...' : 'Отправить на сборку' }}</span>
+          <component :is="ArrowRight" class="btn-icon"/>
+        </button>
+        <button class="primary full strong white-btn" @click="submitToFormspree('discuss')" :disabled="isSubmitting">
+          <span class="btn-text">{{ isSubmitting && submitAction==='discuss' ? 'Отправляю...' : 'Обсудить позже' }}</span>
+          <component :is="ArrowUpRight" class="btn-icon"/>
+        </button>
+      </div>
+    </div>
+
+    <Teleport to="body">
+      <Transition name="pricing-modal">
+        <div v-if="isModalOpen" class="pricing-modal-overlay" @click="closeModal">
+          <div class="pricing-modal-window" @click.stop>
+            <button class="pricing-modal-close" @click="closeModal" aria-label="Закрыть"><CloseIcon/></button>
+
+            <template v-if="modalKind==='categories'">
+              <div class="pricing-modal-header">НАСТРОЙКИ</div>
+              <h2 class="pricing-modal-title">Матрица эскалации</h2>
+              <div class="pricing-modal-body">
+                <div class="owner-col-single">
+                  <div v-for="k in ['A','B','C','D']" :key="k" class="owner-block surface owner-block-full">
+                    <h2 class="cat-h2">Категория {{k==='A'?'А':k==='B'?'Б':k==='C'?'В':'Г'}}</h2>
+                    <div class="select-wrapper">
+                      <select :value="getCategoryData(k).owner" @input="(e:any)=>setCategoryOwner(k,e.target.value)" class="select-arrow">
+                        <option value="team">Команда</option><option value="manager">Управляющий</option><option value="custom">Другое</option>
+                      </select>
+                      <component :is="ChevronUpDown" class="chevron-icon"/>
+                    </div>
+                    <label v-if="getCategoryData(k).owner==='custom'" class="row surface"><input style="display:none"/><span class="black">Контакт</span>
+                      <input :value="getCategoryData(k).contact" @input="(e:any)=>setCategoryContact(k,e.target.value)" type="text" placeholder="@handle или телефон"/>
+                    </label>
+                    <div class="topics-grid compact3">
+                      <button v-for="name in currentTopics" :key="name" type="button" class="topic-card small" :class="{selected:getCategoryTopics(k).includes(name)}" :disabled="!isTopicAvailable(k,name)" @click="toggleCategoryTopic(k,name)">
+                        <input type="checkbox" :checked="getCategoryTopics(k).includes(name)"/><span class="t-name black topic-left">{{name}}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <template v-else-if="modalKind==='ticket'">
+              <div class="pricing-modal-header">ШАБЛОН</div><h2 class="pricing-modal-title">Тикет</h2>
+              <div class="pricing-modal-body">
+                <h2 class="section-h2">Базовые поля</h2>
+                <div class="surface pad black">{{state.ticket_template.base_fields_ru.join(', ')}}</div>
+                <h2 class="section-h2" style="margin-top:16px;">Дополнительные поля</h2>
+                <div class="hint small black" style="margin-bottom:10px">Можно выбрать не более 2 полей</div>
+                <div class="extras-grid">
+                  <button v-for="f in availableExtraFields()" :key="f" type="button" class="extra-card" :class="{active:state.ticket_template.extra_fields.includes(f)}" @click="toggleExtraField(f)">{{f}}</button>
+                </div>
+              </div>
+            </template>
+
+            <template v-else-if="modalKind==='goals_ops'">
+              <div class="pricing-modal-header">ЦЕЛИ</div><h2 class="pricing-modal-title">Операционные</h2>
+              <div class="pricing-modal-body spaced-large">
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Полное закрытие (ч): <strong>{{state.goals.full_close_time_hours}}</strong></span></label><input class="range long black" type="range" min="1" max="24" v-model.number="state.goals.full_close_time_hours"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Без эскалации: <strong>{{state.goals.resolved_without_escalation_pct}}%</strong></span></label><input class="range long black" type="range" min="0" max="100" v-model.number="state.goals.resolved_without_escalation_pct"/></div>
+              </div>
+            </template>
+
+            <template v-else-if="modalKind==='goals_quality'">
+              <div class="pricing-modal-header">ЦЕЛИ</div><h2 class="pricing-modal-title">Качество</h2>
+              <div class="pricing-modal-body spaced-large">
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Точность рекомендаций: <strong>{{state.goals.reco_accuracy_pct}}%</strong></span></label><input class="range long black" type="range" min="0" max="100" v-model.number="state.goals.reco_accuracy_pct"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Получение NPS: <strong>{{state.goals.nps_collected_pct}}%</strong></span></label><input class="range long black" type="range" min="0" max="100" v-model.number="state.goals.nps_collected_pct"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Средний NPS: <strong>{{state.goals.nps_avg}}</strong></span></label><input class="range long black" type="range" min="1" max="10" v-model.number="state.goals.nps_avg"/></div>
+              </div>
+            </template>
+
+            <template v-else-if="modalKind==='goals_business'">
+              <div class="pricing-modal-header">ЦЕЛИ</div><h2 class="pricing-modal-title">Бизнес</h2>
+              <div class="pricing-modal-body spaced-large">
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Возврат после жалобы: <strong>{{state.goals.returns_after_complaint_pct}}%</strong></span></label><input class="range long black" type="range" min="0" max="100" v-model.number="state.goals.returns_after_complaint_pct"/></div>
+                <div class="goal-block surface black"><label class="row surface"><input style="display:none"/><span>Средняя компенсация (₽): <strong>{{state.goals.avg_compensation_rub}}</strong></span></label><input class="range long black" type="range" min="0" max="5000" step="10" v-model.number="state.goals.avg_compensation_rub"/></div>
+              </div>
+            </template>
+
+            <template v-else-if="modalKind==='sla_ready'">
+              <div class="pricing-modal-header">ДЕТАЛИ</div>
+              <h2 class="pricing-modal-title">Почти готово</h2>
+              <div class="pricing-modal-body">
+                <div class="sla-detail-cards">
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Версия документа</strong> с общими положениями и регламентом работы ИИ-ассистента</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>10-этапный алгоритм обработки</strong> негативной обратной связи от приветствия до NPS</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Типология сигналов</strong> КОМПЕНСИРУЕМЫЙ (разовые проблемы) и СИСТЕМНЫЙ (требует физических изменений)</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Матрица эскалации</strong> по категориям A-Г с полномочиями команды и управляющего</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>SLA параметры</strong> сроки обработки, каналы связи, метрики качества</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Шаблоны фраз и скрипты</strong> для работы ИИ-ассистента Анна</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Расширенные рекомендации</strong> по каждой категории жалоб</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Метрики успеха</strong> скорость ответа, процент разрешения без эскалации, целевой NPS</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Технические требования</strong> к интеграции с тикет-системой</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Приложения и примеры</strong> реальных обращений с разбором</span>
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <template v-else-if="modalKind==='sla_later'">
+              <div class="pricing-modal-header">ДЕТАЛИ</div>
+              <h2 class="pricing-modal-title">Доработать и согласовать</h2>
+              <div class="pricing-modal-body">
+                <div class="sla-detail-cards">
+                  <div class="sla-detail-card">
+                    <component :is="CircleDotDashed" class="detail-check"/>
+                    <span><strong>Полные скрипты ответов</strong> для каждой категории жалоб (A, Б, В, Г)</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDotDashed" class="detail-check"/>
+                    <span><strong>Контакты ответственных лиц</strong> и команды по направлениям</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDotDashed" class="detail-check"/>
+                    <span><strong>Эскалационная матрица</strong> с условиями передачи на более высокий уровень</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDotDashed" class="detail-check"/>
+                    <span><strong>Примеры обработки реальных кейсов</strong> и кейсов с разбором решений</span>
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <template v-else>
+              <div class="pricing-modal-header">ГРАФИК</div><h2 class="pricing-modal-title">Расширенный режим</h2>
+              <div class="pricing-modal-body spaced-large-full">
+                <div class="surface pad workhours-block"><h4 class="workhours-title">Будни</h4><label class="row surface time-row"><input style="display:none"/><span class="workhours-label">От</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekdays.from" type="time" class="time-input"/></div></label><label class="row surface time-row"><input style="display:none"/><span class="workhours-label">До</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekdays.to" type="time" class="time-input"/></div></label></div>
+                <div class="surface pad workhours-block"><h4 class="workhours-title">Выходные</h4><label class="row surface time-row"><input style="display:none"/><span class="workhours-label">От</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekends.from" type="time" class="time-input"/></div></label><label class="row surface time-row"><input style="display:none"/><span class="workhours-label">До</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekends.to" type="time" class="time-input"/></div></label></div>
+              </div>
+            </template>
+
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+  </section>
+</template>
+
 <style scoped>
 .signal-sla.dark{--bg:transparent;--card:#151719;--muted:#9aa3ad;--text:#e8eaed;--line:#2a2d31;--green:#4ade80;--green-10:rgba(77,222,128,0.05);--lime:#c5f946;background:var(--bg);color:var(--text);padding-bottom:20px;font-size:14px;max-width:980px;margin:0 auto;overflow-wrap:anywhere}
 h2,h3,h4{margin:0 0 6px}h2{font-size:22px}h3{font-size:16px}h4{font-size:14px}
@@ -160,3 +707,4 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .time-row span{min-width:auto}
 }
 </style>
+
