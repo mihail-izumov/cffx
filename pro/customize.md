@@ -54,7 +54,8 @@ notification: brew
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px 0;
+  min-height: 30vh;
+  padding: 0;
 }
 
 /* Группа кнопок по центру */
@@ -82,23 +83,32 @@ notification: brew
   text-decoration: none !important;
 }
 
+/* Первая кнопка (яркая) */
 .btn-primary {
   background-color: #C5F946;
   color: #000 !important;
+  border: none;
 }
-.btn-primary:hover {
-  background-color: #fff;
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #fff !important;
   color: #000 !important;
+  border: none;
 }
 
+/* Вторая кнопка (серая) */
 .btn-secondary {
   background-color: #f8f9fa;
   color: #333 !important;
   border: 2px solid #dee2e6;
 }
-.btn-secondary:hover {
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active {
   background-color: #e9ecef;
   border-color: #adb5bd;
+  color: #333 !important;
 }
 
 /* Адаптив для мобильных */
