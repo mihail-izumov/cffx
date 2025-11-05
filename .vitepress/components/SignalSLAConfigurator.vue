@@ -688,7 +688,5 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .mini-ag.full-width{grid-template-columns:repeat(2,1fr);gap:8px}
   .time-input-wrapper input[type="time"]{appearance:none;-webkit-appearance:none;background:transparent;border:none;color:#fff;cursor:pointer}
   .time-input-wrapper input[type="time"]::-webkit-calendar-picker-indicator{display:none}
-  .surface{background:#edeef0}
-  .pad{background:#edeef0;color:#1d1d1f}
 }
 </style>
