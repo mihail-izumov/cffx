@@ -697,5 +697,9 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .workhours-label{font-size:12px}
   .time-row{gap:6px}
   .time-row span{min-width:auto}
+  .pricing-modal-body .row.surface{background:#0b0c0e !important;border:1px solid #2a2d31;color:#e8eaed}
+  .pricing-modal-body .row.surface span{color:#e8eaed}
+  .pricing-modal-body .surface.pad{background:#edeef0;color:#1d1d1f}
 }
 </style>
+
