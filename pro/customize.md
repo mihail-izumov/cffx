@@ -28,7 +28,7 @@ notification: brew
 <!-- Блок кнопок по центру экрана -->
 <div class="centered-buttons">
   <div class="button-group">
-    <a href="/pro/reserve" class="btn btn-primary" rel="noopener noreferrer"><strong>Отправить на сборку</strong></a>
+    <a href="/pro/reserve" class="btn btn-primary" rel="noopener noreferrer"><strong>Начать Сейчас</strong></a>
     <a href="/pro/specs" class="btn btn-secondary" rel="noopener noreferrer">Тарифы и спецификация</a>
   </div>
 </div>
@@ -68,7 +68,7 @@ notification: brew
 <!-- Блок кнопок по центру экрана -->
 <div class="centered-buttons">
   <div class="button-group">
-    <a href="/pro/reserve" class="btn btn-primary" rel="noopener noreferrer"><strong>Отправить на сборку</strong></a>
+    <a href="/pro/reserve" class="btn btn-primary" rel="noopener noreferrer"><strong>Начать Сейчас</strong></a>
     <a href="/pro/specs" class="btn btn-secondary" rel="noopener noreferrer">Тарифы и спецификация</a>
   </div>
 </div>
