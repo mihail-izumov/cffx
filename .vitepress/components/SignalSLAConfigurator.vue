@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, computed, h, watch, nextTick } from 'vue'
+import { reactive, ref, computed, h, watch } from 'vue'
 
 const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
 
@@ -14,9 +14,6 @@ const SquareArrowOut = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox
 const CircleDot = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'#4ade80','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'18',height:'18'},[h('circle',{cx:'12',cy:'12',r:'10'}),h('circle',{cx:'12',cy:'12',r:'1',fill:'#4ade80'})])
 
 const CircleDotDashed = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'#999','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'18',height:'18'},[h('path',{d:'M10.1 2.18a9.93 9.93 0 0 1 3.8 0'}),h('path',{d:'M17.6 3.71a9.95 9.95 0 0 1 2.69 2.7'}),h('path',{d:'M21.82 10.1a9.93 9.93 0 0 1 0 3.8'}),h('path',{d:'M20.29 17.6a9.95 9.95 0 0 1-2.7 2.69'}),h('path',{d:'M13.9 21.82a9.94 9.94 0 0 1-3.8 0'}),h('path',{d:'M6.4 20.29a9.95 9.95 0 0 1-2.69-2.7'}),h('path',{d:'M2.18 13.9a9.93 9.93 0 0 1 0-3.8'}),h('path',{d:'M3.71 6.4a9.95 9.95 0 0 1 2.7-2.69'}),h('circle',{cx:'12',cy:'12',r:'1'})])
-
-// === REF ДЛЯ СКРЫТОЙ ФОРМЫ ===
-const signalForm = ref<HTMLFormElement | null>(null)
 
 type Topic = { category: string }
 type CategoryKey = 'A'|'B'|'C'|'D'
@@ -122,10 +119,8 @@ const allSelectedTopics=computed(()=>{
   ;(['A','B','C','D'] as CategoryKey[]).forEach(k=>all.push(...state.categories_map[k].topics))
   return all
 })
-
 const isSubmitting=ref(false)
 const submitMessage=ref<{type:'success'|'error', text:string} | null>(null)
-const formspreeData=ref<Record<string, string>>({})
 
 function getCategoryData(k:string){return state.categories_map[k as CategoryKey]}
 function setCategoryOwner(k:string,val:Owner){state.categories_map[k as CategoryKey].owner=val}
@@ -177,84 +172,86 @@ function validateForm():boolean{
   return true
 }
 
-// === ИСПРАВЛЕННАЯ ФУНКЦИЯ С REF ===
+// ТОЧНЫЙ ПАТТЕРН ИЗ ТВОЕГО РАБОЧЕГО КОДА
 function submitToFormspree(action:'submit'|'discuss'){
   if(!validateForm())return
+  
   if(isSubmitting.value)return
-
+  
   isSubmitting.value=true
   submitMessage.value=null
-
-  // Собираем ВСЕ данные для Formspree
-  formspreeData.value={
+  
+  const formData={
     name:state.contact.name,
     phone:state.contact.phone,
-    company:state.company.name||'-',
+    company:state.company.name,
     type:state.widget==='cafe'?'Общепит':'Фитнес',
-    locations:String(state.company.locations),
-    guests_clients:String(state.company.guests_or_clients),
-    avg_check_abonement:String(state.company.avg_check_or_subscription),
-    retention:String(state.company.retention_pct),
-    ltv_now:String(ltcGrowthCalc.value.without_signal),
-    ltv_with_signal:String(ltcGrowthCalc.value.with_signal),
-    ltv_growth:String(ltcGrowthCalc.value.growth_pct),
-    standards:state.standards_source==='internal'?'Внутренние':'Сигнал',
+    locations:state.company.locations,
+    guests_clients:state.company.guests_or_clients,
+    avg_check_abonement:state.company.avg_check_or_subscription,
+    retention:state.company.retention_pct,
+    ltv_now:ltcGrowthCalc.value.without_signal,
+    ltv_with_signal:ltcGrowthCalc.value.with_signal,
+    ltv_growth:ltcGrowthCalc.value.growth_pct,
+    standards:state.standards_source==='internal'?'Внутренние':'Сигнала',
     scripts:state.client_scripts.join(', ')||'нет',
     ltv_tools:state.company.ltv_cards.join(', ')||'нет',
-    ltv_other:state.company.ltv_tool_other||'-',
     cat_a_owner:ownerLabel(getCategoryData('A').owner),
     cat_a_topics:getCategoryData('A').topics.join(', ')||'нет',
-    cat_a_contact:getCategoryData('A').contact||'-',
     cat_b_owner:ownerLabel(getCategoryData('B').owner),
     cat_b_topics:getCategoryData('B').topics.join(', ')||'нет',
-    cat_b_contact:getCategoryData('B').contact||'-',
     cat_c_owner:ownerLabel(getCategoryData('C').owner),
     cat_c_topics:getCategoryData('C').topics.join(', ')||'нет',
-    cat_c_contact:getCategoryData('C').contact||'-',
     cat_d_owner:ownerLabel(getCategoryData('D').owner),
     cat_d_topics:getCategoryData('D').topics.join(', ')||'нет',
-    cat_d_contact:getCategoryData('D').contact||'-',
     base_fields:state.ticket_template.base_fields_ru.join(', '),
     extra_fields:state.ticket_template.extra_fields.join(', ')||'нет',
-    full_close_hours:String(state.goals.full_close_time_hours),
-    no_escalation:String(state.goals.resolved_without_escalation_pct),
-    accuracy:String(state.goals.reco_accuracy_pct),
-    nps_collection:String(state.goals.nps_collected_pct),
-    nps_avg:String(state.goals.nps_avg),
-    returns:String(state.goals.returns_after_complaint_pct),
-    compensation:String(state.goals.avg_compensation_rub),
-    nps_timer:state.nps.step===-1?`${state.nps.custom_hours} ч`:state.nps.step===60?'60 мин':state.nps.step===1440?'1 день':'3 дня',
-    work_mode:state.work_hours.mode==='wk_9_18'?'Будни 9-18':state.work_hours.mode==='wk_9_18_we'?'9-18 + выходные':`Расш: ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}`,
+    full_close_hours:state.goals.full_close_time_hours,
+    no_escalation:state.goals.resolved_without_escalation_pct,
+    accuracy:state.goals.reco_accuracy_pct,
+    nps_collection:state.goals.nps_collected_pct,
+    nps_avg:state.goals.nps_avg,
+    returns:state.goals.returns_after_complaint_pct,
+    compensation:state.goals.avg_compensation_rub,
+    nps_timer:state.nps.step===-1?`${state.nps.custom_hours}ч`:state.nps.step===60?'60м':state.nps.step===1440?'1д':'3д',
+    work_mode:state.work_hours.mode==='wk_9_18'?'Будни 9-18':state.work_hours.mode==='wk_9_18_we'?'9-18+выходные':`Расш. ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}`,
     consent:state.terms_accepted?'Да':'Нет',
     _subject:action==='submit'
-      ?`[SIGNAL] Новая сборка: ${state.company.name||'Без названия'}`
-      :`[SIGNAL] Уточнить позже: ${state.company.name||'Без названия'}`
+      ?`[SIGNAL] Новая сборка: ${state.company.name}`
+      :`[SIGNAL] Уточнить позже: ${state.company.name}`
   }
-
-  // Даем Vue обновить DOM, ПОТОМ отправляем
-  nextTick(()=>{
-    if(signalForm.value){
-      signalForm.value.submit()
+  
+  fetch('https://formspree.io/f/mdkzjopz',{
+    method:'POST',
+    headers:{
+      'Accept':'application/json',
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify(formData)
+  })
+  .then(response=>{
+    if(!response.ok)throw new Error('Ошибка сервера')
+    
+    state.contact.name=''
+    state.contact.phone=''
+    submitMessage.value={
+      type:'success',
+      text:action==='submit'
+        ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
+        :'✓ Спасибо! Обсудим детали позже.'
     }
   })
-
-  // Показываем успех
-  submitMessage.value={
-    type:'success',
-    text:action==='submit'
-      ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
-      :'✓ Спасибо! Обсудим детали позже.'
-  }
-
-  // Очищаем контакт
-  state.contact.name=''
-  state.contact.phone=''
-
-  // Сбрасываем флаг через 15 сек
-  setTimeout(()=>{
-    submitMessage.value=null
-    isSubmitting.value=false
-  },15000)
+  .catch(error=>{
+    console.error('Error:',error)
+    const mailtoBody=`Компания: ${formData.company}%0AИмя: ${formData.name}%0AТелефон: ${formData.phone}%0AТип: ${formData.type}%0AДействие: ${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
+    window.location.href=`mailto:info@signal.local?subject=[SIGNAL] ${action==='submit'?'Новая сборка':'Уточнить позже'}: ${formData.company}&body=${mailtoBody}`
+  })
+  .finally(()=>{
+    setTimeout(()=>{
+      submitMessage.value=null
+      isSubmitting.value=false
+    },15000)
+  })
 }
 
 watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
@@ -392,7 +389,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           
           <template v-if="item.title.includes('Расчет')">
             <div class="sla-card-calc">Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)</div>
-            <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем omponent :is="SquareArrowOut" class="extxt-icon"/></a>
+            <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем <component :is="SquareArrowOut" class="ext-icon"/></a>
           </template>
           
           <template v-if="item.title.includes('Соглашение')">
@@ -425,11 +422,11 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
       <div class="cta-row">
         <button class="primary full strong lime-btn" @click="submitToFormspree('submit')" :disabled="isSubmitting">
           <span class="btn-text">{{ isSubmitting ? 'Отправляю...' : 'Отправить на сборку' }}</span>
-          omponent :is="ArrowRight" class="btn-iconon"/>
+          <component :is="ArrowRight" class="btn-icon"/>
         </button>
         <button class="primary full strong white-btn" @click="submitToFormspree('discuss')" :disabled="isSubmitting">
           <span class="btn-text">{{ isSubmitting ? 'Отправляю...' : 'Обсудить позже' }}</span>
-          omponent :is="ArrowUpUpRight" class="btn-icon"/>
+          <component :is="ArrowUpRight" class="btn-icon"/>
         </button>
       </div>
     </div>
@@ -451,7 +448,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
                       <select :value="getCategoryData(k).owner" @input="(e:any)=>setCategoryOwner(k,e.target.value)" class="select-arrow">
                         <option value="team">Команда</option><option value="manager">Управляющий</option><option value="custom">Другое</option>
                       </select>
-                      omponent :is="ChevronUpDown" class="chevron-iconon"/>
+                      <component :is="ChevronUpDown" class="chevron-icon"/>
                     </div>
                     <label v-if="getCategoryData(k).owner==='custom'" class="row surface"><input style="display:none"/><span class="black">Контакт</span>
                       <input :value="getCategoryData(k).contact" @input="(e:any)=>setCategoryContact(k,e.target.value)" type="text" placeholder="@handle или телефон"/>
@@ -507,7 +504,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
             <template v-else-if="modalKind==='sla_ready'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Почти готово</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards">
                 <div v-for="(item,i) in SLA_READY_DETAILS" :key="i" class="sla-detail-card">
-                  omponent :is="CircleDot" class="detailil-check"/>{{item}}
+                  <component :is="CircleDot" class="detail-check"/>{{item}}
                 </div>
               </div></div>
             </template>
@@ -515,7 +512,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
             <template v-else-if="modalKind==='sla_later'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Доработать и согласовать</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards line-height-fix">
                 <div v-for="(item,i) in SLA_LATER_DETAILS" :key="i" class="sla-detail-card">
-                  omponent :is="CirclcleDotDashed" class="detail-check"/>{{item}}
+                  <component :is="CircleDotDashed" class="detail-check"/>{{item}}
                 </div>
               </div></div>
             </template>
@@ -532,22 +529,6 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
         </div>
       </Transition>
     </Teleport>
-
-    <!-- === СКРЫТАЯ ФОРМА ДЛЯ FORMSPREE === -->
-    <form
-      ref="signalForm"
-      action="https://formspree.io/f/mdkzjopz"
-      method="POST"
-      style="display: none;"
-    >
-      <input
-        v-for="(value, key) in formspreeData"
-        :key="key"
-        :name="key"
-        :value="value"
-        type="text"
-      />
-    </form>
   </section>
 </template>
 
