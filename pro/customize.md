@@ -28,26 +28,28 @@ notification: brew
 <!-- Блок кнопок по центру экрана -->
 <div class="centered-buttons">
   <div class="button-group">
-    <a href="/pro/dialogs#начать-сегодня" class="btn btn-primary" rel="noopener noreferrer"><strong>Начать бесплатно</strong></a>
-    <a href="/pro/dialogs#тарифы" class="btn btn-secondary" rel="noopener noreferrer">Тарифы и спецификация</a>
+    <a href="/pro/reserve" class="btn btn-primary" rel="noopener noreferrer"><strong>Отправить на сборку</strong></a>
+    <a href="/pro/specs" class="btn btn-secondary" rel="noopener noreferrer">Тарифы и спецификация</a>
   </div>
 </div>
+
+# Модули Сигнала подстраиваются под вашу уникальность.
+
+<SignalConstructorModules />
 
 ## Быстрый Старт
 
 <DialogsFirst5Days />
 
-# Настройте сейчас.  Запустите потом.
+# Настройте сейчас. Запустите потом.
 
-Систему Сигнала легко настроить. Адаптируем систему Сигнала как нужно именно вам. Можете полностью доверить ей безопасность обратной связи с клиентами.
-
-### 7 точек контроля, которые подстраиваются под вашу уникальность.
-
-<SignalConstructorModules />
-
-## Начать Сегодня
-
-<DialogsForm />
+<!-- Блок кнопок по центру экрана -->
+<div class="centered-buttons">
+  <div class="button-group">
+    <a href="/pro/reserve" class="btn btn-primary" rel="noopener noreferrer"><strong>Отправить на сборку</strong></a>
+    <a href="/pro/specs" class="btn btn-secondary" rel="noopener noreferrer">Тарифы и спецификация</a>
+  </div>
+</div>
 
 <style>
 .centered-buttons {
