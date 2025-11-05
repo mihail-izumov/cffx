@@ -693,18 +693,14 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .cat-h2,.section-h2{font-size:16px;line-height:1.1}
   .owner-block-full{width:100%;max-width:100%}
   .mini-ag.full-width{grid-template-columns:repeat(2,1fr);gap:8px}
-  
-  /* ТОЛЬКО ПРАВКИ ДЛЯ МОБИЛКИ "РАСШИРЕННЫЙ РЕЖИМ" */
-  .pricing-modal-body .workhours-block .row{background:#edeef0 !important;border:none;padding:10px 12px;border-radius:10px}
-  .pricing-modal-body .workhours-block .row span{color:#1d1d1f}
-  .pricing-modal-body .workhours-block .time-input-wrapper input[type="time"]{appearance:none;-webkit-appearance:none;background:transparent;border:none;color:#1d1d1f;cursor:pointer;font-size:14px;font-weight:600}
+  .pricing-modal-body .workhours-block .time-input-wrapper input[type="time"]{background:#0b0c0e !important;border:1px solid #2a2d31;color:#fff;padding:8px 10px;border-radius:10px;appearance:none;-webkit-appearance:none;font-size:14px;font-weight:600}
   .pricing-modal-body .workhours-block .time-input-wrapper input[type="time"]::-webkit-calendar-picker-indicator{display:none}
-  .pricing-modal-body .workhours-block .clock-icon{color:#999}
+  .pricing-modal-body .workhours-block .time-input-wrapper input[type="time"]::-moz-calendar-picker-indicator{display:none}
   .workhours-block{gap:10px;padding:12px}
   .workhours-title{margin:0 0 6px;font-size:14px}
-  .workhours-label{font-size:12px}
+  .workhours-label{font-size:12px;color:#1d1d1f}
   .time-row{gap:6px}
-  .time-row span{min-width:auto}
+  .time-row span{min-width:auto;color:#1d1d1f}
 }
 </style>
 
