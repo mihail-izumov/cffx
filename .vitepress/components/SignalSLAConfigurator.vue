@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, computed, h, watch } from 'vue'
+import { reactive, ref, computed, h, watch, nextTick } from 'vue'
 
 const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
 
@@ -119,8 +119,10 @@ const allSelectedTopics=computed(()=>{
   ;(['A','B','C','D'] as CategoryKey[]).forEach(k=>all.push(...state.categories_map[k].topics))
   return all
 })
+
 const isSubmitting=ref(false)
 const submitMessage=ref<{type:'success'|'error', text:string} | null>(null)
+const formspreeData=ref<Record<string, string>>({})
 
 function getCategoryData(k:string){return state.categories_map[k as CategoryKey]}
 function setCategoryOwner(k:string,val:Owner){state.categories_map[k as CategoryKey].owner=val}
@@ -172,86 +174,85 @@ function validateForm():boolean{
   return true
 }
 
-// ТОЧНЫЙ ПАТТЕРН ИЗ ТВОЕГО РАБОЧЕГО КОДА
+// НАТИВНАЯ ОТПРАВКА ЧЕРЕЗ СКРЫТУЮ ФОРМУ
 function submitToFormspree(action:'submit'|'discuss'){
   if(!validateForm())return
-  
   if(isSubmitting.value)return
-  
+
   isSubmitting.value=true
   submitMessage.value=null
-  
-  const formData={
+
+  // Собираем ВСЕ данные для Formspree
+  formspreeData.value={
     name:state.contact.name,
     phone:state.contact.phone,
-    company:state.company.name,
+    company:state.company.name||'-',
     type:state.widget==='cafe'?'Общепит':'Фитнес',
-    locations:state.company.locations,
-    guests_clients:state.company.guests_or_clients,
-    avg_check_abonement:state.company.avg_check_or_subscription,
-    retention:state.company.retention_pct,
-    ltv_now:ltcGrowthCalc.value.without_signal,
-    ltv_with_signal:ltcGrowthCalc.value.with_signal,
-    ltv_growth:ltcGrowthCalc.value.growth_pct,
-    standards:state.standards_source==='internal'?'Внутренние':'Сигнала',
+    locations:String(state.company.locations),
+    guests_clients:String(state.company.guests_or_clients),
+    avg_check_abonement:String(state.company.avg_check_or_subscription),
+    retention:String(state.company.retention_pct),
+    ltv_now:String(ltcGrowthCalc.value.without_signal),
+    ltv_with_signal:String(ltcGrowthCalc.value.with_signal),
+    ltv_growth:String(ltcGrowthCalc.value.growth_pct),
+    standards:state.standards_source==='internal'?'Внутренние':'Сигнал',
     scripts:state.client_scripts.join(', ')||'нет',
     ltv_tools:state.company.ltv_cards.join(', ')||'нет',
+    ltv_other:state.company.ltv_tool_other||'-',
     cat_a_owner:ownerLabel(getCategoryData('A').owner),
     cat_a_topics:getCategoryData('A').topics.join(', ')||'нет',
+    cat_a_contact:getCategoryData('A').contact||'-',
     cat_b_owner:ownerLabel(getCategoryData('B').owner),
     cat_b_topics:getCategoryData('B').topics.join(', ')||'нет',
+    cat_b_contact:getCategoryData('B').contact||'-',
     cat_c_owner:ownerLabel(getCategoryData('C').owner),
     cat_c_topics:getCategoryData('C').topics.join(', ')||'нет',
+    cat_c_contact:getCategoryData('C').contact||'-',
     cat_d_owner:ownerLabel(getCategoryData('D').owner),
     cat_d_topics:getCategoryData('D').topics.join(', ')||'нет',
+    cat_d_contact:getCategoryData('D').contact||'-',
     base_fields:state.ticket_template.base_fields_ru.join(', '),
     extra_fields:state.ticket_template.extra_fields.join(', ')||'нет',
-    full_close_hours:state.goals.full_close_time_hours,
-    no_escalation:state.goals.resolved_without_escalation_pct,
-    accuracy:state.goals.reco_accuracy_pct,
-    nps_collection:state.goals.nps_collected_pct,
-    nps_avg:state.goals.nps_avg,
-    returns:state.goals.returns_after_complaint_pct,
-    compensation:state.goals.avg_compensation_rub,
-    nps_timer:state.nps.step===-1?`${state.nps.custom_hours}ч`:state.nps.step===60?'60м':state.nps.step===1440?'1д':'3д',
-    work_mode:state.work_hours.mode==='wk_9_18'?'Будни 9-18':state.work_hours.mode==='wk_9_18_we'?'9-18+выходные':`Расш. ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}`,
+    full_close_hours:String(state.goals.full_close_time_hours),
+    no_escalation:String(state.goals.resolved_without_escalation_pct),
+    accuracy:String(state.goals.reco_accuracy_pct),
+    nps_collection:String(state.goals.nps_collected_pct),
+    nps_avg:String(state.goals.nps_avg),
+    returns:String(state.goals.returns_after_complaint_pct),
+    compensation:String(state.goals.avg_compensation_rub),
+    nps_timer:state.nps.step===-1?`${state.nps.custom_hours} ч`:state.nps.step===60?'60 мин':state.nps.step===1440?'1 день':'3 дня',
+    work_mode:state.work_hours.mode==='wk_9_18'?'Будни 9-18':state.work_hours.mode==='wk_9_18_we'?'9-18 + выходные':`Расш: ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}`,
     consent:state.terms_accepted?'Да':'Нет',
     _subject:action==='submit'
-      ?`[SIGNAL] Новая сборка: ${state.company.name}`
-      :`[SIGNAL] Уточнить позже: ${state.company.name}`
+      ?`[SIGNAL] Новая сборка: ${state.company.name||'Без названия'}`
+      :`[SIGNAL] Уточнить позже: ${state.company.name||'Без названия'}`
   }
-  
-  fetch('https://formspree.io/f/mdkzjopz',{
-    method:'POST',
-    headers:{
-      'Accept':'application/json',
-      'Content-Type':'application/json'
-    },
-    body:JSON.stringify(formData)
-  })
-  .then(response=>{
-    if(!response.ok)throw new Error('Ошибка сервера')
-    
-    state.contact.name=''
-    state.contact.phone=''
+
+  // Даем Vue обновить DOM
+  nextTick(()=>{
+    const form=document.querySelector('form[ref="signalForm"]') as HTMLFormElement
+    if(form){
+      form.submit()
+    }
+
+    // Показываем успех
     submitMessage.value={
       type:'success',
       text:action==='submit'
         ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
         :'✓ Спасибо! Обсудим детали позже.'
     }
+
+    // Очищаем контакт
+    state.contact.name=''
+    state.contact.phone=''
   })
-  .catch(error=>{
-    console.error('Error:',error)
-    const mailtoBody=`Компания: ${formData.company}%0AИмя: ${formData.name}%0AТелефон: ${formData.phone}%0AТип: ${formData.type}%0AДействие: ${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
-    window.location.href=`mailto:info@signal.local?subject=[SIGNAL] ${action==='submit'?'Новая сборка':'Уточнить позже'}: ${formData.company}&body=${mailtoBody}`
-  })
-  .finally(()=>{
-    setTimeout(()=>{
-      submitMessage.value=null
-      isSubmitting.value=false
-    },15000)
-  })
+
+  // Сбрасываем флаг
+  setTimeout(()=>{
+    submitMessage.value=null
+    isSubmitting.value=false
+  },15000)
 }
 
 watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
@@ -529,6 +530,22 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
         </div>
       </Transition>
     </Teleport>
+
+    <!-- СКРЫТАЯ ФОРМА ДЛЯ FORMSPREE -->
+    <form
+      ref="signalForm"
+      action="https://formspree.io/f/mdkzjopz"
+      method="POST"
+      style="display: none;"
+    >
+      <input
+        v-for="(value, key) in formspreeData"
+        :key="key"
+        :name="key"
+        :value="value"
+        type="text"
+      />
+    </form>
   </section>
 </template>
 
