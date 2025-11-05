@@ -23,11 +23,14 @@ notification: brew
   Адаптируем систему под ваши правила, а не наоборот. Просто скажите да/нет или измените модули системы.
 </p>
 
-<div class="button-group">
-  <a href="/pro/dialogs#начать-сегодня" class="btn btn-primary" rel="noopener noreferrer"><strong>Начать бесплатно</strong></a>
-  <a href="/pro/dialogs#тарифы" class="btn btn-secondary" rel="noopener noreferrer">Тарифы и спецификация</a>
 </div>
 
+<!-- Блок кнопок по центру экрана -->
+<div class="centered-buttons">
+  <div class="button-group">
+    <a href="/pro/dialogs#начать-сегодня" class="btn btn-primary" rel="noopener noreferrer"><strong>Начать бесплатно</strong></a>
+    <a href="/pro/dialogs#тарифы" class="btn btn-secondary" rel="noopener noreferrer">Тарифы и спецификация</a>
+  </div>
 </div>
 
 ## Быстрый Старт
