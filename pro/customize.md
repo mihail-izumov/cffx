@@ -33,16 +33,23 @@ notification: brew
   </div>
 </div>
 
-# Модули Сигнала подстраиваются под вашу уникальность.
+<br>
 
+<div align="center">
+# Модули Сигнала подстраиваются под вашу уникальность.
+</div>
 <SignalConstructorModules />
 
+<div align="center">
 ## Быстрый Старт
-
+</div>
 <DialogsFirst5Days />
 
-# Настройте сейчас. Запустите потом.
+<br>
 
+<div align="center">
+## Настройте сейчас. Запустите потом.
+</div>
 <!-- Блок кнопок по центру экрана -->
 <div class="centered-buttons">
   <div class="button-group">
