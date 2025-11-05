@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, computed, h, watch } from 'vue'
+import { reactive, ref, computed, h, watch, nextTick } from 'vue'
 
 const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
 
@@ -172,15 +172,14 @@ function validateForm():boolean{
   return true
 }
 
-// ТОЧНЫЙ ПАТТЕРН ИЗ ТВОЕГО РАБОЧЕГО КОДА
+// === ИСПРАВЛЕННАЯ ФУНКЦИЯ С FETCH + nextTick (БЕЗ РЕДИРЕКТОВ) ===
 function submitToFormspree(action:'submit'|'discuss'){
   if(!validateForm())return
-  
   if(isSubmitting.value)return
-  
+
   isSubmitting.value=true
   submitMessage.value=null
-  
+
   const formData={
     name:state.contact.name,
     phone:state.contact.phone,
@@ -220,38 +219,44 @@ function submitToFormspree(action:'submit'|'discuss'){
       ?`[SIGNAL] Новая сборка: ${state.company.name}`
       :`[SIGNAL] Уточнить позже: ${state.company.name}`
   }
-  
-  fetch('https://formspree.io/f/mdkzjopz',{
-    method:'POST',
-    headers:{
-      'Accept':'application/json',
-      'Content-Type':'application/json'
-    },
-    body:JSON.stringify(formData)
+
+  // Показываем успех СРАЗУ (ДО отправки на сервер)
+  submitMessage.value={
+    type:'success',
+    text:action==='submit'
+      ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
+      :'✓ Спасибо! Обсудим детали позже.'
+  }
+
+  // Очищаем контакты
+  state.contact.name=''
+  state.contact.phone=''
+
+  // Отправляем в фоне через fetch (БЕЗ перезагрузки страницы)
+  nextTick(()=>{
+    fetch('https://formspree.io/f/mdkzjopz',{
+      method:'POST',
+      headers:{
+        'Accept':'application/json',
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify(formData)
+    })
+    .then(response=>{
+      if(!response.ok)throw new Error('Ошибка сервера')
+      console.log('✓ Письмо успешно отправлено в Formspree')
+    })
+    .catch(error=>{
+      console.error('Ошибка отправки формы:',error)
+      submitMessage.value={type:'error',text:'✗ Ошибка при отправке. Попробуйте ещё раз.'}
+    })
   })
-  .then(response=>{
-    if(!response.ok)throw new Error('Ошибка сервера')
-    
-    state.contact.name=''
-    state.contact.phone=''
-    submitMessage.value={
-      type:'success',
-      text:action==='submit'
-        ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
-        :'✓ Спасибо! Обсудим детали позже.'
-    }
-  })
-  .catch(error=>{
-    console.error('Error:',error)
-    const mailtoBody=`Компания: ${formData.company}%0AИмя: ${formData.name}%0AТелефон: ${formData.phone}%0AТип: ${formData.type}%0AДействие: ${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
-    window.location.href=`mailto:info@signal.local?subject=[SIGNAL] ${action==='submit'?'Новая сборка':'Уточнить позже'}: ${formData.company}&body=${mailtoBody}`
-  })
-  .finally(()=>{
-    setTimeout(()=>{
-      submitMessage.value=null
-      isSubmitting.value=false
-    },15000)
-  })
+
+  // Сбрасываем флаг и скрываем сообщение через 15 сек
+  setTimeout(()=>{
+    submitMessage.value=null
+    isSubmitting.value=false
+  },15000)
 }
 
 watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
