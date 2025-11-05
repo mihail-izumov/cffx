@@ -343,7 +343,9 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           
           <template v-if="item.title.includes('Расчет')">
             <div class="sla-card-calc" v-if="state.widget==='cafe'">Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)</div>
-            <div class="sla-card-calc" v-else>Сейчас: 2100 клиентов/мес → С Сигналом: 2583 клиентов/мес (Δ +23%)</div>
+            <div class="sla-card-calc">
+  Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)
+</div>
             <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем <component :is="SquareArrowOut" class="ext-icon"/></a>
           </template>
           
