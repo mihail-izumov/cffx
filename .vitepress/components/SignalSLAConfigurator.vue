@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, computed, h, watch, nextTick } from 'vue'
 
-const TELEGRAM_BOT_TOKEN = '8502233692:AAGfzrlanIRPO_GKIlSAZHI65bmHPf7y0Lk'
+const TELEGRAM_BOT_TOKEN = '8291628689:AAFOA4-OQR1Qor-Zu45r60x4_mmtp0fuSDc'
 const TELEGRAM_CHAT_ID = '7999126446'
 
 const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
@@ -53,26 +53,6 @@ const SLA_READY_ITEMS=[
   {title:'Тикет-система',desc:'Настройка шаблонов тикетов, адаптация по дстандарты'},
   {title:'Расчет роста LTV (индивидуально)',desc:''},
   {title:'Соглашение об уровне обслуживания (SLA)',desc:''}
-]
-
-const SLA_READY_DETAILS=[
-  'Версия документа с общими положениями и регламентом работы ИИ-ассистента',
-  '10-этапный алгоритм обработки негативной обратной связи (от приветствия до NPS)',
-  'Типология сигналов: КОМПЕНСИРУЕМЫЙ (разовые проблемы) и СИСТЕМНЫЙ (требует физических изменений)',
-  'Матрица эскалации по категориям A-Г с полномочиями команды и управляющего',
-  'SLA параметры (Service Level Agreement): сроки обработки, каналы связи, метрики качества',
-  'Шаблоны фраз и скрипты для работы ИИ-ассистента Анна',
-  'Расширенные рекомендации по каждой категории жалоб',
-  'Метрики успеха: скорость ответа, процент разрешения без эскалации, целевой NPS',
-  'Технические требования к интеграции с тикет-системой',
-  'Приложения и примеры реальных обращений с разбором'
-]
-
-const SLA_LATER_DETAILS=[
-  'Полные скрипты ответов для каждой категории жалоб (A, Б, В, Г)',
-  'Контакты ответственных лиц и команды по направлениям',
-  'Эскалационная матрица с условиями передачи на более высокий уровень',
-  'Примеры обработки реальных кейсов и кейсов с разбором решений'
 ]
 
 const state = reactive({
@@ -341,14 +321,14 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
         <div class="mini-badge">Кат. В — 1 час<div class="mini-sub">{{ownerLabel(getCategoryData('C').owner)}}</div></div>
         <div class="mini-badge">Кат. Г — 15 минут<div class="mini-sub">{{ownerLabel(getCategoryData('D').owner)}}</div></div>
       </div>
-      <button class="linklike" @click="openModal('categories')" style="margin-top:12px">Изменить роли и темы</button>
+      <button class="linklike" @click="openModal('categories')" style="margin-top:8px">Изменить роли и темы</button>
     </div>
 
     <div class="card">
       <h3>Шаблон тикета</h3>
       <div class="goal-line"><span class="field-label">Базовые поля:</span> {{state.ticket_template.base_fields_ru.join(', ')}}</div>
       <div class="goal-line"><span class="field-label">Дополнительные поля:</span> {{state.ticket_template.extra_fields.join(', ')||'не выбрано'}}</div>
-      <button class="linklike" @click="openModal('ticket')" style="margin-top:12px">Изменить шаблон</button>
+      <button class="linklike" @click="openModal('ticket')" style="margin-top:8px">Изменить шаблон</button>
     </div>
 
     <div class="card summary onecol lime-outline">
@@ -362,7 +342,8 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           <div v-if="item.desc" class="sla-card-desc">{{item.desc}}</div>
           
           <template v-if="item.title.includes('Расчет')">
-            <div class="sla-card-calc">Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)</div>
+            <div class="sla-card-calc" v-if="state.widget==='cafe'">Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)</div>
+            <div class="sla-card-calc" v-else>Сейчас: 2100 клиентов/мес → С Сигналом: 2583 клиентов/мес (Δ +23%)</div>
             <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем <component :is="SquareArrowOut" class="ext-icon"/></a>
           </template>
           
@@ -475,20 +456,78 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
               </div>
             </template>
 
-            <template v-else-if="modalKind==='sla_ready'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Почти готово</h2>
-              <div class="pricing-modal-body"><div class="sla-detail-cards">
-                <div v-for="(item,i) in SLA_READY_DETAILS" :key="i" class="sla-detail-card">
-                  <component :is="CircleDot" class="detail-check"/><span><strong>{{ item.split(':')[0] }}:</strong>{{ item.includes(':') ? item.slice(item.indexOf(':')) : item }}</span>
+            <template v-else-if="modalKind==='sla_ready'">
+              <div class="pricing-modal-header">ДЕТАЛИ</div>
+              <h2 class="pricing-modal-title">Почти готово</h2>
+              <div class="pricing-modal-body">
+                <div class="sla-detail-cards">
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Версия документа</strong> с общими положениями и регламентом работы ИИ-ассистента</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>10-этапный алгоритм обработки</strong> негативной обратной связи от приветствия до NPS</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Типология сигналов</strong> КОМПЕНСИРУЕМЫЙ (разовые проблемы) и СИСТЕМНЫЙ (требует физических изменений)</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Матрица эскалации</strong> по категориям A-Г с полномочиями команды и управляющего</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>SLA параметры</strong> сроки обработки, каналы связи, метрики качества</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Шаблоны фраз и скрипты</strong> для работы ИИ-ассистента Анна</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Расширенные рекомендации</strong> по каждой категории жалоб</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Метрики успеха</strong> скорость ответа, процент разрешения без эскалации, целевой NPS</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Технические требования</strong> к интеграции с тикет-системой</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDot" class="detail-check"/>
+                    <span><strong>Приложения и примеры</strong> реальных обращений с разбором</span>
+                  </div>
                 </div>
-              </div></div>
+              </div>
             </template>
 
-            <template v-else-if="modalKind==='sla_later'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Доработать и согласовать</h2>
-              <div class="pricing-modal-body"><div class="sla-detail-cards line-height-fix">
-                <div v-for="(item,i) in SLA_LATER_DETAILS" :key="i" class="sla-detail-card">
-                  <component :is="CircleDotDashed" class="detail-check"/><span><strong>{{ item.split(':')[0] }}:</strong>{{ item.includes(':') ? item.slice(item.indexOf(':')) : item }}</span>
+            <template v-else-if="modalKind==='sla_later'">
+              <div class="pricing-modal-header">ДЕТАЛИ</div>
+              <h2 class="pricing-modal-title">Доработать и согласовать</h2>
+              <div class="pricing-modal-body">
+                <div class="sla-detail-cards">
+                  <div class="sla-detail-card">
+                    <component :is="CircleDotDashed" class="detail-check"/>
+                    <span><strong>Полные скрипты ответов</strong> для каждой категории жалоб (A, Б, В, Г)</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDotDashed" class="detail-check"/>
+                    <span><strong>Контакты ответственных лиц</strong> и команды по направлениям</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDotDashed" class="detail-check"/>
+                    <span><strong>Эскалационная матрица</strong> с условиями передачи на более высокий уровень</span>
+                  </div>
+                  <div class="sla-detail-card">
+                    <component :is="CircleDotDashed" class="detail-check"/>
+                    <span><strong>Примеры обработки реальных кейсов</strong> и кейсов с разбором решений</span>
+                  </div>
                 </div>
-              </div></div>
+              </div>
             </template>
 
             <template v-else>
@@ -546,7 +585,7 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .ltv-card{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#0d0f12;text-align:left;cursor:pointer;font-size:13px}
 .ltv-card.active{border-color:var(--lime);background:#1a1d20}
 .ltv-other{margin-top:10px;font-size:13px}
-.linklike{background:transparent;border:none;color:#fff;text-decoration:underline;text-decoration-style:dashed;cursor:pointer;padding:0;font-size:inherit}
+.linklike{background:transparent;border:none;color:var(--lime);text-decoration:underline;text-decoration-style:dashed;cursor:pointer;padding:0;font-size:14px}
 .linklike-calc{background:transparent;border:none;color:var(--lime);text-decoration:none;cursor:pointer;padding:0;font-size:13px;display:inline-flex;align-items:center;gap:4px;margin-top:6px}
 .linklike-calc:hover{text-decoration:underline}
 .ext-icon{width:12px;height:12px}
@@ -622,7 +661,6 @@ button.primary:hover .btn-icon{transform:translateX(3px)}
 .sla-detail-cards{display:grid;gap:10px}
 .sla-detail-card{background:#edeef0;border-radius:10px;padding:12px;color:#1d1d1f;font-size:12px;line-height:1.5;display:flex;align-items:flex-start;gap:8px}
 .detail-check{flex-shrink:0;margin-top:2px}
-.line-height-fix .sla-detail-card{line-height:1.6}
 @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 button:disabled{opacity:0.6;cursor:not-allowed}
 @media(max-width:1024px){
@@ -633,7 +671,7 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .contact-grid{grid-template-columns:1fr}
   .goals-row{gap:4px;flex-wrap:wrap}
   .goals-col{flex-basis:100%}
-  .linklike{font-size:12px}
+  .linklike{font-size:14px;color:var(--lime)}
   .pricing-modal-header,.pricing-modal-title,.pricing-modal-body{margin-left:24px;margin-right:24px;padding-left:0;padding-right:0}
   .extras-grid,.topics-grid.compact3{grid-template-columns:1fr 1fr}
   .card{padding:14px 12px;margin:10px 0}
@@ -646,7 +684,7 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .pricing-modal-title{font-size:1.6rem}
   .cat-h2,.section-h2{font-size:16px;line-height:1.1}
   .owner-block-full{width:100%;max-width:100%}
-  .mini-ag.full-width{grid-template-columns:1fr}
+  .mini-ag.full-width{grid-template-columns:repeat(2,1fr);gap:8px}
   .time-input-wrapper input[type="time"]{appearance:none;-webkit-appearance:none;background:transparent;border:none;color:#fff;cursor:pointer}
   .time-input-wrapper input[type="time"]::-webkit-calendar-picker-indicator{display:none}
 }
