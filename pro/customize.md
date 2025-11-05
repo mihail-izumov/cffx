@@ -54,7 +54,7 @@ notification: brew
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 60vh; /* Центрирование по вертикали */
+  padding: 20px 0;
 }
 
 /* Группа кнопок по центру */
