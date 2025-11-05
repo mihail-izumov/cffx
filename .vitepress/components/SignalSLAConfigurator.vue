@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, computed, h, watch, nextTick } from 'vue'
 
-const TELEGRAM_BOT_TOKEN = '8291628689:AAFOA4-OQR1Qor-Zu45r60x4_mmtp0fuSDc'
+const TELEGRAM_BOT_TOKEN = '8502233692:AAGfzrlanIRPO_GKIlSAZHI65bmHPf7y0Lk'
 const TELEGRAM_CHAT_ID = '7999126446'
 
 const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
@@ -124,7 +124,7 @@ const allSelectedTopics=computed(()=>{
 })
 const isSubmitting=ref(false)
 const submitAction=ref<'submit'|'discuss'|null>(null)
-const submitMessage=ref<{type:'success'|'error', text:string} | null>(null)
+const submitMessage=ref<{type:'success'|'error', text:string, time:number} | null>(null)
 
 function getCategoryData(k:string){return state.categories_map[k as CategoryKey]}
 function setCategoryOwner(k:string,val:Owner){state.categories_map[k as CategoryKey].owner=val}
@@ -169,10 +169,10 @@ function closeModal(){isModalOpen.value=false;if(typeof document!=='undefined')d
 function ownerLabel(o:Owner){return o==='team'?'Команда':o==='manager'?'Управляющий':'Другое'}
 
 function validateForm():boolean{
-  if(!state.company.name.trim()){submitMessage.value={type:'error',text:'Укажите название компании'};return false}
-  if(!state.contact.name.trim()){submitMessage.value={type:'error',text:'Укажите имя'};return false}
-  if(!state.contact.phone.trim()){submitMessage.value={type:'error',text:'Укажите телефон'};return false}
-  if(!state.terms_accepted){submitMessage.value={type:'error',text:'Подтвердите согласие с Условиями использования'};return false}
+  if(!state.company.name.trim()){submitMessage.value={type:'error',text:'Укажите название компании',time:Date.now()};return false}
+  if(!state.contact.name.trim()){submitMessage.value={type:'error',text:'Укажите имя',time:Date.now()};return false}
+  if(!state.contact.phone.trim()){submitMessage.value={type:'error',text:'Укажите телефон',time:Date.now()};return false}
+  if(!state.terms_accepted){submitMessage.value={type:'error',text:'Подтвердите согласие с Условиями использования',time:Date.now()};return false}
   return true
 }
 
@@ -197,12 +197,22 @@ function submitToFormspree(action:'submit'|'discuss'){
   .then(response=>{
     if(!response.ok)throw new Error('Telegram error')
     
-    submitMessage.value={
-      type:'success',
-      text:action==='submit'
-        ?'Отправлено! Мы свяжемся с вами в течение 2 часов.'
-        :'Спасибо! Обсудим детали позже.'
-    }
+    setTimeout(()=>{
+      submitMessage.value={
+        type:'success',
+        text:action==='submit'
+          ?'Отправлено! Мы свяжемся с вами в течение 2 часов.'
+          :'Спасибо! Обсудим детали позже.',
+        time:Date.now()
+      }
+      
+      isSubmitting.value=false
+      submitAction.value=null
+      
+      setTimeout(()=>{
+        submitMessage.value=null
+      },3000)
+    },400)
     
     state.contact.name=''
     state.contact.phone=''
@@ -211,14 +221,10 @@ function submitToFormspree(action:'submit'|'discuss'){
   })
   .catch(error=>{
     console.error('Ошибка при отправке в Telegram:',error)
-    submitMessage.value={type:'error',text:'Ошибка при отправке. Попробуйте ещё раз.'}
-  })
-  .finally(()=>{
-    setTimeout(()=>{
-      submitMessage.value=null
-      submitAction.value=null
-      isSubmitting.value=false
-    },15000)
+    isSubmitting.value=false
+    submitAction.value=null
+    submitMessage.value={type:'error',text:'Ошибка при отправке. Попробуйте ещё раз.',time:Date.now()}
+    setTimeout(()=>{submitMessage.value=null},3000)
   })
 }
 
@@ -296,13 +302,13 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
       <h3>Цели</h3>
       <div class="goals-row"><div class="goals-col"><div class="goal-title">Операционные</div>
         <div class="goal-line">Полное закрытие: {{state.goals.full_close_time_hours}} ч; Без эскалации: {{state.goals.resolved_without_escalation_pct}}%</div></div>
-        <button class="linklike same" @click="openModal('goals_ops')">Изменить</button></div>
+        <button class="linklike" @click="openModal('goals_ops')">Изменить</button></div>
       <div class="goals-row"><div class="goals-col"><div class="goal-title">Качество</div>
         <div class="goal-line">Точность рекомендаций: {{state.goals.reco_accuracy_pct}}%; Получение NPS: {{state.goals.nps_collected_pct}}%; Средний NPS: {{state.goals.nps_avg}}</div></div>
-        <button class="linklike same" @click="openModal('goals_quality')">Изменить</button></div>
+        <button class="linklike" @click="openModal('goals_quality')">Изменить</button></div>
       <div class="goals-row"><div class="goals-col"><div class="goal-title">Бизнес</div>
         <div class="goal-line">Возврат после жалобы: {{state.goals.returns_after_complaint_pct}}%; Средняя компенсация: {{state.goals.avg_compensation_rub}} ₽</div></div>
-        <button class="linklike same" @click="openModal('goals_business')">Изменить</button></div>
+        <button class="linklike" @click="openModal('goals_business')">Изменить</button></div>
     </div>
 
     <div class="card">
@@ -323,26 +329,26 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
       </div>
       <div class="row" style="margin-top:8px;">
         <input class="radio-big" type="radio" value="extended" v-model="state.work_hours.mode"/>
-        <span>Расширенный режим — <button class="linklike same" type="button" @click="openModal('workhours')">Настроить</button></span>
+        <span>Расширенный режим — <button class="linklike" type="button" @click="openModal('workhours')">Настроить</button></span>
       </div>
     </div>
 
     <div class="card">
       <h3>Матрица эскалации</h3>
-      <div class="mini-ag">
+      <div class="mini-ag full-width">
         <div class="mini-badge">Кат. А — 4 часа<div class="mini-sub">{{ownerLabel(getCategoryData('A').owner)}}</div></div>
         <div class="mini-badge">Кат. Б — 2 часа<div class="mini-sub">{{ownerLabel(getCategoryData('B').owner)}}</div></div>
         <div class="mini-badge">Кат. В — 1 час<div class="mini-sub">{{ownerLabel(getCategoryData('C').owner)}}</div></div>
         <div class="mini-badge">Кат. Г — 15 минут<div class="mini-sub">{{ownerLabel(getCategoryData('D').owner)}}</div></div>
       </div>
-      <button class="linklike same" @click="openModal('categories')" style="margin-top:12px">Изменить роли и темы</button>
+      <button class="linklike" @click="openModal('categories')" style="margin-top:12px">Изменить роли и темы</button>
     </div>
 
     <div class="card">
       <h3>Шаблон тикета</h3>
       <div class="goal-line"><span class="field-label">Базовые поля:</span> {{state.ticket_template.base_fields_ru.join(', ')}}</div>
       <div class="goal-line"><span class="field-label">Дополнительные поля:</span> {{state.ticket_template.extra_fields.join(', ')||'не выбрано'}}</div>
-      <button class="linklike same" @click="openModal('ticket')" style="margin-top:12px">Изменить шаблон</button>
+      <button class="linklike" @click="openModal('ticket')" style="margin-top:12px">Изменить шаблон</button>
     </div>
 
     <div class="card summary onecol lime-outline">
@@ -363,11 +369,11 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           <template v-if="item.title.includes('Соглашение')">
             <div class="sla-subgroup">
               <div class="sla-subgroup-title">Почти готово</div>
-              <button class="linklike same" @click="openModal('sla_ready')">Детали</button>
+              <button class="linklike" @click="openModal('sla_ready')">Детали</button>
             </div>
             <div class="sla-subgroup">
               <div class="sla-subgroup-title">Доработать и согласовать</div>
-              <button class="linklike same" @click="openModal('sla_later')">Детали</button>
+              <button class="linklike" @click="openModal('sla_later')">Детали</button>
             </div>
           </template>
         </div>
@@ -541,7 +547,6 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .ltv-card.active{border-color:var(--lime);background:#1a1d20}
 .ltv-other{margin-top:10px;font-size:13px}
 .linklike{background:transparent;border:none;color:#fff;text-decoration:underline;text-decoration-style:dashed;cursor:pointer;padding:0;font-size:inherit}
-.linklike.same{font-size:13px}
 .linklike-calc{background:transparent;border:none;color:var(--lime);text-decoration:none;cursor:pointer;padding:0;font-size:13px;display:inline-flex;align-items:center;gap:4px;margin-top:6px}
 .linklike-calc:hover{text-decoration:underline}
 .ext-icon{width:12px;height:12px}
@@ -555,6 +560,7 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .nps-card{border:1px solid var(--line);border-radius:12px;padding:10px 16px;background:#0d0f12;color:#e8eaed;cursor:pointer;text-align:center;font-size:13px}
 .nps-card.active{border-color:var(--lime);background:#1a1d20}
 .mini-ag{display:flex;gap:8px;flex-wrap:wrap}
+.mini-ag.full-width{width:100%;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
 .mini-badge{background:#0b0c0e;border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:12px}
 .mini-sub{color:#9aa3ad;font-size:11px;margin-top:2px}
 .field-label{color:#fff;font-weight:700;font-size:13px}
@@ -571,7 +577,7 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .sla-subgroup-title{font-weight:600;font-size:13px}
 .contact-in-summary{background:rgba(12,12,14,0.7);border:1px solid var(--line);margin:16px 0 20px}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.terms-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:15px;font-size:12px;line-height:1.4}
+.terms-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:20px;font-size:12px;line-height:1.4}
 .terms-row input[type="checkbox"]{accent-color:var(--lime);width:16px;height:16px;margin-top:2px;flex-shrink:0}
 .terms-row a{color:var(--lime);text-decoration:underline}
 .submit-message{padding:12px 16px;border-radius:12px;margin-bottom:10px;font-size:13px;font-weight:600;text-align:center;animation:slideDown 0.3s ease}
@@ -627,7 +633,7 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .contact-grid{grid-template-columns:1fr}
   .goals-row{gap:4px;flex-wrap:wrap}
   .goals-col{flex-basis:100%}
-  .linklike.same{font-size:11px}
+  .linklike{font-size:12px}
   .pricing-modal-header,.pricing-modal-title,.pricing-modal-body{margin-left:24px;margin-right:24px;padding-left:0;padding-right:0}
   .extras-grid,.topics-grid.compact3{grid-template-columns:1fr 1fr}
   .card{padding:14px 12px;margin:10px 0}
@@ -636,9 +642,12 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .fullwidth-mobile{width:100%}
   .radio-left{flex-direction:column;align-items:flex-start}
   .contact-in-summary{margin:16px 0 12px}
-  .terms-row{margin-bottom:15px}
+  .terms-row{margin-bottom:20px}
   .pricing-modal-title{font-size:1.6rem}
   .cat-h2,.section-h2{font-size:16px;line-height:1.1}
   .owner-block-full{width:100%;max-width:100%}
+  .mini-ag.full-width{grid-template-columns:1fr}
+  .time-input-wrapper input[type="time"]{appearance:none;-webkit-appearance:none;background:transparent;border:none;color:#fff;cursor:pointer}
+  .time-input-wrapper input[type="time"]::-webkit-calendar-picker-indicator{display:none}
 }
 </style>
