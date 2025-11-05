@@ -33,6 +33,8 @@ notification: brew
   </div>
 </div>
 
+---
+
 <br>
 
 <div align="center">
@@ -45,7 +47,7 @@ notification: brew
 
 <div align="center">
   
-## Быстрый Старт
+# Стартуйте быстро.
 
 </div>
 
@@ -55,7 +57,7 @@ notification: brew
 
 <div align="center">
   
-## Настройте сейчас. Запустите потом.
+# Настройте сейчас. Запустите потом.
 
 </div>
 
