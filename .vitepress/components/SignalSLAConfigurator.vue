@@ -70,6 +70,9 @@ const SLA_LATER_DETAILS=[
   'Примеры обработки реальных кейсов и кейсов с разбором решений'
 ]
 
+// ✅ ДОБАВЛЕНО: ref для формы
+const signalForm=ref<HTMLFormElement|null>(null)
+
 const state = reactive({
   widget:'cafe' as WidgetKey,
   company:{name:'',locations:5,guests_or_clients:3000,avg_check_or_subscription:550,retention_pct:40,ltv_cards:[] as string[],ltv_tool_other:''},
@@ -121,8 +124,8 @@ const allSelectedTopics=computed(()=>{
 })
 
 const isSubmitting=ref(false)
-const submitMessage=ref<{type:'success'|'error', text:string} | null>(null)
-const formspreeData=ref<Record<string, string>>({})
+const submitMessage=ref<{type:'success'|'error', text:string}|null>(null)
+const formspreeData=ref<Record<string,string>>({})
 
 function getCategoryData(k:string){return state.categories_map[k as CategoryKey]}
 function setCategoryOwner(k:string,val:Owner){state.categories_map[k as CategoryKey].owner=val}
@@ -174,7 +177,7 @@ function validateForm():boolean{
   return true
 }
 
-// НАТИВНАЯ ОТПРАВКА ЧЕРЕЗ СКРЫТУЮ ФОРМУ
+// ✅ ПОЛНОСТЬЮ ПЕРЕПИСАНО: использует Vue ref вместо querySelector
 function submitToFormspree(action:'submit'|'discuss'){
   if(!validateForm())return
   if(isSubmitting.value)return
@@ -182,7 +185,7 @@ function submitToFormspree(action:'submit'|'discuss'){
   isSubmitting.value=true
   submitMessage.value=null
 
-  // Собираем ВСЕ данные для Formspree
+  // Собираем данные
   formspreeData.value={
     name:state.contact.name,
     phone:state.contact.phone,
@@ -228,27 +231,26 @@ function submitToFormspree(action:'submit'|'discuss'){
       :`[SIGNAL] Уточнить позже: ${state.company.name||'Без названия'}`
   }
 
-  // Даем Vue обновить DOM
+  // ✅ Отправляем через ref вместо querySelector
   nextTick(()=>{
-    const form=document.querySelector('form[ref="signalForm"]') as HTMLFormElement
-    if(form){
-      form.submit()
+    if(signalForm.value){
+      signalForm.value.submit()
     }
-
-    // Показываем успех
-    submitMessage.value={
-      type:'success',
-      text:action==='submit'
-        ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
-        :'✓ Спасибо! Обсудим детали позже.'
-    }
-
-    // Очищаем контакт
-    state.contact.name=''
-    state.contact.phone=''
   })
 
-  // Сбрасываем флаг
+  // Успех
+  submitMessage.value={
+    type:'success',
+    text:action==='submit'
+      ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
+      :'✓ Спасибо! Обсудим детали позже.'
+  }
+
+  // Очистка
+  state.contact.name=''
+  state.contact.phone=''
+
+  // Сброс
   setTimeout(()=>{
     submitMessage.value=null
     isSubmitting.value=false
@@ -390,7 +392,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           
           <template v-if="item.title.includes('Расчет')">
             <div class="sla-card-calc">Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)</div>
-            <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем <component :is="SquareArrowOut" class="ext-icon"/></a>
+            <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем omponent :is="SquareArrowOut" class="extxt-icon"/></a>
           </template>
           
           <template v-if="item.title.includes('Соглашение')">
@@ -423,11 +425,11 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
       <div class="cta-row">
         <button class="primary full strong lime-btn" @click="submitToFormspree('submit')" :disabled="isSubmitting">
           <span class="btn-text">{{ isSubmitting ? 'Отправляю...' : 'Отправить на сборку' }}</span>
-          <component :is="ArrowRight" class="btn-icon"/>
+          omponentnt :is="ArrowRight" class="btn-icon"/>
         </button>
         <button class="primary full strong white-btn" @click="submitToFormspree('discuss')" :disabled="isSubmitting">
           <span class="btn-text">{{ isSubmitting ? 'Отправляю...' : 'Обсудить позже' }}</span>
-          <component :is="ArrowUpRight" class="btn-icon"/>
+          omponent :is="ArrowUpUpRight" class="btn-icon"/>
         </button>
       </div>
     </div>
@@ -449,7 +451,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
                       <select :value="getCategoryData(k).owner" @input="(e:any)=>setCategoryOwner(k,e.target.value)" class="select-arrow">
                         <option value="team">Команда</option><option value="manager">Управляющий</option><option value="custom">Другое</option>
                       </select>
-                      <component :is="ChevronUpDown" class="chevron-icon"/>
+                      omponent :is="ChevronUpDown" class="chevevron-icon"/>
                     </div>
                     <label v-if="getCategoryData(k).owner==='custom'" class="row surface"><input style="display:none"/><span class="black">Контакт</span>
                       <input :value="getCategoryData(k).contact" @input="(e:any)=>setCategoryContact(k,e.target.value)" type="text" placeholder="@handle или телефон"/>
@@ -505,7 +507,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
             <template v-else-if="modalKind==='sla_ready'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Почти готово</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards">
                 <div v-for="(item,i) in SLA_READY_DETAILS" :key="i" class="sla-detail-card">
-                  <component :is="CircleDot" class="detail-check"/>{{item}}
+                  omponent :is="CircleDot" class="detailil-check"/>{{item}}
                 </div>
               </div></div>
             </template>
@@ -513,7 +515,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
             <template v-else-if="modalKind==='sla_later'"><div class="pricing-modal-header">ДЕТАЛИ</div><h2 class="pricing-modal-title">Доработать и согласовать</h2>
               <div class="pricing-modal-body"><div class="sla-detail-cards line-height-fix">
                 <div v-for="(item,i) in SLA_LATER_DETAILS" :key="i" class="sla-detail-card">
-                  <component :is="CircleDotDashed" class="detail-check"/>{{item}}
+                  omponent :is="CirclcleDotDashed" class="detail-check"/>{{item}}
                 </div>
               </div></div>
             </template>
@@ -531,7 +533,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
       </Transition>
     </Teleport>
 
-    <!-- СКРЫТАЯ ФОРМА ДЛЯ FORMSPREE -->
+    <!-- ✅ СКРЫТАЯ ФОРМА ДЛЯ FORMSPREE (с Vue ref) -->
     <form
       ref="signalForm"
       action="https://formspree.io/f/mdkzjopz"
