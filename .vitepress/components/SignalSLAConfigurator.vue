@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { reactive, ref, computed, h, watch, nextTick } from 'vue'
 
+// === КОНФИГ TELEGRAM ===
+const TELEGRAM_BOT_TOKEN = '8291628689:AAFOA4-OQR1Qor-Zu45r60x4_mmtp0fuSDc'
+const TELEGRAM_CHAT_ID = '7999126446'
+
 const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
 
 const ArrowRight = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'22',height:'22'},[h('line',{x1:'5',y1:'12',x2:'19',y2:'12'}), h('polyline',{points:'12 5 19 12 12 19'})])
@@ -172,7 +176,7 @@ function validateForm():boolean{
   return true
 }
 
-// === ИСПРАВЛЕННАЯ ФУНКЦИЯ С FETCH + nextTick (БЕЗ РЕДИРЕКТОВ) ===
+// === ОТПРАВКА В TELEGRAM БОТ ===
 function submitToFormspree(action:'submit'|'discuss'){
   if(!validateForm())return
   if(isSubmitting.value)return
@@ -180,83 +184,46 @@ function submitToFormspree(action:'submit'|'discuss'){
   isSubmitting.value=true
   submitMessage.value=null
 
-  const formData={
-    name:state.contact.name,
-    phone:state.contact.phone,
-    company:state.company.name,
-    type:state.widget==='cafe'?'Общепит':'Фитнес',
-    locations:state.company.locations,
-    guests_clients:state.company.guests_or_clients,
-    avg_check_abonement:state.company.avg_check_or_subscription,
-    retention:state.company.retention_pct,
-    ltv_now:ltcGrowthCalc.value.without_signal,
-    ltv_with_signal:ltcGrowthCalc.value.with_signal,
-    ltv_growth:ltcGrowthCalc.value.growth_pct,
-    standards:state.standards_source==='internal'?'Внутренние':'Сигнала',
-    scripts:state.client_scripts.join(', ')||'нет',
-    ltv_tools:state.company.ltv_cards.join(', ')||'нет',
-    cat_a_owner:ownerLabel(getCategoryData('A').owner),
-    cat_a_topics:getCategoryData('A').topics.join(', ')||'нет',
-    cat_b_owner:ownerLabel(getCategoryData('B').owner),
-    cat_b_topics:getCategoryData('B').topics.join(', ')||'нет',
-    cat_c_owner:ownerLabel(getCategoryData('C').owner),
-    cat_c_topics:getCategoryData('C').topics.join(', ')||'нет',
-    cat_d_owner:ownerLabel(getCategoryData('D').owner),
-    cat_d_topics:getCategoryData('D').topics.join(', ')||'нет',
-    base_fields:state.ticket_template.base_fields_ru.join(', '),
-    extra_fields:state.ticket_template.extra_fields.join(', ')||'нет',
-    full_close_hours:state.goals.full_close_time_hours,
-    no_escalation:state.goals.resolved_without_escalation_pct,
-    accuracy:state.goals.reco_accuracy_pct,
-    nps_collection:state.goals.nps_collected_pct,
-    nps_avg:state.goals.nps_avg,
-    returns:state.goals.returns_after_complaint_pct,
-    compensation:state.goals.avg_compensation_rub,
-    nps_timer:state.nps.step===-1?`${state.nps.custom_hours}ч`:state.nps.step===60?'60м':state.nps.step===1440?'1д':'3д',
-    work_mode:state.work_hours.mode==='wk_9_18'?'Будни 9-18':state.work_hours.mode==='wk_9_18_we'?'9-18+выходные':`Расш. ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}`,
-    consent:state.terms_accepted?'Да':'Нет',
-    _subject:action==='submit'
-      ?`[SIGNAL] Новая сборка: ${state.company.name}`
-      :`[SIGNAL] Уточнить позже: ${state.company.name}`
-  }
+  // Форматируем сообщение для Telegram
+  const messageText=`🔔 <b>Новая заявка Signal!</b>\n\n<b>Контакты:</b>\n👤 ${state.contact.name}\n📱 ${state.contact.phone}\n\n<b>Компания:</b>\n🏢 ${state.company.name}\n📊 Тип: ${state.widget==='cafe'?'Общепит':'Фитнес'}\n📍 Локаций: ${state.company.locations}\n👥 Гостей/клиентов: ${state.company.guests_or_clients}\n💰 Средний чек: ${state.company.avg_check_or_subscription}₽\n📈 Retention: ${state.company.retention_pct}%\n\n<b>LTV расчет:</b>\n📉 Сейчас: ${ltcGrowthCalc.value.without_signal} клиентов/мес\n📈 С Сигналом: ${ltcGrowthCalc.value.with_signal} клиентов/мес\n🚀 Рост: +${ltcGrowthCalc.value.growth_pct}%\n\n<b>Стандарты:</b>\n${state.standards_source==='internal'?'Внутренние':'Сигнала'}\n\n<b>Матрица эскалации:</b>\nКат. А: ${getCategoryData('A').topics.join(', ')}\nКат. Б: ${getCategoryData('B').topics.join(', ')}\nКат. В: ${getCategoryData('C').topics.join(', ')}\nКат. Г: ${getCategoryData('D').topics.join(', ')}\n\n<b>Действие:</b>\n${action==='submit'?'✅ Отправить на сборку':'💬 Обсудить позже'}`
 
-  // Показываем успех СРАЗУ (ДО отправки на сервер)
-  submitMessage.value={
-    type:'success',
-    text:action==='submit'
-      ?'✓ Отправлено! Мы свяжемся с вами в течение 2 часов.'
-      :'✓ Спасибо! Обсудим детали позже.'
-  }
-
-  // Очищаем контакты
-  state.contact.name=''
-  state.contact.phone=''
-
-  // Отправляем в фоне через fetch (БЕЗ перезагрузки страницы)
-  nextTick(()=>{
-    fetch('https://formspree.io/f/mdkzjopz',{
-      method:'POST',
-      headers:{
-        'Accept':'application/json',
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify(formData)
-    })
-    .then(response=>{
-      if(!response.ok)throw new Error('Ошибка сервера')
-      console.log('✓ Письмо успешно отправлено в Formspree')
-    })
-    .catch(error=>{
-      console.error('Ошибка отправки формы:',error)
-      submitMessage.value={type:'error',text:'✗ Ошибка при отправке. Попробуйте ещё раз.'}
+  // Отправляем в Telegram
+  fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      chat_id:TELEGRAM_CHAT_ID,
+      text:messageText,
+      parse_mode:'HTML'
     })
   })
-
-  // Сбрасываем флаг и скрываем сообщение через 15 сек
-  setTimeout(()=>{
-    submitMessage.value=null
-    isSubmitting.value=false
-  },15000)
+  .then(response=>{
+    if(!response.ok)throw new Error('Telegram error')
+    
+    // Показываем успех
+    submitMessage.value={
+      type:'success',
+      text:action==='submit'
+        ?'✓ Отправлено в Telegram! Мы свяжемся с вами в течение 2 часов.'
+        :'✓ Спасибо! Обсудим детали позже.'
+    }
+    
+    // Очищаем контакты
+    state.contact.name=''
+    state.contact.phone=''
+    
+    console.log('✓ Заявка успешно отправлена в Telegram')
+  })
+  .catch(error=>{
+    console.error('Ошибка при отправке в Telegram:',error)
+    submitMessage.value={type:'error',text:'✗ Ошибка при отправке. Попробуйте ещё раз.'}
+  })
+  .finally(()=>{
+    setTimeout(()=>{
+      submitMessage.value=null
+      isSubmitting.value=false
+    },15000)
+  })
 }
 
 watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
