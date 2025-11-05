@@ -70,7 +70,7 @@ const SLA_LATER_DETAILS=[
   'Примеры обработки реальных кейсов и кейсов с разбором решений'
 ]
 
-const formspreeEndpoint = 'https://formspree.io/f/YOUR_FORM_ID'
+const formspreeEndpoint = 'https://formspree.io/f/mdkzjopz'
 
 const state = reactive({
   widget:'cafe' as WidgetKey,
