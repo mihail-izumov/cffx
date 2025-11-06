@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="app-icon">
-          <img src="/widget-cafe-icon.svg" alt="Общепит" style="width: 100%; height: 100%; object-fit: contain;" />
+          <img src="/dialogs-widgets-cafe-icon.svg" alt="Общепит" style="width: 100%; height: 100%; object-fit: contain;" />
         </div>
         <p class="card-description">Не говорим вам, как варить кофе. Даем умную систему, чтобы ваша кофейня стала прибыльным и предсказуемым активом.</p>
         <div class="card-footer">
@@ -54,7 +54,7 @@
           </div>
         </div>
         <div class="app-icon">
-          <img src="/widget-fitness-icon.svg" alt="Фитнес" style="width: 100%; height: 100%; object-fit: contain;" />
+          <img src="/dialogs-widgets-fitness-icon.svg" alt="Фитнес" style="width: 100%; height: 100%; object-fit: contain;" />
         </div>
         <p class="card-description">50% ваших новых клиентов боятся заходить в зал. Знаем, как это исправить.</p>
         <div class="card-footer">
