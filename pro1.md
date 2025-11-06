@@ -30,11 +30,13 @@ notification: brew
 
 <DividerCustom />
 
-<div style="border-top: 1px solid rgba(255, 255, 255, 0.15); margin: 20px 0;"></div>
+<div style="border-top: 1px solid rgba(255, 255, 255, 0.15); margin: 30px 0;"></div>
 
 # Не просто мнение или жалоба – импульс к реальным улучшениям. 
 <br>
 <SignalsYandexVSSignal />
+
+<br>
 
 # Сигнал в действии.
 
@@ -56,6 +58,8 @@ notification: brew
 
 <div align="center">
 
+<br>
+
 # Ваш Безупречный Сигнал просто как 1-2-3.
 
 </div>
@@ -64,6 +68,8 @@ notification: brew
 
 <div align="center">
 
+<br>
+
 # Забота о клиентах начинается здесь.
 
 </div>
@@ -71,6 +77,8 @@ notification: brew
 <SignalDashboardSwitcher />
 
 <div align="center">
+
+<br>
 
 # От диалогов к безупречной системе сервиса.
 
