@@ -19,7 +19,7 @@ function renderIcon(val) {
 
 const tariffs = ref([
   {
-    title: '«Сигнал Диалоги»',
+    title: 'Сигнал Диалоги',
     description: 'Для старта (1-3 точки)',
     isHighlighted: false,
     prices: {
@@ -45,7 +45,7 @@ const tariffs = ref([
     }
   },
   {
-    title: '«Сигнал Макс»',
+    title: 'Сигнал Макс',
     description: 'Для сетей (4+ точки)',
     isHighlighted: true,
     prices: {
