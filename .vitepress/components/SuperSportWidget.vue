@@ -15,7 +15,7 @@ const FADE_DURATION_MS = 1000
 
 // Профили всех кофеен с базовыми значениями времени
 const cafeProfiles = {
-  'корж': {
+  'supersport': {
     responseTime: { base: 2.3, min: 1.8, max: 2.8 },
     resolutionTime: { base: 17.5, min: 15, max: 20 }
   },
@@ -51,21 +51,16 @@ const cafeProfiles = {
 
 // -------------------------
 const establishment = {
-  name: 'Корж',
-  totalReviews: '1',
-  yandex2gis: '4,9',
-  yandex2gisPercent: 94,
-  signals: 1,
+  name: 'supersport',
+  totalReviews: '187',
+  yandex2gis: '4,8',
+  yandex2gisPercent: 92,
+  signals: 47,
   signalsPercent: 100,
   branches: [
-    { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/reviews' },
-    { address: 'Революционная, 101В', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858//reviews' },
-    { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/152008652145/reviews' },
-    { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/reviews' },
-    { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/reviews' },
-    { address: 'Дачная, 2к2', gisUrl: 'https://2gis.ru/samara/firm/70000001045453045/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/144063441903/reviews' },
-    { address: 'Ульяновская, 19', gisUrl: 'https://2gis.ru/samara/firm/70000001033411071/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/102178077269/reviews' },
-    { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/reviews' }
+    { address: 'Тверская, 15', gisUrl: 'https://2gis.ru', yandexUrl: 'https://yandex.ru/maps' },
+    { address: 'Профсоюзная, 84', gisUrl: 'https://2gis.ru', yandexUrl: 'hhttps://yandex.ru/maps' },
+    { address: 'Кутузовский просп., 48', gisUrl: 'https://2gis.ru', yandexUrl: 'https://yandex.ru/maps' }
   ],
 }
 
@@ -152,7 +147,7 @@ const goToReviews = (branch) => {
 
 const createTicket = () => {
   emit('close')
-  window.location.href = '/signal/korzh/new'
+  window.location.href = '/signal/supersport/new'
 }
 
 const rotatingQuestions = [
