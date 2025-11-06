@@ -14,7 +14,7 @@ const notifications = [
     buttonUrl: '/pro/dialogs'
   },
   { 
-    text: 'Решаем любую проблему вашего клиента <strong>за 24 часа</strong>.', 
+    text: 'Ваш Сигнал. <strong>Не коробка, а конструктор.</strong>.', 
     hasButton: true, 
     buttonText: 'Настроить Сейчас',
     buttonUrl: '/pro/reserve'
