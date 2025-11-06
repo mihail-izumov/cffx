@@ -8,7 +8,7 @@ const cafeItems = [
   {
     name: 'Сигнал\nдля Бизнеса',  // \n для переноса
     subtitle: '',
-    url: '/pro.html',
+    url: 'https://cffx.ru/pro.html',
     icon: 'M12 5 m-9 0 a9 3 0 1 0 18 0 a9 3 0 1 0 -18 0 M3 5V19A9 3 0 0 0 15 21.84 M21 5V8 M21 12L18 17H22L19 22 M3 12A9 3 0 0 0 14.59 14.87',
     gradientId: 'gradient-0'
   },
