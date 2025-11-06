@@ -25,7 +25,7 @@ notification: brew
 
 <div class="checkup-cta-section">
   <div class="checkup-price">От ₽65,500/мес.</div>
-  <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
+  <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
 
 <DividerCustom />
