@@ -44,6 +44,6 @@ description: Где Начинается Ваш Фитнес
 }
 </style>
 
-<KorzhWidget />
+<SuperSportWidget />
 <br>
 <SignalWidgetBadge />
