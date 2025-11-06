@@ -1,23 +1,16 @@
 <script setup lang="ts">
-import { reactive, ref, computed, h, watch, nextTick } from 'vue'
+import { reactive, ref, computed, h, watch } from 'vue'
 
 const TELEGRAM_BOT_TOKEN = '8502233692:AAGfzrlanIRPO_GKIlSAZHI65bmHPf7y0Lk'
 const TELEGRAM_CHAT_ID = '7999126446'
 
 const CloseIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'24',height:'24'},[h('line',{x1:'18',y1:'6',x2:'6',y2:'18'}), h('line',{x1:'6',y1:'6',x2:'18',y2:'18'})])
-
 const ArrowRight = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'22',height:'22'},[h('line',{x1:'5',y1:'12',x2:'19',y2:'12'}), h('polyline',{points:'12 5 19 12 12 19'})])
-
 const ArrowUpRight = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'22',height:'22'},[h('line',{x1:'7',y1:'17',x2:'17',y2:'7'}), h('polyline',{points:'7 7 17 7 17 17'})])
-
 const ChevronUpDown = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'16',height:'16'},[h('path',{d:'m7 15 5 5 5-5'}),h('path',{d:'m7 9 5-5 5 5'})])
-
 const SquareArrowOut = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'14',height:'14'},[h('path',{d:'M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6'}),h('path',{d:'m21 3-9 9'}),h('path',{d:'M15 3h6v6'})])
-
 const CircleDot = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'#4ade80','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'18',height:'18'},[h('circle',{cx:'12',cy:'12',r:'10'}),h('circle',{cx:'12',cy:'12',r:'1',fill:'#4ade80'})])
-
 const CircleDotDashed = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'#999','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'18',height:'18'},[h('path',{d:'M10.1 2.18a9.93 9.93 0 0 1 3.8 0'}),h('path',{d:'M17.6 3.71a9.95 9.95 0 0 1 2.69 2.7'}),h('path',{d:'M21.82 10.1a9.93 9.93 0 0 1 0 3.8'}),h('path',{d:'M20.29 17.6a9.95 9.95 0 0 1-2.7 2.69'}),h('path',{d:'M13.9 21.82a9.94 9.94 0 0 1-3.8 0'}),h('path',{d:'M6.4 20.29a9.95 9.95 0 0 1-2.69-2.7'}),h('path',{d:'M2.18 13.9a9.93 9.93 0 0 1 0-3.8'}),h('path',{d:'M3.71 6.4a9.95 9.95 0 0 1 2.7-2.69'}),h('circle',{cx:'12',cy:'12',r:'1'})])
-
 const ClockIcon = () => h('svg',{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',width:'16',height:'16'},[h('circle',{cx:'12',cy:'12',r:'10'}),h('polyline',{points:'12 6 12 12 16 14'})])
 
 type Topic = { category: string }
@@ -86,27 +79,17 @@ const ltcGrowthCalc = computed(() => {
   const multiplier = WIDGETS[state.widget].growthMultiplier || 0.23
   const with_signal = Math.round(without_signal * (1 + multiplier))
   const growth_pct = Math.round((with_signal - without_signal) / without_signal * 100)
-  
-  return {
-    without_signal: without_signal,
-    with_signal: with_signal,
-    growth_pct: growth_pct
-  }
+  return { without_signal, with_signal, growth_pct }
 })
 
+// НОВАЯ ФУНКЦИЯ: расчет жалоб с Δ +200%
 const complaintsCalc = computed(() => {
   const without_signal = state.company.complaints_pct
   const growth_multiplier = WIDGETS[state.widget].complaintsGrowth || 3.0
   const with_signal = Math.round(without_signal * growth_multiplier * 100) / 100
   const growth_pct = Math.round((growth_multiplier - 1) * 100)
   const resolved_without_escalation = 75
-  
-  return {
-    without_signal: without_signal,
-    with_signal: with_signal,
-    growth_pct: growth_pct,
-    resolved_without_escalation: resolved_without_escalation
-  }
+  return { without_signal, with_signal, growth_pct, resolved_without_escalation }
 })
 
 const slaTitle=computed(()=>`Сборка Сигнала ${state.company.name||''}`)
@@ -177,81 +160,6 @@ function validateForm():boolean{
   return true
 }
 
-function buildMessageText(action:'submit'|'discuss'):string{
-  const actionText=action==='submit'?'Новая сборка':'Обсудить позже'
-  const lines=[
-    '🔔 ' + actionText + ': ' + state.company.name,
-    '',
-    'Контакты:',
-    'Имя: ' + state.contact.name,
-    'Телефон: ' + state.contact.phone,
-    'Условия: ' + (state.terms_accepted?'Согласен':'Не согласен'),
-    '',
-    'Компания:',
-    'Название: ' + state.company.name,
-    'Тип: ' + (state.widget==='cafe'?'Общепит':'Фитнес'),
-    'Локаций: ' + state.company.locations,
-    'Гостей/клиентов (за период): ' + (state.company.guests_or_clients*state.company.locations),
-    'Средний чек/абонемент: ' + state.company.avg_check_or_subscription,
-    'Retention: ' + state.company.retention_pct + '%',
-    'Жалобы/мес: ' + state.company.complaints_pct + '%',
-    '',
-    'LTV расчет:',
-    'Сейчас: ' + ltcGrowthCalc.value.without_signal + ' клиентов/мес',
-    'С Сигналом: ' + ltcGrowthCalc.value.with_signal + ' клиентов/мес',
-    'Рост: +' + ltcGrowthCalc.value.growth_pct + '%',
-    'Инструменты: ' + (state.company.ltv_cards.join(', ')||'не выбраны'),
-    (state.company.ltv_tool_other?'Другое: ' + state.company.ltv_tool_other:''),
-    '',
-    'Расчёт жалоб:',
-    'Сейчас: ' + complaintsCalc.value.without_signal + '% жалоб/мес',
-    'С Сигналом: ' + complaintsCalc.value.with_signal + '% жалоб/мес',
-    'Рост: +' + complaintsCalc.value.growth_pct + '%',
-    'Без эскалации: >' + complaintsCalc.value.resolved_without_escalation + '%',
-    '',
-    'Стандарты и скрипты:',
-    'Стандарты: ' + (state.standards_source==='internal'?'Внутренние':'Сигнала'),
-    'Скрипты: ' + (state.client_scripts.length>0?state.client_scripts.join(', '):'не выбраны'),
-    '',
-    'Матрица эскалации:',
-    'Кат. А (4ч): ' + ownerLabel(getCategoryData('A').owner),
-    '  Темы: ' + getCategoryData('A').topics.join(', '),
-    'Кат. Б (2ч): ' + ownerLabel(getCategoryData('B').owner),
-    '  Темы: ' + getCategoryData('B').topics.join(', '),
-    'Кат. В (1ч): ' + ownerLabel(getCategoryData('C').owner),
-    '  Темы: ' + getCategoryData('C').topics.join(', '),
-    'Кат. Г (15м): ' + ownerLabel(getCategoryData('D').owner),
-    '  Темы: ' + getCategoryData('D').topics.join(', '),
-    '',
-    'Тикет-система:',
-    'Базовые: ' + state.ticket_template.base_fields_ru.join(', '),
-    'Доп. поля: ' + (state.ticket_template.extra_fields.join(', ')||'нет'),
-    '',
-    'Цели (операционные):',
-    'Полное закрытие: ' + state.goals.full_close_time_hours + 'ч',
-    'Без эскалации: ' + state.goals.resolved_without_escalation_pct + '%',
-    '',
-    'Цели (качество):',
-    'Точность рекомендаций: ' + state.goals.reco_accuracy_pct + '%',
-    'Получение NPS: ' + state.goals.nps_collected_pct + '%',
-    'Средний NPS: ' + state.goals.nps_avg + '/10',
-    '',
-    'Цели (бизнес):',
-    'Возврат после жалобы: ' + state.goals.returns_after_complaint_pct + '%',
-    'Средняя компенсация: ' + state.goals.avg_compensation_rub,
-    '',
-    'NPS таймер:',
-    (state.nps.step===-1?(state.nps.custom_hours + 'ч (свой)'):state.nps.step===60?'60 минут':state.nps.step===1440?'1 день':'3 дня'),
-    '',
-    'Режим работы:',
-    (state.work_hours.mode==='wk_9_18'?'Будни 9–18 МСК':state.work_hours.mode==='wk_9_18_we'?'9–18 МСК + выходные':'Расш.: Будни ' + state.work_hours.weekdays.from + '-' + state.work_hours.weekdays.to + ', Вых. ' + state.work_hours.weekends.from + '-' + state.work_hours.weekends.to),
-    '',
-    'Действие:',
-    (action==='submit'?'Отправить на сборку':'Обсудить позже')
-  ]
-  return lines.join('\n')
-}
-
 function submitToFormspree(action:'submit'|'discuss'){
   if(!validateForm())return
   if(isSubmitting.value)return
@@ -259,9 +167,10 @@ function submitToFormspree(action:'submit'|'discuss'){
   isSubmitting.value=true
   submitAction.value=action
   
-  const messageText=buildMessageText(action)
+  const actionText=action==='submit'?'Новая сборка':'Обсудить позже'
+  const messageText=`🔔 ${actionText}: ${state.company.name}\n\nКонтакты:\nИмя: ${state.contact.name}\nТелефон: ${state.contact.phone}\nУсловия: ${state.terms_accepted?'Согласен':'Не согласен'}\n\nКомпания:\nНазвание: ${state.company.name}\nТип: ${state.widget==='cafe'?'Общепит':'Фитнес'}\nЛокаций: ${state.company.locations}\nГостей/клиентов (за период): ${state.company.guests_or_clients*state.company.locations}\nСредний чек/абонемент: ${state.company.avg_check_or_subscription}\nRetention: ${state.company.retention_pct}%\nЖалобы/мес: ${state.company.complaints_pct}%\n\nLTV расчет:\nСейчас: ${ltcGrowthCalc.value.without_signal} клиентов/мес\nС Сигналом: ${ltcGrowthCalc.value.with_signal} клиентов/мес\nРост: +${ltcGrowthCalc.value.growth_pct}%\nИнструменты: ${state.company.ltv_cards.join(', ')||'не выбраны'}\n${state.company.ltv_tool_other?`Другое: ${state.company.ltv_tool_other}`:''}\n\nРасчёт жалоб:\nСейчас: ${complaintsCalc.value.without_signal}% жалоб/мес\nС Сигналом: ${complaintsCalc.value.with_signal}% жалоб/мес\nРост: +${complaintsCalc.value.growth_pct}%\nБез эскалации: >${complaintsCalc.value.resolved_without_escalation}%\n\nСтандарты и скрипты:\nСтандарты: ${state.standards_source==='internal'?'Внутренние':'Сигнала'}\nСкрипты: ${state.client_scripts.length>0?state.client_scripts.join(', '):'не выбраны'}\n\nМатрица эскалации:\nКат. А (4ч): ${getCategoryData('A').owner===`team`?'Команда':getCategoryData('A').owner===`manager`?'Управляющий':''+getCategoryData('A').contact}\n  Темы: ${getCategoryData('A').topics.join(', ')}\nКат. Б (2ч): ${getCategoryData('B').owner===`team`?'Команда':getCategoryData('B').owner===`manager`?'Управляющий':''+getCategoryData('B').contact}\n  Темы: ${getCategoryData('B').topics.join(', ')}\nКат. В (1ч): ${getCategoryData('C').owner===`team`?'Команда':getCategoryData('C').owner===`manager`?'Управляющий':''+getCategoryData('C').contact}\n  Темы: ${getCategoryData('C').topics.join(', ')}\nКат. Г (15м): ${getCategoryData('D').owner===`team`?'Команда':getCategoryData('D').owner===`manager`?'Управляющий':''+getCategoryData('D').contact}\n  Темы: ${getCategoryData('D').topics.join(', ')}\n\nТикет-система:\nБазовые: ${state.ticket_template.base_fields_ru.join(', ')}\nДоп. поля: ${state.ticket_template.extra_fields.join(', ')||'нет'}\n\nЦели (операционные):\nПолное закрытие: ${state.goals.full_close_time_hours}ч\nБез эскалации: ${state.goals.resolved_without_escalation_pct}%\n\nЦели (качество):\nТочность рекомендаций: ${state.goals.reco_accuracy_pct}%\nПолучение NPS: ${state.goals.nps_collected_pct}%\nСредний NPS: ${state.goals.nps_avg}/10\n\nЦели (бизнес):\nВозврат после жалобы: ${state.goals.returns_after_complaint_pct}%\nСредняя компенсация: ${state.goals.avg_compensation_rub}\n\nNPS таймер:\n${state.nps.step===-1?`${state.nps.custom_hours}ч (свой)`:state.nps.step===60?'60 минут':state.nps.step===1440?'1 день':'3 дня'}\n\nРежим работы:\n${state.work_hours.mode==='wk_9_18'?'Будни 9–18 МСК':state.work_hours.mode==='wk_9_18_we'?'9–18 МСК + выходные':`Расш.: Будни ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}, Вых. ${state.work_hours.weekends.from}-${state.work_hours.weekends.to}`}\n\nДействие:\n${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
 
-  fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',{
+  fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
@@ -347,6 +256,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
             <span class="inline-value">{{state.company.retention_pct}}%</span>
           </label>
           
+          <!-- ПРАВКА 1: ДОБАВЛЕН ПОЛЗУНОК "ЖАЛОБЫ/МЕС" -->
           <label class="row"><input style="display:none"/><span>Жалобы/мес</span>
             <input class="range long white" type="range" min="0" max="10" step="0.1" v-model.number="state.company.complaints_pct"/>
             <span class="inline-value">{{state.company.complaints_pct}}%</span>
@@ -415,17 +325,12 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 
     <div class="card">
       <h3>Матрица эскалации</h3>
-      <div class="sla-sidebar-meta">
-        <div class="sla-badge-time">4 часа</div>
-        <div class="sla-badge-time">2 часа</div>
-        <div class="sla-badge-time">1 час</div>
-        <div class="sla-badge-time">15 минут</div>
-      </div>
+      <!-- ПРАВКА 2: ДОБАВЛЕНЫ БЕЙДЖИ "4 часа", "2 часа", "1 час", "15 минут" -->
       <div class="mini-ag full-width">
-        <div class="mini-badge">Кат. А<div class="mini-sub">{{ownerLabel(getCategoryData('A').owner)}}</div></div>
-        <div class="mini-badge">Кат. Б<div class="mini-sub">{{ownerLabel(getCategoryData('B').owner)}}</div></div>
-        <div class="mini-badge">Кат. В<div class="mini-sub">{{ownerLabel(getCategoryData('C').owner)}}</div></div>
-        <div class="mini-badge">Кат. Г<div class="mini-sub">{{ownerLabel(getCategoryData('D').owner)}}</div></div>
+        <div class="mini-badge">Кат. А — 4 часа<div class="mini-sub">{{ownerLabel(getCategoryData('A').owner)}}</div></div>
+        <div class="mini-badge">Кат. Б — 2 часа<div class="mini-sub">{{ownerLabel(getCategoryData('B').owner)}}</div></div>
+        <div class="mini-badge">Кат. В — 1 час<div class="mini-sub">{{ownerLabel(getCategoryData('C').owner)}}</div></div>
+        <div class="mini-badge">Кат. Г — 15 минут<div class="mini-sub">{{ownerLabel(getCategoryData('D').owner)}}</div></div>
       </div>
       <button class="linklike" @click="openModal('categories')" style="margin-top:8px">Изменить роли и темы</button>
     </div>
@@ -447,21 +352,16 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           <h3 class="sla-card-title">{{item.title}}</h3>
           <div v-if="item.desc" class="sla-card-desc">{{item.desc}}</div>
           
+          <!-- ПРАВКА 3: ДОБАВЛЕНА ФУНКЦИЯ complaintsCalc С АЛГОРИТМОМ Δ +200% -->
           <template v-if="item.title.includes('Расчет роста LTV')">
-            <div 
-              :key="`calc-ltc-${state.company.locations}-${state.company.guests_or_clients}-${state.company.retention_pct}-${state.widget}`" 
-              class="sla-card-calc"
-            >
+            <div :key="`calc-ltc-${state.company.locations}-${state.company.guests_or_clients}-${state.company.retention_pct}-${state.widget}`" class="sla-card-calc">
               Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)
             </div>
             <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем <component :is="SquareArrowOut" class="ext-icon"/></a>
           </template>
           
           <template v-if="item.title.includes('Расчет роста жалоб')">
-            <div 
-              :key="`calc-compl-${state.company.complaints_pct}-${state.widget}`" 
-              class="sla-card-calc"
-            >
+            <div :key="`calc-compl-${state.company.complaints_pct}-${state.widget}`" class="sla-card-calc">
               Сейчас: {{complaintsCalc.without_signal}}% жалоб/мес → С Сигналом: {{complaintsCalc.with_signal}}% жалоб/мес (Δ +{{complaintsCalc.growth_pct}}%), Без эскалации > {{complaintsCalc.resolved_without_escalation}}%
             </div>
           </template>
@@ -580,46 +480,16 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
               <h2 class="pricing-modal-title">Почти готово</h2>
               <div class="pricing-modal-body">
                 <div class="sla-detail-cards">
-                  <div class="sla-detail-card">
-                    <component :is="CircleDot" class="detail-check"/>
-                    <span><strong>Версия документа</strong> с общими положениями и регламентом работы ИИ-ассистента</span>
-                  </div>
-                  <div class="sla-detail-card">
-                    <component :is="CircleDot" class="detail-check"/>
-                    <span><strong>10-этапный алгоритм обработки</strong> негативной обратной связи от приветствия до NPS</span>
-                  </div>
-                  <div class="sla-detail-card">
-                    <component :is="CircleDot" class="detail-check"/>
-                    <span><strong>Типология сигналов</strong> КОМПЕНСИРУЕМЫЙ (разовые проблемы) и СИСТЕМНЫЙ (требует физических изменений)</span>
-                  </div>
-                  <div class="sla-detail-card">
-                    <component :is="CircleDot" class="detail-check"/>
-                    <span><strong>Матрица эскалации</strong> по категориям A-Г с полномочиями команды и управляющего</span>
-                  </div>
-                  <div class="sla-detail-card">
-                    <component :is="CircleDot" class="detail-check"/>
-                    <span><strong>SLA параметры</strong> сроки обработки, каналы связи, метрики качества</span>
-                  </div>
-                  <div class="sla-detail-card">
-                    <component :is="CircleDot" class="detail-check"/>
-                    <span><strong>Шаблоны фраз и скрипты</strong> для работы ИИ-ассистента Анна</span>
-                  </div>
-                  <div class="sla-detail-card">
-                    <component :is="CircleDot" class="detail-check"/>
-                    <span><strong>Расширенные рекомендации</strong> по каждой категории жалоб</span>
-                  </div>
-                  <div class="sla-detail-card">
-                    <component :is="CircleDot" class="detail-check"/>
-                    <span><strong>Метрики успеха</strong> скорость ответа, процент разрешения без эскалации, целевой NPS</span>
-                  </div>
-                  <div class="sla-detail-card">
-                    <component :is="CircleDot" class="detail-check"/>
-                    <span><strong>Технические требования</strong> к интеграции с тикет-системой</span>
-                  </div>
-                  <div class="sla-detail-card">
-                    <component :is="CircleDot" class="detail-check"/>
-                    <span><strong>Приложения и примеры</strong> реальных обращений с разбором</span>
-                  </div>
+                  <div class="sla-detail-card"><component :is="CircleDot" class="detail-check"/><span><strong>Версия документа</strong> с общими положениями и регламентом работы ИИ-ассистента</span></div>
+                  <div class="sla-detail-card"><component :is="CircleDot" class="detail-check"/><span><strong>10-этапный алгоритм обработки</strong> негативной обратной связи от приветствия до NPS</span></div>
+                  <div class="sla-detail-card"><component :is="CircleDot" class="detail-check"/><span><strong>Типология сигналов</strong> КОМПЕНСИРУЕМЫЙ (разовые проблемы) и СИСТЕМНЫЙ (требует физических изменений)</span></div>
+                  <div class="sla-detail-card"><component :is="CircleDot" class="detail-check"/><span><strong>Матрица эскалации</strong> по категориям A-Г с полномочиями команды и управляющего</span></div>
+                  <div class="sla-detail-card"><component :is="CircleDot" class="detail-check"/><span><strong>SLA параметры</strong> сроки обработки, каналы связи, метрики качества</span></div>
+                  <div class="sla-detail-card"><component :is="CircleDot" class="detail-check"/><span><strong>Шаблоны фраз и скрипты</strong> для работы ИИ-ассистента Анна</span></div>
+                  <div class="sla-detail-card"><component :is="CircleDot" class="detail-check"/><span><strong>Расширенные рекомендации</strong> по каждой категории жалоб</span></div>
+                  <div class="sla-detail-card"><component :is="CircleDot" class="detail-check"/><span><strong>Метрики успеха</strong> скорость ответа, процент разрешения без эскалации, целевой NPS</span></div>
+                  <div class="sla-detail-card"><component :is="CircleDot" class="detail-check"/><span><strong>Технические требования</strong> к интеграции с тикет-системой</span></div>
+                  <div class="sla-detail-card"><component :is="CircleDot" class="detail-check"/><span><strong>Приложения и примеры</strong> реальных обращений с разбором</span></div>
                 </div>
               </div>
             </template>
@@ -629,22 +499,10 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
               <h2 class="pricing-modal-title">Доработать и согласовать</h2>
               <div class="pricing-modal-body">
                 <div class="sla-detail-cards">
-                  <div class="sla-detail-card">
-                    <component :is="CircleDotDashed" class="detail-check"/>
-                    <span><strong>Полные скрипты ответов</strong> для каждой категории жалоб (A, Б, В, Г)</span>
-                  </div>
-                  <div class="sla-detail-card">
-                    <component :is="CircleDotDashed" class="detail-check"/>
-                    <span><strong>Контакты ответственных лиц</strong> и команды по направлениям</span>
-                  </div>
-                  <div class="sla-detail-card">
-                    <component :is="CircleDotDashed" class="detail-check"/>
-                    <span><strong>Эскалационная матрица</strong> с условиями передачи на более высокий уровень</span>
-                  </div>
-                  <div class="sla-detail-card">
-                    <component :is="CircleDotDashed" class="detail-check"/>
-                    <span><strong>Примеры обработки реальных кейсов</strong> и кейсов с разбором решений</span>
-                  </div>
+                  <div class="sla-detail-card"><component :is="CircleDotDashed" class="detail-check"/><span><strong>Полные скрипты ответов</strong> для каждой категории жалоб (A, Б, В, Г)</span></div>
+                  <div class="sla-detail-card"><component :is="CircleDotDashed" class="detail-check"/><span><strong>Контакты ответственных лиц</strong> и команды по направлениям</span></div>
+                  <div class="sla-detail-card"><component :is="CircleDotDashed" class="detail-check"/><span><strong>Эскалационная матрица</strong> с условиями передачи на более высокий уровень</span></div>
+                  <div class="sla-detail-card"><component :is="CircleDotDashed" class="detail-check"/><span><strong>Примеры обработки реальных кейсов</strong> и кейсов с разбором решений</span></div>
                 </div>
               </div>
             </template>
@@ -656,7 +514,6 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
                 <div class="surface pad workhours-block"><h4 class="workhours-title">Выходные</h4><label class="row surface time-row"><input style="display:none"/><span class="workhours-label">От</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekends.from" type="time" class="time-input"/></div></label><label class="row surface time-row"><input style="display:none"/><span class="workhours-label">До</span><div class="time-input-wrapper"><component :is="ClockIcon" class="clock-icon"/><input v-model="state.work_hours.weekends.to" type="time" class="time-input"/></div></label></div>
               </div>
             </template>
-
           </div>
         </div>
       </Transition>
@@ -717,10 +574,6 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .nps-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .nps-card{border:1px solid var(--line);border-radius:12px;padding:10px 16px;background:#0d0f12;color:#e8eaed;cursor:pointer;text-align:center;font-size:13px}
 .nps-card.active{border-color:var(--lime);background:#1a1d20}
-
-.sla-sidebar-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px}
-.sla-badge-time{background:#e8eaed;color:#000;border-radius:8px;padding:6px 8px;font-size:12px;font-weight:700;text-align:center}
-
 .mini-ag{display:flex;gap:8px;flex-wrap:wrap}
 .mini-ag.full-width{width:100%;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
 .mini-badge{background:#0b0c0e;border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:13px}
@@ -785,7 +638,6 @@ button.primary:hover .btn-icon{transform:translateX(3px)}
 .sla-detail-cards{display:grid;gap:10px}
 .sla-detail-card{background:#edeef0;border-radius:10px;padding:12px;color:#1d1d1f;font-size:12px;line-height:1.5;display:flex;align-items:flex-start;gap:8px}
 .detail-check{flex-shrink:0;margin-top:2px}
-
 .workhours-block{display:flex;flex-direction:column;gap:12px}
 .workhours-title{color:#1d1d1f;margin:0 0 8px 0;font-size:15px;font-weight:600}
 .workhours-label{color:#1d1d1f;font-weight:500;font-size:13px}
@@ -815,8 +667,6 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .cat-h2,.section-h2{font-size:16px;line-height:1.1}
   .owner-block-full{width:100%;max-width:100%}
   .mini-ag.full-width{grid-template-columns:repeat(2,1fr);gap:8px}
-  .sla-sidebar-meta{grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:8px}
-  .sla-badge-time{font-size:11px;padding:5px 6px}
   .pricing-modal-body .workhours-block .time-input-wrapper input[type="time"]{background:#0b0c0e !important;border:1px solid #2a2d31;color:#fff;padding:8px 10px;border-radius:10px;appearance:none;-webkit-appearance:none;font-size:14px;font-weight:600}
   .pricing-modal-body .workhours-block .time-input-wrapper input[type="time"]::-webkit-calendar-picker-indicator{display:none}
   .pricing-modal-body .workhours-block .time-input-wrapper input[type="time"]::-moz-calendar-picker-indicator{display:none}
