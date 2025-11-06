@@ -10,11 +10,11 @@ const notifications = [
     { 
     text: 'Перехват 94% проблем до того, как они попадают в Яндекс.', 
     hasButton: true,
-    buttonText: 'Узнать Больше',
+    buttonText: 'Сигнал Диалоги',
     buttonUrl: '/pro/dialogs'
   },
   { 
-    text: 'Ваш Сигнал. <strong>Не коробка, а конструктор.</strong>.', 
+    text: 'Ваш Сигнал. <strong>Не коробка, а конструктор.</strong>', 
     hasButton: true, 
     buttonText: 'Настроить Сейчас',
     buttonUrl: '/pro/reserve'
