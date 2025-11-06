@@ -123,6 +123,7 @@ import SignalSLAConfigurator from '../components/SignalSLAConfigurator.vue'
 import DividerCustom from '../components/DividerCustom.vue'
 import MaxGrowWithYou3Cards from '../components/MaxGrowWithYou3Cards.vue'
 import SuperSportWidget from '../components/SuperSportWidget.vue'
+import SignalFormSuperSport from '../components/SignalFormSuperSport.vue'
 
 export default {
   extends: DefaultTheme,
@@ -251,6 +252,7 @@ export default {
     app.component('DividerCustom', DividerCustom)
     app.component('MaxGrowWithYou3Cards', MaxGrowWithYou3Cards)
     app.component('SuperSportWidget', SuperSportWidget)
+    app.component('SignalFormSuperSport', SignalFormSuperSport)
   
   },
 }
