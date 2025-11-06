@@ -285,7 +285,7 @@ const modalData = {
     tariff: 'СИГНАЛ ДИАЛОГИ',
     ticketing: {
       title: 'Тикет-система',
-      link: '/pro1',
+      link: '/pro/tickets',
       points: [
         {
           icon: '✓',
@@ -311,7 +311,7 @@ const modalData = {
     },
     anna: {
       title: 'Анна (базовая версия)',
-      link: '/pro1',
+      link: '/pro/anna',
       points: [
         {
           icon: '✓',
@@ -332,7 +332,7 @@ const modalData = {
     },
     support: {
       title: 'Поддержка оператора (будни, 9-18)',
-      link: '/pro1',
+      link: '/pro/dialogs',
       points: [
         {
           icon: '✓',
@@ -353,7 +353,7 @@ const modalData = {
     },
     widget: {
       title: 'Виджет',
-      link: '/pro1',
+      link: '/pro/dialogs',
       points: [
         {
           icon: '✓',
@@ -374,7 +374,7 @@ const modalData = {
     },
     stats: {
       title: 'Ежемесячная статистика',
-      link: '/pro1',
+      link: '/pro/dialogs',
       points: [
         {
           icon: '✓',
@@ -398,7 +398,7 @@ const modalData = {
     tariff: 'СИГНАЛ МАКС',
     analytics: {
       title: 'Аналитика 360° и еженедельные отчёты',
-      link: '/pro1',
+      link: '/pro/max',
       points: [
         {
           icon: '✓',
@@ -424,7 +424,7 @@ const modalData = {
     },
     annaMax: {
       title: 'Анна (продвинутая настройка)',
-      link: '/pro1',
+      link: '/pro/anna',
       points: [
         {
           icon: '✓',
@@ -445,7 +445,7 @@ const modalData = {
     },
     widgetMax: {
       title: 'Виджет (расширенная версия)',
-      link: '/pro1',
+      link: '/pro/max',
       points: [
         {
           icon: '✓',
@@ -466,7 +466,7 @@ const modalData = {
     },
     priority: {
       title: 'Приоритетная поддержка',
-      link: '/pro1',
+      link: '/pro/max',
       points: [
         {
           icon: '✓',
@@ -487,7 +487,7 @@ const modalData = {
     },
     analyst: {
       title: 'Персональный аналитик и стратегические сессии',
-      link: '/pro1',
+      link: '/pro/max',
       points: [
         {
           icon: '✓',
