@@ -8,7 +8,15 @@ description: Где Начинается Ваш Бизнес
 
 <SignalProductsSlider />
 
+<div align="center">
+
 <h1 class="responsive-heading">Спецификация<br>Сигнала</h1>
+
+<br>
+  
+# Цены
+
+</div>
 
 <FitnessTarifs />
 
@@ -22,9 +30,11 @@ Cнимает первичный негатив, определяет реаль
 
 </div>
 
-<div style="height: 20px;"></div>
+<div style="height: 15px;"></div>
 
 <AnnaAccordion />
+
+<div style="height: 40px;"></div>
 
 <div align="center">
 
@@ -32,9 +42,11 @@ Cнимает первичный негатив, определяет реаль
 
 </div>
 
-<div style="height: 30px;"></div>
+<div style="height: 15px;"></div>
 
 <TicketsAccordion />
+
+<div style="height: 40px;"></div>
 
 <div align="center">
 
