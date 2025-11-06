@@ -36,8 +36,7 @@ notification: brew
 <br>
 <SignalsYandexVSSignal />
 
-<br>
-
+<div style="height: 50px;"></div>
 
 # Сигнал в действии.
 
