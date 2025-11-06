@@ -37,7 +37,7 @@
         <div class="app-icon">
           <img src="/dialogs-widgets-cafe-icon.svg" alt="Общепит" style="width: 100%; height: 100%; object-fit: contain;" />
         </div>
-        <p class="card-description">Не говорим вам, как варить кофе. Даем умную систему, чтобы ваша кофейня стала прибыльным и предсказуемым активом.</p>
+        <p class="card-description">Не говорим вам, как варить кофе. Даем умную систему, чтобы в вашей кофейне было больше постоянных гостей.</p>
         <div class="card-footer">
           <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Тест-драйв</a>
         </div>
