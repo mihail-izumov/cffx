@@ -45,11 +45,13 @@ notification: brew
 
 <div align="center">
 
-<div style="height: 30px;"></div>
+<div style="height: 50px;"></div>
 
 # Собрано в Октябре 2025.
 
 </div>
+
+<div style="height: 30px;"></div>
 
 <AnnaAccordion />
 
