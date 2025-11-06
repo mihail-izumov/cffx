@@ -116,7 +116,7 @@
           </span>
         </li>
       </ul>
-      <a href="/pro/sistema" class="card-button">Подключить Макс</a>
+      <a href="/pro/max" class="card-button">Подключить Макс</a>
     </div>
 
     <!-- МОДАЛЬНОЕ ОКНО -->
