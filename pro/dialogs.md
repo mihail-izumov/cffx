@@ -21,7 +21,7 @@ notification: brew
 
 <div class="checkup-cta-section">
   <div class="checkup-price">От ₽65,500/мес</div>
-  <a href="/reserve" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
+  <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
 
 <div style="border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: 50px; margin-bottom: 60px;"></div>
@@ -63,7 +63,7 @@ notification: brew
 <br>
 <div align="center">
   
-# Диалоги с Анной
+# Диалоги с Анной, а не ботом.
 
 ### Внимательный и точный ИИ-ассистент Анна ведёт до результата. Понимает с полуслова.
 
@@ -99,6 +99,8 @@ notification: brew
 <DialogsStatisticsSlider />
 
 <div align="center">
+
+<div style="height: 50px;"></div>
 
 # Настройте сейчас. Запустите потом.
 
