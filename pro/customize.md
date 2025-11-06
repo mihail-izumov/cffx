@@ -29,7 +29,7 @@ notification: brew
 <div class="centered-buttons">
   <div class="button-group">
     <a href="/pro/reserve" class="btn btn-primary" rel="noopener noreferrer"><strong>Настроить Сейчас</strong></a>
-    <a href="/pro/specs" class="btn btn-secondary" rel="noopener noreferrer">Тарифы и спецификация</a>
+    <a href="/pro/specs" class="btn btn-secondary" rel="noopener noreferrer">Цены и спецификация</a>
   </div>
 </div>
 
