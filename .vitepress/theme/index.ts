@@ -121,6 +121,7 @@ import LTVCalcSwitcher from '../components/LTVCalcSwitcher.vue'
 import SignalMaker123 from '../components/SignalMaker123.vue'
 import SignalSLAConfigurator from '../components/SignalSLAConfigurator.vue'
 import DividerCustom from '../components/DividerCustom.vue'
+import MaxGrowWithYou3Cards from '../components/MaxGrowWithYou3Cards.vue'
 
 export default {
   extends: DefaultTheme,
@@ -247,5 +248,6 @@ export default {
     app.component('SignalMaker123', SignalMaker123)
     app.component('SignalSLAConfigurator', SignalSLAConfigurator)
     app.component('DividerCustom', DividerCustom)
+    app.component('MaxGrowWithYou3Cards', MaxGrowWithYou3Cards)
   },
 }
