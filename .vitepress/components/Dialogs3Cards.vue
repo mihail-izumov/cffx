@@ -71,12 +71,12 @@ onUnmounted(() => {
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
               </svg>
-              <div class="rw-stat-title">уточняет детали</div>
+              <div class="rw-stat-title">от деталей до тикета</div>
             </div>
             <div class="rw-stat-main">
-              <div class="rw-stat-value">3 ч</div>
+              <div class="rw-stat-value">30 мин</div>
             </div>
-            <div class="rw-stat-description">Принимает негатив, уточняет детали, формирует тикет</div>
+            <div class="rw-stat-description">Анна принимает негатив, уточняет детали, формирует полный тикет</div>
           </div>
         </div>
 
@@ -88,12 +88,12 @@ onUnmounted(() => {
                 <circle cx="11" cy="11" r="8"/>
                 <path d="m21 21-4.35-4.35"/>
               </svg>
-              <div class="rw-stat-title">поиск решения</div>
+              <div class="rw-stat-title">доставка решения</div>
             </div>
             <div class="rw-stat-main">
               <div class="rw-stat-value">24 ч</div>
             </div>
-            <div class="rw-stat-description">Доставляет результат, закрывает тикет, оценка NPS</div>
+            <div class="rw-stat-description">Сертификаты, Отработка агрессии, Контроль NPS </div>
           </div>
         </div>
       </div>
