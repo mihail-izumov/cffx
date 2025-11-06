@@ -30,7 +30,9 @@ description: Где Начинается Ваш Бизнес
 
 <div align="center">
 
-## Создана, чтобы быть мощной для нас <br>и простой для вас.
+<div style="height: 50px;"></div>
+
+# Создана, чтобы быть мощной для нас <br>и простой для вас.
 
 </div>
 
@@ -38,9 +40,27 @@ description: Где Начинается Ваш Бизнес
 
 <TicketsExamples />
 
-## Базовый функционал
+<div align="center">
+
+<div style="height: 50px;"></div>
+
+# Функционало от и до.
+
+</div>
 
 <TicketsAccordion />
+
+<div align="center">
+
+<div style="height: 50px;"></div>
+
+# Настройте сейчас. Запустите потом.
+
+Адаптируем систему под ваши правила. Просто скажите да/нет или измените модули системы. <strong>На все - 1 минута.</strong>
+
+</div>
+
+<DialogsWidgets />
 
 <style>
 .responsive-heading {
