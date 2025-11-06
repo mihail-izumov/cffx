@@ -13,8 +13,6 @@ notification: brew
 
 <h1 class="responsive-heading">Сигнал<br>для Бизнеса</h1>
 
-<div style="height: 24px;"></div>
-
 <h1>
   <span>Командный центр управления </span><br class="mobile-break"><span>репутацией для общепита и фитнеса.</span>
 </h1>
@@ -30,13 +28,13 @@ notification: brew
 
 <DividerCustom />
 
-<div style="border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: 50px; margin-bottom: 50px;"></div>
+<div style="border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: 50px; margin-bottom: 60px;"></div>
 
 # Не просто мнение или жалоба – импульс к реальным улучшениям. 
 <br>
 <SignalsYandexVSSignal />
 
-<div style="height: 50px;"></div>
+<div style="height: 60px;"></div>
 
 # Сигнал в действии.
 
