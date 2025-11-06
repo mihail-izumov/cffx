@@ -8,14 +8,16 @@ const notifications = [
     buttonUrl: '/fest#презентация-сигнала'
   },
     { 
-    text: 'Перехватите негатив до того, как он попадёт в 2ГИС/Яндекс.', 
+    text: 'Перехват 94% проблем до того, как они попадают в Яндекс.', 
     hasButton: true,
     buttonText: 'Узнать Больше',
     buttonUrl: '/pro/dialogs'
   },
   { 
-    text: 'Отправим стикер и подключим кофейню <strong>бесплатно за 5 дней</strong>.', 
-    hasButton: false 
+    text: 'Решаем любую проблему вашего клиента <strong>за 24 часа</strong>.', 
+    hasButton: true, 
+    buttonText: 'Настроить Сейчас',
+    buttonUrl: '/pro/reserve'
   }
 ]
 const currentIndex = ref(0)
