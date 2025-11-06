@@ -28,6 +28,11 @@ notification: brew
   <a href="/apply" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
 
+## Не просто мнение или жалоба – импульс к реальным улучшениям. 
+</div>
+<br>
+<SignalsYandexVSSignal />
+
 ## Сигнал в действии.
 
 <p>
