@@ -42,19 +42,19 @@ const cards = [
     title: 'Меняйте правила работы тикетов',
     // description заменить ниже!
     description: '', 
-    imgSrc: '/123-ban-reserve.svg',
+    imgSrc: '/max-ban-change.svg',
     imgAlt: 'Меняйте правила работы тикетов'
   },
   {
     title: 'Виджет для продаж и сервиса',
     description: 'Добавьте цвета бренда, новые метрики, локации, подсказки и даже измените логику умной формы, чтобы повысить конверсию в Сигналы.',
-    imgSrc: '/123-ban-delivery.svg',
+    imgSrc: '/max-ban-widget.svg',
     imgAlt: 'Виджет для продаж и сервиса'
   },
   {
     title: 'Легко подключить что-то новое',
     description: 'Полный контроль над каждым аспектом защиты вашей репутации, не погружаясь в ненужную сложность.',
-    imgSrc: '/123-ban-customize.svg',
+    imgSrc: '/max-ban-plugin.svg',
     imgAlt: 'Легко подключить что-то новое'
   }
 ];
