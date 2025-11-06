@@ -13,6 +13,8 @@ notification: brew
 
 <h1 class="responsive-heading">Сигнал<br>для Бизнеса</h1>
 
+<div style="height: 25px;"></div>
+
 <h1>
   <span>Командный центр управления </span><br class="mobile-break"><span>репутацией для общепита и фитнеса.</span>
 </h1>
