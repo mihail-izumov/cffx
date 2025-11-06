@@ -569,7 +569,7 @@ async function submitForm() {
   formData.append('ticketNumber', formattedTicketNumber.value);
   formData.append('date', currentDate.value);
   formData.append('submitted', submittedTime.value);
-  formData.append('coffeehouse', `Корж, ${form.coffeeShopAddress}`);
+  formData.append('sportclub', `СуперСпорт, ${form.coffeeShopAddress}`);
   formData.append('name', form.name);
   formData.append('telegram', form.telegramPhone);
   formData.append('emotionalRelease', form.emotionalRelease);
