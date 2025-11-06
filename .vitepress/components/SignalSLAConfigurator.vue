@@ -33,31 +33,32 @@ const WIDGETS = {
     scripts:['Вкус','Долгая подача','Инородный предмет','Поведение персонала','Чистота','Температура'],
     defaultOwners:{A:'team' as Owner,B:'team' as Owner,C:'manager' as Owner,D:'manager' as Owner},
     defaultTopics:{A:['Ошибки в заказе','Коммуникация','Цена','Упаковка'],B:['Долгое ожидание','Вкус','Чистота'],C:['Инородные предметы','Профессионализм','Атмосфера'],D:['Договор и отмена','Поведение персонала']},
-    defaultCompany:'СуперФуд', defaultLocations:5, defaultGuests:3000, defaultAbonement:550, defaultRetention:40, growthMultiplier:0.55
+    defaultCompany:'СуперФуд', defaultLocations:5, defaultGuests:3000, defaultAbonement:550, defaultRetention:40, defaultComplaints:1, growthMultiplier:0.55, complaintsGrowth:3.0
   },
   fitness: {
     title:'Фитнес', icon:'/widget-fitness-icon.svg', topics:FITNESS_TOPICS,
     scripts:['Переполненность/очереди','Чистота раздевалок','Оборудование/ремонт','Поведение персонала','Расписание занятий','Температура/вентиляция'],
     defaultOwners:{A:'team' as Owner,B:'team' as Owner,C:'manager' as Owner,D:'manager' as Owner},
     defaultTopics:{A:['Цена','Расписание','Коммуникация'],B:['Чистота','Переполненность','Температура'],C:['Оборудование','Поведение персонала'],D:['Договор и отмена','Поведение персонала']},
-    defaultCompany:'СуперСпорт', defaultLocations:7, defaultGuests:600, defaultAbonement:9500, defaultRetention:50, growthMultiplier:0.23
+    defaultCompany:'СуперСпорт', defaultLocations:7, defaultGuests:600, defaultAbonement:9500, defaultRetention:50, defaultComplaints:1, growthMultiplier:0.23, complaintsGrowth:3.0
   }
 } as const
 
 type WidgetKey = keyof typeof WIDGETS
 
 const SLA_READY_ITEMS=[
-  {title:'Виджет Сигнала (базовая версия)',desc:'Публичная страница, живой рейтинг, метрики, брендирование, быстрый отзыв в Яндекс/2ГИС, бейдж Репутация под защитой'},
-  {title:'Умная форма',desc:'150 цепочек с подсказками, рендер вопросов, переключение гендеров'},
-  {title:'Анна (базовая версия)',desc:'Адаптация под ваш тон, продукты и особые ситуации из стандартов (если предоставлено)'},
-  {title:'Тикет-система',desc:'Настройка шаблонов тикетов, адаптация по дстандарты'},
-  {title:'Расчет роста LTV (индивидуально)',desc:''},
-  {title:'Соглашение об уровне обслуживания (SLA)',desc:''}
+  {title:'Виджет Сигнала (базовая версия)',desc:'Публичная страница, живой рейтинг, метрики, брендирование, быстрый отзыв в Яндекс/2ГИС, бейдж Репутация под защитой',meta:''},
+  {title:'Умная форма',desc:'150 цепочек с подсказками, рендер вопросов, переключение гендеров',meta:''},
+  {title:'Анна (базовая версия)',desc:'Адаптация под ваш тон, продукты и особые ситуации из стандартов (если предоставлено)',meta:''},
+  {title:'Тикет-система',desc:'Настройка шаблонов тикетов, адаптация под стандарты',meta:''},
+  {title:'Расчет роста LTV (индивидуально)',desc:'',meta:''},
+  {title:'Расчет роста жалоб (индивидуально)',desc:'',meta:''},
+  {title:'Соглашение об уровне обслуживания (SLA)',desc:'',meta:''}
 ]
 
 const state = reactive({
   widget:'cafe' as WidgetKey,
-  company:{name:'',locations:5,guests_or_clients:3000,avg_check_or_subscription:550,retention_pct:40,ltv_cards:[] as string[],ltv_tool_other:''},
+  company:{name:'',locations:5,guests_or_clients:3000,avg_check_or_subscription:550,retention_pct:40,complaints_pct:1,ltv_cards:[] as string[],ltv_tool_other:''},
   standards_source:'internal' as 'internal'|'signal',
   has_full_classification:false,
   client_scripts:[] as string[],
@@ -90,6 +91,21 @@ const ltcGrowthCalc = computed(() => {
     without_signal: without_signal,
     with_signal: with_signal,
     growth_pct: growth_pct
+  }
+})
+
+const complaintsCalc = computed(() => {
+  const without_signal = state.company.complaints_pct
+  const growth_multiplier = WIDGETS[state.widget].complaintsGrowth || 3.0
+  const with_signal = Math.round(without_signal * growth_multiplier * 100) / 100
+  const growth_pct = Math.round((growth_multiplier - 1) * 100)
+  const resolved_without_escalation = 75
+  
+  return {
+    without_signal: without_signal,
+    with_signal: with_signal,
+    growth_pct: growth_pct,
+    resolved_without_escalation: resolved_without_escalation
   }
 })
 
@@ -131,6 +147,7 @@ function applyWidgetDefaults(){
   state.company.locations=w.defaultLocations
   state.company.guests_or_clients=w.defaultGuests
   state.company.retention_pct=w.defaultRetention
+  state.company.complaints_pct=w.defaultComplaints
   state.company.avg_check_or_subscription=w.defaultAbonement!
   ;(['A','B','C','D'] as CategoryKey[]).forEach(k=>{
     state.categories_map[k].owner=w.defaultOwners[k]
@@ -166,9 +183,9 @@ function submitToFormspree(action:'submit'|'discuss'){
 
   isSubmitting.value=true
   submitAction.value=action
-
+  
   const actionText=action==='submit'?'Новая сборка':'Обсудить позже'
-  const messageText=`🔔 ${actionText}: ${state.company.name}\n\nКонтакты:\nИмя: ${state.contact.name}\nТелефон: ${state.contact.phone}\nУсловия: ${state.terms_accepted?'Согласен':'Не согласен'}\n\nКомпания:\nНазвание: ${state.company.name}\nТип: ${state.widget==='cafe'?'Общепит':'Фитнес'}\nЛокаций: ${state.company.locations}\nГостей/клиентов (за период): ${state.company.guests_or_clients*state.company.locations}\nСредний чек/абонемент: ${state.company.avg_check_or_subscription}\nRetention: ${state.company.retention_pct}%\n\nLTV расчет:\nСейчас: ${ltcGrowthCalc.value.without_signal} клиентов/мес\nС Сигналом: ${ltcGrowthCalc.value.with_signal} клиентов/мес\nРост: +${ltcGrowthCalc.value.growth_pct}%\nИнструменты: ${state.company.ltv_cards.join(', ')||'не выбраны'}\n${state.company.ltv_tool_other?`Другое: ${state.company.ltv_tool_other}`:''}\n\nСтандарты и скрипты:\nСтандарты: ${state.standards_source==='internal'?'Внутренние':'Сигнала'}\nСкрипты: ${state.client_scripts.length>0?state.client_scripts.join(', '):'не выбраны'}\n\nМатрица эскалации:\nКат. А (4ч): ${getCategoryData('A').owner===`team`?'Команда':getCategoryData('A').owner===`manager`?'Управляющий':''+getCategoryData('A').contact}\n  Темы: ${getCategoryData('A').topics.join(', ')}\nКат. Б (2ч): ${getCategoryData('B').owner===`team`?'Команда':getCategoryData('B').owner===`manager`?'Управляющий':''+getCategoryData('B').contact}\n  Темы: ${getCategoryData('B').topics.join(', ')}\nКат. В (1ч): ${getCategoryData('C').owner===`team`?'Команда':getCategoryData('C').owner===`manager`?'Управляющий':''+getCategoryData('C').contact}\n  Темы: ${getCategoryData('C').topics.join(', ')}\nКат. Г (15м): ${getCategoryData('D').owner===`team`?'Команда':getCategoryData('D').owner===`manager`?'Управляющий':''+getCategoryData('D').contact}\n  Темы: ${getCategoryData('D').topics.join(', ')}\n\nТикет-система:\nБазовые: ${state.ticket_template.base_fields_ru.join(', ')}\nДоп. поля: ${state.ticket_template.extra_fields.join(', ')||'нет'}\n\nЦели (операционные):\nПолное закрытие: ${state.goals.full_close_time_hours}ч\nБез эскалации: ${state.goals.resolved_without_escalation_pct}%\n\nЦели (качество):\nТочность рекомендаций: ${state.goals.reco_accuracy_pct}%\nПолучение NPS: ${state.goals.nps_collected_pct}%\nСредний NPS: ${state.goals.nps_avg}/10\n\nЦели (бизнес):\nВозврат после жалобы: ${state.goals.returns_after_complaint_pct}%\nСредняя компенсация: ${state.goals.avg_compensation_rub}\n\nNPS таймер:\n${state.nps.step===-1?`${state.nps.custom_hours}ч (свой)`:state.nps.step===60?'60 минут':state.nps.step===1440?'1 день':'3 дня'}\n\nРежим работы:\n${state.work_hours.mode==='wk_9_18'?'Будни 9–18 МСК':state.work_hours.mode==='wk_9_18_we'?'9–18 МСК + выходные':`Расш.: Будни ${state.work_hours.weekdays.from}-${state.work_hours.weekdays.to}, Вых. ${state.work_hours.weekends.from}-${state.work_hours.weekends.to}`}\n\nДействие:\n${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
+  const messageText=`🔔 ${actionText}: ${state.company.name}\n\nКонтакты:\nИмя: ${state.contact.name}\nТелефон: ${state.contact.phone}\nУсловия: ${state.terms_accepted?'Согласен':'Не согласен'}\n\nКомпания:\nНазвание: ${state.company.name}\nТип: ${state.widget==='cafe'?'Общепит':'Фитнес'}\nЛокаций: ${state.company.locations}\nГостей/клиентов (за период): ${state.company.guests_or_clients*state.company.locations}\nСредний чек/абонемент: ${state.company.avg_check_or_subscription}\nRetention: ${state.company.retention_pct}%\nЖалобы/мес: ${state.company.complaints_pct}%\n\nLTV расчет:\nСейчас: ${ltcGrowthCalc.value.without_signal} клиентов/мес\nС Сигналом: ${ltcGrowthCalc.value.with_signal} клиентов/мес\nРост: +${ltcGrowthCalc.value.growth_pct}%\nИнструменты: ${state.company.ltv_cards.join(', ')||'не выбраны'}\n${state.company.ltv_tool_other?`Другое: ${state.company.ltv_tool_other}`:''}\n\nРасчёт жалоб:\nСейчас: ${complaintsCalc.value.without_signal}% жалоб/мес\nС Сигналом: ${complaintsCalc.value.with_signal}% жалоб/мес\nРост: +${complaintsCalc.value.growth_pct}%\nБез эскалации: >${complaintsCalc.value.resolved_without_escalation}%\n\nСтандарты и скрипты:\nСтандарты: ${state.standards_source==='internal'?'Внутренние':'Сигнала'}\nСкрипты: ${state.client_scripts.length>0?state.client_scripts.join(', '):'не выбраны'}\n\nМатрица эскалации:\nКат. А (4ч): ${getCategoryData('A').owner===\`team\`?'Команда':getCategoryData('A').owner===\`manager\`?'Управляющий':''+getCategoryData('A').contact}\n  Темы: ${getCategoryData('A').topics.join(', ')}\nКат. Б (2ч): ${getCategoryData('B').owner===\`team\`?'Команда':getCategoryData('B').owner===\`manager\`?'Управляющий':''+getCategoryData('B').contact}\n  Темы: ${getCategoryData('B').topics.join(', ')}\nКат. В (1ч): ${getCategoryData('C').owner===\`team\`?'Команда':getCategoryData('C').owner===\`manager\`?'Управляющий':''+getCategoryData('C').contact}\n  Темы: ${getCategoryData('C').topics.join(', ')}\nКат. Г (15м): ${getCategoryData('D').owner===\`team\`?'Команда':getCategoryData('D').owner===\`manager\`?'Управляющий':''+getCategoryData('D').contact}\n  Темы: ${getCategoryData('D').topics.join(', ')}\n\nТикет-система:\nБазовые: ${state.ticket_template.base_fields_ru.join(', ')}\nДоп. поля: ${state.ticket_template.extra_fields.join(', ')||'нет'}\n\nЦели (операционные):\nПолное закрытие: ${state.goals.full_close_time_hours}ч\nБез эскалации: ${state.goals.resolved_without_escalation_pct}%\n\nЦели (качество):\nТочность рекомендаций: ${state.goals.reco_accuracy_pct}%\nПолучение NPS: ${state.goals.nps_collected_pct}%\nСредний NPS: ${state.goals.nps_avg}/10\n\nЦели (бизнес):\nВозврат после жалобы: ${state.goals.returns_after_complaint_pct}%\nСредняя компенсация: ${state.goals.avg_compensation_rub}\n\nNPS таймер:\n${state.nps.step===-1?\`\${state.nps.custom_hours}ч (свой)\`:state.nps.step===60?'60 минут':state.nps.step===1440?'1 день':'3 дня'}\n\nРежим работы:\n${state.work_hours.mode==='wk_9_18'?'Будни 9–18 МСК':state.work_hours.mode==='wk_9_18_we'?'9–18 МСК + выходные':\`Расш.: Будни \${state.work_hours.weekdays.from}-\${state.work_hours.weekdays.to}, Вых. \${state.work_hours.weekends.from}-\${state.work_hours.weekends.to}\`}\n\nДействие:\n${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
 
   fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{
     method:'POST',
@@ -255,6 +272,11 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
             <input class="range long white" type="range" min="0" max="100" v-model.number="state.company.retention_pct"/>
             <span class="inline-value">{{state.company.retention_pct}}%</span>
           </label>
+          
+          <label class="row"><input style="display:none"/><span>Жалобы/мес</span>
+            <input class="range long white" type="range" min="0" max="10" step="0.1" v-model.number="state.company.complaints_pct"/>
+            <span class="inline-value">{{state.company.complaints_pct}}%</span>
+          </label>
         </div>
 
         <div class="ltv-block">
@@ -319,11 +341,17 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 
     <div class="card">
       <h3>Матрица эскалации</h3>
+      <div class="sla-sidebar-meta">
+        <div class="sla-badge-time">4 часа</div>
+        <div class="sla-badge-time">2 часа</div>
+        <div class="sla-badge-time">1 час</div>
+        <div class="sla-badge-time">15 минут</div>
+      </div>
       <div class="mini-ag full-width">
-        <div class="mini-badge">Кат. А — 4 часа<div class="mini-sub">{{ownerLabel(getCategoryData('A').owner)}}</div></div>
-        <div class="mini-badge">Кат. Б — 2 часа<div class="mini-sub">{{ownerLabel(getCategoryData('B').owner)}}</div></div>
-        <div class="mini-badge">Кат. В — 1 час<div class="mini-sub">{{ownerLabel(getCategoryData('C').owner)}}</div></div>
-        <div class="mini-badge">Кат. Г — 15 минут<div class="mini-sub">{{ownerLabel(getCategoryData('D').owner)}}</div></div>
+        <div class="mini-badge">Кат. А<div class="mini-sub">{{ownerLabel(getCategoryData('A').owner)}}</div></div>
+        <div class="mini-badge">Кат. Б<div class="mini-sub">{{ownerLabel(getCategoryData('B').owner)}}</div></div>
+        <div class="mini-badge">Кат. В<div class="mini-sub">{{ownerLabel(getCategoryData('C').owner)}}</div></div>
+        <div class="mini-badge">Кат. Г<div class="mini-sub">{{ownerLabel(getCategoryData('D').owner)}}</div></div>
       </div>
       <button class="linklike" @click="openModal('categories')" style="margin-top:8px">Изменить роли и темы</button>
     </div>
@@ -345,15 +373,24 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           <h3 class="sla-card-title">{{item.title}}</h3>
           <div v-if="item.desc" class="sla-card-desc">{{item.desc}}</div>
           
-          <template v-if="item.title.includes('Расчет')">
-  <div 
-    :key="`calc-${state.company.locations}-${state.company.guests_or_clients}-${state.company.retention_pct}-${state.widget}`" 
-    class="sla-card-calc"
-  >
-    Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)
-  </div>
-  <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем <component :is="SquareArrowOut" class="ext-icon"/></a>
-</template>
+          <template v-if="item.title.includes('Расчет роста LTV')">
+            <div 
+              :key="`calc-ltc-${state.company.locations}-${state.company.guests_or_clients}-${state.company.retention_pct}-${state.widget}`" 
+              class="sla-card-calc"
+            >
+              Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)
+            </div>
+            <a class="linklike-calc" href="/pro/ltvcalc" target="_blank" rel="noopener">Как считаем <component :is="SquareArrowOut" class="ext-icon"/></a>
+          </template>
+          
+          <template v-if="item.title.includes('Расчет роста жалоб')">
+            <div 
+              :key="`calc-compl-${state.company.complaints_pct}-${state.widget}`" 
+              class="sla-card-calc"
+            >
+              Сейчас: {{complaintsCalc.without_signal}}% жалоб/мес → С Сигналом: {{complaintsCalc.with_signal}}% жалоб/мес (Δ +{{complaintsCalc.growth_pct}}%), Без эскалации > {{complaintsCalc.resolved_without_escalation}}%
+            </div>
+          </template>
           
           <template v-if="item.title.includes('Соглашение')">
             <div class="sla-subgroup">
@@ -606,6 +643,10 @@ input[type="text"],input[type="number"],input[type="time"],select{padding:8px 10
 .nps-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .nps-card{border:1px solid var(--line);border-radius:12px;padding:10px 16px;background:#0d0f12;color:#e8eaed;cursor:pointer;text-align:center;font-size:13px}
 .nps-card.active{border-color:var(--lime);background:#1a1d20}
+
+.sla-sidebar-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px}
+.sla-badge-time{background:#e8eaed;color:#000;border-radius:8px;padding:6px 8px;font-size:12px;font-weight:700;text-align:center}
+
 .mini-ag{display:flex;gap:8px;flex-wrap:wrap}
 .mini-ag.full-width{width:100%;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
 .mini-badge{background:#0b0c0e;border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:13px}
@@ -671,7 +712,6 @@ button.primary:hover .btn-icon{transform:translateX(3px)}
 .sla-detail-card{background:#edeef0;border-radius:10px;padding:12px;color:#1d1d1f;font-size:12px;line-height:1.5;display:flex;align-items:flex-start;gap:8px}
 .detail-check{flex-shrink:0;margin-top:2px}
 
-/* ТОЛЬКО ПРАВКИ ДЛЯ МОДАЛКИ "РАСШИРЕННЫЙ РЕЖИМ" */
 .workhours-block{display:flex;flex-direction:column;gap:12px}
 .workhours-title{color:#1d1d1f;margin:0 0 8px 0;font-size:15px;font-weight:600}
 .workhours-label{color:#1d1d1f;font-weight:500;font-size:13px}
@@ -701,6 +741,8 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .cat-h2,.section-h2{font-size:16px;line-height:1.1}
   .owner-block-full{width:100%;max-width:100%}
   .mini-ag.full-width{grid-template-columns:repeat(2,1fr);gap:8px}
+  .sla-sidebar-meta{grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:8px}
+  .sla-badge-time{font-size:11px;padding:5px 6px}
   .pricing-modal-body .workhours-block .time-input-wrapper input[type="time"]{background:#0b0c0e !important;border:1px solid #2a2d31;color:#fff;padding:8px 10px;border-radius:10px;appearance:none;-webkit-appearance:none;font-size:14px;font-weight:600}
   .pricing-modal-body .workhours-block .time-input-wrapper input[type="time"]::-webkit-calendar-picker-indicator{display:none}
   .pricing-modal-body .workhours-block .time-input-wrapper input[type="time"]::-moz-calendar-picker-indicator{display:none}
@@ -711,4 +753,3 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .time-row span{min-width:auto;color:#1d1d1f}
 }
 </style>
-
