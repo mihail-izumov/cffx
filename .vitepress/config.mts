@@ -10,7 +10,7 @@ export default defineConfig({
     '/': {
       lang: 'ru-RU',
       title: 'Сигнал',
-      description: 'Где Начинается Ваша Кофейня',
+      description: 'Где Начинается Ваш Бизнес',
     },
   },
   
@@ -21,7 +21,7 @@ export default defineConfig({
   transformHead: ({ pageData }) => {
     const head = []
     const pageTitle = pageData.frontmatter.title || pageData.title || 'Сигнал'
-    const pageDescription = pageData.frontmatter.description || pageData.description || 'Где Начинается Ваша Кофейня'
+    const pageDescription = pageData.frontmatter.description || pageData.description || 'Где Начинается Ваш Бизнес'
     const hasCustomImage = pageData.frontmatter.head && 
       pageData.frontmatter.head.some(tag => 
         tag[0] === 'meta' && 
@@ -80,7 +80,7 @@ export default defineConfig({
         });
         html += '</div></div>';
         html += '<div style="margin-top: 24px; text-align: center;">';
-        html += '<div style="color: white; font-size: 14px;">Где Начинается Ваша Кофейня</div>';
+        html += '<div style="color: white; font-size: 14px;">Где Начинается Ваш Бизнес</div>';
         html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Сигнал 2025 • Создано в <a href="https://orxaos.sbs" target="_blank" style="color: inherit; text-decoration: underline;">Orxaos</a></div>';
         return html;
       }
@@ -375,7 +375,7 @@ export default defineConfig({
   
   base: '/',
   outDir: '.vitepress/dist',
-  description: 'Где Начинается Ваша Кофейня',
+  description: 'Где Начинается Ваш Бизнес',
   
   themeConfig: {
     logo: '/favicon.svg',
@@ -445,7 +445,7 @@ function nav(): DefaultTheme.NavItem[] {
       items: [
         { text: '→ Система Сигнала', link: '/pro' },  
         { text: 'Радар', link: '/pro/radar' },
-        { text: 'Сигнал для кофейни', link: '/pro/dialogs' },
+        { text: 'Сигнал для кофейни', link: '/pro/coffeehouse' },
         { text: 'Инвестиции в кофейни', link: '/invest/pulse' }
       ]
     }
