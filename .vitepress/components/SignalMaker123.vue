@@ -40,7 +40,7 @@ const nowMonth = MONTHS[new Date().getMonth()];
 const cards = [
   {
     title: '1. Сейчас: Отправить на сборку',
-    // description заменяем ниже!
+    // description заменить ниже!
     description: '', 
     imgSrc: '/123-ban-reserve.svg',
     imgAlt: 'Отправить на сборку'
