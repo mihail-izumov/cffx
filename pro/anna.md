@@ -37,7 +37,7 @@ notification: brew
 
 # Понимает с полуслова.
 
-<div style="height: 30px;"></div>
+<div style="height: 40px;"></div>
 
 </div>
 
@@ -45,13 +45,13 @@ notification: brew
 
 <div align="center">
 
-<div style="height: 50px;"></div>
+<div style="height: 60px;"></div>
 
 # Собрано в Октябре 2025.
 
 </div>
 
-<div style="height: 30px;"></div>
+<div style="height: 20px;"></div>
 
 <AnnaAccordion />
 
