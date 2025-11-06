@@ -1,14 +1,7 @@
 <template>
   <div class="signal-dashboard-wrapper">
-    <!-- Tesla-style переключатель: Общепит / Фитнес -->
+    <!-- Tesla-style переключатель: Фитнес / Общепит -->
     <div class="signal-theme-toggle">
-      <button
-        class="signal-theme-btn"
-        :class="{ active: selectedTheme === 'cafe' }"
-        @click="selectedTheme = 'cafe'"
-      >
-        Общепит
-      </button>
       <button
         class="signal-theme-btn"
         :class="{ active: selectedTheme === 'fitness' }"
@@ -16,16 +9,23 @@
       >
         Фитнес
       </button>
+      <button
+        class="signal-theme-btn"
+        :class="{ active: selectedTheme === 'cafe' }"
+        @click="selectedTheme = 'cafe'"
+      >
+        Общепит
+      </button>
       <div class="signal-theme-slider" :style="{ left: sliderLeft }"></div>
     </div>
 
     <!-- ДЭШБОРД: Показываем только выбранный -->
     <transition name="fade" mode="out-in">
-      <div v-if="selectedTheme === 'cafe'" key="cafe">
-        <DashboardCafeSignalsMap />
-      </div>
-      <div v-else key="fitness">
+      <div v-if="selectedTheme === 'fitness'" key="fitness">
         <DashboardGymSignalsMap />
+      </div>
+      <div v-else key="cafe">
+        <DashboardCafeSignalsMap />
       </div>
     </transition>
   </div>
@@ -36,10 +36,10 @@ import { ref, computed } from 'vue'
 import DashboardCafeSignalsMap from './DashboardCafeSignalsMap.vue'
 import DashboardGymSignalsMap from './DashboardGymSignalsMap.vue'
 
-const selectedTheme = ref('cafe') // 'cafe' | 'fitness'
+const selectedTheme = ref('fitness') // 'cafe' | 'fitness'
 
 const sliderLeft = computed(() => {
-  return selectedTheme.value === 'cafe' ? '6px' : 'calc(50% + 6px)'
+  return selectedTheme.value === 'fitness' ? '6px' : 'calc(50% + 6px)'
 })
 </script>
 
@@ -125,4 +125,3 @@ const sliderLeft = computed(() => {
   }
 }
 </style>
-
