@@ -93,7 +93,7 @@ onUnmounted(() => {
             <div class="rw-stat-main">
               <div class="rw-stat-value">24 ч</div>
             </div>
-            <div class="rw-stat-description">Сертификаты, Отработка агрессии, Контроль NPS </div>
+            <div class="rw-stat-description">Сертификаты, Отработка агрессии, Контроль NPS, Особые протоколы </div>
           </div>
         </div>
       </div>
