@@ -82,7 +82,6 @@ const ltcGrowthCalc = computed(() => {
   return { without_signal, with_signal, growth_pct }
 })
 
-// ОБНОВЛЕНО: теперь берет resolved_without_escalation_pct из goals
 const complaintsCalc = computed(() => {
   const without_signal = state.company.complaints_pct
   const growth_multiplier = WIDGETS[state.widget].complaintsGrowth || 3.0
@@ -151,6 +150,7 @@ const modalKind=ref<'categories'|'ticket'|'goals_ops'|'goals_quality'|'goals_bus
 function openModal(kind:typeof modalKind.value){modalKind.value=kind;isModalOpen.value=true;if(typeof document!=='undefined')document.body.style.overflow='hidden'}
 function closeModal(){isModalOpen.value=false;if(typeof document!=='undefined')document.body.style.overflow=''}
 function ownerLabel(o:Owner){return o==='team'?'Команда':o==='manager'?'Управляющий':'Другое'}
+function getTimeLabel(k:string):string{return k==='A'?'4 часа':k==='B'?'2 часа':k==='C'?'1 час':'15 минут'}
 
 function validateForm():boolean{
   if(!state.company.name.trim()){submitMessage.value={type:'error',text:'Укажите название компании',time:Date.now()};return false}
@@ -413,16 +413,12 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
               <h2 class="pricing-modal-title">Матрица эскалации</h2>
               <div class="pricing-modal-body">
                 <div class="owner-col-single">
-                  <!-- ДОБАВЛЕНЫ БЕЙДЖИ СО ВРЕМЕНЕМ В МОДАЛКУ -->
-                  <div class="time-badges-row">
-                    <div class="time-badge">4 часа</div>
-                    <div class="time-badge">2 часа</div>
-                    <div class="time-badge">1 час</div>
-                    <div class="time-badge">15 минут</div>
-                  </div>
-                  
+                  <!-- ИСПРАВЛЕНО: бейджи с временем теперь в каждой карточке -->
                   <div v-for="k in ['A','B','C','D']" :key="k" class="owner-block surface owner-block-full">
-                    <h2 class="cat-h2">Категория {{k==='A'?'А':k==='B'?'Б':k==='C'?'В':'Г'}}</h2>
+                    <div class="cat-h2-row">
+                      <h2 class="cat-h2">Категория {{k==='A'?'А':k==='B'?'Б':k==='C'?'В':'Г'}}</h2>
+                      <div class="time-badge-inline">{{getTimeLabel(k)}}</div>
+                    </div>
                     <div class="select-wrapper">
                       <select :value="getCategoryData(k).owner" @input="(e:any)=>setCategoryOwner(k,e.target.value)" class="select-arrow">
                         <option value="team">Команда</option><option value="manager">Управляющий</option><option value="custom">Другое</option>
@@ -624,6 +620,8 @@ button.primary:hover .btn-icon{transform:translateX(3px)}
 .owner-block{padding:16px}
 .owner-block-full{width:100%}
 .cat-h2,.section-h2{font-size:19px;font-weight:600;color:#1d1d1f;margin:0 0 10px 0;line-height:1.15}
+.cat-h2-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.time-badge-inline{background:#d2d3d6;color:#1d1d1f;border-radius:6px;padding:4px 8px;font-size:12px;font-weight:600;white-space:nowrap}
 .topics-grid.compact3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .topic-card{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #d2d3d6;border-radius:10px;background:#f1f2f4;cursor:pointer;font-size:11px;line-height:1.2}
 .topic-card.small{padding:6px 8px}
@@ -646,8 +644,6 @@ button.primary:hover .btn-icon{transform:translateX(3px)}
 .workhours-block{display:flex;flex-direction:column;gap:12px}
 .workhours-title{color:#1d1d1f;margin:0 0 8px 0;font-size:15px;font-weight:600}
 .workhours-label{color:#1d1d1f;font-weight:500;font-size:13px}
-.time-badges-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
-.time-badge{background:#e8eaed;color:#1d1d1f;border-radius:8px;padding:8px;font-size:12px;font-weight:700;text-align:center}
 
 @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 button:disabled{opacity:0.6;cursor:not-allowed}
@@ -682,7 +678,7 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .workhours-label{font-size:12px;color:#1d1d1f}
   .time-row{gap:6px}
   .time-row span{min-width:auto;color:#1d1d1f}
-  .time-badges-row{grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:16px}
-  .time-badge{padding:6px;font-size:11px}
+  .cat-h2-row{gap:8px;margin-bottom:8px}
+  .time-badge-inline{padding:3px 6px;font-size:11px}
 }
 </style>
