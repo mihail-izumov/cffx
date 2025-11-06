@@ -36,7 +36,7 @@ notification: brew
 <br>
 <SignalsYandexVSSignal />
 
-<br>
+<br><br>
 
 # Сигнал в действии.
 
@@ -49,6 +49,8 @@ notification: brew
 <DialogsWidgets />
 
 <div align="center">
+
+<br>
 
 # Технология сервиса в каждом Сигнале.
 
@@ -78,7 +80,7 @@ notification: brew
 
 <div align="center">
 
-<br>
+<br><br>
 
 # От диалогов к безупречной системе сервиса.
 
