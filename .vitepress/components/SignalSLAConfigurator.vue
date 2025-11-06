@@ -82,13 +82,13 @@ const ltcGrowthCalc = computed(() => {
   return { without_signal, with_signal, growth_pct }
 })
 
-// НОВАЯ ФУНКЦИЯ: расчет жалоб с Δ +200%
+// ОБНОВЛЕНО: теперь берет resolved_without_escalation_pct из goals
 const complaintsCalc = computed(() => {
   const without_signal = state.company.complaints_pct
   const growth_multiplier = WIDGETS[state.widget].complaintsGrowth || 3.0
   const with_signal = Math.round(without_signal * growth_multiplier * 100) / 100
   const growth_pct = Math.round((growth_multiplier - 1) * 100)
-  const resolved_without_escalation = 75
+  const resolved_without_escalation = state.goals.resolved_without_escalation_pct
   return { without_signal, with_signal, growth_pct, resolved_without_escalation }
 })
 
@@ -256,7 +256,6 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
             <span class="inline-value">{{state.company.retention_pct}}%</span>
           </label>
           
-          <!-- ПРАВКА 1: ДОБАВЛЕН ПОЛЗУНОК "ЖАЛОБЫ/МЕС" -->
           <label class="row"><input style="display:none"/><span>Жалобы/мес</span>
             <input class="range long white" type="range" min="0" max="10" step="0.1" v-model.number="state.company.complaints_pct"/>
             <span class="inline-value">{{state.company.complaints_pct}}%</span>
@@ -325,7 +324,6 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
 
     <div class="card">
       <h3>Матрица эскалации</h3>
-      <!-- ПРАВКА 2: ДОБАВЛЕНЫ БЕЙДЖИ "4 часа", "2 часа", "1 час", "15 минут" -->
       <div class="mini-ag full-width">
         <div class="mini-badge">Кат. А — 4 часа<div class="mini-sub">{{ownerLabel(getCategoryData('A').owner)}}</div></div>
         <div class="mini-badge">Кат. Б — 2 часа<div class="mini-sub">{{ownerLabel(getCategoryData('B').owner)}}</div></div>
@@ -352,7 +350,6 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           <h3 class="sla-card-title">{{item.title}}</h3>
           <div v-if="item.desc" class="sla-card-desc">{{item.desc}}</div>
           
-          <!-- ПРАВКА 3: ДОБАВЛЕНА ФУНКЦИЯ complaintsCalc С АЛГОРИТМОМ Δ +200% -->
           <template v-if="item.title.includes('Расчет роста LTV')">
             <div :key="`calc-ltc-${state.company.locations}-${state.company.guests_or_clients}-${state.company.retention_pct}-${state.widget}`" class="sla-card-calc">
               Сейчас: {{ltcGrowthCalc.without_signal}} клиентов/мес → С Сигналом: {{ltcGrowthCalc.with_signal}} клиентов/мес (Δ +{{ltcGrowthCalc.growth_pct}}%)
@@ -361,7 +358,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           </template>
           
           <template v-if="item.title.includes('Расчет роста жалоб')">
-            <div :key="`calc-compl-${state.company.complaints_pct}-${state.widget}`" class="sla-card-calc">
+            <div :key="`calc-compl-${state.company.complaints_pct}-${state.goals.resolved_without_escalation_pct}-${state.widget}`" class="sla-card-calc">
               Сейчас: {{complaintsCalc.without_signal}}% жалоб/мес → С Сигналом: {{complaintsCalc.with_signal}}% жалоб/мес (Δ +{{complaintsCalc.growth_pct}}%), Без эскалации > {{complaintsCalc.resolved_without_escalation}}%
             </div>
           </template>
@@ -416,6 +413,14 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
               <h2 class="pricing-modal-title">Матрица эскалации</h2>
               <div class="pricing-modal-body">
                 <div class="owner-col-single">
+                  <!-- ДОБАВЛЕНЫ БЕЙДЖИ СО ВРЕМЕНЕМ В МОДАЛКУ -->
+                  <div class="time-badges-row">
+                    <div class="time-badge">4 часа</div>
+                    <div class="time-badge">2 часа</div>
+                    <div class="time-badge">1 час</div>
+                    <div class="time-badge">15 минут</div>
+                  </div>
+                  
                   <div v-for="k in ['A','B','C','D']" :key="k" class="owner-block surface owner-block-full">
                     <h2 class="cat-h2">Категория {{k==='A'?'А':k==='B'?'Б':k==='C'?'В':'Г'}}</h2>
                     <div class="select-wrapper">
@@ -641,6 +646,8 @@ button.primary:hover .btn-icon{transform:translateX(3px)}
 .workhours-block{display:flex;flex-direction:column;gap:12px}
 .workhours-title{color:#1d1d1f;margin:0 0 8px 0;font-size:15px;font-weight:600}
 .workhours-label{color:#1d1d1f;font-weight:500;font-size:13px}
+.time-badges-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.time-badge{background:#e8eaed;color:#1d1d1f;border-radius:8px;padding:8px;font-size:12px;font-weight:700;text-align:center}
 
 @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 button:disabled{opacity:0.6;cursor:not-allowed}
@@ -675,5 +682,7 @@ button:disabled{opacity:0.6;cursor:not-allowed}
   .workhours-label{font-size:12px;color:#1d1d1f}
   .time-row{gap:6px}
   .time-row span{min-width:auto;color:#1d1d1f}
+  .time-badges-row{grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:16px}
+  .time-badge{padding:6px;font-size:11px}
 }
 </style>
