@@ -177,6 +177,81 @@ function validateForm():boolean{
   return true
 }
 
+function buildMessageText(action:'submit'|'discuss'):string{
+  const actionText=action==='submit'?'Новая сборка':'Обсудить позже'
+  const lines=[
+    '🔔 ' + actionText + ': ' + state.company.name,
+    '',
+    'Контакты:',
+    'Имя: ' + state.contact.name,
+    'Телефон: ' + state.contact.phone,
+    'Условия: ' + (state.terms_accepted?'Согласен':'Не согласен'),
+    '',
+    'Компания:',
+    'Название: ' + state.company.name,
+    'Тип: ' + (state.widget==='cafe'?'Общепит':'Фитнес'),
+    'Локаций: ' + state.company.locations,
+    'Гостей/клиентов (за период): ' + (state.company.guests_or_clients*state.company.locations),
+    'Средний чек/абонемент: ' + state.company.avg_check_or_subscription,
+    'Retention: ' + state.company.retention_pct + '%',
+    'Жалобы/мес: ' + state.company.complaints_pct + '%',
+    '',
+    'LTV расчет:',
+    'Сейчас: ' + ltcGrowthCalc.value.without_signal + ' клиентов/мес',
+    'С Сигналом: ' + ltcGrowthCalc.value.with_signal + ' клиентов/мес',
+    'Рост: +' + ltcGrowthCalc.value.growth_pct + '%',
+    'Инструменты: ' + (state.company.ltv_cards.join(', ')||'не выбраны'),
+    (state.company.ltv_tool_other?'Другое: ' + state.company.ltv_tool_other:''),
+    '',
+    'Расчёт жалоб:',
+    'Сейчас: ' + complaintsCalc.value.without_signal + '% жалоб/мес',
+    'С Сигналом: ' + complaintsCalc.value.with_signal + '% жалоб/мес',
+    'Рост: +' + complaintsCalc.value.growth_pct + '%',
+    'Без эскалации: >' + complaintsCalc.value.resolved_without_escalation + '%',
+    '',
+    'Стандарты и скрипты:',
+    'Стандарты: ' + (state.standards_source==='internal'?'Внутренние':'Сигнала'),
+    'Скрипты: ' + (state.client_scripts.length>0?state.client_scripts.join(', '):'не выбраны'),
+    '',
+    'Матрица эскалации:',
+    'Кат. А (4ч): ' + ownerLabel(getCategoryData('A').owner),
+    '  Темы: ' + getCategoryData('A').topics.join(', '),
+    'Кат. Б (2ч): ' + ownerLabel(getCategoryData('B').owner),
+    '  Темы: ' + getCategoryData('B').topics.join(', '),
+    'Кат. В (1ч): ' + ownerLabel(getCategoryData('C').owner),
+    '  Темы: ' + getCategoryData('C').topics.join(', '),
+    'Кат. Г (15м): ' + ownerLabel(getCategoryData('D').owner),
+    '  Темы: ' + getCategoryData('D').topics.join(', '),
+    '',
+    'Тикет-система:',
+    'Базовые: ' + state.ticket_template.base_fields_ru.join(', '),
+    'Доп. поля: ' + (state.ticket_template.extra_fields.join(', ')||'нет'),
+    '',
+    'Цели (операционные):',
+    'Полное закрытие: ' + state.goals.full_close_time_hours + 'ч',
+    'Без эскалации: ' + state.goals.resolved_without_escalation_pct + '%',
+    '',
+    'Цели (качество):',
+    'Точность рекомендаций: ' + state.goals.reco_accuracy_pct + '%',
+    'Получение NPS: ' + state.goals.nps_collected_pct + '%',
+    'Средний NPS: ' + state.goals.nps_avg + '/10',
+    '',
+    'Цели (бизнес):',
+    'Возврат после жалобы: ' + state.goals.returns_after_complaint_pct + '%',
+    'Средняя компенсация: ' + state.goals.avg_compensation_rub,
+    '',
+    'NPS таймер:',
+    (state.nps.step===-1?(state.nps.custom_hours + 'ч (свой)'):state.nps.step===60?'60 минут':state.nps.step===1440?'1 день':'3 дня'),
+    '',
+    'Режим работы:',
+    (state.work_hours.mode==='wk_9_18'?'Будни 9–18 МСК':state.work_hours.mode==='wk_9_18_we'?'9–18 МСК + выходные':'Расш.: Будни ' + state.work_hours.weekdays.from + '-' + state.work_hours.weekdays.to + ', Вых. ' + state.work_hours.weekends.from + '-' + state.work_hours.weekends.to),
+    '',
+    'Действие:',
+    (action==='submit'?'Отправить на сборку':'Обсудить позже')
+  ]
+  return lines.join('\n')
+}
+
 function submitToFormspree(action:'submit'|'discuss'){
   if(!validateForm())return
   if(isSubmitting.value)return
@@ -184,10 +259,9 @@ function submitToFormspree(action:'submit'|'discuss'){
   isSubmitting.value=true
   submitAction.value=action
   
-  const actionText=action==='submit'?'Новая сборка':'Обсудить позже'
-  const messageText=`🔔 ${actionText}: ${state.company.name}\n\nКонтакты:\nИмя: ${state.contact.name}\nТелефон: ${state.contact.phone}\nУсловия: ${state.terms_accepted?'Согласен':'Не согласен'}\n\nКомпания:\nНазвание: ${state.company.name}\nТип: ${state.widget==='cafe'?'Общепит':'Фитнес'}\nЛокаций: ${state.company.locations}\nГостей/клиентов (за период): ${state.company.guests_or_clients*state.company.locations}\nСредний чек/абонемент: ${state.company.avg_check_or_subscription}\nRetention: ${state.company.retention_pct}%\nЖалобы/мес: ${state.company.complaints_pct}%\n\nLTV расчет:\nСейчас: ${ltcGrowthCalc.value.without_signal} клиентов/мес\nС Сигналом: ${ltcGrowthCalc.value.with_signal} клиентов/мес\nРост: +${ltcGrowthCalc.value.growth_pct}%\nИнструменты: ${state.company.ltv_cards.join(', ')||'не выбраны'}\n${state.company.ltv_tool_other?`Другое: ${state.company.ltv_tool_other}`:''}\n\nРасчёт жалоб:\nСейчас: ${complaintsCalc.value.without_signal}% жалоб/мес\nС Сигналом: ${complaintsCalc.value.with_signal}% жалоб/мес\nРост: +${complaintsCalc.value.growth_pct}%\nБез эскалации: >${complaintsCalc.value.resolved_without_escalation}%\n\nСтандарты и скрипты:\nСтандарты: ${state.standards_source==='internal'?'Внутренние':'Сигнала'}\nСкрипты: ${state.client_scripts.length>0?state.client_scripts.join(', '):'не выбраны'}\n\nМатрица эскалации:\nКат. А (4ч): ${getCategoryData('A').owner===\`team\`?'Команда':getCategoryData('A').owner===\`manager\`?'Управляющий':''+getCategoryData('A').contact}\n  Темы: ${getCategoryData('A').topics.join(', ')}\nКат. Б (2ч): ${getCategoryData('B').owner===\`team\`?'Команда':getCategoryData('B').owner===\`manager\`?'Управляющий':''+getCategoryData('B').contact}\n  Темы: ${getCategoryData('B').topics.join(', ')}\nКат. В (1ч): ${getCategoryData('C').owner===\`team\`?'Команда':getCategoryData('C').owner===\`manager\`?'Управляющий':''+getCategoryData('C').contact}\n  Темы: ${getCategoryData('C').topics.join(', ')}\nКат. Г (15м): ${getCategoryData('D').owner===\`team\`?'Команда':getCategoryData('D').owner===\`manager\`?'Управляющий':''+getCategoryData('D').contact}\n  Темы: ${getCategoryData('D').topics.join(', ')}\n\nТикет-система:\nБазовые: ${state.ticket_template.base_fields_ru.join(', ')}\nДоп. поля: ${state.ticket_template.extra_fields.join(', ')||'нет'}\n\nЦели (операционные):\nПолное закрытие: ${state.goals.full_close_time_hours}ч\nБез эскалации: ${state.goals.resolved_without_escalation_pct}%\n\nЦели (качество):\nТочность рекомендаций: ${state.goals.reco_accuracy_pct}%\nПолучение NPS: ${state.goals.nps_collected_pct}%\nСредний NPS: ${state.goals.nps_avg}/10\n\nЦели (бизнес):\nВозврат после жалобы: ${state.goals.returns_after_complaint_pct}%\nСредняя компенсация: ${state.goals.avg_compensation_rub}\n\nNPS таймер:\n${state.nps.step===-1?\`\${state.nps.custom_hours}ч (свой)\`:state.nps.step===60?'60 минут':state.nps.step===1440?'1 день':'3 дня'}\n\nРежим работы:\n${state.work_hours.mode==='wk_9_18'?'Будни 9–18 МСК':state.work_hours.mode==='wk_9_18_we'?'9–18 МСК + выходные':\`Расш.: Будни \${state.work_hours.weekdays.from}-\${state.work_hours.weekdays.to}, Вых. \${state.work_hours.weekends.from}-\${state.work_hours.weekends.to}\`}\n\nДействие:\n${action==='submit'?'Отправить на сборку':'Обсудить позже'}`
+  const messageText=buildMessageText(action)
 
-  fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{
+  fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
