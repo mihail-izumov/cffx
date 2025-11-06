@@ -1,4 +1,3 @@
-<DOCUMENT filename="SignalFormSuperSport.vue">
 <template>
   <div class="signal-form-wrapper">
     <!-- Экран успешной отправки -->
