@@ -29,7 +29,6 @@ notification: brew
 </div>
 
 ## Не просто мнение или жалоба – импульс к реальным улучшениям. 
-</div>
 <br>
 <SignalsYandexVSSignal />
 
