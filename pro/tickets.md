@@ -46,15 +46,15 @@ description: Где Начинается Ваш Бизнес
 
 # Функционально от и до.
 
-<div style="height: 30px;"></div>
-
 </div>
+
+<div style="height: 30px;"></div>
 
 <TicketsAccordion />
 
-<div align="center">
-
 <div style="height: 50px;"></div>
+
+<div align="center">
 
 # Настройте сейчас. Запустите потом.
 
