@@ -33,9 +33,7 @@ notification: brew
   </div>
 </div>
 
----
-
-<br>
+<div style="border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: 50px; margin-bottom: 60px;"></div>
 
 <div align="center">
 
@@ -49,7 +47,7 @@ notification: brew
 
 <div align="center">
   
-# Стартуйте быстро.
+# Старт сегодня – результ завтра.
 
 </div>
 
