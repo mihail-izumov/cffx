@@ -30,7 +30,7 @@ notification: brew
 
 <DividerCustom />
 
-<div style="border-top: 1px solid rgba(255, 255, 255, 0.15); margin: 40px 0;"></div>
+<div style="border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: 20px; margin-bottom: 50px;"></div>
 
 # Не просто мнение или жалоба – импульс к реальным улучшениям. 
 <br>
@@ -80,7 +80,7 @@ notification: brew
 
 <div align="center">
 
-<br><br>
+<br>
 
 # От диалогов к безупречной системе сервиса.
 
