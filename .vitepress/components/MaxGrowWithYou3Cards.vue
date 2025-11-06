@@ -39,7 +39,7 @@ const nowMonth = MONTHS[new Date().getMonth()];
 
 const cards = [
   {
-    title: 'Виджет для роста',
+    title: 'Виджет для продаж и сервиса',
     // description заменить ниже!
     description: '', 
     imgSrc: '/123-ban-reserve.svg',
