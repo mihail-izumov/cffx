@@ -20,7 +20,7 @@ notification: brew
 </h1>
 
 <div class="checkup-cta-section">
-  <div class="checkup-price">От ₽65,500/мес</div>
+  <a href="/pro/specs" class="checkup-price" target="_blank" rel="noopener noreferrer">От ₽65,500/мес</a>
   <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
 
