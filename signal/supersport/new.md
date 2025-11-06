@@ -71,4 +71,4 @@ description: Где Начинается Ваш Фитнес
 </p>
 
 </div>
-<SignalFormKorzh1 />
+<SignalFormSuperSport />
