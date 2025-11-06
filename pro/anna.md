@@ -24,20 +24,38 @@ notification: brew
 </h1>
 
 <p>
-  Внимательный и точный ассистент, который ведёт до результата.<br class="mobile-break"> <strong>Понимает с полуслова.</strong>
+  Внимательный и точный ассистент, который ведёт до результата.
 </p>
 
 </div>
 
 <AnnaSpecsSlider />
 
-## Диалоги с Анной
+<div align="center">
+
+<div style="height: 50px;"></div>
+
+# Понимает с полуслова.
+
+</div>
 
 <AnnaQuotes />
 
-## Сборка Октябрь 2025
+# Собрано в Октябре 2025.
 
 <AnnaAccordion />
+
+<div align="center">
+
+<div style="height: 50px;"></div>
+
+# Настройте сейчас. Запустите потом.
+
+Адаптируем систему под ваши правила. Просто скажите да/нет или измените модули системы. <strong>На все - 1 минута.</strong>
+
+</div>
+
+<DialogsWidgets />
 
 <style>
 .responsive-heading {
