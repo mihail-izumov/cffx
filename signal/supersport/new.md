@@ -5,7 +5,7 @@ title: Новый Сигнал в Корж
 description: Где Начинается Ваш Фитнес
 ---
 <div class="back-button-container">
-  <a href="/korzh" class="back-button">
+  <a href="/supersport" class="back-button">
     <svg class="back-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
@@ -67,7 +67,7 @@ description: Где Начинается Ваш Фитнес
 # Ваш Сигнал — тому, кто решает.
 
 <p>
-  Поможем решить любую проблему с<br class="mobile-break"> <strong><span style="color: #9B7EBD;"> вашей кофейней <em>Корж</em> за 24 часа.</span></strong>
+  Поможем решить любую проблему с<br class="mobile-break"> <strong><span style="color: #9B7EBD;"> вашим клубом <em>СуперСпорт</em> за 24 часа.</span></strong>
 </p>
 
 </div>
