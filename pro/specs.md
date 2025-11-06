@@ -12,15 +12,13 @@ description: Где Начинается Ваш Бизнес
 
 <h1 class="responsive-heading">Спецификация<br>Сигнала</h1>
 
-<br>
+<div style="border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: 50px; margin-bottom: 60px;"></div>
   
 # Цены
 
 </div>
 
 <FitnessTarifs />
-
-<div style="border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: 50px; margin-bottom: 60px;"></div>
 
 <div align="center">
   
