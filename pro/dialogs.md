@@ -88,7 +88,7 @@ notification: brew
 
 <TicketsExamples />
 
-<br>
+<div style="height: 50px;"></div>
 
 <div align="center">
 
