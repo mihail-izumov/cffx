@@ -8,14 +8,14 @@ const cafeItems = [
   {
     name: 'Сигнал\nдля Бизнеса',  // \n для переноса
     subtitle: '',
-    url: '/pro1',
+    url: '/pro',
     icon: 'M12 5 m-9 0 a9 3 0 1 0 18 0 a9 3 0 1 0 -18 0 M3 5V19A9 3 0 0 0 15 21.84 M21 5V8 M21 12L18 17H22L19 22 M3 12A9 3 0 0 0 14.59 14.87',
     gradientId: 'gradient-0'
   },
   {
     name: 'Сигнал Диалоги',
     subtitle: '',
-    url: '/pro/dialogs1',
+    url: '/pro/dialogs',
     icon: 'M16 10a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 14.286V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z M20 9a2 2 0 0 1 2 2v10.286a.71.71 0 0 1-1.212.502l-2.202-2.202A2 2 0 0 0 17.172 19H10a2 2 0 0 1-2-2v-1',
     gradientId: 'gradient-1'
   },
