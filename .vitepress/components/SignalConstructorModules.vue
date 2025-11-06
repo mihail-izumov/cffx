@@ -4,8 +4,8 @@
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">МОДУЛЬ 1</div>
       <h3 class="anna-title">Классификация Проблем</h3>
-      <p class="anna-description-main">Наша система автоматически распознает тип проблемы (сервис, чистота, еда, атмосфера) и присваивает ей уровень критичности.</p>
-      <p class="anna-description-secondary"><strong>Ваш контроль:</strong> Вы можете добавить свои уникальные категории (например, «запах в зале» для фитнеса или «скорость room service» для отеля).</p>
+      <p class="anna-description-main">Система Синала автоматически распознает тип проблемы (сервис, чистота, еда, атмосфера) и присваивает ей уровень критичности.</p>
+      <p class="anna-description-secondary"><strong>Адаптация:</strong> Добавьте свои уникальные категории (например, «запах в зале» для фитнеса или «скорость room service» для отеля).</p>
       <p class="anna-description-goals anna-step-goals">Ни одна жалоба не теряется. Критичные проблемы решаются в первую очередь.</p>
     </div>
     
@@ -13,36 +13,36 @@
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">МОДУЛЬ 2</div>
       <h3 class="anna-title">Алгоритм Анны</h3>
-      <p class="anna-description-main">10-этапный сценарий, по которому наш ИИ-ассистент Анна общается с вашим гостем: от эмпатии и сбора деталей до контроля решения и запроса оценки.</p>
-      <p class="anna-description-secondary"><strong>Ваш контроль:</strong> Мы можем скорректировать тон голоса Анны под ваш бренд (более формальный или более дружелюбный).</p>
+      <p class="anna-description-main">10-этапный сценарий взаимодействия ИИ с клиентом: эмпатия, сбор деталей, классификация, эскалация и контроль решения.</p>
+      <p class="anna-description-secondary"><strong>Адаптация:</strong> Измените тон голоса Анны под ваш бренд (более формальный или более дружелюбный).</p>
       <p class="anna-description-goals anna-step-goals">Каждый недовольный гость чувствует себя услышанным и важным, что превращает его в лояльного клиента.</p>
     </div>
-    
+
     <!-- МОДУЛЬ 3 -->
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">МОДУЛЬ 3</div>
-      <h3 class="anna-title">Скрипты и Шаблоны</h3>
-      <p class="anna-description-main">Готовая библиотека фраз и шаблонов ответов для Анны по каждой категории проблем, основанная на лучших практиках клиентоориентированного сервиса.</p>
-      <p class="anna-description-secondary"><strong>Ваш контроль:</strong> Вы можете отредактировать или утвердить ключевые фразы, чтобы они на 100% соответствовали вашему голосу бренда.</p>
-      <p class="anna-description-goals anna-step-goals">Система говорит с вашими гостями так, как говорили бы вы сами, сохраняя уникальность вашего сервиса.</p>
+      <h3 class="anna-title">Полномочия и ограничения ИИ</h3>
+      <p class="anna-description-main">Правила, что Анна может делать сама (уточнять детали, предлагать стандартные решения), а где требуется ваше участие (решения о крупных компенсациях).</p>
+      <p class="anna-description-secondary"><strong>Адаптация:</strong> Вы проводите черту: где заканчивается автоматизация и начинается ваше человеческое решение.</p>
+      <p class="anna-description-goals anna-step-goals">Система работает автономно, но ключевые решения всегда за вами.</p>
     </div>
     
     <!-- МОДУЛЬ 4 -->
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">МОДУЛЬ 4</div>
-      <h3 class="anna-title">Матрица Эскалации</h3>
-      <p class="anna-description-main">Чёткие правила, кому и в какой ситуации Анна отправляет тикет: мелкая проблема — дежурному тренеру, критическая (например, травма) — лично вам на телефон в течение 5 минут.</p>
-      <p class="anna-description-secondary"><strong>Ваш контроль:</strong> Вы сами определяете, кто за что отвечает и какие ситуации считаются критичными.</p>
-      <p class="anna-description-goals anna-step-goals">Вы не тонете в рутине, но никогда не упустите по-настоящему важную проблему. Полный контроль без микроменеджмента.</p>
+      <h3 class="anna-title">Скрипты и Шаблоны</h3>
+      <p class="anna-description-main">Готовая библиотека фраз и шаблонов ответов для Анны по каждой категории проблем, основанная на лучших практиках клиентоориентированного сервиса.</p>
+      <p class="anna-description-secondary"><strong>Адаптация:</strong> Вы можете отредактировать или утвердить ключевые фразы, чтобы они на 100% соответствовали вашему голосу бренда.</p>
+      <p class="anna-description-goals anna-step-goals">Система говорит с вашими клиентами так, как говорили бы вы сами, сохраняя уникальность вашего сервиса.</p>
     </div>
     
     <!-- МОДУЛЬ 5 -->
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">МОДУЛЬ 5</div>
-      <h3 class="anna-title">Полномочия и Ограничения</h3>
-      <p class="anna-description-main">Правила, что Анна может делать сама (уточнять детали, предлагать стандартные решения), а где требуется ваше участие (решения о крупных компенсациях).</p>
-      <p class="anna-description-secondary"><strong>Ваш контроль:</strong> Вы проводите черту: где заканчивается автоматизация и начинается ваше человеческое решение.</p>
-      <p class="anna-description-goals anna-step-goals">Система работает автономно, но ключевые решения всегда за вами.</p>
+      <h3 class="anna-title">Матрица Эскалации</h3>
+      <p class="anna-description-main">Чёткие правила, кому и в какой ситуации Анна отправляет тикет: мелкая проблема — дежурному тренеру, критическая (например, травма) — лично вам на телефон в течение 5 минут.</p>
+      <p class="anna-description-secondary"><strong>Адаптация:</strong> Определите, кто за что отвечает и какие ситуации считаются критичными.</p>
+      <p class="anna-description-goals anna-step-goals">Вы не тонете в рутине, но никогда не упустите по-настоящему важную проблему. Полный контроль без микроменеджмента.</p>
     </div>
     
     <!-- МОДУЛЬ 6 -->
@@ -50,17 +50,26 @@
       <div class="anna-tariff-badge anna-step">МОДУЛЬ 6</div>
       <h3 class="anna-title">Система Компенсаций</h3>
       <p class="anna-description-main">Логика выдачи бонусов за проблемы: от бесплатного кофе за долгое ожидание до сертификата на следующее посещение за серьёзный сбой.</p>
-      <p class="anna-description-secondary"><strong>Ваш контроль:</strong> Вы устанавливаете правила компенсаций. Система лишь предлагает их в нужный момент.</p>
+      <p class="anna-description-secondary"><strong>Адаптация:</strong> Вы устанавливаете правила компенсаций. Система рекомендует тип и размер компенсации и предлагает в нужный момент.</p>
       <p class="anna-description-goals anna-step-goals">Быстрое и справедливое решение проблемы превращает негатив в позитивный опыт.</p>
     </div>
     
     <!-- МОДУЛЬ 7 -->
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">МОДУЛЬ 7</div>
-      <h3 class="anna-title">Метрики и Отчётность</h3>
+      <h3 class="anna-title">Система Компенсаций</h3>
+      <p class="anna-description-main">Логика выдачи бонусов за проблемы: от бесплатного кофе за долгое ожидание до сертификата на следующее посещение за серьёзный сбой.</p>
+      <p class="anna-description-secondary"><strong>Адаптация:</strong> Вы устанавливаете правила компенсаций. Система лишь предлагает их в нужный момент.</p>
+      <p class="anna-description-goals anna-step-goals">Быстрое и справедливое решение проблемы превращает негатив в позитивный опыт.</p>
+    </div>
+    
+    <!-- МОДУЛЬ 8 -->
+    <div class="anna-brand-card anna-step-card">
+      <div class="anna-tariff-badge anna-step">МОДУЛЬ 8</div>
+      <h3 class="anna-title">Метрики успеха</h3>
       <p class="anna-description-main">Какие показатели мы отслеживаем (SLA по времени ответа, NPS после решения проблемы) и как выглядят ваши еженедельные отчёты.</p>
-      <p class="anna-description-secondary"><strong>Ваш контроль:</strong> Вы можете добавить 1-2 кастомные метрики, важные именно для вашего бизнеса.</p>
-      <p class="anna-description-goals anna-step-goals">Вы видите эффективность системы в реальных цифрах и принимаете решения на основе данных.</p>
+      <p class="anna-description-secondary"><strong>Адаптация:</strong> Добавьте 1-2 кастомные метрики, важные именно для вашего бизнеса.</p>
+      <p class="anna-description-goals anna-step-goals">Вы видите эффективность системы Сигнала в реальных цифрах и принимаете решения на основе данных.</p>
     </div>
   </div>
 </template>
