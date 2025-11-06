@@ -48,7 +48,7 @@ notification: brew
 
 <div align="center">
 
-<br>
+<div style="height: 60px;"></div>
 
 # Технология сервиса в каждом Сигнале.
 
@@ -58,7 +58,7 @@ notification: brew
 
 <div align="center">
 
-<br>
+<div style="height: 60px;"></div>
 
 # Ваш Безупречный Сигнал просто как 1-2-3.
 
@@ -68,7 +68,7 @@ notification: brew
 
 <div align="center">
 
-<br>
+<div style="height: 60px;"></div>
 
 # Забота о клиентах начинается здесь.
 
@@ -78,7 +78,7 @@ notification: brew
 
 <div align="center">
 
-<br>
+<div style="height: 60px;"></div>
 
 # От диалогов к безупречной системе сервиса.
 
