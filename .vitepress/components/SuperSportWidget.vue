@@ -51,15 +51,15 @@ const cafeProfiles = {
 
 // -------------------------
 const establishment = {
-  name: 'supersport',
-  totalReviews: '187',
-  yandex2gis: '4,8',
+  name: 'СуперСпорт',
+  totalReviews: '32',
+  yandex2gis: '4,7',
   yandex2gisPercent: 92,
-  signals: 47,
+  signals: 42,
   signalsPercent: 100,
   branches: [
     { address: 'Тверская, 15', gisUrl: 'https://2gis.ru', yandexUrl: 'https://yandex.ru/maps' },
-    { address: 'Профсоюзная, 84', gisUrl: 'https://2gis.ru', yandexUrl: 'hhttps://yandex.ru/maps' },
+    { address: 'Профсоюзная, 84', gisUrl: 'https://2gis.ru', yandexUrl: 'https://yandex.ru/maps' },
     { address: 'Кутузовский просп., 48', gisUrl: 'https://2gis.ru', yandexUrl: 'https://yandex.ru/maps' }
   ],
 }
