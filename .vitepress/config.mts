@@ -443,7 +443,7 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Для Бизнеса',
       items: [
-        { text: '→ Система Сигнала', link: '/pro' },  
+        { text: '→ Система Сигнала', link: '/pro/index' },  
         { text: 'Радар', link: '/pro/radar' },
         { text: 'Сигнал для кофейни', link: '/pro/coffeehouse' },
         { text: 'Инвестиции в кофейни', link: '/invest/pulse' }
