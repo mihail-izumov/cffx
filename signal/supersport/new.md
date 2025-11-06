@@ -67,7 +67,7 @@ description: Где Начинается Ваш Фитнес
 # Ваш Сигнал — тому, кто решает.
 
 <p>
-  Поможем решить любую проблему с<br class="mobile-break"> <strong><span style="color: #9B7EBD;"> вашим клубом <em>СуперСпорт</em> за 24 часа.</span></strong>
+  Поможем решить любую проблему с<br class="mobile-break"> <strong><span style="color: #9B7EBD;"> <em>вашим клубом СуперСпорт за 24 часа</em>.</span></strong>
 </p>
 
 </div>
