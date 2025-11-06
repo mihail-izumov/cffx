@@ -17,7 +17,7 @@
           href="/pro/customize"
           class="card-link-custom"
         >
-          Запустить Сигнал <br> в ${nowMonth}
+          Настроить Сигнал <br> Сейчас
           <span class="arrow-icon-custom" aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -47,7 +47,7 @@ const cards = [
   },
   {
     title: 'Меняйте правила работы тикетов',
-    description: 'Создавайте из диалогов полезные кейсы, чтобы делать продукт и сервис лучше каждый день.',
+    description: 'Создавайте из диалогов полезные кейсы, чтобы сделать продукт и сервис лучше уже в ${nowMonth}.',
     imgSrc: '/123-ban-delivery.svg',
     imgAlt: 'Меняйте правила работы тикетов'
   },
