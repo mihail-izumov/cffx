@@ -20,6 +20,8 @@ description: Где Начинается Ваш Бизнес
 
 <FitnessTarifs />
 
+<div style="height: 40px;"></div>
+
 <div align="center">
   
 # Диалоги с Анной
@@ -50,6 +52,6 @@ description: Где Начинается Ваш Бизнес
 
 </div>
 
-<div style="height: 30px;"></div>
+<div style="height: 15px;"></div>
 
 <AnalyticsAccordion />
