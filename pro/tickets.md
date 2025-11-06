@@ -44,7 +44,9 @@ description: Где Начинается Ваш Бизнес
 
 <div style="height: 50px;"></div>
 
-# Функционало от и до.
+# Функционально от и до.
+
+<div style="height: 30px;"></div>
 
 </div>
 
