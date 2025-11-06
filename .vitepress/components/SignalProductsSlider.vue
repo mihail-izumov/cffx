@@ -55,7 +55,7 @@ const cafeItems = [
     gradientId: 'gradient-6'
   },
   {
-    name: 'Спецификация',
+    name: 'Цены и спецификация',
     subtitle: '',
     url: '/pro/specs',
     icon: 'M12 20v2 M12 2v2 M17 20v2 M17 2v2 M2 12h2 M2 17h2 M2 7h2 M20 12h2 M20 17h2 M20 7h2 M7 20v2 M7 2v2 M4 4 h16 v16 h-16 z M4 4 a2 2 0 0 1 2 -2 M20 4 a2 2 0 0 0 -2 -2 M4 20 a2 2 0 0 0 2 2 M20 20 a2 2 0 0 1 -2 2 M8 8 h8 v8 h-8 z M8 8 a1 1 0 0 1 1 -1 M16 8 a1 1 0 0 0 -1 -1 M8 16 a1 1 0 0 0 1 1 M16 16 a1 1 0 0 1 -1 1',
