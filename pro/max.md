@@ -41,7 +41,7 @@ notification: brew
 
 <Dialogs3Cards />
 
-<div style="height: 50px;"></div>
+<div style="height: 60px;"></div>
 
 <div align="center">
 
@@ -74,6 +74,8 @@ notification: brew
 Какие метрики считает система, что даёт ежедневная, еженедельная и ежемесячная аналитика, и синхронизация с работой Анны и тикет‑системы.
 
 </div>
+
+<div style="height: 30px;"></div>
 
 <AnalyticsAccordion />
 
