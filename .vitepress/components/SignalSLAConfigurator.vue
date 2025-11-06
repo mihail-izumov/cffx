@@ -257,7 +257,7 @@ watch(()=>state.work_hours.mode,(m)=>{if(m==='extended')openModal('workhours')})
           </label>
           
           <label class="row"><input style="display:none"/><span>Жалобы/мес</span>
-            <input class="range long white" type="range" min="0" max="10" step="0.1" v-model.number="state.company.complaints_pct"/>
+            <input class="range long white" type="range" min="0" max="10" step="1" v-model.number="state.company.complaints_pct"/>
             <span class="inline-value">{{state.company.complaints_pct}}%</span>
           </label>
         </div>
