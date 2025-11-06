@@ -33,15 +33,23 @@ notification: brew
 
 <div align="center">
 
-<div style="height: 50px;"></div>
+<div style="height: 30px;"></div>
 
 # Понимает с полуслова.
+
+<div style="height: 30px;"></div>
 
 </div>
 
 <AnnaQuotes />
 
+<div align="center">
+
+<div style="height: 30px;"></div>
+
 # Собрано в Октябре 2025.
+
+</div>
 
 <AnnaAccordion />
 
