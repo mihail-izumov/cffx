@@ -120,6 +120,7 @@ import LTVFitCalc from '../components/LTVFitCalc.vue'
 import LTVCalcSwitcher from '../components/LTVCalcSwitcher.vue'
 import SignalMaker123 from '../components/SignalMaker123.vue'
 import SignalSLAConfigurator from '../components/SignalSLAConfigurator.vue'
+import DividerCustom from '../components/DividerCustom.vue'
 
 export default {
   extends: DefaultTheme,
@@ -245,5 +246,6 @@ export default {
     app.component('LTVCalcSwitcher', LTVCalcSwitcher)
     app.component('SignalMaker123', SignalMaker123)
     app.component('SignalSLAConfigurator', SignalSLAConfigurator)
+    app.component('DividerCustom', DividerCustom)
   },
 }
