@@ -4,6 +4,10 @@ prev: false
 next: false
 title: Отправьте Сигнал в СуперСпорт
 description: Где Начинается Ваш Фитнес
+head:
+  - - meta
+    - property: "og:image"
+      content: "https://cffx.ru/korzh_og_card.jpg"
 ---
 
 </div>
