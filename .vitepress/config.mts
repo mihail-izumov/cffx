@@ -3,6 +3,10 @@ import pkg from '../package.json' assert { type: 'json' }
 const { version } = pkg
 
 export default defineConfig({
+  build: {
+    chunkSizeWarningLimit: 1000
+  },
+
   title: 'Сигнал',
   appearance: 'force-dark',
   
