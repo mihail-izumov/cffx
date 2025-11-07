@@ -256,7 +256,7 @@ const genderClass = computed(() => {
 });
 
 // ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок с гендерными вариантами
-export const baseSuggestions = {
+const baseSuggestions = {
   female: {
     emotions: {
       initial: ['довольна','восхищена','благодарна','спокойна','удивлена','расстроена','разочарована','недовольна','возмущена'],
