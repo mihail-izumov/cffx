@@ -166,6 +166,7 @@ notification: brew
     padding: 16px 20px;
     gap: 12px;
     border-radius: 20px;
+    box-sizing: border-box;
   }
   
   .checkup-price {
@@ -176,6 +177,7 @@ notification: brew
   .btn-cta {
     width: 100%;
     padding: 12px 24px;
+    box-sizing: border-box; /* Это исправит центрирование */
   }
 }
 </style>
