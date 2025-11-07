@@ -24,7 +24,7 @@ notification: brew
 </p>
 
 <div class="checkup-cta-section">
-  <div class="checkup-price">От ₽65,500/мес</div>
+  <a href="/pro/specs" class="checkup-price" target="_blank" rel="noopener noreferrer">От ₽65,500/мес</a>
   <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
 </div>
 
@@ -110,7 +110,7 @@ notification: brew
 </style>
 
 <style>
-/* Checkup CTA Section - Perfect Single Line */
+/* --- Контейнер блока --- */
 .checkup-cta-section {
   background-color: #2a2a2a;
   padding: 10px 12px 10px 20px;
@@ -132,7 +132,7 @@ notification: brew
   line-height: 1;
 }
 
-/* CTA Button - Same Size, Normal Weight */
+/* --- Кнопка --- */
 .btn-cta {
   background-color: #C5F946;
   color: #000 !important;
@@ -148,6 +148,7 @@ notification: brew
   white-space: nowrap;
   display: inline-block;
   line-height: 1;
+  box-sizing: border-box;
 }
 
 .btn-cta:hover {
@@ -157,7 +158,7 @@ notification: brew
   box-shadow: 0 4px 12px rgba(197, 249, 70, 0.25);
 }
 
-/* Responsive - Full width on mobile */
+/* --- Адаптация для мобильных --- */
 @media (max-width: 767px) {
   .checkup-cta-section {
     display: flex;
@@ -166,18 +167,28 @@ notification: brew
     padding: 16px 20px;
     gap: 12px;
     border-radius: 20px;
+    align-items: center; /* Центрируем дочерние элементы */
     box-sizing: border-box;
   }
   
   .checkup-price {
     font-size: 18px;
     text-align: center;
+    width: 100%;
   }
   
   .btn-cta {
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
     padding: 12px 24px;
-    box-sizing: border-box; /* Это исправит центрирование */
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 18px;
+    line-height: 1.2;
+    white-space: normal; /* Если текст длинный */
   }
 }
 </style>
