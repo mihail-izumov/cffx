@@ -164,12 +164,16 @@ notification: brew
     display: flex;
     width: 100%;
     flex-direction: column;
-    padding: 16px 20px;
+    padding: 16px 20px; /* Было: 16px 20px - перепроверьте! */
     gap: 12px;
     border-radius: 20px;
-    align-items: center; /* Центрируем дочерние элементы */
+    align-items: center;
     box-sizing: border-box;
+    /* Новый стиль: */
+    padding-left: 0 !important; /* Нет отступа слева на мобиле */
+    padding-right: 0 !important;
   }
+}
   
   .checkup-price {
     font-size: 18px;
