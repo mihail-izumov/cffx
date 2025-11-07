@@ -58,7 +58,7 @@
         </div>
         <p class="card-description">50% ваших новых клиентов боятся заходить в зал. Знаем, как это исправить.</p>
         <div class="card-footer">
-          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Тест-драйв</a>
+          <a href="/supersport" target="_blank" rel="noopener noreferrer" class="play-btn">Тест-драйв</a>
         </div>
       </div>
     </div>
