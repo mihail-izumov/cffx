@@ -68,9 +68,9 @@
       <!-- Модальное окно -->
       <div v-if="showInfoModal" class="modal-overlay" @click.self="showInfoModal = false">
         <div class="modal">
-          <div class="modal-title">Ваши отзывы меняют всё.</div>
+          <div class="modal-title">Ваш Сигнал — тому, кто решает.</div>
           <div class="modal-body">
-            Каждый отзыв делает любимую кофейню еще лучше, а Сигнал помогает решить Вашу проблему за 24 часа. Почувствуйте силу настоящих перемен.<br><br>
+            Каждый Сигнал делает ваш любимый клуб еще лучше и помогает решить любую проблему за 24 часа. Почувствуйте силу настоящих перемен.<br><br>
             <a href="https://cffx.ru/signals.html" target="_blank" class="modal-link">Как Работает Сигнал</a>
           </div>
           <div class="modal-footer">
