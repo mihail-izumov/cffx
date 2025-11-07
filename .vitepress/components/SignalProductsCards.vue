@@ -153,10 +153,12 @@
                   {{ point.text }}
                 </div>
               </div>
-              <a :href="currentModal.link" class="pricing-modal-link">
+              <!-- v--- ИЗМЕНЕНИЕ ЗДЕСЬ ---v -->
+              <button @click="navigateAndClose(currentModal.link)" class="pricing-modal-link">
                 Узнать Больше
                 <ArrowRightIcon />
-              </a>
+              </button>
+              <!-- ^--- КОНЕЦ ИЗМЕНЕНИЯ ---^ -->
             </div>
           </div>
         </div>
@@ -167,6 +169,11 @@
 
 <script setup>
 import { h, ref, computed } from 'vue'
+import { useRouter } from 'vitepress'
+
+// v--- ДОБАВЛЕНО ---v
+const router = useRouter()
+// ^--- КОНЕЦ ---^
 
 /* SVG иконки */
 // СТАРАЯ ИКОНКА ДЛЯ КАРТОЧЕК (круглая галочка)
@@ -535,6 +542,13 @@ const closeModal = () => {
   document.body.style.overflow = ''
 }
 
+// v--- ДОБАВЛЕНА НОВАЯ ФУНКЦИЯ ---v
+const navigateAndClose = (url) => {
+  closeModal()
+  router.go(url)
+}
+// ^--- КОНЕЦ НОВОЙ ФУНКЦИИ ---^
+
 const toggleAccordion = (index) => {
   if (openAccordions.value.includes(index)) {
     openAccordions.value = []
@@ -887,6 +901,13 @@ const toggleAccordion = (index) => {
   text-decoration: none !important;
   margin-top: 32px !important;
   transition: color 0.2s ease !important;
+  /* v--- Стили для сброса вида кнопки ---v */
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  /* ^--- Конец стилей ---^ */
 }
 
 .pricing-modal-link:hover {
