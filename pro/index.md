@@ -120,6 +120,8 @@ notification: brew
   gap: 16px;
   width: fit-content;
 }
+
+/* --- Цена/ссылка --- */
 .checkup-price {
   color: #ffffff;
   margin: 0;
@@ -128,7 +130,24 @@ notification: brew
   font-weight: 500;
   white-space: nowrap;
   line-height: 1;
+  text-decoration: none;   /* нет подчеркивания по умолчанию */
+  border-bottom: none;
+  transition: color 0.2s, border-bottom 0.2s;
+  outline: none;
 }
+.checkup-price:hover,
+.checkup-price:focus-visible {
+  text-decoration: underline;   /* или border-bottom: 1.5px solid #C5F946; */
+  /* border-bottom: 1.5px solid #C5F946; */
+}
+.checkup-price:focus,
+.checkup-price:active {
+  outline: none;
+  text-decoration: none;   /* сбрасываем underline при active/focus */
+  border-bottom: none;
+}
+
+/* --- Кнопка --- */
 .btn-cta {
   background-color: #C5F946;
   color: #000 !important;
@@ -153,6 +172,7 @@ notification: brew
   box-shadow: 0 4px 12px rgba(197, 249, 70, 0.25);
 }
 
+/* --- Мобильная адаптация --- */
 @media (max-width: 767px) {
   .checkup-cta-section {
     display: flex;
@@ -162,8 +182,7 @@ notification: brew
     border-radius: 20px;
     align-items: center;
     box-sizing: border-box;
-    /* ГЛАВНЫЙ ОТСТУП! */
-    padding: 16px 18px !important;   /* только здесь! */
+    padding: 16px 18px !important; /* ключ к отступам! */
   }
   .checkup-price {
     font-size: 18px;
@@ -171,7 +190,7 @@ notification: brew
     width: 100%;
   }
   .btn-cta {
-    width: 100%;            /* только 100% ширина — берёт от контейнера */
+    width: 100%;
     max-width: 100%;
     padding: 12px 24px;
     display: block;
@@ -180,7 +199,8 @@ notification: brew
     font-size: 18px;
     line-height: 1.2;
     white-space: normal;
-    margin: 0;              /* margin убираем! */
+    margin: 0;
   }
 }
 </style>
+
