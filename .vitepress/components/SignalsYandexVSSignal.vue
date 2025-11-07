@@ -32,6 +32,18 @@
           <p><strong>Результат за 24 часа</strong></p>
         </div>
       </div>
+
+            <div class="table-row">
+        <div class="cell usual-cell">
+          <span class="mobile-label">Яндекс/2ГИС:</span>
+          <p>Поделиться с другими и наказать</p>
+        </div>
+        <div class="cell smart-cell">
+          <span class="mobile-label">Сигнал:</span>
+          <span class="arrow">→</span>
+          <p><strong>Разобраться и изменить</strong></p>
+        </div>
+      </div>
       
       <div class="table-row">
         <div class="cell usual-cell">
