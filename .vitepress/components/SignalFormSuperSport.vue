@@ -255,10 +255,6 @@ const genderClass = computed(() => {
   return selectedGender.value === 'female' ? 'gender-female' : 'gender-male';
 });
 
-
-<script setup>
-import { computed } from 'vue'
-
 // ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок с гендерными вариантами
 export const baseSuggestions = {
   female: {
