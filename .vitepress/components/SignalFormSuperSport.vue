@@ -229,18 +229,17 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { reactive, ref, computed, onMounted, onUnmounted } from 'vue';
 
-const form = reactive({ 
+const form = reactive({
   coffeeShopAddress: '',
-  emotionalRelease: '', 
-  factualAnalysis: '', 
-  constructiveSuggestions: '', 
-  name: '', 
-  telegramPhone: '', 
-  consent: false 
+  emotionalRelease: '',
+  factualAnalysis: '',
+  constructiveSuggestions: '',
+  name: '',
+  telegramPhone: '',
+  consent: false
 });
-
 const isSubmitting = ref(false);
 const submittedTime = ref('');
 const formSubmitted = ref(false);
@@ -254,7 +253,6 @@ const showInfoModal = ref(false);
 const genderClass = computed(() => {
   return selectedGender.value === 'female' ? 'gender-female' : 'gender-male';
 });
-
 // ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок с гендерными вариантами
 const baseSuggestions = {
   female: {
@@ -407,8 +405,8 @@ const baseSuggestions = {
       'комфортной атмосферой': ['нет шума','удобные диваны','есть где отдохнуть','дружелюбные посетители','чистота везде'],
       'благодарен': ['за решение вопроса','за поддержку новичков','за индивидуальный подход','за помощь на тренировке','за рекомендации'],
       'за решение вопроса': ['вернули деньги','сделали замену','оперативно исправили','пошли навстречу','без лишних вопросов'],
-      'за поддержку новичков': ['показали оборудование','общая вводная тренировка','не было лишних вопросов','без давления','чёткая объяснительная'],
-      'за индивидуальный подход': ['учли мой режим','подобра first тренера','дали рекомендации для моих целей','всё по делу','занятия по графику'],
+      'за поддержка новичков': ['показали оборудование','общая вводная тренировка','не было лишних вопросов','без давления','чёткая объяснительная'],
+      'за индивидуальный подход': ['учли мой режим','подобрали тренера','дали рекомендации для моих целей','всё по делу','занятия по графику'],
       'за помощь на тренировке': ['помогли с техникой','показали ошибку','прекратили опасное упражнение','рассказали про питание','порекомендовали упражнение'],
       'за рекомендации': ['совет по питанию','лучшая программа','подобрали группу','дали контакт врача','рассказали про восстановление'],
       'спокоен': ['всё прошло стабильно','обычная тренировка','без сюрпризов','ничего особенного','всё нормально'],
@@ -468,7 +466,7 @@ const baseSuggestions = {
     'таракан в душе': ['замечен не впервые','жалобы игнорируются','клинер не отреагировал','склад рядом с душем','дрянь на стенах'],
     'очередь на тренажёры': ['жду на кардио больше 10 минут','нет SMS-уведомлений','таймер не срабатывает','админ не управляет очередью','все тренажёры одним списком'],
     'жду на кардио больше 10 минут': ['записывалась заранее','никто не выходит по времени','контроля нет','место занято чужим клиентом','понятие “по записи” не работает'],
-    'таймер не срабатывает': ['лампочка не горит','нет экранов','никто не отслеживает','бесполезная функция','не синхронизировано с приложением']
+    'таймер не срабатывает': ['лампочка не горит','нет экранов','никто не отслеживает','бесполезная функция','не синхронизировано с приложении']
   },
   solutions: {
     initial: ['таймер занятия','электронная очередь','чек-лист уборки','система жалоб','перепланировка зала','замена тренера','тех. поддержка','перерасчёт абонемента','компенсация'],
@@ -499,58 +497,50 @@ const baseSuggestions = {
     'бесплатное занятие': ['запись через приложение','уведомление от администратора','контроль даты','перенос без штрафа','можно подарить другому']
   }
 };
-
 // Объединяем подсказки с учетом гендера
 const suggestions = computed(() => {
   const gender = selectedGender.value;
   return {
     emotions: baseSuggestions[gender].emotions,
-    facts: baseSuggestions[gender].facts,
-    solutions: baseSuggestions[gender].solutions
+    facts: baseSuggestions.facts,
+    solutions: baseSuggestions.solutions
   };
 });
-
 // Текущие подсказки для каждого поля
 const currentSuggestions = reactive({
   emotions: [],
   facts: [],
   solutions: []
 });
-
 // Выбранные подсказки (для построения цепочек)
 const selectedSuggestions = reactive({
   emotions: [],
   facts: [],
   solutions: []
 });
-
 // Счетчики веток для улучшенного разделения текста
 const branchCounters = reactive({
   emotions: 0,
   facts: 0,
   solutions: 0
 });
-
 const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
 const phrasesForQuestion2 = ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'];
 const phrasesForQuestion3 = ['Как бы вы это исправили?', 'Что могло бы предотвратить эту ситуацию?', 'Какое одно изменение сделало бы ваш опыт идеальным?'];
-
 const currentQuestion1 = ref(phrasesForQuestion1[0]);
 const currentQuestion2 = ref(phrasesForQuestion2[0]);
 const currentQuestion3 = ref(phrasesForQuestion3[0]);
-
 let rotationInterval = null;
 let currentQuestionIndex1 = 0;
 let currentQuestionIndex2 = 0;
 let currentQuestionIndex3 = 0;
-
 // Инициализация подсказок при загрузке
 function initializeSuggestions() {
-  currentSuggestions.emotions = [...suggestions.value.emotions.initial];
-  currentSuggestions.facts = [...suggestions.value.facts.initial];
-  currentSuggestions.solutions = [...suggestions.value.solutions.initial];
+  const s = suggestions.value;
+  currentSuggestions.emotions = [...(s.emotions?.initial || [])];
+  currentSuggestions.facts = [...(s.facts?.initial || [])];
+  currentSuggestions.solutions = [...(s.solutions?.initial || [])];
 }
-
 // Обработчик переключения пола
 function onGenderClick(gender) {
   selectedGender.value = gender;
@@ -559,24 +549,26 @@ function onGenderClick(gender) {
   selectedSuggestions.emotions = [];
   branchCounters.emotions = 0;
 }
-
 // Проверка, являются ли текущие подсказки начальными
 function isInitialSuggestions(suggestionType) {
-  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(suggestions.value[suggestionType].initial);
+  const s = suggestions.value;
+  const initial = suggestionType === 'emotions' ? s.emotions.initial 
+                : suggestionType === 'facts' ? s.facts.initial 
+                : s.solutions.initial;
+  return currentSuggestions[suggestionType].length === initial.length;  // Оптимизировано, без JSON
 }
-
 // Сброс подсказок к начальным вариантам
 function resetSuggestions(suggestionType) {
-  currentSuggestions[suggestionType] = [...suggestions.value[suggestionType].initial];
+  const s = suggestions.value;
+  currentSuggestions[suggestionType] = [...(s[suggestionType].initial || [])];
 }
-
 // УЛУЧШЕННАЯ функция выбора подсказки с разделением веток
 function selectSuggestion(fieldName, suggestion, suggestionType) {
   const currentText = form[fieldName].trim();
-  
+ 
   // Определяем, начинается ли новая ветка
   const isNewBranch = isInitialSuggestions(suggestionType);
-  
+ 
   if (currentText) {
     if (isNewBranch) {
       // Новая ветка - добавляем с точкой и заглавной буквы
@@ -591,25 +583,24 @@ function selectSuggestion(fieldName, suggestion, suggestionType) {
     form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
     branchCounters[suggestionType] = 1;
   }
-  
+ 
   // Сохраняем выбранную подсказку
   selectedSuggestions[suggestionType].push(suggestion);
-  
+ 
   // Обновляем доступные подсказки на основе выбора
   updateSuggestions(suggestionType, suggestion);
 }
-
 // Обновление подсказок на основе выбора
 function updateSuggestions(suggestionType, selectedWord) {
-  const nextSuggestions = suggestions.value[suggestionType][selectedWord];
+  const s = suggestions.value;
+  const nextSuggestions = s[suggestionType][selectedWord];
   if (nextSuggestions && nextSuggestions.length > 0) {
     currentSuggestions[suggestionType] = [...nextSuggestions];
   } else {
     // Если нет продолжения цепочки, показываем начальные подсказки
-    currentSuggestions[suggestionType] = [...suggestions.value[suggestionType].initial];
+    currentSuggestions[suggestionType] = [...(s[suggestionType].initial || [])];
   }
 }
-
 function startRotation(questionNum) {
   stopRotation();
   activeRotator.value = questionNum;
@@ -626,26 +617,23 @@ function startRotation(questionNum) {
     }
   }, 3000);
 }
-
 function stopRotation() {
   clearInterval(rotationInterval);
   activeRotator.value = 0;
 }
-
 // ИЗМЕНЕННОЕ УСЛОВИЕ ВАЛИДАЦИИ ФОРМЫ
-const isFormValid = computed(() => 
-  form.coffeeShopAddress.trim() && 
-  (form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim()) && 
-  form.name.trim() && 
-  form.telegramPhone.trim() && 
+const isFormValid = computed(() =>
+  form.coffeeShopAddress.trim() &&
+  (form.emotionalRelease.trim() || form.factualAnalysis.trim() || form.constructiveSuggestions.trim()) &&
+  form.name.trim() &&
+  form.telegramPhone.trim() &&
   form.consent
 );
-
 async function submitForm() {
   if (!isFormValid.value) return;
-  
+ 
   isSubmitting.value = true;
-  
+ 
   const now = new Date();
   const day = String(now.getDate()).padStart(2, '0');
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -654,16 +642,16 @@ async function submitForm() {
   const minutes = String(now.getMinutes()).padStart(2, '0');
   const seconds = String(now.getSeconds()).padStart(2, '0');
   submittedTime.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  
+ 
   // Генерируем уникальный ID клиента (для rate limiting)
   let clientId = localStorage.getItem('signal_client_id');
   if (!clientId) {
     clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now();
     localStorage.setItem('signal_client_id', clientId);
   }
-  
+ 
   const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz-q12RybG6wOSSXlAe89GFu70b9XJustdNg0qDgaOF_0PSZOuOg0ChKbRRFQPccCZs/exec';
-  
+ 
   const formData = new FormData();
   formData.append('referer', window.location.origin);
   formData.append('clientId', clientId);
@@ -676,15 +664,15 @@ async function submitForm() {
   formData.append('emotionalRelease', form.emotionalRelease);
   formData.append('factualAnalysis', form.factualAnalysis);
   formData.append('constructiveSuggestions', form.constructiveSuggestions);
-  
+ 
   try {
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
       body: formData
     });
-    
+   
     const result = await response.json();
-    
+   
     if (result.status === 'success' && result.processed) {
       console.log('✅ Отзыв успешно отправлен');
       formSubmitted.value = true;
@@ -693,7 +681,7 @@ async function submitForm() {
     }
   } catch (error) {
     console.error('❌ Ошибка отправки:', error);
-    
+   
     if (error.message && error.message.includes('много запросов')) {
       alert('Вы отправили слишком много отзывов. Пожалуйста, подождите минуту.');
     } else {
@@ -703,11 +691,10 @@ async function submitForm() {
     isSubmitting.value = false;
   }
 }
-
 onMounted(() => {
-rawTicketNumber.value = String(Math.floor(Math.random() * 900000) + 100000);
-formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3)}`;
-  
+  rawTicketNumber.value = String(Math.floor(Math.random() * 900000) + 100000);
+  formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3)}`;
+ 
   const now = new Date();
   const day = String(now.getDate()).padStart(2, '0');
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -715,16 +702,14 @@ formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketN
   const hours = String(now.getHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
   const seconds = String(now.getSeconds()).padStart(2, '0');
-  
+ 
   currentDate.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  
+ 
   initializeSuggestions();
 });
-
 onUnmounted(() => {
   stopRotation();
 });
-
 </script>
 
 
