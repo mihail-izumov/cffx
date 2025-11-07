@@ -25,7 +25,7 @@ notification: brew
 
 <div class="checkup-cta-section">
   <a href="/pro/specs" class="checkup-price" target="_blank" rel="noopener noreferrer">От ₽65,500/мес</a>
-  <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Ноябре 2025</a>
+  <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Ноябре</a>
 </div>
 
 <DividerCustom />
@@ -110,10 +110,10 @@ notification: brew
 </style>
 
 <style>
-/* --- Базовый контейнер --- */
+/* --- Корневой контейнер (десктоп) --- */
 .checkup-cta-section {
   background-color: #2a2a2a;
-  padding: 10px 12px 10px 20px;   /* Слева 20px — для десктопа */
+  padding: 10px 12px 10px 20px;   /* Слева 20px — вид на десктопе */
   border-radius: 999px;
   margin: 24px 0;
   display: inline-flex;
@@ -133,7 +133,7 @@ notification: brew
   line-height: 1;
 }
 
-/* --- Кнопка --- */
+/* --- Кнопка (общие) --- */
 .btn-cta {
   background-color: #C5F946;
   color: #000 !important;
@@ -159,7 +159,7 @@ notification: brew
   box-shadow: 0 4px 12px rgba(197, 249, 70, 0.25);
 }
 
-/* --- Адаптация для мобильных устройств --- */
+/* --- Мобильная адаптация --- */
 @media (max-width: 767px) {
   .checkup-cta-section {
     display: flex;
@@ -169,7 +169,7 @@ notification: brew
     border-radius: 20px;
     align-items: center;
     box-sizing: border-box;
-    padding: 16px 0 !important;    /* ВАЖНО: нет паддинга слева/справа! */
+    padding: 16px 0 !important;    /* Отступ только сверху/снизу, по бокам нет */
   }
 
   .checkup-price {
@@ -179,12 +179,12 @@ notification: brew
   }
 
   .btn-cta {
-    width: 100%;
-    min-width: 0;
+    width: auto;
     max-width: 100%;
+    min-width: 0;
     padding: 12px 24px;
+    margin: 0 18px; /* Вот нужные вам симметричные отступы слева/справа! */
     display: block;
-    margin: 0 auto;
     text-align: center;
     box-sizing: border-box;
     font-size: 18px;
@@ -193,4 +193,5 @@ notification: brew
   }
 }
 </style>
+
 
