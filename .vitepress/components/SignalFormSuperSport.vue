@@ -513,9 +513,9 @@ emotions: {
 const suggestions = computed(() => {
   const gender = selectedGender.value;
   return {
-    emotions: { ...baseSuggestions[gender].emotions, ...baseSuggestions.common.emotions },
-    facts: baseSuggestions.common.facts,
-    solutions: baseSuggestions.common.solutions
+    emotions: baseSuggestions[gender].emotions,
+    facts: baseSuggestions[gender].facts,
+    solutions: baseSuggestions[gender].solutions
   };
 });
 
