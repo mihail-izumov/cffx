@@ -1,8 +1,12 @@
 ---
 prev: false
 next: false
-title: Новый Сигнал в Корж
+title: Новый Сигнал в СуперСпорт
 description: Где Начинается Ваш Фитнес
+head:
+  - - meta
+    - property: "og:image"
+      content: "https://cffx.ru/korzh_og_card.jpg"
 ---
 <div class="back-button-container">
   <a href="/supersport" class="back-button">
