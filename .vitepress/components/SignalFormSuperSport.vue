@@ -526,7 +526,7 @@ const branchCounters = reactive({
 });
 const phrasesForQuestion1 = ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что расстроило?', 'Что порадовало?'];
 const phrasesForQuestion2 = ['Что именно произошло?', 'Какие детали важны?', 'Опишите факты'];
-const phrasesForQuestion3 = [['Что можно сделать лучше?', 'Как исправить?', 'Ваши предложения?'];
+const phrasesForQuestion3 = ['Что можно сделать лучше?', 'Как исправить?', 'Ваши предложения?'];
 const currentQuestion1 = ref(phrasesForQuestion1[0]);
 const currentQuestion2 = ref(phrasesForQuestion2[0]);
 const currentQuestion3 = ref(phrasesForQuestion3[0]);
