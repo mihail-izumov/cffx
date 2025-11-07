@@ -110,10 +110,10 @@ notification: brew
 </style>
 
 <style>
-/* --- Контейнер блока --- */
+/* --- Базовый контейнер --- */
 .checkup-cta-section {
   background-color: #2a2a2a;
-  padding: 10px 12px 10px 20px;
+  padding: 10px 12px 10px 20px;   /* Слева 20px — для десктопа */
   border-radius: 999px;
   margin: 24px 0;
   display: inline-flex;
@@ -122,6 +122,7 @@ notification: brew
   width: fit-content;
 }
 
+/* --- Цена --- */
 .checkup-price {
   color: #ffffff;
   margin: 0;
@@ -158,29 +159,25 @@ notification: brew
   box-shadow: 0 4px 12px rgba(197, 249, 70, 0.25);
 }
 
-/* --- Адаптация для мобильных --- */
+/* --- Адаптация для мобильных устройств --- */
 @media (max-width: 767px) {
   .checkup-cta-section {
     display: flex;
     width: 100%;
     flex-direction: column;
-    padding: 16px 20px; /* Было: 16px 20px - перепроверьте! */
     gap: 12px;
     border-radius: 20px;
     align-items: center;
     box-sizing: border-box;
-    /* Новый стиль: */
-    padding-left: 0 !important; /* Нет отступа слева на мобиле */
-    padding-right: 0 !important;
+    padding: 16px 0 !important;    /* ВАЖНО: нет паддинга слева/справа! */
   }
-}
-  
+
   .checkup-price {
     font-size: 18px;
     text-align: center;
     width: 100%;
   }
-  
+
   .btn-cta {
     width: 100%;
     min-width: 0;
@@ -192,7 +189,8 @@ notification: brew
     box-sizing: border-box;
     font-size: 18px;
     line-height: 1.2;
-    white-space: normal; /* Если текст длинный */
+    white-space: normal;
   }
 }
 </style>
+
