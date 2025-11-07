@@ -115,7 +115,7 @@
             </div>
           </div>
           
-          <p class="signal-example-hint" v-html="'Пример: «Кофе был <b>холодный</b>, а бариста <b>не обратил внимания</b>»'"></p>
+          <p class="signal-example-hint" v-html="'Пример: «Тренажёр <b>сломан</b>, а администратор <b>не помог</b>»'"></p>
         </div>
         
         <div class="signal-question-block" :class="genderClass" style="--accent-color: #3DDC84;">
@@ -152,7 +152,7 @@
             </div>
           </div>
           
-          <p class="signal-example-hint" v-html="'Пример: «Заказ на два капучино <b>ждал 22 минуты</b>, хотя в кафе был почти один»'"></p>
+          <p class="signal-example-hint" v-html="'Пример: «Тренер опоздал на <b>15 минут</b>, группа ждала у двери»'"></p>
         </div>
         
         <div class="signal-question-block" :class="genderClass" style="--accent-color: #FFB800;">
@@ -189,7 +189,7 @@
             </div>
           </div>
           
-          <p class="signal-example-hint" v-html="'Пример: «Добавить на кассе <b>таймер</b>, чтобы бариста видел <b>время ожидания</b>»'"></p>
+          <p class="signal-example-hint" v-html="'Пример: «Поставить <b>таймер на двери</b>, чтобы опоздания были видны всем»'"></p>
         </div>
       </div>
       
@@ -524,9 +524,9 @@ const branchCounters = reactive({
   facts: 0,
   solutions: 0
 });
-const phrasesForQuestion1 = ['Что вас расстроило сегодня?', 'Какое впечатление осталось после визита?', 'Оправдались ли ваши ожидания?'];
-const phrasesForQuestion2 = ['Что конкретно пошло не так?', 'Опишите факты: что, когда и где произошло.', 'Кто-то из персонала был вовлечен?'];
-const phrasesForQuestion3 = ['Как бы вы это исправили?', 'Что могло бы предотвратить эту ситуацию?', 'Какое одно изменение сделало бы ваш опыт идеальным?'];
+const phrasesForQuestion1 = ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что расстроило?', 'Что порадовало?'];
+const phrasesForQuestion2 = ['Что именно произошло?', 'Какие детали важны?', 'Опишите факты'];
+const phrasesForQuestion3 = [['Что можно сделать лучше?', 'Как исправить?', 'Ваши предложения?'];
 const currentQuestion1 = ref(phrasesForQuestion1[0]);
 const currentQuestion2 = ref(phrasesForQuestion2[0]);
 const currentQuestion3 = ref(phrasesForQuestion3[0]);
