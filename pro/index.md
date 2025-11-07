@@ -110,10 +110,9 @@ notification: brew
 </style>
 
 <style>
-/* --- Десктоп базовый контейнер --- */
 .checkup-cta-section {
   background-color: #2a2a2a;
-  padding: 10px 12px 10px 20px;
+  padding: 10px 12px 10px 20px;   /* десктоп */
   border-radius: 999px;
   margin: 24px 0;
   display: inline-flex;
@@ -121,8 +120,6 @@ notification: brew
   gap: 16px;
   width: fit-content;
 }
-
-/* --- Цена --- */
 .checkup-price {
   color: #ffffff;
   margin: 0;
@@ -132,8 +129,6 @@ notification: brew
   white-space: nowrap;
   line-height: 1;
 }
-
-/* --- Кнопка по умолчанию --- */
 .btn-cta {
   background-color: #C5F946;
   color: #000 !important;
@@ -151,7 +146,6 @@ notification: brew
   line-height: 1;
   box-sizing: border-box;
 }
-
 .btn-cta:hover {
   background-color: #b3e63d;
   transform: translateY(-1px);
@@ -159,7 +153,6 @@ notification: brew
   box-shadow: 0 4px 12px rgba(197, 249, 70, 0.25);
 }
 
-/* --- Мобильная адаптация c гарантированными отступами кнопки --- */
 @media (max-width: 767px) {
   .checkup-cta-section {
     display: flex;
@@ -169,26 +162,25 @@ notification: brew
     border-radius: 20px;
     align-items: center;
     box-sizing: border-box;
-    padding: 16px 0 !important;     /* без паддинга по бокам */
+    /* ГЛАВНЫЙ ОТСТУП! */
+    padding: 16px 18px !important;   /* только здесь! */
   }
-
   .checkup-price {
     font-size: 18px;
     text-align: center;
     width: 100%;
   }
-
   .btn-cta {
-    width: calc(100% - 36px);       /* отступы по 18px с каждой стороны */
+    width: 100%;            /* только 100% ширина — берёт от контейнера */
     max-width: 100%;
     padding: 12px 24px;
     display: block;
-    margin: 0 auto;
     text-align: center;
     box-sizing: border-box;
     font-size: 18px;
     line-height: 1.2;
     white-space: normal;
+    margin: 0;              /* margin убираем! */
   }
 }
 </style>
