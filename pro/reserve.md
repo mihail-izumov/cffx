@@ -30,20 +30,20 @@ description: Настройте сейчас. Измените потом.
 
 <style>
 .responsive-heading {
-  font-size: 65px !important;
+  font-size: 80px !important;
   line-height: 0.9 !important;
 }
 
 @media screen and (max-width: 768px) {
   .responsive-heading {
-    font-size: 65px !important;
+    font-size: 55px !important;
     line-height: 1.1 !important;
   }
 }
 
 @media screen and (max-width: 480px) {
   .responsive-heading {
-    font-size: 50px !important;
+    font-size: 45px !important;
     line-height: 1.1 !important;
   }
 }
