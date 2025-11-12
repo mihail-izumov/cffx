@@ -11,20 +11,20 @@
     <div class="anna-brand-card anna-step-card">
       <h3 class="anna-title">Говорит языком решений</h3>
       <p class="anna-description-main">Ваше «бесит медленное обслуживание» Анна переводит в «оптимизировать время подачи заказов»</p>
-      <p class="anna-description-goals anna-step-goals">Кофейни слушают Анну</p>
+      <p class="anna-description-goals anna-step-goals">Бизнес слушает Анну</p>
     </div>
     
     <!-- СВЯЗИ -->
     <div class="anna-brand-card anna-step-card">
       <h3 class="anna-title">Знает, к кому обратиться</h3>
-      <p class="anna-description-main">Доставляет ваш Сигнал именно тому, кто может всё изменить</p>
+      <p class="anna-description-main">Доставляет Ваш Сигнал именно тому, кто может всё изменить</p>
       <p class="anna-description-goals anna-step-goals">Прямая линия с каждым управляющим</p>
     </div>
     
     <!-- ПАМЯТЬ -->
     <div class="anna-brand-card anna-step-card">
       <h3 class="anna-title">Следит за результатом</h3>
-      <p class="anna-description-main">Помнит каждый ваш сигнал и отслеживает, что с ним происходит</p>
+      <p class="anna-description-main">Помнит каждый ваш Cигнал и отслеживает, что с ним происходит</p>
       <p class="anna-description-goals anna-step-goals">Присылает уведомления, когда всё готово</p>
     </div>
   </div>
