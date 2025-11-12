@@ -10,7 +10,7 @@ description: Настройте сейчас. Измените потом.
 
 <div align="center">
 
-<h2 class="responsive-heading">Настройте сейчас.<br>Измените потом.</h2>
+<h1 class="responsive-heading">Настройте сейчас.<br>Измените потом.</h1>
 
 <br>
 
@@ -28,3 +28,23 @@ description: Настройте сейчас. Измените потом.
 
 <SignalSLAConfigurator />
 
+<style>
+.responsive-heading {
+  font-size: 65px !important;
+  line-height: 0.9 !important;
+}
+
+@media screen and (max-width: 768px) {
+  .responsive-heading {
+    font-size: 65px !important;
+    line-height: 1.1 !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .responsive-heading {
+    font-size: 50px !important;
+    line-height: 1.1 !important;
+  }
+}
+</style>
