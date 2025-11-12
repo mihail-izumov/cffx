@@ -10,7 +10,7 @@ description: Настройте сейчас. Измените потом.
 
 <div align="center">
 
-<h1 class="responsive-heading">Настройте сейчас.<br>Измените потом.</h1>
+<h2 class="responsive-heading">Настройте сейчас.<br>Измените потом.</h2>
 
 <br>
 
