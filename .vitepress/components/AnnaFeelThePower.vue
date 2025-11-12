@@ -4,7 +4,7 @@
       <div class="user-card-content">
         <h3 class="user-card-title">Для Гостя</h3>
         <p class="user-card-description">
-          <strong>Ваши отзывы меняют всё.</strong>
+          <strong>Ваши Сигналы меняют всё.</strong>
         </p>
         <p class="user-card-highlight">
           Каждый Сигнал помогает бизнесу стать лучше уже сегодня.
