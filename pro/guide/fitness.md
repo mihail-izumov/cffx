@@ -1,3 +1,33 @@
+---
+outline: false
+prev: false
+next: false
+title: Сигнал для Фитнеса
+description: Большой гид по экстра-удержанию клиентов
+notification: brew
+---
+
+<SignalProductsSlider />
+
+<div align="center">
+
+<h1 class="responsive-heading">Сигнал<br>для Фитнеса</h1>
+
+<div style="height: 25px;"></div>
+
+<h1>
+  <span>Большой гид </span><br class="mobile-break"><span> по экстра-удержанию клиентов.</span>
+</h1>
+
+<p>
+  <strong>Всё в одном месте: </strong><br class="mobile-break">тикеты в чат, ИИ-ассистент Анна, аналитика и поддержка.
+</p>
+
+<div class="checkup-cta-section">
+  <a href="/pro/specs" class="checkup-price" target="_blank" rel="noopener noreferrer">От ₽65,500/мес</a>
+  <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Ноябре</a>
+</div>
+
 ## Абонементы на посещения: неочевидная логика устойчивого фитнес-бизнеса
 
 Модель фитнеса с малыми группами (6–12 человек) и продажей абонементов по конкретному количеству занятий (например, 6, 8, 12) имеет ряд важных преимуществ перед классическими клубами, где продаются долгосрочные годовые карты. 
