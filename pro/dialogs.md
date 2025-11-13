@@ -40,7 +40,7 @@ notification: brew
 
 </div>
 
-<TestT9Fitness />
+<DialogsTestT9 />
 <DialogsT9 />
 
 <div style="text-align: center; margin: 2rem 0;">
@@ -225,4 +225,3 @@ notification: brew
   }
 }
 </style>
-
