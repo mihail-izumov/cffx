@@ -85,7 +85,7 @@ export default defineConfig({
         html += '</div></div>';
         html += '<div style="margin-top: 24px; text-align: center;">';
         html += '<div style="color: white; font-size: 14px;">Ваш Сигнал – тому, кто решает.</div>';
-        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© Сигнал 2025 • Создано в <a href="https://orxaos.sbs" target="_blank" style="color: inherit; text-decoration: underline;">Orxaos</a></div>';
+        html += '<div style="color: var(--vp-c-text-2); margin-top: 4px; font-size: 14px; text-align: center;">© <a href="https://runscale.ru" target="_blank" style="color: inherit; text-decoration: underline;">Модуль Роста®</a> 2025 • Создано в <a href="https://orxaos.sbs" target="_blank" style="color: inherit; text-decoration: underline;">Orxaos</a></div>';
         return html;
       }
       
