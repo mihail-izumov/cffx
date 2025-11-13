@@ -1,5 +1,4 @@
 ---
-outline: true
 prev: false
 next: false
 title: Сигнал для Фитнеса
