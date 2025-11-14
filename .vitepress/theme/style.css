@@ -140,3 +140,8 @@
   position: relative;
   padding-bottom: 120px;
 }
+
+/* Класс для лаймового выделения текста */
+.lime-text {
+  color: #C5F946;
+}
