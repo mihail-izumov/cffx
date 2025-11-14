@@ -8,5 +8,3 @@ title: Отправьте Умный Отзыв – Тест
 
 <BannerFitGuide />
 
-
-
