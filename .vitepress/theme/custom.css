@@ -100,3 +100,8 @@
 .korzh-badge:hover {
   color: #c5a8f0;
 }
+
+/* Лаймовое выделение текста - работает везде включая заголовки */
+.lime-text {
+  color: #C5F946 !important;
+}
