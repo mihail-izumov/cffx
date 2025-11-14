@@ -2,10 +2,10 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 const notifications = [
   { 
-    text: 'Презентация Сигнала на Фестивале "Культура Кофе 2025".', 
+    text: '<strong>Сигнал для Фитнеса.</strong> Гид по экстра-удержанию клиентов.', 
     hasButton: true,
-    buttonText: 'Смотреть',
-    buttonUrl: '/fest#презентация-сигнала'
+    buttonText: 'Читать',
+    buttonUrl: '/pro/guide/fitness'
   },
     { 
     text: 'Перехват 94% проблем до того, как они попадают в Яндекс.', 
