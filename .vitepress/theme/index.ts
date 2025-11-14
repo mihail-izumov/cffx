@@ -258,6 +258,5 @@ export default {
     app.component('TestT9Fitness', TestT9Fitness)
     app.component('BannerFitGuide', BannerFitGuide)
     
-
   },
 }
