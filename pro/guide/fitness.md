@@ -15,8 +15,12 @@ notification: brew
 <div style="height: 25px;"></div>
 
 <h1>
-  <span>Большой гид </span><br class="mobile-break"><span> по экстра-удержанию клиентов</span>
+  <span>Большой гид <br> по экстра-удержанию клиентов</span>
 </h1>
+
+<p>
+  <span>ВРЕМЯ НА ЧТЕНИЕ: 12 МИН.</span>
+</p>
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
