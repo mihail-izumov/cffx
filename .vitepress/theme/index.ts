@@ -125,6 +125,7 @@ import MaxGrowWithYou3Cards from '../components/MaxGrowWithYou3Cards.vue'
 import SuperSportWidget from '../components/SuperSportWidget.vue'
 import SignalFormSuperSport from '../components/SignalFormSuperSport.vue'
 import TestT9Fitness from '../components/TestT9Fitness.vue'
+import BannerFitGuide from '../components/BannerFitGuide.vue'
 
 export default {
   extends: DefaultTheme,
@@ -255,6 +256,8 @@ export default {
     app.component('SuperSportWidget', SuperSportWidget)
     app.component('SignalFormSuperSport', SignalFormSuperSport)
     app.component('TestT9Fitness', TestT9Fitness)
+    app.component('BannerFitGuide', BannerFitGuide)
+    
   
   },
 }
