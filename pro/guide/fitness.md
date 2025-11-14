@@ -133,9 +133,11 @@ notification: brew
 
 **Главное — считать не «сколько пришло», а «сколько осталось, вернулось и порекомендовало». Так рождается настоящая устойчивость и рост бизнеса.**
 
-<div class="checkup-cta-section">
-  <a href="/pro/specs" class="checkup-price" target="_blank" rel="noopener noreferrer">От ₽65,500/мес</a>
-  <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Ноябре</a>
+<div style="text-align: center;">
+  <div class="checkup-cta-section">
+    <a href="/pro/specs" class="checkup-price" target="_blank" rel="noopener noreferrer">От ₽65,500/мес</a>
+    <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Ноябре</a>
+  </div>
 </div>
 
 <br>
