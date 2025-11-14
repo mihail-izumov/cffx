@@ -26,8 +26,8 @@ notification: brew
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
-    src="/signals-ban.jpg" 
-    alt="Сигнал"
+    src="/signal-where-the-fitness-begins-web.jpg" 
+    alt="Сигнал для Фитнеса"
     style="
       width: 100%;
       max-width: 800px;
