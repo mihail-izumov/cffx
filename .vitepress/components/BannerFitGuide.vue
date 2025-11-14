@@ -7,7 +7,7 @@ const openGuide = () => {
 <template>
   <!-- Десктоп -->
   <div class="promo-block desktop">
-    <img src="/image.png" alt="Пиксельный огонь" class="promo-icon" />
+    <img src="/widget-fitness-icon.svg" alt="Пиксельный огонь" class="promo-icon" />
     <div class="promo-content">
       <div class="promo-title">Экстра-удержание клиентов</div>
       <div class="promo-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
