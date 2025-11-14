@@ -7,10 +7,14 @@ const openGuide = () => {
 <template>
   <!-- Десктоп -->
   <div class="promo-block desktop">
-    <img src="/widget-fitness-icon.svg" alt="Пиксельный огонь" class="promo-icon" />
+    <div class="promo-icon-block">
+      <img src="/widget-fitness-icon.svg" alt="Пиксельный огонь" class="promo-icon" />
+    </div>
     <div class="promo-content">
       <div class="promo-title">Экстра-удержание клиентов</div>
-      <div class="promo-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
+      <div class="promo-subtitle">
+        Неочевидная логика устойчивого фитнес-бизнеса
+      </div>
     </div>
     <button class="promo-btn" @click="openGuide">
       Гид для фитнеса
@@ -19,10 +23,14 @@ const openGuide = () => {
 
   <!-- Мобильная версия -->
   <div class="promo-block mobile">
-    <img src="/widget-fitness-icon.svg" alt="Пиксельный огонь" class="promo-icon" />
+    <div class="promo-icon-block">
+      <img src="/widget-fitness-icon.svg" alt="Пиксельный огонь" class="promo-icon" />
+    </div>
     <div class="promo-content">
       <div class="promo-title">Экстра-удержание клиентов</div>
-      <div class="promo-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
+      <div class="promo-subtitle">
+        Неочевидная логика устойчивого фитнес-бизнеса
+      </div>
     </div>
     <button class="promo-btn" @click="openGuide">
       Гид для фитнеса
@@ -34,81 +42,111 @@ const openGuide = () => {
 .promo-block {
   display: flex;
   align-items: center;
-  background: #222;
+  background: #232323;
   color: #fff;
-  border-radius: 24px;
+  border-radius: 36px;
   font-family: 'Inter', system-ui, sans-serif;
-  margin-bottom: 24px;
+  margin-bottom: 36px;
   width: 100%;
+  box-sizing: border-box;
 }
+
 .promo-block.desktop {
   min-height: 160px;
-  padding: 24px 32px;
+  max-width: 100%;
+  padding: 32px 36px;
   flex-direction: row;
+  box-sizing: border-box;
 }
+
 .promo-block.mobile {
   flex-direction: column;
-  min-height: 120px;
-  padding: 18px 16px;
+  min-height: 160px;
+  padding: 32px 18px;
+  box-sizing: border-box;
 }
+
+.promo-icon-block {
+  width: 96px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  margin-right: 24px;
+  border: 3px solid #dbff46;
+  border-radius: 16px;
+}
+
 .promo-icon {
-  width: 56px;
-  height: 56px;
-  margin-right: 22px;
+  width: 72px;
+  height: 72px;
+  display: block;
+  background: none;
 }
-.promo-block.mobile .promo-icon {
-  margin-bottom: 8px;
-  margin-right: 0;
-}
+
 .promo-content {
   flex: 1;
   min-width: 0;
 }
+
 .promo-title {
-  font-size: 2rem;
+  font-size: 2.4rem;
   font-weight: 700;
-  margin-bottom: 6px;
-  line-height: 1.15;
+  margin-bottom: 12px;
+  line-height: 1.12;
 }
+
 .promo-block.mobile .promo-title {
-  font-size: 1.3rem;
-  text-align: left;
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+  text-align: center;
 }
+
 .promo-subtitle {
-  font-size: 1.12rem;
-  color: #aaa;
+  font-size: 1.16rem;
+  color: #a6a6a6;
   margin-bottom: 0;
 }
+
 .promo-block.mobile .promo-subtitle {
-  font-size: 1rem;
+  font-size: 1.08rem;
+  text-align: center;
 }
+
 .promo-btn {
-  margin-left: 32px;
-  padding: 12px 32px;
-  border: 2px solid #d5ff44;
+  margin-left: 48px;
+  padding: 18px 0;
+  min-width: 320px;
+  border: 3px solid #dbff46;
   background: transparent;
-  border-radius: 16px;
-  color: #d5ff44;
-  font-size: 1.3rem;
+  border-radius: 22px;
+  color: #dbff46;
+  font-size: 1.5rem;
   font-weight: 700;
   cursor: pointer;
   transition: border-color 0.16s, color 0.16s;
+  box-sizing: border-box;
 }
+
 .promo-btn:hover {
-  border-color: #fae800;
-  color: #fae800;
+  border-color: #d2f800;
+  color: #d2f800;
 }
+
 .promo-block.mobile .promo-btn {
   margin-left: 0;
-  margin-top: 18px;
+  margin-top: 24px;
   width: 100%;
-  font-size: 1.12rem;
-  padding: 10px 0;
+  font-size: 1.2rem;
+  padding: 18px 0;
 }
+
 /* Скрытие/показ версий */
 .desktop { display: flex; }
 .mobile { display: none; }
-@media (max-width: 650px) {
+
+@media (max-width: 720px) {
   .desktop { display: none; }
   .mobile { display: flex; }
 }
