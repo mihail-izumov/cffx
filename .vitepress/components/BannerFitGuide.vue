@@ -1,68 +1,66 @@
 <template>
   <div class="fitness-widget">
-    <!-- Desktop Version -->
-    <div class="desktop-layout">
-      <div class="content">
-        <img src="/widget-fitness-icon.svg" alt="Fitness Icon" class="icon" />
-        <div class="text">
-          <h3>Экстра-удержание клиентов</h3>
-          <p>Неочевидная логика устойчивого бизнеса</p>
+    <!-- Desktop -->
+    <a href="/pro/guide/fitness" target="_blank" class="desktop">
+      <div class="desktop-content">
+        <img src="/widget-fitness-icon.svg" alt="Icon" class="icon" />
+        <div class="desktop-text">
+          <h3 class="title">Экстра-удержание клиентов</h3>
+          <p class="subtitle">Неочевидная логика устойчивого бизнеса</p>
         </div>
       </div>
-      <a href="/pro/guide/fitness" target="_blank" class="button">
-        Гид для фитнеса
-      </a>
-    </div>
+      <div class="desktop-button">Гид для фитнеса</div>
+    </a>
 
-    <!-- Mobile Version -->
-    <div class="mobile-layout">
-      <div class="content">
-        <img src="/widget-fitness-icon.svg" alt="Fitness Icon" class="icon" />
-        <div class="text">
-          <h3>Экстра-удержание клиентов</h3>
-          <p>Неочевидная логика устойчивого фитнес-бизнеса</p>
+    <!-- Mobile -->
+    <a href="/pro/guide/fitness" target="_blank" class="mobile">
+      <div class="mobile-top">
+        <img src="/widget-fitness-icon.svg" alt="Icon" class="icon" />
+        <div class="mobile-text">
+          <h3 class="title">Экстра-удержание клиентов</h3>
+          <p class="subtitle">Неочевидная логика устойчивого фитнес-бизнеса</p>
         </div>
       </div>
-      <a href="/pro/guide/fitness" target="_blank" class="button">
-        Гид для фитнеса
-      </a>
-    </div>
+      <div class="mobile-button">Гид для фитнеса</div>
+    </a>
   </div>
 </template>
 
 <script setup>
-// Компонент не требует логики
+// ничего не нужно
 </script>
 
 <style scoped>
+/* -------------------------------------------------
+   Общие стили
+   ------------------------------------------------- */
 .fitness-widget {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #1a1a1a;
-  color: #fff;
+  background: #1a1a1a;
   border-radius: 12px;
   overflow: hidden;
-  max-width: 100%;
-  margin: 0 auto;
 }
 
-.desktop-layout {
+/* убираем любые подчёркивания от VitePress */
+.fitness-widget a {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+/* -------------------------------------------------
+   Desktop (≥ 769px)
+   ------------------------------------------------- */
+.desktop {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 32px;
   height: 160px;
-  background-color: #2d2d2d;
+  padding: 0 32px;
+  background: #2d2d2d;
+  color: #fff;
 }
 
-.mobile-layout {
-  display: none;
-  flex-direction: column;
-  padding: 24px;
-  gap: 16px;
-  background-color: #2d2d2d;
-}
-
-.content {
+.desktop-content {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -74,63 +72,93 @@
   flex-shrink: 0;
 }
 
-.text h3 {
+.desktop-text .title {
   margin: 0;
-  font-size: 24px;
   font-weight: 600;
+  font-size: 24px;
   line-height: 1.2;
+  color: #fff;
 }
 
-.text p {
+.desktop-text .subtitle {
   margin: 4px 0 0;
   font-size: 16px;
-  color: #aaaaaa;
   line-height: 1.4;
+  color: #aaaaaa;
 }
 
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  color: #bfff00;
+.desktop-button {
+  background: #bfff00;
+  color: #1a1a1a;
   font-weight: 600;
   font-size: 18px;
   padding: 12px 24px;
-  border: 2px solid #bfff00;
   border-radius: 8px;
-  text-decoration: none;
-  transition: all 0.2s ease;
   white-space: nowrap;
 }
 
-.button:hover {
-  background-color: #bfff00;
+/* hover без артефактов */
+.desktop:hover .desktop-button {
+  background: #a8e600;
+}
+
+/* -------------------------------------------------
+   Mobile (< 769px)
+   ------------------------------------------------- */
+.mobile {
+  display: none;
+  flex-direction: column;
+  padding: 24px;
+  gap: 16px;
+  background: #2d2d2d;
+  color: #fff;
+}
+
+.mobile-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mobile-text .title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.mobile-text .subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #aaaaaa;
+}
+
+.mobile-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  color: #bfff00;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 14px;
+  border: 2px solid #bfff00;
+  border-radius: 8px;
+}
+
+/* hover без артефактов */
+.mobile:hover .mobile-button {
+  background: #bfff00;
   color: #1a1a1a;
 }
 
-/* Мобильная версия */
+/* -------------------------------------------------
+   Адаптивность
+   ------------------------------------------------- */
 @media (max-width: 768px) {
-  .desktop-layout {
-    display: none;
-  }
-
-  .mobile-layout {
-    display: flex;
-  }
-
-  .text h3 {
-    font-size: 20px;
-  }
-
-  .text p {
-    font-size: 14px;
-  }
-
-  .button {
-    width: 100%;
-    font-size: 16px;
-    padding: 14px;
-  }
+  .desktop { display: none; }
+  .mobile   { display: flex; }
 }
 </style>
