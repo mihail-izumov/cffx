@@ -1,29 +1,29 @@
 <template>
-  <div class="fitness-widget-container">
+  <div class="fw-container">
     <!-- Desktop -->
-    <div class="fitness-widget-desktop">
-      <div class="fitness-widget-desktop-content">
-        <img src="/fitness-icon_ban.svg" alt="Icon" class="fitness-widget-icon" />
-        <div class="fitness-widget-desktop-text">
-          <h3 class="fitness-widget-title">Экстра-удержание клиентов</h3>
-          <p class="fitness-widget-subtitle">Неочевидная логика устойчивого бизнеса</p>
+    <div class="fw-desktop">
+      <div class="fw-desktop-content">
+        <img src="/fitness-icon_ban.svg" alt="Icon" class="fw-icon" />
+        <div class="fw-desktop-text">
+          <h3 class="fw-title">Экстра-удержание клиентов</h3>
+          <p class="fw-subtitle">Неочевидная логика устойчивого бизнеса</p>
         </div>
       </div>
-      <a href="/pro/guide/fitness" target="_blank" class="fitness-widget-button fitness-widget-desktop-button" @click.stop>
+      <a href="/pro/guide/fitness" target="_blank" class="fw-button fw-desktop-btn" @click.stop>
         Гид для фитнеса
       </a>
     </div>
 
     <!-- Mobile -->
-    <div class="fitness-widget-mobile">
-      <div class="fitness-widget-mobile-top">
-        <img src="/fitness-icon_ban.svg" alt="Icon" class="fitness-widget-icon" />
-        <div class="fitness-widget-mobile-text">
-          <h3 class="fitness-widget-title">Экстра-удержание клиентов</h3>
-          <p class="fitness-widget-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</p>
-        </div>
+    <div class="fw-mobile">
+      <div class="fw-mobile-top">
+        <img src="/fitness-icon_ban.svg" alt="Icon" class="fw-icon" />
       </div>
-      <a href="/pro/guide/fitness" target="_blank" class="fitness-widget-button fitness-widget-mobile-button" @click.stop>
+      <div class="fw-mobile-text">
+        <h3 class="fw-title">Экстра-удержание клиентов</h3>
+        <p class="fw-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</p>
+      </div>
+      <a href="/pro/guide/fitness" target="_blank" class="fw-button fw-mobile-btn" @click.stop>
         Гид для фитнеса
       </a>
     </div>
@@ -36,56 +36,62 @@
 
 <style scoped>
 /* -------------------------------------------------
-   Общие стили (изолированные классы для защиты от VitePress)
+   Изоляция от VitePress: уникальные префиксы + !important
    ------------------------------------------------- */
-.fitness-widget-container {
+.fw-container {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #1a1a1a;
   border-radius: 12px;
   overflow: hidden;
+  max-width: 100%;
 }
 
-/* Полностью изолируем ссылку от VitePress стилей */
-.fitness-widget-button {
+/* Полная защита от VitePress */
+.fw-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   text-decoration: none !important;
   color: inherit !important;
   outline: none !important;
   box-shadow: none !important;
   -webkit-tap-highlight-color: transparent !important;
-  border-bottom: none !important;
+  border: none !important;
+  cursor: pointer !important;
 }
 
-.fitness-widget-button::before,
-.fitness-widget-button::after {
+.fw-button::before,
+.fw-button::after {
   content: none !important;
 }
 
 /* -------------------------------------------------
    Desktop (≥ 769px)
    ------------------------------------------------- */
-.fitness-widget-desktop {
+.fw-desktop {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 120px; /* Уменьшена высота для соответствия отступам */
-  padding: 0 24px;
+  height: 100px;
+  padding: 0 16px;
   background: #2d2d2d;
   color: #fff;
 }
 
-.fitness-widget-desktop-content {
+.fw-desktop-content {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
-.fitness-widget-icon {
-  width: 64px; /* Увеличен размер для соответствия отступам */
-  height: 64px;
+.fw-icon {
+  width: 56px;
+  height: 56px;
+  margin: 8px 0;
   flex-shrink: 0;
 }
 
-.fitness-widget-desktop-text .fitness-widget-title {
+.fw-desktop-text .fw-title {
   margin: 0;
   font-weight: 600;
   font-size: 24px;
@@ -93,87 +99,87 @@
   color: #fff;
 }
 
-.fitness-widget-desktop-text .fitness-widget-subtitle {
+.fw-desktop-text .fw-subtitle {
+  margin: 2px 0 0;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #aaaaaa;
+}
+
+.fw-desktop-btn {
+  background: transparent;
+  color: #bfff00;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 8px 20px;
+  border: 2px solid #bfff00;
+  border-radius: 8px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.fw-desktop-btn:hover {
+  background: #bfff00;
+  color: #1a1a1a;
+}
+
+/* -------------------------------------------------
+   Mobile (< 769px)
+   ------------------------------------------------- */
+.fw-mobile {
+  display: none;
+  flex-direction: column;
+  padding: 16px;
+  gap: 12px;
+  background: #2d2d2d;
+  color: #fff;
+}
+
+.fw-mobile-top {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.fw-mobile-text {
+  text-align: left;
+}
+
+.fw-mobile-text .fw-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.fw-mobile-text .fw-subtitle {
   margin: 4px 0 0;
   font-size: 16px;
   line-height: 1.4;
   color: #aaaaaa;
 }
 
-.fitness-widget-desktop-button {
-  background: transparent;
-  color: #bfff00;
-  font-weight: 600;
-  font-size: 18px;
-  padding: 12px 24px;
-  border: 2px solid #bfff00;
-  border-radius: 8px;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-}
-
-.fitness-widget-desktop-button:hover {
+.fw-mobile-btn {
   background: #bfff00;
-  color: #1a1a1a; /* Тёмный цвет текста при hover */
-}
-
-/* -------------------------------------------------
-   Mobile (< 769px)
-   ------------------------------------------------- */
-.fitness-widget-mobile {
-  display: none;
-  flex-direction: column;
-  padding: 24px;
-  gap: 16px;
-  background: #2d2d2d;
-  color: #fff;
-}
-
-.fitness-widget-mobile-top {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.fitness-widget-mobile-text .fitness-widget-title {
-  margin: 0;
-  font-weight: 600;
-  font-size: 24px; /* Один в один с десктопом */
-  line-height: 1.2;
-  color: #fff;
-}
-
-.fitness-widget-mobile-text .fitness-widget-subtitle {
-  margin: 4px 0 0;
-  font-size: 16px; /* Один в один с десктопом */
-  line-height: 1.4;
-  color: #aaaaaa;
-}
-
-.fitness-widget-mobile-button {
-  background: transparent;
-  color: #bfff00;
+  color: #1a1a1a;
   font-weight: 600;
   font-size: 18px;
-  padding: 12px 24px;
-  border: 2px solid #bfff00;
+  padding: 12px;
   border-radius: 8px;
-  white-space: nowrap;
-  transition: all 0.2s ease;
   width: 100%;
-  text-align: center;
+  transition: background 0.2s ease;
 }
 
-.fitness-widget-mobile-button:hover {
-  background: #bfff00;
-  color: #1a1a1a; /* Тёмный цвет текста при hover */
+.fw-mobile-btn:hover {
+  background: #a8e600;
+  color: #1a1a1a;
 }
 
 /* -------------------------------------------------
    Адаптивность
    ------------------------------------------------- */
 @media (max-width: 768px) {
-  .fitness-widget-desktop { display: none; }
-  .fitness-widget-mobile   { display: flex; }
+  .fw-desktop { display: none; }
+  .fw-mobile   { display: flex; }
 }
 </style>
