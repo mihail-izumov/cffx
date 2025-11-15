@@ -19,8 +19,12 @@
       <div class="mobile-top">
         <img src="/fitness-icon_ban.svg" alt="" class="icon" />
       </div>
-      <div class="mobile-title">Экстра-удержание<br><span>клиентов</span></div>
-      <div class="mobile-subtitle">Неочевидная логика устойчивого<br>фитнес-бизнеса</div>
+      <div class="mobile-title">
+        Экстра-удержание<br><span>клиентов</span>
+      </div>
+      <div class="mobile-subtitle">
+        Неочевидная логика устойчивого<br>фитнес-бизнеса
+      </div>
       <a href="/pro/guide/fitness" target="_blank" class="btn mobile-btn">
         Гид для фитнеса
       </a>
@@ -29,7 +33,7 @@
 </template>
 
 <script setup>
-
+// ничего не нужно
 </script>
 
 <style scoped>
@@ -40,8 +44,7 @@
   overflow: hidden;
 }
 
-/* УБИВАЕМ ВСЕ АРТЕФАКТЫ VITEPRESS РАЗ И НАВСЕГДА */
-.fitness-widget a */
+/* Полностью убираем все артефакты VitePress */
 .fitness-widget a {
   text-decoration: none !important;
   outline: none !important;
@@ -60,7 +63,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 124px; /* именно такая высота на твоём скриншоте */
+  height: 124px;
   padding: 0 28px;
   background: #2d2d2d;
   color: #fff;
@@ -83,6 +86,7 @@
   font-weight: 600;
   font-size: 26px;
   line-height: 1.2;
+  color: #fff;
 }
 
 .subtitle {
