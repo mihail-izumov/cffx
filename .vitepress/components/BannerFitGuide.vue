@@ -16,12 +16,12 @@
 
     <!-- Mobile -->
     <div class="fw-mobile">
-      <div class="fw-mobile-top">
+      <div class="fw-mobile-content">
         <img src="/fitness-icon_ban.svg" alt="Icon" class="fw-icon" />
-      </div>
-      <div class="fw-mobile-text">
-        <h3 class="fw-title">Экстра-удержание клиентов</h3>
-        <p class="fw-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</p>
+        <div class="fw-mobile-text">
+          <h3 class="fw-title">Экстра-удержание клиентов</h3>
+          <p class="fw-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</p>
+        </div>
       </div>
       <a href="/pro/guide/fitness" target="_blank" class="fw-button fw-mobile-btn" @click.stop>
         Гид для фитнеса
@@ -36,7 +36,7 @@
 
 <style scoped>
 /* -------------------------------------------------
-   Изоляция от VitePress: уникальные префиксы + !important
+   Изоляция от VitePress
    ------------------------------------------------- */
 .fw-container {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -46,7 +46,6 @@
   max-width: 100%;
 }
 
-/* Полная защита от VitePress */
 .fw-button {
   display: inline-flex !important;
   align-items: center !important;
@@ -61,19 +60,17 @@
 }
 
 .fw-button::before,
-.fw-button::after {
-  content: none !important;
-}
+.fw-button::after { content: none !important; }
 
 /* -------------------------------------------------
-   Desktop (≥ 769px)
+   Desktop
    ------------------------------------------------- */
 .fw-desktop {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 100px;
-  padding: 0 16px;
+  height: 88px;
+  padding: 0 20px;
   background: #2d2d2d;
   color: #fff;
 }
@@ -81,13 +78,12 @@
 .fw-desktop-content {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 .fw-icon {
-  width: 56px;
-  height: 56px;
-  margin: 8px 0;
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
 }
 
@@ -100,47 +96,47 @@
 }
 
 .fw-desktop-text .fw-subtitle {
-  margin: 2px 0 0;
+  margin: 4px 0 0;
   font-size: 16px;
   line-height: 1.4;
   color: #aaaaaa;
 }
 
 .fw-desktop-btn {
-  background: transparent;
-  color: #bfff00;
+  background: #bfff00;
+  color: #1a1a1a;
   font-weight: 600;
   font-size: 18px;
-  padding: 8px 20px;
-  border: 2px solid #bfff00;
+  padding: 10px 24px;
   border-radius: 8px;
   white-space: nowrap;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .fw-desktop-btn:hover {
-  background: #bfff00;
-  color: #1a1a1a;
+  background: #a8e600;
 }
 
 /* -------------------------------------------------
-   Mobile (< 769px)
+   Mobile
    ------------------------------------------------- */
 .fw-mobile {
   display: none;
   flex-direction: column;
-  padding: 16px;
-  gap: 12px;
+  padding: 20px;
+  gap: 16px;
   background: #2d2d2d;
   color: #fff;
 }
 
-.fw-mobile-top {
+.fw-mobile-content {
   display: flex;
-  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .fw-mobile-text {
+  flex: 1;
   text-align: left;
 }
 
@@ -164,7 +160,7 @@
   color: #1a1a1a;
   font-weight: 600;
   font-size: 18px;
-  padding: 12px;
+  padding: 14px;
   border-radius: 8px;
   width: 100%;
   transition: background 0.2s ease;
@@ -172,7 +168,6 @@
 
 .fw-mobile-btn:hover {
   background: #a8e600;
-  color: #1a1a1a;
 }
 
 /* -------------------------------------------------
