@@ -8,7 +8,7 @@ const openGuide = () => {
   <!-- Десктоп -->
   <div class="promo-block desktop">
     <div class="promo-icon-block">
-      <img src="/widget-fitness-icon.svg" alt="Пиксельный огонь" class="promo-icon" />
+      <img src="/widget-fitness-icon.svg" alt="Огонь" class="promo-icon" />
     </div>
     <div class="promo-content">
       <div class="promo-title">Экстра-удержание клиентов</div>
@@ -24,7 +24,7 @@ const openGuide = () => {
   <!-- Мобильная версия -->
   <div class="promo-block mobile">
     <div class="promo-icon-block">
-      <img src="/widget-fitness-icon.svg" alt="Пиксельный огонь" class="promo-icon" />
+      <img src="/widget-fitness-icon.svg" alt="Огонь" class="promo-icon" />
     </div>
     <div class="promo-content">
       <div class="promo-title">Экстра-удержание клиентов</div>
@@ -43,110 +43,94 @@ const openGuide = () => {
   display: flex;
   align-items: center;
   background: #232323;
-  color: #fff;
-  border-radius: 36px;
-  font-family: 'Inter', system-ui, sans-serif;
-  margin-bottom: 36px;
+  border-radius: 28px;
   width: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
   box-sizing: border-box;
+  color: #fff;
 }
-
 .promo-block.desktop {
   min-height: 160px;
   max-width: 100%;
-  padding: 32px 36px;
+  padding: 16px 32px;
   flex-direction: row;
-  box-sizing: border-box;
 }
-
 .promo-block.mobile {
   flex-direction: column;
-  min-height: 160px;
-  padding: 32px 18px;
-  box-sizing: border-box;
+  min-height: 156px;
+  padding: 18px 12px 24px 12px;
 }
-
 .promo-icon-block {
-  width: 96px;
-  height: 96px;
+  width: 98px;
+  height: 98px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: none;
-  margin-right: 24px;
-  border: 3px solid #dbff46;
   border-radius: 16px;
+  border: 2.8px solid #d5ff44;
+  margin-right: 18px;
+  margin-bottom: 0;
 }
-
+.promo-block.mobile .promo-icon-block {
+  margin-right: 0;
+  margin-bottom: 10px;
+  align-self: flex-start;
+}
 .promo-icon {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   display: block;
-  background: none;
 }
-
 .promo-content {
   flex: 1;
   min-width: 0;
 }
-
 .promo-title {
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 12px;
-  line-height: 1.12;
+  white-space: nowrap;
+  margin-bottom: 7px;
+  line-height: 1.16;
 }
-
-.promo-block.mobile .promo-title {
-  font-size: 1.6rem;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
 .promo-subtitle {
-  font-size: 1.16rem;
-  color: #a6a6a6;
+  font-size: 1.1rem;
+  color: #acacac;
+  white-space: nowrap;
   margin-bottom: 0;
 }
-
+.promo-block.mobile .promo-title,
 .promo-block.mobile .promo-subtitle {
-  font-size: 1.08rem;
-  text-align: center;
+  text-align: left;
 }
-
 .promo-btn {
-  margin-left: 48px;
-  padding: 18px 0;
-  min-width: 320px;
-  border: 3px solid #dbff46;
+  margin-left: 24px;
+  padding: 13px 38px;
+  border: 2.5px solid #d5ff44;
   background: transparent;
-  border-radius: 22px;
-  color: #dbff46;
-  font-size: 1.5rem;
+  border-radius: 17px;
+  color: #d5ff44;
+  font-size: 1.37rem;
   font-weight: 700;
   cursor: pointer;
   transition: border-color 0.16s, color 0.16s;
   box-sizing: border-box;
 }
-
 .promo-btn:hover {
-  border-color: #d2f800;
-  color: #d2f800;
+  border-color: #f6ff44;
+  color: #f6ff44;
 }
-
 .promo-block.mobile .promo-btn {
   margin-left: 0;
-  margin-top: 24px;
+  margin-top: 22px;
   width: 100%;
-  font-size: 1.2rem;
-  padding: 18px 0;
+  font-size: 1.17rem;
+  padding: 12px 0;
 }
-
-/* Скрытие/показ версий */
+/* Адаптация для мобильного */
 .desktop { display: flex; }
 .mobile { display: none; }
-
-@media (max-width: 720px) {
+@media (max-width: 650px) {
   .desktop { display: none; }
   .mobile { display: flex; }
 }
