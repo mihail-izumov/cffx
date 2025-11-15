@@ -1,29 +1,29 @@
 <template>
-  <div class="fitness-widget">
+  <div class="fitness-widget-container">
     <!-- Desktop -->
-    <div class="desktop">
-      <div class="desktop-content">
-        <img src="/fitness-icon_ban.svg" alt="Icon" class="icon" />
-        <div class="desktop-text">
-          <h3 class="title">Экстра-удержание клиентов</h3>
-          <p class="subtitle">Неочевидная логика устойчивого бизнеса</p>
+    <div class="fitness-widget-desktop">
+      <div class="fitness-widget-desktop-content">
+        <img src="/fitness-icon_ban.svg" alt="Icon" class="fitness-widget-icon" />
+        <div class="fitness-widget-desktop-text">
+          <h3 class="fitness-widget-title">Экстра-удержание клиентов</h3>
+          <p class="fitness-widget-subtitle">Неочевидная логика устойчивого бизнеса</p>
         </div>
       </div>
-      <a href="/pro/guide/fitness" target="_blank" class="button desktop-button" @click.stop>
+      <a href="/pro/guide/fitness" target="_blank" class="fitness-widget-button fitness-widget-desktop-button" @click.stop>
         Гид для фитнеса
       </a>
     </div>
 
     <!-- Mobile -->
-    <div class="mobile">
-      <div class="mobile-top">
-        <img src="/fitness-icon_ban.svg" alt="Icon" class="icon" />
-        <div class="mobile-text">
-          <h3 class="title">Экстра-удержание клиентов</h3>
-          <p class="subtitle">Неочевидная логика устойчивого фитнес-бизнеса</p>
+    <div class="fitness-widget-mobile">
+      <div class="fitness-widget-mobile-top">
+        <img src="/fitness-icon_ban.svg" alt="Icon" class="fitness-widget-icon" />
+        <div class="fitness-widget-mobile-text">
+          <h3 class="fitness-widget-title">Экстра-удержание клиентов</h3>
+          <p class="fitness-widget-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</p>
         </div>
       </div>
-      <a href="/pro/guide/fitness" target="_blank" class="button mobile-button" @click.stop>
+      <a href="/pro/guide/fitness" target="_blank" class="fitness-widget-button fitness-widget-mobile-button" @click.stop>
         Гид для фитнеса
       </a>
     </div>
@@ -36,56 +36,56 @@
 
 <style scoped>
 /* -------------------------------------------------
-   Общие стили
+   Общие стили (изолированные классы для защиты от VitePress)
    ------------------------------------------------- */
-.fitness-widget {
+.fitness-widget-container {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #1a1a1a;
   border-radius: 12px;
   overflow: hidden;
 }
 
-/* Полностью убираем артефакты VitePress: подчёркивание, цвет, outline */
-.fitness-widget a {
+/* Полностью изолируем ссылку от VitePress стилей */
+.fitness-widget-button {
   text-decoration: none !important;
   color: inherit !important;
   outline: none !important;
   box-shadow: none !important;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent !important;
+  border-bottom: none !important;
 }
 
-/* Убираем любые возможные hover-эффекты от VitePress */
-.fitness-widget a::before,
-.fitness-widget a::after {
+.fitness-widget-button::before,
+.fitness-widget-button::after {
   content: none !important;
 }
 
 /* -------------------------------------------------
    Desktop (≥ 769px)
    ------------------------------------------------- */
-.desktop {
+.fitness-widget-desktop {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 160px;
-  padding: 0 32px;
+  height: 120px; /* Уменьшена высота для соответствия отступам */
+  padding: 0 24px;
   background: #2d2d2d;
   color: #fff;
 }
 
-.desktop-content {
+.fitness-widget-desktop-content {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-.icon {
-  width: 48px;
-  height: 48px;
+.fitness-widget-icon {
+  width: 64px; /* Увеличен размер для соответствия отступам */
+  height: 64px;
   flex-shrink: 0;
 }
 
-.desktop-text .title {
+.fitness-widget-desktop-text .fitness-widget-title {
   margin: 0;
   font-weight: 600;
   font-size: 24px;
@@ -93,32 +93,34 @@
   color: #fff;
 }
 
-.desktop-text .subtitle {
+.fitness-widget-desktop-text .fitness-widget-subtitle {
   margin: 4px 0 0;
   font-size: 16px;
   line-height: 1.4;
   color: #aaaaaa;
 }
 
-.desktop-button {
-  background: #bfff00;
-  color: #1a1a1a;
+.fitness-widget-desktop-button {
+  background: transparent;
+  color: #bfff00;
   font-weight: 600;
   font-size: 18px;
   padding: 12px 24px;
+  border: 2px solid #bfff00;
   border-radius: 8px;
   white-space: nowrap;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.desktop-button:hover {
-  background: #a8e600;
+.fitness-widget-desktop-button:hover {
+  background: #bfff00;
+  color: #1a1a1a; /* Тёмный цвет текста при hover */
 }
 
 /* -------------------------------------------------
    Mobile (< 769px)
    ------------------------------------------------- */
-.mobile {
+.fitness-widget-mobile {
   display: none;
   flex-direction: column;
   padding: 24px;
@@ -127,52 +129,51 @@
   color: #fff;
 }
 
-.mobile-top {
+.fitness-widget-mobile-top {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-.mobile-text .title {
+.fitness-widget-mobile-text .fitness-widget-title {
   margin: 0;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 24px; /* Один в один с десктопом */
   line-height: 1.2;
   color: #fff;
 }
 
-.mobile-text .subtitle {
+.fitness-widget-mobile-text .fitness-widget-subtitle {
   margin: 4px 0 0;
-  font-size: 14px;
+  font-size: 16px; /* Один в один с десктопом */
   line-height: 1.4;
   color: #aaaaaa;
 }
 
-.mobile-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.fitness-widget-mobile-button {
   background: transparent;
   color: #bfff00;
   font-weight: 600;
-  font-size: 16px;
-  padding: 14px;
+  font-size: 18px;
+  padding: 12px 24px;
   border: 2px solid #bfff00;
   border-radius: 8px;
+  white-space: nowrap;
   transition: all 0.2s ease;
   width: 100%;
+  text-align: center;
 }
 
-.mobile-button:hover {
+.fitness-widget-mobile-button:hover {
   background: #bfff00;
-  color: #1a1a1a;
+  color: #1a1a1a; /* Тёмный цвет текста при hover */
 }
 
 /* -------------------------------------------------
    Адаптивность
    ------------------------------------------------- */
 @media (max-width: 768px) {
-  .desktop { display: none; }
-  .mobile   { display: flex; }
+  .fitness-widget-desktop { display: none; }
+  .fitness-widget-mobile   { display: flex; }
 }
 </style>
