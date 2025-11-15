@@ -3,13 +3,13 @@
     <!-- Desktop -->
     <div class="desktop">
       <div class="desktop-content">
-        <img src="/widget-fitness-icon.svg" alt="Icon" class="icon" />
+        <img src="/fitness-icon_ban.svg" alt="Icon" class="icon" />
         <div class="desktop-text">
           <h3 class="title">Экстра-удержание клиентов</h3>
           <p class="subtitle">Неочевидная логика устойчивого бизнеса</p>
         </div>
       </div>
-      <a href="/pro/guide/fitness" target="_blank" class="button desktop-button">
+      <a href="/pro/guide/fitness" target="_blank" class="button desktop-button" @click.stop>
         Гид для фитнеса
       </a>
     </div>
@@ -17,13 +17,13 @@
     <!-- Mobile -->
     <div class="mobile">
       <div class="mobile-top">
-        <img src="/widget-fitness-icon.svg" alt="Icon" class="icon" />
+        <img src="/fitness-icon_ban.svg" alt="Icon" class="icon" />
         <div class="mobile-text">
           <h3 class="title">Экстра-удержание клиентов</h3>
           <p class="subtitle">Неочевидная логика устойчивого фитнес-бизнеса</p>
         </div>
       </div>
-      <a href="/pro/guide/fitness" target="_blank" class="button mobile-button">
+      <a href="/pro/guide/fitness" target="_blank" class="button mobile-button" @click.stop>
         Гид для фитнеса
       </a>
     </div>
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-// no logic needed
+// no logic
 </script>
 
 <style scoped>
@@ -45,11 +45,19 @@
   overflow: hidden;
 }
 
-/* Убираем любые подчёркивания и артефакты VitePress */
+/* Полностью убираем артефакты VitePress: подчёркивание, цвет, outline */
 .fitness-widget a {
   text-decoration: none !important;
   color: inherit !important;
   outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Убираем любые возможные hover-эффекты от VitePress */
+.fitness-widget a::before,
+.fitness-widget a::after {
+  content: none !important;
 }
 
 /* -------------------------------------------------
@@ -68,28 +76,27 @@
 .desktop-content {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
 }
 
 .icon {
-  width: 115px;
-  height: 115px;
-  margin: 25px 0; /* 25px сверху и снизу */
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
 }
 
 .desktop-text .title {
   margin: 0;
   font-weight: 600;
-  font-size: 42px;
+  font-size: 24px;
   line-height: 1.2;
   color: #fff;
 }
 
 .desktop-text .subtitle {
-  margin: 8px 0 0;
-  font-size: 32px;
-  line-height: 1.2;
+  margin: 4px 0 0;
+  font-size: 16px;
+  line-height: 1.4;
   color: #aaaaaa;
 }
 
@@ -98,7 +105,7 @@
   color: #1a1a1a;
   font-weight: 600;
   font-size: 18px;
-  padding: 12px 32px;
+  padding: 12px 24px;
   border-radius: 8px;
   white-space: nowrap;
   transition: background 0.2s ease;
@@ -114,32 +121,30 @@
 .mobile {
   display: none;
   flex-direction: column;
-  height: 380px;
-  padding: 32px 24px;
-  gap: 32px;
+  padding: 24px;
+  gap: 16px;
   background: #2d2d2d;
   color: #fff;
-  justify-content: space-between;
 }
 
 .mobile-top {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
 }
 
 .mobile-text .title {
   margin: 0;
   font-weight: 600;
-  font-size: 42px;
+  font-size: 20px;
   line-height: 1.2;
   color: #fff;
 }
 
 .mobile-text .subtitle {
-  margin: 8px 0 0;
-  font-size: 32px;
-  line-height: 1.2;
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.4;
   color: #aaaaaa;
 }
 
@@ -147,18 +152,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #bfff00;
-  color: #1a1a1a;
+  background: transparent;
+  color: #bfff00;
   font-weight: 600;
-  font-size: 18px;
-  padding: 16px;
+  font-size: 16px;
+  padding: 14px;
+  border: 2px solid #bfff00;
   border-radius: 8px;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
   width: 100%;
 }
 
 .mobile-button:hover {
-  background: #a8e600;
+  background: #bfff00;
+  color: #1a1a1a;
 }
 
 /* -------------------------------------------------
