@@ -1,7 +1,7 @@
 <template>
   <div class="fitness-widget">
     <!-- Desktop -->
-    <a href="/pro/guide/fitness" target="_blank" class="desktop">
+    <div class="desktop">
       <div class="desktop-content">
         <img src="/widget-fitness-icon.svg" alt="Icon" class="icon" />
         <div class="desktop-text">
@@ -9,11 +9,13 @@
           <p class="subtitle">Неочевидная логика устойчивого бизнеса</p>
         </div>
       </div>
-      <div class="desktop-button">Гид для фитнеса</div>
-    </a>
+      <a href="/pro/guide/fitness" target="_blank" class="button desktop-button">
+        Гид для фитнеса
+      </a>
+    </div>
 
     <!-- Mobile -->
-    <a href="/pro/guide/fitness" target="_blank" class="mobile">
+    <div class="mobile">
       <div class="mobile-top">
         <img src="/widget-fitness-icon.svg" alt="Icon" class="icon" />
         <div class="mobile-text">
@@ -21,13 +23,15 @@
           <p class="subtitle">Неочевидная логика устойчивого фитнес-бизнеса</p>
         </div>
       </div>
-      <div class="mobile-button">Гид для фитнеса</div>
-    </a>
+      <a href="/pro/guide/fitness" target="_blank" class="button mobile-button">
+        Гид для фитнеса
+      </a>
+    </div>
   </div>
 </template>
 
 <script setup>
-// ничего не нужно
+// no logic needed
 </script>
 
 <style scoped>
@@ -41,10 +45,11 @@
   overflow: hidden;
 }
 
-/* убираем любые подчёркивания от VitePress */
+/* Убираем любые подчёркивания и артефакты VitePress */
 .fitness-widget a {
   text-decoration: none !important;
   color: inherit !important;
+  outline: none !important;
 }
 
 /* -------------------------------------------------
@@ -63,27 +68,28 @@
 .desktop-content {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
 }
 
 .icon {
-  width: 48px;
-  height: 48px;
+  width: 115px;
+  height: 115px;
+  margin: 25px 0; /* 25px сверху и снизу */
   flex-shrink: 0;
 }
 
 .desktop-text .title {
   margin: 0;
   font-weight: 600;
-  font-size: 24px;
+  font-size: 42px;
   line-height: 1.2;
   color: #fff;
 }
 
 .desktop-text .subtitle {
-  margin: 4px 0 0;
-  font-size: 16px;
-  line-height: 1.4;
+  margin: 8px 0 0;
+  font-size: 32px;
+  line-height: 1.2;
   color: #aaaaaa;
 }
 
@@ -92,13 +98,13 @@
   color: #1a1a1a;
   font-weight: 600;
   font-size: 18px;
-  padding: 12px 24px;
+  padding: 12px 32px;
   border-radius: 8px;
   white-space: nowrap;
+  transition: background 0.2s ease;
 }
 
-/* hover без артефактов */
-.desktop:hover .desktop-button {
+.desktop-button:hover {
   background: #a8e600;
 }
 
@@ -108,30 +114,32 @@
 .mobile {
   display: none;
   flex-direction: column;
-  padding: 24px;
-  gap: 16px;
+  height: 380px;
+  padding: 32px 24px;
+  gap: 32px;
   background: #2d2d2d;
   color: #fff;
+  justify-content: space-between;
 }
 
 .mobile-top {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
 }
 
 .mobile-text .title {
   margin: 0;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 42px;
   line-height: 1.2;
   color: #fff;
 }
 
 .mobile-text .subtitle {
-  margin: 4px 0 0;
-  font-size: 14px;
-  line-height: 1.4;
+  margin: 8px 0 0;
+  font-size: 32px;
+  line-height: 1.2;
   color: #aaaaaa;
 }
 
@@ -139,19 +147,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: transparent;
-  color: #bfff00;
-  font-weight: 600;
-  font-size: 16px;
-  padding: 14px;
-  border: 2px solid #bfff00;
-  border-radius: 8px;
-}
-
-/* hover без артефактов */
-.mobile:hover .mobile-button {
   background: #bfff00;
   color: #1a1a1a;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 16px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  width: 100%;
+}
+
+.mobile-button:hover {
+  background: #a8e600;
 }
 
 /* -------------------------------------------------
