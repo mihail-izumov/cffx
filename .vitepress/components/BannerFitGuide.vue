@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-// ничего не нужно
+
 </script>
 
 <style scoped>
