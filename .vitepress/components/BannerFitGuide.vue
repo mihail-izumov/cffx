@@ -1,166 +1,152 @@
 <template>
-  <div class="fw-container">
-    <!-- Desktop -->
-    <div class="fw-desktop">
-      <div class="fw-desktop-content">
-        <img src="/fitness-icon_ban.svg" alt="Icon" class="fw-icon" />
-        <div class="fw-desktop-text">
-          <h3 class="fw-title">Экстра-удержание клиентов</h3>
-          <p class="fw-subtitle">Неочевидная логика устойчивого бизнеса</p>
-        </div>
+  <div class="fitness-banner">
+
+    <!-- DESKTOP -->
+    <div class="banner-desktop">
+      <div class="icon-wrap">
+        <img src="/fitness-icon_ban.svg" alt="icon" class="icon" />
       </div>
-      <a href="/pro/guide/fitness" target="_blank" class="fw-button fw-desktop-btn" @click.stop>
+
+      <div class="text-block">
+        <h2 class="title">Экстра-удержание клиентов</h2>
+        <p class="subtitle">Неочевидная логика устойчивого фитнеса</p>
+      </div>
+
+      <a
+        href="/pro/guide/fitness"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="guide-btn"
+      >
         Гид для фитнеса
       </a>
     </div>
 
-    <!-- Mobile -->
-    <div class="fw-mobile">
-      <div class="fw-mobile-content">
-        <img src="/fitness-icon_ban.svg" alt="Icon" class="fw-icon" />
-        <div class="fw-mobile-text">
-          <h3 class="fw-title">
-            Экстра-удержание<br><span class="big">клиентов</span>
-          </h3>
-          <p class="fw-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</p>
+    <!-- MOBILE -->
+    <div class="banner-mobile">
+      <div class="top-row">
+        <div class="icon-wrap">
+          <img src="/fitness-icon_ban.svg" alt="icon" class="icon" />
         </div>
+
+        <h2 class="title">Экстра-удержание клиентов</h2>
       </div>
-      <a href="/pro/guide/fitness" target="_blank" class="fw-button fw-mobile-btn" @click.stop>
+
+      <p class="subtitle">Неочевидная логика устойчивого фитнес-бизнеса</p>
+
+      <a
+        href="/pro/guide/fitness"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="guide-btn mobile"
+      >
         Гид для фитнеса
       </a>
     </div>
   </div>
 </template>
 
-<script setup>
-// no logic
-</script>
-
 <style scoped>
-.fw-container {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #1a1a1a;
+.fitness-banner {
+  width: 100%;
+  font-family: var(--vp-font-family-base, Inter, sans-serif);
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------- DESKTOP ---------------------- */
+.banner-desktop {
+  display: flex;
+  align-items: center;
+  background: #242424;
+  border-radius: 16px;
+  padding: 24px;
+  gap: 28px;
+}
+
+.icon-wrap {
+  background: #333333;
+  padding: 16px;
   border-radius: 12px;
-  overflow: hidden;
-  max-width: 100%;
-}
-
-.fw-button {
-  background: #2d2d2d;
-  color: #fff;
-}
-
-.fw-button {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-decoration: none !important;
-  color: inherit !important;
-  outline: none !important;
-  box-shadow: none !important;
-  -webkit-tap-highlight-color: transparent !important;
-  border: none !important;
-  cursor: pointer !important;
-}
-
-.fw-button::before,
-.fw-button::after { content: none !important; }
-
-/* Desktop */
-.fw-desktop {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 160px;
-  padding: 0 32px;
-}
-
-.fw-desktop-content {
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: center;
 }
 
-.fw-icon {
-  width: 48px;
-  height: 48px;
-  flex-shrink: 0;
+.icon {
+  width: 42px;
+  height: 42px;
 }
 
-.fw-title {
+.text-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
   margin: 0;
-  font-weight: 600;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  color: #9d9d9d;
+  font-size: 20px;
+}
+
+.guide-btn {
+  margin-left: auto;
+  padding: 18px 32px;
+  border-radius: 16px;
+  border: 3px solid #ccff00;
+  color: #ccff00;
   font-size: 24px;
-  line-height: 1.2;
-  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
 }
 
-.big {
-  font-size: 42px;
-  line-height: 1;
-  display: block;
+.guide-btn:hover {
+  opacity: 0.7;
 }
 
-.fw-subtitle {
-  margin: 4px 0 0;
-  font-size: 16px;
-  line-height: 1.4;
-  color: #aaaaaa;
-}
-
-.fw-desktop-btn {
-  background: transparent;
-  color: #bfff00;
-  font-weight: 600;
-  font-size: 18px;
-  padding: 12px 24px;
-  border: 2px solid #bfff00;
-  border-radius: 8px;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-}
-
-.fw-desktop-btn:hover {
-  background: #bfff00;
-  color: #1a1a1a;
-}
-
-/* Mobile */
-.fw-mobile {
+/* --------------------- MOBILE ---------------------- */
+.banner-mobile {
   display: none;
   flex-direction: column;
-  padding: 24px;
-  gap: 24px;
+  background: #242424;
+  border-radius: 16px;
+  padding: 22px;
+  gap: 14px;
 }
 
-.fw-mobile-content {
+.top-row {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-.fw-mobile-text .fw-title {
-  font-size: 20px;
-  line-height: 1.1;
-}
-
-.fw-mobile-btn {
-  background: #bfff00;
-  color: #1a1a1a;
-  font-weight: 600;
-  font-size: 18px;
-  padding: 16px;
-  border-radius: 8px;
+.guide-btn.mobile {
   width: 100%;
-  transition: background 0.2s ease;
+  text-align: center;
 }
 
-.fw-mobile-btn:hover {
-  background: #a8e600;
-}
+/* --------------------- ADAPTIVE ---------------------- */
+@media (max-width: 680px) {
+  .banner-desktop {
+    display: none;
+  }
+  .banner-mobile {
+    display: flex;
+  }
 
-@media (max-width: 768px) {
-  .fw-desktop { display: none; }
-  .fw-mobile   { display: flex; }
+  .title {
+    font-size: 26px;
+  }
+  .subtitle {
+    font-size: 18px;
+  }
 }
 </style>
