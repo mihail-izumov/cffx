@@ -1,151 +1,136 @@
-<script setup>
-const openGuide = () => {
-  window.open('/pro/guide/fitness', '_blank')
-}
-</script>
-
 <template>
-  <!-- Десктоп -->
-  <div class="promo desktop">
-    <img class="promo-icon" src="/widget-fitness-icon.svg" alt="" draggable="false" />
-    <div class="promo-content">
-      <div class="promo-title">Экстра-удержание клиентов</div>
-      <div class="promo-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
+  <div class="fitness-widget">
+    <!-- Desktop Version -->
+    <div class="desktop-layout">
+      <div class="content">
+        <img src="/widget-fitness-icon.svg" alt="Fitness Icon" class="icon" />
+        <div class="text">
+          <h3>Экстра-удержание клиентов</h3>
+          <p>Неочевидная логика устойчивого бизнеса</p>
+        </div>
+      </div>
+      <a href="/pro/guide/fitness" target="_blank" class="button">
+        Гид для фитнеса
+      </a>
     </div>
-    <button class="promo-btn" @click="openGuide">Гид для фитнеса</button>
-  </div>
 
-  <!-- Мобильная версия -->
-  <div class="promo mobile">
-    <img class="promo-icon" src="/widget-fitness-icon.svg" alt="" draggable="false" />
-    <div class="promo-content">
-      <div class="promo-title">Экстра-удержание клиентов</div>
-      <div class="promo-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
+    <!-- Mobile Version -->
+    <div class="mobile-layout">
+      <div class="content">
+        <img src="/widget-fitness-icon.svg" alt="Fitness Icon" class="icon" />
+        <div class="text">
+          <h3>Экстра-удержание клиентов</h3>
+          <p>Неочевидная логика устойчивого фитнес-бизнеса</p>
+        </div>
+      </div>
+      <a href="/pro/guide/fitness" target="_blank" class="button">
+        Гид для фитнеса
+      </a>
     </div>
-    <button class="promo-btn" @click="openGuide">Гид для фитнеса</button>
   </div>
 </template>
 
+<script setup>
+// Компонент не требует логики
+</script>
+
 <style scoped>
-.promo {
-  width: 100%;
-  background: #232323;
-  border-radius: 40px;
-  box-sizing: border-box;
+.fitness-widget {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #1a1a1a;
+  color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.desktop-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  height: 160px;
+  background-color: #2d2d2d;
+}
+
+.mobile-layout {
+  display: none;
+  flex-direction: column;
+  padding: 24px;
+  gap: 16px;
+  background-color: #2d2d2d;
+}
+
+.content {
   display: flex;
   align-items: center;
-  padding: 0;
+  gap: 16px;
 }
 
-.desktop {
-  min-height: 160px;
-  flex-direction: row;
-  padding: 28px 32px;
-}
-
-.mobile {
-  flex-direction: column;
-  align-items: stretch;
-  padding: 28px 16px 24px 16px;
-  min-height: 160px;
-  display: none;
-}
-
-.promo-icon {
-  width: 88px;
-  height: 88px;
-  border: 3px solid #d5ff44;
-  border-radius: 16px;
-  background: #232323;
-  margin-right: 24px;
+.icon {
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
-  display: block;
-  box-sizing: border-box;
 }
 
-.mobile .promo-icon {
-  margin: 0 auto 16px auto;
+.text h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
-.promo-content {
-  flex: 1;
-  min-width: 0;
+.text p {
+  margin: 4px 0 0;
+  font-size: 16px;
+  color: #aaaaaa;
+  line-height: 1.4;
 }
 
-.promo-title {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 2.15rem;
-  line-height: 1.08;
-  color: #fff;
-  margin-bottom: 12px;
-  white-space: nowrap;
-}
-
-.promo-subtitle {
-  font-family: 'Inter', system-ui, sans-serif;
-  color: #9c9c9c;
-  font-size: 1.14rem;
-  font-weight: 400;
-  white-space: nowrap;
-}
-
-.promo-btn {
-  margin-left: 36px;
-  padding: 0 48px;
-  height: 72px;
-  border: 3px solid #d5ff44;
-  border-radius: 22px;
-  color: #d5ff44;
-  background: transparent;
-  font-size: 1.38rem;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
+.button {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 0.16s, color 0.16s;
-  letter-spacing: 0.01em;
-  box-sizing: border-box;
+  background-color: transparent;
+  color: #bfff00;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 12px 24px;
+  border: 2px solid #bfff00;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-.promo-btn:hover {
-  border-color: #eaff9a;
-  color: #eaff9a;
+.button:hover {
+  background-color: #bfff00;
+  color: #1a1a1a;
 }
 
-@media (max-width: 710px) {
-  .desktop { display: none; }
-  .mobile { display: flex; }
-  .promo-icon {
-    width: 68px;
-    height: 68px;
-    margin-right: 0;
-    margin-bottom: 12px;
+/* Мобильная версия */
+@media (max-width: 768px) {
+  .desktop-layout {
+    display: none;
   }
-  .promo-content {
-    align-items: center;
-    margin-bottom: 16px;
+
+  .mobile-layout {
+    display: flex;
   }
-  .promo-title {
-    font-size: 1.18rem;
-    text-align: center;
-    margin-bottom: 6px;
-    white-space: normal;
+
+  .text h3 {
+    font-size: 20px;
   }
-  .promo-subtitle {
-    font-size: 0.95rem;
-    text-align: center;
-    white-space: normal;
+
+  .text p {
+    font-size: 14px;
   }
-  .promo-btn {
-    margin: 0;
-    margin-top: 22px;
+
+  .button {
     width: 100%;
-    padding: 0;
-    height: 54px;
-    font-size: 1.13rem;
+    font-size: 16px;
+    padding: 14px;
   }
 }
 </style>
