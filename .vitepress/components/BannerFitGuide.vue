@@ -6,132 +6,154 @@ const openGuide = () => {
 
 <template>
   <!-- Десктоп -->
-  <div class="promo-block desktop">
-    <div class="promo-icon-block">
-      <img src="/widget-fitness-icon.svg" alt="Огонь" class="promo-icon" />
+  <div class="promo desktop">
+    <div class="icon-wrap">
+      <img src="/widget-fitness-icon.svg" alt="Огонь фитнес" />
     </div>
-    <div class="promo-content">
-      <div class="promo-title">Экстра-удержание клиентов</div>
-      <div class="promo-subtitle">
-        Неочевидная логика устойчивого фитнес-бизнеса
-      </div>
+    <div class="text-content">
+      <div class="title">Экстра-удержание клиентов</div>
+      <div class="subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
     </div>
-    <button class="promo-btn" @click="openGuide">
-      Гид для фитнеса
-    </button>
+    <button class="fitness-btn" @click="openGuide">Гид для фитнеса</button>
   </div>
 
-  <!-- Мобильная версия -->
-  <div class="promo-block mobile">
-    <div class="promo-icon-block">
-      <img src="/widget-fitness-icon.svg" alt="Огонь" class="promo-icon" />
+  <!-- Мобильная -->
+  <div class="promo mobile">
+    <div class="icon-wrap">
+      <img src="/widget-fitness-icon.svg" alt="Огонь фитнес" />
     </div>
-    <div class="promo-content">
-      <div class="promo-title">Экстра-удержание клиентов</div>
-      <div class="promo-subtitle">
-        Неочевидная логика устойчивого фитнес-бизнеса
-      </div>
+    <div class="text-content">
+      <div class="title">Экстра-удержание клиентов</div>
+      <div class="subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
     </div>
-    <button class="promo-btn" @click="openGuide">
-      Гид для фитнеса
-    </button>
+    <button class="fitness-btn" @click="openGuide">Гид для фитнеса</button>
   </div>
 </template>
 
 <style scoped>
-.promo-block {
+.promo {
   display: flex;
   align-items: center;
   background: #232323;
   border-radius: 28px;
   width: 100%;
-  font-family: 'Inter', system-ui, sans-serif;
   box-sizing: border-box;
-  color: #fff;
 }
-.promo-block.desktop {
+
+.desktop {
   min-height: 160px;
-  max-width: 100%;
-  padding: 16px 32px;
+  padding: 28px 40px 28px 24px;
   flex-direction: row;
 }
-.promo-block.mobile {
+
+.mobile {
+  min-height: 160px;
   flex-direction: column;
-  min-height: 156px;
-  padding: 18px 12px 24px 12px;
+  padding: 24px 12px 24px 12px;
+  align-items: stretch;
+  display: none;
 }
-.promo-icon-block {
-  width: 98px;
-  height: 98px;
+
+.icon-wrap {
+  width: 112px;
+  height: 112px;
+  background: #232323;
+  border: 3px solid #d5ff44;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: none;
-  border-radius: 16px;
-  border: 2.8px solid #d5ff44;
-  margin-right: 18px;
-  margin-bottom: 0;
+  margin-right: 32px;
+  flex-shrink: 0;
 }
-.promo-block.mobile .promo-icon-block {
-  margin-right: 0;
-  margin-bottom: 10px;
-  align-self: flex-start;
+
+.icon-wrap img {
+  width: 72px;
+  height: 72px;
 }
-.promo-icon {
-  width: 64px;
-  height: 64px;
-  display: block;
-}
-.promo-content {
+
+.text-content {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
-.promo-title {
-  font-size: 2rem;
+
+.title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 2.15rem;
   font-weight: 700;
+  color: #fff;
+  line-height: 1.07;
+  white-space: nowrap; /* Чтобы не разбивалось! */
+  margin-bottom: 11px;
+}
+
+.subtitle {
+  color: #adadad;
+  font-size: 1.15rem;
+  font-family: 'Inter', system-ui, sans-serif;
   white-space: nowrap;
-  margin-bottom: 7px;
-  line-height: 1.16;
 }
-.promo-subtitle {
-  font-size: 1.1rem;
-  color: #acacac;
-  white-space: nowrap;
-  margin-bottom: 0;
-}
-.promo-block.mobile .promo-title,
-.promo-block.mobile .promo-subtitle {
-  text-align: left;
-}
-.promo-btn {
-  margin-left: 24px;
-  padding: 13px 38px;
-  border: 2.5px solid #d5ff44;
-  background: transparent;
-  border-radius: 17px;
+
+.fitness-btn {
+  margin-left: 40px;
+  padding: 0 48px;
+  height: 70px;
+  border: 3px solid #d5ff44;
+  border-radius: 22px;
   color: #d5ff44;
-  font-size: 1.37rem;
+  font-size: 1.55rem;
+  font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
+  background: transparent;
   cursor: pointer;
-  transition: border-color 0.16s, color 0.16s;
-  box-sizing: border-box;
+  letter-spacing: 0.01em;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.promo-btn:hover {
-  border-color: #f6ff44;
-  color: #f6ff44;
+
+.fitness-btn:hover {
+  border-color: #eaff9a;
+  color: #eaff9a;
 }
-.promo-block.mobile .promo-btn {
-  margin-left: 0;
-  margin-top: 22px;
-  width: 100%;
-  font-size: 1.17rem;
-  padding: 12px 0;
-}
-/* Адаптация для мобильного */
-.desktop { display: flex; }
-.mobile { display: none; }
-@media (max-width: 650px) {
+
+@media (max-width: 700px) {
   .desktop { display: none; }
   .mobile { display: flex; }
+  .icon-wrap {
+    margin: 0 auto 14px auto;
+    width: 88px;
+    height: 88px;
+  }
+  .icon-wrap img {
+    width: 52px;
+    height: 52px;
+  }
+  .text-content {
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .title {
+    font-size: 1.18rem;
+    margin-bottom: 7px;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .subtitle {
+    font-size: 0.96rem;
+    text-align: center;
+    white-space: pre-line;
+  }
+  .fitness-btn {
+    margin: 0;
+    width: 100%;
+    padding: 0;
+    height: 56px;
+    font-size: 1.18rem;
+  }
 }
 </style>
