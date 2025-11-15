@@ -7,153 +7,145 @@ const openGuide = () => {
 <template>
   <!-- Десктоп -->
   <div class="promo desktop">
-    <div class="icon-wrap">
-      <img src="/widget-fitness-icon.svg" alt="Огонь фитнес" />
+    <img class="promo-icon" src="/widget-fitness-icon.svg" alt="" draggable="false" />
+    <div class="promo-content">
+      <div class="promo-title">Экстра-удержание клиентов</div>
+      <div class="promo-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
     </div>
-    <div class="text-content">
-      <div class="title">Экстра-удержание клиентов</div>
-      <div class="subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
-    </div>
-    <button class="fitness-btn" @click="openGuide">Гид для фитнеса</button>
+    <button class="promo-btn" @click="openGuide">Гид для фитнеса</button>
   </div>
 
-  <!-- Мобильная -->
+  <!-- Мобильная версия -->
   <div class="promo mobile">
-    <div class="icon-wrap">
-      <img src="/widget-fitness-icon.svg" alt="Огонь фитнес" />
+    <img class="promo-icon" src="/widget-fitness-icon.svg" alt="" draggable="false" />
+    <div class="promo-content">
+      <div class="promo-title">Экстра-удержание клиентов</div>
+      <div class="promo-subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
     </div>
-    <div class="text-content">
-      <div class="title">Экстра-удержание клиентов</div>
-      <div class="subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
-    </div>
-    <button class="fitness-btn" @click="openGuide">Гид для фитнеса</button>
+    <button class="promo-btn" @click="openGuide">Гид для фитнеса</button>
   </div>
 </template>
 
 <style scoped>
 .promo {
+  width: 100%;
+  background: #232323;
+  border-radius: 40px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
-  background: #232323;
-  border-radius: 28px;
-  width: 100%;
-  box-sizing: border-box;
+  padding: 0;
 }
 
 .desktop {
   min-height: 160px;
-  padding: 28px 40px 28px 24px;
   flex-direction: row;
+  padding: 28px 32px;
 }
 
 .mobile {
-  min-height: 160px;
   flex-direction: column;
-  padding: 24px 12px 24px 12px;
   align-items: stretch;
+  padding: 28px 16px 24px 16px;
+  min-height: 160px;
   display: none;
 }
 
-.icon-wrap {
-  width: 112px;
-  height: 112px;
-  background: #232323;
+.promo-icon {
+  width: 88px;
+  height: 88px;
   border: 3px solid #d5ff44;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 32px;
+  border-radius: 16px;
+  background: #232323;
+  margin-right: 24px;
   flex-shrink: 0;
+  display: block;
+  box-sizing: border-box;
 }
 
-.icon-wrap img {
-  width: 72px;
-  height: 72px;
+.mobile .promo-icon {
+  margin: 0 auto 16px auto;
 }
 
-.text-content {
+.promo-content {
   flex: 1;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
-.title {
+.promo-title {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 2.15rem;
   font-weight: 700;
+  font-size: 2.15rem;
+  line-height: 1.08;
   color: #fff;
-  line-height: 1.07;
-  white-space: nowrap; /* Чтобы не разбивалось! */
-  margin-bottom: 11px;
-}
-
-.subtitle {
-  color: #adadad;
-  font-size: 1.15rem;
-  font-family: 'Inter', system-ui, sans-serif;
+  margin-bottom: 12px;
   white-space: nowrap;
 }
 
-.fitness-btn {
-  margin-left: 40px;
+.promo-subtitle {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #9c9c9c;
+  font-size: 1.14rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.promo-btn {
+  margin-left: 36px;
   padding: 0 48px;
-  height: 70px;
+  height: 72px;
   border: 3px solid #d5ff44;
   border-radius: 22px;
   color: #d5ff44;
-  font-size: 1.55rem;
+  background: transparent;
+  font-size: 1.38rem;
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
-  background: transparent;
   cursor: pointer;
-  letter-spacing: 0.01em;
-  transition: all 0.18s;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: border-color 0.16s, color 0.16s;
+  letter-spacing: 0.01em;
+  box-sizing: border-box;
 }
 
-.fitness-btn:hover {
+.promo-btn:hover {
   border-color: #eaff9a;
   color: #eaff9a;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 710px) {
   .desktop { display: none; }
   .mobile { display: flex; }
-  .icon-wrap {
-    margin: 0 auto 14px auto;
-    width: 88px;
-    height: 88px;
+  .promo-icon {
+    width: 68px;
+    height: 68px;
+    margin-right: 0;
+    margin-bottom: 12px;
   }
-  .icon-wrap img {
-    width: 52px;
-    height: 52px;
-  }
-  .text-content {
+  .promo-content {
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
-  .title {
+  .promo-title {
     font-size: 1.18rem;
-    margin-bottom: 7px;
-    white-space: nowrap;
     text-align: center;
+    margin-bottom: 6px;
+    white-space: normal;
   }
-  .subtitle {
-    font-size: 0.96rem;
+  .promo-subtitle {
+    font-size: 0.95rem;
     text-align: center;
-    white-space: pre-line;
+    white-space: normal;
   }
-  .fitness-btn {
+  .promo-btn {
     margin: 0;
+    margin-top: 22px;
     width: 100%;
     padding: 0;
-    height: 56px;
-    font-size: 1.18rem;
+    height: 54px;
+    font-size: 1.13rem;
   }
 }
 </style>
