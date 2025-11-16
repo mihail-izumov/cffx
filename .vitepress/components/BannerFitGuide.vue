@@ -1,24 +1,33 @@
 <template>
   <div class="fitness-guide-banner">
-    <!-- Desktop & Mobile (одинаковая структура, только расположение меняется) -->
-    <a href="/pro/guide/fitness" target="_blank" class="banner-link">
-      <div class="content">
+    <!-- Desktop -->
+    <div class="desktop">
+      <div class="left">
         <img src="/fitness-icon_ban.svg" alt="" class="icon" />
-        <div class="text-block">
+        <div class="text">
           <div class="title">Экстра-удержание клиентов</div>
-          <div class="subtitle">
-            <span class="desktop-only">Неочевидная логика устойчивого бизнеса</span>
-            <span class="mobile-only">Неочевидная логика устойчивого<br>фитнес-бизнеса</span>
-          </div>
+          <div class="subtitle">Неочевидная логика устойчивого бизнеса</div>
         </div>
       </div>
-      <div class="button">Гид для фитнеса</div>
-    </a>
+
+      <a href="/pro/guide/fitness" target="_blank" class="btn">
+        Гид для фитнеса
+      </a>
+    </div>
+
+    <!-- Mobile -->
+    <div class="mobile">
+      <img src="/fitness-icon_ban.svg" alt="" class="icon" />
+      <div class="title">Экстра-удержание клиентов</div>
+      <div class="subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
+      <a href="/pro/guide/fitness" target="_blank" class="btn">
+        Гид для фитнеса
+      </a>
+    </div>
   </div>
 </template>
 
 <script setup>
-// ok
 </script>
 
 <style scoped>
@@ -29,34 +38,35 @@
   overflow: hidden;
 }
 
-/* Убиваем ВитеПресс полностью */
+/* Полная защита от VitePress */
 .fitness-guide-banner a {
   all: unset;
   cursor: pointer;
-  display: block;
-  width: 100%;
-}
-
-/* Общий контейнер */
-.banner-link {
-  display: flex;
-  justify-content: space-between;
+  display: inline-flex;
   align-items: center;
-  height: 140px;
-  padding: 0 28px;
-  background: #2d2d2d;
-  color: #fff;
+  justify-content: center;
   box-sizing: border-box;
 }
 
-.content {
+/* Desktop */
+.desktop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 138px;                 /* уменьшено с 160px → иконка ближе к краям */
+  padding: 0 32px;
+  background: #2d2d2d;
+  color: #fff;
+}
+
+.left {
   display: flex;
   align-items: center;
   gap: 18px;
 }
 
 .icon {
-  width: 58px;   /* +20% от оригинальных 48px */
+  width: 58px;                   /* +20% от оригинальных 48px */
   height: 58px;
   flex-shrink: 0;
 }
@@ -66,6 +76,7 @@
   font-weight: 600;
   line-height: 1.2;
   margin: 0;
+  color: #fff;
 }
 
 .subtitle {
@@ -75,7 +86,7 @@
   margin-top: 4px;
 }
 
-.button {
+.btn {
   font-size: 18px;
   font-weight: 600;
   color: #bfff00;
@@ -86,55 +97,51 @@
   transition: all 0.2s ease;
 }
 
-.button:hover {
+.btn:hover {
   background: #bfff00;
   color: #111;
 }
 
-/* Мобильная версия — почти как десктоп, но вертикально */
-@media (max-width: 768px) {
-  .banner-link {
-    flex-direction: column;
-    justify-content: center;
-    height: auto;
-    padding: 32px 24px;
-    text-align: center;
-    gap: 20px;
-  }
-
-  .content {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .icon {
-    width: 58px;
-    height: 58px;
-  }
-
-  .title {
-    font-size: 24px;
-  }
-
-  .subtitle {
-    margin-top: 8px;
-    font-size: 16px;
-  }
-
-  .button {
-    width: 100%;
-    max-width: 340px;
-    padding: 16px;
-  }
-
-  .desktop-only {
-    display: none;
-  }
+/* Mobile — теперь точно как ты просил: иконка + заголовок в одном ряду, подзаголовок под ними */
+.mobile {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 24px 36px;
+  background: #2d2d2d;
+  color: #fff;
+  text-align: center;
+  gap: 16px;
 }
 
-@media (min-width: 769px) {
-  .mobile-only {
-    display: none;
-  }
+.mobile .icon {
+  width: 58px;
+  height: 58px;
+}
+
+.mobile .title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.mobile .subtitle {
+  font-size: 16px;
+  color: #aaaaaa;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.mobile .btn {
+  width: 100%;
+  max-width: 340px;
+  font-size: 18px;
+  padding: 16px;
+}
+
+@media (max-width: 768px) {
+  .desktop { display: none; }
+  .mobile { display: flex; }
 }
 </style>
