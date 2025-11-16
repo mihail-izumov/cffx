@@ -1,138 +1,107 @@
 <template>
-  <div
-    class="guide-banner"
-  >
-    <div class="banner-content">
-      <div class="guide-banner__icon">
-        <!-- SVG или <img> иконка -->
-        <slot name="icon">
-          <svg width="48" height="48" viewBox="0 0 48 48"><!-- ваша svg тут --></svg>
-        </slot>
-      </div>
-      <div class="guide-banner__info">
-        <div class="guide-banner__title-row">
-          <span class="guide-banner__title">Экстра-удержание клиентов</span>
-        </div>
-        <div class="guide-banner__subtitle">
-          Неочевидная логика устойчивого фитнес-бизнеса
-        </div>
-      </div>
-      <button class="guide-banner__btn">Гид для фитнеса</button>
+  <div class="banner">
+    <div class="icon-block">
+      <img src="/path-to-your-icon.svg" alt="icon" class="icon" />
     </div>
+    <div class="content-block">
+      <div class="title">Экстра-удержание клиентов</div>
+      <div class="subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
+    </div>
+    <button class="guide-btn">Гид для фитнеса</button>
   </div>
 </template>
 
 <style scoped>
-.guide-banner {
-  background: #232323;
-  border-radius: 24px;
-  padding: 12px 24px;
+.banner {
   display: flex;
   align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-  /* Минимизируем высоту контейнера */
+  gap: 24px;
+  padding: 16px 24px;
+  background: #232325;
+  border-radius: 28px;
+  /* уменьшена высота контейнера для плотности */
 }
 
-.banner-content {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 16px;
-  padding: 0; /* Уменьшаем отступы */
-}
-
-.guide-banner__icon {
-  min-width: 58px; /* 20% больше от 48px, если раньше была 40px—сделайте 48px */
-  min-height: 58px;
-  width: 58px;
-  height: 58px;
-  border-radius: 16px;
-  background: #292929;
+.icon-block {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 12px 0 0;
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  background: #232325;
+  border-radius: 16px;
+  /* уменьшено со всех сторон */
 }
 
-.guide-banner__info {
+.icon {
+  width: 48px; /* допустим, раньше было 40px, стало +20% */
+  height: 48px;
+}
+
+/* Контент */
+.content-block {
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
-  gap: 4px;
+  justify-content: center;
 }
 
-.guide-banner__title-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.guide-banner__title {
+.title {
+  font-size: 2.3rem;
+  font-weight: bold;
   color: #fff;
-  font-size: 2.2rem;
-  font-weight: 700;
-  line-height: 1.1;
-  /* Без переноса — если критично, можно добавить */
+  line-height: 1.15;
 }
 
-.guide-banner__subtitle {
-  color: #b2b2b2;
-  font-size: 1.3rem;
-  font-weight: 400;
-  line-height: 1.1;
+.subtitle {
+  font-size: 1.4rem;
+  color: #A1A1AA;
+  margin-top: 4px;
 }
 
-.guide-banner__btn {
-  background: transparent;
-  border: 3px solid #ccff32;
-  color: #ccff32;
+/* Кнопка */
+.guide-btn {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 600;
+  color: #D7FF36;
+  background: transparent;
+  border: 3px solid #D7FF36;
   border-radius: 16px;
-  padding: 10px 32px;
-  margin-left: 16px;
-  transition: 0.1s;
+  padding: 14px 36px 12px 36px;
+  margin-left: 24px;
   cursor: pointer;
-  white-space: nowrap;
-  box-sizing: border-box;
+  transition: background 0.2s, color 0.2s;
 }
 
-/* Мобайл — всё то же что на десктопе! */
-@media (max-width: 600px) {
-  .guide-banner {
-    padding: 12px 10px;
-  }
-  .banner-content {
+/* Мобильный вид */
+@media (max-width: 640px) {
+  .banner {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 12px;
+    padding: 16px;
   }
-  .guide-banner__icon,
-  .guide-banner__info,
-  .guide-banner__btn {
-    margin: 0;
-  }
-  .guide-banner__title-row {
-    flex-direction: row;
-    align-items: center;
+  .icon-block {
     margin-bottom: 0;
+    /* Оставляем размеры иконки такими же */
   }
-  .guide-banner__info {
-    order: 2;
+  .content-block {
     width: 100%;
   }
-  .guide-banner__icon {
-    order: 1;
-    align-self: flex-start;
-    /* Сохраняет размер! */
-  }
-  .guide-banner__btn {
-    order: 3;
-    align-self: stretch;
-    width: 100%;
+  .title {
     margin-top: 8px;
+    /* Размер остаётся таким же */
+  }
+  .subtitle {
+    margin-top: 8px;
+    /* Переносим под заголовок */
+  }
+  .guide-btn {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 16px;
   }
 }
-
 </style>
