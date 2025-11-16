@@ -42,16 +42,19 @@
   overflow: hidden;
 }
 
-/* Полное подавление всех стилей VitePress/Vue для ссылок */
+/* Полностью убиваем стили VitePress для ссылок внутри виджета */
 .fitness-widget a {
-  {
   all: unset !important;
-  display: inline-block !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   cursor: pointer !important;
   box-sizing: border-box !important;
+  text-decoration: none !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
-/* Desktop — точно как на твоём последнем скриншоте */
+/* Desktop — теперь 100% как на твоём последнем скриншоте */
 .desktop {
   display: flex;
   justify-content: space-between;
@@ -89,28 +92,28 @@
   line-height: 1.3;
 }
 
+/* Кнопка в десктопе — заливка лайм + тёмный текст (как на скриншоте) */
 .desktop-btn {
-  color: #bfff00;
+  background: #bfff00;
+  color: #111;
   font-weight: 600;
   font-size: 18px;
-  padding: 12px 28px;
-  border: 2px solid #bfff00;
+  padding: 14px 32px;
   border-radius: 12px;
-  transition: all 0.25s ease;
+  transition: background 0.25s ease;
 }
 
 .desktop-btn:hover {
-  background: #bfff00;
-  color: #111;
+  background: #a8e600;
 }
 
-/* Mobile — точно как на твоём последнем скриншоте */
+/* Mobile — теперь 100% как на твоём последнем скриншоте */
 .mobile {
   display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 24px;
+  padding: 40px 32px;
   gap: 20px;
   background: #2d2d2d;
   text-align: center;
@@ -139,7 +142,7 @@
   font-size: 18px;
   color: #aaaaaa;
   line-height: 1.4;
-  margin: 0;
+  margin: 0 0 32px 0;
 }
 
 .mobile-btn {
@@ -150,7 +153,7 @@
   padding: 20px;
   border-radius: 16px;
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
   transition: background 0.25s ease;
 }
 
@@ -158,7 +161,6 @@
   background: #a8e600;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
   .desktop { display: none; }
   .mobile { display: flex; }
