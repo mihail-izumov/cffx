@@ -50,6 +50,8 @@ notification: brew
 
 <BannerFitGuide />
 
+<br>
+
 <div align="center">
 
 <div style="height: 30px;"></div>
