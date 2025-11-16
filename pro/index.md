@@ -48,6 +48,8 @@ notification: brew
 
 <DialogsWidgets />
 
+<BannerFitGuide />
+
 <div align="center">
 
 <div style="height: 30px;"></div>
