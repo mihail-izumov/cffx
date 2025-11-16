@@ -1,15 +1,16 @@
 <template>
-  <div class="fitness-widget">
+  <div class="fitness-guide-banner">
     <!-- Desktop -->
     <div class="desktop">
       <div class="left">
         <img src="/fitness-icon_ban.svg" alt="" class="icon" />
         <div class="text">
-          <h3 class="title">Экстра-удержание клиентов</h3>
-          <p class="subtitle">Неочевидная логика устойчивого бизнеса</p>
+          <div class="title">Экстра-удержание клиентов</div>
+          <div class="subtitle">Неочевидная логика устойчивого бизнеса</div>
         </div>
       </div>
-      <a href="/pro/guide/fitness" target="_blank" class="btn desktop-btn">
+
+      <a href="/pro/guide/fitness" target="_blank" class="btn">
         Гид для фитнеса
       </a>
     </div>
@@ -17,13 +18,9 @@
     <!-- Mobile -->
     <div class="mobile">
       <img src="/fitness-icon_ban.svg" alt="" class="icon" />
-      <h3 class="title">
-        Экстра-удержание<br><span>клиентов</span>
-      </h3>
-      <p class="subtitle">
-        Неочевидная логика устойчивого<br>фитнес-бизнеса
-      </p>
-      <a href="/pro/guide/fitness" target="_blank" class="btn mobile-btn">
+      <div class="title">Экстра-удержание<br><strong>клиентов</strong></div>
+      <div class="subtitle">Неочевидная логика устойчивого<br>фитнес-бизнеса</div>
+      <a href="/pro/guide/fitness" target="_blank" class="btn">
         Гид для фитнеса
       </a>
     </div>
@@ -31,36 +28,33 @@
 </template>
 
 <script setup>
-// ничего не нужно
-</script>
+// ok></script>
 
 <style scoped>
-.fitness-widget {
+.fitness-guide-banner {
   font-family: 'Inter', sans-serif;
   background: #1a1a1a;
   border-radius: 16px;
   overflow: hidden;
 }
 
-/* Полностью убиваем стили VitePress для ссылок внутри виджета */
-.fitness-widget a {
-  all: unset !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  box-sizing: border-box !important;
-  text-decoration: none !important;
-  -webkit-tap-highlight-color: transparent !important;
+/* Убиваем ВитеПресс навсегда */
+.fitness-guide-banner a {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
-/* Desktop — теперь 100% как на твоём последнем скриншоте */
+/* Десктоп — 160px высота, точно как в задании */
 .desktop {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 108px;
-  padding: 0 24px;
+  height: 160px;
+  padding: 0 32px;
   background: #2d2d2d;
   color: #fff;
 }
@@ -68,97 +62,96 @@
 .left {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .icon {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
 }
 
-.title {
-  margin: 0;
+.desktop .title {
+  font-size: 24px;
   font-weight: 600;
-  font-size: 28px;
-  line-height: 1.2;
-  color: #fff;
+  margin: 0;
 }
 
-.subtitle {
-  margin: 6px 0 0;
+.desktop .subtitle {
   font-size: 16px;
   color: #aaaaaa;
-  line-height: 1.3;
+  margin: 4px 0 0 0;
 }
 
-/* Кнопка в десктопе — заливка лайм + тёмный текст (как на скриншоте) */
-.desktop-btn {
+.desktop .btn {
+  font-size: 18px;
+  font-weight: 600;
+  color: #bfff00;
+  background: transparent;
+  border: 2px solid #bfff00;
+  border-radius: 8px;
+  padding: 12px 24px;
+  transition: all 0.2s ease;
+}
+
+.desktop .btn:hover {
   background: #bfff00;
   color: #111;
-  font-weight: 600;
-  font-size: 18px;
-  padding: 14px 32px;
-  border-radius: 12px;
-  transition: background 0.25s ease;
 }
 
-.desktop-btn:hover {
-  background: #a8e600;
-}
-
-/* Mobile — теперь 100% как на твоём последнем скриншоте */
+/* Мобильная версия — точно как в твоём оригинальном задании */
 .mobile {
   display: none;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 40px 32px;
-  gap: 20px;
+  padding: 32px 24px 40px;
   background: #2d2d2d;
-  text-align: center;
   color: #fff;
+  text-align: center;
+  gap: 16px;
 }
 
 .mobile .icon {
-  width: 80px;
-  height: 80px;
+  width: 48px;
+  height: 48px;
 }
 
 .mobile .title {
+  font-size: 20px;
   font-weight: 600;
-  font-size: 32px;
-  line-height: 1;
+  line-height: 1.1;
   margin: 0;
 }
 
-.mobile .title span {
-  font-size: 64px;
+.mobile .title strong {
+  font-size: 42px;
+  font-weight: 600;
   display: block;
   line-height: 1;
 }
 
 .mobile .subtitle {
-  font-size: 18px;
+  font-size: 16px;
   color: #aaaaaa;
   line-height: 1.4;
-  margin: 0 0 32px 0;
+  margin: 8px 0 24px 0;
 }
 
-.mobile-btn {
+.mobile .btn {
+  width: 100%;
+  background: transparent;
+  color: #bfff00;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px;
+  border: 2px solid #bfff00;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.mobile .btn:hover {
   background: #bfff00;
   color: #111;
-  font-weight: 600;
-  font-size: 20px;
-  padding: 20px;
-  border-radius: 16px;
-  width: 100%;
-  max-width: 380px;
-  transition: background 0.25s ease;
-}
-
-.mobile-btn:hover {
-  background: #a8e600;
 }
 
 @media (max-width: 768px) {
