@@ -48,11 +48,12 @@
   box-sizing: border-box;
 }
 
+/* Десктоп */
 .desktop {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 160px;
+  height: 80px; /* было 160px, стало в 2 раза меньше */
   padding: 0 32px;
   background: #2d2d2d;
   color: #fff;
@@ -98,23 +99,23 @@
   color: #111;
 }
 
-/* Мобильная версия — как десктоп по размерам, в два ряда: иконка+заголовок, ниже subtitle, еще ниже кнопка */
+/* Мобильная версия */
 .mobile {
   display: none;
   flex-direction: column;
-  align-items: stretch;
-  padding: 20px 18px 26px;
+  align-items: flex-start;
+  padding: 14px 14px 22px; /* компактнее, меньшие отступы сверху/снизу */
   background: #2d2d2d;
   color: #fff;
-  text-align: left;
-  gap: 12px;
+  gap: 8px; /* компактный вертикальный отступ между блоками */
 }
 
 .mobile .row {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  width: 100%;
 }
 
 .mobile .icon {
@@ -132,8 +133,9 @@
 .mobile .subtitle {
   font-size: 16px;
   color: #aaaaaa;
-  line-height: 1.4;
-  margin: 8px 0 0 60px; /* склонен выравнивать с заголовком/иконкой */
+  line-height: 1.3;
+  margin: 4px 0 0 58px; /* минимальный отступ сверху до заголовка, слева равен левой границе иконки */
+  padding-right: 6px;
 }
 
 .mobile .btn {
@@ -142,11 +144,11 @@
   color: #bfff00;
   font-size: 16px;
   font-weight: 600;
-  padding: 14px;
+  padding: 10px;
   border: 2px solid #bfff00;
   border-radius: 8px;
   transition: all 0.2s ease;
-  margin-top: 18px;
+  margin-top: 10px; /* меньшее расстояние до кнопки */
 }
 
 .mobile .btn:hover {
