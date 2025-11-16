@@ -15,11 +15,9 @@
     </div>
     <!-- Mobile -->
     <div class="mobile">
-      <div class="row">
-        <img src="/fitness-icon_ban.svg" alt="" class="icon" />
-        <div class="title">Экстра-удержание клиентов</div>
-      </div>
+      <img src="/fitness-icon_ban.svg" alt="" class="icon" />
       <div class="subtitle">Неочевидная логика устойчивого фитнес-бизнеса</div>
+      <div class="title">Экстра-удержание клиентов</div>
       <a href="/pro/guide/fitness" target="_blank" class="btn">
         Гид для фитнеса
       </a>
@@ -53,8 +51,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px; /* было 160px, стало в 2 раза меньше */
-  padding: 0 32px;
+  height: 80px;
+  padding: 0 16px; /* было 32px, стало в 2 раза меньше */
   background: #2d2d2d;
   color: #fff;
 }
@@ -62,17 +60,17 @@
 .left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .icon {
-  width: 48px;
-  height: 48px;
+  width: 58px; /* увеличено с 48px на 20% */
+  height: 58px;
   flex-shrink: 0;
 }
 
 .desktop .title {
-  font-size: 24px;
+  font-size: 20px; /* было 24px, стало на 2 меньше */
   font-weight: 600;
   margin: 0;
 }
@@ -92,6 +90,7 @@
   border-radius: 8px;
   padding: 12px 24px;
   transition: all 0.2s ease;
+  margin-right: 0; /* кнопка ближе к краю вслед за уменьшением паддинга */
 }
 
 .desktop .btn:hover {
@@ -104,38 +103,33 @@
   display: none;
   flex-direction: column;
   align-items: flex-start;
-  padding: 14px 14px 22px; /* компактнее, меньшие отступы сверху/снизу */
+  padding: 18px 10px; /* вертикальный паддинг одинаковый сверху и снизу (18px) */
   background: #2d2d2d;
   color: #fff;
-  gap: 8px; /* компактный вертикальный отступ между блоками */
-}
-
-.mobile .row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
+  min-width: 0;
 }
 
 .mobile .icon {
-  width: 48px;
-  height: 48px;
-}
-
-.mobile .title {
-  font-size: 24px;
-  font-weight: 600;
-  margin: 0;
-  line-height: 1.1;
+  width: 58px; /* также увеличена */
+  height: 58px;
+  margin-bottom: 3px; /* минимальный отступ до серого текста */
 }
 
 .mobile .subtitle {
   font-size: 16px;
   color: #aaaaaa;
-  line-height: 1.3;
-  margin: 4px 0 0 58px; /* минимальный отступ сверху до заголовка, слева равен левой границе иконки */
-  padding-right: 6px;
+  line-height: 1.27;
+  margin: 0 0 3px 0; /* минимальный отступ снизу до заголовка */
+  padding-left: 0; /* выровнено по иконке */
+  text-align: left;
+}
+
+.mobile .title {
+  font-size: 20px; /* на 2 кегля меньше */
+  font-weight: 600;
+  margin: 0 0 7px 0;
+  line-height: 1.1;
+  text-align: left;
 }
 
 .mobile .btn {
@@ -148,7 +142,7 @@
   border: 2px solid #bfff00;
   border-radius: 8px;
   transition: all 0.2s ease;
-  margin-top: 10px; /* меньшее расстояние до кнопки */
+  margin-top: auto;
 }
 
 .mobile .btn:hover {
