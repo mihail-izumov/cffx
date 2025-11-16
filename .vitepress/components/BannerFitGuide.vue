@@ -86,7 +86,7 @@
 }
 
 .desktop .btn {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: #bfff00;
   background: transparent;
