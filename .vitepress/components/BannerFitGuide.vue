@@ -1,34 +1,25 @@
 <template>
   <div class="fitness-guide-banner">
-    <!-- Desktop -->
-    <div class="desktop">
-      <div class="left">
+    <!-- Desktop & Mobile (одинаковая структура, только расположение меняется) -->
+    <a href="/pro/guide/fitness" target="_blank" class="banner-link">
+      <div class="content">
         <img src="/fitness-icon_ban.svg" alt="" class="icon" />
-        <div class="text">
+        <div class="text-block">
           <div class="title">Экстра-удержание клиентов</div>
-          <div class="subtitle">Неочевидная логика устойчивого бизнеса</div>
+          <div class="subtitle">
+            <span class="desktop-only">Неочевидная логика устойчивого бизнеса</span>
+            <span class="mobile-only">Неочевидная логика устойчивого<br>фитнес-бизнеса</span>
+          </div>
         </div>
       </div>
-
-      <a href="/pro/guide/fitness" target="_blank" class="btn">
-        Гид для фитнеса
-      </a>
-    </div>
-
-    <!-- Mobile -->
-    <div class="mobile">
-      <img src="/fitness-icon_ban.svg" alt="" class="icon" />
-      <div class="title">Экстра-удержание<br><strong>клиентов</strong></div>
-      <div class="subtitle">Неочевидная логика устойчивого<br>фитнес-бизнеса</div>
-      <a href="/pro/guide/fitness" target="_blank" class="btn">
-        Гид для фитнеса
-      </a>
-    </div>
+      <div class="button">Гид для фитнеса</div>
+    </a>
   </div>
 </template>
 
 <script setup>
-// ok></script>
+// ok
+</script>
 
 <style scoped>
 .fitness-guide-banner {
@@ -38,124 +29,112 @@
   overflow: hidden;
 }
 
-/* Убиваем ВитеПресс навсегда */
+/* Убиваем ВитеПресс полностью */
 .fitness-guide-banner a {
   all: unset;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
+  display: block;
+  width: 100%;
 }
 
-/* Десктоп — 160px высота, точно как в задании */
-.desktop {
+/* Общий контейнер */
+.banner-link {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 160px;
-  padding: 0 32px;
+  height: 140px;
+  padding: 0 28px;
   background: #2d2d2d;
   color: #fff;
+  box-sizing: border-box;
 }
 
-.left {
+.content {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
 }
 
 .icon {
-  width: 48px;
-  height: 48px;
+  width: 58px;   /* +20% от оригинальных 48px */
+  height: 58px;
   flex-shrink: 0;
 }
 
-.desktop .title {
+.title {
   font-size: 24px;
   font-weight: 600;
+  line-height: 1.2;
   margin: 0;
 }
 
-.desktop .subtitle {
+.subtitle {
   font-size: 16px;
   color: #aaaaaa;
-  margin: 4px 0 0 0;
+  line-height: 1.4;
+  margin-top: 4px;
 }
 
-.desktop .btn {
+.button {
   font-size: 18px;
   font-weight: 600;
   color: #bfff00;
   background: transparent;
   border: 2px solid #bfff00;
   border-radius: 8px;
-  padding: 12px 24px;
+  padding: 12px 28px;
   transition: all 0.2s ease;
 }
 
-.desktop .btn:hover {
+.button:hover {
   background: #bfff00;
   color: #111;
 }
 
-/* Мобильная версия — точно как в твоём оригинальном задании */
-.mobile {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  padding: 32px 24px 40px;
-  background: #2d2d2d;
-  color: #fff;
-  text-align: center;
-  gap: 16px;
-}
-
-.mobile .icon {
-  width: 48px;
-  height: 48px;
-}
-
-.mobile .title {
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.1;
-  margin: 0;
-}
-
-.mobile .title strong {
-  font-size: 42px;
-  font-weight: 600;
-  display: block;
-  line-height: 1;
-}
-
-.mobile .subtitle {
-  font-size: 16px;
-  color: #aaaaaa;
-  line-height: 1.4;
-  margin: 8px 0 24px 0;
-}
-
-.mobile .btn {
-  width: 100%;
-  background: transparent;
-  color: #bfff00;
-  font-size: 16px;
-  font-weight: 600;
-  padding: 14px;
-  border: 2px solid #bfff00;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.mobile .btn:hover {
-  background: #bfff00;
-  color: #111;
-}
-
+/* Мобильная версия — почти как десктоп, но вертикально */
 @media (max-width: 768px) {
-  .desktop { display: none; }
-  .mobile { display: flex; }
+  .banner-link {
+    flex-direction: column;
+    justify-content: center;
+    height: auto;
+    padding: 32px 24px;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .content {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .icon {
+    width: 58px;
+    height: 58px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    margin-top: 8px;
+    font-size: 16px;
+  }
+
+  .button {
+    width: 100%;
+    max-width: 340px;
+    padding: 16px;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none;
+  }
 }
 </style>
