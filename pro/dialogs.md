@@ -110,6 +110,8 @@ notification: brew
 
 <DialogsWidgets />
 
+<BannerFitGuide />
+
 <style>
 .responsive-heading {
   font-size: 80px !important;
