@@ -197,38 +197,9 @@
       </div>
 
       <!-- Секция 6: Локация -->
-      <div v-if="selectedSection === 'location'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #5A9FB8;">
-          <div class="signal-rotating-phrase-container">
-            <p class="signal-question-label">В какой кофейне разобрать Ваш Сигнал?</p>
-          </div>
-          <select v-model="form.selectedNetwork" @change="form.selectedBranch = ''" class="signal-select">
-            <option disabled value="">Выбрать Кофейню</option>
-            <option v-for="(cafe, name) in cafes" :key="name" :value="name">{{ name }}</option>
-          </select>
-          <select v-model="form.selectedBranch" class="signal-select" :disabled="!form.selectedNetwork">
-            <option disabled value="">Выбрать Локацию</option>
-            <option v-for="(branch, index) in selectedNetworkBranches" :key="index" :value="branch.address">
-              {{ branch.address }}
-            </option>
-          </select>
-          <select v-model="form.selectedNetwork">
-  <option disabled value="">Выбрать сеть</option>
-  <option
-    v-for="(club, name) in form.direction === 'fitness' ? fitness : cafes"
-    :key="name"
-    :value="name"
-  >
-    {{ name }}
-  </option>
-</select>
-        </div>
-      </div>
+      <div v-if="selectedSection === 'contact'" class="signal-form-section">
 
-<!-- Секция 7: Контакт -->
-<div v-if="selectedSection === 'contact'" class="signal-form-section">
-
-  <!-- Экран подтверждения (показывается ПОСЛЕ отправки) -->
+  <!-- Экран подтверждения (ПОСЛЕ отправки) -->
   <div v-if="formSubmitted" class="signal-success-screen">
     <div class="signal-success-content">
       <h3>Сигнал отправлен ⚡</h3>
@@ -237,13 +208,19 @@
         <span class="signal-success-ticket">{{ formattedTicketNumber }}</span>
       </div>
       <p class="signal-success-description">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
-      <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`" target="_blank" :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">Получить Ответ</a>
-      <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">Кто Анна и как работает</a>
+      <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`"
+         target="_blank"
+         :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">
+        Получить Ответ
+      </a>
+      <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">
+        Кто Анна и как работает
+      </a>
     </div>
   </div>
 
-  <!-- Форма отправки (показывается ДО отправки) -->
-  <template v-if="!formSubmitted">
+  <!-- Форма отправки (ДО отправки) -->
+  <div v-else>
     <div class="signal-question-block contact" style="--accent-color: #00C2A8;">
       <div class="signal-rotating-phrase-container">
         <p class="signal-question-label">Отправьте Сигнал</p>
@@ -267,26 +244,28 @@
       <!-- Динамическая подсказка -->
       <p class="signal-input-hint">
         {{ form.isIncognito 
-           ? 'Кофейня получит Сигнал. Ответ по запросу у Анны.' 
-           : 'Кофейня ответит. Анна вернёт и поможет уточнить.' }}
+          ? 'Кофейня получит Сигнал. Ответ по запросу у Анны.'
+          : 'Кофейня ответит. Анна вернёт и поможет уточнить.' }}
       </p>
     </div>
 
     <!-- Соглашение с условиями -->
     <label class="signal-agreement">
       <input type="checkbox" v-model="form.agreedToTerms" />
-      <span>Подтверждаю согласие с <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a></span>
+      <span>Подтверждаю согласие с
+        <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a>
+      </span>
     </label>
 
     <!-- Кнопка отправки -->
-<button 
-  class="signal-submit-button" 
-  :disabled="submitStatus === 'processing' || !form.agreedToTerms || !isEmotionFilled"
-  @click="submitForm"
->
-  <span class="signal-liquid-next-text">{{ submitButtonText }}</span>
-</button>
-  </template>
+    <button 
+      class="signal-submit-button" 
+      :disabled="submitStatus === 'processing' || !form.agreedToTerms || !isEmotionFilled"
+      @click="submitForm"
+    >
+      <span class="signal-liquid-next-text">{{ submitButtonText }}</span>
+    </button>
+  </div>
 
 </div>
 
