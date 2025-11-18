@@ -6,4 +6,4 @@ pageClass: centered-page
 title: Отправьте Умный Отзыв – Тест
 ---
 
-<BannerFitGuide />
+<SignalConfigurator2New />
