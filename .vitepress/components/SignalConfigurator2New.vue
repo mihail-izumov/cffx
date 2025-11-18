@@ -97,7 +97,7 @@
                 v-for="suggestion in currentSuggestions.emotions" 
                 :key="suggestion"
                 class="signal-suggestion-bubble signal-emotion-bubble"
-                @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
+                @click="selectSuggestion('emotionalRelease', suggestion)"
               >
                 {{ suggestion }}
               </div>
@@ -131,7 +131,7 @@
                 v-for="suggestion in currentSuggestions.facts" 
                 :key="suggestion"
                 class="signal-suggestion-bubble signal-fact-bubble"
-                @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
+                @click="selectSuggestion('factualAnalysis', suggestion)"
               >
                 {{ suggestion }}
               </div>
@@ -165,7 +165,7 @@
                 v-for="suggestion in currentSuggestions.solutions" 
                 :key="suggestion"
                 class="signal-suggestion-bubble signal-solution-bubble"
-                @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
+                @click="selectSuggestion('constructiveSuggestions', suggestion)"
               >
                 {{ suggestion }}
               </div>
@@ -333,7 +333,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed, onMounted } from 'vue'
+import { reactive, ref, computed, onMounted, watch } from 'vue'
 
 // ====== Стейт формы ======
 const form = reactive({
@@ -356,7 +356,7 @@ onMounted(() => {
   window.addEventListener('resize', checkMobile);
 });
 
-const selectedGender = ref('female'); // дефолт: женский
+const selectedGender = ref('female');
 const showInfoModal = ref(false);
 const formSubmitted = ref(false);
 const submitStatus = ref('idle');
@@ -365,7 +365,6 @@ const formattedTicketNumber = ref(null);
 const currentDate = ref('');
 const humanizeStatus = ref('idle');
 
-// ====== Примеры сетей для location ======
 const fitness = {
   'X-Fit': {
     branches: [
@@ -385,10 +384,10 @@ const cafes = {
     branches: [
       { address: 'Куйбышева, 103' },
       { address: 'Революционная, 101В' }
-      // и др.
+      // ...другие адреса
     ]
   },
-  // добавь другие сети...
+  // ...другие сети
 };
 
 const selectedNetworkBranches = computed(() =>
@@ -399,52 +398,116 @@ const selectedNetworkBranches = computed(() =>
       : cafes[form.selectedNetwork]?.branches || []
 );
 
-// ====== Подсказки (добавь свои, как нужно) ======
-const maleEmotionsInitial = [
-  // 'расстроен', 'разочарован', ...
-];
-const femaleEmotionsInitial = [
-  // 'расстроена', 'разочарована', ...
-];
-
+// ====== Подсказки для двух направлений ======
 const baseSuggestions = {
   food: {
     emotions: {
-      male: maleEmotionsInitial,
-      female: femaleEmotionsInitial
+      male: ['расстроен', 'разочарован', 'доволен', 'удивлён'],
+      female: ['расстроена', 'разочарована', 'довольна', 'удивлена']
     },
-    facts: [
-      // факты для food
-    ],
-    solutions: [
-      // решения для food
-    ]
+    facts: {
+      initial: ['Долго ждал', 'Перепутали заказ', 'Не вернули сдачу'],
+      // добавляй уровни если хочешь ротацию
+    },
+    solutions: {
+      initial: ['Ускорить обслуживание', 'Контролировать качество', 'Обучить персонал'],
+      // добавляй уровни если нужны “глубже”
+    }
   },
   fitness: {
     emotions: {
-      male: maleEmotionsInitial,
-      female: femaleEmotionsInitial
+      male: ['нет мотивации', 'устал', 'не вдохновлен'],
+      female: ['нет мотивации', 'устала', 'не вдохновлена']
     },
-    facts: [
-      // факты для fitness
-    ],
-    solutions: [
-      // решения для fitness
-    ]
+    facts: {
+      initial: ['Тренер не ответил', 'Мало групповых занятий'],
+    },
+    solutions: {
+      initial: ['Добавить групповые', 'Персональный подход', 'Мотивирующие акции'],
+    }
   }
 };
 
-const currentSuggestions = computed(() => {
-  const dir = form.direction;
-  const gender = selectedGender.value;
-  return {
-    emotions: baseSuggestions[dir]?.emotions[gender] || [],
-    facts: baseSuggestions[dir]?.facts || [],
-    solutions: baseSuggestions[dir]?.solutions || []
-  };
+function getInitialSuggestions(type) {
+  if (type === 'emotions') {
+    return baseSuggestions[form.direction]?.emotions[selectedGender.value] || [];
+  }
+  return baseSuggestions[form.direction]?.[type]?.initial || [];
+}
+
+const currentSuggestions = reactive({
+  emotions: getInitialSuggestions('emotions'),
+  facts: getInitialSuggestions('facts'),
+  solutions: getInitialSuggestions('solutions')
 });
 
-// ====== Шаги/секции для навигации ======
+const selectedFirstLevelSuggestions = reactive({
+  emotions: [],
+  facts: [],
+  solutions: []
+});
+
+watch([() => form.direction, selectedGender], () => {
+  currentSuggestions.emotions = getInitialSuggestions('emotions');
+  currentSuggestions.facts = getInitialSuggestions('facts');
+  currentSuggestions.solutions = getInitialSuggestions('solutions');
+  selectedFirstLevelSuggestions.emotions = [];
+  selectedFirstLevelSuggestions.facts = [];
+  selectedFirstLevelSuggestions.solutions = [];
+});
+
+// ====== Основная “цепочная” логика ======
+function selectSuggestion(fieldName, suggestion, type) {
+  const currentText = form[fieldName].trim();
+  const isNewBranch = isInitialSuggestions(type);
+
+  if (currentText) {
+    if (isNewBranch) {
+      form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+    } else {
+      form[fieldName] = currentText + ' ' + suggestion;
+    }
+  } else {
+    form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+  }
+
+  if (!selectedFirstLevelSuggestions[type].includes(suggestion)) {
+    selectedFirstLevelSuggestions[type].push(suggestion);
+  }
+
+  updateSuggestions(type, suggestion);
+}
+
+function updateSuggestions(type, selectedWord) {
+  // Пример простой ротации — если нужны многослойные уровни, доработай сам
+  // Выбрали любой suggestion — он пропадает из списка. Когда все выбраны — сбросить
+  const initial = getInitialSuggestions(type);
+  const filtered = initial.filter(item => !selectedFirstLevelSuggestions[type].includes(item));
+  currentSuggestions[type] = filtered.length > 0 ? filtered : [...initial];
+  if (filtered.length === 0) selectedFirstLevelSuggestions[type] = [];
+}
+
+function resetSuggestions(type) {
+  selectedFirstLevelSuggestions[type] = [];
+  currentSuggestions[type] = getInitialSuggestions(type);
+}
+
+function isInitialSuggestions(type) {
+  const initialSuggs = getInitialSuggestions(type);
+  const unusedInitial = initialSuggs.filter(
+    item => !selectedFirstLevelSuggestions[type].includes(item)
+  );
+  return JSON.stringify(currentSuggestions[type]) === JSON.stringify(unusedInitial);
+}
+
+// ====== Остальные функции — оставить как было ======
+function onGenderClick(gender) {
+  selectedGender.value = gender;
+}
+function chooseDirection(dir) {
+  form.direction = dir;
+  selectedSection.value = 'location';
+}
 const sections = [
   { id: 'location', title: 'Локация', buttonText: 'Начать' },
   { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
@@ -453,7 +516,6 @@ const sections = [
   { id: 'summary', title: 'Резюме', buttonText: 'Формат ответа' },
   { id: 'contact', title: 'Контакт', buttonText: '' }
 ];
-
 const selectedSection = ref('location');
 const isActive = id => id === selectedSection.value;
 const currentSectionData = computed(() => sections.find(s => s.id === selectedSection.value));
@@ -464,38 +526,22 @@ const goToNextSection = () => {
     selectedSection.value = sections[idx + 1].id
   }
 };
-
-// ====== Переключатели пола и направления ======
-function onGenderClick(gender) {
-  selectedGender.value = gender;
-}
-function chooseDirection(dir) {
-  form.direction = dir;
-  selectedSection.value = 'location';
-}
-
-// ====== Computed для вопросов ======
 const currentQuestion1 = computed(() => {
   if (form.direction === 'fitness') return 'Что вы почувствовали во время тренировки?';
   if (form.direction === 'food') return 'Что вас расстроило или впечатлило в заведении?';
   return 'Какие были эмоции?';
 });
-
 const currentQuestion2 = computed(() => {
   if (form.direction === 'fitness') return 'Какие факты или события оказались ключевыми?';
   if (form.direction === 'food') return 'Что конкретно произошло — где, когда, с кем?';
   return 'Что и когда произошло?';
 });
-
 const currentQuestion3 = computed(() => {
   if (form.direction === 'fitness') return 'Ваш совет или пожелание клубу?';
   if (form.direction === 'food') return 'Что стоит изменить в заведении, чтобы вам захотелось вернуться?';
   return 'Что стоит изменить или улучшить?';
 });
-
-// ====== Пример isEmotionFilled ======
 const isEmotionFilled = computed(() => form.emotionalRelease && form.emotionalRelease.trim().length > 0);
-
 const submitButtonText = computed(() =>
   submitStatus.value === 'processing'
     ? '⏳ Отправляется...'
@@ -614,48 +660,9 @@ async function submitForm() {
   }
 }
 
-function selectSuggestion(fieldName, suggestion, suggestionType) {
-  const currentText = form[fieldName].trim();
-  const isNewBranch = isInitialSuggestions(suggestionType);
-
-  if (currentText) {
-    if (isNewBranch) {
-      form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-    } else {
-      form[fieldName] = currentText + ' ' + suggestion;
-    }
-  } else {
-    form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
-  }
-
-  if (suggestionType === 'emotions') {
-    if (!selectedFirstLevelSuggestions.emotions.includes(suggestion)) {
-      selectedFirstLevelSuggestions.emotions.push(suggestion);
-    }
-  } else {
-    if (!selectedFirstLevelSuggestions[suggestionType].includes(suggestion)) {
-      selectedFirstLevelSuggestions[suggestionType].push(suggestion);
-    }
-  }
-
-  updateSuggestions(suggestionType, suggestion);
+function selectSuggestion(fieldName, suggestion) {
+  form[fieldName] = suggestion;
 }
-
-function updateSuggestions(suggestionType, selectedWord) {
-  let nextSuggestions = baseSuggestions[suggestionType][selectedWord];
-
-  if (suggestionType === 'emotions' && selectedGender.value === 'male') {
-    if (!nextSuggestions) {
-      const remaining = maleEmotionsInitial.filter(e => !selectedFirstLevelSuggestions.emotions.includes(e));
-      if (remaining.length === 0) {
-        selectedFirstLevelSuggestions.emotions = [];
-        currentSuggestions.emotions = [...maleEmotionsInitial];
-      } else {
-        currentSuggestions.emotions = remaining;
-      }
-      return;
-    }
-  }
 
   if (nextSuggestions && nextSuggestions.length > 0) {
     currentSuggestions[suggestionType] = [...nextSuggestions];
@@ -679,40 +686,6 @@ function updateSuggestions(suggestionType, selectedWord) {
     }
   }
 }
-
-function resetSuggestions(suggestionType) {
-  selectedFirstLevelSuggestions[suggestionType] = [];
-  if (suggestionType === 'emotions' && selectedGender.value === 'male') {
-    currentSuggestions.emotions = [...maleEmotionsInitial];
-  } else {
-    currentSuggestions[suggestionType] = [...baseSuggestions[suggestionType].initial];
-  }
-}
-
-function isInitialSuggestions(suggestionType) {
-  const initialSuggs = suggestionType === 'emotions' && selectedGender.value === 'male' 
-    ? maleEmotionsInitial
-    : baseSuggestions[suggestionType].initial;
-
-  const unusedInitial = initialSuggs.filter(
-    item => !selectedFirstLevelSuggestions[suggestionType].includes(item)
-  );
-
-  return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(unusedInitial);
-}
-
-function updateSuggestionsForGender() {
-  if (selectedGender.value === 'male') {
-    const remaining = maleEmotionsInitial.filter(e => !selectedFirstLevelSuggestions.emotions.includes(e));
-    currentSuggestions.emotions = remaining.length > 0 ? remaining : [...maleEmotionsInitial];
-  } else {
-    const remaining = baseSuggestions.emotions.initial.filter(e => !selectedFirstLevelSuggestions.emotions.includes(e));
-    currentSuggestions.emotions = remaining.length > 0 ? remaining : [...baseSuggestions.emotions.initial];
-  }
-}
-
-
-// ===== КОНЕЦ ИСПРАВЛЕННОЙ ЧАСТИ =====
 
 const questionsShare = ['Что произошло?', 'Расскажите о ситуации', 'Опишите вашу проблему'];
 const questions1 = { 
