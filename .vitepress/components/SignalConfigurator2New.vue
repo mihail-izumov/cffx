@@ -72,107 +72,109 @@
       </div>
 
       <div class="signal-demo__form-container">
-        <!-- Секция 2: Эмоции -->
-        <div v-if="selectedSection === 'emotions'" class="signal-form-section">
-          <div class="signal-question-block" style="--accent-color: #6f5d9f;">
-            <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-              <transition name="fade" mode="out-in">
-                <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
-              </transition>
-            </div>
-            <textarea 
-              v-model="form.emotionalRelease" 
-              @focus="startRotation(1)" 
-              :rows="isMobile ? 5 : 3"
-              placeholder="Или напишите своими словами ..."
-            ></textarea>
-            <div class="signal-suggestions-container">
-              <div 
-                v-for="suggestion in currentSuggestions.emotions" 
-                :key="suggestion"
-                class="signal-suggestion-bubble signal-emotion-bubble"
-                @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
-              >
-                {{ suggestion }}
-              </div>
-              <div 
-                v-if="!isInitialSuggestions('emotions')"
-                class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
-                @click="resetSuggestions('emotions')"
-              >
-                ← Ещё варианты
-              </div>
-            </div>
-          </div>
+  <!-- Секция 2: Эмоции -->
+  <div v-if="selectedSection === 'emotions'" class="signal-form-section">
+    <div class="signal-question-block" style="--accent-color: #6f5d9f;">
+      <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
+        <transition name="fade" mode="out-in">
+          <p :key="currentQuestion1.value" class="signal-question-label">{{ currentQuestion1 }}</p>
+        </transition>
+      </div>
+      <textarea 
+        v-model="form.emotionalRelease" 
+        @focus="startRotation(1)" 
+        :rows="isMobile ? 5 : 3"
+        placeholder="Или напишите своими словами ..."
+      ></textarea>
+      <div class="signal-suggestions-container">
+        <div 
+          v-for="suggestion in currentSuggestions.emotions" 
+          :key="suggestion"
+          class="signal-suggestion-bubble signal-emotion-bubble"
+          @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
+        >
+          {{ suggestion }}
         </div>
+        <div 
+          v-if="!isInitialSuggestions('emotions')"
+          class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
+          @click="resetSuggestions('emotions')"
+        >
+          ← Ещё варианты
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- Секция 3: Факты -->
-        <div v-if="selectedSection === 'facts'" class="signal-form-section">
-          <div class="signal-question-block" style="--accent-color: #3a8862;">
-            <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-              <transition name="fade" mode="out-in">
-                <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
-              </transition>
-            </div>
-            <textarea 
-              v-model="form.factualAnalysis" 
-              @focus="startRotation(2)" 
-              :rows="isMobile ? 5 : 3"
-              placeholder="Несколько фактов: что и когда произошло ..."
-            ></textarea>
-            <div class="signal-suggestions-container">
-              <div 
-                v-for="suggestion in currentSuggestions.facts" 
-                :key="suggestion"
-                class="signal-suggestion-bubble signal-fact-bubble"
-                @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
-              >
-                {{ suggestion }}
-              </div>
-              <div 
-                v-if="!isInitialSuggestions('facts')"
-                class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
-                @click="resetSuggestions('facts')"
-              >
-                ← Ещё варианты
-              </div>
-            </div>
-          </div>
+  <!-- Секция 3: Факты -->
+  <div v-if="selectedSection === 'facts'" class="signal-form-section">
+    <div class="signal-question-block" style="--accent-color: #3a8862;">
+      <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
+        <transition name="fade" mode="out-in">
+          <p :key="currentQuestion2.value" class="signal-question-label">{{ currentQuestion2 }}</p>
+        </transition>
+      </div>
+      <textarea 
+        v-model="form.factualAnalysis" 
+        @focus="startRotation(2)" 
+        :rows="isMobile ? 5 : 3"
+        placeholder="Несколько фактов: что и когда произошло ..."
+      ></textarea>
+      <div class="signal-suggestions-container">
+        <div 
+          v-for="suggestion in currentSuggestions.facts" 
+          :key="suggestion"
+          class="signal-suggestion-bubble signal-fact-bubble"
+          @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
+        >
+          {{ suggestion }}
         </div>
+        <div 
+          v-if="!isInitialSuggestions('facts')"
+          class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
+          @click="resetSuggestions('facts')"
+        >
+          ← Ещё варианты
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- Секция 4: Решение -->
-        <div v-if="selectedSection === 'solutions'" class="signal-form-section">
-          <div class="signal-question-block" style="--accent-color: #4A90E2;">
-            <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-              <transition name="fade" mode="out-in">
-                <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
-              </transition>
-            </div>
-            <textarea 
-              v-model="form.constructiveSuggestions" 
-              @focus="startRotation(3)" 
-              :rows="isMobile ? 5 : 3"
-              placeholder="Дайте честный совет ..."
-            ></textarea>
-            <div class="signal-suggestions-container">
-              <div 
-                v-for="suggestion in currentSuggestions.solutions" 
-                :key="suggestion"
-                class="signal-suggestion-bubble signal-solution-bubble"
-                @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
-              >
-                {{ suggestion }}
-              </div>
-              <div 
-                v-if="!isInitialSuggestions('solutions')"
-                class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
-                @click="resetSuggestions('solutions')"
-              >
-                ← Ещё варианты
-              </div>
-            </div>
-          </div>
+  <!-- Секция 4: Решение -->
+  <div v-if="selectedSection === 'solutions'" class="signal-form-section">
+    <div class="signal-question-block" style="--accent-color: #4A90E2;">
+      <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
+        <transition name="fade" mode="out-in">
+          <p :key="currentQuestion3.value" class="signal-question-label">{{ currentQuestion3 }}</p>
+        </transition>
+      </div>
+      <textarea 
+        v-model="form.constructiveSuggestions" 
+        @focus="startRotation(3)" 
+        :rows="isMobile ? 5 : 3"
+        placeholder="Дайте честный совет ..."
+      ></textarea>
+      <div class="signal-suggestions-container">
+        <div 
+          v-for="suggestion in currentSuggestions.solutions" 
+          :key="suggestion"
+          class="signal-suggestion-bubble signal-solution-bubble"
+          @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
+        >
+          {{ suggestion }}
         </div>
+        <div 
+          v-if="!isInitialSuggestions('solutions')"
+          class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
+          @click="resetSuggestions('solutions')"
+        >
+          ← Ещё варианты
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
         <!-- Секция 5: Итого -->
         <div v-if="selectedSection === 'summary'" class="signal-form-section">
@@ -499,21 +501,98 @@ const goToNextSection = () => {
     selectedSection.value = sections[idx + 1].id
   }
 };
-const currentQuestion1 = computed(() => {
-  if (form.direction === 'fitness') return 'Что вы почувствовали во время тренировки?';
-  if (form.direction === 'food') return 'Что вас расстроило или впечатлило в заведении?';
-  return 'Какие были эмоции?';
+// ======== МАССИВЫ ВОПРОСОВ ДЛЯ КАЖДОГО НАПРАВЛЕНИЯ =======
+
+const questions1 = {
+  food: [
+    'Что вас расстроило или впечатлило в заведении?',
+    'Какие были эмоции?',
+    'Что показалось необычным или приятным?',
+    'Что заставило задуматься или улыбнуться?'
+  ],
+  fitness: [
+    'Что вы почувствовали во время тренировки?',
+    'Что мотивировало или демотивировало на занятии?',
+    'Какие ощущения после тренировки?',
+    'Что понравилось или удивило в клубе?'
+  ]
+};
+const questions2 = {
+  food: [
+    'Что конкретно произошло — где, когда, с кем?',
+    'Можете описать детали ситуации?',
+    'Что удивило или огорчило в сервисе?',
+    'Есть ли факты, которые стоит отметить?'
+  ],
+  fitness: [
+    'Какие события или детали показались важными?',
+    'Были ли трудности или позитивные моменты?',
+    'Какие факты или мелочи стоит озвучить?',
+    'Что из произошедшего особенно запомнилось?'
+  ]
+};
+const questions3 = {
+  food: [
+    'Что стоит изменить в заведении, чтобы вам захотелось вернуться?',
+    'Какой совет вы бы дали управляющему?',
+    'Что стоит улучшить для гостей?',
+    'Чем можно порадовать новых посетителей?'
+  ],
+  fitness: [
+    'Ваш совет или пожелание клубу?',
+    'Что поможет сделать занятия комфортнее?',
+    'Ваше предложение по улучшению сервиса?',
+    'Как мотивировать вас возвращаться снова?'
+  ]
+};
+
+// ======== АКТИВНЫЙ ВОПРОС (ДЛЯ ПОКАЗА/АНИМАЦИИ) ========
+const currentQuestion1 = ref(questions1.food[0]);
+const currentQuestion2 = ref(questions2.food[0]);
+const currentQuestion3 = ref(questions3.food[0]);
+
+// ======== АНИМАЦИЯ/РОТАЦИЯ ВОПРОСОВ ========
+
+let rotationInterval = null;
+
+function startRotation(questionNum) {
+  if (rotationInterval) clearInterval(rotationInterval);
+
+  let questions, currentQuestion;
+
+  if (questionNum === 1) {
+    questions = questions1[form.direction] || questions1.food;
+    currentQuestion = currentQuestion1;
+  } else if (questionNum === 2) {
+    questions = questions2[form.direction] || questions2.food;
+    currentQuestion = currentQuestion2;
+  } else if (questionNum === 3) {
+    questions = questions3[form.direction] || questions3.food;
+    currentQuestion = currentQuestion3;
+  } else {
+    return;
+  }
+
+  let currentIndex = questions.indexOf(currentQuestion.value);
+  rotationInterval = setInterval(() => {
+    currentIndex = (currentIndex + 1) % questions.length;
+    currentQuestion.value = questions[currentIndex];
+  }, 3000);
+}
+
+// Останавливаем анимацию при размонтировании
+import { onUnmounted } from 'vue';
+onUnmounted(() => {
+  if (rotationInterval) clearInterval(rotationInterval);
 });
-const currentQuestion2 = computed(() => {
-  if (form.direction === 'fitness') return 'Какие факты или события оказались ключевыми?';
-  if (form.direction === 'food') return 'Что конкретно произошло — где, когда, с кем?';
-  return 'Что и когда произошло?';
+
+// ====== АВТОМАТИЧЕСКОЕ ОБНОВЛЕНИЕ ПРИ СМЕНЕ НАПРАВЛЕНИЯ ======
+watch(() => form.direction, () => {
+  currentQuestion1.value = questions1[form.direction]?.[0] || questions1.food[0];
+  currentQuestion2.value = questions2[form.direction]?.[0] || questions2.food[0];
+  currentQuestion3.value = questions3[form.direction]?.[0] || questions3.food[0];
 });
-const currentQuestion3 = computed(() => {
-  if (form.direction === 'fitness') return 'Ваш совет или пожелание клубу?';
-  if (form.direction === 'food') return 'Что стоит изменить в заведении, чтобы вам захотелось вернуться?';
-  return 'Что стоит изменить или улучшить?';
-});
+
 const isEmotionFilled = computed(() => form.emotionalRelease && form.emotionalRelease.trim().length > 0);
 const submitButtonText = computed(() =>
   submitStatus.value === 'processing'
@@ -528,7 +607,7 @@ const submitButtonText = computed(() =>
 // Старт анимации вопроса (если используется) — оставьте пустым если не надо
 function startRotation(n) {}
 
-// Склонение кофейни (ваша реализация — оставлена без изменений)
+// Склонение кофейни
 function getAccusativeCase(networkName) {
   if (!networkName) return '';
   const lastChar = networkName.slice(-1).toLowerCase();
