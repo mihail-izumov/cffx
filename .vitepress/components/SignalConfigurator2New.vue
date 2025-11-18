@@ -1,22 +1,18 @@
 <template>
   <div class="signal-demo-wrapper">
 
-    <!-- Новый первый шаг: выбор направления -->
+    <!-- Первый шаг: выбор направления -->
     <div v-if="!form.direction" class="signal-form-section">
       <div class="signal-question-block" style="--accent-color: #A972FF;">
         <p class="signal-question-label">Какое направление?</p>
         <div style="display: flex; gap: 20px; margin-top: 20px;">
-          <button class="signal-suggestion-bubble" @click="chooseDirection('food')">
-            Общепит
-          </button>
-          <button class="signal-suggestion-bubble" @click="chooseDirection('fitness')">
-            Фитнес
-          </button>
+          <button class="signal-suggestion-bubble" @click="chooseDirection('food')">Общепит</button>
+          <button class="signal-suggestion-bubble" @click="chooseDirection('fitness')">Фитнес</button>
         </div>
       </div>
     </div>
 
-    <!-- Остальной интерфейс только после выбора направления -->
+    <!-- Остальной интерфейс после выбора направления -->
     <div v-else>
       <!-- Переключатель секций -->
       <div class="signal-demo__header">
@@ -75,9 +71,7 @@
         </div>
       </div>
 
-      <!-- Контейнер с формой -->
       <div class="signal-demo__form-container">
-
         <!-- Секция 2: Эмоции -->
         <div v-if="selectedSection === 'emotions'" class="signal-form-section">
           <div class="signal-question-block" style="--accent-color: #6f5d9f;">
@@ -180,157 +174,136 @@
           </div>
         </div>
 
-      <!-- Секция 5: Итого -->
-      <div v-if="selectedSection === 'summary'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #FFB800;">
-          <p class="signal-direction-label">Ваш Сигнал</p>
-          <div class="signal-rotating-phrase-container">
-            <p class="signal-question-label">Что должно измениться?</p>
+        <!-- Секция 5: Итого -->
+        <div v-if="selectedSection === 'summary'" class="signal-form-section">
+          <div class="signal-question-block" style="--accent-color: #FFB800;">
+            <p class="signal-direction-label">Ваш Сигнал</p>
+            <div class="signal-rotating-phrase-container">
+              <p class="signal-question-label">Что должно измениться?</p>
+            </div>
+            <textarea 
+              v-model="form.summaryText" 
+              :rows="isMobile ? 8 : 6"
+              placeholder="Перемены начинаются здесь ..."
+            ></textarea>
+            <p class="signal-example-hint signal-example-hint-white">Команда к действию для кофейни и видимый результат для вас</p>
           </div>
-        <textarea 
-          v-model="form.summaryText" 
-          :rows="isMobile ? 8 : 6"
-          placeholder="Перемены начинаются здесь ..."
-        ></textarea>
-          <p class="signal-example-hint signal-example-hint-white">Команда к действию для кофейни и видимый результат для вас</p>
         </div>
-      </div>
 
-<!-- Секция 6: Локация -->
-<div v-if="selectedSection === 'location'" class="signal-form-section">
-  <div class="signal-question-block" style="--accent-color: #5A9FB8;">
-    <div class="signal-rotating-phrase-container">
-      <p class="signal-question-label">В какой кофейне (или клубе) разобрать Ваш Сигнал?</p>
-    </div>
-    <select v-model="form.selectedNetwork" @change="form.selectedBranch = ''" class="signal-select">
-      <option disabled value="">Выбрать сеть</option>
-      <option
-        v-for="(club, name) in form.direction === 'fitness' ? fitness : cafes"
-        :key="name"
-        :value="name"
-      >
-        {{ name }}
-      </option>
-    </select>
-    <select v-model="form.selectedBranch" class="signal-select" :disabled="!form.selectedNetwork">
-      <option disabled value="">Выбрать локацию</option>
-      <option v-for="(branch, index) in selectedNetworkBranches" :key="index" :value="branch.address">
-        {{ branch.address }}
-      </option>
-    </select>
-  </div>
-</div>
+        <!-- Секция 6: Локация -->
+        <div v-if="selectedSection === 'location'" class="signal-form-section">
+          <div class="signal-question-block" style="--accent-color: #5A9FB8;">
+            <div class="signal-rotating-phrase-container">
+              <p class="signal-question-label">В какой кофейне (или клубе) разобрать Ваш Сигнал?</p>
+            </div>
+            <select v-model="form.selectedNetwork" @change="form.selectedBranch = ''" class="signal-select">
+              <option disabled value="">Выбрать сеть</option>
+              <option v-for="(club, name) in form.direction === 'fitness' ? fitness : cafes" :key="name" :value="name">{{ name }}</option>
+            </select>
+            <select v-model="form.selectedBranch" class="signal-select" :disabled="!form.selectedNetwork">
+              <option disabled value="">Выбрать локацию</option>
+              <option v-for="(branch, index) in selectedNetworkBranches" :key="index" :value="branch.address">{{ branch.address }}</option>
+            </select>
+          </div>
+        </div>
 
-<!-- Секция 7: Контакт -->
-<div v-if="selectedSection === 'contact'" class="signal-form-section">
+        <!-- Секция 7: Контакт -->
+        <div v-if="selectedSection === 'contact'" class="signal-form-section">
+          <!-- Экран подтверждения (ПОСЛЕ отправки) -->
+          <div v-if="formSubmitted" class="signal-success-screen">
+            <div class="signal-success-content">
+              <h3>Сигнал отправлен ⚡</h3>
+              <div class="signal-success-ticket-info">
+                <span class="signal-success-date">{{ currentDate }}</span>
+                <span class="signal-success-ticket">{{ formattedTicketNumber }}</span>
+              </div>
+              <p class="signal-success-description">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
+              <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`"
+                 target="_blank"
+                 :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">
+                Получить Ответ
+              </a>
+              <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">
+                Кто Анна и как работает
+              </a>
+            </div>
+          </div>
 
-  <!-- Экран подтверждения (ПОСЛЕ отправки) -->
-  <div v-if="formSubmitted" class="signal-success-screen">
-    <div class="signal-success-content">
-      <h3>Сигнал отправлен ⚡</h3>
-      <div class="signal-success-ticket-info">
-        <span class="signal-success-date">{{ currentDate }}</span>
-        <span class="signal-success-ticket">{{ formattedTicketNumber }}</span>
-      </div>
-      <p class="signal-success-description">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
-      <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`"
-         target="_blank"
-         :class="['signal-telegram-button', selectedGender === 'female' ? 'female' : 'male']">
-        Получить Ответ
-      </a>
-      <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">
-        Кто Анна и как работает
-      </a>
-    </div>
-  </div>
+          <!-- Форма отправки (ДО отправки) -->
+          <div v-else>
+            <div class="signal-question-block contact" style="--accent-color: #00C2A8;">
+              <div class="signal-rotating-phrase-container">
+                <p class="signal-question-label">Отправьте Сигнал</p>
+              </div>
+              <div v-if="!form.isIncognito" class="signal-name-field">
+                <label>Для персонального разбора</label>
+                <input v-model="form.userName" class="signal-input" placeholder="Ваше Имя" />
+              </div>
+              <div class="signal-incognito-toggle">
+                <label class="signal-toggle-label">
+                  <input type="checkbox" v-model="form.isIncognito" class="signal-toggle-checkbox" />
+                  <span class="signal-toggle-slider"></span>
+                  <span class="signal-toggle-text">Анонимно</span>
+                </label>
+              </div>
+              <p class="signal-input-hint">
+                {{ form.isIncognito 
+                  ? 'Кофейня (или клуб) получит Сигнал. Ответ по запросу у Анны.'
+                  : 'Кофейня (или клуб) ответит. Анна вернёт и поможет уточнить.' }}
+              </p>
+            </div>
+            <label class="signal-agreement">
+              <input type="checkbox" v-model="form.agreedToTerms" />
+              <span>Подтверждаю согласие с
+                <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a>
+              </span>
+            </label>
+            <button 
+              class="signal-submit-button" 
+              :disabled="submitStatus === 'processing' || !form.agreedToTerms || !isEmotionFilled"
+              @click="submitForm"
+            >
+              <span class="signal-liquid-next-text">{{ submitButtonText }}</span>
+            </button>
+          </div>
+        </div>
 
-  <!-- Форма отправки (ДО отправки) -->
-  <div v-else>
-    <div class="signal-question-block contact" style="--accent-color: #00C2A8;">
-      <div class="signal-rotating-phrase-container">
-        <p class="signal-question-label">Отправьте Сигнал</p>
-      </div>
-
-      <!-- Поле ввода имени -->
-      <div v-if="!form.isIncognito" class="signal-name-field">
-        <label>Для персонального разбора</label>
-        <input v-model="form.userName" class="signal-input" placeholder="Ваше Имя" />
-      </div>
-
-      <!-- Переключатель "Инкогнито" -->
-      <div class="signal-incognito-toggle">
-        <label class="signal-toggle-label">
-          <input type="checkbox" v-model="form.isIncognito" class="signal-toggle-checkbox" />
-          <span class="signal-toggle-slider"></span>
-          <span class="signal-toggle-text">Анонимно</span>
-        </label>
-      </div>
-
-      <!-- Динамическая подсказка -->
-      <p class="signal-input-hint">
-        {{ form.isIncognito 
-          ? 'Кофейня (или клуб) получит Сигнал. Ответ по запросу у Анны.'
-          : 'Кофейня (или клуб) ответит. Анна вернёт и поможет уточнить.' }}
-      </p>
-    </div>
-
-    <!-- Соглашение с условиями -->
-    <label class="signal-agreement">
-      <input type="checkbox" v-model="form.agreedToTerms" />
-      <span>Подтверждаю согласие с
-        <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a>
-      </span>
-    </label>
-
-    <!-- Кнопка отправки -->
-    <button 
-      class="signal-submit-button" 
-      :disabled="submitStatus === 'processing' || !form.agreedToTerms || !isEmotionFilled"
-      @click="submitForm"
-    >
-      <span class="signal-liquid-next-text">{{ submitButtonText }}</span>
-    </button>
-  </div>
-</div>
-
-
-      <!-- Кнопки навигации -->
-      <div v-if="selectedSection !== 'contact'" class="signal-next-button-container">
-        <button
-  class="signal-liquid-next-btn"
-  :class="[
-    selectedSection === 'share' ? 'signal-share-next' : '',
-    selectedSection === 'emotions' ? 'signal-emotion-next' : '',
-    selectedSection === 'facts' ? 'signal-fact-next' : '',
-    selectedSection === 'solutions' ? 'signal-solution-next' : '',
-    selectedSection === 'summary' ? 'signal-summary-next' : '',
-    selectedSection === 'location' ? 'signal-location-next' : ''
-  ]"
-  @click="goToNextSection"
-  :disabled="(selectedSection === 'emotions' && !isEmotionFilled) || (selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim())) || (selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch))"
->
-  <span class="signal-liquid-next-text">{{ currentSectionData.buttonText }}</span>
-  <CupFillIcon
-    class="signal-next-icon"
-    :step-index="sections.findIndex(s => s.id === selectedSection)"
-    :steps-total="6"
-    :size="22"
-  />
-</button>
-
-
-        
-        <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
-          <button class="signal-liquid-humanize-btn" @click="summarizeAllContent()" :disabled="humanizeStatus === 'processing'">
-            <span class="signal-liquid-humanize-text">
-              {{ humanizeStatus === 'completed' ? 'Готово' : humanizeStatus === 'processing' ? 'Обновление...' : 'Обновить' }}
-            </span>
+        <!-- Кнопки навигации по шагам -->
+        <div v-if="selectedSection !== 'contact'" class="signal-next-button-container">
+          <button
+            class="signal-liquid-next-btn"
+            :class="[
+              selectedSection === 'share' ? 'signal-share-next' : '',
+              selectedSection === 'emotions' ? 'signal-emotion-next' : '',
+              selectedSection === 'facts' ? 'signal-fact-next' : '',
+              selectedSection === 'solutions' ? 'signal-solution-next' : '',
+              selectedSection === 'summary' ? 'signal-summary-next' : '',
+              selectedSection === 'location' ? 'signal-location-next' : ''
+            ]"
+            @click="goToNextSection"
+            :disabled="(selectedSection === 'emotions' && !isEmotionFilled) || (selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim())) || (selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch))"
+          >
+            <span class="signal-liquid-next-text">{{ currentSectionData.buttonText }}</span>
+            <CupFillIcon
+              class="signal-next-icon"
+              :step-index="sections.findIndex(s => s.id === selectedSection)"
+              :steps-total="6"
+              :size="22"
+            />
           </button>
+          <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
+            <button class="signal-liquid-humanize-btn" @click="summarizeAllContent()" :disabled="humanizeStatus === 'processing'">
+              <span class="signal-liquid-humanize-text">
+                {{ humanizeStatus === 'completed' ? 'Готово' : humanizeStatus === 'processing' ? 'Обновление...' : 'Обновить' }}
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { reactive, ref, computed, onMounted, watch } from 'vue'
