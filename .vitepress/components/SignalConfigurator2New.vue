@@ -382,7 +382,7 @@ const fitness = {
     branches: [
       { address: 'Куйбышева, 133' }
     ]
-  },
+  };
   
   const cafes = {
 'Корж': {
