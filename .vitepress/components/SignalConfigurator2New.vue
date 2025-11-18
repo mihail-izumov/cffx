@@ -381,7 +381,8 @@ const fitness = {
   'Alex Fitness': {
     branches: [
       { address: 'Куйбышева, 133' }
-    ]}
+    ]
+  }
   };
   
   const cafes = {
