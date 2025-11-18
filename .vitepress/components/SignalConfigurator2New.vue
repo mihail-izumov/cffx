@@ -72,109 +72,107 @@
       </div>
 
       <div class="signal-demo__form-container">
-  <!-- Секция 2: Эмоции -->
-  <div v-if="selectedSection === 'emotions'" class="signal-form-section">
-    <div class="signal-question-block" style="--accent-color: #6f5d9f;">
-      <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-        <transition name="fade" mode="out-in">
-          <p :key="currentQuestion1.value" class="signal-question-label">{{ currentQuestion1 }}</p>
-        </transition>
-      </div>
-      <textarea 
-        v-model="form.emotionalRelease" 
-        @focus="startRotation(1)" 
-        :rows="isMobile ? 5 : 3"
-        placeholder="Или напишите своими словами ..."
-      ></textarea>
-      <div class="signal-suggestions-container">
-        <div 
-          v-for="suggestion in currentSuggestions.emotions" 
-          :key="suggestion"
-          class="signal-suggestion-bubble signal-emotion-bubble"
-          @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
-        >
-          {{ suggestion }}
+        <!-- Секция 2: Эмоции -->
+        <div v-if="selectedSection === 'emotions'" class="signal-form-section">
+          <div class="signal-question-block" style="--accent-color: #6f5d9f;">
+            <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
+              <transition name="fade" mode="out-in">
+                <p :key="currentQuestion1.value" class="signal-question-label">{{ currentQuestion1 }}</p>
+              </transition>
+            </div>
+            <textarea 
+              v-model="form.emotionalRelease" 
+              @focus="startRotation(1)" 
+              :rows="isMobile ? 5 : 3"
+              placeholder="Или напишите своими словами ..."
+            ></textarea>
+            <div class="signal-suggestions-container">
+              <div 
+                v-for="suggestion in currentSuggestions.emotions" 
+                :key="suggestion"
+                class="signal-suggestion-bubble signal-emotion-bubble"
+                @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
+              >
+                {{ suggestion }}
+              </div>
+              <div 
+                v-if="!isInitialSuggestions('emotions')"
+                class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
+                @click="resetSuggestions('emotions')"
+              >
+                ← Ещё варианты
+              </div>
+            </div>
+          </div>
         </div>
-        <div 
-          v-if="!isInitialSuggestions('emotions')"
-          class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
-          @click="resetSuggestions('emotions')"
-        >
-          ← Ещё варианты
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Секция 3: Факты -->
-  <div v-if="selectedSection === 'facts'" class="signal-form-section">
-    <div class="signal-question-block" style="--accent-color: #3a8862;">
-      <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-        <transition name="fade" mode="out-in">
-          <p :key="currentQuestion2.value" class="signal-question-label">{{ currentQuestion2 }}</p>
-        </transition>
-      </div>
-      <textarea 
-        v-model="form.factualAnalysis" 
-        @focus="startRotation(2)" 
-        :rows="isMobile ? 5 : 3"
-        placeholder="Несколько фактов: что и когда произошло ..."
-      ></textarea>
-      <div class="signal-suggestions-container">
-        <div 
-          v-for="suggestion in currentSuggestions.facts" 
-          :key="suggestion"
-          class="signal-suggestion-bubble signal-fact-bubble"
-          @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
-        >
-          {{ suggestion }}
+        <!-- Секция 3: Факты -->
+        <div v-if="selectedSection === 'facts'" class="signal-form-section">
+          <div class="signal-question-block" style="--accent-color: #3a8862;">
+            <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
+              <transition name="fade" mode="out-in">
+                <p :key="currentQuestion2.value" class="signal-question-label">{{ currentQuestion2 }}</p>
+              </transition>
+            </div>
+            <textarea 
+              v-model="form.factualAnalysis" 
+              @focus="startRotation(2)" 
+              :rows="isMobile ? 5 : 3"
+              placeholder="Несколько фактов: что и когда произошло ..."
+            ></textarea>
+            <div class="signal-suggestions-container">
+              <div 
+                v-for="suggestion in currentSuggestions.facts" 
+                :key="suggestion"
+                class="signal-suggestion-bubble signal-fact-bubble"
+                @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
+              >
+                {{ suggestion }}
+              </div>
+              <div 
+                v-if="!isInitialSuggestions('facts')"
+                class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
+                @click="resetSuggestions('facts')"
+              >
+                ← Ещё варианты
+              </div>
+            </div>
+          </div>
         </div>
-        <div 
-          v-if="!isInitialSuggestions('facts')"
-          class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
-          @click="resetSuggestions('facts')"
-        >
-          ← Ещё варианты
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Секция 4: Решение -->
-  <div v-if="selectedSection === 'solutions'" class="signal-form-section">
-    <div class="signal-question-block" style="--accent-color: #4A90E2;">
-      <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-        <transition name="fade" mode="out-in">
-          <p :key="currentQuestion3.value" class="signal-question-label">{{ currentQuestion3 }}</p>
-        </transition>
-      </div>
-      <textarea 
-        v-model="form.constructiveSuggestions" 
-        @focus="startRotation(3)" 
-        :rows="isMobile ? 5 : 3"
-        placeholder="Дайте честный совет ..."
-      ></textarea>
-      <div class="signal-suggestions-container">
-        <div 
-          v-for="suggestion in currentSuggestions.solutions" 
-          :key="suggestion"
-          class="signal-suggestion-bubble signal-solution-bubble"
-          @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
-        >
-          {{ suggestion }}
+        <!-- Секция 4: Решение -->
+        <div v-if="selectedSection === 'solutions'" class="signal-form-section">
+          <div class="signal-question-block" style="--accent-color: #4A90E2;">
+            <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
+              <transition name="fade" mode="out-in">
+                <p :key="currentQuestion3.value" class="signal-question-label">{{ currentQuestion3 }}</p>
+              </transition>
+            </div>
+            <textarea 
+              v-model="form.constructiveSuggestions" 
+              @focus="startRotation(3)" 
+              :rows="isMobile ? 5 : 3"
+              placeholder="Дайте честный совет ..."
+            ></textarea>
+            <div class="signal-suggestions-container">
+              <div 
+                v-for="suggestion in currentSuggestions.solutions" 
+                :key="suggestion"
+                class="signal-suggestion-bubble signal-solution-bubble"
+                @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
+              >
+                {{ suggestion }}
+              </div>
+              <div 
+                v-if="!isInitialSuggestions('solutions')"
+                class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
+                @click="resetSuggestions('solutions')"
+              >
+                ← Ещё варианты
+              </div>
+            </div>
+          </div>
         </div>
-        <div 
-          v-if="!isInitialSuggestions('solutions')"
-          class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
-          @click="resetSuggestions('solutions')"
-        >
-          ← Ещё варианты
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 
         <!-- Секция 5: Итого -->
         <div v-if="selectedSection === 'summary'" class="signal-form-section">
@@ -211,7 +209,6 @@
 
         <!-- Секция 7: Контакт -->
         <div v-if="selectedSection === 'contact'" class="signal-form-section">
-          <!-- Экран подтверждения (ПОСЛЕ отправки) -->
           <div v-if="formSubmitted" class="signal-success-screen">
             <div class="signal-success-content">
               <h3>Сигнал отправлен ⚡</h3>
@@ -230,8 +227,6 @@
               </a>
             </div>
           </div>
-
-          <!-- Форма отправки (ДО отправки) -->
           <div v-else>
             <div class="signal-question-block contact" style="--accent-color: #00C2A8;">
               <div class="signal-rotating-phrase-container">
@@ -301,10 +296,11 @@
             </button>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </div> <!-- конец .signal-demo__form-container -->
+    </div> <!-- конец v-else -->
+  </div> <!-- конец .signal-demo-wrapper -->
 </template>
+
 
 
 <script setup>
