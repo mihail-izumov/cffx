@@ -528,11 +528,6 @@ const submitButtonText = computed(() =>
 // Старт анимации вопроса (если используется) — оставьте пустым если не надо
 function startRotation(n) {}
 
-// Смена пола
-function onGenderClick(gender) {
-  selectedGender.value = gender;
-}
-
 // Склонение кофейни (ваша реализация — оставлена без изменений)
 function getAccusativeCase(networkName) {
   if (!networkName) return '';
