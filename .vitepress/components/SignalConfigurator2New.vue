@@ -614,18 +614,6 @@ async function submitForm() {
   }
 }
 
-const currentSuggestions = reactive({
-  emotions: baseSuggestions.emotions.initial,
-  facts: baseSuggestions.facts.initial,
-  solutions: baseSuggestions.solutions.initial
-});
-
-let selectedFirstLevelSuggestions = reactive({
-  emotions: [],
-  facts: [],
-  solutions: []
-});
-
 function selectSuggestion(fieldName, suggestion, suggestionType) {
   const currentText = form[fieldName].trim();
   const isNewBranch = isInitialSuggestions(suggestionType);
