@@ -196,8 +196,33 @@
         </div>
       </div>
 
-      <!-- Секция 6: Локация -->
-      <div v-if="selectedSection === 'contact'" class="signal-form-section">
+<!-- Секция 6: Локация -->
+<div v-if="selectedSection === 'location'" class="signal-form-section">
+  <div class="signal-question-block" style="--accent-color: #5A9FB8;">
+    <div class="signal-rotating-phrase-container">
+      <p class="signal-question-label">В какой кофейне (или клубе) разобрать Ваш Сигнал?</p>
+    </div>
+    <select v-model="form.selectedNetwork" @change="form.selectedBranch = ''" class="signal-select">
+      <option disabled value="">Выбрать сеть</option>
+      <option
+        v-for="(club, name) in form.direction === 'fitness' ? fitness : cafes"
+        :key="name"
+        :value="name"
+      >
+        {{ name }}
+      </option>
+    </select>
+    <select v-model="form.selectedBranch" class="signal-select" :disabled="!form.selectedNetwork">
+      <option disabled value="">Выбрать локацию</option>
+      <option v-for="(branch, index) in selectedNetworkBranches" :key="index" :value="branch.address">
+        {{ branch.address }}
+      </option>
+    </select>
+  </div>
+</div>
+
+<!-- Секция 7: Контакт -->
+<div v-if="selectedSection === 'contact'" class="signal-form-section">
 
   <!-- Экран подтверждения (ПОСЛЕ отправки) -->
   <div v-if="formSubmitted" class="signal-success-screen">
@@ -244,8 +269,8 @@
       <!-- Динамическая подсказка -->
       <p class="signal-input-hint">
         {{ form.isIncognito 
-          ? 'Кофейня получит Сигнал. Ответ по запросу у Анны.'
-          : 'Кофейня ответит. Анна вернёт и поможет уточнить.' }}
+          ? 'Кофейня (или клуб) получит Сигнал. Ответ по запросу у Анны.'
+          : 'Кофейня (или клуб) ответит. Анна вернёт и поможет уточнить.' }}
       </p>
     </div>
 
@@ -266,8 +291,8 @@
       <span class="signal-liquid-next-text">{{ submitButtonText }}</span>
     </button>
   </div>
-
 </div>
+
 
       <!-- Кнопки навигации -->
       <div v-if="selectedSection !== 'contact'" class="signal-next-button-container">
