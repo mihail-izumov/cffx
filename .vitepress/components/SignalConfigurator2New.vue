@@ -97,7 +97,7 @@
                 v-for="suggestion in currentSuggestions.emotions" 
                 :key="suggestion"
                 class="signal-suggestion-bubble signal-emotion-bubble"
-                @click="selectSuggestion('emotionalRelease', suggestion)"
+                @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
               >
                 {{ suggestion }}
               </div>
@@ -131,7 +131,7 @@
                 v-for="suggestion in currentSuggestions.facts" 
                 :key="suggestion"
                 class="signal-suggestion-bubble signal-fact-bubble"
-                @click="selectSuggestion('factualAnalysis', suggestion)"
+                @click="selectSuggestion('factualAnalysis', suggestion, 'facts')"
               >
                 {{ suggestion }}
               </div>
@@ -165,7 +165,7 @@
                 v-for="suggestion in currentSuggestions.solutions" 
                 :key="suggestion"
                 class="signal-suggestion-bubble signal-solution-bubble"
-                @click="selectSuggestion('constructiveSuggestions', suggestion)"
+                @click="selectSuggestion('constructiveSuggestions', suggestion, 'solutions')"
               >
                 {{ suggestion }}
               </div>
@@ -552,21 +552,6 @@ const submitButtonText = computed(() =>
 
 // ====================== Действия с подсказками ======================
 
-// Выбор подсказки: записывает выбранную подсказку в соответствующее поле формы
-function selectSuggestion(fieldName, suggestion, suggestionType) {
-  form[fieldName] = suggestion;
-}
-
-// Сброс подсказок: если используется фича “ещё варианты” – для простых статичных подсказок можно оставить пустым.
-function resetSuggestions(type) {
-  // Если подсказки не меняются динамически — оставьте функцию пустой!
-}
-
-// Проверка: показываются ли сейчас начальные подсказки (если нет ротации — всегда true)
-function isInitialSuggestions(type) {
-  return true;
-}
-
 // Старт анимации вопроса (если используется) — оставьте пустым если не надо
 function startRotation(n) {}
 
@@ -657,33 +642,6 @@ async function submitForm() {
   } catch (error) {
     alert('Не удалось отправить отзыв. Пожалуйста, попробуйте позже.');
     submitStatus.value = 'idle';
-  }
-}
-
-function selectSuggestion(fieldName, suggestion) {
-  form[fieldName] = suggestion;
-}
-
-  if (nextSuggestions && nextSuggestions.length > 0) {
-    currentSuggestions[suggestionType] = [...nextSuggestions];
-  } else {
-    if (suggestionType === 'emotions' && selectedGender.value === 'male') {
-      const remaining = maleEmotionsInitial.filter(e => !selectedFirstLevelSuggestions.emotions.includes(e));
-      if (remaining.length === 0) {
-        selectedFirstLevelSuggestions.emotions = [];
-        currentSuggestions.emotions = [...maleEmotionsInitial];
-      } else {
-        currentSuggestions.emotions = remaining;
-      }
-    } else {
-      const remaining = baseSuggestions[suggestionType].initial.filter(item => !selectedFirstLevelSuggestions[suggestionType].includes(item));
-      if (remaining.length === 0) {
-        selectedFirstLevelSuggestions[suggestionType] = [];
-        currentSuggestions[suggestionType] = [...baseSuggestions[suggestionType].initial];
-      } else {
-        currentSuggestions[suggestionType] = remaining;
-      }
-    }
   }
 }
 
