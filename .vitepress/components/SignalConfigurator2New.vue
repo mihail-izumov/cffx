@@ -543,8 +543,8 @@ const sections = [
   { id: 'location', title: 'Локация', buttonText: 'Начать' },
   { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
   { id: 'facts', title: 'Факты', buttonText: 'К решению ситуации' },
-  { id: 'solutions', title: 'Решения', buttonText: 'Сформировать Сигнал' },
-  { id: 'summary', title: 'Резюме', buttonText: 'Формат ответа' },
+  { id: 'solutions', title: 'Решения', buttonText: 'Суммировать' },
+  { id: 'summary', title: 'Резюме', buttonText: 'Отправьте Сигнал' },
   { id: 'contact', title: 'Контакт', buttonText: '' }
 ];
 const selectedSection = ref('location');
