@@ -1501,7 +1501,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   font-size: 0.9rem;
   color: #ccc;
   cursor: pointer;
-  margin: 0;
   padding: 0;
 }
 
