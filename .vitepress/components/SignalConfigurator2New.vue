@@ -81,7 +81,7 @@
       v-model="form.selectedNetwork"
       @change="form.selectedBranch = ''"
       class="signal-select"
-      style="margin-bottom: 16px;"
+      style="margin-bottom: 14px;"
       :disabled="!form.direction"
     >
       <option disabled value="">
@@ -101,7 +101,7 @@
       v-model="form.selectedBranch"
       class="signal-select"
       :disabled="!form.selectedNetwork"
-      style="margin-bottom: 16px;"
+      style="margin-bottom: 12px;"
     >
       <option disabled value="">
         {{ !form.selectedNetwork ? 'Сначала выберите сеть' : 'Выбрать локацию' }}
