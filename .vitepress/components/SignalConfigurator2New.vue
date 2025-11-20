@@ -68,54 +68,47 @@
         В какой кофейне (или клубе) разобрать Ваш Сигнал?
       </p>
     </div>
-
-    <!-- Контейнер-селекторы с минимальным gap -->
     <div style="display: flex; flex-direction: column; gap: 7px;">
-      <!-- Селектор направления -->
       <select v-model="form.direction" class="signal-select">
         <option disabled value="">Выбрать направление</option>
         <option value="food">Общепит</option>
         <option value="fitness">Фитнес</option>
       </select>
-
-      <!-- Селектор сети (активен при выборе направления) -->
       <select
         v-model="form.selectedNetwork"
         class="signal-select"
         :disabled="!form.direction"
       >
-        <option disabled value="">
-          {{ !form.direction ? 'Сначала выберите направление' : 'Выбрать сеть' }}
-        </option>
+        <option disabled value="">Выбрать сеть</option>
         <option
           v-for="(club, name) in form.direction === 'fitness' ? fitness : cafes"
           :key="name"
           :value="name"
-        >
-          {{ name }}
-        </option>
+        >{{ name }}</option>
       </select>
-
-      <!-- Селектор локации (активен при выборе сети) -->
       <select
         v-model="form.selectedBranch"
         class="signal-select"
         :disabled="!form.selectedNetwork"
       >
-        <option disabled value="">
-          {{ !form.selectedNetwork ? 'Сначала выберите сеть' : 'Выбрать локацию' }}
-        </option>
+        <option disabled value="">Выбрать локацию</option>
         <option
           v-for="(branch, index) in selectedNetworkBranches"
           :key="index"
           :value="branch.address"
-        >
-          {{ branch.address }}
-        </option>
+        >{{ branch.address }}</option>
       </select>
     </div>
+    <button
+      class="signal-submit-button"
+      :disabled="!isLocationStepComplete"
+      style="margin-top: 18px;"
+    >
+      Начать
+    </button>
   </div>
 </div>
+
 
 
       <!-- Секция 2: Эмоции -->
@@ -333,31 +326,6 @@
 <script setup>
 import { reactive, ref, computed, onMounted, watch } from 'vue'
 
-// Сброс значений селекторов при изменении выбора выше
-
-// Сброс сети и локации при смене направления
-watch(
-  () => form.direction,
-  (newVal, oldVal) => {
-    if (newVal !== oldVal) {
-      form.selectedNetwork = "";
-      form.selectedBranch = "";
-    }
-  }
-);
-
-// Сброс локации при смене выбранной сети
-watch(
-  () => form.selectedNetwork,
-  (newVal, oldVal) => {
-    if (newVal !== oldVal) {
-      form.selectedBranch = "";
-    }
-  }
-);
-
-
-
 // ====== Стейт формы ======
 const form = reactive({
   direction: '', // 'food' или 'fitness'
@@ -372,6 +340,28 @@ const form = reactive({
   agreedToTerms: false,
 });
 
+// Сброс сети и локации при изменении направления
+watch(
+  () => form.direction,
+  (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+      form.selectedNetwork = '';
+      form.selectedBranch = '';
+    }
+  }
+);
+
+// Сброс локации при изменении сети
+watch(
+  () => form.selectedNetwork,
+  (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+      form.selectedBranch = '';
+    }
+  }
+);
+
+// Для проп-шагов (пример: если используются табы или плавный скролл)
 const isMobile = ref(false);
 onMounted(() => {
   const checkMobile = () => { isMobile.value = window.innerWidth <= 768 }
@@ -388,6 +378,7 @@ const formattedTicketNumber = ref(null);
 const currentDate = ref('');
 const humanizeStatus = ref('idle');
 
+// Массивы сетей и филиалов
 const fitness = {
   'X-Fit': {
     branches: [
@@ -407,18 +398,21 @@ const cafes = {
     branches: [
       { address: 'Куйбышева, 103' },
       { address: 'Революционная, 101В' }
-      // ...другие адрес
     ]
   },
   // ...другие сети
 };
 
-const selectedNetworkBranches = computed(() =>
-  !form.selectedNetwork
-    ? []
-    : form.direction === 'fitness'
-      ? fitness[form.selectedNetwork]?.branches || []
-      : cafes[form.selectedNetwork]?.branches || []
+// Список локаций для выбранной сети
+const selectedNetworkBranches = computed(() => {
+  if (!form.direction || !form.selectedNetwork) return [];
+  const source = form.direction === 'fitness' ? fitness : cafes;
+  return source[form.selectedNetwork]?.branches || [];
+});
+
+// computed для блокировки кнопки "Начать"
+const isLocationStepComplete = computed(() =>
+  !!form.direction && !!form.selectedNetwork && !!form.selectedBranch
 );
 
 // ====== Подсказки для двух направлений ======
