@@ -1494,6 +1494,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
 .signal-agreement {
+  margin: 20px 0 0 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -1792,10 +1793,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   flex-shrink: 0;
   transform: translateY(1px);
   transition: opacity 0.2s ease-in-out; /* ← ДОБАВИТЬ */
-}
-
-.signal-checkbox-row {
-  margin-top: 16px; 
 }
 
 </style>
