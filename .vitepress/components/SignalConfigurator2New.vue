@@ -1254,7 +1254,7 @@ onUnmounted(() => {
   padding: 1.25rem;
   border: 1px solid #3a3a3e;
   border-left: 4px solid var(--accent-color, #444);
-  padding-bottom: 50px;
+  padding-bottom: 35px;
 }
 
 .signal-question-block.contact {
