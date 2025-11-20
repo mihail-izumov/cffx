@@ -683,46 +683,6 @@ async function submitForm() {
   }
 }
 
-const questionsShare = ['Что произошло?', 'Расскажите о ситуации', 'Опишите вашу проблему'];
-const questions1 = { 
-  female: ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что расстроило?', 'Что порадовало?'],
-  male: ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что расстроило?', 'Что порадовало?']
-};
-const questions2 = ['Что именно произошло?', 'Какие детали важны?', 'Опишите факты'];
-const questions3 = ['Что можно сделать лучше?', 'Как исправить?', 'Ваши предложения?'];
-
-const currentQuestionShare = ref(questionsShare[0]);
-const currentQuestion1 = ref(questions1.female[0]);
-const currentQuestion2 = ref(questions2[0]);
-const currentQuestion3 = ref(questions3[0]);
-
-let rotationInterval = null;
-
-function startRotation(questionNum) {
-  if (rotationInterval) clearInterval(rotationInterval);
-
-  let questions, currentQuestion;
-
-  if (questionNum === 1) {
-    questions = questions1[form.direction] || questions1.food;
-    currentQuestion = currentQuestion1;
-  } else if (questionNum === 2) {
-    questions = questions2[form.direction] || questions2.food;
-    currentQuestion = currentQuestion2;
-  } else if (questionNum === 3) {
-    questions = questions3[form.direction] || questions3.food;
-    currentQuestion = currentQuestion3;
-  } else {
-    return;
-  }
-
-  let currentIndex = questions.indexOf(currentQuestion.value);
-  rotationInterval = setInterval(() => {
-    currentIndex = (currentIndex + 1) % questions.length;
-    currentQuestion.value = questions[currentIndex];
-  }, 3000);
-}
-
 function applyGenderCorrection(text, gender) {
   return text;
 }
