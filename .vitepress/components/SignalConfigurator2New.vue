@@ -374,6 +374,23 @@ const formattedTicketNumber = ref(null);
 const currentDate = ref('');
 const humanizeStatus = ref('idle');
 
+  onMounted(() => {
+  // Генерируем номер тикета и дату при запуске формы
+  rawTicketNumber.value = String(Date.now()).slice(-6);
+  formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
+
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  currentDate.value = `${day}.${month}.${year}, ${hours}:${minutes}:${seconds}`;
+});
+
+
 // Массивы сетей и филиалов
 const fitness = {
   'X-Fit': {
