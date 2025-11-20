@@ -598,11 +598,6 @@ const submitButtonText = computed(() =>
       : 'Отправить в заведение'
 );
 
-// ====================== Действия с подсказками ======================
-
-// Старт анимации вопроса (если используется) — оставьте пустым если не надо
-function startRotation(n) {}
-
 // Склонение кофейни
 function getAccusativeCase(networkName) {
   if (!networkName) return '';
@@ -705,22 +700,23 @@ let rotationInterval = null;
 
 function startRotation(questionNum) {
   if (rotationInterval) clearInterval(rotationInterval);
-  
+
   let questions, currentQuestion;
-  
+
   if (questionNum === 1) {
-    questions = selectedGender.value === 'female' ? questions1.female : questions1.male;
+    questions = questions1[form.direction] || questions1.food;
     currentQuestion = currentQuestion1;
   } else if (questionNum === 2) {
-    questions = questions2;
+    questions = questions2[form.direction] || questions2.food;
     currentQuestion = currentQuestion2;
   } else if (questionNum === 3) {
-    questions = questions3;
+    questions = questions3[form.direction] || questions3.food;
     currentQuestion = currentQuestion3;
+  } else {
+    return;
   }
-  
+
   let currentIndex = questions.indexOf(currentQuestion.value);
-  
   rotationInterval = setInterval(() => {
     currentIndex = (currentIndex + 1) % questions.length;
     currentQuestion.value = questions[currentIndex];
