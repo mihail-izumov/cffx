@@ -81,7 +81,7 @@
       v-model="form.selectedNetwork"
       @change="form.selectedBranch = ''"
       class="signal-select"
-      style="margin-bottom: 14px;"
+      style="margin-bottom: 12px;"
       :disabled="!form.direction"
     >
       <option disabled value="">
