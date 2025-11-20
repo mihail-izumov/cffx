@@ -65,7 +65,7 @@
   <div class="signal-question-block" style="--accent-color: #5A9FB8;">
     <div class="signal-rotating-phrase-container">
       <p class="signal-question-label" style="margin-bottom: 24px;">
-        В какой кофейне (или клубе) разобрать Ваш Сигнал?
+        Где разобрать Ваш Сигнал?
       </p>
     </div>
     <div style="display: flex; flex-direction: column; gap: 7px;">
@@ -216,7 +216,7 @@
             :rows="isMobile ? 8 : 6"
             placeholder="Перемены начинаются здесь ..."
           ></textarea>
-          <p class="signal-example-hint signal-example-hint-white">Команда к действию для кофейни и видимый результат для вас</p>
+          <p class="signal-example-hint signal-example-hint-white">Команда к действию для бизнеса и видимый результат для вас</p>
         </div>
       </div>
 
@@ -1323,7 +1323,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 .signal-example-hint {
   font-size: 0.8rem;
   color: #777;
-  margin: 0.5rem 0 0 0.25rem;
+  margin: 0.4rem 0 0 0.5rem;
   line-height: 1.15;
 }
 
