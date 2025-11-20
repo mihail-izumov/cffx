@@ -60,7 +60,7 @@
 
     <div class="signal-demo__form-container">
 
-      <!-- Секция 6: Локация + выбор направления в виде выпадающего меню -->
+<!-- Секция 6: Локация + выбор направления в виде выпадающего меню -->
 <div v-if="selectedSection === 'location'" class="signal-form-section">
   <div class="signal-question-block" style="--accent-color: #5A9FB8;">
     <div class="signal-rotating-phrase-container">
@@ -99,17 +99,8 @@
         >{{ branch.address }}</option>
       </select>
     </div>
-    <button
-      class="signal-submit-button"
-      :disabled="!isLocationStepComplete"
-      style="margin-top: 18px;"
-    >
-      Начать
-    </button>
   </div>
 </div>
-
-
 
       <!-- Секция 2: Эмоции -->
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
@@ -289,27 +280,32 @@
 
       <!-- Кнопки навигации по шагам -->
       <div v-if="selectedSection !== 'contact'" class="signal-next-button-container">
-        <button
-          class="signal-liquid-next-btn"
-          :class="[
-            selectedSection === 'share' ? 'signal-share-next' : '',
-            selectedSection === 'emotions' ? 'signal-emotion-next' : '',
-            selectedSection === 'facts' ? 'signal-fact-next' : '',
-            selectedSection === 'solutions' ? 'signal-solution-next' : '',
-            selectedSection === 'summary' ? 'signal-summary-next' : '',
-            selectedSection === 'location' ? 'signal-location-next' : ''
-          ]"
-          @click="goToNextSection"
-          :disabled="(selectedSection === 'emotions' && !isEmotionFilled) || (selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim())) || (selectedSection === 'location' && (!form.selectedNetwork || !form.selectedBranch))"
-        >
-          <span class="signal-liquid-next-text">{{ currentSectionData.buttonText }}</span>
-          <CupFillIcon
-            class="signal-next-icon"
-            :step-index="sections.findIndex(s => s.id === selectedSection)"
-            :steps-total="6"
-            :size="22"
-          />
-        </button>
+  <button
+    class="signal-liquid-next-btn"
+    :class="[
+      selectedSection === 'share' ? 'signal-share-next' : '',
+      selectedSection === 'emotions' ? 'signal-emotion-next' : '',
+      selectedSection === 'facts' ? 'signal-fact-next' : '',
+      selectedSection === 'solutions' ? 'signal-solution-next' : '',
+      selectedSection === 'summary' ? 'signal-summary-next' : '',
+      selectedSection === 'location' ? 'signal-location-next' : ''
+    ]"
+    @click="goToNextSection"
+    :disabled="
+      (selectedSection === 'emotions' && !isEmotionFilled)
+      || (selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim()))
+      || (selectedSection === 'location' && (!form.direction || !form.selectedNetwork || !form.selectedBranch))
+    "
+  >
+    <span class="signal-liquid-next-text">{{ currentSectionData.buttonText }}</span>
+    <CupFillIcon
+      class="signal-next-icon"
+      :step-index="sections.findIndex(s => s.id === selectedSection)"
+      :steps-total="6"
+      :size="22"
+    />
+  </button>
+
         <div v-if="selectedSection === 'summary'" class="signal-humanize-button-container">
           <button class="signal-liquid-humanize-btn" @click="summarizeAllContent()" :disabled="humanizeStatus === 'processing'">
             <span class="signal-liquid-humanize-text">
