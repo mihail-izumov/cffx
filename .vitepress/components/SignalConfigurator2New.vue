@@ -456,15 +456,6 @@ watch([() => form.direction, selectedGender], () => {
   selectedFirstLevelSuggestions.solutions = [];
 });
 
-import { watch } from 'vue';
-watch(() => form.direction, () => {
-  form.selectedNetwork = '';
-  form.selectedBranch = '';
-});
-watch(() => form.selectedNetwork, () => {
-  form.selectedBranch = '';
-});
-
 
 // ====== Основная “цепочная” логика ======
 function selectSuggestion(fieldName, suggestion, type) {
