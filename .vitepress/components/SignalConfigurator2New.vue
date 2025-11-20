@@ -60,7 +60,7 @@
 
     <div class="signal-demo__form-container">
 
-      <!-- Секция 6: Локация + выбор направления -->
+      <!-- Секция 6: Локация + выбор направления в формате выпадающего меню -->
 <div v-if="selectedSection === 'location'" class="signal-form-section">
   <div class="signal-question-block" style="--accent-color: #5A9FB8;">
     <div class="signal-rotating-phrase-container">
@@ -69,32 +69,52 @@
       </p>
     </div>
 
-    <!-- Выбор направления — тут, сразу под вопросом -->
-    <div class="signal-direction-inline-row" style="margin: 8px 0 18px 0; display: flex; gap: 18px; justify-content: flex-start;">
-      <button
-        class="signal-suggestion-bubble"
-        :class="{ active: form.direction === 'food' }"
-        @click="form.direction = 'food'"
-        type="button"
-      >Общепит</button>
-      <button
-        class="signal-suggestion-bubble"
-        :class="{ active: form.direction === 'fitness' }"
-        @click="form.direction = 'fitness'"
-        type="button"
-      >Фитнес</button>
-    </div>
-
-    <select v-model="form.selectedNetwork" @change="form.selectedBranch = ''" class="signal-select">
-      <option disabled value="">Выбрать сеть</option>
-      <option v-for="(club, name) in form.direction === 'fitness' ? fitness : cafes" :key="name" :value="name">{{ name }}</option>
+    <!-- Выпадающее меню "Выбрать направление" -->
+    <select v-model="form.direction" class="signal-select" style="margin-bottom: 18px;">
+      <option disabled value="">Выбрать направление</option>
+      <option value="food">Общепит</option>
+      <option value="fitness">Фитнес</option>
     </select>
-    <select v-model="form.selectedBranch" class="signal-select" :disabled="!form.selectedNetwork">
-      <option disabled value="">Выбрать локацию</option>
-      <option v-for="(branch, index) in selectedNetworkBranches" :key="index" :value="branch.address">{{ branch.address }}</option>
+
+    <!-- Выбор сети, активен только если выбран направление -->
+    <select
+      v-model="form.selectedNetwork"
+      @change="form.selectedBranch = ''"
+      class="signal-select"
+      :disabled="!form.direction"
+    >
+      <option disabled value="">
+        {{ !form.direction ? 'Сначала выберите направление' : 'Выбрать сеть' }}
+      </option>
+      <option
+        v-for="(club, name) in form.direction === 'fitness' ? fitness : cafes"
+        :key="name"
+        :value="name"
+      >
+        {{ name }}
+      </option>
+    </select>
+
+    <!-- Выбор локации, активен только если выбрана сеть -->
+    <select
+      v-model="form.selectedBranch"
+      class="signal-select"
+      :disabled="!form.selectedNetwork"
+    >
+      <option disabled value="">
+        {{ !form.selectedNetwork ? 'Сначала выберите сеть' : 'Выбрать локацию' }}
+      </option>
+      <option
+        v-for="(branch, index) in selectedNetworkBranches"
+        :key="index"
+        :value="branch.address"
+      >
+        {{ branch.address }}
+      </option>
     </select>
   </div>
 </div>
+
 
 
       <!-- Секция 2: Эмоции -->
