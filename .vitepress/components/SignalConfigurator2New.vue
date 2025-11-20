@@ -579,13 +579,6 @@ const baseSuggestions = {
   }
 };
 
-function getInitialSuggestions(type) {
-  if (type === 'emotions') {
-    return baseSuggestions[form.direction]?.emotions[selectedGender.value] || [];
-  }
-  return baseSuggestions[form.direction]?.[type]?.initial || [];
-}
-
 const currentSuggestions = reactive({
   emotions: getInitialSuggestions('emotions'),
   facts: getInitialSuggestions('facts'),
