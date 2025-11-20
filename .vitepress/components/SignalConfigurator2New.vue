@@ -60,27 +60,28 @@
 
     <div class="signal-demo__form-container">
 
-      <!-- Секция 6: Локация + выбор направления в формате выпадающего меню -->
+      <!-- Секция 6: Локация + выбор направления в виде выпадающего меню -->
 <div v-if="selectedSection === 'location'" class="signal-form-section">
   <div class="signal-question-block" style="--accent-color: #5A9FB8;">
     <div class="signal-rotating-phrase-container">
-      <p class="signal-question-label">
+      <p class="signal-question-label" style="margin-bottom: 26px;"> <!-- увеличенный отступ после вопроса -->
         В какой кофейне (или клубе) разобрать Ваш Сигнал?
       </p>
     </div>
 
-    <!-- Выпадающее меню "Выбрать направление" -->
-    <select v-model="form.direction" class="signal-select" style="margin-bottom: 18px;">
+    <!-- Выпадающий селектор направления -->
+    <select v-model="form.direction" class="signal-select" style="margin-bottom: 20px;">
       <option disabled value="">Выбрать направление</option>
       <option value="food">Общепит</option>
       <option value="fitness">Фитнес</option>
     </select>
 
-    <!-- Выбор сети, активен только если выбран направление -->
+    <!-- Селектор сети -->
     <select
       v-model="form.selectedNetwork"
       @change="form.selectedBranch = ''"
       class="signal-select"
+      style="margin-bottom: 20px;"
       :disabled="!form.direction"
     >
       <option disabled value="">
@@ -95,11 +96,12 @@
       </option>
     </select>
 
-    <!-- Выбор локации, активен только если выбрана сеть -->
+    <!-- Селектор локации -->
     <select
       v-model="form.selectedBranch"
       class="signal-select"
       :disabled="!form.selectedNetwork"
+      style="margin-bottom: 18px;"
     >
       <option disabled value="">
         {{ !form.selectedNetwork ? 'Сначала выберите сеть' : 'Выбрать локацию' }}
@@ -114,7 +116,6 @@
     </select>
   </div>
 </div>
-
 
 
       <!-- Секция 2: Эмоции -->
