@@ -1494,7 +1494,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
 .signal-agreement {
-  margin: 20px 0 0 0;
+  margin: 20px 0 24px 0;;
   display: flex;
   align-items: center;
   gap: 0.5rem;
