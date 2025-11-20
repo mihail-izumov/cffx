@@ -630,20 +630,46 @@ function selectSuggestion(fieldName, suggestion, type) {
   updateSuggestions(type, suggestion);
 }
 
-function updateSuggestions(type, selectedWord) {
-  // Пример простой ротации — если нужны многослойные уровни, доработай сам
-  // Выбрали любой suggestion — он пропадает из списка. Когда все выбраны — сбросить
-  const initial = getInitialSuggestions(type);
-  const filtered = initial.filter(item => !selectedFirstLevelSuggestions[type].includes(item));
-  currentSuggestions[type] = filtered.length > 0 ? filtered : [...initial];
-  if (filtered.length === 0) selectedFirstLevelSuggestions[type] = [];
+// Возвращает начальные подсказки для выбранного типа
+function getInitialSuggestions(type) {
+  return baseSuggestions[form.direction]?.[type]?.initial || [];
 }
 
+// Обновляет список подсказок по выбранному слову, переходя на следующий уровень,
+// либо возвращает начальные если глубже идти некуда
+function updateSuggestions(type, selectedWord) {
+  const dict = baseSuggestions[form.direction]?.[type] || {};
+  const initial = getInitialSuggestions(type);
+
+  // Дочерние подсказки 2-го/3-го уровня для выбранного слова
+  const next = dict[selectedWord];
+
+  if (next && next.length) {
+    // Переход на следующий уровень — показываем его
+    currentSuggestions[type] = [...next];
+    return;
+  }
+
+  // Если нет потомков — ротация по initial
+  const remaining = initial.filter(
+    item => !selectedFirstLevelSuggestions[type].includes(item)
+  );
+
+  if (remaining.length === 0) {
+    selectedFirstLevelSuggestions[type] = [];
+    currentSuggestions[type] = [...initial];
+  } else {
+    currentSuggestions[type] = remaining;
+  }
+}
+
+// Сброс выбранных подсказок и возврат к начальному списку
 function resetSuggestions(type) {
   selectedFirstLevelSuggestions[type] = [];
   currentSuggestions[type] = getInitialSuggestions(type);
 }
 
+// Возвращает true, если сейчас в currentSuggestions доступны только начальные подсказки, которые ещё не выбраны
 function isInitialSuggestions(type) {
   const initialSuggs = getInitialSuggestions(type);
   const unusedInitial = initialSuggs.filter(
