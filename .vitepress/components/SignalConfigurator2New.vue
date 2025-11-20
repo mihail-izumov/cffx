@@ -623,8 +623,11 @@ function selectSuggestion(fieldName, suggestion, type) {
   updateSuggestions(type, suggestion);
 }
 
-// Возвращает начальные подсказки для выбранного типа
 function getInitialSuggestions(type) {
+  if (type === 'emotions') {
+    // Теперь возвращаем массив по selectedGender.value (male или female)
+    return baseSuggestions[form.direction]?.emotions[selectedGender.value] || [];
+  }
   return baseSuggestions[form.direction]?.[type]?.initial || [];
 }
 
