@@ -61,35 +61,41 @@
     <div class="signal-demo__form-container">
 
       <!-- Секция 6: Локация + выбор направления -->
-      <div v-if="selectedSection === 'location'" class="signal-form-section">
-        <div class="signal-direction-choose-row" style="margin-bottom: 18px; display: flex; gap: 20px; justify-content: center;">
-          <button
-            class="signal-suggestion-bubble"
-            :class="{ active: form.direction === 'food' }"
-            @click="form.direction = 'food'"
-            type="button"
-          >Общепит</button>
-          <button
-            class="signal-suggestion-bubble"
-            :class="{ active: form.direction === 'fitness' }"
-            @click="form.direction = 'fitness'"
-            type="button"
-          >Фитнес</button>
-        </div>
-        <div class="signal-question-block" style="--accent-color: #5A9FB8;">
-          <div class="signal-rotating-phrase-container">
-            <p class="signal-question-label">В какой кофейне (или клубе) разобрать Ваш Сигнал?</p>
-          </div>
-          <select v-model="form.selectedNetwork" @change="form.selectedBranch = ''" class="signal-select">
-            <option disabled value="">Выбрать сеть</option>
-            <option v-for="(club, name) in form.direction === 'fitness' ? fitness : cafes" :key="name" :value="name">{{ name }}</option>
-          </select>
-          <select v-model="form.selectedBranch" class="signal-select" :disabled="!form.selectedNetwork">
-            <option disabled value="">Выбрать локацию</option>
-            <option v-for="(branch, index) in selectedNetworkBranches" :key="index" :value="branch.address">{{ branch.address }}</option>
-          </select>
-        </div>
-      </div>
+<div v-if="selectedSection === 'location'" class="signal-form-section">
+  <div class="signal-question-block" style="--accent-color: #5A9FB8;">
+    <div class="signal-rotating-phrase-container">
+      <p class="signal-question-label">
+        В какой кофейне (или клубе) разобрать Ваш Сигнал?
+      </p>
+    </div>
+
+    <!-- Выбор направления — тут, сразу под вопросом -->
+    <div class="signal-direction-inline-row" style="margin: 8px 0 18px 0; display: flex; gap: 18px; justify-content: flex-start;">
+      <button
+        class="signal-suggestion-bubble"
+        :class="{ active: form.direction === 'food' }"
+        @click="form.direction = 'food'"
+        type="button"
+      >Общепит</button>
+      <button
+        class="signal-suggestion-bubble"
+        :class="{ active: form.direction === 'fitness' }"
+        @click="form.direction = 'fitness'"
+        type="button"
+      >Фитнес</button>
+    </div>
+
+    <select v-model="form.selectedNetwork" @change="form.selectedBranch = ''" class="signal-select">
+      <option disabled value="">Выбрать сеть</option>
+      <option v-for="(club, name) in form.direction === 'fitness' ? fitness : cafes" :key="name" :value="name">{{ name }}</option>
+    </select>
+    <select v-model="form.selectedBranch" class="signal-select" :disabled="!form.selectedNetwork">
+      <option disabled value="">Выбрать локацию</option>
+      <option v-for="(branch, index) in selectedNetworkBranches" :key="index" :value="branch.address">{{ branch.address }}</option>
+    </select>
+  </div>
+</div>
+
 
       <!-- Секция 2: Эмоции -->
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
