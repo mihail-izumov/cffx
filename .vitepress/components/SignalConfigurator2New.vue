@@ -64,24 +64,23 @@
 <div v-if="selectedSection === 'location'" class="signal-form-section">
   <div class="signal-question-block" style="--accent-color: #5A9FB8;">
     <div class="signal-rotating-phrase-container">
-      <p class="signal-question-label" style="margin-bottom: 32px;">
+      <p class="signal-question-label" style="margin-bottom: 24px;">
         В какой кофейне (или клубе) разобрать Ваш Сигнал?
       </p>
     </div>
 
-    <!-- Все селекторы в flex-колонке с нужным gap -->
-    <div style="display: flex; flex-direction: column; gap: 22px;">
-      <!-- Выпадающий селектор направления -->
+    <!-- Контейнер-селекторы с минимальным gap -->
+    <div style="display: flex; flex-direction: column; gap: 7px;">
+      <!-- Селектор направления -->
       <select v-model="form.direction" class="signal-select">
         <option disabled value="">Выбрать направление</option>
         <option value="food">Общепит</option>
         <option value="fitness">Фитнес</option>
       </select>
 
-      <!-- Селектор сети -->
+      <!-- Селектор сети (активен при выборе направления) -->
       <select
         v-model="form.selectedNetwork"
-        @change="form.selectedBranch = ''"
         class="signal-select"
         :disabled="!form.direction"
       >
@@ -97,7 +96,7 @@
         </option>
       </select>
 
-      <!-- Селектор локации -->
+      <!-- Селектор локации (активен при выборе сети) -->
       <select
         v-model="form.selectedBranch"
         class="signal-select"
@@ -117,7 +116,6 @@
     </div>
   </div>
 </div>
-
 
 
       <!-- Секция 2: Эмоции -->
@@ -335,16 +333,29 @@
 <script setup>
 import { reactive, ref, computed, onMounted, watch } from 'vue'
 
-  // Сброс сети и локации при смене направления
-watch(() => form.direction, () => {
-  form.selectedNetwork = '';
-  form.selectedBranch = '';
-});
+// Сброс значений селекторов при изменении выбора выше
 
-// Сброс локации при смене сети
-watch(() => form.selectedNetwork, () => {
-  form.selectedBranch = '';
-});
+// Сброс сети и локации при смене направления
+watch(
+  () => form.direction,
+  (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+      form.selectedNetwork = "";
+      form.selectedBranch = "";
+    }
+  }
+);
+
+// Сброс локации при смене выбранной сети
+watch(
+  () => form.selectedNetwork,
+  (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+      form.selectedBranch = "";
+    }
+  }
+);
+
 
 
 // ====== Стейт формы ======
