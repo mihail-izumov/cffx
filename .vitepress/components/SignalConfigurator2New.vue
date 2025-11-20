@@ -1794,4 +1794,8 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   transition: opacity 0.2s ease-in-out; /* ← ДОБАВИТЬ */
 }
 
+.signal-checkbox-row {
+  margin-top: 16px; 
+}
+
 </style>
