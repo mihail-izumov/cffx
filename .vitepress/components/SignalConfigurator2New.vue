@@ -1490,6 +1490,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   font-size: 0.9rem;
   color: #777;
   margin-top: 0;
+  margin-bottom: 16px;
   line-height: 1.2;
 }
 
