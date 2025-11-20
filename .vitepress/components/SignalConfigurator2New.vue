@@ -64,58 +64,60 @@
 <div v-if="selectedSection === 'location'" class="signal-form-section">
   <div class="signal-question-block" style="--accent-color: #5A9FB8;">
     <div class="signal-rotating-phrase-container">
-      <p class="signal-question-label" style="margin-bottom: 24px;"> <!-- увеличенный отступ после вопроса -->
+      <p class="signal-question-label" style="margin-bottom: 32px;">
         В какой кофейне (или клубе) разобрать Ваш Сигнал?
       </p>
     </div>
 
-    <!-- Выпадающий селектор направления -->
-    <select v-model="form.direction" class="signal-select" style="margin-bottom: 20px;">
-      <option disabled value="">Выбрать направление</option>
-      <option value="food">Общепит</option>
-      <option value="fitness">Фитнес</option>
-    </select>
+    <!-- Все селекторы в flex-колонке с нужным gap -->
+    <div style="display: flex; flex-direction: column; gap: 22px;">
+      <!-- Выпадающий селектор направления -->
+      <select v-model="form.direction" class="signal-select">
+        <option disabled value="">Выбрать направление</option>
+        <option value="food">Общепит</option>
+        <option value="fitness">Фитнес</option>
+      </select>
 
-    <!-- Селектор сети -->
-    <select
-      v-model="form.selectedNetwork"
-      @change="form.selectedBranch = ''"
-      class="signal-select"
-      style="margin-bottom: 12px;"
-      :disabled="!form.direction"
-    >
-      <option disabled value="">
-        {{ !form.direction ? 'Сначала выберите направление' : 'Выбрать сеть' }}
-      </option>
-      <option
-        v-for="(club, name) in form.direction === 'fitness' ? fitness : cafes"
-        :key="name"
-        :value="name"
+      <!-- Селектор сети -->
+      <select
+        v-model="form.selectedNetwork"
+        @change="form.selectedBranch = ''"
+        class="signal-select"
+        :disabled="!form.direction"
       >
-        {{ name }}
-      </option>
-    </select>
+        <option disabled value="">
+          {{ !form.direction ? 'Сначала выберите направление' : 'Выбрать сеть' }}
+        </option>
+        <option
+          v-for="(club, name) in form.direction === 'fitness' ? fitness : cafes"
+          :key="name"
+          :value="name"
+        >
+          {{ name }}
+        </option>
+      </select>
 
-    <!-- Селектор локации -->
-    <select
-      v-model="form.selectedBranch"
-      class="signal-select"
-      :disabled="!form.selectedNetwork"
-      style="margin-bottom: 12px;"
-    >
-      <option disabled value="">
-        {{ !form.selectedNetwork ? 'Сначала выберите сеть' : 'Выбрать локацию' }}
-      </option>
-      <option
-        v-for="(branch, index) in selectedNetworkBranches"
-        :key="index"
-        :value="branch.address"
+      <!-- Селектор локации -->
+      <select
+        v-model="form.selectedBranch"
+        class="signal-select"
+        :disabled="!form.selectedNetwork"
       >
-        {{ branch.address }}
-      </option>
-    </select>
+        <option disabled value="">
+          {{ !form.selectedNetwork ? 'Сначала выберите сеть' : 'Выбрать локацию' }}
+        </option>
+        <option
+          v-for="(branch, index) in selectedNetworkBranches"
+          :key="index"
+          :value="branch.address"
+        >
+          {{ branch.address }}
+        </option>
+      </select>
+    </div>
   </div>
 </div>
+
 
 
       <!-- Секция 2: Эмоции -->
@@ -453,6 +455,16 @@ watch([() => form.direction, selectedGender], () => {
   selectedFirstLevelSuggestions.facts = [];
   selectedFirstLevelSuggestions.solutions = [];
 });
+
+import { watch } from 'vue';
+watch(() => form.direction, () => {
+  form.selectedNetwork = '';
+  form.selectedBranch = '';
+});
+watch(() => form.selectedNetwork, () => {
+  form.selectedBranch = '';
+});
+
 
 // ====== Основная “цепочная” логика ======
 function selectSuggestion(fieldName, suggestion, type) {
