@@ -64,7 +64,7 @@
 <div v-if="selectedSection === 'location'" class="signal-form-section">
   <div class="signal-question-block" style="--accent-color: #5A9FB8;">
     <div class="signal-rotating-phrase-container">
-      <p class="signal-question-label" style="margin-bottom: 26px;"> <!-- увеличенный отступ после вопроса -->
+      <p class="signal-question-label" style="margin-bottom: 24px;"> <!-- увеличенный отступ после вопроса -->
         В какой кофейне (или клубе) разобрать Ваш Сигнал?
       </p>
     </div>
@@ -81,7 +81,7 @@
       v-model="form.selectedNetwork"
       @change="form.selectedBranch = ''"
       class="signal-select"
-      style="margin-bottom: 20px;"
+      style="margin-bottom: 16px;"
       :disabled="!form.direction"
     >
       <option disabled value="">
@@ -101,7 +101,7 @@
       v-model="form.selectedBranch"
       class="signal-select"
       :disabled="!form.selectedNetwork"
-      style="margin-bottom: 18px;"
+      style="margin-bottom: 16px;"
     >
       <option disabled value="">
         {{ !form.selectedNetwork ? 'Сначала выберите сеть' : 'Выбрать локацию' }}
