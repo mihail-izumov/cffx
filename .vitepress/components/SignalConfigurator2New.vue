@@ -335,6 +335,18 @@
 <script setup>
 import { reactive, ref, computed, onMounted, watch } from 'vue'
 
+  // Сброс сети и локации при смене направления
+watch(() => form.direction, () => {
+  form.selectedNetwork = '';
+  form.selectedBranch = '';
+});
+
+// Сброс локации при смене сети
+watch(() => form.selectedNetwork, () => {
+  form.selectedBranch = '';
+});
+
+
 // ====== Стейт формы ======
 const form = reactive({
   direction: '', // 'food' или 'fitness'
