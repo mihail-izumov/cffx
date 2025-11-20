@@ -71,8 +71,8 @@
     <div style="display: flex; flex-direction: column; gap: 7px;">
       <select v-model="form.direction" class="signal-select">
         <option disabled value="">Выбрать направление</option>
-        <option value="food">Общепит</option>
-        <option value="fitness">Фитнес</option>
+        <option value="food">Рестораны и кофейни</option>
+        <option value="fitness">Фитнес-клубы и студии</option>
       </select>
       <select
         v-model="form.selectedNetwork"
@@ -393,15 +393,24 @@ const humanizeStatus = ref('idle');
 
 // Массивы сетей и филиалов
 const fitness = {
-  'X-Fit': {
+  'SMSTRETCHING': {
     branches: [
-      { address: 'Московское шоссе, 19' },
-      { address: 'Полевая, 120А' }
+      { address: 'Москва, Спиридоньевский пер., 9' },
+      { address: 'Москва, ул. Лужники, 24 стр 21' },
+      { address: 'Москва, ул. Мясницкая, 24/7 стр 1' },
+      { address: 'Москва, Холодильный пер., 3 к 1 стр 3' },
+      { address: 'Москва, ул. Тимура Фрунзе, 16 стр 3' },
+      { address: 'Москва, ул. Гиляровского, 39 стр 1' },
+      { address: 'Санкт-Петербург, ул. Кременчугская, 19 к 3' },
+      { address: 'Краснодар, ул. Новокузнечная, 89' }
     ]
   },
-  'Alex Fitness': {
+  'FiZКУЛЬТУРА': {
     branches: [
-      { address: 'Куйбышева, 133' }
+      { address: 'Самара, ул. Врубеля, 11' },
+      { address: 'Самара, ул. Ново-Садовая, 160М' },
+      { address: 'Самара, ул. Гагарина, 99' },
+      { address: 'Самара, ул. Казачья, 36' }
     ]
   }
 };
