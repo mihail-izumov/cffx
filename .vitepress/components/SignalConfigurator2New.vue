@@ -110,10 +110,9 @@
               <p :key="currentQuestion1.value" class="signal-question-label">{{ currentQuestion1 }}</p>
             </transition>
           </div>
-          <textarea
-            v-model="form.emotionalRelease"
-            @focus="stopRotation"
-            @blur="startRotation(1)"
+          <textarea 
+            v-model="form.emotionalRelease" 
+            @focus="startRotation(1)" 
             :rows="isMobile ? 5 : 3"
             placeholder="Или напишите своими словами ..."
           ></textarea>
@@ -145,12 +144,11 @@
               <p :key="currentQuestion2.value" class="signal-question-label">{{ currentQuestion2 }}</p>
             </transition>
           </div>
-          <textarea
-            v-model="form.emotionalRelease"
-            @focus="stopRotation"
-            @blur="startRotation(1)"
+          <textarea 
+            v-model="form.factualAnalysis" 
+            @focus="startRotation(2)" 
             :rows="isMobile ? 5 : 3"
-            placeholder="Или напишите своими словами ..."
+            placeholder="Несколько фактов: что и когда произошло ..."
           ></textarea>
           <div class="signal-suggestions-container">
             <div 
@@ -180,12 +178,11 @@
               <p :key="currentQuestion3.value" class="signal-question-label">{{ currentQuestion3 }}</p>
             </transition>
           </div>
-          <textarea
-            v-model="form.emotionalRelease"
-            @focus="stopRotation"
-            @blur="startRotation(1)"
+          <textarea 
+            v-model="form.constructiveSuggestions" 
+            @focus="startRotation(3)" 
             :rows="isMobile ? 5 : 3"
-            placeholder="Или напишите своими словами ..."
+            placeholder="Дайте честный совет ..."
           ></textarea>
           <div class="signal-suggestions-container">
             <div 
@@ -845,11 +842,6 @@ function startRotation(questionNum) {
     currentIndex = (currentIndex + 1) % questions.length;
     currentQuestion.value = questions[currentIndex];
   }, 3000);
-}
-
-function stopRotation() {
-  if (rotationInterval) clearInterval(rotationInterval);
-  rotationInterval = null;
 }
 
 // Останавливаем анимацию при размонтировании
