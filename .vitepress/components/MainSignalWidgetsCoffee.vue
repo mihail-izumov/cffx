@@ -8,49 +8,49 @@ const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка
 const cafes = {
   'Корж': {
     name: 'Корж',
-    ListeningStatus: 'Подключены',
+    ListeningStatus: '67 отзывов',
     ListeningBadgeText: 'Отвечают быстро',
-    SignalsStatus: 'Действуют',
+    SignalsStatus: '1 сигнал',
     SignalsBadgeText: 'Решение: 100%',
     isConnected: true
   },
   'MOSAIC': {
     name: 'MOSAIC',
-    ListeningStatus: 'Подключены',
+    ListeningStatus: '3 отзыва',
     ListeningBadgeText: 'Ответ: 42%',
-    SignalsStatus: 'Действуют',
+    SignalsStatus: '0 сигналов',
     SignalsBadgeText: 'Без решений',
     isConnected: false
   },
   'Skuratov': {
     name: 'Skuratov',
-    ListeningStatus: 'Подключены',
+    ListeningStatus: '3 отзыва',
     ListeningBadgeText: 'Ответ: 89%',
-    SignalsStatus: 'Действуют',
+    SignalsStatus: '0 сигналов',
     SignalsBadgeText: 'Без решений',
     isConnected: false
   },
   'Surf': {
     name: 'Surf',
-    ListeningStatus: 'Подключены',
+    ListeningStatus: '1 отзыв',
     ListeningBadgeText: 'Ответ: 100%',
-    SignalsStatus: 'Действуют',
+    SignalsStatus: '0 сигналов',
     SignalsBadgeText: 'Без решений',
     isConnected: false
   },
   'Белотурка': {
     name: 'Белотурка',
-    ListeningStatus: 'Подключены',
+    ListeningStatus: '8 отзывов',
     ListeningBadgeText: 'Ответ: 1%',
-    SignalsStatus: 'Действуют',
+    SignalsStatus: '0 сигналов',
     SignalsBadgeText: 'Без решений',
     isConnected: false
   },
   'Кэрри': {
     name: 'Кэрри',
-    ListeningStatus: 'Подключены',
+    ListeningStatus: '4 отзыва',
     ListeningBadgeText: 'Ответ: 97%',
-    SignalsStatus: 'Действуют',
+    SignalsStatus: '0 сигналов',
     SignalsBadgeText: 'Без решений',
     isConnected: false
   }
@@ -348,18 +348,13 @@ onUnmounted(() => {
           >
             <div class="signal2-stat-content">
               <div class="signal2-stat-left-group">
-                <div
-                  class="signal2-stat-value"
-                  :style="!isMobile ? { fontSize: '2.6rem' } : {}"
+                <div 
+                  class="signal2-stat-value" 
+                  :class="{ 'signal2-stat-value-desktop': !isMobile }"
                 >
                   {{ establishment.ListeningStatus }}
                 </div>
-                <div
-                  v-if="!isMobile"
-                  class="signal2-stat-label"
-                >
-                  Как слушают
-                </div>
+                <div v-if="!isMobile" class="signal2-stat-label">Как слушают</div>
               </div>
               <div class="signal2-stat-badge signal2-graphite-badge">
                 <span class="signal2-badge-emoji">💬</span>
@@ -376,18 +371,13 @@ onUnmounted(() => {
           >
             <div class="signal2-stat-content">
               <div class="signal2-stat-left-group">
-                <div
+                <div 
                   class="signal2-stat-value"
-                  :style="!isMobile ? { fontSize: '2.6rem' } : {}"
+                  :class="{ 'signal2-stat-value-desktop': !isMobile }"
                 >
                   {{ establishment.SignalsStatus }}
                 </div>
-                <div
-                  v-if="!isMobile"
-                  class="signal2-stat-label"
-                >
-                  Как меняют
-                </div>
+                <div v-if="!isMobile" class="signal2-stat-label">Как меняют</div>
               </div>
               <div class="signal2-stat-badge signal2-lime-badge">
                 <span class="signal2-badge-emoji">⚡</span>
@@ -425,13 +415,11 @@ onUnmounted(() => {
               :aria-expanded="showInfoModal ? 'true' : 'false'"
               @click="showInfoModal = true"
             >
-              <span class="signal2-button-icon-container">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  ircle cx="12" cy="12" r="10" />
-                  <path d="M12 16v-4" />
-                  <path d="M12 8h.01" />
-                </svg>
-              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                ircle cx="12" cy="12" r="10" />
+                <path d="M12 16v-4" />
+                <path d="M12 8h.01" />
+              </svg>
             </button>
             <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
             <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
@@ -560,6 +548,10 @@ onUnmounted(() => {
 .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
 .signal2-stat-card:hover .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.4); }
 .signal2-stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+/* НОВЫЙ КЛАСС: Уменьшенный шрифт для десктопа */
+.signal2-stat-value-desktop { font-size: 2.2rem !important; }
+
 .signal2-stat-card:hover .signal2-stat-value { transform: scale(1.15); text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); }
 .signal2-stat-label { color: #ffffff; font-weight: 700; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .signal2-stat-card:hover .signal2-stat-label { transform: scale(1.05); }
@@ -581,7 +573,27 @@ onUnmounted(() => {
 .signal2-control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; }
 .signal2-info-link { color: rgba(255, 255, 255, 0.5); display: flex; align-items: center; transition: color 0.3s ease; flex-shrink: 0; }
 .signal2-info-link:hover, .signal2-info-link:focus { color: white; }
-.signal2-info-button { background: transparent; border: none; cursor: pointer; }
+
+/* ОБНОВЛЕНО: Стили для круглой инфо-кнопки */
+.signal2-info-button {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  transition: all 0.3s ease !important;
+  flex-shrink: 0 !important;
+  cursor: pointer;
+}
+.signal2-info-button:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  transform: scale(1.05) !important;
+}
+
 .signal2-static-prompt { color: white; margin-right: 8px; flex-shrink: 0; }
 .signal2-rotating-text-container { flex-grow: 1; text-align: left; color: rgba(255, 255, 255, 0.7); min-height: 36px; display: flex; align-items: center; }
 .signal2-rotating-text-container.signal2-full-width { text-align: center; justify-content: center; }
@@ -660,8 +672,9 @@ onUnmounted(() => {
     gap: 12px;
   }
   
+  /* ОБНОВЛЕНО: Крупный шрифт для мобильных */
   .signal2-stat-value { 
-    font-size: 2rem; 
+    font-size: 3.2rem !important; 
     font-weight: 600; 
     margin: 0;
   }
@@ -821,5 +834,5 @@ onUnmounted(() => {
 .signal-100-badge .signal2-badge-emoji {
   filter: brightness(0);
 }
-
 </style>
+
