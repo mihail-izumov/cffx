@@ -1,306 +1,355 @@
-<template>
-  <div class="slider-container">
-    <!-- Card 1: Purple - Listening -->
-    <div class="card card-purple">
-      <div class="header">
-        <div class="icon-circle">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-            <path d="M4 10a7.31 7.31 0 0 0 10 10Z"/>
-            <path d="m9 15 3-3"/>
-            <path d="M17 13a6 6 0 0 0-6-6"/>
-            <path d="M21 13A10 10 0 0 0 11 3"/>
-          </svg>
-        </div>
-        <div class="text-block">
-          <h3 class="title">Как слушают</h3>
-          <p class="subtitle">ПОДКЛЮЧЕНЫ</p>
-        </div>
-      </div>
-      
-      <div class="slider-wrapper">
-        <input 
-          type="range" 
-          v-model="sliderValue1" 
-          min="0" 
-          max="8" 
-          class="slider slider-purple"
-          @input="handleSlider1Input"
-        />
-        <div class="slider-labels">
-          <div class="label label-left">{{ labels1[0] }}</div>
-          <div class="label label-center">{{ labels1[1] }}</div>
-          <div class="label label-right">{{ labels1[2] }}</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 2: Bronze - Change -->
-    <div class="card card-bronze">
-      <div class="header">
-        <div class="icon-circle">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
-          </svg>
-        </div>
-        <div class="text-block">
-          <h3 class="title">Как меняют</h3>
-          <p class="subtitle">ДЕЙСТВУЮТ</p>
-        </div>
-      </div>
-      
-      <div class="slider-wrapper">
-        <input 
-          type="range" 
-          v-model="sliderValue2" 
-          min="0" 
-          max="8" 
-          class="slider slider-bronze"
-          @input="handleSlider2Input"
-        />
-        <div class="slider-labels">
-          <div class="label label-left">{{ labels2[0] }}</div>
-          <div class="label label-center">{{ labels2[1] }}</div>
-          <div class="label label-right">{{ labels2[2] }}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const sliderValue1 = ref(4)
-const sliderValue2 = ref(4)
-const labels1 = ['Подключены', 'Слышат', 'Отвечают']
-const labels2 = ['Открыты', 'Действуют', 'Меняют']
+// Значения ползунков (0–8)
+const listeningValue = ref(3)
+const changeValue = ref(3)
 
-const handleSlider1Input = () => {
-  // Handle slider change if needed
-}
+// Функция для динамического стиля градиента ползунка
+const sliderStyle = (value: number | string) => {
+  const v = Number(value)
+  const percentage = (v / 8) * 100
 
-const handleSlider2Input = () => {
-  // Handle slider change if needed
+  return {
+    background: `linear-gradient(
+      to right,
+      var(--track-active) 0%,
+      var(--track-active) ${percentage}%,
+      var(--track-bg) ${percentage}%,
+      var(--track-bg) 100%
+    )`,
+  }
 }
 </script>
 
+<template>
+  <div class="readiness-wrapper">
+    
+    <!-- Карточка 1: Фиолетовая -->
+    <div class="card card--purple">
+      <div class="card-header">
+        <!-- Иконка в круге -->
+        <div class="icon-circle icon-circle--purple">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-satellite-dish-icon lucide-satellite-dish"
+          >
+            <path d="M4 10a7.31 7.31 0 0 0 10 10Z" />
+            <path d="m9 15 3-3" />
+            <path d="M17 13a6 6 0 0 0-6-6" />
+            <path d="M21 13A10 10 0 0 0 11 3" />
+          </svg>
+        </div>
+
+        <!-- Заголовки -->
+        <div class="card-titles">
+          <div class="card-title">Как слушают</div>
+          <div class="card-subtitle card-subtitle--purple">ПОДКЛЮЧЕНЫ</div>
+        </div>
+      </div>
+
+      <!-- Тело с ползунком -->
+      <div class="card-body">
+        <div class="slider-row">
+          <input
+            type="range"
+            min="0"
+            max="8"
+            step="1"
+            v-model="listeningValue"
+            class="slider slider--purple"
+            :style="sliderStyle(listeningValue)"
+          />
+        </div>
+        <div class="slider-labels">
+          <span class="label-left">Подключены</span>
+          <span class="label-center">Слышат</span>
+          <span class="label-right">Отвечают</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Карточка 2: Бронзовая -->
+    <div class="card card--bronze">
+      <div class="card-header">
+        <!-- Иконка в круге -->
+        <div class="icon-circle icon-circle--bronze">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-zap-icon lucide-zap"
+          >
+            <path
+              d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
+            />
+          </svg>
+        </div>
+
+        <!-- Заголовки -->
+        <div class="card-titles">
+          <div class="card-title">Как меняют</div>
+          <div class="card-subtitle card-subtitle--bronze">ДЕЙСТВУЮТ</div>
+        </div>
+      </div>
+
+      <!-- Тело с ползунком -->
+      <div class="card-body">
+        <div class="slider-row">
+          <input
+            type="range"
+            min="0"
+            max="8"
+            step="1"
+            v-model="changeValue"
+            class="slider slider--bronze"
+            :style="sliderStyle(changeValue)"
+          />
+        </div>
+        <div class="slider-labels">
+          <span class="label-left">Открыты</span>
+          <span class="label-center">Действуют</span>
+          <span class="label-right">Меняют</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>
+
 <style scoped>
-.slider-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+/* Общий контейнер */
+.readiness-wrapper {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+  justify-content: center;
+  flex-wrap: wrap;
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
 }
 
-@media (max-width: 768px) {
-  .slider-container {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-}
-
+/* Карточка */
 .card {
-  border-radius: 12px;
-  padding: 24px;
-  backdrop-filter: blur(8px);
+  --card-radius: 16px;
+  --track-bg: rgba(255, 255, 255, 0.18);
+  --track-active: #ffffff;
+  --thumb-size: 20px; /* Размер ползунка */
+
+  position: relative;
+  flex: 1 1 320px;
+  max-width: 420px;
+  padding: 16px 18px 18px;
+  border-radius: var(--card-radius);
+  color: #f9fafb;
+  overflow: hidden;
+  backdrop-filter: blur(18px);
 }
 
-.card-purple {
-  background: linear-gradient(135deg, rgba(88, 28, 135, 0.1) 0%, rgba(124, 58, 255, 0.1) 100%);
-  border: 1px solid rgba(124, 58, 255, 0.2);
+/* Фон для фиолетовой карточки */
+.card--purple {
+  background: radial-gradient(circle at 0 0, #7c3aed33, transparent 55%),
+    radial-gradient(circle at 100% 100%, #22d3ee1f, transparent 60%),
+    linear-gradient(135deg, #0b0b21, #15152f);
 }
 
-.card-bronze {
-  background: linear-gradient(135deg, rgba(92, 64, 51, 0.1) 0%, rgba(180, 131, 84, 0.1) 100%);
-  border: 1px solid rgba(180, 131, 84, 0.2);
+/* Фон для бронзовой карточки */
+.card--bronze {
+  background: radial-gradient(circle at 0 0, #f59e0b33, transparent 55%),
+    radial-gradient(circle at 100% 100%, #f973161f, transparent 60%),
+    linear-gradient(135deg, #14120c, #262012);
 }
 
-.header {
+/* Шапка карточки */
+.card-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 28px;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
+/* Круг с иконкой */
 .icon-circle {
+  /* Увеличенный размер, чтобы соответствовать высоте текста */
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  color: white;
+  color: #ffffff; /* Белая иконка */
+  backdrop-filter: blur(4px); /* Легкий блюр фона под кругом */
 }
 
-.card-purple .icon-circle {
-  background: rgba(124, 58, 255, 0.15);
+/* Цвет круга с прозрачностью */
+.icon-circle--purple {
+  background: rgba(167, 139, 250, 0.20);
 }
 
-.card-bronze .icon-circle {
-  background: rgba(180, 131, 84, 0.15);
+.icon-circle--bronze {
+  background: rgba(251, 191, 36, 0.20);
 }
 
-.icon {
-  width: 32px;
-  height: 32px;
-}
-
-.text-block {
+/* Блок заголовков */
+.card-titles {
   display: flex;
   flex-direction: column;
+  /* Минимальный отступ между строками */
+  gap: 2px; 
   justify-content: center;
-  gap: 4px;
 }
 
-.title {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0;
-  color: #ffffff;
+.card-title {
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 500;
+  color: #f3f4f6;
 }
 
-.subtitle {
-  font-size: 12px;
-  font-weight: 600;
-  margin: 0;
-  letter-spacing: 0.5px;
+.card-subtitle {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  line-height: 1;
 }
 
-.card-purple .subtitle {
-  color: #a78bfa;
+.card-subtitle--purple {
+  color: #c084fc; /* Ярко-фиолетовый */
 }
 
-.card-bronze .subtitle {
-  color: #d4a574;
+.card-subtitle--bronze {
+  color: #fbbf24; /* Ярко-золотой */
 }
 
-.slider-wrapper {
-  position: relative;
-  padding: 0 8px;
+.card-body {
+  margin-top: 4px;
 }
 
-.slider {
+.slider-row {
+  display: flex;
+  align-items: center;
   width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  outline: none;
+}
+
+/* Стили ползунка (Range Input) */
+.slider {
   -webkit-appearance: none;
   appearance: none;
-  margin-bottom: 36px;
-}
-
-/* Track styling */
-.slider::-webkit-slider-runnable-track {
   width: 100%;
   height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+  margin: 0;
+  /* Фон задается динамически через :style */
 }
 
-.slider::-moz-range-track {
-  width: 100%;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-  border: none;
-}
-
-/* Purple slider - filled track */
-.slider-purple::-webkit-slider-runnable-track {
-  background: linear-gradient(90deg, 
-    rgba(124, 58, 255, 0.3) 0%, 
-    rgba(124, 58, 255, 0.3) calc((var(--value, 0) / 8) * 100%), 
-    rgba(255, 255, 255, 0.1) calc((var(--value, 0) / 8) * 100%), 
-    rgba(255, 255, 255, 0.1) 100%
-  );
-}
-
-/* Bronze slider - filled track */
-.slider-bronze::-webkit-slider-runnable-track {
-  background: linear-gradient(90deg, 
-    rgba(180, 131, 84, 0.3) 0%, 
-    rgba(180, 131, 84, 0.3) calc((var(--value, 0) / 8) * 100%), 
-    rgba(255, 255, 255, 0.1) calc((var(--value, 0) / 8) * 100%), 
-    rgba(255, 255, 255, 0.1) 100%
-  );
-}
-
-/* Thumb styling */
+/* Webkit (Chrome, Safari, Edge) Thumb */
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: var(--thumb-size);
+  height: var(--thumb-size);
   border-radius: 50%;
-  background: white;
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.5); /* Тень для контраста */
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  position: relative;
+  margin-top: 0px; /* Центрирование на треке */
+  
+  /* Двойной круг: белый снаружи, цветной внутри */
+  background: radial-gradient(
+    circle,
+    var(--thumb-inner-color) 0%,
+    var(--thumb-inner-color) 35%,
+    #ffffff 36%,
+    #ffffff 100%
+  );
 }
 
+/* Firefox Thumb */
 .slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: var(--thumb-size);
+  height: var(--thumb-size);
   border-radius: 50%;
-  background: white;
+  border: 2px solid rgba(15, 23, 42, 0.2);
   cursor: pointer;
-  border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  
+  /* Двойной круг */
+  background: radial-gradient(
+    circle,
+    var(--thumb-inner-color) 0%,
+    var(--thumb-inner-color) 35%,
+    #ffffff 36%,
+    #ffffff 100%
+  );
 }
 
-/* Inner colored circle for purple */
-.slider-purple::-webkit-slider-thumb::before {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #7c3aff;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.slider::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: transparent;
 }
 
-/* Inner colored circle for bronze */
-.slider-bronze::-webkit-slider-thumb::before {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #b48354;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+/* Цвета внутренней точки ползунка */
+.slider--purple {
+  --thumb-inner-color: #a855f7;
 }
 
+.slider--bronze {
+  --thumb-inner-color: #fbbf24;
+}
+
+/* Подписи под ползунком */
 .slider-labels {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.label {
-  text-align: center;
-  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-top: 10px;
+  color: rgba(229, 231, 235, 0.7);
+  position: relative;
+  height: 16px; /* Фикс высоты чтобы элементы absolute не схлопывали контейнер если нужно */
 }
 
 .label-left {
-  text-align: left;
-  padding-left: 4px;
+  position: absolute;
+  left: 0;
 }
 
 .label-center {
-  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .label-right {
-  text-align: right;
-  padding-right: 4px;
+  position: absolute;
+  right: 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .readiness-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 </style>
