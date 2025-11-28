@@ -81,6 +81,11 @@ const changeValue = ref(4.2)
 const networkListeningStatus = ref(0)
 const networkSignalStatus = ref(0)
 
+// === TICKET & DATE (статичные, генерируются один раз на onMounted) ===
+const rawTicketNumber = ref<string | null>(null)
+const formattedTicketNumber = ref<string | null>(null)
+const currentDate = ref('')
+
 const availableNetworks = computed(() => {
   if (!form.value.direction) return []
   const source = form.value.direction === 'fitness' ? fitness : cafes
@@ -95,11 +100,8 @@ const updateStatusesFromNetwork = () => {
   const networkData = source[form.value.selectedNetwork]
   
   if (networkData) {
-    // 1. Обновляем "истинные" статусы сети для заголовков
     networkListeningStatus.value = networkData.listeningStatus
     networkSignalStatus.value = networkData.signalStatus
-
-    // 2. Сбрасываем ползунки пользователя на эти же значения (как отправная точка)
     listeningValue.value = networkData.listeningStatus
     changeValue.value = networkData.signalStatus
   }
@@ -115,7 +117,22 @@ watch(() => form.value.selectedNetwork, () => {
   updateStatusesFromNetwork()
 })
 
+// === INIT: Генерируем тикет и дату один раз ===
 onMounted(() => {
+  // Генерируем номер тикета и дату при запуске формы (как в paste.txt)
+  rawTicketNumber.value = String(Date.now()).slice(-6)
+  formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`
+
+  const now = new Date()
+  const day = String(now.getDate()).padStart(2, '0')
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const year = now.getFullYear()
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  const seconds = String(now.getSeconds()).padStart(2, '0')
+
+  currentDate.value = `${day}.${month}.${year}, ${hours}:${minutes}:${seconds}`
+
   updateStatusesFromNetwork()
 })
 
@@ -131,11 +148,9 @@ const getStatusIndex = (val: number) => {
   return 2
 }
 
-// Индексы для ПОЛЗУНКОВ (меняются при движении)
 const userListeningIndex = computed(() => getStatusIndex(listeningValue.value))
 const userChangeIndex = computed(() => getStatusIndex(changeValue.value))
 
-// Индексы для ЗАГОЛОВКОВ (фиксированы, пока не сменится сеть)
 const networkListeningIndex = computed(() => getStatusIndex(networkListeningStatus.value))
 const networkSignalIndex = computed(() => getStatusIndex(networkSignalStatus.value))
 
@@ -155,7 +170,7 @@ const sliderStyle = (value: number | string) => {
 }
 
 // --- ДИНАМИЧЕСКИЙ ТЕКСТ ---
-// Текст зависит от того, что накрутил ПОЛЬЗОВАТЕЛЬ
+
 const feedbackMessage = computed(() => {
   const l = userListeningIndex.value
   const c = userChangeIndex.value
@@ -169,7 +184,7 @@ const feedbackMessage = computed(() => {
     [
       'Место слышит Клиентов и открыто к доработкам — ваш Сигнал подскажет, что именно стоит поправить первым.',
       'Бизнес уже реагирует на обратную связь — следите, как он шаг за шагом становится удобнее лично для вас.',
-      'Клиентов здесь реально слушают, и изменения уже идут — ваш Сигнал поможет направить эти изменения именно туда, где это важнее всего для вас.'
+      'Клиентов здесь реально слушают, и изменения уже идят — ваш Сигнал поможет направить эти изменения именно туда, где это важнее всего для вас.'
     ],
     [
       'Команда отвечает на каждый Сигнал и только формирует систему изменений — ваш Сигнал может задать им ясный вектор.',
@@ -185,6 +200,7 @@ const feedbackMessage = computed(() => {
 
 const isSubmitting = ref(false)
 const isSuccess = ref(false)
+
 const buttonText = computed(() => {
   if (isSuccess.value) return 'Отправлено!'
   if (isSubmitting.value) return 'Отправка...'
@@ -202,12 +218,7 @@ const submitForm = async () => {
 
   isSubmitting.value = true
 
-  let clientId = localStorage.getItem('signal_client_id')
-  if (!clientId) {
-    clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now()
-    localStorage.setItem('signal_client_id', clientId)
-  }
-
+  // Генерируем НОВЫЙ submittedTime для каждой отправки
   const now = new Date()
   const day = String(now.getDate()).padStart(2, '0')
   const month = String(now.getMonth() + 1).padStart(2, '0')
@@ -215,25 +226,27 @@ const submitForm = async () => {
   const hours = String(now.getHours()).padStart(2, '0')
   const minutes = String(now.getMinutes()).padStart(2, '0')
   const seconds = String(now.getSeconds()).padStart(2, '0')
-  
-  const currentDate = `${year}-${month}-${day}`
+
   const submittedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-  const ticketNumber = `TICKET-${Date.now().toString().slice(-6)}`
+
+  let clientId = localStorage.getItem('signal_client_id')
+  if (!clientId) {
+    clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now()
+    localStorage.setItem('signal_client_id', clientId)
+  }
 
   const formData = new FormData()
   formData.append('referer', window.location.origin)
   formData.append('clientId', clientId)
-  formData.append('ticketNumber', ticketNumber)
-  formData.append('date', currentDate)
+  formData.append('ticketNumber', formattedTicketNumber.value!)
+  formData.append('date', currentDate.value)
   formData.append('submitted', submittedTime)
-  
   formData.append('direction', form.value.direction === 'food' ? 'Еда' : 'Фитнес')
   formData.append('network', form.value.selectedNetwork)
   formData.append('address', 'Online Assessment')
   formData.append('name', 'Пользователь Readiness')
 
-  const reviewText = `
-[Оценка Readiness]
+  const reviewText = `[Оценка Readiness]
 Направление: ${form.value.direction === 'food' ? 'Еда' : 'Фитнес'}
 Сеть: ${form.value.selectedNetwork}
 
@@ -246,9 +259,9 @@ const submitForm = async () => {
 Как меняют: ${changeLabels[userChangeIndex.value]} (${changeValue.value.toFixed(2)}/8)
 
 [Комментарий системы]
-${feedbackMessage.value}
-  `
-  formData.append('review', reviewText.trim())
+${feedbackMessage.value}`
+
+  formData.append('review', reviewText)
 
   try {
     const response = await fetch(API_ENDPOINT, {
@@ -258,7 +271,7 @@ ${feedbackMessage.value}
 
     const result = await response.json()
     
-    if (result.status === 'success') {
+    if (result.status === 'success' && result.processed) {
       isSuccess.value = true
       setTimeout(() => {
         isSuccess.value = false
@@ -274,6 +287,7 @@ ${feedbackMessage.value}
   }
 }
 </script>
+
 
 <template>
   <div class="page-container">
