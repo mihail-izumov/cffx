@@ -1,63 +1,74 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 
-// --- ДАННЫЕ ДЛЯ СЕЛЕКТОВ (из paste.txt) ---
-
-const cafes = {
-  'Skuratov Coffee': [
-    { address: 'ул. Куйбышева, 68/70' },
-    { address: 'Московское шоссе, 252' }
-  ],
-  'Корж': [
-    { address: 'ул. Дачная, 2к1' },
-    { address: 'ул. Ульяновская, 19' },
-    { address: 'ул. Ново-Садовая, 106г' },
-    { address: 'ул. Самарская, 270' },
-    { address: 'ул. Льва Толстого, 57' },
-    { address: 'пр. Масленникова, 19' }
-  ],
-  'Дринкит': [
-    { address: 'ул. Вилоновская, 84' },
-    { address: 'ул. Ленинградская, 29' }
-  ],
-  'Surf Coffee': [
-    { address: 'ул. Галактионовская, 40' },
-    { address: 'ул. Некрасовская, 57' }
-  ]
-}
+// --- ДАННЫЕ НАПРАВЛЕНИЙ И СЕТЕЙ (из paste.txt) ---
 
 const fitness = {
-  'SuperSport': [
-    { address: 'Московское шоссе, 4к4' }
-  ],
-  'DDX Fitness': [
-    { address: 'Аврора Молл, ул. Аэродромная, 47А' },
-    { address: 'Космопорт, ул. Дыбенко, 30' },
-    { address: 'Летоут, Московское шоссе, 18-й км, 25А' }
-  ],
-  'Fizkultura': [
-    { address: 'Галактионовская 157' },
-    { address: 'Врубеля 15' }
-  ],
-  'Luxury Fitness': [
-    { address: 'ул. Солнечная, 30' }
-  ],
-  'Ботек-Велнес': [
-    { address: 'ул. Карла Маркса, 55' }
-  ]
+  'SMSTRETCHING': {
+    branches: [
+      { address: 'г. Самара, ул. Ново-Садовая, 9' },
+      { address: 'г. Самара, пр. К. Маркса, 24 (ТЦ Пирамида)' },
+      { address: 'г. Самара, ул. Димитрова, 247 (ТЦ METRO)' }
+    ]
+  },
+  'FiZ': {
+    branches: [
+      { address: 'г. Самара, пр-кт. Кирова, 11' },
+      { address: 'г. Самара, ул. Мориса Тореза, 160' }
+    ]
+  }
 }
 
-// --- СОСТОЯНИЕ ФОРМЫ ---
+const cafes = {
+  'Корж': {
+    branches: [
+      { address: 'г. Самара, ТРЦ Гудок, Московское шоссе, 103' },
+      { address: 'г. Самара, ТРЦ Амбар, Московское шоссе, 101' }
+    ]
+  },
+  'MOSAIC': {
+    branches: [
+      { address: 'г. Самара, Московское шоссе, 4а' },
+      { address: 'г. Самара, ул. Ново-Садовая, 50' }
+    ]
+  },
+  'Skuratov': {
+    branches: [
+      { address: 'г. Самара, ул. Ленинградская, 190' },
+      { address: 'г. Самара, ул. Ново-Садовая, 80' }
+    ]
+  },
+  'Surf Coffee': {
+    branches: [
+      { address: 'г. Самара, ул. Мичурина, 57' },
+      { address: 'г. Самара, ул. Мичурина, 54' }
+    ]
+  },
+  'Старик Хоттабыч': {
+    branches: [
+      { address: 'г. Самара, ул. Чапаевская, 99' },
+      { address: 'г. Самара, ул. Ленинская, 153' }
+    ]
+  }
+}
 
-const selectedDirection = ref('')
-const selectedNetwork = ref('')
-// Локацию пока не используем в отправке по вашему ТЗ, но логику можно оставить
-const selectedBranch = ref('')
+// --- ЛОГИКА ФОРМЫ ---
 
-// При смене направления сбрасываем сеть
-watch(selectedDirection, () => {
-  selectedNetwork.value = ''
-  selectedBranch.value = ''
+const form = ref({
+  direction: '',
+  selectedNetwork: ''
+})
+
+// Список сетей в зависимости от направления
+const availableNetworks = computed(() => {
+  if (!form.value.direction) return []
+  const source = form.value.direction === 'fitness' ? fitness : cafes
+  return Object.keys(source)
+})
+
+// Сброс сети при смене направления
+watch(() => form.value.direction, () => {
+  form.value.selectedNetwork = ''
 })
 
 // --- ЛОГИКА СЛАЙДЕРОВ ---
@@ -78,9 +89,27 @@ const getStatusIndex = (val: number) => {
 const listeningStatusIndex = computed(() => getStatusIndex(listeningValue.value))
 const changeStatusIndex = computed(() => getStatusIndex(changeValue.value))
 
+const sliderStyle = (value: number | string) => {
+  const v = Number(value)
+  const percentage = (v / 8) * 100
+
+  return {
+    background: `linear-gradient(
+      to right,
+      var(--track-active) 0%,
+      var(--track-active) ${percentage}%,
+      var(--track-bg) ${percentage}%,
+      var(--track-bg) 100%
+    )`,
+  }
+}
+
+// --- ДИНАМИЧЕСКИЙ ТЕКСТ ---
+
 const feedbackMessage = computed(() => {
   const l = listeningStatusIndex.value
   const c = changeStatusIndex.value
+
   const messages = [
     [
       'Место только выстраивает систему обратной связи — ваш Сигнал войдёт в основу того, как они будут работать с Клиентами.',
@@ -98,36 +127,28 @@ const feedbackMessage = computed(() => {
       'Здесь ваши Сигналы работают как рычаг — место быстро отвечает и действительно меняется вместе с вами.'
     ]
   ]
+
   return messages[l][c]
 })
 
-const sliderStyle = (value: number | string) => {
-  const v = Number(value)
-  const percentage = (v / 8) * 100
-  return {
-    background: `linear-gradient(to right, var(--track-active) 0%, var(--track-active) ${percentage}%, var(--track-bg) ${percentage}%, var(--track-bg) 100%)`,
-  }
-}
-
-// --- ОТПРАВКА ---
+// --- ОТПРАВКА ФОРМЫ ---
 
 const isSubmitting = ref(false)
 const isSuccess = ref(false)
-
 const buttonText = computed(() => {
   if (isSuccess.value) return 'Отправлено!'
   if (isSubmitting.value) return 'Отправка...'
   return 'Отправить'
 })
 
-const isFormValid = computed(() => {
-  return selectedDirection.value && selectedNetwork.value
-})
-
 const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2di_IxXDyAZEfSxJ7wLvupwjb7_IAIlKVsXlyOL6WcDj/exec'
 
 const submitForm = async () => {
-  if (!isFormValid.value || isSubmitting.value || isSuccess.value) return
+  if (isSubmitting.value || isSuccess.value) return
+  if (!form.value.direction || !form.value.selectedNetwork) {
+    alert('Пожалуйста, выберите направление и сеть')
+    return
+  }
 
   isSubmitting.value = true
 
@@ -141,10 +162,13 @@ const submitForm = async () => {
   const day = String(now.getDate()).padStart(2, '0')
   const month = String(now.getMonth() + 1).padStart(2, '0')
   const year = now.getFullYear()
-  const ticketNumber = `TICKET-${Date.now().toString().slice(-6)}`
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  const seconds = String(now.getSeconds()).padStart(2, '0')
   
   const currentDate = `${year}-${month}-${day}`
-  const submittedTime = `${year}-${month}-${day} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`
+  const submittedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+  const ticketNumber = `TICKET-${Date.now().toString().slice(-6)}`
 
   const formData = new FormData()
   formData.append('referer', window.location.origin)
@@ -153,39 +177,45 @@ const submitForm = async () => {
   formData.append('date', currentDate)
   formData.append('submitted', submittedTime)
   
-  // Данные из селектов
-  const directionLabel = selectedDirection.value === 'food' ? 'Рестораны и кофейни' : 'Фитнес-клубы и студии'
-  formData.append('network', selectedNetwork.value) // Сеть
-  formData.append('name', 'Аноним') // Заглушка
+  // Основные данные
+  formData.append('direction', form.value.direction === 'food' ? 'Еда' : 'Фитнес')
+  formData.append('network', form.value.selectedNetwork)
+  formData.append('address', 'Online Assessment') // Можно оставить пустым
+  formData.append('name', 'Пользователь Readiness')
 
-  // Формируем review text с данными из 4х полей
+  // Формируем отзыв
   const reviewText = `
-    [Данные формы]
-    Направление: ${directionLabel}
-    Сеть: ${selectedNetwork.value}
-    
-    [Статистика Readiness]
-    Как слушают: ${listeningLabels[listeningStatusIndex.value]} (${listeningValue.value.toFixed(2)}/8)
-    Как меняют: ${changeLabels[changeStatusIndex.value]} (${changeValue.value.toFixed(2)}/8)
-    
-    [Комментарий системы]
-    ${feedbackMessage.value}
+[Оценка Readiness]
+Направление: ${form.value.direction === 'food' ? 'Еда' : 'Фитнес'}
+Сеть: ${form.value.selectedNetwork}
+
+Как слушают: ${listeningLabels[listeningStatusIndex.value]} (${listeningValue.value.toFixed(2)}/8)
+Как меняют: ${changeLabels[changeStatusIndex.value]} (${changeValue.value.toFixed(2)}/8)
+
+[Комментарий системы]
+${feedbackMessage.value}
   `
   formData.append('review', reviewText.trim())
 
   try {
-    const response = await fetch(API_ENDPOINT, { method: 'POST', body: formData })
+    const response = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      body: formData
+    })
+
     const result = await response.json()
     
     if (result.status === 'success') {
       isSuccess.value = true
-      setTimeout(() => { isSuccess.value = false }, 3000)
+      setTimeout(() => {
+        isSuccess.value = false
+      }, 3000)
     } else {
-      throw new Error(result.message || 'Ошибка')
+      throw new Error(result.message || 'Ошибка обработки данных')
     }
   } catch (error) {
     console.error(error)
-    alert('Ошибка при отправке')
+    alert('Не удалось отправить данные. Попробуйте позже.')
   } finally {
     isSubmitting.value = false
   }
@@ -195,40 +225,45 @@ const submitForm = async () => {
 <template>
   <div class="page-container">
     
-    <!-- 1. Изолированный заголовок -->
-    <h2 class="isolated-title">Проверьте готовность к изменениям</h2>
+    <!-- Заголовок -->
+    <h1 class="readiness-title">Где Вас Слушают?</h1>
 
-    <!-- 2. Блок с селектами -->
-    <div class="selects-container">
-      <select v-model="selectedDirection" class="signal-select">
-        <option disabled value="">Выбрать направление</option>
-        <option value="food">Рестораны и кофейни</option>
-        <option value="fitness">Фитнес-клубы и студии</option>
-      </select>
+    <!-- Селекты направления и сети -->
+    <div class="selectors-container">
+      <div class="selector-group">
+        <label class="selector-label">Выбрать направление</label>
+        <select v-model="form.direction" class="readiness-select">
+          <option disabled value="">Выберите направление</option>
+          <option value="food">Еда</option>
+          <option value="fitness">Фитнес</option>
+        </select>
+      </div>
 
-      <select
-        v-model="selectedNetwork"
-        class="signal-select"
-        :disabled="!selectedDirection"
-      >
-        <option disabled value="">Выбрать сеть</option>
-        <option
-          v-for="(val, name) in (selectedDirection === 'fitness' ? fitness : cafes)"
-          :key="name"
-          :value="name"
+      <div class="selector-group">
+        <label class="selector-label">Выбрать сеть</label>
+        <select 
+          v-model="form.selectedNetwork" 
+          class="readiness-select"
+          :disabled="!form.direction"
         >
-          {{ name }}
-        </option>
-      </select>
+          <option disabled value="">Выберите сеть</option>
+          <option 
+            v-for="network in availableNetworks" 
+            :key="network" 
+            :value="network"
+          >
+            {{ network }}
+          </option>
+        </select>
+      </div>
     </div>
 
-    <!-- 3. Карточки слайдеров -->
+    <!-- Карточки со слайдерами -->
     <div class="readiness-wrapper">
-      <!-- Карточка 1 -->
       <div class="card card--purple">
         <div class="card-header">
           <div class="icon-circle icon-circle--purple">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-satellite-dish-icon lucide-satellite-dish"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
           </div>
           <div class="card-titles">
             <div class="card-title">Как слушают</div>
@@ -247,11 +282,10 @@ const submitForm = async () => {
         </div>
       </div>
 
-      <!-- Карточка 2 -->
       <div class="card card--bronze">
         <div class="card-header">
           <div class="icon-circle icon-circle--bronze">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           </div>
           <div class="card-titles">
             <div class="card-title">Как меняют</div>
@@ -280,7 +314,7 @@ const submitForm = async () => {
     <div class="submit-container">
       <button 
         class="submit-button" 
-        :disabled="!isFormValid || isSubmitting || isSuccess"
+        :disabled="isSubmitting || isSuccess || !form.direction || !form.selectedNetwork"
         @click="submitForm"
       >
         {{ buttonText }}
@@ -291,60 +325,109 @@ const submitForm = async () => {
 </template>
 
 <style scoped>
+/* Сброс VitePress стилей */
+.page-container * {
+  all: revert;
+}
+
 .page-container {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-/* Изолированный заголовок */
-.isolated-title {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 24px;
+/* Заголовок */
+.readiness-title {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 32px;
   font-weight: 700;
+  color: #f9fafb;
   text-align: center;
-  margin: 0 0 24px 0;
+  margin: 0 0 32px 0;
   padding: 0;
-  border: none;
-  line-height: 1.3;
-  color: var(--vp-c-text-1, #2c3e50); /* Используем переменную темы или дефолт */
 }
 
 /* Контейнер селектов */
-.selects-container {
+.selectors-container {
+  all: initial;
+  display: flex;
+  gap: 16px;
   width: 100%;
-  max-width: 420px; /* Ширина как у карточки */
+  max-width: 856px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+.selector-group {
+  all: initial;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
+  flex: 1 1 320px;
+  min-width: 250px;
+  box-sizing: border-box;
 }
 
-/* Стили селекта (как в paste.txt) */
-.signal-select {
+.selector-label {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.readiness-select {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   width: 100%;
+  background-color: #242426;
+  border: 1px solid #444;
+  border-radius: 10px;
   padding: 12px 16px;
-  font-size: 16px;
-  border: 1px solid rgba(60, 60, 67, 0.29); /* VitePress border color approx */
-  border-radius: 12px;
-  background-color: var(--vp-c-bg-soft, #f6f6f7);
-  color: var(--vp-c-text-1, #2c3e50);
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-  background-repeat: no-repeat;
-  background-position: right 16px top 50%;
-  background-size: 12px auto;
+  font-size: 15px;
+  color: #f0f0f0;
   cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23f0f0f0' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+  box-sizing: border-box;
+  display: block;
 }
 
-.signal-select:disabled {
+.readiness-select:focus {
+  outline: none;
+  border-color: #7c3aed;
+  background-color: #2a2a2e;
+}
+
+.readiness-select:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
+.readiness-select option {
+  background-color: #1a1a1c;
+  color: #f0f0f0;
+  padding: 8px;
+}
+
 /* Сетка карточек */
 .readiness-wrapper {
+  all: initial;
   display: flex;
   gap: 16px;
   align-items: stretch;
@@ -352,10 +435,11 @@ const submitForm = async () => {
   flex-wrap: wrap;
   width: 100%;
   margin-bottom: 24px;
+  box-sizing: border-box;
 }
 
-/* Карточка */
 .card {
+  all: initial;
   --card-radius: 16px;
   --track-bg: rgba(255, 255, 255, 0.18);
   --track-active: #ffffff;
@@ -369,6 +453,8 @@ const submitForm = async () => {
   color: #f9fafb;
   overflow: hidden;
   backdrop-filter: blur(18px);
+  box-sizing: border-box;
+  display: block;
 }
 
 .card--purple {
@@ -384,6 +470,7 @@ const submitForm = async () => {
 }
 
 .card-header {
+  all: initial;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -391,6 +478,7 @@ const submitForm = async () => {
 }
 
 .icon-circle {
+  all: initial;
   width: 42px;
   height: 42px;
   min-width: 42px;
@@ -402,10 +490,15 @@ const submitForm = async () => {
   backdrop-filter: blur(4px);
 }
 
+.icon-circle svg {
+  display: block;
+}
+
 .icon-circle--purple { background: rgba(167, 139, 250, 0.20); }
 .icon-circle--bronze { background: rgba(251, 191, 36, 0.20); }
 
 .card-titles {
+  all: initial;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -413,36 +506,45 @@ const submitForm = async () => {
 }
 
 .card-title {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: 15px;
   line-height: 1;
   font-weight: 500;
   color: #f3f4f6;
+  display: block;
 }
 
 .card-subtitle {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 700;
   line-height: 1;
+  display: block;
 }
 
 .card-subtitle--purple { color: #c084fc; }
 .card-subtitle--bronze { color: #fbbf24; }
 
 .card-body {
+  all: initial;
   display: flex;
   flex-direction: column;
   margin-top: 4px;
 }
 
 .slider-row {
+  all: initial;
   display: flex;
   align-items: center;
   width: 100%;
 }
 
 .slider {
+  all: initial;
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -451,6 +553,7 @@ const submitForm = async () => {
   outline: none;
   cursor: pointer;
   margin: 0;
+  display: block;
 }
 
 .slider::-webkit-slider-thumb {
@@ -483,8 +586,10 @@ const submitForm = async () => {
 .slider--bronze { --thumb-inner-color: #fbbf24; }
 
 .slider-labels {
+  all: initial;
   display: flex;
   justify-content: space-between;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: 11px;
   margin-top: 10px;
   color: rgba(229, 231, 235, 0.7);
@@ -493,7 +598,7 @@ const submitForm = async () => {
 }
 
 .active-text {
-  color: #ffffff;
+  color: #ffffff !important;
   font-weight: 600;
   transition: color 0.2s ease;
 }
@@ -504,10 +609,12 @@ const submitForm = async () => {
 
 /* Блок сообщения */
 .message-box {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   width: 100%;
   max-width: 600px;
   text-align: center;
-  color: var(--vp-c-text-2, #64748b); /* Цвет текста адаптивный */
+  color: #e2e8f0;
   font-size: 15px;
   line-height: 1.5;
   margin-bottom: 24px;
@@ -515,21 +622,26 @@ const submitForm = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 /* Кнопка отправки */
 .submit-container {
+  all: initial;
   width: 100%;
   max-width: 856px;
   display: flex;
   justify-content: center;
   margin-top: 0;
+  box-sizing: border-box;
 }
 
 .submit-button {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   width: 100%;
-  background-color: var(--vp-c-brand, #3451b2); /* Цвет бренда VitePress по умолчанию */
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #0f172a;
   font-size: 16px;
   font-weight: 600;
   padding: 14px 0;
@@ -537,14 +649,31 @@ const submitForm = async () => {
   border-radius: 12px;
   cursor: pointer;
   transition: transform 0.1s ease, opacity 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  display: block;
+  box-sizing: border-box;
 }
 
 .submit-button:active { transform: scale(0.98); }
-.submit-button:disabled { opacity: 0.7; cursor: not-allowed; background-color: #94a3b8; }
+.submit-button:disabled { opacity: 0.7; cursor: not-allowed; }
 
 /* Адаптивность */
 @media (max-width: 768px) {
+  .readiness-title {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  .selectors-container {
+    flex-direction: column;
+    margin-bottom: 24px;
+  }
+
+  .selector-group {
+    width: 100%;
+  }
+
   .readiness-wrapper {
     flex-direction: column;
     align-items: center;
@@ -580,10 +709,6 @@ const submitForm = async () => {
   .message-box {
     font-size: 14px;
     padding: 0 8px;
-  }
-
-  .isolated-title {
-    font-size: 20px; /* Чуть меньше на мобилке */
   }
 }
 </style>
