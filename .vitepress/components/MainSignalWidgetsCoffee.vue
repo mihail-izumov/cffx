@@ -78,8 +78,7 @@ const todayStatus = computed(() => {
   
   const monthName = monthNames[today.getMonth()];
   
-  // ИКОНКА РАДИО замена на файл + СТРЕЛКА замена на SVG
-  return `<img src="/radio.svg" class="signal2-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px; width: 14px; height: 14px;" /> ${day}.${month} <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="signal2-arrow-icon" style="display: inline-block; vertical-align: middle; margin: 0 4px;"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> ${monthName} ${year}`;
+  return `<span class="signal2-radio-icon-wrapper"></span>${day}.${month} <span class="signal2-arrow-icon-wrapper"></span> ${monthName} ${year}`;
 });
 
 const getCafeConfig = (cafeName) => {
@@ -258,7 +257,6 @@ onUnmounted(() => {
         ref="switchersRef"
         @scroll="handleSwitcherScroll"
       >
-        <!-- УБРАНЫ ВСЕ ИКОНКИ из switcher -->
         <button class="signal2-switcher" :class="{ active: selectedCafe === 'Корж' }" @click="selectedCafe = 'Корж'">Корж</button>
         <button class="signal2-switcher" :class="{ active: selectedCafe === 'MOSAIC' }" @click="selectedCafe = 'MOSAIC'">MOSAIC</button>
         <button class="signal2-switcher" :class="{ active: selectedCafe === 'Surf' }" @click="selectedCafe = 'Surf'">Surf</button>
@@ -287,11 +285,8 @@ onUnmounted(() => {
                 <div class="signal2-stat-label">КАК СЛУШАЮТ</div>
                 <div class="signal2-stat-value">{{ establishment.ListeningStatus }}</div>
               </div>
+              <!-- УБРАЛИ ИКОНКУ ИЗ БАБЛА -->
               <div class="signal2-stat-badge signal2-graphite-badge">
-                <!-- ЦВЕТ ИКОНКИ изменен на цвет текста -->
-                <span class="signal2-badge-emoji">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(160, 174, 192, 1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
-                </span>
                 <span class="signal2-badge-text">{{ establishment.ListeningBadgeText }}</span>
               </div>
             </div>
@@ -303,10 +298,8 @@ onUnmounted(() => {
                 <div class="signal2-stat-label">КАК МЕНЯЮТ</div>
                 <div class="signal2-stat-value">{{ establishment.SignalsStatus }}</div>
               </div>
+              <!-- УБРАЛИ ИКОНКУ ИЗ БАБЛА -->
               <div class="signal2-stat-badge signal2-lime-badge signal-100-badge">
-                <span class="signal2-badge-emoji">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-                </span>
                 <span class="signal2-badge-text">{{ establishment.SignalsBadgeText }}</span>
               </div>
             </div>
@@ -339,8 +332,7 @@ onUnmounted(() => {
               aria-haspopup="dialog"
               @click="showInfoModal = true"
             >
-              <!-- ИКОНКА ИНФО заменена на файл -->
-              <img src="/info.svg" width="24" height="24" style="display: block;" />
+              <span class="signal2-info-icon-wrapper"></span>
             </button>
             <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
             <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
@@ -352,8 +344,7 @@ onUnmounted(() => {
             <button @click="openVoteModal" class="signal2-action-button signal2-ticket-button">
               Оценить место
               <div class="signal2-button-icon-container">
-                <!-- ИКОНКА НАСТРОЕК заменена на файл -->
-                <img src="/settings.svg" width="18" height="18" style="display: block;" />
+                <span class="signal2-settings-icon-wrapper"></span>
               </div>
             </button>
             <button @click="openSignalModal" class="signal2-action-button signal2-review-button">
@@ -444,6 +435,55 @@ onUnmounted(() => {
 :deep(.signal2-modal-link.signal2-no-vitepress-style) { text-decoration: underline !important; text-decoration-color: #a3e635 !important; border-bottom: none !important; background: none !important; }
 :deep(.signal2-modal-link.signal2-no-vitepress-style:hover) { text-decoration: underline !important; text-decoration-color: #c5f946 !important; border-bottom: none !important; background: none !important; }
 
+/* CSS Mask для иконок с возможностью изменения цвета */
+.signal2-radio-icon-wrapper {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-color: #a3e635;
+  -webkit-mask: url(/radio.svg) no-repeat center;
+  mask: url(/radio.svg) no-repeat center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.signal2-arrow-icon-wrapper {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") no-repeat center;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") no-repeat center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+.signal2-info-icon-wrapper {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-color: currentColor;
+  -webkit-mask: url(/info.svg) no-repeat center;
+  mask: url(/info.svg) no-repeat center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.signal2-settings-icon-wrapper {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-color: currentColor;
+  -webkit-mask: url(/settings.svg) no-repeat center;
+  mask: url(/settings.svg) no-repeat center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
 .signal2-review-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 8px; box-sizing: border-box; }
 .signal2-review-modal-content { background: #1e1e20; border-radius: 16px; width: 650px; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); box-sizing: border-box; color: white; display: flex; flex-direction: column; overflow: hidden; }
 .signal2-modal-scrollable-content { flex: 1; overflow-y: auto; padding: 20px 16px 16px 16px; }
@@ -469,16 +509,17 @@ onUnmounted(() => {
 .signal2-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .signal2-stat-card { position: relative; border-radius: 22px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background: var(--vp-c-bg-soft); cursor: pointer; }
 .signal2-stat-card:hover { transform: translateY(-8px); }
-.signal2-stat-card::before { content: ''; position: absolute; inset: 0; border-radius: 22px; padding: 2px; background: var(--signal2-border-gradient); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: filter 0.4s ease; z-index: 3; }
+
+/* ОБНОВЛЕНО: Уменьшена толщина обводки с 2px до 1.5px */
+.signal2-stat-card::before { content: ''; position: absolute; inset: 0; border-radius: 22px; padding: 1.5px; background: var(--signal2-border-gradient); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: filter 0.4s ease; z-index: 3; }
 .signal2-stat-card:hover::before { filter: brightness(2) saturate(1.5); }
 .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
 .signal2-stat-card:hover .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.4); }
 
-/* ОБНОВЛЕНО: Шрифт статусов меньше и средней жирности */
 .signal2-stat-value { 
   font-family: 'Inter', sans-serif; 
   font-size: 1.8rem; 
-  font-weight: 500; /* Изменено с 600 на 500 - средняя жирность */
+  font-weight: 500;
   line-height: 1; 
   color: #fff; 
   margin-bottom: 20px;
@@ -591,8 +632,6 @@ onUnmounted(() => {
 .signal2-modal-footer { margin-top: 24px; display: flex; justify-content: flex-end; }
 .signal2-modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 500; }
 .signal2-modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
-.signal2-radio-icon { display: inline-block; vertical-align: middle; margin-right: 4px; }
-.signal2-arrow-icon { display: inline-block; vertical-align: middle; margin: 0 4px; }
 
 .signal2-mobile-break { display: none; }
 .signal2-modal-close-icon { display: none; }
@@ -601,19 +640,20 @@ onUnmounted(() => {
   .signal2-switcher::before, 
   .signal2-switcher:hover::before { display: none; }
   
-  /* ОБНОВЛЕНО: Увеличен отступ сверху в мобильной версии */
-  .signal2-widget-content { padding: 40px 0 24px 0; }
+  /* ОБНОВЛЕНО: Увеличен отступ сверху над заголовком */
+  .signal2-widget-content { padding: 48px 0 24px 0; }
   
-  .signal2-main-card { padding: 16px; }
+  .signal2-main-card { padding: 16px; padding-top: 20px; }
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 16px; }
   
+  /* ОБНОВЛЕНО: Уменьшена высота и скругление как у блока "на связи" (12px) */
   .signal2-stat-card { 
     display: flex;
     flex-direction: row;
     align-items: center;
-    border-radius: 16px; 
+    border-radius: 12px; 
     transition: none;
-    min-height: 90px;
+    min-height: 80px;
   }
   
   .signal2-stat-card:hover { transform: none; }
@@ -636,15 +676,13 @@ onUnmounted(() => {
     gap: 2px;
   }
   
-  /* ОБНОВЛЕНО: Шрифт статусов еще меньше в мобилке */
   .signal2-stat-value { 
     font-size: 1.2rem !important; 
-    font-weight: 500 !important; /* Средняя жирность */
+    font-weight: 500 !important;
     margin: 0;
     line-height: 1.1;
   }
   
-  /* ОБНОВЛЕНО: Label немного больше в мобилке */
   .signal2-stat-label { 
     font-size: 11px !important;
     font-weight: 600;
@@ -707,7 +745,7 @@ onUnmounted(() => {
   .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
 }
 @media (max-width: 480px) {
-  .signal2-widget-content { padding: 40px 0 20px 0; }
+  .signal2-widget-content { padding: 48px 0 20px 0; }
   .signal2-branches-title-text { font-size: 22px; text-align: center; }
   .signal2-branches-subtitle { font-size: 14px; }
   .signal2-cafe-name { font-size: 20px; }
@@ -778,9 +816,5 @@ onUnmounted(() => {
 .signal-100-badge .signal2-badge-text {
   color: #000 !important;
   font-weight: 700;
-}
-
-.signal-100-badge .signal2-badge-emoji {
-  filter: brightness(0);
 }
 </style>
