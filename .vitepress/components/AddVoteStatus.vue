@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
-// Значения ползунков теперь дробные для плавности (0.00 – 8.00)
+// Значения ползунков теперь дробные для планости (0.00 – 8.00)
 const listeningValue = ref(3.5)
 const changeValue = ref(4.2)
 
