@@ -1,279 +1,306 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-
-const listeningValue = ref(3) // 0–8, по 3 шага на каждый сегмент
-const changeValue = ref(3)
-
-const sliderStyle = (value: number | string) => {
-  const v = Number(value)
-  const percentage = (v / 8) * 100
-
-  return {
-    background: `linear-gradient(
-      to right,
-      var(--track-active) 0%,
-      var(--track-active) ${percentage}%,
-      var(--track-bg) ${percentage}%,
-      var(--track-bg) 100%
-    )`,
-  }
-}
-</script>
-
 <template>
-  <div class="readiness-wrapper">
-    <!-- Карточка 1 -->
-    <div class="card card--purple">
-      <div class="card-header">
+  <div class="slider-container">
+    <!-- Card 1: Purple - Listening -->
+    <div class="card card-purple">
+      <div class="header">
         <div class="icon-circle">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-satellite-dish-icon lucide-satellite-dish"
-          >
-            <path d="M4 10a7.31 7.31 0 0 0 10 10Z" />
-            <path d="m9 15 3-3" />
-            <path d="M17 13a6 6 0 0 0-6-6" />
-            <path d="M21 13A10 10 0 0 0 11 3" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path d="M4 10a7.31 7.31 0 0 0 10 10Z"/>
+            <path d="m9 15 3-3"/>
+            <path d="M17 13a6 6 0 0 0-6-6"/>
+            <path d="M21 13A10 10 0 0 0 11 3"/>
           </svg>
         </div>
-
-        <div class="card-titles">
-          <div class="card-title">Как слушают</div>
-          <div class="card-subtitle card-subtitle--purple">ПОДКЛЮЧЕНЫ</div>
+        <div class="text-block">
+          <h3 class="title">Как слушают</h3>
+          <p class="subtitle">ПОДКЛЮЧЕНЫ</p>
         </div>
       </div>
-
-      <div class="card-body">
-        <div class="slider-row">
-          <input
-            type="range"
-            min="0"
-            max="8"
-            step="1"
-            v-model="listeningValue"
-            class="slider"
-            :style="sliderStyle(listeningValue)"
-          />
-        </div>
+      
+      <div class="slider-wrapper">
+        <input 
+          type="range" 
+          v-model="sliderValue1" 
+          min="0" 
+          max="8" 
+          class="slider slider-purple"
+          @input="handleSlider1Input"
+        />
         <div class="slider-labels">
-          <span>Подключены</span>
-          <span>Слышат</span>
-          <span>Отвечают</span>
+          <div class="label label-left">{{ labels1[0] }}</div>
+          <div class="label label-center">{{ labels1[1] }}</div>
+          <div class="label label-right">{{ labels1[2] }}</div>
         </div>
       </div>
     </div>
 
-    <!-- Карточка 2 -->
-    <div class="card card--bronze">
-      <div class="card-header">
+    <!-- Card 2: Bronze - Change -->
+    <div class="card card-bronze">
+      <div class="header">
         <div class="icon-circle">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-zap-icon lucide-zap"
-          >
-            <path
-              d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
           </svg>
         </div>
-
-        <div class="card-titles">
-          <div class="card-title">Как меняют</div>
-          <div class="card-subtitle card-subtitle--bronze">ДЕЙСТВУЮТ</div>
+        <div class="text-block">
+          <h3 class="title">Как меняют</h3>
+          <p class="subtitle">ДЕЙСТВУЮТ</p>
         </div>
       </div>
-
-      <div class="card-body">
-        <div class="slider-row">
-          <input
-            type="range"
-            min="0"
-            max="8"
-            step="1"
-            v-model="changeValue"
-            class="slider"
-            :style="sliderStyle(changeValue)"
-          />
-        </div>
+      
+      <div class="slider-wrapper">
+        <input 
+          type="range" 
+          v-model="sliderValue2" 
+          min="0" 
+          max="8" 
+          class="slider slider-bronze"
+          @input="handleSlider2Input"
+        />
         <div class="slider-labels">
-          <span>Открыты</span>
-          <span>Действуют</span>
-          <span>Меняют</span>
+          <div class="label label-left">{{ labels2[0] }}</div>
+          <div class="label label-center">{{ labels2[1] }}</div>
+          <div class="label label-right">{{ labels2[2] }}</div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const sliderValue1 = ref(4)
+const sliderValue2 = ref(4)
+const labels1 = ['Подключены', 'Слышат', 'Отвечают']
+const labels2 = ['Открыты', 'Действуют', 'Меняют']
+
+const handleSlider1Input = () => {
+  // Handle slider change if needed
+}
+
+const handleSlider2Input = () => {
+  // Handle slider change if needed
+}
+</script>
+
 <style scoped>
-.readiness-wrapper {
-  display: flex;
-  gap: 16px;
-  align-items: stretch;
-  justify-content: center;
-  flex-wrap: wrap;
+.slider-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .slider-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 }
 
 .card {
-  --card-radius: 16px;
-  --track-bg: rgba(255, 255, 255, 0.18);
-  --track-active: #ffffff;
-  --thumb-size: 18px;
-
-  position: relative;
-  flex: 1 1 320px;
-  max-width: 420px;
-  padding: 16px 18px 18px;
-  border-radius: var(--card-radius);
-  color: #f9fafb;
-  overflow: hidden;
-  backdrop-filter: blur(18px);
+  border-radius: 12px;
+  padding: 24px;
+  backdrop-filter: blur(8px);
 }
 
-.card--purple {
-  background: radial-gradient(circle at 0 0, #7c3aed33, transparent 55%),
-    radial-gradient(circle at 100% 100%, #22d3ee1f, transparent 60%),
-    linear-gradient(135deg, #0b0b21, #15152f);
+.card-purple {
+  background: linear-gradient(135deg, rgba(88, 28, 135, 0.1) 0%, rgba(124, 58, 255, 0.1) 100%);
+  border: 1px solid rgba(124, 58, 255, 0.2);
 }
 
-.card--bronze {
-  background: radial-gradient(circle at 0 0, #f59e0b33, transparent 55%),
-    radial-gradient(circle at 100% 100%, #f973161f, transparent 60%),
-    linear-gradient(135deg, #14120c, #262012);
+.card-bronze {
+  background: linear-gradient(135deg, rgba(92, 64, 51, 0.1) 0%, rgba(180, 131, 84, 0.1) 100%);
+  border: 1px solid rgba(180, 131, 84, 0.2);
 }
 
-.card-header {
+.header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 18px;
+  gap: 16px;
+  margin-bottom: 28px;
 }
 
 .icon-circle {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(15, 23, 42, 0.7);
-  color: #e5e7eb;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  color: white;
 }
 
-.card-titles {
+.card-purple .icon-circle {
+  background: rgba(124, 58, 255, 0.15);
+}
+
+.card-bronze .icon-circle {
+  background: rgba(180, 131, 84, 0.15);
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+}
+
+.text-block {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  gap: 4px;
 }
 
-.card-title {
-  font-size: 14px;
-  line-height: 1.2;
-  font-weight: 500;
-}
-
-.card-subtitle {
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-top: 2px;
+.title {
+  font-size: 18px;
   font-weight: 600;
+  margin: 0;
+  color: #ffffff;
 }
 
-.card-subtitle--purple {
-  color: #a855f7;
+.subtitle {
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.5px;
 }
 
-.card-subtitle--bronze {
-  color: #fbbf24;
+.card-purple .subtitle {
+  color: #a78bfa;
 }
 
-.card-body {
-  margin-top: 4px;
+.card-bronze .subtitle {
+  color: #d4a574;
 }
 
-.slider-row {
-  display: flex;
-  align-items: center;
+.slider-wrapper {
+  position: relative;
+  padding: 0 8px;
 }
 
-/* Базовый трек + подсветка выбранной области */
 .slider {
-  -webkit-appearance: none;
-  appearance: none;
   width: 100%;
   height: 6px;
-  border-radius: 999px;
-  background: linear-gradient(
-    to right,
-    var(--track-active) 0%,
-    var(--track-active) 40%,
-    var(--track-bg) 40%,
-    var(--track-bg) 100%
-  );
+  border-radius: 3px;
   outline: none;
-  cursor: pointer;
-  transition: background 120ms ease-out;
-}
-
-/* Ползунок */
-.slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: var(--thumb-size);
-  height: var(--thumb-size);
-  border-radius: 999px;
-  background: #ffffff;
-  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.85);
+  margin-bottom: 36px;
 }
 
-.slider::-moz-range-thumb {
-  width: var(--thumb-size);
-  height: var(--thumb-size);
-  border-radius: 999px;
-  background: #ffffff;
-  border: 2px solid rgba(15, 23, 42, 0.85);
+/* Track styling */
+.slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
 }
 
 .slider::-moz-range-track {
+  width: 100%;
   height: 6px;
-  border-radius: 999px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  border: none;
 }
 
-/* Подписи к 3 зонам (0–2, 3–5, 6–8) */
+/* Purple slider - filled track */
+.slider-purple::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, 
+    rgba(124, 58, 255, 0.3) 0%, 
+    rgba(124, 58, 255, 0.3) calc((var(--value, 0) / 8) * 100%), 
+    rgba(255, 255, 255, 0.1) calc((var(--value, 0) / 8) * 100%), 
+    rgba(255, 255, 255, 0.1) 100%
+  );
+}
+
+/* Bronze slider - filled track */
+.slider-bronze::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, 
+    rgba(180, 131, 84, 0.3) 0%, 
+    rgba(180, 131, 84, 0.3) calc((var(--value, 0) / 8) * 100%), 
+    rgba(255, 255, 255, 0.1) calc((var(--value, 0) / 8) * 100%), 
+    rgba(255, 255, 255, 0.1) 100%
+  );
+}
+
+/* Thumb styling */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Inner colored circle for purple */
+.slider-purple::-webkit-slider-thumb::before {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #7c3aff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Inner colored circle for bronze */
+.slider-bronze::-webkit-slider-thumb::before {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #b48354;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .slider-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  margin-top: 10px;
-  color: rgba(229, 231, 235, 0.8);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.slider-labels span {
-  flex: 1;
+.label {
+  text-align: center;
+  font-weight: 500;
+}
+
+.label-left {
+  text-align: left;
+  padding-left: 4px;
+}
+
+.label-center {
   text-align: center;
 }
 
-/* Адаптивность: на мобильном карточки одна под другой */
-@media (max-width: 768px) {
-  .readiness-wrapper {
-    flex-direction: column;
-  }
+.label-right {
+  text-align: right;
+  padding-right: 4px;
 }
 </style>
