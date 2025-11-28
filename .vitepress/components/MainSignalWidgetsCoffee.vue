@@ -78,8 +78,8 @@ const todayStatus = computed(() => {
   
   const monthName = monthNames[today.getMonth()];
   
-  /* ИКОНКА РАДИО (Заменена на точную копию из запроса) */
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a3e635" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="signal2-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/>ircle cx="12" cy="12" r="2"/></svg> ${day}.${month} → ${monthName} ${year}`;
+  // ИКОНКА РАДИО замена на файл + СТРЕЛКА замена на SVG
+  return `<img src="/radio.svg" class="signal2-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px; width: 14px; height: 14px;" /> ${day}.${month} <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="signal2-arrow-icon" style="display: inline-block; vertical-align: middle; margin: 0 4px;"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> ${monthName} ${year}`;
 });
 
 const getCafeConfig = (cafeName) => {
@@ -258,24 +258,13 @@ onUnmounted(() => {
         ref="switchersRef"
         @scroll="handleSwitcherScroll"
       >
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Корж' }" @click="selectedCafe = 'Корж'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> Корж
-        </button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'MOSAIC' }" @click="selectedCafe = 'MOSAIC'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg> MOSAIC
-        </button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Surf' }" @click="selectedCafe = 'Surf'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg> Surf
-        </button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Skuratov' }" @click="selectedCafe = 'Skuratov'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg> Skuratov
-        </button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Белотурка' }" @click="selectedCafe = 'Белотурка'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg> Белотурка
-        </button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Кэрри' }" @click="selectedCafe = 'Кэрри'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg> Кэрри
-        </button>
+        <!-- УБРАНЫ ВСЕ ИКОНКИ из switcher -->
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Корж' }" @click="selectedCafe = 'Корж'">Корж</button>
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'MOSAIC' }" @click="selectedCafe = 'MOSAIC'">MOSAIC</button>
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Surf' }" @click="selectedCafe = 'Surf'">Surf</button>
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Skuratov' }" @click="selectedCafe = 'Skuratov'">Skuratov</button>
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Белотурка' }" @click="selectedCafe = 'Белотурка'">Белотурка</button>
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Кэрри' }" @click="selectedCafe = 'Кэрри'">Кэрри</button>
       </div>
       
       <div class="signal2-switchers-gradient signal2-switchers-gradient-left" :class="{ 'signal2-gradient-visible': showLeftGradient }"></div>
@@ -299,8 +288,9 @@ onUnmounted(() => {
                 <div class="signal2-stat-value">{{ establishment.ListeningStatus }}</div>
               </div>
               <div class="signal2-stat-badge signal2-graphite-badge">
+                <!-- ЦВЕТ ИКОНКИ изменен на цвет текста -->
                 <span class="signal2-badge-emoji">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(160, 174, 192, 1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
                 </span>
                 <span class="signal2-badge-text">{{ establishment.ListeningBadgeText }}</span>
               </div>
@@ -349,8 +339,8 @@ onUnmounted(() => {
               aria-haspopup="dialog"
               @click="showInfoModal = true"
             >
-              <!-- ИКОНКА ИНФО (точная копия) -->
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info">ircle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              <!-- ИКОНКА ИНФО заменена на файл -->
+              <img src="/info.svg" width="24" height="24" style="display: block;" />
             </button>
             <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
             <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
@@ -362,8 +352,8 @@ onUnmounted(() => {
             <button @click="openVoteModal" class="signal2-action-button signal2-ticket-button">
               Оценить место
               <div class="signal2-button-icon-container">
-                <!-- ИКОНКА НАСТРОЕК (точная копия) -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings2-icon lucide-settings-2"><path d="M14 17H5"/><path d="M19 7h-9"/>ircle cx="17" cy="17" r="3"/>ircle cx="7" cy="7" r="3"/></svg>
+                <!-- ИКОНКА НАСТРОЕК заменена на файл -->
+                <img src="/settings.svg" width="18" height="18" style="display: block;" />
               </div>
             </button>
             <button @click="openSignalModal" class="signal2-action-button signal2-review-button">
@@ -390,8 +380,6 @@ onUnmounted(() => {
         <div class="signal2-modal-scrollable-content">
           <AddVoteStatus />
         </div>
-        
-        <!-- Кнопка закрытия убрана полностью -->
       </div>
     </div>
 
@@ -486,10 +474,11 @@ onUnmounted(() => {
 .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
 .signal2-stat-card:hover .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.4); }
 
+/* ОБНОВЛЕНО: Шрифт статусов меньше и средней жирности */
 .signal2-stat-value { 
   font-family: 'Inter', sans-serif; 
-  font-size: 2.2rem; 
-  font-weight: 600; 
+  font-size: 1.8rem; 
+  font-weight: 500; /* Изменено с 600 на 500 - средняя жирность */
   line-height: 1; 
   color: #fff; 
   margin-bottom: 20px;
@@ -603,6 +592,7 @@ onUnmounted(() => {
 .signal2-modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 500; }
 .signal2-modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 .signal2-radio-icon { display: inline-block; vertical-align: middle; margin-right: 4px; }
+.signal2-arrow-icon { display: inline-block; vertical-align: middle; margin: 0 4px; }
 
 .signal2-mobile-break { display: none; }
 .signal2-modal-close-icon { display: none; }
@@ -611,8 +601,8 @@ onUnmounted(() => {
   .signal2-switcher::before, 
   .signal2-switcher:hover::before { display: none; }
   
-  /* Увеличен отступ сверху в мобильной версии */
-  .signal2-widget-content { padding: 32px 0; }
+  /* ОБНОВЛЕНО: Увеличен отступ сверху в мобильной версии */
+  .signal2-widget-content { padding: 40px 0 24px 0; }
   
   .signal2-main-card { padding: 16px; }
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -623,7 +613,7 @@ onUnmounted(() => {
     align-items: center;
     border-radius: 16px; 
     transition: none;
-    min-height: 90px; /* Еще немного уменьшили высоту карточек */
+    min-height: 90px;
   }
   
   .signal2-stat-card:hover { transform: none; }
@@ -646,16 +636,17 @@ onUnmounted(() => {
     gap: 2px;
   }
   
-  /* Сделали шрифт статусов еще меньше */
+  /* ОБНОВЛЕНО: Шрифт статусов еще меньше в мобилке */
   .signal2-stat-value { 
-    font-size: 1.4rem !important; 
-    font-weight: 600; 
+    font-size: 1.2rem !important; 
+    font-weight: 500 !important; /* Средняя жирность */
     margin: 0;
     line-height: 1.1;
   }
   
+  /* ОБНОВЛЕНО: Label немного больше в мобилке */
   .signal2-stat-label { 
-    font-size: 10px;
+    font-size: 11px !important;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -716,7 +707,7 @@ onUnmounted(() => {
   .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
 }
 @media (max-width: 480px) {
-  .signal2-widget-content { padding: 32px 0; } /* Увеличен отступ */
+  .signal2-widget-content { padding: 40px 0 20px 0; }
   .signal2-branches-title-text { font-size: 22px; text-align: center; }
   .signal2-branches-subtitle { font-size: 14px; }
   .signal2-cafe-name { font-size: 20px; }
