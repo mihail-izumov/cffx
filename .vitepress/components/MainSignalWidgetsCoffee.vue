@@ -78,7 +78,8 @@ const todayStatus = computed(() => {
   
   const monthName = monthNames[today.getMonth()];
   
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a3e635" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="signal2-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"></path><path d="M19.075 4.933a10 10 0 0 1 0 14.134"></path><path d="M4.925 19.067a10 10 0 0 1 0-14.134"></path><path d="M7.753 16.239a6 6 0 0 1 0-8.478"></path>ircle cx="12" cy="12" r="2"></circle></svg> ${day}.${month} → ${monthName} ${year}`;
+  /* ИКОНКА РАДИО (Заменена на точную копию из запроса) */
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a3e635" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="signal2-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/>ircle cx="12" cy="12" r="2"/></svg> ${day}.${month} → ${monthName} ${year}`;
 });
 
 const getCafeConfig = (cafeName) => {
@@ -258,22 +259,22 @@ onUnmounted(() => {
         @scroll="handleSwitcherScroll"
       >
         <button class="signal2-switcher" :class="{ active: selectedCafe === 'Корж' }" @click="selectedCafe = 'Корж'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg> Корж
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> Корж
         </button>
         <button class="signal2-switcher" :class="{ active: selectedCafe === 'MOSAIC' }" @click="selectedCafe = 'MOSAIC'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"></path><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"></path></svg> MOSAIC
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg> MOSAIC
         </button>
         <button class="signal2-switcher" :class="{ active: selectedCafe === 'Surf' }" @click="selectedCafe = 'Surf'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"></path><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"></path></svg> Surf
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg> Surf
         </button>
         <button class="signal2-switcher" :class="{ active: selectedCafe === 'Skuratov' }" @click="selectedCafe = 'Skuratov'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path><path d="M8 12h.01"></path><path d="M12 12h.01"></path><path d="M16 12h.01"></path></svg> Skuratov
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg> Skuratov
         </button>
         <button class="signal2-switcher" :class="{ active: selectedCafe === 'Белотурка' }" @click="selectedCafe = 'Белотурка'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path><path d="M8 12h.01"></path><path d="M12 12h.01"></path><path d="M16 12h.01"></path></svg> Белотурка
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg> Белотурка
         </button>
         <button class="signal2-switcher" :class="{ active: selectedCafe === 'Кэрри' }" @click="selectedCafe = 'Кэрри'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path><path d="M8 12h.01"></path><path d="M12 12h.01"></path><path d="M16 12h.01"></path></svg> Кэрри
+          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg> Кэрри
         </button>
       </div>
       
@@ -299,7 +300,7 @@ onUnmounted(() => {
               </div>
               <div class="signal2-stat-badge signal2-graphite-badge">
                 <span class="signal2-badge-emoji">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"></path><path d="m9 15 3-3"></path><path d="M17 13a6 6 0 0 0-6-6"></path><path d="M21 13A10 10 0 0 0 11 3"></path></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
                 </span>
                 <span class="signal2-badge-text">{{ establishment.ListeningBadgeText }}</span>
               </div>
@@ -314,7 +315,7 @@ onUnmounted(() => {
               </div>
               <div class="signal2-stat-badge signal2-lime-badge signal-100-badge">
                 <span class="signal2-badge-emoji">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
                 </span>
                 <span class="signal2-badge-text">{{ establishment.SignalsBadgeText }}</span>
               </div>
@@ -348,7 +349,8 @@ onUnmounted(() => {
               aria-haspopup="dialog"
               @click="showInfoModal = true"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info">ircle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+              <!-- ИКОНКА ИНФО (точная копия) -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info">ircle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
             </button>
             <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
             <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
@@ -360,13 +362,14 @@ onUnmounted(() => {
             <button @click="openVoteModal" class="signal2-action-button signal2-ticket-button">
               Оценить место
               <div class="signal2-button-icon-container">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings2-icon lucide-settings-2"><path d="M14 17H5"></path><path d="M19 7h-9"></path>ircle cx="17" cy="17" r="3"></circle>ircle cx="7" cy="7" r="3"></circle></svg>
+                <!-- ИКОНКА НАСТРОЕК (точная копия) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings2-icon lucide-settings-2"><path d="M14 17H5"/><path d="M19 7h-9"/>ircle cx="17" cy="17" r="3"/>ircle cx="7" cy="7" r="3"/></svg>
               </div>
             </button>
             <button @click="openSignalModal" class="signal2-action-button signal2-review-button">
               Отправить Сигнал
               <div class="signal2-button-icon-container signal2-lime-icon-container">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2e05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2e05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
               </div>
             </button>
           </div>
@@ -374,24 +377,24 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Модальное окно "Оценить место" БЕЗ кнопки закрыть внизу -->
     <div 
       v-if="isVoteModalOpen" 
       class="signal2-review-modal-overlay"
       @click="closeVoteModal"
     >
-      <div class="signal2-review-modal-content signal2-vote-modal-content" @click.stop>
+      <div class="signal2-review-modal-content" @click.stop>
         <button @click="closeVoteModal" class="signal2-modal-close-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
         
         <div class="signal2-modal-scrollable-content">
           <AddVoteStatus />
         </div>
+        
+        <!-- Кнопка закрытия убрана полностью -->
       </div>
     </div>
 
-    <!-- Модальное окно "Отправить Сигнал" С кнопкой закрыть -->
     <div 
       v-if="isSignalModalOpen" 
       class="signal2-review-modal-overlay"
@@ -399,7 +402,7 @@ onUnmounted(() => {
     >
       <div class="signal2-review-modal-content" @click.stop>
         <button @click="closeSignalModal" class="signal2-modal-close-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
 
         <div class="signal2-modal-scrollable-content">
@@ -455,12 +458,6 @@ onUnmounted(() => {
 
 .signal2-review-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 8px; box-sizing: border-box; }
 .signal2-review-modal-content { background: #1e1e20; border-radius: 16px; width: 650px; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); box-sizing: border-box; color: white; display: flex; flex-direction: column; overflow: hidden; }
-
-/* Модальное окно "Оценить место" без нижнего блока */
-.signal2-vote-modal-content .signal2-modal-scrollable-content {
-  padding-bottom: 20px; /* Добавлен нижний отступ */
-}
-
 .signal2-modal-scrollable-content { flex: 1; overflow-y: auto; padding: 20px 16px 16px 16px; }
 :deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(p), :deep(span), :deep(label), :deep(.title), :deep(.subtitle), :deep(.description), :deep(.example-text), :deep(.hint-text) { text-align: initial !important; padding-left: 0 !important; padding-right: 0 !important; }
 :deep(.container), :deep(.content) { padding-left: 0 !important; padding-right: 0 !important; margin-left: 0 !important; margin-right: 0 !important; }
@@ -614,13 +611,10 @@ onUnmounted(() => {
   .signal2-switcher::before, 
   .signal2-switcher:hover::before { display: none; }
   
-  /* Увеличен отступ сверху */
-  .signal2-widget-content { padding: 32px 0 24px 0; }
-  .signal2-main-card { padding: 20px 16px 16px 16px; }
+  /* Увеличен отступ сверху в мобильной версии */
+  .signal2-widget-content { padding: 32px 0; }
   
-  /* Увеличен отступ до заголовка */
-  .signal2-establishment-header { margin-bottom: 20px; }
-  
+  .signal2-main-card { padding: 16px; }
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 16px; }
   
   .signal2-stat-card { 
@@ -629,7 +623,7 @@ onUnmounted(() => {
     align-items: center;
     border-radius: 16px; 
     transition: none;
-    min-height: 100px;
+    min-height: 90px; /* Еще немного уменьшили высоту карточек */
   }
   
   .signal2-stat-card:hover { transform: none; }
@@ -638,7 +632,7 @@ onUnmounted(() => {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 18px;
+    padding: 12px 16px;
     width: 100%; 
     background: none !important; 
     box-shadow: none !important;
@@ -649,12 +643,12 @@ onUnmounted(() => {
     display: flex; 
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
+    gap: 2px;
   }
   
-  /* СИЛЬНО уменьшен размер текста статусов */
+  /* Сделали шрифт статусов еще меньше */
   .signal2-stat-value { 
-    font-size: 1.2rem !important; 
+    font-size: 1.4rem !important; 
     font-weight: 600; 
     margin: 0;
     line-height: 1.1;
@@ -689,28 +683,8 @@ onUnmounted(() => {
   .signal2-review-modal-content { width: 95vw; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); position: relative; }
   .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
   
-  /* Только для модального окна Сигнала показываем кнопку */
-  .signal2-review-modal-content:not(.signal2-vote-modal-content) .signal2-modal-close-button { 
-    display: block !important; 
-    width: 100%; 
-    justify-content: center; 
-    font-size: 14px; 
-    padding: 12px 20px; 
-  }
-  .signal2-review-modal-content:not(.signal2-vote-modal-content) .signal2-modal-close-section { 
-    display: flex !important; 
-    padding: 12px; 
-    border-top: 1px solid rgba(255,255,255,0.1); 
-    background: #1e1e20; 
-  }
-  
-  /* Для модального окна Оценить место полностью скрываем секцию */
-  .signal2-vote-modal-content .signal2-modal-close-section {
-    display: none !important;
-  }
-  .signal2-vote-modal-content .signal2-modal-scrollable-content {
-    padding-bottom: 20px;
-  }
+  .signal2-modal-close-button { display: block !important; width: 100%; justify-content: center; font-size: 14px; padding: 12px 20px; }
+  .signal2-modal-close-section { display: flex !important; padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); background: #1e1e20; }
   
   .signal2-mobile-break { display: block; }
   
@@ -742,7 +716,7 @@ onUnmounted(() => {
   .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
 }
 @media (max-width: 480px) {
-  .signal2-widget-content { padding: 28px 0 20px 0; }
+  .signal2-widget-content { padding: 32px 0; } /* Увеличен отступ */
   .signal2-branches-title-text { font-size: 22px; text-align: center; }
   .signal2-branches-subtitle { font-size: 14px; }
   .signal2-cafe-name { font-size: 20px; }
