@@ -128,6 +128,7 @@ import TestT9Fitness from '../components/TestT9Fitness.vue'
 import BannerFitGuide from '../components/BannerFitGuide.vue'
 import SignalConfigurator2New from '../components/SignalConfigurator2New.vue'
 import MainSignalWidgetsCoffee from '../components/MainSignalWidgetsCoffee.vue'
+import AddVoteStatus from '../components/AddVoteStatus.vue'
 
 export default {
   extends: DefaultTheme,
@@ -261,7 +262,7 @@ export default {
     app.component('BannerFitGuide', BannerFitGuide)
     app.component('SignalConfigurator2New', SignalConfigurator2New)
     app.component('MainSignalWidgetsCoffee', MainSignalWidgetsCoffee)
-    
+    app.component('AddVoteStatus', AddVoteStatus)
     
   },
 }
