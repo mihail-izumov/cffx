@@ -8,9 +8,9 @@ const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка
 const cafes = {
   'Корж': {
     name: 'Корж',
-    ListeningStatus: '67 отзывов',
+    ListeningStatus: 'Подключены',
     ListeningBadgeText: 'Отвечают быстро',
-    SignalsStatus: '1 сигнал',
+    SignalsStatus: 'Открыты',
     SignalsBadgeText: 'Решение: 100%',
     isConnected: true
   },
