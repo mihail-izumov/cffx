@@ -7,11 +7,11 @@ import { ref, computed } from 'vue'
 const listeningValue = ref(3.5)
 const changeValue = ref(4.2)
 
-// Текстовые статусы для отправки
+// Текстовые статусы
 const listeningLabels = ['Подключены', 'Слышат', 'Отвечают']
 const changeLabels = ['Открыты', 'Действуют', 'Меняют']
 
-// Логика статусов (0, 1, 2)
+// Логика индексов статусов (0, 1, 2)
 const getStatusIndex = (val: number) => {
   const step = 8 / 3
   if (val < step) return 0
@@ -21,6 +21,38 @@ const getStatusIndex = (val: number) => {
 
 const listeningStatusIndex = computed(() => getStatusIndex(listeningValue.value))
 const changeStatusIndex = computed(() => getStatusIndex(changeValue.value))
+
+// --- ЛОГИКА ДИНАМИЧЕСКОГО ТЕКСТА ---
+
+const feedbackMessage = computed(() => {
+  const l = listeningStatusIndex.value
+  const c = changeStatusIndex.value
+
+  // Матрица текстов [слушают][меняют]
+  // Индексы: 0=Подключены/Открыты, 1=Слышат/Действуют, 2=Отвечают/Меняют
+  const messages = [
+    // listening=0 (Подключены)
+    [
+      'Место только выстраивает систему обратной связи — ваш Сигнал войдёт в основу того, как они будут работать с Клиентами.', // + Открыты (0)
+      'Они уже что‑то меняют внутри, хотя только подключились к Сигналам — ваш Сигнал поможет навести фокус на самом важном.', // + Действуют (1)
+      'Бизнес активно меняется, но ещё учится слышать Сигналы — ваш Сигнал может связать их внутренние планы с вашим опытом.'  // + Меняют (2)
+    ],
+    // listening=1 (Слышат)
+    [
+      'Место слышит Клиентов и открыто к доработкам — ваш Сигнал подскажет, что именно стоит поправить первым.', // + Открыты (0)
+      'Бизнес уже реагирует на обратную связь — следите, как он шаг за шагом становится удобнее лично для вас.', // + Действуют (1)
+      'Клиентов здесь реально слушают, и изменения уже идут — ваш Сигнал поможет направить эти изменения именно туда, где это важнее всего для вас.' // + Меняют (2)
+    ],
+    // listening=2 (Отвечают)
+    [
+      'Команда отвечает на каждый Сигнал и только формирует систему изменений — ваш Сигнал может задать им ясный вектор.', // + Открыты (0)
+      'Ответы здесь превращаются в действия, но система ещё в росте — ваш Сигнал помогает закрепить этот уровень как новый стандарт.', // + Действуют (1)
+      'Здесь ваши Сигналы работают как рычаг — место быстро отвечает и действительно меняется вместе с вами.' // + Меняют (2)
+    ]
+  ]
+
+  return messages[l][c]
+})
 
 // Стиль градиента
 const sliderStyle = (value: number | string) => {
@@ -48,7 +80,6 @@ const buttonText = computed(() => {
   return 'Отправить'
 })
 
-// URL вашего скрипта (из примера)
 const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2di_IxXDyAZEfSxJ7wLvupwjb7_IAIlKVsXlyOL6WcDj/exec'
 
 const submitForm = async () => {
@@ -56,14 +87,12 @@ const submitForm = async () => {
 
   isSubmitting.value = true
 
-  // 1. Генерация Client ID
   let clientId = localStorage.getItem('signal_client_id')
   if (!clientId) {
     clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now()
     localStorage.setItem('signal_client_id', clientId)
   }
 
-  // 2. Текущая дата и время
   const now = new Date()
   const day = String(now.getDate()).padStart(2, '0')
   const month = String(now.getMonth() + 1).padStart(2, '0')
@@ -74,32 +103,28 @@ const submitForm = async () => {
   
   const currentDate = `${year}-${month}-${day}`
   const submittedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-  
-  // Номер тикета (упрощенно)
   const ticketNumber = `TICKET-${Date.now().toString().slice(-6)}`
 
-  // 3. Сбор данных
   const formData = new FormData()
   formData.append('referer', window.location.origin)
   formData.append('clientId', clientId)
   formData.append('ticketNumber', ticketNumber)
   formData.append('date', currentDate)
   formData.append('submitted', submittedTime)
-  
-  // Пример данных
   formData.append('network', 'Signal Demo') 
   formData.append('address', 'Online')
   formData.append('name', 'Пользователь')
 
-  // Формируем тело отзыва
   const reviewText = `
     [Статистика Readiness]
     Как слушают: ${listeningLabels[listeningStatusIndex.value]} (${listeningValue.value.toFixed(2)}/8)
     Как меняют: ${changeLabels[changeStatusIndex.value]} (${changeValue.value.toFixed(2)}/8)
+    
+    [Комментарий системы]
+    ${feedbackMessage.value}
   `
   formData.append('review', reviewText.trim())
 
-  // 4. Отправка
   try {
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
@@ -111,7 +136,7 @@ const submitForm = async () => {
     if (result.status === 'success') {
       isSuccess.value = true
       setTimeout(() => {
-        isSuccess.value = false // Сброс через 3 сек
+        isSuccess.value = false
       }, 3000)
     } else {
       throw new Error(result.message || 'Ошибка обработки данных')
@@ -129,45 +154,20 @@ const submitForm = async () => {
   <div class="page-container">
     
     <div class="readiness-wrapper">
-      <!-- Карточка 1: Фиолетовая -->
+      <!-- Карточка 1 -->
       <div class="card card--purple">
         <div class="card-header">
           <div class="icon-circle icon-circle--purple">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-satellite-dish-icon lucide-satellite-dish"
-            >
-              <path d="M4 10a7.31 7.31 0 0 0 10 10Z" />
-              <path d="m9 15 3-3" />
-              <path d="M17 13a6 6 0 0 0-6-6" />
-              <path d="M21 13A10 10 0 0 0 11 3" />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-satellite-dish-icon lucide-satellite-dish"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
           </div>
           <div class="card-titles">
             <div class="card-title">Как слушают</div>
             <div class="card-subtitle card-subtitle--purple">ПОДКЛЮЧЕНЫ</div>
           </div>
         </div>
-
         <div class="card-body">
           <div class="slider-row">
-            <input
-              type="range"
-              min="0"
-              max="8"
-              step="0.02"
-              v-model="listeningValue"
-              class="slider slider--purple"
-              :style="sliderStyle(listeningValue)"
-            />
+            <input type="range" min="0" max="8" step="0.02" v-model="listeningValue" class="slider slider--purple" :style="sliderStyle(listeningValue)"/>
           </div>
           <div class="slider-labels">
             <span class="label-left" :class="{ 'active-text': listeningStatusIndex === 0 }">Подключены</span>
@@ -177,44 +177,20 @@ const submitForm = async () => {
         </div>
       </div>
 
-      <!-- Карточка 2: Бронзовая -->
+      <!-- Карточка 2 -->
       <div class="card card--bronze">
         <div class="card-header">
           <div class="icon-circle icon-circle--bronze">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-zap-icon lucide-zap"
-            >
-              <path
-                d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
-              />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           </div>
           <div class="card-titles">
             <div class="card-title">Как меняют</div>
             <div class="card-subtitle card-subtitle--bronze">ДЕЙСТВУЮТ</div>
           </div>
         </div>
-
         <div class="card-body">
           <div class="slider-row">
-            <input
-              type="range"
-              min="0"
-              max="8"
-              step="0.02"
-              v-model="changeValue"
-              class="slider slider--bronze"
-              :style="sliderStyle(changeValue)"
-            />
+            <input type="range" min="0" max="8" step="0.02" v-model="changeValue" class="slider slider--bronze" :style="sliderStyle(changeValue)"/>
           </div>
           <div class="slider-labels">
             <span class="label-left" :class="{ 'active-text': changeStatusIndex === 0 }">Открыты</span>
@@ -225,7 +201,12 @@ const submitForm = async () => {
       </div>
     </div>
 
-    <!-- Кнопка отправки (не стики) -->
+    <!-- Динамический текст -->
+    <div class="message-box">
+      {{ feedbackMessage }}
+    </div>
+
+    <!-- Кнопка отправки -->
     <div class="submit-container">
       <button 
         class="submit-button" 
@@ -240,7 +221,6 @@ const submitForm = async () => {
 </template>
 
 <style scoped>
-/* Контейнер всей страницы */
 .page-container {
   width: 100%;
   display: flex;
@@ -248,7 +228,6 @@ const submitForm = async () => {
   align-items: center;
 }
 
-/* Сетка карточек */
 .readiness-wrapper {
   display: flex;
   gap: 16px;
@@ -256,7 +235,7 @@ const submitForm = async () => {
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
-  margin-bottom: 24px; /* Отступ от карточек до кнопки */
+  margin-bottom: 24px;
 }
 
 .card {
@@ -306,13 +285,8 @@ const submitForm = async () => {
   backdrop-filter: blur(4px);
 }
 
-.icon-circle--purple {
-  background: rgba(167, 139, 250, 0.20);
-}
-
-.icon-circle--bronze {
-  background: rgba(251, 191, 36, 0.20);
-}
+.icon-circle--purple { background: rgba(167, 139, 250, 0.20); }
+.icon-circle--bronze { background: rgba(251, 191, 36, 0.20); }
 
 .card-titles {
   display: flex;
@@ -336,13 +310,8 @@ const submitForm = async () => {
   line-height: 1;
 }
 
-.card-subtitle--purple {
-  color: #c084fc;
-}
-
-.card-subtitle--bronze {
-  color: #fbbf24;
-}
+.card-subtitle--purple { color: #c084fc; }
+.card-subtitle--bronze { color: #fbbf24; }
 
 .card-body {
   display: flex;
@@ -375,13 +344,7 @@ const submitForm = async () => {
   border-radius: 50%;
   box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.5);
   cursor: pointer;
-  background: radial-gradient(
-    circle,
-    var(--thumb-inner-color) 0%,
-    var(--thumb-inner-color) 35%,
-    #ffffff 36%,
-    #ffffff 100%
-  );
+  background: radial-gradient(circle, var(--thumb-inner-color) 0%, var(--thumb-inner-color) 35%, #ffffff 36%, #ffffff 100%);
 }
 
 .slider::-moz-range-thumb {
@@ -390,13 +353,7 @@ const submitForm = async () => {
   border-radius: 50%;
   border: 2px solid rgba(15, 23, 42, 0.2);
   cursor: pointer;
-  background: radial-gradient(
-    circle,
-    var(--thumb-inner-color) 0%,
-    var(--thumb-inner-color) 35%,
-    #ffffff 36%,
-    #ffffff 100%
-  );
+  background: radial-gradient(circle, var(--thumb-inner-color) 0%, var(--thumb-inner-color) 35%, #ffffff 36%, #ffffff 100%);
 }
 
 .slider::-moz-range-track {
@@ -405,13 +362,8 @@ const submitForm = async () => {
   background: transparent;
 }
 
-.slider--purple {
-  --thumb-inner-color: #a855f7;
-}
-
-.slider--bronze {
-  --thumb-inner-color: #fbbf24;
-}
+.slider--purple { --thumb-inner-color: #a855f7; }
+.slider--bronze { --thumb-inner-color: #fbbf24; }
 
 .slider-labels {
   display: flex;
@@ -429,26 +381,29 @@ const submitForm = async () => {
   transition: color 0.2s ease;
 }
 
-.label-left {
-  position: absolute;
-  left: 0;
+.label-left { position: absolute; left: 0; }
+.label-center { position: absolute; left: 50%; transform: translateX(-50%); }
+.label-right { position: absolute; right: 0; }
+
+/* Блок сообщения */
+.message-box {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  color: #e2e8f0;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+  min-height: 48px; /* Чтобы блок не скакал по высоте при смене текста */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.label-center {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.label-right {
-  position: absolute;
-  right: 0;
-}
-
-/* Кнопка отправки под блоками */
+/* Кнопка отправки */
 .submit-container {
   width: 100%;
-  max-width: 856px; /* 420 + 420 + 16 gap */
+  max-width: 856px;
   display: flex;
   justify-content: center;
   margin-top: 0;
@@ -468,16 +423,10 @@ const submitForm = async () => {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.submit-button:active {
-  transform: scale(0.98);
-}
+.submit-button:active { transform: scale(0.98); }
+.submit-button:disabled { opacity: 0.7; cursor: not-allowed; }
 
-.submit-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-/* АДАПТИВНОСТЬ */
+/* Адаптивность */
 @media (max-width: 768px) {
   .readiness-wrapper {
     flex-direction: column;
@@ -492,28 +441,28 @@ const submitForm = async () => {
     padding-bottom: 16px;
   }
 
-  .card-header {
-    margin-bottom: 12px;
-  }
+  .card-header { margin-bottom: 12px; }
 
-  /* Порядок: подписи сверху, ползунок снизу */
   .card-body {
     flex-direction: column-reverse;
     gap: 16px; 
   }
 
-  /* Сброс марджинов и увеличение шрифта */
   .slider-labels {
     margin-top: 0;
     margin-bottom: 0;
-    font-size: 13px; /* Увеличенный шрифт на мобильных */
+    font-size: 13px;
   }
 
-  /* Кнопка на мобилке */
   .submit-container {
     width: 100%;
     max-width: 100%;
-    padding: 0 0 20px 0; /* Небольшой отступ снизу страницы */
+    padding: 0 0 20px 0;
+  }
+  
+  .message-box {
+    font-size: 14px; /* Чуть меньше на мобилке */
+    padding: 0 8px;
   }
 }
 </style>
