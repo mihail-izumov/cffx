@@ -1,56 +1,76 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 
-// --- ДАННЫЕ СЕТЕЙ С ПРЕДУСТАНОВЛЕННЫМИ СТАТУСАМИ ---
-// listeningStatus: 0-8 (ползунок "Как слушают")
-// changeStatus: 0-8 (ползунок "Как меняют")
+// --- ДАННЫЕ НАПРАВЛЕНИЙ И СЕТЕЙ С СТАТУСАМИ ---
 
 const fitness = {
   'SMSTRETCHING': {
-    listeningStatus: 6.5, // ~Отвечают
-    changeStatus: 7.0,    // ~Меняют
-    branches: []
+    listeningStatus: 2.5,
+    signalStatus: 3.8,
+    branches: [
+      { address: 'г. Самара, ул. Ново-Садовая, 9' },
+      { address: 'г. Самара, пр. К. Маркса, 24 (ТЦ Пирамида)' },
+      { address: 'г. Самара, ул. Димитрова, 247 (ТЦ METRO)' }
+    ]
   },
   'FiZ': {
-    listeningStatus: 4.0, // ~Слышат
-    changeStatus: 3.0,    // ~Действуют
-    branches: []
+    listeningStatus: 4.2,
+    signalStatus: 5.1,
+    branches: [
+      { address: 'г. Самара, пр-кт. Кирова, 11' },
+      { address: 'г. Самара, ул. Мориса Тореза, 160' }
+    ]
   }
 }
 
 const cafes = {
   'Корж': {
-    listeningStatus: 7.5, // Отвечают
-    changeStatus: 7.8,    // Меняют
-    branches: []
+    listeningStatus: 5.5,
+    signalStatus: 6.8,
+    branches: [
+      { address: 'г. Самара, ТРЦ Гудок, Московское шоссе, 103' },
+      { address: 'г. Самара, ТРЦ Амбар, Московское шоссе, 101' }
+    ]
   },
   'MOSAIC': {
-    listeningStatus: 5.0, // Слышат
-    changeStatus: 4.0,    // Действуют
-    branches: []
+    listeningStatus: 3.2,
+    signalStatus: 4.5,
+    branches: [
+      { address: 'г. Самара, Московское шоссе, 4а' },
+      { address: 'г. Самара, ул. Ново-Садовая, 50' }
+    ]
   },
   'Skuratov': {
-    listeningStatus: 3.0, // Слышат
-    changeStatus: 2.0,    // Открыты/Действуют
-    branches: []
+    listeningStatus: 6.2,
+    signalStatus: 7.1,
+    branches: [
+      { address: 'г. Самара, ул. Ленинградская, 190' },
+      { address: 'г. Самара, ул. Ново-Садовая, 80' }
+    ]
   },
   'Surf Coffee': {
-    listeningStatus: 2.0, // Подключены
-    changeStatus: 1.5,    // Открыты
-    branches: []
+    listeningStatus: 4.8,
+    signalStatus: 5.5,
+    branches: [
+      { address: 'г. Самара, ул. Мичурина, 57' },
+      { address: 'г. Самара, ул. Мичурина, 54' }
+    ]
   },
   'Старик Хоттабыч': {
-    listeningStatus: 4.5, // Слышат
-    changeStatus: 5.0,    // Действуют
-    branches: []
+    listeningStatus: 3.9,
+    signalStatus: 4.2,
+    branches: [
+      { address: 'г. Самара, ул. Чапаевская, 99' },
+      { address: 'г. Самара, ул. Ленинская, 153' }
+    ]
   }
 }
 
 // --- ЛОГИКА ФОРМЫ ---
 
 const form = ref({
-  direction: 'food', // Предвыбор: Еда
-  selectedNetwork: 'Корж' // Предвыбор: Первая сеть
+  direction: 'food', // Предвыбрано первое направление
+  selectedNetwork: 'Корж' // Предвыбрана первая сеть
 })
 
 // Список сетей в зависимости от направления
@@ -60,39 +80,40 @@ const availableNetworks = computed(() => {
   return Object.keys(source)
 })
 
-// При смене направления выбираем первую сеть из списка
-watch(() => form.value.direction, (newDirection) => {
-  const source = newDirection === 'fitness' ? fitness : cafes
-  const networks = Object.keys(source)
-  if (networks.length > 0) {
-    form.value.selectedNetwork = networks[0]
-  } else {
-    form.value.selectedNetwork = ''
+// Обновление статусов при смене сети
+const updateStatusesFromNetwork = () => {
+  if (!form.value.direction || !form.value.selectedNetwork) return
+  
+  const source = form.value.direction === 'fitness' ? fitness : cafes
+  const networkData = source[form.value.selectedNetwork]
+  
+  if (networkData) {
+    listeningValue.value = networkData.listeningStatus
+    changeValue.value = networkData.signalStatus
   }
+}
+
+// Сброс сети при смене направления
+watch(() => form.value.direction, (newDirection) => {
+  const networks = newDirection === 'fitness' ? Object.keys(fitness) : Object.keys(cafes)
+  form.value.selectedNetwork = networks[0] || ''
+  updateStatusesFromNetwork()
+})
+
+// Обновление при смене сети
+watch(() => form.value.selectedNetwork, () => {
+  updateStatusesFromNetwork()
+})
+
+// Инициализация при монтировании
+onMounted(() => {
+  updateStatusesFromNetwork()
 })
 
 // --- ЛОГИКА СЛАЙДЕРОВ ---
 
-const listeningValue = ref(3.5)
-const changeValue = ref(4.2)
-
-// Следим за выбором сети и подставляем её статусы в слайдеры
-watch(
-  [() => form.value.direction, () => form.value.selectedNetwork],
-  ([dir, net]) => {
-    if (!dir || !net) return
-    
-    const source = dir === 'fitness' ? fitness : cafes
-    // @ts-ignore
-    const data = source[net]
-    
-    if (data) {
-      listeningValue.value = data.listeningStatus
-      changeValue.value = data.changeStatus
-    }
-  },
-  { immediate: true } // Сразу применить при старте
-)
+const listeningValue = ref(5.5) // Начальные значения будут перезаписаны
+const changeValue = ref(6.8)
 
 const listeningLabels = ['Подключены', 'Слышат', 'Отвечают']
 const changeLabels = ['Открыты', 'Действуют', 'Меняют']
@@ -243,56 +264,40 @@ ${feedbackMessage.value}
     
     <h1 class="readiness-title">Оценка Readiness</h1>
 
-    <!-- Селекты направления и сети -->
     <div class="selectors-container">
       <div class="selector-group">
         <label class="selector-label">Выбрать направление</label>
         <div class="select-wrapper">
           <select v-model="form.direction" class="readiness-select">
-            <option disabled value="">Выберите направление</option>
             <option value="food">Еда</option>
             <option value="fitness">Фитнес</option>
           </select>
-          <div class="select-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
-          </div>
+          <svg class="select-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </div>
       </div>
 
       <div class="selector-group">
         <label class="selector-label">Выбрать сеть</label>
         <div class="select-wrapper">
-          <select 
-            v-model="form.selectedNetwork" 
-            class="readiness-select"
-            :disabled="!form.direction"
-          >
-            <option disabled value="">Выберите сеть</option>
-            <option 
-              v-for="network in availableNetworks" 
-              :key="network" 
-              :value="network"
-            >
+          <select v-model="form.selectedNetwork" class="readiness-select">
+            <option v-for="network in availableNetworks" :key="network" :value="network">
               {{ network }}
             </option>
           </select>
-          <div class="select-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
-          </div>
+          <svg class="select-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </div>
       </div>
     </div>
 
-    <!-- Карточки со слайдерами -->
     <div class="readiness-wrapper">
       <div class="card card--purple">
         <div class="card-header">
           <div class="icon-circle icon-circle--purple">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-satellite-dish-icon lucide-satellite-dish"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
           </div>
           <div class="card-titles">
             <div class="card-title">Как слушают</div>
-            <div class="card-subtitle card-subtitle--purple">ПОДКЛЮЧЕНЫ</div>
+            <div class="card-subtitle card-subtitle--purple">{{ listeningLabels[listeningStatusIndex].toUpperCase() }}</div>
           </div>
         </div>
         <div class="card-body">
@@ -310,11 +315,11 @@ ${feedbackMessage.value}
       <div class="card card--bronze">
         <div class="card-header">
           <div class="icon-circle icon-circle--bronze">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           </div>
           <div class="card-titles">
             <div class="card-title">Как меняют</div>
-            <div class="card-subtitle card-subtitle--bronze">ДЕЙСТВУЮТ</div>
+            <div class="card-subtitle card-subtitle--bronze">{{ changeLabels[changeStatusIndex].toUpperCase() }}</div>
           </div>
         </div>
         <div class="card-body">
@@ -335,11 +340,7 @@ ${feedbackMessage.value}
     </div>
 
     <div class="submit-container">
-      <button 
-        class="submit-button" 
-        :disabled="isSubmitting || isSuccess || !form.direction || !form.selectedNetwork"
-        @click="submitForm"
-      >
+      <button class="submit-button" :disabled="isSubmitting || isSuccess" @click="submitForm">
         {{ buttonText }}
       </button>
     </div>
@@ -348,10 +349,7 @@ ${feedbackMessage.value}
 </template>
 
 <style scoped>
-/* Сброс VitePress */
-.page-container * { all: revert; }
 .page-container {
-  all: initial;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   width: 100%;
   display: flex;
@@ -363,8 +361,6 @@ ${feedbackMessage.value}
 }
 
 .readiness-title {
-  all: initial;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: 32px;
   font-weight: 700;
   color: #f9fafb;
@@ -375,7 +371,6 @@ ${feedbackMessage.value}
 
 /* Селекты */
 .selectors-container {
-  all: initial;
   display: flex;
   gap: 16px;
   width: 100%;
@@ -386,7 +381,6 @@ ${feedbackMessage.value}
 }
 
 .selector-group {
-  all: initial;
   display: flex;
   flex-direction: column;
   flex: 1 1 320px;
@@ -395,8 +389,6 @@ ${feedbackMessage.value}
 }
 
 .selector-label {
-  all: initial;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: 13px;
   font-weight: 600;
   color: #9ca3af;
@@ -407,60 +399,35 @@ ${feedbackMessage.value}
 }
 
 .select-wrapper {
-  all: initial;
   position: relative;
   width: 100%;
-  box-sizing: border-box;
-  display: block;
 }
 
 .readiness-select {
-  all: initial;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   width: 100%;
   background-color: #242426;
   border: 1px solid #444;
   border-radius: 10px;
-  padding: 12px 16px;
+  padding: 12px 40px 12px 16px;
   font-size: 15px;
   color: #f0f0f0;
   cursor: pointer;
   transition: all 0.3s ease;
-  appearance: none; /* Убираем стандартную стрелку */
-  padding-right: 40px;
+  appearance: none;
   box-sizing: border-box;
   display: block;
-}
-
-/* Кастомная иконка шеврона */
-.select-icon {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: rgba(240, 240, 240, 0.4); /* Приглушенный цвет */
-  transition: transform 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-family: inherit;
 }
 
 .readiness-select:focus {
   outline: none;
-  border-color: #ffffff; /* Белая рамка при фокусе */
+  border-color: #ffffff;
   background-color: #2a2a2e;
 }
 
-/* Поворот иконки при фокусе */
 .readiness-select:focus + .select-icon {
-  transform: translateY(-50%) rotate(180deg);
-  color: rgba(240, 240, 240, 0.8);
-}
-
-.readiness-select:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  transform: rotate(180deg);
+  color: #ffffff;
 }
 
 .readiness-select option {
@@ -469,9 +436,18 @@ ${feedbackMessage.value}
   padding: 8px;
 }
 
-/* Сетка карточек */
+.select-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #888;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Карточки */
 .readiness-wrapper {
-  all: initial;
   display: flex;
   gap: 16px;
   align-items: stretch;
@@ -483,7 +459,6 @@ ${feedbackMessage.value}
 }
 
 .card {
-  all: initial;
   --card-radius: 16px;
   --track-bg: rgba(255, 255, 255, 0.18);
   --track-active: #ffffff;
@@ -498,7 +473,6 @@ ${feedbackMessage.value}
   overflow: hidden;
   backdrop-filter: blur(18px);
   box-sizing: border-box;
-  display: block;
 }
 
 .card--purple {
@@ -514,7 +488,6 @@ ${feedbackMessage.value}
 }
 
 .card-header {
-  all: initial;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -522,7 +495,6 @@ ${feedbackMessage.value}
 }
 
 .icon-circle {
-  all: initial;
   width: 42px;
   height: 42px;
   min-width: 42px;
@@ -534,7 +506,6 @@ ${feedbackMessage.value}
   backdrop-filter: blur(4px);
 }
 
-/* Восстановленные иконки */
 .icon-circle svg {
   display: block;
 }
@@ -543,7 +514,6 @@ ${feedbackMessage.value}
 .icon-circle--bronze { background: rgba(251, 191, 36, 0.20); }
 
 .card-titles {
-  all: initial;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -551,45 +521,36 @@ ${feedbackMessage.value}
 }
 
 .card-title {
-  all: initial;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: 15px;
   line-height: 1;
   font-weight: 500;
   color: #f3f4f6;
-  display: block;
 }
 
 .card-subtitle {
-  all: initial;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 700;
   line-height: 1;
-  display: block;
 }
 
 .card-subtitle--purple { color: #c084fc; }
 .card-subtitle--bronze { color: #fbbf24; }
 
 .card-body {
-  all: initial;
   display: flex;
   flex-direction: column;
   margin-top: 4px;
 }
 
 .slider-row {
-  all: initial;
   display: flex;
   align-items: center;
   width: 100%;
 }
 
 .slider {
-  all: initial;
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -598,7 +559,6 @@ ${feedbackMessage.value}
   outline: none;
   cursor: pointer;
   margin: 0;
-  display: block;
 }
 
 .slider::-webkit-slider-thumb {
@@ -631,10 +591,8 @@ ${feedbackMessage.value}
 .slider--bronze { --thumb-inner-color: #fbbf24; }
 
 .slider-labels {
-  all: initial;
   display: flex;
   justify-content: space-between;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: 11px;
   margin-top: 10px;
   color: rgba(229, 231, 235, 0.7);
@@ -652,9 +610,8 @@ ${feedbackMessage.value}
 .label-center { position: absolute; left: 50%; transform: translateX(-50%); }
 .label-right { position: absolute; right: 0; }
 
+/* Сообщение */
 .message-box {
-  all: initial;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   width: 100%;
   max-width: 600px;
   text-align: center;
@@ -669,8 +626,8 @@ ${feedbackMessage.value}
   box-sizing: border-box;
 }
 
+/* Кнопка */
 .submit-container {
-  all: initial;
   width: 100%;
   max-width: 856px;
   display: flex;
@@ -680,8 +637,6 @@ ${feedbackMessage.value}
 }
 
 .submit-button {
-  all: initial;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   width: 100%;
   background-color: #ffffff;
   color: #0f172a;
@@ -694,13 +649,13 @@ ${feedbackMessage.value}
   transition: transform 0.1s ease, opacity 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   text-align: center;
-  display: block;
   box-sizing: border-box;
 }
 
 .submit-button:active { transform: scale(0.98); }
 .submit-button:disabled { opacity: 0.7; cursor: not-allowed; }
 
+/* Адаптивность */
 @media (max-width: 768px) {
   .readiness-title {
     font-size: 24px;
@@ -710,12 +665,11 @@ ${feedbackMessage.value}
   .selectors-container {
     flex-direction: column;
     margin-bottom: 24px;
-    gap: 16px; /* Фиксированный отступ, без "дырок" */
+    gap: 12px; /* Уменьшен gap */
   }
 
   .selector-group {
     width: 100%;
-    margin-bottom: 0; /* Убираем лишние отступы */
   }
 
   .readiness-wrapper {
