@@ -42,7 +42,7 @@ onUnmounted(() => {
       </svg>
       
       <span class="signal-text">
-        {{ count }} оценок и Сигналов отправлено сегодня
+        {{ count }} оценок и сигналов отправлено сегодня
       </span>
     </div>
   </div>
