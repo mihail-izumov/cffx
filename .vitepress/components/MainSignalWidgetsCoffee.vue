@@ -560,7 +560,6 @@ onUnmounted(() => {
 .signal2-button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
 .signal2-action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-/* ОБНОВЛЕНО: Цвета кнопки "Оценить место" в графитовой гамме */
 .signal2-ticket-button { 
   background: linear-gradient(135deg, rgba(70, 70, 72, 0.85), rgba(90, 92, 95, 0.9)); 
   color: rgba(255, 255, 255, 0.95); 
@@ -576,7 +575,6 @@ onUnmounted(() => {
 .signal2-review-button { background: linear-gradient(135deg, #a3e635, #c5f946); color: #1a2e05; box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3); }
 .signal2-review-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(163, 230, 53, 0.4); }
 
-/* ОБНОВЛЕНО: Иконка кнопки "Оценить место" в графитовом стиле */
 .signal2-button-icon-container { 
   width: 32px; 
   height: 32px; 
@@ -627,8 +625,11 @@ onUnmounted(() => {
   .signal2-switcher::before, 
   .signal2-switcher:hover::before { display: none; }
   
-  .signal2-widget-content { padding: 24px 0; }
-  .signal2-main-card { padding: 16px; }
+  /* ОБНОВЛЕНО: Минимальные отступы в мобильной версии */
+  .signal2-widget-content { padding: 12px 8px; } /* Было 24px 0 */
+  .signal2-main-card { padding: 12px; } /* Было 16px */
+  .signal2-cafe-switchers-container { margin-bottom: 16px; } /* Было 32px */
+  
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 14px; }
   
   .signal2-stat-card { 
@@ -637,7 +638,7 @@ onUnmounted(() => {
     align-items: center;
     border-radius: 16px; 
     transition: none;
-    min-height: 100px; /* Уменьшено с 120px */
+    min-height: 100px;
   }
   
   .signal2-stat-card:hover { transform: none; }
@@ -646,7 +647,7 @@ onUnmounted(() => {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 18px; /* Уменьшен padding */
+    padding: 14px 18px;
     width: 100%; 
     background: none !important; 
     box-shadow: none !important;
@@ -656,15 +657,14 @@ onUnmounted(() => {
     display: flex; 
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px; /* Уменьшен gap */
+    gap: 6px;
   }
   
-  /* ОБНОВЛЕНО: Уменьшен размер текста статусов на 2px */
   .signal2-stat-value { 
-    font-size: 1.6rem !important; /* Было 1.8rem */
+    font-size: 1.6rem !important;
     font-weight: 600; 
     margin: 0;
-    line-height: 1.1; /* Уменьшено межстрочное расстояние */
+    line-height: 1.1;
   }
   
   .signal2-stat-label { 
@@ -674,7 +674,7 @@ onUnmounted(() => {
     letter-spacing: 0.08em;
     margin-bottom: 0;
     order: -1;
-    line-height: 1.2; /* Уменьшено межстрочное расстояние */
+    line-height: 1.2;
   }
   
   .signal2-stat-badge { 
@@ -729,7 +729,11 @@ onUnmounted(() => {
   .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
 }
 @media (max-width: 480px) {
-  .signal2-widget-content { padding: 20px 0; }
+  /* ОБНОВЛЕНО: Еще меньше отступы для маленьких экранов */
+  .signal2-widget-content { padding: 8px 6px; } /* Было 20px 0 */
+  .signal2-main-card { padding: 10px; } /* Минимальный padding */
+  .signal2-cafe-switchers-container { margin-bottom: 12px; }
+  
   .signal2-branches-title-text { font-size: 22px; text-align: center; }
   .signal2-branches-subtitle { font-size: 14px; }
   .signal2-cafe-name { font-size: 20px; }
@@ -806,3 +810,4 @@ onUnmounted(() => {
   filter: brightness(0);
 }
 </style>
+
