@@ -111,12 +111,12 @@ onUnmounted(() => {
   }
   
   .signal-text {
-    font-size: 11px;
+    font-size: 12px;
   }
   
   .signal-icon {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
   }
 }
 </style>
