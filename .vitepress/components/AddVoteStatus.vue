@@ -716,6 +716,7 @@ ${feedbackMessage.value}`
 
   .selector-group {
     width: 100% !important;
+    flex: 0 0 auto !important;
   }
 
   .readiness-wrapper {
