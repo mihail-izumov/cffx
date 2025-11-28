@@ -8,7 +8,7 @@ const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка
 const cafes = {
   'Корж': {
     name: 'Корж',
-    yandex2gis: 1,
+    yandex2gis: Подключены,
     yandex2gisPercent: 94,
     smartReviews: 0,
     smartReviewsPercent: 0,
@@ -452,7 +452,7 @@ watch(showBranchList, (newValue) => {
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-value">{{ establishment.yandex2gis }}</div>
-                  <div class="signal2-stat-label">Яндекс/2ГИС</div>
+                  <div class="signal2-stat-label">Как слушают</div>
                 </div>
                 <div class="signal2-stat-badge signal2-graphite-badge">
                   <span class="signal2-badge-emoji">💬</span>
@@ -470,7 +470,7 @@ watch(showBranchList, (newValue) => {
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
                   <div class="signal2-stat-value">{{ establishment.signals }}</div>
-                  <div class="signal2-stat-label">Сигналы</div>
+                  <div class="signal2-stat-label">Как меняют</div>
                 </div>
                 <div 
                   class="signal2-stat-badge signal2-lime-badge" 
