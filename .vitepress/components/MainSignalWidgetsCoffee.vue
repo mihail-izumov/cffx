@@ -348,7 +348,7 @@ onUnmounted(() => {
               aria-haspopup="dialog"
               @click="showInfoModal = true"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info">ircle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info">ircle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
             </button>
             <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
             <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
@@ -560,43 +560,27 @@ onUnmounted(() => {
 .signal2-button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
 .signal2-action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-/* ОБНОВЛЕНО: Цвета кнопки "Оценить место" в графитовой гамме */
+/* ОБНОВЛЕНО: Кнопка "оценить место" с графитовыми цветами */
 .signal2-ticket-button { 
-  background: linear-gradient(135deg, rgba(70, 70, 72, 0.85), rgba(90, 92, 95, 0.9)); 
-  color: rgba(255, 255, 255, 0.95); 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(70, 70, 70, 0.9), rgba(113, 128, 150, 0.7));
+  color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(70, 70, 70, 0.3);
 }
 .signal2-ticket-button:hover { 
-  background: linear-gradient(135deg, rgba(85, 85, 87, 0.95), rgba(105, 107, 110, 1)); 
+  background: linear-gradient(135deg, rgba(85, 85, 85, 0.95), rgba(128, 142, 165, 0.8));
   color: white; 
-  transform: translateY(-2px); 
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(70, 70, 70, 0.4);
 }
 
 .signal2-review-button { background: linear-gradient(135deg, #a3e635, #c5f946); color: #1a2e05; box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3); }
 .signal2-review-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(163, 230, 53, 0.4); }
-
-/* ОБНОВЛЕНО: Иконка кнопки "Оценить место" в графитовом стиле */
-.signal2-button-icon-container { 
-  width: 32px; 
-  height: 32px; 
-  border-radius: 50%; 
-  background: rgba(45, 45, 47, 0.9); 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  flex-shrink: 0; 
-  transition: all 0.3s ease; 
-}
+.signal2-button-icon-container { width: 32px; height: 32px; border-radius: 50%; background: rgba(50, 50, 50, 0.9); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
 .signal2-lime-icon-container { background: rgba(100, 150, 30, 0.4) !important; }
 .signal2-button-icon { transition: transform 0.3s ease; color: currentColor; }
 .signal2-review-button:hover .signal2-button-icon { transform: translateX(2px); }
-.signal2-ticket-button:hover .signal2-button-icon-container { 
-  background: rgba(60, 62, 65, 1); 
-  transform: scale(1.05); 
-}
+.signal2-ticket-button:hover .signal2-button-icon-container { background: rgba(35, 35, 35, 1); transform: scale(1.05); }
 .signal2-review-button:hover .signal2-lime-icon-container { background: rgba(120, 180, 40, 0.5) !important; transform: scale(1.05); }
-
 .signal2-branches-content { flex-grow: 1; }
 .signal2-branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
 .signal2-branches-list { padding: 0; }
@@ -629,7 +613,7 @@ onUnmounted(() => {
   
   .signal2-widget-content { padding: 24px 0; }
   .signal2-main-card { padding: 16px; }
-  .signal2-stats-grid { grid-template-columns: 1fr; gap: 14px; }
+  .signal2-stats-grid { grid-template-columns: 1fr; gap: 16px; }
   
   .signal2-stat-card { 
     display: flex;
@@ -637,7 +621,7 @@ onUnmounted(() => {
     align-items: center;
     border-radius: 16px; 
     transition: none;
-    min-height: 100px; /* Уменьшено с 120px */
+    min-height: 100px; /* Уменьшена высота с 120px */
   }
   
   .signal2-stat-card:hover { transform: none; }
@@ -650,31 +634,31 @@ onUnmounted(() => {
     width: 100%; 
     background: none !important; 
     box-shadow: none !important;
+    gap: 12px;
   }
   
   .signal2-stat-left-group { 
     display: flex; 
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px; /* Уменьшен gap */
+    gap: 4px; /* Уменьшен gap между label и value */
   }
   
-  /* ОБНОВЛЕНО: Уменьшен размер текста статусов на 2px */
   .signal2-stat-value { 
-    font-size: 1.6rem !important; /* Было 1.8rem */
+    font-size: 1.6rem !important; /* Уменьшен размер на 2px - с 1.8rem */
     font-weight: 600; 
     margin: 0;
     line-height: 1.1; /* Уменьшено межстрочное расстояние */
   }
   
   .signal2-stat-label { 
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 0;
     order: -1;
-    line-height: 1.2; /* Уменьшено межстрочное расстояние */
+    line-height: 1; /* Уменьшено межстрочное расстояние */
   }
   
   .signal2-stat-badge { 
@@ -706,23 +690,23 @@ onUnmounted(() => {
     line-height: 1.4;
   }
   
-.signal2-modal-close-icon {
-  display: flex !important;
-  position: absolute !important;
-  top: 12px !important;
-  right: 12px !important;
-  width: 40px !important;
-  height: 40px !important;
-  background: rgba(255,255,255,0.1) !important;
-  border: none !important;
-  border-radius: 8px !important;
-  color: #fff !important;
-  cursor: pointer !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 0.3s ease;
-  z-index: 10;
-}
+  .signal2-modal-close-icon {
+    display: flex !important;
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    width: 40px !important;
+    height: 40px !important;
+    background: rgba(255,255,255,0.1) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    cursor: pointer !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
 }
 @media (max-width: 700px) {
   .signal2-review-modal-content { width: 95vw; height: 85vh; }
