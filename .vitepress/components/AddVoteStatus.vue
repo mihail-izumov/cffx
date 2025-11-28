@@ -1,62 +1,56 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 
-// --- ДАННЫЕ НАПРАВЛЕНИЙ И СЕТЕЙ (из paste.txt) ---
+// --- ДАННЫЕ СЕТЕЙ С ПРЕДУСТАНОВЛЕННЫМИ СТАТУСАМИ ---
+// listeningStatus: 0-8 (ползунок "Как слушают")
+// changeStatus: 0-8 (ползунок "Как меняют")
 
 const fitness = {
   'SMSTRETCHING': {
-    branches: [
-      { address: 'г. Самара, ул. Ново-Садовая, 9' },
-      { address: 'г. Самара, пр. К. Маркса, 24 (ТЦ Пирамида)' },
-      { address: 'г. Самара, ул. Димитрова, 247 (ТЦ METRO)' }
-    ]
+    listeningStatus: 6.5, // ~Отвечают
+    changeStatus: 7.0,    // ~Меняют
+    branches: []
   },
   'FiZ': {
-    branches: [
-      { address: 'г. Самара, пр-кт. Кирова, 11' },
-      { address: 'г. Самара, ул. Мориса Тореза, 160' }
-    ]
+    listeningStatus: 4.0, // ~Слышат
+    changeStatus: 3.0,    // ~Действуют
+    branches: []
   }
 }
 
 const cafes = {
   'Корж': {
-    branches: [
-      { address: 'г. Самара, ТРЦ Гудок, Московское шоссе, 103' },
-      { address: 'г. Самара, ТРЦ Амбар, Московское шоссе, 101' }
-    ]
+    listeningStatus: 7.5, // Отвечают
+    changeStatus: 7.8,    // Меняют
+    branches: []
   },
   'MOSAIC': {
-    branches: [
-      { address: 'г. Самара, Московское шоссе, 4а' },
-      { address: 'г. Самара, ул. Ново-Садовая, 50' }
-    ]
+    listeningStatus: 5.0, // Слышат
+    changeStatus: 4.0,    // Действуют
+    branches: []
   },
   'Skuratov': {
-    branches: [
-      { address: 'г. Самара, ул. Ленинградская, 190' },
-      { address: 'г. Самара, ул. Ново-Садовая, 80' }
-    ]
+    listeningStatus: 3.0, // Слышат
+    changeStatus: 2.0,    // Открыты/Действуют
+    branches: []
   },
   'Surf Coffee': {
-    branches: [
-      { address: 'г. Самара, ул. Мичурина, 57' },
-      { address: 'г. Самара, ул. Мичурина, 54' }
-    ]
+    listeningStatus: 2.0, // Подключены
+    changeStatus: 1.5,    // Открыты
+    branches: []
   },
   'Старик Хоттабыч': {
-    branches: [
-      { address: 'г. Самара, ул. Чапаевская, 99' },
-      { address: 'г. Самара, ул. Ленинская, 153' }
-    ]
+    listeningStatus: 4.5, // Слышат
+    changeStatus: 5.0,    // Действуют
+    branches: []
   }
 }
 
 // --- ЛОГИКА ФОРМЫ ---
 
 const form = ref({
-  direction: '',
-  selectedNetwork: ''
+  direction: 'food', // Предвыбор: Еда
+  selectedNetwork: 'Корж' // Предвыбор: Первая сеть
 })
 
 // Список сетей в зависимости от направления
@@ -66,15 +60,39 @@ const availableNetworks = computed(() => {
   return Object.keys(source)
 })
 
-// Сброс сети при смене направления
-watch(() => form.value.direction, () => {
-  form.value.selectedNetwork = ''
+// При смене направления выбираем первую сеть из списка
+watch(() => form.value.direction, (newDirection) => {
+  const source = newDirection === 'fitness' ? fitness : cafes
+  const networks = Object.keys(source)
+  if (networks.length > 0) {
+    form.value.selectedNetwork = networks[0]
+  } else {
+    form.value.selectedNetwork = ''
+  }
 })
 
 // --- ЛОГИКА СЛАЙДЕРОВ ---
 
 const listeningValue = ref(3.5)
 const changeValue = ref(4.2)
+
+// Следим за выбором сети и подставляем её статусы в слайдеры
+watch(
+  [() => form.value.direction, () => form.value.selectedNetwork],
+  ([dir, net]) => {
+    if (!dir || !net) return
+    
+    const source = dir === 'fitness' ? fitness : cafes
+    // @ts-ignore
+    const data = source[net]
+    
+    if (data) {
+      listeningValue.value = data.listeningStatus
+      changeValue.value = data.changeStatus
+    }
+  },
+  { immediate: true } // Сразу применить при старте
+)
 
 const listeningLabels = ['Подключены', 'Слышат', 'Отвечают']
 const changeLabels = ['Открыты', 'Действуют', 'Меняют']
@@ -177,13 +195,11 @@ const submitForm = async () => {
   formData.append('date', currentDate)
   formData.append('submitted', submittedTime)
   
-  // Основные данные
   formData.append('direction', form.value.direction === 'food' ? 'Еда' : 'Фитнес')
   formData.append('network', form.value.selectedNetwork)
-  formData.append('address', 'Online Assessment') // Можно оставить пустым
+  formData.append('address', 'Online Assessment')
   formData.append('name', 'Пользователь Readiness')
 
-  // Формируем отзыв
   const reviewText = `
 [Оценка Readiness]
 Направление: ${form.value.direction === 'food' ? 'Еда' : 'Фитнес'}
@@ -225,36 +241,45 @@ ${feedbackMessage.value}
 <template>
   <div class="page-container">
     
-    <!-- Заголовок -->
-    <h1 class="readiness-title">Где Вас Слушают?</h1>
+    <h1 class="readiness-title">Оценка Readiness</h1>
 
     <!-- Селекты направления и сети -->
     <div class="selectors-container">
       <div class="selector-group">
         <label class="selector-label">Выбрать направление</label>
-        <select v-model="form.direction" class="readiness-select">
-          <option disabled value="">Выберите направление</option>
-          <option value="food">Еда</option>
-          <option value="fitness">Фитнес</option>
-        </select>
+        <div class="select-wrapper">
+          <select v-model="form.direction" class="readiness-select">
+            <option disabled value="">Выберите направление</option>
+            <option value="food">Еда</option>
+            <option value="fitness">Фитнес</option>
+          </select>
+          <div class="select-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
       </div>
 
       <div class="selector-group">
         <label class="selector-label">Выбрать сеть</label>
-        <select 
-          v-model="form.selectedNetwork" 
-          class="readiness-select"
-          :disabled="!form.direction"
-        >
-          <option disabled value="">Выберите сеть</option>
-          <option 
-            v-for="network in availableNetworks" 
-            :key="network" 
-            :value="network"
+        <div class="select-wrapper">
+          <select 
+            v-model="form.selectedNetwork" 
+            class="readiness-select"
+            :disabled="!form.direction"
           >
-            {{ network }}
-          </option>
-        </select>
+            <option disabled value="">Выберите сеть</option>
+            <option 
+              v-for="network in availableNetworks" 
+              :key="network" 
+              :value="network"
+            >
+              {{ network }}
+            </option>
+          </select>
+          <div class="select-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -263,7 +288,7 @@ ${feedbackMessage.value}
       <div class="card card--purple">
         <div class="card-header">
           <div class="icon-circle icon-circle--purple">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-satellite-dish-icon lucide-satellite-dish"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
           </div>
           <div class="card-titles">
             <div class="card-title">Как слушают</div>
@@ -285,7 +310,7 @@ ${feedbackMessage.value}
       <div class="card card--bronze">
         <div class="card-header">
           <div class="icon-circle icon-circle--bronze">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           </div>
           <div class="card-titles">
             <div class="card-title">Как меняют</div>
@@ -305,12 +330,10 @@ ${feedbackMessage.value}
       </div>
     </div>
 
-    <!-- Динамический текст -->
     <div class="message-box">
       {{ feedbackMessage }}
     </div>
 
-    <!-- Кнопка отправки -->
     <div class="submit-container">
       <button 
         class="submit-button" 
@@ -325,11 +348,8 @@ ${feedbackMessage.value}
 </template>
 
 <style scoped>
-/* Сброс VitePress стилей */
-.page-container * {
-  all: revert;
-}
-
+/* Сброс VitePress */
+.page-container * { all: revert; }
 .page-container {
   all: initial;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -342,7 +362,6 @@ ${feedbackMessage.value}
   box-sizing: border-box;
 }
 
-/* Заголовок */
 .readiness-title {
   all: initial;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -354,7 +373,7 @@ ${feedbackMessage.value}
   padding: 0;
 }
 
-/* Контейнер селектов */
+/* Селекты */
 .selectors-container {
   all: initial;
   display: flex;
@@ -387,6 +406,14 @@ ${feedbackMessage.value}
   display: block;
 }
 
+.select-wrapper {
+  all: initial;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+}
+
 .readiness-select {
   all: initial;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -399,19 +426,36 @@ ${feedbackMessage.value}
   color: #f0f0f0;
   cursor: pointer;
   transition: all 0.3s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23f0f0f0' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
+  appearance: none; /* Убираем стандартную стрелку */
   padding-right: 40px;
   box-sizing: border-box;
   display: block;
 }
 
+/* Кастомная иконка шеврона */
+.select-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: rgba(240, 240, 240, 0.4); /* Приглушенный цвет */
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .readiness-select:focus {
   outline: none;
-  border-color: #7c3aed;
+  border-color: #ffffff; /* Белая рамка при фокусе */
   background-color: #2a2a2e;
+}
+
+/* Поворот иконки при фокусе */
+.readiness-select:focus + .select-icon {
+  transform: translateY(-50%) rotate(180deg);
+  color: rgba(240, 240, 240, 0.8);
 }
 
 .readiness-select:disabled {
@@ -490,6 +534,7 @@ ${feedbackMessage.value}
   backdrop-filter: blur(4px);
 }
 
+/* Восстановленные иконки */
 .icon-circle svg {
   display: block;
 }
@@ -607,7 +652,6 @@ ${feedbackMessage.value}
 .label-center { position: absolute; left: 50%; transform: translateX(-50%); }
 .label-right { position: absolute; right: 0; }
 
-/* Блок сообщения */
 .message-box {
   all: initial;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -625,7 +669,6 @@ ${feedbackMessage.value}
   box-sizing: border-box;
 }
 
-/* Кнопка отправки */
 .submit-container {
   all: initial;
   width: 100%;
@@ -658,7 +701,6 @@ ${feedbackMessage.value}
 .submit-button:active { transform: scale(0.98); }
 .submit-button:disabled { opacity: 0.7; cursor: not-allowed; }
 
-/* Адаптивность */
 @media (max-width: 768px) {
   .readiness-title {
     font-size: 24px;
@@ -668,10 +710,12 @@ ${feedbackMessage.value}
   .selectors-container {
     flex-direction: column;
     margin-bottom: 24px;
+    gap: 16px; /* Фиксированный отступ, без "дырок" */
   }
 
   .selector-group {
     width: 100%;
+    margin-bottom: 0; /* Убираем лишние отступы */
   }
 
   .readiness-wrapper {
