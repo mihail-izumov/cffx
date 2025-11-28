@@ -129,6 +129,7 @@ import BannerFitGuide from '../components/BannerFitGuide.vue'
 import SignalConfigurator2New from '../components/SignalConfigurator2New.vue'
 import MainSignalWidgetsCoffee from '../components/MainSignalWidgetsCoffee.vue'
 import AddVoteStatus from '../components/AddVoteStatus.vue'
+import BadgeCounter from '../components/BadgeCounter.vue'
 
 export default {
   extends: DefaultTheme,
@@ -263,6 +264,7 @@ export default {
     app.component('SignalConfigurator2New', SignalConfigurator2New)
     app.component('MainSignalWidgetsCoffee', MainSignalWidgetsCoffee)
     app.component('AddVoteStatus', AddVoteStatus)
+    app.component('BadgeCounter', BadgeCounter)
     
   },
 }
