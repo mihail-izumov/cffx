@@ -1,26 +1,22 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
-// Значения ползунков теперь дробные для планости (0.00 – 8.00)
+// Значения ползунков (дробные для плавности)
 const listeningValue = ref(3.5)
 const changeValue = ref(4.2)
 
-// Логика: определяем, к какому из 3 статусов (0, 1, 2) ближе всего ползунок
-// 0–2.66 = Левый статус
-// 2.66–5.33 = Средний статус
-// 5.33–8.00 = Правый статус
+// Логика определения статуса (0, 1, 2) по значению ползунка
 const getStatusIndex = (val: number) => {
   const step = 8 / 3
-  if (val < step) return 0 // Первый сегмент
-  if (val < step * 2) return 1 // Второй сегмент
-  return 2 // Третий сегмент
+  if (val < step) return 0
+  if (val < step * 2) return 1
+  return 2
 }
 
-// Эти вычисляемые свойства можно использовать для отправки данных на бэкенд или логики
 const listeningStatusIndex = computed(() => getStatusIndex(listeningValue.value))
 const changeStatusIndex = computed(() => getStatusIndex(changeValue.value))
 
-// Функция для динамического стиля градиента (закраска трека)
+// Динамический градиент трека
 const sliderStyle = (value: number | string) => {
   const v = Number(value)
   const percentage = (v / 8) * 100
@@ -71,7 +67,6 @@ const sliderStyle = (value: number | string) => {
 
       <div class="card-body">
         <div class="slider-row">
-          <!-- step="0.02" убирает дискретность, движение становится плавным -->
           <input
             type="range"
             min="0"
@@ -158,9 +153,10 @@ const sliderStyle = (value: number | string) => {
   --thumb-size: 20px;
 
   position: relative;
+  /* Десктоп: basis отвечает за ширину */
   flex: 1 1 320px;
   max-width: 420px;
-  padding: 16px 18px 18px; /* Десктопный отступ снизу */
+  padding: 16px 18px 18px;
   border-radius: var(--card-radius);
   color: #f9fafb;
   overflow: hidden;
@@ -210,7 +206,7 @@ const sliderStyle = (value: number | string) => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 5px; /* Увеличенное расстояние между заголовком и подзаголовком */
+  gap: 5px; 
 }
 
 .card-title {
@@ -246,7 +242,6 @@ const sliderStyle = (value: number | string) => {
   width: 100%;
 }
 
-/* Стили ползунка */
 .slider {
   -webkit-appearance: none;
   appearance: none;
@@ -304,7 +299,6 @@ const sliderStyle = (value: number | string) => {
   --thumb-inner-color: #fbbf24;
 }
 
-/* Подписи */
 .slider-labels {
   display: flex;
   justify-content: space-between;
@@ -315,7 +309,6 @@ const sliderStyle = (value: number | string) => {
   height: 16px;
 }
 
-/* Опционально: подсвечивать активный текстовый статус */
 .active-text {
   color: #ffffff;
   font-weight: 600;
@@ -338,7 +331,6 @@ const sliderStyle = (value: number | string) => {
   right: 0;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
   .readiness-wrapper {
     flex-direction: column;
@@ -346,14 +338,15 @@ const sliderStyle = (value: number | string) => {
   }
   
   .card {
+    /* Сбрасываем flex-basis, чтобы высота определялась контентом */
+    flex: 1 1 auto; 
     width: 100%;
     max-width: 100%;
-    /* Уменьшенный отступ снизу на мобилке для компактности */
-    padding-bottom: 10px; 
+    padding-bottom: 16px;
   }
 
   .card-header {
-    margin-bottom: 14px; /* Чуть плотнее шапка на мобилке */
+    margin-bottom: 14px;
   }
 }
 </style>
