@@ -689,30 +689,20 @@ ${feedbackMessage.value}`
 .submit-button:active { transform: scale(0.98); }
 .submit-button:disabled { opacity: 0.7; cursor: not-allowed; }
 
-/* Адаптивность */
+/* Адаптивность с принудительными отступами */
 @media (max-width: 768px) {
-  /* Базовый padding страницы */
   .page-container {
     padding: 0 16px !important;
   }
 
-  /* Гашение глобального вертикального ритма VitePress */
-  :deep(.page-container > * + *) {
-    margin-top: 8px !important;
-  }
-
+  /* Сброс внешних отступов темы, чтобы убрать "дыры" */
+  :deep(.page-container > * + *) { margin-top: 8px !important; }
   :deep(.page-container h1),
   :deep(.page-container h2),
-  :deep(.page-container h3),
   :deep(.page-container p),
   :deep(.page-container label),
-  :deep(.page-container select),
-  :deep(.page-container div) {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-  }
+  :deep(.page-container select) { margin-top: 0 !important; margin-bottom: 0 !important; }
 
-  /* Компактные интервалы для блоков */
   .readiness-title {
     font-size: 24px !important;
     margin-bottom: 16px !important;
@@ -741,9 +731,7 @@ ${feedbackMessage.value}`
     padding-bottom: 12px !important;
   }
 
-  .card-header {
-    margin-bottom: 12px !important;
-  }
+  .card-header { margin-bottom: 12px !important; }
 
   .card-body {
     flex-direction: column-reverse !important;
@@ -756,18 +744,16 @@ ${feedbackMessage.value}`
     font-size: 13px !important;
   }
 
-  .message-box {
-    font-size: 14px !important;
-    padding: 0 8px !important;
-    margin-bottom: 16px !important;
-  }
-
   .submit-container {
     width: 100% !important;
     max-width: 100% !important;
     padding: 0 0 20px 0 !important;
   }
+  
+  .message-box {
+    font-size: 14px !important;
+    padding: 0 8px !important;
+    margin-bottom: 16px !important;
+  }
 }
 </style>
-
-
