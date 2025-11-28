@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+
+// --- ЛОГИКА СЛАЙДЕРОВ ---
 
 // Значения ползунков (0.00 – 8.00)
 const listeningValue = ref(3.5)
 const changeValue = ref(4.2)
+
+// Текстовые статусы для отправки
+const listeningLabels = ['Подключены', 'Слышат', 'Отвечают']
+const changeLabels = ['Открыты', 'Действуют', 'Меняют']
 
 // Логика статусов (0, 1, 2)
 const getStatusIndex = (val: number) => {
@@ -31,110 +37,218 @@ const sliderStyle = (value: number | string) => {
     )`,
   }
 }
+
+// --- ЛОГИКА ОТПРАВКИ ФОРМЫ ---
+
+const isSubmitting = ref(false)
+const isSuccess = ref(false)
+const buttonText = computed(() => {
+  if (isSuccess.value) return 'Отправлено!'
+  if (isSubmitting.value) return 'Отправка...'
+  return 'Отправить'
+})
+
+// URL вашего скрипта (из примера)
+const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2di_IxXDyAZEfSxJ7wLvupwjb7_IAIlKVsXlyOL6WcDj/exec'
+
+const submitForm = async () => {
+  if (isSubmitting.value || isSuccess.value) return
+
+  isSubmitting.value = true
+
+  // 1. Генерация Client ID
+  let clientId = localStorage.getItem('signal_client_id')
+  if (!clientId) {
+    clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now()
+    localStorage.setItem('signal_client_id', clientId)
+  }
+
+  // 2. Текущая дата и время
+  const now = new Date()
+  const day = String(now.getDate()).padStart(2, '0')
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const year = now.getFullYear()
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  const seconds = String(now.getSeconds()).padStart(2, '0')
+  
+  const currentDate = `${year}-${month}-${day}`
+  const submittedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+  
+  // Номер тикета (упрощенно)
+  const ticketNumber = `TICKET-${Date.now().toString().slice(-6)}`
+
+  // 3. Сбор данных
+  const formData = new FormData()
+  formData.append('referer', window.location.origin)
+  formData.append('clientId', clientId)
+  formData.append('ticketNumber', ticketNumber)
+  formData.append('date', currentDate)
+  formData.append('submitted', submittedTime)
+  
+  // Пример данных (можно подставить реальные инпуты, если нужно)
+  formData.append('network', 'Signal Demo') 
+  formData.append('address', 'Online')
+  formData.append('name', 'Пользователь')
+
+  // Формируем тело отзыва из значений слайдеров
+  const reviewText = `
+    [Статистика Readiness]
+    Как слушают: ${listeningLabels[listeningStatusIndex.value]} (${listeningValue.value.toFixed(2)}/8)
+    Как меняют: ${changeLabels[changeStatusIndex.value]} (${changeValue.value.toFixed(2)}/8)
+  `
+  formData.append('review', reviewText.trim())
+
+  // 4. Отправка
+  try {
+    const response = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      body: formData
+    })
+
+    const result = await response.json()
+    
+    if (result.status === 'success') { // Проверка может отличаться в зависимости от вашего скрипта, но обычно так
+      isSuccess.value = true
+      setTimeout(() => {
+        isSuccess.value = false // Сброс через 3 сек
+      }, 3000)
+    } else {
+      throw new Error(result.message || 'Ошибка обработки данных')
+    }
+  } catch (error) {
+    console.error(error)
+    alert('Не удалось отправить данные. Попробуйте позже.')
+  } finally {
+    isSubmitting.value = false
+  }
+}
 </script>
 
 <template>
-  <div class="readiness-wrapper">
+  <div class="page-container">
     
-    <!-- Карточка 1: Фиолетовая -->
-    <div class="card card--purple">
-      <div class="card-header">
-        <div class="icon-circle icon-circle--purple">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-satellite-dish-icon lucide-satellite-dish"
-          >
-            <path d="M4 10a7.31 7.31 0 0 0 10 10Z" />
-            <path d="m9 15 3-3" />
-            <path d="M17 13a6 6 0 0 0-6-6" />
-            <path d="M21 13A10 10 0 0 0 11 3" />
-          </svg>
+    <div class="readiness-wrapper">
+      <!-- Карточка 1: Фиолетовая -->
+      <div class="card card--purple">
+        <div class="card-header">
+          <div class="icon-circle icon-circle--purple">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-satellite-dish-icon lucide-satellite-dish"
+            >
+              <path d="M4 10a7.31 7.31 0 0 0 10 10Z" />
+              <path d="m9 15 3-3" />
+              <path d="M17 13a6 6 0 0 0-6-6" />
+              <path d="M21 13A10 10 0 0 0 11 3" />
+            </svg>
+          </div>
+          <div class="card-titles">
+            <div class="card-title">Как слушают</div>
+            <div class="card-subtitle card-subtitle--purple">ПОДКЛЮЧЕНЫ</div>
+          </div>
         </div>
-        <div class="card-titles">
-          <div class="card-title">Как слушают</div>
-          <div class="card-subtitle card-subtitle--purple">ПОДКЛЮЧЕНЫ</div>
+
+        <div class="card-body">
+          <div class="slider-row">
+            <input
+              type="range"
+              min="0"
+              max="8"
+              step="0.02"
+              v-model="listeningValue"
+              class="slider slider--purple"
+              :style="sliderStyle(listeningValue)"
+            />
+          </div>
+          <div class="slider-labels">
+            <span class="label-left" :class="{ 'active-text': listeningStatusIndex === 0 }">Подключены</span>
+            <span class="label-center" :class="{ 'active-text': listeningStatusIndex === 1 }">Слышат</span>
+            <span class="label-right" :class="{ 'active-text': listeningStatusIndex === 2 }">Отвечают</span>
+          </div>
         </div>
       </div>
 
-      <div class="card-body">
-        <div class="slider-row">
-          <input
-            type="range"
-            min="0"
-            max="8"
-            step="0.02"
-            v-model="listeningValue"
-            class="slider slider--purple"
-            :style="sliderStyle(listeningValue)"
-          />
+      <!-- Карточка 2: Бронзовая -->
+      <div class="card card--bronze">
+        <div class="card-header">
+          <div class="icon-circle icon-circle--bronze">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-zap-icon lucide-zap"
+            >
+              <path
+                d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
+              />
+            </svg>
+          </div>
+          <div class="card-titles">
+            <div class="card-title">Как меняют</div>
+            <div class="card-subtitle card-subtitle--bronze">ДЕЙСТВУЮТ</div>
+          </div>
         </div>
-        <div class="slider-labels">
-          <span class="label-left" :class="{ 'active-text': listeningStatusIndex === 0 }">Подключены</span>
-          <span class="label-center" :class="{ 'active-text': listeningStatusIndex === 1 }">Слышат</span>
-          <span class="label-right" :class="{ 'active-text': listeningStatusIndex === 2 }">Отвечают</span>
+
+        <div class="card-body">
+          <div class="slider-row">
+            <input
+              type="range"
+              min="0"
+              max="8"
+              step="0.02"
+              v-model="changeValue"
+              class="slider slider--bronze"
+              :style="sliderStyle(changeValue)"
+            />
+          </div>
+          <div class="slider-labels">
+            <span class="label-left" :class="{ 'active-text': changeStatusIndex === 0 }">Открыты</span>
+            <span class="label-center" :class="{ 'active-text': changeStatusIndex === 1 }">Действуют</span>
+            <span class="label-right" :class="{ 'active-text': changeStatusIndex === 2 }">Меняют</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Карточка 2: Бронзовая -->
-    <div class="card card--bronze">
-      <div class="card-header">
-        <div class="icon-circle icon-circle--bronze">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-zap-icon lucide-zap"
-          >
-            <path
-              d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
-            />
-          </svg>
-        </div>
-        <div class="card-titles">
-          <div class="card-title">Как меняют</div>
-          <div class="card-subtitle card-subtitle--bronze">ДЕЙСТВУЮТ</div>
-        </div>
-      </div>
-
-      <div class="card-body">
-        <div class="slider-row">
-          <input
-            type="range"
-            min="0"
-            max="8"
-            step="0.02"
-            v-model="changeValue"
-            class="slider slider--bronze"
-            :style="sliderStyle(changeValue)"
-          />
-        </div>
-        <div class="slider-labels">
-          <span class="label-left" :class="{ 'active-text': changeStatusIndex === 0 }">Открыты</span>
-          <span class="label-center" :class="{ 'active-text': changeStatusIndex === 1 }">Действуют</span>
-          <span class="label-right" :class="{ 'active-text': changeStatusIndex === 2 }">Меняют</span>
-        </div>
-      </div>
+    <!-- Кнопка отправки -->
+    <div class="submit-container">
+      <button 
+        class="submit-button" 
+        :disabled="isSubmitting || isSuccess"
+        @click="submitForm"
+      >
+        {{ buttonText }}
+      </button>
     </div>
 
   </div>
 </template>
 
 <style scoped>
+/* Контейнер всей страницы */
+.page-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Сетка карточек */
 .readiness-wrapper {
   display: flex;
   gap: 16px;
@@ -142,6 +256,7 @@ const sliderStyle = (value: number | string) => {
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
+  margin-bottom: 80px; /* Отступ снизу, чтобы кнопка не перекрывала контент */
 }
 
 .card {
@@ -232,7 +347,6 @@ const sliderStyle = (value: number | string) => {
 .card-body {
   display: flex;
   flex-direction: column;
-  /* По умолчанию (десктоп) ползунок сверху, подписи снизу */
   margin-top: 4px;
 }
 
@@ -303,7 +417,7 @@ const sliderStyle = (value: number | string) => {
   display: flex;
   justify-content: space-between;
   font-size: 11px;
-  margin-top: 10px; /* Отступ сверху для десктопа (когда под ползунком) */
+  margin-top: 10px;
   color: rgba(229, 231, 235, 0.7);
   position: relative;
   height: 16px;
@@ -331,11 +445,51 @@ const sliderStyle = (value: number | string) => {
   right: 0;
 }
 
-/* Адаптивность */
+/* Кнопка отправки внизу */
+.submit-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(to top, rgba(11, 11, 33, 1) 60%, transparent 100%);
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+  pointer-events: none; /* Чтобы градиент не перекрывал клики выше, но кнопка была активна */
+}
+
+.submit-button {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 500px; /* Ограничение ширины на десктопе */
+  background-color: #ffffff;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px 0;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.submit-button:active {
+  transform: scale(0.98);
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
   .readiness-wrapper {
     flex-direction: column;
     align-items: center;
+    margin-bottom: 100px; /* Больше места под кнопку на мобилке */
   }
   
   .card {
@@ -349,15 +503,17 @@ const sliderStyle = (value: number | string) => {
     margin-bottom: 12px;
   }
 
-  /* Переворачиваем порядок в card-body: сначала подписи, потом ползунок */
+  /* Переворот порядка: подписи сверху, ползунок снизу */
   .card-body {
     flex-direction: column-reverse;
+    /* ДОБАВЛЕН ВОЗДУХ МЕЖДУ СТАТУСАМИ И ПОЛЗУНКОМ */
+    gap: 16px; 
   }
 
-  /* Меняем отступы: у подписей убираем margin-top, добавляем margin-bottom */
+  /* Сброс марджинов, так как теперь работает gap */
   .slider-labels {
     margin-top: 0;
-    margin-bottom: 8px;
+    margin-bottom: 0;
   }
 }
 </style>
