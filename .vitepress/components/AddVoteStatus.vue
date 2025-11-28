@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 
-// --- ДАННЫЕ НАПРАВЛЕНИЙ И СЕТЕЙ С СТАТУСАМИ ---
+// --- ДАННЫЕ (Сети и их статусы) ---
 
 const fitness = {
   'SMSTRETCHING': {
@@ -69,18 +69,25 @@ const cafes = {
 // --- ЛОГИКА ФОРМЫ ---
 
 const form = ref({
-  direction: 'food', // Предвыбрано первое направление
-  selectedNetwork: 'Корж' // Предвыбрана первая сеть
+  direction: 'food', 
+  selectedNetwork: 'Корж'
 })
 
-// Список сетей в зависимости от направления
+// Ползунки (мнение пользователя)
+const listeningValue = ref(3.5)
+const changeValue = ref(4.2)
+
+// Статусы сети (фиксированные значения из базы)
+const networkListeningStatus = ref(0)
+const networkSignalStatus = ref(0)
+
 const availableNetworks = computed(() => {
   if (!form.value.direction) return []
   const source = form.value.direction === 'fitness' ? fitness : cafes
   return Object.keys(source)
 })
 
-// Обновление статусов при смене сети
+// Обновление данных при смене сети
 const updateStatusesFromNetwork = () => {
   if (!form.value.direction || !form.value.selectedNetwork) return
   
@@ -88,32 +95,31 @@ const updateStatusesFromNetwork = () => {
   const networkData = source[form.value.selectedNetwork]
   
   if (networkData) {
+    // 1. Обновляем "истинные" статусы сети для заголовков
+    networkListeningStatus.value = networkData.listeningStatus
+    networkSignalStatus.value = networkData.signalStatus
+
+    // 2. Сбрасываем ползунки пользователя на эти же значения (как отправная точка)
     listeningValue.value = networkData.listeningStatus
     changeValue.value = networkData.signalStatus
   }
 }
 
-// Сброс сети при смене направления
 watch(() => form.value.direction, (newDirection) => {
   const networks = newDirection === 'fitness' ? Object.keys(fitness) : Object.keys(cafes)
   form.value.selectedNetwork = networks[0] || ''
   updateStatusesFromNetwork()
 })
 
-// Обновление при смене сети
 watch(() => form.value.selectedNetwork, () => {
   updateStatusesFromNetwork()
 })
 
-// Инициализация при монтировании
 onMounted(() => {
   updateStatusesFromNetwork()
 })
 
-// --- ЛОГИКА СЛАЙДЕРОВ ---
-
-const listeningValue = ref(5.5) // Начальные значения будут перезаписаны
-const changeValue = ref(6.8)
+// --- ЛОГИКА СТАТУСОВ ---
 
 const listeningLabels = ['Подключены', 'Слышат', 'Отвечают']
 const changeLabels = ['Открыты', 'Действуют', 'Меняют']
@@ -125,8 +131,13 @@ const getStatusIndex = (val: number) => {
   return 2
 }
 
-const listeningStatusIndex = computed(() => getStatusIndex(listeningValue.value))
-const changeStatusIndex = computed(() => getStatusIndex(changeValue.value))
+// Индексы для ПОЛЗУНКОВ (меняются при движении)
+const userListeningIndex = computed(() => getStatusIndex(listeningValue.value))
+const userChangeIndex = computed(() => getStatusIndex(changeValue.value))
+
+// Индексы для ЗАГОЛОВКОВ (фиксированы, пока не сменится сеть)
+const networkListeningIndex = computed(() => getStatusIndex(networkListeningStatus.value))
+const networkSignalIndex = computed(() => getStatusIndex(networkSignalStatus.value))
 
 const sliderStyle = (value: number | string) => {
   const v = Number(value)
@@ -144,10 +155,10 @@ const sliderStyle = (value: number | string) => {
 }
 
 // --- ДИНАМИЧЕСКИЙ ТЕКСТ ---
-
+// Текст зависит от того, что накрутил ПОЛЬЗОВАТЕЛЬ
 const feedbackMessage = computed(() => {
-  const l = listeningStatusIndex.value
-  const c = changeStatusIndex.value
+  const l = userListeningIndex.value
+  const c = userChangeIndex.value
 
   const messages = [
     [
@@ -170,14 +181,14 @@ const feedbackMessage = computed(() => {
   return messages[l][c]
 })
 
-// --- ОТПРАВКА ФОРМЫ ---
+// --- ОТПРАВКА ---
 
 const isSubmitting = ref(false)
 const isSuccess = ref(false)
 const buttonText = computed(() => {
   if (isSuccess.value) return 'Отправлено!'
   if (isSubmitting.value) return 'Отправка...'
-  return 'Отправить'
+  return 'Оценить'
 })
 
 const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2di_IxXDyAZEfSxJ7wLvupwjb7_IAIlKVsXlyOL6WcDj/exec'
@@ -226,8 +237,13 @@ const submitForm = async () => {
 Направление: ${form.value.direction === 'food' ? 'Еда' : 'Фитнес'}
 Сеть: ${form.value.selectedNetwork}
 
-Как слушают: ${listeningLabels[listeningStatusIndex.value]} (${listeningValue.value.toFixed(2)}/8)
-Как меняют: ${changeLabels[changeStatusIndex.value]} (${changeValue.value.toFixed(2)}/8)
+[Данные сети]
+Статус сети (Listening): ${listeningLabels[networkListeningIndex.value]} (${networkListeningStatus.value})
+Статус сети (Signal): ${changeLabels[networkSignalIndex.value]} (${networkSignalStatus.value})
+
+[Мнение пользователя]
+Как слушают: ${listeningLabels[userListeningIndex.value]} (${listeningValue.value.toFixed(2)}/8)
+Как меняют: ${changeLabels[userChangeIndex.value]} (${changeValue.value.toFixed(2)}/8)
 
 [Комментарий системы]
 ${feedbackMessage.value}
@@ -262,7 +278,7 @@ ${feedbackMessage.value}
 <template>
   <div class="page-container">
     
-    <h1 class="readiness-title">Оценка Readiness</h1>
+    <h1 class="readiness-title">Где Вас Слушают?</h1>
 
     <div class="selectors-container">
       <div class="selector-group">
@@ -297,7 +313,8 @@ ${feedbackMessage.value}
           </div>
           <div class="card-titles">
             <div class="card-title">Как слушают</div>
-            <div class="card-subtitle card-subtitle--purple">{{ listeningLabels[listeningStatusIndex].toUpperCase() }}</div>
+            <!-- Заголовок зависит от сети (networkListeningIndex), а не от ползунка -->
+            <div class="card-subtitle card-subtitle--purple">{{ listeningLabels[networkListeningIndex].toUpperCase() }}</div>
           </div>
         </div>
         <div class="card-body">
@@ -305,9 +322,10 @@ ${feedbackMessage.value}
             <input type="range" min="0" max="8" step="0.02" v-model="listeningValue" class="slider slider--purple" :style="sliderStyle(listeningValue)"/>
           </div>
           <div class="slider-labels">
-            <span class="label-left" :class="{ 'active-text': listeningStatusIndex === 0 }">Подключены</span>
-            <span class="label-center" :class="{ 'active-text': listeningStatusIndex === 1 }">Слышат</span>
-            <span class="label-right" :class="{ 'active-text': listeningStatusIndex === 2 }">Отвечают</span>
+            <!-- Подсветка зависит от ползунка (userListeningIndex) -->
+            <span class="label-left" :class="{ 'active-text': userListeningIndex === 0 }">Подключены</span>
+            <span class="label-center" :class="{ 'active-text': userListeningIndex === 1 }">Слышат</span>
+            <span class="label-right" :class="{ 'active-text': userListeningIndex === 2 }">Отвечают</span>
           </div>
         </div>
       </div>
@@ -319,7 +337,8 @@ ${feedbackMessage.value}
           </div>
           <div class="card-titles">
             <div class="card-title">Как меняют</div>
-            <div class="card-subtitle card-subtitle--bronze">{{ changeLabels[changeStatusIndex].toUpperCase() }}</div>
+            <!-- Заголовок зависит от сети (networkSignalIndex) -->
+            <div class="card-subtitle card-subtitle--bronze">{{ changeLabels[networkSignalIndex].toUpperCase() }}</div>
           </div>
         </div>
         <div class="card-body">
@@ -327,9 +346,10 @@ ${feedbackMessage.value}
             <input type="range" min="0" max="8" step="0.02" v-model="changeValue" class="slider slider--bronze" :style="sliderStyle(changeValue)"/>
           </div>
           <div class="slider-labels">
-            <span class="label-left" :class="{ 'active-text': changeStatusIndex === 0 }">Открыты</span>
-            <span class="label-center" :class="{ 'active-text': changeStatusIndex === 1 }">Действуют</span>
-            <span class="label-right" :class="{ 'active-text': changeStatusIndex === 2 }">Меняют</span>
+            <!-- Подсветка зависит от ползунка (userChangeIndex) -->
+            <span class="label-left" :class="{ 'active-text': userChangeIndex === 0 }">Открыты</span>
+            <span class="label-center" :class="{ 'active-text': userChangeIndex === 1 }">Действуют</span>
+            <span class="label-right" :class="{ 'active-text': userChangeIndex === 2 }">Меняют</span>
           </div>
         </div>
       </div>
@@ -425,8 +445,9 @@ ${feedbackMessage.value}
   background-color: #2a2a2e;
 }
 
+/* Поворот иконки только при фокусе (открытом меню) */
 .readiness-select:focus + .select-icon {
-  transform: rotate(180deg);
+  transform: translateY(-50%) rotate(180deg);
   color: #ffffff;
 }
 
@@ -440,7 +461,7 @@ ${feedbackMessage.value}
   position: absolute;
   right: 12px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%); /* Центрирование + базовый поворот 0 */
   pointer-events: none;
   color: #888;
   transition: transform 0.3s ease, color 0.3s ease;
@@ -665,7 +686,7 @@ ${feedbackMessage.value}
   .selectors-container {
     flex-direction: column;
     margin-bottom: 24px;
-    gap: 12px; /* Уменьшен gap */
+    gap: 8px; /* Убрал огромные отступы */
   }
 
   .selector-group {
