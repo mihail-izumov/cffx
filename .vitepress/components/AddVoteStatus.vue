@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
-// Значения ползунков (дробные для плавности)
+// Значения ползунков (0.00 – 8.00)
 const listeningValue = ref(3.5)
 const changeValue = ref(4.2)
 
-// Логика определения статуса (0, 1, 2) по значению ползунка
+// Логика статусов (0, 1, 2)
 const getStatusIndex = (val: number) => {
   const step = 8 / 3
   if (val < step) return 0
@@ -16,7 +16,7 @@ const getStatusIndex = (val: number) => {
 const listeningStatusIndex = computed(() => getStatusIndex(listeningValue.value))
 const changeStatusIndex = computed(() => getStatusIndex(changeValue.value))
 
-// Динамический градиент трека
+// Стиль градиента
 const sliderStyle = (value: number | string) => {
   const v = Number(value)
   const percentage = (v / 8) * 100
@@ -58,7 +58,6 @@ const sliderStyle = (value: number | string) => {
             <path d="M21 13A10 10 0 0 0 11 3" />
           </svg>
         </div>
-
         <div class="card-titles">
           <div class="card-title">Как слушают</div>
           <div class="card-subtitle card-subtitle--purple">ПОДКЛЮЧЕНЫ</div>
@@ -106,7 +105,6 @@ const sliderStyle = (value: number | string) => {
             />
           </svg>
         </div>
-
         <div class="card-titles">
           <div class="card-title">Как меняют</div>
           <div class="card-subtitle card-subtitle--bronze">ДЕЙСТВУЮТ</div>
@@ -153,7 +151,6 @@ const sliderStyle = (value: number | string) => {
   --thumb-size: 20px;
 
   position: relative;
-  /* Десктоп: basis отвечает за ширину */
   flex: 1 1 320px;
   max-width: 420px;
   padding: 16px 18px 18px;
@@ -206,7 +203,7 @@ const sliderStyle = (value: number | string) => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 5px; 
+  gap: 5px;
 }
 
 .card-title {
@@ -233,6 +230,9 @@ const sliderStyle = (value: number | string) => {
 }
 
 .card-body {
+  display: flex;
+  flex-direction: column;
+  /* По умолчанию (десктоп) ползунок сверху, подписи снизу */
   margin-top: 4px;
 }
 
@@ -303,7 +303,7 @@ const sliderStyle = (value: number | string) => {
   display: flex;
   justify-content: space-between;
   font-size: 11px;
-  margin-top: 10px;
+  margin-top: 10px; /* Отступ сверху для десктопа (когда под ползунком) */
   color: rgba(229, 231, 235, 0.7);
   position: relative;
   height: 16px;
@@ -331,6 +331,7 @@ const sliderStyle = (value: number | string) => {
   right: 0;
 }
 
+/* Адаптивность */
 @media (max-width: 768px) {
   .readiness-wrapper {
     flex-direction: column;
@@ -338,7 +339,6 @@ const sliderStyle = (value: number | string) => {
   }
   
   .card {
-    /* Сбрасываем flex-basis, чтобы высота определялась контентом */
     flex: 1 1 auto; 
     width: 100%;
     max-width: 100%;
@@ -346,7 +346,18 @@ const sliderStyle = (value: number | string) => {
   }
 
   .card-header {
-    margin-bottom: 14px;
+    margin-bottom: 12px;
+  }
+
+  /* Переворачиваем порядок в card-body: сначала подписи, потом ползунок */
+  .card-body {
+    flex-direction: column-reverse;
+  }
+
+  /* Меняем отступы: у подписей убираем margin-top, добавляем margin-bottom */
+  .slider-labels {
+    margin-top: 0;
+    margin-bottom: 8px;
   }
 }
 </style>
