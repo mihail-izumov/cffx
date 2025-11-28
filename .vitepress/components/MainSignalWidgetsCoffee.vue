@@ -8,49 +8,49 @@ const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка
 const cafes = {
   'Корж': {
     name: 'Корж',
-    ListeningStatus: '67 отзывов',
+    ListeningStatus: 'Подключены',
     ListeningBadgeText: 'Отвечают быстро',
-    SignalsStatus: '1 сигнал',
+    SignalsStatus: 'Действуют',
     SignalsBadgeText: 'Решение: 100%',
     isConnected: true
   },
   'MOSAIC': {
     name: 'MOSAIC',
-    ListeningStatus: '3 отзыва',
+    ListeningStatus: 'Подключены',
     ListeningBadgeText: 'Ответ: 42%',
-    SignalsStatus: '0 сигналов',
+    SignalsStatus: 'Действуют',
     SignalsBadgeText: 'Без решений',
     isConnected: false
   },
   'Skuratov': {
     name: 'Skuratov',
-    ListeningStatus: '3 отзыва',
+    ListeningStatus: 'Подключены',
     ListeningBadgeText: 'Ответ: 89%',
-    SignalsStatus: '0 сигналов',
+    SignalsStatus: 'Действуют',
     SignalsBadgeText: 'Без решений',
     isConnected: false
   },
   'Surf': {
     name: 'Surf',
-    ListeningStatus: '1 отзыв',
+    ListeningStatus: 'Подключены',
     ListeningBadgeText: 'Ответ: 100%',
-    SignalsStatus: '0 сигналов',
+    SignalsStatus: 'Действуют',
     SignalsBadgeText: 'Без решений',
     isConnected: false
   },
   'Белотурка': {
     name: 'Белотурка',
-    ListeningStatus: '8 отзывов',
+    ListeningStatus: 'Подключены',
     ListeningBadgeText: 'Ответ: 1%',
-    SignalsStatus: '0 сигналов',
+    SignalsStatus: 'Действуют',
     SignalsBadgeText: 'Без решений',
     isConnected: false
   },
   'Кэрри': {
     name: 'Кэрри',
-    ListeningStatus: '4 отзыва',
+    ListeningStatus: 'Подключены',
     ListeningBadgeText: 'Ответ: 97%',
-    SignalsStatus: '0 сигналов',
+    SignalsStatus: 'Действуют',
     SignalsBadgeText: 'Без решений',
     isConnected: false
   }
