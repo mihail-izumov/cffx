@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 import SignalT9Configurator from './SignalT9Configurator.vue'
+import AddVoteStatus from './AddVoteStatus.vue'
 
 const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка', 'Кэрри']
 
@@ -78,7 +79,7 @@ const todayStatus = computed(() => {
   
   const monthName = monthNames[today.getMonth()];
   
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a3e635" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="signal2-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/>ircle cx="12" cy="12" r="2"/></svg> ${day}.${month} → ${monthName} ${year}`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a3e635" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="signal2-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"></path><circle cx="12" cy="12" r="2"></circle></svg> ${day}.${month} → ${monthName} ${year}`;
 });
 
 const getCafeConfig = (cafeName) => {
@@ -108,7 +109,8 @@ const systemMetrics = ref({
 const showLeftGradient = ref(false)
 const showRightGradient = ref(false)
 const isMobile = ref(false)
-const isReviewModalOpen = ref(false)
+const isSignalModalOpen = ref(false)
+const isVoteModalOpen = ref(false)
 
 const showYandexTooltip = ref(false)
 const showSignalsTooltip = ref(false)
@@ -153,13 +155,23 @@ const widgetContentRef = ref(null)
 const switchersRef = ref(null)
 const badgeRef = ref(null)
 
-const openReviewModal = () => {
-  isReviewModalOpen.value = true
+const openSignalModal = () => {
+  isSignalModalOpen.value = true
   document.body.style.overflow = 'hidden'
 }
 
-const closeReviewModal = () => {
-  isReviewModalOpen.value = false
+const closeSignalModal = () => {
+  isSignalModalOpen.value = false
+  document.body.style.overflow = 'auto'
+}
+
+const openVoteModal = () => {
+  isVoteModalOpen.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+const closeVoteModal = () => {
+  isVoteModalOpen.value = false
   document.body.style.overflow = 'auto'
 }
 
@@ -186,452 +198,165 @@ const rotatingQuestions = [
   "\"Что дало ощущение уюта/суеты?\"",
   "\"Одно слово, которое осталось после визита?\""
 ]
-const currentQuestionIndex = ref(0)
-const showText = ref(true)
-let intervalId = null
-let metricsIntervalId = null
-
-const cycleText = () => {
-  showText.value = false
-  setTimeout(() => {
-    currentQuestionIndex.value = (currentQuestionIndex.value + 1) % rotatingQuestions.length
-    showText.value = true
-  }, 1000)
-}
-
-const showInfoModal = ref(false)
-const showGrowthModal = ref(false)
-
-const onKeydown = (e) => {
-  if (e.key === 'Escape') {
-    if (isReviewModalOpen.value) {
-      closeReviewModal()
-    } else {
-      showInfoModal.value = false
-      showGrowthModal.value = false
-    }
-  }
-}
-
-const openYandexModal = () => {
-  if (isMobile.value) return
-  showYandexTooltip.value = false
-  showGrowthModal.value = true
-}
-
-const openSignalsModal = () => {
-  if (isMobile.value) {
-    showInfoModal.value = true
-  } else {
-    showSignalsTooltip.value = false
-    showInfoModal.value = true
-  }
-}
-
-watch(selectedCafe, (newName) => {
-  const newConfig = getCafeConfig(newName)
-  systemMetrics.value.responseTime = newConfig.responseTime.base
-  systemMetrics.value.resolutionTime = newConfig.resolutionTime.base
-  systemMetrics.value.lastUpdate = Date.now()
-  fetchSystemStatus()
-})
 
 onMounted(() => {
-  intervalId = setInterval(cycleText, 7000)
-  metricsIntervalId = setInterval(fetchSystemStatus, 45000)
-  fetchSystemStatus()
-  window.addEventListener('keydown', onKeydown)
-  window.addEventListener('resize', checkMobile)
   checkMobile()
-  
-  nextTick(() => {
-    handleSwitcherScroll()
-  })
+  window.addEventListener('resize', checkMobile)
+  if (switchersRef.value) switchersRef.value.addEventListener('scroll', handleSwitcherScroll)
+  handleSwitcherScroll()
+  fetchSystemStatus()
+  const interval = setInterval(fetchSystemStatus, 1000)
+  return () => clearInterval(interval)
 })
 
 onUnmounted(() => {
-  clearInterval(intervalId)
-  clearInterval(metricsIntervalId)
-  window.removeEventListener('keydown', onKeydown)
   window.removeEventListener('resize', checkMobile)
+  if (switchersRef.value) switchersRef.value.removeEventListener('scroll', handleSwitcherScroll)
 })
+
 </script>
 
 <template>
   <div class="signal2-widget-content" ref="widgetContentRef">
-    <div class="signal2-cafe-switchers-container">
-      <div 
-        class="signal2-cafe-switchers" 
-        ref="switchersRef"
-        @scroll="handleSwitcherScroll"
-      >
-        <button
-          class="signal2-switcher"
-          :class="{ active: selectedCafe === 'Корж' }"
-          @click="selectedCafe = 'Корж'"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
-          </svg>
-          Корж
-        </button>
-        <button
-          class="signal2-switcher"
-          :class="{ active: selectedCafe === 'MOSAIC' }"
-          @click="selectedCafe = 'MOSAIC'"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg>
-          MOSAIC
-        </button>
-        <button
-          class="signal2-switcher"
-          :class="{ active: selectedCafe === 'Surf' }"
-          @click="selectedCafe = 'Surf'"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg>
-          Surf
-        </button>
-        <button
-          class="signal2-switcher"
-          :class="{ active: selectedCafe === 'Skuratov' }"
-          @click="selectedCafe = 'Skuratov'"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
-          Skuratov
-        </button>
-        <button
-          class="signal2-switcher"
-          :class="{ active: selectedCafe === 'Белотурка' }"
-          @click="selectedCafe = 'Белотурка'"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
-          Белотурка
-        </button>
-        <button
-          class="signal2-switcher"
-          :class="{ active: selectedCafe === 'Кэрри' }"
-          @click="selectedCafe = 'Кэрри'"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="signal2-switcher-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
-          Кэрри
+    <div class="signal2-switchers-container">
+      <div class="signal2-left-gradient" v-if="showLeftGradient"></div>
+      <div class="signal2-switchers" ref="switchersRef">
+        <button class="signal2-switcher" v-for="cafe in cafeNames" :key="cafe" :class="{ 'signal2-active-switcher': selectedCafe === cafe }" @click="selectedCafe = cafe">
+          {{ cafe }}
         </button>
       </div>
-      
-      <div 
-        class="signal2-switchers-gradient signal2-switchers-gradient-left"
-        :class="{ 'signal2-gradient-visible': showLeftGradient }"
-      ></div>
-      <div 
-        class="signal2-switchers-gradient signal2-switchers-gradient-right"
-        :class="{ 'signal2-gradient-visible': showRightGradient }"
-      ></div>
+      <div class="signal2-right-gradient" v-if="showRightGradient"></div>
     </div>
-
-    <div v-if="establishment">
-      <div class="signal2-main-card">
-        <div class="signal2-establishment-header">
-          <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
-          <div 
-            class="signal2-status-badge"
-            ref="badgeRef"
-          >
-            <span v-html="todayStatus"></span>
-          </div>
-        </div>
-
-        <div class="signal2-stats-grid">
-          <div 
-            class="signal2-stat-card signal2-graphite-stat"
-            @mouseenter="!isMobile ? showYandexTooltip = true : null"
-            @mouseleave="!isMobile ? showYandexTooltip = false : null"
-            @click="openYandexModal"
-          >
-            <div class="signal2-stat-content">
-              <div class="signal2-stat-left-group">
-                <div 
-                  class="signal2-stat-value" 
-                  :class="{ 'signal2-stat-value-desktop': !isMobile }"
-                >
-                  {{ establishment.ListeningStatus }}
-                </div>
-                <div v-if="!isMobile" class="signal2-stat-label">Как слушают</div>
-              </div>
-              <div class="signal2-stat-badge signal2-graphite-badge">
-                <span class="signal2-badge-emoji">💬</span>
-                <span class="signal2-badge-text">{{ establishment.ListeningBadgeText }}</span>
-              </div>
+    <div class="signal2-main-card">
+      <div class="signal2-header">
+        <h2 class="signal2-cafe-name">{{ establishment.name }}</h2>
+        <div class="signal2-status-badge" v-html="todayStatus"></div>
+      </div>
+      <div class="signal2-stats-grid">
+        <div class="signal2-stat-card signal2-graphite-stat" @mouseover="showYandexTooltip = true" @mouseleave="showYandexTooltip = false">
+          <div class="signal2-stat-content">
+            <div class="signal2-stat-left-group">
+              <div class="signal2-stat-label">КАК СЛУШАЮТ</div>
+              <div class="signal2-stat-value">{{ establishment.ListeningStatus }}</div>
             </div>
-          </div>
-
-          <div 
-            class="signal2-stat-card signal2-lime-stat" 
-            @mouseenter="!isMobile ? showSignalsTooltip = true : null"
-            @mouseleave="!isMobile ? showSignalsTooltip = false : null"
-            @click="openSignalsModal"
-          >
-            <div class="signal2-stat-content">
-              <div class="signal2-stat-left-group">
-                <div 
-                  class="signal2-stat-value"
-                  :class="{ 'signal2-stat-value-desktop': !isMobile }"
-                >
-                  {{ establishment.SignalsStatus }}
-                </div>
-                <div v-if="!isMobile" class="signal2-stat-label">Как меняют</div>
-              </div>
-              <div class="signal2-stat-badge signal2-lime-badge">
-                <span class="signal2-badge-emoji">⚡</span>
-                <span class="signal2-badge-text">{{ establishment.SignalsBadgeText }}</span>
-              </div>
+            <div class="signal2-stat-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
+              {{ establishment.ListeningBadgeText }}
             </div>
           </div>
         </div>
-
-        <div class="signal2-system-status-bar">
-          <span v-if="establishment.isConnected" class="signal2-status-label">🟢 На связи:</span>
-          <span v-else class="signal2-status-label-disconnected">🟡 Отправим менеджеру кофейни <br class="signal2-mobile-break">и постараемся помочь</span>
-          
-          <div v-if="establishment.isConnected" class="signal2-status-metrics">
-            <div class="signal2-status-metric">
-              <span class="signal2-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
-              <span class="signal2-metric-text">→ ответ</span>
+        <div class="signal2-stat-card signal2-lime-stat" @mouseover="showSignalsTooltip = true" @mouseleave="showSignalsTooltip = false">
+          <div class="signal2-stat-content">
+            <div class="signal2-stat-left-group">
+              <div class="signal2-stat-label">КАК МЕНЯЮТ</div>
+              <div class="signal2-stat-value">{{ establishment.SignalsStatus }}</div>
             </div>
-            <div class="signal2-status-separator">•</div>
-            <div class="signal2-status-metric">
-              <span class="signal2-metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
-              <span class="signal2-metric-text">→ решение</span>
+            <div class="signal2-stat-badge signal-100-badge" ref="badgeRef">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+              {{ establishment.SignalsBadgeText }}
             </div>
           </div>
         </div>
-
-        <div class="signal2-control-panel">
-          <div class="signal2-control-panel-header">
-            <button
-              v-if="!isMobile"
-              type="button"
-              class="signal2-info-link signal2-info-button"
-              aria-haspopup="dialog"
-              aria-controls="signal2-signal-dialog"
-              :aria-expanded="showInfoModal ? 'true' : 'false'"
-              @click="showInfoModal = true"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                ircle cx="12" cy="12" r="10" />
-                <path d="M12 16v-4" />
-                <path d="M12 8h.01" />
-              </svg>
-            </button>
-            <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
-            <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
-              <span :class="['signal2-rotating-text', { 'signal2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
-            </div>
+      </div>
+      <div class="signal2-system-status-bar" v-if="establishment.isConnected">
+        <span class="signal2-status-label">
+          <span class="signal2-status-indicator"></span>
+          На связи:
+        </span>
+        <div class="signal2-status-metrics">
+          <span class="signal2-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
+          <span class="signal2-metric-text">→ ответ</span>
+          <span class="signal2-metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
+          <span class="signal2-metric-text">→ решение</span>
+        </div>
+      </div>
+      <div class="signal2-system-status-bar" v-else>
+        <span class="signal2-status-label-disconnected">
+          Нет связи <span class="signal2-mobile-break"></span>с системой
+        </span>
+      </div>
+      <div class="signal2-question-section">
+        <div class="signal2-info-circle">i</div>
+        <span class="signal2-question-text">Поделитесь: {{ rotatingQuestions[0] }}</span>
+      </div>
+      <div class="signal2-button-container">
+        <button class="signal2-action-button signal2-graphite-button" @click="openVoteModal">
+          Оценить место
+          <div class="signal2-button-icon-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
           </div>
-
-          <div class="signal2-button-container">
-            <button @click="openYandexModal" class="signal2-action-button signal2-ticket-button">
-              Отзыв Яндекс/2ГИС
-              <div class="signal2-button-icon-container">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0"/>ircle cx="12" cy="8" r="2"/><path d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712"/></svg>
-              </div>
-            </button>
-            <button @click="openReviewModal" class="signal2-action-button signal2-review-button">
-              Отправить Сигнал
-              <div class="signal2-button-icon-container signal2-lime-icon-container">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2e05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-              </div>
-            </button>
+        </button>
+        <button class="signal2-action-button signal2-lime-button" @click="openSignalModal">
+          Отправить Сигнал
+          <div class="signal2-button-icon-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg>
           </div>
-        </div>
+        </button>
       </div>
     </div>
-
-    <div 
-      v-if="isReviewModalOpen" 
-      class="signal2-review-modal-overlay"
-      @click="closeReviewModal"
-    >
-      <div 
-        class="signal2-review-modal-content"
-        @click.stop
-      >
-        <div class="signal2-modal-scrollable-content">
-          <SignalT9Configurator />
-        </div>
-        
-        <div class="signal2-modal-close-section">
-          <button @click="closeReviewModal" class="signal2-modal-close-icon" aria-label="Закрыть">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 6 6 18"/>
-              <path d="m6 6 12 12"/>
-            </svg>
-          </button>
-          <button @click="closeReviewModal" class="signal2-modal-close-button">Закрыть и вернуться</button>
-        </div>
+  </div>
+  <div class="signal2-review-modal-overlay" v-if="isVoteModalOpen" @click="closeVoteModal">
+    <div class="signal2-review-modal-content" @click.stop>
+      <button class="signal2-modal-close-icon" @click="closeVoteModal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="signal2-modal-scrollable-content">
+        <AddVoteStatus />
+      </div>
+      <div class="signal2-modal-close-section">
+        <button class="signal2-modal-close-button" @click="closeVoteModal">Закрыть</button>
       </div>
     </div>
-
-    <div v-if="showInfoModal" class="signal2-modal-overlay" @click.self="showInfoModal = false">
-      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Сигналы">
-        <div class="signal2-modal-header">
-          <div class="signal2-modal-title">Сигналы</div>
-        </div>
-        <div class="signal2-modal-body">
-          Быстрая помощь и решение проблем за 24 часа. Ваш сигнал мгновенно поступает в работу управляющему кофейни, и вы получаете не просто ответ, а реальный результат.
-        </div>
-        <div class="signal2-modal-footer">
-          <button class="signal2-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
-        </div>
+  </div>
+  <div class="signal2-review-modal-overlay" v-if="isSignalModalOpen" @click="closeSignalModal">
+    <div class="signal2-review-modal-content" @click.stop>
+      <button class="signal2-modal-close-icon" @click="closeSignalModal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="signal2-modal-scrollable-content">
+        <SignalT9Configurator />
+      </div>
+      <div class="signal2-modal-close-section">
+        <button class="signal2-modal-close-button" @click="closeSignalModal">Закрыть</button>
       </div>
     </div>
-
-    <div v-if="showGrowthModal" class="signal2-modal-overlay" @click.self="showGrowthModal = false">
-      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Отзыв Яндекс/2ГИС">
-        <div class="signal2-modal-header">
-          <div class="signal2-modal-title">Отзыв Яндекс/2ГИС</div>
-        </div>
-        <div class="signal2-modal-body">
-          Это пустое модальное окно
-        </div>
-        <div class="signal2-modal-footer">
-          <button class="signal2-modal-ok" type="button" @click="showGrowthModal = false">Понятно</button>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
-<style scoped>
-.signal2-widget-content { padding: 32px 0; }
-.signal2-cafe-switchers-container { position: relative; margin-bottom: 32px; }
-.signal2-cafe-switchers { display: flex; gap: 12px; padding-bottom: 12px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: rgba(70, 70, 70, 0.8) transparent; }
-.signal2-cafe-switchers::-webkit-scrollbar { height: 2px; }
-.signal2-cafe-switchers::-webkit-scrollbar-track { background: transparent; }
-.signal2-cafe-switchers::-webkit-scrollbar-thumb { background-color: rgba(70, 70, 70, 0.8); border-radius: 10px; }
-.signal2-cafe-switchers::-webkit-scrollbar-thumb:hover { background-color: rgba(85, 85, 85, 0.9); }
-.signal2-switcher { border-radius: 50px; padding: 12px 20px; font-size: 15px; font-weight: 700; cursor: pointer; border: none; transition: all 0.3s ease; white-space: nowrap; display: flex; align-items: center; gap: 8px; min-width: fit-content; position: relative; overflow: hidden; background: rgba(70, 70, 70, 0.6); color: rgba(255, 255, 255, 0.9); }
-.signal2-switcher::before { content: ''; position: absolute; left: -200%; top: 0; width: 200%; height: 100%; background: linear-gradient(90deg, transparent 0%, transparent 30%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.08) 60%, transparent 70%, transparent 100%); transition: all 1.2s ease; }
-.signal2-switcher:hover::before { left: 100%; }
-.signal2-switcher.active { background: rgba(255, 255, 255, 0.95); color: #333; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-.signal2-switcher.active::before { display: none; }
-.signal2-switcher-icon { width: 16px; height: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-.signal2-switchers-gradient { position: absolute; top: 0; bottom: 12px; width: 60px; pointer-events: none; z-index: 2; opacity: 0; transition: opacity 0.6s ease; }
-.signal2-switchers-gradient.signal2-gradient-visible { opacity: 1; }
-.signal2-switchers-gradient-left { left: 0; background: linear-gradient( to right, #1b1b1f 0%, #1b1b1f 20%, rgba(27, 27, 31, 0.95) 40%, rgba(27, 27, 31, 0.8) 60%, rgba(27, 27, 31, 0.5) 80%, transparent 100% ); }
-.signal2-switchers-gradient-right { right: 0; background: linear-gradient( to left, #1b1b1f 0%, #1b1b1f 20%, rgba(27, 27, 31, 0.95) 40%, rgba(27, 27, 31, 0.8) 60%, rgba(27, 27, 31, 0.5) 80%, transparent 100% ); }
-:deep(.signal2-no-vitepress-style) { text-decoration: underline !important; text-decoration-color: rgba(255, 255, 255, 0.3) !important; border-bottom: none !important; background: none !important; }
-:deep(.signal2-no-vitepress-style:hover) { text-decoration: underline !important; text-decoration-color: rgba(255, 255, 255, 0.6) !important; border-bottom: none !important; background: none !important; }
-:deep(.signal2-no-vitepress-style:visited), :deep(.signal2-no-vitepress-style:focus), :deep(.signal2-no-vitepress-style:active) { text-decoration: underline !important; text-decoration-color: rgba(255, 255, 255, 0.3) !important; border-bottom: none !important; background: none !important; }
-:deep(.signal2-modal-link.signal2-no-vitepress-style) { text-decoration: underline !important; text-decoration-color: #a3e635 !important; border-bottom: none !important; background: none !important; }
-:deep(.signal2-modal-link.signal2-no-vitepress-style:hover) { text-decoration: underline !important; text-decoration-color: #c5f946 !important; border-bottom: none !important; background: none !important; }
-.signal2-review-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 8px; box-sizing: border-box; }
-.signal2-review-modal-content { background: #1e1e20; border-radius: 16px; width: 650px; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); box-sizing: border-box; color: white; display: flex; flex-direction: column; overflow: hidden; }
-.signal2-modal-scrollable-content { flex: 1; overflow-y: auto; padding: 20px 16px 16px 16px; }
-:deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(p), :deep(span), :deep(label), :deep(.title), :deep(.subtitle), :deep(.description), :deep(.example-text), :deep(.hint-text) { text-align: initial !important; padding-left: 0 !important; padding-right: 0 !important; }
-:deep(.container), :deep(.content) { padding-left: 0 !important; padding-right: 0 !important; margin-left: 0 !important; margin-right: 0 !important; }
-:deep(.form-section), :deep(.form-group), :deep(.section-wrapper) { margin-bottom: clamp(10px, 2vw, 10px) !important; }
-:deep(.card), :deep(.block), :deep(.content-block) { margin-bottom: clamp(8px, 1.6vw, 8px) !important; }
-.signal2-modal-close-section { flex-shrink: 0; padding: 20px 16px 24px 16px; background: #1e1e20; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: center; }
-.signal2-branches-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid var(--vp-c-border); }
-.signal2-branches-title-text { margin: 0; color: white; font-size: 26px; font-weight: 700; line-height: 1.2; text-align: center; flex-grow: 1; }
-.signal2-internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
-.signal2-back-btn:hover { background: var(--vp-c-bg-soft); border-color: var(--vp-c-text-2); color: white; }
-.signal2-main-card { background: var(--vp-c-bg-soft); border-radius: 20px; padding: 20px; }
-.signal2-establishment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.signal2-cafe-name { margin: 0; color: #ffffff; font-size: 24px; font-weight: 600; }
-.signal2-status-badge { background: rgba(0,0,0,0.2); backdrop-filter: blur(5px); color: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3); text-transform: uppercase; letter-spacing: 0.5px; position: relative; }
-.signal2-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.signal2-stat-card { position: relative; border-radius: 22px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background: var(--vp-c-bg-soft); cursor: pointer; }
-.signal2-stat-card:hover { transform: translateY(-8px); }
-.signal2-stat-card::before { content: ''; position: absolute; inset: 0; border-radius: 22px; padding: 2px; background: var(--signal2-border-gradient); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: filter 0.4s ease; z-index: 3; }
-.signal2-stat-card:hover::before { filter: brightness(2) saturate(1.5); }
-.signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
-.signal2-stat-card:hover .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-hover-color) 0%, transparent 70%); box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.4); }
-.signal2-stat-value { font-family: 'Inter', sans-serif; font-size: 3.2rem; font-weight: 600; line-height: 1; color: #fff; margin-bottom: 8px; text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
-
-/* НОВЫЙ КЛАСС: Уменьшенный шрифт для десктопа */
-.signal2-stat-value-desktop { font-size: 2.2rem !important; }
-
-.signal2-stat-card:hover .signal2-stat-value { transform: scale(1.15); text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); }
-.signal2-stat-label { color: #ffffff; font-weight: 700; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.signal2-stat-card:hover .signal2-stat-label { transform: scale(1.05); }
-.signal2-stat-badge { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.1); margin-top: auto; }
-.signal2-badge-emoji { font-size: 16px; line-height: 1; flex-shrink: 0; }
-.signal2-badge-text { font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.85); letter-spacing: 0.02em; white-space: nowrap; }
-.signal2-graphite-badge .signal2-badge-text { color: rgba(160, 174, 192, 1); }
-.signal2-orange-badge .signal2-badge-text { color: rgba(252, 211, 77, 1); }
-.signal2-lime-badge .signal2-badge-text { color: rgba(197, 249, 70, 1); }
-.signal2-system-status-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0 16px 0; padding: 8px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06); }
-.signal2-status-label { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); margin-right: 6px; flex-shrink: 0; }
-.signal2-status-label-disconnected { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); flex-shrink: 0; }
-.signal2-status-metrics { display: flex; align-items: center; gap: 8px; }
-.signal2-status-metric { display: flex; align-items: baseline; gap: 4px; }
-.signal2-metric-time { font-size: 14px; font-weight: 700; color: rgba(255, 255, 255, 0.9); font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace; min-width: 32px; text-align: right; transition: all 0.3s ease; }
-.signal2-metric-text { font-size: 14px; font-weight: 500; color: rgba(255, 255, 255, 0.6); }
-.signal2-status-separator { color: rgba(255, 255, 255, 0.3); font-size: 14px; margin: 0 4px; }
-.signal2-control-panel { margin-top: 24px; }
-.signal2-control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; }
-.signal2-info-link { color: rgba(255, 255, 255, 0.5); display: flex; align-items: center; transition: color 0.3s ease; flex-shrink: 0; }
-.signal2-info-link:hover, .signal2-info-link:focus { color: white; }
-
-/* ОБНОВЛЕНО: Стили для круглой инфо-кнопки */
-.signal2-info-button {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border-radius: 50% !important;
-  width: 32px !important;
-  height: 32px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  transition: all 0.3s ease !important;
-  flex-shrink: 0 !important;
-  cursor: pointer;
+<style>
+.signal2-widget-content { padding: 24px 0; }
+.signal2-main-card { padding: 16px; }
+.signal2-stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+.signal2-stat-card { 
+  border-radius: 16px; 
+  transition: transform 0.3s ease;
 }
-.signal2-info-button:hover {
-  background: rgba(255, 255, 255, 0.15) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  transform: scale(1.05) !important;
+.signal2-stat-card:hover { transform: translateY(-4px); }
+.signal2-stat-content { 
+  flex-direction: column;
+  padding: 12px 16px;
 }
+.signal2-stat-label { 
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+.signal2-stat-value { 
+  font-size: 2.4rem; 
+  font-weight: 600; 
+  margin: 0;
+}
+.signal2-stat-badge { margin-top: 8px; }
 
-.signal2-static-prompt { color: white; margin-right: 8px; flex-shrink: 0; }
-.signal2-rotating-text-container { flex-grow: 1; text-align: left; color: rgba(255, 255, 255, 0.7); min-height: 36px; display: flex; align-items: center; }
-.signal2-rotating-text-container.signal2-full-width { text-align: center; justify-content: center; }
-.signal2-rotating-text { transition: opacity 0.5s ease-in-out; line-height: 1.2; }
-.signal2-rotating-text:not(.signal2-show) { opacity: 0; }
-.signal2-button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
-.signal2-action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
-.signal2-ticket-button { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); }
-.signal2-ticket-button:hover { background: rgba(85, 85, 85, 0.9); color: white; transform: translateY(-2px); }
-.signal2-review-button { background: linear-gradient(135deg, #a3e635, #c5f946); color: #1a2e05; box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3); }
-.signal2-review-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(163, 230, 53, 0.4); }
-.signal2-button-icon-container { width: 32px; height: 32px; border-radius: 50%; background: rgba(50, 50, 50, 0.9); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
-.signal2-lime-icon-container { background: rgba(100, 150, 30, 0.4) !important; }
-.signal2-button-icon { transition: transform 0.3s ease; color: currentColor; }
-.signal2-review-button:hover .signal2-button-icon { transform: translateX(2px); }
-.signal2-ticket-button:hover .signal2-button-icon-container { background: rgba(35, 35, 35, 1); transform: scale(1.05); }
-.signal2-review-button:hover .signal2-lime-icon-container { background: rgba(120, 180, 40, 0.5) !important; transform: scale(1.05); }
-.signal2-branches-content { flex-grow: 1; }
-.signal2-branches-subtitle { margin: 0 0 16px 0; font-size: 16px; color: var(--vp-c-text-2); }
-.signal2-branches-list { padding: 0; }
-.signal2-branch-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px; margin-bottom: 12px; background: var(--vp-c-bg-soft); border: 2px solid var(--vp-c-border); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
-.signal2-branch-item:hover { background: var(--vp-c-bg-soft); border-color: rgba(255, 255, 255, 0.5); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); transform: translateX(4px); }
-.signal2-branch-info { display: flex; align-items: center; gap: 16px; flex: 1; overflow: hidden; }
-.signal2-branch-number { background: rgba(70, 70, 70, 0.8); color: rgba(255, 255, 255, 0.9); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; transition: all 0.3s ease; box-shadow: none; }
-.signal2-branch-item:hover .signal2-branch-number { background: rgba(85, 85, 85, 0.9); box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4); }
-.signal2-branch-address { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.signal2-branch-action { color: rgba(255, 255, 255, 0.5); transition: transform 0.3s ease; margin-left: 12px; }
-.signal2-branch-item:hover .signal2-branch-action { transform: translateX(4px); }
-.signal2-modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-.signal2-modal { background: var(--vp-c-bg, #111); color: var(--vp-c-text-1, #fff); border: 1px solid var(--vp-c-border, rgba(255, 255, 255, 0.12)); border-radius: 12px; width: min(520px, 96vw); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); padding: 32px; }
-.signal2-modal-header { display: flex; align-items: center; justify-content: flex-start; gap: 12px; }
-.signal2-modal-title { font-weight: 700; font-size: 16px; }
-.signal2-modal-body { margin-top: 16px; font-size: 14px; color: var(--vp-c-text-1); line-height: 1.5; }
-.signal2-modal-link { color: #a3e635; text-decoration: underline; text-decoration-color: #a3e635 !important; font-weight: 600; transition: all 0.3s ease; cursor: pointer; }
-.signal2-modal-link:hover { color: #c5f946; text-decoration: underline; text-decoration-color: #c5f946 !important; }
-.signal2-modal-footer { margin-top: 24px; display: flex; justify-content: flex-end; }
-.signal2-modal-ok { background: var(--vp-c-bg-mute, #222); border: 1px solid var(--vp-c-border); color: var(--vp-c-text-1); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 500; }
-.signal2-modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 .signal2-radio-icon { display: inline-block; vertical-align: middle; margin-right: 4px; }
 
 /* Базовые стили — крестик скрыт на десктопе, перенос скрыт */
@@ -672,9 +397,8 @@ onUnmounted(() => {
     gap: 12px;
   }
   
-  /* ОБНОВЛЕНО: Крупный шрифт для мобильных */
   .signal2-stat-value { 
-    font-size: 3.2rem !important; 
+    font-size: 2rem; 
     font-weight: 600; 
     margin: 0;
   }
@@ -682,7 +406,7 @@ onUnmounted(() => {
   .signal2-stat-label { 
     font-size: 14px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.9);
+    color: #888;
     text-transform: none;
     letter-spacing: 0.02em;
     margin-bottom: 0;
@@ -827,7 +551,7 @@ onUnmounted(() => {
 }
 
 .signal-100-badge .signal2-badge-text {
-  color: #000;
+  color: #fff;
   font-weight: 700;
 }
 
@@ -835,4 +559,3 @@ onUnmounted(() => {
   filter: brightness(0);
 }
 </style>
-
