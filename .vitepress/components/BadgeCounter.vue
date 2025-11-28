@@ -6,27 +6,15 @@ let timer = null
 
 const updateCount = () => {
   const now = new Date()
-  // Получаем текущее время в минутах с начала дня (0 - 1440)
   const minutesSinceMidnight = now.getHours() * 60 + now.getMinutes()
-  
-  // Логика:
-  // Весь день (1440 минут) делим на отрезки по 90 минут.
-  // 1440 / 90 = 16 интервалов (от 0 до 15).
-  // Нам нужно распределить значение от 0 до 47 по этим интервалам.
-  
   const intervalIndex = Math.floor(minutesSinceMidnight / 90)
-  const totalIntervals = 15 // Максимальный индекс интервала (16-й шаг - это конец дня)
-  
-  // Линейная интерполяция: (текущий_интервал / всего_интервалов) * макс_значение
-  // Используем Math.min, чтобы не превысить 47
+  const totalIntervals = 15
   const calculated = Math.round((intervalIndex / totalIntervals) * 47)
-  
   count.value = Math.min(47, Math.max(0, calculated))
 }
 
 onMounted(() => {
   updateCount()
-  // Проверяем время каждую минуту, чтобы обновить значение при смене 90-минутного интервала
   timer = setInterval(updateCount, 60 * 1000)
 })
 
@@ -38,7 +26,6 @@ onUnmounted(() => {
 <template>
   <div class="signal-badge">
     <div class="signal-content">
-      <!-- Ваша SVG иконка -->
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
         width="20" 
@@ -55,7 +42,7 @@ onUnmounted(() => {
       </svg>
       
       <span class="signal-text">
-        {{ count }} Сигналов отправлено сегодня
+        {{ count }} оценок и Сигналов отправлено сегодня
       </span>
     </div>
   </div>
@@ -63,36 +50,32 @@ onUnmounted(() => {
 
 <style scoped>
 .signal-badge {
-  /* Стили для имитации первого скриншота (badge container) */
   display: inline-flex;
   align-items: center;
-  background-color: #191B1A; /* Тёмный фон со скриншота 1 */
-  border-radius: 9999px;     /* Полное скругление (pill shape) */
-  padding: 10px 20px;        /* Отступы как на макете */
+  background-color: #191B1A;
+  border-radius: 9999px;
+  padding: 7px 18px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  border: 1px solid rgba(255, 255, 255, 0.05); /* Очень легкая обводка для контраста, если нужно */
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 30px;
 }
 
 .signal-content {
   display: flex;
   align-items: center;
-  gap: 10px; /* Расстояние между иконкой и текстом */
-  
-  /* Лаймовый цвет текста и иконки со скриншота 2 */
-  color: #D3FF5C; 
+  gap: 10px;
+  color: #D3FF5C;
 }
 
 .signal-text {
   font-size: 15px;
   font-weight: 500;
   line-height: 1.2;
-  /* Отключаем выделение текста для UI элементов */
   user-select: none;
 }
 
 .signal-icon {
-  /* Убеждаемся, что иконка наследует цвет */
   color: inherit;
   display: block;
 }
