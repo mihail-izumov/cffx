@@ -1,11 +1,26 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
-// Значения ползунков (0–8)
-const listeningValue = ref(3)
-const changeValue = ref(3)
+// Значения ползунков теперь дробные для плавности (0.00 – 8.00)
+const listeningValue = ref(3.5)
+const changeValue = ref(4.2)
 
-// Функция для динамического стиля градиента ползунка
+// Логика: определяем, к какому из 3 статусов (0, 1, 2) ближе всего ползунок
+// 0–2.66 = Левый статус
+// 2.66–5.33 = Средний статус
+// 5.33–8.00 = Правый статус
+const getStatusIndex = (val: number) => {
+  const step = 8 / 3
+  if (val < step) return 0 // Первый сегмент
+  if (val < step * 2) return 1 // Второй сегмент
+  return 2 // Третий сегмент
+}
+
+// Эти вычисляемые свойства можно использовать для отправки данных на бэкенд или логики
+const listeningStatusIndex = computed(() => getStatusIndex(listeningValue.value))
+const changeStatusIndex = computed(() => getStatusIndex(changeValue.value))
+
+// Функция для динамического стиля градиента (закраска трека)
 const sliderStyle = (value: number | string) => {
   const v = Number(value)
   const percentage = (v / 8) * 100
@@ -28,7 +43,6 @@ const sliderStyle = (value: number | string) => {
     <!-- Карточка 1: Фиолетовая -->
     <div class="card card--purple">
       <div class="card-header">
-        <!-- Иконка в круге -->
         <div class="icon-circle icon-circle--purple">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -49,30 +63,29 @@ const sliderStyle = (value: number | string) => {
           </svg>
         </div>
 
-        <!-- Заголовки -->
         <div class="card-titles">
           <div class="card-title">Как слушают</div>
           <div class="card-subtitle card-subtitle--purple">ПОДКЛЮЧЕНЫ</div>
         </div>
       </div>
 
-      <!-- Тело с ползунком -->
       <div class="card-body">
         <div class="slider-row">
+          <!-- step="0.02" убирает дискретность, движение становится плавным -->
           <input
             type="range"
             min="0"
             max="8"
-            step="1"
+            step="0.02"
             v-model="listeningValue"
             class="slider slider--purple"
             :style="sliderStyle(listeningValue)"
           />
         </div>
         <div class="slider-labels">
-          <span class="label-left">Подключены</span>
-          <span class="label-center">Слышат</span>
-          <span class="label-right">Отвечают</span>
+          <span class="label-left" :class="{ 'active-text': listeningStatusIndex === 0 }">Подключены</span>
+          <span class="label-center" :class="{ 'active-text': listeningStatusIndex === 1 }">Слышат</span>
+          <span class="label-right" :class="{ 'active-text': listeningStatusIndex === 2 }">Отвечают</span>
         </div>
       </div>
     </div>
@@ -80,7 +93,6 @@ const sliderStyle = (value: number | string) => {
     <!-- Карточка 2: Бронзовая -->
     <div class="card card--bronze">
       <div class="card-header">
-        <!-- Иконка в круге -->
         <div class="icon-circle icon-circle--bronze">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -100,30 +112,28 @@ const sliderStyle = (value: number | string) => {
           </svg>
         </div>
 
-        <!-- Заголовки -->
         <div class="card-titles">
           <div class="card-title">Как меняют</div>
           <div class="card-subtitle card-subtitle--bronze">ДЕЙСТВУЮТ</div>
         </div>
       </div>
 
-      <!-- Тело с ползунком -->
       <div class="card-body">
         <div class="slider-row">
           <input
             type="range"
             min="0"
             max="8"
-            step="1"
+            step="0.02"
             v-model="changeValue"
             class="slider slider--bronze"
             :style="sliderStyle(changeValue)"
           />
         </div>
         <div class="slider-labels">
-          <span class="label-left">Открыты</span>
-          <span class="label-center">Действуют</span>
-          <span class="label-right">Меняют</span>
+          <span class="label-left" :class="{ 'active-text': changeStatusIndex === 0 }">Открыты</span>
+          <span class="label-center" :class="{ 'active-text': changeStatusIndex === 1 }">Действуют</span>
+          <span class="label-right" :class="{ 'active-text': changeStatusIndex === 2 }">Меняют</span>
         </div>
       </div>
     </div>
@@ -132,7 +142,6 @@ const sliderStyle = (value: number | string) => {
 </template>
 
 <style scoped>
-/* Общий контейнер */
 .readiness-wrapper {
   display: flex;
   gap: 16px;
@@ -142,38 +151,34 @@ const sliderStyle = (value: number | string) => {
   width: 100%;
 }
 
-/* Карточка */
 .card {
   --card-radius: 16px;
   --track-bg: rgba(255, 255, 255, 0.18);
   --track-active: #ffffff;
-  --thumb-size: 20px; /* Размер ползунка */
+  --thumb-size: 20px;
 
   position: relative;
   flex: 1 1 320px;
   max-width: 420px;
-  padding: 16px 18px 18px;
+  padding: 16px 18px 18px; /* Десктопный отступ снизу */
   border-radius: var(--card-radius);
   color: #f9fafb;
   overflow: hidden;
   backdrop-filter: blur(18px);
 }
 
-/* Фон для фиолетовой карточки */
 .card--purple {
   background: radial-gradient(circle at 0 0, #7c3aed33, transparent 55%),
     radial-gradient(circle at 100% 100%, #22d3ee1f, transparent 60%),
     linear-gradient(135deg, #0b0b21, #15152f);
 }
 
-/* Фон для бронзовой карточки */
 .card--bronze {
   background: radial-gradient(circle at 0 0, #f59e0b33, transparent 55%),
     radial-gradient(circle at 100% 100%, #f973161f, transparent 60%),
     linear-gradient(135deg, #14120c, #262012);
 }
 
-/* Шапка карточки */
 .card-header {
   display: flex;
   align-items: center;
@@ -181,9 +186,7 @@ const sliderStyle = (value: number | string) => {
   margin-bottom: 18px;
 }
 
-/* Круг с иконкой */
 .icon-circle {
-  /* Увеличенный размер, чтобы соответствовать высоте текста */
   width: 42px;
   height: 42px;
   min-width: 42px;
@@ -191,11 +194,10 @@ const sliderStyle = (value: number | string) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff; /* Белая иконка */
-  backdrop-filter: blur(4px); /* Легкий блюр фона под кругом */
+  color: #ffffff;
+  backdrop-filter: blur(4px);
 }
 
-/* Цвет круга с прозрачностью */
 .icon-circle--purple {
   background: rgba(167, 139, 250, 0.20);
 }
@@ -204,13 +206,11 @@ const sliderStyle = (value: number | string) => {
   background: rgba(251, 191, 36, 0.20);
 }
 
-/* Блок заголовков */
 .card-titles {
   display: flex;
   flex-direction: column;
-  /* Минимальный отступ между строками */
-  gap: 2px; 
   justify-content: center;
+  gap: 5px; /* Увеличенное расстояние между заголовком и подзаголовком */
 }
 
 .card-title {
@@ -229,11 +229,11 @@ const sliderStyle = (value: number | string) => {
 }
 
 .card-subtitle--purple {
-  color: #c084fc; /* Ярко-фиолетовый */
+  color: #c084fc;
 }
 
 .card-subtitle--bronze {
-  color: #fbbf24; /* Ярко-золотой */
+  color: #fbbf24;
 }
 
 .card-body {
@@ -246,7 +246,7 @@ const sliderStyle = (value: number | string) => {
   width: 100%;
 }
 
-/* Стили ползунка (Range Input) */
+/* Стили ползунка */
 .slider {
   -webkit-appearance: none;
   appearance: none;
@@ -256,21 +256,16 @@ const sliderStyle = (value: number | string) => {
   outline: none;
   cursor: pointer;
   margin: 0;
-  /* Фон задается динамически через :style */
 }
 
-/* Webkit (Chrome, Safari, Edge) Thumb */
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: var(--thumb-size);
   height: var(--thumb-size);
   border-radius: 50%;
-  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.5); /* Тень для контраста */
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.5);
   cursor: pointer;
-  margin-top: 0px; /* Центрирование на треке */
-  
-  /* Двойной круг: белый снаружи, цветной внутри */
   background: radial-gradient(
     circle,
     var(--thumb-inner-color) 0%,
@@ -280,15 +275,12 @@ const sliderStyle = (value: number | string) => {
   );
 }
 
-/* Firefox Thumb */
 .slider::-moz-range-thumb {
   width: var(--thumb-size);
   height: var(--thumb-size);
   border-radius: 50%;
   border: 2px solid rgba(15, 23, 42, 0.2);
   cursor: pointer;
-  
-  /* Двойной круг */
   background: radial-gradient(
     circle,
     var(--thumb-inner-color) 0%,
@@ -304,7 +296,6 @@ const sliderStyle = (value: number | string) => {
   background: transparent;
 }
 
-/* Цвета внутренней точки ползунка */
 .slider--purple {
   --thumb-inner-color: #a855f7;
 }
@@ -313,7 +304,7 @@ const sliderStyle = (value: number | string) => {
   --thumb-inner-color: #fbbf24;
 }
 
-/* Подписи под ползунком */
+/* Подписи */
 .slider-labels {
   display: flex;
   justify-content: space-between;
@@ -321,7 +312,14 @@ const sliderStyle = (value: number | string) => {
   margin-top: 10px;
   color: rgba(229, 231, 235, 0.7);
   position: relative;
-  height: 16px; /* Фикс высоты чтобы элементы absolute не схлопывали контейнер если нужно */
+  height: 16px;
+}
+
+/* Опционально: подсвечивать активный текстовый статус */
+.active-text {
+  color: #ffffff;
+  font-weight: 600;
+  transition: color 0.2s ease;
 }
 
 .label-left {
@@ -350,6 +348,12 @@ const sliderStyle = (value: number | string) => {
   .card {
     width: 100%;
     max-width: 100%;
+    /* Уменьшенный отступ снизу на мобилке для компактности */
+    padding-bottom: 10px; 
+  }
+
+  .card-header {
+    margin-bottom: 14px; /* Чуть плотнее шапка на мобилке */
   }
 }
 </style>
