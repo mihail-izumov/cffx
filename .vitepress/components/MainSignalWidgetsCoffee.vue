@@ -10,7 +10,7 @@ const cafes = {
     name: 'Корж',
     ListeningStatus: 'Подключены',
     ListeningBadgeText: 'Отвечают быстро',
-    SignalsStatus: 'Открыты',
+    SignalsStatus: 'Быстро',
     SignalsBadgeText: 'Решение: 100%',
     isConnected: true
   },
@@ -302,7 +302,7 @@ onUnmounted(() => {
                @mouseleave="!isMobile ? showSignalsTooltip = false : null">
             <div class="signal2-stat-content">
               <div class="signal2-stat-left-group">
-                <div class="signal2-stat-label">КАК МЕНЯЮТ</div>
+                <div class="signal2-stat-label">КАК ДЕЙСТВУЮТ</div>
                 <div class="signal2-stat-value">{{ establishment.SignalsStatus }}</div>
               </div>
               <div class="signal2-stat-badge signal2-lime-badge signal-100-badge">
