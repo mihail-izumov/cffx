@@ -692,6 +692,22 @@ ${feedbackMessage.value}`
 
 /* Адаптивность */
 @media (max-width: 768px) {
+
+    .page-container {
+    padding: 0 16px;  /* ← ДОБАВИТЬ */
+  }
+
+  .readiness-title {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .selectors-container {
+    flex-direction: column;
+    margin-bottom: 8px;
+    gap: 8px;
+  }
+  
   .readiness-title {
     font-size: 24px;
     margin-bottom: 16px;
