@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 
 // --- ЛОГИКА СЛАЙДЕРОВ ---
 
@@ -86,12 +86,12 @@ const submitForm = async () => {
   formData.append('date', currentDate)
   formData.append('submitted', submittedTime)
   
-  // Пример данных (можно подставить реальные инпуты, если нужно)
+  // Пример данных
   formData.append('network', 'Signal Demo') 
   formData.append('address', 'Online')
   formData.append('name', 'Пользователь')
 
-  // Формируем тело отзыва из значений слайдеров
+  // Формируем тело отзыва
   const reviewText = `
     [Статистика Readiness]
     Как слушают: ${listeningLabels[listeningStatusIndex.value]} (${listeningValue.value.toFixed(2)}/8)
@@ -108,7 +108,7 @@ const submitForm = async () => {
 
     const result = await response.json()
     
-    if (result.status === 'success') { // Проверка может отличаться в зависимости от вашего скрипта, но обычно так
+    if (result.status === 'success') {
       isSuccess.value = true
       setTimeout(() => {
         isSuccess.value = false // Сброс через 3 сек
@@ -225,7 +225,7 @@ const submitForm = async () => {
       </div>
     </div>
 
-    <!-- Кнопка отправки -->
+    <!-- Кнопка отправки (не стики) -->
     <div class="submit-container">
       <button 
         class="submit-button" 
@@ -256,7 +256,7 @@ const submitForm = async () => {
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
-  margin-bottom: 80px; /* Отступ снизу, чтобы кнопка не перекрывала контент */
+  margin-bottom: 24px; /* Отступ от карточек до кнопки */
 }
 
 .card {
@@ -445,24 +445,17 @@ const submitForm = async () => {
   right: 0;
 }
 
-/* Кнопка отправки внизу */
+/* Кнопка отправки под блоками */
 .submit-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100%;
-  padding: 16px;
-  background: linear-gradient(to top, rgba(11, 11, 33, 1) 60%, transparent 100%);
+  max-width: 856px; /* 420 + 420 + 16 gap */
   display: flex;
   justify-content: center;
-  z-index: 100;
-  pointer-events: none; /* Чтобы градиент не перекрывал клики выше, но кнопка была активна */
+  margin-top: 0;
 }
 
 .submit-button {
-  pointer-events: auto;
   width: 100%;
-  max-width: 500px; /* Ограничение ширины на десктопе */
   background-color: #ffffff;
   color: #0f172a;
   font-size: 16px;
@@ -489,7 +482,7 @@ const submitForm = async () => {
   .readiness-wrapper {
     flex-direction: column;
     align-items: center;
-    margin-bottom: 100px; /* Больше места под кнопку на мобилке */
+    margin-bottom: 24px;
   }
   
   .card {
@@ -503,17 +496,24 @@ const submitForm = async () => {
     margin-bottom: 12px;
   }
 
-  /* Переворот порядка: подписи сверху, ползунок снизу */
+  /* Порядок: подписи сверху, ползунок снизу */
   .card-body {
     flex-direction: column-reverse;
-    /* ДОБАВЛЕН ВОЗДУХ МЕЖДУ СТАТУСАМИ И ПОЛЗУНКОМ */
     gap: 16px; 
   }
 
-  /* Сброс марджинов, так как теперь работает gap */
+  /* Сброс марджинов и увеличение шрифта */
   .slider-labels {
     margin-top: 0;
     margin-bottom: 0;
+    font-size: 13px; /* Увеличенный шрифт на мобильных */
+  }
+
+  /* Кнопка на мобилке */
+  .submit-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 0 20px 0; /* Небольшой отступ снизу страницы */
   }
 }
 </style>
