@@ -691,10 +691,28 @@ ${feedbackMessage.value}`
 
 /* Адаптивность */
 @media (max-width: 768px) {
+  /* Базовый padding страницы */
   .page-container {
     padding: 0 16px !important;
   }
 
+  /* Гашение глобального вертикального ритма VitePress */
+  :deep(.page-container > * + *) {
+    margin-top: 8px !important;
+  }
+
+  :deep(.page-container h1),
+  :deep(.page-container h2),
+  :deep(.page-container h3),
+  :deep(.page-container p),
+  :deep(.page-container label),
+  :deep(.page-container select),
+  :deep(.page-container div) {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Компактные интервалы для блоков */
   .readiness-title {
     font-size: 24px !important;
     margin-bottom: 16px !important;
@@ -713,7 +731,7 @@ ${feedbackMessage.value}`
   .readiness-wrapper {
     flex-direction: column !important;
     align-items: center !important;
-    margin-bottom: 16px !important;
+    margin: 8px 0 16px !important;
   }
   
   .card {
@@ -723,8 +741,8 @@ ${feedbackMessage.value}`
     padding-bottom: 12px !important;
   }
 
-  .card-header { 
-    margin-bottom: 12px !important; 
+  .card-header {
+    margin-bottom: 12px !important;
   }
 
   .card-body {
@@ -738,17 +756,18 @@ ${feedbackMessage.value}`
     font-size: 13px !important;
   }
 
-  .submit-container {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 0 20px 0 !important;
-  }
-  
   .message-box {
     font-size: 14px !important;
     padding: 0 8px !important;
     margin-bottom: 16px !important;
   }
+
+  .submit-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 0 20px 0 !important;
+  }
 }
 </style>
+
 
