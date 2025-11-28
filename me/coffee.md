@@ -1,3 +1,6 @@
 <MainSignalWidgetsCoffee />
 
+<br>
+<br>
+
 <AddVoteStatus />
