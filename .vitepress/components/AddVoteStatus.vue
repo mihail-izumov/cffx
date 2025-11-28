@@ -1,17 +1,73 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+
+// --- ДАННЫЕ ДЛЯ СЕЛЕКТОВ (из paste.txt) ---
+
+const cafes = {
+  'Skuratov Coffee': [
+    { address: 'ул. Куйбышева, 68/70' },
+    { address: 'Московское шоссе, 252' }
+  ],
+  'Корж': [
+    { address: 'ул. Дачная, 2к1' },
+    { address: 'ул. Ульяновская, 19' },
+    { address: 'ул. Ново-Садовая, 106г' },
+    { address: 'ул. Самарская, 270' },
+    { address: 'ул. Льва Толстого, 57' },
+    { address: 'пр. Масленникова, 19' }
+  ],
+  'Дринкит': [
+    { address: 'ул. Вилоновская, 84' },
+    { address: 'ул. Ленинградская, 29' }
+  ],
+  'Surf Coffee': [
+    { address: 'ул. Галактионовская, 40' },
+    { address: 'ул. Некрасовская, 57' }
+  ]
+}
+
+const fitness = {
+  'SuperSport': [
+    { address: 'Московское шоссе, 4к4' }
+  ],
+  'DDX Fitness': [
+    { address: 'Аврора Молл, ул. Аэродромная, 47А' },
+    { address: 'Космопорт, ул. Дыбенко, 30' },
+    { address: 'Летоут, Московское шоссе, 18-й км, 25А' }
+  ],
+  'Fizkultura': [
+    { address: 'Галактионовская 157' },
+    { address: 'Врубеля 15' }
+  ],
+  'Luxury Fitness': [
+    { address: 'ул. Солнечная, 30' }
+  ],
+  'Ботек-Велнес': [
+    { address: 'ул. Карла Маркса, 55' }
+  ]
+}
+
+// --- СОСТОЯНИЕ ФОРМЫ ---
+
+const selectedDirection = ref('')
+const selectedNetwork = ref('')
+// Локацию пока не используем в отправке по вашему ТЗ, но логику можно оставить
+const selectedBranch = ref('')
+
+// При смене направления сбрасываем сеть
+watch(selectedDirection, () => {
+  selectedNetwork.value = ''
+  selectedBranch.value = ''
+})
 
 // --- ЛОГИКА СЛАЙДЕРОВ ---
 
-// Значения ползунков (0.00 – 8.00)
 const listeningValue = ref(3.5)
 const changeValue = ref(4.2)
 
-// Текстовые статусы
 const listeningLabels = ['Подключены', 'Слышат', 'Отвечают']
 const changeLabels = ['Открыты', 'Действуют', 'Меняют']
 
-// Логика индексов статусов (0, 1, 2)
 const getStatusIndex = (val: number) => {
   const step = 8 / 3
   if (val < step) return 0
@@ -22,68 +78,56 @@ const getStatusIndex = (val: number) => {
 const listeningStatusIndex = computed(() => getStatusIndex(listeningValue.value))
 const changeStatusIndex = computed(() => getStatusIndex(changeValue.value))
 
-// --- ЛОГИКА ДИНАМИЧЕСКОГО ТЕКСТА ---
-
 const feedbackMessage = computed(() => {
   const l = listeningStatusIndex.value
   const c = changeStatusIndex.value
-
-  // Матрица текстов [слушают][меняют]
-  // Индексы: 0=Подключены/Открыты, 1=Слышат/Действуют, 2=Отвечают/Меняют
   const messages = [
-    // listening=0 (Подключены)
     [
-      'Место только выстраивает систему обратной связи — ваш Сигнал войдёт в основу того, как они будут работать с Клиентами.', // + Открыты (0)
-      'Они уже что‑то меняют внутри, хотя только подключились к Сигналам — ваш Сигнал поможет навести фокус на самом важном.', // + Действуют (1)
-      'Бизнес активно меняется, но ещё учится слышать Сигналы — ваш Сигнал может связать их внутренние планы с вашим опытом.'  // + Меняют (2)
+      'Место только выстраивает систему обратной связи — ваш Сигнал войдёт в основу того, как они будут работать с Клиентами.',
+      'Они уже что‑то меняют внутри, хотя только подключились к Сигналам — ваш Сигнал поможет навести фокус на самом важном.',
+      'Бизнес активно меняется, но ещё учится слышать Сигналы — ваш Сигнал может связать их внутренние планы с вашим опытом.'
     ],
-    // listening=1 (Слышат)
     [
-      'Место слышит Клиентов и открыто к доработкам — ваш Сигнал подскажет, что именно стоит поправить первым.', // + Открыты (0)
-      'Бизнес уже реагирует на обратную связь — следите, как он шаг за шагом становится удобнее лично для вас.', // + Действуют (1)
-      'Клиентов здесь реально слушают, и изменения уже идут — ваш Сигнал поможет направить эти изменения именно туда, где это важнее всего для вас.' // + Меняют (2)
+      'Место слышит Клиентов и открыто к доработкам — ваш Сигнал подскажет, что именно стоит поправить первым.',
+      'Бизнес уже реагирует на обратную связь — следите, как он шаг за шагом становится удобнее лично для вас.',
+      'Клиентов здесь реально слушают, и изменения уже идут — ваш Сигнал поможет направить эти изменения именно туда, где это важнее всего для вас.'
     ],
-    // listening=2 (Отвечают)
     [
-      'Команда отвечает на каждый Сигнал и только формирует систему изменений — ваш Сигнал может задать им ясный вектор.', // + Открыты (0)
-      'Ответы здесь превращаются в действия, но система ещё в росте — ваш Сигнал помогает закрепить этот уровень как новый стандарт.', // + Действуют (1)
-      'Здесь ваши Сигналы работают как рычаг — место быстро отвечает и действительно меняется вместе с вами.' // + Меняют (2)
+      'Команда отвечает на каждый Сигнал и только формирует систему изменений — ваш Сигнал может задать им ясный вектор.',
+      'Ответы здесь превращаются в действия, но система ещё в росте — ваш Сигнал помогает закрепить этот уровень как новый стандарт.',
+      'Здесь ваши Сигналы работают как рычаг — место быстро отвечает и действительно меняется вместе с вами.'
     ]
   ]
-
   return messages[l][c]
 })
 
-// Стиль градиента
 const sliderStyle = (value: number | string) => {
   const v = Number(value)
   const percentage = (v / 8) * 100
-
   return {
-    background: `linear-gradient(
-      to right,
-      var(--track-active) 0%,
-      var(--track-active) ${percentage}%,
-      var(--track-bg) ${percentage}%,
-      var(--track-bg) 100%
-    )`,
+    background: `linear-gradient(to right, var(--track-active) 0%, var(--track-active) ${percentage}%, var(--track-bg) ${percentage}%, var(--track-bg) 100%)`,
   }
 }
 
-// --- ЛОГИКА ОТПРАВКИ ФОРМЫ ---
+// --- ОТПРАВКА ---
 
 const isSubmitting = ref(false)
 const isSuccess = ref(false)
+
 const buttonText = computed(() => {
   if (isSuccess.value) return 'Отправлено!'
   if (isSubmitting.value) return 'Отправка...'
   return 'Отправить'
 })
 
+const isFormValid = computed(() => {
+  return selectedDirection.value && selectedNetwork.value
+})
+
 const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2di_IxXDyAZEfSxJ7wLvupwjb7_IAIlKVsXlyOL6WcDj/exec'
 
 const submitForm = async () => {
-  if (isSubmitting.value || isSuccess.value) return
+  if (!isFormValid.value || isSubmitting.value || isSuccess.value) return
 
   isSubmitting.value = true
 
@@ -97,13 +141,10 @@ const submitForm = async () => {
   const day = String(now.getDate()).padStart(2, '0')
   const month = String(now.getMonth() + 1).padStart(2, '0')
   const year = now.getFullYear()
-  const hours = String(now.getHours()).padStart(2, '0')
-  const minutes = String(now.getMinutes()).padStart(2, '0')
-  const seconds = String(now.getSeconds()).padStart(2, '0')
+  const ticketNumber = `TICKET-${Date.now().toString().slice(-6)}`
   
   const currentDate = `${year}-${month}-${day}`
-  const submittedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-  const ticketNumber = `TICKET-${Date.now().toString().slice(-6)}`
+  const submittedTime = `${year}-${month}-${day} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`
 
   const formData = new FormData()
   formData.append('referer', window.location.origin)
@@ -111,11 +152,18 @@ const submitForm = async () => {
   formData.append('ticketNumber', ticketNumber)
   formData.append('date', currentDate)
   formData.append('submitted', submittedTime)
-  formData.append('network', 'Signal Demo') 
-  formData.append('address', 'Online')
-  formData.append('name', 'Пользователь')
+  
+  // Данные из селектов
+  const directionLabel = selectedDirection.value === 'food' ? 'Рестораны и кофейни' : 'Фитнес-клубы и студии'
+  formData.append('network', selectedNetwork.value) // Сеть
+  formData.append('name', 'Аноним') // Заглушка
 
+  // Формируем review text с данными из 4х полей
   const reviewText = `
+    [Данные формы]
+    Направление: ${directionLabel}
+    Сеть: ${selectedNetwork.value}
+    
     [Статистика Readiness]
     Как слушают: ${listeningLabels[listeningStatusIndex.value]} (${listeningValue.value.toFixed(2)}/8)
     Как меняют: ${changeLabels[changeStatusIndex.value]} (${changeValue.value.toFixed(2)}/8)
@@ -126,24 +174,18 @@ const submitForm = async () => {
   formData.append('review', reviewText.trim())
 
   try {
-    const response = await fetch(API_ENDPOINT, {
-      method: 'POST',
-      body: formData
-    })
-
+    const response = await fetch(API_ENDPOINT, { method: 'POST', body: formData })
     const result = await response.json()
     
     if (result.status === 'success') {
       isSuccess.value = true
-      setTimeout(() => {
-        isSuccess.value = false
-      }, 3000)
+      setTimeout(() => { isSuccess.value = false }, 3000)
     } else {
-      throw new Error(result.message || 'Ошибка обработки данных')
+      throw new Error(result.message || 'Ошибка')
     }
   } catch (error) {
     console.error(error)
-    alert('Не удалось отправить данные. Попробуйте позже.')
+    alert('Ошибка при отправке')
   } finally {
     isSubmitting.value = false
   }
@@ -153,6 +195,34 @@ const submitForm = async () => {
 <template>
   <div class="page-container">
     
+    <!-- 1. Изолированный заголовок -->
+    <h2 class="isolated-title">Проверьте готовность к изменениям</h2>
+
+    <!-- 2. Блок с селектами -->
+    <div class="selects-container">
+      <select v-model="selectedDirection" class="signal-select">
+        <option disabled value="">Выбрать направление</option>
+        <option value="food">Рестораны и кофейни</option>
+        <option value="fitness">Фитнес-клубы и студии</option>
+      </select>
+
+      <select
+        v-model="selectedNetwork"
+        class="signal-select"
+        :disabled="!selectedDirection"
+      >
+        <option disabled value="">Выбрать сеть</option>
+        <option
+          v-for="(val, name) in (selectedDirection === 'fitness' ? fitness : cafes)"
+          :key="name"
+          :value="name"
+        >
+          {{ name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- 3. Карточки слайдеров -->
     <div class="readiness-wrapper">
       <!-- Карточка 1 -->
       <div class="card card--purple">
@@ -210,7 +280,7 @@ const submitForm = async () => {
     <div class="submit-container">
       <button 
         class="submit-button" 
-        :disabled="isSubmitting || isSuccess"
+        :disabled="!isFormValid || isSubmitting || isSuccess"
         @click="submitForm"
       >
         {{ buttonText }}
@@ -228,6 +298,52 @@ const submitForm = async () => {
   align-items: center;
 }
 
+/* Изолированный заголовок */
+.isolated-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 24px 0;
+  padding: 0;
+  border: none;
+  line-height: 1.3;
+  color: var(--vp-c-text-1, #2c3e50); /* Используем переменную темы или дефолт */
+}
+
+/* Контейнер селектов */
+.selects-container {
+  width: 100%;
+  max-width: 420px; /* Ширина как у карточки */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* Стили селекта (как в paste.txt) */
+.signal-select {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 1px solid rgba(60, 60, 67, 0.29); /* VitePress border color approx */
+  border-radius: 12px;
+  background-color: var(--vp-c-bg-soft, #f6f6f7);
+  color: var(--vp-c-text-1, #2c3e50);
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px top 50%;
+  background-size: 12px auto;
+  cursor: pointer;
+}
+
+.signal-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Сетка карточек */
 .readiness-wrapper {
   display: flex;
   gap: 16px;
@@ -238,6 +354,7 @@ const submitForm = async () => {
   margin-bottom: 24px;
 }
 
+/* Карточка */
 .card {
   --card-radius: 16px;
   --track-bg: rgba(255, 255, 255, 0.18);
@@ -390,11 +507,11 @@ const submitForm = async () => {
   width: 100%;
   max-width: 600px;
   text-align: center;
-  color: #e2e8f0;
+  color: var(--vp-c-text-2, #64748b); /* Цвет текста адаптивный */
   font-size: 15px;
   line-height: 1.5;
   margin-bottom: 24px;
-  min-height: 48px; /* Чтобы блок не скакал по высоте при смене текста */
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -411,8 +528,8 @@ const submitForm = async () => {
 
 .submit-button {
   width: 100%;
-  background-color: #ffffff;
-  color: #0f172a;
+  background-color: var(--vp-c-brand, #3451b2); /* Цвет бренда VitePress по умолчанию */
+  color: #ffffff;
   font-size: 16px;
   font-weight: 600;
   padding: 14px 0;
@@ -420,11 +537,11 @@ const submitForm = async () => {
   border-radius: 12px;
   cursor: pointer;
   transition: transform 0.1s ease, opacity 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .submit-button:active { transform: scale(0.98); }
-.submit-button:disabled { opacity: 0.7; cursor: not-allowed; }
+.submit-button:disabled { opacity: 0.7; cursor: not-allowed; background-color: #94a3b8; }
 
 /* Адаптивность */
 @media (max-width: 768px) {
@@ -461,8 +578,12 @@ const submitForm = async () => {
   }
   
   .message-box {
-    font-size: 14px; /* Чуть меньше на мобилке */
+    font-size: 14px;
     padding: 0 8px;
+  }
+
+  .isolated-title {
+    font-size: 20px; /* Чуть меньше на мобилке */
   }
 }
 </style>
