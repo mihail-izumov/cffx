@@ -127,6 +127,7 @@ import SignalFormSuperSport from '../components/SignalFormSuperSport.vue'
 import TestT9Fitness from '../components/TestT9Fitness.vue'
 import BannerFitGuide from '../components/BannerFitGuide.vue'
 import SignalConfigurator2New from '../components/SignalConfigurator2New.vue'
+import MainSignalWidgetsCoffee from '../components/MainSignalWidgetsCoffee.vue'
 
 export default {
   extends: DefaultTheme,
@@ -259,6 +260,8 @@ export default {
     app.component('TestT9Fitness', TestT9Fitness)
     app.component('BannerFitGuide', BannerFitGuide)
     app.component('SignalConfigurator2New', SignalConfigurator2New)
+    app.component('MainSignalWidgetsCoffee', MainSignalWidgetsCoffee)
+    
     
   },
 }
