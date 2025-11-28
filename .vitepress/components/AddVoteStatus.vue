@@ -459,7 +459,6 @@ ${feedbackMessage.value}`
   background-color: #2a2a2e;
 }
 
-/* Поворот иконки только при фокусе (открытом меню) */
 .readiness-select:focus + .select-icon {
   transform: translateY(-50%) rotate(180deg);
   color: #ffffff;
@@ -475,7 +474,7 @@ ${feedbackMessage.value}`
   position: absolute;
   right: 12px;
   top: 50%;
-  transform: translateY(-50%); /* Центрирование + базовый поворот 0 */
+  transform: translateY(-50%);
   pointer-events: none;
   color: #888;
   transition: transform 0.3s ease, color 0.3s ease;
@@ -693,60 +692,62 @@ ${feedbackMessage.value}`
 /* Адаптивность */
 @media (max-width: 768px) {
   .page-container {
-    padding: 0 16px; /* Исправляет дыры по краям */
+    padding: 0 16px !important;
   }
 
   .readiness-title {
-    font-size: 24px;
-    margin-bottom: 16px;
+    font-size: 24px !important;
+    margin-bottom: 16px !important;
   }
 
   .selectors-container {
-    flex-direction: column;
-    margin-bottom: 8px;
-    gap: 8px;
+    flex-direction: column !important;
+    margin-bottom: 8px !important;
+    gap: 8px !important;
   }
 
   .selector-group {
-    width: 100%;
+    width: 100% !important;
   }
 
   .readiness-wrapper {
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 16px;
+    flex-direction: column !important;
+    align-items: center !important;
+    margin-bottom: 16px !important;
   }
   
   .card {
-    flex: 1 1 auto; 
-    width: 100%;
-    max-width: 100%;
-    padding-bottom: 12px;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-bottom: 12px !important;
   }
 
-  .card-header { margin-bottom: 12px; }
+  .card-header { 
+    margin-bottom: 12px !important; 
+  }
 
   .card-body {
-    flex-direction: column-reverse;
-    gap: 16px; 
+    flex-direction: column-reverse !important;
+    gap: 16px !important;
   }
 
   .slider-labels {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 13px;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    font-size: 13px !important;
   }
 
   .submit-container {
-    width: 100%;
-    max-width: 100%;
-    padding: 0 0 20px 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 0 20px 0 !important;
   }
   
   .message-box {
-    font-size: 14px;
-    padding: 0 8px;
-    margin-bottom: 16px;
+    font-size: 14px !important;
+    padding: 0 8px !important;
+    margin-bottom: 16px !important;
   }
 }
 </style>
