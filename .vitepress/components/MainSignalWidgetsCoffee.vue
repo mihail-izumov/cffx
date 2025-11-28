@@ -78,7 +78,6 @@ const todayStatus = computed(() => {
   
   const monthName = monthNames[today.getMonth()];
   
-  /* ИСПРАВЛЕНО: Вернулись иконки радио и стрелки */
   return `<span class="signal2-radio-icon-wrapper"></span>${day}.${month} <span class="signal2-arrow-icon-wrapper"></span> ${monthName} ${year}`;
 });
 
@@ -306,8 +305,8 @@ onUnmounted(() => {
         </div>
 
         <div class="signal2-system-status-bar">
-          <span v-if="establishment.isConnected" class="signal2-status-label">🟢 На связи:</span>
-          <span v-else class="signal2-status-label-disconnected">🟡 Отправим менеджеру кофейни <br class="signal2-mobile-break">и постараемся помочь</span>
+          <span v-if="establishment.isConnected" class="signal2-status-label"><span class="signal2-emoji">🟢</span> На связи:</span>
+          <span v-else class="signal2-status-label-disconnected"><span class="signal2-emoji">🟡</span> Отправим менеджеру кофейни <br class="signal2-mobile-break">и постараемся помочь</span>
           
           <div v-if="establishment.isConnected" class="signal2-status-metrics">
             <div class="signal2-status-metric">
@@ -335,7 +334,6 @@ onUnmounted(() => {
             </button>
             <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
             <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
-              <!-- ИСПРАВЛЕНО: выравнивание по центру для мобилок -->
               <span :class="['signal2-rotating-text', { 'signal2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
             </div>
           </div>
@@ -435,6 +433,7 @@ onUnmounted(() => {
 :deep(.signal2-modal-link.signal2-no-vitepress-style) { text-decoration: underline !important; text-decoration-color: #a3e635 !important; border-bottom: none !important; background: none !important; }
 :deep(.signal2-modal-link.signal2-no-vitepress-style:hover) { text-decoration: underline !important; text-decoration-color: #c5f946 !important; border-bottom: none !important; background: none !important; }
 
+/* CSS Mask для иконок с возможностью изменения цвета */
 .signal2-radio-icon-wrapper {
   display: inline-block;
   width: 14px;
@@ -461,7 +460,7 @@ onUnmounted(() => {
   margin: 0 4px;
 }
 
-/* ИСПРАВЛЕНО: Инфо иконка уменьшена на 25% (с 24px до 18px) */
+/* ОБНОВЛЕНО: Инфо-иконка уменьшена на 25% (с 24px до 18px) */
 .signal2-info-icon-wrapper {
   display: inline-block;
   width: 18px;
@@ -482,6 +481,13 @@ onUnmounted(() => {
   mask: url(/settings.svg) no-repeat center;
   -webkit-mask-size: contain;
   mask-size: contain;
+}
+
+/* ОБНОВЛЕНО: Эмодзи уменьшены на 20% */
+.signal2-emoji {
+  display: inline-block;
+  font-size: 0.8em;
+  line-height: 1;
 }
 
 .signal2-review-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 8px; box-sizing: border-box; }
@@ -510,6 +516,7 @@ onUnmounted(() => {
 .signal2-stat-card { position: relative; border-radius: 22px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background: var(--vp-c-bg-soft); cursor: pointer; }
 .signal2-stat-card:hover { transform: translateY(-8px); }
 
+/* Обводка карточек */
 .signal2-stat-card::before { content: ''; position: absolute; inset: 0; border-radius: 22px; padding: 1.5px; background: var(--signal2-border-gradient); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: filter 0.4s ease; z-index: 3; }
 .signal2-stat-card:hover::before { filter: brightness(2) saturate(1.5); }
 .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
@@ -553,44 +560,26 @@ onUnmounted(() => {
 .signal2-orange-badge .signal2-badge-text { color: rgba(252, 211, 77, 1); }
 .signal2-lime-badge .signal2-badge-text { color: rgba(197, 249, 70, 1); }
 .signal2-system-status-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0 16px 0; padding: 8px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06); }
-
-/* ИСПРАВЛЕНО: Эмодзи в статус-баре уменьшены (scale 0.8) */
-.signal2-status-label { 
-  font-size: 14px; 
-  font-weight: 600; 
-  color: rgba(255, 255, 255, 0.7); 
-  margin-right: 6px; 
-  flex-shrink: 0; 
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.signal2-status-label::before {
-  content: '🟢';
-  transform: scale(0.8);
-}
-
-.signal2-status-label-disconnected { 
-  font-size: 14px; 
-  font-weight: 600; 
-  color: rgba(255, 255, 255, 0.7); 
-  flex-shrink: 0; 
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.signal2-status-label-disconnected::before {
-  content: '🟡';
-  transform: scale(0.8);
-}
-
+.signal2-status-label { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); margin-right: 6px; flex-shrink: 0; }
+.signal2-status-label-disconnected { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); flex-shrink: 0; }
 .signal2-status-metrics { display: flex; align-items: center; gap: 8px; }
 .signal2-status-metric { display: flex; align-items: baseline; gap: 4px; }
 .signal2-metric-time { font-size: 14px; font-weight: 700; color: rgba(255, 255, 255, 0.9); font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace; min-width: 32px; text-align: right; transition: all 0.3s ease; }
 .signal2-metric-text { font-size: 14px; font-weight: 500; color: rgba(255, 255, 255, 0.6); }
 .signal2-status-separator { color: rgba(255, 255, 255, 0.3); font-size: 14px; margin: 0 4px; }
 .signal2-control-panel { margin-top: 24px; }
-.signal2-control-panel-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 8px; font-size: 14px; font-weight: 600; }
+
+/* ОБНОВЛЕНО: Выравнивание "Поделитесь:" и вопросов по одной линии */
+.signal2-control-panel-header { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  margin-bottom: 12px; 
+  padding: 0 8px; 
+  font-size: 14px; 
+  font-weight: 600; 
+  line-height: 1.5;
+}
 .signal2-info-link { color: rgba(255, 255, 255, 0.5); display: flex; align-items: center; transition: color 0.3s ease; flex-shrink: 0; }
 .signal2-info-link:hover, .signal2-info-link:focus { color: white; }
 
@@ -611,10 +600,25 @@ onUnmounted(() => {
   transform: scale(1.1) !important; 
 }
 
-.signal2-static-prompt { color: white; margin-right: 8px; flex-shrink: 0; }
-.signal2-rotating-text-container { flex-grow: 1; text-align: left; color: rgba(255, 255, 255, 0.7); min-height: 36px; display: flex; align-items: center; }
+.signal2-static-prompt { 
+  color: white; 
+  margin-right: 8px; 
+  flex-shrink: 0; 
+  line-height: 1.5;
+}
+.signal2-rotating-text-container { 
+  flex-grow: 1; 
+  text-align: left; 
+  color: rgba(255, 255, 255, 0.7); 
+  min-height: 21px;
+  display: flex; 
+  align-items: center; 
+}
 .signal2-rotating-text-container.signal2-full-width { text-align: center; justify-content: center; }
-.signal2-rotating-text { transition: opacity 0.5s ease-in-out; line-height: 1.2; }
+.signal2-rotating-text { 
+  transition: opacity 0.5s ease-in-out; 
+  line-height: 1.5;
+}
 .signal2-rotating-text:not(.signal2-show) { opacity: 0; }
 .signal2-button-container { display: flex; gap: 6px; background-color: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 20px; padding: 6px; }
 .signal2-action-button { flex: 1; padding: 14px 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -673,18 +677,18 @@ onUnmounted(() => {
   .signal2-main-card { padding: 16px; padding-top: 20px; }
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 16px; }
   
+  /* ОБНОВЛЕНО: Высота карточек еще меньше (с 80px до 70px), скругление 12px, обводка тоже 12px */
   .signal2-stat-card { 
     display: flex;
     flex-direction: row;
     align-items: center;
     border-radius: 12px; 
     transition: none;
-    min-height: 60px; /* ИСПРАВЛЕНО: Уменьшили высоту карточек */
+    min-height: 70px;
   }
   
-  /* ИСПРАВЛЕНО: Исправление радиусов для ::before в мобильной версии, чтобы border совпадал */
   .signal2-stat-card::before {
-    border-radius: 12px; 
+    border-radius: 12px;
   }
   
   .signal2-stat-card:hover { transform: none; }
@@ -693,20 +697,19 @@ onUnmounted(() => {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
+    padding: 10px 14px;
     width: 100%; 
     background: none !important; 
     box-shadow: none !important;
     gap: 12px;
-    /* ИСПРАВЛЕНО: Радиус для контента тоже должен совпадать */
-    border-radius: 10px;
   }
   
+  /* ОБНОВЛЕНО: Увеличен gap между label и value */
   .signal2-stat-left-group { 
     display: flex; 
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px; /* ИСПРАВЛЕНО: Чуть больше отступ между label и value */
+    gap: 4px;
   }
   
   .signal2-stat-value { 
@@ -733,26 +736,25 @@ onUnmounted(() => {
   
   .signal2-button-container { flex-direction: column; gap: 8px; }
   .signal2-action-button:hover { transform: none; }
-  
-  /* ИСПРАВЛЕНО: Вопросы выровнены по центру */
-  .signal2-control-panel-header { justify-content: center; position: relative; }
-  .signal2-info-button { position: absolute; left: 0; }
-  .signal2-rotating-text-container { text-align: center; width: 100%; }
-  
-  /* ИСПРАВЛЕНО: Вопросы и "Поделитесь" на одном уровне */
-  .signal2-rotating-text { 
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 24px; /* Выровняли высоту строки с иконкой */
-  }
-  
   .signal2-system-status-bar { flex-direction: column; align-items: center; padding: 8px 12px; gap: 4px; margin: 16px 0 12px 0; }
-  .signal2-status-label, .signal2-status-label-disconnected { font-size: 14px; font-weight: 600; margin-right: 0; justify-content: center; }
+  .signal2-status-label, .signal2-status-label-disconnected { font-size: 14px; font-weight: 600; margin-right: 0; }
   .signal2-status-metrics { gap: 12px; justify-content: center; }
   .signal2-metric-time, .signal2-metric-text { font-size: 14px; }
   .signal2-button-icon-container { width: 28px; height: 28px; }
   .signal2-action-button { justify-content: center !important; }
   .signal2-button-icon-container { margin-left: 8px !important; margin-right: -8px; }
+  
+  /* ОБНОВЛЕНО: Все вопросы выровнены по центру в мобилке */
+  .signal2-rotating-text-container { 
+    text-align: center !important; 
+    justify-content: center !important; 
+    width: 100%;
+  }
+  
+  .signal2-rotating-text {
+    text-align: center;
+    width: 100%;
+  }
   
   .signal2-review-modal-overlay { padding: 4px; z-index: 9999; }
   .signal2-review-modal-content { width: 95vw; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); position: relative; }
