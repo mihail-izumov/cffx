@@ -78,6 +78,7 @@ const todayStatus = computed(() => {
   
   const monthName = monthNames[today.getMonth()];
   
+  /* ИСПРАВЛЕНО: Вернулись иконки радио и стрелки */
   return `<span class="signal2-radio-icon-wrapper"></span>${day}.${month} <span class="signal2-arrow-icon-wrapper"></span> ${monthName} ${year}`;
 });
 
@@ -285,7 +286,6 @@ onUnmounted(() => {
                 <div class="signal2-stat-label">КАК СЛУШАЮТ</div>
                 <div class="signal2-stat-value">{{ establishment.ListeningStatus }}</div>
               </div>
-              <!-- УБРАЛИ ИКОНКУ ИЗ БАБЛА -->
               <div class="signal2-stat-badge signal2-graphite-badge">
                 <span class="signal2-badge-text">{{ establishment.ListeningBadgeText }}</span>
               </div>
@@ -298,7 +298,6 @@ onUnmounted(() => {
                 <div class="signal2-stat-label">КАК МЕНЯЮТ</div>
                 <div class="signal2-stat-value">{{ establishment.SignalsStatus }}</div>
               </div>
-              <!-- УБРАЛИ ИКОНКУ ИЗ БАБЛА -->
               <div class="signal2-stat-badge signal2-lime-badge signal-100-badge">
                 <span class="signal2-badge-text">{{ establishment.SignalsBadgeText }}</span>
               </div>
@@ -336,6 +335,7 @@ onUnmounted(() => {
             </button>
             <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
             <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
+              <!-- ИСПРАВЛЕНО: выравнивание по центру для мобилок -->
               <span :class="['signal2-rotating-text', { 'signal2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
             </div>
           </div>
@@ -435,7 +435,6 @@ onUnmounted(() => {
 :deep(.signal2-modal-link.signal2-no-vitepress-style) { text-decoration: underline !important; text-decoration-color: #a3e635 !important; border-bottom: none !important; background: none !important; }
 :deep(.signal2-modal-link.signal2-no-vitepress-style:hover) { text-decoration: underline !important; text-decoration-color: #c5f946 !important; border-bottom: none !important; background: none !important; }
 
-/* CSS Mask для иконок с возможностью изменения цвета */
 .signal2-radio-icon-wrapper {
   display: inline-block;
   width: 14px;
@@ -462,10 +461,11 @@ onUnmounted(() => {
   margin: 0 4px;
 }
 
+/* ИСПРАВЛЕНО: Инфо иконка уменьшена на 25% (с 24px до 18px) */
 .signal2-info-icon-wrapper {
   display: inline-block;
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   background-color: currentColor;
   -webkit-mask: url(/info.svg) no-repeat center;
   mask: url(/info.svg) no-repeat center;
@@ -510,7 +510,6 @@ onUnmounted(() => {
 .signal2-stat-card { position: relative; border-radius: 22px; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background: var(--vp-c-bg-soft); cursor: pointer; }
 .signal2-stat-card:hover { transform: translateY(-8px); }
 
-/* ОБНОВЛЕНО: Уменьшена толщина обводки с 2px до 1.5px */
 .signal2-stat-card::before { content: ''; position: absolute; inset: 0; border-radius: 22px; padding: 1.5px; background: var(--signal2-border-gradient); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: filter 0.4s ease; z-index: 3; }
 .signal2-stat-card:hover::before { filter: brightness(2) saturate(1.5); }
 .signal2-stat-content { background: radial-gradient(circle at 50% 0%, var(--signal2-glow-color) 0%, transparent 70%); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; text-align: center; box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3); transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; z-index: 2; }
@@ -554,8 +553,37 @@ onUnmounted(() => {
 .signal2-orange-badge .signal2-badge-text { color: rgba(252, 211, 77, 1); }
 .signal2-lime-badge .signal2-badge-text { color: rgba(197, 249, 70, 1); }
 .signal2-system-status-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0 16px 0; padding: 8px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06); }
-.signal2-status-label { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); margin-right: 6px; flex-shrink: 0; }
-.signal2-status-label-disconnected { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.7); flex-shrink: 0; }
+
+/* ИСПРАВЛЕНО: Эмодзи в статус-баре уменьшены (scale 0.8) */
+.signal2-status-label { 
+  font-size: 14px; 
+  font-weight: 600; 
+  color: rgba(255, 255, 255, 0.7); 
+  margin-right: 6px; 
+  flex-shrink: 0; 
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.signal2-status-label::before {
+  content: '🟢';
+  transform: scale(0.8);
+}
+
+.signal2-status-label-disconnected { 
+  font-size: 14px; 
+  font-weight: 600; 
+  color: rgba(255, 255, 255, 0.7); 
+  flex-shrink: 0; 
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.signal2-status-label-disconnected::before {
+  content: '🟡';
+  transform: scale(0.8);
+}
+
 .signal2-status-metrics { display: flex; align-items: center; gap: 8px; }
 .signal2-status-metric { display: flex; align-items: baseline; gap: 4px; }
 .signal2-metric-time { font-size: 14px; font-weight: 700; color: rgba(255, 255, 255, 0.9); font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace; min-width: 32px; text-align: right; transition: all 0.3s ease; }
@@ -640,20 +668,23 @@ onUnmounted(() => {
   .signal2-switcher::before, 
   .signal2-switcher:hover::before { display: none; }
   
-  /* ОБНОВЛЕНО: Увеличен отступ сверху над заголовком */
   .signal2-widget-content { padding: 48px 0 24px 0; }
   
   .signal2-main-card { padding: 16px; padding-top: 20px; }
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 16px; }
   
-  /* ОБНОВЛЕНО: Уменьшена высота и скругление как у блока "на связи" (12px) */
   .signal2-stat-card { 
     display: flex;
     flex-direction: row;
     align-items: center;
     border-radius: 12px; 
     transition: none;
-    min-height: 80px;
+    min-height: 60px; /* ИСПРАВЛЕНО: Уменьшили высоту карточек */
+  }
+  
+  /* ИСПРАВЛЕНО: Исправление радиусов для ::before в мобильной версии, чтобы border совпадал */
+  .signal2-stat-card::before {
+    border-radius: 12px; 
   }
   
   .signal2-stat-card:hover { transform: none; }
@@ -667,13 +698,15 @@ onUnmounted(() => {
     background: none !important; 
     box-shadow: none !important;
     gap: 12px;
+    /* ИСПРАВЛЕНО: Радиус для контента тоже должен совпадать */
+    border-radius: 10px;
   }
   
   .signal2-stat-left-group { 
     display: flex; 
     flex-direction: column;
     align-items: flex-start;
-    gap: 2px;
+    gap: 6px; /* ИСПРАВЛЕНО: Чуть больше отступ между label и value */
   }
   
   .signal2-stat-value { 
@@ -700,8 +733,21 @@ onUnmounted(() => {
   
   .signal2-button-container { flex-direction: column; gap: 8px; }
   .signal2-action-button:hover { transform: none; }
+  
+  /* ИСПРАВЛЕНО: Вопросы выровнены по центру */
+  .signal2-control-panel-header { justify-content: center; position: relative; }
+  .signal2-info-button { position: absolute; left: 0; }
+  .signal2-rotating-text-container { text-align: center; width: 100%; }
+  
+  /* ИСПРАВЛЕНО: Вопросы и "Поделитесь" на одном уровне */
+  .signal2-rotating-text { 
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 24px; /* Выровняли высоту строки с иконкой */
+  }
+  
   .signal2-system-status-bar { flex-direction: column; align-items: center; padding: 8px 12px; gap: 4px; margin: 16px 0 12px 0; }
-  .signal2-status-label, .signal2-status-label-disconnected { font-size: 14px; font-weight: 600; margin-right: 0; }
+  .signal2-status-label, .signal2-status-label-disconnected { font-size: 14px; font-weight: 600; margin-right: 0; justify-content: center; }
   .signal2-status-metrics { gap: 12px; justify-content: center; }
   .signal2-metric-time, .signal2-metric-text { font-size: 14px; }
   .signal2-button-icon-container { width: 28px; height: 28px; }
