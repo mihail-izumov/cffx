@@ -123,8 +123,8 @@ const fetchSystemStatus = async () => {
     const hourOfDay = new Date().getHours()
     const isBusinessHours = hourOfDay >= 9 && hourOfDay <= 21
     const loadFactor = isBusinessHours ? 0.8 : 1.2
-    const responseVariation = (Math.random() - 0.5) * 0.15 * loadFactor
-    const resolutionVariation = (Math.random() - 0.5) * 1.2 * loadFactor
+    const responseVariation = (Math.random() - 0.5) * 0.1 * loadFactor
+    const resolutionVariation = (Math.random() - 0.5) * 0.8 * loadFactor
 
     systemMetrics.value.responseTime = Math.max(
       currentConfig.responseTime.min,
@@ -205,7 +205,7 @@ onMounted(() => {
   if (switchersRef.value) switchersRef.value.addEventListener('scroll', handleSwitcherScroll)
   handleSwitcherScroll()
   fetchSystemStatus()
-  const interval = setInterval(fetchSystemStatus, 1000)
+  const interval = setInterval(fetchSystemStatus, 3000)
   return () => clearInterval(interval)
 })
 
@@ -235,10 +235,8 @@ onUnmounted(() => {
       <div class="signal2-stats-grid">
         <div class="signal2-stat-card signal2-graphite-stat" @mouseover="showYandexTooltip = true" @mouseleave="showYandexTooltip = false">
           <div class="signal2-stat-content">
-            <div class="signal2-stat-left-group">
-              <div class="signal2-stat-label">КАК СЛУШАЮТ</div>
-              <div class="signal2-stat-value">{{ establishment.ListeningStatus }}</div>
-            </div>
+            <div class="signal2-stat-value">{{ establishment.ListeningStatus }}</div>
+            <div class="signal2-stat-label">КАК СЛУШАЮТ</div>
             <div class="signal2-stat-badge">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg>
               {{ establishment.ListeningBadgeText }}
@@ -247,10 +245,8 @@ onUnmounted(() => {
         </div>
         <div class="signal2-stat-card signal2-lime-stat" @mouseover="showSignalsTooltip = true" @mouseleave="showSignalsTooltip = false">
           <div class="signal2-stat-content">
-            <div class="signal2-stat-left-group">
-              <div class="signal2-stat-label">КАК МЕНЯЮТ</div>
-              <div class="signal2-stat-value">{{ establishment.SignalsStatus }}</div>
-            </div>
+            <div class="signal2-stat-value">{{ establishment.SignalsStatus }}</div>
+            <div class="signal2-stat-label">КАК МЕНЯЮТ</div>
             <div class="signal2-stat-badge signal-100-badge" ref="badgeRef">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
               {{ establishment.SignalsBadgeText }}
@@ -307,7 +303,7 @@ onUnmounted(() => {
         <AddVoteStatus />
       </div>
       <div class="signal2-modal-close-section">
-        <button class="signal2-modal-close-button" @click="closeVoteModal">Закрыть</button>
+        <button class="signal2-modal-close-button" @click="closeVoteModal">Закрыть и вернуться</button>
       </div>
     </div>
   </div>
@@ -323,7 +319,7 @@ onUnmounted(() => {
         <SignalT9Configurator />
       </div>
       <div class="signal2-modal-close-section">
-        <button class="signal2-modal-close-button" @click="closeSignalModal">Закрыть</button>
+        <button class="signal2-modal-close-button" @click="closeSignalModal">Закрыть и вернуться</button>
       </div>
     </div>
   </div>
@@ -348,7 +344,7 @@ onUnmounted(() => {
   color: #888;
   text-transform: none;
   letter-spacing: 0.02em;
-  margin-bottom: 4px;
+  margin-top: 4px;
 }
 .signal2-stat-value { 
   font-size: 2.4rem; 
@@ -358,6 +354,20 @@ onUnmounted(() => {
 .signal2-stat-badge { margin-top: 8px; }
 
 .signal2-radio-icon { display: inline-block; vertical-align: middle; margin-right: 4px; }
+
+.signal2-info-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #333;
+  color: #888;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 8px;
+}
 
 /* Базовые стили — крестик скрыт на десктопе, перенос скрыт */
 .signal2-mobile-break { display: none; }
@@ -372,9 +382,6 @@ onUnmounted(() => {
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 12px; }
   
   .signal2-stat-card { 
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     border-radius: 16px; 
     transition: none; 
   }
@@ -382,20 +389,13 @@ onUnmounted(() => {
   .signal2-stat-card:hover { transform: none; }
   
   .signal2-stat-content { 
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     padding: 12px 16px;
     width: 100%; 
-    background: none !important; 
-    box-shadow: none !important;
   }
   
-  .signal2-stat-left-group { 
-    display: flex; 
-    align-items: center; 
-    gap: 12px;
-  }
+  .signal2-stat-label { display: none; } /* Hide labels in mobile to match screenshot */
   
   .signal2-stat-value { 
     font-size: 2rem; 
@@ -403,18 +403,9 @@ onUnmounted(() => {
     margin: 0;
   }
   
-  .signal2-stat-label { 
-    font-size: 14px;
-    font-weight: 600;
-    color: #888;
-    text-transform: none;
-    letter-spacing: 0.02em;
-    margin-bottom: 0;
-  }
-  
   .signal2-stat-badge { 
     flex-shrink: 0;
-    margin-top: 0;
+    margin-top: 8px;
   }
   
   .signal2-button-container { flex-direction: column; gap: 8px; }
