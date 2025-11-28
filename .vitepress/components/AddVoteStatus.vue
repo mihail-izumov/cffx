@@ -694,13 +694,13 @@ ${feedbackMessage.value}`
 @media (max-width: 768px) {
   .readiness-title {
     font-size: 24px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
 
   .selectors-container {
     flex-direction: column;
-    margin-bottom: 24px;
-    gap: 8px; /* Убрал огромные отступы */
+    margin-bottom: 8px;
+    gap: 8px;
   }
 
   .selector-group {
@@ -710,14 +710,14 @@ ${feedbackMessage.value}`
   .readiness-wrapper {
     flex-direction: column;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
   
   .card {
     flex: 1 1 auto; 
     width: 100%;
     max-width: 100%;
-    padding-bottom: 16px;
+    padding-bottom: 12px;
   }
 
   .card-header { margin-bottom: 12px; }
@@ -742,6 +742,8 @@ ${feedbackMessage.value}`
   .message-box {
     font-size: 14px;
     padding: 0 8px;
+    margin-bottom: 16px;
   }
 }
+
 </style>
