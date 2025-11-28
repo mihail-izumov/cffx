@@ -4,129 +4,57 @@ import SignalT9Configurator from './SignalT9Configurator.vue'
 
 const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка', 'Кэрри']
 
-// Данные о кофейнях с полными адресами
+// Данные о кофейнях
 const cafes = {
   'Корж': {
     name: 'Корж',
-    yandex2gis: 67,
-    yandex2gisPercent: 94,
-    smartReviews: 0,
-    smartReviewsPercent: 0,
-    signals: '1',
-    signalsPercent: 100,
-    isConnected: true,
-    branches: [
-      { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/reviews' },
-      { address: 'Революционная, 101В', gisUrl: 'https://2gis.ru/samara/firm/70000001079219341/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/53721116858//reviews' },
-      { address: '9 просека 5-я малая линия, 3б', gisUrl: 'https://2gis.ru/samara/firm/70000001074923618/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/152008652145/reviews' },
-      { address: 'Льва Толстого, 30Б', gisUrl: 'https://2gis.ru/samara/firm/70000001052357057/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/39953057475/reviews' },
-      { address: 'Самарская, 270', gisUrl: 'https://2gis.ru/samara/firm/70000001043471927/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/58375020263/reviews' },
-      { address: 'Дачная, 2к2', gisUrl: 'https://2gis.ru/samara/firm/70000001045453045/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/144063441903/reviews' },
-      { address: 'Ульяновская, 19', gisUrl: 'https://2gis.ru/samara/firm/70000001033411071/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/102178077269/reviews' },
-      { address: 'Ново-Садовая, 106б', gisUrl: 'https://2gis.ru/samara/firm/70000001027391770/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/95875749858/reviews' }
-    ]
+    ListeningStatus: '67 отзывов',
+    ListeningBadgeText: 'Отвечают быстро',
+    SignalsStatus: '1 сигнал',
+    SignalsBadgeText: 'Решение: 100%',
+    isConnected: true
   },
   'MOSAIC': {
     name: 'MOSAIC',
-    yandex2gis: 3,
-    yandex2gisPercent: 42,
-    smartReviews: 0,
-    smartReviewsPercent: 0,
-    signals: '0',
-    signalsPercent: 0,
-    isConnected: false,
-    branches: [
-      { address: 'Бывшая гостиница "Националь" ', gisUrl: 'https://2gis.ru/samara/firm/70000001077330664/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/151180373582/reviews/' },
-      { address: 'Волжский просп., 50', gisUrl: 'https://2gis.ru/samara/firm/70000001074565560/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/241776381665/reviews/' },
-      { address: 'Речной вокзал', gisUrl: 'https://2gis.ru/samara/firm/70000001074565559/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/26968768492/reviews/' },
-      { address: 'Максима Горького, 82', gisUrl: 'https://2gis.ru/samara/firm/70000001065476074/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/130707944684/reviews/' },
-      { address: 'Волжский просп., 40', gisUrl: 'https://2gis.ru/samara/firm/70000001052939655/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/26968768492/reviews/' },
-      { address: 'ЖК Ботанический', gisUrl: 'https://2gis.ru/samara/firm/70000001035366800/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/186171163289/reviews/' },
-      { address: 'ТЦ Аквариум ', gisUrl: 'https://2gis.ru/samara/firm/70000001034344804/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/40452073764/reviews/' },
-      { address: 'ТЦ Аврора', gisUrl: 'https://2gis.ru/samara/firm/70000001046644341/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/121248491329/reviews/' },
-      { address: 'ТЦ Самолет', gisUrl: 'https://2gis.ru/samara/firm/70000001027292047/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/241817444822/reviews/' },
-      { address: 'Волгина, 127А', gisUrl: 'https://2gis.ru/samara/firm/70000001026465823/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/189131333340/reviews/' },
-      { address: 'БЦ ЗИМ', gisUrl: 'https://2gis.ru/samara/firm/70000001027292024/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/131060566066/reviews/' },
-      { address: '5-я просека', gisUrl: 'https://2gis.ru/samara/firm/70000001037266527/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/59004397239/reviews/' },
-      { address: 'Красноармейский спуск', gisUrl: 'https://2gis.ru/samara/firm/70000001074565722/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/87795478653/reviews/' },
-      { address: 'Напротив ЦСКА', gisUrl: 'https://2gis.ru/samara/firm/70000001088760179/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/mosaic_coffee_tea/62781566656/reviews/' }
-    ]
+    ListeningStatus: '3 отзыва',
+    ListeningBadgeText: 'Ответ: 42%',
+    SignalsStatus: '0 сигналов',
+    SignalsBadgeText: 'Без решений',
+    isConnected: false
   },
   'Skuratov': {
     name: 'Skuratov',
-    yandex2gis: 3,
-    yandex2gisPercent: 89,
-    smartReviews: 0,
-    smartReviewsPercent: 0,
-    signals: '0',
-    signalsPercent: 0,
-    isConnected: false,
-    branches: [
-      { address: 'Самарская, 190', gisUrl: 'https://2gis.ru/samara/firm/70000001062410566/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov/150151107830/reviews/' },
-      { address: 'Молодогвардейская, 80', gisUrl: 'https://2gis.ru/samara/firm/70000001063379108/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov_coffee/112256596811/reviews/' },
-      { address: 'Максима Горького, 129', gisUrl: 'https://2gis.ru/samara/firm/70000001094239079/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov_coffee/222229699719/reviews/' },
-      { address: 'Красноармейская, 133', gisUrl: 'https://2gis.ru/samara/firm/70000001052366972/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov_coffee/9331047841/reviews/' },
-      { address: 'Первомайская, 29', gisUrl: 'https://2gis.ru/samara/firm/70000001043589620/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov_coffee/64247746809/reviews/' },
-      { address: 'Куйбышева, 68/70', gisUrl: 'https://2gis.ru/samara/firm/70000001036538224/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/skuratov_coffee/203299963607/reviews/' }
-    ]
+    ListeningStatus: '3 отзыва',
+    ListeningBadgeText: 'Ответ: 89%',
+    SignalsStatus: '0 сигналов',
+    SignalsBadgeText: 'Без решений',
+    isConnected: false
   },
   'Surf': {
     name: 'Surf',
-    yandex2gis: 1,
-    yandex2gisPercent: 100,
-    smartReviews: 0,
-    smartReviewsPercent: 0,
-    signals: '0',
-    signalsPercent: 0,
-    isConnected: false,
-    branches: [
-      { address: 'Некрасовская, 57', gisUrl: 'https://2gis.ru/samara/firm/70000001036632385/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/surf_coffee/130764135504/reviews/' },
-      { address: 'Полевая, 54', gisUrl: 'https://2gis.ru/samara/firm/70000001047142182/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/surf_coffee_x_pool/179188509748/reviews/' },
-      { address: 'Куйбышева, 100', gisUrl: 'https://2gis.ru/samara/firm/70000001082424572/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/surf_coffee/13215597722/reviews/' }
-    ]
+    ListeningStatus: '1 отзыв',
+    ListeningBadgeText: 'Ответ: 100%',
+    SignalsStatus: '0 сигналов',
+    SignalsBadgeText: 'Без решений',
+    isConnected: false
   },
   'Белотурка': {
     name: 'Белотурка',
-    yandex2gis: 8,
-    yandex2gisPercent: 1,
-    smartReviews: 0,
-    smartReviewsPercent: 0,
-    signals: '0',
-    signalsPercent: 0,
-    isConnected: false,
-    branches: [
-      { address: 'Куйбышева, 99', gisUrl: 'https://2gis.ru/samara/firm/70000001075213346/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/21345450545/reviews/' },
-      { address: 'Молодогвардейская, 153', gisUrl: 'https://2gis.ru/samara/firm/70000001094600683/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/71041285330/reviews/' },
-      { address: 'Ново-Садовая, 106', gisUrl: 'https://2gis.ru/samara/firm/70000001095659001/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/56246021902/reviews/' },
-      { address: 'Московское шоссе, 41 (РДЦ)', gisUrl: 'https://2gis.ru/samara/firm/70000001090546275/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/34710016395/reviews/' },
-      { address: 'Московское шоссе, 81Б (Парк Хаус)', gisUrl: 'https://2gis.ru/samara/firm/70000001100074136/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/beloturka/90354199231/reviews/' }
-    ]
+    ListeningStatus: '8 отзывов',
+    ListeningBadgeText: 'Ответ: 1%',
+    SignalsStatus: '0 сигналов',
+    SignalsBadgeText: 'Без решений',
+    isConnected: false
   },
   'Кэрри': {
     name: 'Кэрри',
-    yandex2gis: 4,
-    yandex2gisPercent: 97,
-    smartReviews: 0,
-    smartReviewsPercent: 0,
-    signals: '0',
-    signalsPercent: 0,
-    isConnected: false,
-    branches: [
-      { address: 'Ново-Садовая ул., 160М', gisUrl: 'https://2gis.ru/samara/firm/70000001070543566/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/kerri/202386458956/reviews/' },
-      { address: 'Московское шоссе, 252', gisUrl: 'https://2gis.ru/samara/firm/70000001028380476/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/kerri/158033026774/reviews/' },
-      { address: 'Дачная ул., 2, корп. 1', gisUrl: 'https://2gis.ru/samara/firm/70000001020794652/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/kerri/75305070589/reviews/' },
-      { address: 'Дыбенко, 30 (Космопорт)', gisUrl: 'https://2gis.ru/samara/firm/70000001027327015/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/kerri/25856651419/reviews/' }
-    ]
+    ListeningStatus: '4 отзыва',
+    ListeningBadgeText: 'Ответ: 97%',
+    SignalsStatus: '0 сигналов',
+    SignalsBadgeText: 'Без решений',
+    isConnected: false
   }
 }
-
-
-const getSolutionText = (percent) => {
-  if (percent === 0) {
-    return 'Без решений';
-  }
-  return `Решение: ${percent}%`;
-};
 
 const cafeProfiles = {
   'корж': { responseTime: { base: 2.3, min: 1.8, max: 2.8 }, resolutionTime: { base: 17.5, min: 15, max: 20 } },
@@ -150,7 +78,7 @@ const todayStatus = computed(() => {
   
   const monthName = monthNames[today.getMonth()];
   
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a3e635" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="signal2-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/><circle cx="12" cy="12" r="2"/></svg> ${day}.${month} → ${monthName} ${year}`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a3e635" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="signal2-radio-icon" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/>ircle cx="12" cy="12" r="2"/></svg> ${day}.${month} → ${monthName} ${year}`;
 });
 
 const getCafeConfig = (cafeName) => {
@@ -162,14 +90,11 @@ const selectedCafe = ref(cafeNames[0] || 'Корж')
 
 const establishment = computed(() => cafes[selectedCafe.value] || {
   name: '',
-  yandex2gis: 0,
-  yandex2gisPercent: 0,
-  smartReviews: 0,
-  smartReviewsPercent: 0,
-  signals: '0',
-  signalsPercent: 0,
-  isConnected: false,
-  branches: []
+  ListeningStatus: '',
+  ListeningBadgeText: '',
+  SignalsStatus: '',
+  SignalsBadgeText: '',
+  isConnected: false
 })
 
 const cafeConfig = computed(() => getCafeConfig(selectedCafe.value))
@@ -224,18 +149,9 @@ const formatTime = (hours) => {
   return `${hours.toFixed(1)}ч`
 }
 
-const showBranchList = ref(false)
-const emit = defineEmits(['close'])
 const widgetContentRef = ref(null)
 const switchersRef = ref(null)
 const badgeRef = ref(null)
-
-const getRandomService = () => Math.random() < 0.5 ? 'gis' : 'yandex'
-const goToReviews = (branch) => {
-  const service = getRandomService()
-  const url = service === 'gis' ? branch.gisUrl : branch.yandexUrl
-  window.open(url, '_blank')
-}
 
 const openReviewModal = () => {
   isReviewModalOpen.value = true
@@ -245,10 +161,6 @@ const openReviewModal = () => {
 const closeReviewModal = () => {
   isReviewModalOpen.value = false
   document.body.style.overflow = 'auto'
-}
-
-const openSignalNew = () => {
-  window.location.href = '/signal/new'
 }
 
 const handleSwitcherScroll = () => {
@@ -301,10 +213,6 @@ const onKeydown = (e) => {
   }
 }
 
-const openInvestLink = () => {
-  window.open('/signals', '_blank')
-}
-
 const openYandexModal = () => {
   if (isMobile.value) return
   showYandexTooltip.value = false
@@ -346,16 +254,6 @@ onUnmounted(() => {
   clearInterval(metricsIntervalId)
   window.removeEventListener('keydown', onKeydown)
   window.removeEventListener('resize', checkMobile)
-})
-
-watch(showBranchList, (newValue) => {
-  if (newValue) {
-    nextTick(() => {
-      if (widgetContentRef.value) {
-        widgetContentRef.value.scrollTo({ top: 0, behavior: 'smooth' })
-      }
-    })
-  }
 })
 </script>
 
@@ -430,140 +328,106 @@ watch(showBranchList, (newValue) => {
     </div>
 
     <div v-if="establishment">
-      <div v-if="!showBranchList">
-        <div class="signal2-main-card">
-          <div class="signal2-establishment-header">
-            <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
-            <div 
-              class="signal2-status-badge"
-              ref="badgeRef"
-            >
-              <span v-html="todayStatus"></span>
-            </div>
+      <div class="signal2-main-card">
+        <div class="signal2-establishment-header">
+          <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
+          <div 
+            class="signal2-status-badge"
+            ref="badgeRef"
+          >
+            <span v-html="todayStatus"></span>
           </div>
+        </div>
 
-          <div class="signal2-stats-grid">
-            <div 
-              class="signal2-stat-card signal2-graphite-stat"
-              @mouseenter="!isMobile ? showYandexTooltip = true : null"
-              @mouseleave="!isMobile ? showYandexTooltip = false : null"
-              @click="openYandexModal"
-            >
-              <div class="signal2-stat-content">
-                <div class="signal2-stat-left-group">
-                  <div class="signal2-stat-value">{{ establishment.yandex2gis }}</div>
-                  <div class="signal2-stat-label">Как слушают</div>
-                </div>
-                <div class="signal2-stat-badge signal2-graphite-badge">
-                  <span class="signal2-badge-emoji">💬</span>
-                  <span class="signal2-badge-text">Ответ: {{ establishment.yandex2gisPercent }}%</span>
-                </div>
+        <div class="signal2-stats-grid">
+          <div 
+            class="signal2-stat-card signal2-graphite-stat"
+            @mouseenter="!isMobile ? showYandexTooltip = true : null"
+            @mouseleave="!isMobile ? showYandexTooltip = false : null"
+            @click="openYandexModal"
+          >
+            <div class="signal2-stat-content">
+              <div class="signal2-stat-left-group">
+                <div class="signal2-stat-value">{{ establishment.ListeningStatus }}</div>
+                <div class="signal2-stat-label">Как слушают</div>
               </div>
-            </div>
-
-            <div 
-              class="signal2-stat-card signal2-lime-stat" 
-              @mouseenter="!isMobile ? showSignalsTooltip = true : null"
-              @mouseleave="!isMobile ? showSignalsTooltip = false : null"
-              @click="openSignalsModal"
-            >
-              <div class="signal2-stat-content">
-                <div class="signal2-stat-left-group">
-                  <div class="signal2-stat-value">{{ establishment.signals }}</div>
-                  <div class="signal2-stat-label">Как меняют</div>
-                </div>
-                <div 
-                  class="signal2-stat-badge signal2-lime-badge" 
-                  :class="{ 'signal-100-badge': establishment.signalsPercent === 100 }"
-                >
-                  <span class="signal2-badge-emoji">⚡</span>
-                  <span class="signal2-badge-text">{{ getSolutionText(establishment.signalsPercent) }}</span>
-                </div>
+              <div class="signal2-stat-badge signal2-graphite-badge">
+                <span class="signal2-badge-emoji">💬</span>
+                <span class="signal2-badge-text">{{ establishment.ListeningBadgeText }}</span>
               </div>
             </div>
           </div>
 
-          <div class="signal2-system-status-bar">
-            <span v-if="establishment.isConnected" class="signal2-status-label">🟢 На связи:</span>
-            <span v-else class="signal2-status-label-disconnected">🟡 Отправим менеджеру кофейни <br class="signal2-mobile-break">и постараемся помочь</span>
-            
-            <div v-if="establishment.isConnected" class="signal2-status-metrics">
-              <div class="signal2-status-metric">
-                <span class="signal2-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
-                <span class="signal2-metric-text">→ ответ</span>
+          <div 
+            class="signal2-stat-card signal2-lime-stat" 
+            @mouseenter="!isMobile ? showSignalsTooltip = true : null"
+            @mouseleave="!isMobile ? showSignalsTooltip = false : null"
+            @click="openSignalsModal"
+          >
+            <div class="signal2-stat-content">
+              <div class="signal2-stat-left-group">
+                <div class="signal2-stat-value">{{ establishment.SignalsStatus }}</div>
+                <div class="signal2-stat-label">Как меняют</div>
               </div>
-              <div class="signal2-status-separator">•</div>
-              <div class="signal2-status-metric">
-                <span class="signal2-metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
-                <span class="signal2-metric-text">→ решение</span>
+              <div class="signal2-stat-badge signal2-lime-badge">
+                <span class="signal2-badge-emoji">⚡</span>
+                <span class="signal2-badge-text">{{ establishment.SignalsBadgeText }}</span>
               </div>
-            </div>
-          </div>
-
-          <div class="signal2-control-panel">
-            <div class="signal2-control-panel-header">
-              <button
-                v-if="!isMobile"
-                type="button"
-                class="signal2-info-link signal2-info-button"
-                aria-haspopup="dialog"
-                aria-controls="signal2-signal-dialog"
-                :aria-expanded="showInfoModal ? 'true' : 'false'"
-                @click="showInfoModal = true"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 16v-4" />
-                  <path d="M12 8h.01" />
-                </svg>
-              </button>
-              <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
-              <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
-                <span :class="['signal2-rotating-text', { 'signal2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
-              </div>
-            </div>
-
-            <div class="signal2-button-container">
-              <button @click="showBranchList = true" class="signal2-action-button signal2-ticket-button">
-                Оценить
-                <div class="signal2-button-icon-container">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0"/><circle cx="12" cy="8" r="2"/><path d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712"/></svg>
-                </div>
-              </button>
-              <button @click="openReviewModal" class="signal2-action-button signal2-review-button">
-                Отправить Сигнал
-                <div class="signal2-button-icon-container signal2-lime-icon-container">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2e05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-                </div>
-              </button>
             </div>
           </div>
         </div>
-      </div>
 
-      <div v-else>
-        <div class="signal2-branches-header">
-          <button @click="showBranchList = false" class="signal2-internal-close-btn signal2-back-btn" aria-label="Вернуться назад">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M19 12H5" />
-              <path d="m12 19-7-7 7-7" />
-            </svg>
-          </button>
-          <div class="signal2-branches-title-text">{{ establishment.name }}</div>
-          <div style="width: 44px;"></div>
+        <div class="signal2-system-status-bar">
+          <span v-if="establishment.isConnected" class="signal2-status-label">🟢 На связи:</span>
+          <span v-else class="signal2-status-label-disconnected">🟡 Отправим менеджеру кофейни <br class="signal2-mobile-break">и постараемся помочь</span>
+          
+          <div v-if="establishment.isConnected" class="signal2-status-metrics">
+            <div class="signal2-status-metric">
+              <span class="signal2-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
+              <span class="signal2-metric-text">→ ответ</span>
+            </div>
+            <div class="signal2-status-separator">•</div>
+            <div class="signal2-status-metric">
+              <span class="signal2-metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
+              <span class="signal2-metric-text">→ решение</span>
+            </div>
+          </div>
         </div>
-        <div class="signal2-branches-content">
-          <p class="signal2-branches-subtitle">💡 Вы будете автоматически перенаправлены на 2ГИС или Яндекс.Карты</p>
-          <div class="signal2-branches-list">
-            <button v-for="(branch, index) in establishment.branches" :key="index" @click="goToReviews(branch)" class="signal2-branch-item">
-              <div class="signal2-branch-info">
-                <div class="signal2-branch-number">{{ index + 1 }}</div>
-                <div class="signal2-branch-address">{{ branch.address }}</div>
+
+        <div class="signal2-control-panel">
+          <div class="signal2-control-panel-header">
+            <button
+              v-if="!isMobile"
+              type="button"
+              class="signal2-info-link signal2-info-button"
+              aria-haspopup="dialog"
+              aria-controls="signal2-signal-dialog"
+              :aria-expanded="showInfoModal ? 'true' : 'false'"
+              @click="showInfoModal = true"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                ircle cx="12" cy="12" r="10" />
+                <path d="M12 16v-4" />
+                <path d="M12 8h.01" />
+              </svg>
+            </button>
+            <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
+            <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
+              <span :class="['signal2-rotating-text', { 'signal2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
+            </div>
+          </div>
+
+          <div class="signal2-button-container">
+            <button @click="openYandexModal" class="signal2-action-button signal2-ticket-button">
+              Отзыв Яндекс/2ГИС
+              <div class="signal2-button-icon-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0"/>ircle cx="12" cy="8" r="2"/><path d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712"/></svg>
               </div>
-              <div class="signal2-branch-action">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m9 18 6-6-6-6" />
-                </svg>
+            </button>
+            <button @click="openReviewModal" class="signal2-action-button signal2-review-button">
+              Отправить Сигнал
+              <div class="signal2-button-icon-container signal2-lime-icon-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2e05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
               </div>
             </button>
           </div>
@@ -585,13 +449,12 @@ watch(showBranchList, (newValue) => {
         </div>
         
         <div class="signal2-modal-close-section">
-              <!-- Крестик для мобильной версии -->
-      <button @click="closeReviewModal" class="signal2-modal-close-icon" aria-label="Закрыть">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 6 6 18"/>
-          <path d="m6 6 12 12"/>
-        </svg>
-      </button>
+          <button @click="closeReviewModal" class="signal2-modal-close-icon" aria-label="Закрыть">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"/>
+              <path d="m6 6 12 12"/>
+            </svg>
+          </button>
           <button @click="closeReviewModal" class="signal2-modal-close-button">Закрыть и вернуться</button>
         </div>
       </div>
@@ -617,7 +480,7 @@ watch(showBranchList, (newValue) => {
           <div class="signal2-modal-title">Отзыв Яндекс/2ГИС</div>
         </div>
         <div class="signal2-modal-body">
-          Ваше мнение увидят все, но кофейня может не ответить. Классические отзывы помогают другим гостям, но не гарантируют решение вашей проблемы.
+          Это пустое модальное окно
         </div>
         <div class="signal2-modal-footer">
           <button class="signal2-modal-ok" type="button" @click="showGrowthModal = false">Понятно</button>
@@ -627,6 +490,7 @@ watch(showBranchList, (newValue) => {
 
   </div>
 </template>
+
 
 <style scoped>
 .signal2-widget-content { padding: 32px 0; }
