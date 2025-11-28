@@ -191,7 +191,7 @@ const buttonText = computed(() => {
   return 'Оценить'
 })
 
-const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2di_IxXDyAZEfSxJ7wLvupwjb7_IAIlKVsXlyOL6WcDj/exec'
+const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw1d57QWp_dUziYUW4yBuFTpNw-7PbQHj3pRBWpD9OXeUapAT8eJHp-s7NFIiMmxKnf4g/exec'
 
 const submitForm = async () => {
   if (isSubmitting.value || isSuccess.value) return
