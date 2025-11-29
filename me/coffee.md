@@ -15,7 +15,7 @@ description: Сигнал – тому кто решает
 </h1>
 
 <p>
-  <strong>Анонимно. Без регистрации.</strong><br class="mobile-break"> Результат — в течение дня.
+  Без регистрации.<br class="mobile-break"> <strong>Результат — в течение дня.</strong>
 </p>
 
 <style>
