@@ -227,10 +227,8 @@ const onKeydown = (e) => {
   }
 }
 
-// Предзагрузка изображений
 const preloadImages = () => {
   const imagesToPreload = Object.values(cafes).map(cafe => cafe.image).filter(Boolean)
-  // Убираем дубликаты
   const uniqueImages = [...new Set(imagesToPreload)]
   
   uniqueImages.forEach(src => {
@@ -395,7 +393,6 @@ onUnmounted(() => {
       @click="closeVoteModal"
     >
       <div class="signal2-review-modal-content" @click.stop>
-        <!-- Кнопка закрытия закреплена -->
         <button @click="closeVoteModal" class="signal2-modal-close-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
@@ -522,8 +519,6 @@ onUnmounted(() => {
 }
 
 .signal2-review-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 8px; box-sizing: border-box; }
-
-/* ОБНОВЛЕНО: Увеличена ширина модального окна на десктопе (650px -> 780px) */
 .signal2-review-modal-content { background: #1e1e20; border-radius: 16px; width: 780px; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); box-sizing: border-box; color: white; display: flex; flex-direction: column; overflow: hidden; position: relative; }
 
 .signal2-modal-scrollable-content { flex: 1; overflow-y: auto; padding: 20px 16px 16px 16px; }
@@ -548,20 +543,18 @@ onUnmounted(() => {
   padding: 0;
   transform: translateZ(0); 
   -webkit-mask-image: -webkit-radial-gradient(white, black);
-  
-  /* ОБНОВЛЕНО: Тонкая обводка для скрытия артефактов */
   border: 1px solid rgba(255,255,255,0.05);
 }
 
+/* ОБНОВЛЕНО: Оверлей расширен до -2px для полного перекрытия краев */
 .signal2-blur-overlay {
   position: absolute;
-  inset: -1px; /* Перекрытие краев */
+  inset: -2px; 
   background: rgba(18, 18, 20, 0.85);
-  /* Блюр убран */
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   z-index: 1;
-  border-radius: 20px;
+  border-radius: 20px; /* Дублируем радиус */
 }
 
 .signal2-content-relative {
@@ -594,7 +587,6 @@ onUnmounted(() => {
 }
 .signal2-stat-card:hover .signal2-stat-value { transform: scale(1.05); text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); }
 
-/* ОБНОВЛЕНО: Сделали ярче надписи */
 .signal2-stat-label { 
   font-weight: 700; 
   font-size: 11px; 
@@ -606,7 +598,7 @@ onUnmounted(() => {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  opacity: 0.9; /* Было 0.7 */
+  opacity: 0.9;
   position: relative;
 }
 .signal2-stat-card:hover .signal2-stat-label { 
@@ -834,7 +826,6 @@ onUnmounted(() => {
     line-height: 1.4;
   }
   
-  /* ОБНОВЛЕНО: Кнопка закрытия всегда поверх контента и зафиксирована */
   .signal2-modal-close-icon {
     display: flex !important;
     position: absolute !important;
@@ -850,7 +841,7 @@ onUnmounted(() => {
     align-items: center !important;
     justify-content: center !important;
     transition: all 0.3s ease;
-    z-index: 10; /* Поверх всего */
+    z-index: 10;
   }
 }
 @media (max-width: 700px) {
@@ -879,20 +870,19 @@ onUnmounted(() => {
   .signal2-review-modal-content { height: 75vh !important; max-height: 75vh !important; }
 }
 
-/* ОБНОВЛЕНО: Более светлые цвета для label */
 .signal2-graphite-stat {
   --signal2-border-gradient: linear-gradient(135deg, rgba(70, 70, 70, 0.8), rgba(113, 128, 150, 0.6), rgba(70, 70, 70, 0.8));
   --signal2-glow-color: rgba(70, 70, 70, 0.25);
   --signal2-glow-hover-color: rgba(113, 128, 150, 0.4);
-  --signal2-label-color-1: rgba(140, 155, 180, 1); /* Светлее */
-  --signal2-label-color-2: rgba(180, 194, 212, 0.9); /* Светлее */
+  --signal2-label-color-1: rgba(140, 155, 180, 1);
+  --signal2-label-color-2: rgba(180, 194, 212, 0.9);
 }
 .signal2-lime-stat {
   --signal2-border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #c5f946);
   --signal2-glow-color: rgba(197, 249, 70, 0.25);
   --signal2-glow-hover-color: rgba(197, 249, 70, 0.6);
-  --signal2-label-color-1: rgba(183, 250, 73, 1); /* Светлее */
-  --signal2-label-color-2: rgba(217, 255, 100, 0.9); /* Светлее */
+  --signal2-label-color-1: rgba(183, 250, 73, 1);
+  --signal2-label-color-2: rgba(217, 255, 100, 0.9);
 }
 
 @keyframes liquid-fluid {
