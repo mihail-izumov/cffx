@@ -123,16 +123,55 @@ const showYandexTooltip = ref(false)
 const showSignalsTooltip = ref(false)
 const showInfoModal = ref(false)
 
+// --- ЛОГИКА СВАЙПА ---
+const touchStart = ref({ x: 0, y: 0 })
+const touchEnd = ref({ x: 0, y: 0 })
+
+const handleTouchStart = (e) => {
+  touchStart.value.x = e.changedTouches[0].screenX
+  touchStart.value.y = e.changedTouches[0].screenY
+}
+
+const handleTouchEnd = (e) => {
+  touchEnd.value.x = e.changedTouches[0].screenX
+  touchEnd.value.y = e.changedTouches[0].screenY
+  handleSwipe()
+}
+
+const handleSwipe = () => {
+  const diffX = touchEnd.value.x - touchStart.value.x
+  const diffY = touchEnd.value.y - touchStart.value.y
+  
+  // Если движение по вертикали больше чем по горизонтали - это скролл страницы, игнорируем
+  if (Math.abs(diffY) > Math.abs(diffX)) return
+
+  // Порог срабатывания свайпа (50px)
+  if (Math.abs(diffX) > 50) {
+    const currentIndex = cafeNames.indexOf(selectedCafe.value)
+    let newIndex
+    
+    if (diffX > 0) {
+      // Свайп вправо (предыдущая)
+      newIndex = currentIndex - 1
+      if (newIndex < 0) newIndex = cafeNames.length - 1
+    } else {
+      // Свайп влево (следующая)
+      newIndex = currentIndex + 1
+      if (newIndex >= cafeNames.length) newIndex = 0
+    }
+    
+    selectedCafe.value = cafeNames[newIndex]
+  }
+}
+// --- КОНЕЦ ЛОГИКИ СВАЙПА ---
+
 const fetchSystemStatus = async () => {
   try {
     await new Promise(resolve => setTimeout(resolve, 50))
     const currentConfig = cafeConfig.value
     const now = Date.now()
-    const hourOfDay = new Date().getHours()
-    const isBusinessHours = hourOfDay >= 9 && hourOfDay <= 21
-    const loadFactor = isBusinessHours ? 0.8 : 1.2
-    const responseVariation = (Math.random() - 0.5) * 0.15 * loadFactor
-    const resolutionVariation = (Math.random() - 0.5) * 1.2 * loadFactor
+    const responseVariation = (Math.random() - 0.5) * 0.15
+    const resolutionVariation = (Math.random() - 0.5) * 1.2
 
     systemMetrics.value.responseTime = Math.max(
       currentConfig.responseTime.min,
@@ -237,12 +276,26 @@ const preloadImages = () => {
   })
 }
 
+// Автопрокрутка свитчера к активной кофейне
+const scrollSwitcherToActive = () => {
+  if (!switchersRef.value) return
+  const activeBtn = switchersRef.value.querySelector('.signal2-switcher.active')
+  if (activeBtn) {
+    activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+  }
+}
+
 watch(selectedCafe, (newName) => {
   const newConfig = getCafeConfig(newName)
   systemMetrics.value.responseTime = newConfig.responseTime.base
   systemMetrics.value.resolutionTime = newConfig.resolutionTime.base
   systemMetrics.value.lastUpdate = Date.now()
   fetchSystemStatus()
+  
+  // Ждем обновления DOM и скроллим свитчер
+  nextTick(() => {
+    scrollSwitcherToActive()
+  })
 })
 
 onMounted(() => {
@@ -287,10 +340,15 @@ onUnmounted(() => {
       <div class="signal2-switchers-gradient signal2-switchers-gradient-right" :class="{ 'signal2-gradient-visible': showRightGradient }"></div>
     </div>
 
-    <div v-if="establishment">
+    <!-- Добавлена анимация перехода fade -->
+    <Transition name="fade" mode="out-in">
       <div 
+        v-if="establishment"
+        :key="selectedCafe"
         class="signal2-main-card" 
         :style="{ backgroundImage: `url(${establishment.image})` }"
+        @touchstart="handleTouchStart"
+        @touchend="handleTouchEnd"
       >
         <div class="signal2-blur-overlay"></div>
 
@@ -385,7 +443,7 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-    </div>
+    </Transition>
 
     <div 
       v-if="isVoteModalOpen" 
@@ -441,6 +499,17 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/* Анимация перехода */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .signal2-widget-content { padding: 32px 0; }
 .signal2-cafe-switchers-container { position: relative; margin-bottom: 32px; }
 .signal2-cafe-switchers { display: flex; gap: 12px; padding-bottom: 12px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: rgba(70, 70, 70, 0.8) transparent; }
@@ -533,7 +602,8 @@ onUnmounted(() => {
 .signal2-back-btn:hover { background: var(--vp-c-bg-soft); border-color: var(--vp-c-text-2); color: white; }
 
 .signal2-main-card { 
-  background-color: #2d2d2d; 
+  /* Убран background-color: #2d2d2d, чтобы избежать белых стыков при скруглении */
+  background-color: #1e1e20; /* Цвет темного оверлея */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -543,18 +613,18 @@ onUnmounted(() => {
   padding: 0;
   transform: translateZ(0); 
   -webkit-mask-image: -webkit-radial-gradient(white, black);
-  border: 1px solid rgba(255,255,255,0.05);
 }
 
-/* ОБНОВЛЕНО: Оверлей расширен до -2px для полного перекрытия краев */
+/* Оверлей без border-radius но с inset 0 */
 .signal2-blur-overlay {
   position: absolute;
-  inset: -2px; 
+  inset: 0; /* Полное заполнение */
   background: rgba(18, 18, 20, 0.85);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   z-index: 1;
-  border-radius: 20px; /* Дублируем радиус */
+  /* Убран border-radius, чтобы не конфликтовать с родителем */
+  box-shadow: inset 0 0 0 1px rgba(18, 18, 20, 1); /* Внутренняя тень цвета фона для перекрытия щелей */
 }
 
 .signal2-content-relative {
