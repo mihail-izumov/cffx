@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 
+// Определяем событие для закрытия модального окна
+const emit = defineEmits(['close'])
+
 // --- ДАННЫЕ (Сети и их статусы) ---
 
 const fitness = {
@@ -81,7 +84,7 @@ const changeValue = ref(4.2)
 const networkListeningStatus = ref(0)
 const networkSignalStatus = ref(0)
 
-// === TICKET & DATE (статичные, генерируются один раз на onMounted) ===
+// === TICKET & DATE ===
 const rawTicketNumber = ref<string | null>(null)
 const formattedTicketNumber = ref<string | null>(null)
 const currentDate = ref('')
@@ -92,7 +95,6 @@ const availableNetworks = computed(() => {
   return Object.keys(source)
 })
 
-// Обновление данных при смене сети
 const updateStatusesFromNetwork = () => {
   if (!form.value.direction || !form.value.selectedNetwork) return
   
@@ -117,9 +119,8 @@ watch(() => form.value.selectedNetwork, () => {
   updateStatusesFromNetwork()
 })
 
-// === INIT: Генерируем тикет и дату один раз ===
+// === INIT ===
 onMounted(() => {
-  // Генерируем номер тикета и дату при запуске формы (как в paste.txt)
   rawTicketNumber.value = String(Date.now()).slice(-6)
   formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`
 
@@ -218,7 +219,6 @@ const submitForm = async () => {
 
   isSubmitting.value = true
 
-  // Генерируем НОВЫЙ submittedTime для каждой отправки
   const now = new Date()
   const day = String(now.getDate()).padStart(2, '0')
   const month = String(now.getMonth() + 1).padStart(2, '0')
@@ -292,6 +292,11 @@ ${feedbackMessage.value}`
 <template>
   <div class="page-container">
     
+    <!-- Кнопка закрытия (крестик) -->
+    <button class="close-button" @click="$emit('close')" aria-label="Закрыть">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+
     <h1 class="readiness-title">Где Вас Слушают?</h1>
 
     <div class="selectors-container">
@@ -327,7 +332,6 @@ ${feedbackMessage.value}`
           </div>
           <div class="card-titles">
             <div class="card-title">Как слушают</div>
-            <!-- Заголовок зависит от сети (networkListeningIndex), а не от ползунка -->
             <div class="card-subtitle card-subtitle--purple">{{ listeningLabels[networkListeningIndex].toUpperCase() }}</div>
           </div>
         </div>
@@ -336,7 +340,6 @@ ${feedbackMessage.value}`
             <input type="range" min="0" max="8" step="0.02" v-model="listeningValue" class="slider slider--purple" :style="sliderStyle(listeningValue)"/>
           </div>
           <div class="slider-labels">
-            <!-- Подсветка зависит от ползунка (userListeningIndex) -->
             <span class="label-left" :class="{ 'active-text': userListeningIndex === 0 }">Подключены</span>
             <span class="label-center" :class="{ 'active-text': userListeningIndex === 1 }">Слышат</span>
             <span class="label-right" :class="{ 'active-text': userListeningIndex === 2 }">Отвечают</span>
@@ -351,7 +354,6 @@ ${feedbackMessage.value}`
           </div>
           <div class="card-titles">
             <div class="card-title">Как меняют</div>
-            <!-- Заголовок зависит от сети (networkSignalIndex) -->
             <div class="card-subtitle card-subtitle--bronze">{{ changeLabels[networkSignalIndex].toUpperCase() }}</div>
           </div>
         </div>
@@ -360,7 +362,6 @@ ${feedbackMessage.value}`
             <input type="range" min="0" max="8" step="0.02" v-model="changeValue" class="slider slider--bronze" :style="sliderStyle(changeValue)"/>
           </div>
           <div class="slider-labels">
-            <!-- Подсветка зависит от ползунка (userChangeIndex) -->
             <span class="label-left" :class="{ 'active-text': userChangeIndex === 0 }">Открыты</span>
             <span class="label-center" :class="{ 'active-text': userChangeIndex === 1 }">Действуют</span>
             <span class="label-right" :class="{ 'active-text': userChangeIndex === 2 }">Меняют</span>
@@ -392,9 +393,33 @@ ${feedbackMessage.value}`
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  position: relative; /* Важно для позиционирования крестика */
 }
 
-/* Обновленные стили заголовка (26px и больший отступ сверху) */
+/* Стили кнопки закрытия */
+.close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  z-index: 10;
+}
+
+.close-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
 .readiness-title {
   font-size: 26px;
   font-weight: 700;
@@ -418,8 +443,9 @@ ${feedbackMessage.value}`
 .selector-group {
   display: flex;
   flex-direction: column;
-  flex: 1 1 320px;
-  min-width: 250px;
+  /* Базовый размер (210px) позволяет встать двум в ряд даже на 480px */
+  flex: 1 1 210px; 
+  min-width: 0; /* Разрешить сжатие, если нужно */
   box-sizing: border-box;
 }
 
@@ -500,7 +526,8 @@ ${feedbackMessage.value}`
   --thumb-size: 20px;
 
   position: relative;
-  flex: 1 1 320px;
+  /* Базовый размер (210px) позволяет встать двум в ряд даже на 480px */
+  flex: 1 1 210px;
   max-width: 420px;
   padding: 16px 18px 18px;
   border-radius: var(--card-radius);
@@ -690,20 +717,11 @@ ${feedbackMessage.value}`
 .submit-button:active { transform: scale(0.98); }
 .submit-button:disabled { opacity: 0.7; cursor: not-allowed; }
 
-/* Адаптивность */
-/* Изменили с 768px на 640px, чтобы на планшетах (между 640 и 768) была раскладка в 2 столбца */
-@media (max-width: 640px) {
+/* Мобильная адаптивность (порог 480px) */
+@media (max-width: 480px) {
   .page-container {
     padding: 0 16px !important;
   }
-
-  /* Сброс внешних отступов темы, чтобы убрать "дыры" */
-  :deep(.page-container > * + *) { margin-top: 8px !important; }
-  :deep(.page-container h1),
-  :deep(.page-container h2),
-  :deep(.page-container p),
-  :deep(.page-container label),
-  :deep(.page-container select) { margin-top: 0 !important; margin-bottom: 0 !important; }
 
   .readiness-title {
     font-size: 24px !important;
@@ -717,8 +735,8 @@ ${feedbackMessage.value}`
   }
 
   .selector-group {
-    width: 100% !important;
     flex: 0 0 auto !important;
+    width: 100% !important;
   }
 
   .readiness-wrapper {
@@ -748,8 +766,6 @@ ${feedbackMessage.value}`
   }
 
   .submit-container {
-    width: 100% !important;
-    max-width: 100% !important;
     padding: 0 0 20px 0 !important;
   }
   
@@ -757,6 +773,12 @@ ${feedbackMessage.value}`
     font-size: 14px !important;
     padding: 0 8px !important;
     margin-bottom: 16px !important;
+  }
+
+  /* Подстраиваем крестик под мобильные отступы */
+  .close-button {
+    top: 0;
+    right: 0;
   }
 }
 </style>
