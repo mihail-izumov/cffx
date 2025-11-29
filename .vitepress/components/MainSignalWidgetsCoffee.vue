@@ -18,7 +18,7 @@ const cafes = {
   },
   'MOSAIC': {
     name: 'MOSAIC',
-    image: '/widget/surf_widget_bg.jpg',
+    image: '/fest2025_smr_ban_1.png',
     ListeningStatus: '3 отзыва',
     ListeningBadgeText: 'Ответ: 42%',
     SignalsStatus: '0 сигналов',
