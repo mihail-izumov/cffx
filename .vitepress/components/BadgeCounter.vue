@@ -4,13 +4,22 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const count = ref(0)
 let timer = null
 
+const getDailyMaxValue = () => {
+  const today = new Date()
+  const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate()
+  const random = Math.sin(seed) * 10000
+  const normalized = random - Math.floor(random)
+  return Math.floor(22 + normalized * 11)
+}
+
 const updateCount = () => {
   const now = new Date()
   const minutesSinceMidnight = now.getHours() * 60 + now.getMinutes()
   const intervalIndex = Math.floor(minutesSinceMidnight / 90)
   const totalIntervals = 15
-  const calculated = Math.round((intervalIndex / totalIntervals) * 24)
-  count.value = Math.min(24, Math.max(0, calculated))
+  const maxValue = getDailyMaxValue()
+  const calculated = Math.round((intervalIndex / totalIntervals) * maxValue)
+  count.value = Math.min(maxValue, Math.max(0, calculated))
 }
 
 onMounted(() => {
@@ -40,7 +49,7 @@ onUnmounted(() => {
       </svg>
       
       <span class="signal-text">
-        {{ count }} оценок и сигналов отправлено сегодня
+        {{ count }} оценок и Сигналов отправлено сегодня
       </span>
     </div>
   </div>
@@ -111,13 +120,12 @@ onUnmounted(() => {
   }
   
   .signal-text {
-    font-size: 12px;
+    font-size: 11px;
   }
   
   .signal-icon {
-    width: 15px;
-    height: 15px;
+    width: 14px;
+    height: 14px;
   }
 }
 </style>
-
