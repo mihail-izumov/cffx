@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 
-// Оставляем объявление события, чтобы логика совместимости сохранялась,
-// даже если кнопка находится во внешнем компоненте-обертке.
+// Определяем событие, чтобы кнопка в шаблоне могла вызвать emit('close')
+// Это не влияет на логику отправки формы, но нужно для работы крестика.
 const emit = defineEmits(['close'])
 
 // --- ДАННЫЕ (Сети и их статусы) ---
@@ -85,7 +85,7 @@ const changeValue = ref(4.2)
 const networkListeningStatus = ref(0)
 const networkSignalStatus = ref(0)
 
-// === TICKET & DATE ===
+// === TICKET & DATE (статичные, генерируются один раз на onMounted) ===
 const rawTicketNumber = ref<string | null>(null)
 const formattedTicketNumber = ref<string | null>(null)
 const currentDate = ref('')
@@ -96,6 +96,7 @@ const availableNetworks = computed(() => {
   return Object.keys(source)
 })
 
+// Обновление данных при смене сети
 const updateStatusesFromNetwork = () => {
   if (!form.value.direction || !form.value.selectedNetwork) return
   
@@ -120,8 +121,9 @@ watch(() => form.value.selectedNetwork, () => {
   updateStatusesFromNetwork()
 })
 
-// === INIT ===
+// === INIT: Генерируем тикет и дату один раз ===
 onMounted(() => {
+  // Генерируем номер тикета и дату при запуске формы (как в paste.txt)
   rawTicketNumber.value = String(Date.now()).slice(-6)
   formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`
 
@@ -220,6 +222,7 @@ const submitForm = async () => {
 
   isSubmitting.value = true
 
+  // Генерируем НОВЫЙ submittedTime для каждой отправки
   const now = new Date()
   const day = String(now.getDate()).padStart(2, '0')
   const month = String(now.getMonth() + 1).padStart(2, '0')
@@ -293,7 +296,13 @@ ${feedbackMessage.value}`
 <template>
   <div class="page-container">
     
-    <!-- Кнопка закрытия убрана, так как она рендерится внешним модальным окном -->
+    <!-- Кнопка закрытия: 
+         Показывается на десктопе. 
+         Скрывается на мобильных (< 640px) через CSS, чтобы не было наложения 
+         с системной кнопкой модального окна -->
+    <button class="close-button" @click="$emit('close')" aria-label="Закрыть">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
 
     <h1 class="readiness-title">Где Вас Слушают?</h1>
 
@@ -391,9 +400,33 @@ ${feedbackMessage.value}`
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  position: relative;
 }
 
-/* Уменьшен отступ сверху до 8px */
+/* Стили кнопки закрытия (по умолчанию видна) */
+.close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  z-index: 10;
+}
+
+.close-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
 .readiness-title {
   font-size: 26px;
   font-weight: 700;
@@ -417,9 +450,8 @@ ${feedbackMessage.value}`
 .selector-group {
   display: flex;
   flex-direction: column;
-  /* Базовый размер (210px) позволяет встать двум в ряд даже на 480px */
   flex: 1 1 210px; 
-  min-width: 0; /* Разрешить сжатие */
+  min-width: 0;
   box-sizing: border-box;
 }
 
@@ -500,7 +532,6 @@ ${feedbackMessage.value}`
   --thumb-size: 20px;
 
   position: relative;
-  /* Базовый размер (210px) позволяет встать двум в ряд даже на 480px */
   flex: 1 1 210px;
   max-width: 420px;
   padding: 16px 18px 18px;
@@ -691,15 +722,25 @@ ${feedbackMessage.value}`
 .submit-button:active { transform: scale(0.98); }
 .submit-button:disabled { opacity: 0.7; cursor: not-allowed; }
 
-/* Мобильная адаптивность (порог 480px) */
+/* Мобильная адаптивность (порог < 480px) */
 @media (max-width: 480px) {
   .page-container {
     padding: 0 16px !important;
   }
+  
+  /* Скрываем кнопку закрытия на мобильных, чтобы не было наложения с системной кнопкой */
+  .close-button {
+    display: none;
+  }
 
+  /* Увеличен отступ сверху на 2px (0 -> 2px) */
+  :deep(.page-container h1) { margin-top: 2px !important; margin-bottom: 16px !important; }
+  
+  /* Если сброс не работает, продублируем напрямую */
   .readiness-title {
-    font-size: 24px !important;
+    margin-top: 2px !important;
     margin-bottom: 16px !important;
+    font-size: 24px !important;
   }
 
   .selectors-container {
@@ -717,6 +758,8 @@ ${feedbackMessage.value}`
     flex-direction: column !important;
     align-items: center !important;
     margin: 8px 0 16px !important;
+    /* Уменьшен отступ между карточками на 5px (было 16px -> 11px) */
+    gap: 11px !important;
   }
   
   .card {
