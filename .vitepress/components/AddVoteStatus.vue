@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 
-// Определяем событие, чтобы кнопка в шаблоне могла вызвать emit('close')
+// Оставляем defineEmits, чтобы компонент корректно принимал подписку на @close от родителя,
+// если это требуется архитектурой, даже если мы не вызываем его напрямую кнопкой.
 const emit = defineEmits(['close'])
 
 // --- ДАННЫЕ (Сети и их статусы) ---
@@ -122,6 +123,7 @@ watch(() => form.value.selectedNetwork, () => {
 
 // === INIT: Генерируем тикет и дату один раз ===
 onMounted(() => {
+  // Генерируем номер тикета и дату при запуске формы (как в paste.txt)
   rawTicketNumber.value = String(Date.now()).slice(-6)
   formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`
 
@@ -294,12 +296,10 @@ ${feedbackMessage.value}`
 <template>
   <div class="page-container">
     
-    <!-- Кнопка закрытия:
-         Скрываем её через CSS на ширине < 1024px (мобилки, планшеты),
-         так как там уже есть системный крестик модального окна. -->
-    <button class="close-button" @click="$emit('close')" aria-label="Закрыть">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-    </button>
+    <!-- 
+      Кнопка закрытия полностью удалена из этого компонента.
+      Она добавляется и управляется родительским компонентом (модальным окном).
+    -->
 
     <h1 class="readiness-title">Где Вас Слушают?</h1>
 
@@ -398,37 +398,6 @@ ${feedbackMessage.value}`
   margin: 0;
   box-sizing: border-box;
   position: relative;
-}
-
-/* Стили кнопки закрытия */
-.close-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #9ca3af;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-  z-index: 10;
-}
-
-.close-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
-
-/* ОТДЕЛЬНЫЙ БЛОК: Скрываем крестик на всех промежуточных разрешениях до 1024px */
-@media (max-width: 1024px) {
-  .close-button {
-    display: none;
-  }
 }
 
 .readiness-title {
