@@ -394,12 +394,13 @@ ${feedbackMessage.value}`
   box-sizing: border-box;
 }
 
+/* Обновленные стили заголовка (26px и больший отступ сверху) */
 .readiness-title {
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 700;
   color: #f9fafb;
   text-align: center;
-  margin: 0 0 32px 0;
+  margin: 40px 0 32px 0;
   padding: 0;
 }
 
@@ -689,8 +690,9 @@ ${feedbackMessage.value}`
 .submit-button:active { transform: scale(0.98); }
 .submit-button:disabled { opacity: 0.7; cursor: not-allowed; }
 
-/* Адаптивность с принудительными отступами */
-@media (max-width: 768px) {
+/* Адаптивность */
+/* Изменили с 768px на 640px, чтобы на планшетах (между 640 и 768) была раскладка в 2 столбца */
+@media (max-width: 640px) {
   .page-container {
     padding: 0 16px !important;
   }
