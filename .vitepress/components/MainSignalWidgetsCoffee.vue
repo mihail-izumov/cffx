@@ -5,7 +5,6 @@ import AddVoteStatus from './AddVoteStatus.vue'
 
 const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка', 'Кэрри']
 
-// Добавлены изображения в данные
 const cafes = {
   'Корж': {
     name: 'Корж',
@@ -18,7 +17,7 @@ const cafes = {
   },
   'MOSAIC': {
     name: 'MOSAIC',
-    image: '/fest2025_smr_ban_1.png',
+    image: '/widget/surf_widget_bg.jpg',
     ListeningStatus: '3 отзыва',
     ListeningBadgeText: 'Ответ: 42%',
     SignalsStatus: '0 сигналов',
@@ -278,15 +277,12 @@ onUnmounted(() => {
     </div>
 
     <div v-if="establishment">
-      <!-- ОБНОВЛЕНО: Динамический фон + Glassmorphism -->
       <div 
         class="signal2-main-card" 
         :style="{ backgroundImage: `url(${establishment.image})` }"
       >
-        <!-- Слой затемнения и блюра -->
         <div class="signal2-blur-overlay"></div>
 
-        <!-- Обертка для контента -->
         <div class="signal2-content-relative">
           <div class="signal2-establishment-header">
             <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
@@ -296,7 +292,6 @@ onUnmounted(() => {
           </div>
 
           <div class="signal2-stats-grid">
-            <!-- КАРТОЧКА 1 КЛИКАБЕЛЬНАЯ -->
             <div class="signal2-stat-card signal2-graphite-stat" 
                  @click="openVoteModal"
                  @mouseenter="!isMobile ? showYandexTooltip = true : null" 
@@ -312,7 +307,6 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <!-- КАРТОЧКА 2 КЛИКАБЕЛЬНАЯ -->
             <div class="signal2-stat-card signal2-lime-stat" 
                  @click="openVoteModal"
                  @mouseenter="!isMobile ? showSignalsTooltip = true : null" 
@@ -459,7 +453,6 @@ onUnmounted(() => {
 :deep(.signal2-modal-link.signal2-no-vitepress-style) { text-decoration: underline !important; text-decoration-color: #a3e635 !important; border-bottom: none !important; background: none !important; }
 :deep(.signal2-modal-link.signal2-no-vitepress-style:hover) { text-decoration: underline !important; text-decoration-color: #c5f946 !important; border-bottom: none !important; background: none !important; }
 
-/* CSS Mask для иконок */
 .signal2-radio-icon-wrapper {
   display: inline-block;
   width: 14px;
@@ -527,28 +520,35 @@ onUnmounted(() => {
 .signal2-internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
 .signal2-back-btn:hover { background: var(--vp-c-bg-soft); border-color: var(--vp-c-text-2); color: white; }
 
-/* ОБНОВЛЕНО: Фон из картинки + overlay */
+/* Исправленный стиль для фона и блюра */
 .signal2-main-card { 
-  background-color: #2d2d2d; /* fallback */
+  background-color: #2d2d2d; 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   border-radius: 20px; 
   position: relative;
-  overflow: hidden;
-  padding: 0; /* Паддинг перенесен во wrapper */
+  overflow: hidden; 
+  padding: 0;
+  
+  /* Исправление артефактов на границах для Safari/Chrome */
+  transform: translateZ(0); 
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
-/* Слой затемнения и блюра */
 .signal2-blur-overlay {
   position: absolute;
-  inset: 0;
-  background: rgba(18, 18, 20, 0.85);
-  backdrop-filter: blur(30px);
+  inset: -2px; /* Расширяем оверлей на 2px, чтобы перекрыть края */
+  background: rgba(18, 18, 20, 0.85); /* Прозрачность затемнения */
+  
+  /* УМЕНЬШЕНО РАЗМЫТИЕ (было 30px) */
+  backdrop-filter: blur(20px); 
+  -webkit-backdrop-filter: blur(20px);
+  
   z-index: 1;
+  border-radius: 20px;
 }
 
-/* Обертка контента */
 .signal2-content-relative {
   position: relative;
   z-index: 2;
@@ -718,13 +718,12 @@ onUnmounted(() => {
   
   .signal2-widget-content { padding: 48px 0 24px 0; }
   
-  /* ОБНОВЛЕНО: Отступы для wrapper */
   .signal2-content-relative {
     padding: 16px;
     padding-top: 20px;
   }
   
-  .signal2-main-card { padding: 0; } /* Паддинга нет, так как он внутри */
+  .signal2-main-card { padding: 0; }
   
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 16px; }
   
