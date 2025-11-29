@@ -5,17 +5,20 @@ import AddVoteStatus from './AddVoteStatus.vue'
 
 const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка', 'Кэрри']
 
+// Добавлены изображения в данные
 const cafes = {
   'Корж': {
     name: 'Корж',
+    image: '/widget/korzh_widget_bg.jpg',
     ListeningStatus: 'Подключены',
     ListeningBadgeText: 'Отвечают быстро',
-    SignalsStatus: 'Быстро',
+    SignalsStatus: 'Открыты',
     SignalsBadgeText: 'Решение: 100%',
     isConnected: true
   },
   'MOSAIC': {
     name: 'MOSAIC',
+    image: '/widget/surf_widget_bg.jpg',
     ListeningStatus: '3 отзыва',
     ListeningBadgeText: 'Ответ: 42%',
     SignalsStatus: '0 сигналов',
@@ -24,6 +27,7 @@ const cafes = {
   },
   'Skuratov': {
     name: 'Skuratov',
+    image: '/widget/surf_widget_bg.jpg',
     ListeningStatus: '3 отзыва',
     ListeningBadgeText: 'Ответ: 89%',
     SignalsStatus: '0 сигналов',
@@ -32,6 +36,7 @@ const cafes = {
   },
   'Surf': {
     name: 'Surf',
+    image: '/widget/surf_widget_bg.jpg',
     ListeningStatus: '1 отзыв',
     ListeningBadgeText: 'Ответ: 100%',
     SignalsStatus: '0 сигналов',
@@ -40,6 +45,7 @@ const cafes = {
   },
   'Белотурка': {
     name: 'Белотурка',
+    image: '/widget/surf_widget_bg.jpg',
     ListeningStatus: '8 отзывов',
     ListeningBadgeText: 'Ответ: 1%',
     SignalsStatus: '0 сигналов',
@@ -48,6 +54,7 @@ const cafes = {
   },
   'Кэрри': {
     name: 'Кэрри',
+    image: '/widget/surf_widget_bg.jpg',
     ListeningStatus: '4 отзыва',
     ListeningBadgeText: 'Ответ: 97%',
     SignalsStatus: '0 сигналов',
@@ -90,6 +97,7 @@ const selectedCafe = ref(cafeNames[0] || 'Корж')
 
 const establishment = computed(() => cafes[selectedCafe.value] || {
   name: '',
+  image: '',
   ListeningStatus: '',
   ListeningBadgeText: '',
   SignalsStatus: '',
@@ -270,95 +278,105 @@ onUnmounted(() => {
     </div>
 
     <div v-if="establishment">
-      <div class="signal2-main-card">
-        <div class="signal2-establishment-header">
-          <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
-          <div class="signal2-status-badge" ref="badgeRef">
-            <span v-html="todayStatus"></span>
-          </div>
-        </div>
+      <!-- ОБНОВЛЕНО: Динамический фон + Glassmorphism -->
+      <div 
+        class="signal2-main-card" 
+        :style="{ backgroundImage: `url(${establishment.image})` }"
+      >
+        <!-- Слой затемнения и блюра -->
+        <div class="signal2-blur-overlay"></div>
 
-        <div class="signal2-stats-grid">
-          <!-- КАРТОЧКА 1 КЛИКАБЕЛЬНАЯ -->
-          <div class="signal2-stat-card signal2-graphite-stat" 
-               @click="openVoteModal"
-               @mouseenter="!isMobile ? showYandexTooltip = true : null" 
-               @mouseleave="!isMobile ? showYandexTooltip = false : null">
-            <div class="signal2-stat-content">
-              <div class="signal2-stat-left-group">
-                <div class="signal2-stat-label">КАК СЛУШАЮТ</div>
-                <div class="signal2-stat-value">{{ establishment.ListeningStatus }}</div>
+        <!-- Обертка для контента -->
+        <div class="signal2-content-relative">
+          <div class="signal2-establishment-header">
+            <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
+            <div class="signal2-status-badge" ref="badgeRef">
+              <span v-html="todayStatus"></span>
+            </div>
+          </div>
+
+          <div class="signal2-stats-grid">
+            <!-- КАРТОЧКА 1 КЛИКАБЕЛЬНАЯ -->
+            <div class="signal2-stat-card signal2-graphite-stat" 
+                 @click="openVoteModal"
+                 @mouseenter="!isMobile ? showYandexTooltip = true : null" 
+                 @mouseleave="!isMobile ? showYandexTooltip = false : null">
+              <div class="signal2-stat-content">
+                <div class="signal2-stat-left-group">
+                  <div class="signal2-stat-label">КАК СЛУШАЮТ</div>
+                  <div class="signal2-stat-value">{{ establishment.ListeningStatus }}</div>
+                </div>
+                <div class="signal2-stat-badge signal2-graphite-badge">
+                  <span class="signal2-badge-text">{{ establishment.ListeningBadgeText }}</span>
+                </div>
               </div>
-              <div class="signal2-stat-badge signal2-graphite-badge">
-                <span class="signal2-badge-text">{{ establishment.ListeningBadgeText }}</span>
+            </div>
+
+            <!-- КАРТОЧКА 2 КЛИКАБЕЛЬНАЯ -->
+            <div class="signal2-stat-card signal2-lime-stat" 
+                 @click="openVoteModal"
+                 @mouseenter="!isMobile ? showSignalsTooltip = true : null" 
+                 @mouseleave="!isMobile ? showSignalsTooltip = false : null">
+              <div class="signal2-stat-content">
+                <div class="signal2-stat-left-group">
+                  <div class="signal2-stat-label">КАК МЕНЯЮТ</div>
+                  <div class="signal2-stat-value">{{ establishment.SignalsStatus }}</div>
+                </div>
+                <div class="signal2-stat-badge signal2-lime-badge signal-100-badge">
+                  <span class="signal2-badge-text">{{ establishment.SignalsBadgeText }}</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- КАРТОЧКА 2 КЛИКАБЕЛЬНАЯ -->
-          <div class="signal2-stat-card signal2-lime-stat" 
-               @click="openVoteModal"
-               @mouseenter="!isMobile ? showSignalsTooltip = true : null" 
-               @mouseleave="!isMobile ? showSignalsTooltip = false : null">
-            <div class="signal2-stat-content">
-              <div class="signal2-stat-left-group">
-                <div class="signal2-stat-label">КАК ДЕЙСТВУЮТ</div>
-                <div class="signal2-stat-value">{{ establishment.SignalsStatus }}</div>
+          <div class="signal2-system-status-bar">
+            <span v-if="establishment.isConnected" class="signal2-status-label"><span class="signal2-emoji">🟢</span> На связи:</span>
+            <span v-else class="signal2-status-label-disconnected"><span class="signal2-emoji">🟡</span> Отправим менеджеру кофейни <br class="signal2-mobile-break">и постараемся помочь</span>
+            
+            <div v-if="establishment.isConnected" class="signal2-status-metrics">
+              <div class="signal2-status-metric">
+                <span class="signal2-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
+                <span class="signal2-metric-text">→ ответ</span>
               </div>
-              <div class="signal2-stat-badge signal2-lime-badge signal-100-badge">
-                <span class="signal2-badge-text">{{ establishment.SignalsBadgeText }}</span>
+              <div class="signal2-status-separator">•</div>
+              <div class="signal2-status-metric">
+                <span class="signal2-metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
+                <span class="signal2-metric-text">→ решение</span>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="signal2-system-status-bar">
-          <span v-if="establishment.isConnected" class="signal2-status-label"><span class="signal2-emoji">🟢</span> На связи:</span>
-          <span v-else class="signal2-status-label-disconnected"><span class="signal2-emoji">🟡</span> Отправим менеджеру кофейни <br class="signal2-mobile-break">и постараемся помочь</span>
-          
-          <div v-if="establishment.isConnected" class="signal2-status-metrics">
-            <div class="signal2-status-metric">
-              <span class="signal2-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
-              <span class="signal2-metric-text">→ ответ</span>
-            </div>
-            <div class="signal2-status-separator">•</div>
-            <div class="signal2-status-metric">
-              <span class="signal2-metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
-              <span class="signal2-metric-text">→ решение</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="signal2-control-panel">
-          <div class="signal2-control-panel-header">
-            <button
-              v-if="!isMobile"
-              type="button"
-              class="signal2-info-link signal2-info-button"
-              aria-haspopup="dialog"
-              @click="showInfoModal = true"
-            >
-              <span class="signal2-info-icon-wrapper"></span>
-            </button>
-            <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
-            <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
-              <span :class="['signal2-rotating-text', { 'signal2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
-            </div>
-          </div>
-
-          <div class="signal2-button-container">
-            <button @click="openVoteModal" class="signal2-action-button signal2-ticket-button">
-              Моя Оценка
-              <div class="signal2-button-icon-container">
-                <span class="signal2-settings-icon-wrapper"></span>
+          <div class="signal2-control-panel">
+            <div class="signal2-control-panel-header">
+              <button
+                v-if="!isMobile"
+                type="button"
+                class="signal2-info-link signal2-info-button"
+                aria-haspopup="dialog"
+                @click="showInfoModal = true"
+              >
+                <span class="signal2-info-icon-wrapper"></span>
+              </button>
+              <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
+              <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
+                <span :class="['signal2-rotating-text', { 'signal2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
               </div>
-            </button>
-            <button @click="openSignalModal" class="signal2-action-button signal2-review-button">
-              Отправить Сигнал
-              <div class="signal2-button-icon-container signal2-lime-icon-container">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2e05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-              </div>
-            </button>
+            </div>
+
+            <div class="signal2-button-container">
+              <button @click="openVoteModal" class="signal2-action-button signal2-ticket-button">
+                Оценить место
+                <div class="signal2-button-icon-container">
+                  <span class="signal2-settings-icon-wrapper"></span>
+                </div>
+              </button>
+              <button @click="openSignalModal" class="signal2-action-button signal2-review-button">
+                Отправить Сигнал
+                <div class="signal2-button-icon-container signal2-lime-icon-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2e05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -509,10 +527,32 @@ onUnmounted(() => {
 .signal2-internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
 .signal2-back-btn:hover { background: var(--vp-c-bg-soft); border-color: var(--vp-c-text-2); color: white; }
 
+/* ОБНОВЛЕНО: Фон из картинки + overlay */
 .signal2-main-card { 
-  background: linear-gradient(135deg, rgba(45, 45, 48, 0.95), rgba(35, 35, 38, 0.98));
+  background-color: #2d2d2d; /* fallback */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 20px; 
-  padding: 20px; 
+  position: relative;
+  overflow: hidden;
+  padding: 0; /* Паддинг перенесен во wrapper */
+}
+
+/* Слой затемнения и блюра */
+.signal2-blur-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 18, 20, 0.85);
+  backdrop-filter: blur(30px);
+  z-index: 1;
+}
+
+/* Обертка контента */
+.signal2-content-relative {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
 }
 
 .signal2-establishment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
@@ -678,7 +718,14 @@ onUnmounted(() => {
   
   .signal2-widget-content { padding: 48px 0 24px 0; }
   
-  .signal2-main-card { padding: 16px; padding-top: 20px; }
+  /* ОБНОВЛЕНО: Отступы для wrapper */
+  .signal2-content-relative {
+    padding: 16px;
+    padding-top: 20px;
+  }
+  
+  .signal2-main-card { padding: 0; } /* Паддинга нет, так как он внутри */
+  
   .signal2-stats-grid { grid-template-columns: 1fr; gap: 16px; }
   
   .signal2-stat-card { 
@@ -714,7 +761,6 @@ onUnmounted(() => {
     gap: 4px;
   }
   
-  /* Уменьшено еще на 3px (1rem ~ 16px, -3px ~ 13px = 0.8rem) */
   .signal2-stat-value { 
     font-size: 1rem !important; 
     font-weight: 500 !important;
@@ -747,7 +793,6 @@ onUnmounted(() => {
   .signal2-action-button { justify-content: center !important; }
   .signal2-button-icon-container { margin-left: 8px !important; margin-right: -8px; }
   
-  /* Увеличена высота контейнера ротатора до 44px для предотвращения прыжков */
   .signal2-rotating-text-container { 
     text-align: center !important; 
     justify-content: center !important; 
