@@ -351,6 +351,7 @@ onUnmounted(() => {
         @touchend="handleTouchEnd"
       >
         <div class="signal2-blur-overlay"></div>
+        <div class="signal2-main-card-border"></div>
 
         <div class="signal2-content-relative">
           <div class="signal2-establishment-header">
@@ -624,7 +625,18 @@ onUnmounted(() => {
   -webkit-backdrop-filter: none;
   z-index: 1;
   /* Убран border-radius, чтобы не конфликтовать с родителем */
-  box-shadow: inset 0 0 0 1px rgba(18, 18, 20, 1); /* Внутренняя тень цвета фона для перекрытия щелей */
+  
+}
+
+.signal2-main-card-border {
+  pointer-events: none;
+  border-radius: 20px;
+  border: 1.5px solid rgba(190,200,220,0.20);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  box-sizing: border-box;
+  background: transparent;
 }
 
 .signal2-content-relative {
@@ -732,7 +744,7 @@ onUnmounted(() => {
   flex-grow: 1; 
   text-align: left; 
   color: rgba(255, 255, 255, 0.7); 
-  min-height: 36px;
+  min-height: 36px; 
   display: flex; 
   align-items: center; 
 }
