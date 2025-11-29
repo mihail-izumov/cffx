@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 
-// Определяем событие для закрытия модального окна
+// Оставляем объявление события, чтобы логика совместимости сохранялась,
+// даже если кнопка находится во внешнем компоненте-обертке.
 const emit = defineEmits(['close'])
 
 // --- ДАННЫЕ (Сети и их статусы) ---
@@ -292,10 +293,7 @@ ${feedbackMessage.value}`
 <template>
   <div class="page-container">
     
-    <!-- Кнопка закрытия (крестик) -->
-    <button class="close-button" @click="$emit('close')" aria-label="Закрыть">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-    </button>
+    <!-- Кнопка закрытия убрана, так как она рендерится внешним модальным окном -->
 
     <h1 class="readiness-title">Где Вас Слушают?</h1>
 
@@ -393,39 +391,15 @@ ${feedbackMessage.value}`
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  position: relative; /* Важно для позиционирования крестика */
 }
 
-/* Стили кнопки закрытия */
-.close-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #9ca3af;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-  z-index: 10;
-}
-
-.close-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
-
+/* Уменьшен отступ сверху до 8px */
 .readiness-title {
   font-size: 26px;
   font-weight: 700;
   color: #f9fafb;
   text-align: center;
-  margin: 40px 0 32px 0;
+  margin: 8px 0 32px 0;
   padding: 0;
 }
 
@@ -445,7 +419,7 @@ ${feedbackMessage.value}`
   flex-direction: column;
   /* Базовый размер (210px) позволяет встать двум в ряд даже на 480px */
   flex: 1 1 210px; 
-  min-width: 0; /* Разрешить сжатие, если нужно */
+  min-width: 0; /* Разрешить сжатие */
   box-sizing: border-box;
 }
 
@@ -773,12 +747,6 @@ ${feedbackMessage.value}`
     font-size: 14px !important;
     padding: 0 8px !important;
     margin-bottom: 16px !important;
-  }
-
-  /* Подстраиваем крестик под мобильные отступы */
-  .close-button {
-    top: 0;
-    right: 0;
   }
 }
 </style>
