@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 
-// Оставляем defineEmits, чтобы компонент корректно принимал подписку на @close от родителя,
-// если это требуется архитектурой, даже если мы не вызываем его напрямую кнопкой.
+// Событие для закрытия
 const emit = defineEmits(['close'])
 
 // --- ДАННЫЕ (Сети и их статусы) ---
@@ -85,7 +84,7 @@ const changeValue = ref(4.2)
 const networkListeningStatus = ref(0)
 const networkSignalStatus = ref(0)
 
-// === TICKET & DATE (статичные, генерируются один раз на onMounted) ===
+// === TICKET & DATE ===
 const rawTicketNumber = ref<string | null>(null)
 const formattedTicketNumber = ref<string | null>(null)
 const currentDate = ref('')
@@ -121,9 +120,8 @@ watch(() => form.value.selectedNetwork, () => {
   updateStatusesFromNetwork()
 })
 
-// === INIT: Генерируем тикет и дату один раз ===
+// === INIT ===
 onMounted(() => {
-  // Генерируем номер тикета и дату при запуске формы (как в paste.txt)
   rawTicketNumber.value = String(Date.now()).slice(-6)
   formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`
 
@@ -222,7 +220,6 @@ const submitForm = async () => {
 
   isSubmitting.value = true
 
-  // Генерируем НОВЫЙ submittedTime для каждой отправки
   const now = new Date()
   const day = String(now.getDate()).padStart(2, '0')
   const month = String(now.getMonth() + 1).padStart(2, '0')
@@ -297,9 +294,14 @@ ${feedbackMessage.value}`
   <div class="page-container">
     
     <!-- 
-      Кнопка закрытия полностью удалена из этого компонента.
-      Она добавляется и управляется родительским компонентом (модальным окном).
+      Кнопка закрытия (крестик).
+      Она будет видна ТОЛЬКО на десктопе (> 768px), 
+      потому что родительский компонент скрывает свой крестик на этой ширине.
+      На мобильных (< 768px) мы её скрываем, чтобы не дублировать родительский крестик.
     -->
+    <button class="close-button" @click="$emit('close')" aria-label="Закрыть">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
 
     <h1 class="readiness-title">Где Вас Слушают?</h1>
 
@@ -398,6 +400,38 @@ ${feedbackMessage.value}`
   margin: 0;
   box-sizing: border-box;
   position: relative;
+}
+
+/* Стили кнопки закрытия (видны по умолчанию = десктоп) */
+.close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  z-index: 10;
+}
+
+.close-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Медиа-запрос: СКРЫВАЕМ кнопку, если ширина <= 768px.
+   На этих разрешениях родительский компонент (paste.txt) ВКЛЮЧАЕТ свой крестик. */
+@media (max-width: 768px) {
+  .close-button {
+    display: none;
+  }
 }
 
 .readiness-title {
@@ -725,7 +759,6 @@ ${feedbackMessage.value}`
     flex-direction: column !important;
     align-items: center !important;
     margin: 8px 0 16px !important;
-    /* Уменьшен отступ между карточками на 5px (16px -> 11px) */
     gap: 11px !important;
   }
   
