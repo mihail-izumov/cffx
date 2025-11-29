@@ -1,34 +1,78 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 
-const count = ref(0)
-let timer = null
+// Глобальное состояние для синхронизации между вкладками/страницами
+const globalState = (() => {
+  if (typeof window !== 'undefined') {
+    if (!window.__signalBadgeState) {
+      window.__signalBadgeState = {
+        count: ref(0),
+        timer: null,
+        initialized: false
+      }
+    }
+    return window.__signalBadgeState
+  }
+  return { count: ref(0), timer: null, initialized: false }
+})()
+
+const count = computed(() => globalState.count.value)
 
 const getDailyMaxValue = () => {
   const today = new Date()
   const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate()
+  // Симуляция рандома, привязанного к дате
   const random = Math.sin(seed) * 10000
   const normalized = random - Math.floor(random)
+  // Диапазон от 22 до 32
   return Math.floor(22 + normalized * 11)
 }
 
 const updateCount = () => {
   const now = new Date()
-  const minutesSinceMidnight = now.getHours() * 60 + now.getMinutes()
-  const intervalIndex = Math.floor(minutesSinceMidnight / 90)
-  const totalIntervals = 15
+  const currentHour = now.getHours()
+  const currentMinute = now.getMinutes()
+  
+  // НАСТРОЙКА: Начало рабочего дня (например, 7 утра)
+  const startHour = 7 
+  
+  // Если сейчас ночь (до 7 утра), показываем 0
+  if (currentHour < startHour) {
+    globalState.count.value = 0
+    return
+  }
+
+  // Вычисляем, сколько минут прошло с НАЧАЛА рабочего дня (с 07:00)
+  const minutesSinceStart = (currentHour - startHour) * 60 + currentMinute
+  
+  // Всего активных минут в дне (с 07:00 до 23:59 = 17 часов * 60 минут = 1020 минут)
+  const totalActiveMinutes = (24 - startHour) * 60 
+  
+  // Максимум на сегодня
   const maxValue = getDailyMaxValue()
-  const calculated = Math.round((intervalIndex / totalIntervals) * maxValue)
-  count.value = Math.min(maxValue, Math.max(0, calculated))
+  
+  // Процент прошедшего рабочего времени
+  const ratio = minutesSinceStart / totalActiveMinutes
+  
+  // Нелинейность (опционально): утром медленнее, днем быстрее. 
+  // Но пока оставим линейный рост внутри рабочего окна.
+  const calculated = Math.round(ratio * maxValue)
+  
+  globalState.count.value = Math.min(maxValue, Math.max(0, calculated))
 }
 
 onMounted(() => {
+  // Инициализация только один раз, но обновление срабатывает при каждом маунте для актуальности
   updateCount()
-  timer = setInterval(updateCount, 60 * 1000)
+  
+  if (!globalState.initialized) {
+    globalState.timer = setInterval(updateCount, 60 * 1000)
+    globalState.initialized = true
+  }
 })
 
 onUnmounted(() => {
-  if (timer) clearInterval(timer)
+  // Таймер не убиваем, так как состояние глобальное
 })
 </script>
 
