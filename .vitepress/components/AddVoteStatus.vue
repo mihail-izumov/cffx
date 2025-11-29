@@ -2,7 +2,6 @@
 import { ref, computed, watch, onMounted } from 'vue'
 
 // Определяем событие, чтобы кнопка в шаблоне могла вызвать emit('close')
-// Это не влияет на логику отправки формы, но нужно для работы крестика.
 const emit = defineEmits(['close'])
 
 // --- ДАННЫЕ (Сети и их статусы) ---
@@ -123,7 +122,6 @@ watch(() => form.value.selectedNetwork, () => {
 
 // === INIT: Генерируем тикет и дату один раз ===
 onMounted(() => {
-  // Генерируем номер тикета и дату при запуске формы (как в paste.txt)
   rawTicketNumber.value = String(Date.now()).slice(-6)
   formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`
 
@@ -296,10 +294,9 @@ ${feedbackMessage.value}`
 <template>
   <div class="page-container">
     
-    <!-- Кнопка закрытия: 
-         Показывается на десктопе. 
-         Скрывается на мобильных (< 640px) через CSS, чтобы не было наложения 
-         с системной кнопкой модального окна -->
+    <!-- Кнопка закрытия:
+         Скрываем её через CSS на ширине < 1024px (мобилки, планшеты),
+         так как там уже есть системный крестик модального окна. -->
     <button class="close-button" @click="$emit('close')" aria-label="Закрыть">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
     </button>
@@ -403,7 +400,7 @@ ${feedbackMessage.value}`
   position: relative;
 }
 
-/* Стили кнопки закрытия (по умолчанию видна) */
+/* Стили кнопки закрытия */
 .close-button {
   position: absolute;
   top: 0;
@@ -425,6 +422,13 @@ ${feedbackMessage.value}`
 .close-button:hover {
   background-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
+}
+
+/* ОТДЕЛЬНЫЙ БЛОК: Скрываем крестик на всех промежуточных разрешениях до 1024px */
+@media (max-width: 1024px) {
+  .close-button {
+    display: none;
+  }
 }
 
 .readiness-title {
@@ -722,21 +726,15 @@ ${feedbackMessage.value}`
 .submit-button:active { transform: scale(0.98); }
 .submit-button:disabled { opacity: 0.7; cursor: not-allowed; }
 
-/* Мобильная адаптивность (порог < 480px) */
+/* Мобильная адаптивность (layout) */
 @media (max-width: 480px) {
   .page-container {
     padding: 0 16px !important;
   }
   
-  /* Скрываем кнопку закрытия на мобильных, чтобы не было наложения с системной кнопкой */
-  .close-button {
-    display: none;
-  }
-
-  /* Увеличен отступ сверху на 2px (0 -> 2px) */
+  /* Увеличен отступ сверху на 2px */
   :deep(.page-container h1) { margin-top: 2px !important; margin-bottom: 16px !important; }
   
-  /* Если сброс не работает, продублируем напрямую */
   .readiness-title {
     margin-top: 2px !important;
     margin-bottom: 16px !important;
@@ -758,7 +756,7 @@ ${feedbackMessage.value}`
     flex-direction: column !important;
     align-items: center !important;
     margin: 8px 0 16px !important;
-    /* Уменьшен отступ между карточками на 5px (было 16px -> 11px) */
+    /* Уменьшен отступ между карточками на 5px (16px -> 11px) */
     gap: 11px !important;
   }
   
