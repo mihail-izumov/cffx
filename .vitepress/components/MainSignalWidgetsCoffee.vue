@@ -542,8 +542,8 @@ onUnmounted(() => {
   background: rgba(18, 18, 20, 0.85); /* Прозрачность затемнения */
   
   /* УМЕНЬШЕНО РАЗМЫТИЕ (было 30px) */
-  backdrop-filter: blur(5px); 
-  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(0px); 
+  -webkit-backdrop-filter: blur(0px);
   
   z-index: 1;
   border-radius: 20px;
