@@ -227,6 +227,18 @@ const onKeydown = (e) => {
   }
 }
 
+// Предзагрузка изображений
+const preloadImages = () => {
+  const imagesToPreload = Object.values(cafes).map(cafe => cafe.image).filter(Boolean)
+  // Убираем дубликаты
+  const uniqueImages = [...new Set(imagesToPreload)]
+  
+  uniqueImages.forEach(src => {
+    const img = new Image()
+    img.src = src
+  })
+}
+
 watch(selectedCafe, (newName) => {
   const newConfig = getCafeConfig(newName)
   systemMetrics.value.responseTime = newConfig.responseTime.base
@@ -236,6 +248,7 @@ watch(selectedCafe, (newName) => {
 })
 
 onMounted(() => {
+  preloadImages()
   intervalId = setInterval(cycleText, 7000)
   metricsIntervalId = setInterval(fetchSystemStatus, 45000)
   fetchSystemStatus()
@@ -382,6 +395,7 @@ onUnmounted(() => {
       @click="closeVoteModal"
     >
       <div class="signal2-review-modal-content" @click.stop>
+        <!-- Кнопка закрытия закреплена -->
         <button @click="closeVoteModal" class="signal2-modal-close-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
@@ -508,7 +522,10 @@ onUnmounted(() => {
 }
 
 .signal2-review-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 8px; box-sizing: border-box; }
-.signal2-review-modal-content { background: #1e1e20; border-radius: 16px; width: 650px; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); box-sizing: border-box; color: white; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ОБНОВЛЕНО: Увеличена ширина модального окна на десктопе (650px -> 780px) */
+.signal2-review-modal-content { background: #1e1e20; border-radius: 16px; width: 780px; height: clamp(85vh, 90vh, 85vh); max-width: 95vw; max-height: clamp(85vh, 90vh, 85vh); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); box-sizing: border-box; color: white; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+
 .signal2-modal-scrollable-content { flex: 1; overflow-y: auto; padding: 20px 16px 16px 16px; }
 :deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(p), :deep(span), :deep(label), :deep(.title), :deep(.subtitle), :deep(.description), :deep(.example-text), :deep(.hint-text) { text-align: initial !important; padding-left: 0 !important; padding-right: 0 !important; }
 :deep(.container), :deep(.content) { padding-left: 0 !important; padding-right: 0 !important; margin-left: 0 !important; margin-right: 0 !important; }
@@ -520,7 +537,6 @@ onUnmounted(() => {
 .signal2-internal-close-btn { background: var(--vp-c-bg-mute); border: 2px solid var(--vp-c-border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--vp-c-text-2); transition: all 0.3s ease; flex-shrink: 0; }
 .signal2-back-btn:hover { background: var(--vp-c-bg-soft); border-color: var(--vp-c-text-2); color: white; }
 
-/* Исправленный стиль для фона и блюра */
 .signal2-main-card { 
   background-color: #2d2d2d; 
   background-size: cover;
@@ -530,21 +546,20 @@ onUnmounted(() => {
   position: relative;
   overflow: hidden; 
   padding: 0;
-  
-  /* Исправление артефактов на границах для Safari/Chrome */
   transform: translateZ(0); 
   -webkit-mask-image: -webkit-radial-gradient(white, black);
+  
+  /* ОБНОВЛЕНО: Тонкая обводка для скрытия артефактов */
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
 .signal2-blur-overlay {
   position: absolute;
-  inset: -2px; /* Расширяем оверлей на 2px, чтобы перекрыть края */
-  background: rgba(18, 18, 20, 0.85); /* Прозрачность затемнения */
-  
-  /* УМЕНЬШЕНО РАЗМЫТИЕ (было 30px) */
-  backdrop-filter: blur(0px); 
-  -webkit-backdrop-filter: blur(0px);
-  
+  inset: -1px; /* Перекрытие краев */
+  background: rgba(18, 18, 20, 0.85);
+  /* Блюр убран */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   z-index: 1;
   border-radius: 20px;
 }
@@ -579,6 +594,7 @@ onUnmounted(() => {
 }
 .signal2-stat-card:hover .signal2-stat-value { transform: scale(1.05); text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8); }
 
+/* ОБНОВЛЕНО: Сделали ярче надписи */
 .signal2-stat-label { 
   font-weight: 700; 
   font-size: 11px; 
@@ -590,12 +606,12 @@ onUnmounted(() => {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  opacity: 0.7;
+  opacity: 0.9; /* Было 0.7 */
   position: relative;
 }
 .signal2-stat-card:hover .signal2-stat-label { 
   transform: scale(1.05); 
-  opacity: 0.85;
+  opacity: 1;
 }
 
 .signal2-stat-badge { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.1); margin-top: auto; }
@@ -818,6 +834,7 @@ onUnmounted(() => {
     line-height: 1.4;
   }
   
+  /* ОБНОВЛЕНО: Кнопка закрытия всегда поверх контента и зафиксирована */
   .signal2-modal-close-icon {
     display: flex !important;
     position: absolute !important;
@@ -833,7 +850,7 @@ onUnmounted(() => {
     align-items: center !important;
     justify-content: center !important;
     transition: all 0.3s ease;
-    z-index: 10;
+    z-index: 10; /* Поверх всего */
   }
 }
 @media (max-width: 700px) {
@@ -862,19 +879,20 @@ onUnmounted(() => {
   .signal2-review-modal-content { height: 75vh !important; max-height: 75vh !important; }
 }
 
+/* ОБНОВЛЕНО: Более светлые цвета для label */
 .signal2-graphite-stat {
   --signal2-border-gradient: linear-gradient(135deg, rgba(70, 70, 70, 0.8), rgba(113, 128, 150, 0.6), rgba(70, 70, 70, 0.8));
   --signal2-glow-color: rgba(70, 70, 70, 0.25);
   --signal2-glow-hover-color: rgba(113, 128, 150, 0.4);
-  --signal2-label-color-1: rgba(113, 128, 150, 0.8);
-  --signal2-label-color-2: rgba(160, 174, 192, 0.6);
+  --signal2-label-color-1: rgba(140, 155, 180, 1); /* Светлее */
+  --signal2-label-color-2: rgba(180, 194, 212, 0.9); /* Светлее */
 }
 .signal2-lime-stat {
   --signal2-border-gradient: linear-gradient(135deg, #4d7c0f, #a3e635, #c5f946);
   --signal2-glow-color: rgba(197, 249, 70, 0.25);
   --signal2-glow-hover-color: rgba(197, 249, 70, 0.6);
-  --signal2-label-color-1: rgba(163, 230, 53, 0.8);
-  --signal2-label-color-2: rgba(197, 249, 70, 0.6);
+  --signal2-label-color-1: rgba(183, 250, 73, 1); /* Светлее */
+  --signal2-label-color-2: rgba(217, 255, 100, 0.9); /* Светлее */
 }
 
 @keyframes liquid-fluid {
