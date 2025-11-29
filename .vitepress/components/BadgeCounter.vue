@@ -9,8 +9,8 @@ const updateCount = () => {
   const minutesSinceMidnight = now.getHours() * 60 + now.getMinutes()
   const intervalIndex = Math.floor(minutesSinceMidnight / 90)
   const totalIntervals = 15
-  const calculated = Math.round((intervalIndex / totalIntervals) * 47)
-  count.value = Math.min(47, Math.max(0, calculated))
+  const calculated = Math.round((intervalIndex / totalIntervals) * 24)
+  count.value = Math.min(24, Math.max(0, calculated))
 }
 
 onMounted(() => {
