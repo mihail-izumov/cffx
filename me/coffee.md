@@ -24,26 +24,18 @@ description: Сигнал – тому кто решает
 
 
 <style>
-/* Утилита для переноса строк (без изменений) */
-.mobile-break {
-  display: none;
-}
-
-@media (max-width: 767px) {
-  .mobile-break {
-    display: inline;
-  }
-}
-</style>
-
-<style>
-
+/* Стили для заголовка */
 .vp-doc h1.responsive-heading {
   font-size: 52px !important;
   line-height: 1.1 !important;
+  
+  /* === РЕГУЛИРОВКА ОТСТУПА СВЕРХУ === */
+  /* Сейчас стоит 20px. Ставьте 0, если хотите прижать к бейджу, или 40px, чтобы отодвинуть */
+  margin-top: 15px !important; 
+  
+  /* === РЕГУЛИРОВКА ОТСТУПА СНИЗУ === */
   margin-bottom: 20px !important;
-  margin-top: 0.5em !important;  /* Сброс стандартных отступов, если нужно */
-  margin-bottom: 0.5em !important;
+  
   padding-top: 0 !important;
   font-weight: 700 !important;
 }
@@ -52,7 +44,13 @@ description: Сигнал – тому кто решает
   .vp-doc h1.responsive-heading {
     font-size: 32px !important;
     line-height: 1.2 !important;
+    
+    /* === ОТСТУП СВЕРХУ НА МОБИЛЬНОМ === */
+    /* Можно сделать поменьше, например 10px */
+    margin-top: 10px !important; 
+    
     margin-bottom: 15px !important;
   }
 }
 </style>
+
