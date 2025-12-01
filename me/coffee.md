@@ -26,12 +26,11 @@ description: Сигнал – тому кто решает
 
 
 <style>
-/* По умолчанию скрываем тег <br> с классом .mobile-break */
+/* Утилита для переноса строк (без изменений) */
 .mobile-break {
   display: none;
 }
 
-/* Показываем <br> только на мобильных устройствах (экраны до 767px  включительно) */
 @media (max-width: 767px) {
   .mobile-break {
     display: inline;
@@ -40,22 +39,24 @@ description: Сигнал – тому кто решает
 </style>
 
 <style>
-.responsive-heading {
+/* 
+   Используем селектор ".vp-doc h1.responsive-heading".
+   Это повышает специфичность (вес) стиля, чтобы гарантированно 
+   перебить дефолтные 80px от Vitepress.
+*/
+.vp-doc h1.responsive-heading {
   font-size: 32px !important;
-  line-height: 0.9 !important;
+  line-height: 1.1 !important;
+  margin-top: 0.5em !important;  /* Сброс стандартных отступов, если нужно */
+  margin-bottom: 0.5em !important;
+  padding-top: 0 !important;
+  font-weight: 700 !important;
 }
 
 @media screen and (max-width: 768px) {
-  .responsive-heading {
+  .vp-doc h1.responsive-heading {
     font-size: 22px !important;
-    line-height: 1.1 !important;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .responsive-heading {
-    font-size: 22px !important;
-    line-height: 1.1 !important;
+    line-height: 1.2 !important;
   }
 }
 </style>
