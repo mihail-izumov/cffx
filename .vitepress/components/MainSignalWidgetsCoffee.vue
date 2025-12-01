@@ -511,7 +511,7 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-.signal2-widget-content { padding: 15px 0; }
+.signal2-widget-content { padding-top: 0; padding-bottom: 32px; margin-top: -20px; }
 .signal2-cafe-switchers-container { position: relative; margin-bottom: 32px; }
 .signal2-cafe-switchers { display: flex; gap: 12px; padding-bottom: 12px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: rgba(70, 70, 70, 0.8) transparent; }
 .signal2-cafe-switchers::-webkit-scrollbar { height: 2px; }
