@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 
-// Родитель слушает это событие и закрывает окно сам
+// Объявляем событие close, чтобы родитель мог его слушать
 const emit = defineEmits(['close'])
 
 // --- ДАННЫЕ (Сети и их статусы) ---
@@ -76,8 +76,11 @@ const form = ref({
   selectedNetwork: 'Корж'
 })
 
+// Ползунки (мнение пользователя)
 const listeningValue = ref(3.5)
 const changeValue = ref(4.2)
+
+// Статусы сети (фиксированные значения из базы)
 const networkListeningStatus = ref(0)
 const networkSignalStatus = ref(0)
 
@@ -92,10 +95,13 @@ const availableNetworks = computed(() => {
   return Object.keys(source)
 })
 
+// Обновление данных при смене сети
 const updateStatusesFromNetwork = () => {
   if (!form.value.direction || !form.value.selectedNetwork) return
+  
   const source = form.value.direction === 'fitness' ? fitness : cafes
   const networkData = source[form.value.selectedNetwork]
+  
   if (networkData) {
     networkListeningStatus.value = networkData.listeningStatus
     networkSignalStatus.value = networkData.signalStatus
@@ -128,6 +134,7 @@ onMounted(() => {
   const seconds = String(now.getSeconds()).padStart(2, '0')
 
   currentDate.value = `${day}.${month}.${year}, ${hours}:${minutes}:${seconds}`
+
   updateStatusesFromNetwork()
 })
 
@@ -145,12 +152,14 @@ const getStatusIndex = (val: number) => {
 
 const userListeningIndex = computed(() => getStatusIndex(listeningValue.value))
 const userChangeIndex = computed(() => getStatusIndex(changeValue.value))
+
 const networkListeningIndex = computed(() => getStatusIndex(networkListeningStatus.value))
 const networkSignalIndex = computed(() => getStatusIndex(networkSignalStatus.value))
 
 const sliderStyle = (value: number | string) => {
   const v = Number(value)
   const percentage = (v / 8) * 100
+
   return {
     background: `linear-gradient(
       to right,
@@ -167,6 +176,7 @@ const sliderStyle = (value: number | string) => {
 const feedbackMessage = computed(() => {
   const l = userListeningIndex.value
   const c = userChangeIndex.value
+
   const messages = [
     [
       'Место только выстраивает систему обратной связи — ваш Сигнал войдёт в основу того, как они будут работать с Клиентами.',
@@ -184,6 +194,7 @@ const feedbackMessage = computed(() => {
       'Здесь ваши Сигналы работают как рычаг — место быстро отвечает и действительно меняется вместе с вами.'
     ]
   ]
+
   return messages[l][c]
 })
 
@@ -228,7 +239,7 @@ const submitForm = async () => {
   const formData = new FormData()
   formData.append('referer', window.location.origin)
   formData.append('clientId', clientId)
-  formData.append('ticketNumber', formattedTicketNumber.value!)
+  formData.append('ticketNumber', formattedTicketNumber.value || '000-000') // Защита от null
   formData.append('date', currentDate.value)
   formData.append('submitted', submittedTime)
   formData.append('direction', form.value.direction === 'food' ? 'Еда' : 'Фитнес')
@@ -258,14 +269,14 @@ ${feedbackMessage.value}`
       method: 'POST',
       body: formData
     })
+
     const result = await response.json()
     
     if (result.status === 'success' && result.processed) {
       isSuccess.value = true
       setTimeout(() => {
         isSuccess.value = false
-        // Опционально: закрыть окно после успешной отправки через пару секунд
-        // emit('close')
+        // emit('close') // Раскомментируйте, если хотите закрывать окно после успеха
       }, 3000)
     } else {
       throw new Error(result.message || 'Ошибка обработки данных')
@@ -282,10 +293,7 @@ ${feedbackMessage.value}`
 <template>
   <div class="page-container">
     
-    <!-- 
-      КНОПКА ЗАКРЫТИЯ УДАЛЕНА.
-      Она теперь рендерится в родительском компоненте.
-    -->
+    <!-- Кнопка закрытия УБРАНА, так как она есть в родителе -->
 
     <h1 class="readiness-title">Где Вас Слушают?</h1>
 
@@ -365,7 +373,7 @@ ${feedbackMessage.value}`
     </div>
 
     <div class="submit-container">
-      <button class="submit-button" :disabled="isSubmitting || isSuccess" @click="submitForm">
+      <button type="button" class="submit-button" :disabled="isSubmitting || isSuccess" @click="submitForm">
         {{ buttonText }}
       </button>
     </div>
