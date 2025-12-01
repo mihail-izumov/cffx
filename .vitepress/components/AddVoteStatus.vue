@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 
-// Событие для закрытия
+// Родитель слушает это событие и закрывает окно сам
 const emit = defineEmits(['close'])
 
 // --- ДАННЫЕ (Сети и их статусы) ---
@@ -76,11 +76,8 @@ const form = ref({
   selectedNetwork: 'Корж'
 })
 
-// Ползунки (мнение пользователя)
 const listeningValue = ref(3.5)
 const changeValue = ref(4.2)
-
-// Статусы сети (фиксированные значения из базы)
 const networkListeningStatus = ref(0)
 const networkSignalStatus = ref(0)
 
@@ -95,13 +92,10 @@ const availableNetworks = computed(() => {
   return Object.keys(source)
 })
 
-// Обновление данных при смене сети
 const updateStatusesFromNetwork = () => {
   if (!form.value.direction || !form.value.selectedNetwork) return
-  
   const source = form.value.direction === 'fitness' ? fitness : cafes
   const networkData = source[form.value.selectedNetwork]
-  
   if (networkData) {
     networkListeningStatus.value = networkData.listeningStatus
     networkSignalStatus.value = networkData.signalStatus
@@ -134,7 +128,6 @@ onMounted(() => {
   const seconds = String(now.getSeconds()).padStart(2, '0')
 
   currentDate.value = `${day}.${month}.${year}, ${hours}:${minutes}:${seconds}`
-
   updateStatusesFromNetwork()
 })
 
@@ -152,14 +145,12 @@ const getStatusIndex = (val: number) => {
 
 const userListeningIndex = computed(() => getStatusIndex(listeningValue.value))
 const userChangeIndex = computed(() => getStatusIndex(changeValue.value))
-
 const networkListeningIndex = computed(() => getStatusIndex(networkListeningStatus.value))
 const networkSignalIndex = computed(() => getStatusIndex(networkSignalStatus.value))
 
 const sliderStyle = (value: number | string) => {
   const v = Number(value)
   const percentage = (v / 8) * 100
-
   return {
     background: `linear-gradient(
       to right,
@@ -176,7 +167,6 @@ const sliderStyle = (value: number | string) => {
 const feedbackMessage = computed(() => {
   const l = userListeningIndex.value
   const c = userChangeIndex.value
-
   const messages = [
     [
       'Место только выстраивает систему обратной связи — ваш Сигнал войдёт в основу того, как они будут работать с Клиентами.',
@@ -194,7 +184,6 @@ const feedbackMessage = computed(() => {
       'Здесь ваши Сигналы работают как рычаг — место быстро отвечает и действительно меняется вместе с вами.'
     ]
   ]
-
   return messages[l][c]
 })
 
@@ -269,13 +258,14 @@ ${feedbackMessage.value}`
       method: 'POST',
       body: formData
     })
-
     const result = await response.json()
     
     if (result.status === 'success' && result.processed) {
       isSuccess.value = true
       setTimeout(() => {
         isSuccess.value = false
+        // Опционально: закрыть окно после успешной отправки через пару секунд
+        // emit('close')
       }, 3000)
     } else {
       throw new Error(result.message || 'Ошибка обработки данных')
@@ -289,19 +279,13 @@ ${feedbackMessage.value}`
 }
 </script>
 
-
 <template>
   <div class="page-container">
     
     <!-- 
-      Кнопка закрытия (крестик).
-      Она будет видна ТОЛЬКО на десктопе (> 768px), 
-      потому что родительский компонент скрывает свой крестик на этой ширине.
-      На мобильных (< 768px) мы её скрываем, чтобы не дублировать родительский крестик.
+      КНОПКА ЗАКРЫТИЯ УДАЛЕНА.
+      Она теперь рендерится в родительском компоненте.
     -->
-    <button class="close-button" @click="$emit('close')" aria-label="Закрыть">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-    </button>
 
     <h1 class="readiness-title">Где Вас Слушают?</h1>
 
@@ -400,38 +384,6 @@ ${feedbackMessage.value}`
   margin: 0;
   box-sizing: border-box;
   position: relative;
-}
-
-/* Стили кнопки закрытия (видны по умолчанию = десктоп) */
-.close-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #9ca3af;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-  z-index: 10;
-}
-
-.close-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
-
-/* Медиа-запрос: СКРЫВАЕМ кнопку, если ширина <= 768px.
-   На этих разрешениях родительский компонент (paste.txt) ВКЛЮЧАЕТ свой крестик. */
-@media (max-width: 768px) {
-  .close-button {
-    display: none;
-  }
 }
 
 .readiness-title {
@@ -759,6 +711,7 @@ ${feedbackMessage.value}`
     flex-direction: column !important;
     align-items: center !important;
     margin: 8px 0 16px !important;
+    /* Уменьшен отступ между карточками на 5px (16px -> 11px) */
     gap: 11px !important;
   }
   
