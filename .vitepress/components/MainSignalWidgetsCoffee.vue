@@ -383,7 +383,7 @@ onUnmounted(() => {
                  @mouseleave="!isMobile ? showSignalsTooltip = false : null">
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
-                  <div class="signal2-stat-label">КАК МЕНЯЮТ</div>
+                  <div class="signal2-stat-label">КАК ДЕЙСТВУЮТ</div>
                   <div class="signal2-stat-value">{{ establishment.SignalsStatus }}</div>
                 </div>
                 <div class="signal2-stat-badge signal2-lime-badge signal-100-badge">
@@ -429,7 +429,7 @@ onUnmounted(() => {
 
             <div class="signal2-button-container">
               <button @click="openVoteModal" class="signal2-action-button signal2-ticket-button">
-                Оценить место
+                Моя Оценка
                 <div class="signal2-button-icon-container">
                   <span class="signal2-settings-icon-wrapper"></span>
                 </div>
