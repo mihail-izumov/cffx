@@ -20,8 +20,6 @@ description: Сигнал – тому кто решает
   Без регистрации.<br class="mobile-break"> <strong>Результат — в течение дня.</strong>
 </p>
 
-<div style="border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: 50px; margin-bottom: 60px;"></div>
-
 </div>
 
 <MainSignalWidgetsCoffee />
@@ -43,13 +41,13 @@ description: Сигнал – тому кто решает
 
 <style>
 .responsive-heading {
-  font-size: 80px !important;
+  font-size: 32px !important;
   line-height: 0.9 !important;
 }
 
 @media screen and (max-width: 768px) {
   .responsive-heading {
-    font-size: 32px !important;
+    font-size: 22px !important;
     line-height: 1.1 !important;
   }
 }
