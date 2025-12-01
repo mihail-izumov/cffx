@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 
-// Объявляем событие close, чтобы родитель мог его слушать
+// Объявляем событие, чтобы родительский компонент мог закрыть это окно
 const emit = defineEmits(['close'])
 
 // --- ДАННЫЕ (Сети и их статусы) ---
 
-const fitness = {
+const fitness: Record<string, any> = {
   'SMSTRETCHING': {
     listeningStatus: 2.5,
     signalStatus: 3.8,
@@ -26,7 +26,7 @@ const fitness = {
   }
 }
 
-const cafes = {
+const cafes: Record<string, any> = {
   'Корж': {
     listeningStatus: 5.5,
     signalStatus: 6.8,
@@ -76,11 +76,8 @@ const form = ref({
   selectedNetwork: 'Корж'
 })
 
-// Ползунки (мнение пользователя)
 const listeningValue = ref(3.5)
 const changeValue = ref(4.2)
-
-// Статусы сети (фиксированные значения из базы)
 const networkListeningStatus = ref(0)
 const networkSignalStatus = ref(0)
 
@@ -95,16 +92,21 @@ const availableNetworks = computed(() => {
   return Object.keys(source)
 })
 
-// Обновление данных при смене сети
+// Вспомогательная функция для получения данных текущей сети
+const getCurrentNetworkData = () => {
+  const source = form.value.direction === 'fitness' ? fitness : cafes
+  return source[form.value.selectedNetwork]
+}
+
+// Обновление UI при смене сети
 const updateStatusesFromNetwork = () => {
   if (!form.value.direction || !form.value.selectedNetwork) return
-  
-  const source = form.value.direction === 'fitness' ? fitness : cafes
-  const networkData = source[form.value.selectedNetwork]
+  const networkData = getCurrentNetworkData()
   
   if (networkData) {
     networkListeningStatus.value = networkData.listeningStatus
     networkSignalStatus.value = networkData.signalStatus
+    // Сбрасываем ползунки на значения сети (или можно не сбрасывать, если не хотите)
     listeningValue.value = networkData.listeningStatus
     changeValue.value = networkData.signalStatus
   }
@@ -112,6 +114,7 @@ const updateStatusesFromNetwork = () => {
 
 watch(() => form.value.direction, (newDirection) => {
   const networks = newDirection === 'fitness' ? Object.keys(fitness) : Object.keys(cafes)
+  // Выбираем первую сеть из списка при смене направления
   form.value.selectedNetwork = networks[0] || ''
   updateStatusesFromNetwork()
 })
@@ -134,7 +137,6 @@ onMounted(() => {
   const seconds = String(now.getSeconds()).padStart(2, '0')
 
   currentDate.value = `${day}.${month}.${year}, ${hours}:${minutes}:${seconds}`
-
   updateStatusesFromNetwork()
 })
 
@@ -153,13 +155,13 @@ const getStatusIndex = (val: number) => {
 const userListeningIndex = computed(() => getStatusIndex(listeningValue.value))
 const userChangeIndex = computed(() => getStatusIndex(changeValue.value))
 
+// Computed для отображения в UI
 const networkListeningIndex = computed(() => getStatusIndex(networkListeningStatus.value))
 const networkSignalIndex = computed(() => getStatusIndex(networkSignalStatus.value))
 
 const sliderStyle = (value: number | string) => {
   const v = Number(value)
   const percentage = (v / 8) * 100
-
   return {
     background: `linear-gradient(
       to right,
@@ -218,7 +220,27 @@ const submitForm = async () => {
     return
   }
 
+  // ВАЖНО: Получаем данные о сети прямо перед отправкой
+  const networkData = getCurrentNetworkData()
+  
+  if (!networkData) {
+    // Если мы здесь, значит selectedNetwork не совпал ни с одним ключом в объектах fitness/cafes
+    console.error('Данные для сети не найдены:', form.value.selectedNetwork)
+    alert(`Ошибка: данные для сети "${form.value.selectedNetwork}" не найдены.`)
+    return
+  }
+
   isSubmitting.value = true
+
+  // Используем актуальные данные из объекта networkData
+  const currentNetworkListening = networkData.listeningStatus
+  const currentNetworkSignal = networkData.signalStatus
+  
+  const currentNetLIndex = getStatusIndex(currentNetworkListening)
+  const currentNetSIndex = getStatusIndex(currentNetworkSignal)
+  
+  const currentUserLIndex = getStatusIndex(listeningValue.value)
+  const currentUserCIndex = getStatusIndex(changeValue.value)
 
   const now = new Date()
   const day = String(now.getDate()).padStart(2, '0')
@@ -239,7 +261,7 @@ const submitForm = async () => {
   const formData = new FormData()
   formData.append('referer', window.location.origin)
   formData.append('clientId', clientId)
-  formData.append('ticketNumber', formattedTicketNumber.value || '000-000') // Защита от null
+  formData.append('ticketNumber', formattedTicketNumber.value || '000-000')
   formData.append('date', currentDate.value)
   formData.append('submitted', submittedTime)
   formData.append('direction', form.value.direction === 'food' ? 'Еда' : 'Фитнес')
@@ -252,17 +274,20 @@ const submitForm = async () => {
 Сеть: ${form.value.selectedNetwork}
 
 [Данные сети]
-Статус сети (Listening): ${listeningLabels[networkListeningIndex.value]} (${networkListeningStatus.value})
-Статус сети (Signal): ${changeLabels[networkSignalIndex.value]} (${networkSignalStatus.value})
+Статус сети (Listening): ${listeningLabels[currentNetLIndex]} (${currentNetworkListening})
+Статус сети (Signal): ${changeLabels[currentNetSIndex]} (${currentNetworkSignal})
 
 [Мнение пользователя]
-Как слушают: ${listeningLabels[userListeningIndex.value]} (${listeningValue.value.toFixed(2)}/8)
-Как меняют: ${changeLabels[userChangeIndex.value]} (${changeValue.value.toFixed(2)}/8)
+Как слушают: ${listeningLabels[currentUserLIndex]} (${listeningValue.value.toFixed(2)}/8)
+Как меняют: ${changeLabels[currentUserCIndex]} (${changeValue.value.toFixed(2)}/8)
 
 [Комментарий системы]
 ${feedbackMessage.value}`
 
   formData.append('review', reviewText)
+
+  // Логирование для отладки
+  console.log('Submitting data for:', form.value.selectedNetwork);
 
   try {
     const response = await fetch(API_ENDPOINT, {
@@ -276,7 +301,6 @@ ${feedbackMessage.value}`
       isSuccess.value = true
       setTimeout(() => {
         isSuccess.value = false
-        // emit('close') // Раскомментируйте, если хотите закрывать окно после успеха
       }, 3000)
     } else {
       throw new Error(result.message || 'Ошибка обработки данных')
@@ -293,7 +317,7 @@ ${feedbackMessage.value}`
 <template>
   <div class="page-container">
     
-    <!-- Кнопка закрытия УБРАНА, так как она есть в родителе -->
+    <!-- КНОПКА ЗАКРЫТИЯ ОТСУТСТВУЕТ (управляется родителем) -->
 
     <h1 class="readiness-title">Где Вас Слушают?</h1>
 
