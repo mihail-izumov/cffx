@@ -318,7 +318,7 @@ ${feedbackMessage.value}`
 
 <template>
   <div class="page-container">
-    <h1 class="readiness-title">Где Вас Слушают?</h1>
+    <h1 class="readiness-title">Ваша Оценка Сегодня</h1>
 
     <div class="selectors-container">
       <div class="selector-group">
