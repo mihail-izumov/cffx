@@ -14,8 +14,6 @@ description: Сигнал – тому кто решает
 
 <h1 class="responsive-heading">Ваш Сигнал — тому,<br>кто решает.</h1>
 
-<div style="height: 15px;"></div>
-
 <p>
   Без регистрации.<br class="mobile-break"> <strong>Результат — в течение дня.</strong>
 </p>
@@ -41,18 +39,20 @@ description: Сигнал – тому кто решает
 <style>
 
 .vp-doc h1.responsive-heading {
-  font-size: 42px !important;
+  font-size: 52px !important;
   line-height: 1.1 !important;
+  margin-bottom: 20px !important;
   margin-top: 0.5em !important;  /* Сброс стандартных отступов, если нужно */
   margin-bottom: 0.5em !important;
   padding-top: 0 !important;
-  font-weight: 500 !important;
+  font-weight: 700 !important;
 }
 
 @media screen and (max-width: 768px) {
   .vp-doc h1.responsive-heading {
-    font-size: 22px !important;
+    font-size: 32px !important;
     line-height: 1.2 !important;
+    margin-bottom: 15px !important;
   }
 }
 </style>
