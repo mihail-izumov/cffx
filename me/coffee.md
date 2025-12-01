@@ -51,5 +51,6 @@ description: Сигнал – тому кто решает
     margin-bottom: 15px !important;
   }
 }
+  }
 </style>
 
