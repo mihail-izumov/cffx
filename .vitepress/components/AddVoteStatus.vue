@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 
-// Объявляем событие, чтобы родительский компонент мог закрыть это окно
 const emit = defineEmits(['close'])
 
 // --- ДАННЫЕ (Сети и их статусы) ---
@@ -76,6 +75,7 @@ const form = ref({
   selectedNetwork: 'Корж'
 })
 
+// Инициализируем как числа
 const listeningValue = ref(3.5)
 const changeValue = ref(4.2)
 const networkListeningStatus = ref(0)
@@ -92,13 +92,11 @@ const availableNetworks = computed(() => {
   return Object.keys(source)
 })
 
-// Вспомогательная функция для получения данных текущей сети
 const getCurrentNetworkData = () => {
   const source = form.value.direction === 'fitness' ? fitness : cafes
   return source[form.value.selectedNetwork]
 }
 
-// Обновление UI при смене сети
 const updateStatusesFromNetwork = () => {
   if (!form.value.direction || !form.value.selectedNetwork) return
   const networkData = getCurrentNetworkData()
@@ -106,15 +104,14 @@ const updateStatusesFromNetwork = () => {
   if (networkData) {
     networkListeningStatus.value = networkData.listeningStatus
     networkSignalStatus.value = networkData.signalStatus
-    // Сбрасываем ползунки на значения сети (или можно не сбрасывать, если не хотите)
-    listeningValue.value = networkData.listeningStatus
-    changeValue.value = networkData.signalStatus
+    // Гарантируем, что присваиваем числа
+    listeningValue.value = Number(networkData.listeningStatus)
+    changeValue.value = Number(networkData.signalStatus)
   }
 }
 
 watch(() => form.value.direction, (newDirection) => {
   const networks = newDirection === 'fitness' ? Object.keys(fitness) : Object.keys(cafes)
-  // Выбираем первую сеть из списка при смене направления
   form.value.selectedNetwork = networks[0] || ''
   updateStatusesFromNetwork()
 })
@@ -145,17 +142,18 @@ onMounted(() => {
 const listeningLabels = ['Подключены', 'Слышат', 'Отвечают']
 const changeLabels = ['Открыты', 'Действуют', 'Меняют']
 
-const getStatusIndex = (val: number) => {
+const getStatusIndex = (val: number | string) => {
+  // Принудительное преобразование в число
+  const v = Number(val)
   const step = 8 / 3
-  if (val < step) return 0
-  if (val < step * 2) return 1
+  if (v < step) return 0
+  if (v < step * 2) return 1
   return 2
 }
 
 const userListeningIndex = computed(() => getStatusIndex(listeningValue.value))
 const userChangeIndex = computed(() => getStatusIndex(changeValue.value))
 
-// Computed для отображения в UI
 const networkListeningIndex = computed(() => getStatusIndex(networkListeningStatus.value))
 const networkSignalIndex = computed(() => getStatusIndex(networkSignalStatus.value))
 
@@ -220,11 +218,8 @@ const submitForm = async () => {
     return
   }
 
-  // ВАЖНО: Получаем данные о сети прямо перед отправкой
   const networkData = getCurrentNetworkData()
-  
   if (!networkData) {
-    // Если мы здесь, значит selectedNetwork не совпал ни с одним ключом в объектах fitness/cafes
     console.error('Данные для сети не найдены:', form.value.selectedNetwork)
     alert(`Ошибка: данные для сети "${form.value.selectedNetwork}" не найдены.`)
     return
@@ -232,7 +227,6 @@ const submitForm = async () => {
 
   isSubmitting.value = true
 
-  // Используем актуальные данные из объекта networkData
   const currentNetworkListening = networkData.listeningStatus
   const currentNetworkSignal = networkData.signalStatus
   
@@ -269,6 +263,11 @@ const submitForm = async () => {
   formData.append('address', 'Online Assessment')
   formData.append('name', 'Пользователь Readiness')
 
+  // --- ИСПРАВЛЕНО ЗДЕСЬ ---
+  // Явно приводим значения к Number перед вызовом toFixed()
+  const listVal = Number(listeningValue.value)
+  const changeVal = Number(changeValue.value)
+
   const reviewText = `[Оценка Readiness]
 Направление: ${form.value.direction === 'food' ? 'Еда' : 'Фитнес'}
 Сеть: ${form.value.selectedNetwork}
@@ -278,16 +277,19 @@ const submitForm = async () => {
 Статус сети (Signal): ${changeLabels[currentNetSIndex]} (${currentNetworkSignal})
 
 [Мнение пользователя]
-Как слушают: ${listeningLabels[currentUserLIndex]} (${listeningValue.value.toFixed(2)}/8)
-Как меняют: ${changeLabels[currentUserCIndex]} (${changeValue.value.toFixed(2)}/8)
+Как слушают: ${listeningLabels[currentUserLIndex]} (${listVal.toFixed(2)}/8)
+Как меняют: ${changeLabels[currentUserCIndex]} (${changeVal.toFixed(2)}/8)
 
 [Комментарий системы]
 ${feedbackMessage.value}`
 
   formData.append('review', reviewText)
 
-  // Логирование для отладки
-  console.log('Submitting data for:', form.value.selectedNetwork);
+  console.log('Отправка:', {
+    network: form.value.selectedNetwork,
+    listVal: listVal,
+    changeVal: changeVal
+  })
 
   try {
     const response = await fetch(API_ENDPOINT, {
@@ -316,9 +318,6 @@ ${feedbackMessage.value}`
 
 <template>
   <div class="page-container">
-    
-    <!-- КНОПКА ЗАКРЫТИЯ ОТСУТСТВУЕТ (управляется родителем) -->
-
     <h1 class="readiness-title">Где Вас Слушают?</h1>
 
     <div class="selectors-container">
