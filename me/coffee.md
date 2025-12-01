@@ -51,14 +51,14 @@ description: Сигнал – тому кто решает
 
 @media screen and (max-width: 768px) {
   .responsive-heading {
-    font-size: 65px !important;
+    font-size: 32px !important;
     line-height: 1.1 !important;
   }
 }
 
 @media screen and (max-width: 480px) {
   .responsive-heading {
-    font-size: 50px !important;
+    font-size: 22px !important;
     line-height: 1.1 !important;
   }
 }
