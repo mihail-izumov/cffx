@@ -12,7 +12,7 @@ description: Сигнал – тому кто решает
 
 <BadgeCounter />
 
-<h1 class="responsive-heading">Ваш Сигнал — тому,<br>кто решает в ресторане.</h1>
+<h1 class="responsive-heading-signal-industries">Ваш Сигнал — тому,<br>кто решает в ресторане.</h1>
 
 <p>
   Без регистрации.<br class="mobile-break"> <strong>Результат — в течение дня.</strong>
@@ -29,7 +29,7 @@ description: Сигнал – тому кто решает
 
 <style>
 /* БАЗОВЫЙ СТИЛЬ (Десктоп) */
-.vp-doc h1.responsive-heading {
+.vp-doc h1.responsive-heading-signal-industries {
   font-size: 52px !important;
   line-height: 1.1 !important;
   margin: 0 0 20px 0 !important;
@@ -40,7 +40,7 @@ description: Сигнал – тому кто решает
 /* ПЛАНШЕТЫ (от 601px до 768px) 
    Используем min-width, чтобы это правило НЕ касалось телефонов */
 @media screen and (min-width: 601px) and (max-width: 768px) {
-  .vp-doc h1.responsive-heading {
+  .vp-doc h1.responsive-heading-signal-industries {
     font-size: 32px !important;
     line-height: 1.2 !important;
     margin-bottom: 15px !important;
@@ -50,7 +50,7 @@ description: Сигнал – тому кто решает
 /* ТЕЛЕФОНЫ (всё, что меньше 600px) 
    Увеличили порог с 480 до 600, чтобы точно поймать все мобильные */
 @media screen and (max-width: 600px) {
-  .vp-doc h1.responsive-heading {
+  .vp-doc h1.responsive-heading-signal-industries {
     font-size: 15px !important;
     line-height: 1.2 !important;
     margin-bottom: 15px !important;
