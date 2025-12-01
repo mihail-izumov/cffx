@@ -42,7 +42,7 @@ description: Сигнал – тому кто решает
 /* Планшеты и крупные телефоны (до 768px) */
 @media screen and (max-width: 768px) {
   .vp-doc h1.responsive-heading {
-    font-size: 32px !important;
+    font-size: 15px !important;
     line-height: 1.2 !important;
     margin-top: 0px !important; 
     margin-bottom: 15px !important;
