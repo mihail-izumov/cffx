@@ -22,6 +22,10 @@ description: Сигнал – тому кто решает
 
 <MainSignalWidgetsCoffee />
 
+<br>
+
+<RadarWorksBadge />
+
 
 <style>
 /* Стили для заголовка */
