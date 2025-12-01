@@ -351,6 +351,7 @@ onUnmounted(() => {
         @touchend="handleTouchEnd"
       >
         <div class="signal2-blur-overlay"></div>
+        <div class="signal2-main-card-border"></div>
 
         <div class="signal2-content-relative">
           <div class="signal2-establishment-header">
@@ -624,8 +625,19 @@ onUnmounted(() => {
   -webkit-backdrop-filter: none;
   z-index: 1;
   /* Убран border-radius, чтобы не конфликтовать с родителем */
-  box-shadow: inset 0 0 0 1px rgba(18, 18, 20, 1); /* Внутренняя тень цвета фона для перекрытия щелей */
+  
 }
+.signal2-main-card-border {
+  pointer-events: none;
+  border-radius: 20px;
+  border: 1.5px solid rgba(190,200,220,0.20);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  box-sizing: border-box;
+  background: transparent;
+}
+
 
 .signal2-content-relative {
   position: relative;
@@ -691,25 +703,6 @@ onUnmounted(() => {
 .signal2-metric-text { font-size: 14px; font-weight: 500; color: rgba(255, 255, 255, 0.6); }
 .signal2-status-separator { color: rgba(255, 255, 255, 0.3); font-size: 14px; margin: 0 4px; }
 .signal2-control-panel { margin-top: 24px; }
-
-/* Перенесенные глобальные стили для крестика */
-.signal2-modal-close-icon {
-  display: flex !important;
-  position: absolute !important;
-  top: 12px !important;
-  right: 12px !important;
-  width: 40px !important;
-  height: 40px !important;
-  background: rgba(255,255,255,0.1) !important;
-  border: none !important;
-  border-radius: 8px !important;
-  color: #fff !important;
-  cursor: pointer !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 0.3s ease;
-  z-index: 10;
-}
 
 .signal2-control-panel-header { 
   display: flex; 
@@ -777,7 +770,8 @@ onUnmounted(() => {
 }
 
 .signal2-review-button { background: linear-gradient(135deg, #a3e635, #c5f946); color: #1a2e05; box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3); }
-.signal2-review-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(163, 230, 53, 0.4); }\n.signal2-button-icon-container { width: 32px; height: 32px; border-radius: 50%; background: rgba(50, 50, 50, 0.9); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
+.signal2-review-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(163, 230, 53, 0.4); }
+.signal2-button-icon-container { width: 32px; height: 32px; border-radius: 50%; background: rgba(50, 50, 50, 0.9); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
 .signal2-lime-icon-container { background: rgba(100, 150, 30, 0.4) !important; }
 .signal2-button-icon { transition: transform 0.3s ease; color: currentColor; }
 .signal2-review-button:hover .signal2-button-icon { transform: translateX(2px); }
@@ -806,6 +800,24 @@ onUnmounted(() => {
 .signal2-modal-ok:hover { background: var(--vp-c-bg-soft, #333); }
 
 .signal2-mobile-break { display: none; }
+
+.signal2-modal-close-icon {
+  display: flex;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
 
 
 @media (max-width: 768px) {
@@ -913,6 +925,8 @@ onUnmounted(() => {
     text-align: center;
     line-height: 1.4;
   }
+  
+  
 }
 @media (max-width: 700px) {
   .signal2-review-modal-content { width: 95vw; height: 85vh; }
