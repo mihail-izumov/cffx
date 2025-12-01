@@ -3,64 +3,102 @@ import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 import SignalT9Configurator from './SignalT9Configurator.vue'
 import AddVoteStatus from './AddVoteStatus.vue'
 
-const cafeNames = ['Корж', 'MOSAIC', 'Surf', 'Skuratov', 'Белотурка', 'Кэрри']
+const cafeNames = [
+  'Дринкит', 
+  'Корж', 
+  'Skuratov Coffee', 
+  'Surf Coffee', 
+  'ДаблБи', 
+  'Green House', 
+  'Stars Coffee', 
+  'Cofix', 
+  'Do.bro Coffee'
+]
 
 const cafes = {
+  'Дринкит': {
+    name: 'Дринкит',
+    image: '/widget/surf_widget_bg.jpg', // Используем дефолтный фон
+    ListeningStatus: 'Общаются',
+    ListeningBadgeText: 'Устойчивый диалог',
+    SignalsStatus: 'Системно',
+    SignalsBadgeText: 'Процессы отлажены',
+    isConnected: false
+  },
   'Корж': {
     name: 'Корж',
-    image: '/widget/korzh_widget_bg.jpg',
-    ListeningStatus: 'Подключены',
-    ListeningBadgeText: 'Отвечают быстро',
-    SignalsStatus: 'Открыты',
-    SignalsBadgeText: 'Решение: 100%',
+    image: '/widget/korzh_widget_bg.jpg', // Сохранили оригинальный фон
+    ListeningStatus: 'Общаются',
+    ListeningBadgeText: 'Устойчивый диалог',
+    SignalsStatus: 'Внимательно',
+    SignalsBadgeText: 'Гарантируют решение',
     isConnected: true
   },
-  'MOSAIC': {
-    name: 'MOSAIC',
+  'Skuratov Coffee': {
+    name: 'Skuratov Coffee',
     image: '/widget/surf_widget_bg.jpg',
-    ListeningStatus: '3 отзыва',
-    ListeningBadgeText: 'Ответ: 42%',
-    SignalsStatus: '0 сигналов',
-    SignalsBadgeText: 'Без решений',
+    ListeningStatus: 'Общаются',
+    ListeningBadgeText: 'Устойчивый диалог',
+    SignalsStatus: 'Внимательно',
+    SignalsBadgeText: 'Гарантируют решение',
     isConnected: false
   },
-  'Skuratov': {
-    name: 'Skuratov',
+  'Surf Coffee': {
+    name: 'Surf Coffee',
     image: '/widget/surf_widget_bg.jpg',
-    ListeningStatus: '3 отзыва',
-    ListeningBadgeText: 'Ответ: 89%',
-    SignalsStatus: '0 сигналов',
-    SignalsBadgeText: 'Без решений',
+    ListeningStatus: 'Общаются',
+    ListeningBadgeText: 'Устойчивый диалог',
+    SignalsStatus: 'Внимательно',
+    SignalsBadgeText: 'Гарантируют решение',
     isConnected: false
   },
-  'Surf': {
-    name: 'Surf',
+  'ДаблБи': {
+    name: 'ДаблБи',
     image: '/widget/surf_widget_bg.jpg',
-    ListeningStatus: '1 отзыв',
-    ListeningBadgeText: 'Ответ: 100%',
-    SignalsStatus: '0 сигналов',
-    SignalsBadgeText: 'Без решений',
+    ListeningStatus: 'Реагируют',
+    ListeningBadgeText: 'Обычно отвечают',
+    SignalsStatus: 'Внимательно',
+    SignalsBadgeText: 'Гарантируют решение',
     isConnected: false
   },
-  'Белотурка': {
-    name: 'Белотурка',
+  'Green House': {
+    name: 'Green House',
     image: '/widget/surf_widget_bg.jpg',
-    ListeningStatus: '8 отзывов',
-    ListeningBadgeText: 'Ответ: 1%',
-    SignalsStatus: '0 сигналов',
-    SignalsBadgeText: 'Без решений',
+    ListeningStatus: 'Реагируют',
+    ListeningBadgeText: 'Обычно отвечают',
+    SignalsStatus: 'Внимательно',
+    SignalsBadgeText: 'Гарантируют решение',
     isConnected: false
   },
-  'Кэрри': {
-    name: 'Кэрри',
+  'Stars Coffee': {
+    name: 'Stars Coffee',
     image: '/widget/surf_widget_bg.jpg',
-    ListeningStatus: '4 отзыва',
-    ListeningBadgeText: 'Ответ: 97%',
-    SignalsStatus: '0 сигналов',
-    SignalsBadgeText: 'Без решений',
+    ListeningStatus: 'Реагируют',
+    ListeningBadgeText: 'Обычно отвечают',
+    SignalsStatus: 'Внимательно',
+    SignalsBadgeText: 'Гарантируют решение',
+    isConnected: false
+  },
+  'Cofix': {
+    name: 'Cofix',
+    image: '/widget/surf_widget_bg.jpg',
+    ListeningStatus: 'Реагируют',
+    ListeningBadgeText: 'Обычно отвечают',
+    SignalsStatus: 'Оперативно',
+    SignalsBadgeText: 'Живой отклик',
+    isConnected: false
+  },
+  'Do.bro Coffee': {
+    name: 'Do.bro Coffee',
+    image: '/widget/surf_widget_bg.jpg',
+    ListeningStatus: 'Принимают',
+    ListeningBadgeText: 'Сигналы доходят',
+    SignalsStatus: 'Оперативно',
+    SignalsBadgeText: 'Живой отклик',
     isConnected: false
   }
 }
+
 
 const cafeProfiles = {
   'корж': { responseTime: { base: 2.3, min: 1.8, max: 2.8 }, resolutionTime: { base: 17.5, min: 15, max: 20 } },
