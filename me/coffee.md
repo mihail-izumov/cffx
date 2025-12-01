@@ -20,8 +20,6 @@ description: Сигнал – тому кто решает
   Без регистрации.<br class="mobile-break"> <strong>Результат — в течение дня.</strong>
 </p>
 
-<DividerCustom />
-
 <div style="border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: 50px; margin-bottom: 60px;"></div>
 
 </div>
