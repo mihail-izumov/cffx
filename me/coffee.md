@@ -14,7 +14,7 @@ description: Сигнал – тому кто решает
 
 <h1 class="responsive-heading">Ваш Сигнал — тому,<br>кто решает.</h1>
 
-<div style="height: 25px;"></div>
+<div style="height: 15px;"></div>
 
 <p>
   Без регистрации.<br class="mobile-break"> <strong>Результат — в течение дня.</strong>
@@ -39,18 +39,14 @@ description: Сигнал – тому кто решает
 </style>
 
 <style>
-/* 
-   Используем селектор ".vp-doc h1.responsive-heading".
-   Это повышает специфичность (вес) стиля, чтобы гарантированно 
-   перебить дефолтные 80px от Vitepress.
-*/
+
 .vp-doc h1.responsive-heading {
-  font-size: 32px !important;
+  font-size: 42px !important;
   line-height: 1.1 !important;
   margin-top: 0.5em !important;  /* Сброс стандартных отступов, если нужно */
   margin-bottom: 0.5em !important;
   padding-top: 0 !important;
-  font-weight: 700 !important;
+  font-weight: 500 !important;
 }
 
 @media screen and (max-width: 768px) {
