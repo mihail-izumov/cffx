@@ -66,7 +66,7 @@ export default defineConfig({
         const links = [
           { text: 'Система', href: '/system' },          
           { text: 'Обновления', href: '/changelog' },
-          { text: 'Фестиваль', href: '/fest' },
+          { text: 'Культура кофе 2025', href: '/fest' },
           { text: 'Условия использования', href: '/terms' },
           { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
           { text: 'Контакт', href: '/about/contacts' }
