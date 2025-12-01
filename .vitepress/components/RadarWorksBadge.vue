@@ -15,7 +15,7 @@
           <div class="sp-radar-wave sp-wave-3"></div>
         </div>
         <div class="sp-badge-text">
-          <span class="sp-badge-label">Поиск сигналов и отзывов</span>
+          <span class="sp-badge-label">Поиск отзывов и предложений</span>
           <span class="sp-badge-brand">Радар работает.</span>
         </div>
       </div>
