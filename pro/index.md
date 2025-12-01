@@ -16,11 +16,11 @@ notification: brew
 <div style="height: 25px;"></div>
 
 <h1>
-  <span>Система Сигналов </span><br class="mobile-break"><span> для общепита и фитнеса.</span>
+  <span>Система Сигналов </span><br class="mobile-break"><span> высокого качества.</span>
 </h1>
 
 <p>
-  <strong>Всё в одном месте: </strong><br class="mobile-break">тикеты в чат, ИИ-ассистент Анна, аналитика и поддержка.
+  <strong>Для общепита и фитнеса: </strong><br class="mobile-break">тикеты в чат, ИИ-ассистент Анна, аналитика и поддержка.
 </p>
 
 <div class="checkup-cta-section">
