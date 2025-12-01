@@ -6,7 +6,7 @@ pageClass: centered-page
 title: Отправьте Сигнал – Корж, Skuratov, Surf, Mosaic, Белотурка, Кэрри
 description: Сигнал – тому кто решает
 ---
-<SignalProductsSlider />
+<SignalItemsSlider />
 
 <div align="center">
 
