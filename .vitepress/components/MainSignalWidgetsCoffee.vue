@@ -18,7 +18,7 @@ const cafeNames = [
 const cafes = {
   'Дринкит': {
     name: 'Дринкит',
-    image: '/widget/surf_widget_bg.jpg', // Используем дефолтный фон
+    image: '/widget/surf_widget_bg.jpg',
     ListeningStatus: 'Общаются',
     ListeningBadgeText: 'Устойчивый диалог',
     SignalsStatus: 'Системно',
@@ -27,11 +27,11 @@ const cafes = {
   },
   'Корж': {
     name: 'Корж',
-    image: '/widget/korzh_widget_bg.jpg', // Сохранили оригинальный фон
+    image: '/widget/korzh_widget_bg.jpg',
     ListeningStatus: 'Общаются',
     ListeningBadgeText: 'Устойчивый диалог',
     SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантируют решение',
+    SignalsBadgeText: 'Гарантия решения', // Заменено
     isConnected: true
   },
   'Skuratov Coffee': {
@@ -40,7 +40,7 @@ const cafes = {
     ListeningStatus: 'Общаются',
     ListeningBadgeText: 'Устойчивый диалог',
     SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантируют решение',
+    SignalsBadgeText: 'Гарантия решения', // Заменено
     isConnected: false
   },
   'Surf Coffee': {
@@ -49,7 +49,7 @@ const cafes = {
     ListeningStatus: 'Общаются',
     ListeningBadgeText: 'Устойчивый диалог',
     SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантируют решение',
+    SignalsBadgeText: 'Гарантия решения', // Заменено
     isConnected: false
   },
   'ДаблБи': {
@@ -58,7 +58,7 @@ const cafes = {
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
     SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантируют решение',
+    SignalsBadgeText: 'Гарантия решения', // Заменено
     isConnected: false
   },
   'Green House': {
@@ -67,7 +67,7 @@ const cafes = {
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
     SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантируют решение',
+    SignalsBadgeText: 'Гарантия решения', // Заменено
     isConnected: false
   },
   'Stars Coffee': {
@@ -76,7 +76,7 @@ const cafes = {
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
     SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантируют решение',
+    SignalsBadgeText: 'Гарантия решения', // Заменено
     isConnected: false
   },
   'Cofix': {
@@ -101,12 +101,42 @@ const cafes = {
 
 
 const cafeProfiles = {
-  'корж': { responseTime: { base: 2.3, min: 1.8, max: 2.8 }, resolutionTime: { base: 17.5, min: 15, max: 20 } },
-  'mosaic': { responseTime: { base: 1.4, min: 1.0, max: 1.9 }, resolutionTime: { base: 14.7, min: 12, max: 17 } },
-  'skuratov': { responseTime: { base: 1.6, min: 1.2, max: 2.1 }, resolutionTime: { base: 15.2, min: 13, max: 18 } },
-  'surf': { responseTime: { base: 3.1, min: 2.5, max: 3.8 }, resolutionTime: { base: 20.3, min: 18, max: 23 } },
-  'белотурка': { responseTime: { base: 2.7, min: 2.2, max: 3.2 }, resolutionTime: { base: 18.8, min: 16, max: 22 } },
-  'кэрри': { responseTime: { base: 2.0, min: 1.5, max: 2.6 }, resolutionTime: { base: 16.4, min: 14, max: 19 } }
+  'дринкит': { 
+    responseTime: { base: 1.5, min: 1.2, max: 1.9 }, // Рейтинг 7.5
+    resolutionTime: { base: 14.0, min: 12, max: 16 } // Рейтинг 7.9
+  },
+  'корж': { 
+    responseTime: { base: 1.4, min: 1.0, max: 1.8 }, // Рейтинг 7.8
+    resolutionTime: { base: 18.0, min: 16, max: 20 } // Рейтинг 6.5
+  },
+  'skuratov coffee': { 
+    responseTime: { base: 1.4, min: 1.0, max: 1.8 }, // Рейтинг 7.8
+    resolutionTime: { base: 18.0, min: 16, max: 20 } // Рейтинг 6.5
+  },
+  'surf coffee': { 
+    responseTime: { base: 3.0, min: 2.5, max: 3.5 }, // Рейтинг 6.0
+    resolutionTime: { base: 24.0, min: 20, max: 28 } // Рейтинг 4.5
+  },
+  'даблби': { 
+    responseTime: { base: 4.5, min: 3.5, max: 5.5 }, // Рейтинг 5.2
+    resolutionTime: { base: 22.0, min: 19, max: 25 } // Рейтинг 5.0
+  },
+  'green house': { 
+    responseTime: { base: 5.0, min: 4.0, max: 6.0 }, // Рейтинг 5.0
+    resolutionTime: { base: 23.0, min: 20, max: 26 } // Рейтинг 4.8
+  },
+  'stars coffee': { 
+    responseTime: { base: 7.0, min: 6.0, max: 8.0 }, // Рейтинг 4.0
+    resolutionTime: { base: 30.0, min: 25, max: 35 } // Рейтинг 3.8
+  },
+  'cofix': { 
+    responseTime: { base: 9.0, min: 8.0, max: 10.0 }, // Рейтинг 3.5
+    resolutionTime: { base: 36.0, min: 30, max: 42 } // Рейтинг 2.8
+  },
+  'do.bro coffee': { 
+    responseTime: { base: 12.0, min: 10.0, max: 14.0 }, // Рейтинг 2.5
+    resolutionTime: { base: 48.0, min: 40, max: 56 } // Рейтинг 2.0
+  }
 }
 
 const todayStatus = computed(() => {
@@ -366,13 +396,18 @@ onUnmounted(() => {
         ref="switchersRef"
         @scroll="handleSwitcherScroll"
       >
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Дринкит' }" @click="selectedCafe = 'Дринкит'">Дринкит</button>
         <button class="signal2-switcher" :class="{ active: selectedCafe === 'Корж' }" @click="selectedCafe = 'Корж'">Корж</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'MOSAIC' }" @click="selectedCafe = 'MOSAIC'">MOSAIC</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Surf' }" @click="selectedCafe = 'Surf'">Surf</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Skuratov' }" @click="selectedCafe = 'Skuratov'">Skuratov</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Белотурка' }" @click="selectedCafe = 'Белотурка'">Белотурка</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Кэрри' }" @click="selectedCafe = 'Кэрри'">Кэрри</button>
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Skuratov Coffee' }" @click="selectedCafe = 'Skuratov Coffee'">Skuratov Coffee</button>
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Surf Coffee' }" @click="selectedCafe = 'Surf Coffee'">Surf Coffee</button>
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'ДаблБи' }" @click="selectedCafe = 'ДаблБи'">ДаблБи</button>
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Green House' }" @click="selectedCafe = 'Green House'">Green House</button>
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Stars Coffee' }" @click="selectedCafe = 'Stars Coffee'">Stars Coffee</button>
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Cofix' }" @click="selectedCafe = 'Cofix'">Cofix</button>
+        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Do.bro Coffee' }" @click="selectedCafe = 'Do.bro Coffee'">Do.bro Coffee</button>
       </div>
+</div>
+
       
       <div class="signal2-switchers-gradient signal2-switchers-gradient-left" :class="{ 'signal2-gradient-visible': showLeftGradient }"></div>
       <div class="signal2-switchers-gradient signal2-switchers-gradient-right" :class="{ 'signal2-gradient-visible': showRightGradient }"></div>
