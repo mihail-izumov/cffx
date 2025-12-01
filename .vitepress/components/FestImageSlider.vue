@@ -1,7 +1,7 @@
 <template>
-  <div class="image-slider">
+  <div :class="$style.imageSlider">
     <div 
-      class="slider-container"
+      :class="$style.sliderContainer"
       @touchstart="handleTouchStart"
       @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
@@ -11,31 +11,31 @@
         :key="index"
         :src="image" 
         :alt="`Slide ${index + 1}`"
-        :class="['slider-image', { active: currentIndex === index }]"
+        :class="[$style.sliderImage, { [$style.active]: currentIndex === index }]"
         loading="eager"
       />
     </div>
     
     <!-- Точки для десктопа -->
-    <div class="slider-dots">
+    <div :class="$style.sliderDots">
       <span 
         v-for="(image, index) in images" 
         :key="index"
-        :class="['dot', { active: currentIndex === index }]"
+        :class="[$style.dot, { [$style.active]: currentIndex === index }]"
         @click="goToSlide(index)"
       />
     </div>
     
     <!-- Интерактивная полоса прогресса для мобильных -->
     <div 
-      class="slider-progress-bar"
+      :class="$style.sliderProgressBar"
       @click="handleProgressClick"
       @touchstart="handleProgressTouchStart"
       @touchmove="handleProgressTouchMove"
       @touchend="handleProgressTouchEnd"
     >
       <div 
-        class="progress-fill"
+        :class="$style.progressFill"
         :style="{ width: progressWidth + '%' }"
       />
     </div>
@@ -191,15 +191,15 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
-.image-slider {
+<style module>
+.imageSlider {
   position: relative;
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
 }
 
-.slider-container {
+.sliderContainer {
   position: relative;
   width: 100%;
   overflow: hidden;
@@ -208,7 +208,7 @@ onUnmounted(() => {
   touch-action: pan-y pinch-zoom;
 }
 
-.slider-image {
+.sliderImage {
   position: absolute;
   top: 0;
   left: 0;
@@ -224,17 +224,19 @@ onUnmounted(() => {
   -webkit-user-drag: none;
 }
 
-.slider-image:first-child {
+.sliderImage:first-child {
   position: relative;
 }
 
-.slider-image.active {
+/* Комбинируем классы через composes или просто в CSS, 
+   но в модулях проще полагаться на условный рендеринг класса .active */
+.sliderImage.active {
   opacity: 1;
   z-index: 1;
 }
 
 /* Точки для десктопа */
-.slider-dots {
+.sliderDots {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -263,7 +265,7 @@ onUnmounted(() => {
 }
 
 /* Интерактивная полоса прогресса для мобильных */
-.slider-progress-bar {
+.sliderProgressBar {
   display: none;
   width: 100%;
   height: 3.5px;
@@ -275,7 +277,7 @@ onUnmounted(() => {
   touch-action: none;
 }
 
-.progress-fill {
+.progressFill {
   height: 100%;
   background-color: #c6f945;
   transition: width 0.3s ease;
@@ -285,11 +287,11 @@ onUnmounted(() => {
 
 /* Медиа-запрос для мобильных устройств */
 @media (max-width: 768px) {
-  .slider-dots {
+  .sliderDots {
     display: none;
   }
   
-  .slider-progress-bar {
+  .sliderProgressBar {
     display: block;
   }
 }
