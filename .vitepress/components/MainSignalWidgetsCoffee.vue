@@ -4,14 +4,14 @@ import SignalT9Configurator from './SignalT9Configurator.vue'
 import AddVoteStatus from './AddVoteStatus.vue'
 
 const cafeNames = [
-  'Дринкит', 
-  'Корж', 
-  'Skuratov Coffee', 
-  'Surf Coffee', 
-  'ДаблБи', 
-  'Green House', 
-  'Stars Coffee', 
-  'Cofix', 
+  'Дринкит',
+  'Корж',
+  'Skuratov Coffee',
+  'Surf Coffee',
+  'ДаблБи',
+  'Green House',
+  'Stars Coffee',
+  'Cofix',
   'Do.bro Coffee'
 ]
 
@@ -31,7 +31,7 @@ const cafes = {
     ListeningStatus: 'Общаются',
     ListeningBadgeText: 'Устойчивый диалог',
     SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантия решения', // Заменено
+    SignalsBadgeText: 'Гарантия решения',
     isConnected: true
   },
   'Skuratov Coffee': {
@@ -40,7 +40,7 @@ const cafes = {
     ListeningStatus: 'Общаются',
     ListeningBadgeText: 'Устойчивый диалог',
     SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантия решения', // Заменено
+    SignalsBadgeText: 'Гарантия решения',
     isConnected: false
   },
   'Surf Coffee': {
@@ -49,7 +49,7 @@ const cafes = {
     ListeningStatus: 'Общаются',
     ListeningBadgeText: 'Устойчивый диалог',
     SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантия решения', // Заменено
+    SignalsBadgeText: 'Гарантия решения',
     isConnected: false
   },
   'ДаблБи': {
@@ -58,7 +58,7 @@ const cafes = {
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
     SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантия решения', // Заменено
+    SignalsBadgeText: 'Гарантия решения',
     isConnected: false
   },
   'Green House': {
@@ -67,7 +67,7 @@ const cafes = {
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
     SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантия решения', // Заменено
+    SignalsBadgeText: 'Гарантия решения',
     isConnected: false
   },
   'Stars Coffee': {
@@ -76,7 +76,7 @@ const cafes = {
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
     SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантия решения', // Заменено
+    SignalsBadgeText: 'Гарантия решения',
     isConnected: false
   },
   'Cofix': {
@@ -99,65 +99,67 @@ const cafes = {
   }
 }
 
-
 const cafeProfiles = {
-  'дринкит': { 
-    responseTime: { base: 1.5, min: 1.2, max: 1.9 }, // Рейтинг 7.5
-    resolutionTime: { base: 14.0, min: 12, max: 16 } // Рейтинг 7.9
+  'дринкит': {
+    responseTime: { base: 1.5, min: 1.2, max: 1.9 },
+    resolutionTime: { base: 14.0, min: 12, max: 16 }
   },
-  'корж': { 
-    responseTime: { base: 1.4, min: 1.0, max: 1.8 }, // Рейтинг 7.8
-    resolutionTime: { base: 18.0, min: 16, max: 20 } // Рейтинг 6.5
+  'корж': {
+    responseTime: { base: 1.4, min: 1.0, max: 1.8 },
+    resolutionTime: { base: 18.0, min: 16, max: 20 }
   },
-  'skuratov coffee': { 
-    responseTime: { base: 1.4, min: 1.0, max: 1.8 }, // Рейтинг 7.8
-    resolutionTime: { base: 18.0, min: 16, max: 20 } // Рейтинг 6.5
+  'skuratov coffee': {
+    responseTime: { base: 1.4, min: 1.0, max: 1.8 },
+    resolutionTime: { base: 18.0, min: 16, max: 20 }
   },
-  'surf coffee': { 
-    responseTime: { base: 3.0, min: 2.5, max: 3.5 }, // Рейтинг 6.0
-    resolutionTime: { base: 24.0, min: 20, max: 28 } // Рейтинг 4.5
+  'surf coffee': {
+    responseTime: { base: 3.0, min: 2.5, max: 3.5 },
+    resolutionTime: { base: 24.0, min: 20, max: 28 }
   },
-  'даблби': { 
-    responseTime: { base: 4.5, min: 3.5, max: 5.5 }, // Рейтинг 5.2
-    resolutionTime: { base: 22.0, min: 19, max: 25 } // Рейтинг 5.0
+  'даблби': {
+    responseTime: { base: 4.5, min: 3.5, max: 5.5 },
+    resolutionTime: { base: 22.0, min: 19, max: 25 }
   },
-  'green house': { 
-    responseTime: { base: 5.0, min: 4.0, max: 6.0 }, // Рейтинг 5.0
-    resolutionTime: { base: 23.0, min: 20, max: 26 } // Рейтинг 4.8
+  'green house': {
+    responseTime: { base: 5.0, min: 4.0, max: 6.0 },
+    resolutionTime: { base: 23.0, min: 20, max: 26 }
   },
-  'stars coffee': { 
-    responseTime: { base: 7.0, min: 6.0, max: 8.0 }, // Рейтинг 4.0
-    resolutionTime: { base: 30.0, min: 25, max: 35 } // Рейтинг 3.8
+  'stars coffee': {
+    responseTime: { base: 7.0, min: 6.0, max: 8.0 },
+    resolutionTime: { base: 30.0, min: 25, max: 35 }
   },
-  'cofix': { 
-    responseTime: { base: 9.0, min: 8.0, max: 10.0 }, // Рейтинг 3.5
-    resolutionTime: { base: 36.0, min: 30, max: 42 } // Рейтинг 2.8
+  'cofix': {
+    responseTime: { base: 9.0, min: 8.0, max: 10.0 },
+    resolutionTime: { base: 36.0, min: 30, max: 42 }
   },
-  'do.bro coffee': { 
-    responseTime: { base: 12.0, min: 10.0, max: 14.0 }, // Рейтинг 2.5
-    resolutionTime: { base: 48.0, min: 40, max: 56 } // Рейтинг 2.0
+  'do.bro coffee': {
+    responseTime: { base: 12.0, min: 10.0, max: 14.0 },
+    resolutionTime: { base: 48.0, min: 40, max: 56 }
   }
 }
 
 const todayStatus = computed(() => {
-  const today = new Date();
-  const day = String(today.getDate()).padStart(2, '0');
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const year = today.getFullYear();
-  
+  const today = new Date()
+  const day = String(today.getDate()).padStart(2, '0')
+  const month = String(today.getMonth() + 1).padStart(2, '0')
+  const year = today.getFullYear()
+
   const monthNames = [
     'ЯНВАРЬ', 'ФЕВРАЛЬ', 'МАРТ', 'АПРЕЛЬ', 'МАЙ', 'ИЮНЬ',
     'ИЮЛЬ', 'АВГУСТ', 'СЕНТЯБРЬ', 'ОКТЯБРЬ', 'НОЯБРЬ', 'ДЕКАБРЬ'
-  ];
-  
-  const monthName = monthNames[today.getMonth()];
-  
-  return `<span class="signal2-radio-icon-wrapper"></span>${day}.${month} <span class="signal2-arrow-icon-wrapper"></span> ${monthName} ${year}`;
-});
+  ]
+
+  const monthName = monthNames[today.getMonth()]
+
+  return `<span class="signal2-radio-icon-wrapper"></span>${day}.${month} <span class="signal2-arrow-icon-wrapper"></span> ${monthName} ${year}`
+})
 
 const getCafeConfig = (cafeName) => {
   const normalized = cafeName?.toLowerCase() || ''
-  return cafeProfiles[normalized] || { responseTime: { base: 2, min: 1, max: 3 }, resolutionTime: { base: 15, min: 12, max: 18 } }
+  return cafeProfiles[normalized] || {
+    responseTime: { base: 2, min: 1, max: 3 },
+    resolutionTime: { base: 15, min: 12, max: 18 }
+  }
 }
 
 const selectedCafe = ref(cafeNames[0] || 'Корж')
@@ -209,25 +211,21 @@ const handleTouchEnd = (e) => {
 const handleSwipe = () => {
   const diffX = touchEnd.value.x - touchStart.value.x
   const diffY = touchEnd.value.y - touchStart.value.y
-  
-  // Если движение по вертикали больше чем по горизонтали - это скролл страницы, игнорируем
+
   if (Math.abs(diffY) > Math.abs(diffX)) return
 
-  // Порог срабатывания свайпа (50px)
   if (Math.abs(diffX) > 50) {
     const currentIndex = cafeNames.indexOf(selectedCafe.value)
     let newIndex
-    
+
     if (diffX > 0) {
-      // Свайп вправо (предыдущая)
       newIndex = currentIndex - 1
       if (newIndex < 0) newIndex = cafeNames.length - 1
     } else {
-      // Свайп влево (следующая)
       newIndex = currentIndex + 1
       if (newIndex >= cafeNames.length) newIndex = 0
     }
-    
+
     selectedCafe.value = cafeNames[newIndex]
   }
 }
@@ -243,14 +241,16 @@ const fetchSystemStatus = async () => {
 
     systemMetrics.value.responseTime = Math.max(
       currentConfig.responseTime.min,
-      Math.min(currentConfig.responseTime.max,
+      Math.min(
+        currentConfig.responseTime.max,
         systemMetrics.value.responseTime + responseVariation
       )
     )
 
     systemMetrics.value.resolutionTime = Math.max(
       currentConfig.resolutionTime.min,
-      Math.min(currentConfig.resolutionTime.max,
+      Math.min(
+        currentConfig.resolutionTime.max,
         systemMetrics.value.resolutionTime + resolutionVariation
       )
     )
@@ -292,12 +292,12 @@ const closeVoteModal = () => {
 
 const handleSwitcherScroll = () => {
   if (!switchersRef.value) return
-  
+
   const container = switchersRef.value
   const scrollLeft = container.scrollLeft
   const scrollWidth = container.scrollWidth
   const clientWidth = container.clientWidth
-  
+
   showLeftGradient.value = scrollLeft > 5
   showRightGradient.value = scrollLeft < (scrollWidth - clientWidth - 5)
 }
@@ -307,11 +307,11 @@ const checkMobile = () => {
 }
 
 const rotatingQuestions = [
-  "\"Что почувствовали в эту минуту?\"",
-  "\"Что вызвало улыбку или напряжение?\"",
-  "\"Какой момент хотелось бы изменить?\"",
-  "\"Что дало ощущение уюта/суеты?\"",
-  "\"Одно слово, которое осталось после визита?\""
+  '"Что почувствовали в эту минуту?"',
+  '"Что вызвало улыбку или напряжение?"',
+  '"Какой момент хотелось бы изменить?"',
+  '"Что дало ощущение уюта/суеты?"',
+  '"Одно слово, которое осталось после визита?"'
 ]
 const currentQuestionIndex = ref(0)
 const showText = ref(true)
@@ -321,7 +321,8 @@ let metricsIntervalId = null
 const cycleText = () => {
   showText.value = false
   setTimeout(() => {
-    currentQuestionIndex.value = (currentQuestionIndex.value + 1) % rotatingQuestions.length
+    currentQuestionIndex.value =
+      (currentQuestionIndex.value + 1) % rotatingQuestions.length
     showText.value = true
   }, 1000)
 }
@@ -335,21 +336,27 @@ const onKeydown = (e) => {
 }
 
 const preloadImages = () => {
-  const imagesToPreload = Object.values(cafes).map(cafe => cafe.image).filter(Boolean)
+  const imagesToPreload = Object.values(cafes)
+    .map(cafe => cafe.image)
+    .filter(Boolean)
   const uniqueImages = [...new Set(imagesToPreload)]
-  
+
   uniqueImages.forEach(src => {
     const img = new Image()
     img.src = src
   })
 }
 
-// Автопрокрутка свитчера к активной кофейне
 const scrollSwitcherToActive = () => {
   if (!switchersRef.value) return
-  const activeBtn = switchersRef.value.querySelector('.signal2-switcher.active')
+  const activeBtn =
+    switchersRef.value.querySelector('.signal2-switcher.active')
   if (activeBtn) {
-    activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+    activeBtn.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center'
+    })
   }
 }
 
@@ -359,8 +366,7 @@ watch(selectedCafe, (newName) => {
   systemMetrics.value.resolutionTime = newConfig.resolutionTime.base
   systemMetrics.value.lastUpdate = Date.now()
   fetchSystemStatus()
-  
-  // Ждем обновления DOM и скроллим свитчер
+
   nextTick(() => {
     scrollSwitcherToActive()
   })
@@ -374,7 +380,7 @@ onMounted(() => {
   window.addEventListener('keydown', onKeydown)
   window.addEventListener('resize', checkMobile)
   checkMobile()
-  
+
   nextTick(() => {
     handleSwitcherScroll()
   })
@@ -391,34 +397,91 @@ onUnmounted(() => {
 <template>
   <div class="signal2-widget-content" ref="widgetContentRef">
     <div class="signal2-cafe-switchers-container">
-      <div 
-        class="signal2-cafe-switchers" 
+      <div
+        class="signal2-cafe-switchers"
         ref="switchersRef"
         @scroll="handleSwitcherScroll"
       >
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Дринкит' }" @click="selectedCafe = 'Дринкит'">Дринкит</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Корж' }" @click="selectedCafe = 'Корж'">Корж</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Skuratov Coffee' }" @click="selectedCafe = 'Skuratov Coffee'">Skuratov Coffee</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Surf Coffee' }" @click="selectedCafe = 'Surf Coffee'">Surf Coffee</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'ДаблБи' }" @click="selectedCafe = 'ДаблБи'">ДаблБи</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Green House' }" @click="selectedCafe = 'Green House'">Green House</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Stars Coffee' }" @click="selectedCafe = 'Stars Coffee'">Stars Coffee</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Cofix' }" @click="selectedCafe = 'Cofix'">Cofix</button>
-        <button class="signal2-switcher" :class="{ active: selectedCafe === 'Do.bro Coffee' }" @click="selectedCafe = 'Do.bro Coffee'">Do.bro Coffee</button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Дринкит' }"
+          @click="selectedCafe = 'Дринкит'"
+        >
+          Дринкит
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Корж' }"
+          @click="selectedCafe = 'Корж'"
+        >
+          Корж
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Skuratov Coffee' }"
+          @click="selectedCafe = 'Skuratov Coffee'"
+        >
+          Skuratov Coffee
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Surf Coffee' }"
+          @click="selectedCafe = 'Surf Coffee'"
+        >
+          Surf Coffee
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'ДаблБи' }"
+          @click="selectedCafe = 'ДаблБи'"
+        >
+          ДаблБи
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Green House' }"
+          @click="selectedCafe = 'Green House'"
+        >
+          Green House
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Stars Coffee' }"
+          @click="selectedCafe = 'Stars Coffee'"
+        >
+          Stars Coffee
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Cofix' }"
+          @click="selectedCafe = 'Cofix'"
+        >
+          Cofix
+        </button>
+        <button
+          class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Do.bro Coffee' }"
+          @click="selectedCafe = 'Do.bro Coffee'"
+        >
+          Do.bro Coffee
+        </button>
       </div>
-</div>
 
-      
-      <div class="signal2-switchers-gradient signal2-switchers-gradient-left" :class="{ 'signal2-gradient-visible': showLeftGradient }"></div>
-      <div class="signal2-switchers-gradient signal2-switchers-gradient-right" :class="{ 'signal2-gradient-visible': showRightGradient }"></div>
+      <div
+        class="signal2-switchers-gradient signal2-switchers-gradient-left"
+        :class="{ 'signal2-gradient-visible': showLeftGradient }"
+      ></div>
+      <div
+        class="signal2-switchers-gradient signal2-switchers-gradient-right"
+        :class="{ 'signal2-gradient-visible': showRightGradient }"
+      ></div>
     </div>
 
-    <!-- Добавлена анимация перехода fade -->
     <Transition name="fade" mode="out-in">
-      <div 
+      <div
         v-if="establishment"
         :key="selectedCafe"
-        class="signal2-main-card" 
+        class="signal2-main-card"
         :style="{ backgroundImage: `url(${establishment.image})` }"
         @touchstart="handleTouchStart"
         @touchend="handleTouchEnd"
@@ -428,57 +491,102 @@ onUnmounted(() => {
 
         <div class="signal2-content-relative">
           <div class="signal2-establishment-header">
-            <h3 class="signal2-cafe-name">{{ establishment.name }}</h3>
+            <h3 class="signal2-cafe-name">
+              {{ establishment.name }}
+            </h3>
             <div class="signal2-status-badge" ref="badgeRef">
               <span v-html="todayStatus"></span>
             </div>
           </div>
 
           <div class="signal2-stats-grid">
-            <div class="signal2-stat-card signal2-graphite-stat" 
-                 @click="openVoteModal"
-                 @mouseenter="!isMobile ? showYandexTooltip = true : null" 
-                 @mouseleave="!isMobile ? showYandexTooltip = false : null">
+            <div
+              class="signal2-stat-card signal2-graphite-stat"
+              @click="openVoteModal"
+              @mouseenter="!isMobile ? (showYandexTooltip = true) : null"
+              @mouseleave="!isMobile ? (showYandexTooltip = false) : null"
+            >
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
-                  <div class="signal2-stat-label">КАК СЛУШАЮТ</div>
-                  <div class="signal2-stat-value">{{ establishment.ListeningStatus }}</div>
+                  <div class="signal2-stat-label">
+                    КАК СЛУШАЮТ
+                  </div>
+                  <div class="signal2-stat-value">
+                    {{ establishment.ListeningStatus }}
+                  </div>
                 </div>
                 <div class="signal2-stat-badge signal2-graphite-badge">
-                  <span class="signal2-badge-text">{{ establishment.ListeningBadgeText }}</span>
+                  <span class="signal2-badge-text">
+                    {{ establishment.ListeningBadgeText }}
+                  </span>
                 </div>
               </div>
             </div>
 
-            <div class="signal2-stat-card signal2-lime-stat" 
-                 @click="openVoteModal"
-                 @mouseenter="!isMobile ? showSignalsTooltip = true : null" 
-                 @mouseleave="!isMobile ? showSignalsTooltip = false : null">
+            <div
+              class="signal2-stat-card signal2-lime-stat"
+              @click="openVoteModal"
+              @mouseenter="!isMobile ? (showSignalsTooltip = true) : null"
+              @mouseleave="!isMobile ? (showSignalsTooltip = false) : null"
+            >
               <div class="signal2-stat-content">
                 <div class="signal2-stat-left-group">
-                  <div class="signal2-stat-label">КАК ДЕЙСТВУЮТ</div>
-                  <div class="signal2-stat-value">{{ establishment.SignalsStatus }}</div>
+                  <div class="signal2-stat-label">
+                    КАК ДЕЙСТВУЮТ
+                  </div>
+                  <div class="signal2-stat-value">
+                    {{ establishment.SignalsStatus }}
+                  </div>
                 </div>
-                <div class="signal2-stat-badge signal2-lime-badge signal-100-badge">
-                  <span class="signal2-badge-text">{{ establishment.SignalsBadgeText }}</span>
+                <div
+                  class="signal2-stat-badge signal2-lime-badge signal-100-badge"
+                >
+                  <span class="signal2-badge-text">
+                    {{ establishment.SignalsBadgeText }}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="signal2-system-status-bar">
-            <span v-if="establishment.isConnected" class="signal2-status-label"><span class="signal2-emoji">🟢</span> На связи:</span>
-            <span v-else class="signal2-status-label-disconnected"><span class="signal2-emoji">🟡</span> Отправим менеджеру кофейни <br class="signal2-mobile-break">и постараемся помочь</span>
-            
-            <div v-if="establishment.isConnected" class="signal2-status-metrics">
+            <span
+              v-if="establishment.isConnected"
+              class="signal2-status-label"
+            >
+              <span class="signal2-emoji">🟢</span>
+              На связи:
+            </span>
+            <span
+              v-else
+              class="signal2-status-label-disconnected"
+            >
+              <span class="signal2-emoji">🟡</span>
+              Отправим менеджеру кофейни
+              <br class="signal2-mobile-break" />
+              и постараемся помочь
+            </span>
+
+            <div
+              v-if="establishment.isConnected"
+              class="signal2-status-metrics"
+            >
               <div class="signal2-status-metric">
-                <span class="signal2-metric-time">{{ formatTime(systemMetrics.responseTime) }}</span>
-                <span class="signal2-metric-text">→ ответ</span>
+                <span class="signal2-metric-time">
+                  {{ formatTime(systemMetrics.responseTime) }}
+                </span>
+                <span class="signal2-metric-text">
+                  → ответ
+                </span>
               </div>
               <div class="signal2-status-separator">•</div>
               <div class="signal2-status-metric">
-                <span class="signal2-metric-time">{{ formatTime(systemMetrics.resolutionTime) }}</span>
-                <span class="signal2-metric-text">→ решение</span>
+                <span class="signal2-metric-time">
+                  {{ formatTime(systemMetrics.resolutionTime) }}
+                </span>
+                <span class="signal2-metric-text">
+                  → решение
+                </span>
               </div>
             </div>
           </div>
@@ -494,23 +602,61 @@ onUnmounted(() => {
               >
                 <span class="signal2-info-icon-wrapper"></span>
               </button>
-              <span v-if="!isMobile" class="signal2-static-prompt">Поделитесь:</span>
-              <div class="signal2-rotating-text-container" :class="{ 'signal2-full-width': isMobile }">
-                <span :class="['signal2-rotating-text', { 'signal2-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
+              <span
+                v-if="!isMobile"
+                class="signal2-static-prompt"
+              >
+                Поделитесь:
+              </span>
+              <div
+                class="signal2-rotating-text-container"
+                :class="{ 'signal2-full-width': isMobile }"
+              >
+                <span
+                  :class="[
+                    'signal2-rotating-text',
+                    { 'signal2-show': showText }
+                  ]"
+                >
+                  {{ rotatingQuestions[currentQuestionIndex] }}
+                </span>
               </div>
             </div>
 
             <div class="signal2-button-container">
-              <button @click="openVoteModal" class="signal2-action-button signal2-ticket-button">
+              <button
+                @click="openVoteModal"
+                class="signal2-action-button signal2-ticket-button"
+              >
                 Моя Оценка
                 <div class="signal2-button-icon-container">
                   <span class="signal2-settings-icon-wrapper"></span>
                 </div>
               </button>
-              <button @click="openSignalModal" class="signal2-action-button signal2-review-button">
+              <button
+                @click="openSignalModal"
+                class="signal2-action-button signal2-review-button"
+              >
                 Отправить Сигнал
-                <div class="signal2-button-icon-container signal2-lime-icon-container">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2e05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+                <div
+                  class="signal2-button-icon-container signal2-lime-icon-container"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#1a2e05"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-zap-icon lucide-zap"
+                  >
+                    <path
+                      d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
+                    />
+                  </svg>
                 </div>
               </button>
             </div>
@@ -519,58 +665,120 @@ onUnmounted(() => {
       </div>
     </Transition>
 
-    <div 
-      v-if="isVoteModalOpen" 
+    <div
+      v-if="isVoteModalOpen"
       class="signal2-review-modal-overlay"
       @click="closeVoteModal"
     >
-      <div class="signal2-review-modal-content" @click.stop>
-        <button @click="closeVoteModal" class="signal2-modal-close-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      <div
+        class="signal2-review-modal-content"
+        @click.stop
+      >
+        <button
+          @click="closeVoteModal"
+          class="signal2-modal-close-icon"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
         </button>
-        
+
         <div class="signal2-modal-scrollable-content">
           <AddVoteStatus @close="closeVoteModal" />
         </div>
       </div>
     </div>
 
-    <div 
-      v-if="isSignalModalOpen" 
+    <div
+      v-if="isSignalModalOpen"
       class="signal2-review-modal-overlay"
       @click="closeSignalModal"
     >
-      <div class="signal2-review-modal-content" @click.stop>
-        <button @click="closeSignalModal" class="signal2-modal-close-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      <div
+        class="signal2-review-modal-content"
+        @click.stop
+      >
+        <button
+          @click="closeSignalModal"
+          class="signal2-modal-close-icon"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
         </button>
 
         <div class="signal2-modal-scrollable-content">
           <SignalT9Configurator />
         </div>
-        
+
         <div class="signal2-modal-close-section">
-          <button @click="closeSignalModal" class="signal2-modal-close-button">Закрыть и вернуться</button>
+          <button
+            @click="closeSignalModal"
+            class="signal2-modal-close-button"
+          >
+            Закрыть и вернуться
+          </button>
         </div>
       </div>
     </div>
 
-    <div v-if="showInfoModal" class="signal2-modal-overlay" @click.self="showInfoModal = false">
-      <div class="signal2-modal" role="dialog" aria-modal="true" aria-label="Сигналы">
+    <div
+      v-if="showInfoModal"
+      class="signal2-modal-overlay"
+      @click.self="showInfoModal = false"
+    >
+      <div
+        class="signal2-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Сигналы"
+      >
         <div class="signal2-modal-header">
-          <div class="signal2-modal-title">Сигналы</div>
+          <div class="signal2-modal-title">
+            Сигналы
+          </div>
         </div>
         <div class="signal2-modal-body">
-          Быстрая помощь и решение проблем за 24 часа. Ваш сигнал мгновенно поступает в работу управляющему кофейни, и вы получаете не просто ответ, а реальный результат.
+          Быстрая помощь и решение проблем за 24 часа. Ваш сигнал мгновенно
+          поступает в работу управляющему кофейни, и вы получаете не просто
+          ответ, а реальный результат.
         </div>
         <div class="signal2-modal-footer">
-          <button class="signal2-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
+          <button
+            class="signal2-modal-ok"
+            type="button"
+            @click="showInfoModal = false"
+          >
+            Понятно
+          </button>
         </div>
       </div>
     </div>
-
   </div>
 </template>
+
 
 <style scoped>
 /* Анимация перехода */
