@@ -29,16 +29,17 @@ description: Сигнал – тому кто решает
 
 <style>
 /* Стили для заголовка */
+/* Базовый стиль (Десктоп) */
 .vp-doc h1.responsive-heading {
   font-size: 52px !important;
   line-height: 1.1 !important;
   margin-top: 0px !important; 
   margin-bottom: 20px !important;
-  
   padding-top: 0 !important;
   font-weight: 700 !important;
 }
 
+/* Планшеты и крупные телефоны (до 768px) */
 @media screen and (max-width: 768px) {
   .vp-doc h1.responsive-heading {
     font-size: 32px !important;
@@ -46,7 +47,9 @@ description: Сигнал – тому кто решает
     margin-top: 0px !important; 
     margin-bottom: 15px !important;
   }
+} /* <-- Важно: закрывающая скобка для первого @media */
 
+/* Мобильные телефоны (до 480px) */
 @media screen and (max-width: 480px) {
   .vp-doc h1.responsive-heading {
     font-size: 22px !important;
@@ -54,7 +57,7 @@ description: Сигнал – тому кто решает
     margin-top: 0px !important; 
     margin-bottom: 15px !important;
   }
-}
-  }
+} /* <-- Важно: закрывающая скобка для второго @media */
 </style>
+
 
