@@ -824,7 +824,7 @@ onUnmounted(() => {
   .signal2-switcher::before, 
   .signal2-switcher:hover::before { display: none; }
   
-  .signal2-widget-content { padding: 48px 0 24px 0; }
+  .signal2-widget-content { padding-top: 12px; margin-top: 0; }
   
   .signal2-content-relative {
     padding: 16px;
