@@ -247,7 +247,7 @@
   font-size: 16px;
   color: rgba(140, 140, 140, 0.95);
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0px;
   transition: color 0.6s ease;
 }
 
