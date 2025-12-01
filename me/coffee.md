@@ -47,15 +47,12 @@ description: Сигнал – тому кто решает
   }
 }
 
-/* ТЕЛЕФОНЫ (всё, что меньше 600px) 
-   Увеличили порог с 480 до 600, чтобы точно поймать все мобильные */
+/* ТЕЛЕФОНЫ (всё, что меньше 600px)*/
 @media screen and (max-width: 600px) {
   .vp-doc h1.responsive-heading-signal-industries {
     font-size: 26px !important;
     line-height: 1.2 !important;
     margin-bottom: 15px !important;
-    /* ВРЕМЕННО: Красный фон для проверки. Если фон красный — медиа-запрос работает! */
-    /* background-color: red !important; */
   }
 }
 </style>
