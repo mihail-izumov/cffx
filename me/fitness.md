@@ -12,7 +12,7 @@ description: Сигнал – тому кто решает
 
 <BadgeCounter />
 
-<h1 class="responsive-heading">Ваш Сигнал — тому,<br>кто решает в фитнесе</h1>
+<h1 class="responsive-heading-signal-industries">Ваш Сигнал — тому,<br>кто решает в фитнесе.</h1>
 
 <p>
   Без регистрации.<br class="mobile-break"> <strong>Результат — в течение дня.</strong>
@@ -24,22 +24,30 @@ description: Сигнал – тому кто решает
 
 
 <style>
-/* Стили для заголовка */
-.vp-doc h1.responsive-heading {
+/* БАЗОВЫЙ СТИЛЬ (Десктоп) */
+.vp-doc h1.responsive-heading-signal-industries {
   font-size: 52px !important;
   line-height: 1.1 !important;
-  margin-top: 0px !important; 
-  margin-bottom: 20px !important;
-  
+  margin: 0 0 20px 0 !important;
   padding-top: 0 !important;
   font-weight: 700 !important;
 }
 
-@media screen and (max-width: 768px) {
-  .vp-doc h1.responsive-heading {
+/* ПЛАНШЕТЫ (от 601px до 768px) 
+   Используем min-width, чтобы это правило НЕ касалось телефонов */
+@media screen and (min-width: 601px) and (max-width: 768px) {
+  .vp-doc h1.responsive-heading-signal-industries {
     font-size: 32px !important;
     line-height: 1.2 !important;
-    margin-top: 0px !important; 
+    margin-bottom: 15px !important;
+  }
+}
+
+/* ТЕЛЕФОНЫ (всё, что меньше 600px)*/
+@media screen and (max-width: 600px) {
+  .vp-doc h1.responsive-heading-signal-industries {
+    font-size: 26px !important;
+    line-height: 1.2 !important;
     margin-bottom: 15px !important;
   }
 }
