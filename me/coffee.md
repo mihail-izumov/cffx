@@ -52,7 +52,7 @@ description: Сигнал – тому кто решает
 /* Мобильные телефоны (до 480px) */
 @media screen and (max-width: 480px) {
   .vp-doc h1.responsive-heading {
-    font-size: 22px !important;
+    font-size: 15px !important;
     line-height: 1.2 !important;
     margin-top: 0px !important; 
     margin-bottom: 15px !important;
