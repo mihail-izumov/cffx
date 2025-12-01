@@ -12,7 +12,7 @@ description: Сигнал – тому кто решает
 
 <BadgeCounter />
 
-<h1 class="responsive-heading-signal-industries">Ваш Сигнал — тому,<br>кто решает в ресторане.</h1>
+<h1 class="responsive-heading-signal-industries">Ваш Сигнал — тому,<br>кто решает в ресторанах.</h1>
 
 <p>
   Без регистрации.<br class="mobile-break"> <strong>Результат — в течение дня.</strong>
