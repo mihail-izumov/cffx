@@ -154,22 +154,23 @@ onUnmounted(() => {
   }
 }
 
+/* Увеличенная на 20% версия для мобильных */
 @media (max-width: 480px) {
   .signal-badge {
-    padding: 5px 12px;
+    padding: 6px 14px; /* Было 5px 12px */
   }
   
   .signal-content {
-    gap: 6px;
+    gap: 7px; /* Было 6px */
   }
   
   .signal-text {
-    font-size: 11px;
+    font-size: 13px; /* Было 11px */
   }
   
   .signal-icon {
-    width: 14px;
-    height: 14px;
+    width: 17px; /* Было 14px */
+    height: 17px; /* Было 14px */
   }
 }
 </style>
