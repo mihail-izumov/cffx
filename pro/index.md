@@ -16,7 +16,7 @@ notification: brew
 <div style="height: 25px;"></div>
 
 <h1>
-  <span>Система Сигналов </span><br class="mobile-break"><span> высокого качества.</span>
+  <span>Система обратной связи </span><br class="mobile-break"><span> высокого качества.</span>
 </h1>
 
 <p>
