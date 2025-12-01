@@ -130,6 +130,7 @@ import SignalConfigurator2New from '../components/SignalConfigurator2New.vue'
 import MainSignalWidgetsCoffee from '../components/MainSignalWidgetsCoffee.vue'
 import AddVoteStatus from '../components/AddVoteStatus.vue'
 import BadgeCounter from '../components/BadgeCounter.vue'
+import SignalItemsSlider from '../components/SignalItemsSlider.vue'
 
 export default {
   extends: DefaultTheme,
@@ -265,6 +266,7 @@ export default {
     app.component('MainSignalWidgetsCoffee', MainSignalWidgetsCoffee)
     app.component('AddVoteStatus', AddVoteStatus)
     app.component('BadgeCounter', BadgeCounter)
+    app.component('SignalItemsSlider', SignalItemsSlider)
     
   },
 }
