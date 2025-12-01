@@ -511,7 +511,7 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-.signal2-widget-content { padding-top: 60px !important; padding-bottom: 32px; margin-top: 0px !important; }
+.signal2-widget-content { padding-top: 30px !important; padding-bottom: 32px; margin-top: 0px !important; }
 .signal2-cafe-switchers-container { position: relative; margin-bottom: 32px; }
 .signal2-cafe-switchers { display: flex; gap: 12px; padding-bottom: 12px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: rgba(70, 70, 70, 0.8) transparent; }
 .signal2-cafe-switchers::-webkit-scrollbar { height: 2px; }
@@ -824,7 +824,7 @@ onUnmounted(() => {
   .signal2-switcher::before, 
   .signal2-switcher:hover::before { display: none; }
   
-  .signal2-widget-content { padding-top: 5px !important; margin-top: 0; }
+  .signal2-widget-content { padding-top: 10px !important; margin-top: 0; }
   
   .signal2-content-relative {
     padding: 16px;
@@ -933,7 +933,7 @@ onUnmounted(() => {
   .signal2-modal-scrollable-content { padding: 20px 12px 12px 12px; }
 }
 @media (max-width: 480px) {
-  .signal2-widget-content { padding-top: 5px !important; margin-top: 0; }
+  .signal2-widget-content { padding-top: 10px !important; margin-top: 0; }
   .signal2-branches-title-text { font-size: 22px; text-align: center; }
   .signal2-branches-subtitle { font-size: 14px; }
   .signal2-cafe-name { font-size: 20px; }
