@@ -45,7 +45,7 @@ description: Сигнал – тому кто решает
 
 @media screen and (max-width: 480px) {
   .vp-doc h1.responsive-heading {
-    font-size: 28px !important;
+    font-size: 22px !important;
     line-height: 1.2 !important;
     margin-top: 0px !important; 
     margin-bottom: 15px !important;
