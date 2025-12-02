@@ -6,65 +6,72 @@ const emit = defineEmits(['close'])
 // --- ДАННЫЕ (Сети и их статусы) ---
 
 const fitness: Record<string, any> = {
-  'SMSTRETCHING': {
-    listeningStatus: 2.5,
-    signalStatus: 3.8,
-    branches: [
-      { address: 'г. Самара, ул. Ново-Садовая, 9' },
-      { address: 'г. Самара, пр. К. Маркса, 24 (ТЦ Пирамида)' },
-      { address: 'г. Самара, ул. Димитрова, 247 (ТЦ METRO)' }
-    ]
+  'World Class': {
+    listeningStatus: 4.5,
+    signalStatus: 3.8
   },
-  'FiZ': {
-    listeningStatus: 4.2,
-    signalStatus: 5.1,
-    branches: [
-      { address: 'г. Самара, пр-кт. Кирова, 11' },
-      { address: 'г. Самара, ул. Мориса Тореза, 160' }
-    ]
+  'FIZ Культура': {
+    listeningStatus: 4.3,
+    signalStatus: 3.6
+  },
+  'X-Fit': {
+    listeningStatus: 3.5,
+    signalStatus: 3.0
+  },
+  'SMSTRETCHING': {
+    listeningStatus: 3.8,
+    signalStatus: 2.2
+  },
+  'SPORTLIFE': {
+    listeningStatus: 2.8,
+    signalStatus: 2.5
+  },
+  'Fitness House': {
+    listeningStatus: 2.5,
+    signalStatus: 2.0
+  },
+  'DDX': {
+    listeningStatus: 1.5,
+    signalStatus: 1.2
   }
 }
 
 const cafes: Record<string, any> = {
+  'Дринкит': {
+    listeningStatus: 7.5,
+    signalStatus: 7.9
+  },
   'Корж': {
-    listeningStatus: 5.5,
-    signalStatus: 6.8,
-    branches: [
-      { address: 'г. Самара, ТРЦ Гудок, Московское шоссе, 103' },
-      { address: 'г. Самара, ТРЦ Амбар, Московское шоссе, 101' }
-    ]
+    listeningStatus: 7.8,
+    signalStatus: 6.5
   },
-  'MOSAIC': {
-    listeningStatus: 3.2,
-    signalStatus: 4.5,
-    branches: [
-      { address: 'г. Самара, Московское шоссе, 4а' },
-      { address: 'г. Самара, ул. Ново-Садовая, 50' }
-    ]
-  },
-  'Skuratov': {
-    listeningStatus: 6.2,
-    signalStatus: 7.1,
-    branches: [
-      { address: 'г. Самара, ул. Ленинградская, 190' },
-      { address: 'г. Самара, ул. Ново-Садовая, 80' }
-    ]
+  'Skuratov Coffee': {
+    listeningStatus: 7.8,
+    signalStatus: 6.5
   },
   'Surf Coffee': {
-    listeningStatus: 4.8,
-    signalStatus: 5.5,
-    branches: [
-      { address: 'г. Самара, ул. Мичурина, 57' },
-      { address: 'г. Самара, ул. Мичурина, 54' }
-    ]
+    listeningStatus: 6.0,
+    signalStatus: 4.5
   },
-  'Старик Хоттабыч': {
-    listeningStatus: 3.9,
-    signalStatus: 4.2,
-    branches: [
-      { address: 'г. Самара, ул. Чапаевская, 99' },
-      { address: 'г. Самара, ул. Ленинская, 153' }
-    ]
+  'ДаблБи': {
+    listeningStatus: 5.2,
+    signalStatus: 5.0
+  },
+  'Green House': {
+    listeningStatus: 5.0,
+    signalStatus: 4.8
+  },
+  'Stars Coffee': {
+    listeningStatus: 4.0,
+    signalStatus: 3.8
+  },
+  'Cofix': {
+    listeningStatus: 3.5,
+    signalStatus: 2.8
+  },
+  'Do.bro Coffee': {
+    listeningStatus: 2.5,
+    signalStatus: 2.0
   }
 }
 
@@ -72,7 +79,7 @@ const cafes: Record<string, any> = {
 
 const form = ref({
   direction: 'food', 
-  selectedNetwork: 'Корж'
+  selectedNetwork: 'Дринкит'
 })
 
 // Инициализируем как числа
