@@ -38,7 +38,7 @@ const fitness: Record<string, any> = {
 
 const cafes: Record<string, any> = {
   'Дринкит': {
-    listeningStatus: 7.5,
+    listeningStatus: 6.5,
     signalStatus: 7.9
   },
   'Корж': {
@@ -47,11 +47,11 @@ const cafes: Record<string, any> = {
   },
   'Skuratov Coffee': {
     listeningStatus: 6.0,
-    signalStatus: 5.2
+    signalStatus: 4.2
   },
   'Кофемания': {
-    listeningStatus: 6.5,
-    signalStatus: 4.5
+    listeningStatus: 6.7,
+    signalStatus: 3.5
   },
   'Surf Coffee': {
     listeningStatus: 3.2,
