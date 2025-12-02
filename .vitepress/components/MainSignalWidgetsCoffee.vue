@@ -4,6 +4,7 @@ import SignalT9Configurator from './SignalT9Configurator.vue'
 import AddVoteStatus from './AddVoteStatus.vue'
 
 const cafeNames = [
+  'Кофемания',
   'Дринкит',
   'Корж',
   'Skuratov Coffee',
@@ -11,8 +12,7 @@ const cafeNames = [
   'ДаблБи',
   'Green House',
   'Stars Coffee',
-  'Cofix',
-  'Do.bro Coffee'
+  'Cofix'
 ]
 
 const cafes = {
@@ -36,6 +36,15 @@ const cafes = {
   },
   'Skuratov Coffee': {
     name: 'Skuratov Coffee',
+    image: '/widget/surf_widget_bg.jpg',
+    ListeningStatus: 'Общаются',
+    ListeningBadgeText: 'Устойчивый диалог',
+    SignalsStatus: 'Внимательно',
+    SignalsBadgeText: 'Гарантия решения',
+    isConnected: false
+  },
+  'Кофемания': {
+    name: 'Кофемания',
     image: '/widget/surf_widget_bg.jpg',
     ListeningStatus: 'Общаются',
     ListeningBadgeText: 'Устойчивый диалог',
@@ -87,15 +96,6 @@ const cafes = {
     SignalsStatus: 'Оперативно',
     SignalsBadgeText: 'Живой отклик',
     isConnected: false
-  },
-  'Do.bro Coffee': {
-    name: 'Do.bro Coffee',
-    image: '/widget/surf_widget_bg.jpg',
-    ListeningStatus: 'Принимают',
-    ListeningBadgeText: 'Сигналы доходят',
-    SignalsStatus: 'Оперативно',
-    SignalsBadgeText: 'Живой отклик',
-    isConnected: false
   }
 }
 
@@ -132,7 +132,7 @@ const cafeProfiles = {
     responseTime: { base: 9.0, min: 8.0, max: 10.0 },
     resolutionTime: { base: 36.0, min: 30, max: 42 }
   },
-  'do.bro coffee': {
+  'кофемания': {
     responseTime: { base: 12.0, min: 10.0, max: 14.0 },
     resolutionTime: { base: 48.0, min: 40, max: 56 }
   }
