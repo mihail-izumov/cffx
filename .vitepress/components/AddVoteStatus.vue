@@ -368,9 +368,9 @@ ${feedbackMessage.value}`
             <input type="range" min="0" max="8" step="0.02" v-model="listeningValue" class="slider slider--purple" :style="sliderStyle(listeningValue)"/>
           </div>
           <div class="slider-labels">
-            <span class="label-left" :class="{ 'active-text': userListeningIndex === 0 }">Подключены</span>
-            <span class="label-center" :class="{ 'active-text': userListeningIndex === 1 }">Слышат</span>
-            <span class="label-right" :class="{ 'active-text': userListeningIndex === 2 }">Отвечают</span>
+            <span class="label-left" :class="{ 'active-text': userListeningIndex === 0 }">Принимают</span>
+            <span class="label-center" :class="{ 'active-text': userListeningIndex === 1 }">Реагируют</span>
+            <span class="label-right" :class="{ 'active-text': userListeningIndex === 2 }">Общаются</span>
           </div>
         </div>
       </div>
@@ -381,7 +381,7 @@ ${feedbackMessage.value}`
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           </div>
           <div class="card-titles">
-            <div class="card-title">Как меняют</div>
+            <div class="card-title">Как действуют</div>
             <div class="card-subtitle card-subtitle--bronze">{{ changeLabels[networkSignalIndex].toUpperCase() }}</div>
           </div>
         </div>
@@ -390,9 +390,9 @@ ${feedbackMessage.value}`
             <input type="range" min="0" max="8" step="0.02" v-model="changeValue" class="slider slider--bronze" :style="sliderStyle(changeValue)"/>
           </div>
           <div class="slider-labels">
-            <span class="label-left" :class="{ 'active-text': userChangeIndex === 0 }">Открыты</span>
-            <span class="label-center" :class="{ 'active-text': userChangeIndex === 1 }">Действуют</span>
-            <span class="label-right" :class="{ 'active-text': userChangeIndex === 2 }">Меняют</span>
+            <span class="label-left" :class="{ 'active-text': userChangeIndex === 0 }">Оперативно</span>
+            <span class="label-center" :class="{ 'active-text': userChangeIndex === 1 }">Внимательно</span>
+            <span class="label-right" :class="{ 'active-text': userChangeIndex === 2 }">Системно</span>
           </div>
         </div>
       </div>
