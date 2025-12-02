@@ -17,7 +17,7 @@ const fitnessNames = [
 const fitnessClubs = {
   'World Class': {
     name: 'World Class',
-    image: '/widget/surf_widget_bg.jpg',
+    image: '/widget/fitness/worldclass-widget_bg.jpg',
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
     SignalsStatus: 'Внимательно',
@@ -26,7 +26,7 @@ const fitnessClubs = {
   },
   'FIZ Культура': {
     name: 'FIZ Культура',
-    image: '/widget/surf_widget_bg.jpg',
+    image: '/widget/fitness/fiz-widget_bg.jpg',
     ListeningStatus: 'Общаются',
     ListeningBadgeText: 'Устойчивый диалог',
     SignalsStatus: 'Внимательно',
@@ -35,7 +35,7 @@ const fitnessClubs = {
   },
   'X-Fit': {
     name: 'X-Fit',
-    image: '/widget/surf_widget_bg.jpg',
+    image: '/widget/fitness/xfit-widget_bg.jpg',
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
     SignalsStatus: 'Внимательно',
@@ -44,7 +44,7 @@ const fitnessClubs = {
   },
   'SMSTRETCHING': {
     name: 'SMSTRETCHING',
-    image: '/widget/surf_widget_bg.jpg',
+    image: '/widget/fitness/smstretching-widget_bg.jpg',
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
     SignalsStatus: 'Оперативно',
@@ -53,7 +53,7 @@ const fitnessClubs = {
   },
   'SPORTLIFE': {
     name: 'SPORTLIFE',
-    image: '/widget/surf_widget_bg.jpg',
+    image: '/widget/fitness/sportlife-widget_bg.jpg',
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
     SignalsStatus: 'Оперативно',
@@ -62,7 +62,7 @@ const fitnessClubs = {
   },
   'Fitness House': {
     name: 'Fitness House',
-    image: '/widget/surf_widget_bg.jpg',
+    image: '/widget/fitness/fitness-house-widget_bg.jpg',
     ListeningStatus: 'Принимают',
     ListeningBadgeText: 'Сигналы доходят',
     SignalsStatus: 'Оперативно',
@@ -71,7 +71,7 @@ const fitnessClubs = {
   },
   'DDX': {
     name: 'DDX',
-    image: '/widget/surf_widget_bg.jpg',
+    image: '/widget/fitness/ddx-widget_bg.jpg',
     ListeningStatus: 'Принимают',
     ListeningBadgeText: 'Сигналы доходят',
     SignalsStatus: 'Оперативно',
