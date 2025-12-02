@@ -46,32 +46,32 @@ const cafes: Record<string, any> = {
     signalStatus: 6.5
   },
   'Skuratov Coffee': {
-    listeningStatus: 7.2,
+    listeningStatus: 6.9,
     signalStatus: 5.2
   },
   'Кофемания': {
-    listeningStatus: 6.8,
-    signalStatus: 5.0
+    listeningStatus: 6.5,
+    signalStatus: 5.5
   },
   'Surf Coffee': {
-    listeningStatus: 5.2,
+    listeningStatus: 4.2,
     signalStatus: 4.5
   },
   'ДаблБи': {
-    listeningStatus: 5.2,
+    listeningStatus: 3.9,
     signalStatus: 4.8
   },
   'Green House': {
-    listeningStatus: 4.6,
+    listeningStatus: 3.6,
     signalStatus: 4.2
   },
   'Stars Coffee': {
-    listeningStatus: 4.0,
-    signalStatus: 3.8
+    listeningStatus: 3.5,
+    signalStatus: 2.3
   },
   'Cofix': {
-    listeningStatus: 3.5,
-    signalStatus: 2.8
+    listeningStatus: 3.2,
+    signalStatus: 1.9
   }
 }
 
