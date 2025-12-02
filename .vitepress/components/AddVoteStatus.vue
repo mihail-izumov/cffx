@@ -139,8 +139,8 @@ onMounted(() => {
 
 // --- ЛОГИКА СТАТУСОВ ---
 
-const listeningLabels = ['Подключены', 'Слышат', 'Отвечают']
-const changeLabels = ['Открыты', 'Действуют', 'Меняют']
+const listeningLabels = ['Принимают', 'Реагируют', 'Общаются']
+const changeLabels = ['Оперативно', 'Внимательно', 'Системно']
 
 const getStatusIndex = (val: number | string) => {
   // Принудительное преобразование в число
