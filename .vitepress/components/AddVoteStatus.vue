@@ -265,7 +265,7 @@ const submitForm = async () => {
   formData.append('ticketNumber', formattedTicketNumber.value || '000-000')
   formData.append('date', currentDate.value)
   formData.append('submitted', submittedTime)
-  formData.append('direction', form.value.direction === 'food' ? 'Еда' : 'Фитнес')
+  formData.append('direction', form.value.direction === 'food' ? 'Рестораны и Кофейни' : 'Фитнес-клубы и Студии')
   formData.append('network', form.value.selectedNetwork)
   formData.append('address', 'Online Assessment')
   formData.append('name', 'Пользователь Readiness')
