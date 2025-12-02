@@ -7,6 +7,8 @@ notification: brew
 title: Как работают Сигналы
 description: Разобраться и изменить
 ---
+<SignalItemsSlider />
+
 <div align="center">
 
 <h1>
