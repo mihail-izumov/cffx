@@ -49,6 +49,10 @@ const cafes: Record<string, any> = {
     listeningStatus: 7.8,
     signalStatus: 6.5
   },
+  'Кофемания': {
+    listeningStatus: 6.8,
+    signalStatus: 5.5
+  },
   'Surf Coffee': {
     listeningStatus: 6.0,
     signalStatus: 4.5
@@ -68,10 +72,6 @@ const cafes: Record<string, any> = {
   'Cofix': {
     listeningStatus: 3.5,
     signalStatus: 2.8
-  },
-  'Do.bro Coffee': {
-    listeningStatus: 2.5,
-    signalStatus: 2.0
   }
 }
 
