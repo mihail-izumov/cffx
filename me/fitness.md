@@ -20,7 +20,7 @@ description: Сигнал – тому кто решает
 
 </div>
 
-<MainSignalWidgetsCoffee />
+<MainSignalWidgetsFitness />
 
 
 <style>
