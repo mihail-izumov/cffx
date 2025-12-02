@@ -132,6 +132,8 @@ import AddVoteStatus from '../components/AddVoteStatus.vue'
 import BadgeCounter from '../components/BadgeCounter.vue'
 import SignalItemsSlider from '../components/SignalItemsSlider.vue'
 import RadarWorksBadge from '../components/RadarWorksBadge.vue'
+import MainSignalWidgetsFitness from '../components/MainSignalWidgetsFitness.vue'
+
 
 export default {
   extends: DefaultTheme,
@@ -269,6 +271,7 @@ export default {
     app.component('BadgeCounter', BadgeCounter)
     app.component('SignalItemsSlider', SignalItemsSlider)
     app.component('RadarWorksBadge', RadarWorksBadge)
+    app.component('MainSignalWidgetsFitness', MainSignalWidgetsFitness)
     
   },
 }
