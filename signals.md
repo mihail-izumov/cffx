@@ -10,7 +10,7 @@ description: Разобраться и изменить
 
 <div align="center">
 
-<h1 class="responsive-heading-signal-industries">Разобраться и изменить.</h1>
+<h1 class="responsive-heading-signal-industries">Разобраться и<br> изменить.</h1>
 
 </div>
 
