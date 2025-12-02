@@ -4,36 +4,16 @@ prev: false
 next: false
 pageClass: centered-page
 notification: brew
-title: Как работает Сигнал
-description: Просто скажите что не так
+title: Как работают Сигналы
+description: Разобраться и изменить
 ---
 <div align="center">
 
-<span class="signal-badge">Разобраться и изменить</span> <br>
-
 <h1>
-  <span>Ваш Сигнал — тому,</span><br class="mobile-break"> <span>кто решает.</span>
+  <span>Разобраться и изменить.</span>
 </h1>
 
-<p>
-  <strong>Анонимно. Без регистрации.</strong><br class="mobile-break"> Результат — в течение дня.
-</p>
-
 </div>
-
-<style>
-/* По умолчанию скрываем тег <br> с классом .mobile-break */
-.mobile-break {
-  display: none;
-}
-
-/* Показываем <br> только на мобильных устройствах (экраны до 767px включительно) */
-@media (max-width: 767px) {
-  .mobile-break {
-    display: inline;
-  }
-}
-</style>
 
 <div style="text-align: center; margin: 2rem 0;">
   <img 
@@ -54,7 +34,7 @@ description: Просто скажите что не так
 
 <div align="center">
   
-## Что Сигнал делает для вас?
+# Что Сигнал делает для вас?
 
 ### Ваш Сигнал – это команда к действию для бизнеса и видимый результат для вас.
 
@@ -62,12 +42,8 @@ description: Просто скажите что не так
 
 <SignalSteps />
 
-<div align="center">
-  
-<SignalSendButton />
-
 ### Не просто мнение или жалоба – импульс к реальным улучшениям. 
-</div>
+
 <br>
 <SignalsYandexVSSignal />
 
