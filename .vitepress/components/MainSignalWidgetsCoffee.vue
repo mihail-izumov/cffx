@@ -432,6 +432,13 @@ onUnmounted(() => {
         </button>
         <button
           class="signal2-switcher"
+          :class="{ active: selectedCafe === 'Кофемания' }"
+          @click="selectedCafe = 'Кофемания'"
+        >
+          Surf Coffee
+        </button>
+        <button
+          class="signal2-switcher"
           :class="{ active: selectedCafe === 'ДаблБи' }"
           @click="selectedCafe = 'ДаблБи'"
         >
@@ -457,13 +464,6 @@ onUnmounted(() => {
           @click="selectedCafe = 'Cofix'"
         >
           Cofix
-        </button>
-        <button
-          class="signal2-switcher"
-          :class="{ active: selectedCafe === 'Do.bro Coffee' }"
-          @click="selectedCafe = 'Do.bro Coffee'"
-        >
-          Do.bro Coffee
         </button>
       </div>
 
