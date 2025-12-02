@@ -276,7 +276,7 @@ const submitForm = async () => {
   const changeVal = Number(changeValue.value)
 
   const reviewText = `[Оценка Readiness]
-Направление: ${form.value.direction === 'food' ? 'Еда' : 'Фитнес'}
+Направление: ${form.value.direction === 'food' ? 'Рестораны и Кофейни' : 'Фитнес-клубы и Студии'}
 Сеть: ${form.value.selectedNetwork}
 
 [Данные сети]
@@ -332,8 +332,8 @@ ${feedbackMessage.value}`
         <label class="selector-label">Выбрать направление</label>
         <div class="select-wrapper">
           <select v-model="form.direction" class="readiness-select">
-            <option value="food">Еда</option>
-            <option value="fitness">Фитнес</option>
+            <option value="food">Рестораны и Кофейни</option>
+            <option value="fitness">Фитнес-клубы и Студии</option>
           </select>
           <svg class="select-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </div>
