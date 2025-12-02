@@ -757,7 +757,7 @@ onUnmounted(() => {
       >
         <div class="signal2-modal-header">
           <div class="signal2-modal-title">
-            Сигналы
+            Ваши Сигналы
           </div>
         </div>
         <div class="signal2-modal-body">
