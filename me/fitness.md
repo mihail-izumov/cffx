@@ -15,7 +15,7 @@ description: Сигнал – тому кто решает
 <h1 class="responsive-heading-signal-industries">Ваш Сигнал — тому,<br>кто решает в фитнесе.</h1>
 
 <p>
-  Без регистрации.<br class="mobile-break"> <strong>Результат — в течение дня.</strong>
+  Без регистрации.<br class="mobile-break"> <strong>Результат — сегодня.</strong>
 </p>
 
 </div>
