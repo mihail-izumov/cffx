@@ -13,12 +13,12 @@ hero:
   actions:
     - theme: brand
       text: Отправить ⚡ Сигнал
-      link: /me
+      link: /me/coffee
 
 features:
   - title: Где Вас Слушают
     details: "Отправьте Сигнал. Получите поддержку и видимый результат за 24 часа. "
-    link: /me
+    link: /me/coffee
     linkText: Выбрать место
   - title: Инвестиции с Сигналом
     details: "Начните инвестировать с Сигналом прямо сейчас."
