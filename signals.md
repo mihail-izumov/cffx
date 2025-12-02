@@ -3,7 +3,6 @@ outline: false
 prev: false
 next: false
 pageClass: centered-page
-notification: brew
 title: Как работают Сигналы
 description: Разобраться и изменить
 ---
