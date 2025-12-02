@@ -22,6 +22,10 @@ description: Сигнал – тому кто решает
 
 <MainSignalWidgetsFitness />
 
+<br>
+
+<RadarWorksBadge />
+
 
 <style>
 /* БАЗОВЫЙ СТИЛЬ (Десктоп) */
