@@ -446,7 +446,7 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Где Вас Слушают',
       items: [
-        { text: 'Кофейни и Рестораны', link: '/me/coffee' },  
+        { text: 'Рестораны и Кофейни', link: '/me/coffee' },  
         { text: 'Фитнес-клубы и Студии', link: '/me/fitness' }
       ]
     },
