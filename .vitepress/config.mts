@@ -443,7 +443,11 @@ export default defineConfig({
 
 function nav(): DefaultTheme.NavItem[] {
   return [
-    { text: 'Где Вас Слушают', link: '/me' },
+{
+      text: 'Где Вас Слушают',
+      items: [
+        { text: 'Кофейни и Рестораны', link: '/me/coffee' },  
+        { text: 'Фитнес-клубы и Студии', link: '/me/fitness' },
     {
       text: 'Для Бизнеса',
       items: [
