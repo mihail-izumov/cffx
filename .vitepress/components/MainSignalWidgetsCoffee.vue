@@ -30,8 +30,8 @@ const cafes = {
     image: '/widget/rest-and-coffee/korzh_widget_bg.jpg',
     ListeningStatus: 'Общаются',
     ListeningBadgeText: 'Устойчивый диалог',
-    SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантия решения',
+    SignalsStatus: 'Системно',
+    SignalsBadgeText: 'Процессы отлажены',
     isConnected: true
   },
   'Skuratov Coffee': {
@@ -55,8 +55,8 @@ const cafes = {
   'Surf Coffee': {
     name: 'Surf Coffee',
     image: '/widget/rest-and-coffee/surf_widget_bg.jpg',
-    ListeningStatus: 'Общаются',
-    ListeningBadgeText: 'Устойчивый диалог',
+    ListeningStatus: 'Реагируют',
+    ListeningBadgeText: 'Обычно отвечают',
     SignalsStatus: 'Внимательно',
     SignalsBadgeText: 'Гарантия решения',
     isConnected: false
@@ -73,8 +73,8 @@ const cafes = {
   'Green House': {
     name: 'Green House',
     image: '/widget/rest-and-coffee/green-house-widget_bg.jpg',
-    ListeningStatus: 'Реагируют',
-    ListeningBadgeText: 'Обычно отвечают',
+    ListeningStatus: 'Принимают',
+    ListeningBadgeText: 'Сигналы доходят',
     SignalsStatus: 'Внимательно',
     SignalsBadgeText: 'Гарантия решения',
     isConnected: false
@@ -82,17 +82,17 @@ const cafes = {
   'Stars Coffee': {
     name: 'Stars Coffee',
     image: '/widget/rest-and-coffee/stars-coffee-widget_bg.jpg',
-    ListeningStatus: 'Реагируют',
-    ListeningBadgeText: 'Обычно отвечают',
-    SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантия решения',
+    ListeningStatus: 'Принимают',
+    ListeningBadgeText: 'Сигналы доходят',
+    SignalsStatus: 'Оперативно',
+    SignalsBadgeText: 'Живой отклик',
     isConnected: false
   },
   'Cofix': {
     name: 'Cofix',
     image: '/widget/rest-and-coffee/cofix-widget_bg.jpg',
-    ListeningStatus: 'Реагируют',
-    ListeningBadgeText: 'Обычно отвечают',
+    ListeningStatus: 'Принимают',
+    ListeningBadgeText: 'Сигналы доходят',
     SignalsStatus: 'Оперативно',
     SignalsBadgeText: 'Живой отклик',
     isConnected: false
