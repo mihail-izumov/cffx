@@ -46,7 +46,7 @@ const cafes: Record<string, any> = {
     signalStatus: 6.5
   },
   'Skuratov Coffee': {
-    listeningStatus: 6.9,
+    listeningStatus: 6.0,
     signalStatus: 5.2
   },
   'Кофемания': {
@@ -58,19 +58,19 @@ const cafes: Record<string, any> = {
     signalStatus: 4.5
   },
   'ДаблБи': {
-    listeningStatus: 3.9,
+    listeningStatus: 3.2,
     signalStatus: 4.8
   },
   'Green House': {
-    listeningStatus: 3.6,
+    listeningStatus: 2.9,
     signalStatus: 4.2
   },
   'Stars Coffee': {
-    listeningStatus: 3.5,
+    listeningStatus: 1.5,
     signalStatus: 2.3
   },
   'Cofix': {
-    listeningStatus: 3.2,
+    listeningStatus: 1.3,
     signalStatus: 1.9
   }
 }
