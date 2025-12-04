@@ -534,7 +534,9 @@ const cafes = {
       { address: 'Москва, Новокузнецкая ул., 4/12с1' },
       { address: 'Москва, Большой Овчинниковский пер., 16' },
       { address: 'Москва, ул. Шаболовка, 24' },
-      { address: 'Москва, ул. Ленинская Слобода, 26, стр. 5' }
+      { address: 'Москва, ул. Ленинская Слобода, 26, стр. 5' },
+      { address: 'Самара, ул. Ленинградская, 29' },
+      { address: 'Самара, Московское ш., 41' }
     ]
   },
   'Корж': {
@@ -1708,7 +1710,7 @@ onUnmounted(() => {
   border-radius: 20px;       /* Чуть мягче скругление */
   width: min(480px, 92vw);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); /* Мягкая тень */
-  padding: 32px;
+  padding: 40px;
   text-align: center;        /* Центрируем весь текст внутри */
 }
 
@@ -1720,8 +1722,8 @@ onUnmounted(() => {
 }
 
 .modal-body {
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.3;
   color: #444;               /* Текст чуть мягче черного для чтения */
 }
 
@@ -2454,12 +2456,12 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 
 /* Разделитель (пустое пространство) */
 .modal-spacer {
-  height: 16px;         /* Высота пустого пространства */
+  height: 12px;         /* Высота пустого пространства */
 }
 
 /* Жирный текст в описании */
 .modal-body b {
-  font-weight: 700;
+  font-weight: 500;
   color: #000;          /* Жирный текст чисто черный */
   display: block;       /* Чтобы точно занимал свой блок */
 }
