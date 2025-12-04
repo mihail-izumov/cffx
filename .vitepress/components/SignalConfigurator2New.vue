@@ -1313,15 +1313,11 @@ function getAccusativeCase(networkName) {
 
   // РУЧНЫЕ ИСПРАВЛЕНИЯ ДЛЯ СЛОЖНЫХ СЛОВ
   
-  // FiZКУЛЬТУРА -> FiZКУЛЬТУРУ / FIZ Культуру
-  if (lower.includes('fiz') && lower.includes('культур')) {
-     // Если капс
-     if (name === name.toUpperCase()) return 'FIZКУЛЬТУРУ';
-     return name.slice(0, -1) + 'у';
+  if (lower.includes('FIZКУЛЬТУРА')) {
+    return 'FIZКУЛЬТУРУ';
   }
 
-  // Кофемания -> Кофеманию
-  if (lower.includes('кофемания')) {
+  if (lower.endsWith('мания')) {
     return 'Кофеманию';
   }
 
