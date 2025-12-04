@@ -32,6 +32,8 @@ description: Разобраться и изменить
 </div>
 
 <div align="center">
+
+<br>
   
 # Что Сигнал делает для вас?
 
@@ -40,6 +42,8 @@ description: Разобраться и изменить
 </div>
 
 <SignalSteps />
+
+<br>
 
 <div align="center">
 
@@ -50,6 +54,8 @@ description: Разобраться и изменить
 <br>
 <SignalsYandexVSSignal />
 
+<br>
+
 <div align="center">
 
 # От Сигнала до решения – 24 часа
@@ -57,6 +63,8 @@ description: Разобраться и изменить
 </div>
 
 <SignalDashboardSwitcher />
+
+<br>
 
 <div align="center">
 
@@ -88,6 +96,8 @@ description: Разобраться и изменить
 </div>
 
 <AnnaSpecsSignal />
+
+<br>
 
 <div align="center">
 
