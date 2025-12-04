@@ -28,6 +28,8 @@ description: Сигнал – тому кто решает
 
 </div>
 
+<br>
+
 <DashboardCafeSignalsMap />
 
 <br>
