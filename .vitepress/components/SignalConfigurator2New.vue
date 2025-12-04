@@ -1333,17 +1333,6 @@ onUnmounted(() => {
 :root {
   --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --signal-font-mono: 'SF Mono', 'Monaco', monospace;
-
-  /* --- НОВЫЕ ПРИГЛУШЕННЫЕ ЦВЕТА --- */
-  --female-color: #C875A0; /* Приглушенный розовый */
-  --female-bg: rgba(200, 117, 160, 0.15);
-  --female-border: rgba(200, 117, 160, 0.3);
-  --female-gradient: linear-gradient(135deg, #C875A0 0%, #B0688F 100%);
-
-  --male-color: #75A0C8;   /* Приглушенный сине-голубой */
-  --male-bg: rgba(117, 160, 200, 0.15);
-  --male-border: rgba(117, 160, 200, 0.3);
-  --male-gradient: linear-gradient(135deg, #75A0C8 0%, #6085A9 100%);
 }
 
 .signal-demo-wrapper {
@@ -1466,23 +1455,22 @@ onUnmounted(() => {
   margin: 0 2px;
 }
 
-/* ИЗМЕНЕНИЕ: Цвета кнопок пола тоже приглушили */
 .signal-gender-female {
-  background: rgba(200, 117, 160, 0.3);
+  background: rgba(255, 105, 180, 0.3);
 }
 
 .signal-gender-female.is-active {
-  background: var(--female-color);
-  box-shadow: 0 0 12px rgba(200, 117, 160, 0.5);
+  background: #ff69b4;
+  box-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
 }
 
 .signal-gender-male {
-  background: rgba(117, 160, 200, 0.3);
+  background: rgba(135, 206, 235, 0.3);
 }
 
 .signal-gender-male.is-active {
-  background: var(--male-color);
-  box-shadow: 0 0 12px rgba(117, 160, 200, 0.5);
+  background: #87ceeb;
+  box-shadow: 0 0 12px rgba(135, 206, 235, 0.5);
 }
 
 .modal-overlay {
@@ -2167,97 +2155,63 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
 /* ===============================
-   ЕДИНЫЙ ГЕНДЕРНЫЙ ЦВЕТ (ОБНОВЛЕНО)
+   ЕДИНЫЙ ГЕНДЕРНЫЙ ЦВЕТ ДЛЯ ВСЕХ ЭЛЕМЕНТОВ
    =============================== */
 
-/* --- ЖЕНСКИЙ СТИЛЬ (ПРИГЛУШЕННЫЙ) --- */
-
-/* Баблы */
+/* Женский цвет для всех элементов */
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-suggestion-bubble {
-  background: var(--female-bg) !important;
-  border-color: var(--female-border) !important;
-  color: var(--female-color) !important;
+  background: rgba(255, 105, 180, 0.1) !important;
+  border-color: rgba(255, 105, 180, 0.3) !important;
+  color: #ff69b4 !important;
 }
+
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-suggestion-bubble:hover {
-  background: var(--female-color) !important;
+  background: #ff69b4 !important;
   color: #fff !important;
 }
 
-/* Кнопка "Далее" */
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn {
-  background: var(--female-gradient) !important;
+  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%) !important;
 }
+
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn .signal-liquid-next-text,
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn .signal-next-icon {
   color: #fff !important;
 }
 
-/* Кнопка "Отправить" (ДОБАВЛЕНО) */
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-submit-button {
-  background: var(--female-gradient) !important;
-}
-
-/* Переключатель "Анонимно" (ДОБАВЛЕНО) */
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-toggle-checkbox:checked + .signal-toggle-slider {
-  background-color: var(--female-color) !important;
-}
-
-/* Чекбокс "Согласие" (ДОБАВЛЕНО) */
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-agreement input[type="checkbox"] {
-  accent-color: var(--female-color) !important;
-}
-
-/* Фокус полей */
-.signal-demo-wrapper:has(.signal-gender-female.is-active) textarea:focus,
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-input:focus,
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-select:focus {
-  border-color: var(--female-color) !important;
-  box-shadow: 0 0 0 3px rgba(200, 117, 160, 0.2) !important;
-}
-
-/* --- МУЖСКОЙ СТИЛЬ (ПРИГЛУШЕННЫЙ) --- */
-
-/* Баблы */
+/* Мужской цвет для всех элементов */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble {
-  background: var(--male-bg) !important;
-  border-color: var(--male-border) !important;
-  color: var(--male-color) !important;
+  background: rgba(135, 206, 235, 0.1) !important;
+  border-color: rgba(135, 206, 235, 0.3) !important;
+  color: #87ceeb !important;
 }
+
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble:hover {
-  background: var(--male-color) !important;
+  background: #87ceeb !important;
   color: #000 !important;
 }
 
-/* Кнопка "Далее" */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn {
-  background: var(--male-gradient) !important;
+  background: linear-gradient(135deg, #87ceeb 0%, #4682b4 100%) !important;
 }
-/* ВНИМАНИЕ: Текст стал белым по вашему запросу */
+
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn .signal-liquid-next-text,
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn .signal-next-icon {
-  color: #fff !important; 
+  color: #000 !important;
 }
 
-/* Кнопка "Отправить" (ДОБАВЛЕНО) */
-.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-submit-button {
-  background: var(--male-gradient) !important;
+/* Гендерная подсветка для текстовых полей при фокусе */
+.signal-demo-wrapper:has(.signal-gender-female.is-active) textarea:focus,
+.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-input:focus,
+.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-select:focus {
+  border-color: #ff69b4 !important;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2) !important;
 }
 
-/* Переключатель "Анонимно" (ДОБАВЛЕНО) */
-.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-toggle-checkbox:checked + .signal-toggle-slider {
-  background-color: var(--male-color) !important;
-}
-
-/* Чекбокс "Согласие" (ДОБАВЛЕНО) */
-.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-agreement input[type="checkbox"] {
-  accent-color: var(--male-color) !important;
-}
-
-/* Фокус полей */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) textarea:focus,
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-input:focus,
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-select:focus {
-  border-color: var(--male-color) !important;
-  box-shadow: 0 0 0 3px rgba(117, 160, 200, 0.2) !important;
+  border-color: #87ceeb !important;
+  box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.2) !important;
 }
 </style>
