@@ -2264,16 +2264,23 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   }
 
   .signal-demo-wrapper {
-    margin-left: -8px;
-    margin-right: -8px;
+    width: 100%;
+    margin: 0 auto;
   }
 
+  /* Сам контейнер без стилей карточки, но с отступами */
   .signal-demo__form-container {
     background-color: transparent;
     border: none;
     box-shadow: none;
-    padding: 0.75rem 0;   /* минимум внутренних отступов */
+    padding: 0 0.5rem; /* Небольшой отступ от краев экрана (безопасная зона) */
     border-radius: 0;
+    max-width: 100%;
+  }
+
+  /* Убеждаемся, что внутренние элементы занимают всю ширину */
+  .signal-form-section {
+    width: 100%;
   }
   
   .signal-question-block {
