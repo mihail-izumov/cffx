@@ -1710,7 +1710,7 @@ onUnmounted(() => {
   border-radius: 20px;       /* Чуть мягче скругление */
   width: min(480px, 92vw);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); /* Мягкая тень */
-  padding: 40px;
+  padding: 60px;
   text-align: center;        /* Центрируем весь текст внутри */
 }
 
@@ -1722,8 +1722,9 @@ onUnmounted(() => {
 }
 
 .modal-body {
-  font-size: 14px;
-  line-height: 1.3;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.4;
   color: #444;               /* Текст чуть мягче черного для чтения */
 }
 
