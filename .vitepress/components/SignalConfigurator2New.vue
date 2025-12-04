@@ -1296,20 +1296,58 @@ const submitButtonText = computed(() =>
 function getAccusativeCase(networkName) {
   if (!networkName) return '';
   
-  const name = networkName.trim(); // Убираем случайные пробелы
-  const lower = name.toLowerCase(); 
+  const name = networkName.trim();
+  const lower = name.toLowerCase();
 
-  // СПИСОК ИСКЛЮЧЕНИЙ (Возвращаем как есть)
+  // 1. СПИСОК ИСКЛЮЧЕНИЙ (Никогда не склоняем)
   const exceptions = [
     'корж', 'даблби', 'дринкит', 
     'world class', 'x-fit', 'smstretching', 'sportlife', 'fitness house', 
     'ddx', 'skuratov', 'surf coffee', 'stars coffee', 
-    'cofix', 'green house'
+    'cofix', 'green house', 'спортлайф'
   ];
 
   if (exceptions.includes(lower)) {
     return name;
   }
+
+  // 2. РУЧНЫЕ ПРАВИЛА (Проверяем lower!)
+  
+  // Для FIZКУЛЬТУРА (ищет "fizкультура" маленькими)
+  if (lower.includes('fizкультура')) {
+    // Если исходное слово было капсом (FIZКУЛЬТУРА), возвращаем капсом
+    if (name === name.toUpperCase()) return 'FIZКУЛЬТУРУ';
+    // Иначе (FiZКУЛЬТУРА) возвращаем с маленькой 'у'
+    return name.slice(0, -1) + 'у';
+  }
+
+  // Для Кофемании (ищет "кофемания" или "мания" в конце)
+  if (lower.endsWith('мания')) {
+    return 'Кофеманию';
+  }
+  
+  // Для Белотурки
+  if (lower.includes('белотурка')) {
+    return 'Белотурку';
+  }
+
+  // 3. АВТОМАТИКА
+  const lastChar = lower.slice(-1);
+  
+  // Проверяем и русскую 'а', и английскую 'a'
+  if (lastChar === 'а' || lastChar === 'a') {
+     const isCaps = name === name.toUpperCase() && name !== name.toLowerCase();
+     return name.slice(0, -1) + (isCaps ? 'У' : 'у');
+  }
+
+  if (lastChar === 'я') {
+     const isCaps = name === name.toUpperCase() && name !== name.toLowerCase();
+     return name.slice(0, -1) + (isCaps ? 'Ю' : 'ю');
+  }
+  
+  return name;
+}
+
 
   // РУЧНЫЕ ИСПРАВЛЕНИЯ ДЛЯ СЛОЖНЫХ СЛОВ
   
