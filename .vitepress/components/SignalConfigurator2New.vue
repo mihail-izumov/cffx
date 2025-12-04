@@ -1910,10 +1910,12 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
 .signal-example-hint {
-  font-size: 0.8rem;
-  color: #777;
-  margin: 0.4rem 0 0 0.5rem;
-  line-height: 1.15;
+  font-family: var(--signal-font-sans);
+  font-size: 0.85rem;       /* Чуть-чуть увеличим для читаемости */
+  color: #888;
+  line-height: 1.4;         /* Дадим строкам чуть больше воздуха */
+  letter-spacing: 0.02em;   /* И самую малость - буквам */
+  margin: 0.25rem 0 0.5rem 0.5rem; /* top | right | bottom | left */
 }
 
 .signal-example-hint-white {
