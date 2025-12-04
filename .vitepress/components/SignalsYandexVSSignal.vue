@@ -1,13 +1,13 @@
 <template>
   <div class="adaptive-comparison">
-    <!-- === ДЕСКТОПНАЯ ВЕРСИЯ (ВАШ КОД) === -->
+    <!-- === ДЕСКТОПНАЯ ВЕРСИЯ === -->
     <div class="desktop-view">
       <div class="table-content">
         <div class="table-header">
           <div class="header-cell usual">Обычный отзыв Яндекс/2ГИС</div>
           <div class="header-cell smart">
             <img src="/favicon.svg" alt="Signal Icon" class="header-icon" />
-            Сигнал
+            <span class="signal-header-text">Сигнал</span>
           </div>
         </div>
         
@@ -16,14 +16,28 @@
             <p>{{ item.regular }}</p>
           </div>
           <div class="cell smart-cell">
-            <span class="arrow">→</span>
+            <svg
+              class="arrow-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M18 8L22 12L18 16" />
+              <path d="M2 12H22" />
+            </svg>
             <p><strong>{{ item.signal }}</strong></p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- === УЛУЧШЕННАЯ МОБИЛЬНАЯ ВЕРСИЯ (КАРТОЧКИ) === -->
+    <!-- === МОБИЛЬНАЯ ВЕРСИЯ (КАРТОЧКИ) === -->
     <div class="mobile-view">
       <div class="mobile-card" v-for="(item, index) in comparisonData" :key="index">
         <div class="mobile-item">
@@ -36,9 +50,26 @@
         <div class="mobile-item">
           <div class="mobile-label signal-label">
             <img src="/favicon.svg" alt="Signal Icon" class="mobile-icon" />
-            Сигнал
+            <span class="signal-label-text">Сигнал</span>
           </div>
-          <div class="mobile-value signal-value">→ {{ item.signal }}</div>
+          <div class="mobile-value signal-value">
+            <svg
+              class="arrow-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M18 8L22 12L18 16" />
+              <path d="M2 12H22" />
+            </svg>
+            <span>{{ item.signal }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -57,7 +88,6 @@ const comparisonData = ref([
 </script>
 
 <style scoped>
-/* === ДЕСКТОПНАЯ ВЕРСИЯ (ВАШИ СТИЛИ) === */
 .desktop-view {
   display: block;
 }
@@ -65,6 +95,7 @@ const comparisonData = ref([
   display: none;
 }
 
+/* Десктоп — ваши стили + правка цветов */
 .table-content {
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
@@ -96,7 +127,9 @@ const comparisonData = ref([
 }
 .header-cell.smart {
   background: rgba(200,255,90,0.08);
-  color: #c8ff5a;
+}
+.signal-header-text {
+  color: #ffffff;
 }
 .header-icon {
   width: 16px;
@@ -137,14 +170,12 @@ const comparisonData = ref([
   font-weight: 600;
   color: #c8ff5a;
 }
-.arrow {
+.arrow-icon {
   color: #c8ff5a;
-  font-size: 16px;
-  font-weight: bold;
   flex-shrink: 0;
 }
 
-/* === МОБИЛЬНАЯ ВЕРСИЯ (НОВЫЕ СТИЛИ) === */
+/* Мобильные карточки */
 @media (max-width: 768px) {
   .desktop-view {
     display: none;
@@ -154,7 +185,7 @@ const comparisonData = ref([
   }
 
   .mobile-card {
-    background-color: #222528; /* Графитовый фон */
+    background-color: #222528;
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 12px;
     padding: 20px;
@@ -174,10 +205,13 @@ const comparisonData = ref([
     align-items: center;
     gap: 8px;
   }
-  
-  .mobile-label.signal-label {
-    color: #c8ff5a;
-    opacity: 0.9;
+
+  .signal-label-text {
+    color: #ffffff;
+  }
+
+  .signal-label {
+    opacity: 0.95;
   }
 
   .mobile-icon {
@@ -190,6 +224,9 @@ const comparisonData = ref([
     line-height: 1.5;
     color: rgba(255,255,255,0.9);
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   .signal-value {
