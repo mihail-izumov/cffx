@@ -133,7 +133,7 @@ import BadgeCounter from '../components/BadgeCounter.vue'
 import SignalItemsSlider from '../components/SignalItemsSlider.vue'
 import RadarWorksBadge from '../components/RadarWorksBadge.vue'
 import MainSignalWidgetsFitness from '../components/MainSignalWidgetsFitness.vue'
-
+import DashboardTest from '../components/DashboardTest.vue'
 
 export default {
   extends: DefaultTheme,
@@ -272,6 +272,8 @@ export default {
     app.component('SignalItemsSlider', SignalItemsSlider)
     app.component('RadarWorksBadge', RadarWorksBadge)
     app.component('MainSignalWidgetsFitness', MainSignalWidgetsFitness)
+    app.component('DashboardTest', DashboardTest)
+    
     
   },
 }
