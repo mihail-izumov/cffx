@@ -17,11 +17,10 @@
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade-smooth">
-          <div v-if="activeIdx === i" class="card-tooltip">
-            <div class="tooltip-text">{{ cat.desc }}</div>
-          </div>
-        </transition>
+        <!-- Тултип без анимации (transition убран) -->
+        <div v-if="activeIdx === i" class="card-tooltip">
+          <div class="tooltip-text">{{ cat.desc }}</div>
+        </div>
       </div>
     </div>
 
@@ -42,11 +41,9 @@
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade-smooth">
-          <div v-if="activeIdx === i + 2" class="card-tooltip">
-            <div class="tooltip-text">{{ cat.desc }}</div>
-          </div>
-        </transition>
+        <div v-if="activeIdx === i + 2" class="card-tooltip">
+          <div class="tooltip-text">{{ cat.desc }}</div>
+        </div>
       </div>
     </div>
 
@@ -67,11 +64,9 @@
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade-smooth">
-          <div v-if="activeIdx === i + 4" class="card-tooltip">
-            <div class="tooltip-text">{{ cat.desc }}</div>
-          </div>
-        </transition>
+        <div v-if="activeIdx === i + 4" class="card-tooltip">
+          <div class="tooltip-text">{{ cat.desc }}</div>
+        </div>
       </div>
     </div>
 
@@ -92,15 +87,13 @@
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade-smooth">
-          <div v-if="activeIdx === i + 7" class="card-tooltip">
-            <div class="tooltip-text">{{ cat.desc }}</div>
-          </div>
-        </transition>
+        <div v-if="activeIdx === i + 7" class="card-tooltip">
+          <div class="tooltip-text">{{ cat.desc }}</div>
+        </div>
       </div>
     </div>
 
-    <!-- Нижние 4 карточки — компактные -->
+    <!-- Нижние 4 карточки — широкие -->
     <div class="column-center">
       <div
         v-for="(cat, i) in categories.slice(10)"
@@ -117,11 +110,9 @@
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade-smooth">
-          <div v-if="activeIdx === i + 10" class="card-tooltip">
-            <div class="tooltip-text">{{ cat.desc }}</div>
-          </div>
-        </transition>
+        <div v-if="activeIdx === i + 10" class="card-tooltip">
+          <div class="tooltip-text">{{ cat.desc }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -132,12 +123,12 @@ import { ref } from 'vue'
 
 const activeIdx = ref(-1)
 
-// Функция для переключения состояния по клику
+// Функция переключения
 const toggle = (index) => {
   if (activeIdx.value === index) {
-    activeIdx.value = -1 // Закрыть, если кликнули по уже открытому
+    activeIdx.value = -1
   } else {
-    activeIdx.value = index // Открыть новый
+    activeIdx.value = index
   }
 }
 
@@ -211,8 +202,7 @@ const categories = [
   overflow: hidden;
   box-sizing: border-box;
   transition: transform 0.14s ease, box-shadow 0.14s ease;
-  /* Убрал outline по умолчанию, добавляйте focus-visible при необходимости */
-  outline: none; 
+  outline: none;
 }
 
 .card:hover,
@@ -221,11 +211,12 @@ const categories = [
   box-shadow: 0 3px 8px rgba(24, 24, 26, 0.18);
 }
 
+/* ВЫСОТЫ УВЕЛИЧЕНЫ ЕЩЕ СИЛЬНЕЕ */
 /* 2 крупные карточки */
 .card-large {
   flex: 1 1 calc(50% - 3px);
   min-width: 0;
-  min-height: 90px; /* Было 74px -> Увеличено */
+  min-height: 110px; /* Было 90px -> 110px */
   height: auto;
   font-size: clamp(0.92rem, 1.75vw, 1.12rem);
 }
@@ -234,7 +225,7 @@ const categories = [
 .card-mid {
   flex: 1 1 calc(33.333% - 4px);
   min-width: 0;
-  min-height: 70px; /* Было 54px -> Увеличено */
+  min-height: 90px; /* Было 70px -> 90px */
   height: auto;
   font-size: clamp(0.78rem, 1.5vw, 0.92rem);
 }
@@ -243,20 +234,21 @@ const categories = [
 .card-wide {
   flex: 1 1 100%;
   min-width: 0;
-  min-height: 45px; /* Было 28px -> Увеличено */
+  min-height: 60px; /* Было 45px -> 60px */
   height: auto;
   font-size: clamp(0.76rem, 1.45vw, 0.90rem);
 }
 
-/* === ОСНОВНЫЕ КАРТОЧКИ === */
+/* === ВНУТРЕННОСТИ КАРТОЧКИ (Отступы увеличены) === */
 .card-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 5px;
+  /* Увеличены отступы: 10px сверху/снизу, 16px по бокам */
+  padding: 10px 16px; 
   gap: 6px;
   width: 100%;
-  height: 100%; /* Чтобы контент занимал всю высоту */
+  height: 100%;
   box-sizing: border-box;
 }
 
@@ -280,7 +272,7 @@ const categories = [
   text-align: right;
 }
 
-/* === ТУЛТИП === */
+/* === ТУЛТИП (Анимации удалены) === */
 .card-tooltip {
   position: absolute;
   inset: 0;
@@ -288,12 +280,12 @@ const categories = [
   color: #ededed;
   border-radius: 11px;
   z-index: 10;
-  padding: 8px 10px;
+  /* Отступы тултипа тоже немного увеличим для согласованности */
+  padding: 10px 16px; 
   display: flex;
-  align-items: flex-start; /* Текст начинается сверху */
-  animation: tooltipPop 0.28s ease-out;
+  align-items: flex-start;
   box-shadow: 0 3px 10px rgba(22, 23, 25, 0.32);
-  overflow-y: auto; /* На случай, если текста слишком много даже для новой высоты */
+  overflow-y: auto; /* Скролл на крайний случай */
 }
 
 .tooltip-text {
@@ -305,22 +297,6 @@ const categories = [
   max-width: 100%;
 }
 
-/* === Анимации === */
-.fade-smooth-enter-active,
-.fade-smooth-leave-active {
-  transition: opacity 0.28s ease;
-}
-
-.fade-smooth-enter-from,
-.fade-smooth-leave-to {
-  opacity: 0;
-}
-
-@keyframes tooltipPop {
-  0% { opacity: 0.92; transform: scale(0.97); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
 /* === Адаптивность === */
 @media (max-width: 720px) {
   .signal-treemap-reset { padding: 0 3px; }
@@ -328,27 +304,30 @@ const categories = [
   
   .card-large { 
     flex: 1 1 calc(50% - 2.5px); 
-    min-height: 80px; /* Немного меньше чем на десктопе, но больше чем было */
+    min-height: 100px; /* Чуть меньше чем на десктопе, но высоко */
   }
   .card-mid { 
     flex: 1 1 calc(50% - 2.5px); 
-    min-height: 65px; 
+    min-height: 80px; 
   }
   
-  .card-inner { padding: 7px 4px; }
-  .card-tooltip { padding: 7px 9px; }
+  /* На мобильных отступы можно чуть уменьшить, чтобы влезал текст */
+  .card-inner { padding: 8px 10px; }
+  .card-tooltip { padding: 8px 10px; }
 }
 
 @media (max-width: 480px) {
   .card-large,
   .card-mid {
     flex: 1 1 100%;
-    min-height: 70px; /* Достаточно места для описания на мобилке */
+    min-height: 80px;
     font-size: clamp(0.78rem, 2.1vw, 0.88rem);
   }
-  .card-wide { min-height: 45px; } 
-  .card-inner { padding: 7px 4px; gap: 5px; }
-  .card-tooltip { padding: 7px 9px; }
+  .card-wide { min-height: 60px; }
+  
+  .card-inner { padding: 8px 10px; gap: 5px; }
+  .card-tooltip { padding: 8px 10px; }
+  
   .card-percent { font-size: 0.80em; min-width: 30px; }
   .tooltip-text { font-size: 0.80rem; }
 }
