@@ -6,23 +6,20 @@
         v-for="(cat, i) in categories.slice(0, 2)"
         :key="cat.category"
         class="card card-large"
-        @mouseenter="activeIdx = i"
-        @mouseleave="activeIdx = -1"
-        @focus="activeIdx = i"
-        @blur="activeIdx = -1"
+        @click="toggle(i)"
         tabindex="0"
         role="button"
         :aria-label="`${cat.category}: ${cat.percent}%`"
+        @keydown.enter.prevent="toggle(i)"
+        @keydown.space.prevent="toggle(i)"
       >
         <div class="card-inner">
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade-smooth">
-          <div v-if="activeIdx === i" class="card-tooltip">
-            <div class="tooltip-text">{{ cat.desc }}</div>
-          </div>
-        </transition>
+        <div v-if="activeIdx === i" class="card-tooltip">
+          <div class="tooltip-text">{{ cat.desc }}</div>
+        </div>
       </div>
     </div>
 
@@ -32,23 +29,20 @@
         v-for="(cat, i) in categories.slice(2, 4)"
         :key="cat.category"
         class="card card-large"
-        @mouseenter="activeIdx = i + 2"
-        @mouseleave="activeIdx = -1"
-        @focus="activeIdx = i + 2"
-        @blur="activeIdx = -1"
+        @click="toggle(i + 2)"
         tabindex="0"
         role="button"
         :aria-label="`${cat.category}: ${cat.percent}%`"
+        @keydown.enter.prevent="toggle(i + 2)"
+        @keydown.space.prevent="toggle(i + 2)"
       >
         <div class="card-inner">
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade-smooth">
-          <div v-if="activeIdx === i + 2" class="card-tooltip">
-            <div class="tooltip-text">{{ cat.desc }}</div>
-          </div>
-        </transition>
+        <div v-if="activeIdx === i + 2" class="card-tooltip">
+          <div class="tooltip-text">{{ cat.desc }}</div>
+        </div>
       </div>
     </div>
 
@@ -58,23 +52,20 @@
         v-for="(cat, i) in categories.slice(4, 7)"
         :key="cat.category"
         class="card card-mid"
-        @mouseenter="activeIdx = i + 4"
-        @mouseleave="activeIdx = -1"
-        @focus="activeIdx = i + 4"
-        @blur="activeIdx = -1"
+        @click="toggle(i + 4)"
         tabindex="0"
         role="button"
         :aria-label="`${cat.category}: ${cat.percent}%`"
+        @keydown.enter.prevent="toggle(i + 4)"
+        @keydown.space.prevent="toggle(i + 4)"
       >
         <div class="card-inner">
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade-smooth">
-          <div v-if="activeIdx === i + 4" class="card-tooltip">
-            <div class="tooltip-text">{{ cat.desc }}</div>
-          </div>
-        </transition>
+        <div v-if="activeIdx === i + 4" class="card-tooltip">
+          <div class="tooltip-text">{{ cat.desc }}</div>
+        </div>
       </div>
     </div>
 
@@ -84,49 +75,43 @@
         v-for="(cat, i) in categories.slice(7, 10)"
         :key="cat.category"
         class="card card-mid"
-        @mouseenter="activeIdx = i + 7"
-        @mouseleave="activeIdx = -1"
-        @focus="activeIdx = i + 7"
-        @blur="activeIdx = -1"
+        @click="toggle(i + 7)"
         tabindex="0"
         role="button"
         :aria-label="`${cat.category}: ${cat.percent}%`"
+        @keydown.enter.prevent="toggle(i + 7)"
+        @keydown.space.prevent="toggle(i + 7)"
       >
         <div class="card-inner">
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade-smooth">
-          <div v-if="activeIdx === i + 7" class="card-tooltip">
-            <div class="tooltip-text">{{ cat.desc }}</div>
-          </div>
-        </transition>
+        <div v-if="activeIdx === i + 7" class="card-tooltip">
+          <div class="tooltip-text">{{ cat.desc }}</div>
+        </div>
       </div>
     </div>
 
-    <!-- Нижние 4 карточки — компактные -->
+    <!-- Нижние 4 карточки — широкие -->
     <div class="column-center">
       <div
         v-for="(cat, i) in categories.slice(10)"
         :key="cat.category"
         class="card card-wide"
-        @mouseenter="activeIdx = i + 10"
-        @mouseleave="activeIdx = -1"
-        @focus="activeIdx = i + 10"
-        @blur="activeIdx = -1"
+        @click="toggle(i + 10)"
         tabindex="0"
         role="button"
         :aria-label="`${cat.category}: ${cat.percent}%`"
+        @keydown.enter.prevent="toggle(i + 10)"
+        @keydown.space.prevent="toggle(i + 10)"
       >
         <div class="card-inner">
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <transition name="fade-smooth">
-          <div v-if="activeIdx === i + 10" class="card-tooltip">
-            <div class="tooltip-text">{{ cat.desc }}</div>
-          </div>
-        </transition>
+        <div v-if="activeIdx === i + 10" class="card-tooltip">
+          <div class="tooltip-text">{{ cat.desc }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -136,6 +121,14 @@
 import { ref } from 'vue'
 
 const activeIdx = ref(-1)
+
+const toggle = (index) => {
+  if (activeIdx.value === index) {
+    activeIdx.value = -1
+  } else {
+    activeIdx.value = index
+  }
+}
 
 const categories = [
   // 1 строка
@@ -172,7 +165,8 @@ const categories = [
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  /* Единый отступ 6px для вертикальных расстояний между рядами */
+  gap: 6px; 
   padding: 0 4px;
   box-sizing: border-box;
   font-family: inherit;
@@ -185,14 +179,16 @@ const categories = [
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  gap: 6px;
+  /* Единый отступ 6px для горизонтальных расстояний */
+  gap: 6px; 
   margin: 0;
 }
 
 .column-center {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  /* ИСПРАВЛЕНО: было 4px, стало 6px, чтобы выровнять с остальными */
+  gap: 6px; 
   width: 100%;
 }
 
@@ -207,6 +203,7 @@ const categories = [
   overflow: hidden;
   box-sizing: border-box;
   transition: transform 0.14s ease, box-shadow 0.14s ease;
+  outline: none;
 }
 
 .card:hover,
@@ -217,39 +214,42 @@ const categories = [
 
 /* 2 крупные карточки */
 .card-large {
+  /* calc(50% - 3px) — это ровно половина минус половина gap(6px) */
   flex: 1 1 calc(50% - 3px);
   min-width: 0;
-  min-height: 74px;
+  min-height: 110px;
   height: auto;
   font-size: clamp(0.92rem, 1.75vw, 1.12rem);
 }
 
 /* 3 средние карточки */
 .card-mid {
+  /* calc(33.333% - 4px) — треть ширины минус 2/3 от gap(6px) */
   flex: 1 1 calc(33.333% - 4px);
   min-width: 0;
-  min-height: 54px;
+  min-height: 110px; /* Высота увеличена по запросу */
   height: auto;
   font-size: clamp(0.78rem, 1.5vw, 0.92rem);
 }
 
-/* Нижние — УМЕНЬШЕНА ВЫСОТА НА 10px */
+/* Нижние */
 .card-wide {
   flex: 1 1 100%;
   min-width: 0;
-  min-height: 28px; /* было 38px → уменьшено на 10px */
+  min-height: 60px;
   height: auto;
   font-size: clamp(0.76rem, 1.45vw, 0.90rem);
 }
 
-/* === ОСНОВНЫЕ КАРТОЧКИ — ОТСТУП СЛЕВА УМЕНЬШЕН НА 15px === */
+/* === ВНУТРЕННОСТИ КАРТОЧКИ === */
 .card-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 5px; /* было 8px 10px → слева 10 → 5 = -15px */
+  padding: 10px 16px; 
   gap: 6px;
   width: 100%;
+  height: 100%;
   box-sizing: border-box;
 }
 
@@ -273,7 +273,7 @@ const categories = [
   text-align: right;
 }
 
-/* === ТУЛТИП — ОТСТУПЫ КАК БЫЛИ (8px 10px) === */
+/* === ТУЛТИП === */
 .card-tooltip {
   position: absolute;
   inset: 0;
@@ -281,11 +281,11 @@ const categories = [
   color: #ededed;
   border-radius: 11px;
   z-index: 10;
-  padding: 8px 10px; /* ВОЗВРАЩЕНО КАК БЫЛО */
+  padding: 10px 16px; 
   display: flex;
   align-items: flex-start;
-  animation: tooltipPop 0.28s ease-out;
   box-shadow: 0 3px 10px rgba(22, 23, 25, 0.32);
+  overflow-y: auto;
 }
 
 .tooltip-text {
@@ -297,42 +297,45 @@ const categories = [
   max-width: 100%;
 }
 
-/* === Анимации === */
-.fade-smooth-enter-active,
-.fade-smooth-leave-active {
-  transition: opacity 0.28s ease;
-}
-
-.fade-smooth-enter-from,
-.fade-smooth-leave-to {
-  opacity: 0;
-}
-
-@keyframes tooltipPop {
-  0% { opacity: 0.92; transform: scale(0.97); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
 /* === Адаптивность === */
 @media (max-width: 720px) {
+  /* Убрано уменьшение padding и gap. Оставляем gap: 6px, чтобы было идентично десктопу */
   .signal-treemap-reset { padding: 0 3px; }
-  .row, .row-2, .row-3 { gap: 5px; }
-  .card-large { flex: 1 1 calc(50% - 2.5px); min-height: 66px; }
-  .card-mid { flex: 1 1 calc(50% - 2.5px); min-height: 50px; }
-  .card-inner { padding: 7px 4px; } /* -15px слева */
-  .card-tooltip { padding: 7px 9px; } /* как было */
+  
+  /* 
+     Здесь gap мы НЕ меняем (наследуется 6px).
+     Значит, нужно только проверить расчет ширины для 2-х колонок.
+     flex: 1 1 calc(50% - 3px) подходит идеально (3px = 6px / 2).
+  */
+  
+  .card-large { 
+    flex: 1 1 calc(50% - 3px); 
+    min-height: 100px;
+  }
+  
+  .card-mid { 
+    /* На планшете средние карточки становятся по 2 в ряд (как large) */
+    flex: 1 1 calc(50% - 3px); 
+    min-height: 90px; 
+  }
+  
+  .card-inner { padding: 8px 10px; }
+  .card-tooltip { padding: 8px 10px; }
 }
 
 @media (max-width: 480px) {
+  /* На мобильном все карточки 100% ширины */
   .card-large,
   .card-mid {
     flex: 1 1 100%;
-    min-height: 58px;
+    min-height: 80px;
     font-size: clamp(0.78rem, 2.1vw, 0.88rem);
   }
-  .card-wide { min-height: 26px; } /* -10px */
-  .card-inner { padding: 7px 4px; gap: 5px; }
-  .card-tooltip { padding: 7px 9px; }
+  .card-wide { min-height: 60px; }
+  
+  .card-inner { padding: 8px 10px; gap: 5px; }
+  .card-tooltip { padding: 8px 10px; }
+  
   .card-percent { font-size: 0.80em; min-width: 30px; }
   .tooltip-text { font-size: 0.80rem; }
 }
