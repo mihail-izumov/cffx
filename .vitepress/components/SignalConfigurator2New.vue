@@ -1295,6 +1295,15 @@ const submitButtonText = computed(() =>
 // Склонение названия компании
 function getAccusativeCase(networkName) {
   if (!networkName) return '';
+
+    // 1. ОТЛАДКА (Временно)
+  // Мы увидим точные коды символов. Если там латинская "a" вместо русской "а", мы это поймем.
+  console.log('RAW:', networkName);
+  console.log('CODES:', networkName.split('').map(c => c.charCodeAt(0)));
+
+  const name = networkName.trim();
+  const lower = name.toLowerCase();
+
   
   const name = networkName.trim();
   const lower = name.toLowerCase();
