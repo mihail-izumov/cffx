@@ -1752,7 +1752,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 .signal-liquid-next-btn {
   width: 100%;
   height: 56px;
-  border-radius: 20px;
+  border-radius: 12px;
   border: none;
   cursor: pointer;
   display: flex;
@@ -1762,11 +1762,27 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   transition: all 0.3s ease;
   order: 1;
   font-size: 0;
+  background: var(--submit-gradient, linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%));
+  background-size: 200% auto;
+  background-position: 25% 50%;
+  transition: all 0.4s ease-out;
+}
+
+.signal-liquid-next-btn:not(:disabled):hover {
+  transform: translateY(-2px);
+  background-position: 75% 50%;
 }
 
 .signal-liquid-next-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
+}
+
+.signal-liquid-next-btn .signal-liquid-next-text,
+.signal-liquid-next-btn .signal-next-icon {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .signal-liquid-next-btn:not(:disabled):hover {
@@ -1796,52 +1812,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   fill: currentColor;
   opacity: 1;
   transition: height 0.3s ease-in-out, y 0.3s ease-in-out;
-}
-
-/* Базовые градиенты (переопределяются гендерными стилями) */
-.signal-emotion-next {
-  background: linear-gradient(135deg, #6f5d9f, #8a7ab8);
-}
-
-.signal-emotion-next .signal-liquid-next-text,
-.signal-emotion-next .signal-next-icon {
-  color: #fff;
-}
-
-.signal-fact-next {
-  background: linear-gradient(135deg, #3a8862, #4fa87a);
-}
-
-.signal-fact-next .signal-liquid-next-text,
-.signal-fact-next .signal-next-icon {
-  color: #fff;
-}
-
-.signal-solution-next {
-  background: linear-gradient(135deg, #4A90E2, #6BA8F0);
-}
-
-.signal-solution-next .signal-liquid-next-text,
-.signal-solution-next .signal-next-icon {
-  color: #fff;
-}
-
-.signal-summary-next {
-  background: linear-gradient(135deg, #FFB800, #FFC933);
-}
-
-.signal-summary-next .signal-liquid-next-text,
-.signal-summary-next .signal-next-icon {
-  color: #000;
-}
-
-.signal-location-next {
-  background: linear-gradient(135deg, #5A9FB8, #7AB8CD);
-}
-
-.signal-location-next .signal-liquid-next-text,
-.signal-location-next .signal-next-icon {
-  color: #fff;
 }
 
 .signal-columns {
@@ -2171,15 +2141,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   color: #fff !important;
 }
 
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn {
-  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%) !important;
-}
-
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn .signal-liquid-next-text,
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn .signal-next-icon {
-  color: #fff !important;
-}
-
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-toggle-checkbox:checked + .signal-toggle-slider {
   background-color: #ff69b4 !important;
 }
@@ -2191,7 +2152,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   --submit-gradient: linear-gradient(90deg, #ffb6da 0%, #ff69b4 50%, #ff1493 100%);
 }
 
-
 /* Мужской цвет для всех элементов */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble {
   background: rgba(135, 206, 235, 0.1) !important;
@@ -2202,10 +2162,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble:hover {
   background: #87ceeb !important;
   color: #fff !important;
-}
-
-.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn {
-  background: linear-gradient(135deg, #87ceeb 0%, #4682b4 100%) !important;
 }
 
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn .signal-liquid-next-text,
