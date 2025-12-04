@@ -1647,13 +1647,28 @@ onUnmounted(() => {
   line-height: 1.3;
 }
 
-/* Плавное исчезновение и появление без движения */
+/* Контейнер должен быть relative, чтобы позиционировать вопросы внутри себя */
+.signal-rotating-phrase-container {
+  position: relative; 
+  min-height: 2.6em; /* Обязательно фиксируем высоту, чтобы блок не схлопывался */
+  overflow: hidden; /* Скрываем, если что-то вылезет за границы (опционально) */
+}
+
+/* Стили анимации */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.6s ease;
 }
 
-/* В начале появления и в конце исчезновения элемент просто прозрачный */
+/* Уходящий элемент вынимаем из потока, чтобы новый сразу встал на его место */
+.fade-leave-active {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; /* Чтобы ширина не ломалась при absolute */
+}
+
+/* Состояния прозрачности */
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
