@@ -2,7 +2,7 @@
   <div class="user-coffee-cards-container">
     <div class="user-coffee-card">
       <div class="user-card-content">
-        <h3 class="user-card-title">Для Гостя</h3>
+        <h3 class="user-card-title">Для Клиентов</h3>
         <p class="user-card-description">
           <strong>Ваши Сигналы меняют всё.</strong>
         </p>
