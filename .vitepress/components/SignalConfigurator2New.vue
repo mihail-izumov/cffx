@@ -1333,6 +1333,20 @@ onUnmounted(() => {
 :root {
   --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --signal-font-mono: 'SF Mono', 'Monaco', monospace;
+
+  /* Новые приглушенные цвета */
+  --female-color: #C875A0; /* Приглушенный розовый */
+  --male-color: #85A8BD;   /* Приглушенный сине-голубой */
+
+  --female-color-bg: rgba(200, 117, 160, 0.15);
+  --female-color-border: rgba(200, 117, 160, 0.3);
+  --female-color-focus: rgba(200, 117, 160, 0.2);
+  --female-gradient: linear-gradient(135deg, #C875A0 0%, #B0688F 100%);
+
+  --male-color-bg: rgba(133, 168, 189, 0.15);
+  --male-color-border: rgba(133, 168, 189, 0.3);
+  --male-color-focus: rgba(133, 168, 189, 0.2);
+  --male-gradient: linear-gradient(135deg, #85A8BD 0%, #7092A8 100%);
 }
 
 .signal-demo-wrapper {
@@ -1456,21 +1470,21 @@ onUnmounted(() => {
 }
 
 .signal-gender-female {
-  background: rgba(255, 105, 180, 0.3);
+  background: rgba(200, 117, 160, 0.3);
 }
 
 .signal-gender-female.is-active {
-  background: #ff69b4;
-  box-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
+  background: var(--female-color);
+  box-shadow: 0 0 12px var(--female-color-focus);
 }
 
 .signal-gender-male {
-  background: rgba(135, 206, 235, 0.3);
+  background: rgba(133, 168, 189, 0.3);
 }
 
 .signal-gender-male.is-active {
-  background: #87ceeb;
-  box-shadow: 0 0 12px rgba(135, 206, 235, 0.5);
+  background: var(--male-color);
+  box-shadow: 0 0 12px var(--male-color-focus);
 }
 
 .modal-overlay {
@@ -1505,24 +1519,21 @@ onUnmounted(() => {
   line-height: 1.5;
 }
 
-.modal-link {
-  color: #fff !important;
-  font-weight: 600;
-  transition: all 0.3s ease;
+.modal-link, .signal-policy-link {
+  color: #999 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transition: color 0.3s ease;
 }
 
-.modal-link:hover {
-  color: #ddd !important;
+.modal-link:hover, .signal-policy-link:hover {
+  color: #fff !important;
 }
 
 .no-double-underline {
   text-decoration: none !important;
   border-bottom: 1px solid currentColor !important;
   padding-bottom: 1px !important;
-}
-
-.no-double-underline:hover {
-  border-bottom: 1px solid currentColor !important;
 }
 
 .modal-footer {
@@ -1561,18 +1572,12 @@ onUnmounted(() => {
   gap: 1.5rem;
 }
 
-/* Блок вопроса без цветной полоски слева */
 .signal-question-block {
   background-color: #2a2a2e;
   border-radius: 16px;
   padding: 1.25rem;
   border: 1px solid #3a3a3e;
-  /* border-left удален для чистого стиля */
   padding-bottom: 35px;
-}
-
-.signal-question-block.contact {
-  /* Цветная полоска для контакта тоже убрана */
 }
 
 .signal-direction-label {
@@ -1601,13 +1606,8 @@ onUnmounted(() => {
   line-height: 1.3;
 }
 
-.fade-enter-active, .fade-leave-active { 
-  transition: opacity 0.5s ease; 
-}
-
-.fade-enter-from, .fade-leave-to { 
-  opacity: 0; 
-}
+.fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
 
 textarea, .signal-input, .signal-select {
   width: 100%;
@@ -1624,13 +1624,11 @@ textarea, .signal-input, .signal-select {
 
 textarea:focus, .signal-input:focus, .signal-select:focus {
   outline: none;
-  border-color: var(--accent-color);
+  border-color: #666; /* Нейтральный фокус по умолчанию */
   background-color: #2a2a2e;
 }
 
-::placeholder { 
-  color: #666; 
-}
+::placeholder { color: #666; }
 
 .signal-suggestions-container {
   display: flex;
@@ -1650,43 +1648,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   border: 1px solid transparent;
 }
 
-/* Базовые цвета (переопределяются гендерными стилями ниже) */
-.signal-emotion-bubble {
-  background: rgba(169, 114, 255, 0.1);
-  border-color: rgba(169, 114, 255, 0.3);
-  color: #A972FF;
-}
-
-.signal-fact-bubble {
-  background: rgba(61, 220, 132, 0.1);
-  border-color: rgba(61, 220, 132, 0.3);
-  color: #3DDC84;
-}
-
-.signal-solution-bubble {
-  background: rgba(74, 144, 226, 0.1);
-  border-color: rgba(74, 144, 226, 0.3);
-  color: #4A90E2;
-}
-
-/* Применяем ховер-эффекты только для устройств с мышью */
-@media (hover: hover) and (pointer: fine) {
-  .signal-emotion-bubble:hover {
-    background: #A972FF;
-    color: #000;
-  }
-
-  .signal-fact-bubble:hover {
-    background: #3DDC84;
-    color: #000;
-  }
-  
-  .signal-solution-bubble:hover {
-    background: #4A90E2;
-    color: #fff;
-  }
-}
-
 .signal-reset-bubble {
   font-weight: 600;
   opacity: 0.8;
@@ -1701,51 +1662,14 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   line-height: 1.15;
 }
 
-.signal-example-hint-white {
-  color: #f0f0f0 !important;
-}
-
-.signal-example-hint b {
-  color: #aaa;
-  font-weight: 600;
-}
+.signal-example-hint-white { color: #f0f0f0 !important; }
+.signal-example-hint b { color: #aaa; font-weight: 600; }
 
 .signal-next-button-container {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-.signal-humanize-button-container {
-  order: 2;
-}
-
-.signal-liquid-humanize-btn {
-  width: 100%;
-  height: 56px;
-  border-radius: 18px;
-  border: 2px solid #444;
-  background: #2a2a2e;
-  color: #888;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.signal-liquid-humanize-btn:not(:disabled):hover {
-  border-color: #666;
-  color: #bbb;
-  background: #333;
-}
-
-.signal-liquid-humanize-text {
-  font-size: 16px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .signal-liquid-next-btn {
@@ -1759,27 +1683,20 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   justify-content: center;
   gap: 10px;
   transition: all 0.3s ease;
-  order: 1;
   font-size: 0;
+  background: #333; /* Нейтральный фон по умолчанию */
 }
 
-.signal-liquid-next-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.signal-liquid-next-btn:not(:disabled):hover {
-  transform: translateY(-2px);
-}
+.signal-liquid-next-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.signal-liquid-next-btn:not(:disabled):hover { transform: translateY(-2px); }
 
 .signal-liquid-next-text {
   font-size: 16px;
   font-weight: 600;
-  text-transform: none;
-  letter-spacing: normal;
   line-height: 1;
   display: flex;
   align-items: center;
+  color: #ccc; /* Нейтральный цвет текста */
 }
 
 .signal-next-icon {
@@ -1789,6 +1706,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   vertical-align: middle;
   transform: translate(0, 0px);
   transition: opacity 0.2s ease-in-out;
+  color: #ccc; /* Нейтральный цвет иконки */
 }
 
 .signal-next-icon .signal-coffee-fill {
@@ -1797,80 +1715,8 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   transition: height 0.3s ease-in-out, y 0.3s ease-in-out;
 }
 
-/* Базовые градиенты (переопределяются гендерными стилями) */
-.signal-emotion-next {
-  background: linear-gradient(135deg, #6f5d9f, #8a7ab8);
-}
-
-.signal-emotion-next .signal-liquid-next-text,
-.signal-emotion-next .signal-next-icon {
-  color: #fff;
-}
-
-.signal-fact-next {
-  background: linear-gradient(135deg, #3a8862, #4fa87a);
-}
-
-.signal-fact-next .signal-liquid-next-text,
-.signal-fact-next .signal-next-icon {
-  color: #fff;
-}
-
-.signal-solution-next {
-  background: linear-gradient(135deg, #4A90E2, #6BA8F0);
-}
-
-.signal-solution-next .signal-liquid-next-text,
-.signal-solution-next .signal-next-icon {
-  color: #fff;
-}
-
-.signal-summary-next {
-  background: linear-gradient(135deg, #FFB800, #FFC933);
-}
-
-.signal-summary-next .signal-liquid-next-text,
-.signal-summary-next .signal-next-icon {
-  color: #000;
-}
-
-.signal-location-next {
-  background: linear-gradient(135deg, #5A9FB8, #7AB8CD);
-}
-
-.signal-location-next .signal-liquid-next-text,
-.signal-location-next .signal-next-icon {
-  color: #fff;
-}
-
-.signal-columns {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.signal-column {
-  flex: 1;
-}
-
-.signal-column label {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #aaa;
-  margin-bottom: 0.5rem;
-}
-
-.signal-input-hint {
-  font-size: 0.9rem;
-  color: #777;
-  margin-top: 0;
-  margin-bottom: 16px;
-  line-height: 1.2;
-}
-
 .signal-agreement {
-  margin: 20px 0 24px 0;;
+  margin: 20px 0 24px 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -1883,27 +1729,11 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 .signal-agreement input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: #00C2A8;
+  accent-color: #555; /* Нейтральный цвет по умолчанию */
   cursor: pointer;
   margin: 0;
   flex-shrink: 0;
-}
-
-.signal-agreement span {
-  margin: 0;
-  padding: 0;
-  line-height: 1.4;
-}
-
-.signal-policy-link {
-  color: #999 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  transition: color 0.3s ease;
-}
-
-.signal-policy-link:hover {
-  color: #fff !important;
+  transition: accent-color 0.3s ease;
 }
 
 .signal-submit-button {
@@ -1911,9 +1741,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   height: 56px;
   border-radius: 12px;
   border: none;
-  background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%);
-  background-size: 200% auto;
-  background-position: 25% 50%;
+  background: #333; /* Нейтральный фон по умолчанию */
   color: #fff;
   font-size: 16px;
   font-weight: 600;
@@ -1921,179 +1749,15 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   cursor: pointer;
   transition: all 0.4s ease-out;
   margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0;
-}
-
-.signal-submit-button .signal-liquid-next-text {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
 }
 
 .signal-submit-button:hover:not(:disabled) {
-  background-position: 75% 50%;
   transform: scale(1.02);
 }
 
-.signal-submit-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+.signal-submit-button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.signal-success-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 3rem 2rem;
-  width: 100%;
-}
-
-.signal-success-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  max-width: 600px;
-}
-
-.signal-success-content h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #fff;
-  margin: 0 0 1.5rem 0;
-  text-align: center;
-}
-
-.signal-success-ticket-info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
-  flex-wrap: wrap;
-}
-
-.signal-success-date {
-  font-family: var(--signal-font-mono);
-  font-size: 0.9rem;
-  color: #888;
-}
-
-.signal-success-ticket {
-  background-color: #2a2a2e;
-  color: #fff;
-  font-weight: 700;
-  padding: 0.7rem 2.5rem !important;
-  border-radius: 12px;
-  letter-spacing: 1px;
-  font-family: var(--signal-font-mono);
-  font-size: 1.1rem;
-}
-
-.signal-success-description {
-  color: #b0b0b0;
-  line-height: 1.6;
-  margin: 0 0 1.5rem 0;
-  text-align: center !important;
-  width: 100% !important;
-  display: block !important;
-}
-
-.signal-telegram-button {
-  display: inline-block;
-  padding: 0.8rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 600;
-  text-decoration: none !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  transition: all 0.3s;
-}
-
-.signal-telegram-button.female {
-  background-color: #ff69b4;
-  color: #fff;
-}
-
-.signal-telegram-button.male {
-  background-color: #87ceeb;
-  color: #000;
-}
-
-.signal-telegram-button:hover {
-  filter: brightness(110%);
-  transform: scale(1.05);
-  text-decoration: none !important;
-  border: none !important;
-}
-
-.signal-secondary-link {
-  display: block;
-  margin-top: 1.5rem;
-  font-size: 0.85rem;
-  color: #888;
-  transition: color 0.3s;
-}
-
-.signal-secondary-link:hover {
-  color: #fff !important;
-}
-
-@media (max-width: 768px) {
-  .signal-demo__header {
-    margin-bottom: 12px;
-  }
-
-  .signal-controls-row {
-    margin-bottom: 12px;
-  }
-
-  .signal-demo__form-container {
-    padding: 1rem 0.75rem;
-    max-width: 100%;
-  }
-  
-  .signal-question-block {
-    padding: 1rem 0.85rem;
-  }
-
-  .signal-liquid-next-btn {
-    width: 100%;
-    height: 52px;
-  }
-
-  .signal-suggestion-bubble {
-    font-size: 0.85rem;
-    padding: 0.4rem 0.9rem;
-  }
-  
-  .signal-columns {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .signal-success-ticket-info {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .signal-success-ticket {
-    padding: 0.6rem 2rem;
-  }
-}
-
-.signal-incognito-toggle {
-  margin-bottom: 12px;
-}
-
+.signal-incognito-toggle { margin-bottom: 12px; }
 .signal-toggle-label {
   display: flex;
   align-items: center;
@@ -2101,11 +1765,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   cursor: pointer;
   user-select: none;
 }
-
-.signal-toggle-checkbox {
-  display: none;
-}
-
+.signal-toggle-checkbox { display: none; }
 .signal-toggle-slider {
   position: relative;
   width: 48px;
@@ -2115,7 +1775,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   transition: background-color 0.3s ease;
   flex-shrink: 0;
 }
-
 .signal-toggle-slider::before {
   content: '';
   position: absolute;
@@ -2127,25 +1786,18 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   left: 3px;
   transition: transform 0.3s ease;
 }
-
 .signal-toggle-checkbox:checked + .signal-toggle-slider {
-  background-color: #00C2A8;
+  background-color: #555; /* Нейтральный цвет по умолчанию */
 }
-
 .signal-toggle-checkbox:checked + .signal-toggle-slider::before {
   transform: translateX(22px);
 }
-
 .signal-toggle-text {
   font-size: 0.95rem;
   font-weight: 500;
   color: #ccc;
 }
-
-.signal-name-field {
-  margin-bottom: 12px;
-}
-
+.signal-name-field { margin-bottom: 12px; }
 .signal-name-field label {
   display: block;
   font-size: 0.9rem;
@@ -2154,64 +1806,131 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   margin-bottom: 0.5rem;
 }
 
+.signal-success-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  width: 100%;
+}
+/* ...остальные стили для success-screen, telegram-button и др. ... */
+.signal-success-content h3 { font-size: 1.5rem; font-weight: 600; color: #fff; margin: 0 0 1.5rem 0; }
+.signal-success-ticket-info { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+.signal-success-date { font-family: var(--signal-font-mono); font-size: 0.9rem; color: #888; }
+.signal-success-ticket { background-color: #2a2a2e; color: #fff; font-weight: 700; padding: 0.7rem 2.5rem !important; border-radius: 12px; letter-spacing: 1px; font-family: var(--signal-font-mono); font-size: 1.1rem; }
+.signal-success-description { color: #b0b0b0; line-height: 1.6; margin: 0 0 1.5rem 0; text-align: center !important; width: 100% !important; display: block !important; }
+.signal-telegram-button { display: inline-block; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 600; text-decoration: none !important; border: none !important; transition: all 0.3s; }
+.signal-telegram-button.female { background-color: var(--female-color); color: #fff; }
+.signal-telegram-button.male { background-color: var(--male-color); color: #fff; }
+.signal-telegram-button:hover { filter: brightness(110%); transform: scale(1.05); }
+.signal-secondary-link { display: block; margin-top: 1.5rem; font-size: 0.85rem; color: #888; transition: color 0.3s; }
+
 /* ===============================
-   ЕДИНЫЙ ГЕНДЕРНЫЙ ЦВЕТ ДЛЯ ВСЕХ ЭЛЕМЕНТОВ
-   =============================== */
+   ЕДИНЫЙ ГЕНДЕРНЫЙ СТИЛЬ
+=============================== */
 
-/* Женский цвет для всех элементов */
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-suggestion-bubble {
-  background: rgba(255, 105, 180, 0.1) !important;
-  border-color: rgba(255, 105, 180, 0.3) !important;
-  color: #ff69b4 !important;
+/* --- ЖЕНСКИЙ СТИЛЬ --- */
+.signal-demo-wrapper:has(.signal-gender-female.is-active) {
+  /* Подсказки */
+  --suggestion-bg: var(--female-color-bg);
+  --suggestion-border: var(--female-color-border);
+  --suggestion-text: var(--female-color);
+  --suggestion-hover-bg: var(--female-color);
+  --suggestion-hover-text: #fff;
+  
+  /* Кнопка "Далее" */
+  --next-btn-bg: var(--female-gradient);
+  --next-btn-text: #fff;
+
+  /* Кнопка "Отправить" */
+  --submit-btn-bg: var(--female-gradient);
+  
+  /* Фокус полей */
+  --focus-border: var(--female-color);
+  --focus-shadow: var(--female-color-focus);
+
+  /* Переключатели */
+  --toggle-checked-bg: var(--female-color);
+  --checkbox-accent: var(--female-color);
 }
 
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-suggestion-bubble:hover {
-  background: #ff69b4 !important;
-  color: #fff !important;
+/* --- МУЖСКОЙ СТИЛЬ --- */
+.signal-demo-wrapper:has(.signal-gender-male.is-active) {
+  /* Подсказки */
+  --suggestion-bg: var(--male-color-bg);
+  --suggestion-border: var(--male-color-border);
+  --suggestion-text: var(--male-color);
+  --suggestion-hover-bg: var(--male-color);
+  --suggestion-hover-text: #fff; /* ИСПРАВЛЕНО НА БЕЛЫЙ */
+  
+  /* Кнопка "Далее" */
+  --next-btn-bg: var(--male-gradient);
+  --next-btn-text: #fff; /* ИСПРАВЛЕНО НА БЕЛЫЙ */
+  
+  /* Кнопка "Отправить" */
+  --submit-btn-bg: var(--male-gradient);
+
+  /* Фокус полей */
+  --focus-border: var(--male-color);
+  --focus-shadow: var(--male-color-focus);
+  
+  /* Переключатели */
+  --toggle-checked-bg: var(--male-color);
+  --checkbox-accent: var(--male-color);
 }
 
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn {
-  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%) !important;
+/* --- Применение переменных --- */
+.signal-demo-wrapper:has(.signal-gender-btn.is-active) .signal-suggestion-bubble {
+  background-color: var(--suggestion-bg) !important;
+  border-color: var(--suggestion-border) !important;
+  color: var(--suggestion-text) !important;
 }
 
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn .signal-liquid-next-text,
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn .signal-next-icon {
-  color: #fff !important;
+@media (hover: hover) and (pointer: fine) {
+  .signal-demo-wrapper:has(.signal-gender-btn.is-active) .signal-suggestion-bubble:hover {
+    background-color: var(--suggestion-hover-bg) !important;
+    color: var(--suggestion-hover-text) !important;
+  }
 }
 
-/* Мужской цвет для всех элементов */
-.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble {
-  background: rgba(135, 206, 235, 0.1) !important;
-  border-color: rgba(135, 206, 235, 0.3) !important;
-  color: #87ceeb !important;
+.signal-demo-wrapper:has(.signal-gender-btn.is-active) .signal-liquid-next-btn {
+  background: var(--next-btn-bg) !important;
 }
 
-.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble:hover {
-  background: #87ceeb !important;
-  color: #000 !important;
+.signal-demo-wrapper:has(.signal-gender-btn.is-active) .signal-liquid-next-text,
+.signal-demo-wrapper:has(.signal-gender-btn.is-active) .signal-next-icon {
+  color: var(--next-btn-text) !important;
 }
 
-.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn {
-  background: linear-gradient(135deg, #87ceeb 0%, #4682b4 100%) !important;
+.signal-demo-wrapper:has(.signal-gender-btn.is-active) textarea:focus,
+.signal-demo-wrapper:has(.signal-gender-btn.is-active) .signal-input:focus,
+.signal-demo-wrapper:has(.signal-gender-btn.is-active) .signal-select:focus {
+  border-color: var(--focus-border) !important;
+  box-shadow: 0 0 0 3px var(--focus-shadow) !important;
 }
 
-.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn .signal-liquid-next-text,
-.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn .signal-next-icon {
-  color: #000 !important;
+.signal-demo-wrapper:has(.signal-gender-btn.is-active) .signal-submit-button {
+  background: var(--submit-btn-bg) !important;
 }
 
-/* Гендерная подсветка для текстовых полей при фокусе */
-.signal-demo-wrapper:has(.signal-gender-female.is-active) textarea:focus,
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-input:focus,
-.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-select:focus {
-  border-color: #ff69b4 !important;
-  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2) !important;
+.signal-demo-wrapper:has(.signal-gender-btn.is-active) .signal-toggle-checkbox:checked + .signal-toggle-slider {
+  background-color: var(--toggle-checked-bg) !important;
 }
 
-.signal-demo-wrapper:has(.signal-gender-male.is-active) textarea:focus,
-.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-input:focus,
-.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-select:focus {
-  border-color: #87ceeb !important;
-  box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.2) !important;
+.signal-demo-wrapper:has(.signal-gender-btn.is-active) .signal-agreement input[type="checkbox"] {
+  accent-color: var(--checkbox-accent) !important;
+}
+
+@media (max-width: 768px) {
+  .signal-demo__header { margin-bottom: 12px; }
+  .signal-controls-row { margin-bottom: 12px; }
+  .signal-demo__form-container { padding: 1rem 0.75rem; max-width: 100%; }
+  .signal-question-block { padding: 1rem 0.85rem; }
+  .signal-liquid-next-btn { height: 52px; }
+  .signal-suggestion-bubble { font-size: 0.85rem; padding: 0.4rem 0.9rem; }
+  .signal-success-ticket-info { flex-direction: column; gap: 0.75rem; }
+  .signal-success-ticket { padding: 0.6rem 2rem; }
 }
 </style>
