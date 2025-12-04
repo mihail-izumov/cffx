@@ -211,7 +211,7 @@ const categories = [
 .card-large {
   flex: 1 1 calc(50% - 3px);
   min-width: 0;
-  min-height: 130px; 
+  min-height: 130px;
   height: auto;
   font-size: clamp(0.92rem, 1.75vw, 1.12rem);
 }
@@ -220,7 +220,7 @@ const categories = [
 .card-mid {
   flex: 1 1 calc(33.333% - 4px);
   min-width: 0;
-  min-height: 130px; 
+  min-height: 130px;
   height: auto;
   font-size: clamp(0.78rem, 1.5vw, 0.92rem);
 }
@@ -237,9 +237,9 @@ const categories = [
 /* === ВНУТРЕННОСТИ КАРТОЧКИ === */
 .card-inner {
   display: flex;
-  align-items: center;
+  align-items: center; /* На десктопе оставляем по центру, как вам нравится */
   justify-content: space-between;
-  padding: 10px 16px; 
+  padding: 10px 16px;
   gap: 6px;
   width: 100%;
   height: 100%;
@@ -274,7 +274,7 @@ const categories = [
   color: #ededed;
   border-radius: 11px;
   z-index: 10;
-  padding: 10px 16px; 
+  padding: 10px 16px;
   display: flex;
   align-items: flex-start;
   box-shadow: 0 3px 10px rgba(22, 23, 25, 0.32);
@@ -308,7 +308,6 @@ const categories = [
 }
 
 @media (max-width: 480px) {
-  /* ВСЕ карточки теперь имеют высоту 90px */
   .card-large,
   .card-mid,
   .card-wide {
@@ -317,7 +316,13 @@ const categories = [
     font-size: clamp(0.78rem, 2.1vw, 0.88rem);
   }
   
-  .card-inner { padding: 8px 10px; gap: 5px; }
+  /* ПРАВКА: Принудительное выравнивание по верху для мобильной версии */
+  .card-inner { 
+    padding: 8px 10px; 
+    gap: 5px;
+    align-items: flex-start; /* Текст прилипает к верху */
+  }
+  
   .card-tooltip { padding: 8px 10px; }
   
   .card-percent { font-size: 0.80em; min-width: 30px; }
