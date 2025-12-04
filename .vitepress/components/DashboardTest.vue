@@ -165,7 +165,8 @@ const categories = [
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  /* Единый отступ 6px для вертикальных расстояний между рядами */
+  gap: 6px; 
   padding: 0 4px;
   box-sizing: border-box;
   font-family: inherit;
@@ -178,14 +179,16 @@ const categories = [
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  gap: 6px;
+  /* Единый отступ 6px для горизонтальных расстояний */
+  gap: 6px; 
   margin: 0;
 }
 
 .column-center {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  /* ИСПРАВЛЕНО: было 4px, стало 6px, чтобы выровнять с остальными */
+  gap: 6px; 
   width: 100%;
 }
 
@@ -211,6 +214,7 @@ const categories = [
 
 /* 2 крупные карточки */
 .card-large {
+  /* calc(50% - 3px) — это ровно половина минус половина gap(6px) */
   flex: 1 1 calc(50% - 3px);
   min-width: 0;
   min-height: 110px;
@@ -219,11 +223,11 @@ const categories = [
 }
 
 /* 3 средние карточки */
-/* ИЗМЕНЕНО: Высота увеличена с 90px до 110px */
 .card-mid {
+  /* calc(33.333% - 4px) — треть ширины минус 2/3 от gap(6px) */
   flex: 1 1 calc(33.333% - 4px);
   min-width: 0;
-  min-height: 110px; 
+  min-height: 110px; /* Высота увеличена по запросу */
   height: auto;
   font-size: clamp(0.78rem, 1.5vw, 0.92rem);
 }
@@ -295,16 +299,23 @@ const categories = [
 
 /* === Адаптивность === */
 @media (max-width: 720px) {
+  /* Убрано уменьшение padding и gap. Оставляем gap: 6px, чтобы было идентично десктопу */
   .signal-treemap-reset { padding: 0 3px; }
-  .row, .row-2, .row-3 { gap: 5px; }
+  
+  /* 
+     Здесь gap мы НЕ меняем (наследуется 6px).
+     Значит, нужно только проверить расчет ширины для 2-х колонок.
+     flex: 1 1 calc(50% - 3px) подходит идеально (3px = 6px / 2).
+  */
   
   .card-large { 
-    flex: 1 1 calc(50% - 2.5px); 
+    flex: 1 1 calc(50% - 3px); 
     min-height: 100px;
   }
+  
   .card-mid { 
-    flex: 1 1 calc(50% - 2.5px); 
-    /* Также немного увеличил для мобильных для подстраховки (было 80) */
+    /* На планшете средние карточки становятся по 2 в ряд (как large) */
+    flex: 1 1 calc(50% - 3px); 
     min-height: 90px; 
   }
   
@@ -313,6 +324,7 @@ const categories = [
 }
 
 @media (max-width: 480px) {
+  /* На мобильном все карточки 100% ширины */
   .card-large,
   .card-mid {
     flex: 1 1 100%;
