@@ -165,8 +165,7 @@ const categories = [
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  /* Единый отступ 6px для вертикальных расстояний между рядами */
-  gap: 6px; 
+  gap: 6px;
   padding: 0 4px;
   box-sizing: border-box;
   font-family: inherit;
@@ -179,16 +178,14 @@ const categories = [
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  /* Единый отступ 6px для горизонтальных расстояний */
-  gap: 6px; 
+  gap: 6px;
   margin: 0;
 }
 
 .column-center {
   display: flex;
   flex-direction: column;
-  /* ИСПРАВЛЕНО: было 4px, стало 6px, чтобы выровнять с остальными */
-  gap: 6px; 
+  gap: 6px;
   width: 100%;
 }
 
@@ -212,27 +209,26 @@ const categories = [
   box-shadow: 0 3px 8px rgba(24, 24, 26, 0.18);
 }
 
-/* 2 крупные карточки */
+/* 2 крупные карточки (Desktop) */
 .card-large {
-  /* calc(50% - 3px) — это ровно половина минус половина gap(6px) */
   flex: 1 1 calc(50% - 3px);
   min-width: 0;
-  min-height: 110px;
+  /* Увеличенная высота для десктопа (как и во втором компоненте) */
+  min-height: 130px;
   height: auto;
   font-size: clamp(0.92rem, 1.75vw, 1.12rem);
 }
 
-/* 3 средние карточки */
+/* 3 средние карточки (Desktop) */
 .card-mid {
-  /* calc(33.333% - 4px) — треть ширины минус 2/3 от gap(6px) */
   flex: 1 1 calc(33.333% - 4px);
   min-width: 0;
-  min-height: 110px; /* Высота увеличена по запросу */
+  min-height: 130px;
   height: auto;
   font-size: clamp(0.78rem, 1.5vw, 0.92rem);
 }
 
-/* Нижние */
+/* Нижние (Desktop) */
 .card-wide {
   flex: 1 1 100%;
   min-width: 0;
@@ -246,7 +242,7 @@ const categories = [
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px; 
+  padding: 10px 16px;
   gap: 6px;
   width: 100%;
   height: 100%;
@@ -281,7 +277,7 @@ const categories = [
   color: #ededed;
   border-radius: 11px;
   z-index: 10;
-  padding: 10px 16px; 
+  padding: 10px 16px;
   display: flex;
   align-items: flex-start;
   box-shadow: 0 3px 10px rgba(22, 23, 25, 0.32);
@@ -297,46 +293,52 @@ const categories = [
   max-width: 100%;
 }
 
-/* === Адаптивность === */
+/* === Адаптивность (Tablet) === */
 @media (max-width: 720px) {
-  /* Убрано уменьшение padding и gap. Оставляем gap: 6px, чтобы было идентично десктопу */
   .signal-treemap-reset { padding: 0 3px; }
   
-  /* 
-     Здесь gap мы НЕ меняем (наследуется 6px).
-     Значит, нужно только проверить расчет ширины для 2-х колонок.
-     flex: 1 1 calc(50% - 3px) подходит идеально (3px = 6px / 2).
-  */
-  
-  .card-large { 
-    flex: 1 1 calc(50% - 3px); 
-    min-height: 100px;
-  }
-  
-  .card-mid { 
-    /* На планшете средние карточки становятся по 2 в ряд (как large) */
-    flex: 1 1 calc(50% - 3px); 
-    min-height: 90px; 
-  }
+  .card-large { flex: 1 1 calc(50% - 3px); min-height: 110px; }
+  .card-mid { flex: 1 1 calc(50% - 3px); min-height: 110px; }
   
   .card-inner { padding: 8px 10px; }
   .card-tooltip { padding: 8px 10px; }
 }
 
+/* === Адаптивность (Mobile) — ТЕ ЖЕ ПРАВКИ === */
 @media (max-width: 480px) {
-  /* На мобильном все карточки 100% ширины */
   .card-large,
-  .card-mid {
+  .card-mid,
+  .card-wide {
     flex: 1 1 100%;
-    min-height: 80px;
-    font-size: clamp(0.78rem, 2.1vw, 0.88rem);
+    min-height: 120px; /* Одинаковая высота для всех на мобильном */
+    font-size: 1rem;
   }
-  .card-wide { min-height: 60px; }
   
-  .card-inner { padding: 8px 10px; gap: 5px; }
-  .card-tooltip { padding: 8px 10px; }
+  .card-inner { 
+    flex-direction: column; /* Вертикально */
+    justify-content: space-between; /* Текст сверху, проценты снизу */
+    align-items: flex-start; /* Прижато влево */
+    padding: 12px 14px; 
+    gap: 4px;
+  }
   
-  .card-percent { font-size: 0.80em; min-width: 30px; }
-  .tooltip-text { font-size: 0.80rem; }
+  .card-problem {
+    font-size: 1.5rem; /* Крупный заголовок */
+    font-weight: 600;
+    line-height: 1.1;
+    width: 100%;
+  }
+
+  .card-percent {
+    text-align: left; /* Влево */
+    font-size: 1.4rem; /* Крупный процент */
+    font-weight: 700;
+    min-width: auto;
+    margin-top: 6px;
+    opacity: 0.7;
+  }
+  
+  .card-tooltip { padding: 12px 14px; }
+  .tooltip-text { font-size: 0.95rem; }
 }
 </style>
