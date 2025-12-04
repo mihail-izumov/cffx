@@ -24,6 +24,18 @@ description: Сигнал – тому кто решает
 
 <br>
 
+<div align="center">
+
+# Статистика всех Сигналов
+
+</div>
+
+<br>
+
+<DashboardGymSignalsMap />
+
+<br>
+
 <RadarWorksBadge />
 
 
