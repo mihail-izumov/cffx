@@ -10,7 +10,11 @@ description: Что Сигнал делает для Вас
 
 <div align="center">
 
-# Не просто мнение или жалоба – импульс к реальным улучшениям
+<h1 class="responsive-heading-signal-industries">Сигнал</h1>
+
+<p>
+  Не просто мнение или жалоба –<br class="mobile-break"> <strong>импульс к реальным улучшениям.</strong>
+</p>
 
 </div>
 
