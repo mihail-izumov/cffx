@@ -74,7 +74,7 @@ description: Разобраться и изменить
 
 <div align="center">
 
-# Анна ждёт вас там, где слушают
+# Анна ждёт вас там, <br class="mobile-break">где Вас слушают
 
 </div>
 
