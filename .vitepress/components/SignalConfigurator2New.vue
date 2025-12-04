@@ -1333,6 +1333,7 @@ onUnmounted(() => {
 :root {
   --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --signal-font-mono: 'SF Mono', 'Monaco', monospace;
+  --submit-gradient: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%);
 }
 
 .signal-demo-wrapper {
@@ -1911,7 +1912,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   height: 56px;
   border-radius: 12px;
   border: none;
-  background: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%);
+  background: var(--submit-gradient, linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%));
   background-size: 200% auto;
   background-position: 25% 50%;
   color: #fff;
@@ -2186,7 +2187,9 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-agreement input[type="checkbox"] {
   accent-color: #ff69b4 !important;
 }
-
+.signal-demo-wrapper:has(.signal-gender-female.is-active) {
+  --submit-gradient: linear-gradient(90deg, #ffb6da 0%, #ff69b4 50%, #ff1493 100%);
+}
 
 
 /* Мужской цвет для всех элементов */
@@ -2215,6 +2218,9 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-agreement input[type="checkbox"] {
   accent-color: #87ceeb !important;
+}
+.signal-demo-wrapper:has(.signal-gender-male.is-active) {
+  --submit-gradient: linear-gradient(90deg, #c0e6ff 0%, #87ceeb 50%, #4682b4 100%);
 }
 
 /* Гендерная подсветка для текстовых полей при фокусе */
