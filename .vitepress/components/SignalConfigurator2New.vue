@@ -2263,9 +2263,17 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
     margin-bottom: 12px;
   }
 
+  .signal-demo-wrapper {
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+
   .signal-demo__form-container {
-    padding: 1rem 0.75rem;
-    max-width: 100%;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0.75rem 0;   /* минимум внутренних отступов */
+    border-radius: 0;
   }
   
   .signal-question-block {
