@@ -1883,7 +1883,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 .signal-agreement input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: #00C2A8;
+  accent-color: #666;
   cursor: pointer;
   margin: 0;
   flex-shrink: 0;
@@ -2129,7 +2129,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
 .signal-toggle-checkbox:checked + .signal-toggle-slider {
-  background-color: #00C2A8;
+  background-color: #555;
 }
 
 .signal-toggle-checkbox:checked + .signal-toggle-slider::before {
@@ -2179,16 +2179,26 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   color: #fff !important;
 }
 
+.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-toggle-checkbox:checked + .signal-toggle-slider {
+  background-color: #ff69b4 !important;
+}
+
+.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-agreement input[type="checkbox"] {
+  accent-color: #ff69b4 !important;
+}
+
+
+
 /* Мужской цвет для всех элементов */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble {
   background: rgba(135, 206, 235, 0.1) !important;
   border-color: rgba(135, 206, 235, 0.3) !important;
-  color: #87ceeb !important;
+  color: #fff !important;
 }
 
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble:hover {
   background: #87ceeb !important;
-  color: #000 !important;
+  color: #fff !important;
 }
 
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn {
@@ -2197,7 +2207,14 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn .signal-liquid-next-text,
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn .signal-next-icon {
-  color: #000 !important;
+  color: #fff !important;
+}
+
+.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-toggle-checkbox:checked + .signal-toggle-slider {
+  background-color: #87ceeb !important;
+}
+.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-agreement input[type="checkbox"] {
+  accent-color: #87ceeb !important;
 }
 
 /* Гендерная подсветка для текстовых полей при фокусе */
