@@ -207,7 +207,7 @@ const categories = [
   box-shadow: 0 3px 8px rgba(24, 24, 26, 0.18);
 }
 
-/* 2 крупные карточки */
+/* 2 крупные карточки (Desktop) */
 .card-large {
   flex: 1 1 calc(50% - 3px);
   min-width: 0;
@@ -216,7 +216,7 @@ const categories = [
   font-size: clamp(0.92rem, 1.75vw, 1.12rem);
 }
 
-/* 3 средние карточки */
+/* 3 средние карточки (Desktop) */
 .card-mid {
   flex: 1 1 calc(33.333% - 4px);
   min-width: 0;
@@ -225,7 +225,7 @@ const categories = [
   font-size: clamp(0.78rem, 1.5vw, 0.92rem);
 }
 
-/* Нижние */
+/* Нижние (Desktop) */
 .card-wide {
   flex: 1 1 100%;
   min-width: 0;
@@ -237,7 +237,7 @@ const categories = [
 /* === ВНУТРЕННОСТИ КАРТОЧКИ === */
 .card-inner {
   display: flex;
-  align-items: center; /* На десктопе оставляем по центру, как вам нравится */
+  align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
   gap: 6px;
@@ -290,42 +290,57 @@ const categories = [
   max-width: 100%;
 }
 
-/* === Адаптивность === */
+/* === Адаптивность (Tablet) === */
 @media (max-width: 720px) {
   .signal-treemap-reset { padding: 0 3px; }
   
-  .card-large { 
-    flex: 1 1 calc(50% - 3px); 
-    min-height: 110px; 
-  }
-  .card-mid { 
-    flex: 1 1 calc(50% - 3px); 
-    min-height: 110px; 
-  }
+  .card-large { flex: 1 1 calc(50% - 3px); min-height: 110px; }
+  .card-mid { flex: 1 1 calc(50% - 3px); min-height: 110px; }
   
   .card-inner { padding: 8px 10px; }
   .card-tooltip { padding: 8px 10px; }
 }
 
+/* === Адаптивность (Mobile) — ГЛОБАЛЬНЫЕ ИЗМЕНЕНИЯ === */
 @media (max-width: 480px) {
   .card-large,
   .card-mid,
   .card-wide {
     flex: 1 1 100%;
-    min-height: 90px; 
-    font-size: clamp(0.78rem, 2.1vw, 0.88rem);
+    /* Увеличили высоту, чтобы огромный текст влезал */
+    min-height: 120px; 
+    /* Базовый размер шрифта не меняем тут, меняем конкретные элементы ниже */
+    font-size: 1rem; 
   }
   
-  /* ПРАВКА: Принудительное выравнивание по верху для мобильной версии */
+  /* Меняем направление флекса на колонку */
   .card-inner { 
-    padding: 8px 10px; 
-    gap: 5px;
-    align-items: flex-start; /* Текст прилипает к верху */
+    flex-direction: column; /* Вертикальное расположение */
+    justify-content: space-between; /* Текст сверху, % снизу */
+    align-items: flex-start; /* Все прижато влево */
+    padding: 12px 14px; 
+    gap: 4px;
   }
   
-  .card-tooltip { padding: 8px 10px; }
+  /* Текст проблемы: Огромный, сверху */
+  .card-problem {
+    font-size: 1.5rem; /* В ~2 раза больше обычного */
+    font-weight: 600;
+    line-height: 1.1;
+    width: 100%;
+  }
+
+  /* Проценты: Огромные, снизу слева */
+  .card-percent {
+    text-align: left; /* Влево */
+    font-size: 1.4rem; /* В ~2 раза больше обычного */
+    font-weight: 700;
+    min-width: auto;
+    margin-top: 6px;
+    opacity: 0.7;
+  }
   
-  .card-percent { font-size: 0.80em; min-width: 30px; }
-  .tooltip-text { font-size: 0.80rem; }
+  .card-tooltip { padding: 12px 14px; }
+  .tooltip-text { font-size: 0.95rem; } /* Текст тултипа тоже чуть крупнее для читаемости */
 }
 </style>
