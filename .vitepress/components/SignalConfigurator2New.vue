@@ -1296,19 +1296,17 @@ const submitButtonText = computed(() =>
 function getAccusativeCase(networkName) {
   if (!networkName) return '';
 
-    // 1. ОТЛАДКА (Временно)
-  // Мы увидим точные коды символов. Если там латинская "a" вместо русской "а", мы это поймем.
-  console.log('RAW:', networkName);
-  console.log('CODES:', networkName.split('').map(c => c.charCodeAt(0)));
-
-  const name = networkName.trim();
-  const lower = name.toLowerCase();
-
+  // 1. Нормализация: меняем латинские буквы на русские (A->А, K->К, O->О и т.д.)
+  // Это решает проблему "Kофемания" (латинская K) или "FIZКУЛЬТУРA" (латинская A)
+  let name = networkName.trim();
   
-  const name = networkName.trim();
-  const lower = name.toLowerCase();
+  // Таблица замен (латиница -> кириллица для нижнего регистра)
+  const map = {'a':'а', 'e':'е', 'o':'о', 'p':'р', 'c':'с', 'k':'к', 'x':'х', 'y':'у', 'm':'м', 'h':'н'};
+  
+  // Строка для поиска (нормализованная, нижний регистр)
+  let lower = name.toLowerCase().split('').map(char => map[char] || char).join('');
 
-  // 1. СПИСОК ИСКЛЮЧЕНИЙ (Никогда не склоняем)
+  // 2. Исключения (проверяем по нормализованной строке)
   const exceptions = [
     'корж', 'даблби', 'дринкит', 
     'world class', 'x-fit', 'smstretching', 'sportlife', 'fitness house', 
@@ -1316,47 +1314,34 @@ function getAccusativeCase(networkName) {
     'cofix', 'green house', 'спортлайф'
   ];
 
-  if (exceptions.includes(lower)) {
-    return name;
-  }
-
-  // 2. РУЧНЫЕ ПРАВИЛА (Проверяем lower!)
+  // Тут важно: exceptions тоже должны быть в кириллице или английском как есть.
+  // Английские бренды (world class) останутся английскими, т.к. буквы w, s, l, i, f не менялись.
+  // А вот "Kофемания" превратилась в чисто русскую "кофемания".
   
-  // Для FIZКУЛЬТУРА (ищет "fizкультура" маленькими)
-  if (lower.includes('fizкультура')) {
-    // Если исходное слово было капсом (FIZКУЛЬТУРА), возвращаем капсом
+  if (exceptions.includes(lower)) return name;
+
+  // 3. Ручные правила
+  
+  // FIZКУЛЬТУРА. У нас FIZ остался (f,i,z не меняли), а КУЛЬТУРА стала русской.
+  if (lower.includes('fiz') && lower.includes('культур')) {
     if (name === name.toUpperCase()) return 'FIZКУЛЬТУРУ';
-    // Иначе (FiZКУЛЬТУРА) возвращаем с маленькой 'у'
     return name.slice(0, -1) + 'у';
   }
 
-  // Для Кофемании (ищет "кофемания" или "мания" в конце)
-  if (lower.endsWith('мания')) {
+  // Кофемания (теперь она точно русская "кофемания")
+  if (lower.includes('кофемания')) {
     return 'Кофеманию';
   }
-  
-  // Для Белотурки
-  if (lower.includes('белотурка')) {
-    return 'Белотурку';
-  }
 
-  // 3. АВТОМАТИКА
+  // 4. Автоматика
   const lastChar = lower.slice(-1);
-  
-  // Проверяем и русскую 'а', и английскую 'a'
-  if (lastChar === 'а' || lastChar === 'a') {
-     const isCaps = name === name.toUpperCase() && name !== name.toLowerCase();
-     return name.slice(0, -1) + (isCaps ? 'У' : 'у');
-  }
+  const isCaps = name === name.toUpperCase() && name !== name.toLowerCase();
 
-  if (lastChar === 'я') {
-     const isCaps = name === name.toUpperCase() && name !== name.toLowerCase();
-     return name.slice(0, -1) + (isCaps ? 'Ю' : 'ю');
-  }
+  if (lastChar === 'а') return name.slice(0, -1) + (isCaps ? 'У' : 'у');
+  if (lastChar === 'я') return name.slice(0, -1) + (isCaps ? 'Ю' : 'ю');
   
   return name;
 }
-
 
 
 // Сборка итога для поля summaryText (можете сохранить свою реализацию или заменить на более универсальную)
