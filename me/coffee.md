@@ -22,6 +22,8 @@ description: Сигнал – тому кто решает
 
 <MainSignalWidgetsCoffee />
 
+<br>
+
 <div align="center">
 
 # Статистика всех Сигналов
