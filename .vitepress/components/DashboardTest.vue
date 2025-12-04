@@ -163,8 +163,7 @@ const categories = [
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  /* Единый отступ 6px */
-  gap: 6px; 
+  gap: 6px;
   padding: 0 4px;
   box-sizing: border-box;
   font-family: inherit;
@@ -177,16 +176,14 @@ const categories = [
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  /* Единый отступ 6px */
-  gap: 6px; 
+  gap: 6px;
   margin: 0;
 }
 
 .column-center {
   display: flex;
   flex-direction: column;
-  /* Единый отступ 6px */
-  gap: 6px; 
+  gap: 6px;
   width: 100%;
 }
 
@@ -214,7 +211,7 @@ const categories = [
 .card-large {
   flex: 1 1 calc(50% - 3px);
   min-width: 0;
-  min-height: 110px; /* Увеличено до 110px */
+  min-height: 130px; /* Увеличено с 110px до 130px */
   height: auto;
   font-size: clamp(0.92rem, 1.75vw, 1.12rem);
 }
@@ -223,7 +220,7 @@ const categories = [
 .card-mid {
   flex: 1 1 calc(33.333% - 4px);
   min-width: 0;
-  min-height: 110px; /* Увеличено до 110px */
+  min-height: 130px; /* Увеличено с 110px до 130px */
   height: auto;
   font-size: clamp(0.78rem, 1.5vw, 0.92rem);
 }
@@ -232,7 +229,7 @@ const categories = [
 .card-wide {
   flex: 1 1 100%;
   min-width: 0;
-  min-height: 60px; /* Увеличено до 60px */
+  min-height: 60px;
   height: auto;
   font-size: clamp(0.76rem, 1.45vw, 0.90rem);
 }
@@ -242,7 +239,7 @@ const categories = [
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px; /* Увеличены отступы */
+  padding: 10px 16px; 
   gap: 6px;
   width: 100%;
   height: 100%;
@@ -277,7 +274,7 @@ const categories = [
   color: #ededed;
   border-radius: 11px;
   z-index: 10;
-  padding: 10px 16px; /* Согласованные отступы */
+  padding: 10px 16px; 
   display: flex;
   align-items: flex-start;
   box-shadow: 0 3px 10px rgba(22, 23, 25, 0.32);
@@ -299,11 +296,11 @@ const categories = [
   
   .card-large { 
     flex: 1 1 calc(50% - 3px); 
-    min-height: 100px;
+    min-height: 110px; /* Чуть меньше для планшетов, но больше чем было */
   }
   .card-mid { 
     flex: 1 1 calc(50% - 3px); 
-    min-height: 90px; 
+    min-height: 110px; 
   }
   
   .card-inner { padding: 8px 10px; }
@@ -314,7 +311,7 @@ const categories = [
   .card-large,
   .card-mid {
     flex: 1 1 100%;
-    min-height: 80px;
+    min-height: 90px; /* Для мобильных тоже увеличил */
     font-size: clamp(0.78rem, 2.1vw, 0.88rem);
   }
   .card-wide { min-height: 60px; }
