@@ -1849,7 +1849,7 @@ textarea, .signal-input, .signal-select {
   background-color: #242426;
   border: 1px solid #444;
   border-radius: 10px;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.6rem;
   font-size: 0.95rem;
   color: #f0f0f0;
   transition: all 0.3s ease;
@@ -2270,12 +2270,13 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 
   /* Сам контейнер без стилей карточки, но с отступами */
   .signal-demo__form-container {
-    background-color: transparent;
+    background: transparent;
     border: none;
     box-shadow: none;
-    padding: 0 0.5rem; /* Небольшой отступ от краев экрана (безопасная зона) */
     border-radius: 0;
-    max-width: 100%;
+    padding: 0 !important; 
+    margin: 0 !important;
+    width: 100%;
   }
 
   /* Убеждаемся, что внутренние элементы занимают всю ширину */
@@ -2284,7 +2285,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   }
   
   .signal-question-block {
-    padding: 1rem 0.85rem;
+    padding: 1rem 0.5rem !important; 
   }
 
   .signal-liquid-next-btn {
