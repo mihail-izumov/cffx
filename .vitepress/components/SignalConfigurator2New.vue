@@ -1691,35 +1691,39 @@ onUnmounted(() => {
   z-index: 1000;
 }
 
+/* === МОДАЛЬНОЕ ОКНО (Светлая тема) === */
 .modal {
-  background: #111;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  width: min(520px, 96vw);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  background: #ffffff;        /* Белый фон */
+  color: #1d1d1f;            /* Темный (почти черный) текст */
+  border-radius: 20px;       /* Чуть мягче скругление */
+  width: min(480px, 92vw);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); /* Мягкая тень */
   padding: 32px;
+  text-align: center;        /* Центрируем весь текст внутри */
 }
 
 .modal-title {
   font-weight: 700;
-  font-size: 16px;
+  font-size: 20px;
   margin-bottom: 16px;
+  color: #000000;
 }
 
 .modal-body {
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #444;               /* Текст чуть мягче черного для чтения */
 }
 
+/* Ссылка внутри модалки */
 .modal-link {
-  color: #fff !important;
+  color: #000 !important;    /* Черная ссылка */
   font-weight: 600;
-  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(0,0,0,0.2) !important;
+  transition: border-color 0.3s;
 }
-
 .modal-link:hover {
-  color: #ddd !important;
+  border-bottom-color: #000 !important;
 }
 
 .no-double-underline {
@@ -1732,25 +1736,28 @@ onUnmounted(() => {
   border-bottom: 1px solid currentColor !important;
 }
 
+/* Футер с кнопкой */
 .modal-footer {
-  margin-top: 24px;
+  margin-top: 28px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;   /* Центрируем кнопку */
 }
 
+/* Базовый стиль кнопки (цвет будет задан через гендер) */
 .modal-ok {
-  background: #222;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #fff;
-  border-radius: 8px;
-  padding: 10px 16px;
+  border: none;
+  color: #fff;               /* Белый текст на кнопке */
+  border-radius: 12px;
+  padding: 12px 40px;        /* Кнопка пошире */
   cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 16px;
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
 
 .modal-ok:hover {
-  background: #333;
+  transform: scale(1.03);
+  filter: brightness(1.05);
 }
 
 .signal-demo__form-container {
@@ -2368,6 +2375,11 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   --submit-gradient: linear-gradient(90deg, #ffb6da 0%, #ff69b4 50%, #ff1493 100%);
 }
 
+.signal-demo-wrapper:has(.signal-gender-female.is-active) .modal-ok {
+  background-color: #ff69b4;
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+}
+
 /* Мужской цвет для всех элементов */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble {
   background: rgba(135, 206, 235, 0.1) !important;
@@ -2393,6 +2405,12 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 .signal-demo-wrapper:has(.signal-gender-male.is-active) {
   --submit-gradient: linear-gradient(90deg, #c0e6ff 0%, #87ceeb 50%, #4682b4 100%);
+}
+
+/* Мужская кнопка "Понятно" */
+.signal-demo-wrapper:has(.signal-gender-male.is-active) .modal-ok {
+  background-color: #87ceeb;
+  box-shadow: 0 4px 15px rgba(135, 206, 235, 0.3);
 }
 
 /* Гендерная подсветка для текстовых полей при фокусе */
