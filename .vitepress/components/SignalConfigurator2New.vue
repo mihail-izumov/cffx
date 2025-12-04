@@ -1722,7 +1722,7 @@ onUnmounted(() => {
 }
 
 .modal-body {
-  font-weight: 400;
+  font-weight: 500;
   font-size: 16px;
   line-height: 1.4;
   color: #444;               /* Текст чуть мягче черного для чтения */
@@ -2470,7 +2470,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 
 /* Жирный текст в описании */
 .modal-body b {
-  font-weight: 500;
+  font-weight: 600;
   color: #000;          /* Жирный текст чисто черный */
   display: block;       /* Чтобы точно занимал свой блок */
 }
