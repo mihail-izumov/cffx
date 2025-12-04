@@ -46,6 +46,14 @@ description: Разобраться и изменить
 <br>
 <SignalsYandexVSSignal />
 
+<div align="center">
+
+## От Сигнала до решения – 24 часа.
+
+</div>
+
+<SignalDashboardSwitcher />
+
 ## Ваш персональный ИИ-ассистент Анна.
 
 **Позвольте помощнику заняться вашими проблемами в кофейне или фитнес-клубе.**
@@ -63,14 +71,6 @@ description: Разобраться и изменить
 ### Личный переводчик между тем, что вы чувствуете, и тем, что может сделать бизнес.
 
 <AnnaSpecsSignal />
-
-<div align="center">
-
-## От Сигнала до решения – 24 часа.
-
-</div>
-
-<SignalDashboardSwitcher />
 
 <div align="center">
 
