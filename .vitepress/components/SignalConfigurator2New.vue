@@ -112,7 +112,8 @@
           </div>
           <textarea 
             v-model="form.emotionalRelease" 
-            @focus="startRotation(1)" 
+            @focus="stopRotation"
+            @blur="startRotation(1)"
             :rows="isMobile ? 5 : 3"
             placeholder="Или напишите своими словами ..."
           ></textarea>
@@ -146,7 +147,8 @@
           </div>
           <textarea 
             v-model="form.factualAnalysis" 
-            @focus="startRotation(2)" 
+            @focus="stopRotation" 
+            @blur="startRotation(2)"
             :rows="isMobile ? 5 : 3"
             placeholder="Несколько фактов: что и когда произошло ..."
           ></textarea>
@@ -180,7 +182,8 @@
           </div>
           <textarea 
             v-model="form.constructiveSuggestions" 
-            @focus="startRotation(3)" 
+            @focus="stopRotation" 
+            @blur="startRotation(3)" 
             :rows="isMobile ? 5 : 3"
             placeholder="Дайте честный совет ..."
           ></textarea>
@@ -1004,51 +1007,80 @@ const questions3 = {
 };
 
 // ======== АКТИВНЫЙ ВОПРОС (ДЛЯ ПОКАЗА/АНИМАЦИИ) ========
-const currentQuestion1 = ref(questions1.food[0]);
-const currentQuestion2 = ref(questions2.food[0]);
-const currentQuestion3 = ref(questions3.food[0]);
+// ======== АКТИВНЫЙ ВОПРОС (ДЛЯ ПОКАЗА/АНИМАЦИИ) ========
+const currentQuestion1 = ref(questions1[form.direction]?.[0] || questions1.food[0]);
+const currentQuestion2 = ref(questions2[form.direction]?.[0] || questions2.food[0]);
+const currentQuestion3 = ref(questions3[form.direction]?.[0] || questions3.food[0]);
 
 // ======== АНИМАЦИЯ/РОТАЦИЯ ВОПРОСОВ ========
 
 let rotationInterval = null;
 
 function startRotation(questionNum) {
-  if (rotationInterval) clearInterval(rotationInterval);
+  // Сначала останавливаем, чтобы не накладывалось
+  stopRotation();
 
-  let questions, currentQuestion;
+  let questionsArray = [];
+  let currentRef = null;
 
+  // ИСПРАВЛЕНО: используем questionNum в условиях
   if (questionNum === 1) {
-    questions = questions1[form.direction] || questions1.food;
-    currentQuestion = currentQuestion1;
+    questionsArray = questions1[form.direction] || questions1.food;
+    currentRef = currentQuestion1;
   } else if (questionNum === 2) {
-    questions = questions2[form.direction] || questions2.food;
-    currentQuestion = currentQuestion2;
+    questionsArray = questions2[form.direction] || questions2.food;
+    currentRef = currentQuestion2;
   } else if (questionNum === 3) {
-    questions = questions3[form.direction] || questions3.food;
-    currentQuestion = currentQuestion3;
+    questionsArray = questions3[form.direction] || questions3.food;
+    currentRef = currentQuestion3;
   } else {
     return;
   }
 
-  let currentIndex = questions.indexOf(currentQuestion.value);
+  // ИСПРАВЛЕНО: убрана лишняя строка с ошибкой let currentIndex = ...
+  
+  // Запускаем таймер
   rotationInterval = setInterval(() => {
-    currentIndex = (currentIndex + 1) % questions.length;
-    currentQuestion.value = questions[currentIndex];
-  }, 3000);
+    // Находим индекс текущего текста в массиве и берем следующий
+    const currentIndex = questionsArray.indexOf(currentRef.value);
+    const nextIndex = (currentIndex + 1) % questionsArray.length;
+    currentRef.value = questionsArray[nextIndex];
+  }, 4000); // Скорость смены - 4 секунды
 }
 
-// Останавливаем анимацию при размонтировании
-import { onUnmounted } from 'vue';
+function stopRotation() {
+  if (rotationInterval) {
+    clearInterval(rotationInterval);
+    rotationInterval = null;
+  }
+}
+
+watch(selectedSection, (newSection) => {
+  stopRotation(); // При смене шага останавливаем старую ротацию
+  
+  if (newSection === 'emotions') {
+    startRotation(1);
+  } else if (newSection === 'facts') {
+    startRotation(2);
+  } else if (newSection === 'solutions') {
+    startRotation(3);
+  }
+}, { immediate: true });
+
+// Чистим память при уходе
 onUnmounted(() => {
-  if (rotationInterval) clearInterval(rotationInterval);
+  stopRotation();
 });
 
-// ====== АВТОМАТИЧЕСКОЕ ОБНОВЛЕНИЕ ПРИ СМЕНЕ НАПРАВЛЕНИЯ ======
+// Также следим за сменой направления (Рестораны <-> Фитнес), чтобы обновить массив вопросов
 watch(() => form.direction, () => {
-  currentQuestion1.value = questions1[form.direction]?.[0] || questions1.food[0];
-  currentQuestion2.value = questions2[form.direction]?.[0] || questions2.food[0];
-  currentQuestion3.value = questions3[form.direction]?.[0] || questions3.food[0];
+   stopRotation();
+   // Перезапускаем ротацию для текущей активной секции
+   if (selectedSection.value === 'emotions') startRotation(1);
+   if (selectedSection.value === 'facts') startRotation(2);
+   if (selectedSection.value === 'solutions') startRotation(3);
 });
+
 
 const isEmotionFilled = computed(() => form.emotionalRelease && form.emotionalRelease.trim().length > 0);
 const submitButtonText = computed(() =>
@@ -1603,11 +1635,17 @@ onUnmounted(() => {
 }
 
 .fade-enter-active, .fade-leave-active { 
-  transition: opacity 0.5s ease; 
+  transition: all 0.6s ease; 
 }
 
 .fade-enter-from, .fade-leave-to { 
-  opacity: 0; 
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 textarea, .signal-input, .signal-select {
