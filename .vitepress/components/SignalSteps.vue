@@ -12,7 +12,7 @@
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">ШАГ 2</div>
       <h3 class="anna-title">Получите поддержку</h3>
-      <p class="anna-description-main">Ваш персональный ИИ-помощник Анна поможет с тем, чтобы Ваш Сигнал был гарантированно услышан бизнесом</p>
+      <p class="anna-description-main">ИИ-помощник Анна поможет с тем, чтобы Ваш Сигнал был гарантированно услышан бизнесом</p>
       <p class="anna-description-goals anna-step-goals">Превращает эмоции в действия</p>
     </div>
     
@@ -20,7 +20,7 @@
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">ШАГ 3</div>
       <h3 class="anna-title">Запустите процесс</h3>
-      <p class="anna-description-main">Ваш Сигнал запускает нужные процессы в бизнесе, система начинает на вас</p>
+      <p class="anna-description-main">Ваш Сигнал запускает нужные процессы в бизнесе, система начинает работать на вас</p>
       <p class="anna-description-goals anna-step-goals">Гарантия решения любой проблемы</p>
     </div>
     
