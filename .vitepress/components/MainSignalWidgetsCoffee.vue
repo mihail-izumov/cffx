@@ -15,6 +15,7 @@ const cafeNames = [
   'Cofix'
 ]
 
+  
 const cafes = {
   'Дринкит': {
     name: 'Дринкит',
