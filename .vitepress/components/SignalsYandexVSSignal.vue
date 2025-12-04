@@ -1,185 +1,208 @@
-<script setup>
-// Данные таблицы можно вынести в реактивные переменные если нужно
-</script>
 <template>
-  <div class="comparison-table">
-    <div class="table-content">
-      <div class="table-header">
-        <div class="header-cell usual">Обычный отзыв Яндекс/2ГИС</div>
-        <div class="header-cell smart">⚡ Сигнал</div>
-      </div>
-      
-      <div class="table-row">
-        <div class="cell usual-cell">
-          <span class="mobile-label">Яндекс/2ГИС:</span>
-          <p>Теряется в потоке</p>
-        </div>
-        <div class="cell smart-cell">
-          <span class="mobile-label">Сигнал:</span>
-          <span class="arrow">→</span>
-          <p><strong>Поступает в работу немедленно</strong></p>
-        </div>
-      </div>
-      
-      <div class="table-row">
-        <div class="cell usual-cell">
-          <span class="mobile-label">Яндекс/2ГИС:</span>
-          <p>Решение не гарантировано</p>
-        </div>
-        <div class="cell smart-cell">
-          <span class="mobile-label">Сигнал:</span>
-          <span class="arrow">→</span>
-          <p><strong>Результат за 24 часа</strong></p>
-        </div>
-      </div>
+  <div class="comparison-container">
+    <!-- Десктопная версия (таблица) -->
+    <div class="desktop-view">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Обычный отзыв Яндекс/2ГИС</th>
+            <th>⚡ Сигнал</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in comparisonData" :key="index">
+            <td>
+              <div class="regular-review">{{ item.regular }}</div>
+            </td>
+            <td>
+              <div class="signal-benefit">→ {{ item.signal }}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-            <div class="table-row">
-        <div class="cell usual-cell">
-          <span class="mobile-label">Яндекс/2ГИС:</span>
-          <p>Поделиться с другими и наказать</p>
+    <!-- Мобильная версия (карточки) -->
+    <div class="mobile-view">
+      <div 
+        v-for="(item, index) in comparisonData" 
+        :key="index" 
+        class="comparison-card"
+      >
+        <div class="comparison-item">
+          <div class="item-label">Обычный отзыв Яндекс/2ГИС:</div>
+          <div class="item-value">{{ item.regular }}</div>
         </div>
-        <div class="cell smart-cell">
-          <span class="mobile-label">Сигнал:</span>
-          <span class="arrow">→</span>
-          <p><strong>Разобраться и изменить</strong></p>
-        </div>
-      </div>
-      
-      <div class="table-row">
-        <div class="cell usual-cell">
-          <span class="mobile-label">Яндекс/2ГИС:</span>
-          <p>Шум без последствий</p>
-        </div>
-        <div class="cell smart-cell">
-          <span class="mobile-label">Сигнал:</span>
-          <span class="arrow">→</span>
-          <p><strong>Рост бизнеса</strong></p>
+        <div class="divider"></div>
+        <div class="comparison-item">
+          <div class="item-label">⚡ Сигнал</div>
+          <div class="item-value signal-value">→ {{ item.signal }}</div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+
+const comparisonData = ref([
+  {
+    regular: 'Теряется в потоке',
+    signal: 'Поступает в работу немедленно'
+  },
+  {
+    regular: 'Решение не гарантировано',
+    signal: 'Результат за 24 часа'
+  },
+  {
+    regular: 'Поделиться с другими и наказать',
+    signal: 'Разобраться и изменить'
+  },
+  {
+    regular: 'Шум без последствий',
+    signal: 'Рост бизнеса'
+  }
+])
+</script>
+
 <style scoped>
-.comparison-table {
+.comparison-container {
   width: 100%;
+  margin: 20px 0;
 }
-.table-content {
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
-  background: rgba(255,255,255,0.03);
-  overflow: hidden;
+
+/* Десктопная версия - показываем на больших экранах */
+.desktop-view {
+  display: block;
 }
-.table-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-.header-cell {
-  padding: 10px 16px;
-  font-weight: 600;
-  font-size: 14px;
-  text-align: center;
-  border-right: 1px solid rgba(255,255,255,0.08);
-}
-.header-cell:last-child {
-  border-right: none;
-}
-.header-cell.usual {
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.7);
-}
-.header-cell.smart {
-  background: rgba(200,255,90,0.08);
-  color: #c8ff5a;
-}
-.table-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-.table-row:last-child {
-  border-bottom: none;
-}
-.cell {
-  padding: 8px 16px;
-  font-size: 14px;
-  line-height: 1.05;
-  border-right: 1px solid rgba(255,255,255,0.08);
-}
-.cell:last-child {
-  border-right: none;
-}
-.usual-cell {
-  color: rgba(255,255,255,0.7);
-  background: rgba(255,255,255,0.01);
-}
-.smart-cell {
-  color: rgba(255,255,255,0.88);
-  background: rgba(200,255,90,0.04);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.cell p {
-  margin: 0;
-}
-.smart-cell strong {
-  font-weight: 600;
-  color: #c8ff5a;
-}
-.arrow {
-  color: #c8ff5a;
-  font-size: 16px;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-.mobile-label {
+
+.mobile-view {
   display: none;
 }
-/* Мобильная версия */
+
+.comparison-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: var(--vp-c-bg-soft);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.comparison-table thead {
+  background-color: var(--vp-c-bg-mute);
+}
+
+.comparison-table th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 16px;
+  border-bottom: 2px solid var(--vp-c-divider);
+}
+
+.comparison-table th:first-child {
+  color: var(--vp-c-text-2);
+}
+
+.comparison-table th:last-child {
+  color: var(--vp-c-brand-1);
+}
+
+.comparison-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+.regular-review {
+  color: var(--vp-c-text-2);
+  font-size: 15px;
+}
+
+.signal-benefit {
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Мобильная версия - показываем на маленьких экранах */
 @media (max-width: 768px) {
-  .table-header {
+  .desktop-view {
     display: none;
   }
-  .table-row {
-    grid-template-columns: 1fr;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    padding: 0;
+
+  .mobile-view {
+    display: block;
   }
-  .table-row:last-child {
-    border-bottom: none;
+
+  .comparison-card {
+    background-color: var(--vp-c-bg-soft);
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
-  .cell {
-    border-right: none;
-    padding: 6px 14px;
-    font-size: 12px;
-    line-height: 1.2;
+
+  .comparison-card:last-child {
+    margin-bottom: 0;
   }
-  .usual-cell {
-    background: rgba(255,255,255,0.04);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    padding-bottom: 4px;
+
+  .comparison-item {
+    margin-bottom: 16px;
   }
-  .smart-cell {
-    background: rgba(200,255,90,0.06);
-    padding-top: 4px;
-    gap: 6px;
+
+  .comparison-item:last-child {
+    margin-bottom: 0;
   }
-  .arrow {
-    font-size: 12px;
-  }
-  .mobile-label {
-    display: inline;
-    font-size: 10px;
+
+  .item-label {
+    font-size: 13px;
     font-weight: 600;
-    opacity: 0.7;
-    margin-right: 4px;
+    color: var(--vp-c-text-3);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
-  .usual-cell .mobile-label {
-    color: rgba(255,255,255,0.6);
+
+  .item-value {
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--vp-c-text-1);
+    font-weight: 500;
   }
-  .smart-cell .mobile-label {
-    color: #c8ff5a;
+
+  .signal-value {
+    color: var(--vp-c-brand-1);
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .divider {
+    height: 1px;
+    background-color: var(--vp-c-divider);
+    margin: 16px 0;
+  }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 480px) {
+  .comparison-card {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .item-value {
+    font-size: 16px;
+  }
+
+  .signal-value {
+    font-size: 17px;
   }
 }
 </style>
