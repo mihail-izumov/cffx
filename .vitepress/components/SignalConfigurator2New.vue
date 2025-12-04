@@ -1349,31 +1349,6 @@ function getAccusativeCase(networkName) {
 }
 
 
-  // РУЧНЫЕ ИСПРАВЛЕНИЯ ДЛЯ СЛОЖНЫХ СЛОВ
-  
-  if (lower.includes('FIZКУЛЬТУРА')) {
-    return 'FIZКУЛЬТУРУ';
-  }
-
-  if (lower.endsWith('мания')) {
-    return 'Кофеманию';
-  }
-
-  // АВТОМАТИКА (для всего остального, если вдруг добавишь новое)
-  const lastChar = lower.slice(-1);
-  const isCaps = name === name.toUpperCase() && name !== name.toLowerCase();
-
-  if (lastChar === 'а' || lastChar === 'a') { // русская и англ
-    return name.slice(0, -1) + (isCaps ? 'У' : 'у');
-  }
-
-  if (lastChar === 'я') {
-    return name.slice(0, -1) + (isCaps ? 'Ю' : 'ю');
-  }
-  
-  return name;
-}
-
 
 // Сборка итога для поля summaryText (можете сохранить свою реализацию или заменить на более универсальную)
 function summarizeAllContent() {
