@@ -4,10 +4,10 @@ import SignalT9Configurator from './SignalT9Configurator.vue'
 import AddVoteStatus from './AddVoteStatus.vue'
 
 const cafeNames = [
-  'Кофемания',
   'Дринкит',
   'Корж',
   'Skuratov Coffee',
+  'Кофемания',
   'Surf Coffee',
   'ДаблБи',
   'Green House',
