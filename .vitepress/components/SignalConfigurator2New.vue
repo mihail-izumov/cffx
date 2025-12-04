@@ -1292,33 +1292,46 @@ const submitButtonText = computed(() =>
       : 'Отправить в заведение'
 );
 
-// Склонение кофейни
+// Склонение названия компании
 function getAccusativeCase(networkName) {
   if (!networkName) return '';
-  const lastChar = networkName.slice(-1).toLowerCase();
-  const lowerCaseName = networkName.toLowerCase();
+  const cleanName = networkName.trim();
+  const lower = cleanName.toLowerCase();
 
+  // 1. Исключения (не склоняем)
   const exceptions = [
-    // Русские неизменяемые
     'корж', 'даблби', 'дринкит', 
-    
-    // Английские бренды (обычно не склоняются)
     'world class', 'x-fit', 'smstretching', 'sportlife', 'fitness house', 
     'ddx', 'skuratov', 'surf coffee', 'stars coffee', 
     'cofix', 'green house'
   ];
-  if (exceptions.includes(lowerCaseName)) {
-    return networkName;
+
+  if (exceptions.includes(lower)) {
+    return cleanName;
   }
 
-  if (lastChar === 'а') {
-    return networkName.slice(0, -1) + 'у';
+  // 2. Явный фикс для FIZКУЛЬТУРА (на случай латиницы/кириллицы в конце)
+  // Проверяем, если слово заканчивается на "КУЛЬТУРА" (в любом регистре)
+  if (lower.endsWith('культура') || lower.endsWith('fizкультура')) {
+    return cleanName.slice(0, -1) + 'У'; // Меняем на 'У' (так как всё капсом)
+  }
+
+  // 3. Общие правила
+  const lastChar = lower.slice(-1); // берем последнюю букву в нижнем регистре
+
+  // Если заканчивается на 'а' (русскую) или 'a' (английскую - на всякий случай)
+  if (lastChar === 'а' || lastChar === 'a') {
+    // Если всё слово капсом (как FIZКУЛЬТУРА), добавляем большую 'У'
+    const isCaps = cleanName === cleanName.toUpperCase() && cleanName !== cleanName.toLowerCase();
+    return cleanName.slice(0, -1) + (isCaps ? 'У' : 'у');
   }
 
   if (lastChar === 'я') {
-    return networkName.slice(0, -1) + 'ю';
+    const isCaps = cleanName === cleanName.toUpperCase() && cleanName !== cleanName.toLowerCase();
+    return cleanName.slice(0, -1) + (isCaps ? 'Ю' : 'ю');
   }
-  return networkName;
+  
+  return cleanName;
 }
 
 // Сборка итога для поля summaryText (можете сохранить свою реализацию или заменить на более универсальную)
