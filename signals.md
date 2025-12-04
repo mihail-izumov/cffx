@@ -10,32 +10,7 @@ description: Разобраться и изменить
 
 <div align="center">
 
-<h1 class="responsive-heading-signal-industries">Разобраться и изменить.</h1>
-
-</div>
-
-<div style="text-align: center; margin: 2rem 0;">
-  <img 
-    src="/signals-ban.jpg" 
-    alt="Сигнал"
-    style="
-      width: 100%;
-      max-width: 800px;
-      height: auto;
-      border-radius: max(12px, min(24px, 3vw));
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-    "
-    onmouseover="this.style.transform='scale(1.02)'"
-    onmouseout="this.style.transform='scale(1)'"
-  />
-</div>
-
-<div align="center">
-
-<br>
-  
-# Что Сигнал делает <br class="mobile-break"> для вас
+<h1 class="responsive-heading-signal-industries">Что Сигнал делает <br class="mobile-break"> для вас</h1>
 
 </div>
 
@@ -104,6 +79,26 @@ description: Разобраться и изменить
 </div>
 
 <AnnaFeelThePower />
+
+<br>
+
+<div style="text-align: center; margin: 2rem 0;">
+  <img 
+    src="/signals-ban.jpg" 
+    alt="Сигнал"
+    style="
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      border-radius: max(12px, min(24px, 3vw));
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    "
+    onmouseover="this.style.transform='scale(1.02)'"
+    onmouseout="this.style.transform='scale(1)'"
+  />
+</div>
+
 
 <style>
 /* БАЗОВЫЙ СТИЛЬ (Десктоп) */
