@@ -4,7 +4,7 @@
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">ШАГ 1</div>
       <h3 class="anna-title">Отправьте Сигнал</h3>
-      <p class="anna-description-main">Умная форма поможет за 30 секунд рассказать о своих чувствах и предложить улучшения</p>
+      <p class="anna-description-main">Умная форма поможет за 30 сек. рассказать о своих чувствах и предложить улучшения</p>
       <p class="anna-description-goals anna-step-goals">Проще, чем оставить отзыв</p>
     </div>
     
