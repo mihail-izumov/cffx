@@ -1333,18 +1333,16 @@ onUnmounted(() => {
 :root {
   --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --signal-font-mono: 'SF Mono', 'Monaco', monospace;
-  
-  /* Приглушенные элегантные цвета */
-  --female-primary: #C875A0;
-  --female-bg: rgba(200, 117, 160, 0.12);
-  --female-border: rgba(200, 117, 160, 0.25);
-  --female-focus: rgba(200, 117, 160, 0.15);
-  --female-gradient: linear-gradient(135deg, #C875A0 0%, #A96085 100%);
 
-  --male-primary: #75A0C8;
-  --male-bg: rgba(117, 160, 200, 0.12);
-  --male-border: rgba(117, 160, 200, 0.25);
-  --male-focus: rgba(117, 160, 200, 0.15);
+  /* --- НОВЫЕ ПРИГЛУШЕННЫЕ ЦВЕТА --- */
+  --female-color: #C875A0; /* Приглушенный розовый */
+  --female-bg: rgba(200, 117, 160, 0.15);
+  --female-border: rgba(200, 117, 160, 0.3);
+  --female-gradient: linear-gradient(135deg, #C875A0 0%, #B0688F 100%);
+
+  --male-color: #75A0C8;   /* Приглушенный сине-голубой */
+  --male-bg: rgba(117, 160, 200, 0.15);
+  --male-border: rgba(117, 160, 200, 0.3);
   --male-gradient: linear-gradient(135deg, #75A0C8 0%, #6085A9 100%);
 }
 
@@ -1468,13 +1466,14 @@ onUnmounted(() => {
   margin: 0 2px;
 }
 
+/* ИЗМЕНЕНИЕ: Цвета кнопок пола тоже приглушили */
 .signal-gender-female {
   background: rgba(200, 117, 160, 0.3);
 }
 
 .signal-gender-female.is-active {
-  background: var(--female-primary);
-  box-shadow: 0 0 12px var(--female-focus);
+  background: var(--female-color);
+  box-shadow: 0 0 12px rgba(200, 117, 160, 0.5);
 }
 
 .signal-gender-male {
@@ -1482,8 +1481,8 @@ onUnmounted(() => {
 }
 
 .signal-gender-male.is-active {
-  background: var(--male-primary);
-  box-shadow: 0 0 12px var(--male-focus);
+  background: var(--male-color);
+  box-shadow: 0 0 12px rgba(117, 160, 200, 0.5);
 }
 
 .modal-overlay {
@@ -1580,11 +1579,12 @@ onUnmounted(() => {
   border-radius: 16px;
   padding: 1.25rem;
   border: 1px solid #3a3a3e;
+  /* border-left удален для чистого стиля */
   padding-bottom: 35px;
 }
 
 .signal-question-block.contact {
-  /* Цветная полоска для контакта убрана */
+  /* Цветная полоска для контакта тоже убрана */
 }
 
 .signal-direction-label {
@@ -1636,7 +1636,7 @@ textarea, .signal-input, .signal-select {
 
 textarea:focus, .signal-input:focus, .signal-select:focus {
   outline: none;
-  border-color: #666;
+  border-color: var(--accent-color);
   background-color: #2a2a2e;
 }
 
@@ -1662,7 +1662,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   border: 1px solid transparent;
 }
 
-/* Базовые цвета баблов (переопределяются ниже гендерными стилями) */
+/* Базовые цвета (переопределяются гендерными стилями ниже) */
 .signal-emotion-bubble {
   background: rgba(169, 114, 255, 0.1);
   border-color: rgba(169, 114, 255, 0.3);
@@ -1882,7 +1882,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
 .signal-agreement {
-  margin: 20px 0 24px 0;
+  margin: 20px 0 24px 0;;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -2059,6 +2059,49 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   color: #fff !important;
 }
 
+@media (max-width: 768px) {
+  .signal-demo__header {
+    margin-bottom: 12px;
+  }
+
+  .signal-controls-row {
+    margin-bottom: 12px;
+  }
+
+  .signal-demo__form-container {
+    padding: 1rem 0.75rem;
+    max-width: 100%;
+  }
+  
+  .signal-question-block {
+    padding: 1rem 0.85rem;
+  }
+
+  .signal-liquid-next-btn {
+    width: 100%;
+    height: 52px;
+  }
+
+  .signal-suggestion-bubble {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+  }
+  
+  .signal-columns {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .signal-success-ticket-info {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .signal-success-ticket {
+    padding: 0.6rem 2rem;
+  }
+}
+
 .signal-incognito-toggle {
   margin-bottom: 12px;
 }
@@ -2123,140 +2166,98 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   margin-bottom: 0.5rem;
 }
 
-@media (max-width: 768px) {
-  .signal-demo__header {
-    margin-bottom: 12px;
-  }
-
-  .signal-controls-row {
-    margin-bottom: 12px;
-  }
-
-  .signal-demo__form-container {
-    padding: 1rem 0.75rem;
-    max-width: 100%;
-  }
-  
-  .signal-question-block {
-    padding: 1rem 0.85rem;
-  }
-
-  .signal-liquid-next-btn {
-    width: 100%;
-    height: 52px;
-  }
-
-  .signal-suggestion-bubble {
-    font-size: 0.85rem;
-    padding: 0.4rem 0.9rem;
-  }
-  
-  .signal-columns {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .signal-success-ticket-info {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .signal-success-ticket {
-    padding: 0.6rem 2rem;
-  }
-}
-
 /* ===============================
-   ЕДИНЫЙ ГЕНДЕРНЫЙ СТИЛЬ (ПРИГЛУШЕННЫЙ И ЭЛЕГАНТНЫЙ)
+   ЕДИНЫЙ ГЕНДЕРНЫЙ ЦВЕТ (ОБНОВЛЕНО)
    =============================== */
 
-/* Женский цвет - приглушенные баблы */
+/* --- ЖЕНСКИЙ СТИЛЬ (ПРИГЛУШЕННЫЙ) --- */
+
+/* Баблы */
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-suggestion-bubble {
   background: var(--female-bg) !important;
   border-color: var(--female-border) !important;
-  color: var(--female-primary) !important;
+  color: var(--female-color) !important;
 }
-
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-suggestion-bubble:hover {
-  background: var(--female-primary) !important;
+  background: var(--female-color) !important;
   color: #fff !important;
 }
 
-/* Женский цвет - кнопка "Дальше" */
+/* Кнопка "Далее" */
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn {
   background: var(--female-gradient) !important;
 }
-
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn .signal-liquid-next-text,
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn .signal-next-icon {
   color: #fff !important;
 }
 
-/* Женский цвет - кнопка "Отправить" */
+/* Кнопка "Отправить" (ДОБАВЛЕНО) */
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-submit-button {
   background: var(--female-gradient) !important;
 }
 
-/* Женский цвет - переключатель "Анонимно" */
+/* Переключатель "Анонимно" (ДОБАВЛЕНО) */
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-toggle-checkbox:checked + .signal-toggle-slider {
-  background-color: var(--female-primary) !important;
+  background-color: var(--female-color) !important;
 }
 
-/* Женский цвет - чекбокс согласия */
+/* Чекбокс "Согласие" (ДОБАВЛЕНО) */
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-agreement input[type="checkbox"] {
-  accent-color: var(--female-primary) !important;
+  accent-color: var(--female-color) !important;
 }
 
-/* Женский цвет - фокус полей */
+/* Фокус полей */
 .signal-demo-wrapper:has(.signal-gender-female.is-active) textarea:focus,
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-input:focus,
 .signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-select:focus {
-  border-color: var(--female-primary) !important;
-  box-shadow: 0 0 0 3px var(--female-focus) !important;
+  border-color: var(--female-color) !important;
+  box-shadow: 0 0 0 3px rgba(200, 117, 160, 0.2) !important;
 }
 
-/* Мужской цвет - приглушенные баблы */
+/* --- МУЖСКОЙ СТИЛЬ (ПРИГЛУШЕННЫЙ) --- */
+
+/* Баблы */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble {
   background: var(--male-bg) !important;
   border-color: var(--male-border) !important;
-  color: var(--male-primary) !important;
+  color: var(--male-color) !important;
 }
-
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble:hover {
-  background: var(--male-primary) !important;
-  color: #fff !important;
+  background: var(--male-color) !important;
+  color: #000 !important;
 }
 
-/* Мужской цвет - кнопка "Дальше" с БЕЛЫМ текстом */
+/* Кнопка "Далее" */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn {
   background: var(--male-gradient) !important;
 }
-
+/* ВНИМАНИЕ: Текст стал белым по вашему запросу */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn .signal-liquid-next-text,
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn .signal-next-icon {
-  color: #fff !important;
+  color: #fff !important; 
 }
 
-/* Мужской цвет - кнопка "Отправить" */
+/* Кнопка "Отправить" (ДОБАВЛЕНО) */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-submit-button {
   background: var(--male-gradient) !important;
 }
 
-/* Мужской цвет - переключатель "Анонимно" */
+/* Переключатель "Анонимно" (ДОБАВЛЕНО) */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-toggle-checkbox:checked + .signal-toggle-slider {
-  background-color: var(--male-primary) !important;
+  background-color: var(--male-color) !important;
 }
 
-/* Мужской цвет - чекбокс согласия */
+/* Чекбокс "Согласие" (ДОБАВЛЕНО) */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-agreement input[type="checkbox"] {
-  accent-color: var(--male-primary) !important;
+  accent-color: var(--male-color) !important;
 }
 
-/* Мужской цвет - фокус полей */
+/* Фокус полей */
 .signal-demo-wrapper:has(.signal-gender-male.is-active) textarea:focus,
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-input:focus,
 .signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-select:focus {
-  border-color: var(--male-primary) !important;
-  box-shadow: 0 0 0 3px var(--male-focus) !important;
+  border-color: var(--male-color) !important;
+  box-shadow: 0 0 0 3px rgba(117, 160, 200, 0.2) !important;
 }
 </style>
