@@ -1628,45 +1628,38 @@ onUnmounted(() => {
   margin-bottom: 0.5rem;
 }
 
-.signal-rotating-phrase-container {
-  min-height: 1.3em;
-  margin-bottom: 0.6rem;
-}
-
-.signal-rotating-fixed-height {
-  min-height: 2.6em; /* Достаточно места для 1-2 строк текста */
-  display: flex;     /* Центрирует контент если нужно */
-  align-items: center; /* Выравнивает по вертикали */
-}
-
-.signal-question-label {
-  font-weight: 500;
-  font-size: 1rem;
-  margin: 0;
-  color: #f0f0f0;
-  line-height: 1.3;
-}
-
-/* Контейнер для вопросов */
+/* Родительский контейнер */
 .signal-rotating-phrase-container {
   position: relative;
-  min-height: 2.6em;   /* чтобы высота не прыгала */
-  overflow: hidden;
+  min-height: 2.6em; /* Высота под 2 строки, чтобы не прыгало */
+  overflow: hidden;  /* Обрезаем всё лишнее */
+  display: flex;     /* Помогает правильно позиционировать внутри */
+  align-items: center; /* Центрируем по вертикали (если одна строка) */
 }
 
-/* Плавное исчезновение/появление без движения */
+/* Анимация плавного перехода */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.6s ease;
 }
 
-/* Уходящий элемент вынимаем из потока, чтобы новый встал на его место */
+/* Уходящий элемент: */
 .fade-leave-active {
-  position: absolute;
-  inset: 0;      /* top:0; right:0; bottom:0; left:0; */
+  position: absolute; /* Вынимаем из потока */
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0 !important; /* ВАЖНО: убираем отступы, чтобы он не съезжал */
 }
 
-/* Прозрачные состояния */
+/* Входящий элемент тоже должен быть без лишних отступов сверху, если они есть */
+.signal-question-label {
+  margin: 0; /* Убираем дефолтные отступы у параграфа */
+  line-height: 1.3;
+  /* Остальные твои стили: font-weight, font-size и т.д. */
+}
+
+/* Состояния прозрачности */
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
