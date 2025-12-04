@@ -1354,6 +1354,7 @@ onUnmounted(() => {
   align-items: center;
 }
 
+/* Стили для переключателей шагов (нейтрально-белые) */
 .signal-breadcrumb {
   appearance: none;
   border: none;
@@ -1366,7 +1367,7 @@ onUnmounted(() => {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #444;
+  background: rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
 }
 
@@ -1374,36 +1375,13 @@ onUnmounted(() => {
   width: 24px;
   height: 8px;
   border-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+  transform: scale(1.1);
 }
 
-.signal-breadcrumb.contact.is-active .signal-breadcrumb-circle {
-  background: linear-gradient(90deg, #00C2FF 0%, #00C2A8 100%);
-  box-shadow: 0 0 10px rgba(0, 194, 168, 0.5);
-}
-
-.signal-breadcrumb.share.is-active .signal-breadcrumb-circle {
-  background: #fff;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-.signal-breadcrumb.emotions.is-active .signal-breadcrumb-circle {
-  background: #6f5d9f;
-}
-
-.signal-breadcrumb.facts.is-active .signal-breadcrumb-circle {
-  background: #3a8862;
-}
-
-.signal-breadcrumb.solutions.is-active .signal-breadcrumb-circle {
-  background: #4A90E2;
-}
-
-.signal-breadcrumb.summary.is-active .signal-breadcrumb-circle {
-  background: #FFB800;
-}
-
-.signal-breadcrumb.location.is-active .signal-breadcrumb-circle {
-  background: #5A9FB8;
+.signal-breadcrumb:hover .signal-breadcrumb-circle {
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .signal-controls-row {
@@ -1583,18 +1561,18 @@ onUnmounted(() => {
   gap: 1.5rem;
 }
 
+/* Блок вопроса без цветной полоски слева */
 .signal-question-block {
   background-color: #2a2a2e;
   border-radius: 16px;
   padding: 1.25rem;
   border: 1px solid #3a3a3e;
-  border-left: 4px solid var(--accent-color, #444);
+  /* border-left удален для чистого стиля */
   padding-bottom: 35px;
 }
 
 .signal-question-block.contact {
-  border-left-color: #00C2A8 !important;
-  border-left-width: 4px;
+  /* Цветная полоска для контакта тоже убрана */
 }
 
 .signal-direction-label {
@@ -1672,6 +1650,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   border: 1px solid transparent;
 }
 
+/* Базовые цвета (переопределяются гендерными стилями ниже) */
 .signal-emotion-bubble {
   background: rgba(169, 114, 255, 0.1);
   border-color: rgba(169, 114, 255, 0.3);
@@ -1702,17 +1681,10 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
     color: #000;
   }
   
-  /* Добавляем недостающий hover для .signal-solution-bubble */
   .signal-solution-bubble:hover {
     background: #4A90E2;
     color: #fff;
   }
-}
-
-
-.signal-solution-bubble:hover {
-  background: #4A90E2;
-  color: #fff;
 }
 
 .signal-reset-bubble {
@@ -1816,6 +1788,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   flex-shrink: 0;
   vertical-align: middle;
   transform: translate(0, 0px);
+  transition: opacity 0.2s ease-in-out;
 }
 
 .signal-next-icon .signal-coffee-fill {
@@ -1824,7 +1797,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   transition: height 0.3s ease-in-out, y 0.3s ease-in-out;
 }
 
-
+/* Базовые градиенты (переопределяются гендерными стилями) */
 .signal-emotion-next {
   background: linear-gradient(135deg, #6f5d9f, #8a7ab8);
 }
@@ -1952,7 +1925,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0;    /* Убрать любые паддинги */
+  padding: 0;
 }
 
 .signal-submit-button .signal-liquid-next-text {
@@ -1971,7 +1944,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   cursor: not-allowed;
 }
 
-/* ПРАВКА 1, 2: Экран подтверждения */
 .signal-success-screen {
   display: flex;
   flex-direction: column;
@@ -1999,7 +1971,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   text-align: center;
 }
 
-/* ПРАВКА 1: Больше серого поля для тикета */
 .signal-success-ticket-info {
   display: flex;
   align-items: center;
@@ -2035,7 +2006,6 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   display: block !important;
 }
 
-/* ПРАВКА 3, 4: Кнопка без артефактов */
 .signal-telegram-button {
   display: inline-block;
   padding: 0.8rem 1.5rem;
@@ -2086,26 +2056,22 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
     margin-bottom: 12px;
   }
 
-  /* Увеличиваем ширину основного контейнера формы */
   .signal-demo__form-container {
-    padding: 1rem 0.75rem; /* Уменьшаем боковые отступы */
-    max-width: 100%; /* Используем всю доступную ширину */
+    padding: 1rem 0.75rem;
+    max-width: 100%;
   }
   
-  /* Увеличиваем ширину блока с вопросами */
   .signal-question-block {
-    padding: 1rem 0.85rem; /* Уменьшаем внутренние отступы */
+    padding: 1rem 0.85rem;
   }
 
-  /* Увеличиваем ширину кнопки "Дальше" */
   .signal-liquid-next-btn {
     width: 100%;
-    height: 52px; /* Можно немного уменьшить высоту для мобильных */
+    height: 52px;
   }
 
-  /* Увеличиваем размер шрифта в баблах подсказок */
   .signal-suggestion-bubble {
-    font-size: 0.85rem; /* Немного больше для удобства нажатия */
+    font-size: 0.85rem;
     padding: 0.4rem 0.9rem;
   }
   
@@ -2124,7 +2090,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   }
 }
 
-  .signal-incognito-toggle {
+.signal-incognito-toggle {
   margin-bottom: 12px;
 }
 
@@ -2188,13 +2154,64 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   margin-bottom: 0.5rem;
 }
 
-/* Плавная смена иконок */
-.signal-next-icon {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  transform: translateY(1px);
-  transition: opacity 0.2s ease-in-out; /* ← ДОБАВИТЬ */
+/* ===============================
+   ЕДИНЫЙ ГЕНДЕРНЫЙ ЦВЕТ ДЛЯ ВСЕХ ЭЛЕМЕНТОВ
+   =============================== */
+
+/* Женский цвет для всех элементов */
+.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-suggestion-bubble {
+  background: rgba(255, 105, 180, 0.1) !important;
+  border-color: rgba(255, 105, 180, 0.3) !important;
+  color: #ff69b4 !important;
 }
 
+.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-suggestion-bubble:hover {
+  background: #ff69b4 !important;
+  color: #fff !important;
+}
+
+.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn {
+  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%) !important;
+}
+
+.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn .signal-liquid-next-text,
+.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-liquid-next-btn .signal-next-icon {
+  color: #fff !important;
+}
+
+/* Мужской цвет для всех элементов */
+.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble {
+  background: rgba(135, 206, 235, 0.1) !important;
+  border-color: rgba(135, 206, 235, 0.3) !important;
+  color: #87ceeb !important;
+}
+
+.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-suggestion-bubble:hover {
+  background: #87ceeb !important;
+  color: #000 !important;
+}
+
+.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn {
+  background: linear-gradient(135deg, #87ceeb 0%, #4682b4 100%) !important;
+}
+
+.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn .signal-liquid-next-text,
+.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-liquid-next-btn .signal-next-icon {
+  color: #000 !important;
+}
+
+/* Гендерная подсветка для текстовых полей при фокусе */
+.signal-demo-wrapper:has(.signal-gender-female.is-active) textarea:focus,
+.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-input:focus,
+.signal-demo-wrapper:has(.signal-gender-female.is-active) .signal-select:focus {
+  border-color: #ff69b4 !important;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2) !important;
+}
+
+.signal-demo-wrapper:has(.signal-gender-male.is-active) textarea:focus,
+.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-input:focus,
+.signal-demo-wrapper:has(.signal-gender-male.is-active) .signal-select:focus {
+  border-color: #87ceeb !important;
+  box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.2) !important;
+}
 </style>
