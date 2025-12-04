@@ -168,12 +168,15 @@
   </transition>
 </div>
           <textarea 
-            v-model="form.factualAnalysis" 
-            @focus="stopRotation" 
-            @blur="startRotation(2)"
-            :rows="isMobile ? 5 : 3"
-            placeholder="Несколько фактов: что и когда произошло ..."
-          ></textarea>
+  v-model="form.factualAnalysis" 
+  @focus="stopRotation" 
+  @blur="startRotation(2)"
+  :rows="isMobile ? 5 : 3"
+  :placeholder="isMobile 
+    ? 'Несколько фактов:\nчто и когда произошло ...' 
+    : 'Несколько фактов: что и когда произошло ...'"
+></textarea>
+
           <div class="signal-suggestions-container">
             <div 
               v-for="suggestion in currentSuggestions.facts" 
