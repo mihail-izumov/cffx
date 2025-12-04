@@ -35,7 +35,7 @@ description: Разобраться и изменить
 
 <br>
   
-# Что Сигнал делает для вас?
+# Что Сигнал делает для вас
 
 ### Ваш Сигнал – это команда к действию для бизнеса и видимый результат для вас.
 
@@ -54,7 +54,7 @@ description: Разобраться и изменить
 <br>
 <SignalsYandexVSSignal />
 
-<br>
+<br><br>
 
 <div align="center">
 
@@ -64,7 +64,7 @@ description: Разобраться и изменить
 
 <SignalDashboardSwitcher />
 
-<br>
+<br><br>
 
 <div align="center">
 
