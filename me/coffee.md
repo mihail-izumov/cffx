@@ -22,7 +22,11 @@ description: Сигнал – тому кто решает
 
 <MainSignalWidgetsCoffee />
 
-## Статистика Сигналов
+<div align="center">
+
+# Статистика Сигналов
+
+</div>
 
 <DashboardCafeSignalsMap />
 
