@@ -1125,7 +1125,7 @@ const sections = [
   { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
   { id: 'facts', title: 'Факты', buttonText: 'К решению ситуации' },
   { id: 'solutions', title: 'Решения', buttonText: 'Суммировать' },
-  { id: 'summary', title: 'Резюме', buttonText: 'Отправьте Сигнал' },
+  { id: 'summary', title: 'Резюме', buttonText: 'Раз-два и готово' },
   { id: 'contact', title: 'Контакт', buttonText: '' }
 ];
 const selectedSection = ref('location');
