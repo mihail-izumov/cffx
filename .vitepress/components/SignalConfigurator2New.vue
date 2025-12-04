@@ -45,18 +45,28 @@
     </div>
 
     <!-- Модальное окно -->
-    <div v-if="showInfoModal" class="modal-overlay" @click.self="showInfoModal = false">
-      <div class="modal">
-        <div class="modal-title">Почувствуйте силу настоящих перемен</div>
-        <div class="modal-body">
-          Сигнал – не просто мнение или жалоба, а импульс к реальным улучшениям. Каждый Сигнал делает бизнес, который вы любите, еще лучше каждый день для Вас.<br><br>
-          <a href="https://cffx.ru/signals.html" target="_blank" class="modal-link no-double-underline">Как Работает Сигнал</a>
-        </div>
-        <div class="modal-footer">
-          <button class="modal-ok" @click="showInfoModal = false">Понятно</button>
-        </div>
-      </div>
+<div v-if="showInfoModal" class="modal-overlay" @click.self="showInfoModal = false">
+  <div class="modal">
+    <div class="modal-title">
+      Почувствуйте силу <span class="title-break">настоящих перемен</span>
     </div>
+    <div class="modal-body">
+      <b>Сигнал – не просто мнение или жалоба, а импульс к реальным улучшениям.</b>
+      
+      <div class="modal-spacer"></div>
+      
+      Каждый Сигнал делает бизнес, который вы любите, еще лучше каждый день для Вас.
+      
+      <div class="modal-spacer"></div>
+
+      <a href="https://cffx.ru/signals.html" target="_blank" class="modal-link no-double-underline">Как Работает Сигнал</a>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-ok" @click="showInfoModal = false">Понятно</button>
+    </div>
+  </div>
+</div>
+
 
     <div class="signal-demo__form-container">
 
@@ -2427,4 +2437,48 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   border-color: #87ceeb !important;
   box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.2) !important;
 }
+
+/* Настройка заголовка */
+.modal-title {
+  font-weight: 700;     /* Сделали еще жирнее для акцента */
+  font-size: 22px;      /* Чуть крупнее */
+  line-height: 1.3;     /* Оптимальный интервал */
+  margin-bottom: 20px;
+  color: #000;
+}
+
+/* Класс для переноса строки */
+.title-break {
+  display: inline;      /* На десктопе - в строку */
+}
+
+/* Разделитель (пустое пространство) */
+.modal-spacer {
+  height: 16px;         /* Высота пустого пространства */
+}
+
+/* Жирный текст в описании */
+.modal-body b {
+  font-weight: 700;
+  color: #000;          /* Жирный текст чисто черный */
+  display: block;       /* Чтобы точно занимал свой блок */
+}
+
+/* === МОБИЛЬНЫЕ СТИЛИ === */
+@media (max-width: 480px) {
+  /* Переносим "настоящих перемен" на новую строку */
+  .title-break {
+    display: block;
+  }
+  
+  .modal {
+    padding: 24px 20px; /* Чуть меньше отступы по краям на телефоне */
+    width: 85vw;
+  }
+  
+  .modal-title {
+    font-size: 20px;    /* Чуть меньше шрифт на телефоне */
+  }
+}
+
 </style>
