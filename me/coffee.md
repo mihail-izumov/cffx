@@ -34,7 +34,7 @@ description: Сигнал – тому кто решает
 
 <DashboardCafeSignalsMap />
 
-<br>
+<br><br>
 
 <RadarWorksBadge />
 
