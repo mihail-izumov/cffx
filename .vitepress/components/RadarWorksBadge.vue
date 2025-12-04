@@ -16,7 +16,7 @@
         </div>
         <div class="sp-badge-text">
           <span class="sp-badge-label">Поиск отзывов и предложений</span>
-          <span class="sp-badge-brand">Радар работает.</span>
+          <span class="sp-badge-brand">Радар Сигнала работает.</span>
         </div>
       </div>
     </a>
