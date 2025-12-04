@@ -26,7 +26,19 @@ description: Сигнал – тому кто решает
 
 <div align="center">
 
-# Статистика всех Сигналов
+<br>
+  
+# Что Сигнал делает <br class="mobile-break"> для вас
+
+Команда к действию для бизнеса и видимый результат для вас – <br class="mobile-break">[Как работает](/signals) <br>
+
+</div>
+
+<SignalSteps />
+
+<div align="center">
+
+# Проблемы решаются
 
 </div>
 
