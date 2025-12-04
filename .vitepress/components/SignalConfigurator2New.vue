@@ -1623,14 +1623,13 @@ onUnmounted(() => {
   margin-bottom: 0.5rem;
 }
 
-/* Контейнер */
+/* Контейнер с вертикальным центрированием */
 .signal-rotating-phrase-container {
   position: relative;
-  min-height: 2.6em;
-}
-
-.signal-rotating-fixed-height {
-  min-height: 2.6em;
+  min-height: 2.6em;    /* Фиксируем высоту */
+  display: flex;        /* Включаем флексбокс */
+  align-items: center;  /* Центрируем текст по вертикали */
+  overflow: hidden;
 }
 
 /* Анимация */
@@ -1639,12 +1638,10 @@ onUnmounted(() => {
   transition: opacity 0.5s ease;
 }
 
-/* Уходящий элемент в absolute, чтобы новый встал на его место */
+/* СБРОС: absolute больше не нужен, так как mode="out-in" исключает наложение.
+   Теперь уходящий элемент тоже будет центрироваться флексом. */
 .fade-leave-active {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: static; 
 }
 
 /* Прозрачность */
@@ -1653,12 +1650,10 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-/* Входящий элемент тоже должен быть без лишних отступов сверху, если они есть */
+/* Убираем отступы у текста, чтобы центрирование было идеальным */
 .signal-question-label {
-  margin-top: 5px;
-  margin: 0; /* Убираем дефолтные отступы у параграфа */
+  margin: 0;
   line-height: 1.3;
-  /* Остальные твои стили: font-weight, font-size и т.д. */
 }
 
 textarea, .signal-input, .signal-select {
