@@ -106,10 +106,17 @@
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #6f5d9f;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion1.value" class="signal-question-label">{{ currentQuestion1 }}</p>
-            </transition>
-          </div>
+  <transition-group name="fade" tag="div">
+    <p
+      v-for="q in [currentQuestion1]"
+      :key="q"
+      class="signal-question-label"
+    >
+      {{ q }}
+    </p>
+  </transition-group>
+</div>
+
           <textarea 
             v-model="form.emotionalRelease" 
             @focus="stopRotation"
@@ -141,10 +148,12 @@
       <div v-if="selectedSection === 'facts'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #3a8862;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion2.value" class="signal-question-label">{{ currentQuestion2 }}</p>
-            </transition>
-          </div>
+  <transition-group name="fade" tag="div">
+    <p v-for="q in [currentQuestion2]" :key="q" class="signal-question-label">
+      {{ q }}
+    </p>
+  </transition-group>
+</div>
           <textarea 
             v-model="form.factualAnalysis" 
             @focus="stopRotation" 
@@ -176,10 +185,12 @@
       <div v-if="selectedSection === 'solutions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #4A90E2;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion3.value" class="signal-question-label">{{ currentQuestion3 }}</p>
-            </transition>
-          </div>
+  <transition-group name="fade" tag="div">
+    <p v-for="q in [currentQuestion3]" :key="q" class="signal-question-label">
+      {{ q }}
+    </p>
+  </transition-group>
+</div>
           <textarea 
             v-model="form.constructiveSuggestions" 
             @focus="stopRotation" 
