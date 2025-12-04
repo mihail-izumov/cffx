@@ -211,7 +211,7 @@ const categories = [
 .card-large {
   flex: 1 1 calc(50% - 3px);
   min-width: 0;
-  min-height: 130px; /* Увеличено с 110px до 130px */
+  min-height: 130px; 
   height: auto;
   font-size: clamp(0.92rem, 1.75vw, 1.12rem);
 }
@@ -220,7 +220,7 @@ const categories = [
 .card-mid {
   flex: 1 1 calc(33.333% - 4px);
   min-width: 0;
-  min-height: 130px; /* Увеличено с 110px до 130px */
+  min-height: 130px; 
   height: auto;
   font-size: clamp(0.78rem, 1.5vw, 0.92rem);
 }
@@ -296,7 +296,7 @@ const categories = [
   
   .card-large { 
     flex: 1 1 calc(50% - 3px); 
-    min-height: 110px; /* Чуть меньше для планшетов, но больше чем было */
+    min-height: 110px; 
   }
   .card-mid { 
     flex: 1 1 calc(50% - 3px); 
@@ -308,13 +308,14 @@ const categories = [
 }
 
 @media (max-width: 480px) {
+  /* ВСЕ карточки теперь имеют высоту 90px */
   .card-large,
-  .card-mid {
+  .card-mid,
+  .card-wide {
     flex: 1 1 100%;
-    min-height: 90px; /* Для мобильных тоже увеличил */
+    min-height: 90px; 
     font-size: clamp(0.78rem, 2.1vw, 0.88rem);
   }
-  .card-wide { min-height: 60px; }
   
   .card-inner { padding: 8px 10px; gap: 5px; }
   .card-tooltip { padding: 8px 10px; }
