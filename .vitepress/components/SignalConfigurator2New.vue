@@ -141,12 +141,18 @@
               {{ suggestion }}
             </div>
             <div 
-              v-if="!isInitialSuggestions('emotions')"
-              class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
-              @click="resetSuggestions('emotions')"
-            >
-              ← Ещё варианты
-            </div>
+  v-if="!isInitialSuggestions('emotions')"
+  class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
+  @click="resetSuggestions('emotions')"
+>
+  <!-- Начало иконки -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="signal-reset-icon">
+    <path d="M6 8L2 12L6 16"/>
+    <path d="M2 12H22"/>
+  </svg>
+  <!-- Конец иконки -->
+  Ещё варианты
+</div>
           </div>
         </div>
       </div>
@@ -178,12 +184,16 @@
               {{ suggestion }}
             </div>
             <div 
-              v-if="!isInitialSuggestions('facts')"
-              class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
-              @click="resetSuggestions('facts')"
-            >
-              ← Ещё варианты
-            </div>
+  v-if="!isInitialSuggestions('facts')"
+  class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
+  @click="resetSuggestions('facts')"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="signal-reset-icon">
+    <path d="M6 8L2 12L6 16"/>
+    <path d="M2 12H22"/>
+  </svg>
+  Ещё варианты
+</div>
           </div>
         </div>
       </div>
@@ -215,12 +225,16 @@
               {{ suggestion }}
             </div>
             <div 
-              v-if="!isInitialSuggestions('solutions')"
-              class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
-              @click="resetSuggestions('solutions')"
-            >
-              ← Ещё варианты
-            </div>
+  v-if="!isInitialSuggestions('solutions')"
+  class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
+  @click="resetSuggestions('solutions')"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="signal-reset-icon">
+    <path d="M6 8L2 12L6 16"/>
+    <path d="M2 12H22"/>
+  </svg>
+  Ещё варианты
+</div>
           </div>
         </div>
       </div>
@@ -433,7 +447,7 @@ const fitness = {
       { address: 'Тюмень, ул. Республики, 245' }
     ]
   },
-  'FIZ Культура': {
+  'FIZКУЛЬТУРА': {
     branches: [
       { address: 'Самара, ул. Врубеля, 11' },
       { address: 'Самара, ул. Ново-Садовая, 160М' },
@@ -472,7 +486,7 @@ const fitness = {
       { address: 'Краснодар, ул. Новокузнечная, 89' }
     ]
   },
-  'SPORTLIFE': {
+  'Спортлайф': {
     branches: [
       { address: 'Санкт-Петербург, Аптекарский проспект, 16' },
       { address: 'Санкт-Петербург, Байконурская ул., 14-А' },
@@ -552,7 +566,7 @@ const cafes = {
       { address: 'Самара, Ново-Садовая, 106б' }
     ]
   },
-  'Skuratov Coffee': {
+  'Skuratov': {
     branches: [
       { address: 'Москва, Верхняя Радищевская ул., 19/3с2, этаж 1' },
       { address: 'Москва, Калашный пер., 5' },
@@ -604,7 +618,7 @@ const cafes = {
       { address: 'Москва, Большая Новодмитровская ул., 36, стр. 8, подъезд 3' }
     ]
   },
-  'ДаблБи': {
+  'Даблби': {
     branches: [
       { address: 'Москва, ул. Тимура Фрунзе, 11, стр. 33' },
       { address: 'Москва, Большой Толмачёвский пер., 4, стр. 1, этаж 1' },
@@ -1284,7 +1298,15 @@ function getAccusativeCase(networkName) {
   const lastChar = networkName.slice(-1).toLowerCase();
   const lowerCaseName = networkName.toLowerCase();
 
-  const exceptions = ['корж', 'skuratov', 'surf'];
+  const exceptions = [
+    // Русские неизменяемые
+    'корж', 'даблби', 'дринкит', 
+    
+    // Английские бренды (обычно не склоняются)
+    'world class', 'x-fit', 'smstretching', 'sportlife', 'fitness house', 
+    'ddx', 'skuratov', 'surf coffee', 'stars coffee', 
+    'cofix', 'green house'
+  ];
   if (exceptions.includes(lowerCaseName)) {
     return networkName;
   }
@@ -1711,7 +1733,7 @@ onUnmounted(() => {
   border-radius: 20px;       /* Чуть мягче скругление */
   width: min(480px, 92vw);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); /* Мягкая тень */
-  padding: 60px;
+  padding: 30px;
   text-align: center;        /* Центрируем весь текст внутри */
 }
 
@@ -1928,6 +1950,16 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   opacity: 0.8;
   font-size: 0.75rem;
   border-style: dashed !important;
+   /* Новые свойства для выравнивания иконки и текста */
+  display: inline-flex !important; /* Чтобы flex работал внутри строки */
+  align-items: center;             /* Центрируем иконку по вертикали */
+  gap: 6px;                        /* Расстояние между стрелкой и текстом */
+  padding-left: 10px !important;   /* Чуть больше отступ слева для баланса */
+}
+
+.signal-reset-icon {
+  flex-shrink: 0; /* Чтобы иконку не сжимало */
+  /* Цвет наследуется автоматически через stroke="currentColor" */
 }
 
 .signal-example-hint {
