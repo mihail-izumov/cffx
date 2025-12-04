@@ -106,15 +106,12 @@
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #6f5d9f;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-  <transition-group name="fade" tag="div">
-    <p
-      v-for="q in [currentQuestion1]"
-      :key="q"
-      class="signal-question-label"
-    >
-      {{ q }}
+  <transition name="fade" mode="out-in">
+    <p :key="currentQuestion1" class="signal-question-label">
+      {{ currentQuestion1 }}
     </p>
-  </transition-group>
+  </transition>
+</div>
 </div>
 
           <textarea 
@@ -148,11 +145,11 @@
       <div v-if="selectedSection === 'facts'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #3a8862;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-  <transition-group name="fade" tag="div">
-    <p v-for="q in [currentQuestion2]" :key="q" class="signal-question-label">
-      {{ q }}
+  <transition name="fade" mode="out-in">
+    <p :key="currentQuestion2" class="signal-question-label">
+      {{ currentQuestion2 }}
     </p>
-  </transition-group>
+  </transition>
 </div>
           <textarea 
             v-model="form.factualAnalysis" 
@@ -185,11 +182,11 @@
       <div v-if="selectedSection === 'solutions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #4A90E2;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-  <transition-group name="fade" tag="div">
-    <p v-for="q in [currentQuestion3]" :key="q" class="signal-question-label">
-      {{ q }}
+  <transition name="fade" mode="out-in">
+    <p :key="currentQuestion3" class="signal-question-label">
+      {{ currentQuestion3 }}
     </p>
-  </transition-group>
+  </transition>
 </div>
           <textarea 
             v-model="form.constructiveSuggestions" 
@@ -1628,28 +1625,34 @@ onUnmounted(() => {
   margin-bottom: 0.5rem;
 }
 
-/* Родительский контейнер */
+/* Контейнер */
 .signal-rotating-phrase-container {
   position: relative;
-  min-height: 2.6em; /* Высота под 2 строки, чтобы не прыгало */
-  overflow: hidden;  /* Обрезаем всё лишнее */
-  display: flex;     /* Помогает правильно позиционировать внутри */
-  align-items: center; /* Центрируем по вертикали (если одна строка) */
+  min-height: 2.6em;
 }
 
-/* Анимация плавного перехода */
+.signal-rotating-fixed-height {
+  min-height: 2.6em;
+}
+
+/* Анимация */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.6s ease;
+  transition: opacity 0.5s ease;
 }
 
-/* Уходящий элемент: */
+/* Уходящий элемент в absolute, чтобы новый встал на его место */
 .fade-leave-active {
-  position: absolute; /* Вынимаем из потока */
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  margin: 0 !important; /* ВАЖНО: убираем отступы, чтобы он не съезжал */
+  right: 0;
+}
+
+/* Прозрачность */
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 /* Входящий элемент тоже должен быть без лишних отступов сверху, если они есть */
@@ -1657,12 +1660,6 @@ onUnmounted(() => {
   margin: 0; /* Убираем дефолтные отступы у параграфа */
   line-height: 1.3;
   /* Остальные твои стили: font-weight, font-size и т.д. */
-}
-
-/* Состояния прозрачности */
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 
 textarea, .signal-input, .signal-select {
