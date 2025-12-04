@@ -36,6 +36,8 @@ description: Сигнал – тому кто решает
 
 <SignalSteps />
 
+<br>
+
 <div align="center">
 
 # Проблемы решаются
