@@ -2484,8 +2484,7 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
 }
 
 .signal-question-block {
-    padding: 1rem 0.5rem !important;
-    border: none !important;
+    border: none;
   }
 
 /* === МОБИЛЬНЫЕ СТИЛИ === */
