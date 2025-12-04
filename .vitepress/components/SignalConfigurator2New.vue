@@ -1634,7 +1634,9 @@ onUnmounted(() => {
 }
 
 .signal-rotating-fixed-height {
-  min-height: 2.6em;
+  min-height: 2.6em; /* Достаточно места для 1-2 строк текста */
+  display: flex;     /* Центрирует контент если нужно */
+  align-items: center; /* Выравнивает по вертикали */
 }
 
 .signal-question-label {
@@ -1645,18 +1647,16 @@ onUnmounted(() => {
   line-height: 1.3;
 }
 
-.fade-enter-active, .fade-leave-active { 
-  transition: all 0.6s ease; 
+/* Плавное исчезновение и появление без движения */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.6s ease;
 }
 
-.fade-enter-from, .fade-leave-to { 
-  opacity: 0;
-  transform: translateY(10px);
-}
-
+/* В начале появления и в конце исчезновения элемент просто прозрачный */
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-  transform: translateY(-10px);
 }
 
 textarea, .signal-input, .signal-select {
