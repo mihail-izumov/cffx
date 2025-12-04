@@ -78,7 +78,7 @@ description: Что Сигнал делает для Вас
 
 <div align="center">
 
-# Анна ждёт вас там, <br class="mobile-break">где Вас слушают
+# Анна ждёт там, <br class="mobile-break">где Вас слушают
 
 </div>
 
