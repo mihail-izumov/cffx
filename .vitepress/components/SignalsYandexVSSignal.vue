@@ -231,8 +231,8 @@ const comparisonData = ref([
 
   .signal-value {
     color: #c8ff5a;
-    font-weight: 700;
-    font-size: 18px;
+    font-weight: 500;
+    font-size: 17px;
   }
 
   .mobile-divider {
