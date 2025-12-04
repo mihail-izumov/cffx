@@ -408,7 +408,7 @@ export default defineConfig({
       options: {
         placeholder: 'Поиск…',
         translations: {
-          button: { buttonText: 'Поиск', buttonAriaLabel: 'Поиск' },
+          button: { buttonText: 'Поиск Сигналов', buttonAriaLabel: 'Поиск Сигналов' },
           modal: {
             displayDetails: 'Показать подробные результаты',
             resetButtonTitle: 'Сбросить поиск',
