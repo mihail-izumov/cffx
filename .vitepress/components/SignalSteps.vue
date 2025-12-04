@@ -20,8 +20,8 @@
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">ШАГ 3</div>
       <h3 class="anna-title">Запустите процесс</h3>
-      <p class="anna-description-main">Ваш Сигнал немедленно поступает тому, кто принимает решение, система начинает отслеживать доставку результата</p>
-      <p class="anna-description-goals anna-step-goals">Мы гарантируем, что вы получите решение любой проблемы</p>
+      <p class="anna-description-main">Ваш Сигнал запускает нужные процессы в бизнесе, система начинает на вас</p>
+      <p class="anna-description-goals anna-step-goals">Гарантия решения любой проблемы</p>
     </div>
     
     <!-- ШАГ 4 -->
