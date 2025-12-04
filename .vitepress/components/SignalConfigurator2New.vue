@@ -1901,6 +1901,7 @@ textarea, .signal-input, .signal-select {
   transition: all 0.3s ease;
   font-family: var(--signal-font-sans);
   margin-bottom: 0.75rem;
+  resize: none;
 }
 
 textarea:focus, .signal-input:focus, .signal-select:focus {
