@@ -253,7 +253,7 @@
         <div v-else>
           <div class="signal-question-block contact" style="--accent-color: #00C2A8;">
             <div class="signal-rotating-phrase-container">
-              <p class="signal-question-label">Отправьте Сигнал</p>
+              <p class="signal-question-label">Раз-два и готово</p>
             </div>
             <div v-if="!form.isIncognito" class="signal-name-field">
               <label>Для персонального разбора</label>
