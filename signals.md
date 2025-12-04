@@ -35,8 +35,7 @@ description: Что Сигнал делает для Вас
 
 <div align="center">
 
-# Решает проблемы
-
+# Проблемы решаются
 </div>
 
 <SignalDashboardSwitcher />
