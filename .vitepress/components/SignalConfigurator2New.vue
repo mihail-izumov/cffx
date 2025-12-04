@@ -1295,10 +1295,11 @@ const submitButtonText = computed(() =>
 // Склонение названия компании
 function getAccusativeCase(networkName) {
   if (!networkName) return '';
-  const cleanName = networkName.trim();
-  const lower = cleanName.toLowerCase();
+  
+  const name = networkName.trim(); // Убираем случайные пробелы
+  const lower = name.toLowerCase(); 
 
-  // 1. Исключения (не склоняем)
+  // СПИСОК ИСКЛЮЧЕНИЙ (Возвращаем как есть)
   const exceptions = [
     'корж', 'даблби', 'дринкит', 
     'world class', 'x-fit', 'smstretching', 'sportlife', 'fitness house', 
@@ -1307,32 +1308,38 @@ function getAccusativeCase(networkName) {
   ];
 
   if (exceptions.includes(lower)) {
-    return cleanName;
+    return name;
   }
 
-  // 2. Явный фикс для FIZКУЛЬТУРА (на случай латиницы/кириллицы в конце)
-  // Проверяем, если слово заканчивается на "КУЛЬТУРА" (в любом регистре)
-  if (lower.endsWith('культура') || lower.endsWith('fizкультура')) {
-    return cleanName.slice(0, -1) + 'У'; // Меняем на 'У' (так как всё капсом)
+  // РУЧНЫЕ ИСПРАВЛЕНИЯ ДЛЯ СЛОЖНЫХ СЛОВ
+  
+  // FiZКУЛЬТУРА -> FiZКУЛЬТУРУ / FIZ Культуру
+  if (lower.includes('fiz') && lower.includes('культур')) {
+     // Если капс
+     if (name === name.toUpperCase()) return 'FIZКУЛЬТУРУ';
+     return name.slice(0, -1) + 'у';
   }
 
-  // 3. Общие правила
-  const lastChar = lower.slice(-1); // берем последнюю букву в нижнем регистре
+  // Кофемания -> Кофеманию
+  if (lower.includes('кофемания')) {
+    return 'Кофеманию';
+  }
 
-  // Если заканчивается на 'а' (русскую) или 'a' (английскую - на всякий случай)
-  if (lastChar === 'а' || lastChar === 'a') {
-    // Если всё слово капсом (как FIZКУЛЬТУРА), добавляем большую 'У'
-    const isCaps = cleanName === cleanName.toUpperCase() && cleanName !== cleanName.toLowerCase();
-    return cleanName.slice(0, -1) + (isCaps ? 'У' : 'у');
+  // АВТОМАТИКА (для всего остального, если вдруг добавишь новое)
+  const lastChar = lower.slice(-1);
+  const isCaps = name === name.toUpperCase() && name !== name.toLowerCase();
+
+  if (lastChar === 'а' || lastChar === 'a') { // русская и англ
+    return name.slice(0, -1) + (isCaps ? 'У' : 'у');
   }
 
   if (lastChar === 'я') {
-    const isCaps = cleanName === cleanName.toUpperCase() && cleanName !== cleanName.toLowerCase();
-    return cleanName.slice(0, -1) + (isCaps ? 'Ю' : 'ю');
+    return name.slice(0, -1) + (isCaps ? 'Ю' : 'ю');
   }
   
-  return cleanName;
+  return name;
 }
+
 
 // Сборка итога для поля summaryText (можете сохранить свою реализацию или заменить на более универсальную)
 function summarizeAllContent() {
