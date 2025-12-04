@@ -4,7 +4,7 @@
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">ШАГ 1</div>
       <h3 class="anna-title">Отправьте Сигнал</h3>
-      <p class="anna-description-main">Наша умная форма поможет за 30 секунд изложить свои мысли и предложения</p>
+      <p class="anna-description-main">Умная форма поможет за 30 секунд рассказать о своих чувствах и сделать предложения</p>
       <p class="anna-description-goals anna-step-goals">Ничего лишнего — только суть</p>
     </div>
     
@@ -12,23 +12,23 @@
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">ШАГ 2</div>
       <h3 class="anna-title">Получите поддержку</h3>
-      <p class="anna-description-main">ИИ-ассистент Анна поможет сформировать запрос, так чтобы он был гарантированно услышан кофейней</p>
-      <p class="anna-description-goals anna-step-goals">Превращает ваши эмоции в действия</p>
+      <p class="anna-description-main">Ваш персональный ИИ-помощник Анна поможет с тем, чтобы Ваш Сигнал был гарантированно услышан бизнесом</p>
+      <p class="anna-description-goals anna-step-goals">Превращает эмоции в действия</p>
     </div>
     
     <!-- ШАГ 3 -->
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">ШАГ 3</div>
-      <h3 class="anna-title">Запустите Процесс</h3>
-      <p class="anna-description-main">Ваш Сигнал немедленно поступает в работу менеджеру нужной кофейни</p>
-      <p class="anna-description-goals anna-step-goals">Мы гарантируем, что вы получите ответ</p>
+      <h3 class="anna-title">Запустите процесс</h3>
+      <p class="anna-description-main">Ваш Сигнал немедленно поступает тому, кто принимает решение, система начинает отслеживать доставку результата</p>
+      <p class="anna-description-goals anna-step-goals">Мы гарантируем, что вы получите решение любой проблемы</p>
     </div>
     
     <!-- ШАГ 4 -->
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">ШАГ 4</div>
-      <h3 class="anna-title">Получите Результат</h3>
-      <p class="anna-description-main">Анна отправит вам результат в Телеграм-чат, когда разбор будет закончен</p>
+      <h3 class="anna-title">Получите результат</h3>
+      <p class="anna-description-main">Анна сообщит о решении бизнеса лично в Телеграм, когда разбор будет закончен</p>
       <p class="anna-description-goals anna-step-goals">Не просто ответ, а результат</p>
     </div>
   </div>
