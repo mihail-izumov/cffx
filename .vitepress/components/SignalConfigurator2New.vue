@@ -1722,7 +1722,7 @@ onUnmounted(() => {
 }
 
 .modal-body {
-  font-weight: 300;
+  font-weight: 400;
   font-size: 16px;
   line-height: 1.4;
   color: #444;               /* Текст чуть мягче черного для чтения */
