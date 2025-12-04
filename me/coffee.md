@@ -22,6 +22,10 @@ description: Сигнал – тому кто решает
 
 <MainSignalWidgetsCoffee />
 
+## Статистика Сигналов
+
+<DashboardCafeSignalsMap />
+
 <br>
 
 <RadarWorksBadge />
