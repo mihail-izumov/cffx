@@ -80,7 +80,7 @@
 import { ref } from 'vue'
 
 const comparisonData = ref([
-  { regular: 'Теряется в потоке', signal: 'Поступает в работу немедленно' },
+  { regular: 'Теряется в потоке', signal: 'Действует немедленно' },
   { regular: 'Решение не гарантировано', signal: 'Результат за 24 часа' },
   { regular: 'Поделиться с другими и наказать', signal: 'Разобраться и изменить' },
   { regular: 'Шум без последствий', signal: 'Рост бизнеса' }
@@ -222,7 +222,7 @@ const comparisonData = ref([
   .mobile-value {
     font-size: 17px;
     line-height: 1.5;
-    color: rgba(255,255,255,0.9);
+    color: rgba(255, 255, 255, 0.7);
     font-weight: 500;
     display: flex;
     align-items: center;
