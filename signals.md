@@ -4,19 +4,9 @@ prev: false
 next: false
 pageClass: centered-page
 title: Как работают Сигналы
-description: Разобраться и изменить
+description: Что Сигнал делает для Вас
 ---
 <SignalItemsSlider />
-
-<div align="center">
-
-<h1 class="responsive-heading-signal-industries">Что Сигнал делает <br class="mobile-break"> для вас</h1>
-
-</div>
-
-<SignalSteps />
-
-<br>
 
 <div align="center">
 
@@ -26,6 +16,16 @@ description: Разобраться и изменить
 
 <br>
 <SignalsYandexVSSignal />
+
+<br><br>
+
+<div align="center">
+
+# Что Сигнал делает <br class="mobile-break"> для Вас
+
+</div>
+
+<SignalSteps />
 
 <br><br>
 
