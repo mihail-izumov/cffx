@@ -1288,7 +1288,7 @@ const submitButtonText = computed(() =>
   submitStatus.value === 'processing'
     ? '⏳ Отправляется...'
     : form.selectedNetwork
-      ? `Отправить в ${form.selectedNetwork}`
+      ? `Отправить в ${getAccusativeCase(form.selectedNetwork)}`
       : 'Отправить в заведение'
 );
 
