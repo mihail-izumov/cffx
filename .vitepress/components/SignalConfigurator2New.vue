@@ -2483,6 +2483,11 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   display: block;       /* Чтобы точно занимал свой блок */
 }
 
+.signal-question-block {
+    padding: 1rem 0.5rem !important;
+    border: none !important;
+  }
+
 /* === МОБИЛЬНЫЕ СТИЛИ === */
 @media (max-width: 480px) {
   /* Переносим "настоящих перемен" на новую строку */
