@@ -17,7 +17,6 @@
           <span class="card-problem">{{ cat.category }}</span>
           <span class="card-percent">{{ cat.percent }}%</span>
         </div>
-        <!-- Тултип без анимации (transition убран) -->
         <div v-if="activeIdx === i" class="card-tooltip">
           <div class="tooltip-text">{{ cat.desc }}</div>
         </div>
@@ -123,7 +122,6 @@ import { ref } from 'vue'
 
 const activeIdx = ref(-1)
 
-// Функция переключения
 const toggle = (index) => {
   if (activeIdx.value === index) {
     activeIdx.value = -1
@@ -211,21 +209,21 @@ const categories = [
   box-shadow: 0 3px 8px rgba(24, 24, 26, 0.18);
 }
 
-/* ВЫСОТЫ УВЕЛИЧЕНЫ ЕЩЕ СИЛЬНЕЕ */
 /* 2 крупные карточки */
 .card-large {
   flex: 1 1 calc(50% - 3px);
   min-width: 0;
-  min-height: 110px; /* Было 90px -> 110px */
+  min-height: 110px;
   height: auto;
   font-size: clamp(0.92rem, 1.75vw, 1.12rem);
 }
 
 /* 3 средние карточки */
+/* ИЗМЕНЕНО: Высота увеличена с 90px до 110px */
 .card-mid {
   flex: 1 1 calc(33.333% - 4px);
   min-width: 0;
-  min-height: 90px; /* Было 70px -> 90px */
+  min-height: 110px; 
   height: auto;
   font-size: clamp(0.78rem, 1.5vw, 0.92rem);
 }
@@ -234,17 +232,16 @@ const categories = [
 .card-wide {
   flex: 1 1 100%;
   min-width: 0;
-  min-height: 60px; /* Было 45px -> 60px */
+  min-height: 60px;
   height: auto;
   font-size: clamp(0.76rem, 1.45vw, 0.90rem);
 }
 
-/* === ВНУТРЕННОСТИ КАРТОЧКИ (Отступы увеличены) === */
+/* === ВНУТРЕННОСТИ КАРТОЧКИ === */
 .card-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* Увеличены отступы: 10px сверху/снизу, 16px по бокам */
   padding: 10px 16px; 
   gap: 6px;
   width: 100%;
@@ -272,7 +269,7 @@ const categories = [
   text-align: right;
 }
 
-/* === ТУЛТИП (Анимации удалены) === */
+/* === ТУЛТИП === */
 .card-tooltip {
   position: absolute;
   inset: 0;
@@ -280,12 +277,11 @@ const categories = [
   color: #ededed;
   border-radius: 11px;
   z-index: 10;
-  /* Отступы тултипа тоже немного увеличим для согласованности */
   padding: 10px 16px; 
   display: flex;
   align-items: flex-start;
   box-shadow: 0 3px 10px rgba(22, 23, 25, 0.32);
-  overflow-y: auto; /* Скролл на крайний случай */
+  overflow-y: auto;
 }
 
 .tooltip-text {
@@ -304,14 +300,14 @@ const categories = [
   
   .card-large { 
     flex: 1 1 calc(50% - 2.5px); 
-    min-height: 100px; /* Чуть меньше чем на десктопе, но высоко */
+    min-height: 100px;
   }
   .card-mid { 
     flex: 1 1 calc(50% - 2.5px); 
-    min-height: 80px; 
+    /* Также немного увеличил для мобильных для подстраховки (было 80) */
+    min-height: 90px; 
   }
   
-  /* На мобильных отступы можно чуть уменьшить, чтобы влезал текст */
   .card-inner { padding: 8px 10px; }
   .card-tooltip { padding: 8px 10px; }
 }
