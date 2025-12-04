@@ -73,11 +73,12 @@
 <!-- Секция 6: Локация + выбор направления в виде выпадающего меню -->
 <div v-if="selectedSection === 'location'" class="signal-form-section">
   <div class="signal-question-block" style="--accent-color: #5A9FB8;">
-    <div class="signal-rotating-phrase-container">
-      <p class="signal-question-label" style="margin-bottom: 24px;">
-        Где разобрать Ваш Сигнал?
-      </p>
-    </div>
+    <div class="signal-rotating-phrase-container location-header-container">
+  <p class="location-title">
+    Где разобрать Ваш Сигнал?
+  </p>
+</div>
+
     <div style="display: flex; flex-direction: column; gap: 7px;">
       <select v-model="form.direction" class="signal-select">
         <option disabled value="">Выбрать направление</option>
@@ -2254,7 +2255,36 @@ textarea:focus, .signal-input:focus, .signal-select:focus {
   color: #fff !important;
 }
 
+.location-header-container {
+  display: flex;
+  justify-content: center; /* По центру горизонтально */
+  align-items: center;
+  margin-bottom: 32px;     /* Отступ снизу до полей ввода */
+  margin-top: 12px;        /* Отступ сверху */
+  min-height: auto;        /* Сбрасываем фиксированную высоту ротатора, здесь она не нужна */
+}
+
+/* Сам заголовок */
+.location-title {
+  font-family: var(--signal-font-sans); /* Твой шрифт */
+  font-weight: 700;        /* Жирный */
+  font-size: 22px;         /* Размер для десктопа */
+  color: #f0f0f0;          /* Белый цвет текста */
+  margin: 0;               /* Убираем дефолтные отступы */
+  text-align: center;      /* Центровка текста */
+  line-height: 1.2;
+}
+
 @media (max-width: 768px) {
+  .location-title {
+    font-size: 19px;
+  }
+  
+  .location-header-container {
+    margin-bottom: 24px;
+    margin-top: 8px;
+  }
+  
   .signal-demo__header {
     margin-bottom: 12px;
   }
