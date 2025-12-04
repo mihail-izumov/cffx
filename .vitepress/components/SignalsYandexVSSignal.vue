@@ -1,42 +1,44 @@
 <template>
-  <div class="comparison-container">
-    <!-- === ДЕСКТОПНАЯ ВЕРСИЯ: ИСХОДНЫЙ ДИЗАЙН === -->
+  <div class="adaptive-comparison">
+    <!-- === ДЕСКТОПНАЯ ВЕРСИЯ (ВАШ КОД) === -->
     <div class="desktop-view">
-      <div class="comparison-table-wrapper">
-        <table class="comparison-table">
-          <thead>
-            <tr>
-              <th>Обычный отзыв Яндекс/2ГИС</th>
-              <th><span class="lightning-bolt">⚡</span> Сигнал</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in comparisonData" :key="index">
-              <td>{{ item.regular }}</td>
-              <td class="signal-cell">→ {{ item.signal }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="table-content">
+        <div class="table-header">
+          <div class="header-cell usual">Обычный отзыв Яндекс/2ГИС</div>
+          <div class="header-cell smart">
+            <img src="/favicon.svg" alt="Signal Icon" class="header-icon" />
+            Сигнал
+          </div>
+        </div>
+        
+        <div class="table-row" v-for="(item, index) in comparisonData" :key="index">
+          <div class="cell usual-cell">
+            <p>{{ item.regular }}</p>
+          </div>
+          <div class="cell smart-cell">
+            <span class="arrow">→</span>
+            <p><strong>{{ item.signal }}</strong></p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- === МОБИЛЬНАЯ ВЕРСИЯ: НОВАЯ СТРУКТУРА + ВАШ СТИЛЬ === -->
+    <!-- === УЛУЧШЕННАЯ МОБИЛЬНАЯ ВЕРСИЯ (КАРТОЧКИ) === -->
     <div class="mobile-view">
-      <div 
-        v-for="(item, index) in comparisonData" 
-        :key="index" 
-        class="comparison-card"
-      >
-        <div class="comparison-item">
-          <div class="item-label">Обычный отзыв Яндекс/2ГИС:</div>
-          <div class="item-value">{{ item.regular }}</div>
+      <div class="mobile-card" v-for="(item, index) in comparisonData" :key="index">
+        <div class="mobile-item">
+          <div class="mobile-label">Обычный отзыв Яндекс/2ГИС</div>
+          <div class="mobile-value">{{ item.regular }}</div>
         </div>
         
-        <div class="divider"></div>
+        <div class="mobile-divider"></div>
         
-        <div class="comparison-item">
-          <div class="item-label signal-label"><span class="lightning-bolt">⚡</span> Сигнал</div>
-          <div class="item-value signal-value">→ {{ item.signal }}</div>
+        <div class="mobile-item">
+          <div class="mobile-label signal-label">
+            <img src="/favicon.svg" alt="Signal Icon" class="mobile-icon" />
+            Сигнал
+          </div>
+          <div class="mobile-value signal-value">→ {{ item.signal }}</div>
         </div>
       </div>
     </div>
@@ -55,12 +57,7 @@ const comparisonData = ref([
 </script>
 
 <style scoped>
-/* === ОБЩИЕ СТИЛИ === */
-.lightning-bolt {
-  color: #F1C40F; /* Желтый цвет молнии */
-}
-
-/* === СТИЛИ ДЕСКТОПНОЙ ВЕРСИИ === */
+/* === ДЕСКТОПНАЯ ВЕРСИЯ (ВАШИ СТИЛИ) === */
 .desktop-view {
   display: block;
 }
@@ -68,50 +65,86 @@ const comparisonData = ref([
   display: none;
 }
 
-.comparison-table-wrapper {
-  background-color: #283739; /* Темный фон из вашего макета */
+.table-content {
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
+  background: rgba(255,255,255,0.03);
   overflow: hidden;
-  padding: 8px 0;
 }
-
-.comparison-table {
-  width: 100%;
-  border-collapse: collapse;
+.table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-
-.comparison-table th,
-.comparison-table td {
-  padding: 16px 24px;
-  text-align: left;
-  vertical-align: middle;
-}
-
-.comparison-table th {
-  font-size: 16px;
+.header-cell {
+  padding: 10px 16px;
   font-weight: 600;
-  color: #e0e0e0;
+  font-size: 14px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
-
-.comparison-table th:first-child {
-  color: #a0aeb3;
+.header-cell:last-child {
+  border-right: none;
 }
-
-.comparison-table tbody tr {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+.header-cell.usual {
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.7);
 }
-
-.comparison-table td {
-  font-size: 16px;
-  color: #f0f0f0;
+.header-cell.smart {
+  background: rgba(200,255,90,0.08);
+  color: #c8ff5a;
 }
-
-.comparison-table .signal-cell {
-  color: #34D399; /* Зеленый цвет для Сигнала */
+.header-icon {
+  width: 16px;
+  height: 16px;
+}
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.table-row:last-child {
+  border-bottom: none;
+}
+.cell {
+  padding: 8px 16px;
+  font-size: 14px;
+  line-height: 1.05;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+}
+.cell:last-child {
+  border-right: none;
+}
+.usual-cell {
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.01);
+}
+.smart-cell {
+  color: rgba(255,255,255,0.88);
+  background: rgba(200,255,90,0.04);
+  gap: 8px;
+}
+.cell p {
+  margin: 0;
+}
+.smart-cell strong {
   font-weight: 600;
+  color: #c8ff5a;
+}
+.arrow {
+  color: #c8ff5a;
+  font-size: 16px;
+  font-weight: bold;
+  flex-shrink: 0;
 }
 
-/* === СТИЛИ МОБИЛЬНОЙ ВЕРСИИ (с 768px и меньше) === */
+/* === МОБИЛЬНАЯ ВЕРСИЯ (НОВЫЕ СТИЛИ) === */
 @media (max-width: 768px) {
   .desktop-view {
     display: none;
@@ -120,47 +153,55 @@ const comparisonData = ref([
     display: block;
   }
 
-  .comparison-card {
-    background-color: #283739; /* Темный фон из вашего макета */
+  .mobile-card {
+    background-color: #222528; /* Графитовый фон */
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 16px;
   }
 
-  .comparison-item {
-    padding: 8px 0;
+  .mobile-item {
+    padding: 4px 0;
   }
 
-  .item-label {
+  .mobile-label {
     font-size: 13px;
     font-weight: 600;
-    color: #97a8ad; /* Цвет подписи */
+    color: rgba(255,255,255,0.5);
     margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   
-  /* Делаем подпись Сигнала ярче, как вы просили */
-  .item-label.signal-label {
-    color: #e0e0e0; 
+  .mobile-label.signal-label {
+    color: #c8ff5a;
+    opacity: 0.9;
   }
 
-  .item-value {
-    font-size: 18px;
+  .mobile-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .mobile-value {
+    font-size: 17px;
     line-height: 1.5;
-    color: #f0f0f0;
+    color: rgba(255,255,255,0.9);
     font-weight: 500;
   }
 
   .signal-value {
-    color: #34D399; /* Зеленый цвет для Сигнала */
+    color: #c8ff5a;
     font-weight: 700;
+    font-size: 18px;
   }
 
-  .divider {
+  .mobile-divider {
     height: 1px;
-    background-color: rgba(255, 255, 255, 0.1);
-    margin: 8px 0;
+    background-color: rgba(255,255,255,0.1);
+    margin: 12px 0;
   }
 }
 </style>
