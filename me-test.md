@@ -1,2 +1,6 @@
 
 <DashboardTest />
+
+---
+
+<SignalConfigurator2New />
