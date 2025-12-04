@@ -112,7 +112,6 @@
     </p>
   </transition>
 </div>
-</div>
 
           <textarea 
             v-model="form.emotionalRelease" 
