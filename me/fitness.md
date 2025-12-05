@@ -27,6 +27,10 @@ description: Сигнал – тому кто решает
 
 <br>
 
+<RadarWorksBadge />
+
+<br>
+
 <div align="center">
 
 <br>
@@ -51,9 +55,9 @@ description: Сигнал – тому кто решает
 
 <DashboardGymSignalsMap />
 
-<br><br>
+<br>
 
-<RadarWorksBadge />
+<PulseSubscribeBanner />
 
 
 <style>
