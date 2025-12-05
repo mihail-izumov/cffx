@@ -25,10 +25,7 @@
           <p v-if="subtitle" class="banner-subtitle">{{ subtitle }}</p>
         </div>
 
-        <button
-          class="banner-button glass-pill"
-          @click="handleButtonClick"
-        >
+        <button class="banner-button glass-pill" @click="handleButtonClick">
           {{ buttonText }}
         </button>
       </div>
@@ -84,7 +81,6 @@ const handleButtonClick = () => {
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Зум только при наведении на кнопку */
 .glass-pill:hover ~ .banner-image {
   transform: scale(1.04);
 }
@@ -128,7 +124,7 @@ const handleButtonClick = () => {
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-/* КНОПКА — ЖИДКОЕ СТЕКЛО + ПОЛНОСТЬЮ СКРУГЛЁННАЯ */
+/* Кнопка — полностью круглая + жидкое стекло + лаймовый цвет всегда */
 .glass-pill {
   pointer-events: auto;
   background: rgba(30, 30, 32, 0.45);
@@ -138,13 +134,11 @@ const handleButtonClick = () => {
   color: #b5f240;
   font-weight: 600;
   font-size: clamp(1.05rem, 2.2vw, 1.15rem);
-  padding: 0.95rem 3rem;
-  border-radius: 9999px; /* полностью круглая */
+  padding: 0.95rem 3.2rem;
+  border-radius: 9999px;
   cursor: pointer;
   transition: all 0.4s ease;
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 0 20px rgba(181, 242, 64, 0.15);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 20px rgba(181,242,64,0.15);
   position: relative;
   overflow: hidden;
 }
@@ -154,23 +148,20 @@ const handleButtonClick = () => {
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg,
-    transparent,
-    rgba(181, 242, 64, 0.15) 30%,
-    rgba(181, 242, 64, 0.3) 50%,
-    rgba(181, 242, 64, 0.15) 70%,
-    transparent
-  );
+    transparent 0%,
+    rgba(181,242,64,0.15) 30%,
+    rgba(181,242,64,0.3) 50%,
+    rgba(181,242,64,0.15) 70%,
+    transparent 100%
   );
   transform: translateX(-150%);
   transition: transform 0.7s;
 }
 
 .glass-pill:hover {
-  transform: translateY(-4px);
-  box-shadow: 
-    0 16px 40px rgba(0, 0, 0, 0.4),
-    0 0 30px rgba(181, 242, 64, 0.35);
-  background: rgba(40, 40, 44, 0.6);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.45), 0 0 35px rgba(181,242,64,0.4);
+  background: rgba(40,40,44,0.65);
 }
 
 .glass-pill:hover::before {
@@ -181,7 +172,6 @@ const handleButtonClick = () => {
   transform: translateY(-1px);
 }
 
-/* Мобильная адаптация */
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
