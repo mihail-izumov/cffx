@@ -649,7 +649,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
   .actions-wrapper {
     padding: 5px;
-    border-radius: 9999px !important; 
+    border-radius: 51px !important; 
   }
 
   .actions {
@@ -659,7 +659,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
   .btn-create,
   .btn-see-all {
-    border-radius: 9999px !important;
+    border-radius: 46px !important;
   }
 
   .apps-grid {
