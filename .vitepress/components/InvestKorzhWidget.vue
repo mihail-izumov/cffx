@@ -56,26 +56,21 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 <template>
   <div class="essential-apps">
 
-    <div class="header">
-      <div class="actions">
-        <a href="/invest/pulse" class="btn-create">
-          Инвестировать Сигналы
-          <span class="icon-circle">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 7h10v10"/>
-              <path d="M7 17 17 7"/>
-            </svg>
-          </span>
-        </a>
-        <a href="/pro/ltvcalc" class="btn-see-all">
-          Все возможности
-          <span class="icon-circle">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14"/>
-              <path d="m12 5 7 7-7 7"/>
-            </svg>
-          </span>
-        </a>
+    <!-- Блок метрик (перемещен наверх) -->
+    <div class="stats-header-block">
+      <div class="global-stat-item">
+        <img src="/eye-icon.svg" alt="Просмотры" class="eye-icon" />
+        <span>{{ formattedPageViews }}</span>
+      </div>
+      <div class="global-stat-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
+          <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+        </svg>
+        <span>{{ totalLikes }}</span>
+      </div>
+      <div class="global-stat-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+        <span>{{ totalLightning }}</span>
       </div>
     </div>
 
@@ -139,6 +134,7 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 
         <div class="bubbles-container">
           <div class="bubble">
+            <img src="/piggy-bank-icon.svg" alt="" class="bubble-icon" />
             Инвестиции в кофейни
           </div>
           <div class="bubble">
@@ -167,20 +163,27 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
       </div>
     </div>
 
-    <div class="stats-footer-block">
-      <div class="global-stat-item">
-        <img src="/eye-icon.svg" alt="Просмотры" class="eye-icon" />
-        <span>{{ formattedPageViews }}</span>
-      </div>
-      <div class="global-stat-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
-          <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
-        </svg>
-        <span>{{ totalLikes }}</span>
-      </div>
-      <div class="global-stat-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-        <span>{{ totalLightning }}</span>
+    <!-- Блок с кнопками (перемещен вниз, на черной плашке) -->
+    <div class="actions-wrapper">
+      <div class="actions">
+        <a href="/invest/pulse" class="btn-create">
+          Инвестировать Сигналы
+          <span class="icon-circle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 7h10v10"/>
+              <path d="M7 17 17 7"/>
+            </svg>
+          </span>
+        </a>
+        <a href="/pro/ltvcalc" class="btn-see-all">
+          Все возможности
+          <span class="icon-circle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/>
+              <path d="m12 5 7 7-7 7"/>
+            </svg>
+          </span>
+        </a>
       </div>
     </div>
 
@@ -195,14 +198,46 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
   padding: 0;
 }
 
-.header {
+/* Блок метрик наверху */
+.stats-header-block {
+  background: #000000;
+  border-radius: 50px;
+  padding: 16px 32px;
   margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  min-height: 56px;
+}
+
+.global-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.eye-icon {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(0.85);
+}
+
+/* Блок с кнопками внизу на черной плашке */
+.actions-wrapper {
+  background: #000000;
+  border-radius: 50px;
+  padding: 5px;
+  margin-top: 40px;
 }
 
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 5px;
 }
 
 .btn-create,
@@ -330,15 +365,15 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 
 .promo-bg-icon {
   position: absolute;
-  width: 500px;
-  height: 500px;
-  bottom: -150px;
-  right: -150px;
+  width: 800px;
+  height: 800px;
+  top: -200px;
+  right: -200px;
   background-image: url('/favicon.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.06;
+  opacity: 0.05;
   pointer-events: none;
   mask-image: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.2) 20%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.8) 80%, rgba(0,0,0,1) 100%);
   -webkit-mask-image: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.2) 20%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.8) 80%, rgba(0,0,0,1) 100%);
@@ -356,21 +391,19 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 }
 
 .promo-link {
-  color: #C5F946;
-  opacity: 0.7;
+  color: #9e9e9e;
   text-decoration: none !important;
   font-size: 16px;
   font-weight: 600;
-  border-bottom: 1px solid #C5F946;
+  border-bottom: 1px solid #9e9e9e;
   transition: all 0.3s ease;
   position: relative;
   z-index: 1;
 }
 
 .promo-link:hover {
-  color: #C5F946 !important;
-  opacity: 1;
-  border-bottom-color: #C5F946 !important;
+  color: #ffffff !important;
+  border-bottom-color: #ffffff !important;
   text-decoration: none !important;
 }
 
@@ -379,7 +412,6 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 .promo-link:visited,
 .promo-link:focus {
   text-decoration: none !important;
-  border-bottom: 1px solid #C5F946 !important;
 }
 
 .app-card:hover {
@@ -512,8 +544,8 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 }
 
 .play-btn:hover {
-  border-color: #C5F946;
-  background: #C5F946;
+  border-color: #ffffff;
+  background: #ffffff;
   color: #1a1a1a;
   transform: translateY(-2px);
 }
@@ -547,9 +579,15 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
   transition: all 0.2s ease;
 }
 
+.bubble-icon {
+  width: 14px;
+  height: 14px;
+  filter: brightness(0) invert(0.7);
+}
+
 .bubble.bubble-signal {
-  background-color: #606060;
-  color: #2a2a2a;
+  background-color: #7a7a7a;
+  color: #e0e0e0;
   cursor: pointer;
   text-decoration: none !important;
 }
@@ -570,40 +608,25 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
   box-shadow: none !important;
 }
 
-.stats-footer-block {
-  background: #000000;
-  border-radius: 50px;
-  padding: 16px 32px;
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 32px;
-  min-height: 56px;
-}
-
-.global-stat-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #e0e0e0;
-}
-
-.eye-icon {
-  width: 20px;
-  height: 20px;
-  filter: brightness(0) invert(0.85);
-}
-
 @media (max-width: 768px) {
   .essential-apps {
     margin: 32px 0;
   }
 
+  .stats-header-block {
+    flex-direction: row;
+    gap: 24px;
+    padding: 16px;
+    border-radius: 50px;
+  }
+
+  .actions-wrapper {
+    padding: 5px;
+  }
+
   .actions {
     grid-template-columns: 1fr;
+    gap: 5px;
   }
 
   .apps-grid {
@@ -614,11 +637,21 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
     height: 140px;
   }
 
-  .stats-footer-block {
-    flex-direction: row;
-    gap: 24px;
-    padding: 16px;
-    border-radius: 50px;
+  .app-card.promo-card {
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .promo-bg-icon {
+    width: 300px;
+    height: 300px;
+    top: -50px;
+    right: -50px;
+    opacity: 0.08;
+  }
+
+  .promo-text {
+    max-width: 90%;
   }
 }
 </style>
