@@ -55,6 +55,9 @@ description: Сигнал – тому кто решает
 
 <RadarWorksBadge />
 
+<br>
+
+<PulseSubscribeBanner />
 
 <style>
 /* БАЗОВЫЙ СТИЛЬ (Десктоп) */
