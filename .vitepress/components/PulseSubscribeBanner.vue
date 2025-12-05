@@ -39,10 +39,7 @@ import { defineProps, defineEmits } from 'vue'
 const props = defineProps({
   imageSrc: { type: String, default: '/subscribe_ban.jpg' },
   imageAlt: { type: String, default: 'Новости Сигнала в Телеграм' },
-  title: {
-    type: String,
-    default: 'Еще больше возможностей быть ближе к бизнесу, который вы любите.'
-  },
+  title: { type: String, default: 'Еще больше возможностей быть ближе к бизнесу, который вы любите.' },
   subtitle: { type: String, default: '' },
   buttonText: { type: String, default: 'Подписаться в Телеграм' },
   buttonLink: { type: String, default: 'https://t.me/runScale' }
@@ -78,16 +75,12 @@ const handleButtonClick = () => {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ЗУМ РАБОТАЕТ — правильный селектор! */
-.banner-overlay .glass-pill:hover {
-  transform: translateY(-5px);
-}
-.banner-overlay .glass-pill:hover ~ .banner-image,
-.banner-overlay .glass-pill:focus-visible ~ .banner-image {
-  transform: scale(1.045);
+/* ЗУМ ФОНА — теперь точно работает */
+.banner-content:hover .banner-image {
+  transform: scale(1.05);
 }
 
 .banner-overlay {
@@ -127,66 +120,63 @@ const handleButtonClick = () => {
 }
 
 .title-desktop { display: block; }
-.title-mobile { display: none; }
+.title-mobile  { display: none; }
 
-/* КНОПКА — ЖИДКОЕ СТЕКЛО + APPLE HIGHLIGHT + ГРАДИЕНТНЫЙ БОРДЕР */
+/* САМАЯ КРАСИВАЯ КНОПКА 2025 */
 .glass-pill {
   pointer-events: auto;
   position: relative;
-  background: rgba(20, 20, 22, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 2px solid transparent;
+  background: rgba(15, 15, 17, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.6px solid transparent;
   background-clip: padding-box;
   border-radius: 9999px;
-  padding: 1rem 3.4rem;
+  padding: 0.95rem 3.4rem;
   font-weight: 600;
   font-size: clamp(1.05rem, 2.2vw, 1.18rem);
-  color: #b5f240;
+  color: #c0ff5a;
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: all 0.5s ease;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
 }
 
-/* Градиентный живой бордер */
+/* Живой лаймовый градиентный бордер */
 .glass-pill::before {
   content: '';
   position: absolute;
   inset: -2px;
-  padding: 2px;
-  background: linear-gradient(90deg, #b5f240, #95d428, #b5f240, #85c41f);
-  background-size: 300% 300%;
+  background: linear-gradient(90deg, 
+    #b5f240, 
+    #d0ff70 30%, 
+    #95d428 60%, 
+    #b5f240
+  );
+  background-size: 200% 100%;
   border-radius: 9999px;
-  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
-  animation: borderFlow 6s linear infinite;
   z-index: -1;
+  animation: borderFlow 5s ease infinite;
 }
 
-/* Внутреннее свечение сверху (как у Apple) */
+/* Тонкое внутреннее свечение — прижато к верху */
 .glass-pill::after {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  background: linear-gradient(180deg, 
-    rgba(181,242,64,0.25) 0%,
-    transparent 40%
+  top: 0; left: 0; right: 0;
+  height: 40%;
+  background: linear-gradient(to bottom, 
+    rgba(181,242,64,0.22) 0%,
+    transparent 100%
   );
+  border-radius: 9999px;
   pointer-events: none;
-  opacity: 0.7;
-  transition: opacity 0.4s;
 }
 
 .glass-pill:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 50px rgba(181,242,64,0.3);
-}
-
-.glass-pill:hover::after {
-  opacity: 1;
+  box-shadow: 0 20px 50px rgba(181,242,64,0.22);
+  background: rgba(20,20,22,0.55);
 }
 
 .glass-pill:active {
@@ -195,9 +185,10 @@ const handleButtonClick = () => {
 
 @keyframes borderFlow {
   0%   { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
+  100% { background-position: 200% 50%; }
 }
 
+/* Мобильная адаптация */
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
