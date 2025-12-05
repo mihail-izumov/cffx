@@ -548,7 +548,7 @@ onUnmounted(() => {
                 @click="openVoteModal"
                 class="signal2-action-button signal2-ticket-button"
               >
-                Моя Оценка
+                Оценить Сервис
                 <div class="signal2-button-icon-container">
                   <span class="signal2-settings-icon-wrapper"></span>
                 </div>
