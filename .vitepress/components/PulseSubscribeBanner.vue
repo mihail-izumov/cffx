@@ -45,7 +45,6 @@ const props = defineProps({
   imageSrc: { type: String, default: '/subscribe_ban.jpg' },
   imageAlt: { type: String, default: 'Новости Сигнала в Телеграм' },
   title: { type: String, default: 'Еще больше возможностей быть ближе к бизнесу, который вы любите.' },
-  subtitle: { type: String, default: '' },
   buttonText: { type: String, default: 'Подписаться в Телеграм' },
   buttonLink: { type: String, default: 'https://t.me/runScale' }
 })
@@ -103,7 +102,7 @@ const handleButtonClick = () => {
   align-items: center;
   gap: 2.2rem;
   width: 100%;
-  max-width: 700px;
+  max-width: 720px;
   text-align: center;
 }
 
@@ -128,67 +127,100 @@ const handleButtonClick = () => {
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-/* КНОПКА — Apple-style 2025: тёмное стекло + белый текст + тонкий лайм-хайлайт */
+/* ЖИДКОЕ СТЕКЛО APPLE 2025 — с заметной лаймовой обводкой и внутренним размытием */
 .glass-pill {
   pointer-events: auto;
   position: relative;
-  background: rgba(20, 20, 24, 0.68);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: none;
+  isolation: isolate;
+  background: rgba(28, 28, 32, 0.58);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 9999px;
-  padding: 1.05rem 3.6rem;
+  padding: 1.15rem 3.8rem;
   font-weight: 600;
-  font-size: clamp(1.08rem, 2.3vw, 1.2rem);
+  font-size: clamp(1.1rem, 2.3vw, 1.22rem);
   color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
   cursor: pointer;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
-  box-shadow: 0 10px 35px rgba(0,0,0,0.45);
+  box-shadow: 
+    0 12px 40px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
-/* Очень тонкий лаймовый блик сверху — как у Apple */
+/* Заметная живая лаймовая обводка по всему периметру */
 .glass-pill::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(181,242,64,0.6), transparent);
-  opacity: 0.7;
+  inset: -2.5px;
+  border-radius: 9999px;
+  padding: 2.5px;
+  background: linear-gradient(90deg, #b5f240, #e0ff80, #95d428, #b5f240);
+  background-size: 300% 300%;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  animation: borderFlow 7s linear infinite;
+  z-index: -1;
 }
 
+/* Внутреннее свечение + лёгкое боковое сияние (как у Apple) */
 .glass-pill::after {
   content: '';
   position: absolute;
-  top: 1px; left: 4px; right: 4px;
-  height: 32%;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.14), transparent);
+  inset: 2px;
   border-radius: 9999px;
+  background: linear-gradient(180deg,
+    rgba(181,242,64,0.14) 0%,
+    rgba(181,242,64,0.04) 30%,
+    transparent 70%
+  );
   pointer-events: none;
+  z-index: -1;
 }
 
+/* Лёгкое боковое свечение (опционально, но очень красиво) */
+.glass-pill > span {
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 60%;
+  background: linear-gradient(90deg, transparent, rgba(181,242,64,0.08), transparent);
+  filter: blur(12px);
+  transform: translateY(-50%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+.glass-pill > span:first-of-type { left: 0; }
+.glass-pill > span:last-of-type { right: 0; }
+
 .glass-pill:hover {
-  transform: translateY(-7px);
-  background: rgba(30,30,35,0.8);
-  box-shadow: 0 22px 55px rgba(0,0,0,0.55), 0 0 30px rgba(181,242,64,0.18);
+  transform: translateY(-8px);
+  background: rgba(35,35,40,0.75);
+  box-shadow: 
+    0 24px 60px rgba(0,0,0,0.6),
+    0 0 40px rgba(181,242,64,0.25);
 }
 
 .glass-pill:active {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
-/* Мобильная версия — идеальное выравнивание */
+@keyframes borderFlow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+/* Мобильная адаптация */
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
-
   .banner-overlay { padding: 1.6rem; }
   .banner-inner { gap: 1.9rem; }
-
   .glass-pill {
-    padding: 1rem 3rem;
-    font-size: 1.15rem;
+    padding: 1.05rem 3.2rem;
+    font-size: 1.16rem;
   }
 }
 </style>
