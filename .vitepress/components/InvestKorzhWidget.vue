@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, watch } from 'vue'
 
 // Вставь сюда свой URL скрипта
-const SCRIPT_URL = 'https://script.google.com/macros/s/ТВОЙ_DEPLOYMENT_ID/exec'
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
 // Переменные состояния
 const isKorzhLiked = ref(false)
