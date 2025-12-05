@@ -4,7 +4,7 @@ import { ref, onMounted, computed } from 'vue'
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
 const INITIAL_BASE = {
-  pageViews: 553,
+  pageViews: 1000,
   korzhLikes: 12,
   korzhSignals: 4
 }
@@ -181,7 +181,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
       <div class="app-card promo-card">
         <div class="promo-bg-icon"></div>
-        <p class="promo-text">С поддержкой клиентов расти быстрее и увереннее.</p>
+        <p class="promo-text">Получите поддержку клиентов, чтобы расти быстрее конкурентов.</p>
         <a href="/pro/index" class="promo-link">
           <img src="/favicon.svg" alt="" class="promo-link-icon" />
           Запустить Сигнал
@@ -231,7 +231,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 .global-stat-item {
   display: flex;
   align-items: center;
-  gap: 4px; /* Уменьшен отступ между иконкой и цифрой */
+  gap: 4px;
   font-size: 16px;
   font-weight: 600;
   color: #e0e0e0;
@@ -244,7 +244,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 }
 
 .actions-wrapper {
-  background: #2a2a2a; /* Цвет фона карточек */
+  background: #2a2a2a;
   border-radius: 50px;
   padding: 5px;
   margin-top: 40px;
@@ -274,13 +274,13 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 }
 
 .btn-create {
-  background: #e0e0e0; /* Светло-серый */
-  color: #1a1a1a; /* Темный текст */
+  background: #e0e0e0;
+  color: #1a1a1a;
   border: none;
 }
 
 .btn-create:hover {
-  background: #ffffff; /* Белый при ховере */
+  background: #ffffff;
   transform: translateY(-2px);
   color: #000000;
 }
@@ -325,7 +325,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 }
 
 .btn-create:hover .icon-circle::before {
-  opacity: 0.1; /* Легкая тень под иконкой для светлой кнопки */
+  opacity: 0.1;
 }
 
 .btn-see-all:hover .icon-circle::before {
@@ -358,11 +358,21 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 }
 
 .app-card {
-  background: #2a2a2a;
+  /* Убрали стандартный бордер и фон */
+  border: 1px solid transparent;
   border-radius: 24px;
   padding: 24px;
   transition: all 0.3s ease;
-  border: 1px solid #3a3a3a;
+  
+  /* Магия градиентной обводки */
+  /* Слой 1: Темный фон (padding-box чтобы не залезал на бордер) */
+  /* Слой 2: Градиент (border-box чтобы был под прозрачным бордером) */
+  background-image: 
+    linear-gradient(#2a2a2a, #2a2a2a), 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(255, 255, 255, 0) 100%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  
   display: flex;
   flex-direction: column;
   min-height: 100%;
@@ -385,7 +395,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
   position: absolute;
   width: 560px;
   height: 560px;
-  top: -100px; /* Опустили ниже */
+  top: -100px;
   right: -140px;
   background-image: url('/favicon.svg');
   background-size: contain;
@@ -393,7 +403,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
   background-position: center;
   opacity: 0.04;
   pointer-events: none;
-  filter: drop-shadow(0 0 30px rgba(255,255,255,0.05)); /* Эффект глубины */
+  filter: drop-shadow(0 0 30px rgba(255,255,255,0.05));
   mask-image: radial-gradient(ellipse 70% 70% at 60% 40%, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.1) 80%, transparent 100%);
   -webkit-mask-image: radial-gradient(ellipse 70% 70% at 60% 40%, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.1) 80%, transparent 100%);
 }
@@ -412,7 +422,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 .promo-link {
   color: #9e9e9e;
   text-decoration: none !important;
-  border-bottom: none !important; /* Убрали подчеркивание */
+  border-bottom: none !important;
   font-size: 16px;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -441,9 +451,12 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 }
 
 .app-card:hover {
-  background: #323232;
+  /* При ховере меняем фон на чуть светлее и делаем обводку ярче */
+  background-image: 
+    linear-gradient(#323232, #323232), 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+    
   transform: translateY(-4px);
-  border-color: #4a4a4a;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
@@ -546,7 +559,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 4px; /* Уменьшен отступ между иконкой и цифрой */
+  gap: 4px;
 }
 
 .card-footer {
@@ -590,10 +603,10 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 .bubble {
   display: inline-flex;
   align-items: center;
-  gap: 4px; /* Уменьшен отступ между иконкой и текстом */
+  gap: 4px;
   background-color: #424242; 
   color: #adadad; 
-  padding: 6px 10px; /* Уменьшен боковой отступ (было 12) */
+  padding: 6px 10px;
   border-radius: 14px;
   font-size: 12px; 
   font-weight: 500;
@@ -601,7 +614,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
   cursor: default;
   text-decoration: none !important;
   transition: all 0.2s ease;
-  min-height: 28px; /* Фиксированная высота для всех */
+  min-height: 28px;
 }
 
 .bubble-icon {
@@ -649,7 +662,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
   .actions-wrapper {
     padding: 5px;
-    border-radius: 35px !important; 
+    border-radius: 35px !important; /* Исправлено: Радиус плашки (30 + 5) */
   }
 
   .actions {
@@ -659,7 +672,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
   .btn-create,
   .btn-see-all {
-    border-radius: 30px !important;
+    border-radius: 30px !important; /* Исправлено: Радиус кнопок */
   }
 
   .apps-grid {
