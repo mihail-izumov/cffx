@@ -108,15 +108,13 @@ const totalLightning = computed(() => _baseLightning)
 
         <div class="stats-row">
           <div class="stat-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
               <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
             </svg>
             <span>{{ korzhLikes }}</span>
           </div>
           <div class="stat-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap">
-              <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
             <span>{{ _baseLightning }}</span>
           </div>
         </div>
@@ -328,10 +326,11 @@ const totalLightning = computed(() => _baseLightning)
   font-size: 16px;
   font-weight: 600;
   border-bottom: 1px solid #C5F946;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .promo-link:hover {
+  color: #C5F946;
   opacity: 1;
 }
 
@@ -394,22 +393,16 @@ const totalLightning = computed(() => _baseLightning)
   border-radius: 24px;
 }
 
-.card-description {
-  font-size: 13px;
-  color: #f5f5f5;
-  text-align: center;
-  margin: 0 0 16px 0;
-  line-height: 1.5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .card-description.bold-desc {
   font-size: 16px; 
   font-weight: 600;
   color: #ffffff;
-  margin: 0; 
+  margin: 0;
+  text-align: center;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .stats-row {
@@ -533,12 +526,6 @@ const totalLightning = computed(() => _baseLightning)
 
   .app-icon {
     height: 140px;
-  }
-
-  .card-description {
-    font-size: 16px;
-    margin: 0 0 16px 0;
-    padding: 0 8px;
   }
 
   .stats-footer-block {
