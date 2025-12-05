@@ -36,7 +36,7 @@ const cafes = {
     isConnected: true
   },
   'Skuratov': {
-    name: 'Skuratov Coffee',
+    name: 'Skuratov',
     image: '/widget/rest-and-coffee/skuratov-widget_bg.jpg',
     ListeningStatus: 'Общаются',
     ListeningBadgeText: 'Устойчивый диалог',
