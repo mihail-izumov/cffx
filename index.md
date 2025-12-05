@@ -16,7 +16,7 @@ hero:
       link: /me/coffee
 
 features:
-  - title: Где Вас Слушают
+  - title: Где Вас слушают
     details: "Отправьте Сигнал. Получите поддержку и видимый результат сегодня. "
     link: /me/coffee
     linkText: Выбрать место
