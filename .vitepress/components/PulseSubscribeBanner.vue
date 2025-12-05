@@ -119,12 +119,11 @@ const handleButtonClick = () => {
   color: white;
   text-shadow: 0 4px 16px rgba(0,0,0,0.8);
   line-height: 1.3;
- 3;
   margin: 0;
 }
 
 .title-desktop { display: block; }
-.title-mobile  { display: none; }
+.title-mobile { display: none; }
 
 .glass-pill {
   pointer-events: auto;
@@ -145,7 +144,7 @@ const handleButtonClick = () => {
   box-shadow: 0 10px 35px rgba(0,0,0,0.45);
 }
 
-/* Чуть ярче лаймовая обводка по всему периметру */
+/* Чуть более заметная лаймовая обводка */
 .glass-pill::before {
   content: '';
   position: absolute;
@@ -161,7 +160,6 @@ const handleButtonClick = () => {
   z-index: -1;
 }
 
-/* Оригинальный тонкий блик сверху — оставлен как был */
 .glass-pill::after {
   content: '';
   position: absolute;
@@ -191,9 +189,10 @@ const handleButtonClick = () => {
 
 @media (max-width: 768px) {
   .title-desktop { display: none; }
-  .title-mobile  { display: block; }
+  .title-mobile { display: block; }
   .banner-overlay { padding: 1.6rem; }
   .banner-inner { gap: 1.9rem; }
+  }
   .glass-pill {
     padding: 1rem 3rem;
     font-size: 1.15rem;
