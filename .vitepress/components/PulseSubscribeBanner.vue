@@ -1,23 +1,38 @@
 <template>
   <div class="investor-banner">
     <div class="banner-content">
-      <img 
-        :src="imageSrc" 
+      <img
+        :src="imageSrc"
         :alt="imageAlt"
         class="banner-image"
       />
       <div class="banner-overlay">
         <div class="banner-text">
           <div class="banner-intro">ОСТАНЕМСЯ НА СВЯЗИ?</div>
-          <div class="banner-title">{{ title }}</div>
+
+          <!-- Красивые переносы только для нашего дефолтного текста -->
+          <div class="banner-title">
+            <span class="title-desktop">
+              Еще больше возможностей быть ближе к бизнесу,<br>
+              который вы любите.
+            </span>
+            <span class="title-mobile">
+              Еще больше возможностей<br>
+              быть ближе к бизнесу,<br>
+              который вы любите.
+            </span>
+          </div>
+
           <p v-if="subtitle" class="banner-subtitle">{{ subtitle }}</p>
         </div>
-        <button 
+
+        <button
           class="banner-button"
           @click="handleButtonClick"
         >
           {{ buttonText }}
         </button>
+      </button>
       </div>
     </div>
   </div>
@@ -92,10 +107,7 @@ const handleButtonClick = () => {
 
 .banner-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -125,8 +137,37 @@ const handleButtonClick = () => {
   color: white;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   margin: 0 0 1rem 0;
-  line-height: 1.3;
+  line-height: 1.35;
   max-width: 600px;
+}
+
+/* Переносы строк — только для дефолтного текста */
+.title-desktop {
+  display: block;
+}
+
+.title-mobile {
+  display: none;
+}
+
+/* На мобильных — другая верстка заголовка */
+@media (max-width: 768px) {
+  .title-desktop {
+    display: none;
+  }
+  .title-mobile {
+    display: block;
+  }
+
+  .banner-overlay {
+    padding: 1rem;
+  }
+  .banner-text {
+    margin-bottom: 2rem;
+  }
+  .banner-button {
+    padding: 0.6rem 1.8rem;
+  }
 }
 
 .banner-subtitle {
@@ -159,20 +200,5 @@ const handleButtonClick = () => {
 .banner-button:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(181, 242, 64, 0.3);
-}
-
-/* Адаптивность для мобильных устройств */
-@media (max-width: 768px) {
-  .banner-overlay {
-    padding: 1rem;
-  }
-  
-  .banner-text {
-    margin-bottom: 2rem;
-  }
-  
-  .banner-button {
-    padding: 0.6rem 1.8rem;
-  }
 }
 </style>
