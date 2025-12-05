@@ -109,7 +109,7 @@ const cafeProfiles = {
     responseTime: { base: 1.4, min: 1.0, max: 1.8 },
     resolutionTime: { base: 18.0, min: 16, max: 20 }
   },
-  'skuratov coffee': {
+  'skuratov': {
     responseTime: { base: 1.4, min: 1.0, max: 1.8 },
     resolutionTime: { base: 18.0, min: 16, max: 20 }
   },
@@ -419,10 +419,10 @@ onUnmounted(() => {
         </button>
         <button
           class="signal2-switcher"
-          :class="{ active: selectedCafe === 'Skuratov Coffee' }"
-          @click="selectedCafe = 'Skuratov Coffee'"
+          :class="{ active: selectedCafe === 'Skuratov' }"
+          @click="selectedCafe = 'Skuratov'"
         >
-          Skuratov Coffee
+          Skuratov
         </button>
         <button
           class="signal2-switcher"
@@ -440,10 +440,10 @@ onUnmounted(() => {
         </button>
         <button
           class="signal2-switcher"
-          :class="{ active: selectedCafe === 'ДаблБи' }"
-          @click="selectedCafe = 'ДаблБи'"
+          :class="{ active: selectedCafe === 'Даблби' }"
+          @click="selectedCafe = 'Даблби'"
         >
-          ДаблБи
+          Даблби
         </button>
         <button
           class="signal2-switcher"
