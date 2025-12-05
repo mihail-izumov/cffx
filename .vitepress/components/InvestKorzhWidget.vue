@@ -4,19 +4,19 @@ import { ref, onMounted, computed } from 'vue'
 // --- КОНФИГУРАЦИЯ ---
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
-// БАЗОВЫЕ ЗНАЧЕНИЯ (То, что показываем, если сервер молчит или дает 0)
+// БАЗОВЫЕ ЗНАЧЕНИЯ (Должны совпадать с колонкой Base в таблице)
 const INITIAL_BASE = {
-  pageViews: 120,
-  korzhLikes: 56,
-  korzhSignals: 4
+  pageViews: 1000,   // Ячейка C3
+  korzhLikes: 12,    // Ячейка C4
+  korzhSignals: 4    // Ячейка C5
 }
 
 const isKorzhLiked = ref(false)
 const stats = ref({ ...INITIAL_BASE })
 
-// Защищенное форматирование (никаких -1)
+// Защищенное форматирование
 const formatNumber = (num) => {
-  const safeNum = Math.max(0, num || 0) // Защита от null и минусов
+  const safeNum = Math.max(0, num || 0)
   if (safeNum >= 1000) {
     return (safeNum / 1000).toFixed(1).replace(/\.0$/, '') + 'K'
   }
@@ -26,7 +26,7 @@ const formatNumber = (num) => {
 // --- ЛОГИКА КЭША ---
 const loadFromCache = () => {
   try {
-    const cached = localStorage.getItem('signal_stats_cache_v2') // Новый ключ v2, чтобы сбросить старые глюки
+    const cached = localStorage.getItem('signal_stats_cache_v3') // Новый ключ v3 для сброса
     if (cached) {
       const parsed = JSON.parse(cached)
       stats.value = { ...stats.value, ...parsed }
@@ -35,7 +35,7 @@ const loadFromCache = () => {
 }
 
 const saveToCache = () => {
-  localStorage.setItem('signal_stats_cache_v2', JSON.stringify(stats.value))
+  localStorage.setItem('signal_stats_cache_v3', JSON.stringify(stats.value))
 }
 
 // --- СЕТЕВАЯ ЛОГИКА ---
@@ -44,10 +44,10 @@ const fetchStats = async () => {
     const response = await fetch(`${SCRIPT_URL}?action=get`)
     const data = await response.json()
     
-    // ЗАЩИТА: Если сервер вернул 0 (пустая таблица), НЕ перезаписываем базу
-    if (data.pageViews > 0) stats.value.pageViews = data.pageViews
-    if (data.korzhLikes > 0) stats.value.korzhLikes = data.korzhLikes
-    if (data.korzhSignals > 0) stats.value.korzhSignals = data.korzhSignals
+    // Проверяем наличие полей перед обновлением
+    if (data.pageViews !== undefined) stats.value.pageViews = data.pageViews
+    if (data.korzhLikes !== undefined) stats.value.korzhLikes = data.korzhLikes
+    if (data.korzhSignals !== undefined) stats.value.korzhSignals = data.korzhSignals
     
     saveToCache()
   } catch (error) {
@@ -72,19 +72,18 @@ const toggleKorzhLike = async () => {
     localStorage.setItem('korzh_liked_status', 'true')
     saveToCache()
     
-    // Отправляем запрос
     fetch(`${SCRIPT_URL}?action=addLike`).catch(() => {
-      stats.value.korzhLikes-- // Откат при ошибке
+      stats.value.korzhLikes-- 
       isKorzhLiked.value = false
     })
   } else {
-    // Убираем лайк (с защитой от ухода в минус)
+    // Убираем лайк
     if (stats.value.korzhLikes > 0) stats.value.korzhLikes--
     localStorage.removeItem('korzh_liked_status')
     saveToCache()
     
     fetch(`${SCRIPT_URL}?action=removeLike`).catch(() => {
-      stats.value.korzhLikes++ // Откат
+      stats.value.korzhLikes++
       isKorzhLiked.value = true
     })
   }
@@ -93,14 +92,11 @@ const toggleKorzhLike = async () => {
 onMounted(async () => {
   loadFromCache()
   
-  // Синхронизация статуса лайка
   const hasLikedKorzh = localStorage.getItem('korzh_liked_status')
   if (hasLikedKorzh) isKorzhLiked.value = true
 
-  // Грузим данные
   await fetchStats()
 
-  // Засчитываем просмотр
   const sessionViewed = sessionStorage.getItem('signal_session_viewed')
   if (!sessionViewed) {
     incrementViews()
@@ -110,6 +106,7 @@ onMounted(async () => {
 
 const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 </script>
+
 
 <template>
   <div class="essential-apps">
