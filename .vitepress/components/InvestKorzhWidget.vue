@@ -181,7 +181,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
       <div class="app-card promo-card">
         <div class="promo-bg-icon"></div>
-        <p class="promo-text">Получите поддержку клиентов, чтобы расти быстрее конкурентов.</p>
+        <p class="promo-text">С поддержкой клиентов расти быстрее и увереннее.</p>
         <a href="/pro/index" class="promo-link">
           <img src="/favicon.svg" alt="" class="promo-link-icon" />
           Запустить Сигнал
@@ -649,7 +649,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
   .actions-wrapper {
     padding: 5px;
-    border-radius: 46px; /* Исправлен радиус под кнопки */
+    border-radius: 50px;
   }
 
   .actions {
