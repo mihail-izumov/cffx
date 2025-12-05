@@ -4,7 +4,7 @@ prev: false
 next: false
 pageClass: centered-page
 notification: clients
-title: Отправьте Сигнал – Корж, Skuratov, Surf, Mosaic, Белотурка, Кэрри
+title: Отправьте Сигнал – Дринкит, Корж, Skuratov, Кофемания, Surf Coffee, Даблби, Green House, Stars Coffee, Cofix
 description: Сигнал – тому кто решает
 ---
 <SignalItemsSlider />
