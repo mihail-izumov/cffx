@@ -451,13 +451,14 @@ function nav(): DefaultTheme.NavItem[] {
       ]
     },
     {
-      text: 'Для Бизнеса',
-      link: '/pro/index'
-    },
-    {
       text: 'Возможности',
       link: '/invest/pulse'
+    },
+    {
+      text: 'Для Бизнеса',
+      link: '/pro/index'
     }
+  
   ]
 }
 
@@ -465,7 +466,7 @@ function nav(): DefaultTheme.NavItem[] {
 function sidebarPulse(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: 'Инвестиции',
+      text: 'Возможности',
       collapsed: false,
       items: [
         { text: 'Пульс', link: '/invest/pulse' },
