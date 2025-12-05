@@ -10,12 +10,14 @@
         <div class="banner-text">
           <div class="banner-intro">ОСТАНЕМСЯ НА СВЯЗИ?</div>
 
-          <!-- Красивые переносы только для нашего дефолтного текста -->
           <div class="banner-title">
+            <!-- Десктопная версия (≥769px) -->
             <span class="title-desktop">
               Еще больше возможностей быть ближе к бизнесу,<br>
               который вы любите.
             </span>
+
+            <!-- Мобильная версия (≤768px) -->
             <span class="title-mobile">
               Еще больше возможностей<br>
               быть ближе к бизнесу,<br>
@@ -32,7 +34,6 @@
         >
           {{ buttonText }}
         </button>
-      </button>
       </div>
     </div>
   </div>
@@ -96,7 +97,7 @@ const handleButtonClick = () => {
   width: 100%;
   height: auto;
   border-radius: max(12px, min(24px, 3vw));
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0.1);
   transition: transform 0.3s ease;
   display: block;
 }
@@ -107,7 +108,7 @@ const handleButtonClick = () => {
 
 .banner-overlay {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -141,7 +142,7 @@ const handleButtonClick = () => {
   max-width: 600px;
 }
 
-/* Переносы строк — только для дефолтного текста */
+/* Управление переносами /
 .title-desktop {
   display: block;
 }
@@ -150,7 +151,6 @@ const handleButtonClick = () => {
   display: none;
 }
 
-/* На мобильных — другая верстка заголовка */
 @media (max-width: 768px) {
   .title-desktop {
     display: none;
@@ -199,6 +199,5 @@ const handleButtonClick = () => {
 
 .banner-button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(181, 242, 64, 0.3);
 }
 </style>
