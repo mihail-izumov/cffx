@@ -6,10 +6,10 @@ import AddVoteStatus from './AddVoteStatus.vue'
 const cafeNames = [
   'Дринкит',
   'Корж',
-  'Skuratov Coffee',
+  'Skuratov',
   'Кофемания',
   'Surf Coffee',
-  'ДаблБи',
+  'Даблби',
   'Green House',
   'Stars Coffee',
   'Cofix'
@@ -35,7 +35,7 @@ const cafes = {
     SignalsBadgeText: 'Процессы отлажены',
     isConnected: true
   },
-  'Skuratov Coffee': {
+  'Skuratov': {
     name: 'Skuratov Coffee',
     image: '/widget/rest-and-coffee/skuratov-widget_bg.jpg',
     ListeningStatus: 'Общаются',
@@ -62,8 +62,8 @@ const cafes = {
     SignalsBadgeText: 'Гарантия решения',
     isConnected: false
   },
-  'ДаблБи': {
-    name: 'ДаблБи',
+  'Даблби': {
+    name: 'Даблби',
     image: '/widget/rest-and-coffee/double-b-widget_bg.jpg',
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
