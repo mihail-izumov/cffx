@@ -134,6 +134,7 @@ import SignalItemsSlider from '../components/SignalItemsSlider.vue'
 import RadarWorksBadge from '../components/RadarWorksBadge.vue'
 import MainSignalWidgetsFitness from '../components/MainSignalWidgetsFitness.vue'
 import DashboardTest from '../components/DashboardTest.vue'
+import InvestKorzhWidget from '../components/InvestKorzhWidget.vue'
 
 export default {
   extends: DefaultTheme,
@@ -273,7 +274,7 @@ export default {
     app.component('RadarWorksBadge', RadarWorksBadge)
     app.component('MainSignalWidgetsFitness', MainSignalWidgetsFitness)
     app.component('DashboardTest', DashboardTest)
-    
+    app.component('InvestKorzhWidget', InvestKorzhWidget)
     
   },
 }
