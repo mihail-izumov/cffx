@@ -3,6 +3,7 @@ outline: false
 prev: false
 next: false
 pageClass: centered-page
+notification: clients
 title: Отправьте Сигнал – Корж, Skuratov, Surf, Mosaic, Белотурка, Кэрри
 description: Сигнал – тому кто решает
 ---
