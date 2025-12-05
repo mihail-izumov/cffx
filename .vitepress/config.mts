@@ -452,10 +452,11 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: 'Для Бизнеса',
-      items: [
-        { text: 'Система Сигналов', link: '/pro/index' },  
-        { text: 'Инвестиции в Кофейни', link: '/invest/pulse' }
-      ]
+      link: '/pro/index'
+    },
+    {
+      text: 'Инвесторы',
+      link: '/invest/pulse'
     }
   ]
 }
