@@ -105,6 +105,10 @@ const totalLightning = computed(() => _baseLightning)
         <p class="card-description bold-desc">
           Жить любить кофе пить
         </p>
+        
+        <p class="card-subtitle">
+          Сеть кофеен №1 в Самаре. Лидер Индекса роста Сигнала.
+        </p>
 
         <div class="stats-row">
           <div class="stat-item">
@@ -120,20 +124,20 @@ const totalLightning = computed(() => _baseLightning)
         </div>
 
         <div class="card-footer">
-          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Возможности в Корж</a>
+          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Поддержать Корж</a>
         </div>
 
         <div class="bubbles-container">
-          <div class="bubble">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gift-icon lucide-gift"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
-            Вознаграждения
-          </div>
-          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="bubble bubble-active">
+          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="bubble bubble-inverted">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
             Сигналы работают
           </a>
           <div class="bubble">
-            Инвестиции
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gift-icon lucide-gift"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
+            Вознаграждения
+          </div>
+          <div class="bubble">
+            Инвестиции в кофейни
           </div>
           <div class="bubble">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag-icon lucide-flag"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg>
@@ -143,6 +147,7 @@ const totalLightning = computed(() => _baseLightning)
       </div>
 
       <div class="app-card promo-card">
+        <div class="promo-bg-icon"></div>
         <p class="promo-text">
           Получите поддержку клиентов, чтобы расти быстрее конкурентов.
         </p>
@@ -158,7 +163,7 @@ const totalLightning = computed(() => _baseLightning)
         <span>{{ pageViews }}</span>
       </div>
       <div class="global-stat-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
           <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
         </svg>
         <span>{{ totalLikes }}</span>
@@ -298,7 +303,7 @@ const totalLightning = computed(() => _baseLightning)
 }
 
 .app-card.korzh-card {
-  grid-template-rows: auto auto auto auto auto 1fr;
+  grid-template-rows: auto auto auto auto auto auto 1fr;
 }
 
 .app-card.promo-card {
@@ -308,6 +313,24 @@ const totalLightning = computed(() => _baseLightning)
   align-items: center;
   text-align: center;
   gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.promo-bg-icon {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  bottom: -50px;
+  right: -50px;
+  background-image: url('/favicon.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.08;
+  pointer-events: none;
+  mask-image: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,1) 100%);
+  -webkit-mask-image: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,1) 100%);
 }
 
 .promo-text {
@@ -317,6 +340,8 @@ const totalLightning = computed(() => _baseLightning)
   margin: 0;
   line-height: 1.6;
   max-width: 80%;
+  position: relative;
+  z-index: 1;
 }
 
 .promo-link {
@@ -327,17 +352,23 @@ const totalLightning = computed(() => _baseLightning)
   font-weight: 600;
   border-bottom: 1px solid #C5F946;
   transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
 .promo-link:hover {
-  color: #C5F946;
+  color: #C5F946 !important;
   opacity: 1;
+  border-bottom-color: #C5F946 !important;
+  text-decoration: none !important;
 }
 
 .promo-link:hover,
 .promo-link:active,
-.promo-link:visited {
+.promo-link:visited,
+.promo-link:focus {
   text-decoration: none !important;
+  border-bottom: 1px solid #C5F946 !important;
 }
 
 .app-card:hover {
@@ -403,6 +434,15 @@ const totalLightning = computed(() => _baseLightning)
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.card-subtitle {
+  font-size: 13px;
+  font-weight: 300;
+  color: #b0b0b0;
+  margin: 8px 0 0 0;
+  text-align: center;
+  line-height: 1.5;
 }
 
 .stats-row {
@@ -476,19 +516,27 @@ const totalLightning = computed(() => _baseLightning)
   font-weight: 500;
   line-height: 1;
   cursor: default;
-  text-decoration: none;
+  text-decoration: none !important;
   transition: background-color 0.2s ease;
 }
 
-.bubble.bubble-active {
-  background-color: #4a4a4a;
-  color: #d0d0d0;
+.bubble.bubble-inverted {
+  background-color: #C5F946;
+  color: #1a1a1a;
   cursor: pointer;
+  text-decoration: none !important;
 }
 
-.bubble.bubble-active:hover {
-  background-color: #5a5a5a;
-  color: #e0e0e0;
+.bubble.bubble-inverted:hover {
+  background-color: #d4ff6b;
+  text-decoration: none !important;
+}
+
+.bubble.bubble-inverted:hover,
+.bubble.bubble-inverted:active,
+.bubble.bubble-inverted:visited,
+.bubble.bubble-inverted:focus {
+  text-decoration: none !important;
 }
 
 .stats-footer-block {
@@ -500,6 +548,7 @@ const totalLightning = computed(() => _baseLightning)
   justify-content: center;
   align-items: center;
   gap: 32px;
+  min-height: 56px;
 }
 
 .global-stat-item {
