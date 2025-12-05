@@ -27,6 +27,10 @@ description: Сигнал – тому кто решает
 
 <br>
 
+<RadarWorksBadge />
+
+<br>
+
 <div align="center">
 
 <br>
@@ -50,10 +54,6 @@ description: Сигнал – тому кто решает
 <br>
 
 <DashboardCafeSignalsMap />
-
-<br><br>
-
-<RadarWorksBadge />
 
 <br>
 
