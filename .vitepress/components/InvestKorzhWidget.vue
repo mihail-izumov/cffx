@@ -649,7 +649,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
   .actions-wrapper {
     padding: 5px;
-    border-radius: 50px;
+    border-radius: 51px;
   }
 
   .actions {
