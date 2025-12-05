@@ -6,10 +6,10 @@ import AddVoteStatus from './AddVoteStatus.vue'
 // ============ ФИТНЕС КЛУБЫ ============
 const fitnessNames = [
   'World Class',
-  'FIZ Культура',
+  'FIZКУЛЬТУРА',
   'X-Fit',
   'SMSTRETCHING',
-  'SPORTLIFE',
+  'Спортлайф',
   'Fitness House',
   'DDX'
 ]
@@ -24,8 +24,8 @@ const fitnessClubs = {
     SignalsBadgeText: 'Гарантия решения',
     isConnected: false
   },
-  'FIZ Культура': {
-    name: 'FIZ Культура',
+  'FIZКУЛЬТУРА': {
+    name: 'FIZКУЛЬТУРА',
     image: '/widget/fitness/fiz-widget_bg.jpg',
     ListeningStatus: 'Общаются',
     ListeningBadgeText: 'Устойчивый диалог',
@@ -51,8 +51,8 @@ const fitnessClubs = {
     SignalsBadgeText: 'Живой отклик',
     isConnected: false
   },
-  'SPORTLIFE': {
-    name: 'SPORTLIFE',
+  'Спортлайф': {
+    name: 'Спортлайф',
     image: '/widget/fitness/sportlife-widget_bg.jpg',
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
