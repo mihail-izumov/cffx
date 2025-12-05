@@ -26,10 +26,8 @@
         </div>
 
         <button
-          class="banner-button premium-liquid"
+          class="banner-button glass-pill"
           @click="handleButtonClick"
-          @mouseenter="isHovered = true"
-          @mouseleave="isHovered = false"
         >
           {{ buttonText }}
         </button>
@@ -39,7 +37,6 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
@@ -55,7 +52,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['button-click'])
-const isHovered = ref(false)
 
 const handleButtonClick = () => {
   if (props.buttonLink && props.buttonLink !== '#') {
@@ -88,8 +84,8 @@ const handleButtonClick = () => {
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.premium-liquid:hover ~ .banner-image,
-.premium-liquid:focus-visible ~ .banner-image {
+/* Зум только при наведении на кнопку */
+.glass-pill:hover ~ .banner-image {
   transform: scale(1.04);
 }
 
@@ -127,80 +123,79 @@ const handleButtonClick = () => {
   text-shadow: 0 3px 10px rgba(0,0,0,0.7);
   line-height: 1.32;
   max-width: 680px;
-  margin: 0 0 1rem 0;
 }
 
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-.premium-liquid {
-  position: relative;
-  background: rgba(30, 30, 32, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1.5px solid rgba(181, 242, 64, 0.4);
-  color: white;
+/* КНОПКА — ЖИДКОЕ СТЕКЛО + ПОЛНОСТЬЮ СКРУГЛЁННАЯ */
+.glass-pill {
+  pointer-events: auto;
+  background: rgba(30, 30, 32, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.8px solid #b5f240;
+  color: #b5f240;
   font-weight: 600;
   font-size: clamp(1.05rem, 2.2vw, 1.15rem);
-  padding: 1rem 3.2rem;
-  border-radius: 12px;
+  padding: 0.95rem 3rem;
+  border-radius: 9999px; /* полностью круглая */
   cursor: pointer;
-  transition: all 0.45s ease;
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(181, 242, 64, 0.15);
+  position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  animation: liquidSubtle 9s ease infinite;
-  pointer-events: auto;
 }
 
-.premium-liquid::before {
+.glass-pill::before {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(181, 242, 64, 0.12) 30%,
-    rgba(181, 242, 64, 0.25) 50%,
-    rgba(181, 242, 64, 0.12) 70%,
-    transparent 100%
+    transparent,
+    rgba(181, 242, 64, 0.15) 30%,
+    rgba(181, 242, 64, 0.3) 50%,
+    rgba(181, 242, 64, 0.15) 70%,
+    transparent
   );
-  transform: translateX(-100%);
-  transition: transform 0.6s;
+  );
+  transform: translateX(-150%);
+  transition: transform 0.7s;
 }
 
-.premium-liquid:hover {
-  border-color: #b5f240;
-  background: rgba(40, 40, 44, 0.7);
+.glass-pill:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(181, 242, 64, 0.25);
+  box-shadow: 
+    0 16px 40px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(181, 242, 64, 0.35);
+  background: rgba(40, 40, 44, 0.6);
 }
 
-.premium-liquid:hover::before {
-  transform: translateX(100%);
+.glass-pill:hover::before {
+  transform: translateX(150%);
 }
 
-.premium-liquid:active {
+.glass-pill:active {
   transform: translateY(-1px);
 }
 
-@keyframes liquidSubtle {
-  0%, 100% { background: rgba(30, 30, 32, 0.55); }
-  50%      { background: rgba(35, 35, 38, 0.65); }
-}
-
+/* Мобильная адаптация */
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
   .banner-overlay { padding: 1.5rem; }
   .banner-text    { margin-bottom: 2.5rem; }
-  .premium-liquid {
-    padding: 0.9rem 2.8rem;
+  .glass-pill {
+    padding: 0.85rem 2.6rem;
     font-size: 1.1rem;
   }
 }
 
 .banner-subtitle {
   font-size: clamp(0.9rem, 2vw, 1.15rem);
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255,255,255,0.92);
   text-shadow: 0 1px 4px rgba(0,0,0,0.5);
   max-width: 560px;
   margin: 0;
