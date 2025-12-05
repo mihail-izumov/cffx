@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/ТВОЙ_DEPLOYMENT_ID/exec'
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
 const isKorzhLiked = ref(false)
 const korzhLikes = ref(0)
