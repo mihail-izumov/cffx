@@ -1,21 +1,28 @@
 <template>
   <div class="investor-banner">
     <div class="banner-content" :class="{ 'is-hovered': isHovered }">
-      <img :src="imageSrc" :alt="imageAlt" class="banner-image" />
+      <img
+        :src="imageSrc"
+        :alt="imageAlt"
+        class="banner-image"
+      />
+
       <div class="banner-overlay">
         <div class="banner-inner">
           <div class="banner-intro">ОСТАНЕМСЯ НА СВЯЗИ?</div>
+
           <div class="banner-title">
             <span class="title-desktop">
-              Еще больше возможностей быть ближе к бизнесу,<br />
+              Еще больше возможностей быть ближе к бизнесу,<br>
               который вы любите.
             </span>
             <span class="title-mobile">
-              Еще больше возможностей<br />
-              быть ближе к бизнесу,<br />
+              Еще больше возможностей<br>
+              быть ближе к бизнесу,<br>
               который вы любите.
             </span>
           </div>
+
           <button
             class="glass-pill"
             @click="handleButtonClick"
@@ -121,6 +128,7 @@ const handleButtonClick = () => {
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
+/* КНОПКА — Apple-style 2025: тёмное стекло + белый текст */
 .glass-pill {
   pointer-events: auto;
   position: relative;
@@ -136,32 +144,36 @@ const handleButtonClick = () => {
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
   cursor: pointer;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  overflow: hidden;
+  /* box-shadow создает внешнее свечение, а ::before создаст обводку */
   box-shadow: 0 10px 35px rgba(0,0,0,0.45);
 }
 
-/* Чуть более заметная лаймовая обводка */
+/* ИЗМЕНЕНИЕ: Яркая градиентная обводка по всему периметру (Mask technique) */
 .glass-pill::before {
   content: '';
   position: absolute;
-  inset: -2px;
+  inset: 0;
   border-radius: 9999px;
-  padding: 2px;
-  background: linear-gradient(90deg, #b5f240, #d0ff70, #95d428, #b5f240);
-  background-size: 300% 300%;
-  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
+  padding: 1.5px; /* Толщина обводки */
+  background: linear-gradient(135deg, 
+    rgba(181,242,64,0.8),   /* Яркий лайм */
+    rgba(255,255,255,0.6),  /* Белый акцент */
+    rgba(181,242,64,0.8)    /* Яркий лайм */
+  );
+  /* Маска вырезает центр, оставляя только border */
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
-  animation: flow 8s linear infinite;
-  z-index: -1;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 1;
 }
 
 .glass-pill::after {
   content: '';
   position: absolute;
-  top: 1px;
-  left: 4px;
-  right: 4px;
+  top: 1px; left: 4px; right: 4px;
   height: 32%;
   background: linear-gradient(to bottom, rgba(255,255,255,0.14), transparent);
   border-radius: 9999px;
@@ -171,23 +183,22 @@ const handleButtonClick = () => {
 .glass-pill:hover {
   transform: translateY(-7px);
   background: rgba(30,30,35,0.8);
-  box-shadow: 0 22px 55px rgba(0,0,0,0.55), 0 0 30px rgba(181,242,64,0.18);
+  /* Добавлено чуть больше свечения лаймом при наведении */
+  box-shadow: 0 22px 55px rgba(0,0,0,0.55), 0 0 35px rgba(181,242,64,0.25);
 }
 
 .glass-pill:active {
   transform: translateY(-2px);
 }
 
-@keyframes flow {
-  0%   { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
-}
-
+/* Мобильная версия — идеальное выравнивание */
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
+
   .banner-overlay { padding: 1.6rem; }
   .banner-inner { gap: 1.9rem; }
+
   .glass-pill {
     padding: 1rem 3rem;
     font-size: 1.15rem;
