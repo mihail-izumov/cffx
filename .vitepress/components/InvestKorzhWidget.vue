@@ -1,90 +1,136 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
+// Вставь сюда свой URL скрипта
+const SCRIPT_URL = 'https://script.google.com/macros/s/ТВОЙ_DEPLOYMENT_ID/exec'
 
+// Переменные состояния
 const isKorzhLiked = ref(false)
-const korzhLikes = ref(0)
-const pageViews = ref(0)
-const lightning = ref(0)
+
+// Данные (по умолчанию нули, но сразу попытаемся взять из кэша)
+const stats = ref({
+  pageViews: 0,
+  korzhLikes: 0,
+  korzhSignals: 4
+})
 
 const formatNumber = (num) => {
+  if (!num) return '0'
   if (num >= 1000) {
     return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K'
   }
   return num.toString()
 }
 
+// --- Логика Кэширования ---
+
+// Загрузка из кэша (выполняется мгновенно при старте)
+const loadFromCache = () => {
+  try {
+    const cached = localStorage.getItem('signal_stats_cache')
+    if (cached) {
+      const parsed = JSON.parse(cached)
+      // Если в кэше есть данные, применяем их сразу
+      stats.value = { ...stats.value, ...parsed }
+    }
+  } catch (e) {
+    console.error('Ошибка чтения кэша', e)
+  }
+}
+
+// Сохранение в кэш
+const saveToCache = () => {
+  localStorage.setItem('signal_stats_cache', JSON.stringify(stats.value))
+}
+
+// --- Сетевая Логика ---
+
 const fetchStats = async () => {
   try {
     const response = await fetch(`${SCRIPT_URL}?action=get`)
     const data = await response.json()
-    pageViews.value = data.pageViews || 0
-    korzhLikes.value = data.korzhLikes || 0
-    lightning.value = data.lightning || 0
+    
+    // Обновляем данные (сервер главнее кэша)
+    // Но если пользователь лайкнул пока грузилось, нужно быть аккуратным.
+    // Для простоты: просто обновляем, но учитываем локальный лайк.
+    
+    stats.value.pageViews = data.pageViews || stats.value.pageViews
+    
+    // Хитрый момент: если мы локально лайкнули, а сервер вернул старое число (без лайка),
+    // может случиться скачок. Но обычно "Всего" из таблицы уже включает базу.
+    stats.value.korzhLikes = data.korzhLikes || stats.value.korzhLikes
+    stats.value.korzhSignals = data.korzhSignals || stats.value.korzhSignals
+    
+    saveToCache() // Обновляем кэш свежими данными
   } catch (error) {
-    console.error('Ошибка загрузки статистики:', error)
+    console.error('Ошибка загрузки (используем кэш):', error)
   }
 }
 
 const incrementViews = async () => {
+  // Оптимистично +1
+  stats.value.pageViews++
+  saveToCache()
+  
+  // Отправляем на сервер
   try {
-    const response = await fetch(`${SCRIPT_URL}?action=incrementViews`)
-    const data = await response.json()
-    pageViews.value = data.pageViews
-  } catch (error) {
-    console.error('Ошибка инкремента просмотров:', error)
-  }
+    await fetch(`${SCRIPT_URL}?action=incrementViews`)
+  } catch (e) {}
 }
 
-const addLike = async () => {
-  try {
-    const response = await fetch(`${SCRIPT_URL}?action=addLike`)
-    const data = await response.json()
-    korzhLikes.value = data.korzhLikes
-  } catch (error) {
-    console.error('Ошибка добавления лайка:', error)
-  }
-}
-
-const removeLike = async () => {
-  try {
-    const response = await fetch(`${SCRIPT_URL}?action=removeLike`)
-    const data = await response.json()
-    korzhLikes.value = data.korzhLikes
-  } catch (error) {
-    console.error('Ошибка удаления лайка:', error)
+const toggleKorzhLike = async () => {
+  // МГНОВЕННАЯ РЕАКЦИЯ UI
+  const wasLiked = isKorzhLiked.value
+  isKorzhLiked.value = !wasLiked
+  
+  if (!wasLiked) {
+    // Ставим лайк
+    stats.value.korzhLikes++
+    localStorage.setItem('korzh_liked_status', 'true')
+    saveToCache()
+    
+    // В фоне шлем запрос
+    fetch(`${SCRIPT_URL}?action=addLike`).catch(() => {
+      // Откат при ошибке (редко)
+      stats.value.korzhLikes--
+      isKorzhLiked.value = false
+    })
+  } else {
+    // Убираем лайк
+    stats.value.korzhLikes--
+    localStorage.removeItem('korzh_liked_status')
+    saveToCache()
+    
+    fetch(`${SCRIPT_URL}?action=removeLike`).catch(() => {
+      // Откат при ошибке
+      stats.value.korzhLikes++
+      isKorzhLiked.value = true
+    })
   }
 }
 
 onMounted(async () => {
-  await fetchStats()
+  // 1. Сначала грузим кэш (мгновенно отобразит цифры с прошлого раза)
+  loadFromCache()
   
+  // 2. Проверяем статус лайка
   const hasLikedKorzh = localStorage.getItem('korzh_liked_status')
   if (hasLikedKorzh) {
     isKorzhLiked.value = true
   }
 
+  // 3. Фоново обновляем данные с сервера (юзер не видит блера, просто цифры могут чуть поменяться)
+  await fetchStats()
+
+  // 4. Инкремент просмотра (1 раз за сессию)
   const sessionViewed = sessionStorage.getItem('signal_session_viewed')
   if (!sessionViewed) {
-    await incrementViews()
+    incrementViews()
     sessionStorage.setItem('signal_session_viewed', 'true')
   }
 })
 
-const toggleKorzhLike = async () => {
-  if (!isKorzhLiked.value) {
-    isKorzhLiked.value = true
-    localStorage.setItem('korzh_liked_status', 'true')
-    await addLike()
-  } else {
-    isKorzhLiked.value = false
-    localStorage.removeItem('korzh_liked_status')
-    await removeLike()
-  }
-}
-
-const formattedPageViews = computed(() => formatNumber(pageViews.value))
+const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 </script>
 
 <template>
@@ -99,11 +145,11 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
           <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
         </svg>
-        <span>{{ korzhLikes }}</span>
+        <span>{{ stats.korzhLikes }}</span>
       </div>
       <div class="global-stat-item">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-        <span>{{ lightning }}</span>
+        <span>{{ stats.korzhSignals }}</span>
       </div>
     </div>
 
@@ -153,11 +199,11 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
               <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
             </svg>
-            <span>{{ korzhLikes }}</span>
+            <span>{{ stats.korzhLikes }}</span>
           </div>
           <div class="stat-item">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-            <span>{{ lightning }}</span>
+            <span>{{ stats.korzhSignals }}</span>
           </div>
         </div>
 
@@ -224,6 +270,7 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 </template>
 
 <style scoped>
+/* Стили без изменений */
 .essential-apps {
   background-color: #1a1a1a;
   color: #e0e0e0;
