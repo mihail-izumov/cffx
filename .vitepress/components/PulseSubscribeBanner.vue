@@ -11,13 +11,11 @@
           <div class="banner-intro">ОСТАНЕМСЯ НА СВЯЗИ?</div>
 
           <div class="banner-title">
-            <!-- Десктопная версия (≥769px) -->
             <span class="title-desktop">
               Еще больше возможностей быть ближе к бизнесу,<br>
               который вы любите.
             </span>
 
-            <!-- Мобильная версия (≤768px) -->
             <span class="title-mobile">
               Еще больше возможностей<br>
               быть ближе к бизнесу,<br>
@@ -28,10 +26,7 @@
           <p v-if="subtitle" class="banner-subtitle">{{ subtitle }}</p>
         </div>
 
-        <button
-          class="banner-button"
-          @click="handleButtonClick"
-        >
+        <button class="banner-button" @click="handleButtonClick">
           {{ buttonText }}
         </button>
       </div>
@@ -43,30 +38,15 @@
 import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
-  imageSrc: {
-    type: String,
-    default: '/subscribe_ban.jpg'
-  },
-  imageAlt: {
-    type: String,
-    default: 'Новости Сигнала в Телеграм'
-  },
+  imageSrc: { type: String, default: '/subscribe_ban.jpg' },
+  imageAlt: { type: String, default: 'Новости Сигнала в Телеграм' },
   title: {
     type: String,
     default: 'Еще больше возможностей быть ближе к бизнесу, который вы любите.'
   },
-  subtitle: {
-    type: String,
-    default: ''
-  },
-  buttonText: {
-    type: String,
-    default: 'Подписаться в Телеграм'
-  },
-  buttonLink: {
-    type: String,
-    default: 'https://t.me/runScale'
-  }
+  subtitle: { type: String, default: '' },
+  buttonText: { type: String, default: 'Подписаться в Телеграм' },
+  buttonLink: { type: String, default: 'https://t.me/runScale' }
 })
 
 const emit = defineEmits(['button-click'])
@@ -97,7 +77,7 @@ const handleButtonClick = () => {
   width: 100%;
   height: auto;
   border-radius: max(12px, min(24px, 3vw));
-  box-shadow: 0 4px 12px rgba(0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   display: block;
 }
@@ -128,7 +108,7 @@ const handleButtonClick = () => {
   color: #b5f240;
   text-transform: uppercase;
   letter-spacing: 0.25em;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 4px rgba(0, 0, 0.5);
   margin: -1rem 0 1rem 0;
 }
 
@@ -142,32 +122,17 @@ const handleButtonClick = () => {
   max-width: 600px;
 }
 
-/* Управление переносами /
-.title-desktop {
-  display: block;
-}
-
-.title-mobile {
-  display: none;
-}
+/* Переносы заголовка */
+.title-desktop { display: block; }
+.title-mobile  { display: none; }
 
 @media (max-width: 768px) {
-  .title-desktop {
-    display: none;
-  }
-  .title-mobile {
-    display: block;
-  }
+  .title-desktop { display: none; }
+  .title-mobile  { display: block; }
 
-  .banner-overlay {
-    padding: 1rem;
-  }
-  .banner-text {
-    margin-bottom: 2rem;
-  }
-  .banner-button {
-    padding: 0.6rem 1.8rem;
-  }
+  .banner-overlay { padding: 1rem; }
+  .banner-text    { margin-bottom: 2rem; }
+  .banner-button  { padding: 0.6rem 1.8rem; }
 }
 
 .banner-subtitle {
