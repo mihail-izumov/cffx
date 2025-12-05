@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
-// --- НАСТРОЙКИ СКРЫТЫХ СЧЕТЧИКОВ ---
 const _GRID_COLS = 4
 const _GRID_ROWS = 3
 const _GRID_GAP = 2
@@ -10,9 +9,9 @@ const _GRID_PADDING = 2
 const _baseLikes = _GRID_COLS * _GRID_ROWS
 const _baseLightning = _GRID_GAP * _GRID_PADDING
 
-// --- СОСТОЯНИЕ КОМПОНЕНТОВ ---
 const isKorzhLiked = ref(false)
 const korzhLikes = ref(_baseLikes)
+
 const pageViews = ref(0)
 
 onMounted(() => {
@@ -20,9 +19,12 @@ onMounted(() => {
   if (hasLikedKorzh) {
     isKorzhLiked.value = true
     korzhLikes.value = _baseLikes + 1
+  } else {
+    korzhLikes.value = _baseLikes
   }
 
-  let currentViews = parseInt(localStorage.getItem('signal_page_views') || '2340', 10)
+  const storedViews = localStorage.getItem('signal_page_views')
+  let currentViews = storedViews ? parseInt(storedViews, 10) : 0
   currentViews++
   pageViews.value = currentViews
   localStorage.setItem('signal_page_views', currentViews.toString())
@@ -39,14 +41,13 @@ const toggleKorzhLike = () => {
   }
 }
 
-// --- СУММАРНЫЕ МЕТРИКИ (для нижнего блока) ---
 const totalLikes = computed(() => korzhLikes.value) 
-const totalLightning = computed(() => _baseLightning)
+const totalLightning = computed(() => _baseLightning) 
 </script>
 
 <template>
   <div class="essential-apps">
-    
+
     <div class="header">
       <div class="actions">
         <a href="/invest/pulse" class="btn-create">
@@ -71,10 +72,10 @@ const totalLightning = computed(() => _baseLightning)
     </div>
 
     <div class="apps-grid">
-      <!-- ЛЕВАЯ КАРТОЧКА (КОРЖ) -->
       <div class="app-card korzh-card">
         <div class="card-header">
           <span class="app-name">КОРЖ</span>
+          
           <div 
             class="like-btn" 
             :class="{ 'is-liked': isKorzhLiked }"
@@ -90,7 +91,7 @@ const totalLightning = computed(() => _baseLightning)
               stroke-width="2" 
               stroke-linecap="round" 
               stroke-linejoin="round" 
-              class="lucide lucide-heart-icon"
+              class="lucide lucide-heart-icon lucide-heart"
             >
               <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
             </svg>
@@ -98,22 +99,22 @@ const totalLightning = computed(() => _baseLightning)
         </div>
 
         <div class="app-icon">
-          <img src="/korzh_badge.svg" alt="Корж" class="card-image-rounded" />
+          <img src="/korzh_badge.svg" alt="Корж" />
         </div>
 
-        <p class="card-description bold-desc white-text">
+        <p class="card-description bold-desc">
           Жить любить кофе пить
         </p>
 
         <div class="stats-row">
           <div class="stat-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
               <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
             </svg>
             <span>{{ korzhLikes }}</span>
           </div>
           <div class="stat-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap">
               <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
             </svg>
             <span>{{ _baseLightning }}</span>
@@ -126,22 +127,23 @@ const totalLightning = computed(() => _baseLightning)
 
         <div class="bubbles-container">
           <div class="bubble">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gift-icon"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gift-icon lucide-gift"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
             Вознаграждения
           </div>
-          <a href="/korzh" target="_blank" class="bubble bubble-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="bubble bubble-active">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
             Сигналы работают
           </a>
-          <div class="bubble">Инвестиции</div>
           <div class="bubble">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag-icon"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg>
+            Инвестиции
+          </div>
+          <div class="bubble">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag-icon lucide-flag"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg>
             Самара
           </div>
         </div>
       </div>
 
-      <!-- ПРАВАЯ КАРТОЧКА (ПРОМО) -->
       <div class="app-card promo-card">
         <p class="promo-text">
           Получите поддержку клиентов, чтобы расти быстрее конкурентов.
@@ -151,22 +153,24 @@ const totalLightning = computed(() => _baseLightning)
         </a>
       </div>
     </div>
-    
-    <!-- НИЖНИЙ БЛОК СТАТИСТИКИ -->
+
     <div class="stats-footer-block">
       <div class="global-stat-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0Z"/>ircle cx="12" cy="12" r="3"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>ircle cx="12" cy="12" r="3"/></svg>
         <span>{{ pageViews }}</span>
       </div>
       <div class="global-stat-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
+          <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+        </svg>
         <span>{{ totalLikes }}</span>
       </div>
       <div class="global-stat-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
         <span>{{ totalLightning }}</span>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -314,21 +318,27 @@ const totalLightning = computed(() => _baseLightning)
   color: #ffffff;
   margin: 0;
   line-height: 1.6;
-  max-width: 90%;
+  max-width: 80%;
 }
 
 .promo-link {
   color: #C5F946;
+  opacity: 0.7;
+  text-decoration: none !important;
   font-size: 16px;
   font-weight: 600;
-  text-decoration: none;
   border-bottom: 1px solid #C5F946;
-  opacity: 0.7;
   transition: opacity 0.3s ease;
 }
 
 .promo-link:hover {
   opacity: 1;
+}
+
+.promo-link:hover,
+.promo-link:active,
+.promo-link:visited {
+  text-decoration: none !important;
 }
 
 .app-card:hover {
@@ -353,12 +363,16 @@ const totalLightning = computed(() => _baseLightning)
   cursor: pointer;
   color: #9e9e9e;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 4px;
   border-radius: 50%;
 }
 
 .like-btn:hover {
   color: #fff;
+  background: transparent;
 }
 
 .like-btn.is-liked {
@@ -373,14 +387,25 @@ const totalLightning = computed(() => _baseLightning)
   margin-bottom: 16px;
 }
 
-.card-image-rounded {
+.app-icon img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 20px;
+  border-radius: 24px;
 }
 
-.card-description.bold-desc.white-text {
+.card-description {
+  font-size: 13px;
+  color: #f5f5f5;
+  text-align: center;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-description.bold-desc {
   font-size: 16px; 
   font-weight: 600;
   color: #ffffff;
@@ -418,10 +443,11 @@ const totalLightning = computed(() => _baseLightning)
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.3s ease;
   text-decoration: none;
-  display: flex;
-  justify-content: center;
 }
 
 .play-btn:hover {
@@ -429,6 +455,12 @@ const totalLightning = computed(() => _baseLightning)
   background: #C5F946;
   color: #1a1a1a;
   transform: translateY(-2px);
+}
+
+.app-card:has(.play-btn:hover) {
+  transform: translateY(-4px);
+  border-color: #4a4a4a;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .bubbles-container {
@@ -443,25 +475,27 @@ const totalLightning = computed(() => _baseLightning)
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background-color: #4a4a4a; 
-  color: #c0c0c0; 
+  background-color: #424242; 
+  color: #adadad; 
   padding: 6px 12px; 
   border-radius: 14px;
   font-size: 12px; 
   font-weight: 500;
-  text-decoration: none;
+  line-height: 1;
   cursor: default;
-  transition: background-color 0.3s ease;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
 }
 
-.bubble.bubble-link {
-  background-color: #5a5a5a;
-  color: #ffffff;
+.bubble.bubble-active {
+  background-color: #4a4a4a;
+  color: #d0d0d0;
   cursor: pointer;
 }
 
-.bubble.bubble-link:hover {
-  background-color: #6a6a6a;
+.bubble.bubble-active:hover {
+  background-color: #5a5a5a;
+  color: #e0e0e0;
 }
 
 .stats-footer-block {
@@ -485,17 +519,33 @@ const totalLightning = computed(() => _baseLightning)
 }
 
 @media (max-width: 768px) {
+  .essential-apps {
+    margin: 32px 0;
+  }
+
   .actions {
     grid-template-columns: 1fr;
   }
+
   .apps-grid {
     grid-template-columns: 1fr;
   }
+
+  .app-icon {
+    height: 140px;
+  }
+
+  .card-description {
+    font-size: 16px;
+    margin: 0 0 16px 0;
+    padding: 0 8px;
+  }
+
   .stats-footer-block {
     flex-direction: row;
     gap: 24px;
     padding: 16px;
-    margin-top: 24px;
+    border-radius: 50px;
   }
 }
 </style>
