@@ -25,7 +25,7 @@
           <p v-if="subtitle" class="banner-subtitle">{{ subtitle }}</p>
         </div>
 
-        <button class="banner-button glass-pill" @click="handleButtonClick">
+        <button class="glass-pill" @click="handleButtonClick">
           {{ buttonText }}
         </button>
       </div>
@@ -78,11 +78,16 @@ const handleButtonClick = () => {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.glass-pill:hover ~ .banner-image {
-  transform: scale(1.04);
+/* ЗУМ РАБОТАЕТ — правильный селектор! */
+.banner-overlay .glass-pill:hover {
+  transform: translateY(-5px);
+}
+.banner-overlay .glass-pill:hover ~ .banner-image,
+.banner-overlay .glass-pill:focus-visible ~ .banner-image {
+  transform: scale(1.045);
 }
 
 .banner-overlay {
@@ -116,60 +121,81 @@ const handleButtonClick = () => {
   font-size: clamp(1.1rem, 2.6vw, 1.75rem);
   font-weight: 600;
   color: white;
-  text-shadow: 0 3px 10px rgba(0,0,0,0.7);
+  text-shadow: 0 3px 12px rgba(0,0,0,0.8);
   line-height: 1.32;
-  max-width: 680px;
+  max-width: 700px;
 }
 
 .title-desktop { display: block; }
-.title-mobile  { display: none; }
+.title-mobile { display: none; }
 
-/* Кнопка — полностью круглая + жидкое стекло + лаймовый цвет всегда */
+/* КНОПКА — ЖИДКОЕ СТЕКЛО + APPLE HIGHLIGHT + ГРАДИЕНТНЫЙ БОРДЕР */
 .glass-pill {
   pointer-events: auto;
-  background: rgba(30, 30, 32, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1.8px solid #b5f240;
-  color: #b5f240;
-  font-weight: 600;
-  font-size: clamp(1.05rem, 2.2vw, 1.15rem);
-  padding: 0.95rem 3.2rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 20px rgba(181,242,64,0.15);
   position: relative;
+  background: rgba(20, 20, 22, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 9999px;
+  padding: 1rem 3.4rem;
+  font-weight: 600;
+  font-size: clamp(1.05rem, 2.2vw, 1.18rem);
+  color: #b5f240;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
+/* Градиентный живой бордер */
 .glass-pill::before {
   content: '';
   position: absolute;
+  inset: -2px;
+  padding: 2px;
+  background: linear-gradient(90deg, #b5f240, #95d428, #b5f240, #85c41f);
+  background-size: 300% 300%;
+  border-radius: 9999px;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  animation: borderFlow 6s linear infinite;
+  z-index: -1;
+}
+
+/* Внутреннее свечение сверху (как у Apple) */
+.glass-pill::after {
+  content: '';
+  position: absolute;
   inset: 0;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(181,242,64,0.15) 30%,
-    rgba(181,242,64,0.3) 50%,
-    rgba(181,242,64,0.15) 70%,
-    transparent 100%
+  border-radius: 9999px;
+  background: linear-gradient(180deg, 
+    rgba(181,242,64,0.25) 0%,
+    transparent 40%
   );
-  transform: translateX(-150%);
-  transition: transform 0.7s;
+  pointer-events: none;
+  opacity: 0.7;
+  transition: opacity 0.4s;
 }
 
 .glass-pill:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.45), 0 0 35px rgba(181,242,64,0.4);
-  background: rgba(40,40,44,0.65);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(181,242,64,0.3);
 }
 
-.glass-pill:hover::before {
-  transform: translateX(150%);
+.glass-pill:hover::after {
+  opacity: 1;
 }
 
 .glass-pill:active {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+}
+
+@keyframes borderFlow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
 }
 
 @media (max-width: 768px) {
@@ -178,8 +204,8 @@ const handleButtonClick = () => {
   .banner-overlay { padding: 1.5rem; }
   .banner-text    { margin-bottom: 2.5rem; }
   .glass-pill {
-    padding: 0.85rem 2.6rem;
-    font-size: 1.1rem;
+    padding: 0.9rem 2.8rem;
+    font-size: 1.12rem;
   }
 }
 
