@@ -102,7 +102,7 @@ const handleButtonClick = () => {
   align-items: center;
   gap: 2.2rem;
   width: 100%;
-  max-width: 720px;
+  max-width: 700px;
   text-align: center;
 }
 
@@ -127,80 +127,64 @@ const handleButtonClick = () => {
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-/* ЖИДКОЕ СТЕКЛО APPLE 2025 — с заметной лаймовой обводкой и внутренним размытием */
+/* ЖИДКОЕ СТЕКЛО — финальная версия */
 .glass-pill {
   pointer-events: auto;
   position: relative;
   isolation: isolate;
-  background: rgba(28, 28, 32, 0.58);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(25, 25, 30, 0.68);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   border-radius: 9999px;
-  padding: 1.15rem 3.8rem;
+  padding: 1.1rem 3.8rem;
   font-weight: 600;
   font-size: clamp(1.1rem, 2.3vw, 1.22rem);
   color: #ffffff;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
   cursor: pointer;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
   box-shadow: 
-    0 12px 40px rgba(0,0,0,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.08);
+    0 12px 40px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
-/* Заметная живая лаймовая обводка по всему периметру */
+/* Красивая живая лаймовая обводка по всему периметру */
 .glass-pill::before {
   content: '';
   position: absolute;
-  inset: -2.5px;
+  inset: -2px;
   border-radius: 9999px;
-  padding: 2.5px;
-  background: linear-gradient(90deg, #b5f240, #e0ff80, #95d428, #b5f240);
+  padding: 2px;
+  background: linear-gradient(90deg, #b5f240, #dfff90, #95d428, #b5f240);
   background-size: 300% 300%;
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   -webkit-mask-composite: xor;
-  animation: borderFlow 7s linear infinite;
+  animation: borderFlow 8s linear infinite;
   z-index: -1;
 }
 
-/* Внутреннее свечение + лёгкое боковое сияние (как у Apple) */
+/* Внутреннее размытие фона + тонкое свечение сверху и по бокам */
 .glass-pill::after {
   content: '';
   position: absolute;
-  inset: 2px;
+  inset: 3px;
   border-radius: 9999px;
-  background: linear-gradient(180deg,
-    rgba(181,242,64,0.14) 0%,
-    rgba(181,242,64,0.04) 30%,
-    transparent 70%
-  );
+  background: radial-gradient(ellipse at top, rgba(181,242,64,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at left, rgba(181,242,64,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at right, rgba(181,242,64,0.08) 0%, transparent 50%);
+  backdrop-filter: blur(6px);
   pointer-events: none;
   z-index: -1;
 }
 
-/* Лёгкое боковое свечение (опционально, но очень красиво) */
-.glass-pill > span {
-  position: absolute;
-  top: 50%;
-  width: 30%;
-  height: 60%;
-  background: linear-gradient(90deg, transparent, rgba(181,242,64,0.08), transparent);
-  filter: blur(12px);
-  transform: translateY(-50%);
-  opacity: 0.6;
-  pointer-events: none;
-}
-.glass-pill > span:first-of-type { left: 0; }
-.glass-pill > span:last-of-type { right: 0; }
-
 .glass-pill:hover {
-  transform: translateY(-8px);
-  background: rgba(35,35,40,0.75);
+  transform: translateY(-7px);
+  background: rgba(32,32,38,0.78);
   box-shadow: 
-    0 24px 60px rgba(0,0,0,0.6),
-    0 0 40px rgba(181,242,64,0.25);
+    0 24px 60px rgba(0,0,0,0.55),
+    0 0 35px rgba(181,242,64,0.22);
 }
 
 .glass-pill:active {
@@ -212,7 +196,7 @@ const handleButtonClick = () => {
   100% { background-position: 300% 50%; }
 }
 
-/* Мобильная адаптация */
+/* Мобильная версия — идеальное центрирование */
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
