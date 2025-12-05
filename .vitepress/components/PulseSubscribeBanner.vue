@@ -128,59 +128,67 @@ const handleButtonClick = () => {
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-/* КНОПКА — Apple-style 2025: Refined */
+/* КНОПКА — Жидкое стекло (Liquid Glass) */
 .glass-pill {
   pointer-events: auto;
   position: relative;
-  background: rgba(20, 20, 24, 0.68);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   
-  /* 1. Добавили тонкую полупрозрачную обводку лаймового оттенка */
-  border: 1px solid rgba(181, 242, 64, 0.25);
+  /* Фон: стал чуть прозрачнее (0.55), чтобы пропустить размытый фон */
+  background: rgba(20, 20, 24, 0.55);
+  
+  /* Сильное размытие фона (эффект стекла) */
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  
+  /* Border: используем border 1px, такой же как у верхнего блика */
+  border: 1px solid rgba(181, 242, 64, 0.3);
   
   border-radius: 9999px;
   padding: 1.05rem 3.6rem;
   font-weight: 600;
   font-size: clamp(1.08rem, 2.3vw, 1.2rem);
-  
-  /* 2. Цвет текста изменили на лаймовый */
-  color: #b5f240;
-  
+  color: #b5f240; /* Лаймовый текст */
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
   cursor: pointer;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
-  box-shadow: 0 10px 35px rgba(0,0,0,0.45);
+  
+  /* Тень для глубины */
+  box-shadow: 
+    0 10px 40px rgba(0,0,0,0.4), 
+    inset 0 0 0 0.5px rgba(255,255,255,0.1); /* Тонкий внутренний контур */
 }
 
-/* Верхний блик (оставил как было, так как он вам нравился) */
+/* Верхний блик — строго 1px высотой, совпадает с border */
 .glass-pill::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(181,242,64,0.5), transparent);
-  opacity: 0.8;
+  height: 1px; /* Высота равна толщине border */
+  background: linear-gradient(90deg, transparent, rgba(181,242,64,0.8), transparent);
+  opacity: 0.9;
+  z-index: 2;
 }
 
-/* Внутренний глянец */
+/* Эффект "мокрого" блика внутри */
 .glass-pill::after {
   content: '';
   position: absolute;
-  top: 1px; left: 4px; right: 4px;
-  height: 32%;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent);
+  top: 1px; left: 1px; right: 1px;
+  bottom: 0;
   border-radius: 9999px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.01) 40%, transparent 100%);
   pointer-events: none;
 }
 
 .glass-pill:hover {
   transform: translateY(-7px);
-  background: rgba(30,30,35,0.85);
-  /* При наведении обводка становится чуть ярче */
-  border-color: rgba(181, 242, 64, 0.5);
-  box-shadow: 0 22px 55px rgba(0,0,0,0.55), 0 0 30px rgba(181,242,64,0.15);
+  /* При наведении стекло становится чуть плотнее */
+  background: rgba(30,30,35,0.75);
+  border-color: rgba(181, 242, 64, 0.6);
+  box-shadow: 
+    0 22px 55px rgba(0,0,0,0.55), 
+    0 0 30px rgba(181,242,64,0.2);
 }
 
 .glass-pill:active {
