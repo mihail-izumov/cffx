@@ -455,7 +455,7 @@ function nav(): DefaultTheme.NavItem[] {
       link: '/pro/index'
     },
     {
-      text: 'Инвесторы',
+      text: 'Возможности',
       link: '/invest/pulse'
     }
   ]
