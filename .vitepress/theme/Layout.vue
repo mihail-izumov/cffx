@@ -27,7 +27,7 @@ const { frontmatter } = useData()
 const router = useRouter()
 
 const shouldShowBanner = computed(() => 
-  frontmatter.value?.notification === 'brew' || frontmatter.value?.notification === 'general'
+  ['brew', 'general', 'clients'].includes(frontmatter.value?.notification)
 )
 
 watch(shouldShowBanner, (newVal) => {
