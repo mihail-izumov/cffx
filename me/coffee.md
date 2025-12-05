@@ -17,6 +17,8 @@ description: Сигнал – тому кто решает
   Без регистрации.<br class="mobile-break"> <strong>Результат — сегодня.</strong>
 </p>
 
+<br>
+
 <BadgeCounter />
 
 </div>
