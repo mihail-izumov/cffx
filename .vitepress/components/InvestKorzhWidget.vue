@@ -14,6 +14,13 @@ const korzhLikes = ref(_baseLikes)
 
 const pageViews = ref(0)
 
+const formatNumber = (num) => {
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K'
+  }
+  return num.toString()
+}
+
 onMounted(() => {
   const hasLikedKorzh = localStorage.getItem('korzh_liked_status')
   if (hasLikedKorzh) {
@@ -42,7 +49,8 @@ const toggleKorzhLike = () => {
 }
 
 const totalLikes = computed(() => korzhLikes.value) 
-const totalLightning = computed(() => _baseLightning) 
+const totalLightning = computed(() => _baseLightning)
+const formattedPageViews = computed(() => formatNumber(pageViews.value))
 </script>
 
 <template>
@@ -99,7 +107,9 @@ const totalLightning = computed(() => _baseLightning)
         </div>
 
         <div class="app-icon">
-          <img src="/korzh_badge.svg" alt="Корж" />
+          <div class="badge-wrapper">
+            <img src="/korzh_badge.svg" alt="Корж" class="badge-image" />
+          </div>
         </div>
 
         <p class="card-description bold-desc">
@@ -128,14 +138,6 @@ const totalLightning = computed(() => _baseLightning)
         </div>
 
         <div class="bubbles-container">
-          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="bubble bubble-inverted">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-            Сигналы работают
-          </a>
-          <div class="bubble">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gift-icon lucide-gift"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
-            Вознаграждения
-          </div>
           <div class="bubble">
             Инвестиции в кофейни
           </div>
@@ -143,6 +145,14 @@ const totalLightning = computed(() => _baseLightning)
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag-icon lucide-flag"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg>
             Самара
           </div>
+          <div class="bubble">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gift-icon lucide-gift"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
+            Вознаграждения
+          </div>
+          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="bubble bubble-signal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+            Сигналы работают
+          </a>
         </div>
       </div>
 
@@ -159,8 +169,8 @@ const totalLightning = computed(() => _baseLightning)
 
     <div class="stats-footer-block">
       <div class="global-stat-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>ircle cx="12" cy="12" r="3"/></svg>
-        <span>{{ pageViews }}</span>
+        <img src="/eye-icon.svg" alt="Просмотры" class="eye-icon" />
+        <span>{{ formattedPageViews }}</span>
       </div>
       <div class="global-stat-item">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
@@ -303,7 +313,8 @@ const totalLightning = computed(() => _baseLightning)
 }
 
 .app-card.korzh-card {
-  grid-template-rows: auto auto auto auto auto auto 1fr;
+  grid-template-rows: auto auto auto auto auto auto auto;
+  padding-bottom: 24px;
 }
 
 .app-card.promo-card {
@@ -319,18 +330,18 @@ const totalLightning = computed(() => _baseLightning)
 
 .promo-bg-icon {
   position: absolute;
-  width: 200px;
-  height: 200px;
-  bottom: -50px;
-  right: -50px;
+  width: 500px;
+  height: 500px;
+  bottom: -150px;
+  right: -150px;
   background-image: url('/favicon.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.08;
+  opacity: 0.06;
   pointer-events: none;
-  mask-image: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,1) 100%);
-  -webkit-mask-image: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,1) 100%);
+  mask-image: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.2) 20%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.8) 80%, rgba(0,0,0,1) 100%);
+  -webkit-mask-image: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.2) 20%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.8) 80%, rgba(0,0,0,1) 100%);
 }
 
 .promo-text {
@@ -375,6 +386,10 @@ const totalLightning = computed(() => _baseLightning)
   background: #323232;
 }
 
+.app-card.korzh-card:hover .badge-image {
+  filter: none;
+}
+
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -417,11 +432,23 @@ const totalLightning = computed(() => _baseLightning)
   margin-bottom: 16px;
 }
 
-.app-icon img {
+.badge-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.badge-image {
   width: 100%;
   height: 100%;
   object-fit: contain;
   border-radius: 24px;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
 }
 
 .card-description.bold-desc {
@@ -438,7 +465,7 @@ const totalLightning = computed(() => _baseLightning)
 
 .card-subtitle {
   font-size: 13px;
-  font-weight: 300;
+  font-weight: 500;
   color: #b0b0b0;
   margin: 8px 0 0 0;
   text-align: center;
@@ -449,7 +476,7 @@ const totalLightning = computed(() => _baseLightning)
   display: flex;
   justify-content: center;
   gap: 16px;
-  margin: 24px 0; 
+  margin: 12px 0;
   color: #e0e0e0;
   font-size: 14px;
   font-weight: 500;
@@ -464,6 +491,7 @@ const totalLightning = computed(() => _baseLightning)
 .card-footer {
   display: flex;
   align-items: center;
+  margin-bottom: 16px;
 }
 
 .play-btn {
@@ -501,7 +529,6 @@ const totalLightning = computed(() => _baseLightning)
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
-  margin-top: 16px;
 }
 
 .bubble {
@@ -517,26 +544,30 @@ const totalLightning = computed(() => _baseLightning)
   line-height: 1;
   cursor: default;
   text-decoration: none !important;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.bubble.bubble-inverted {
-  background-color: #C5F946;
-  color: #1a1a1a;
+.bubble.bubble-signal {
+  background-color: #606060;
+  color: #2a2a2a;
   cursor: pointer;
   text-decoration: none !important;
 }
 
-.bubble.bubble-inverted:hover {
-  background-color: #d4ff6b;
+.bubble.bubble-signal:hover {
+  background-color: #ffffff;
+  color: #1a1a1a;
   text-decoration: none !important;
 }
 
-.bubble.bubble-inverted:hover,
-.bubble.bubble-inverted:active,
-.bubble.bubble-inverted:visited,
-.bubble.bubble-inverted:focus {
+.bubble.bubble-signal:hover,
+.bubble.bubble-signal:active,
+.bubble.bubble-signal:visited,
+.bubble.bubble-signal:focus {
   text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .stats-footer-block {
@@ -558,6 +589,12 @@ const totalLightning = computed(() => _baseLightning)
   font-size: 16px;
   font-weight: 600;
   color: #e0e0e0;
+}
+
+.eye-icon {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(0.85);
 }
 
 @media (max-width: 768px) {
