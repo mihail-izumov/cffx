@@ -1,19 +1,27 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
-// Вставь сюда свой URL скрипта
+// --- КОНФИГУРАЦИЯ ---
+
+// 1. Ссылка на твой Google Script
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
-// Переменные состояния
+// 2. БАЗОВЫЕ ЗНАЧЕНИЯ (должны совпадать с колонкой C в Google Таблице)
+// Это то, что видит новый пользователь в первую секунду
+const INITIAL_BASE = {
+  pageViews: 120,    // Впиши сюда число из ячейки C2
+  korzhLikes: 56,    // Впиши сюда число из ячейки C3
+  korzhSignals: 12   // Впиши сюда число из ячейки C4
+}
+
+// --- СОСТОЯНИЕ ---
+
 const isKorzhLiked = ref(false)
 
-// Данные (по умолчанию нули, но сразу попытаемся взять из кэша)
-const stats = ref({
-  pageViews: 0,
-  korzhLikes: 0,
-  korzhSignals: 4
-})
+// Инициализируем сразу "красивыми" цифрами
+const stats = ref({ ...INITIAL_BASE })
 
+// Форматирование (1200 -> 1.2K)
 const formatNumber = (num) => {
   if (!num) return '0'
   if (num >= 1000) {
@@ -22,15 +30,14 @@ const formatNumber = (num) => {
   return num.toString()
 }
 
-// --- Логика Кэширования ---
+// --- ЛОГИКА КЭША ---
 
-// Загрузка из кэша (выполняется мгновенно при старте)
 const loadFromCache = () => {
   try {
     const cached = localStorage.getItem('signal_stats_cache')
     if (cached) {
       const parsed = JSON.parse(cached)
-      // Если в кэше есть данные, применяем их сразу
+      // Если есть кэш - он приоритетнее хардкода
       stats.value = { ...stats.value, ...parsed }
     }
   } catch (e) {
@@ -38,48 +45,41 @@ const loadFromCache = () => {
   }
 }
 
-// Сохранение в кэш
 const saveToCache = () => {
   localStorage.setItem('signal_stats_cache', JSON.stringify(stats.value))
 }
 
-// --- Сетевая Логика ---
+// --- СЕТЕВАЯ ЛОГИКА ---
 
 const fetchStats = async () => {
   try {
     const response = await fetch(`${SCRIPT_URL}?action=get`)
     const data = await response.json()
     
-    // Обновляем данные (сервер главнее кэша)
-    // Но если пользователь лайкнул пока грузилось, нужно быть аккуратным.
-    // Для простоты: просто обновляем, но учитываем локальный лайк.
-    
-    stats.value.pageViews = data.pageViews || stats.value.pageViews
-    
-    // Хитрый момент: если мы локально лайкнули, а сервер вернул старое число (без лайка),
-    // может случиться скачок. Но обычно "Всего" из таблицы уже включает базу.
-    stats.value.korzhLikes = data.korzhLikes || stats.value.korzhLikes
-    stats.value.korzhSignals = data.korzhSignals || stats.value.korzhSignals
+    // Обновляем данные (сервер всегда прав)
+    if (data.pageViews) stats.value.pageViews = data.pageViews
+    if (data.korzhLikes) stats.value.korzhLikes = data.korzhLikes
+    if (data.korzhSignals) stats.value.korzhSignals = data.korzhSignals
     
     saveToCache() // Обновляем кэш свежими данными
   } catch (error) {
-    console.error('Ошибка загрузки (используем кэш):', error)
+    console.error('Ошибка загрузки с сервера, показываем кэш/базу:', error)
   }
 }
 
 const incrementViews = async () => {
-  // Оптимистично +1
+  // Оптимистично обновляем UI
   stats.value.pageViews++
   saveToCache()
   
-  // Отправляем на сервер
+  // Шлем запрос (fire and forget)
   try {
     await fetch(`${SCRIPT_URL}?action=incrementViews`)
   } catch (e) {}
 }
 
 const toggleKorzhLike = async () => {
-  // МГНОВЕННАЯ РЕАКЦИЯ UI
+  // МГНОВЕННАЯ РЕАКЦИЯ ИНТЕРФЕЙСА
   const wasLiked = isKorzhLiked.value
   isKorzhLiked.value = !wasLiked
   
@@ -89,7 +89,7 @@ const toggleKorzhLike = async () => {
     localStorage.setItem('korzh_liked_status', 'true')
     saveToCache()
     
-    // В фоне шлем запрос
+    // Отправляем на сервер
     fetch(`${SCRIPT_URL}?action=addLike`).catch(() => {
       // Откат при ошибке (редко)
       stats.value.korzhLikes--
@@ -102,27 +102,29 @@ const toggleKorzhLike = async () => {
     saveToCache()
     
     fetch(`${SCRIPT_URL}?action=removeLike`).catch(() => {
-      // Откат при ошибке
+      // Откат
       stats.value.korzhLikes++
       isKorzhLiked.value = true
     })
   }
 }
 
+// --- ЗАПУСК ---
+
 onMounted(async () => {
-  // 1. Сначала грузим кэш (мгновенно отобразит цифры с прошлого раза)
+  // 1. МГНОВЕННО: Грузим из кэша (если есть) или показываем INITIAL_BASE
   loadFromCache()
   
-  // 2. Проверяем статус лайка
+  // 2. Проверяем, стоит ли лайк у юзера локально
   const hasLikedKorzh = localStorage.getItem('korzh_liked_status')
   if (hasLikedKorzh) {
     isKorzhLiked.value = true
   }
 
-  // 3. Фоново обновляем данные с сервера (юзер не видит блера, просто цифры могут чуть поменяться)
+  // 3. ФОНОВО: Грузим актуальные данные с сервера (юзер не замечает задержки)
   await fetchStats()
 
-  // 4. Инкремент просмотра (1 раз за сессию)
+  // 4. ФОНОВО: Засчитываем просмотр (1 раз за сессию)
   const sessionViewed = sessionStorage.getItem('signal_session_viewed')
   if (!sessionViewed) {
     incrementViews()
@@ -270,7 +272,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 </template>
 
 <style scoped>
-/* Стили без изменений */
+/* Стили без изменений, можно оставить из предыдущих версий */
 .essential-apps {
   background-color: #1a1a1a;
   color: #e0e0e0;
