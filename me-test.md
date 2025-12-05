@@ -1,2 +1,2 @@
 
-<SignalConfigurator2New />
+<InvestKorzhWidget />
