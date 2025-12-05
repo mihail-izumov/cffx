@@ -8,7 +8,7 @@
       />
       <div class="banner-overlay">
         <div class="banner-text">
-          <div class="banner-intro">ПУЛЬС В ТЕЛЕГРАМ</div>
+          <div class="banner-intro">ОСТАНЕМСЯ НА СВЯЗИ?</div>
           <div class="banner-title">{{ title }}</div>
           <p v-if="subtitle" class="banner-subtitle">{{ subtitle }}</p>
         </div>
@@ -33,11 +33,11 @@ const props = defineProps({
   },
   imageAlt: {
     type: String,
-    default: 'Investment banner'
+    default: 'Новости Сигнала в Телеграм'
   },
   title: {
     type: String,
-    default: 'Сигналы рынка в реальном времени'
+    default: 'Еще больше возможностей быть ближе к бизнесу, который вы любите.'
   },
   subtitle: {
     type: String,
@@ -45,7 +45,7 @@ const props = defineProps({
   },
   buttonText: {
     type: String,
-    default: 'Подписаться'
+    default: 'Подписаться в Телеграм'
   },
   buttonLink: {
     type: String,
