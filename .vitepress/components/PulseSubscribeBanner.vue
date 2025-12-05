@@ -1,5 +1,4 @@
 <template>
-<template>
   <div class="investor-banner">
     <div class="banner-content">
       <img
@@ -86,10 +85,9 @@ const handleButtonClick = () => {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.6s cubic-bezier(0.22,1,.36,1);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Зум ТОЛЬКО при наведении на кнопку — теперь работает идеально */
 .premium-liquid:hover ~ .banner-image,
 .premium-liquid:focus-visible ~ .banner-image {
   transform: scale(1.04);
@@ -135,11 +133,6 @@ const handleButtonClick = () => {
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-/* === ПРЕМИАЛЬНАЯ КНОПКА 2025 === */
-.banner-button {
-  pointer-events: auto;
-}
-
 .premium-liquid {
   position: relative;
   background: rgba(30, 30, 32, 0.55);
@@ -156,6 +149,7 @@ const handleButtonClick = () => {
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   animation: liquidSubtle 9s ease infinite;
+  pointer-events: auto;
 }
 
 .premium-liquid::before {
@@ -193,14 +187,11 @@ const handleButtonClick = () => {
   50%      { background: rgba(35, 35, 38, 0.65); }
 }
 
-/* Мобильная версия */
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
-
   .banner-overlay { padding: 1.5rem; }
   .banner-text    { margin-bottom: 2.5rem; }
-
   .premium-liquid {
     padding: 0.9rem 2.8rem;
     font-size: 1.1rem;
