@@ -4,7 +4,7 @@ import { ref, onMounted, computed } from 'vue'
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
 const INITIAL_BASE = {
-  pageViews: 1000,
+  pageViews: 553,
   korzhLikes: 12,
   korzhSignals: 4
 }
@@ -357,25 +357,53 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
   align-items: stretch;
 }
 
+/* === НОВЫЙ СТИЛЬ ДЛЯ КАРТОЧЕК С ГЛАСС-БОРДЕРОМ === */
 .app-card {
-  /* Убрали стандартный бордер и фон */
-  border: 1px solid transparent;
+  position: relative;
+  background: #2a2a2a; /* Основной фон */
   border-radius: 24px;
-  padding: 24px;
-  transition: all 0.3s ease;
-  
-  /* Магия градиентной обводки */
-  /* Слой 1: Темный фон (padding-box чтобы не залезал на бордер) */
-  /* Слой 2: Градиент (border-box чтобы был под прозрачным бордером) */
-  background-image: 
-    linear-gradient(#2a2a2a, #2a2a2a), 
-    linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(255, 255, 255, 0) 100%);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  
+  padding: 24px; /* Обычный отступ */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  
+  /* Важно: убираем дефолтный бордер */
+  border: none; 
+  /* Создаем отступ для рамки (1px), чтобы контент не прилипал */
+  box-shadow: inset 0 0 0 1px transparent; 
+  z-index: 1;
+}
+
+/* Псевдо-элемент для градиентной рамки */
+.app-card::before {
+  content: "";
+  position: absolute;
+  inset: 0; /* Растягиваем на всю карточку */
+  border-radius: 24px; /* Такой же радиус */
+  padding: 1px; /* Толщина рамки! */
+  
+  /* Градиент рамки: Слева-Сверху (Белый) -> Вправо-Вниз (Прозрачный) */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0) 100%);
+  
+  /* Маска чтобы вырезать центр и оставить только рамку */
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  
+  pointer-events: none; /* Чтобы клики проходили сквозь */
+  z-index: -1; /* Кладем ПОД контент, но НАД фоном (фоном управляет родитель) */
+}
+
+/* Чтобы фон родителя не перекрывал рамку, используем отдельный фон для контента, если нужно,
+   но в данном случае проще сделать background на родителе и ::before поверх него */
+   
+.app-card {
+  /* Обновленный фон: чтобы рамка была видна, фон должен быть внутри border-radius.
+     Но из-за ::before с padding:1px, лучше сделать так: */
+  background-clip: padding-box; 
 }
 
 .app-card.korzh-card {
@@ -451,13 +479,14 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 }
 
 .app-card:hover {
-  /* При ховере меняем фон на чуть светлее и делаем обводку ярче */
-  background-image: 
-    linear-gradient(#323232, #323232), 
-    linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
-    
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  /* Легкое белое свечение при наведении */
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.03); 
+}
+
+/* При ховере делаем рамку чуть ярче */
+.app-card:hover::before {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
 }
 
 .app-card.korzh-card:hover .badge-image {
@@ -662,7 +691,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
   .actions-wrapper {
     padding: 5px;
-    border-radius: 35px !important; /* Исправлено: Радиус плашки (30 + 5) */
+    border-radius: 35px !important; 
   }
 
   .actions {
@@ -672,7 +701,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
   .btn-create,
   .btn-see-all {
-    border-radius: 30px !important; /* Исправлено: Радиус кнопок */
+    border-radius: 30px !important;
   }
 
   .apps-grid {
