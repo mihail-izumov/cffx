@@ -128,63 +128,59 @@ const handleButtonClick = () => {
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-/* КНОПКА — Apple-style 2025: тёмное стекло + белый текст */
+/* КНОПКА — Apple-style 2025: Refined */
 .glass-pill {
   pointer-events: auto;
   position: relative;
   background: rgba(20, 20, 24, 0.68);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: none;
+  
+  /* 1. Добавили тонкую полупрозрачную обводку лаймового оттенка */
+  border: 1px solid rgba(181, 242, 64, 0.25);
+  
   border-radius: 9999px;
   padding: 1.05rem 3.6rem;
   font-weight: 600;
   font-size: clamp(1.08rem, 2.3vw, 1.2rem);
-  color: #ffffff;
+  
+  /* 2. Цвет текста изменили на лаймовый */
+  color: #b5f240;
+  
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
   cursor: pointer;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  /* box-shadow создает внешнее свечение, а ::before создаст обводку */
+  overflow: hidden;
   box-shadow: 0 10px 35px rgba(0,0,0,0.45);
 }
 
-/* ИЗМЕНЕНИЕ: Яркая градиентная обводка по всему периметру (Mask technique) */
+/* Верхний блик (оставил как было, так как он вам нравился) */
 .glass-pill::before {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  padding: 1.5px; /* Толщина обводки */
-  background: linear-gradient(135deg, 
-    rgba(181,242,64,0.8),   /* Яркий лайм */
-    rgba(255,255,255,0.6),  /* Белый акцент */
-    rgba(181,242,64,0.8)    /* Яркий лайм */
-  );
-  /* Маска вырезает центр, оставляя только border */
-  -webkit-mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  opacity: 1;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(181,242,64,0.5), transparent);
+  opacity: 0.8;
 }
 
+/* Внутренний глянец */
 .glass-pill::after {
   content: '';
   position: absolute;
   top: 1px; left: 4px; right: 4px;
   height: 32%;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.14), transparent);
+  background: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent);
   border-radius: 9999px;
   pointer-events: none;
 }
 
 .glass-pill:hover {
   transform: translateY(-7px);
-  background: rgba(30,30,35,0.8);
-  /* Добавлено чуть больше свечения лаймом при наведении */
-  box-shadow: 0 22px 55px rgba(0,0,0,0.55), 0 0 35px rgba(181,242,64,0.25);
+  background: rgba(30,30,35,0.85);
+  /* При наведении обводка становится чуть ярче */
+  border-color: rgba(181, 242, 64, 0.5);
+  box-shadow: 0 22px 55px rgba(0,0,0,0.55), 0 0 30px rgba(181,242,64,0.15);
 }
 
 .glass-pill:active {
