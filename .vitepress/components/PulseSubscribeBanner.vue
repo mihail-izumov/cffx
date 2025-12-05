@@ -1,22 +1,18 @@
 <template>
   <div class="investor-banner">
     <div class="banner-content" :class="{ 'is-hovered': isHovered }">
-      <img
-        :src="imageSrc"
-        :alt="imageAlt"
-        class="banner-image"
-      />
+      <img :src="imageSrc" :alt="imageAlt" class="banner-image" />
       <div class="banner-overlay">
         <div class="banner-inner">
           <div class="banner-intro">ОСТАНЕМСЯ НА СВЯЗИ?</div>
           <div class="banner-title">
             <span class="title-desktop">
-              Еще больше возможностей быть ближе к бизнесу,<br>
+              Еще больше возможностей быть ближе к бизнесу,<br />
               который вы любите.
             </span>
             <span class="title-mobile">
-              Еще больше возможностей<br>
-              быть ближе к бизнесу,<br>
+              Еще больше возможностей<br />
+              быть ближе к бизнесу,<br />
               который вы любите.
             </span>
           </div>
@@ -123,7 +119,7 @@ const handleButtonClick = () => {
 }
 
 .title-desktop { display: block; }
-.title-mobile { display: none; }
+.title-mobile  { display: none; }
 
 .glass-pill {
   pointer-events: auto;
@@ -189,10 +185,9 @@ const handleButtonClick = () => {
 
 @media (max-width: 768px) {
   .title-desktop { display: none; }
-  .title-mobile { display: block; }
+  .title-mobile  { display: block; }
   .banner-overlay { padding: 1.6rem; }
   .banner-inner { gap: 1.9rem; }
-  }
   .glass-pill {
     padding: 1rem 3rem;
     font-size: 1.15rem;
