@@ -6,11 +6,9 @@
         :alt="imageAlt"
         class="banner-image"
       />
-
       <div class="banner-overlay">
         <div class="banner-inner">
           <div class="banner-intro">ОСТАНЕМСЯ НА СВЯЗИ?</div>
-
           <div class="banner-title">
             <span class="title-desktop">
               Еще больше возможностей быть ближе к бизнесу,<br>
@@ -22,7 +20,6 @@
               который вы любите.
             </span>
           </div>
-
           <button
             class="glass-pill"
             @click="handleButtonClick"
@@ -45,6 +42,7 @@ const props = defineProps({
   imageSrc: { type: String, default: '/subscribe_ban.jpg' },
   imageAlt: { type: String, default: 'Новости Сигнала в Телеграм' },
   title: { type: String, default: 'Еще больше возможностей быть ближе к бизнесу, который вы любите.' },
+  subtitle: { type: String, default: '' },
   buttonText: { type: String, default: 'Подписаться в Телеграм' },
   buttonLink: { type: String, default: 'https://t.me/runScale' }
 })
@@ -127,36 +125,34 @@ const handleButtonClick = () => {
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-/* ЖИДКОЕ СТЕКЛО — финальная версия */
+/* КНОПКА — тот самый шедевр + чуть ярче обводка */
 .glass-pill {
   pointer-events: auto;
   position: relative;
-  isolation: isolate;
-  background: rgba(25, 25, 30, 0.68);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  background: rgba(20, 20, 24, 0.68);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: none;
   border-radius: 9999px;
-  padding: 1.1rem 3.8rem;
+  padding: 1.05rem 3.6rem;
   font-weight: 600;
-  font-size: clamp(1.1rem, 2.3vw, 1.22rem);
+  font-size: clamp(1.08rem, 2.3vw, 1.2rem);
   color: #ffffff;
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
   cursor: pointer;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
-  box-shadow: 
-    0 12px 40px rgba(0,0,0,0.45),
-    inset 0 1px 0 rgba(255,255,255,0.1);
+  box-shadow: 0 10px 35px rgba(0,0,0,0.45);
 }
 
-/* Красивая живая лаймовая обводка по всему периметру */
+/* НОВАЯ ОБВОДКА — чуть ярче, но всё ещё элегантная /
 .glass-pill::before {
   content: '';
   position: absolute;
   inset: -2px;
   border-radius: 9999px;
   padding: 2px;
-  background: linear-gradient(90deg, #b5f240, #dfff90, #95d428, #b5f240);
+  background: linear-gradient(90deg, #b5f240, #d0ff70, #95d428, #b5f240);
   background-size: 300% 300%;
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
@@ -165,30 +161,25 @@ const handleButtonClick = () => {
   z-index: -1;
 }
 
-/* Внутреннее размытие фона + тонкое свечение сверху и по бокам */
+/ Тонкий блик сверху — как было /
 .glass-pill::after {
   content: '';
   position: absolute;
-  inset: 3px;
+  top: 1px; left: 4px; right: 4px;
+  height: 32%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.14), transparent);
   border-radius: 9999px;
-  background: radial-gradient(ellipse at top, rgba(181,242,64,0.12) 0%, transparent 60%),
-              radial-gradient(ellipse at left, rgba(181,242,64,0.08) 0%, transparent 50%),
-              radial-gradient(ellipse at right, rgba(181,242,64,0.08) 0%, transparent 50%);
-  backdrop-filter: blur(6px);
   pointer-events: none;
-  z-index: -1;
 }
 
 .glass-pill:hover {
   transform: translateY(-7px);
-  background: rgba(32,32,38,0.78);
-  box-shadow: 
-    0 24px 60px rgba(0,0,0,0.55),
-    0 0 35px rgba(181,242,64,0.22);
+  background: rgba(30,30,35,0.8);
+  box-shadow: 0 22px 55px rgba(0,0,0,0.55), 0 0 30px rgba(181,242,64,0.18);
 }
 
 .glass-pill:active {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 
 @keyframes borderFlow {
@@ -196,15 +187,15 @@ const handleButtonClick = () => {
   100% { background-position: 300% 50%; }
 }
 
-/* Мобильная версия — идеальное центрирование */
+/ Мобильная версия — идеальное выравнивание /
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
   .banner-overlay { padding: 1.6rem; }
   .banner-inner { gap: 1.9rem; }
   .glass-pill {
-    padding: 1.05rem 3.2rem;
-    font-size: 1.16rem;
+    padding: 1rem 3rem;
+    font-size: 1.15rem;
   }
 }
 </style>
