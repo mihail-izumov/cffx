@@ -3,6 +3,7 @@
     <template #doc-before>
       <div v-if="shouldShowBanner" class="notification-container">
         <NotificationSlider v-if="frontmatter.notification === 'brew'" />
+        <NotificationsClients v-if="frontmatter.notification === 'clients'" />
         <GeneralNotification v-else />
       </div>
     </template>
@@ -18,6 +19,7 @@ import { useData, useRouter } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import NotificationSlider from './NotificationSlider.vue'
 import GeneralNotification from './GeneralNotification.vue'
+import NotificationsClients from './NotificationsClients.vue'  
 import SignalModalButton from '../components/SignalModalButton.vue'
 
 const DefaultLayout = DefaultTheme.Layout
