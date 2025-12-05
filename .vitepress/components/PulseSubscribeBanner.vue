@@ -15,7 +15,6 @@
               Еще больше возможностей быть ближе к бизнесу,<br>
               который вы любите.
             </span>
-
             <span class="title-mobile">
               Еще больше возможностей<br>
               быть ближе к бизнесу,<br>
@@ -26,7 +25,11 @@
           <p v-if="subtitle" class="banner-subtitle">{{ subtitle }}</p>
         </div>
 
-        <button class="banner-button" @click="handleButtonClick">
+        <!-- Кнопка с жидкой анимацией -->
+        <button
+          class="banner-button liquid-btn"
+          @click="handleButtonClick"
+        >
           {{ buttonText }}
         </button>
       </div>
@@ -78,14 +81,20 @@ const handleButtonClick = () => {
   height: auto;
   border-radius: max(12px, min(24px, 3vw));
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
   display: block;
+  transition: transform 0.4s ease; /* плавный зум */
 }
 
+/* Зум картинки ТОЛЬКО при наведении на кнопку */
 .banner-content:hover .banner-image {
-  transform: scale(1.02);
+  transform: none !important; /* отключаем старый зум */
+}
+.liquid-btn:hover ~ .banner-image,
+.liquid-btn:focus ~ .banner-image {
+  transform: scale(1.04);
 }
 
+/* Оверлей */
 .banner-overlay {
   position: absolute;
   inset: 0;
@@ -95,11 +104,13 @@ const handleButtonClick = () => {
   align-items: center;
   padding: 2rem;
   border-radius: max(12px, min(24px, 3vw));
+  pointer-events: none; /* чтобы не мешал наведению на кнопку */
 }
 
 .banner-text {
   text-align: center;
   margin-bottom: 2.5rem;
+  pointer-events: auto;
 }
 
 .banner-intro {
@@ -108,7 +119,7 @@ const handleButtonClick = () => {
   color: #b5f240;
   text-transform: uppercase;
   letter-spacing: 0.25em;
-  text-shadow: 0 2px 4px rgba(0, 0, 0.5);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   margin: -1rem 0 1rem 0;
 }
 
@@ -122,17 +133,74 @@ const handleButtonClick = () => {
   max-width: 600px;
 }
 
-/* Переносы заголовка */
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
+/* Жидкая кнопка — огонь 2025 */
+.banner-button {
+  pointer-events: auto; /* включаем клики */
+}
+.liquid-btn {
+  position: relative;
+  background: linear-gradient(-45deg, #b5f240, #95d428, #85c41f, #b5f240);
+  background-size: 400% 400%;
+  color: #1a1a1a;
+  border: none;
+  padding: 0.85rem 3.4rem;
+  border-radius: 16px;
+  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 6px 20px rgba(181, 242, 64, 0.45);
+  animation: liquidFlow 7s ease infinite;
+  overflow: hidden;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  z-index: 2;
+}
+
+.liquid-btn::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  background: linear-gradient(45deg, #d0ff70, #a0e040, #90d430, #d0ff70);
+  border-radius: 19px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  animation: liquidFlow 5s ease infinite reverse;
+}
+
+.liquid-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 32px rgba(181, 242, 64, 0.65);
+  animation-duration: 2.8s;
+}
+
+.liquid-btn:hover::before {
+  opacity: 0.7;
+}
+
+.liquid-btn:active {
+  transform: translateY(-2px);
+}
+
+@keyframes liquidFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+/* Мобильная версия */
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
 
   .banner-overlay { padding: 1rem; }
   .banner-text    { margin-bottom: 2rem; }
-  .banner-button  { padding: 0.6rem 1.8rem; }
+  .liquid-btn {
+    padding: 0.75rem 2.6rem;
+    font-size: 1.1rem;
+  }
 }
 
 .banner-subtitle {
@@ -141,28 +209,5 @@ const handleButtonClick = () => {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   margin: 0;
   max-width: 500px;
-}
-
-.banner-button {
-  background: linear-gradient(135deg, #b5f240 0%, #95d428 100%);
-  color: #2d3748;
-  border: none;
-  padding: 0.75rem 3rem;
-  border-radius: 12px;
-  font-size: clamp(1rem, 2vw, 1.1rem);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(181, 242, 64, 0.3);
-}
-
-.banner-button:hover {
-  background: linear-gradient(135deg, #95d428 0%, #85c41f 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(181, 242, 64, 0.4);
-}
-
-.banner-button:active {
-  transform: translateY(0);
 }
 </style>
