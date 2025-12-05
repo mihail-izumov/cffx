@@ -1,20 +1,17 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
-// --- КОНФИГУРАЦИЯ ---
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
-// БАЗОВЫЕ ЗНАЧЕНИЯ (Должны совпадать с колонкой Base в таблице)
 const INITIAL_BASE = {
-  pageViews: 1000,   // Ячейка C3
-  korzhLikes: 12,    // Ячейка C4
-  korzhSignals: 4    // Ячейка C5
+  pageViews: 553,
+  korzhLikes: 12,
+  korzhSignals: 4
 }
 
 const isKorzhLiked = ref(false)
 const stats = ref({ ...INITIAL_BASE })
 
-// Защищенное форматирование
 const formatNumber = (num) => {
   const safeNum = Math.max(0, num || 0)
   if (safeNum >= 1000) {
@@ -23,10 +20,9 @@ const formatNumber = (num) => {
   return safeNum.toString()
 }
 
-// --- ЛОГИКА КЭША ---
 const loadFromCache = () => {
   try {
-    const cached = localStorage.getItem('signal_stats_cache_v3') // Новый ключ v3 для сброса
+    const cached = localStorage.getItem('signal_stats_cache_v3')
     if (cached) {
       const parsed = JSON.parse(cached)
       stats.value = { ...stats.value, ...parsed }
@@ -38,20 +34,18 @@ const saveToCache = () => {
   localStorage.setItem('signal_stats_cache_v3', JSON.stringify(stats.value))
 }
 
-// --- СЕТЕВАЯ ЛОГИКА ---
 const fetchStats = async () => {
   try {
     const response = await fetch(`${SCRIPT_URL}?action=get`)
     const data = await response.json()
     
-    // Проверяем наличие полей перед обновлением
     if (data.pageViews !== undefined) stats.value.pageViews = data.pageViews
     if (data.korzhLikes !== undefined) stats.value.korzhLikes = data.korzhLikes
     if (data.korzhSignals !== undefined) stats.value.korzhSignals = data.korzhSignals
     
     saveToCache()
   } catch (error) {
-    console.error('Ошибка сервера, используем локальные данные')
+    console.error('Ошибка сервера')
   }
 }
 
@@ -65,9 +59,7 @@ const toggleKorzhLike = async () => {
   const wasLiked = isKorzhLiked.value
   isKorzhLiked.value = !wasLiked
   
-  // Оптимистичное обновление UI
   if (!wasLiked) {
-    // Ставим лайк
     stats.value.korzhLikes++
     localStorage.setItem('korzh_liked_status', 'true')
     saveToCache()
@@ -77,7 +69,6 @@ const toggleKorzhLike = async () => {
       isKorzhLiked.value = false
     })
   } else {
-    // Убираем лайк
     if (stats.value.korzhLikes > 0) stats.value.korzhLikes--
     localStorage.removeItem('korzh_liked_status')
     saveToCache()
@@ -107,10 +98,8 @@ onMounted(async () => {
 const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 </script>
 
-
 <template>
   <div class="essential-apps">
-    <!-- Верхняя плашка -->
     <div class="stats-header-block">
       <div class="global-stat-item">
         <img src="/eye-icon.svg" alt="Просмотры" class="eye-icon" />
@@ -128,9 +117,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
       </div>
     </div>
 
-    <!-- Grid карточек -->
     <div class="apps-grid">
-      <!-- Карточка Корж -->
       <div class="app-card korzh-card">
         <div class="card-header">
           <span class="app-name">КОРЖ</span>
@@ -192,7 +179,6 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
         </div>
       </div>
 
-      <!-- Промо карточка -->
       <div class="app-card promo-card">
         <div class="promo-bg-icon"></div>
         <p class="promo-text">Получите поддержку клиентов, чтобы расти быстрее конкурентов.</p>
@@ -203,7 +189,6 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
       </div>
     </div>
 
-    <!-- Нижние кнопки -->
     <div class="actions-wrapper">
       <div class="actions">
         <a href="/invest/pulse" class="btn-create">
@@ -224,7 +209,6 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 </template>
 
 <style scoped>
-/* Твои стили остаются без изменений */
 .essential-apps {
   background-color: #1a1a1a;
   color: #e0e0e0;
@@ -247,7 +231,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 .global-stat-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px; /* Уменьшен отступ между иконкой и цифрой */
   font-size: 16px;
   font-weight: 600;
   color: #e0e0e0;
@@ -260,7 +244,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 }
 
 .actions-wrapper {
-  background: #000000;
+  background: #2a2a2a; /* Цвет фона карточек */
   border-radius: 50px;
   padding: 5px;
   margin-top: 40px;
@@ -290,15 +274,15 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 }
 
 .btn-create {
-  background: #C5F946;
-  color: #1a1a1a;
+  background: #e0e0e0; /* Светло-серый */
+  color: #1a1a1a; /* Темный текст */
   border: none;
 }
 
 .btn-create:hover {
-  background: #d4ff6b;
+  background: #ffffff; /* Белый при ховере */
   transform: translateY(-2px);
-  color: #1a1a1a;
+  color: #000000;
 }
 
 .btn-see-all {
@@ -341,7 +325,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 }
 
 .btn-create:hover .icon-circle::before {
-  opacity: 1;
+  opacity: 0.1; /* Легкая тень под иконкой для светлой кнопки */
 }
 
 .btn-see-all:hover .icon-circle::before {
@@ -354,8 +338,12 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
   transition: stroke 0.3s ease;
 }
 
+.btn-create .icon-circle svg {
+  stroke: #1a1a1a;
+}
+
 .btn-create:hover .icon-circle svg {
-  stroke: #C5F946;
+  stroke: #000000;
 }
 
 .btn-see-all:hover .icon-circle svg {
@@ -397,7 +385,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
   position: absolute;
   width: 560px;
   height: 560px;
-  top: -140px;
+  top: -100px; /* Опустили ниже */
   right: -140px;
   background-image: url('/favicon.svg');
   background-size: contain;
@@ -405,8 +393,9 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
   background-position: center;
   opacity: 0.04;
   pointer-events: none;
-  mask-image: radial-gradient(ellipse 80% 80% at 70% 30%, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.1) 70%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 70% 30%, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.1) 70%, transparent 100%);
+  filter: drop-shadow(0 0 30px rgba(255,255,255,0.05)); /* Эффект глубины */
+  mask-image: radial-gradient(ellipse 70% 70% at 60% 40%, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.1) 80%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 60% 40%, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.1) 80%, transparent 100%);
 }
 
 .promo-text {
@@ -423,9 +412,9 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 .promo-link {
   color: #9e9e9e;
   text-decoration: none !important;
+  border-bottom: none !important; /* Убрали подчеркивание */
   font-size: 16px;
   font-weight: 600;
-  border-bottom: 1px solid #9e9e9e;
   transition: all 0.3s ease;
   position: relative;
   z-index: 1;
@@ -447,15 +436,8 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
 .promo-link:hover {
   color: #ffffff !important;
-  border-bottom-color: #ffffff !important;
   text-decoration: none !important;
-}
-
-.promo-link:hover,
-.promo-link:active,
-.promo-link:visited,
-.promo-link:focus {
-  text-decoration: none !important;
+  border-bottom: none !important;
 }
 
 .app-card:hover {
@@ -564,7 +546,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px; /* Уменьшен отступ между иконкой и цифрой */
 }
 
 .card-footer {
@@ -608,10 +590,10 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 .bubble {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px; /* Уменьшен отступ между иконкой и текстом */
   background-color: #424242; 
   color: #adadad; 
-  padding: 6px 12px; 
+  padding: 6px 10px; /* Уменьшен боковой отступ (было 12) */
   border-radius: 14px;
   font-size: 12px; 
   font-weight: 500;
@@ -619,6 +601,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
   cursor: default;
   text-decoration: none !important;
   transition: all 0.2s ease;
+  min-height: 28px; /* Фиксированная высота для всех */
 }
 
 .bubble-icon {
@@ -666,7 +649,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
   .actions-wrapper {
     padding: 5px;
-    border-radius: 50px;
+    border-radius: 46px; /* Исправлен радиус под кнопки */
   }
 
   .actions {
@@ -695,7 +678,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
   .promo-bg-icon {
     width: 250px;
     height: 250px;
-    top: -30px;
+    top: -20px;
     right: -30px;
     opacity: 0.06;
   }
