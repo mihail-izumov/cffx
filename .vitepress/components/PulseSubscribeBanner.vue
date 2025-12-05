@@ -1,4 +1,5 @@
 <template>
+<template>
   <div class="investor-banner">
     <div class="banner-content">
       <img
@@ -25,10 +26,11 @@
           <p v-if="subtitle" class="banner-subtitle">{{ subtitle }}</p>
         </div>
 
-        <!-- Кнопка с жидкой анимацией -->
         <button
-          class="banner-button liquid-btn"
+          class="banner-button premium-liquid"
           @click="handleButtonClick"
+          @mouseenter="isHovered = true"
+          @mouseleave="isHovered = false"
         >
           {{ buttonText }}
         </button>
@@ -38,6 +40,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
@@ -53,6 +56,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['button-click'])
+const isHovered = ref(false)
 
 const handleButtonClick = () => {
   if (props.buttonLink && props.buttonLink !== '#') {
@@ -65,7 +69,7 @@ const handleButtonClick = () => {
 <style scoped>
 .investor-banner {
   text-align: center;
-  margin: 2rem 0;
+  margin: 2.5rem 0;
   width: 100%;
 }
 
@@ -73,28 +77,24 @@ const handleButtonClick = () => {
   position: relative;
   display: inline-block;
   width: 100%;
-  max-width: 800px;
+  max-width: 840px;
+  border-radius: max(16px, min(28px, 3.5vw));
+  overflow: hidden;
 }
 
 .banner-image {
   width: 100%;
   height: auto;
-  border-radius: max(12px, min(24px, 3vw));
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: block;
-  transition: transform 0.4s ease; /* плавный зум */
+  transition: transform 0.6s cubic-bezier(0.22,1,.36,1);
 }
 
-/* Зум картинки ТОЛЬКО при наведении на кнопку */
-.banner-content:hover .banner-image {
-  transform: none !important; /* отключаем старый зум */
-}
-.liquid-btn:hover ~ .banner-image,
-.liquid-btn:focus ~ .banner-image {
+/* Зум ТОЛЬКО при наведении на кнопку — теперь работает идеально */
+.premium-liquid:hover ~ .banner-image,
+.premium-liquid:focus-visible ~ .banner-image {
   transform: scale(1.04);
 }
 
-/* Оверлей */
 .banner-overlay {
   position: absolute;
   inset: 0;
@@ -102,92 +102,95 @@ const handleButtonClick = () => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
-  border-radius: max(12px, min(24px, 3vw));
-  pointer-events: none; /* чтобы не мешал наведению на кнопку */
+  padding: 2.5rem;
+  pointer-events: none;
 }
 
 .banner-text {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
   pointer-events: auto;
 }
 
 .banner-intro {
-  font-size: clamp(0.55rem, 1vw, 0.7rem);
-  font-weight: 400;
+  font-size: clamp(0.6rem, 1.1vw, 0.75rem);
+  font-weight: 500;
   color: #b5f240;
   text-transform: uppercase;
-  letter-spacing: 0.25em;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  margin: -1rem 0 1rem 0;
+  letter-spacing: 0.32em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  margin: -1rem 0 1.2rem 0;
 }
 
 .banner-title {
-  font-size: clamp(0.9rem, 2vw, 1.5rem);
-  font-weight: 500;
+  font-size: clamp(1.1rem, 2.6vw, 1.75rem);
+  font-weight: 600;
   color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 3px 10px rgba(0,0,0,0.7);
+  line-height: 1.32;
+  max-width: 680px;
   margin: 0 0 1rem 0;
-  line-height: 1.35;
-  max-width: 600px;
 }
 
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-/* Жидкая кнопка — огонь 2025 */
+/* === ПРЕМИАЛЬНАЯ КНОПКА 2025 === */
 .banner-button {
-  pointer-events: auto; /* включаем клики */
-}
-.liquid-btn {
-  position: relative;
-  background: linear-gradient(-45deg, #b5f240, #95d428, #85c41f, #b5f240);
-  background-size: 400% 400%;
-  color: #1a1a1a;
-  border: none;
-  padding: 0.85rem 3.4rem;
-  border-radius: 16px;
-  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  box-shadow: 0 6px 20px rgba(181, 242, 64, 0.45);
-  animation: liquidFlow 7s ease infinite;
-  overflow: hidden;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.15);
-  z-index: 2;
+  pointer-events: auto;
 }
 
-.liquid-btn::before {
+.premium-liquid {
+  position: relative;
+  background: rgba(30, 30, 32, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(181, 242, 64, 0.4);
+  color: white;
+  font-weight: 600;
+  font-size: clamp(1.05rem, 2.2vw, 1.15rem);
+  padding: 1rem 3.2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.45s ease;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  animation: liquidSubtle 9s ease infinite;
+}
+
+.premium-liquid::before {
   content: '';
   position: absolute;
-  inset: -3px;
-  background: linear-gradient(45deg, #d0ff70, #a0e040, #90d430, #d0ff70);
-  border-radius: 19px;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  animation: liquidFlow 5s ease infinite reverse;
+  inset: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(181, 242, 64, 0.12) 30%,
+    rgba(181, 242, 64, 0.25) 50%,
+    rgba(181, 242, 64, 0.12) 70%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s;
 }
 
-.liquid-btn:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 14px 32px rgba(181, 242, 64, 0.65);
-  animation-duration: 2.8s;
+.premium-liquid:hover {
+  border-color: #b5f240;
+  background: rgba(40, 40, 44, 0.7);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(181, 242, 64, 0.25);
 }
 
-.liquid-btn:hover::before {
-  opacity: 0.7;
+.premium-liquid:hover::before {
+  transform: translateX(100%);
 }
 
-.liquid-btn:active {
-  transform: translateY(-2px);
+.premium-liquid:active {
+  transform: translateY(-1px);
 }
 
-@keyframes liquidFlow {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
+@keyframes liquidSubtle {
+  0%, 100% { background: rgba(30, 30, 32, 0.55); }
+  50%      { background: rgba(35, 35, 38, 0.65); }
 }
 
 /* Мобильная версия */
@@ -195,19 +198,20 @@ const handleButtonClick = () => {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
 
-  .banner-overlay { padding: 1rem; }
-  .banner-text    { margin-bottom: 2rem; }
-  .liquid-btn {
-    padding: 0.75rem 2.6rem;
+  .banner-overlay { padding: 1.5rem; }
+  .banner-text    { margin-bottom: 2.5rem; }
+
+  .premium-liquid {
+    padding: 0.9rem 2.8rem;
     font-size: 1.1rem;
   }
 }
 
 .banner-subtitle {
-  font-size: clamp(0.85rem, 1.8vw, 1.1rem);
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  max-width: 560px;
   margin: 0;
-  max-width: 500px;
 }
 </style>
