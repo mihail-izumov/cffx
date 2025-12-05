@@ -1,6 +1,6 @@
 <template>
   <div class="investor-banner">
-    <div class="banner-content">
+    <div class="banner-content" :class="{ 'is-hovered': isHovered }">
       <img
         :src="imageSrc"
         :alt="imageAlt"
@@ -25,7 +25,12 @@
           <p v-if="subtitle" class="banner-subtitle">{{ subtitle }}</p>
         </div>
 
-        <button class="glass-pill" @click="handleButtonClick">
+        <button
+          class="glass-pill"
+          @click="handleButtonClick"
+          @mouseenter="isHovered = true"
+          @mouseleave="isHovered = false"
+        >
           {{ buttonText }}
         </button>
       </div>
@@ -34,6 +39,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
@@ -46,6 +52,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['button-click'])
+const isHovered = ref(false)
 
 const handleButtonClick = () => {
   if (props.buttonLink && props.buttonLink !== '#') {
@@ -75,12 +82,12 @@ const handleButtonClick = () => {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ЗУМ ФОНА — теперь точно работает */
-.banner-content:hover .banner-image {
-  transform: scale(1.05);
+/* Зум фона только когда наводим на кнопку */
+.banner-content.is-hovered .banner-image {
+  transform: scale(1.045);
 }
 
 .banner-overlay {
@@ -114,81 +121,76 @@ const handleButtonClick = () => {
   font-size: clamp(1.1rem, 2.6vw, 1.75rem);
   font-weight: 600;
   color: white;
-  text-shadow: 0 3px 12px rgba(0,0,0,0.8);
+  text-shadow: 0 3px 10px rgba(0,0,0,0.7);
   line-height: 1.32;
-  max-width: 700px;
+  max-width: 680px;
+  margin: 0 0 1rem 0;
 }
 
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-/* САМАЯ КРАСИВАЯ КНОПКА 2025 */
+/* Кнопка — чистый лайм + тонкое свечение сверху + минимум размытия */
 .glass-pill {
   pointer-events: auto;
   position: relative;
-  background: rgba(15, 15, 17, 0.4);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(25, 25, 28, 0.5);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
   border: 1.6px solid transparent;
   background-clip: padding-box;
   border-radius: 9999px;
-  padding: 0.95rem 3.4rem;
+  padding: 1rem 3.4rem;
   font-weight: 600;
   font-size: clamp(1.05rem, 2.2vw, 1.18rem);
-  color: #c0ff5a;
+  color: #d0ff70;
   cursor: pointer;
-  transition: all 0.5s ease;
+  transition: all 0.45s ease;
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
 }
 
-/* Живой лаймовый градиентный бордер */
+/* Живой лаймовый бордер */
 .glass-pill::before {
   content: '';
   position: absolute;
-  inset: -2px;
-  background: linear-gradient(90deg, 
-    #b5f240, 
-    #d0ff70 30%, 
-    #95d428 60%, 
-    #b5f240
-  );
-  background-size: 200% 100%;
+  inset: -1.6px;
+  background: linear-gradient(90deg, #b5f240, #d4ff80, #95d428, #b5f240);
+  background-size: 300% 100%;
   border-radius: 9999px;
   z-index: -1;
-  animation: borderFlow 5s ease infinite;
+  animation: flow 6s ease infinite;
 }
 
-/* Тонкое внутреннее свечение — прижато к верху */
+/* Очень тонкое свечение сверху (как у Apple) */
 .glass-pill::after {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 40%;
-  background: linear-gradient(to bottom, 
-    rgba(181,242,64,0.22) 0%,
-    transparent 100%
-  );
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 22%;
+  background: linear-gradient(to bottom, rgba(181,242,64,0.18), transparent);
   border-radius: 9999px;
   pointer-events: none;
 }
 
 .glass-pill:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 50px rgba(181,242,64,0.22);
-  background: rgba(20,20,22,0.55);
+  transform: translateY(-5px);
+  background: rgba(35,35,38,0.65);
+  box-shadow: 0 18px 45px rgba(181,242,64,0.28);
 }
 
 .glass-pill:active {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
-@keyframes borderFlow {
+@keyframes flow {
   0%   { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
+  100% { background-position: 300% 50%; }
 }
 
-/* Мобильная адаптация */
+/* Мобильная версия */
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
@@ -196,15 +198,15 @@ const handleButtonClick = () => {
   .banner-text    { margin-bottom: 2.5rem; }
   .glass-pill {
     padding: 0.9rem 2.8rem;
-    font-size: 1.12rem;
+    font-size: 1.1rem;
   }
 }
 
 .banner-subtitle {
-  font-size: clamp(0.9rem, 2vw, 1.15rem);
-  color: rgba(255,255,255,0.92);
-  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
-  max-width: 560px;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  max-width: 520px;
   margin: 0;
 }
 </style>
