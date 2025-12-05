@@ -9,11 +9,12 @@
 
       <div class="banner-overlay">
         <div class="banner-inner">
-          <div class="banner-intro">ОСТАНЕМСЯ НА СВЯЗИ?</div>
+          <div class="banner-intro">ОСТАНЕМСЯ НА СВЯЗИ</div>
 
           <div class="banner-title">
             <span class="title-desktop">
-              Еще больше возможностей быть ближе к бизнесу,<br>
+              Еще больше возможностей<br>
+              быть ближе к бизнесу,<br>
               который вы любите.
             </span>
             <span class="title-mobile">
