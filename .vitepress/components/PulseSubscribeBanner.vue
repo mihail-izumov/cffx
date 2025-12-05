@@ -144,7 +144,7 @@ const handleButtonClick = () => {
   padding: 0.75rem 3rem;
   border-radius: 12px;
   font-size: clamp(1rem, 2vw, 1.1rem);
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(181, 242, 64, 0.3);
