@@ -1,19 +1,12 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { database } from '/.vitepress/firebase.js'
-import { ref as dbRef, get, set, increment, onValue } from 'firebase/database'
 
-const _GRID_COLS = 4
-const _GRID_ROWS = 3
-const _GRID_GAP = 2
-const _GRID_PADDING = 2
-
-const _baseLikes = _GRID_COLS * _GRID_ROWS
-const _baseLightning = _GRID_GAP * _GRID_PADDING
+const SCRIPT_URL = 'https://script.google.com/macros/s/ТВОЙ_DEPLOYMENT_ID/exec'
 
 const isKorzhLiked = ref(false)
-const korzhLikes = ref(_baseLikes)
+const korzhLikes = ref(0)
 const pageViews = ref(0)
+const lightning = ref(0)
 
 const formatNumber = (num) => {
   if (num >= 1000) {
@@ -22,64 +15,75 @@ const formatNumber = (num) => {
   return num.toString()
 }
 
+const fetchStats = async () => {
+  try {
+    const response = await fetch(`${SCRIPT_URL}?action=get`)
+    const data = await response.json()
+    pageViews.value = data.pageViews || 0
+    korzhLikes.value = data.korzhLikes || 0
+    lightning.value = data.lightning || 0
+  } catch (error) {
+    console.error('Ошибка загрузки статистики:', error)
+  }
+}
+
+const incrementViews = async () => {
+  try {
+    const response = await fetch(`${SCRIPT_URL}?action=incrementViews`)
+    const data = await response.json()
+    pageViews.value = data.pageViews
+  } catch (error) {
+    console.error('Ошибка инкремента просмотров:', error)
+  }
+}
+
+const addLike = async () => {
+  try {
+    const response = await fetch(`${SCRIPT_URL}?action=addLike`)
+    const data = await response.json()
+    korzhLikes.value = data.korzhLikes
+  } catch (error) {
+    console.error('Ошибка добавления лайка:', error)
+  }
+}
+
+const removeLike = async () => {
+  try {
+    const response = await fetch(`${SCRIPT_URL}?action=removeLike`)
+    const data = await response.json()
+    korzhLikes.value = data.korzhLikes
+  } catch (error) {
+    console.error('Ошибка удаления лайка:', error)
+  }
+}
+
 onMounted(async () => {
-  // Проверяем локальный статус лайка (чтобы не лайкать дважды с одного браузера)
+  await fetchStats()
+  
   const hasLikedKorzh = localStorage.getItem('korzh_liked_status')
   if (hasLikedKorzh) {
     isKorzhLiked.value = true
   }
 
-  // Инкрементируем просмотры в Firebase
-  const viewsRef = dbRef(database, 'stats/pageViews')
-  const likesRef = dbRef(database, 'stats/korzhLikes')
-
-  // Проверяем, был ли уже засчитан просмотр в этой сессии
   const sessionViewed = sessionStorage.getItem('signal_session_viewed')
   if (!sessionViewed) {
-    // Инкрементируем просмотры
-    const viewsSnapshot = await get(viewsRef)
-    const currentViews = viewsSnapshot.exists() ? viewsSnapshot.val() : 0
-    await set(viewsRef, currentViews + 1)
+    await incrementViews()
     sessionStorage.setItem('signal_session_viewed', 'true')
   }
-
-  // Слушаем изменения в реальном времени
-  onValue(viewsRef, (snapshot) => {
-    pageViews.value = snapshot.exists() ? snapshot.val() : 0
-  })
-
-  onValue(likesRef, (snapshot) => {
-    const dbLikes = snapshot.exists() ? snapshot.val() : 0
-    korzhLikes.value = _baseLikes + dbLikes
-  })
 })
 
 const toggleKorzhLike = async () => {
-  const likesRef = dbRef(database, 'stats/korzhLikes')
-  
   if (!isKorzhLiked.value) {
-    // Ставим лайк
     isKorzhLiked.value = true
     localStorage.setItem('korzh_liked_status', 'true')
-    
-    const snapshot = await get(likesRef)
-    const currentLikes = snapshot.exists() ? snapshot.val() : 0
-    await set(likesRef, currentLikes + 1)
+    await addLike()
   } else {
-    // Убираем лайк
     isKorzhLiked.value = false
     localStorage.removeItem('korzh_liked_status')
-    
-    const snapshot = await get(likesRef)
-    const currentLikes = snapshot.exists() ? snapshot.val() : 0
-    if (currentLikes > 0) {
-      await set(likesRef, currentLikes - 1)
-    }
+    await removeLike()
   }
 }
 
-const totalLikes = computed(() => korzhLikes.value) 
-const totalLightning = computed(() => _baseLightning)
 const formattedPageViews = computed(() => formatNumber(pageViews.value))
 </script>
 
@@ -95,11 +99,11 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
           <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
         </svg>
-        <span>{{ totalLikes }}</span>
+        <span>{{ korzhLikes }}</span>
       </div>
       <div class="global-stat-item">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-        <span>{{ totalLightning }}</span>
+        <span>{{ lightning }}</span>
       </div>
     </div>
 
@@ -153,7 +157,7 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
           </div>
           <div class="stat-item">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-            <span>{{ _baseLightning }}</span>
+            <span>{{ lightning }}</span>
           </div>
         </div>
 
