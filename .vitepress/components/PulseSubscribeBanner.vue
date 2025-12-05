@@ -119,13 +119,13 @@ const handleButtonClick = () => {
   color: white;
   text-shadow: 0 4px 16px rgba(0,0,0,0.8);
   line-height: 1.3;
+ 3;
   margin: 0;
 }
 
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-/* КНОПКА — тот самый шедевр + чуть ярче обводка */
 .glass-pill {
   pointer-events: auto;
   position: relative;
@@ -145,7 +145,7 @@ const handleButtonClick = () => {
   box-shadow: 0 10px 35px rgba(0,0,0,0.45);
 }
 
-/* НОВАЯ ОБВОДКА — чуть ярче, но всё ещё элегантная /
+/* Чуть ярче лаймовая обводка по всему периметру */
 .glass-pill::before {
   content: '';
   position: absolute;
@@ -157,15 +157,17 @@ const handleButtonClick = () => {
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   -webkit-mask-composite: xor;
-  animation: borderFlow 8s linear infinite;
+  animation: flow 8s linear infinite;
   z-index: -1;
 }
 
-/ Тонкий блик сверху — как было /
+/* Оригинальный тонкий блик сверху — оставлен как был */
 .glass-pill::after {
   content: '';
   position: absolute;
-  top: 1px; left: 4px; right: 4px;
+  top: 1px;
+  left: 4px;
+  right: 4px;
   height: 32%;
   background: linear-gradient(to bottom, rgba(255,255,255,0.14), transparent);
   border-radius: 9999px;
@@ -182,12 +184,11 @@ const handleButtonClick = () => {
   transform: translateY(-2px);
 }
 
-@keyframes borderFlow {
+@keyframes flow {
   0%   { background-position: 0% 50%; }
   100% { background-position: 300% 50%; }
 }
 
-/ Мобильная версия — идеальное выравнивание /
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
