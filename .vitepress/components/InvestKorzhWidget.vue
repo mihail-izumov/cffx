@@ -1,5 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { database } from '/.vitepress/firebase.js'
+import { ref as dbRef, get, set, increment, onValue } from 'firebase/database'
 
 const _GRID_COLS = 4
 const _GRID_ROWS = 3
@@ -11,7 +13,6 @@ const _baseLightning = _GRID_GAP * _GRID_PADDING
 
 const isKorzhLiked = ref(false)
 const korzhLikes = ref(_baseLikes)
-
 const pageViews = ref(0)
 
 const formatNumber = (num) => {
@@ -21,30 +22,59 @@ const formatNumber = (num) => {
   return num.toString()
 }
 
-onMounted(() => {
+onMounted(async () => {
+  // Проверяем локальный статус лайка (чтобы не лайкать дважды с одного браузера)
   const hasLikedKorzh = localStorage.getItem('korzh_liked_status')
   if (hasLikedKorzh) {
     isKorzhLiked.value = true
-    korzhLikes.value = _baseLikes + 1
-  } else {
-    korzhLikes.value = _baseLikes
   }
 
-  const storedViews = localStorage.getItem('signal_page_views')
-  let currentViews = storedViews ? parseInt(storedViews, 10) : 0
-  currentViews++
-  pageViews.value = currentViews
-  localStorage.setItem('signal_page_views', currentViews.toString())
+  // Инкрементируем просмотры в Firebase
+  const viewsRef = dbRef(database, 'stats/pageViews')
+  const likesRef = dbRef(database, 'stats/korzhLikes')
+
+  // Проверяем, был ли уже засчитан просмотр в этой сессии
+  const sessionViewed = sessionStorage.getItem('signal_session_viewed')
+  if (!sessionViewed) {
+    // Инкрементируем просмотры
+    const viewsSnapshot = await get(viewsRef)
+    const currentViews = viewsSnapshot.exists() ? viewsSnapshot.val() : 0
+    await set(viewsRef, currentViews + 1)
+    sessionStorage.setItem('signal_session_viewed', 'true')
+  }
+
+  // Слушаем изменения в реальном времени
+  onValue(viewsRef, (snapshot) => {
+    pageViews.value = snapshot.exists() ? snapshot.val() : 0
+  })
+
+  onValue(likesRef, (snapshot) => {
+    const dbLikes = snapshot.exists() ? snapshot.val() : 0
+    korzhLikes.value = _baseLikes + dbLikes
+  })
 })
 
-const toggleKorzhLike = () => {
-  isKorzhLiked.value = !isKorzhLiked.value
-  if (isKorzhLiked.value) {
-    korzhLikes.value = _baseLikes + 1
+const toggleKorzhLike = async () => {
+  const likesRef = dbRef(database, 'stats/korzhLikes')
+  
+  if (!isKorzhLiked.value) {
+    // Ставим лайк
+    isKorzhLiked.value = true
     localStorage.setItem('korzh_liked_status', 'true')
+    
+    const snapshot = await get(likesRef)
+    const currentLikes = snapshot.exists() ? snapshot.val() : 0
+    await set(likesRef, currentLikes + 1)
   } else {
-    korzhLikes.value = _baseLikes
+    // Убираем лайк
+    isKorzhLiked.value = false
     localStorage.removeItem('korzh_liked_status')
+    
+    const snapshot = await get(likesRef)
+    const currentLikes = snapshot.exists() ? snapshot.val() : 0
+    if (currentLikes > 0) {
+      await set(likesRef, currentLikes - 1)
+    }
   }
 }
 
@@ -56,7 +86,6 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 <template>
   <div class="essential-apps">
 
-    <!-- Блок метрик (перемещен наверх) -->
     <div class="stats-header-block">
       <div class="global-stat-item">
         <img src="/eye-icon.svg" alt="Просмотры" class="eye-icon" />
@@ -158,12 +187,12 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
           Получите поддержку клиентов, чтобы расти быстрее конкурентов.
         </p>
         <a href="/pro/index" class="promo-link">
+          <img src="/favicon.svg" alt="" class="promo-link-icon" />
           Запустить Сигнал
         </a>
       </div>
     </div>
 
-    <!-- Блок с кнопками (перемещен вниз, на черной плашке) -->
     <div class="actions-wrapper">
       <div class="actions">
         <a href="/invest/pulse" class="btn-create">
@@ -198,7 +227,6 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
   padding: 0;
 }
 
-/* Блок метрик наверху */
 .stats-header-block {
   background: #000000;
   border-radius: 50px;
@@ -226,7 +254,6 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
   filter: brightness(0) invert(0.85);
 }
 
-/* Блок с кнопками внизу на черной плашке */
 .actions-wrapper {
   background: #000000;
   border-radius: 50px;
@@ -243,7 +270,7 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 .btn-create,
 .btn-see-all {
   padding: 16px 32px;
-  border-radius: 50px;
+  border-radius: 46px;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -334,6 +361,7 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
+  align-items: stretch;
 }
 
 .app-card {
@@ -342,19 +370,16 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
   padding: 24px;
   transition: all 0.3s ease;
   border: 1px solid #3a3a3a;
-  display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 
 .app-card.korzh-card {
-  grid-template-rows: auto auto auto auto auto auto auto;
   padding-bottom: 24px;
 }
 
 .app-card.promo-card {
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -365,18 +390,18 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 
 .promo-bg-icon {
   position: absolute;
-  width: 800px;
-  height: 800px;
-  top: -200px;
-  right: -200px;
+  width: 560px;
+  height: 560px;
+  top: -140px;
+  right: -140px;
   background-image: url('/favicon.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.05;
+  opacity: 0.04;
   pointer-events: none;
-  mask-image: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.2) 20%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.8) 80%, rgba(0,0,0,1) 100%);
-  -webkit-mask-image: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.2) 20%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.8) 80%, rgba(0,0,0,1) 100%);
+  mask-image: radial-gradient(ellipse 80% 80% at 70% 30%, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.1) 70%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 70% 30%, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.1) 70%, transparent 100%);
 }
 
 .promo-text {
@@ -399,6 +424,20 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
   transition: all 0.3s ease;
   position: relative;
   z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.promo-link-icon {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) invert(0.65);
+  transition: filter 0.3s ease;
+}
+
+.promo-link:hover .promo-link-icon {
+  filter: brightness(0) invert(1);
 }
 
 .promo-link:hover {
@@ -416,6 +455,9 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 
 .app-card:hover {
   background: #323232;
+  transform: translateY(-4px);
+  border-color: #4a4a4a;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .app-card.korzh-card:hover .badge-image {
@@ -550,17 +592,12 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
   transform: translateY(-2px);
 }
 
-.app-card:has(.play-btn:hover) {
-  transform: translateY(-4px);
-  border-color: #4a4a4a;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-
 .bubbles-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
+  margin-top: auto;
 }
 
 .bubble {
@@ -590,12 +627,15 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
   color: #e0e0e0;
   cursor: pointer;
   text-decoration: none !important;
+  box-sizing: border-box;
+  border: 2px solid transparent;
 }
 
 .bubble.bubble-signal:hover {
   background-color: #ffffff;
   color: #1a1a1a;
   text-decoration: none !important;
+  border: 2px solid transparent;
 }
 
 .bubble.bubble-signal:hover,
@@ -603,7 +643,6 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 .bubble.bubble-signal:visited,
 .bubble.bubble-signal:focus {
   text-decoration: none !important;
-  border: none !important;
   outline: none !important;
   box-shadow: none !important;
 }
@@ -622,11 +661,17 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
 
   .actions-wrapper {
     padding: 5px;
+    border-radius: 50px;
   }
 
   .actions {
     grid-template-columns: 1fr;
     gap: 5px;
+  }
+
+  .btn-create,
+  .btn-see-all {
+    border-radius: 46px;
   }
 
   .apps-grid {
@@ -643,11 +688,11 @@ const formattedPageViews = computed(() => formatNumber(pageViews.value))
   }
 
   .promo-bg-icon {
-    width: 300px;
-    height: 300px;
-    top: -50px;
-    right: -50px;
-    opacity: 0.08;
+    width: 250px;
+    height: 250px;
+    top: -30px;
+    right: -30px;
+    opacity: 0.06;
   }
 
   .promo-text {
