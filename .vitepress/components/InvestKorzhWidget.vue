@@ -1,48 +1,85 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
+// --- НАСТРОЙКИ СКРЫТЫХ СЧЕТЧИКОВ (СЕТКА) ---
 const _GRID_COLS = 4
 const _GRID_ROWS = 3
 const _GRID_GAP = 2
 const _GRID_PADDING = 2
 
-const _baseValue = _GRID_COLS * _GRID_ROWS
-const _secondaryValue = _GRID_GAP * _GRID_PADDING
+// Базовые значения для карточки "КОРЖ"
+const _baseLikes = _GRID_COLS * _GRID_ROWS // 12
+const _baseLightning = _GRID_GAP * _GRID_PADDING // 4
 
-const isLiked = ref(false)
-const currentLikes = ref(_baseValue)
-const lightningCount = _secondaryValue
+// Состояние лайка "КОРЖ"
+const isKorzhLiked = ref(false)
+const korzhLikes = ref(_baseLikes)
+
+// Счетчик просмотров страницы
+const pageViews = ref(0)
 
 onMounted(() => {
-  const hasLiked = localStorage.getItem('korzh_liked_status')
-  
-  if (hasLiked) {
-    isLiked.value = true
-    currentLikes.value = _baseValue + 1
+  // 1. Логика лайка для КОРЖа
+  const hasLikedKorzh = localStorage.getItem('korzh_liked_status')
+  if (hasLikedKorzh) {
+    isKorzhLiked.value = true
+    korzhLikes.value = _baseLikes + 1
   } else {
-    currentLikes.value = _baseValue
+    korzhLikes.value = _baseLikes
   }
+
+  // 2. Логика просмотров страницы (вечно растет)
+  const storedViews = localStorage.getItem('signal_page_views')
+  let currentViews = storedViews ? parseInt(storedViews, 10) : 2340 // Стартовое число для красоты
+  currentViews++
+  pageViews.value = currentViews
+  localStorage.setItem('signal_page_views', currentViews.toString())
 })
 
-const toggleLike = () => {
-  isLiked.value = !isLiked.value
-
-  if (isLiked.value) {
-    currentLikes.value = _baseValue + 1
+// Переключатель лайка
+const toggleKorzhLike = () => {
+  isKorzhLiked.value = !isKorzhLiked.value
+  if (isKorzhLiked.value) {
+    korzhLikes.value = _baseLikes + 1
     localStorage.setItem('korzh_liked_status', 'true')
   } else {
-    currentLikes.value = _baseValue
+    korzhLikes.value = _baseLikes
     localStorage.removeItem('korzh_liked_status')
   }
 }
+
+// Вычисляемые общие суммы (для верхнего блока статистики)
+// Если добавится вторая карточка, просто приплюсуем её ref сюда
+const totalLikes = computed(() => korzhLikes.value) 
+const totalLightning = computed(() => _baseLightning) 
 </script>
 
 <template>
   <div class="essential-apps">
+    
+    <!-- БЛОК ОБЩЕЙ СТАТИСТИКИ (Новый пункт 12) -->
+    <div class="stats-header-block">
+      <div class="global-stat-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>ircle cx="12" cy="12" r="3"/></svg>
+        <span>{{ pageViews }}</span>
+      </div>
+      <div class="global-stat-item">
+        <!-- Заполненное сердце -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
+          <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+        </svg>
+        <span>{{ totalLikes }}</span>
+      </div>
+      <div class="global-stat-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+        <span>{{ totalLightning }}</span>
+      </div>
+    </div>
+
     <div class="header">
       <div class="actions">
-        <a href="/pro/customize" class="btn-create">
-          Настроить Свой Сигнал
+        <a href="/invest/pulse" class="btn-create">
+          Инвестировать Сигналы
           <span class="icon-circle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M7 7h10v10"/>
@@ -51,7 +88,7 @@ const toggleLike = () => {
           </span>
         </a>
         <a href="/pro/ltvcalc" class="btn-see-all">
-          LTV Калькулятор
+          Все возможности
           <span class="icon-circle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14"/>
@@ -63,21 +100,22 @@ const toggleLike = () => {
     </div>
 
     <div class="apps-grid">
+      <!-- ЛЕВАЯ КАРТОЧКА (КОРЖ) -->
       <div class="app-card korzh-card">
         <div class="card-header">
-          <span class="app-name">ОБЩЕПИТ</span>
+          <span class="app-name">КОРЖ</span>
           
           <div 
             class="like-btn" 
-            :class="{ 'is-liked': isLiked }"
-            @click="toggleLike"
+            :class="{ 'is-liked': isKorzhLiked }"
+            @click="toggleKorzhLike"
             title="Нравится"
           >
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               width="24" height="24" 
               viewBox="0 0 24 24" 
-              :fill="isLiked ? 'white' : 'none'" 
+              :fill="isKorzhLiked ? 'white' : 'none'" 
               stroke="currentColor" 
               stroke-width="2" 
               stroke-linecap="round" 
@@ -90,30 +128,31 @@ const toggleLike = () => {
         </div>
 
         <div class="app-icon">
-          <img src="/dialogs-widgets-cafe-icon.svg" alt="Общепит" style="width: 100%; height: 100%; object-fit: contain;" />
+          <img src="/korzh_badge.svg" alt="Корж" style="width: 100%; height: 100%; object-fit: contain;" />
         </div>
 
         <p class="card-description bold-desc">
-          Не говорим вам, как варить кофе. Даем умную систему, чтобы в вашей кофейне было больше постоянных гостей.
+          Жить любить кофе пить
         </p>
 
         <div class="stats-row">
           <div class="stat-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
+            <!-- Заполненное сердце -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
               <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
             </svg>
-            <span>{{ currentLikes }}</span>
+            <span>{{ korzhLikes }}</span>
           </div>
           <div class="stat-item">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap">
               <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
             </svg>
-            <span>{{ lightningCount }}</span>
+            <span>{{ _baseLightning }}</span>
           </div>
         </div>
 
         <div class="card-footer">
-          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Тест-драйв</a>
+          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Возможности в Корж</a>
         </div>
 
         <div class="bubbles-container">
@@ -129,30 +168,23 @@ const toggleLike = () => {
             Инвестиции
           </div>
           <div class="bubble">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-icon lucide-map-pin"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>ircle cx="12" cy="10" r="3"/></svg>
+            <!-- Флаг -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag-icon lucide-flag"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg>
             Самара
           </div>
         </div>
       </div>
 
-      <div class="app-card">
-        <div class="card-header">
-          <span class="app-name">ФИТНЕС</span>
-          <div class="like-info">
-            <span class="like-count">[СуперСпорт]</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
-            </svg>
-          </div>
-        </div>
-        <div class="app-icon">
-          <img src="/dialogs-widgets-fitness-icon.svg" alt="Фитнес" style="width: 100%; height: 100%; object-fit: contain;" />
-        </div>
-        <p class="card-description">50% ваших новых клиентов боятся заходить в зал. Знаем, как это исправить.</p>
-        <div class="card-footer">
-          <a href="/supersport" target="_blank" rel="noopener noreferrer" class="play-btn">Тест-драйв</a>
-        </div>
+      <!-- ПРАВАЯ КАРТОЧКА (ПРОМО) -->
+      <div class="app-card promo-card">
+        <p class="promo-text">
+          Получите поддержку клиентов, чтобы расти быстрее конкурентов.
+        </p>
+        <a href="/pro/index" class="promo-link">
+          Запустить Сигнал
+        </a>
       </div>
+
     </div>
   </div>
 </template>
@@ -163,6 +195,28 @@ const toggleLike = () => {
   color: #e0e0e0;
   margin: 48px 0;
   padding: 0;
+}
+
+/* Блок общей статистики */
+.stats-header-block {
+  background: #2a2a2a; /* Цвет карточек */
+  border-radius: 24px; /* Как у карточек */
+  padding: 16px 32px;
+  margin-bottom: 16px; /* Расстояние до кнопок такое же, как gap */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px; /* Расстояние между иконками */
+  border: 1px solid #3a3a3a;
+}
+
+.global-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e0e0e0;
 }
 
 .header {
@@ -201,6 +255,7 @@ const toggleLike = () => {
 .btn-create:hover {
   background: #d4ff6b;
   transform: translateY(-2px);
+  color: #1a1a1a; /* Цвет текста не меняется при ховере */
 }
 
 .btn-see-all {
@@ -285,6 +340,46 @@ const toggleLike = () => {
   grid-template-rows: auto auto auto auto auto 1fr;
 }
 
+/* ПРАВАЯ КАРТОЧКА */
+.app-card.promo-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+}
+
+.promo-text {
+  /* Стиль как у заголовка .app-name */
+  font-size: 14px;
+  font-weight: 500;
+  color: #b0b0b0;
+  letter-spacing: 0.5px;
+  margin: 0;
+  line-height: 1.6;
+  max-width: 80%;
+}
+
+.promo-link {
+  color: #C5F946;
+  text-decoration: none; /* Убираем стандартное подчеркивание */
+  font-weight: 500;
+  border-bottom: 2px solid #C5F946; /* Кастомное подчеркивание */
+  transition: opacity 0.3s ease;
+}
+
+.promo-link:hover {
+  opacity: 0.8;
+}
+
+/* Важно для VitePress, чтобы перебить дефолтные стили ссылок */
+.promo-link:hover,
+.promo-link:active,
+.promo-link:visited {
+  text-decoration: none !important;
+}
+
 .app-card:hover {
   background: #323232;
 }
@@ -301,18 +396,6 @@ const toggleLike = () => {
   font-weight: 500;
   color: #b0b0b0;
   letter-spacing: 0.5px;
-}
-
-.like-info {
-  color: #9e9e9e;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-}
-
-.like-count {
-  font-family: inherit;
 }
 
 .like-btn {
@@ -423,8 +506,10 @@ const toggleLike = () => {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background-color: #383838; 
-  color: #757575; 
+  /* Сделали ярче фон (было #383838, стало #424242) */
+  background-color: #424242; 
+  /* Сделали ярче текст (было #757575, стало #adadad) */
+  color: #adadad; 
   padding: 6px 12px; 
   border-radius: 14px;
   font-size: 12px; 
@@ -436,6 +521,12 @@ const toggleLike = () => {
 @media (max-width: 768px) {
   .essential-apps {
     margin: 32px 0;
+  }
+
+  .stats-header-block {
+    flex-direction: row;
+    gap: 24px;
+    padding: 16px;
   }
 
   .actions {
