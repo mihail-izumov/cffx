@@ -3,20 +3,23 @@ outline: false
 prev: false
 next: false
 pageClass: centered-page
-title: Отправьте Сигнал – Корж, Skuratov, Surf, Mosaic, Белотурка, Кэрри
+notification: clients
+title: Отправьте Сигнал – World Class, FIZКУЛЬТУРА, X-fit, SMSTRETCHING, Спортлайф, Fitness House, DDX
 description: Сигнал – тому кто решает
 ---
 <SignalItemsSlider />
 
 <div align="center">
 
-<BadgeCounter />
-
 <h1 class="responsive-heading-signal-industries">Ваш Сигнал — тому,<br>кто решает в фитнесе.</h1>
 
 <p>
   Без регистрации.<br class="mobile-break"> <strong>Результат — сегодня.</strong>
 </p>
+
+<br>
+
+<BadgeCounter />
 
 </div>
 
