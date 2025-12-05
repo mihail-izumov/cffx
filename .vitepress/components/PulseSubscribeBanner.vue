@@ -128,74 +128,91 @@ const handleButtonClick = () => {
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-/* КНОПКА — Жидкое стекло (Liquid Glass) */
+/* КНОПКА — Чистое стекло (Ultra Clear) */
 .glass-pill {
   pointer-events: auto;
   position: relative;
   
-  /* Фон: стал чуть прозрачнее (0.55), чтобы пропустить размытый фон */
-  background: rgba(20, 20, 24, 0.55);
+  /* Фон: прозрачнее (0.3) для видимости фона страницы */
+  background: rgba(20, 20, 24, 0.3);
   
-  /* Сильное размытие фона (эффект стекла) */
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  /* Блюр: минимальный (4px), чтобы сохранить текстуру фона */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   
-  /* Border: используем border 1px, такой же как у верхнего блика */
-  border: 1px solid rgba(181, 242, 64, 0.3);
+  /* Border убираем, рисуем его через ::before для идеального стыка */
+  border: none;
   
   border-radius: 9999px;
   padding: 1.05rem 3.6rem;
   font-weight: 600;
   font-size: clamp(1.08rem, 2.3vw, 1.2rem);
-  color: #b5f240; /* Лаймовый текст */
+  color: #b5f240;
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
   
-  /* Тень для глубины */
-  box-shadow: 
-    0 10px 40px rgba(0,0,0,0.4), 
-    inset 0 0 0 0.5px rgba(255,255,255,0.1); /* Тонкий внутренний контур */
+  /* Анимация: делаем плавнее (убираем резкость пружины) */
+  transition: 
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), 
+    background 0.6s ease, 
+    box-shadow 0.6s ease;
+    
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
 
-/* Верхний блик — строго 1px высотой, совпадает с border */
+/* ЕДИНАЯ ОБВОДКА (Решает проблему "дырок") */
 .glass-pill::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px; /* Высота равна толщине border */
-  background: linear-gradient(90deg, transparent, rgba(181,242,64,0.8), transparent);
-  opacity: 0.9;
-  z-index: 2;
+  inset: 0; /* Занимает всю площадь */
+  border-radius: 9999px; 
+  padding: 1px; /* Толщина обводки */
+  
+  /* 
+     ХИТРОСТЬ: Складываем два фона для рамки.
+     1. Radial-gradient: Яркое пятно сверху по центру.
+     2. Linear-gradient: Тусклая линия по всему периметру.
+  */
+  background: 
+    radial-gradient(60% 50% at 50% 0%, rgba(181, 242, 64, 1) 0%, transparent 100%),
+    linear-gradient(rgba(181, 242, 64, 0.25), rgba(181, 242, 64, 0.25));
+    
+  /* Маска вырезает центр, оставляя только рамку 1px */
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  
+  pointer-events: none;
+  transition: opacity 0.5s ease;
 }
 
-/* Эффект "мокрого" блика внутри */
+/* Легкий внутренний блик для объема (опционально, очень тонкий) */
 .glass-pill::after {
   content: '';
   position: absolute;
-  top: 1px; left: 1px; right: 1px;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   border-radius: 9999px;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.01) 40%, transparent 100%);
+  box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.05);
   pointer-events: none;
 }
 
 .glass-pill:hover {
-  transform: translateY(-7px);
-  /* При наведении стекло становится чуть плотнее */
-  background: rgba(30,30,35,0.75);
-  border-color: rgba(181, 242, 64, 0.6);
+  transform: translateY(-5px); /* Чуть меньше амплитуда движения */
+  background: rgba(30,30,35,0.6); /* Чуть плотнее при наведении */
   box-shadow: 
-    0 22px 55px rgba(0,0,0,0.55), 
-    0 0 30px rgba(181,242,64,0.2);
+    0 20px 50px rgba(0,0,0,0.5), 
+    0 0 25px rgba(181,242,64,0.15);
 }
 
 .glass-pill:active {
   transform: translateY(-2px);
+  transition-duration: 0.15s; /* Быстрый отклик на клик */
 }
 
-/* Мобильная версия — идеальное выравнивание */
+/* Мобильная версия */
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
