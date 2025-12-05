@@ -2,129 +2,105 @@
 import { ref, onMounted, computed } from 'vue'
 
 // --- КОНФИГУРАЦИЯ ---
-
-// 1. Ссылка на твой Google Script
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
-// 2. БАЗОВЫЕ ЗНАЧЕНИЯ (должны совпадать с колонкой C в Google Таблице)
-// Это то, что видит новый пользователь в первую секунду
+// БАЗОВЫЕ ЗНАЧЕНИЯ (То, что показываем, если сервер молчит или дает 0)
 const INITIAL_BASE = {
-  pageViews: 120,    // Впиши сюда число из ячейки C2
-  korzhLikes: 56,    // Впиши сюда число из ячейки C3
-  korzhSignals: 12   // Впиши сюда число из ячейки C4
+  pageViews: 120,
+  korzhLikes: 56,
+  korzhSignals: 4
 }
 
-// --- СОСТОЯНИЕ ---
-
 const isKorzhLiked = ref(false)
-
-// Инициализируем сразу "красивыми" цифрами
 const stats = ref({ ...INITIAL_BASE })
 
-// Форматирование (1200 -> 1.2K)
+// Защищенное форматирование (никаких -1)
 const formatNumber = (num) => {
-  if (!num) return '0'
-  if (num >= 1000) {
-    return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K'
+  const safeNum = Math.max(0, num || 0) // Защита от null и минусов
+  if (safeNum >= 1000) {
+    return (safeNum / 1000).toFixed(1).replace(/\.0$/, '') + 'K'
   }
-  return num.toString()
+  return safeNum.toString()
 }
 
 // --- ЛОГИКА КЭША ---
-
 const loadFromCache = () => {
   try {
-    const cached = localStorage.getItem('signal_stats_cache')
+    const cached = localStorage.getItem('signal_stats_cache_v2') // Новый ключ v2, чтобы сбросить старые глюки
     if (cached) {
       const parsed = JSON.parse(cached)
-      // Если есть кэш - он приоритетнее хардкода
       stats.value = { ...stats.value, ...parsed }
     }
-  } catch (e) {
-    console.error('Ошибка чтения кэша', e)
-  }
+  } catch (e) { console.error(e) }
 }
 
 const saveToCache = () => {
-  localStorage.setItem('signal_stats_cache', JSON.stringify(stats.value))
+  localStorage.setItem('signal_stats_cache_v2', JSON.stringify(stats.value))
 }
 
 // --- СЕТЕВАЯ ЛОГИКА ---
-
 const fetchStats = async () => {
   try {
     const response = await fetch(`${SCRIPT_URL}?action=get`)
     const data = await response.json()
     
-    // Обновляем данные (сервер всегда прав)
-    if (data.pageViews) stats.value.pageViews = data.pageViews
-    if (data.korzhLikes) stats.value.korzhLikes = data.korzhLikes
-    if (data.korzhSignals) stats.value.korzhSignals = data.korzhSignals
+    // ЗАЩИТА: Если сервер вернул 0 (пустая таблица), НЕ перезаписываем базу
+    if (data.pageViews > 0) stats.value.pageViews = data.pageViews
+    if (data.korzhLikes > 0) stats.value.korzhLikes = data.korzhLikes
+    if (data.korzhSignals > 0) stats.value.korzhSignals = data.korzhSignals
     
-    saveToCache() // Обновляем кэш свежими данными
+    saveToCache()
   } catch (error) {
-    console.error('Ошибка загрузки с сервера, показываем кэш/базу:', error)
+    console.error('Ошибка сервера, используем локальные данные')
   }
 }
 
 const incrementViews = async () => {
-  // Оптимистично обновляем UI
   stats.value.pageViews++
   saveToCache()
-  
-  // Шлем запрос (fire and forget)
-  try {
-    await fetch(`${SCRIPT_URL}?action=incrementViews`)
-  } catch (e) {}
+  try { await fetch(`${SCRIPT_URL}?action=incrementViews`) } catch (e) {}
 }
 
 const toggleKorzhLike = async () => {
-  // МГНОВЕННАЯ РЕАКЦИЯ ИНТЕРФЕЙСА
   const wasLiked = isKorzhLiked.value
   isKorzhLiked.value = !wasLiked
   
+  // Оптимистичное обновление UI
   if (!wasLiked) {
     // Ставим лайк
     stats.value.korzhLikes++
     localStorage.setItem('korzh_liked_status', 'true')
     saveToCache()
     
-    // Отправляем на сервер
+    // Отправляем запрос
     fetch(`${SCRIPT_URL}?action=addLike`).catch(() => {
-      // Откат при ошибке (редко)
-      stats.value.korzhLikes--
+      stats.value.korzhLikes-- // Откат при ошибке
       isKorzhLiked.value = false
     })
   } else {
-    // Убираем лайк
-    stats.value.korzhLikes--
+    // Убираем лайк (с защитой от ухода в минус)
+    if (stats.value.korzhLikes > 0) stats.value.korzhLikes--
     localStorage.removeItem('korzh_liked_status')
     saveToCache()
     
     fetch(`${SCRIPT_URL}?action=removeLike`).catch(() => {
-      // Откат
-      stats.value.korzhLikes++
+      stats.value.korzhLikes++ // Откат
       isKorzhLiked.value = true
     })
   }
 }
 
-// --- ЗАПУСК ---
-
 onMounted(async () => {
-  // 1. МГНОВЕННО: Грузим из кэша (если есть) или показываем INITIAL_BASE
   loadFromCache()
   
-  // 2. Проверяем, стоит ли лайк у юзера локально
+  // Синхронизация статуса лайка
   const hasLikedKorzh = localStorage.getItem('korzh_liked_status')
-  if (hasLikedKorzh) {
-    isKorzhLiked.value = true
-  }
+  if (hasLikedKorzh) isKorzhLiked.value = true
 
-  // 3. ФОНОВО: Грузим актуальные данные с сервера (юзер не замечает задержки)
+  // Грузим данные
   await fetchStats()
 
-  // 4. ФОНОВО: Засчитываем просмотр (1 раз за сессию)
+  // Засчитываем просмотр
   const sessionViewed = sessionStorage.getItem('signal_session_viewed')
   if (!sessionViewed) {
     incrementViews()
@@ -137,7 +113,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 
 <template>
   <div class="essential-apps">
-
+    <!-- Верхняя плашка -->
     <div class="stats-header-block">
       <div class="global-stat-item">
         <img src="/eye-icon.svg" alt="Просмотры" class="eye-icon" />
@@ -155,28 +131,19 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
       </div>
     </div>
 
+    <!-- Grid карточек -->
     <div class="apps-grid">
+      <!-- Карточка Корж -->
       <div class="app-card korzh-card">
         <div class="card-header">
           <span class="app-name">КОРЖ</span>
-          
           <div 
             class="like-btn" 
             :class="{ 'is-liked': isKorzhLiked }"
             @click="toggleKorzhLike"
             title="Нравится"
           >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              width="24" height="24" 
-              viewBox="0 0 24 24" 
-              :fill="isKorzhLiked ? 'white' : 'none'" 
-              stroke="currentColor" 
-              stroke-width="2" 
-              stroke-linecap="round" 
-              stroke-linejoin="round" 
-              class="lucide lucide-heart-icon lucide-heart"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" :fill="isKorzhLiked ? 'white' : 'none'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
               <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
             </svg>
           </div>
@@ -188,13 +155,8 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
           </div>
         </div>
 
-        <p class="card-description bold-desc">
-          Жить любить кофе пить
-        </p>
-        
-        <p class="card-subtitle">
-          Сеть кофеен №1 в Самаре. Лидер Индекса роста Сигнала.
-        </p>
+        <p class="card-description bold-desc">Жить любить кофе пить</p>
+        <p class="card-subtitle">Сеть кофеен №1 в Самаре. Лидер Индекса роста Сигнала.</p>
 
         <div class="stats-row">
           <div class="stat-item">
@@ -233,11 +195,10 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
         </div>
       </div>
 
+      <!-- Промо карточка -->
       <div class="app-card promo-card">
         <div class="promo-bg-icon"></div>
-        <p class="promo-text">
-          Получите поддержку клиентов, чтобы расти быстрее конкурентов.
-        </p>
+        <p class="promo-text">Получите поддержку клиентов, чтобы расти быстрее конкурентов.</p>
         <a href="/pro/index" class="promo-link">
           <img src="/favicon.svg" alt="" class="promo-link-icon" />
           Запустить Сигнал
@@ -245,34 +206,28 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
       </div>
     </div>
 
+    <!-- Нижние кнопки -->
     <div class="actions-wrapper">
       <div class="actions">
         <a href="/invest/pulse" class="btn-create">
           Инвестировать Сигналы
           <span class="icon-circle">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 7h10v10"/>
-              <path d="M7 17 17 7"/>
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
           </span>
         </a>
         <a href="/pro/ltvcalc" class="btn-see-all">
           Все возможности
           <span class="icon-circle">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14"/>
-              <path d="m12 5 7 7-7 7"/>
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </span>
         </a>
       </div>
     </div>
-
   </div>
 </template>
 
 <style scoped>
-/* Стили без изменений, можно оставить из предыдущих версий */
+/* Твои стили остаются без изменений */
 .essential-apps {
   background-color: #1a1a1a;
   color: #e0e0e0;
