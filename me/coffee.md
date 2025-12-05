@@ -11,13 +11,13 @@ description: Сигнал – тому кто решает
 
 <div align="center">
 
-<BadgeCounter />
-
 <h1 class="responsive-heading-signal-industries">Ваш Сигнал — тому,<br>кто решает в ресторанах.</h1>
 
 <p>
   Без регистрации.<br class="mobile-break"> <strong>Результат — сегодня.</strong>
 </p>
+
+<BadgeCounter />
 
 </div>
 
