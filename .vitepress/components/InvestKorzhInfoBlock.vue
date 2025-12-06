@@ -67,7 +67,17 @@ const toggleLike = () => {
     localStorage.removeItem(STORAGE_KEY)
     fetch(`${SCRIPT_URL}?action=removeLike`).catch(() => { stats.value.korzhLikes++; isLiked.value = true })
   }
+  
   saveToCache()
+
+  // --- МАГИЯ СИНХРОНИЗАЦИИ ---
+  // Создаем и отправляем событие, чтобы другие компоненты на странице узнали об изменении
+  window.dispatchEvent(new CustomEvent('korzh-like-changed', {
+    detail: { 
+      liked: isLiked.value,
+      newCount: stats.value.korzhLikes
+    }
+  }))
 }
 
 const copyLink = async () => {
@@ -94,6 +104,13 @@ onMounted(async () => {
   if (localStorage.getItem('korzh_liked_status')) {
     isLiked.value = true
   }
+
+  // --- СЛУШАЕМ СОСЕДЕЙ ---
+  // Если другой компонент изменил лайк, мы тоже обновимся
+  window.addEventListener('korzh-like-changed', (e) => {
+    isLiked.value = e.detail.liked
+    stats.value.korzhLikes = e.detail.newCount
+  })
   
   await fetchStats()
   
@@ -105,6 +122,7 @@ onMounted(async () => {
 
 const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 </script>
+
 
 <template>
   <div class="wide-widget-container">
