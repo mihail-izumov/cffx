@@ -280,7 +280,7 @@ export default {
     app.component('InvestKorzhWidget', InvestKorzhWidget)
     app.component('InvestKorzhInfoBlock', InvestKorzhInfoBlock)
     app.component('InvestUpdatesInfoBlock', InvestUpdatesInfoBlock)
-    app.component('InvestKorzhGallerySlider', InvestKorzhGallerySlider.vue)
+    app.component('InvestKorzhGallerySlider', InvestKorzhGallerySlider)
     
   },
 }
