@@ -3,4 +3,6 @@
 
 <InvestKorzhInfoBlock />
 
+<InvestKorzhGallerySlider />
+
 <InvestUpdatesInfoBlock />
