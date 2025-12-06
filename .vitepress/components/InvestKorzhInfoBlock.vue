@@ -51,15 +51,20 @@ const incrementViews = async () => {
   try { await fetch(`${SCRIPT_URL}?action=incrementViewsKorzh`) } catch (e) {}
 }
 
+// Логика лайков (Синхронизирована с родительским виджетом)
 const toggleLike = () => {
   isLiked.value = !isLiked.value
+  
+  // Используем тот же ключ localStorage, что и в родительском компоненте!
+  const STORAGE_KEY = 'korzh_liked_status'
+  
   if (isLiked.value) {
     stats.value.korzhLikes++
-    localStorage.setItem('korzh_liked_wide', 'true')
+    localStorage.setItem(STORAGE_KEY, 'true')
     fetch(`${SCRIPT_URL}?action=addLike`).catch(() => { stats.value.korzhLikes--; isLiked.value = false })
   } else {
     if (stats.value.korzhLikes > 0) stats.value.korzhLikes--
-    localStorage.removeItem('korzh_liked_wide')
+    localStorage.removeItem(STORAGE_KEY)
     fetch(`${SCRIPT_URL}?action=removeLike`).catch(() => { stats.value.korzhLikes++; isLiked.value = true })
   }
   saveToCache()
@@ -84,7 +89,11 @@ const shareTelegram = () => {
 
 onMounted(async () => {
   loadFromCache()
-  if (localStorage.getItem('korzh_liked_wide')) isLiked.value = true
+  
+  // Проверяем общий ключ лайка
+  if (localStorage.getItem('korzh_liked_status')) {
+    isLiked.value = true
+  }
   
   await fetchStats()
   
@@ -101,17 +110,13 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   <div class="wide-widget-container">
     
     <div class="wide-card">
+      <!-- ЗАГОЛОВОК И ЛОГО -->
       <div class="card-top">
         <img src="/korzh_badge.svg" alt="Корж" class="logo-img" />
         <h1 class="card-title">Корж – сеть кофеен</h1>
       </div>
 
-      <p class="card-text">
-        Garage Barcelona is one of Spain's leading craft breweries. With Untappd top-ranked IPAs they have increased their revenue via two Garage bars and distribution across 34 countries worldwide. They are raising funds for brewery expansion and to open a new flagship bar in the centre of Barcelona
-      </p>
-
-      <a href="https://korzhcoffee.ru" target="_blank" class="website-link">korzhcoffee.ru</a>
-
+      <!-- БАБЛЫ (Теперь над текстом) -->
       <div class="bubbles-row">
         <div class="bubble">
           <img src="/piggy-bank-icon.svg" alt="" class="bubble-icon" />
@@ -131,6 +136,14 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
         </a>
       </div>
 
+      <!-- ТЕКСТ -->
+      <p class="card-text">
+        Garage Barcelona is one of Spain's leading craft breweries. With Untappd top-ranked IPAs they have increased their revenue via two Garage bars and distribution across 34 countries worldwide. They are raising funds for brewery expansion and to open a new flagship bar in the centre of Barcelona
+      </p>
+
+      <a href="https://korzhcoffee.ru" target="_blank" class="website-link">korzhcoffee.ru</a>
+
+      <!-- СТАТИСТИКА (Сжатая по высоте) -->
       <div class="stats-block">
         <div class="stat-item">
           <img src="/eye-icon.svg" alt="Просмотры" class="stat-icon" />
@@ -146,18 +159,21 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
         </div>
       </div>
 
+      <!-- КНОПКИ -->
       <div class="actions-wrapper">
         <div class="actions">
           <button class="btn-create" @click="showFollowModal = true">
             Получать обновления
             <span class="icon-circle">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>ircle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              <!-- Иконка BELL -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell-icon lucide-bell"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
             </span>
           </button>
           <button class="btn-see-all" @click="showShareModal = true">
             Поделиться
             <span class="icon-circle">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">ircle cx="18" cy="5" r="3"/>ircle cx="6" cy="12" r="3"/>ircle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              <!-- Иконка UPLOAD -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-icon lucide-upload"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
             </span>
           </button>
         </div>
@@ -165,16 +181,23 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 
     </div>
 
+    <!-- МОДАЛКА FOLLOW -->
     <div v-if="showFollowModal" class="modal-overlay" @click.self="showFollowModal = false">
-      <div class="modal-card">
+      <div class="modal-card relative">
+        <button class="modal-close-icon" @click="showFollowModal = false">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
         <h3>Получайте новости первым когда появятся возможности инвестировать в новые кофейни Корж</h3>
         <p>Following allows you to stay up to date with everything a company is doing meaning you'll never miss out on an investment opportunity. Create an account to follow GARAGE BARCELONA.</p>
-        <button class="modal-close" @click="showFollowModal = false">Закрыть</button>
       </div>
     </div>
 
+    <!-- МОДАЛКА SHARE -->
     <div v-if="showShareModal" class="modal-overlay blur-bg" @click.self="showShareModal = false">
-      <div class="modal-card white-theme">
+      <div class="modal-card white-theme relative">
+        <button class="modal-close-icon dark" @click="showShareModal = false">
+           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
         <h3>Поделитесь</h3>
         <p>Пригласите друзей следить за инвестициями в Корж</p>
         
@@ -196,6 +219,7 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
       </div>
     </div>
 
+    <!-- TOAST -->
     <Transition name="fade">
       <div v-if="showCopyToast" class="toast-notification">
         <div class="check-circle">✓</div>
@@ -219,30 +243,44 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   color: #e0e0e0;
 }
 
+/* --- КАРТОЧКА С МАГИЧЕСКОЙ ОБВОДКОЙ --- */
 .wide-card {
+  position: relative;
   background: #2a2a2a;
   border-radius: 24px;
   padding: 40px;
-  position: relative;
-  border: 1px solid transparent;
+  /* Убираем стандартный бордер */
+  border: none;
+  /* Создаем прозрачный отступ для рамки */
+  box-shadow: inset 0 0 0 1px transparent;
+  z-index: 1;
+  /* Чтобы фон контента не залезал на прозрачность, обрезаем по паддингу */
+  background-clip: padding-box;
 }
 
+/* Псевдо-элемент для ГРАДИЕНТНОЙ РАМКИ (как просил!) */
 .wide-card::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 24px;
-  padding: 1px;
+  padding: 1px; /* Толщина той самой тонкой рамки */
+  
+  /* Тот самый градиент: Белый сверху-слева -> Прозрачный снизу-справа */
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0) 100%);
+  
+  /* Маска для вырезания центра */
   -webkit-mask: 
      linear-gradient(#fff 0 0) content-box, 
      linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
+  
   pointer-events: none;
   z-index: -1;
 }
 
+/* Ховер эффект для рамки */
 .wide-card:hover::before {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
 }
@@ -263,7 +301,7 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 }
 
 .card-title {
-  font-size: 48px;
+  font-size: 36px; /* Уменьшил до 36px по запросу */
   font-weight: 700;
   color: #fff;
   margin: 0;
@@ -352,13 +390,13 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 .stats-block {
   background: #000000;
   border-radius: 50px;
-  padding: 16px 32px;
+  padding: 10px 32px; /* Уменьшил высоту (было 16px) */
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 32px;
   margin-bottom: 24px;
-  min-height: 56px;
+  min-height: 48px; /* Было 56px */
 }
 
 .stat-item {
@@ -429,7 +467,8 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 
 .btn-see-all:hover {
   border-color: #616161;
-  background: #2a2a2a;
+  /* Добавил светло-серый фон при ховере */
+  background: #3a3a3a; 
   color: #e0e0e0;
 }
 
@@ -512,6 +551,7 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   width: 90%;
   text-align: center;
   color: #fff;
+  position: relative; /* Для крестика */
 }
 
 .modal-card.white-theme {
@@ -519,8 +559,33 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   color: #000;
 }
 
+.relative {
+  position: relative;
+}
+
+.modal-close-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 4px;
+  transition: opacity 0.2s;
+  opacity: 0.6;
+}
+
+.modal-close-icon:hover {
+  opacity: 1;
+}
+
+.modal-close-icon.dark {
+  color: #000;
+}
+
 .modal-card h3 {
-  margin-top: 0;
+  margin-top: 12px;
   font-size: 24px;
   margin-bottom: 16px;
 }
@@ -530,15 +595,6 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   line-height: 1.5;
   margin-bottom: 32px;
   opacity: 0.8;
-}
-
-.modal-close {
-  background: #333;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
-  cursor: pointer;
 }
 
 .share-buttons {
@@ -634,7 +690,7 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   }
 
   .card-title {
-    font-size: 32px;
+    font-size: 28px;
   }
 
   .card-text {
