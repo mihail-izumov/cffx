@@ -116,9 +116,9 @@
 </template>
 
 <style scoped>
-/* Reset VitePress styles */
-.early-access-widget :deep(h2) {
-  border: none !important;
+/* СБРОС СТИЛЕЙ */
+.early-access-widget :deep(h2),
+.early-access-widget :deep(p) {
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -135,29 +135,31 @@
   box-sizing: border-box;
 }
 
-/* Header */
+/* HEADER */
 .header-section {
   text-align: center;
   margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; /* Используем gap вместо margin-bottom у h2 для точного контроля */
 }
 
 .widget-title {
   font-size: 32px !important;
   font-weight: 700 !important;
   color: #ffffff !important;
-  margin-bottom: 16px !important;
-  /* ИЗМЕНЕНИЕ: было 1.2, стало 1.4 для соответствия другому компоненту */
-  line-height: 1.4 !important; 
+  line-height: 1.4 !important; /* Синхронизировано с Коржом */
   border: none !important;
+  margin: 0 !important; /* Убираем margin, используем gap родителя */
 }
 
 .widget-subtitle {
   font-size: 18px !important;
-  /* ИЗМЕНЕНИЕ: было 0.7, стало 0.6 для идентичности */
-  color: rgba(255, 255, 255, 0.6) !important; 
-  margin: 0 auto !important;
+  color: rgba(255, 255, 255, 0.6) !important;
   line-height: 1.5 !important;
   max-width: 600px;
+  margin: 0 !important;
 }
 
 /* Grid */
