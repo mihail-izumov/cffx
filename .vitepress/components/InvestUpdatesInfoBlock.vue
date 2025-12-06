@@ -2,13 +2,14 @@
   <div class="early-access-widget">
     
     <!-- SVG DEFINITIONS (Градиенты и Фильтры для 3D иконок) -->
+    <!-- pointer-events: none чтобы не перекрывало клики -->
     <svg width="0" height="0" style="position: absolute; pointer-events: none;">
       <defs>
-        <!-- Оранжевый градиент для иконок (объем) -->
-        <linearGradient id="icon-gradient-orange" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#FFAB91; stop-opacity:1" /> <!-- Светлый оранжевый -->
-          <stop offset="50%" style="stop-color:#FF5722; stop-opacity:1" /> <!-- Основной -->
-          <stop offset="100%" style="stop-color:#D84315; stop-opacity:1" /> <!-- Темный -->
+        <!-- ФИОЛЕТОВЫЙ градиент для иконок (под стиль Корж) -->
+        <linearGradient id="icon-gradient-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#E9D5FF; stop-opacity:1" /> <!-- Светло-лиловый -->
+          <stop offset="50%" style="stop-color:#C084FC; stop-opacity:1" /> <!-- Основной фиолетовый -->
+          <stop offset="100%" style="stop-color:#9333EA; stop-opacity:1" /> <!-- Темный фиолетовый -->
         </linearGradient>
 
         <!-- Фильтр глубины (обычное состояние) -->
@@ -40,7 +41,6 @@
     </svg>
 
     <!-- ЗАГОЛОВОК БЛОКА -->
-    <!-- Используем классы с reset-стилями, чтобы VitePress не мешал -->
     <div class="header-section">
       <h2 class="widget-title">What's Early Access?</h2>
       <p class="widget-subtitle">
@@ -55,19 +55,24 @@
       <div class="glow-card">
         <div class="card-content">
           <div class="icon-wrapper">
-            <!-- Иконка List Start с эффектами -->
+            <!-- Иконка List Start (полный путь) -->
+            <!-- stroke="url(#icon-gradient-purple)" - применяем градиент -->
             <svg 
               class="icon-3d" 
-              width="48" height="48" 
+              width="64" height="64" 
               viewBox="0 0 24 24" 
               fill="none" 
-              stroke="url(#icon-gradient-orange)" 
+              stroke="url(#icon-gradient-purple)" 
               stroke-width="2" 
               stroke-linecap="round" 
               stroke-linejoin="round"
               filter="url(#depth-effect)"
             >
-              <path d="M3 5h6"/><path d="M3 12h13"/><path d="M3 19h13"/><path d="m16 8-3-3 3-3"/><path d="M21 19V7a2 2 0 0 0-2-2h-6"/>
+              <path d="M3 5h6"/>
+              <path d="M3 12h13"/>
+              <path d="M3 19h13"/>
+              <path d="m16 8-3-3 3-3"/>
+              <path d="M21 19V7a2 2 0 0 0-2-2h-6"/>
             </svg>
           </div>
           
@@ -83,13 +88,13 @@
       <div class="glow-card">
         <div class="card-content">
           <div class="icon-wrapper">
-            <!-- Иконка Heart Handshake с эффектами -->
+            <!-- Иконка Heart Handshake (полный путь) -->
             <svg 
               class="icon-3d" 
-              width="48" height="48" 
+              width="64" height="64" 
               viewBox="0 0 24 24" 
               fill="none" 
-              stroke="url(#icon-gradient-orange)" 
+              stroke="url(#icon-gradient-purple)" 
               stroke-width="2" 
               stroke-linecap="round" 
               stroke-linejoin="round"
@@ -112,7 +117,7 @@
 </template>
 
 <style scoped>
-/* СБРОС СТИЛЕЙ VITEPRESS ДЛЯ ЗАГОЛОВКОВ */
+/* СБРОС СТИЛЕЙ VITEPRESS */
 .early-access-widget :deep(h2) {
   border: none !important;
   margin: 0 !important;
@@ -124,7 +129,7 @@
   max-width: 100%;
   margin: 48px 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  /* Фон всего блока теперь #2a2a2a (как старые карточки) */
+  /* Фон всего блока #2a2a2a (общий фон виджетов) */
   background-color: #2a2a2a; 
   color: #e0e0e0;
   padding: 48px;
@@ -165,7 +170,7 @@
 /* --- КАРТОЧКА (GLOW CARD) --- */
 .glow-card {
   position: relative;
-  /* Внутренние карточки темнее (#1f1f1f), чтобы выделяться на фоне #2a2a2a */
+  /* Внутренние карточки темнее (#1f1f1f) для контраста */
   background: #1f1f1f;
   border-radius: 24px;
   padding: 40px 32px;
@@ -182,19 +187,17 @@
   transition: transform 0.3s ease;
 }
 
-/* Эффект легкого подъема карточки при наведении */
 .glow-card:hover {
   transform: translateY(-4px);
 }
 
-/* ГРАДИЕНТНАЯ ОБВОДКА КАРТОЧКИ */
+/* ГРАДИЕНТНАЯ ОБВОДКА */
 .glow-card::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 24px;
   padding: 1px; 
-  /* Градиент: Белый верх -> Прозрачный низ */
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%);
   
   -webkit-mask: 
@@ -218,26 +221,24 @@
   gap: 20px;
 }
 
-/* --- СТИЛИ ИКОНОК (3D ЭФФЕКТ) --- */
+/* --- 3D ИКОНКИ --- */
 .icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 80px;
   height: 80px;
-  /* Легкая подложка под иконкой для усиления глубины (опционально) */
-  /* background: radial-gradient(circle, rgba(255, 87, 34, 0.1) 0%, rgba(0,0,0,0) 70%); */
 }
 
 .icon-3d {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Применяем фильтр тени */
+  /* Базовое состояние с фильтром и легкой тенью */
   filter: url(#depth-effect) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-/* Hover эффект для иконки при наведении на карточку */
+/* Hover эффект для иконки: свечение фиолетовым + подъем */
 .glow-card:hover .icon-3d {
-  filter: url(#depth-effect-hover) drop-shadow(0 4px 8px rgba(255, 87, 34, 0.2));
+  filter: url(#depth-effect-hover) drop-shadow(0 6px 12px rgba(168, 85, 247, 0.3));
   transform: translateY(-4px) scale(1.1);
 }
 
@@ -247,7 +248,6 @@
   font-weight: 700 !important;
   color: #fff !important;
   margin: 0 !important;
-  border: none !important;
 }
 
 .card-text {
