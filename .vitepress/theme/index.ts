@@ -140,7 +140,7 @@ import InvestUpdatesInfoBlock from '../components/InvestUpdatesInfoBlock.vue'
 import InvestKorzhGallerySlider from '../components/InvestKorzhGallerySlider.vue'
 import InvestKorzhIndexBlock from '../components/InvestKorzhIndexBlock.vue'
 import InvestKorzhSendSignal from '../components/InvestKorzhSendSignal.vue'
-
+import InvestKorzhSpecsTabs from '../components/InvestKorzhSpecsTabs.vue'
 
 export default {
   extends: DefaultTheme,
@@ -286,6 +286,7 @@ export default {
     app.component('InvestKorzhGallerySlider', InvestKorzhGallerySlider)
     app.component('InvestKorzhIndexBlock', InvestKorzhIndexBlock)
     app.component('InvestKorzhSendSignal', InvestKorzhSendSignal)
+    app.component('InvestKorzhSpecsTabs', InvestKorzhSpecsTabs)
     
     
   },
