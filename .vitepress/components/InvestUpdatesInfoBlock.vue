@@ -1,10 +1,49 @@
 <template>
-  <div class="widget-container">
+  <div class="early-access-widget">
     
+    <!-- SVG DEFINITIONS (Градиенты и Фильтры для 3D иконок) -->
+    <svg width="0" height="0" style="position: absolute; pointer-events: none;">
+      <defs>
+        <!-- Оранжевый градиент для иконок (объем) -->
+        <linearGradient id="icon-gradient-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#FFAB91; stop-opacity:1" /> <!-- Светлый оранжевый -->
+          <stop offset="50%" style="stop-color:#FF5722; stop-opacity:1" /> <!-- Основной -->
+          <stop offset="100%" style="stop-color:#D84315; stop-opacity:1" /> <!-- Темный -->
+        </linearGradient>
+
+        <!-- Фильтр глубины (обычное состояние) -->
+        <filter id="depth-effect">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+          <feOffset dx="0" dy="2" result="offsetblur"/>
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.4"/>
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+
+        <!-- Фильтр глубины (hover состояние - тень сильнее) -->
+        <filter id="depth-effect-hover">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+          <feOffset dx="0" dy="4" result="offsetblur"/>
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.5"/>
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+    </svg>
+
     <!-- ЗАГОЛОВОК БЛОКА -->
+    <!-- Используем классы с reset-стилями, чтобы VitePress не мешал -->
     <div class="header-section">
-      <h2 class="main-title">What's Early Access?</h2>
-      <p class="subtitle">
+      <h2 class="widget-title">What's Early Access?</h2>
+      <p class="widget-subtitle">
         Gains App will be Live soon, but with Early Access you'll get...
       </p>
     </div>
@@ -12,12 +51,24 @@
     <!-- СЕТКА КАРТОЧЕК -->
     <div class="cards-grid">
       
-      <!-- КАРТОЧКА 1 -->
+      <!-- КАРТОЧКА 1: Front of the queue -->
       <div class="glow-card">
         <div class="card-content">
-          <!-- Иконка: Front of the queue (People) -->
-          <div class="icon-wrapper orange">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>ircle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <div class="icon-wrapper">
+            <!-- Иконка List Start с эффектами -->
+            <svg 
+              class="icon-3d" 
+              width="48" height="48" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="url(#icon-gradient-orange)" 
+              stroke-width="2" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+              filter="url(#depth-effect)"
+            >
+              <path d="M3 5h6"/><path d="M3 12h13"/><path d="M3 19h13"/><path d="m16 8-3-3 3-3"/><path d="M21 19V7a2 2 0 0 0-2-2h-6"/>
+            </svg>
           </div>
           
           <h3 class="card-title">Front of the queue</h3>
@@ -28,12 +79,24 @@
         </div>
       </div>
 
-      <!-- КАРТОЧКА 2 -->
+      <!-- КАРТОЧКА 2: Stay in the loop -->
       <div class="glow-card">
         <div class="card-content">
-          <!-- Иконка: Stay in the loop (Megaphone) -->
-          <div class="icon-wrapper orange">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+          <div class="icon-wrapper">
+            <!-- Иконка Heart Handshake с эффектами -->
+            <svg 
+              class="icon-3d" 
+              width="48" height="48" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="url(#icon-gradient-orange)" 
+              stroke-width="2" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+              filter="url(#depth-effect)"
+            >
+              <path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"/>
+            </svg>
           </div>
 
           <h3 class="card-title">Stay in the loop</h3>
@@ -49,56 +112,63 @@
 </template>
 
 <style scoped>
-.widget-container {
+/* СБРОС СТИЛЕЙ VITEPRESS ДЛЯ ЗАГОЛОВКОВ */
+.early-access-widget :deep(h2) {
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.early-access-widget {
   width: 100%;
   max-width: 100%;
   margin: 48px 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  /* Фон основного контейнера (как в примере) */
-  background-color: #1a1a1a; 
+  /* Фон всего блока теперь #2a2a2a (как старые карточки) */
+  background-color: #2a2a2a; 
   color: #e0e0e0;
-  padding: 40px;
-  border-radius: 32px; /* Скругляем и сам контейнер тоже */
+  padding: 48px;
+  border-radius: 32px;
+  box-sizing: border-box;
 }
 
-/* --- ЗАГОЛОВКИ --- */
+/* --- ХЕДЕР --- */
 .header-section {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 }
 
-.main-title {
-  font-size: 32px;
-  font-weight: 700;
-  color: #fff;
-  margin: 0 0 16px 0;
-  line-height: 1.2;
+.widget-title {
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  margin-bottom: 16px !important;
+  line-height: 1.2 !important;
+  border: none !important;
 }
 
-.subtitle {
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.6);
-  margin: 0;
-  line-height: 1.5;
+.widget-subtitle {
+  font-size: 18px !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  margin: 0 auto !important;
+  line-height: 1.5 !important;
   max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* --- СЕТКА --- */
 .cards-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Две колонки */
+  grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
 
-/* --- КАРТОЧКА С МАГИЧЕСКОЙ ОБВОДКОЙ (glow-card) --- */
-/* Стили скопированы из .wide-card и адаптированы */
+/* --- КАРТОЧКА (GLOW CARD) --- */
 .glow-card {
   position: relative;
-  background: #2a2a2a;
+  /* Внутренние карточки темнее (#1f1f1f), чтобы выделяться на фоне #2a2a2a */
+  background: #1f1f1f;
   border-radius: 24px;
-  padding: 32px;
+  padding: 40px 32px;
   border: none;
   box-shadow: inset 0 0 0 1px transparent;
   z-index: 1;
@@ -108,18 +178,24 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  height: 100%; /* Чтобы карточки были одинаковой высоты */
+  height: 100%;
+  transition: transform 0.3s ease;
 }
 
-/* Псевдо-элемент для ГРАДИЕНТНОЙ РАМКИ */
+/* Эффект легкого подъема карточки при наведении */
+.glow-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ГРАДИЕНТНАЯ ОБВОДКА КАРТОЧКИ */
 .glow-card::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 24px;
   padding: 1px; 
-  /* Градиент: Белый сверху -> Прозрачный снизу */
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+  /* Градиент: Белый верх -> Прозрачный низ */
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%);
   
   -webkit-mask: 
      linear-gradient(#fff 0 0) content-box, 
@@ -131,74 +207,79 @@
   z-index: -1;
 }
 
-/* Ховер эффект для рамки */
 .glow-card:hover::before {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
 }
 
 .card-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
 }
 
-/* ИКОНКИ */
+/* --- СТИЛИ ИКОНОК (3D ЭФФЕКТ) --- */
 .icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
-  margin-bottom: 8px;
+  width: 80px;
+  height: 80px;
+  /* Легкая подложка под иконкой для усиления глубины (опционально) */
+  /* background: radial-gradient(circle, rgba(255, 87, 34, 0.1) 0%, rgba(0,0,0,0) 70%); */
 }
 
-/* Делаем иконки оранжевыми, как на скриншоте, чтобы был акцент */
-.icon-wrapper.orange {
-  color: #FF5722; /* Оранжевый цвет (можно заменить на белый, если нужно строго ч/б) */
+.icon-3d {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Применяем фильтр тени */
+  filter: url(#depth-effect) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-.icon-wrapper svg {
-  width: 100%;
-  height: 100%;
+/* Hover эффект для иконки при наведении на карточку */
+.glow-card:hover .icon-3d {
+  filter: url(#depth-effect-hover) drop-shadow(0 4px 8px rgba(255, 87, 34, 0.2));
+  transform: translateY(-4px) scale(1.1);
 }
 
+/* --- ТЕКСТЫ --- */
 .card-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #fff;
-  margin: 0;
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  margin: 0 !important;
+  border: none !important;
 }
 
 .card-text {
-  font-size: 16px;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin: 0 !important;
 }
 
 /* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
 @media (max-width: 768px) {
-  .widget-container {
-    padding: 24px;
+  .early-access-widget {
+    padding: 32px 20px;
     margin: 32px 0;
+    border-radius: 24px;
   }
 
-  .main-title {
-    font-size: 24px;
+  .widget-title {
+    font-size: 26px !important;
   }
   
-  .subtitle {
-    font-size: 16px;
+  .widget-subtitle {
+    font-size: 16px !important;
   }
 
   .cards-grid {
-    grid-template-columns: 1fr; /* Одна колонка */
+    grid-template-columns: 1fr;
     gap: 16px;
   }
 
   .glow-card {
-    padding: 24px;
+    padding: 32px 24px;
   }
 }
 </style>
