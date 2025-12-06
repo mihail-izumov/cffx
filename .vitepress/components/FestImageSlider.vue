@@ -246,20 +246,26 @@ onUnmounted(() => {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #2c2c2c;
+  
+  /* Неактивная точка: нейтральный темно-серый */
+  background-color: #525252; 
+  
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid #383838;
+  
+  /* Убрана обводка */
+  border: none;
 }
 
 .dot:hover {
-  background-color: #4a4a4a;
+  /* При наведении: средний серый */
+  background-color: #737373; 
   transform: scale(1.2);
 }
 
 .dot.active {
-  /* Графитовый / светло-серый для видимости на темном фоне */
-  background-color: #9CA3AF;
+  /* Активная точка: светло-серый (без оттенков) */
+  background-color: #d4d4d4;
   width: 12px;
   height: 12px;
 }
@@ -269,7 +275,10 @@ onUnmounted(() => {
   display: none;
   width: 100%;
   height: 3.5px;
-  background-color: #2c2c2c;
+  
+  /* Фон прогресс-бара: нейтральный темно-серый */
+  background-color: #525252;
+  
   border-radius: 2px;
   margin-top: 16px;
   overflow: hidden;
@@ -279,8 +288,10 @@ onUnmounted(() => {
 
 .progressFill {
   height: 100%;
-  /* Графитовый / светло-серый */
-  background-color: #9CA3AF;
+  
+  /* Заполнение прогресс-бара: светло-серый */
+  background-color: #d4d4d4;
+  
   transition: width 0.3s ease;
   border-radius: 4px;
   pointer-events: none;
