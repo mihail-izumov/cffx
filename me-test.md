@@ -8,3 +8,7 @@
 <InvestUpdatesInfoBlock />
 
 <InvestKorzhIndexBlock />
+
+<InvestKorzhSpecsTabs />
+
+<InvestKorzhSendSignal />
