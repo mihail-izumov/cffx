@@ -69,9 +69,12 @@ onUnmounted(() => {
 
     <div class="main-card">
       
-      <!-- ЦЕНТРАЛЬНЫЙ ЗАГОЛОВОК -->
-      <div class="establishment-header-centered">
+      <!-- HEADER SECTION (Title + Subtitle) -->
+      <div class="header-section">
         <h3 class="cafe-name">{{ establishment.name }}</h3>
+        <p class="cafe-subtitle">
+          Gains App will be Live soon, but with Early Access you'll get...
+        </p>
       </div>
 
       <div class="stats-grid">
@@ -93,7 +96,7 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- 🧩 Потенциал (Rotate 3D Icon) -->
+        <!-- 🧩 Потенциал -->
         <div class="stat-card">
           <div class="stat-content">
             <div class="stat-header">
@@ -116,7 +119,7 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- 🌐 Влияние (Chart Pie Icon) -->
+        <!-- 🌐 Влияние -->
         <div class="stat-card">
           <div class="stat-content">
             <div class="stat-header">
@@ -140,12 +143,12 @@ onUnmounted(() => {
         <div class="button-container">
           
           <!-- Кнопка Смотреть Индекс -->
-          <a href="/invest/smr" class="action-button ticket-button">
+          <a href="/invest/smr" class="action-button ticket-button" target="_blank">
             Смотреть Индекс
           </a>
 
           <!-- Кнопка Получать Пульс -->
-          <a href="https://t.me/runScale" class="action-button review-button">
+          <a href="https://t.me/runScale" class="action-button review-button" target="_blank">
             Получать Пульс
             <svg class="button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="m9 18 6-6-6-6"/>
@@ -189,20 +192,27 @@ onUnmounted(() => {
   color: #e0e0e0;
 }
 
-.establishment-header-centered {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 32px; 
+/* HEADER SECTION (Title + Subtitle) */
+.header-section {
   text-align: center;
+  margin-bottom: 48px; /* Больше воздуха снизу */
+  margin-top: 24px;    /* Немного воздуха сверху */
 }
 
 .cafe-name { 
-  margin: 0; 
+  margin: 0 0 16px 0; 
   color: #FFFFFF; 
   font-size: 32px; 
   font-weight: 700; 
   line-height: 1.2;
+}
+
+.cafe-subtitle {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 auto;
+  line-height: 1.5;
+  max-width: 600px;
 }
 
 /* СЕТКА СТАТИСТИКИ */
@@ -284,13 +294,12 @@ onUnmounted(() => {
   filter: url(#depth-effect-hover) drop-shadow(0 4px 12px rgba(142, 124, 195, 0.3));
 }
 
-/* ЗАГОЛОВКИ КАРТОЧЕК (PREMIUM LOOK) */
 .stat-title { 
   font-size: 14px; 
-  font-weight: 400; /* Тонкий шрифт */
+  font-weight: 400; 
   color: rgba(255,255,255,0.8); 
   text-transform: uppercase;
-  letter-spacing: 2px; /* Премиальный разряд */
+  letter-spacing: 2px;
   transition: all 0.4s ease;
 }
 
@@ -399,13 +408,13 @@ onUnmounted(() => {
 .ticket-button { 
   background: transparent; 
   color: rgba(255, 255, 255, 0.7); 
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Обводка в пассиве */
+  border: 2px solid rgba(255, 255, 255, 0.2); /* 2px обводка */
 }
 
 .ticket-button:hover { 
   background: rgba(255, 255, 255, 0.08); 
   color: #fff; 
-  border-color: transparent; /* Исчезает при ховере */
+  border-color: transparent; 
 }
 
 /* КНОПКА 2: Получать Пульс */
@@ -462,14 +471,17 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .main-card { padding: 20px; border-radius: 20px; }
   
-  /* Воздух для мобильного заголовка */
-  .establishment-header-centered {
-    margin-top: 40px;    /* Воздух сверху */
-    margin-bottom: 32px; /* Воздух снизу */
+  .header-section {
+    margin-top: 40px;
+    margin-bottom: 32px;
   }
   
   .cafe-name { 
     font-size: 24px; 
+  }
+  
+  .cafe-subtitle {
+    font-size: 16px;
   }
 
   .stats-grid { 
