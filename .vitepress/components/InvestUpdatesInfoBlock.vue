@@ -4,11 +4,6 @@
     <!-- SVG DEFINITIONS -->
     <svg width="0" height="0" style="position: absolute; pointer-events: none;">
       <defs>
-        <!-- 
-           ИСПРАВЛЕНИЕ: gradientUnits="userSpaceOnUse"
-           Мы задаем градиент жестко в координатах viewbox (от 0 до 24 пикселей).
-           Это решает проблему исчезновения тонких линий.
-        -->
         <linearGradient 
           id="icon-gradient-purple-fixed" 
           gradientUnits="userSpaceOnUse"
@@ -19,7 +14,6 @@
           <stop offset="100%" style="stop-color:#8E7CC3; stop-opacity:1" />
         </linearGradient>
 
-        <!-- Фильтры остаются прежними -->
         <filter id="depth-effect">
           <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
           <feOffset dx="0" dy="2" result="offsetblur" />
@@ -61,10 +55,6 @@
       <div class="glow-card">
         <div class="card-content">
           <div class="icon-wrapper">
-            <!-- 
-               ВАЖНО: stroke="url(#icon-gradient-purple-fixed)"
-               Теперь градиент применяется глобально к координатам 24x24
-            -->
             <svg
               class="icon-3d"
               width="64"
@@ -77,7 +67,6 @@
               stroke-linejoin="round"
               filter="url(#depth-effect)"
             >
-              <!-- Все пути из вашего примера -->
               <path d="M3 5h6"/>
               <path d="M3 12h13"/>
               <path d="M3 19h13"/>
@@ -157,13 +146,15 @@
   font-weight: 700 !important;
   color: #ffffff !important;
   margin-bottom: 16px !important;
-  line-height: 1.2 !important;
+  /* ИЗМЕНЕНИЕ: было 1.2, стало 1.4 для соответствия другому компоненту */
+  line-height: 1.4 !important; 
   border: none !important;
 }
 
 .widget-subtitle {
   font-size: 18px !important;
-  color: rgba(255, 255, 255, 0.7) !important;
+  /* ИЗМЕНЕНИЕ: было 0.7, стало 0.6 для идентичности */
+  color: rgba(255, 255, 255, 0.6) !important; 
   margin: 0 auto !important;
   line-height: 1.5 !important;
   max-width: 600px;
