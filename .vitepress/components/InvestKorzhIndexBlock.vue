@@ -92,7 +92,7 @@ onUnmounted(() => {
             <div class="stat-main">
               <div class="stat-value">{{ establishment.index }}</div>
             </div>
-            <div class="stat-description">Score всего бизнеса</div>
+            <div class="stat-description">Score всего-всего бизнеса</div>
           </div>
         </div>
 
