@@ -1,17 +1,14 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
-// КОНФИГУРАЦИЯ
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
-// Базовые значения (из таблицы)
 const INITIAL_BASE = {
-  pageViewsKorzh: 123, // Строка 6, ячейка C6
-  korzhLikes: 17,      // Строка 4
-  korzhSignals: 4      // Строка 5
+  pageViewsKorzh: 123,
+  korzhLikes: 17,
+  korzhSignals: 4
 }
 
-// Состояние
 const stats = ref({ ...INITIAL_BASE })
 const isLiked = ref(false)
 const showFollowModal = ref(false)
@@ -19,7 +16,6 @@ const showShareModal = ref(false)
 const showCopyToast = ref(false)
 const showCopyTooltip = ref(false)
 
-// Форматирование чисел (1200 -> 1.2K)
 const formatNumber = (num) => {
   const safeNum = Math.max(0, num || 0)
   return safeNum >= 1000 
@@ -27,7 +23,6 @@ const formatNumber = (num) => {
     : safeNum.toString()
 }
 
-// --- ЛОГИКА ДАННЫХ (Кэш + Сеть) ---
 const loadFromCache = () => {
   try {
     const cached = localStorage.getItem('korzh_wide_stats_v1')
@@ -70,12 +65,11 @@ const toggleLike = () => {
   saveToCache()
 }
 
-// --- ЛОГИКА ШЕРИНГА ---
 const copyLink = async () => {
   try {
     await navigator.clipboard.writeText(window.location.href)
-    showShareModal.value = false // Закрываем модалку
-    showCopyToast.value = true   // Показываем уведомление внизу
+    showShareModal.value = false
+    showCopyToast.value = true
     setTimeout(() => showCopyToast.value = false, 3000)
   } catch (err) {
     console.error('Failed to copy', err)
@@ -106,74 +100,71 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 <template>
   <div class="wide-widget-container">
     
-    <!-- ОСНОВНАЯ КАРТОЧКА -->
     <div class="wide-card">
-      <!-- ВЕРХНЯЯ ЧАСТЬ: Фото + Заголовок -->
       <div class="card-top">
-        <div class="logo-wrapper">
-          <img src="/korzh_badge.svg" alt="Корж" class="logo-img" />
-        </div>
-        <h1 class="card-title">Жить любить кофе пить</h1>
+        <img src="/korzh_badge.svg" alt="Корж" class="logo-img" />
+        <h1 class="card-title">Корж – сеть кофеен</h1>
       </div>
 
-      <!-- ТЕКСТ ОПИСАНИЯ -->
       <p class="card-text">
-        Garage Barcelona is one of Spain’s leading craft breweries. With Untappd top-ranked IPAs they have increased their revenue via two Garage bars and distribution across 34 countries worldwide. They are raising funds for brewery expansion and to open a new flagship bar in the centre of Barcelona
+        Garage Barcelona is one of Spain's leading craft breweries. With Untappd top-ranked IPAs they have increased their revenue via two Garage bars and distribution across 34 countries worldwide. They are raising funds for brewery expansion and to open a new flagship bar in the centre of Barcelona
       </p>
 
-      <!-- ССЫЛКА -->
       <a href="https://korzhcoffee.ru" target="_blank" class="website-link">korzhcoffee.ru</a>
 
-      <!-- БАБЛЫ (В одну строку) -->
       <div class="bubbles-row">
         <div class="bubble">
           <img src="/piggy-bank-icon.svg" alt="" class="bubble-icon" />
           Инвестиции в кофейни
         </div>
         <div class="bubble">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg>
           Самара
         </div>
         <div class="bubble">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
           Вознаграждения
         </div>
-        <a href="/korzh" class="bubble bubble-signal">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+        <a href="/korzh" target="_blank" rel="noopener noreferrer" class="bubble bubble-signal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           Сигналы работают
         </a>
       </div>
 
-      <!-- ЧЕРНЫЙ БЛОК СТАТИСТИКИ -->
       <div class="stats-block">
         <div class="stat-item">
-          <img src="/eye-icon.svg" class="stat-icon" />
+          <img src="/eye-icon.svg" alt="Просмотры" class="stat-icon" />
           <span>{{ formattedViews }}</span>
         </div>
         <div class="stat-item like-trigger" @click="toggleLike">
-          <svg width="20" height="20" viewBox="0 0 24 24" :fill="isLiked ? 'white' : 'none'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" :fill="isLiked ? 'white' : 'none'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
           <span>{{ stats.korzhLikes }}</span>
         </div>
         <div class="stat-item">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           <span>{{ stats.korzhSignals }}</span>
         </div>
       </div>
 
-      <!-- НИЖНИЕ КНОПКИ -->
-      <div class="actions-block">
-        <button class="btn-primary" @click="showFollowModal = true">
-          Получать обновления
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>ircle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-        </button>
-        <button class="btn-secondary" @click="showShareModal = true">
-          Поделиться
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">ircle cx="18" cy="5" r="3"/>ircle cx="6" cy="12" r="3"/>ircle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-        </button>
+      <div class="actions-wrapper">
+        <div class="actions">
+          <button class="btn-create" @click="showFollowModal = true">
+            Получать обновления
+            <span class="icon-circle">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>ircle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            </span>
+          </button>
+          <button class="btn-see-all" @click="showShareModal = true">
+            Поделиться
+            <span class="icon-circle">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">ircle cx="18" cy="5" r="3"/>ircle cx="6" cy="12" r="3"/>ircle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            </span>
+          </button>
+        </div>
       </div>
+
     </div>
 
-    <!-- МОДАЛКА: FOLLOW -->
     <div v-if="showFollowModal" class="modal-overlay" @click.self="showFollowModal = false">
       <div class="modal-card">
         <h3>Получайте новости первым когда появятся возможности инвестировать в новые кофейни Корж</h3>
@@ -182,14 +173,12 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
       </div>
     </div>
 
-    <!-- МОДАЛКА: SHARE -->
     <div v-if="showShareModal" class="modal-overlay blur-bg" @click.self="showShareModal = false">
       <div class="modal-card white-theme">
         <h3>Поделитесь</h3>
         <p>Пригласите друзей следить за инвестициями в Корж</p>
         
         <div class="share-buttons">
-          <!-- Кнопка Копировать -->
           <div 
             class="share-btn-circle" 
             @click="copyLink"
@@ -200,7 +189,6 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
             <div v-if="showCopyTooltip" class="tooltip">Скопировать ссылку</div>
           </div>
 
-          <!-- Кнопка Telegram -->
           <div class="share-btn-circle telegram" @click="shareTelegram">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </div>
@@ -208,7 +196,6 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
       </div>
     </div>
 
-    <!-- TOAST УВЕДОМЛЕНИЕ -->
     <Transition name="fade">
       <div v-if="showCopyToast" class="toast-notification">
         <div class="check-circle">✓</div>
@@ -225,57 +212,63 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 <style scoped>
 .wide-widget-container {
   width: 100%;
-  max-width: 800px; /* Широкая карточка */
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 48px 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #1a1a1a;
+  color: #e0e0e0;
 }
 
-/* --- КАРТОЧКА --- */
 .wide-card {
   background: #2a2a2a;
   border-radius: 24px;
   padding: 40px;
   position: relative;
   border: 1px solid transparent;
-  
-  /* Glassmorphism эффект из прошлого кода */
-  background-image: 
-    linear-gradient(#2a2a2a, #2a2a2a), 
-    linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(255, 255, 255, 0) 100%);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
 }
 
-/* Верхняя часть */
+.wide-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0) 100%);
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.wide-card:hover::before {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+}
+
 .card-top {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  gap: 24px;
   margin-bottom: 24px;
 }
 
-.logo-wrapper {
+.logo-img {
   width: 120px;
   height: 120px;
   border-radius: 24px;
-  overflow: hidden;
-  background: #333;
-}
-
-.logo-img {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .card-title {
-  font-size: 42px; /* Увеличил, чтобы было красиво, 82px может быть слишком крупно */
+  font-size: 48px;
   font-weight: 700;
   color: #fff;
   margin: 0;
-  text-align: right;
-  max-width: 70%;
   line-height: 1.1;
+  text-align: left;
 }
 
 .card-text {
@@ -288,11 +281,11 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 
 .website-link {
   display: inline-block;
-  font-size: 18px;
+  font-size: 22px;
   color: rgba(255,255,255,0.6);
   text-decoration: none;
   border-bottom: 1px solid rgba(255,255,255,0.3);
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   transition: all 0.3s ease;
 }
 
@@ -301,50 +294,80 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   border-color: #fff;
 }
 
-/* Баблы */
 .bubbles-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .bubble {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   background-color: #424242;
   color: #adadad;
-  padding: 8px 14px;
-  border-radius: 16px;
-  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
   font-weight: 500;
+  line-height: 1;
+  cursor: default;
   text-decoration: none !important;
+  transition: all 0.2s ease;
+  min-height: 28px;
 }
 
 .bubble-icon {
-  width: 16px; height: 16px;
+  width: 14px;
+  height: 14px;
   filter: brightness(0) invert(0.7);
 }
 
-/* Черный блок статистики */
+.bubble.bubble-signal {
+  background-color: #7a7a7a;
+  color: #e0e0e0;
+  cursor: pointer;
+  text-decoration: none !important;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+}
+
+.bubble.bubble-signal:hover {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  text-decoration: none !important;
+  border: 2px solid transparent;
+}
+
+.bubble.bubble-signal:hover,
+.bubble.bubble-signal:active,
+.bubble.bubble-signal:visited,
+.bubble.bubble-signal:focus {
+  text-decoration: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .stats-block {
-  background: #000;
-  border-radius: 20px;
-  padding: 20px;
+  background: #000000;
+  border-radius: 50px;
+  padding: 16px 32px;
   display: flex;
   justify-content: center;
-  gap: 40px;
-  margin-bottom: 32px;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 24px;
+  min-height: 56px;
 }
 
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #e0e0e0;
+  gap: 4px;
+  font-size: 16px;
   font-weight: 600;
-  font-size: 18px;
+  color: #e0e0e0;
 }
 
 .like-trigger {
@@ -352,53 +375,123 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 }
 
 .stat-icon {
-  width: 20px; height: 20px;
+  width: 20px;
+  height: 20px;
   filter: brightness(0) invert(0.85);
 }
 
-/* Кнопки */
-.actions-block {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+.actions-wrapper {
+  background: #2a2a2a;
+  border-radius: 50px;
+  padding: 5px;
 }
 
-.btn-primary, .btn-secondary {
-  padding: 18px;
-  border-radius: 50px;
-  font-size: 18px;
-  font-weight: 600;
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.btn-create,
+.btn-see-all {
+  padding: 16px 32px;
+  border-radius: 46px;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  width: 100%;
+  position: relative;
+  text-decoration: none;
+  border: none;
+}
+
+.btn-create {
+  background: #e0e0e0;
+  color: #1a1a1a;
+}
+
+.btn-create:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  color: #000000;
+}
+
+.btn-see-all {
+  background: transparent;
+  color: #e0e0e0;
+  border: 2px solid #424242;
+}
+
+.btn-see-all:hover {
+  border-color: #616161;
+  background: #2a2a2a;
+  color: #e0e0e0;
+}
+
+.icon-circle {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  border: none;
-  transition: all 0.2s;
+  position: relative;
+  width: 32px;
+  height: 32px;
 }
 
-.btn-primary {
-  background: #C5F946; /* Лайм */
-  color: #000;
+.icon-circle::before {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.btn-primary:hover {
-  background: #d4ff6b;
+.btn-create .icon-circle::before {
+  background: #1a1a1a;
 }
 
-.btn-secondary {
-  background: rgba(255,255,255,0.1);
-  color: #fff;
+.btn-see-all .icon-circle::before {
+  background: #e0e0e0;
 }
 
-.btn-secondary:hover {
-  background: rgba(255,255,255,0.2);
+.btn-create:hover .icon-circle::before {
+  opacity: 0.1;
 }
 
-/* --- МОДАЛЬНЫЕ ОКНА --- */
+.btn-see-all:hover .icon-circle::before {
+  opacity: 1;
+}
+
+.icon-circle svg {
+  position: relative;
+  z-index: 1;
+  transition: stroke 0.3s ease;
+}
+
+.btn-create .icon-circle svg {
+  stroke: #1a1a1a;
+}
+
+.btn-create:hover .icon-circle svg {
+  stroke: #000000;
+}
+
+.btn-see-all:hover .icon-circle svg {
+  stroke: #1a1a1a;
+}
+
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(0,0,0,0.8);
   display: flex;
   justify-content: center;
@@ -448,7 +541,6 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   cursor: pointer;
 }
 
-/* Шаринг кнопки */
 .share-buttons {
   display: flex;
   justify-content: center;
@@ -488,7 +580,6 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   margin-bottom: 10px;
 }
 
-/* --- TOAST NOTIFICATION --- */
 .toast-notification {
   position: fixed;
   bottom: 30px;
@@ -506,7 +597,8 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 }
 
 .check-circle {
-  width: 24px; height: 24px;
+  width: 24px;
+  height: 24px;
   background: #fff;
   color: #333;
   border-radius: 50%;
@@ -516,18 +608,62 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   font-weight: bold;
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter-from, .fade-leave-to {
+
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
-/* Адаптив */
 @media (max-width: 768px) {
-  .card-top { flex-direction: column; gap: 20px; }
-  .card-title { text-align: left; max-width: 100%; font-size: 32px; }
-  .stats-block { flex-wrap: wrap; gap: 20px; }
-  .actions-block { grid-template-columns: 1fr; }
+  .wide-widget-container {
+    margin: 32px 0;
+  }
+
+  .wide-card {
+    padding: 24px;
+  }
+
+  .card-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .card-title {
+    font-size: 32px;
+  }
+
+  .card-text {
+    font-size: 18px;
+  }
+
+  .website-link {
+    font-size: 18px;
+  }
+
+  .stats-block {
+    flex-direction: row;
+    gap: 24px;
+    padding: 16px;
+  }
+
+  .actions-wrapper {
+    padding: 5px;
+    border-radius: 35px !important;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .btn-create,
+  .btn-see-all {
+    border-radius: 30px !important;
+  }
 }
 </style>
