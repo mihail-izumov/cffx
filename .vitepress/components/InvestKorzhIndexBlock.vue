@@ -28,11 +28,9 @@ onUnmounted(() => {
 <template>
   <div class="reviews-widget-content">
     
-    <!-- SVG Definitions (Градиенты и Фильтры) -->
+    <!-- SVG Definitions -->
     <svg width="0" height="0" style="position: absolute; pointer-events: none;">
       <defs>
-        <!-- Матовый фиолетовый градиент (Premium Matte) -->
-        <!-- ВАЖНО: gradientUnits="userSpaceOnUse" для корректной отрисовки линий -->
         <linearGradient 
           id="purple-matte-gradient-fixed" 
           gradientUnits="userSpaceOnUse"
@@ -43,7 +41,6 @@ onUnmounted(() => {
           <stop offset="100%" style="stop-color:#8E7CC3; stop-opacity:1" />
         </linearGradient>
 
-        <!-- Фильтр объема -->
         <filter id="depth-effect-soft">
           <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" />
           <feOffset dx="0" dy="1.5" result="offsetblur" />
@@ -56,7 +53,6 @@ onUnmounted(() => {
           </feMerge>
         </filter>
         
-        <!-- Усиленный фильтр для hover -->
         <filter id="depth-effect-hover">
           <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" />
           <feOffset dx="0" dy="3" result="offsetblur" />
@@ -97,14 +93,16 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- 🧩 Потенциал -->
+        <!-- 🧩 Потенциал (Rotate 3D Icon) -->
         <div class="stat-card">
           <div class="stat-content">
             <div class="stat-header">
               <svg class="stat-icon icon-3d" width="32" height="32" viewBox="0 0 24 24" fill="none" 
                    stroke="url(#purple-matte-gradient-fixed)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                    filter="url(#depth-effect-soft)">
-                <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"/>
+                <path d="M16.466 7.5C15.643 4.237 13.952 2 12 2 9.239 2 7 6.477 7 12s2.239 10 5 10c.342 0 .677-.069 1-.2"/>
+                <path d="m15.194 13.707 3.814 1.86-1.86 3.814"/>
+                <path d="M19 15.57c-1.804.885-4.274 1.43-7 1.43-5.523 0-10-2.239-10-5s4.477-5 10-5c4.838 0 8.873 1.718 9.8 4"/>
               </svg>
               <div class="stat-title">Потенциал</div>
             </div>
@@ -118,16 +116,15 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- 🌐 Влияние -->
+        <!-- 🌐 Влияние (Chart Pie Icon) -->
         <div class="stat-card">
           <div class="stat-content">
             <div class="stat-header">
               <svg class="stat-icon icon-3d" width="32" height="32" viewBox="0 0 24 24" fill="none" 
                    stroke="url(#purple-matte-gradient-fixed)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                    filter="url(#depth-effect-soft)">
-                ircle cx="12" cy="12" r="10"/>
-                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-                <path d="M2 12h20"/>
+                <path d="M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z"/>
+                <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
               </svg>
               <div class="stat-title">Влияние</div>
             </div>
@@ -160,7 +157,7 @@ onUnmounted(() => {
 
     </div>
 
-    <!-- Modal (оставлен на случай, если вернете инфо-кнопку, сейчас не вызывается) -->
+    <!-- Modal -->
     <div v-if="showInfoModal" class="modal-overlay" @click.self="showInfoModal = false">
       <div class="modal" role="dialog" aria-modal="true" id="index-dialog" aria-label="Что такое Индекс Роста">
         <div class="modal-header">
@@ -183,7 +180,6 @@ onUnmounted(() => {
   box-sizing: border-box;
 }
 
-/* Фон основного контейнера */
 .main-card { 
   background: #2a2a2a; 
   border-radius: 24px;
@@ -193,20 +189,19 @@ onUnmounted(() => {
   color: #e0e0e0;
 }
 
-/* ЦЕНТРАЛЬНЫЙ ЗАГОЛОВОК */
 .establishment-header-centered {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 32px; /* Отступ до карточек */
+  margin-bottom: 32px; 
   text-align: center;
 }
 
 .cafe-name { 
   margin: 0; 
   color: #FFFFFF; 
-  font-size: 32px; /* 32 пикселя */
-  font-weight: 700; /* жирность 700 */
+  font-size: 32px; 
+  font-weight: 700; 
   line-height: 1.2;
 }
 
@@ -217,7 +212,6 @@ onUnmounted(() => {
   gap: 16px; 
 }
 
-/* КАРТОЧКА СТАТИСТИКИ */
 .stat-card {
   position: relative;
   background: #1f1f1f; 
@@ -229,7 +223,6 @@ onUnmounted(() => {
   box-shadow: inset 0 0 0 1px transparent;
 }
 
-/* МАГИЧЕСКАЯ ОБВОДКА (Фиолетовый градиент) */
 .stat-card::before {
   content: '';
   position: absolute;
@@ -291,12 +284,13 @@ onUnmounted(() => {
   filter: url(#depth-effect-hover) drop-shadow(0 4px 12px rgba(142, 124, 195, 0.3));
 }
 
+/* ЗАГОЛОВКИ КАРТОЧЕК (PREMIUM LOOK) */
 .stat-title { 
   font-size: 14px; 
-  font-weight: 700; 
+  font-weight: 400; /* Тонкий шрифт */
   color: rgba(255,255,255,0.8); 
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 2px; /* Премиальный разряд */
   transition: all 0.4s ease;
 }
 
@@ -304,7 +298,6 @@ onUnmounted(() => {
   color: #E0D7F8;
 }
 
-/* ЗНАЧЕНИЯ */
 .stat-main {
   flex: 1;
   display: flex;
@@ -345,7 +338,6 @@ onUnmounted(() => {
   color: #E0D7F8; 
 }
 
-/* МЕТРИКА ВЛИЯНИЯ */
 .stat-metric-badge {
   display: inline-flex;
   align-items: center;
@@ -369,7 +361,6 @@ onUnmounted(() => {
   color: #E0D7F8;
 }
 
-/* ОПИСАНИЕ */
 .stat-description {
   font-size: 13px;
   font-weight: 400;
@@ -384,7 +375,6 @@ onUnmounted(() => {
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* ПАНЕЛЬ УПРАВЛЕНИЯ */
 .control-panel { margin-top: 24px; }
 
 .button-container { display: flex; gap: 10px; background-color: #1f1f1f; border-radius: 20px; padding: 8px; }
@@ -408,25 +398,25 @@ onUnmounted(() => {
 /* КНОПКА 1: Смотреть Индекс */
 .ticket-button { 
   background: transparent; 
-  color: rgba(255, 255, 255, 0.7); /* Светло-серый в пассиве */
-  border: 1px solid transparent;
+  color: rgba(255, 255, 255, 0.7); 
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Обводка в пассиве */
 }
 
 .ticket-button:hover { 
-  background: rgba(255, 255, 255, 0.08); /* Легкий фон при ховере */
-  color: #fff; /* Белый в активе */
-  border-color: transparent; /* Убрал обводку в ховере */
+  background: rgba(255, 255, 255, 0.08); 
+  color: #fff; 
+  border-color: transparent; /* Исчезает при ховере */
 }
 
 /* КНОПКА 2: Получать Пульс */
 .review-button { 
-  background: #e0e0e0; /* Светло-серый фон */
-  color: #1a1a1a; /* Почти черный текст */
+  background: #e0e0e0; 
+  color: #1a1a1a; 
   box-shadow: none;
 }
 
 .review-button:hover { 
-  background: #ffffff; /* Белый фон в активе */
+  background: #ffffff; 
   color: #000000;
   transform: translateY(-2px); 
 }
@@ -472,12 +462,14 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .main-card { padding: 20px; border-radius: 20px; }
   
+  /* Воздух для мобильного заголовка */
   .establishment-header-centered {
-    margin-bottom: 24px;
+    margin-top: 40px;    /* Воздух сверху */
+    margin-bottom: 32px; /* Воздух снизу */
   }
   
   .cafe-name { 
-    font-size: 24px; /* Чуть меньше на мобильных */
+    font-size: 24px; 
   }
 
   .stats-grid { 
