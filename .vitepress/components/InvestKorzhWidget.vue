@@ -78,6 +78,14 @@ const toggleKorzhLike = async () => {
       isKorzhLiked.value = true
     })
   }
+
+  // --- МАГИЯ СИНХРОНИЗАЦИИ (ОТПРАВКА) ---
+  window.dispatchEvent(new CustomEvent('korzh-like-changed', {
+    detail: { 
+      liked: isKorzhLiked.value,
+      newCount: stats.value.korzhLikes
+    }
+  }))
 }
 
 onMounted(async () => {
@@ -85,6 +93,14 @@ onMounted(async () => {
   
   const hasLikedKorzh = localStorage.getItem('korzh_liked_status')
   if (hasLikedKorzh) isKorzhLiked.value = true
+
+  // --- СЛУШАЕМ СОСЕДЕЙ (ПРИЕМ) ---
+  window.addEventListener('korzh-like-changed', (e) => {
+    // Обновляем статус лайка
+    isKorzhLiked.value = e.detail.liked
+    // Обновляем счетчик (чтобы цифры совпадали)
+    stats.value.korzhLikes = e.detail.newCount
+  })
 
   await fetchStats()
 
@@ -97,6 +113,7 @@ onMounted(async () => {
 
 const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
 </script>
+
 
 <template>
   <div class="essential-apps">
