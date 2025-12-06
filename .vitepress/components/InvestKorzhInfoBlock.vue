@@ -167,10 +167,24 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
           <img src="/eye-icon.svg" alt="Просмотры" class="stat-icon" />
           <span>{{ formattedViews }}</span>
         </div>
-        <div class="stat-item like-trigger" @click="toggleLike">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" :fill="isLiked ? 'white' : 'none'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
-          <span>{{ stats.korzhLikes }}</span>
-        </div>
+       <div class="stat-item like-trigger" @click="toggleLike">
+  <!-- ИСПРАВЛЕННАЯ ИКОНКА СЕРДЦА -->
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width="20" 
+    height="20" 
+    viewBox="0 0 24 24" 
+    :fill="isLiked ? 'white' : 'none'" 
+    :stroke="isLiked ? 'none' : 'currentColor'" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  >
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+  </svg>
+  <span>{{ stats.korzhLikes }}</span>
+</div>
+
         <div class="stat-item">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           <span>{{ stats.korzhSignals }}</span>
