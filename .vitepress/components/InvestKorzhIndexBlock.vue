@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const establishment = {
-  name: 'Корж – лидер Индекса в Самаре',
+  name: 'Корж – лидер Индекса Роста среди всех кофеен Самары', // Обновленный текст
   index: 98,
   currentPoints: 8,
   targetPoints: 12,
@@ -69,7 +69,7 @@ onUnmounted(() => {
 
     <div class="main-card">
       
-      <!-- HEADER SECTION (Title + Subtitle) -->
+      <!-- HEADER SECTION (Стили и отступы скопированы из референса) -->
       <div class="header-section">
         <h3 class="cafe-name">{{ establishment.name }}</h3>
         <p class="cafe-subtitle">
@@ -142,13 +142,11 @@ onUnmounted(() => {
       <div class="control-panel">
         <div class="button-container">
           
-          <!-- Кнопка Смотреть Индекс -->
-          <a href="/invest/smr" class="action-button ticket-button" target="_blank">
+          <a href="/invest/smr" class="action-button ticket-button" target="_blank" rel="noopener noreferrer">
             Смотреть Индекс
           </a>
 
-          <!-- Кнопка Получать Пульс -->
-          <a href="https://t.me/runScale" class="action-button review-button" target="_blank">
+          <a href="https://t.me/runScale" class="action-button review-button" target="_blank" rel="noopener noreferrer">
             Получать Пульс
             <svg class="button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="m9 18 6-6-6-6"/>
@@ -186,17 +184,16 @@ onUnmounted(() => {
 .main-card { 
   background: #2a2a2a; 
   border-radius: 24px;
-  padding: 24px;
+  padding: 48px; /* Общий паддинг для воздуха */
   width: 100%;
   box-sizing: border-box;
   color: #e0e0e0;
 }
 
-/* HEADER SECTION (Title + Subtitle) */
+/* HEADER SECTION (Стили и отступы как в референсе) */
 .header-section {
   text-align: center;
-  margin-bottom: 48px; /* Больше воздуха снизу */
-  margin-top: 24px;    /* Немного воздуха сверху */
+  margin-bottom: 48px;
 }
 
 .cafe-name { 
@@ -204,7 +201,7 @@ onUnmounted(() => {
   color: #FFFFFF; 
   font-size: 32px; 
   font-weight: 700; 
-  line-height: 1.2;
+  line-height: 1.4; /* Межстрочное расстояние */
 }
 
 .cafe-subtitle {
@@ -392,7 +389,6 @@ onUnmounted(() => {
   flex: 1; 
   padding: 14px 20px; 
   border-radius: 16px; 
-  border: none; 
   font-size: 16px; 
   font-weight: 600; 
   cursor: pointer; 
@@ -408,7 +404,7 @@ onUnmounted(() => {
 .ticket-button { 
   background: transparent; 
   color: rgba(255, 255, 255, 0.7); 
-  border: 2px solid rgba(255, 255, 255, 0.2); /* 2px обводка */
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .ticket-button:hover { 
@@ -421,6 +417,7 @@ onUnmounted(() => {
 .review-button { 
   background: #e0e0e0; 
   color: #1a1a1a; 
+  border: none;
   box-shadow: none;
 }
 
@@ -472,36 +469,37 @@ onUnmounted(() => {
   .main-card { padding: 20px; border-radius: 20px; }
   
   .header-section {
-    margin-top: 40px;
+    padding-top: 20px; /* Доп. воздух сверху для мобилки */
     margin-bottom: 32px;
   }
   
-  .cafe-name { 
-    font-size: 24px; 
-  }
-  
-  .cafe-subtitle {
-    font-size: 16px;
-  }
+  .cafe-name { font-size: 24px; }
+  .cafe-subtitle { font-size: 16px; }
 
   .stats-grid { 
     grid-template-columns: 1fr; 
     gap: 12px; 
   }
+  
   .stat-card { 
     border-radius: 16px; 
   }
+  
+  /* ИСПРАВЛЕНИЕ: радиус обводки для мобильной версии */
+  .stat-card::before {
+    border-radius: 16px; 
+  }
+  
   .stat-card:hover { transform: none; }
   
   .stat-content { 
-    display: flex;
-    flex-direction: column; 
-    justify-content: flex-start; 
-    align-items: flex-start; 
     padding: 20px;
     min-height: auto;
     background: radial-gradient(circle at 20% 50%, rgba(142, 124, 195, 0.08) 0%, transparent 70%) !important;
     gap: 16px;
+    flex-direction: column; 
+    justify-content: flex-start; 
+    align-items: flex-start; 
   }
   
   .stat-header { 
@@ -521,19 +519,9 @@ onUnmounted(() => {
     justify-content: flex-start;
   }
   
-  .stat-value {
-    font-size: 2.2rem !important;
-    margin: 0;
-  }
-  
-  .potential-value {
-    font-size: 2.2rem !important;
-    justify-content: flex-start;
-  }
-  
-  .potential-value .potential {
-    font-size: 1.6rem !important;
-  }
+  .stat-value { font-size: 2.2rem !important; margin: 0; }
+  .potential-value { font-size: 2.2rem !important; justify-content: flex-start; }
+  .potential-value .potential { font-size: 1.6rem !important; }
   
   .stat-metric-badge { 
     font-size: 1.2rem !important;
