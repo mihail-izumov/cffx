@@ -136,6 +136,7 @@ import MainSignalWidgetsFitness from '../components/MainSignalWidgetsFitness.vue
 import DashboardTest from '../components/DashboardTest.vue'
 import InvestKorzhWidget from '../components/InvestKorzhWidget.vue'
 import InvestKorzhInfoBlock from '../components/InvestKorzhInfoBlock.vue'
+import InvestUpdatesInfoBlock from '../components/InvestUpdatesInfoBlock.vue'
 
 export default {
   extends: DefaultTheme,
@@ -277,6 +278,8 @@ export default {
     app.component('DashboardTest', DashboardTest)
     app.component('InvestKorzhWidget', InvestKorzhWidget)
     app.component('InvestKorzhInfoBlock', InvestKorzhInfoBlock)
+    app.component('InvestUpdatesInfoBlock', InvestUpdatesInfoBlock)
+    
     
   },
 }
