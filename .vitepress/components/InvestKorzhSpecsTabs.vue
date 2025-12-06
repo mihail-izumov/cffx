@@ -201,11 +201,9 @@ const activeTab = ref('competitors')
   padding: 32px;
   position: relative;
   border: none;
-  /* Мягкая внутренняя граница через inset shadow */
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05); 
 }
 
-/* Эффект "свечения" сверху панели */
 .content-panel::before {
   content: '';
   position: absolute;
@@ -270,11 +268,11 @@ const activeTab = ref('competitors')
   content: '';
   position: absolute;
   left: 0;
-  top: 10px; /* По центру первой строки */
+  top: 10px; 
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #C1B5F0; /* Фиолетовый маркер */
+  background-color: #C1B5F0; 
   box-shadow: 0 0 6px rgba(193, 181, 240, 0.4);
 }
 
@@ -292,7 +290,6 @@ const activeTab = ref('competitors')
   border-color: #fff;
 }
 
-/* Блоки шагов (для последней вкладки) */
 .step-block {
   margin-bottom: 24px;
   padding-bottom: 24px;
@@ -324,19 +321,22 @@ const activeTab = ref('competitors')
     font-size: 16px !important;
   }
   
+  /* Исправление для переноса табов */
   .tabs-container {
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 8px;
-    flex-wrap: nowrap;
-    margin-right: -20px; /* Компенсация паддинга контейнера */
-    padding-right: 20px;
-    -webkit-overflow-scrolling: touch;
+    justify-content: center; /* Центрируем перенесенные элементы */
+    flex-wrap: wrap;        /* Разрешаем перенос на новую строку */
+    padding-bottom: 0;      /* Убираем отступ для скролла */
+    overflow-x: visible;    /* Убираем скролл */
+    margin-right: 0;
+    padding-right: 0;
   }
   
   .tab-button {
-    white-space: nowrap;
+    white-space: normal;    /* Разрешаем тексту внутри кнопки переноситься, если нужно */
     flex-shrink: 0;
+    width: auto;            /* Автоматическая ширина */
+    font-size: 13px;        /* Чуть уменьшим шрифт для компактности */
+    padding: 8px 14px;      /* Чуть меньше паддинги */
   }
   
   .content-panel {
