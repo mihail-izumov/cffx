@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 800 684" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g id="Монтажная-область1" serif:id="Монтажная область1" transform="matrix(0.740741,0,0,0.63287,0,0)">
+        <rect x="0" y="0" width="1080" height="1080" style="fill:none;"/>
+        <clipPath id="_clip1">
+            <rect x="0" y="0" width="1080" height="1080"/>
+        </clipPath>
+        <g clip-path="url(#_clip1)">
+            <g id="telegram-icon" transform="matrix(1.612,0,0,1.88676,-94.5584,-271.053)">
+                <path d="M659.243,147.661C695.507,132.392 734.383,163.057 727.98,201.88L652.35,660.437C645.057,704.65 596.497,730.02 555.933,707.987C521.99,689.55 471.63,661.173 426.243,631.517C403.58,616.707 334.183,569.22 342.713,535.417C350.007,506.513 466.67,397.917 533.337,333.333C559.523,307.964 547.597,293.309 516.67,316.667C439.95,374.61 316.777,462.707 276.045,487.5C240.108,509.373 221.344,513.107 198.962,509.373C158.091,502.563 120.199,492.017 89.263,479.193C47.45,461.86 49.487,404.4 89.234,387.667L659.243,147.661Z" style="fill:white;"/>
+            </g>
+        </g>
+    </g>
+</svg>
