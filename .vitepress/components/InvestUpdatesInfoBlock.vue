@@ -1,17 +1,12 @@
 <template>
   <div class="early-access-widget">
     
-    <!-- SVG DEFINITIONS (Градиенты и Фильтры для 3D иконок) -->
-    <!-- pointer-events: none чтобы не перекрывало клики -->
+    <!-- 
+      SVG ФИЛЬТРЫ ДЛЯ ОБЪЕМА 
+      Мы оставляем их в HTML, чтобы ссылаться на них через CSS filter: url(#...)
+    -->
     <svg width="0" height="0" style="position: absolute; pointer-events: none;">
       <defs>
-        <!-- ФИОЛЕТОВЫЙ градиент для иконок (под стиль Корж) -->
-        <linearGradient id="icon-gradient-purple" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#E9D5FF; stop-opacity:1" /> <!-- Светло-лиловый -->
-          <stop offset="50%" style="stop-color:#C084FC; stop-opacity:1" /> <!-- Основной фиолетовый -->
-          <stop offset="100%" style="stop-color:#9333EA; stop-opacity:1" /> <!-- Темный фиолетовый -->
-        </linearGradient>
-
         <!-- Фильтр глубины (обычное состояние) -->
         <filter id="depth-effect">
           <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
@@ -40,7 +35,7 @@
       </defs>
     </svg>
 
-    <!-- ЗАГОЛОВОК БЛОКА -->
+    <!-- ЗАГОЛОВОК -->
     <div class="header-section">
       <h2 class="widget-title">What's Early Access?</h2>
       <p class="widget-subtitle">
@@ -55,29 +50,12 @@
       <div class="glow-card">
         <div class="card-content">
           <div class="icon-wrapper">
-            <!-- Иконка List Start (полный путь) -->
-            <!-- stroke="url(#icon-gradient-purple)" - применяем градиент -->
-            <svg 
-              class="icon-3d" 
-              width="64" height="64" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="url(#icon-gradient-purple)" 
-              stroke-width="2" 
-              stroke-linecap="round" 
-              stroke-linejoin="round"
-              filter="url(#depth-effect)"
-            >
-              <path d="M3 5h6"/>
-              <path d="M3 12h13"/>
-              <path d="M3 19h13"/>
-              <path d="m16 8-3-3 3-3"/>
-              <path d="M21 19V7a2 2 0 0 0-2-2h-6"/>
-            </svg>
+            <!-- ИКОНКА ЧЕРЕЗ МАСКУ -->
+            <!-- Использует файл /list-start-icon.svg -->
+            <div class="masked-icon icon-list"></div>
           </div>
           
           <h3 class="card-title">Front of the queue</h3>
-          
           <p class="card-text">
             With limited numbers of shares or tax relief available, late investors can lose out. Early Access ensures you're the first to know the minute the Opportunity is Live
           </p>
@@ -88,24 +66,12 @@
       <div class="glow-card">
         <div class="card-content">
           <div class="icon-wrapper">
-            <!-- Иконка Heart Handshake (полный путь) -->
-            <svg 
-              class="icon-3d" 
-              width="64" height="64" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="url(#icon-gradient-purple)" 
-              stroke-width="2" 
-              stroke-linecap="round" 
-              stroke-linejoin="round"
-              filter="url(#depth-effect)"
-            >
-              <path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"/>
-            </svg>
+            <!-- ИКОНКА ЧЕРЕЗ МАСКУ -->
+            <!-- Использует файл /heart-handshake-icon.svg -->
+            <div class="masked-icon icon-heart"></div>
           </div>
 
           <h3 class="card-title">Stay in the loop</h3>
-
           <p class="card-text">
             Get regular updates directly from the company before their raise goes Live, helping you make an investment decision as early as possible.
           </p>
@@ -129,7 +95,7 @@
   max-width: 100%;
   margin: 48px 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  /* Фон всего блока #2a2a2a (общий фон виджетов) */
+  /* Темный фон всего блока */
   background-color: #2a2a2a; 
   color: #e0e0e0;
   padding: 48px;
@@ -167,10 +133,9 @@
   gap: 24px;
 }
 
-/* --- КАРТОЧКА (GLOW CARD) --- */
+/* --- КАРТОЧКА --- */
 .glow-card {
   position: relative;
-  /* Внутренние карточки темнее (#1f1f1f) для контраста */
   background: #1f1f1f;
   border-radius: 24px;
   padding: 40px 32px;
@@ -178,7 +143,6 @@
   box-shadow: inset 0 0 0 1px transparent;
   z-index: 1;
   background-clip: padding-box;
-  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -191,7 +155,7 @@
   transform: translateY(-4px);
 }
 
-/* ГРАДИЕНТНАЯ ОБВОДКА */
+/* Градиентная рамка */
 .glow-card::before {
   content: "";
   position: absolute;
@@ -199,13 +163,9 @@
   border-radius: 24px;
   padding: 1px; 
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%);
-  
-  -webkit-mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  
   pointer-events: none;
   z-index: -1;
 }
@@ -221,7 +181,7 @@
   gap: 20px;
 }
 
-/* --- 3D ИКОНКИ --- */
+/* --- 3D ИКОНКИ (CSS MASK + GRADIENT) --- */
 .icon-wrapper {
   display: flex;
   align-items: center;
@@ -230,14 +190,40 @@
   height: 80px;
 }
 
-.icon-3d {
+/* Общий класс для иконок-масок */
+.masked-icon {
+  width: 64px;
+  height: 64px;
+  
+  /* 1. Задаем ФИОЛЕТОВЫЙ ГРАДИЕНТ как фон */
+  background: linear-gradient(180deg, #E9D5FF 0%, #C084FC 50%, #9333EA 100%);
+  
+  /* 2. Настраиваем маску */
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  
+  /* 3. Применяем SVG фильтр для объема */
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Базовое состояние с фильтром и легкой тенью */
   filter: url(#depth-effect) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-/* Hover эффект для иконки: свечение фиолетовым + подъем */
-.glow-card:hover .icon-3d {
+/* Указываем конкретные файлы иконок */
+.icon-list {
+  -webkit-mask-image: url(/list-start-icon.svg);
+  mask-image: url(/list-start-icon.svg);
+}
+
+.icon-heart {
+  -webkit-mask-image: url(/heart-handshake-icon.svg);
+  mask-image: url(/heart-handshake-icon.svg);
+}
+
+/* Hover эффекты */
+.glow-card:hover .masked-icon {
   filter: url(#depth-effect-hover) drop-shadow(0 6px 12px rgba(168, 85, 247, 0.3));
   transform: translateY(-4px) scale(1.1);
 }
@@ -264,22 +250,7 @@
     margin: 32px 0;
     border-radius: 24px;
   }
-
-  .widget-title {
-    font-size: 26px !important;
-  }
-  
-  .widget-subtitle {
-    font-size: 16px !important;
-  }
-
-  .cards-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .glow-card {
-    padding: 32px 24px;
-  }
+  .widget-title { font-size: 26px !important; }
+  .cards-grid { grid-template-columns: 1fr; }
 }
 </style>
