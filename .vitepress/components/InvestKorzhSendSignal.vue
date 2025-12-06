@@ -43,7 +43,7 @@ import { ref } from 'vue'
 import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
-  imageSrc: { type: String, default: '/subscribe_ban.jpg' },
+  imageSrc: { type: String, default: '/img/korzh/korzh_send_signal_ban.png' },
   imageAlt: { type: String, default: 'Новости Сигнала в Телеграм' },
   title: { type: String, default: 'Еще больше возможностей быть ближе к бизнесу, который вы любите.' },
   subtitle: { type: String, default: '' },
