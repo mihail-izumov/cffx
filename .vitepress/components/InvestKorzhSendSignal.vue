@@ -108,10 +108,11 @@ const handleButtonClick = () => {
   text-align: center;
 }
 
+/* Изменено: цвет лайма на фиолетовый */
 .banner-intro {
   font-size: clamp(0.62rem, 1.1vw, 0.76rem);
   font-weight: 500;
-  color: #b5f240;
+  color: #E0D7F8; /* Светлый фиолетовый */
   text-transform: uppercase;
   letter-spacing: 0.34em;
   text-shadow: 0 2px 10px rgba(0,0,0,0.7);
@@ -134,26 +135,22 @@ const handleButtonClick = () => {
   pointer-events: auto;
   position: relative;
   
-  /* Фон: прозрачнее (0.3) для видимости фона страницы */
   background: rgba(20, 20, 24, 0.3);
   
-  /* Блюр: минимальный (4px), чтобы сохранить текстуру фона */
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   
-  /* Border убираем, рисуем его через ::before для идеального стыка */
   border: none;
   
   border-radius: 9999px;
   padding: 1.05rem 3.6rem;
   font-weight: 600;
   font-size: clamp(1.08rem, 2.3vw, 1.2rem);
-  color: #b5f240;
+  color: #E0D7F8; /* Светлый фиолетовый */
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
   cursor: pointer;
   overflow: hidden;
   
-  /* Анимация: делаем плавнее (убираем резкость пружины) */
   transition: 
     transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), 
     background 0.6s ease, 
@@ -162,24 +159,23 @@ const handleButtonClick = () => {
   box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
 
-/* ЕДИНАЯ ОБВОДКА (Решает проблему "дырок") */
+/* ЕДИНАЯ ОБВОДКА */
 .glass-pill::before {
   content: '';
   position: absolute;
-  inset: 0; /* Занимает всю площадь */
+  inset: 0; 
   border-radius: 9999px; 
-  padding: 1px; /* Толщина обводки */
+  padding: 1px; 
   
   /* 
-     ХИТРОСТЬ: Складываем два фона для рамки.
-     1. Radial-gradient: Яркое пятно сверху по центру.
-     2. Linear-gradient: Тусклая линия по всему периметру.
+     Изменено: Градиент теперь фиолетовый
+     1. Яркое пятно сверху по центру (#E0D7F8).
+     2. Тусклая линия по периметру (#8E7CC3).
   */
   background: 
-    radial-gradient(60% 50% at 50% 0%, rgba(181, 242, 64, 1) 0%, transparent 100%),
-    linear-gradient(rgba(181, 242, 64, 0.25), rgba(181, 242, 64, 0.25));
+    radial-gradient(60% 50% at 50% 0%, rgba(224, 215, 248, 1) 0%, transparent 100%),
+    linear-gradient(rgba(142, 124, 195, 0.4), rgba(142, 124, 195, 0.4));
     
-  /* Маска вырезает центр, оставляя только рамку 1px */
   -webkit-mask: 
      linear-gradient(#fff 0 0) content-box, 
      linear-gradient(#fff 0 0);
@@ -190,7 +186,6 @@ const handleButtonClick = () => {
   transition: opacity 0.5s ease;
 }
 
-/* Легкий внутренний блик для объема (опционально, очень тонкий) */
 .glass-pill::after {
   content: '';
   position: absolute;
@@ -201,16 +196,17 @@ const handleButtonClick = () => {
 }
 
 .glass-pill:hover {
-  transform: translateY(-5px); /* Чуть меньше амплитуда движения */
-  background: rgba(30,30,35,0.6); /* Чуть плотнее при наведении */
+  transform: translateY(-5px); 
+  background: rgba(30,30,35,0.6); 
+  /* Изменено: цвет тени свечения на фиолетовый */
   box-shadow: 
     0 20px 50px rgba(0,0,0,0.5), 
-    0 0 25px rgba(181,242,64,0.15);
+    0 0 25px rgba(142, 124, 195, 0.25);
 }
 
 .glass-pill:active {
   transform: translateY(-2px);
-  transition-duration: 0.15s; /* Быстрый отклик на клик */
+  transition-duration: 0.15s; 
 }
 
 /* Мобильная версия */
