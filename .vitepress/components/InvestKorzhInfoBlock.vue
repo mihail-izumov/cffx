@@ -15,6 +15,7 @@ const showFollowModal = ref(false)
 const showShareModal = ref(false)
 const showCopyToast = ref(false)
 const showCopyTooltip = ref(false)
+const showTelegramTooltip = ref(false)
 
 const formatNumber = (num) => {
   const safeNum = Math.max(0, num || 0)
@@ -244,9 +245,16 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
             <div v-if="showCopyTooltip" class="tooltip">Скопировать ссылку</div>
           </div>
 
-          <div class="share-btn-circle telegram" @click="shareTelegram">
+          <div 
+            class="share-btn-circle telegram" 
+            @click="shareTelegram"
+            @mouseenter="showTelegramTooltip = true" 
+            @mouseleave="showTelegramTooltip = false"
+          >
             <img src="/telegram-icon.svg" alt="Telegram" width="24" height="24" />
+            <div v-if="showTelegramTooltip" class="tooltip">Отправить в Telegram</div>
           </div>
+
         </div>
       </div>
     </div>
