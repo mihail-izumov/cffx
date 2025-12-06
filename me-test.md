@@ -3,4 +3,4 @@
 
 <InvestKorzhInfoBlock />
 
-
+<InvestUpdatesInfoBlock />
