@@ -2,26 +2,21 @@
   <div class="early-access-widget">
     
     <!-- SVG DEFINITIONS (Градиенты и Фильтры для 3D иконок) -->
-    <!-- pointer-events: none чтобы не перекрывало клики -->
     <svg width="0" height="0" style="position: absolute; pointer-events: none;">
       <defs>
-        <!-- 
-          ПРЕМИУМ МАТОВЫЙ ФИОЛЕТОВЫЙ ГРАДИЕНТ 
-          Более мягкие переходы, менее "кислотные" цвета
-        -->
-        <linearGradient id="icon-gradient-premium" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#E9D5FF; stop-opacity:1" /> <!-- Очень светлый лавандовый -->
-          <stop offset="60%" style="stop-color:#C084FC; stop-opacity:1" /> <!-- Спокойный фиолетовый -->
-          <stop offset="100%" style="stop-color:#9333EA; stop-opacity:0.9" /> <!-- Глубокий, но не черный -->
+        <!-- Матовый фиолетовый градиент (приглушенный, премиальный) -->
+        <linearGradient id="icon-gradient-purple-matte" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#C4B5E3; stop-opacity:0.85" />
+          <stop offset="50%" style="stop-color:#A594C5; stop-opacity:0.85" />
+          <stop offset="100%" style="stop-color:#8B75A7; stop-opacity:0.85" />
         </linearGradient>
 
-        <!-- Фильтр глубины (МАТОВЫЙ ЭФФЕКТ) -->
-        <!-- Уменьшил slope с 0.4 до 0.3 для меньшего блеска -->
-        <filter id="depth-effect-matte">
+        <!-- Фильтр глубины (обычное состояние) -->
+        <filter id="depth-effect">
           <feGaussianBlur in="SourceAlpha" stdDeviation="1.5"/>
-          <feOffset dx="0" dy="2" result="offsetblur"/>
+          <feOffset dx="0" dy="1.5" result="offsetblur"/>
           <feComponentTransfer>
-            <feFuncA type="linear" slope="0.3"/> <!-- Меньше прозрачность тени -->
+            <feFuncA type="linear" slope="0.35"/>
           </feComponentTransfer>
           <feMerge>
             <feMergeNode/>
@@ -29,12 +24,12 @@
           </feMerge>
         </filter>
 
-        <!-- Hover (чуть глубже) -->
-        <filter id="depth-effect-matte-hover">
+        <!-- Фильтр глубины (hover состояние) -->
+        <filter id="depth-effect-hover">
           <feGaussianBlur in="SourceAlpha" stdDeviation="2.5"/>
           <feOffset dx="0" dy="3" result="offsetblur"/>
           <feComponentTransfer>
-            <feFuncA type="linear" slope="0.4"/>
+            <feFuncA type="linear" slope="0.45"/>
           </feComponentTransfer>
           <feMerge>
             <feMergeNode/>
@@ -55,32 +50,26 @@
     <!-- СЕТКА КАРТОЧЕК -->
     <div class="cards-grid">
       
-      <!-- КАРТОЧКА 1: Front of the queue -->
+      <!-- КАРТОЧКА 1: Front of the queue (ВСЕ path'и восстановлены) -->
       <div class="glow-card">
         <div class="card-content">
           <div class="icon-wrapper">
-            <!-- 
-               ИКОНКА: LIST START (Исправленная, все пути на месте)
-               stroke="url(#icon-gradient-premium)" - применяем новый матовый градиент
-            -->
             <svg 
               class="icon-3d" 
               width="64" height="64" 
               viewBox="0 0 24 24" 
               fill="none" 
-              stroke="url(#icon-gradient-premium)" 
-              stroke-width="2" 
+              stroke="url(#icon-gradient-purple-matte)" 
+              stroke-width="2.5" 
               stroke-linecap="round" 
               stroke-linejoin="round"
-              filter="url(#depth-effect-matte)"
+              filter="url(#depth-effect)"
             >
-              <!-- Горизонтальные линии -->
+              <!-- Полные данные из вашего SVG -->
               <path d="M3 5h6"/>
               <path d="M3 12h13"/>
               <path d="M3 19h13"/>
-              <!-- Стрелка вверх-влево -->
               <path d="m16 8-3-3 3-3"/>
-              <!-- Изогнутая линия -->
               <path d="M21 19V7a2 2 0 0 0-2-2h-6"/>
             </svg>
           </div>
@@ -97,17 +86,16 @@
       <div class="glow-card">
         <div class="card-content">
           <div class="icon-wrapper">
-            <!-- ИКОНКА: HEART HANDSHAKE -->
             <svg 
               class="icon-3d" 
               width="64" height="64" 
               viewBox="0 0 24 24" 
               fill="none" 
-              stroke="url(#icon-gradient-premium)" 
-              stroke-width="2" 
+              stroke="url(#icon-gradient-purple-matte)" 
+              stroke-width="2.5" 
               stroke-linecap="round" 
               stroke-linejoin="round"
-              filter="url(#depth-effect-matte)"
+              filter="url(#depth-effect)"
             >
               <path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"/>
             </svg>
@@ -175,7 +163,7 @@
   gap: 24px;
 }
 
-/* --- КАРТОЧКА (GLOW CARD) --- */
+/* --- КАРТОЧКА (ВОССТАНОВЛЕНА ГРАДИЕНТНАЯ РАМКА!) --- */
 .glow-card {
   position: relative;
   background: #1f1f1f;
@@ -189,11 +177,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* Центрируем контент вертикально */
   text-align: center;
   height: 100%;
-  
-  /* Гарантирует, что контент внутри распределен равномерно */
-  justify-content: flex-start; 
   transition: transform 0.3s ease;
 }
 
@@ -201,7 +187,7 @@
   transform: translateY(-4px);
 }
 
-/* ГРАДИЕНТНАЯ ОБВОДКА */
+/* ГРАДИЕНТНАЯ ОБВОДКА (ВОЛШЕБНЫЙ ЭФФЕКТ ВОССТАНОВЛЕН) */
 .glow-card::before {
   content: "";
   position: absolute;
@@ -229,27 +215,26 @@
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  height: 100%; /* Занимаем всю высоту для центровки */
+  width: 100%;
 }
 
-/* --- 3D ИКОНКИ --- */
+/* --- 3D ИКОНКИ (МАТОВЫЙ ЭФФЕКТ) --- */
 .icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 80px;
   height: 80px;
-  flex-shrink: 0; /* Чтобы иконка не сплющивалась */
 }
 
 .icon-3d {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: url(#depth-effect-matte) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  filter: url(#depth-effect) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.25));
 }
 
 .glow-card:hover .icon-3d {
-  filter: url(#depth-effect-matte-hover) drop-shadow(0 5px 10px rgba(168, 85, 247, 0.15));
-  transform: translateY(-3px) scale(1.05);
+  filter: url(#depth-effect-hover) drop-shadow(0 3px 8px rgba(139, 117, 167, 0.2));
+  transform: translateY(-2px) scale(1.08);
 }
 
 /* --- ТЕКСТЫ --- */
@@ -267,12 +252,16 @@
   margin: 0 !important;
 }
 
-/* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
+/* --- МОБИЛЬНАЯ ВЕРСИЯ (ЦЕНТРИРОВАНИЕ + ОПТИМИЗАЦИЯ ПРОСТРАНСТВА) --- */
 @media (max-width: 768px) {
   .early-access-widget {
     padding: 32px 20px;
     margin: 32px 0;
     border-radius: 24px;
+  }
+
+  .header-section {
+    margin-bottom: 32px; /* Меньше отступ снизу */
   }
 
   .widget-title {
@@ -285,19 +274,17 @@
 
   .cards-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 20px;
   }
 
-  /* Исправление вертикального выравнивания на мобилках */
   .glow-card {
-    padding: 40px 24px; /* Чуть больше паддинга сверху/снизу */
-    min-height: auto; /* Убираем фиксированную высоту если была */
+    padding: 32px 24px; /* Равномерный padding */
+    justify-content: center; /* Строго по центру вертикально */
+    min-height: 300px; /* Фиксированная высота для равномерности */
   }
 
   .card-content {
-    /* Центрируем контент вертикально, если карточка вытягивается */
-    justify-content: center; 
-    gap: 16px;
+    gap: 16px; /* Меньше gap между элементами */
   }
 }
 </style>
