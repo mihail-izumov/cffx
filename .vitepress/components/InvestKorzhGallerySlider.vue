@@ -1,11 +1,13 @@
 <template>
   <div :class="$style.imageSlider">
+    <!-- Основной контейнер с изображениями + обводка в стиле Корж -->
     <div 
       :class="$style.sliderContainer"
       @touchstart="handleTouchStart"
       @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
     >
+      <div :class="$style.glowBorder"></div> <!-- Добавил "магическую" обводку -->
       <img 
         v-for="(image, index) in images" 
         :key="index"
@@ -115,10 +117,8 @@ const handleTouchEnd = () => {
   
   if (Math.abs(swipeDistance) > minSwipeDistance) {
     if (swipeDistance > 0) {
-      // Свайп влево - следующий слайд
       nextSlide()
     } else {
-      // Свайп вправо - предыдущий слайд
       prevSlide()
     }
   }
@@ -203,9 +203,31 @@ onUnmounted(() => {
   position: relative;
   width: 100%;
   overflow: hidden;
-  border-radius: 16px;
-  background: #2c2c2c;
+  border-radius: 24px; /* Чуть больше скругление (как в других виджетах) */
+  background: #1f1f1f; /* Темный фон подложки */
   touch-action: pan-y pinch-zoom;
+  /* Тень для объема */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* Магическая обводка поверх контейнера */
+.glowBorder {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  pointer-events: none;
+  z-index: 10;
+  /* Градиентная обводка: сверху фиолетовая, снизу прозрачная */
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Дополнительный блик сверху */
+.glowBorder::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(224, 215, 248, 0.3) 50%, transparent 100%);
 }
 
 .sliderImage {
@@ -215,10 +237,10 @@ onUnmounted(() => {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 16px;
+  border-radius: 24px;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 0.8s ease-in-out;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* Более плавный переход */
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
@@ -239,7 +261,7 @@ onUnmounted(() => {
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 .dot {
@@ -247,54 +269,75 @@ onUnmounted(() => {
   height: 10px;
   border-radius: 50%;
   
-  /* Неактивная точка: нейтральный темно-серый */
-  background-color: #525252; 
+  /* Неактивная: полупрозрачный фиолетовый + бордер */
+  background-color: rgba(142, 124, 195, 0.1); 
+  border: 1px solid rgba(142, 124, 195, 0.3);
   
   cursor: pointer;
-  transition: all 0.3s ease;
-  
-  /* Убрана обводка */
-  border: none;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
 }
 
 .dot:hover {
-  /* При наведении: средний серый */
-  background-color: #737373; 
-  transform: scale(1.2);
+  background-color: rgba(142, 124, 195, 0.3);
+  border-color: rgba(224, 215, 248, 0.5);
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(142, 124, 195, 0.4);
 }
 
 .dot.active {
-  /* Активная точка: светло-серый (без оттенков) */
-  background-color: #d4d4d4;
+  /* Активная: Фиолетовый градиент Корж */
+  background: linear-gradient(135deg, #E0D7F8 0%, #8E7CC3 100%);
+  border-color: transparent;
   width: 12px;
   height: 12px;
+  box-shadow: 0 0 12px rgba(142, 124, 195, 0.6);
+  transform: scale(1.1);
 }
 
 /* Интерактивная полоса прогресса для мобильных */
 .sliderProgressBar {
   display: none;
   width: 100%;
-  height: 3.5px;
+  height: 4px; /* Чуть толще для удобства */
   
-  /* Фон прогресс-бара: нейтральный темно-серый */
-  background-color: #525252;
+  /* Фон бара: темный с едва заметным фиолетовым оттенком */
+  background-color: rgba(142, 124, 195, 0.15);
   
   border-radius: 2px;
   margin-top: 16px;
   overflow: hidden;
   cursor: pointer;
   touch-action: none;
+  position: relative;
 }
 
 .progressFill {
   height: 100%;
   
-  /* Заполнение прогресс-бара: светло-серый */
-  background-color: #d4d4d4;
+  /* Заполнение: Фиолетовый градиент Корж */
+  background: linear-gradient(90deg, #E0D7F8 0%, #8E7CC3 100%);
   
   transition: width 0.3s ease;
   border-radius: 4px;
   pointer-events: none;
+  
+  /* Свечение прогресс-бара */
+  box-shadow: 0 0 10px rgba(142, 124, 195, 0.5);
+  position: relative;
+}
+
+/* Блик на конце прогресс-бара */
+.progressFill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  background: rgba(255,255,255,0.8);
+  filter: blur(4px);
+  opacity: 0.6;
 }
 
 /* Медиа-запрос для мобильных устройств */
@@ -305,6 +348,18 @@ onUnmounted(() => {
   
   .sliderProgressBar {
     display: block;
+  }
+  
+  .sliderContainer {
+    border-radius: 20px; /* Чуть меньше на мобильных */
+  }
+  
+  .sliderImage {
+    border-radius: 20px;
+  }
+  
+  .glowBorder {
+    border-radius: 20px;
   }
 }
 </style>
