@@ -1,44 +1,48 @@
 <template>
-  <!-- Скрытый контейнер (1080x1920) -->
-  <div id="story-capture-area" class="story-template">
-    <div class="story-content">
-      
-      <div class="story-top-section">
-        <h1 class="story-main-title">Мой Сигнал в Корж</h1>
+  <!-- Контейнер для скриншота. 
+       Важно: visibility: visible, но z-index отрицательный, 
+       чтобы браузер его "видел" и рендерил -->
+  <div class="story-wrapper">
+    <div id="story-capture-area" class="story-template">
+      <div class="story-content">
+        
+        <div class="story-top-section">
+          <h1 class="story-main-title">Мой Сигнал в Корж</h1>
 
-        <div class="story-tech-panel">
-          <span class="story-tech-date">{{ date }}</span>
-          <span class="story-tech-ticket">#{{ ticket }}</span>
+          <div class="story-tech-panel">
+            <span class="story-tech-date">{{ date }}</span>
+            <span class="story-tech-ticket">#{{ ticket }}</span>
+          </div>
+
+          <div class="story-address-block">
+            📍 {{ address || 'Кофейня Корж' }}
+          </div>
         </div>
 
-        <div class="story-address-block">
-          📍 {{ address }}
+        <div class="story-cloud-section">
+          <div class="story-tags-container">
+            <span 
+              v-for="(tag, index) in displayTags" 
+              :key="tag" 
+              class="story-tag-item"
+              :class="{'tag-accent': index === 0}" 
+            >
+              {{ tag }}
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div class="story-cloud-section">
-        <div class="story-tags-container">
-          <span 
-            v-for="(tag, index) in tags" 
-            :key="tag" 
-            class="story-tag-item"
-            :class="{'tag-accent': index === 0}" 
-          >
-            {{ tag }}
-          </span>
+        <div class="story-footer">
+          <div class="story-link-pill">cffx.ru/korzh</div>
         </div>
+        
       </div>
-
-      <div class="story-footer">
-        <div class="story-link-pill">cffx.ru/korzh</div>
-      </div>
-      
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineExpose } from 'vue';
+import { defineExpose, computed } from 'vue';
 
 const props = defineProps({
   ticket: String,
@@ -47,26 +51,23 @@ const props = defineProps({
   tags: Array
 });
 
-// Функция загрузки библиотеки (Самая надежная версия)
+const displayTags = computed(() => {
+  return props.tags && props.tags.length > 0 ? props.tags : ['Сигнал'];
+});
+
+// Загрузчик библиотеки
 const loadLibrary = () => {
   return new Promise((resolve, reject) => {
     if (window.html2canvas) return resolve(window.html2canvas);
 
-    // 1. Пробуем основной CDN (unpkg)
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js';
-    
     script.onload = () => resolve(window.html2canvas);
     script.onerror = () => {
-       // 2. Если не вышло — пробуем запасной (jsdelivr)
-       console.log('UNPKG failed, trying JSDELIVR...');
        const backup = document.createElement('script');
        backup.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
        backup.onload = () => resolve(window.html2canvas);
-       backup.onerror = () => {
-          // 3. Если совсем всё плохо — ошибка
-          reject(new Error('Не удалось загрузить библиотеку скриншотов'));
-       };
+       backup.onerror = () => reject(new Error('Lib load failed'));
        document.head.appendChild(backup);
     };
     document.head.appendChild(script);
@@ -75,42 +76,63 @@ const loadLibrary = () => {
 
 const generateAndShare = async () => {
   try {
-    // Загружаем библиотеку перед использованием
     await loadLibrary();
     
     const element = document.getElementById('story-capture-area');
     if (!element) return;
     
-    // Ждем тик рендера
-    await new Promise(r => setTimeout(r, 100));
+    // Ждем рендера
+    await new Promise(r => setTimeout(r, 300));
 
     const canvas = await window.html2canvas(element, {
-      scale: 1,
+      scale: 2, // Улучшаем качество
       backgroundColor: '#1E1E20',
       useCORS: true,
-      logging: false
+      logging: false,
+      width: 1080,
+      height: 1920,
+      windowWidth: 1080,
+      windowHeight: 1920
     });
 
     canvas.toBlob(async (blob) => {
-      const file = new File([blob], 'signal.png', { type: 'image/png' });
+      if (!blob) throw new Error('Blob creation failed');
+
+      const file = new File([blob], `signal-${props.ticket}.png`, { type: 'image/png' });
+      
       const shareData = {
         files: [file],
-        text: `Мой Сигнал в Корж ⚡️${props.ticket}\n\nОтправить Сигнал: https://cffx.ru/korzh`
+        title: 'Мой Сигнал',
+        text: `Мой Сигнал в Корж ⚡️${props.ticket}`
       };
 
+      // Пытаемся использовать нативный шеринг
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share(shareData);
+        try {
+          await navigator.share(shareData);
+        } catch (shareError) {
+          console.warn('Share API canceled/failed, falling back to download', shareError);
+          downloadImage(canvas); // Если отменили или ошибка — качаем
+        }
       } else {
-        const link = document.createElement('a');
-        link.download = `signal-${props.ticket}.png`;
-        link.href = canvas.toDataURL();
-        link.click();
+        // Если шеринг файлов не поддерживается (например, десктоп)
+        downloadImage(canvas);
       }
     }, 'image/png');
+
   } catch (e) {
-    console.error('Ошибка в StoryGenerator:', e);
-    alert('Не удалось создать сторис. Проверьте интернет.');
+    console.error('Story gen error:', e);
+    alert('Не удалось создать сторис. Попробуйте еще раз.');
   }
+};
+
+const downloadImage = (canvas) => {
+  const link = document.createElement('a');
+  link.download = `signal-${props.ticket}.png`;
+  link.href = canvas.toDataURL('image/png');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 defineExpose({
@@ -119,16 +141,25 @@ defineExpose({
 </script>
 
 <style scoped>
-.story-template {
+/* Обертка нулевого размера, чтобы не влиять на поток документа */
+.story-wrapper {
   position: fixed;
-  left: -9999px;
   top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  z-index: -1000; /* Прячем под контент */
+  visibility: visible; /* Но оставляем видимым для рендера */
+}
+
+.story-template {
   width: 1080px;
   height: 1920px;
   background: #1E1E20;
-  z-index: -1;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   box-sizing: border-box;
+  /* Важно: не display: none */
 }
 
 .story-content {
