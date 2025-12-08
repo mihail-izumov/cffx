@@ -42,9 +42,9 @@
 
     <!-- Header -->
     <div class="header-section">
-      <h2 class="widget-title">What's Early Access?</h2>
+      <h2 class="widget-title">Зачем Ранний Доступ</h2>
       <p class="widget-subtitle">
-        Gains App will be Live soon, but with Early Access you'll get...
+        Корж скоро откроет возможность инвестировать в новые кофейни. С Ранним Доступом вы можете...
       </p>
     </div>
 
