@@ -132,7 +132,7 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
       <!-- ЗАГОЛОВОК И ЛОГО -->
       <div class="card-top">
         <img src="/korzh_badge.svg" alt="Корж" class="logo-img" />
-        <h1 class="card-title">Корж – сеть кофеен</h1>
+        <h1 class="card-title">Корж побеждает в сердцах</h1>
       </div>
 
       <!-- БАБЛЫ (Теперь над текстом) -->
