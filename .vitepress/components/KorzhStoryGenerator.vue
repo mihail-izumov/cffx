@@ -36,7 +36,7 @@
             </div>
           </div>
 
-          <!-- ГРАДИЕНТ -->
+          <!-- НИЖНИЙ ГРАДИЕНТ -->
           <div class="bottom-gradient"></div>
 
           <!-- ФУТЕР -->
@@ -80,7 +80,7 @@
             </button>
             <p class="modal-hint">
               Мой Сигнал в Корж ⚡️{{ ticket }}<br>
-              Отправить Сигнал: https://cffx.ru/корж
+              Отправить Сигнал: https://cffx.ru/korzh
             </p>
           </div>
 
@@ -104,13 +104,13 @@ const showModal = ref(false);
 const generatedImageUrl = ref(null);
 const generatedBlob = ref(null);
 
-// ПРОСТАЯ ЛОГИКА ТЕКСТА: пробелы, заглавные, точка в конце
+// Мягкая логика текста: пробелы, заглавные, точка в конце
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
   
   let text = props.allText.trim();
   
-  // Пробел после знаков препинания, если его нет
+  // Пробел после знаков препинания
   text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
   // Нормализация пробелов
   text = text.replace(/\s+/g, ' ');
@@ -217,23 +217,22 @@ defineExpose({ generateAndShare });
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
 }
 
-/* Общий layout.
-   Поднял футер (больше нижний padding) и чуть опустил шапку (больше верхний). */
+/* Центрируем композицию: почти равные отступы сверху/снизу */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 210px 60px 260px 60px;
+  padding: 200px 60px 220px 60px;
   display: flex; flex-direction: column; justify-content: space-between;
 }
 
 /* ВЕРХ */
 .story-header { 
   display: flex; flex-direction: column; align-items: center; 
-  gap: 32px;           /* было 40, сделал компактнее */
+  gap: 30px;
   text-align: center; width: 100%;
 }
 
 .story-main-title {
-  font-size: 68px;     /* чуть меньше визуально */
+  font-size: 66px;
   font-weight: 300;
   line-height: 1.1; 
   letter-spacing: 0.15em;
@@ -241,20 +240,29 @@ defineExpose({ generateAndShare });
   text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-/* Инфо‑плашка: светлый фон, белый текст, без темной маски */
+/* === ГЛАССМОРФНЫЙ METAMORPH BORDER (общая идея) === */
+/* Суть — два слоя background-image и background-clip. [file:138] */
+
 .glass-pill-info-light {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(24px); 
-  border: 1px solid rgba(255, 255, 255, 0.2); 
+  position: relative;
   border-radius: 100px; 
-  padding: 22px 46px;
-  display: inline-flex; align-items: center; gap: 28px;
-  font-size: 36px; font-weight: 400; 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  padding: 20px 48px;
+  display: inline-flex; align-items: center; gap: 26px;
+  font-size: 34px; font-weight: 400; 
+
+  background-image:
+    linear-gradient(rgba(18,18,26,0.82), rgba(18,18,26,0.82)),
+    linear-gradient(135deg, #E0D7F8 0%, #C1B5F0 50%, #8E7CC3 100%);
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  border: 2.2px solid transparent; /* чуть толще рамка */
+  backdrop-filter: blur(22px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.45);
 }
+
 .info-icon   { font-size: 40px; line-height: 1; }
 .info-ticket { color: #ffffff; letter-spacing: 0.1em; font-weight: 500; }
-.info-divider{ color: rgba(255,255,255,0.6); }
+.info-divider{ color: rgba(255,255,255,0.7); }
 .info-date   { color: #ffffff; letter-spacing: 0.06em; }
 
 .story-address { 
@@ -266,77 +274,65 @@ defineExpose({ generateAndShare });
 .story-body {
   flex-grow: 1; width: 100%; 
   display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-  padding-top: 56px;
+  padding-top: 52px;
 }
 
-/* ПЛАШКА ОТЗЫВА.
-   Светлый фон с прозрачностью + метаморфозная обводка в стиле stat-card. */
+/* ПЛАШКА ОТЗЫВА:
+   фон сделан более прозрачным/темным, сиреневый — только лёгкий флер + фиолетовая рамка */
 .text-card {
   width: 98%; position: relative;
-  background:
-    radial-gradient(circle at 20% 0%, rgba(224, 215, 248, 0.28) 0%, transparent 55%),
-    rgba(255, 255, 255, 0.16);
+  border-radius: 48px;
+  padding: 54px 44px;
+
+  background-image:
+    radial-gradient(circle at 20% 0%, rgba(224,215,248,0.32) 0%, transparent 58%),
+    linear-gradient(rgba(15,15,22,0.80), rgba(15,15,22,0.80)),
+    linear-gradient(135deg, #E0D7F8 0%, #C1B5F0 45%, #8E7CC3 100%);
+  background-origin: padding-box, padding-box, border-box;
+  background-clip: padding-box, padding-box, border-box;
+  border: 2px solid transparent;
   backdrop-filter: blur(26px);
   -webkit-backdrop-filter: blur(26px);
-  border-radius: 48px;
-  padding: 56px 46px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.45);
-  border: none;
-}
-
-/* Метаморфозная обводка через mask, как в твоем примере */
-.text-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 48px;
-  padding: 1.5px;
-  background: linear-gradient(
-    135deg,
-    rgba(224, 215, 248, 0.7) 0%,
-    rgba(193, 181, 240, 0.4) 45%,
-    rgba(142, 124, 195, 0.0) 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
 }
 
 .text-content {
   margin: 0; 
-  font-size: 48px;       /* на ~2 кегля меньше, чем было 52 */
+  font-size: 48px;        /* на ~2 кегля меньше, чем раньше */
   font-weight: 400;
   line-height: 1.4; 
-  color: #f4f0ff;        /* легкий фиолетовый оттенок */
+  color: #F3EEFF;         /* лёгкий сиреневый тон */
   text-align: center; 
   letter-spacing: 0.01em;
   text-shadow: 0 2px 10px rgba(0,0,0,0.25);
 }
 
-/* НИЖНИЙ ГРАДИЕНТ.
-   Увеличил высоту, чтобы черный фон начинался выше,
-   и длинный текст раньше «уходил» под кнопку. */
+/* НИЖНИЙ ГРАДИЕНТ — выше, чтобы длинный текст заранее уходил в тень */
 .bottom-gradient {
   position: absolute; bottom: 0; left: 0; width: 100%; height: 900px; z-index: 20;
-  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.88) 55%, #000 100%);
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.9) 55%, #000 100%);
   pointer-events: none;
 }
 
-/* ФУТЕР.
-   Футер тот же, но из‑за большего нижнего padding он визуально выше. */
+/* ФУТЕР */
 .story-footer { 
   position: relative; z-index: 30; 
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* Кнопка: длинная и относительно узкая */
+/* Кнопка: та же логика бордера, что и у двух других плашек */
 .link-button {
-  background: linear-gradient(90deg, #E0D7F8 0%, #C1B5F0 100%);
   border-radius: 100px; 
-  padding: 22px 170px;
+  padding: 20px 170px;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 15px 50px rgba(142, 124, 195, 0.25);
+
+  background-image:
+    linear-gradient(#E0D7F8, #C1B5F0),
+    linear-gradient(135deg, #E0D7F8 0%, #C1B5F0 50%, #8E7CC3 100%);
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  border: 2px solid transparent;
+  box-shadow: 0 18px 52px rgba(142,124,195,0.35);
 }
 
 .btn-text {
@@ -346,7 +342,7 @@ defineExpose({ generateAndShare });
   letter-spacing: 0.02em;
 }
 
-/* Текст под кнопкой – крупнее и читаемее */
+/* Текст под кнопкой */
 .footer-tagline {
   font-size: 40px;
   font-weight: 400;
@@ -357,7 +353,7 @@ defineExpose({ generateAndShare });
   text-shadow: 0 2px 12px rgba(0,0,0,0.5);
 }
 
-/* МОДАЛКА */
+/* МОДАЛКА (без изменений важной логики) */
 .modal-overlay { 
   position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000;
   display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px;
