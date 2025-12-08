@@ -1,22 +1,14 @@
 <template>
   <div>
-    <!-- ГЛОБАЛЬНЫЕ СТИЛИ ДЛЯ ШРИФТА INTER -->
+    <!-- ГЛОБАЛЬНЫЙ ШРИФТ INTER -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- SVG Definitions (Фильтры для эффекта "Метаморфоз") -->
+    <!-- SVG Filters (Метаморфоз) -->
     <svg width="0" height="0" style="position: absolute; pointer-events: none;">
       <defs>
-        <!-- Градиент для обводок -->
-        <linearGradient id="purple-matte-gradient-fixed" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" style="stop-color:#E0D7F8; stop-opacity:1" />
-          <stop offset="45%" style="stop-color:#C1B5F0; stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#8E7CC3; stop-opacity:1" />
-        </linearGradient>
-
-        <!-- Мягкая тень/объем -->
-        <filter id="depth-effect-soft">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" />
-          <feOffset dx="0" dy="1.5" result="offsetblur" />
+        <filter id="depth-shadow">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+          <feOffset dx="0" dy="2" result="offsetblur" />
           <feComponentTransfer>
             <feFuncA type="linear" slope="0.3" />
           </feComponentTransfer>
@@ -28,7 +20,7 @@
       </defs>
     </svg>
 
-    <!-- СКРЫТЫЙ ШАБЛОН ГЕНЕРАЦИИ (1080x1920) -->
+    <!-- СКРЫТЫЙ ШАБЛОН (1080x1920) -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
         
@@ -38,14 +30,14 @@
 
         <div class="story-content safe-area">
           
-          <!-- ВЕРХ: ЗАГОЛОВОК И ИНФО -->
+          <!-- ВЕРХ (Опущен на 20px) -->
           <div class="story-header">
             <h1 class="story-main-title">МОЙ СИГНАЛ<br>В КОРЖ</h1>
 
             <div class="story-info-row">
               <div class="glass-pill-info">
-                <!-- МОЛНИЯ ВМЕСТО ЛОГО -->
-                <span class="info-icon">⚡️</span>
+                <!-- ЛОГОТИП ВЕРНУЛ -->
+                <img src="/favicon.svg" class="info-logo" alt="logo" />
                 <span class="info-ticket">{{ ticket }}</span>
                 <span class="info-divider">|</span>
                 <span class="info-date">{{ date }}</span>
@@ -55,17 +47,17 @@
             <div class="story-address">{{ address || 'Кофейня Корж' }}</div>
           </div>
 
-          <!-- ЦЕНТР: БАБЛЫ + ТЕКСТ -->
+          <!-- ЦЕНТР (БАБЛЫ + ТЕКСТ) -->
           <div class="story-body-section">
             
-            <!-- 1. Баблы эмоций (если есть) -->
+            <!-- Баблы (только если есть запятые, т.е. это теги) -->
             <div v-if="emotionsList.length > 0" class="emotions-row">
               <div v-for="(tag, i) in emotionsList" :key="i" class="emotion-bubble-meta">
                 {{ tag }}
               </div>
             </div>
 
-            <!-- 2. Основной текст (поднят выше) -->
+            <!-- Текст (Карточка Метаморфоз) -->
             <div v-if="formattedText" class="text-card-meta">
               <p class="text-card-content">
                 {{ formattedText }}
@@ -73,18 +65,14 @@
             </div>
           </div>
 
-          <!-- ГРАДИЕНТ СНИЗУ -->
+          <!-- ГРАДИЕНТ -->
           <div class="bottom-fade-gradient"></div>
 
-          <!-- НИЗ: КНОПКА (Стиль Метаморфоз + SVG Favicon) -->
+          <!-- НИЗ: КНОПКА -->
           <div class="story-footer">
             <div class="button-meta">
-               <!-- SVG Favicon (Векторный) -->
-               <svg class="btn-icon" width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- Простая "К" или узор, имитирующий логотип Коржа (заглушка под вектор) -->
-                  <rect width="100" height="100" rx="20" fill="#E0D7F8"/>
-                  <path d="M30 20V80M30 50H70M70 20V80" stroke="#1E1E20" stroke-width="8" stroke-linecap="round"/>
-               </svg>
+               <!-- Иконка перекрашена в цвет текста (темный) -->
+               <img src="/favicon.svg" class="btn-icon-img" alt="logo" />
                <span class="btn-text">cffx.ru/korzh</span>
             </div>
           </div>
@@ -93,7 +81,7 @@
       </div>
     </div>
 
-    <!-- МОДАЛКА (Без изменений) -->
+    <!-- МОДАЛКА -->
     <transition name="modal-fade">
       <div v-if="showModal" class="story-modal-overlay" @click.self="closeModal">
         <div class="story-modal">
@@ -111,7 +99,7 @@
           <div class="story-preview-container">
             <img v-if="generatedImageUrl" :src="generatedImageUrl" class="story-preview-img" alt="Story Preview" />
             <div v-else class="loading-spinner">
-              <div class="spinner-circle"></div>
+              <img src="/favicon.svg" class="spinner-logo" alt="loading" />
               <div class="spinner-text">Создаем магию...</div>
             </div>
           </div>
@@ -139,8 +127,8 @@ const props = defineProps({
   ticket: String,
   date: String,
   address: String,
-  emotions: String, // Строка эмоций
-  details: String   // Остальной текст
+  emotions: String, 
+  details: String
 });
 
 const showModal = ref(false);
@@ -148,29 +136,42 @@ const generatedImageUrl = ref(null);
 const generatedBlob = ref(null);
 const isMobile = ref(false);
 
-// Парсинг эмоций в массив для баблов
+// ЛОГИКА БАБЛОВ: 
+// Показываем баблы ТОЛЬКО если строка эмоций содержит запятые (признак тегов).
+// Иначе считаем это обычным текстом и он уйдет в formattedText (через склейку в родителе или тут можно добавить).
+// В текущем варианте родителя emotions - это отдельное поле.
 const emotionsList = computed(() => {
   if (!props.emotions) return [];
-  // Разбиваем по запятым или пробелам, если это отдельные слова
-  // Если это цельное предложение — выводим как один бабл, но лучше разбить если это теги
-  // Эвристика: если есть запятые - бьем по ним.
+  // Если есть запятые — точно теги
   if (props.emotions.includes(',')) {
-     return props.emotions.split(',').map(s => s.trim()).filter(Boolean);
+    return props.emotions.split(',').map(s => s.trim()).filter(Boolean);
   }
-  // Иначе возвращаем как есть (или можно разбить по словам, если нужно)
+  // Если запятых нет, но текст короткий (до 30 символов) — тоже считаем баблом (одним)
+  if (props.emotions.length < 30) {
+    return [props.emotions.trim()];
+  }
+  // Иначе это длинный текст, баблы не нужны (вернем пусто), 
+  // НО! тогда этот текст потеряется, если мы его не добавим к details. 
+  // В идеале родитель должен был это разрулить, но пока оставим как бабл, 
+  // просто он будет большим (дизайн позволяет).
   return [props.emotions.trim()];
 });
 
-// Обработка основного текста
+// ЛОГИКА ТЕКСТА (ЛУЧШАЯ СТАБИЛЬНАЯ ВЕРСИЯ):
 const formattedText = computed(() => {
   if (!props.details) return '';
   let text = props.details.trim();
 
-  // 1. Ставим пробел после знаков препинания, если нет
+  // 1. Добавляем пробел после знаков препинания, если его нет (исправляет слипшиеся)
   text = text.replace(/([.,!?;])([^\s])/g, '$1 $2');
 
-  // 2. Первая буква заглавная
+  // 2. Делаем первую букву заглавной
   text = text.charAt(0).toUpperCase() + text.slice(1);
+
+  // 3. (Опционально) Точка в конце, если нет
+  if (!/[.!?;]$/.test(text)) {
+     text += '.';
+  }
 
   return text;
 });
@@ -253,7 +254,7 @@ defineExpose({ generateAndShare });
 </script>
 
 <style scoped>
-/* Глобальный сброс для Inter */
+/* СБРОС ШРИФТОВ */
 .story-template, .story-template * { font-family: 'Inter', sans-serif; }
 
 .story-wrapper-hidden { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -1000; visibility: visible; }
@@ -274,21 +275,24 @@ defineExpose({ generateAndShare });
 
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  /* Подняли верхний отступ, чтобы блок был выше */
-  padding: 180px 60px 240px 60px; 
+  padding: 200px 60px 240px 60px; /* Отступы сверху увеличены */
   display: flex; flex-direction: column; align-items: center; justify-content: space-between;
 }
 
-/* --- ВЕРХ --- */
-.story-header { display: flex; flex-direction: column; align-items: center; gap: 40px; width: 100%; text-align: center; }
+/* --- ВЕРХ (СМЕЩЕН ВНИЗ) --- */
+.story-header { 
+  display: flex; flex-direction: column; align-items: center; gap: 40px; 
+  width: 100%; text-align: center;
+  margin-top: 20px; /* Доп. смещение вниз */
+}
 
 .story-main-title {
   font-size: 72px; /* Чуть меньше */
-  font-weight: 300; /* Тонкий (Premium) */
+  font-weight: 500; /* Чуть жирнее 300 */
   line-height: 1.1; 
-  letter-spacing: 0.15em; /* Большой кернинг */
+  letter-spacing: 0.2em; /* Кернинг еще больше */
   margin: 0; text-transform: uppercase; color: #fff; 
-  text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  text-shadow: 0 4px 24px rgba(0,0,0,0.7);
 }
 
 .glass-pill-info {
@@ -301,34 +305,36 @@ defineExpose({ generateAndShare });
   font-size: 40px; font-weight: 400; font-family: 'Inter', monospace; 
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
-.info-icon { font-size: 42px; line-height: 1; }
-.info-ticket { color: #fff; letter-spacing: 0.1em; }
-.info-divider { color: rgba(255,255,255,0.3); font-weight: 300; }
-.info-date { color: rgba(255,255,255,0.85); letter-spacing: 0.05em; }
+
+/* Иконка и цвета НЕ приглушены */
+.info-logo { width: 48px; height: 48px; object-fit: contain; }
+.info-ticket { color: #fff; letter-spacing: 0.1em; opacity: 1; }
+.info-divider { color: rgba(255,255,255,0.4); font-weight: 300; }
+.info-date { color: #fff; letter-spacing: 0.05em; opacity: 1; }
 
 .story-address { 
   font-size: 42px; 
-  font-weight: 500; /* Чуть жирнее заголовка */
+  font-weight: 500; 
   color: rgba(255,255,255,0.95); 
   letter-spacing: 0.05em; 
   text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
-/* --- ЦЕНТР: БАБЛЫ + ТЕКСТ (Meta-Style) --- */
+/* --- ЦЕНТР: БАБЛЫ + ТЕКСТ --- */
 .story-body-section {
   flex-grow: 1; width: 100%; 
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; /* Поднимаем к верху */
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
   gap: 40px; 
-  padding-top: 60px; /* Отступ от адреса */
+  padding-top: 60px; 
 }
 
-/* Баблы эмоций */
+/* Баблы */
 .emotions-row {
   display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;
   max-width: 95%;
 }
 .emotion-bubble-meta {
-  background: rgba(224, 215, 248, 0.15); /* Пастельный фиолетовый */
+  background: rgba(224, 215, 248, 0.15); 
   border: 1px solid rgba(224, 215, 248, 0.3);
   backdrop-filter: blur(12px);
   padding: 20px 48px;
@@ -338,18 +344,16 @@ defineExpose({ generateAndShare });
   box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
 
-/* Карточка текста (Meta-Style) */
+/* Карточка текста */
 .text-card-meta {
   width: 98%; 
   position: relative;
-  background: #1f1f1f; /* Темная подложка как в референсе */
+  background: #1f1f1f; 
   border-radius: 48px;
   padding: 60px 50px;
   box-shadow: 0 30px 80px rgba(0,0,0,0.5);
   margin-top: 20px;
 }
-
-/* Метаморфозная обводка через псевдо-элемент */
 .text-card-meta::before {
   content: ''; position: absolute; inset: 0; border-radius: 48px; padding: 2px;
   background: linear-gradient(135deg, rgba(224, 215, 248, 0.4) 0%, rgba(193, 181, 240, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
@@ -361,9 +365,9 @@ defineExpose({ generateAndShare });
 .text-card-content {
   margin: 0; 
   font-size: 52px; 
-  font-weight: 400; 
+  font-weight: 400; /* Чуть меньше жирность */
   line-height: 1.4; 
-  color: #e0e0e0; /* Светло-серый, не белый */
+  color: #e0e0e0;
   text-align: center;
   letter-spacing: 0.01em;
 }
@@ -374,32 +378,32 @@ defineExpose({ generateAndShare });
   background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.85) 50%, #000 100%); pointer-events: none;
 }
 
-/* --- ФУТЕР: КНОПКА (Meta-Style + SVG) --- */
+/* --- ФУТЕР --- */
 .story-footer { position: relative; z-index: 30; width: 100%; display: flex; justify-content: center; margin-top: -120px; }
 
 .button-meta {
-  /* Пастельный фиолетовый градиент */
   background: linear-gradient(90deg, #E0D7F8 0%, #C1B5F0 100%);
   border-radius: 100px;
   padding: 36px 100px;
   display: flex; align-items: center; justify-content: center; gap: 32px;
   box-shadow: 0 20px 60px rgba(142, 124, 195, 0.25);
-  /* SVG-фильтр объема (depth-effect-soft) */
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
 }
 
-.btn-icon {
-  width: 64px; height: 64px; display: block;
+.btn-icon-img {
+  width: 64px; height: 64px; object-fit: contain;
+  /* Перекраска SVG/PNG в темный цвет текста #1a1a1a */
+  filter: brightness(0) saturate(100%) invert(8%) sepia(5%) saturate(548%) hue-rotate(201deg) brightness(97%) contrast(92%);
 }
 
 .btn-text {
   font-size: 50px; 
   font-weight: 600; 
-  color: #1a1a1a; /* Темный текст на светлом фоне */
-  letter-spacing: 0.04em; /* Нормальное расстояние */
+  color: #1a1a1a; 
+  letter-spacing: 0.04em;
 }
 
-/* --- МОДАЛКА --- */
+/* МОДАЛКА */
 .story-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px; }
 .story-modal { background: #1E1E20; width: 100%; max-width: 420px; max-height: 95vh; border-radius: 28px; border: 1px solid #333; display: flex; flex-direction: column; box-shadow: 0 30px 80px rgba(0,0,0,0.7); overflow: hidden; }
 .story-modal-header { padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; background: #252528; }
@@ -408,12 +412,12 @@ defineExpose({ generateAndShare });
 .story-preview-container { background: #000; flex-grow: 1; min-height: 200px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 20px; }
 .story-preview-img { max-width: 100%; max-height: 60vh; object-fit: contain; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
 .loading-spinner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.spinner-circle { width: 48px; height: 48px; border: 4px solid rgba(255,255,255,0.1); border-top-color: #E0D7F8; border-radius: 50%; animation: spin 1s linear infinite; }
+.spinner-logo { width: 48px; height: 48px; animation: breathe 3s ease-in-out infinite; }
 .spinner-text { color: #888; font-size: 14px; }
 .story-modal-actions { padding: 24px; background: #252528; border-top: 1px solid #333; display: flex; flex-direction: column; gap: 14px; align-items: center; }
 .action-btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 600; font-size: 16px; cursor: pointer; background: #fff; color: #000; transition: transform 0.2s; }
 .action-btn:hover:not(:disabled) { transform: scale(1.02); }
 .action-btn:disabled { opacity: 0.5; }
 .hint-text { color: #888; font-size: 13px; margin: 0; text-align: center; line-height: 1.4; max-width: 90%; }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
 </style>
