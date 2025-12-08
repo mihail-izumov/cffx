@@ -242,7 +242,7 @@ defineExpose({ generateAndShare });
   font-size: 66px;
   font-weight: 400;
   line-height: 1.2; 
-  letter-spacing: 0.30em;
+  letter-spacing: 0.20em;
   margin: 0; text-transform: uppercase; color: #fff; 
   text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
