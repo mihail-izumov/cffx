@@ -5,7 +5,7 @@
     <div v-if="formSubmitted" class="signal-success-message">
   <div class="signal-success-text">
     <h3>Сигнал отправлен в Корж ⚡</h3>
-    <p>Начните чат с персональным ИИ-помощником Анной, чтобы получить результат. </p>
+    <p>Начните чат с Анной – Вашим персональным ИИ-помощником, чтобы <strong>получить результат.</strong></p>
 
     <div class="signal-success-actions">
       <a
@@ -1418,7 +1418,7 @@ input#telegramPhone:focus {
 /* 1. Кнопка "Получить ответ" */
 .signal-telegram-button {
   background-color: #9b7fb7;
-  color: #000000;
+  color: #ffffff;
   border: none;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -1428,7 +1428,7 @@ input#telegramPhone:focus {
 .signal-success-message .signal-telegram-button:hover {
   text-decoration: none !important;
   border-bottom: none !important;
-  color: #000000 !important;
+  color: #ffffff !important;
 }
 
 .signal-telegram-button:hover {
