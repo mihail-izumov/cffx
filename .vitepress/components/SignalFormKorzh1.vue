@@ -241,8 +241,8 @@
   :ticket="formattedTicketNumber"
   :date="currentDate.split(' ')[0]"
   :address="form.coffeeShopAddress"
-  :emotional-text="form.emotional"      <!-- поле эмоций -->
-  :problem-text="form.detailsCleaned"   <!-- собранный текст сути -->
+  :emotion-text="form.emotionalRelease"
+  :problem-text="form.factualAnalysis"
 />
 
   </div> <!-- Закрытие signal-form-wrapper -->
