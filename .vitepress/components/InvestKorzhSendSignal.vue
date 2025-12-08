@@ -13,14 +13,12 @@
 
           <div class="banner-title">
             <span class="title-desktop">
-              Еще больше возможностей<br>
-              быть ближе к бизнесу,<br>
-              который вы любите.
+              Ваша любимая кофейня<br>
+              станет лучше уже сегодня.
             </span>
             <span class="title-mobile">
-              Еще больше возможностей<br>
-              быть ближе к бизнесу,<br>
-              который вы любите.
+              Ваша любимая кофейня<br>
+              станет лучше уже сегодня.
             </span>
           </div>
 
@@ -47,8 +45,8 @@ const props = defineProps({
   imageAlt: { type: String, default: 'Новости Сигнала в Телеграм' },
   title: { type: String, default: 'Еще больше возможностей быть ближе к бизнесу, который вы любите.' },
   subtitle: { type: String, default: '' },
-  buttonText: { type: String, default: 'Подписаться в Телеграм' },
-  buttonLink: { type: String, default: 'https://t.me/runScale' }
+  buttonText: { type: String, default: 'Отправить Сигнал' },
+  buttonLink: { type: String, default: '/korzh' }
 })
 
 const emit = defineEmits(['button-click'])
