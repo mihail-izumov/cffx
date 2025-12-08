@@ -13,7 +13,7 @@
 
         <div class="story-content">
           
-          <!-- ВЕРХ -->
+          <!-- ВЕРХ (СДВИНУТ ВНИЗ) -->
           <div class="story-header">
             <h1 class="story-main-title">МОЙ СИГНАЛ<br>В КОРЖ</h1>
 
@@ -39,7 +39,7 @@
           <!-- НИЖНИЙ ГРАДИЕНТ -->
           <div class="bottom-gradient"></div>
 
-          <!-- ФУТЕР (ФИКСИРОВАННОЕ ПОЛОЖЕНИЕ, НЕ СДВИГАЕТСЯ) -->
+          <!-- ФУТЕР (ФИКСИРОВАН, НЕ СДВИГАЕТСЯ) -->
           <div class="story-footer">
             <div class="link-button">
                <span class="btn-text">cffx.ru/korzh</span>
@@ -198,28 +198,33 @@ defineExpose({ generateAndShare });
 .story-wrapper-hidden { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -9999; }
 .story-template { width: 1080px; height: 1920px; position: relative; background: #000; color: #fff; }
 
-/* ФОН */
+/* ФОНЫ: Обновлены URL */
 .story-bg-image { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; }
-.story-bg-image.bg-default,
-.story-bg-image.bg-1,
-.story-bg-image.bg-2 {
+.story-bg-image.bg-default {
   background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg');
 }
+.story-bg-image.bg-1 {
+  background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh-kuybisheva103-1080x1920(2).jpg');
+}
+.story-bg-image.bg-2 {
+  background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh-lva-tolstogo-1080x1920.jpg');
+}
+
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 2;
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
 }
 
-/* Сдвиг контента (кроме футера) вниз на 15px */
+/* Контейнер */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
   padding: 180px 60px 180px 60px;
   display: flex; flex-direction: column; align-items: center;
 }
 
-/* ВЕРХ (Сдвигаем через margin-top) */
+/* ВЕРХ: Явный сдвиг вниз на 30px */
 .story-header { 
-  margin-top: 15px; /* СДВИГ ВНИЗ */
+  margin-top: 30px; 
   display: flex; flex-direction: column; align-items: center; 
   gap: 30px;
   text-align: center; width: 100%;
@@ -243,7 +248,6 @@ defineExpose({ generateAndShare });
   
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(35px);
-  -webkit-backdrop-filter: blur(35px);
   
   border: 1px solid rgba(224, 215, 248, 0.5);
   box-shadow: 
@@ -269,21 +273,19 @@ defineExpose({ generateAndShare });
   padding-top: 56px;
 }
 
-/* КАРТОЧКА ОТЗЫВА — нейтральный фон, чёткая рамка */
+/* КАРТОЧКА ОТЗЫВА — яркая обводка 2px */
 .text-card {
   width: 98%; 
   border-radius: 48px;
   padding: 54px 44px;
   
-  /* Нейтральный фон */
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(50px);
   -webkit-backdrop-filter: blur(50px);
   
-  /* ЧЁТКАЯ обводка 1px с сиреневым оттенком */
-  border: 1px solid rgba(215, 200, 255, 0.55);
+  /* ЯРКАЯ видимая обводка */
+  border: 2px solid rgba(220, 210, 255, 0.65);
   
-  /* Тень */
   box-shadow: 
     0 30px 80px rgba(0, 0, 0, 0.7),
     inset 0 0 30px rgba(180, 150, 255, 0.08);
@@ -294,8 +296,6 @@ defineExpose({ generateAndShare });
   font-size: 48px;
   font-weight: 400;
   line-height: 1.4; 
-  
-  /* Чуть больше фиолетового в тексте */
   color: #E8DDFF;
   text-align: center; 
   letter-spacing: 0.01em;
@@ -309,7 +309,7 @@ defineExpose({ generateAndShare });
   pointer-events: none;
 }
 
-/* ФУТЕР: фиксированное положение (НЕ СДВИГАЕМ) */
+/* ФУТЕР: фиксированное положение */
 .story-footer { 
   position: absolute;
   bottom: 220px;
@@ -319,30 +319,24 @@ defineExpose({ generateAndShare });
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* КНОПКА — Лёгкий фиолетовый градиент */
+/* КНОПКА — Цвет как во вложении */
 .link-button {
   border-radius: 100px; 
   padding: 20px 170px;
   display: flex; align-items: center; justify-content: center;
   
-  background: linear-gradient(90deg, 
-    rgba(230, 220, 255, 0.96) 0%, 
-    rgba(205, 190, 245, 0.94) 100%
-  );
-  backdrop-filter: blur(25px);
+  /* Точный лавандовый цвет из скрина */
+  background: #D9D0F0;
   
-  /* Чёткая обводка */
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    0 16px 50px rgba(160, 130, 220, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  /* Без блюра, так как это плотный цвет */
+  box-shadow: 0 16px 50px rgba(160, 130, 220, 0.4);
 }
 
 .btn-text {
   font-size: 46px;
-  font-weight: 600; 
-  color: #1a1a1a; 
-  letter-spacing: 0.02em;
+  font-weight: 700; /* Жирнее, как на скрине */
+  color: #1A1A1A;   /* Тёмный, почти чёрный */
+  letter-spacing: 0.01em;
 }
 
 /* Текст под кнопкой */
@@ -351,8 +345,9 @@ defineExpose({ generateAndShare });
   font-weight: 400;
   letter-spacing: 0.02em;
   text-align: center;
-  color: rgba(230, 220, 255, 0.95);
-  text-shadow: 0 0 10px rgba(180, 150, 255, 0.5);
+  color: #D9D0F0; /* Такой же цвет как у кнопки */
+  opacity: 0.95;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
 }
 
 /* МОДАЛКА */
