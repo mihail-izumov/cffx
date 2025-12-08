@@ -19,7 +19,7 @@
 
             <div class="story-info-row">
               <div class="glass-pill-info">
-                <!-- ВЕРНУЛ МОЛНИЮ -->
+                <!-- ЭМОДЗИ И ТЕКСТ БЕЗ МАСОК -->
                 <span class="info-icon">⚡️</span>
                 <span class="info-ticket">{{ ticket }}</span>
                 <span class="info-divider">|</span>
@@ -30,9 +30,9 @@
             <div class="story-address">{{ address || 'Кофейня Корж' }}</div>
           </div>
 
-          <!-- ЦЕНТР: ТЕКСТОВАЯ КАРТОЧКА -->
+          <!-- ЦЕНТР: ТЕКСТОВАЯ КАРТОЧКА (КАК НА СКРИНЕ) -->
           <div class="story-body">
-            <div v-if="formattedText" class="text-card-meta">
+            <div v-if="formattedText" class="text-card-glass">
               <p class="text-content">{{ formattedText }}</p>
             </div>
           </div>
@@ -42,11 +42,11 @@
 
           <!-- ФУТЕР -->
           <div class="story-footer">
-            <!-- КНОПКА (Больше, радиус меньше) -->
+            <!-- КНОПКА (ЕЩЕ ШИРЕ) -->
             <div class="link-button">
                <span class="btn-text">cffx.ru/korzh</span>
             </div>
-            <!-- ТЕКСТ ПОД КНОПКОЙ (Больше, без маркера) -->
+            <!-- ТЕКСТ ПОД КНОПКОЙ (ЕЩЕ БОЛЬШЕ) -->
             <div class="footer-tagline">Ваш Сигнал – тому кто решает</div>
           </div>
 
@@ -113,27 +113,31 @@ const formattedText = computed(() => {
   
   let text = props.allText.trim();
   
-  // 1. Обработка ПОДСКАЗОК (цепочки слов без запятых)
-  // Находим последовательности слов разделенных пробелами, где нет знаков препинания
-  // Пример: "вкусно быстро" -> "Вкусно, быстро"
+  // 1. ПОДСКАЗКИ: Ищем цепочки из 2+ слов без знаков препинания между ними
+  // Логика: если есть пробел, но нет знаков препинания рядом - ставим запятую
   
-  // Если в тексте нет запятых/точек, но есть пробелы - считаем это набором тегов
-  if (!/[.,!?;:]/.test(text) && /\s/.test(text)) {
-    text = text.replace(/\s+/g, ', ');
-  } 
-  // Если это смешанный текст, попробуем найти группы слов (экспериментально, но безопасно)
-  // Сейчас оставим простое правило: запятые ставятся, если это явные теги.
+  // Сначала временно заменим существующие запятые на плейсхолдеры, чтобы не сломать их
+  const tempComma = '___COMMA___';
+  text = text.replace(/,/g, tempComma);
   
+  // Теперь ищем пробелы, которые разделяют слова (не знаки)
+  // Это регулярка ищет пробел, который стоит после буквы и перед буквой
+  text = text.replace(/([а-яёa-z0-9])\s+([а-яёa-z0-9])/gi, '$1, $2');
+  
+  // Вернем запятые на место
+  text = text.replace(new RegExp(tempComma, 'g'), ',');
+
   // 2. Стандартная нормализация (пробелы после знаков)
   text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
   
-  // 3. Убираем лишние пробелы
+  // 3. Убираем лишние пробелы и запятые (если случайно продублировались)
   text = text.replace(/\s+/g, ' ');
+  text = text.replace(/,\s*,/g, ',');
   
   // 4. Первая буква заглавная
   text = text.charAt(0).toUpperCase() + text.slice(1);
   
-  // 5. Заглавная буква после точки
+  // 5. Заглавная буква после точки, восклицательного или вопросительного знака
   text = text.replace(/([.!?]\s+)([а-яёa-z])/gi, (match, sep, char) => {
     return sep + char.toUpperCase();
   });
@@ -231,7 +235,7 @@ defineExpose({ generateAndShare });
 
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 180px 60px 180px 60px; /* Отступы скорректированы под большие элементы внизу */
+  padding: 180px 60px 160px 60px; /* Отступ снизу уменьшен для баланса с огромной кнопкой */
   display: flex; flex-direction: column; justify-content: space-between;
 }
 
@@ -250,6 +254,7 @@ defineExpose({ generateAndShare });
   text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
+/* ИНФО ПЛАШКА (БЕЛАЯ) */
 .glass-pill-info {
   background: rgba(30, 30, 32, 0.4); backdrop-filter: blur(24px); 
   border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 100px; 
@@ -259,9 +264,9 @@ defineExpose({ generateAndShare });
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 .info-icon { font-size: 42px; line-height: 1; }
-.info-ticket { color: #fff; letter-spacing: 0.1em; } /* Белый цвет */
+.info-ticket { color: #fff; letter-spacing: 0.1em; } /* БЕЛЫЙ */
 .info-divider { color: rgba(255,255,255,0.4); font-weight: 300; }
-.info-date { color: #fff; letter-spacing: 0.05em; } /* Белый цвет */
+.info-date { color: #fff; letter-spacing: 0.05em; } /* БЕЛЫЙ */
 
 .story-address { 
   font-size: 42px; font-weight: 500; color: rgba(255,255,255,0.95); 
@@ -275,19 +280,22 @@ defineExpose({ generateAndShare });
   padding-top: 60px;
 }
 
-/* Карточка (МЕТАМОРФОЗ ДИЗАЙН) */
-.text-card-meta {
+/* Карточка (КАК НА СКРИНЕ: Прозрачная + Метаморфоз обводка) */
+.text-card-glass {
   width: 98%; position: relative;
-  background: rgba(31, 31, 31, 0.85); /* Полупрозрачный темный */
-  backdrop-filter: blur(20px);
+  /* Цвет фона с прозрачностью как на скрине */
+  background: rgba(255, 255, 255, 0.15); 
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
   border-radius: 48px;
   padding: 60px 50px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
 }
-/* Обводка градиентом */
-.text-card-meta::before {
-  content: ''; position: absolute; inset: 0; border-radius: 48px; padding: 2px;
-  background: linear-gradient(135deg, rgba(224, 215, 248, 0.4) 0%, rgba(193, 181, 240, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+
+/* Метаморфоз обводка */
+.text-card-glass::before {
+  content: ''; position: absolute; inset: 0; border-radius: 48px; padding: 1px;
+  background: linear-gradient(135deg, rgba(224, 215, 248, 0.5) 0%, rgba(255, 255, 255, 0.2) 40%, rgba(255, 255, 255, 0.05) 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude;
   pointer-events: none;
@@ -295,7 +303,8 @@ defineExpose({ generateAndShare });
 
 .text-content {
   margin: 0; font-size: 52px; font-weight: 400;
-  line-height: 1.4; color: #e0e0e0; text-align: center; letter-spacing: 0.01em;
+  line-height: 1.4; color: #fff; text-align: center; letter-spacing: 0.01em;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 /* ГРАДИЕНТ */
@@ -308,21 +317,22 @@ defineExpose({ generateAndShare });
 /* ФУТЕР */
 .story-footer { 
   position: relative; z-index: 30; 
-  display: flex; flex-direction: column; align-items: center; gap: 32px; /* Увеличил отступ между кнопкой и текстом */
+  display: flex; flex-direction: column; align-items: center; gap: 32px; 
 }
 
-/* КНОПКА (Больше, радиус как у плашки ~48px) */
+/* КНОПКА (ШИРОКАЯ) */
 .link-button {
   background: linear-gradient(90deg, #E0D7F8 0%, #C1B5F0 100%);
-  border-radius: 48px; /* Радиус как у текстового блока */
-  padding: 40px 120px; /* Увеличил размер */
+  border-radius: 48px; 
+  padding: 42px 140px; /* Еще шире */
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 20px 60px rgba(142, 124, 195, 0.25);
   width: auto;
+  min-width: 60%;
 }
 
 .btn-text {
-  font-size: 54px; /* Увеличил шрифт */
+  font-size: 58px; /* Еще больше */
   font-weight: 600; 
   color: #1a1a1a; 
   letter-spacing: 0.02em;
@@ -330,7 +340,7 @@ defineExpose({ generateAndShare });
 
 /* ТЕКСТ ПОД КНОПКОЙ */
 .footer-tagline {
-  font-size: 38px; /* Увеличил пропорционально */
+  font-size: 42px; /* Пропорционально больше */
   font-weight: 400;
   letter-spacing: 0.02em;
   text-align: center;
