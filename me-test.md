@@ -5,10 +5,10 @@
 
 <InvestKorzhGallerySlider />
 
+<InvestKorzhSpecsTabs />
+
 <InvestUpdatesInfoBlock />
 
 <InvestKorzhIndexBlock />
-
-<InvestKorzhSpecsTabs />
 
 <InvestKorzhSendSignal />
