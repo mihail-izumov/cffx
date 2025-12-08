@@ -4,8 +4,8 @@
     <!-- 1. ЭКРАН УСПЕХА (внутри wrapper) -->
     <div v-if="formSubmitted" class="signal-success-message">
   <div class="signal-success-text">
-    <h3>Сигнал отправлен ⚡</h3>
-    <p>Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
+    <h3>Сигнал отправлен в Корж ⚡</h3>
+    <p>Начните чат с персональным ИИ-помощником Анной, чтобы получить результат. </p>
 
     <div class="signal-success-actions">
       <a
@@ -13,7 +13,7 @@
         target="_blank"
         class="signal-telegram-button"
       >
-        Получить ответ
+        Получить результат
       </a>
 
       <button
@@ -21,7 +21,7 @@
         @click="handleShareClick"
         class="signal-share-btn"
       >
-        Поделиться в Истории
+        Поделиться в Сториз
       </button>
     </div>
 
