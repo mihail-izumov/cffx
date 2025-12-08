@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 1. Скрытый шаблон для генерации -->
+    <!-- 1. Скрытый шаблон (Улучшенный дизайн) -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
         <div class="story-content">
@@ -12,6 +12,7 @@
             </div>
             <div class="story-address-block">📍 {{ address || 'Кофейня Корж' }}</div>
           </div>
+          
           <div class="story-cloud-section">
             <div class="story-tags-container">
               <span v-for="(tag, index) in displayTags" :key="tag" class="story-tag-item" :class="{'tag-accent': index === 0}">
@@ -19,6 +20,7 @@
               </span>
             </div>
           </div>
+          
           <div class="story-footer">
             <div class="story-link-pill">cffx.ru/korzh</div>
           </div>
@@ -26,41 +28,36 @@
       </div>
     </div>
 
-    <!-- 2. Модальное окно с результатом -->
+    <!-- 2. Модальное окно -->
     <transition name="modal-fade">
       <div v-if="showModal" class="story-modal-overlay" @click.self="closeModal">
         <div class="story-modal">
           
-          <!-- Заголовок с явным крестиком -->
           <div class="story-modal-header">
             <h3>Ваша сторис готова 📸</h3>
-            <button class="close-icon-btn" @click="closeModal" aria-label="Закрыть">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
+            <button class="close-icon-btn" @click="closeModal">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
           </div>
           
-          <!-- Контейнер с картинкой -->
           <div class="story-preview-container">
+            <!-- Картинка целиком (contain) -->
             <img v-if="generatedImageUrl" :src="generatedImageUrl" class="story-preview-img" alt="Story Preview" />
             <div v-else class="loading-spinner">
               <div class="spinner-icon">⚡️</div>
-              <div>Создаем магию...</div>
+              <div>Генерация...</div>
             </div>
           </div>
 
-          <!-- Кнопки действий -->
           <div class="story-modal-actions">
-            <button @click="shareImage" class="action-btn share-btn" :disabled="!generatedImageUrl">
-              <span v-if="canShareNative">Поделиться</span>
+            <!-- Кнопка Скачать / Поделиться -->
+            <button @click="shareOrDownload" class="action-btn share-btn" :disabled="!generatedImageUrl">
+              <span v-if="isMobile">Сохранить картинку 📥</span>
               <span v-else>Скачать картинку 📥</span>
             </button>
             
             <p class="hint-text">
-              1. Сохраните картинку (или сделайте скриншот)<br>
-              2. Выложите в сторис с отметкой <b>@korzh_coffee</b>
+              Сохраните картинку в галерею, а затем выложите в сторис с отметкой <b>@korzh_coffee</b>
             </p>
           </div>
         </div>
@@ -82,19 +79,14 @@ const props = defineProps({
 const showModal = ref(false);
 const generatedImageUrl = ref(null);
 const generatedBlob = ref(null);
-const canShareNative = ref(false);
+const isMobile = ref(false);
 
 const displayTags = computed(() => {
   return props.tags && props.tags.length > 0 ? props.tags : ['Сигнал'];
 });
 
 onMounted(() => {
-  // Проверяем возможность нативного шеринга файлов
-  if (navigator.share && navigator.canShare) {
-    // Создаем фиктивный файл для проверки
-    const testFile = new File(['foo'], 'foo.txt', { type: 'text/plain' });
-    canShareNative.value = navigator.canShare({ files: [testFile] });
-  }
+  isMobile.value = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 });
 
 const loadLibrary = () => {
@@ -120,7 +112,7 @@ const generateAndShare = async () => {
   
   try {
     await loadLibrary();
-    await new Promise(r => setTimeout(r, 600)); // Чуть больше времени для надежности
+    await new Promise(r => setTimeout(r, 500)); 
 
     const element = document.getElementById('story-capture-area');
     if (!element) return;
@@ -141,38 +133,28 @@ const generateAndShare = async () => {
 
   } catch (e) {
     console.error('Gen error:', e);
-    alert('Ошибка генерации. Попробуйте обновить страницу.');
     showModal.value = false;
+    alert('Ошибка генерации.');
   }
 };
 
-const shareImage = async () => {
+const shareOrDownload = async () => {
   if (!generatedBlob.value) return;
 
-  // Стратегия: Сначала пробуем нативный шеринг
-  if (canShareNative.value) {
+  // Пытаемся пошерить ТОЛЬКО файл (без текста), это повышает шансы в TG
+  if (navigator.share && navigator.canShare) {
     const file = new File([generatedBlob.value], `signal-${props.ticket}.png`, { type: 'image/png' });
-    const shareData = {
-      files: [file],
-      // Важно: некоторые браузеры игнорируют text если есть files
-      // Но мы все равно передаем ссылку
-      title: 'Сигнал в Корж',
-    };
-
     try {
-      await navigator.share(shareData);
-      return; // Успех
+      await navigator.share({
+        files: [file] // Никакого title или text, только файл
+      });
+      return;
     } catch (err) {
-      console.log('Native share failed/cancelled', err);
-      // Если не вышло — переходим к скачиванию
+      console.log('Share failed, downloading...', err);
     }
-  } 
+  }
 
-  // Если нативный шеринг недоступен или не сработал — просто скачиваем
-  downloadImage();
-};
-
-const downloadImage = () => {
+  // Фолбек - скачивание
   const link = document.createElement('a');
   link.download = `signal-${props.ticket}.png`;
   link.href = generatedImageUrl.value;
@@ -191,12 +173,19 @@ defineExpose({
 </script>
 
 <style scoped>
-/* Скрытый блок (без изменений) */
+/* Скрытый блок */
 .story-wrapper-hidden { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -1000; visibility: visible; }
 .story-template { width: 1080px; height: 1920px; background: #1E1E20; font-family: -apple-system, BlinkMacSystemFont, sans-serif; box-sizing: border-box; }
-.story-content { width: 100%; height: 100%; padding: 120px 80px; display: flex; flex-direction: column; justify-content: space-between; background: radial-gradient(circle at top right, rgba(179, 157, 200, 0.15), transparent 45%), linear-gradient(180deg, #1E1E20 0%, #151517 100%); }
+
+/* Дизайн сторис: улучшили градиент, чтобы текст читался */
+.story-content { 
+  width: 100%; height: 100%; padding: 120px 80px; display: flex; flex-direction: column; justify-content: space-between; 
+  background: 
+    radial-gradient(circle at top right, rgba(179, 157, 200, 0.25), transparent 50%),
+    linear-gradient(180deg, #252529 0%, #151517 100%);
+}
 .story-top-section { display: flex; flex-direction: column; gap: 50px; }
-.story-main-title { font-size: 86px; font-weight: 800; color: #fff; margin: 0; line-height: 1.05; letter-spacing: -2px; }
+.story-main-title { font-size: 86px; font-weight: 800; color: #fff; margin: 0; line-height: 1.05; letter-spacing: -2px; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
 .story-tech-panel { display: inline-flex; align-items: center; gap: 30px; font-family: monospace; }
 .story-tech-date { color: #888; font-size: 36px; }
 .story-tech-ticket { background-color: #2a2a2e; color: #B39DC8; font-weight: 700; padding: 16px 36px; border-radius: 24px; font-size: 48px; border: 3px solid #3a3a3e; letter-spacing: 3px; }
@@ -208,7 +197,7 @@ defineExpose({
 .story-footer { display: flex; justify-content: center; padding-bottom: 60px; }
 .story-link-pill { background: #fff; color: #000; font-size: 56px; font-weight: 800; padding: 30px 80px; border-radius: 100px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); letter-spacing: -1px; }
 
-/* === МОДАЛЬНОЕ ОКНО === */
+/* === МОДАЛКА === */
 .story-modal-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.9); z-index: 10000;
@@ -216,71 +205,67 @@ defineExpose({
   backdrop-filter: blur(8px);
   padding: 20px;
 }
-
 .story-modal {
-  background: #1E1E20; width: 100%; max-width: 420px; max-height: 90vh;
+  background: #1E1E20; width: 100%; max-width: 420px;
+  max-height: 95vh; /* Ограничиваем высоту */
   border-radius: 24px; border: 1px solid #333;
   display: flex; flex-direction: column; 
   box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-  overflow-y: auto; /* Чтобы на маленьких экранах можно было скроллить */
+  overflow: hidden; /* Важно для скролла внутри */
 }
-
 .story-modal-header {
-  padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; 
-  border-bottom: 1px solid #333; flex-shrink: 0;
+  padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; flex-shrink: 0;
 }
 .story-modal-header h3 { margin: 0; font-size: 18px; color: #fff; font-weight: 600; }
-
 .close-icon-btn {
   background: rgba(255,255,255,0.1); border: none; color: #fff; 
-  width: 36px; height: 36px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: background 0.2s;
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
 }
-.close-icon-btn:hover { background: rgba(255,255,255,0.2); }
 
 .story-preview-container {
   background: #111;
   width: 100%;
-  /* Убираем жесткий aspect-ratio, чтобы не занимало слишком много места, 
-     но ограничиваем высоту */
-  max-height: 55vh; 
-  display: flex; align-items: center; justify-content: center;
+  flex-grow: 1; /* Занимает доступное место */
+  min-height: 200px;
   position: relative;
   overflow: hidden;
+  padding: 20px; /* Отступы вокруг картинки */
+  display: flex; align-items: center; justify-content: center;
 }
+/* Картинка целиком, ничего не обрезается */
 .story-preview-img {
-  width: 100%; height: 100%; object-fit: contain; display: block;
+  max-width: 100%;
+  max-height: 50vh; /* Ограничиваем высоту картинки (50% экрана) */
+  object-fit: contain; 
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.loading-spinner { 
-  display: flex; flex-direction: column; align-items: center; gap: 10px; color: #888; font-size: 14px; padding: 40px; 
-}
-.spinner-icon { font-size: 32px; animation: pulse 1s infinite; }
+.loading-spinner { color: #888; font-size: 14px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.spinner-icon { font-size: 24px; animation: spin 1s infinite linear; }
 
 .story-modal-actions { 
-  padding: 24px 20px 30px 20px; /* Больше отступа снизу */
-  display: flex; flex-direction: column; gap: 16px; align-items: center; 
+  padding: 20px; 
+  display: flex; flex-direction: column; gap: 12px; align-items: center; 
   background: #1E1E20;
+  border-top: 1px solid #333;
+  flex-shrink: 0;
 }
-
 .action-btn {
-  width: 100%; padding: 16px; border-radius: 14px; border: none; 
+  width: 100%; padding: 14px; border-radius: 12px; border: none; 
   font-weight: 600; font-size: 16px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: #fff; color: #000;
 }
-.share-btn { background: #fff; color: #000; }
-.share-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.action-btn:disabled { opacity: 0.5; }
 
 .hint-text { 
-  color: #777; font-size: 13px; margin: 0; text-align: center; line-height: 1.5; 
-  max-width: 90%;
+  color: #777; font-size: 13px; margin: 0; text-align: center; line-height: 1.4; 
+  max-width: 280px;
 }
 .hint-text b { color: #ccc; }
 
-/* Анимации */
 .modal-fade-enter-active, .modal-fade-leave-active { transition: opacity 0.3s ease; }
 .modal-fade-enter-from, .modal-fade-leave-to { opacity: 0; }
-
-@keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 </style>
