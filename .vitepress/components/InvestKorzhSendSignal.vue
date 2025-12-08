@@ -9,16 +9,16 @@
 
       <div class="banner-overlay">
         <div class="banner-inner">
-          <div class="banner-intro">ОСТАНЕМСЯ НА СВЯЗИ</div>
+          <div class="banner-intro">ЛУЧШЕ КАЖДЫЙ ДЕНЬ</div>
 
           <div class="banner-title">
             <span class="title-desktop">
-              Ваша любимая кофейня<br>
-              станет лучше уже сегодня.
+              Где начинается Ваша<br>
+              кофейня Корж.
             </span>
             <span class="title-mobile">
-              Ваша любимая кофейня<br>
-              станет лучше уже сегодня.
+              Где начинается Ваша<br>
+              кофейня Корж.
             </span>
           </div>
 
