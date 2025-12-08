@@ -1,7 +1,10 @@
 <template>
   <div>
     <!-- Шрифт Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    >
 
     <!-- СКРЫТЫЙ ШАБЛОН (1080x1920) -->
     <div class="story-wrapper-hidden">
@@ -13,7 +16,7 @@
 
         <div class="story-content">
           
-          <!-- ВЕРХ (сдвинут вниз на 15px) -->
+          <!-- ВЕРХ -->
           <div class="story-header">
             <h1 class="story-main-title">МОЙ СИГНАЛ<br>В КОРЖ</h1>
 
@@ -39,7 +42,7 @@
           <!-- НИЖНИЙ ГРАДИЕНТ -->
           <div class="bottom-gradient"></div>
 
-          <!-- ФУТЕР (ФИКСИРОВАННОЕ ПОЛОЖЕНИЕ) -->
+          <!-- ФУТЕР (ФИКСИРОВАННОЕ ПОЛОЖЕНИЕ, ВЫШЕ) -->
           <div class="story-footer">
             <div class="link-button">
                <span class="btn-text">cffx.ru/korzh</span>
@@ -195,11 +198,20 @@ defineExpose({ generateAndShare });
 <style scoped>
 * { font-family: 'Inter', -apple-system, sans-serif; }
 
-.story-wrapper-hidden { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -9999; }
-.story-template { width: 1080px; height: 1920px; position: relative; background: #000; color: #fff; }
+.story-wrapper-hidden {
+  position: fixed; top: 0; left: 0; width: 0; height: 0;
+  overflow: hidden; z-index: -9999;
+}
+.story-template {
+  width: 1080px; height: 1920px;
+  position: relative; background: #000; color: #fff;
+}
 
 /* ФОН */
-.story-bg-image { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; }
+.story-bg-image {
+  position: absolute; inset: 0; z-index: 1;
+  background-size: cover; background-position: center;
+}
 .story-bg-image.bg-default,
 .story-bg-image.bg-1,
 .story-bg-image.bg-2 {
@@ -210,48 +222,42 @@ defineExpose({ generateAndShare });
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
 }
 
-/* Отступы сохранены, контент сдвинут вниз через padding-top */
+/* Контент: сдвиг всего блока вниз на 10px без изменения паддингов */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 195px 60px 180px 60px; /* Увеличен верхний padding на 15px */
+  padding: 180px 60px 180px 60px;
   display: flex; flex-direction: column; align-items: center;
+  transform: translateY(10px);
 }
 
 /* ВЕРХ */
 .story-header { 
   display: flex; flex-direction: column; align-items: center; 
-  gap: 30px;
-  text-align: center; width: 100%;
+  gap: 30px; text-align: center; width: 100%;
 }
 
 .story-main-title {
-  font-size: 66px;
-  font-weight: 300;
-  line-height: 1.1; 
-  letter-spacing: 0.15em;
-  margin: 0; text-transform: uppercase; color: #fff; 
+  font-size: 66px; font-weight: 300; line-height: 1.1; 
+  letter-spacing: 0.15em; margin: 0;
+  text-transform: uppercase; color: #fff; 
   text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-/* ПЛАШКА С НОМЕРОМ — усиленный сиреневый */
+/* Плашка с номером — усиленный сиреневый флер */
 .glass-pill-info {
   display: inline-flex; align-items: center; gap: 26px;
-  padding: 20px 48px;
-  border-radius: 100px;
+  padding: 20px 48px; border-radius: 100px;
   font-size: 34px; font-weight: 400; 
   
-  /* Усиленный яркий сиреневый фон */
   background: linear-gradient(
     135deg,
-    rgba(224, 215, 248, 0.25) 0%,
-    rgba(193, 181, 240, 0.20) 100%
+    rgba(230, 219, 255, 0.28) 0%,
+    rgba(198, 176, 255, 0.22) 100%
   );
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(35px);
+  -webkit-backdrop-filter: blur(35px);
   
-  /* Строго 1px, без дублирования */
-  outline: 1px solid rgba(224, 215, 248, 0.6);
-  border: none;
+  border: 1px solid rgba(230, 219, 255, 0.7);
   box-shadow: 
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
@@ -259,7 +265,7 @@ defineExpose({ generateAndShare });
 
 .info-icon   { font-size: 40px; line-height: 1; }
 .info-ticket { color: #ffffff; letter-spacing: 0.1em; font-weight: 500; }
-.info-divider{ color: rgba(255,255,255,0.6); }
+.info-divider{ color: rgba(255,255,255,0.7); }
 .info-date   { color: #ffffff; letter-spacing: 0.06em; }
 
 .story-address { 
@@ -269,46 +275,48 @@ defineExpose({ generateAndShare });
 
 /* ЦЕНТР */
 .story-body {
-  flex: 1;
-  width: 100%; 
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  flex: 1; width: 100%; 
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
   padding-top: 56px;
 }
 
-/* КАРТОЧКА ОТЗЫВА — СТРОГО 1px обводка через outline */
+/* КАРТОЧКА ОТЗЫВА — затемнение, blur и 1px метаморфоз‑бордер */
 .text-card {
-  width: 98%; 
-  border-radius: 48px;
+  width: 98%; border-radius: 48px;
   padding: 54px 44px;
-  
-  /* Темный фон с сиреневым оттенком */
-  background: linear-gradient(
-    180deg,
-    rgba(30, 25, 45, 0.50) 0%,
-    rgba(45, 35, 65, 0.60) 100%
-  );
-  backdrop-filter: blur(55px);
-  -webkit-backdrop-filter: blur(55px);
-  
-  /* Используем outline вместо border для точного 1px */
-  outline: 1px solid rgba(224, 215, 248, 0.5);
-  border: none;
-  box-shadow: 
-    0 30px 80px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+
+  /* Внутренний тёмный слой + внешний сиреневый градиент для бордера */
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(22, 16, 40, 0.75) 0%,
+      rgba(35, 24, 60, 0.78) 100%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(235, 223, 255, 0.95) 0%,
+      rgba(204, 180, 255, 0.95) 50%,
+      rgba(162, 131, 255, 0.95) 100%
+    );
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  border: 1px solid transparent; /* реальный визуальный бордер = 1px */
+  backdrop-filter: blur(42px);
+  -webkit-backdrop-filter: blur(42px);
+
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.65);
 }
 
 .text-content {
   margin: 0; 
-  font-size: 48px;
-  font-weight: 400;
+  font-size: 48px; font-weight: 400;
   line-height: 1.4; 
-  
-  /* МАКСИМАЛЬНО усиленный сиреневый в тексте */
-  color: #E8DEFF;
+  color: #F6E9FF; /* более яркий сиреневый текст */
   text-align: center; 
   letter-spacing: 0.01em;
-  text-shadow: 0 2px 10px rgba(142, 124, 195, 0.4);
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
 }
 
 /* НИЖНИЙ ГРАДИЕНТ */
@@ -318,63 +326,62 @@ defineExpose({ generateAndShare });
   pointer-events: none;
 }
 
-/* ФУТЕР: ПОДНЯТ ВЫШЕ И ЗАФИКСИРОВАН */
+/* ФУТЕР: фиксированное положение, поднят выше */
 .story-footer { 
   position: absolute;
   bottom: 220px;
-  left: 0;
-  width: 100%;
+  left: 0; width: 100%;
   z-index: 30; 
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* КНОПКА — усиленный сиреневый градиент */
+/* КНОПКА — усиленный сиреневый флер, 1px бордер */
 .link-button {
   border-radius: 100px; 
   padding: 20px 170px;
   display: flex; align-items: center; justify-content: center;
   
-  /* Яркий сиреневый градиент */
-  background: linear-gradient(90deg, 
-    rgba(224, 215, 248, 0.98) 0%, 
-    rgba(200, 188, 245, 0.96) 100%
+  background-image: linear-gradient(90deg, 
+    rgba(238, 224, 255, 0.98) 0%, 
+    rgba(210, 188, 255, 0.98) 50%,
+    rgba(187, 157, 255, 0.98) 100%
   );
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   
-  /* Строго 1px через outline */
-  outline: 1px solid rgba(255, 255, 255, 0.35);
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.6);
   box-shadow: 
-    0 16px 48px rgba(142, 124, 195, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    0 18px 52px rgba(142, 124, 195, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
 .btn-text {
   font-size: 46px;
   font-weight: 600; 
-  color: #1a1a1a; 
+  color: #18141f; 
   letter-spacing: 0.02em;
 }
 
-/* Текст под кнопкой — усиленный сиреневый */
+/* Текст под кнопкой */
 .footer-tagline {
   font-size: 40px;
   font-weight: 400;
   letter-spacing: 0.02em;
   text-align: center;
-  color: rgba(224, 215, 248, 0.98);
-  text-shadow: 0 2px 12px rgba(142, 124, 195, 0.4);
+  color: rgba(235, 223, 255, 0.96);
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
 }
 
 /* МОДАЛКА */
 .modal-overlay { 
   position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000;
-  display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(10px); padding: 20px;
 }
 .modal { 
   background: #1E1E20; width: 100%; max-width: 420px; max-height: 95vh;
-  border-radius: 28px; border: 1px solid #333; display: flex; flex-direction: column;
+  border-radius: 28px; border: 1px solid #333;
+  display: flex; flex-direction: column;
   box-shadow: 0 30px 80px rgba(0,0,0,0.7); overflow: hidden;
 }
 .modal-header { 
@@ -384,7 +391,8 @@ defineExpose({ generateAndShare });
 .modal-header h3 { margin: 0; font-size: 18px; color: #fff; font-weight: 600; }
 .modal-close { 
   background: rgba(255,255,255,0.1); border: none; color: #fff; 
-  width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
   cursor: pointer;
 }
 .modal-body { 
