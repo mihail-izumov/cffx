@@ -13,7 +13,7 @@
 
         <div class="story-content">
           
-          <!-- ВЕРХ -->
+          <!-- ВЕРХ (сдвинут вниз на 15px) -->
           <div class="story-header">
             <h1 class="story-main-title">МОЙ СИГНАЛ<br>В КОРЖ</h1>
 
@@ -210,10 +210,10 @@ defineExpose({ generateAndShare });
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
 }
 
-/* Сдвиг контента вниз: padding-top увеличен */
+/* Отступы сохранены, контент сдвинут вниз через padding-top */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 190px 60px 180px 60px; /* Было 180px, стало 190px */
+  padding: 195px 60px 180px 60px; /* Увеличен верхний padding на 15px */
   display: flex; flex-direction: column; align-items: center;
 }
 
@@ -233,32 +233,33 @@ defineExpose({ generateAndShare });
   text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-/* ПЛАШКА С НОМЕРОМ — яркий сиреневый флер + строгий 1px бордер */
+/* ПЛАШКА С НОМЕРОМ — усиленный сиреневый */
 .glass-pill-info {
   display: inline-flex; align-items: center; gap: 26px;
   padding: 20px 48px;
   border-radius: 100px;
   font-size: 34px; font-weight: 400; 
   
-  /* Усиленный сиреневый фон */
+  /* Усиленный яркий сиреневый фон */
   background: linear-gradient(
     135deg,
     rgba(224, 215, 248, 0.25) 0%,
-    rgba(193, 181, 240, 0.15) 100%
+    rgba(193, 181, 240, 0.20) 100%
   );
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
   
-  /* Строго 1px и более светлая обводка */
-  border: 1px solid rgba(224, 215, 248, 0.6);
+  /* Строго 1px, без дублирования */
+  outline: 1px solid rgba(224, 215, 248, 0.6);
+  border: none;
   box-shadow: 
-    0 10px 40px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .info-icon   { font-size: 40px; line-height: 1; }
 .info-ticket { color: #ffffff; letter-spacing: 0.1em; font-weight: 500; }
-.info-divider{ color: rgba(255,255,255,0.7); }
+.info-divider{ color: rgba(255,255,255,0.6); }
 .info-date   { color: #ffffff; letter-spacing: 0.06em; }
 
 .story-address { 
@@ -274,7 +275,7 @@ defineExpose({ generateAndShare });
   padding-top: 56px;
 }
 
-/* КАРТОЧКА ОТЗЫВА — исправленная толщина обводки */
+/* КАРТОЧКА ОТЗЫВА — СТРОГО 1px обводка через outline */
 .text-card {
   width: 98%; 
   border-radius: 48px;
@@ -283,18 +284,18 @@ defineExpose({ generateAndShare });
   /* Темный фон с сиреневым оттенком */
   background: linear-gradient(
     180deg,
-    rgba(30, 25, 45, 0.5) 0%,
-    rgba(45, 35, 65, 0.6) 100%
+    rgba(30, 25, 45, 0.50) 0%,
+    rgba(45, 35, 65, 0.60) 100%
   );
-  backdrop-filter: blur(60px);
-  -webkit-backdrop-filter: blur(60px);
+  backdrop-filter: blur(55px);
+  -webkit-backdrop-filter: blur(55px);
   
-  /* Строго 1px border */
-  border: 1px solid rgba(224, 215, 248, 0.5);
-  /* Дополнительная внутренняя тень создает ощущение тонкости */
+  /* Используем outline вместо border для точного 1px */
+  outline: 1px solid rgba(224, 215, 248, 0.5);
+  border: none;
   box-shadow: 
     0 30px 80px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .text-content {
@@ -303,11 +304,11 @@ defineExpose({ generateAndShare });
   font-weight: 400;
   line-height: 1.4; 
   
-  /* Усиленный сиреневый флер в тексте */
-  color: #F3EEFF;
+  /* МАКСИМАЛЬНО усиленный сиреневый в тексте */
+  color: #E8DEFF;
   text-align: center; 
   letter-spacing: 0.01em;
-  text-shadow: 0 2px 10px rgba(162, 136, 255, 0.3);
+  text-shadow: 0 2px 10px rgba(142, 124, 195, 0.4);
 }
 
 /* НИЖНИЙ ГРАДИЕНТ */
@@ -317,7 +318,7 @@ defineExpose({ generateAndShare });
   pointer-events: none;
 }
 
-/* ФУТЕР: ОСТАЁТСЯ ВЫСОКО */
+/* ФУТЕР: ПОДНЯТ ВЫШЕ И ЗАФИКСИРОВАН */
 .story-footer { 
   position: absolute;
   bottom: 220px;
@@ -327,23 +328,25 @@ defineExpose({ generateAndShare });
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* КНОПКА — яркий сиреневый */
+/* КНОПКА — усиленный сиреневый градиент */
 .link-button {
   border-radius: 100px; 
   padding: 20px 170px;
   display: flex; align-items: center; justify-content: center;
   
-  /* Насыщенный сиреневый градиент */
+  /* Яркий сиреневый градиент */
   background: linear-gradient(90deg, 
-    #E0D7F8 0%, 
-    #C1B5F0 100%
+    rgba(224, 215, 248, 0.98) 0%, 
+    rgba(200, 188, 245, 0.96) 100%
   );
-  backdrop-filter: blur(30px);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
   
-  /* Строго 1px */
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  /* Строго 1px через outline */
+  outline: 1px solid rgba(255, 255, 255, 0.35);
+  border: none;
   box-shadow: 
-    0 18px 52px rgba(142, 124, 195, 0.45),
+    0 16px 48px rgba(142, 124, 195, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
@@ -354,14 +357,14 @@ defineExpose({ generateAndShare });
   letter-spacing: 0.02em;
 }
 
-/* Текст под кнопкой */
+/* Текст под кнопкой — усиленный сиреневый */
 .footer-tagline {
   font-size: 40px;
   font-weight: 400;
   letter-spacing: 0.02em;
   text-align: center;
-  color: #E0D7F8;
-  text-shadow: 0 2px 12px rgba(142, 124, 195, 0.5);
+  color: rgba(224, 215, 248, 0.98);
+  text-shadow: 0 2px 12px rgba(142, 124, 195, 0.4);
 }
 
 /* МОДАЛКА */
