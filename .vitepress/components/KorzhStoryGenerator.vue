@@ -19,7 +19,8 @@
 
             <div class="story-info-row">
               <div class="glass-pill-info">
-                <img src="/favicon.svg" class="info-logo" alt="" />
+                <!-- ЭМОДЗИ МОЛНИИ -->
+                <span class="info-icon">⚡️</span>
                 <span class="info-ticket">{{ ticket }}</span>
                 <span class="info-divider">|</span>
                 <span class="info-date">{{ date }}</span>
@@ -29,7 +30,7 @@
             <div class="story-address">{{ address || 'Кофейня Корж' }}</div>
           </div>
 
-          <!-- ЦЕНТР: ТЕКСТОВАЯ КАРТОЧКА -->
+          <!-- ЦЕНТР: ТЕКСТОВАЯ КАРТОЧКА (МЕТАМОРФОЗ) -->
           <div class="story-body">
             <div v-if="formattedText" class="text-card">
               <p class="text-content">{{ formattedText }}</p>
@@ -44,7 +45,7 @@
             <div class="link-button">
                <span class="btn-text">cffx.ru/korzh</span>
             </div>
-            <div class="footer-tagline">Ваш Сигнал – тому кто решает</div>
+            <div class="footer-tagline">Ваш Сигнал – тому, кто решает</div>
           </div>
 
         </div>
@@ -91,7 +92,7 @@
 </template>
 
 <script setup>
-import { ref, defineExpose, onMounted, computed } from 'vue';
+import { ref, defineExpose, computed } from 'vue';
 
 const props = defineProps({
   ticket: String,
@@ -104,30 +105,40 @@ const showModal = ref(false);
 const generatedImageUrl = ref(null);
 const generatedBlob = ref(null);
 
-// ПРОСТАЯ И НАДЁЖНАЯ ЛОГИКА ФОРМАТИРОВАНИЯ
+// УЛУЧШЕННАЯ ЛОГИКА ФОРМАТИРОВАНИЯ
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
   
   let text = props.allText.trim();
   
-  // 1. Добавляем пробелы после знаков препинания, если их нет
+  // ОПРЕДЕЛЯЕМ: это подсказки (много слов без знаков) или обычный текст
+  const words = text.split(/\s+/);
+  const punctuationCount = (text.match(/[.,!?;:]/g) || []).length;
+  const isHints = words.length > 2 && punctuationCount === 0;
+  
+  if (isHints) {
+    // ЭТО ПОДСКАЗКИ: добавляем запятые между словами
+    text = words.join(', ');
+  }
+  
+  // Нормализуем пробелы после знаков препинания
   text = text.replace(/\.([^\s.])/g, '. $1');
   text = text.replace(/,([^\s,])/g, ', $1');
   text = text.replace(/!([^\s!])/g, '! $1');
   text = text.replace(/\?([^\s?])/g, '? $1');
   
-  // 2. Убираем множественные пробелы
+  // Убираем множественные пробелы
   text = text.replace(/\s+/g, ' ');
   
-  // 3. Первая буква заглавная
+  // Первая буква заглавная
   text = text.charAt(0).toUpperCase() + text.slice(1);
   
-  // 4. Заглавная буква после точки
+  // Заглавная буква после точки
   text = text.replace(/\.\s+([а-яёa-z])/gi, (match, letter) => {
     return '. ' + letter.toUpperCase();
   });
   
-  // 5. Точка в конце, если нет
+  // Точка в конце
   if (!/[.!?]$/.test(text)) {
     text += '.';
   }
@@ -247,10 +258,10 @@ defineExpose({ generateAndShare });
   font-size: 40px; font-weight: 400; 
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
-.info-logo { width: 48px; height: 48px; object-fit: contain; }
-.info-ticket { color: #fff; letter-spacing: 0.1em; }
+.info-icon { font-size: 42px; line-height: 1; }
+.info-ticket { color: #fff; letter-spacing: 0.1em; } /* БЕЛЫЙ */
 .info-divider { color: rgba(255,255,255,0.3); font-weight: 300; }
-.info-date { color: rgba(255,255,255,0.85); letter-spacing: 0.05em; }
+.info-date { color: #fff; letter-spacing: 0.05em; } /* БЕЛЫЙ */
 
 .story-address { 
   font-size: 42px; font-weight: 500; color: rgba(255,255,255,0.95); 
@@ -264,15 +275,28 @@ defineExpose({ generateAndShare });
   padding-top: 60px;
 }
 
-/* Текстовая карточка (ОРИГИНАЛЬНЫЙ ДИЗАЙН) */
+/* Текстовая карточка (МЕТАМОРФОЗ С ОБВОДКОЙ) */
 .text-card {
-  width: 98%; position: relative;
-  background: rgba(30, 30, 32, 0.75);
-  backdrop-filter: blur(40px);
+  width: 98%; 
+  position: relative;
+  background: #1f1f1f; 
   border-radius: 48px; 
   padding: 60px 50px;
   box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Метаморфозная обводка */
+.text-card::before {
+  content: ''; 
+  position: absolute; 
+  inset: 0; 
+  border-radius: 48px; 
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(224, 215, 248, 0.4) 0%, rgba(193, 181, 240, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; 
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .text-content {
@@ -295,35 +319,36 @@ defineExpose({ generateAndShare });
 /* ФУТЕР */
 .story-footer { 
   position: relative; z-index: 30; 
-  display: flex; flex-direction: column; align-items: center; gap: 24px;
+  display: flex; flex-direction: column; align-items: center; gap: 30px;
 }
 
+/* КНОПКА (БОЛЬШЕ, РАДИУС КАК У КАРТОЧКИ) */
 .link-button {
   background: linear-gradient(90deg, #E0D7F8 0%, #C1B5F0 100%);
-  border-radius: 100px; 
-  padding: 36px 100px;
+  border-radius: 48px; /* Как у текстовой карточки */
+  padding: 42px 140px; /* Больше */
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 20px 60px rgba(142, 124, 195, 0.25);
 }
 
 .btn-text {
-  font-size: 50px; 
+  font-size: 56px; /* Больше */
   font-weight: 600; 
   color: #1a1a1a; 
   letter-spacing: 0.04em;
 }
 
-/* ТЕКСТ ПОД КНОПКОЙ (МЕТАМОРФОЗ ГРАДИЕНТ) */
+/* ТЕКСТ ПОД КНОПКОЙ (БЕЗ ПОДЧЕРКИВАНИЯ, БОЛЬШЕ РАЗМЕР) */
 .footer-tagline {
-  font-size: 32px;
+  font-size: 38px; /* Пропорционально увеличенной кнопке */
   font-weight: 400;
   letter-spacing: 0.02em;
   text-align: center;
+  /* Градиент Метаморфоз */
   background: linear-gradient(135deg, rgba(224, 215, 248, 0.9) 0%, rgba(193, 181, 240, 0.7) 50%, rgba(142, 124, 195, 0.5) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 2px 12px rgba(142, 124, 195, 0.3);
 }
 
 /* МОДАЛКА */
