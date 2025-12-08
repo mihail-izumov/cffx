@@ -18,7 +18,7 @@
             <h1 class="story-main-title">МОЙ СИГНАЛ<br>В КОРЖ</h1>
 
             <div class="story-info-row">
-              <div class="glass-pill-info meta-border-pill">
+              <div class="glass-pill-info">
                 <span class="info-icon">⚡️</span>
                 <span class="info-ticket">{{ ticket }}</span>
                 <span class="info-divider">|</span>
@@ -31,7 +31,7 @@
 
           <!-- ЦЕНТР: ПЛАШКА ОТЗЫВА -->
           <div class="story-body">
-            <div v-if="formattedText" class="text-card meta-border-card">
+            <div v-if="formattedText" class="text-card">
               <p class="text-content">{{ formattedText }}</p>
             </div>
           </div>
@@ -41,7 +41,7 @@
 
           <!-- ФУТЕР (ФИКСИРОВАННОЕ ПОЛОЖЕНИЕ) -->
           <div class="story-footer">
-            <div class="link-button meta-border-pill">
+            <div class="link-button">
                <span class="btn-text">cffx.ru/korzh</span>
             </div>
             <div class="footer-tagline">Ваш Сигнал – тому кто решает</div>
@@ -210,7 +210,7 @@ defineExpose({ generateAndShare });
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
 }
 
-/* Центрируем блоки по высоте, футер отделяем абсолютным позиционированием */
+/* Центрируем блоки */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
   padding: 200px 60px 220px 60px;
@@ -233,48 +233,28 @@ defineExpose({ generateAndShare });
   text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-/* Базовый класс для рамки-метаморфозы:
-   градиент только по контуру через mask, как в описании Glassmorphism Border. [file:138] */
-.meta-border-pill,
-.meta-border-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.meta-border-pill::before,
-.meta-border-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 1.5px;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    rgba(224, 215, 248, 0.85) 0%,
-    rgba(193, 181, 240, 0.60) 40%,
-    rgba(142, 124, 195, 0.0) 100%
-  );
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* Плашка с номером сигнала — почти прозрачное «стекло» */
+/* ПЛАШКА С НОМЕРОМ — Apple-стиль: почти прозрачная, тонкая яркая рамка */
 .glass-pill-info {
   display: inline-flex; align-items: center; gap: 26px;
-  padding: 18px 46px;
+  padding: 20px 48px;
   border-radius: 100px;
   font-size: 34px; font-weight: 400; 
-  background: rgba(10, 10, 18, 0.38);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  
+  /* Максимально прозрачный фон */
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  
+  /* Тонкая яркая фиолетовая рамка */
+  border: 1.5px solid rgba(224, 215, 248, 0.4);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .info-icon   { font-size: 40px; line-height: 1; }
 .info-ticket { color: #ffffff; letter-spacing: 0.1em; font-weight: 500; }
-.info-divider{ color: rgba(255,255,255,0.7); }
+.info-divider{ color: rgba(255,255,255,0.5); }
 .info-date   { color: #ffffff; letter-spacing: 0.06em; }
 
 .story-address { 
@@ -290,17 +270,26 @@ defineExpose({ generateAndShare });
   padding-top: 56px;
 }
 
-/* Карточка отзыва — почти прозрачное стекло + лёгкий сиреневый флер сверху */
+/* КАРТОЧКА ОТЗЫВА — Apple-стиль: почти прозрачная, лёгкая */
 .text-card {
   width: 98%; 
   border-radius: 48px;
   padding: 54px 44px;
-  background:
-    radial-gradient(circle at 0% 0%, rgba(224, 215, 248, 0.26) 0, transparent 58%),
-    rgba(12, 12, 20, 0.24);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 26px 70px rgba(0,0,0,0.45);
+  
+  /* Очень прозрачный фон с легким сиреневым оттенком */
+  background: linear-gradient(
+    135deg,
+    rgba(224, 215, 248, 0.08) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  
+  /* Тонкая яркая рамка */
+  border: 1.5px solid rgba(224, 215, 248, 0.35);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .text-content {
@@ -308,20 +297,22 @@ defineExpose({ generateAndShare });
   font-size: 48px;
   font-weight: 400;
   line-height: 1.4; 
-  color: #F5F1FF;            /* еле сиреневый тон */
+  
+  /* Еле заметный сиреневый оттенок, но хорошо читается */
+  color: rgba(255, 255, 255, 0.92);
   text-align: center; 
   letter-spacing: 0.01em;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* НИЖНИЙ ГРАДИЕНТ — чтобы длинный текст мягко уходил в тень под кнопкой */
+/* НИЖНИЙ ГРАДИЕНТ */
 .bottom-gradient {
   position: absolute; bottom: 0; left: 0; width: 100%; height: 900px; z-index: 20;
   background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.9) 55%, #000 100%);
   pointer-events: none;
 }
 
-/* ФУТЕР: фиксированное положение внутри шаблона */
+/* ФУТЕР: фиксированное положение */
 .story-footer { 
   position: absolute;
   bottom: 150px;
@@ -331,23 +322,25 @@ defineExpose({ generateAndShare });
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* Кнопка — как в понравившемся варианте, плюс та же рамка через meta-border-pill */
+/* КНОПКА — чуть плотнее, но тоже элегантная */
 .link-button {
   border-radius: 100px; 
   padding: 20px 170px;
   display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(90deg, #E0D7F8 0%, #C1B5F0 100%);
-  box-shadow: 0 18px 52px rgba(142,124,195,0.35);
-}
-
-.link-button.meta-border-pill::before {
-  /* для кнопки рамка чуть мягче */
-  background: linear-gradient(
-    135deg,
-    rgba(224, 215, 248, 0.7) 0%,
-    rgba(193, 181, 240, 0.5) 40%,
-    rgba(142, 124, 195, 0.0) 100%
+  
+  /* Градиентный фон кнопки */
+  background: linear-gradient(90deg, 
+    rgba(224, 215, 248, 0.95) 0%, 
+    rgba(193, 181, 240, 0.90) 100%
   );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  
+  /* Тонкая светлая рамка */
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 16px 48px rgba(142, 124, 195, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .btn-text {
@@ -363,12 +356,11 @@ defineExpose({ generateAndShare });
   font-weight: 400;
   letter-spacing: 0.02em;
   text-align: center;
-  color: #E0D7F8;
-  opacity: 0.9;
+  color: rgba(224, 215, 248, 0.9);
   text-shadow: 0 2px 12px rgba(0,0,0,0.5);
 }
 
-/* МОДАЛКА (как прежде) */
+/* МОДАЛКА */
 .modal-overlay { 
   position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000;
   display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px;
