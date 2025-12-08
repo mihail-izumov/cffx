@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 1. СКРЫТЫЙ ШАБЛОН -->
+    <!-- 1. СКРЫТЫЙ ШАБЛОН (Рендер) -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
         
@@ -40,7 +40,7 @@
               </div>
 
               <!-- 2. Теги (компактные и фиолетовые) -->
-              <div class="tags-wrapper">
+              <div v-if="displayTags && displayTags.length > 0" class="tags-wrapper">
                 <span 
                   v-for="tag in displayTags" 
                   :key="tag" 
@@ -109,7 +109,7 @@ const props = defineProps({
   date: String,
   address: String,
   tags: Array,
-  details: String
+  details: String // Важно: убедитесь, что родитель передает этот проп!
 });
 
 const showModal = ref(false);
@@ -118,10 +118,11 @@ const generatedBlob = ref(null);
 const isMobile = ref(false);
 
 const displayTags = computed(() => {
-  if (!props.tags || props.tags.length === 0) {
+  // Если нет ни тегов, ни текста — показываем заглушки
+  if ((!props.tags || props.tags.length === 0) && !props.details) {
     return ['Сигнал', 'Впечатление'];
   }
-  return props.tags;
+  return props.tags || [];
 });
 
 onMounted(() => {
