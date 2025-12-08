@@ -233,25 +233,42 @@ defineExpose({ generateAndShare });
   text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-/* Базовый стиль «стеклянных» плашек */
+/* Базовый класс для рамки-метаморфозы:
+   градиент только по контуру через mask, как в описании Glassmorphism Border. [file:138] */
 .meta-border-pill,
 .meta-border-card {
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
-  border: 1.6px solid transparent;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Плашка с номером сигнала — лёгкий фон + яркая фиолетовая рамка */
+.meta-border-pill::before,
+.meta-border-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(224, 215, 248, 0.85) 0%,
+    rgba(193, 181, 240, 0.60) 40%,
+    rgba(142, 124, 195, 0.0) 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Плашка с номером сигнала — почти прозрачное «стекло» */
 .glass-pill-info {
   display: inline-flex; align-items: center; gap: 26px;
-  padding: 20px 48px;
+  padding: 18px 46px;
   border-radius: 100px;
   font-size: 34px; font-weight: 400; 
-  backdrop-filter: blur(20px);
-
-  background-image:
-    linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.10)),
-    linear-gradient(135deg, #E0D7F8 0%, #C1B5F0 50%, #8E7CC3 100%);
+  background: rgba(10, 10, 18, 0.38);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
 
@@ -273,18 +290,17 @@ defineExpose({ generateAndShare });
   padding-top: 56px;
 }
 
-/* Карточка отзыва — светлый, прозрачный, лёгкий сиреневый флер */
+/* Карточка отзыва — почти прозрачное стекло + лёгкий сиреневый флер сверху */
 .text-card {
   width: 98%; 
   border-radius: 48px;
   padding: 54px 44px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(224, 215, 248, 0.26) 0, transparent 58%),
+    rgba(12, 12, 20, 0.24);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   box-shadow: 0 26px 70px rgba(0,0,0,0.45);
-
-  background-image:
-    linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.12)),
-    linear-gradient(135deg, #E0D7F8 0%, #C1B5F0 50%, #8E7CC3 100%);
 }
 
 .text-content {
@@ -292,7 +308,7 @@ defineExpose({ generateAndShare });
   font-size: 48px;
   font-weight: 400;
   line-height: 1.4; 
-  color: #F3EEFF;            /* лёгкий сиреневый оттенок */
+  color: #F5F1FF;            /* еле сиреневый тон */
   text-align: center; 
   letter-spacing: 0.01em;
   text-shadow: 0 2px 10px rgba(0,0,0,0.25);
@@ -315,16 +331,23 @@ defineExpose({ generateAndShare });
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* Кнопка: оставляем понравившийся стиль, добавляя такой же метаморфоз‑бордер */
+/* Кнопка — как в понравившемся варианте, плюс та же рамка через meta-border-pill */
 .link-button {
   border-radius: 100px; 
   padding: 20px 170px;
   display: flex; align-items: center; justify-content: center;
-
-  background-image:
-    linear-gradient(90deg, #E0D7F8 0%, #C1B5F0 100%),
-    linear-gradient(135deg, #E0D7F8 0%, #C1B5F0 50%, #8E7CC3 100%);
+  background: linear-gradient(90deg, #E0D7F8 0%, #C1B5F0 100%);
   box-shadow: 0 18px 52px rgba(142,124,195,0.35);
+}
+
+.link-button.meta-border-pill::before {
+  /* для кнопки рамка чуть мягче */
+  background: linear-gradient(
+    135deg,
+    rgba(224, 215, 248, 0.7) 0%,
+    rgba(193, 181, 240, 0.5) 40%,
+    rgba(142, 124, 195, 0.0) 100%
+  );
 }
 
 .btn-text {
@@ -345,7 +368,7 @@ defineExpose({ generateAndShare });
   text-shadow: 0 2px 12px rgba(0,0,0,0.5);
 }
 
-/* МОДАЛКА (без изменений) */
+/* МОДАЛКА (как прежде) */
 .modal-overlay { 
   position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000;
   display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px;
