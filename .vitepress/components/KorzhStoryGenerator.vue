@@ -9,12 +9,12 @@
         
         <!-- ФОН -->
         <div class="story-bg-image" :class="bgClass"></div>
-        <!-- МАСКА: Сиреневый оттенок + затемнение -->
+        <!-- МАСКА -->
         <div class="story-bg-overlay"></div>
 
         <div class="story-content">
           
-          <!-- ВЕРХ (СДВИНУТ ВНИЗ) -->
+          <!-- ВЕРХ (СДВИНУТ ЕЩЕ НИЖЕ ДЛЯ INSTAGRAM UI) -->
           <div class="story-header">
             <h1 class="story-main-title">МОЙ СИГНАЛ<br>В КОРЖ</h1>
 
@@ -211,29 +211,28 @@ defineExpose({ generateAndShare });
   background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg');
 }
 
-/* МАСКА: Сиреневый оттенок поверх фона */
+/* МАСКА */
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 2;
-  /* Градиент с фиолетовым оттенком (rgba(75, 50, 120, ...)) + затемнение */
   background: linear-gradient(
     180deg,
-    rgba(65, 45, 100, 0.35) 0%,   /* Сверху легкий фиолет */
-    rgba(40, 30, 70, 0.6) 60%,    /* Посредине темнее */
-    #1A1025 100%                  /* Внизу почти черный с фиолетовым отливом */
+    rgba(65, 45, 100, 0.35) 0%,
+    rgba(40, 30, 70, 0.6) 60%,
+    #1A1025 100%
   );
-  mix-blend-mode: multiply; /* Или normal, но с multiply ложится мягче на фото */
+  mix-blend-mode: multiply;
 }
 
-/* Контейнер */
+/* Контейнер: Увеличен верхний отступ до 280px */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 180px 60px 180px 60px;
+  padding: 280px 60px 180px 60px; /* Было 180px, стало 280px */
   display: flex; flex-direction: column; align-items: center;
 }
 
-/* ВЕРХ: Явный сдвиг вниз на 30px */
+/* ВЕРХ: Дополнительный отступ для страховки */
 .story-header { 
-  margin-top: 30px; 
+  margin-top: 40px; 
   display: flex; flex-direction: column; align-items: center; 
   gap: 30px;
   text-align: center; width: 100%;
