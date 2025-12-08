@@ -157,7 +157,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
         </div>
 
         <p class="card-description bold-desc">Жить любить кофе пить</p>
-        <p class="card-subtitle">Сеть кофеен №1 в Самаре. Лидер Индекса роста Сигнала.</p>
+        <p class="card-subtitle">Следите за тем, как Корж превращает локальную историю в успешную сеть эко-кофеен.</p>
 
         <div class="stats-row">
           <div class="stat-item">
