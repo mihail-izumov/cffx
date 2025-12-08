@@ -244,6 +244,7 @@
   :all-text="[form.emotionalRelease, form.factualAnalysis, form.constructiveSuggestions].filter(t => t && t.trim()).join(' ')"
 />
 
+
   </div> <!-- Закрытие signal-form-wrapper -->
 </template>
 
