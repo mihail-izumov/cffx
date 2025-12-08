@@ -39,7 +39,7 @@
           <!-- НИЖНИЙ ГРАДИЕНТ -->
           <div class="bottom-gradient"></div>
 
-          <!-- ФУТЕР (ФИКСИРОВАННОЕ ПОЛОЖЕНИЕ - ВЫШЕ) -->
+          <!-- ФУТЕР (ФИКСИРОВАННОЕ ПОЛОЖЕНИЕ) -->
           <div class="story-footer">
             <div class="link-button">
                <span class="btn-text">cffx.ru/korzh</span>
@@ -210,10 +210,10 @@ defineExpose({ generateAndShare });
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
 }
 
-/* Отцентровка с равными отступами сверху и снизу */
+/* Сдвиг контента вниз: padding-top увеличен */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 180px 60px 180px 60px;
+  padding: 190px 60px 180px 60px; /* Было 180px, стало 190px */
   display: flex; flex-direction: column; align-items: center;
 }
 
@@ -233,7 +233,7 @@ defineExpose({ generateAndShare });
   text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-/* ПЛАШКА С НОМЕРОМ — усилен сиреневый, 1px бордер */
+/* ПЛАШКА С НОМЕРОМ — яркий сиреневый флер + строгий 1px бордер */
 .glass-pill-info {
   display: inline-flex; align-items: center; gap: 26px;
   padding: 20px 48px;
@@ -243,22 +243,22 @@ defineExpose({ generateAndShare });
   /* Усиленный сиреневый фон */
   background: linear-gradient(
     135deg,
-    rgba(224, 215, 248, 0.18) 0%,
-    rgba(193, 181, 240, 0.12) 100%
+    rgba(224, 215, 248, 0.25) 0%,
+    rgba(193, 181, 240, 0.15) 100%
   );
-  backdrop-filter: blur(35px);
-  -webkit-backdrop-filter: blur(35px);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
   
-  /* Строго 1px */
-  border: 1px solid rgba(224, 215, 248, 0.5);
+  /* Строго 1px и более светлая обводка */
+  border: 1px solid rgba(224, 215, 248, 0.6);
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 10px 40px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .info-icon   { font-size: 40px; line-height: 1; }
 .info-ticket { color: #ffffff; letter-spacing: 0.1em; font-weight: 500; }
-.info-divider{ color: rgba(255,255,255,0.6); }
+.info-divider{ color: rgba(255,255,255,0.7); }
 .info-date   { color: #ffffff; letter-spacing: 0.06em; }
 
 .story-address { 
@@ -274,26 +274,27 @@ defineExpose({ generateAndShare });
   padding-top: 56px;
 }
 
-/* КАРТОЧКА ОТЗЫВА — затемнение + размытие + усиленный сиреневый оттенок */
+/* КАРТОЧКА ОТЗЫВА — исправленная толщина обводки */
 .text-card {
   width: 98%; 
   border-radius: 48px;
   padding: 54px 44px;
   
-  /* Более темный и насыщенный фон с сиреневым оттенком */
+  /* Темный фон с сиреневым оттенком */
   background: linear-gradient(
     180deg,
-    rgba(30, 25, 45, 0.45) 0%,
-    rgba(45, 35, 65, 0.55) 100%
+    rgba(30, 25, 45, 0.5) 0%,
+    rgba(45, 35, 65, 0.6) 100%
   );
-  backdrop-filter: blur(50px);
-  -webkit-backdrop-filter: blur(50px);
+  backdrop-filter: blur(60px);
+  -webkit-backdrop-filter: blur(60px);
   
-  /* 1px бордер с метаморфоз-эффектом */
-  border: 1px solid rgba(224, 215, 248, 0.45);
+  /* Строго 1px border */
+  border: 1px solid rgba(224, 215, 248, 0.5);
+  /* Дополнительная внутренняя тень создает ощущение тонкости */
   box-shadow: 
     0 30px 80px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .text-content {
@@ -302,11 +303,11 @@ defineExpose({ generateAndShare });
   font-weight: 400;
   line-height: 1.4; 
   
-  /* Яркий, читаемый текст с сиреневым флером */
-  color: #F0EBFF;
+  /* Усиленный сиреневый флер в тексте */
+  color: #F3EEFF;
   text-align: center; 
   letter-spacing: 0.01em;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 2px 10px rgba(162, 136, 255, 0.3);
 }
 
 /* НИЖНИЙ ГРАДИЕНТ */
@@ -316,33 +317,34 @@ defineExpose({ generateAndShare });
   pointer-events: none;
 }
 
-/* ФУТЕР: ПОДНЯТ ВЫШЕ И ЗАФИКСИРОВАН */
+/* ФУТЕР: ОСТАЁТСЯ ВЫСОКО */
 .story-footer { 
   position: absolute;
-  bottom: 220px; /* Поднял ещё выше */
+  bottom: 220px;
   left: 0;
   width: 100%;
   z-index: 30; 
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* КНОПКА — 1px, сиреневый градиент */
+/* КНОПКА — яркий сиреневый */
 .link-button {
   border-radius: 100px; 
   padding: 20px 170px;
   display: flex; align-items: center; justify-content: center;
   
+  /* Насыщенный сиреневый градиент */
   background: linear-gradient(90deg, 
-    rgba(224, 215, 248, 0.95) 0%, 
-    rgba(193, 181, 240, 0.92) 100%
+    #E0D7F8 0%, 
+    #C1B5F0 100%
   );
-  backdrop-filter: blur(25px);
+  backdrop-filter: blur(30px);
   
   /* Строго 1px */
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 
-    0 16px 48px rgba(142, 124, 195, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    0 18px 52px rgba(142, 124, 195, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .btn-text {
@@ -358,8 +360,8 @@ defineExpose({ generateAndShare });
   font-weight: 400;
   letter-spacing: 0.02em;
   text-align: center;
-  color: rgba(224, 215, 248, 0.95);
-  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  color: #E0D7F8;
+  text-shadow: 0 2px 12px rgba(142, 124, 195, 0.5);
 }
 
 /* МОДАЛКА */
