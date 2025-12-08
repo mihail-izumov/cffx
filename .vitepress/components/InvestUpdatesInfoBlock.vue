@@ -75,10 +75,9 @@
             </svg>
           </div>
 
-          <h3 class="card-title">Front of the queue</h3>
+          <h3 class="card-title">Приоритет в списке</h3>
           <p class="card-text">
-            With limited numbers of shares or tax relief available, late investors can lose out. Early
-            Access ensures you're the first to know the minute the Opportunity is Live
+            Количество инвесторов в новые кофейни ограничено. Чем позже, тем ниже приоритет. Ранний доступ гарантирует ваше место в списке, чтобы первым узнать о возможности инвестировать.
           </p>
         </div>
       </div>
