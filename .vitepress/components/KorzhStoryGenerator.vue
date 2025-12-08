@@ -1,66 +1,74 @@
 <template>
   <div>
-    <!-- 1. СКРЫТЫЙ ШАБЛОН ДЛЯ ГЕНЕРАЦИИ -->
+    <!-- 1. СКРЫТЫЙ ШАБЛОН (Рендер) -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
         
-        <!-- Фоновая картинка -->
+        <!-- Фон -->
         <div class="story-bg-image"></div>
         <div class="story-bg-overlay"></div>
 
         <div class="story-content safe-area">
           
-          <!-- ВЕРХНЯЯ ЧАСТЬ -->
+          <!-- ВЕРХ: Заголовок и Инфо -->
           <div class="story-header">
-            <!-- Заголовок -->
             <h1 class="story-main-title">
-              Мой Сигнал<br>в Корж
+              МОЙ СИГНАЛ<br>В КОРЖ
             </h1>
 
-            <!-- Блок с номером и датой -->
             <div class="story-info-row">
               <div class="glass-pill-info">
-                <span class="info-icon">⚡️</span>
+                <img src="/favicon.svg" class="info-logo" alt="logo" />
                 <span class="info-ticket">{{ ticket }}</span>
                 <span class="info-divider">|</span>
                 <span class="info-date">{{ date }}</span>
               </div>
             </div>
 
-            <!-- Адрес -->
             <div class="story-address">
               {{ address || 'Кофейня Корж' }}
             </div>
           </div>
 
-          <!-- ЦЕНТРАЛЬНАЯ ЧАСТЬ (Облако тегов) -->
-          <div class="story-tags-section">
-            <div class="tags-wrapper">
-              <span 
-                v-for="(tag, index) in displayTags" 
-                :key="tag" 
-                class="tag-pill"
-                :class="{ 'tag-highlight': index % 3 === 0 }" 
-              >
-                {{ tag }}
-              </span>
+          <!-- ЦЕНТР: Теги + Текст пользователя -->
+          <div class="story-body-section">
+            <div class="content-scroll-wrapper">
+              
+              <!-- Теги -->
+              <div class="tags-wrapper">
+                <span 
+                  v-for="(tag, index) in displayTags" 
+                  :key="tag" 
+                  class="tag-pill"
+                  :class="{ 'tag-highlight': index === 0 }" 
+                >
+                  {{ tag }}
+                </span>
+              </div>
+
+              <!-- Текст пользователя (Детали) -->
+              <div v-if="details" class="user-details-text">
+                {{ details }}
+              </div>
+            
             </div>
-            <!-- Градиент, скрывающий лишние теги снизу -->
-            <div class="tags-fade-gradient"></div>
           </div>
 
-          <!-- НИЖНЯЯ ЧАСТЬ (Ссылка) -->
+          <!-- ГРАДИЕНТ (Перекрывает текст перед кнопкой) -->
+          <div class="bottom-fade-gradient"></div>
+
+          <!-- НИЗ: Кнопка-ссылка (Glass Pill) -->
           <div class="story-footer">
-            <div class="glass-pill-link">
+            <button class="glass-pill static-pill">
               cffx.ru/korzh
-            </div>
+            </button>
           </div>
 
         </div>
       </div>
     </div>
 
-    <!-- 2. МОДАЛЬНОЕ ОКНО ПРЕДПРОСМОТРА -->
+    <!-- 2. МОДАЛЬНОЕ ОКНО -->
     <transition name="modal-fade">
       <div v-if="showModal" class="story-modal-overlay" @click.self="closeModal">
         <div class="story-modal">
@@ -74,9 +82,11 @@
           
           <div class="story-preview-container">
             <img v-if="generatedImageUrl" :src="generatedImageUrl" class="story-preview-img" alt="Story Preview" />
+            
+            <!-- Лоадер -->
             <div v-else class="loading-spinner">
-              <div class="spinner-icon">⚡️</div>
-              <div>Создаем магию...</div>
+              <img src="/favicon.svg" class="spinner-logo" alt="loading" />
+              <div class="spinner-text">Создаем магию...</div>
             </div>
           </div>
 
@@ -103,7 +113,8 @@ const props = defineProps({
   ticket: String,
   date: String,
   address: String,
-  tags: Array
+  tags: Array,
+  details: String // Текст от пользователя
 });
 
 const showModal = ref(false);
@@ -112,9 +123,8 @@ const generatedBlob = ref(null);
 const isMobile = ref(false);
 
 const displayTags = computed(() => {
-  // Если тегов нет, показываем дефолтные
   if (!props.tags || props.tags.length === 0) {
-    return ['Сигнал', 'Впечатление', 'Корж'];
+    return ['Сигнал', 'Впечатление'];
   }
   return props.tags;
 });
@@ -146,20 +156,21 @@ const generateAndShare = async () => {
   
   try {
     await loadLibrary();
-    await new Promise(r => setTimeout(r, 500)); 
+    // Небольшая задержка, чтобы DOM точно отрисовался (включая картинки)
+    await new Promise(r => setTimeout(r, 600)); 
 
     const element = document.getElementById('story-capture-area');
     if (!element) return;
 
     const canvas = await window.html2canvas(element, {
       scale: 2,
-      useCORS: true, // Важно для загрузки картинки фона
+      useCORS: true,
       logging: false,
       width: 1080,
       height: 1920,
       windowWidth: 1080,
       windowHeight: 1920,
-      backgroundColor: null // Прозрачный, чтобы фон работал
+      backgroundColor: null
     });
 
     generatedImageUrl.value = canvas.toDataURL('image/png');
@@ -211,8 +222,7 @@ defineExpose({
   width: 1080px; height: 1920px; position: relative;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
   box-sizing: border-box;
-  background: #111;
-  color: #fff;
+  background: #000; color: #fff;
 }
 
 /* ФОН */
@@ -223,98 +233,127 @@ defineExpose({
 }
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 2;
-  /* Темное затемнение для читаемости + фиолетовый оттенок снизу */
-  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 40%, rgba(20,10,30,0.8) 100%);
+  /* Легкое затемнение сверху, сильное снизу */
+  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 50%, #000 100%);
 }
 
-/* КОНТЕНТ (SAFE AREA) */
+/* КОНТЕНТ */
 .story-content {
-  position: relative; z-index: 10;
-  width: 100%; height: 100%;
-  /* Safe Area: отступы под интерфейс сторис (сверху и снизу по ~250px) */
-  padding: 240px 60px 280px 60px; 
-  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  position: relative; z-index: 10; width: 100%; height: 100%;
+  padding: 240px 60px 240px 60px; /* Safe Area */
+  display: flex; flex-direction: column; align-items: center; 
 }
 
-/* === ВЕРХНЯЯ ЧАСТЬ === */
-.story-header { display: flex; flex-direction: column; align-items: center; gap: 32px; width: 100%; text-align: center; }
+/* ВЕРХ */
+.story-header { display: flex; flex-direction: column; align-items: center; gap: 40px; width: 100%; text-align: center; margin-bottom: 60px; }
 
 .story-main-title {
-  font-size: 82px; font-weight: 800; line-height: 1.05; letter-spacing: -2px;
-  margin: 0; text-transform: uppercase;
-  background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+  font-size: 72px; font-weight: 600; line-height: 1.1; letter-spacing: 0.1em;
+  margin: 0; text-transform: uppercase; color: #fff;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.6);
 }
 
-/* СТЕКЛЯННАЯ ПЛАШКА ИНФО */
 .glass-pill-info {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 100px;
-  padding: 18px 42px;
-  display: inline-flex; align-items: center; gap: 20px;
-  font-size: 38px; font-weight: 600; font-family: "SF Mono", monospace;
+  padding: 16px 48px;
+  display: inline-flex; align-items: center; gap: 24px;
+  font-size: 36px; font-weight: 500; font-family: "SF Mono", monospace;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
-.info-icon { font-size: 38px; }
+.info-logo { width: 42px; height: 42px; object-fit: contain; }
 .info-ticket { color: #fff; letter-spacing: 1px; }
-.info-divider { color: rgba(255,255,255,0.3); font-weight: 300; }
-.info-date { color: rgba(255,255,255,0.8); }
+.info-divider { color: rgba(255,255,255,0.3); }
+.info-date { color: rgba(255,255,255,0.7); }
 
 .story-address {
-  font-size: 42px; color: rgba(255,255,255,0.9); font-weight: 500;
+  font-size: 40px; color: rgba(255,255,255,0.9); font-weight: 400; letter-spacing: 0.02em;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-/* === ОБЛАКО ТЕГОВ === */
-.story-tags-section {
-  width: 100%; position: relative;
-  flex-grow: 1; /* Занимает все свободное место в центре */
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden; /* Обрезает слишком длинный список */
-  margin: 40px 0;
+/* ЦЕНТР (ТЕГИ + ТЕКСТ) */
+.story-body-section {
+  flex-grow: 1; width: 100%; position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  overflow: hidden; /* Обрезаем контент */
 }
+.content-scroll-wrapper {
+  display: flex; flex-direction: column; align-items: center; gap: 50px; width: 100%;
+}
+
 .tags-wrapper {
   display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 24px;
 }
-
 .tag-pill {
-  font-size: 42px; font-weight: 600; color: #e0e0e0;
-  padding: 18px 40px; border-radius: 100px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  font-size: 40px; font-weight: 500; color: #e0e0e0;
+  padding: 20px 48px; border-radius: 100px;
+  background: rgba(20, 20, 20, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
 }
-
-/* Подсветка каждого 3-го тега (или первого) */
 .tag-highlight {
-  background: rgba(224, 215, 248, 0.25); /* Фиолетовый оттенок из вашего примера */
-  border-color: rgba(224, 215, 248, 0.6);
+  background: rgba(224, 215, 248, 0.2); 
+  border-color: rgba(224, 215, 248, 0.5);
   color: #fff;
-  box-shadow: 0 0 30px rgba(142, 124, 195, 0.3);
+  box-shadow: 0 0 40px rgba(142, 124, 195, 0.25);
 }
 
-/* Градиент снизу, чтобы "растворить" лишние теги */
-.tags-fade-gradient {
-  position: absolute; bottom: 0; left: 0; width: 100%; height: 150px;
-  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.01)); 
-  /* На темном фоне можно сделать более явное затемнение, если нужно */
+.user-details-text {
+  font-size: 44px; line-height: 1.4; color: #fff; text-align: center;
+  font-weight: 400; font-style: italic; opacity: 0.9;
+  max-width: 90%;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+  white-space: pre-wrap;
 }
 
-/* === ФУТЕР (ССЫЛКА) === */
-.story-footer { width: 100%; display: flex; justify-content: center; }
-
-.glass-pill-link {
-  background: #fff; color: #000;
-  font-size: 48px; font-weight: 700;
-  padding: 28px 70px; border-radius: 100px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  letter-spacing: -0.5px;
+/* ГРАДИЕНТ (ЧЕРНЫЙ СНИЗУ) */
+.bottom-fade-gradient {
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 500px; z-index: 20;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 60%, #000 100%);
+  pointer-events: none;
 }
 
-/* === МОДАЛКА (то же самое) === */
+/* ФУТЕР (КНОПКА) - Поверх градиента */
+.story-footer { 
+  position: relative; z-index: 30; /* Выше градиента */
+  width: 100%; display: flex; justify-content: center; 
+  margin-top: -60px; /* Чуть подтягиваем вверх, чтобы кнопка лежала в черной зоне */
+}
+
+/* КНОПКА GLASS PILL (Копия стилей) */
+.glass-pill {
+  position: relative;
+  background: rgba(20, 20, 24, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  border-radius: 9999px;
+  padding: 32px 100px; /* Увеличил паддинги для масштаба 1080p */
+  font-weight: 600;
+  font-size: 48px; /* Увеличил шрифт для масштаба */
+  color: #E0D7F8;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  letter-spacing: 0.02em;
+}
+.glass-pill::before {
+  content: ''; position: absolute; inset: 0; border-radius: 9999px; padding: 2px; /* толщина обводки для большого экрана */
+  background: radial-gradient(60% 50% at 50% 0%, rgba(224, 215, 248, 1) 0%, transparent 100%),
+              linear-gradient(rgba(142, 124, 195, 0.4), rgba(142, 124, 195, 0.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  pointer-events: none;
+}
+/* Статичная кнопка на картинке не должна иметь hover-эффектов, 
+   но визуально должна выглядеть "дорого" сразу */
+.static-pill {
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(142, 124, 195, 0.2);
+  background: rgba(30,30,35,0.5); 
+}
+
+/* === МОДАЛКА === */
 .story-modal-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.92); z-index: 10000;
@@ -325,8 +364,7 @@ defineExpose({
   background: #1E1E20; width: 100%; max-width: 420px; max-height: 95vh;
   border-radius: 28px; border: 1px solid #333;
   display: flex; flex-direction: column; 
-  box-shadow: 0 30px 80px rgba(0,0,0,0.7);
-  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7); overflow: hidden;
 }
 .story-modal-header {
   padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; 
@@ -347,8 +385,10 @@ defineExpose({
   max-width: 100%; max-height: 60vh; object-fit: contain; 
   border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
 }
-.loading-spinner { color: #888; font-size: 14px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.spinner-icon { font-size: 28px; animation: spin 1s infinite linear; }
+.loading-spinner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.spinner-logo { width: 48px; height: 48px; animation: breathe 3s ease-in-out infinite; filter: drop-shadow(0 0 10px rgba(224,215,248,0.5)); }
+.spinner-text { color: #888; font-size: 14px; font-weight: 500; }
+
 .story-modal-actions { 
   padding: 24px; background: #252528; border-top: 1px solid #333;
   display: flex; flex-direction: column; gap: 14px; align-items: center; 
@@ -363,5 +403,9 @@ defineExpose({
 .hint-text b { color: #ccc; }
 .modal-fade-enter-active, .modal-fade-leave-active { transition: opacity 0.3s ease; }
 .modal-fade-enter-from, .modal-fade-leave-to { opacity: 0; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+@keyframes breathe { 
+  0%, 100% { transform: scale(1); opacity: 0.8; filter: drop-shadow(0 0 5px rgba(224,215,248,0.3)); } 
+  50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px rgba(224,215,248,0.8)); } 
+}
 </style>
