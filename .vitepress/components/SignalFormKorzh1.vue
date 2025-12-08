@@ -241,8 +241,10 @@
   :ticket="formattedTicketNumber"
   :date="currentDate.split(' ')[0]"
   :address="form.coffeeShopAddress"
-  :details="[form.emotionalRelease, form.factualAnalysis, form.constructiveSuggestions].filter(Boolean).join(' ')"
+  :emotions="form.emotionalRelease" 
+  :details="[form.factualAnalysis, form.constructiveSuggestions].filter(Boolean).join(' ')"
 />
+
 
   </div> <!-- Закрытие signal-form-wrapper -->
 </template>
