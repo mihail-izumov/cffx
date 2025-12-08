@@ -1,16 +1,26 @@
 <template>
   <div class="signal-form-wrapper">
-    <!-- Экран успешной отправки -->
+    
+    <!-- 1. ЭКРАН УСПЕХА (внутри wrapper) -->
     <div v-if="formSubmitted" class="signal-success-message">
       <div class="signal-success-text">
         <h3>Сигнал отправлен ⚡</h3>
         <p>Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
+        
+        <!-- Кнопка в Telegram -->
         <a :href="`https://t.me/Anna_Signal?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="signal-telegram-button">Получить ответ</a>
+        
+        <!-- Кнопка Поделиться в сторис -->
+        <button @click="handleShareClick" class="signal-share-btn">
+          Поделиться в Истории
+        </button>
+
+        <!-- Ссылка на информацию -->
         <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link">Кто Анна и как работает</a>
       </div>
     </div>
 
-    <!-- Основная форма -->
+    <!-- 2. ФОРМА (внутри wrapper) -->
     <form v-else @submit.prevent="submitForm">
       <div class="signal-form-header">
         <div class="signal-form-title">Новый Сигнал</div>
@@ -87,7 +97,7 @@
       <!-- Секция с вопросами и подсказками -->
       <div class="signal-form-section">
         <div class="signal-question-block" :class="genderClass" style="--accent-color: #A972FF;">
-  <p class="signal-direction-label">Эмоции и чувства</p>
+          <p class="signal-direction-label">Эмоции и чувства</p>
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
@@ -110,7 +120,6 @@
             >
               {{ suggestion }}
             </div>
-            <!-- Кнопка возврата к начальным вариантам -->
             <div 
               v-if="!isInitialSuggestions('emotions')"
               class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble"
@@ -124,7 +133,7 @@
         </div>
         
         <div class="signal-question-block" :class="genderClass" style="--accent-color: #3DDC84;">
-  <p class="signal-direction-label">Детали проблемы</p>
+          <p class="signal-direction-label">Детали проблемы</p>
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion2" class="signal-question-label">{{ currentQuestion2 }}</p>
@@ -137,7 +146,6 @@
             placeholder="Опишите факты: что, когда и где произошло..."
           ></textarea>
           
-          <!-- Подсказки-баблы для деталей -->
           <div class="signal-suggestions-container">
             <div 
               v-for="suggestion in currentSuggestions.facts" 
@@ -147,7 +155,6 @@
             >
               {{ suggestion }}
             </div>
-            <!-- Кнопка возврата к начальным вариантам -->
             <div 
               v-if="!isInitialSuggestions('facts')"
               class="signal-suggestion-bubble signal-reset-bubble signal-fact-bubble"
@@ -161,7 +168,7 @@
         </div>
         
         <div class="signal-question-block" :class="genderClass" style="--accent-color: #FFB800;">
-  <p class="signal-direction-label">Предложение решения</p>
+          <p class="signal-direction-label">Предложение решения</p>
           <div class="signal-rotating-phrase-container">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion3" class="signal-question-label">{{ currentQuestion3 }}</p>
@@ -174,7 +181,6 @@
             placeholder="Предложите, как это можно исправить..."
           ></textarea>
           
-          <!-- Подсказки-баблы для решений -->
           <div class="signal-suggestions-container">
             <div 
               v-for="suggestion in currentSuggestions.solutions" 
@@ -184,7 +190,6 @@
             >
               {{ suggestion }}
             </div>
-            <!-- Кнопка возврата к начальным вариантам -->
             <div 
               v-if="!isInitialSuggestions('solutions')"
               class="signal-suggestion-bubble signal-reset-bubble signal-solution-bubble"
@@ -213,7 +218,6 @@
         </div>
       </div>
       
-      <!-- ПОДВАЛ С ИСПРАВЛЕННЫМ ТЕКСТОМ -->
       <div class="signal-form-footer">
         <div class="signal-terms-section">
           <div class="signal-checkbox-group">
@@ -230,11 +234,23 @@
         </div>
       </div>
     </form>
-  </div>
+
+    <!-- 3. КОМПОНЕНТ СТОРИС (внутри wrapper) -->
+    <KorzhStoryGenerator 
+      ref="storyGeneratorRef"
+      :ticket="formattedTicketNumber"
+      :date="currentDate.split(' ')[0]"
+      :address="form.coffeeShopAddress"
+      :tags="allStoryTags"
+    />
+
+  </div> <!-- Закрытие signal-form-wrapper -->
 </template>
+
 
 <script setup>
 import { reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import KorzhStoryGenerator from './KorzhStoryGenerator.vue';
 
 const form = reactive({ 
   coffeeShopAddress: '',
@@ -628,6 +644,29 @@ formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketN
 onUnmounted(() => {
   stopRotation();
 });
+
+  // Механика для сториз
+const storyGeneratorRef = ref(null);
+
+const allStoryTags = computed(() => {
+  let tags = [
+    ...(selectedSuggestions.emotions || []),
+    ...(selectedSuggestions.facts || [])
+  ];
+  tags = [...new Set(tags.filter(t => t))];
+  
+  if (tags.length === 0) {
+    const manualText = form.emotionalRelease || form.factualAnalysis;
+    return manualText ? [manualText.slice(0, 50) + '...'] : ['Сигнал'];
+  }
+  return tags.slice(0, 15).map(tag => tag.charAt(0).toUpperCase() + tag.slice(1));
+});
+
+const handleShareClick = () => {
+  if (storyGeneratorRef.value) {
+    storyGeneratorRef.value.generateAndShare();
+  }
+};
 
 </script>
 
@@ -1448,4 +1487,27 @@ input#telegramPhone:focus {
     font-size: 0.8rem;
   }
 }
+
+.signal-share-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 1rem 0; /* Отступ сверху и снизу */
+  transition: all 0.3s ease;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.signal-share-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 </style>
