@@ -9,6 +9,7 @@
         
         <!-- ФОН -->
         <div class="story-bg-image" :class="bgClass"></div>
+        <!-- МАСКА: Сиреневый оттенок + затемнение -->
         <div class="story-bg-overlay"></div>
 
         <div class="story-content">
@@ -39,7 +40,7 @@
           <!-- НИЖНИЙ ГРАДИЕНТ -->
           <div class="bottom-gradient"></div>
 
-          <!-- ФУТЕР (ФИКСИРОВАН, НЕ СДВИГАЕТСЯ) -->
+          <!-- ФУТЕР (ФИКСИРОВАН) -->
           <div class="story-footer">
             <div class="link-button">
                <span class="btn-text">cffx.ru/korzh</span>
@@ -198,7 +199,7 @@ defineExpose({ generateAndShare });
 .story-wrapper-hidden { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -9999; }
 .story-template { width: 1080px; height: 1920px; position: relative; background: #000; color: #fff; }
 
-/* ФОНЫ: Обновлены URL */
+/* ФОНЫ */
 .story-bg-image { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; }
 .story-bg-image.bg-default {
   background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg');
@@ -210,9 +211,17 @@ defineExpose({ generateAndShare });
   background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg');
 }
 
+/* МАСКА: Сиреневый оттенок поверх фона */
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 2;
-  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
+  /* Градиент с фиолетовым оттенком (rgba(75, 50, 120, ...)) + затемнение */
+  background: linear-gradient(
+    180deg,
+    rgba(65, 45, 100, 0.35) 0%,   /* Сверху легкий фиолет */
+    rgba(40, 30, 70, 0.6) 60%,    /* Посредине темнее */
+    #1A1025 100%                  /* Внизу почти черный с фиолетовым отливом */
+  );
+  mix-blend-mode: multiply; /* Или normal, но с multiply ложится мягче на фото */
 }
 
 /* Контейнер */
@@ -273,7 +282,7 @@ defineExpose({ generateAndShare });
   padding-top: 56px;
 }
 
-/* КАРТОЧКА ОТЗЫВА — яркая обводка 2px */
+/* КАРТОЧКА ОТЗЫВА */
 .text-card {
   width: 98%; 
   border-radius: 48px;
@@ -283,7 +292,6 @@ defineExpose({ generateAndShare });
   backdrop-filter: blur(50px);
   -webkit-backdrop-filter: blur(50px);
   
-  /* ЯРКАЯ видимая обводка */
   border: 2px solid rgba(220, 210, 255, 0.65);
   
   box-shadow: 
@@ -305,11 +313,11 @@ defineExpose({ generateAndShare });
 /* НИЖНИЙ ГРАДИЕНТ */
 .bottom-gradient {
   position: absolute; bottom: 0; left: 0; width: 100%; height: 900px; z-index: 20;
-  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.9) 55%, #000 100%);
+  background: linear-gradient(to bottom, transparent 0%, rgba(20, 10, 30, 0.9) 55%, #0F0518 100%);
   pointer-events: none;
 }
 
-/* ФУТЕР: фиксированное положение */
+/* ФУТЕР */
 .story-footer { 
   position: absolute;
   bottom: 220px;
@@ -319,23 +327,19 @@ defineExpose({ generateAndShare });
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* КНОПКА — Цвет как во вложении */
+/* КНОПКА */
 .link-button {
   border-radius: 100px; 
   padding: 20px 170px;
   display: flex; align-items: center; justify-content: center;
-  
-  /* Точный лавандовый цвет из скрина */
   background: #D9D0F0;
-  
-  /* Без блюра, так как это плотный цвет */
   box-shadow: 0 16px 50px rgba(160, 130, 220, 0.4);
 }
 
 .btn-text {
   font-size: 46px;
-  font-weight: 700; /* Жирнее, как на скрине */
-  color: #1A1A1A;   /* Тёмный, почти чёрный */
+  font-weight: 700; 
+  color: #1A1A1A;   
   letter-spacing: 0.01em;
 }
 
@@ -345,7 +349,7 @@ defineExpose({ generateAndShare });
   font-weight: 400;
   letter-spacing: 0.02em;
   text-align: center;
-  color: #D9D0F0; /* Такой же цвет как у кнопки */
+  color: #D9D0F0; 
   opacity: 0.95;
   text-shadow: 0 2px 10px rgba(0,0,0,0.8);
 }
