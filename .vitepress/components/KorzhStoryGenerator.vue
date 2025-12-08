@@ -1,20 +1,17 @@
 <template>
   <div>
-    <!-- 1. СКРЫТЫЙ ШАБЛОН ГЕНЕРАЦИИ (1080x1920) -->
+    <!-- СКРЫТЫЙ ШАБЛОН (1080x1920) -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
         
-        <!-- ФОН -->
         <div class="story-bg-image"></div>
         <div class="story-bg-overlay"></div>
 
         <div class="story-content safe-area">
           
-          <!-- ВЕРХ: ЗАГОЛОВОК И ИНФО -->
+          <!-- ВЕРХ -->
           <div class="story-header">
-            <h1 class="story-main-title">
-              МОЙ СИГНАЛ<br>В КОРЖ
-            </h1>
+            <h1 class="story-main-title">МОЙ СИГНАЛ<br>В КОРЖ</h1>
 
             <div class="story-info-row">
               <div class="glass-pill-info">
@@ -25,45 +22,37 @@
               </div>
             </div>
 
-            <div class="story-address">
-              {{ address || 'Кофейня Корж' }}
-            </div>
+            <div class="story-address">{{ address || 'Кофейня Корж' }}</div>
           </div>
 
-          <!-- ЦЕНТР: ТЕКСТ + ЭМОЦИЯ -->
+          <!-- ЦЕНТР -->
           <div class="story-body-section">
-            <div class="content-wrapper">
-              
-              <!-- 1. Текст пользователя (если есть) -->
-              <div v-if="details" class="user-details-text">
-                {{ details }}
-              </div>
-              
-              <!-- 2. Эмоция (если нет текста, показываем крупнее) -->
-              <div v-if="emotion" class="emotion-wrapper">
-                <span class="emotion-pill">
-                  {{ emotion }}
-                </span>
-              </div>
-
+            
+            <!-- ТЕКСТ (если есть) -->
+            <div v-if="details && details.trim()" class="user-details-text">
+              {{ details.trim() }}
             </div>
+            
+            <!-- ЭМОЦИЯ (бабл) -->
+            <div v-if="emotion && emotion.trim()" class="emotion-wrapper">
+              <span class="emotion-pill">{{ emotion.trim() }}</span>
+            </div>
+
           </div>
 
-          <!-- ГРАДИЕНТ (Черный снизу) -->
+          <!-- ГРАДИЕНТ -->
           <div class="bottom-fade-gradient"></div>
 
-          <!-- НИЗ: ССЫЛКА (Копия вашего дизайна) -->
+          <!-- КНОПКА -->
           <div class="story-footer">
-            <button class="glass-pill-link">
-              cffx.ru/korzh
-            </button>
+            <button class="glass-pill-link">cffx.ru/korzh</button>
           </div>
 
         </div>
       </div>
     </div>
 
-    <!-- 2. МОДАЛЬНОЕ ОКНО ПРЕДПРОСМОТРА -->
+    <!-- МОДАЛКА -->
     <transition name="modal-fade">
       <div v-if="showModal" class="story-modal-overlay" @click.self="closeModal">
         <div class="story-modal">
@@ -77,7 +66,6 @@
           
           <div class="story-preview-container">
             <img v-if="generatedImageUrl" :src="generatedImageUrl" class="story-preview-img" alt="Story Preview" />
-            
             <div v-else class="loading-spinner">
               <img src="/favicon.svg" class="spinner-logo" alt="loading" />
               <div class="spinner-text">Создаем магию...</div>
@@ -89,9 +77,7 @@
               <span v-if="isMobile">Сохранить картинку 📥</span>
               <span v-else>Скачать картинку 📥</span>
             </button>
-            <p class="hint-text">
-              Сохраните картинку и выложите в сторис с отметкой <b>@korzh_coffee</b>
-            </p>
+            <p class="hint-text">Сохраните картинку и выложите в сторис с отметкой <b>@korzh_coffee</b></p>
           </div>
 
         </div>
@@ -101,15 +87,20 @@
 </template>
 
 <script setup>
-import { ref, defineExpose, onMounted } from 'vue';
+import { ref, defineExpose, onMounted, watch } from 'vue';
 
 const props = defineProps({
   ticket: String,
   date: String,
   address: String,
-  details: String,  // Текст проблемы
-  emotion: String   // Выбранная эмоция
+  details: String,
+  emotion: String
 });
+
+// ОТЛАДКА: Выведем в консоль, что передается
+watch(() => [props.details, props.emotion], ([newDetails, newEmotion]) => {
+  console.log('📊 StoryGenerator получил:', { details: newDetails, emotion: newEmotion });
+}, { immediate: true });
 
 const showModal = ref(false);
 const generatedImageUrl = ref(null);
@@ -143,7 +134,6 @@ const generateAndShare = async () => {
   
   try {
     await loadLibrary();
-    // Даем браузеру время отрисовать шрифты и картинки
     await new Promise(r => setTimeout(r, 600)); 
 
     const element = document.getElementById('story-capture-area');
@@ -201,15 +191,12 @@ defineExpose({
 </script>
 
 <style scoped>
-/* УТИЛИТЫ */
 .story-wrapper-hidden { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -1000; visibility: visible; }
 
-/* ШАБЛОН 1080x1920 */
 .story-template { 
   width: 1080px; height: 1920px; position: relative;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-  box-sizing: border-box;
-  background: #000; color: #fff;
+  box-sizing: border-box; background: #000; color: #fff;
 }
 
 /* ФОН */
@@ -220,144 +207,113 @@ defineExpose({
 }
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 2;
-  background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.6) 50%, #000 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.65) 50%, #000 100%);
 }
 
-/* КОНТЕНТ */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 240px 60px 240px 60px; /* Safe Area для Instagram */
-  display: flex; flex-direction: column; align-items: center; 
+  padding: 260px 70px 260px 70px;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
 }
 
-/* --- ВЕРХНЯЯ ЧАСТЬ --- */
+/* ВЕРХ */
 .story-header { 
-  display: flex; flex-direction: column; align-items: center; gap: 40px; 
-  width: 100%; text-align: center; margin-bottom: 40px; 
+  display: flex; flex-direction: column; align-items: center; gap: 45px; 
+  width: 100%; text-align: center;
 }
 
 .story-main-title {
-  font-size: 72px; font-weight: 500; line-height: 1.1; letter-spacing: 0.05em;
+  font-size: 76px; font-weight: 500; line-height: 1.05; letter-spacing: 0.06em;
   margin: 0; text-transform: uppercase; color: #fff;
-  text-shadow: 0 4px 16px rgba(0,0,0,0.6);
+  text-shadow: 0 6px 20px rgba(0,0,0,0.7);
 }
 
 .glass-pill-info {
-  background: rgba(25, 25, 28, 0.4);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(30, 30, 32, 0.5);
+  backdrop-filter: blur(24px);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
   border-radius: 100px;
-  padding: 20px 50px; /* Больше паддингов */
-  display: inline-flex; align-items: center; gap: 28px;
-  font-size: 38px; font-weight: 500; font-family: "SF Mono", monospace;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  padding: 22px 56px;
+  display: inline-flex; align-items: center; gap: 32px;
+  font-size: 42px; font-weight: 500; font-family: "SF Mono", monospace;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
 }
-.info-logo { 
-  width: 48px; height: 48px; 
-  object-fit: contain; display: block; 
-}
-.info-ticket { color: #fff; letter-spacing: 1px; }
-.info-divider { color: rgba(255,255,255,0.3); font-weight: 300; }
-.info-date { 
-  color: rgba(255,255,255,0.9); 
-  letter-spacing: normal; /* Исправляем артефакты */
-}
+.info-logo { width: 50px; height: 50px; object-fit: contain; display: block; }
+.info-ticket { color: #fff; letter-spacing: 1.5px; }
+.info-divider { color: rgba(255,255,255,0.35); font-weight: 300; }
+.info-date { color: rgba(255,255,255,0.9); letter-spacing: 0; }
 
 .story-address {
-  font-size: 40px; color: rgba(255,255,255,0.9); font-weight: 400; letter-spacing: 0.02em;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  font-size: 44px; color: rgba(255,255,255,0.92); font-weight: 400; letter-spacing: 0.02em;
+  text-shadow: 0 3px 8px rgba(0,0,0,0.6);
 }
 
-/* --- ЦЕНТРАЛЬНАЯ ЧАСТЬ --- */
+/* ЦЕНТР (ТЕКСТ + ЭМОЦИЯ) */
 .story-body-section {
-  flex-grow: 1; width: 100%; position: relative;
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-  padding-top: 40px;
-}
-.content-wrapper {
-  display: flex; flex-direction: column; align-items: center; gap: 60px; width: 100%;
+  flex-grow: 1; width: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 60px; padding: 50px 0;
 }
 
 .user-details-text {
-  font-size: 52px; line-height: 1.3; color: #fff; text-align: center;
-  font-weight: 400; font-style: normal;
-  max-width: 95%;
-  text-shadow: 0 4px 12px rgba(0,0,0,0.8);
-  white-space: pre-wrap;
+  font-size: 54px; line-height: 1.3; color: #fff; text-align: center;
+  font-weight: 400; max-width: 92%;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.85);
+  white-space: pre-wrap; word-wrap: break-word;
 }
 
-.emotion-wrapper {
-  display: flex; justify-content: center;
-}
+.emotion-wrapper { display: flex; justify-content: center; }
 .emotion-pill {
-  /* Стиль "тега" но премиальный */
-  font-size: 46px; font-weight: 600; color: #E0D7F8;
-  padding: 24px 60px; border-radius: 100px;
-  
-  background: rgba(224, 215, 248, 0.15);
-  border: 2px solid rgba(224, 215, 248, 0.4);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 10px 40px rgba(142, 124, 195, 0.2);
+  font-size: 50px; font-weight: 600; color: #E0D7F8;
+  padding: 28px 70px; border-radius: 100px;
+  background: rgba(224, 215, 248, 0.18);
+  border: 3px solid rgba(224, 215, 248, 0.45);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 12px 50px rgba(142, 124, 195, 0.25);
   text-transform: capitalize;
 }
 
-/* --- НИЗ И КНОПКА --- */
+/* НИЗ */
 .bottom-fade-gradient {
-  position: absolute; bottom: 0; left: 0; width: 100%; height: 700px; z-index: 20;
-  /* Градиент до полностью черного */
-  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 50%, #000 100%);
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 750px; z-index: 20;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.85) 55%, #000 100%);
   pointer-events: none;
 }
 
 .story-footer { 
-  position: relative; z-index: 30; width: 100%; display: flex; justify-content: center; 
-  margin-top: -100px; /* Поднимаем в зону черного градиента */
+  position: relative; z-index: 30; width: 100%; 
+  display: flex; justify-content: center; margin-top: -120px;
 }
 
-/* КНОПКА (ТОЧНАЯ КОПИЯ glass-pill, МАСШТАБИРОВАННАЯ) */
+/* КНОПКА (ТОЧНАЯ КОПИЯ) */
 .glass-pill-link {
   position: relative;
   background: rgba(20, 20, 24, 0.3);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: none;
-  border-radius: 9999px;
-  
-  /* Масштаб x3 от веб-версии */
-  padding: 32px 110px; 
-  font-weight: 600;
-  font-size: 48px;
-  color: #E0D7F8; /* Светлый фиолетовый */
-  
-  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
-  box-shadow: 0 20px 80px rgba(0,0,0,0.5); /* Тень мощнее */
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: none; border-radius: 9999px;
+  padding: 36px 120px; 
+  font-weight: 600; font-size: 52px;
+  color: #E0D7F8;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.65);
+  box-shadow: 0 24px 90px rgba(0,0,0,0.55);
   letter-spacing: 0.02em;
 }
-
-/* ОБВОДКА (ГРАДИЕНТ) */
 .glass-pill-link::before {
-  content: ''; position: absolute; inset: 0; border-radius: 9999px; padding: 3px; /* Толщина обводки */
+  content: ''; position: absolute; inset: 0; border-radius: 9999px; padding: 3px;
   background: 
     radial-gradient(60% 50% at 50% 0%, rgba(224, 215, 248, 1) 0%, transparent 100%),
     linear-gradient(rgba(142, 124, 195, 0.4), rgba(142, 124, 195, 0.4));
-  -webkit-mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
   pointer-events: none;
 }
-
-/* ВНУТРЕННЕЕ СВЕЧЕНИЕ */
 .glass-pill-link::after {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: 9999px;
-  box-shadow: inset 0 2px 0 0 rgba(255,255,255,0.05);
+  content: ''; position: absolute; inset: 0; border-radius: 9999px;
+  box-shadow: inset 0 2px 0 0 rgba(255,255,255,0.06);
   pointer-events: none;
 }
 
-
-/* --- МОДАЛКА (БЕЗ ИЗМЕНЕНИЙ) --- */
+/* МОДАЛКА */
 .story-modal-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.92); z-index: 10000;
@@ -382,7 +338,7 @@ defineExpose({
 }
 .story-preview-container {
   background: #000; flex-grow: 1; min-height: 200px;
-  display: flex; align-items: center; justify-content: center; position: relative;
+  display: flex; align-items: center; justify-content: center;
   overflow: hidden; padding: 20px;
 }
 .story-preview-img {
