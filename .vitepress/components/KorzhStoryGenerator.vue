@@ -29,7 +29,7 @@
             <div class="story-address">{{ address || 'Кофейня Корж' }}</div>
           </div>
 
-          <!-- ЦЕНТР: ОДИН ТЕКСТОВЫЙ БЛОК -->
+          <!-- ЦЕНТР: ТЕКСТОВАЯ КАРТОЧКА -->
           <div class="story-body">
             <div v-if="formattedText" class="text-card">
               <p class="text-content">{{ formattedText }}</p>
@@ -39,12 +39,12 @@
           <!-- ГРАДИЕНТ -->
           <div class="bottom-gradient"></div>
 
-          <!-- КНОПКА -->
+          <!-- ФУТЕР: КНОПКА + ТЕКСТ -->
           <div class="story-footer">
             <div class="link-button">
-               <img src="/favicon.svg" class="btn-logo" alt="" />
                <span class="btn-text">cffx.ru/korzh</span>
             </div>
+            <div class="footer-tagline">Ваш Сигнал – тому кто решает</div>
           </div>
 
         </div>
@@ -97,79 +97,48 @@ const props = defineProps({
   ticket: String,
   date: String,
   address: String,
-  allText: String  // ВСЁ из всех полей
+  allText: String
 });
 
 const showModal = ref(false);
 const generatedImageUrl = ref(null);
 const generatedBlob = ref(null);
 
-// УМНОЕ ФОРМАТИРОВАНИЕ ТЕКСТА
+// ПРОСТАЯ И НАДЁЖНАЯ ЛОГИКА ФОРМАТИРОВАНИЯ
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
   
   let text = props.allText.trim();
   
-  // ШАГ 1: Определяем, это текст с подсказками (слова без знаков препинания) или обычный текст
-  // Если в тексте почти нет знаков препинания, но много слов — вероятно подсказки
-  const words = text.split(/\s+/);
-  const hasMultipleWords = words.length > 2;
-  const hasPunctuation = /[.,!?;:]/.test(text);
+  // 1. Добавляем пробелы после знаков препинания, если их нет
+  text = text.replace(/\.([^\s.])/g, '. $1');
+  text = text.replace(/,([^\s,])/g, ', $1');
+  text = text.replace(/!([^\s!])/g, '! $1');
+  text = text.replace(/\?([^\s?])/g, '? $1');
   
-  // Если много слов без пунктуации — это подсказки, расставляем запятые
-  if (hasMultipleWords && !hasPunctuation) {
-    text = words.join(', ');
+  // 2. Убираем множественные пробелы
+  text = text.replace(/\s+/g, ' ');
+  
+  // 3. Первая буква заглавная
+  text = text.charAt(0).toUpperCase() + text.slice(1);
+  
+  // 4. Заглавная буква после точки
+  text = text.replace(/\.\s+([а-яёa-z])/gi, (match, letter) => {
+    return '. ' + letter.toUpperCase();
+  });
+  
+  // 5. Точка в конце, если нет
+  if (!/[.!?]$/.test(text)) {
+    text += '.';
   }
   
-  // ШАГ 2: Нормализуем пробелы после знаков препинания
-  text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
-  
-  // ШАГ 3: Разбиваем на предложения (по точкам, восклицательным, вопросительным)
-  const sentences = text.split(/([.!?]+\s*)/).filter(Boolean);
-  
-  // ШАГ 4: Собираем предложения, делая первую букву заглавной
-  let result = '';
-  for (let i = 0; i < sentences.length; i++) {
-    let part = sentences[i].trim();
-    if (!part) continue;
-    
-    // Если это знаки препинания (. ! ?), просто добавляем
-    if (/^[.!?]+$/.test(part)) {
-      result += part + ' ';
-      continue;
-    }
-    
-    // Делаем первую букву заглавной
-    if (part.length > 0) {
-      part = part.charAt(0).toUpperCase() + part.slice(1);
-    }
-    
-    result += part;
-    
-    // Если следующий элемент не знак препинания, добавляем пробел
-    if (i + 1 < sentences.length && !/^[.!?]+$/.test(sentences[i + 1])) {
-      result += ' ';
-    }
-  }
-  
-  result = result.trim();
-  
-  // ШАГ 5: Если в конце нет точки, добавляем
-  if (!/[.!?]$/.test(result)) {
-    result += '.';
-  }
-  
-  return result;
+  return text;
 });
 
 const bgClass = computed(() => {
   if (props.address?.includes('Куйбышева')) return 'bg-1';
   if (props.address?.includes('Льва Толстого')) return 'bg-2';
   return 'bg-default';
-});
-
-onMounted(() => {
-  // Initialization if needed
 });
 
 const loadLibrary = () => {
@@ -182,7 +151,7 @@ const loadLibrary = () => {
       const backup = document.createElement('script');
       backup.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
       backup.onload = () => resolve(window.html2canvas);
-      backup.onerror = () => reject(new Error('Failed to load'));
+      backup.onerror = () => reject(new Error('Failed'));
       document.head.appendChild(backup);
     };
     document.head.appendChild(script);
@@ -218,7 +187,7 @@ const shareOrDownload = async () => {
     try {
       await navigator.share({ files: [file] });
       return;
-    } catch (err) { console.log('Share cancelled'); }
+    } catch (err) { console.log('Cancelled'); }
   }
   const link = document.createElement('a');
   link.download = `signal-${props.ticket}.png`;
@@ -246,46 +215,46 @@ defineExpose({ generateAndShare });
 }
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 2;
-  background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
 }
 
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 220px 60px 260px 60px;
+  padding: 180px 60px 200px 60px;
   display: flex; flex-direction: column; justify-content: space-between;
 }
 
 /* ВЕРХ */
 .story-header { 
-  display: flex; flex-direction: column; align-items: center; gap: 36px; 
+  display: flex; flex-direction: column; align-items: center; gap: 40px; 
   text-align: center; width: 100%;
 }
 
 .story-main-title {
-  font-size: 68px;
-  font-weight: 600;
-  line-height: 1.0; 
-  letter-spacing: 0.25em;
+  font-size: 72px;
+  font-weight: 300;
+  line-height: 1.1; 
+  letter-spacing: 0.15em;
   margin: 0; text-transform: uppercase; color: #fff; 
-  text-shadow: 0 4px 24px rgba(0,0,0,0.75);
+  text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
 .glass-pill-info {
   background: rgba(30, 30, 32, 0.4); backdrop-filter: blur(24px); 
   border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 100px; 
-  padding: 22px 48px;
-  display: inline-flex; align-items: center; gap: 28px;
-  font-size: 38px; font-weight: 400; 
+  padding: 24px 50px;
+  display: inline-flex; align-items: center; gap: 32px;
+  font-size: 40px; font-weight: 400; 
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
-.info-logo { width: 44px; height: 44px; object-fit: contain; }
-.info-ticket { color: #fff; letter-spacing: 0.08em; }
-.info-divider { color: rgba(255,255,255,0.35); font-weight: 300; }
-.info-date { color: #fff; letter-spacing: 0.04em; }
+.info-logo { width: 48px; height: 48px; object-fit: contain; }
+.info-ticket { color: #fff; letter-spacing: 0.1em; }
+.info-divider { color: rgba(255,255,255,0.3); font-weight: 300; }
+.info-date { color: rgba(255,255,255,0.85); letter-spacing: 0.05em; }
 
 .story-address { 
-  font-size: 40px; font-weight: 500; color: rgba(255,255,255,0.95); 
-  letter-spacing: 0.04em; text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  font-size: 42px; font-weight: 500; color: rgba(255,255,255,0.95); 
+  letter-spacing: 0.05em; text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
 /* ЦЕНТР */
@@ -295,22 +264,25 @@ defineExpose({ generateAndShare });
   padding-top: 60px;
 }
 
-/* Текстовая карточка (Метаморфоз) */
+/* Текстовая карточка (ОРИГИНАЛЬНЫЙ ДИЗАЙН) */
 .text-card {
   width: 98%; position: relative;
-  background: #1f1f1f; border-radius: 48px; padding: 56px 48px;
+  background: rgba(30, 30, 32, 0.75);
+  backdrop-filter: blur(40px);
+  border-radius: 48px; 
+  padding: 60px 50px;
   box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
-.text-card::before {
-  content: ''; position: absolute; inset: 0; border-radius: 48px; padding: 2px;
-  background: linear-gradient(135deg, rgba(224, 215, 248, 0.4) 0%, rgba(193, 181, 240, 0.1) 50%, transparent 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
-  pointer-events: none;
-}
+
 .text-content {
-  margin: 0; font-size: 50px; font-weight: 350;
-  line-height: 1.4; color: #e0e0e0; text-align: center; letter-spacing: 0.01em;
+  margin: 0; 
+  font-size: 52px; 
+  font-weight: 400;
+  line-height: 1.4; 
+  color: #e0e0e0;
+  text-align: center; 
+  letter-spacing: 0.01em;
 }
 
 /* ГРАДИЕНТ */
@@ -321,20 +293,37 @@ defineExpose({ generateAndShare });
 }
 
 /* ФУТЕР */
-.story-footer { position: relative; z-index: 30; display: flex; justify-content: center; }
+.story-footer { 
+  position: relative; z-index: 30; 
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+}
 
 .link-button {
   background: linear-gradient(90deg, #E0D7F8 0%, #C1B5F0 100%);
-  border-radius: 100px; padding: 34px 96px;
-  display: flex; align-items: center; gap: 30px;
+  border-radius: 100px; 
+  padding: 36px 100px;
+  display: flex; align-items: center; justify-content: center;
   box-shadow: 0 20px 60px rgba(142, 124, 195, 0.25);
 }
-.btn-logo {
-  width: 60px; height: 60px; object-fit: contain;
-  filter: brightness(0) saturate(100%) invert(8%) sepia(8%) saturate(439%) hue-rotate(201deg) brightness(96%) contrast(93%);
-}
+
 .btn-text {
-  font-size: 48px; font-weight: 600; color: #1a1a1a; letter-spacing: 0.03em;
+  font-size: 50px; 
+  font-weight: 600; 
+  color: #1a1a1a; 
+  letter-spacing: 0.04em;
+}
+
+/* ТЕКСТ ПОД КНОПКОЙ (МЕТАМОРФОЗ ГРАДИЕНТ) */
+.footer-tagline {
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(224, 215, 248, 0.9) 0%, rgba(193, 181, 240, 0.7) 50%, rgba(142, 124, 195, 0.5) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 12px rgba(142, 124, 195, 0.3);
 }
 
 /* МОДАЛКА */
