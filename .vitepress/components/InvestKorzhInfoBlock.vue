@@ -157,7 +157,7 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 
       <!-- ТЕКСТ -->
       <p class="card-text">
-        Garage Barcelona is one of Spain's leading craft breweries. With Untappd top-ranked IPAs they have increased their revenue via two Garage bars and distribution across 34 countries worldwide. They are raising funds for brewery expansion and to open a new flagship bar in the centre of Barcelona
+        Корж — это душа кофейной Самары и пространство про людей. Благодаря легендарным круассанам и искренней заботе о гостях, они выросли в семью из 8 уютных локаций с особым характером. Скоро команда планирует привлечь инвестиции для открытия новых кофеен, чтобы делиться своей атмосферой и любовью к качеству с еще большим количеством гостей.
       </p>
 
       <a href="https://korzhcoffee.ru" target="_blank" class="website-link">korzhcoffee.ru</a>
