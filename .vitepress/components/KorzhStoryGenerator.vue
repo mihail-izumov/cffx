@@ -1,16 +1,16 @@
 <template>
   <div>
-    <!-- 1. СКРЫТЫЙ ШАБЛОН (Рендер) -->
+    <!-- 1. СКРЫТЫЙ ШАБЛОН ГЕНЕРАЦИИ (1080x1920) -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
         
-        <!-- Фон -->
+        <!-- ФОН -->
         <div class="story-bg-image"></div>
         <div class="story-bg-overlay"></div>
 
         <div class="story-content safe-area">
           
-          <!-- ВЕРХ: Заголовок и Инфо -->
+          <!-- ВЕРХ: ЗАГОЛОВОК И ИНФО -->
           <div class="story-header">
             <h1 class="story-main-title">
               МОЙ СИГНАЛ<br>В КОРЖ
@@ -30,23 +30,19 @@
             </div>
           </div>
 
-          <!-- ЦЕНТР: Контент (Текст -> Баблы) -->
+          <!-- ЦЕНТР: ТЕКСТ + ЭМОЦИЯ -->
           <div class="story-body-section">
-            <div class="content-scroll-wrapper">
+            <div class="content-wrapper">
               
               <!-- 1. Текст пользователя (если есть) -->
               <div v-if="details" class="user-details-text">
                 {{ details }}
               </div>
-
-              <!-- 2. Теги (компактные и фиолетовые) -->
-              <div v-if="displayTags && displayTags.length > 0" class="tags-wrapper">
-                <span 
-                  v-for="tag in displayTags" 
-                  :key="tag" 
-                  class="tag-pill-purple"
-                >
-                  {{ tag }}
+              
+              <!-- 2. Эмоция (если нет текста, показываем крупнее) -->
+              <div v-if="emotion" class="emotion-wrapper">
+                <span class="emotion-pill">
+                  {{ emotion }}
                 </span>
               </div>
 
@@ -56,9 +52,9 @@
           <!-- ГРАДИЕНТ (Черный снизу) -->
           <div class="bottom-fade-gradient"></div>
 
-          <!-- НИЗ: Кнопка (Ваш дизайн) -->
+          <!-- НИЗ: ССЫЛКА (Копия вашего дизайна) -->
           <div class="story-footer">
-            <button class="glass-pill-button">
+            <button class="glass-pill-link">
               cffx.ru/korzh
             </button>
           </div>
@@ -67,10 +63,11 @@
       </div>
     </div>
 
-    <!-- 2. МОДАЛЬНОЕ ОКНО -->
+    <!-- 2. МОДАЛЬНОЕ ОКНО ПРЕДПРОСМОТРА -->
     <transition name="modal-fade">
       <div v-if="showModal" class="story-modal-overlay" @click.self="closeModal">
         <div class="story-modal">
+          
           <div class="story-modal-header">
             <h3>Ваша сторис готова 📸</h3>
             <button class="close-icon-btn" @click="closeModal">
@@ -80,6 +77,7 @@
           
           <div class="story-preview-container">
             <img v-if="generatedImageUrl" :src="generatedImageUrl" class="story-preview-img" alt="Story Preview" />
+            
             <div v-else class="loading-spinner">
               <img src="/favicon.svg" class="spinner-logo" alt="loading" />
               <div class="spinner-text">Создаем магию...</div>
@@ -95,6 +93,7 @@
               Сохраните картинку и выложите в сторис с отметкой <b>@korzh_coffee</b>
             </p>
           </div>
+
         </div>
       </div>
     </transition>
@@ -102,28 +101,20 @@
 </template>
 
 <script setup>
-import { ref, defineExpose, computed, onMounted } from 'vue';
+import { ref, defineExpose, onMounted } from 'vue';
 
 const props = defineProps({
   ticket: String,
   date: String,
   address: String,
-  tags: Array,
-  details: String // Важно: убедитесь, что родитель передает этот проп!
+  details: String,  // Текст проблемы
+  emotion: String   // Выбранная эмоция
 });
 
 const showModal = ref(false);
 const generatedImageUrl = ref(null);
 const generatedBlob = ref(null);
 const isMobile = ref(false);
-
-const displayTags = computed(() => {
-  // Если нет ни тегов, ни текста — показываем заглушки
-  if ((!props.tags || props.tags.length === 0) && !props.details) {
-    return ['Сигнал', 'Впечатление'];
-  }
-  return props.tags || [];
-});
 
 onMounted(() => {
   isMobile.value = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -152,6 +143,7 @@ const generateAndShare = async () => {
   
   try {
     await loadLibrary();
+    // Даем браузеру время отрисовать шрифты и картинки
     await new Promise(r => setTimeout(r, 600)); 
 
     const element = document.getElementById('story-capture-area');
@@ -209,8 +201,10 @@ defineExpose({
 </script>
 
 <style scoped>
+/* УТИЛИТЫ */
 .story-wrapper-hidden { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -1000; visibility: visible; }
 
+/* ШАБЛОН 1080x1920 */
 .story-template { 
   width: 1080px; height: 1920px; position: relative;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
@@ -229,113 +223,141 @@ defineExpose({
   background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.6) 50%, #000 100%);
 }
 
+/* КОНТЕНТ */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 240px 60px 240px 60px;
+  padding: 240px 60px 240px 60px; /* Safe Area для Instagram */
   display: flex; flex-direction: column; align-items: center; 
 }
 
-/* ВЕРХНЯЯ ЧАСТЬ */
-.story-header { display: flex; flex-direction: column; align-items: center; gap: 40px; width: 100%; text-align: center; margin-bottom: 50px; }
+/* --- ВЕРХНЯЯ ЧАСТЬ --- */
+.story-header { 
+  display: flex; flex-direction: column; align-items: center; gap: 40px; 
+  width: 100%; text-align: center; margin-bottom: 40px; 
+}
 
 .story-main-title {
-  font-size: 72px; font-weight: 600; line-height: 1.1; letter-spacing: 0.1em;
+  font-size: 72px; font-weight: 500; line-height: 1.1; letter-spacing: 0.05em;
   margin: 0; text-transform: uppercase; color: #fff;
   text-shadow: 0 4px 16px rgba(0,0,0,0.6);
 }
 
 .glass-pill-info {
-  background: rgba(20, 20, 20, 0.4);
+  background: rgba(25, 25, 28, 0.4);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 100px;
-  padding: 16px 48px;
-  display: inline-flex; align-items: center; gap: 24px;
-  font-size: 34px; font-weight: 500; font-family: "SF Mono", monospace;
+  padding: 20px 50px; /* Больше паддингов */
+  display: inline-flex; align-items: center; gap: 28px;
+  font-size: 38px; font-weight: 500; font-family: "SF Mono", monospace;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
-.info-logo { width: 40px; height: 40px; object-fit: contain; }
+.info-logo { 
+  width: 48px; height: 48px; 
+  object-fit: contain; display: block; 
+}
 .info-ticket { color: #fff; letter-spacing: 1px; }
-.info-divider { color: rgba(255,255,255,0.3); }
-.info-date { color: rgba(255,255,255,0.8); }
+.info-divider { color: rgba(255,255,255,0.3); font-weight: 300; }
+.info-date { 
+  color: rgba(255,255,255,0.9); 
+  letter-spacing: normal; /* Исправляем артефакты */
+}
 
 .story-address {
-  font-size: 40px; color: rgba(255,255,255,0.95); font-weight: 400; letter-spacing: 0.02em;
+  font-size: 40px; color: rgba(255,255,255,0.9); font-weight: 400; letter-spacing: 0.02em;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-/* СЕКЦИЯ КОНТЕНТА (ТЕКСТ + БАБЛЫ) */
+/* --- ЦЕНТРАЛЬНАЯ ЧАСТЬ --- */
 .story-body-section {
   flex-grow: 1; width: 100%; position: relative;
   display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-  overflow: hidden;
+  padding-top: 40px;
 }
-.content-scroll-wrapper {
-  display: flex; flex-direction: column; align-items: center; gap: 40px; width: 100%;
+.content-wrapper {
+  display: flex; flex-direction: column; align-items: center; gap: 60px; width: 100%;
 }
 
 .user-details-text {
-  font-size: 48px; line-height: 1.35; color: #fff; text-align: center;
-  font-weight: 400; font-style: italic; opacity: 1;
-  max-width: 90%;
-  text-shadow: 0 4px 12px rgba(0,0,0,0.9);
-  white-space: pre-wrap; margin-bottom: 20px;
+  font-size: 52px; line-height: 1.3; color: #fff; text-align: center;
+  font-weight: 400; font-style: normal;
+  max-width: 95%;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.8);
+  white-space: pre-wrap;
 }
 
-.tags-wrapper {
-  display: flex; flex-wrap: wrap; justify-content: center; align-content: center; 
-  gap: 16px; /* Уменьшено расстояние между баблами */
+.emotion-wrapper {
+  display: flex; justify-content: center;
 }
-/* Единый стиль для всех баблов (фиолетовый) */
-.tag-pill-purple {
-  font-size: 38px; font-weight: 500; color: #fff;
-  padding: 16px 40px; border-radius: 100px;
-  background: rgba(224, 215, 248, 0.15); /* Легкий фиолетовый фон */
-  border: 2px solid rgba(224, 215, 248, 0.4); /* Фиолетовая обводка */
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+.emotion-pill {
+  /* Стиль "тега" но премиальный */
+  font-size: 46px; font-weight: 600; color: #E0D7F8;
+  padding: 24px 60px; border-radius: 100px;
+  
+  background: rgba(224, 215, 248, 0.15);
+  border: 2px solid rgba(224, 215, 248, 0.4);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 40px rgba(142, 124, 195, 0.2);
+  text-transform: capitalize;
 }
 
-/* ГРАДИЕНТ (ЧЕРНЫЙ СНИЗУ) */
+/* --- НИЗ И КНОПКА --- */
 .bottom-fade-gradient {
-  position: absolute; bottom: 0; left: 0; width: 100%; height: 650px; z-index: 20;
-  /* Плотный черный градиент */
-  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.9) 60%, #000 100%);
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 700px; z-index: 20;
+  /* Градиент до полностью черного */
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 50%, #000 100%);
   pointer-events: none;
 }
 
-/* ФУТЕР (КНОПКА) */
 .story-footer { 
   position: relative; z-index: 30; width: 100%; display: flex; justify-content: center; 
-  margin-top: -80px; 
+  margin-top: -100px; /* Поднимаем в зону черного градиента */
 }
 
-/* КНОПКА (Glass Pill Button - копия вашего стиля) */
-.glass-pill-button {
+/* КНОПКА (ТОЧНАЯ КОПИЯ glass-pill, МАСШТАБИРОВАННАЯ) */
+.glass-pill-link {
   position: relative;
   background: rgba(20, 20, 24, 0.3);
-  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: none;
   border-radius: 9999px;
-  padding: 32px 110px; /* Большие паддинги для масштаба */
+  
+  /* Масштаб x3 от веб-версии */
+  padding: 32px 110px; 
   font-weight: 600;
   font-size: 48px;
-  color: #fff; /* Белый цвет текста */
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  color: #E0D7F8; /* Светлый фиолетовый */
+  
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  box-shadow: 0 20px 80px rgba(0,0,0,0.5); /* Тень мощнее */
   letter-spacing: 0.02em;
 }
-.glass-pill-button::before {
-  content: ''; position: absolute; inset: 0; border-radius: 9999px; padding: 2px;
-  background: radial-gradient(60% 50% at 50% 0%, rgba(224, 215, 248, 1) 0%, transparent 100%),
-              linear-gradient(rgba(142, 124, 195, 0.4), rgba(142, 124, 195, 0.4));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
+
+/* ОБВОДКА (ГРАДИЕНТ) */
+.glass-pill-link::before {
+  content: ''; position: absolute; inset: 0; border-radius: 9999px; padding: 3px; /* Толщина обводки */
+  background: 
+    radial-gradient(60% 50% at 50% 0%, rgba(224, 215, 248, 1) 0%, transparent 100%),
+    linear-gradient(rgba(142, 124, 195, 0.4), rgba(142, 124, 195, 0.4));
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
   pointer-events: none;
 }
 
-/* МОДАЛЬНОЕ ОКНО */
+/* ВНУТРЕННЕЕ СВЕЧЕНИЕ */
+.glass-pill-link::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 9999px;
+  box-shadow: inset 0 2px 0 0 rgba(255,255,255,0.05);
+  pointer-events: none;
+}
+
+
+/* --- МОДАЛКА (БЕЗ ИЗМЕНЕНИЙ) --- */
 .story-modal-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.92); z-index: 10000;
