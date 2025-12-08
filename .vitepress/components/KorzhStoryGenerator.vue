@@ -233,27 +233,23 @@ defineExpose({ generateAndShare });
   text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-/* ПЛАШКА С НОМЕРОМ — лёгкий фиолетовый флер + размытие */
+/* ПЛАШКА С НОМЕРОМ — очень лёгкий фиолетовый флер + размытие + 1px бордюр */
 .glass-pill-info {
   display: inline-flex; align-items: center; gap: 26px;
   padding: 20px 48px;
   border-radius: 100px;
   font-size: 34px; font-weight: 400; 
   
-  /* Лёгкий фиолетовый фон с размытием */
-  background: linear-gradient(
-    135deg,
-    rgba(224, 215, 248, 0.12) 0%,
-    rgba(193, 181, 240, 0.08) 100%
-  );
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
+  /* Очень лёгкий, почти прозрачный фон */
+  background: rgba(224, 215, 248, 0.08);
+  backdrop-filter: blur(35px);
+  -webkit-backdrop-filter: blur(35px);
   
   /* Тонкая обводка 1px */
-  border: 1px solid rgba(224, 215, 248, 0.4);
+  border: 1px solid rgba(224, 215, 248, 0.3);
   box-shadow: 
     0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .info-icon   { font-size: 40px; line-height: 1; }
@@ -274,26 +270,26 @@ defineExpose({ generateAndShare });
   padding-top: 56px;
 }
 
-/* КАРТОЧКА ОТЗЫВА — чуть белее фон, лучшая читаемость, обводка 1px */
+/* КАРТОЧКА ОТЗЫВА — лёгкая белизна, прозрачность, 1px бордюр */
 .text-card {
   width: 98%; 
   border-radius: 48px;
   padding: 54px 44px;
   
-  /* Более белый/читаемый фон */
+  /* Фон чуть белее и прозрачнее */
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.14) 0%,
-    rgba(224, 215, 248, 0.10) 100%
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(224, 215, 248, 0.05) 100%
   );
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(45px);
+  -webkit-backdrop-filter: blur(45px);
   
   /* Обводка 1px */
-  border: 1px solid rgba(224, 215, 248, 0.4);
+  border: 1px solid rgba(224, 215, 248, 0.35);
   box-shadow: 
     0 20px 60px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .text-content {
@@ -302,8 +298,8 @@ defineExpose({ generateAndShare });
   font-weight: 400;
   line-height: 1.4; 
   
-  /* Лёгкий фиолетовый флер в тексте */
-  color: #EFE8FF;
+  /* Светлый текст с лёгким оттенком лаванды */
+  color: #F0EBFF;
   text-align: center; 
   letter-spacing: 0.01em;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -316,17 +312,17 @@ defineExpose({ generateAndShare });
   pointer-events: none;
 }
 
-/* ФУТЕР: фиксированное положение, поднято выше */
+/* ФУТЕР: фиксированное положение */
 .story-footer { 
   position: absolute;
-  bottom: 120px;
+  bottom: 150px; /* Вернул чуть ниже, так как 120 было слишком низко */
   left: 0;
   width: 100%;
   z-index: 30; 
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* КНОПКА — обводка 1px */
+/* КНОПКА — 1px бордюр, градиент */
 .link-button {
   border-radius: 100px; 
   padding: 20px 170px;
@@ -334,17 +330,17 @@ defineExpose({ generateAndShare });
   
   /* Градиентный фон кнопки */
   background: linear-gradient(90deg, 
-    rgba(224, 215, 248, 0.95) 0%, 
-    rgba(193, 181, 240, 0.90) 100%
+    rgba(224, 215, 248, 0.92) 0%, 
+    rgba(193, 181, 240, 0.88) 100%
   );
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
   
   /* Обводка 1px */
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow: 
-    0 16px 48px rgba(142, 124, 195, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    0 16px 48px rgba(142, 124, 195, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .btn-text {
