@@ -92,7 +92,7 @@ onUnmounted(() => {
             <div class="stat-main">
               <div class="stat-value">{{ establishment.index }}</div>
             </div>
-            <div class="stat-description">Score всего-всего бизнеса</div>
+            <div class="stat-description">Аналитика 29,600+ уникальных отзывов</div>
           </div>
         </div>
 
@@ -142,12 +142,12 @@ onUnmounted(() => {
       <div class="control-panel">
         <div class="button-container">
           
-          <a href="/invest/smr" class="action-button ticket-button" target="_blank" rel="noopener noreferrer">
-            Смотреть Индекс
+          <a href="/invest/sim" class="action-button ticket-button" target="_blank" rel="noopener noreferrer">
+            Сравнить с рынком
           </a>
 
-          <a href="https://t.me/runScale" class="action-button review-button" target="_blank" rel="noopener noreferrer">
-            Получать Пульс
+          <a href="/invest/smr" class="action-button review-button" target="_blank" rel="noopener noreferrer">
+            Смотреть Индекс
             <svg class="button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="m9 18 6-6-6-6"/>
             </svg>
