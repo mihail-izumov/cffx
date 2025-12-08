@@ -134,7 +134,7 @@ onUnmounted(() => {
             <div class="stat-main">
               <div class="stat-metric-badge">{{ establishment.influenceLevel }}</div>
             </div>
-            <div class="stat-description">Сила эффекта на рынок</div>
+            <div class="stat-description">Сила эффекта на рынок Самары</div>
           </div>
         </div>
       </div>
