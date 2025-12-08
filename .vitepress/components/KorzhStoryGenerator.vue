@@ -204,10 +204,10 @@ defineExpose({ generateAndShare });
   background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg');
 }
 .story-bg-image.bg-1 {
-  background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh-kuybisheva103-1080x1920(2).jpg');
+  background-image: url('/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg');
 }
 .story-bg-image.bg-2 {
-  background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh-lva-tolstogo-1080x1920.jpg');
+  background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg');
 }
 
 .story-bg-overlay {
