@@ -210,10 +210,10 @@ defineExpose({ generateAndShare });
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
 }
 
-/* Центрируем блоки: равные паддинги сверху/снизу */
+/* Отцентровка с равными отступами сверху и снизу */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 200px 60px 200px 60px;
+  padding: 180px 60px 180px 60px;
   display: flex; flex-direction: column; align-items: center;
 }
 
@@ -233,25 +233,27 @@ defineExpose({ generateAndShare });
   text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-/* ПЛАШКА С НОМЕРОМ — лёгкий сиреневый флер + blur, border 1px */
+/* ПЛАШКА С НОМЕРОМ — лёгкий фиолетовый флер + размытие */
 .glass-pill-info {
   display: inline-flex; align-items: center; gap: 26px;
   padding: 20px 48px;
   border-radius: 100px;
   font-size: 34px; font-weight: 400; 
   
-  background-image:
-    linear-gradient(135deg, rgba(224,215,248,0.18), rgba(20,16,40,0.65)),
-    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
-
-  border: 1px solid rgba(224,215,248,0.6);
+  /* Лёгкий фиолетовый фон с размытием */
+  background: linear-gradient(
+    135deg,
+    rgba(224, 215, 248, 0.12) 0%,
+    rgba(193, 181, 240, 0.08) 100%
+  );
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
+  
+  /* Тонкая обводка 1px */
+  border: 1px solid rgba(224, 215, 248, 0.4);
   box-shadow: 
-    0 10px 32px rgba(0,0,0,0.35),
-    inset 0 1px 0 rgba(255,255,255,0.18);
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .info-icon   { font-size: 40px; line-height: 1; }
@@ -272,24 +274,26 @@ defineExpose({ generateAndShare });
   padding-top: 56px;
 }
 
-/* КАРТОЧКА ОТЗЫВА — фон светлее/белее, border 1px, мягкий бело‑сиреневый текст */
+/* КАРТОЧКА ОТЗЫВА — чуть белее фон, лучшая читаемость, обводка 1px */
 .text-card {
   width: 98%; 
   border-radius: 48px;
   padding: 54px 44px;
   
-  background-image:
-    linear-gradient(135deg, rgba(255,255,255,0.42), rgba(255,255,255,0.18)),
-    linear-gradient(135deg, rgba(224,215,248,0.4), rgba(193,181,240,0.08));
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
-
-  border: 1px solid rgba(224,215,248,0.7);
-  backdrop-filter: blur(45px);
-  -webkit-backdrop-filter: blur(45px);
+  /* Более белый/читаемый фон */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(224, 215, 248, 0.10) 100%
+  );
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  
+  /* Обводка 1px */
+  border: 1px solid rgba(224, 215, 248, 0.4);
   box-shadow: 
-    0 22px 70px rgba(0,0,0,0.45),
-    inset 0 1px 0 rgba(255,255,255,0.18);
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .text-content {
@@ -298,11 +302,11 @@ defineExpose({ generateAndShare });
   font-weight: 400;
   line-height: 1.4; 
   
-  /* Лёгкий фиолетовый флер, но читаемо */
-  color: rgba(244, 236, 255, 0.96);
+  /* Лёгкий фиолетовый флер в тексте */
+  color: #EFE8FF;
   text-align: center; 
   letter-spacing: 0.01em;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* НИЖНИЙ ГРАДИЕНТ */
@@ -312,34 +316,35 @@ defineExpose({ generateAndShare });
   pointer-events: none;
 }
 
-/* ФУТЕР: фиксированное положение, чуть выше */
+/* ФУТЕР: фиксированное положение, поднято выше */
 .story-footer { 
   position: absolute;
-  bottom: 210px;   /* подняли кнопку и подпись выше */
+  bottom: 120px;
   left: 0;
   width: 100%;
   z-index: 30; 
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* КНОПКА — border 1px, лёгкий фиолетовый флер */
+/* КНОПКА — обводка 1px */
 .link-button {
   border-radius: 100px; 
   padding: 20px 170px;
   display: flex; align-items: center; justify-content: center;
   
-  background-image:
-    linear-gradient(90deg, rgba(224,215,248,0.96) 0%, rgba(193,181,240,0.92) 100%),
-    linear-gradient(135deg, rgba(224,215,248,0.7), rgba(193,181,240,0.5));
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
-
-  border: 1px solid rgba(255,255,255,0.7);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  /* Градиентный фон кнопки */
+  background: linear-gradient(90deg, 
+    rgba(224, 215, 248, 0.95) 0%, 
+    rgba(193, 181, 240, 0.90) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  
+  /* Обводка 1px */
+  border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 
-    0 18px 52px rgba(142,124,195,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.7);
+    0 16px 48px rgba(142, 124, 195, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .btn-text {
@@ -355,11 +360,11 @@ defineExpose({ generateAndShare });
   font-weight: 400;
   letter-spacing: 0.02em;
   text-align: center;
-  color: rgba(224,215,248,0.9);
+  color: rgba(224, 215, 248, 0.9);
   text-shadow: 0 2px 12px rgba(0,0,0,0.5);
 }
 
-/* МОДАЛКА (оставляем как была) */
+/* МОДАЛКА */
 .modal-overlay { 
   position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000;
   display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px;
