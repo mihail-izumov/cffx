@@ -236,13 +236,14 @@
     </form>
 
     <!-- 3. КОМПОНЕНТ СТОРИС (внутри wrapper) -->
-    <KorzhStoryGenerator 
-      ref="storyGeneratorRef"
-      :ticket="formattedTicketNumber"
-      :date="currentDate.split(' ')[0]"
-      :address="form.coffeeShopAddress"
-      :tags="allStoryTags"
-    />
+<KorzhStoryGenerator 
+  ref="storyGeneratorRef"
+  :ticket="formattedTicketNumber"
+  :date="currentDate.split(' ')[0]"
+  :address="form.coffeeShopAddress"
+  :tags="allStoryTags"
+  :details="form.details"
+/>
 
   </div> <!-- Закрытие signal-form-wrapper -->
 </template>
