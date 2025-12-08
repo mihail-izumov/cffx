@@ -3,22 +3,38 @@
     
     <!-- 1. ЭКРАН УСПЕХА (внутри wrapper) -->
     <div v-if="formSubmitted" class="signal-success-message">
-      <div class="signal-success-text">
-        <h3>Сигнал отправлен ⚡</h3>
-        <p>Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
-        
-        <!-- Кнопка в Telegram -->
-        <a :href="`https://t.me/Anna_Signal?text=Сигнал%20${rawTicketNumber}`" target="_blank" class="signal-telegram-button">Получить ответ</a>
-        
-        <!-- Кнопка Поделиться в сторис -->
-        <button @click="handleShareClick" class="signal-share-btn">
-          Поделиться в Истории
-        </button>
+  <div class="signal-success-text">
+    <h3>Сигнал отправлен ⚡</h3>
+    <p>Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
 
-        <!-- Ссылка на информацию -->
-        <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link">Кто Анна и как работает</a>
-      </div>
+    <div class="signal-success-actions">
+      <a
+        :href="`https://t.me/Anna_Signal?text=Сигнал%20${rawTicketNumber}`"
+        target="_blank"
+        class="signal-telegram-button"
+      >
+        Получить ответ
+      </a>
+
+      <button
+        type="button"
+        @click="handleShareClick"
+        class="signal-share-btn"
+      >
+        Поделиться в Истории
+      </button>
     </div>
+
+    <a
+      href="/signals#знакомьтесь-–-анна"
+      target="_blank"
+      class="signal-secondary-link"
+    >
+      Кто Анна и как работает
+    </a>
+  </div>
+</div>
+
 
     <!-- 2. ФОРМА (внутри wrapper) -->
     <form v-else @submit.prevent="submitForm">
@@ -672,158 +688,164 @@ const handleShareClick = () => {
 
 
 <style scoped>
-:root { 
-  --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-  --signal-font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace; 
+:root {
+  --signal-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --signal-font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Code", "Droid Sans Mono", "Source Code Pro", monospace;
 }
 
-.signal-form-wrapper { 
-  font-family: var(--signal-font-sans); 
-  max-width: 640px; 
-  margin: 40px auto; 
-  background-color: #1E1E20; 
-  border-radius: 24px; 
-  padding: 2rem; 
-  color: #f0f0f0; 
-  border: 1px solid #2c2c2f; 
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); 
+.signal-form-wrapper {
+  font-family: var(--signal-font-sans);
+  max-width: 640px;
+  margin: 40px auto;
+  background-color: #1E1E20;
+  border-radius: 24px;
+  padding: 2rem;
+  color: #f0f0f0;
+  border: 1px solid #2c2c2f;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-.signal-form-header { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  margin-bottom: 2rem; 
-  padding-bottom: 1rem; 
-  border-bottom: 1px solid #2c2c2f; 
+.signal-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #2c2c2f;
 }
 
-.signal-form-title { 
-  font-size: 1.5rem; 
-  font-weight: 600; 
-  color: #fff; 
-  margin: 0; 
+.signal-form-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
 }
 
-.signal-tech-info { 
-  display: flex; 
-  align-items: center; 
-  gap: 1rem; 
-  font-family: var(--signal-font-mono); 
-  font-size: 0.9rem; 
-  color: #888; 
+.signal-tech-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--signal-font-mono);
+  font-size: 0.9rem;
+  color: #888;
 }
 
-.signal-ticket-display { 
-  background-color: #2a2a2e; 
-  color: #9b7fb7; 
-  font-weight: 700; 
-  padding: 0.5rem 1rem; 
-  border-radius: 12px; 
-  letter-spacing: 1px; 
-  font-family: var(--signal-font-mono); 
+.signal-ticket-display {
+  background-color: #2a2a2e;
+  color: #9b7fb7;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  letter-spacing: 1px;
+  font-family: var(--signal-font-mono);
 }
 
-.signal-form-section { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 1.5rem; 
+.signal-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.signal-personal-data-section { 
-  display: grid; 
-  grid-template-columns: 1fr 1fr; 
-  gap: 1rem; 
+.signal-personal-data-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
 
-.signal-question-block { 
-  background-color: #2a2a2e; 
-  border-radius: 16px; 
-  padding: 1.25rem; 
-  border: 1px solid #3a3a3e; 
-  border-left: 4px solid var(--accent-color, #444); 
+.signal-question-block {
+  background-color: #2a2a2e;
+  border-radius: 16px;
+  padding: 1.25rem;
+  border: 1px solid #3a3a3e;
+  border-left: 4px solid var(--accent-color, #444);
 }
 
-.signal-question-block.signal-compact { 
-  padding: 1rem; 
-  border-left-width: 0; 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: space-between; 
+.signal-question-block.signal-compact {
+  padding: 1rem;
+  border-left-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.signal-direction-label { 
-  font-weight: 600; 
-  font-size: 0.75rem; 
-  color: #888; 
-  text-transform: uppercase; 
-  letter-spacing: 0.05em; 
-  margin-bottom: 0.5rem; 
-  display: block; 
+.signal-direction-label {
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  display: block;
 }
 
-.signal-question-help { 
-  font-size: 0.8rem; 
-  color: #888; 
-  margin-bottom: 0.75rem; 
-  line-height: 1.4; 
+.signal-question-help {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
 }
 
-.signal-rotating-phrase-container { 
-  height: 52px; 
+.signal-rotating-phrase-container {
+  height: 52px;
   margin-bottom: 0.75rem;
   display: flex;
-  align-items: flex-start; 
-  overflow: hidden; 
+  align-items: flex-start;
+  overflow: hidden;
 }
 
-.signal-question-label { 
-  font-weight: 500; 
-  font-size: 1rem; 
-  margin: 0; 
+.signal-question-label {
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0;
   color: #f0f0f0;
-  line-height: 1.3; 
+  line-height: 1.3;
   width: 100%;
 }
 
-.fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
-
-.signal-address-select { 
-  width: 100%; 
-  background-color: #242426; 
-  border: 1px solid #444; 
-  border-radius: 10px; 
-  padding: 0.75rem 1rem; 
-  font-size: 0.95rem; 
-  color: #f0f0f0; 
-  transition: all 0.3s ease; 
-  font-family: var(--signal-font-sans); 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
 }
 
-.signal-address-select:focus { 
-  outline: none; 
-  border-color: #B39DC8; 
-  background-color: #2a2a2e; 
-  box-shadow: 0 0 0 3px rgba(179, 157, 200, 0.2); 
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
-.signal-address-select option { 
-  background-color: #2a2a2e; 
-  color: #f0f0f0; 
+.signal-address-select {
+  width: 100%;
+  background-color: #242426;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #f0f0f0;
+  transition: all 0.3s ease;
+  font-family: var(--signal-font-sans);
 }
 
-.signal-address-select option:disabled { color: #666; }
-
-.signal-separator-line { 
-  height: 1px; 
-  background: linear-gradient(90deg, transparent, #2c2c2f 20%, #2c2c2f 80%, transparent); 
-  margin: 2rem 0 1.5rem 0; 
+.signal-address-select:focus {
+  outline: none;
+  border-color: #B39DC8;
+  background-color: #2a2a2e;
+  box-shadow: 0 0 0 3px rgba(179, 157, 200, 0.2);
 }
 
-/* ===============================
-   КНОПКА "КАК РАБОТАЕТ" И ПЕРЕКЛЮЧАТЕЛЬ ПОЛА
-   =============================== */
+.signal-address-select option {
+  background-color: #2a2a2e;
+  color: #f0f0f0;
+}
+
+.signal-address-select option:disabled {
+  color: #666;
+}
+
+.signal-separator-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #2c2c2f 20%, #2c2c2f 80%, transparent);
+  margin: 2rem 0 1.5rem 0;
+}
+
 .signal-controls-row {
   display: flex;
   justify-content: center;
@@ -918,11 +940,6 @@ const handleShareClick = () => {
   transform: scale(1.05);
 }
 
-/* ===============================
-   ГЕНДЕРНЫЕ ЦВЕТА ДЛЯ БЛОКОВ
-   =============================== */
-
-/* Женские цвета для блоков */
 .signal-question-block.gender-female {
   border-left-color: #ff69b4 !important;
 }
@@ -960,7 +977,6 @@ const handleShareClick = () => {
   color: #fff;
 }
 
-/* Мужские цвета для блоков */
 .signal-question-block.gender-male {
   border-left-color: #87ceeb !important;
 }
@@ -976,7 +992,6 @@ const handleShareClick = () => {
   color: #000;
 }
 
-/* Гендерная подсветка для textarea */
 .signal-question-block.gender-female textarea:focus {
   border-color: #ff69b4 !important;
   box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2) !important;
@@ -1009,9 +1024,6 @@ const handleShareClick = () => {
   color: #000;
 }
 
-/* ===============================
-   МОДАЛЬНОЕ ОКНО
-   =============================== */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -1102,39 +1114,37 @@ const handleShareClick = () => {
   box-shadow: 0 8px 20px rgba(155, 127, 183, 0.4);
 }
 
-/* ===============================
-   ОСТАЛЬНЫЕ СТИЛИ
-   =============================== */
-
-textarea, input { 
-  width: 100%; 
-  background-color: #242426; 
-  border: 1px solid #444; 
-  border-radius: 10px; 
-  padding: 0.75rem 1rem; 
-  font-size: 0.95rem; 
-  color: #f0f0f0; 
-  transition: all 0.3s ease; 
-  font-family: var(--signal-font-sans); 
+textarea,
+input {
+  width: 100%;
+  background-color: #242426;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #f0f0f0;
+  transition: all 0.3s ease;
+  font-family: var(--signal-font-sans);
 }
 
-textarea:focus, input:focus { 
-  outline: none; 
-  border-color: var(--accent-color); 
-  background-color: #2a2a2e; 
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent); 
+textarea:focus,
+input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background-color: #2a2a2e;
+  box-shadow: 0 0 0 3px color-mixin(in srgb, var(--accent-color) 20%, transparent);
 }
 
-/* Сиреневая подсветка для имени и телефона */
-input#name:focus, 
+input#name:focus,
 input#telegramPhone:focus {
   border-color: #B39DC8 !important;
   box-shadow: 0 0 0 3px rgba(179, 157, 200, 0.2) !important;
 }
 
-::placeholder { color: #666; }
+::placeholder {
+  color: #666;
+}
 
-/* Стили для подсказок-баблов */
 .signal-suggestions-container {
   display: flex;
   flex-wrap: wrap;
@@ -1190,7 +1200,6 @@ input#telegramPhone:focus {
   transform: scale(1.05);
 }
 
-/* Кнопка сброса к начальным вариантам */
 .signal-reset-bubble {
   font-weight: 600;
   opacity: 0.8;
@@ -1202,47 +1211,52 @@ input#telegramPhone:focus {
   opacity: 1;
 }
 
-.signal-example-hint { 
-  font-size: 0.8rem; 
-  color: #777; 
-  margin: 0.5rem 0 0 0.25rem; 
+.signal-example-hint {
+  font-size: 0.8rem;
+  color: #777;
+  margin: 0.5rem 0 0 0.25rem;
 }
 
-.signal-example-hint b { 
-  color: #aaa; 
-  font-weight: 600; 
+.signal-example-hint b {
+  color: #aaa;
+  font-weight: 600;
 }
 
-.signal-section-divider { 
-  margin: 2.5rem 0; 
-  text-align: center; 
-  position: relative; 
-  color: #888; 
-  font-weight: 500; 
-  font-size: 0.8rem; 
-  text-transform: uppercase; 
-  letter-spacing: 0.1em; 
+.signal-section-divider {
+  margin: 2.5rem 0;
+  text-align: center;
+  position: relative;
+  color: #888;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
-.signal-section-divider::before, .signal-section-divider::after { 
-  content: ''; 
-  position: absolute; 
-  top: 50%; 
-  width: calc(50% - 90px); 
-  height: 1px; 
-  background: #2c2c2f; 
+.signal-section-divider::before,
+.signal-section-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: calc(50% - 90px);
+  height: 1px;
+  background: #2c2c2f;
 }
 
-.signal-section-divider::before { left: 0; } 
-.signal-section-divider::after { right: 0; }
+.signal-section-divider::before {
+  left: 0;
+}
 
-/* ОКОНЧАТЕЛЬНО ИСПРАВЛЕННЫЙ ПОДВАЛ С GRID */
-.signal-form-footer { 
-  margin-top: 2rem; 
+.signal-section-divider::after {
+  right: 0;
+}
+
+.signal-form-footer {
+  margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid #2c2c2f;
   display: grid;
-  grid-template-areas: 
+  grid-template-areas:
     "terms"
     "button";
   gap: 1.5rem;
@@ -1259,40 +1273,39 @@ input#telegramPhone:focus {
   width: 100%;
 }
 
-.signal-checkbox-group { 
-  display: flex; 
+.signal-checkbox-group {
+  display: flex;
   align-items: center;
   gap: 0.75rem;
   width: 100%;
 }
 
-.signal-checkbox-group input { 
+.signal-checkbox-group input {
   accent-color: #B39DC8;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   width: 18px;
   height: 18px;
 }
 
-.signal-checkbox-group label { 
-  font-size: 0.85rem; 
-  color: #999; 
-  line-height: 1.4; 
+.signal-checkbox-group label {
+  font-size: 0.85rem;
+  color: #999;
+  line-height: 1.4;
   flex: 1;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
-/* ИСПРАВЛЕННЫЕ СТИЛИ ССЫЛКИ - УБРАНО ПОДЧЕРКИВАНИЕ */
-.signal-policy-link { 
-  color: #b0b0b0; 
-  text-decoration: none !important; 
+.signal-policy-link {
+  color: #b0b0b0;
+  text-decoration: none !important;
   border-bottom: none !important;
   outline: none !important;
   box-shadow: none !important;
-} 
+}
 
-.signal-policy-link:hover { 
-  text-decoration: underline !important; 
+.signal-policy-link:hover {
+  text-decoration: underline !important;
   border-bottom: none !important;
   color: #C5F946;
 }
@@ -1315,7 +1328,6 @@ input#telegramPhone:focus {
   border-bottom: none !important;
 }
 
-/* Дополнительное переопределение для VitePress */
 .signal-checkbox-group a {
   text-decoration: none !important;
   border-bottom: none !important;
@@ -1328,128 +1340,171 @@ input#telegramPhone:focus {
   border-bottom: none !important;
 }
 
-.signal-submit-btn { 
-  background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 50%, #C5B3D9 100%); 
-  color: #fff; 
-  font-weight: 600; 
-  font-size: 1rem; 
-  border: none; 
-  border-radius: 12px; 
-  padding: 0.9rem 2rem; 
-  cursor: pointer; 
-  transition: all 0.4s ease-out; 
-  background-size: 200% auto; 
-  background-position: 25% 50%; 
+.signal-submit-btn {
+  background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 50%, #C5B3D9 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  padding: 0.9rem 2rem;
+  cursor: pointer;
+  transition: all 0.4s ease-out;
+  background-size: 200% auto;
+  background-position: 25% 50%;
   width: 100%;
   display: block;
 }
 
-.signal-submit-btn:hover:not(:disabled) { 
-  background-position: 75% 50%; 
-  transform: scale(1.02); 
-  box-shadow: 0 10px 20px -5px rgba(155, 127, 183, 0.4); 
+.signal-submit-btn:hover:not(:disabled) {
+  background-position: 75% 50%;
+  transform: scale(1.02);
+  box-shadow: 0 10px 20px -5px rgba(155, 127, 183, 0.4);
 }
 
-.signal-submit-btn:disabled { 
-  opacity: 0.5; 
-  cursor: not-allowed; 
+.signal-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.signal-success-message { 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  text-align: center; 
-  padding: 4rem 2rem 2rem 2rem; 
-  animation: fadeIn 0.5s ease-out; 
+/* ЭКРАН УСПЕХА */
+.signal-success-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem 2rem 2rem;
+  animation: fadeIn 0.5s ease-out;
 }
 
-.signal-success-text h3 { 
-  font-size: 1.5rem; 
-  font-weight: 600; 
-  color: #fff; 
-  margin: 0 0 0.5rem 0; 
+.signal-success-text h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 0.5rem 0;
 }
 
-.signal-success-text p { 
-  color: #b0b0b0; 
-  line-height: 1.6; 
-  margin: 0; 
+.signal-success-text p {
+  color: #b0b0b0;
+  line-height: 1.6;
+  margin: 0;
 }
 
-.signal-telegram-button { 
-  display: inline-block; 
-  background-color: #9b7fb7; 
-  color: #000000; 
-  text-decoration: none; 
-  padding: 0.8rem 1.5rem; 
-  border-radius: 12px; 
-  font-weight: 600; 
-  margin-top: 1.5rem; 
-  transition: all 0.3s ease; 
+/* === НОВЫЕ СТИЛИ КНОПОК УСПЕХА === */
+
+/* Контейнер для двух кнопок */
+.signal-success-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 1.5rem;
+  width: 100%;
 }
 
-.signal-telegram-button:hover { 
-  background-color: #b399c8; 
-  color: #ffffff;  /* ← добавили белый цвет текста */
-  transform: scale(1.05); 
+/* Общие стили для обеих кнопок */
+.signal-success-actions .signal-telegram-button,
+.signal-success-actions .signal-share-btn {
+  flex: 1 1 0; /* Делим ширину поровну */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
 }
 
-.signal-secondary-link { 
-  display: block; 
-  margin-top: 1.5rem; 
-  font-size: 0.85rem; 
-  color: #888; 
-  text-decoration: none; 
-  border-bottom: none !important; 
-  transition: color 0.3s; 
+/* 1. Кнопка "Получить ответ" */
+.signal-telegram-button {
+  background-color: #9b7fb7;
+  color: #000000;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.signal-secondary-link:hover { 
-  color: #B39DC8;  /* ← изменили с #C5F946 на #B39DC8 */
-  text-decoration: underline !important; 
-  border-bottom: none !important; 
+/* Убираем артефакты VitePress и фиксируем цвет текста при ховере */
+.signal-success-message .signal-telegram-button,
+.signal-success-message .signal-telegram-button:hover {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  color: #000000 !important;
 }
 
-@keyframes fadeIn { 
-  from { 
-    opacity: 0; 
-    transform: translateY(10px); 
-  } 
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
-  } 
+.signal-telegram-button:hover {
+  background-color: #b399c8; /* Только осветление фона */
+  transform: scale(1.02);
 }
 
-@media (max-width: 768px) { 
-  .signal-form-wrapper { 
-    padding: 1.5rem; 
-  } 
-  
-  .signal-personal-data-section { 
-    grid-template-columns: 1fr; 
-  } 
-  
-  .signal-form-header { 
-    flex-direction: column; 
-    align-items: center;     /* ← изменили с flex-start на center */
-    text-align: center;      /* ← добавили центрирование текста */
-    gap: 0.5rem; 
+/* 2. Кнопка "Поделиться в Истории" */
+.signal-share-btn {
+  background-color: #3a3a3e;
+  color: #ffffff;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.signal-share-btn:hover {
+  background-color: #4a4a4f;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+.signal-secondary-link {
+  display: block;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: #888;
+  text-decoration: none;
+  border-bottom: none !important;
+  transition: color 0.3s;
+}
+
+.signal-secondary-link:hover {
+  color: #B39DC8;
+  text-decoration: underline !important;
+  border-bottom: none !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* АДАПТИВ */
+@media (max-width: 768px) {
+  .signal-form-wrapper {
+    padding: 1.5rem;
+  }
+
+  .signal-personal-data-section {
+    grid-template-columns: 1fr;
+  }
+
+  .signal-form-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
   .signal-form-title {
-    text-align: center;      /* ← центрируем заголовок */
+    text-align: center;
   }
-  
+
   .signal-tech-info {
-    justify-content: center; /* ← центрируем дату и тикет */
+    justify-content: center;
   }
-  
+
   .signal-rotating-phrase-container {
-    height: 65px; 
+    height: 65px;
   }
-  
+
   .signal-question-label {
     font-size: 0.95rem;
   }
@@ -1457,7 +1512,7 @@ input#telegramPhone:focus {
   .signal-suggestions-container {
     gap: 0.4rem;
   }
-  
+
   .signal-suggestion-bubble {
     font-size: 0.75rem;
     padding: 0.3rem 0.7rem;
@@ -1473,7 +1528,6 @@ input#telegramPhone:focus {
     justify-content: center;
   }
 
-  /* Мобильный подвал остается таким же */
   .signal-checkbox-group {
     gap: 0.5rem;
   }
@@ -1486,28 +1540,15 @@ input#telegramPhone:focus {
   .signal-checkbox-group label {
     font-size: 0.8rem;
   }
-}
 
-.signal-share-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  margin: 1rem 0; /* Отступ сверху и снизу */
-  transition: all 0.3s ease;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
+  /* АДАПТИВ КНОПОК УСПЕХА */
+  .signal-success-actions {
+    flex-direction: column;
+  }
 
-.signal-share-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  .signal-success-actions .signal-telegram-button,
+  .signal-success-actions .signal-share-btn {
+    width: 100%;
+  }
 }
-
 </style>
