@@ -210,10 +210,10 @@ defineExpose({ generateAndShare });
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
 }
 
-/* Центрируем блоки */
+/* Центрируем блоки: равные паддинги сверху/снизу */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 200px 60px 220px 60px;
+  padding: 200px 60px 200px 60px;
   display: flex; flex-direction: column; align-items: center;
 }
 
@@ -233,23 +233,25 @@ defineExpose({ generateAndShare });
   text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-/* ПЛАШКА С НОМЕРОМ — Apple-стиль: почти прозрачная, тонкая яркая рамка */
+/* ПЛАШКА С НОМЕРОМ — лёгкий сиреневый флер + blur, border 1px */
 .glass-pill-info {
   display: inline-flex; align-items: center; gap: 26px;
   padding: 20px 48px;
   border-radius: 100px;
   font-size: 34px; font-weight: 400; 
   
-  /* Максимально прозрачный фон */
-  background: rgba(255, 255, 255, 0.06);
+  background-image:
+    linear-gradient(135deg, rgba(224,215,248,0.18), rgba(20,16,40,0.65)),
+    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+
+  border: 1px solid rgba(224,215,248,0.6);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  
-  /* Тонкая яркая фиолетовая рамка */
-  border: 1.5px solid rgba(224, 215, 248, 0.4);
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 10px 32px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.18);
 }
 
 .info-icon   { font-size: 40px; line-height: 1; }
@@ -270,26 +272,24 @@ defineExpose({ generateAndShare });
   padding-top: 56px;
 }
 
-/* КАРТОЧКА ОТЗЫВА — Apple-стиль: почти прозрачная, лёгкая */
+/* КАРТОЧКА ОТЗЫВА — фон светлее/белее, border 1px, мягкий бело‑сиреневый текст */
 .text-card {
   width: 98%; 
   border-radius: 48px;
   padding: 54px 44px;
   
-  /* Очень прозрачный фон с легким сиреневым оттенком */
-  background: linear-gradient(
-    135deg,
-    rgba(224, 215, 248, 0.08) 0%,
-    rgba(255, 255, 255, 0.04) 100%
-  );
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  
-  /* Тонкая яркая рамка */
-  border: 1.5px solid rgba(224, 215, 248, 0.35);
+  background-image:
+    linear-gradient(135deg, rgba(255,255,255,0.42), rgba(255,255,255,0.18)),
+    linear-gradient(135deg, rgba(224,215,248,0.4), rgba(193,181,240,0.08));
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+
+  border: 1px solid rgba(224,215,248,0.7);
+  backdrop-filter: blur(45px);
+  -webkit-backdrop-filter: blur(45px);
   box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 22px 70px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.18);
 }
 
 .text-content {
@@ -298,11 +298,11 @@ defineExpose({ generateAndShare });
   font-weight: 400;
   line-height: 1.4; 
   
-  /* Еле заметный сиреневый оттенок, но хорошо читается */
-  color: rgba(255, 255, 255, 0.92);
+  /* Лёгкий фиолетовый флер, но читаемо */
+  color: rgba(244, 236, 255, 0.96);
   text-align: center; 
   letter-spacing: 0.01em;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 /* НИЖНИЙ ГРАДИЕНТ */
@@ -312,35 +312,34 @@ defineExpose({ generateAndShare });
   pointer-events: none;
 }
 
-/* ФУТЕР: фиксированное положение */
+/* ФУТЕР: фиксированное положение, чуть выше */
 .story-footer { 
   position: absolute;
-  bottom: 150px;
+  bottom: 210px;   /* подняли кнопку и подпись выше */
   left: 0;
   width: 100%;
   z-index: 30; 
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* КНОПКА — чуть плотнее, но тоже элегантная */
+/* КНОПКА — border 1px, лёгкий фиолетовый флер */
 .link-button {
   border-radius: 100px; 
   padding: 20px 170px;
   display: flex; align-items: center; justify-content: center;
   
-  /* Градиентный фон кнопки */
-  background: linear-gradient(90deg, 
-    rgba(224, 215, 248, 0.95) 0%, 
-    rgba(193, 181, 240, 0.90) 100%
-  );
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  
-  /* Тонкая светлая рамка */
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  background-image:
+    linear-gradient(90deg, rgba(224,215,248,0.96) 0%, rgba(193,181,240,0.92) 100%),
+    linear-gradient(135deg, rgba(224,215,248,0.7), rgba(193,181,240,0.5));
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+
+  border: 1px solid rgba(255,255,255,0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   box-shadow: 
-    0 16px 48px rgba(142, 124, 195, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    0 18px 52px rgba(142,124,195,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.7);
 }
 
 .btn-text {
@@ -356,11 +355,11 @@ defineExpose({ generateAndShare });
   font-weight: 400;
   letter-spacing: 0.02em;
   text-align: center;
-  color: rgba(224, 215, 248, 0.9);
+  color: rgba(224,215,248,0.9);
   text-shadow: 0 2px 12px rgba(0,0,0,0.5);
 }
 
-/* МОДАЛКА */
+/* МОДАЛКА (оставляем как была) */
 .modal-overlay { 
   position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000;
   display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px;
