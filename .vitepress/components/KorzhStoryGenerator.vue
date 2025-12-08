@@ -19,7 +19,7 @@
 
             <div class="story-info-row">
               <div class="glass-pill-info">
-                <!-- ЭМОДЗИ МОЛНИИ -->
+                <!-- ВЕРНУЛ МОЛНИЮ -->
                 <span class="info-icon">⚡️</span>
                 <span class="info-ticket">{{ ticket }}</span>
                 <span class="info-divider">|</span>
@@ -30,9 +30,9 @@
             <div class="story-address">{{ address || 'Кофейня Корж' }}</div>
           </div>
 
-          <!-- ЦЕНТР: ТЕКСТОВАЯ КАРТОЧКА (МЕТАМОРФОЗ) -->
+          <!-- ЦЕНТР: ТЕКСТОВАЯ КАРТОЧКА -->
           <div class="story-body">
-            <div v-if="formattedText" class="text-card">
+            <div v-if="formattedText" class="text-card-meta">
               <p class="text-content">{{ formattedText }}</p>
             </div>
           </div>
@@ -40,12 +40,14 @@
           <!-- ГРАДИЕНТ -->
           <div class="bottom-gradient"></div>
 
-          <!-- ФУТЕР: КНОПКА + ТЕКСТ -->
+          <!-- ФУТЕР -->
           <div class="story-footer">
+            <!-- КНОПКА (Больше, радиус меньше) -->
             <div class="link-button">
                <span class="btn-text">cffx.ru/korzh</span>
             </div>
-            <div class="footer-tagline">Ваш Сигнал – тому, кто решает</div>
+            <!-- ТЕКСТ ПОД КНОПКОЙ (Больше, без маркера) -->
+            <div class="footer-tagline">Ваш Сигнал – тому кто решает</div>
           </div>
 
         </div>
@@ -92,7 +94,7 @@
 </template>
 
 <script setup>
-import { ref, defineExpose, computed } from 'vue';
+import { ref, defineExpose, onMounted, computed } from 'vue';
 
 const props = defineProps({
   ticket: String,
@@ -105,40 +107,38 @@ const showModal = ref(false);
 const generatedImageUrl = ref(null);
 const generatedBlob = ref(null);
 
-// УЛУЧШЕННАЯ ЛОГИКА ФОРМАТИРОВАНИЯ
+// УМНАЯ ОБРАБОТКА ТЕКСТА
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
   
   let text = props.allText.trim();
   
-  // ОПРЕДЕЛЯЕМ: это подсказки (много слов без знаков) или обычный текст
-  const words = text.split(/\s+/);
-  const punctuationCount = (text.match(/[.,!?;:]/g) || []).length;
-  const isHints = words.length > 2 && punctuationCount === 0;
+  // 1. Обработка ПОДСКАЗОК (цепочки слов без запятых)
+  // Находим последовательности слов разделенных пробелами, где нет знаков препинания
+  // Пример: "вкусно быстро" -> "Вкусно, быстро"
   
-  if (isHints) {
-    // ЭТО ПОДСКАЗКИ: добавляем запятые между словами
-    text = words.join(', ');
-  }
+  // Если в тексте нет запятых/точек, но есть пробелы - считаем это набором тегов
+  if (!/[.,!?;:]/.test(text) && /\s/.test(text)) {
+    text = text.replace(/\s+/g, ', ');
+  } 
+  // Если это смешанный текст, попробуем найти группы слов (экспериментально, но безопасно)
+  // Сейчас оставим простое правило: запятые ставятся, если это явные теги.
   
-  // Нормализуем пробелы после знаков препинания
-  text = text.replace(/\.([^\s.])/g, '. $1');
-  text = text.replace(/,([^\s,])/g, ', $1');
-  text = text.replace(/!([^\s!])/g, '! $1');
-  text = text.replace(/\?([^\s?])/g, '? $1');
+  // 2. Стандартная нормализация (пробелы после знаков)
+  text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
   
-  // Убираем множественные пробелы
+  // 3. Убираем лишние пробелы
   text = text.replace(/\s+/g, ' ');
   
-  // Первая буква заглавная
+  // 4. Первая буква заглавная
   text = text.charAt(0).toUpperCase() + text.slice(1);
   
-  // Заглавная буква после точки
-  text = text.replace(/\.\s+([а-яёa-z])/gi, (match, letter) => {
-    return '. ' + letter.toUpperCase();
+  // 5. Заглавная буква после точки
+  text = text.replace(/([.!?]\s+)([а-яёa-z])/gi, (match, sep, char) => {
+    return sep + char.toUpperCase();
   });
-  
-  // Точка в конце
+
+  // 6. Точка в конце
   if (!/[.!?]$/.test(text)) {
     text += '.';
   }
@@ -231,7 +231,7 @@ defineExpose({ generateAndShare });
 
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 180px 60px 200px 60px;
+  padding: 180px 60px 180px 60px; /* Отступы скорректированы под большие элементы внизу */
   display: flex; flex-direction: column; justify-content: space-between;
 }
 
@@ -259,9 +259,9 @@ defineExpose({ generateAndShare });
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 .info-icon { font-size: 42px; line-height: 1; }
-.info-ticket { color: #fff; letter-spacing: 0.1em; } /* БЕЛЫЙ */
-.info-divider { color: rgba(255,255,255,0.3); font-weight: 300; }
-.info-date { color: #fff; letter-spacing: 0.05em; } /* БЕЛЫЙ */
+.info-ticket { color: #fff; letter-spacing: 0.1em; } /* Белый цвет */
+.info-divider { color: rgba(255,255,255,0.4); font-weight: 300; }
+.info-date { color: #fff; letter-spacing: 0.05em; } /* Белый цвет */
 
 .story-address { 
   font-size: 42px; font-weight: 500; color: rgba(255,255,255,0.95); 
@@ -275,38 +275,27 @@ defineExpose({ generateAndShare });
   padding-top: 60px;
 }
 
-/* Текстовая карточка (МЕТАМОРФОЗ С ОБВОДКОЙ) */
-.text-card {
-  width: 98%; 
-  position: relative;
-  background: #1f1f1f; 
-  border-radius: 48px; 
+/* Карточка (МЕТАМОРФОЗ ДИЗАЙН) */
+.text-card-meta {
+  width: 98%; position: relative;
+  background: rgba(31, 31, 31, 0.85); /* Полупрозрачный темный */
+  backdrop-filter: blur(20px);
+  border-radius: 48px;
   padding: 60px 50px;
   box-shadow: 0 30px 80px rgba(0,0,0,0.5);
 }
-
-/* Метаморфозная обводка */
-.text-card::before {
-  content: ''; 
-  position: absolute; 
-  inset: 0; 
-  border-radius: 48px; 
-  padding: 2px;
+/* Обводка градиентом */
+.text-card-meta::before {
+  content: ''; position: absolute; inset: 0; border-radius: 48px; padding: 2px;
   background: linear-gradient(135deg, rgba(224, 215, 248, 0.4) 0%, rgba(193, 181, 240, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor; 
-  mask-composite: exclude;
+  -webkit-mask-composite: xor; mask-composite: exclude;
   pointer-events: none;
 }
 
 .text-content {
-  margin: 0; 
-  font-size: 52px; 
-  font-weight: 400;
-  line-height: 1.4; 
-  color: #e0e0e0;
-  text-align: center; 
-  letter-spacing: 0.01em;
+  margin: 0; font-size: 52px; font-weight: 400;
+  line-height: 1.4; color: #e0e0e0; text-align: center; letter-spacing: 0.01em;
 }
 
 /* ГРАДИЕНТ */
@@ -319,36 +308,35 @@ defineExpose({ generateAndShare });
 /* ФУТЕР */
 .story-footer { 
   position: relative; z-index: 30; 
-  display: flex; flex-direction: column; align-items: center; gap: 30px;
+  display: flex; flex-direction: column; align-items: center; gap: 32px; /* Увеличил отступ между кнопкой и текстом */
 }
 
-/* КНОПКА (БОЛЬШЕ, РАДИУС КАК У КАРТОЧКИ) */
+/* КНОПКА (Больше, радиус как у плашки ~48px) */
 .link-button {
   background: linear-gradient(90deg, #E0D7F8 0%, #C1B5F0 100%);
-  border-radius: 48px; /* Как у текстовой карточки */
-  padding: 42px 140px; /* Больше */
+  border-radius: 48px; /* Радиус как у текстового блока */
+  padding: 40px 120px; /* Увеличил размер */
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 20px 60px rgba(142, 124, 195, 0.25);
+  width: auto;
 }
 
 .btn-text {
-  font-size: 56px; /* Больше */
+  font-size: 54px; /* Увеличил шрифт */
   font-weight: 600; 
   color: #1a1a1a; 
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }
 
-/* ТЕКСТ ПОД КНОПКОЙ (БЕЗ ПОДЧЕРКИВАНИЯ, БОЛЬШЕ РАЗМЕР) */
+/* ТЕКСТ ПОД КНОПКОЙ */
 .footer-tagline {
-  font-size: 38px; /* Пропорционально увеличенной кнопке */
+  font-size: 38px; /* Увеличил пропорционально */
   font-weight: 400;
   letter-spacing: 0.02em;
   text-align: center;
-  /* Градиент Метаморфоз */
-  background: linear-gradient(135deg, rgba(224, 215, 248, 0.9) 0%, rgba(193, 181, 240, 0.7) 50%, rgba(142, 124, 195, 0.5) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #E0D7F8;
+  opacity: 0.8;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
 }
 
 /* МОДАЛКА */
