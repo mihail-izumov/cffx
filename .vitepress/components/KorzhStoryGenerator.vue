@@ -18,7 +18,6 @@
             <h1 class="story-main-title">МОЙ СИГНАЛ<br>В КОРЖ</h1>
 
             <div class="story-info-row">
-              <!-- УБРАЛ ТЕМНЫЙ ФОН, СДЕЛАЛ ПРОЗРАЧНЫМ -->
               <div class="glass-pill-info-light">
                 <span class="info-icon">⚡️</span>
                 <span class="info-ticket">{{ ticket }}</span>
@@ -30,7 +29,7 @@
             <div class="story-address">{{ address || 'Кофейня Корж' }}</div>
           </div>
 
-          <!-- ЦЕНТР: ПРАВИЛЬНАЯ ПЛАШКА -->
+          <!-- ЦЕНТР: ПЛАШКА ОТЗЫВА -->
           <div class="story-body">
             <div v-if="formattedText" class="text-card">
               <p class="text-content">{{ formattedText }}</p>
@@ -81,7 +80,7 @@
             </button>
             <p class="modal-hint">
               Мой Сигнал в Корж ⚡️{{ ticket }}<br>
-              Отправить Сигнал: https://cffx.ru/korzh
+              Отправить Сигнал: https://cffx.ru/корж
             </p>
           </div>
 
@@ -92,7 +91,7 @@
 </template>
 
 <script setup>
-import { ref, defineExpose, onMounted, computed } from 'vue';
+import { ref, defineExpose, computed } from 'vue';
 
 const props = defineProps({
   ticket: String,
@@ -105,30 +104,22 @@ const showModal = ref(false);
 const generatedImageUrl = ref(null);
 const generatedBlob = ref(null);
 
-// ПРОСТАЯ ЛОГИКА БЕЗ ЗАПЯТЫХ
+// ПРОСТАЯ ЛОГИКА ТЕКСТА: пробелы, заглавные, точка в конце
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
   
   let text = props.allText.trim();
   
-  // 1. Пробелы после знаков препинания (если забыли)
+  // Пробел после знаков препинания, если его нет
   text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
-  
-  // 2. Убираем лишние пробелы
+  // Нормализация пробелов
   text = text.replace(/\s+/g, ' ');
-  
-  // 3. Первая буква заглавная
+  // Первая буква заглавная
   text = text.charAt(0).toUpperCase() + text.slice(1);
-  
-  // 4. Заглавная буква после точки
-  text = text.replace(/([.!?]\s+)([а-яёa-z])/gi, (match, sep, char) => {
-    return sep + char.toUpperCase();
-  });
-
-  // 5. Точка в конце
-  if (!/[.!?]$/.test(text)) {
-    text += '.';
-  }
+  // Заглавная после точки/!/? + пробел(ы)
+  text = text.replace(/([.!?]\s+)([а-яёa-z])/gi, (m, sep, ch) => sep + ch.toUpperCase());
+  // Точка в конце, если нет знака
+  if (!/[.!?]$/.test(text)) text += '.';
   
   return text;
 });
@@ -165,8 +156,14 @@ const generateAndShare = async () => {
     const el = document.getElementById('story-capture-area');
     if (!el) return;
     const canvas = await window.html2canvas(el, {
-      scale: 2, useCORS: true, allowTaint: false, logging: false,
-      width: 1080, height: 1920, windowWidth: 1080, windowHeight: 1920,
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+      width: 1080,
+      height: 1920,
+      windowWidth: 1080,
+      windowHeight: 1920,
       backgroundColor: null
     });
     generatedImageUrl.value = canvas.toDataURL('image/png');
@@ -185,7 +182,9 @@ const shareOrDownload = async () => {
     try {
       await navigator.share({ files: [file] });
       return;
-    } catch (err) { console.log('Cancelled'); }
+    } catch (err) {
+      console.log('Share cancelled');
+    }
   }
   const link = document.createElement('a');
   link.download = `signal-${props.ticket}.png`;
@@ -208,7 +207,9 @@ defineExpose({ generateAndShare });
 
 /* ФОН */
 .story-bg-image { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; }
-.story-bg-image.bg-default, .story-bg-image.bg-1, .story-bg-image.bg-2 {
+.story-bg-image.bg-default,
+.story-bg-image.bg-1,
+.story-bg-image.bg-2 {
   background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg');
 }
 .story-bg-overlay {
@@ -216,41 +217,48 @@ defineExpose({ generateAndShare });
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
 }
 
+/* Общий layout.
+   Поднял футер (больше нижний padding) и чуть опустил шапку (больше верхний). */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 180px 60px 180px 60px;
+  padding: 210px 60px 260px 60px;
   display: flex; flex-direction: column; justify-content: space-between;
 }
 
 /* ВЕРХ */
 .story-header { 
-  display: flex; flex-direction: column; align-items: center; gap: 40px; 
+  display: flex; flex-direction: column; align-items: center; 
+  gap: 32px;           /* было 40, сделал компактнее */
   text-align: center; width: 100%;
 }
 
 .story-main-title {
-  font-size: 72px; font-weight: 300; line-height: 1.1; letter-spacing: 0.15em;
-  margin: 0; text-transform: uppercase; color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  font-size: 68px;     /* чуть меньше визуально */
+  font-weight: 300;
+  line-height: 1.1; 
+  letter-spacing: 0.15em;
+  margin: 0; text-transform: uppercase; color: #fff; 
+  text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-/* ИНФО ПЛАШКА (СВЕТЛАЯ, БЕЛЫЙ ТЕКСТ) */
+/* Инфо‑плашка: светлый фон, белый текст, без темной маски */
 .glass-pill-info-light {
-  background: rgba(255, 255, 255, 0.08); /* Очень легкий белый фон */
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(24px); 
   border: 1px solid rgba(255, 255, 255, 0.2); 
   border-radius: 100px; 
-  padding: 24px 50px;
-  display: inline-flex; align-items: center; gap: 32px;
-  font-size: 40px; font-weight: 400; 
+  padding: 22px 46px;
+  display: inline-flex; align-items: center; gap: 28px;
+  font-size: 36px; font-weight: 400; 
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
-.info-icon { font-size: 42px; line-height: 1; }
-.info-ticket { color: #ffffff; letter-spacing: 0.1em; font-weight: 500; } /* ЧИСТО БЕЛЫЙ */
-.info-divider { color: rgba(255,255,255,0.5); font-weight: 300; }
-.info-date { color: #ffffff; letter-spacing: 0.05em; font-weight: 400; } /* ЧИСТО БЕЛЫЙ */
+.info-icon   { font-size: 40px; line-height: 1; }
+.info-ticket { color: #ffffff; letter-spacing: 0.1em; font-weight: 500; }
+.info-divider{ color: rgba(255,255,255,0.6); }
+.info-date   { color: #ffffff; letter-spacing: 0.06em; }
 
 .story-address { 
-  font-size: 42px; font-weight: 500; color: rgba(255,255,255,0.95); 
+  font-size: 40px; font-weight: 500; color: rgba(255,255,255,0.95); 
   letter-spacing: 0.05em; text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
@@ -258,84 +266,94 @@ defineExpose({ generateAndShare });
 .story-body {
   flex-grow: 1; width: 100%; 
   display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-  padding-top: 60px;
+  padding-top: 56px;
 }
 
-/* === ПРАВИЛЬНАЯ ПЛАШКА (КАК НА ЭТАЛОНЕ) === */
+/* ПЛАШКА ОТЗЫВА.
+   Светлый фон с прозрачностью + метаморфозная обводка в стиле stat-card. */
 .text-card {
   width: 98%; position: relative;
-  /* ТЕМНЫЙ полупрозрачный фон */
-  background: rgba(30, 30, 32, 0.75);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(224, 215, 248, 0.28) 0%, transparent 55%),
+    rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(26px);
+  -webkit-backdrop-filter: blur(26px);
   border-radius: 48px;
-  padding: 60px 50px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-  /* Базовая обводка */
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 56px 46px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+  border: none;
 }
 
-/* Метаморфозная обводка (градиент поверх) */
+/* Метаморфозная обводка через mask, как в твоем примере */
 .text-card::before {
-  content: ''; position: absolute; inset: 0; border-radius: 48px; padding: 1.5px;
-  background: linear-gradient(135deg, 
-    rgba(224, 215, 248, 0.4) 0%, 
-    rgba(193, 181, 240, 0.2) 40%, 
-    rgba(255, 255, 255, 0.05) 100%
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 48px;
+  padding: 1.5px;
+  background: linear-gradient(
+    135deg,
+    rgba(224, 215, 248, 0.7) 0%,
+    rgba(193, 181, 240, 0.4) 45%,
+    rgba(142, 124, 195, 0.0) 100%
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor; 
+  -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
 }
 
 .text-content {
   margin: 0; 
-  font-size: 52px; 
+  font-size: 48px;       /* на ~2 кегля меньше, чем было 52 */
   font-weight: 400;
   line-height: 1.4; 
-  color: #e0e0e0; /* Легкий серо-белый */
+  color: #f4f0ff;        /* легкий фиолетовый оттенок */
   text-align: center; 
   letter-spacing: 0.01em;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.25);
 }
 
-/* ГРАДИЕНТ */
+/* НИЖНИЙ ГРАДИЕНТ.
+   Увеличил высоту, чтобы черный фон начинался выше,
+   и длинный текст раньше «уходил» под кнопку. */
 .bottom-gradient {
-  position: absolute; bottom: 0; left: 0; width: 100%; height: 700px; z-index: 20;
-  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.85) 50%, #000 100%);
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 900px; z-index: 20;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.88) 55%, #000 100%);
   pointer-events: none;
 }
 
-/* ФУТЕР */
+/* ФУТЕР.
+   Футер тот же, но из‑за большего нижнего padding он визуально выше. */
 .story-footer { 
   position: relative; z-index: 30; 
-  display: flex; flex-direction: column; align-items: center; gap: 32px; 
+  display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* КНОПКА (УЗКАЯ, ШИРОКАЯ) */
+/* Кнопка: длинная и относительно узкая */
 .link-button {
   background: linear-gradient(90deg, #E0D7F8 0%, #C1B5F0 100%);
   border-radius: 100px; 
-  padding: 24px 160px; 
+  padding: 22px 170px;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 15px 50px rgba(142, 124, 195, 0.2);
+  box-shadow: 0 15px 50px rgba(142, 124, 195, 0.25);
 }
 
 .btn-text {
-  font-size: 48px; 
+  font-size: 46px;
   font-weight: 600; 
   color: #1a1a1a; 
   letter-spacing: 0.02em;
 }
 
-/* ТЕКСТ ПОД КНОПКОЙ */
+/* Текст под кнопкой – крупнее и читаемее */
 .footer-tagline {
-  font-size: 40px; 
+  font-size: 40px;
   font-weight: 400;
   letter-spacing: 0.02em;
   text-align: center;
   color: #E0D7F8;
-  opacity: 0.8;
+  opacity: 0.9;
   text-shadow: 0 2px 12px rgba(0,0,0,0.5);
 }
 
@@ -379,5 +397,9 @@ defineExpose({ generateAndShare });
 .download-btn:hover:not(:disabled) { transform: scale(1.02); }
 .download-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .modal-hint { color: #888; font-size: 13px; margin: 0; text-align: center; line-height: 1.4; max-width: 90%; }
-@keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50%      { transform: scale(1.1); opacity: 1; }
+}
 </style>
