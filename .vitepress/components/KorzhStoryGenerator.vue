@@ -39,7 +39,7 @@
           <!-- НИЖНИЙ ГРАДИЕНТ -->
           <div class="bottom-gradient"></div>
 
-          <!-- ФУТЕР (ФИКСИРОВАННОЕ ПОЛОЖЕНИЕ) -->
+          <!-- ФУТЕР (ФИКСИРОВАННОЕ ПОЛОЖЕНИЕ, НЕ СДВИГАЕТСЯ) -->
           <div class="story-footer">
             <div class="link-button">
                <span class="btn-text">cffx.ru/korzh</span>
@@ -210,16 +210,16 @@ defineExpose({ generateAndShare });
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
 }
 
-/* Сдвиг контента вниз на 10px */
+/* Сдвиг контента (кроме футера) вниз на 15px */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
   padding: 180px 60px 180px 60px;
   display: flex; flex-direction: column; align-items: center;
-  transform: translateY(10px); 
 }
 
-/* ВЕРХ */
+/* ВЕРХ (Сдвигаем через margin-top) */
 .story-header { 
+  margin-top: 15px; /* СДВИГ ВНИЗ */
   display: flex; flex-direction: column; align-items: center; 
   gap: 30px;
   text-align: center; width: 100%;
@@ -241,16 +241,14 @@ defineExpose({ generateAndShare });
   border-radius: 100px;
   font-size: 34px; font-weight: 400; 
   
-  /* Нейтральный фон, но сиреневая обводка и тень */
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(35px);
   -webkit-backdrop-filter: blur(35px);
   
-  /* Чёткая обводка */
   border: 1px solid rgba(224, 215, 248, 0.5);
   box-shadow: 
     0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 0 20px rgba(224, 215, 248, 0.1); /* Лёгкий внутренний флер */
+    inset 0 0 20px rgba(224, 215, 248, 0.1);
 }
 
 .info-icon   { font-size: 40px; line-height: 1; }
@@ -271,13 +269,13 @@ defineExpose({ generateAndShare });
   padding-top: 56px;
 }
 
-/* КАРТОЧКА ОТЗЫВА — Исправлено: чёткая рамка, нет фиолетового фона, есть флер */
+/* КАРТОЧКА ОТЗЫВА — нейтральный фон, чёткая рамка */
 .text-card {
   width: 98%; 
   border-radius: 48px;
   padding: 54px 44px;
   
-  /* Темный нейтральный фон (стекло), без фиолетового */
+  /* Нейтральный фон */
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(50px);
   -webkit-backdrop-filter: blur(50px);
@@ -285,7 +283,7 @@ defineExpose({ generateAndShare });
   /* ЧЁТКАЯ обводка 1px с сиреневым оттенком */
   border: 1px solid rgba(215, 200, 255, 0.55);
   
-  /* Тень + лёгкий внутренний сиреневый флер */
+  /* Тень */
   box-shadow: 
     0 30px 80px rgba(0, 0, 0, 0.7),
     inset 0 0 30px rgba(180, 150, 255, 0.08);
@@ -297,11 +295,11 @@ defineExpose({ generateAndShare });
   font-weight: 400;
   line-height: 1.4; 
   
-  /* Сиреневый флер на тексте */
-  color: #EFE8FF;
+  /* Чуть больше фиолетового в тексте */
+  color: #E8DDFF;
   text-align: center; 
   letter-spacing: 0.01em;
-  text-shadow: 0 0 15px rgba(180, 150, 255, 0.35); /* Свечение текста */
+  text-shadow: 0 0 15px rgba(180, 150, 255, 0.35); 
 }
 
 /* НИЖНИЙ ГРАДИЕНТ */
@@ -311,7 +309,7 @@ defineExpose({ generateAndShare });
   pointer-events: none;
 }
 
-/* ФУТЕР: фиксированное положение, высоко */
+/* ФУТЕР: фиксированное положение (НЕ СДВИГАЕМ) */
 .story-footer { 
   position: absolute;
   bottom: 220px;
@@ -321,22 +319,22 @@ defineExpose({ generateAndShare });
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* КНОПКА — сиреневая, с флером */
+/* КНОПКА — Лёгкий фиолетовый градиент */
 .link-button {
   border-radius: 100px; 
   padding: 20px 170px;
   display: flex; align-items: center; justify-content: center;
   
   background: linear-gradient(90deg, 
-    rgba(224, 215, 248, 0.95) 0%, 
-    rgba(193, 181, 240, 0.92) 100%
+    rgba(230, 220, 255, 0.96) 0%, 
+    rgba(205, 190, 245, 0.94) 100%
   );
   backdrop-filter: blur(25px);
   
   /* Чёткая обводка */
   border: 1px solid rgba(255, 255, 255, 0.6);
   box-shadow: 
-    0 16px 50px rgba(160, 130, 220, 0.5), /* Сиреневое свечение кнопки */
+    0 16px 50px rgba(160, 130, 220, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
