@@ -242,9 +242,7 @@
   :date="currentDate.split(' ')[0]"
   :address="form.coffeeShopAddress"
   :details="form.emotionalRelease + ' ' + form.factualAnalysis + ' ' + form.constructiveSuggestions"
-  :emotion="form.emotionalRelease"
 />
-
 
   </div> <!-- Закрытие signal-form-wrapper -->
 </template>
