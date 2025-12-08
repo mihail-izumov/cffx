@@ -244,8 +244,6 @@
   :emotions="form.emotionalRelease" 
   :details="[form.factualAnalysis, form.constructiveSuggestions].filter(Boolean).join(' ')"
 />
-
-
   </div> <!-- Закрытие signal-form-wrapper -->
 </template>
 
