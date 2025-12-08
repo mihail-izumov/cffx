@@ -1,34 +1,66 @@
 <template>
   <div>
-    <!-- 1. Скрытый шаблон (Улучшенный дизайн) -->
+    <!-- 1. СКРЫТЫЙ ШАБЛОН ДЛЯ ГЕНЕРАЦИИ -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
-        <div class="story-content">
-          <div class="story-top-section">
-            <h1 class="story-main-title">Мой Сигнал в Корж</h1>
-            <div class="story-tech-panel">
-              <span class="story-tech-date">{{ date }}</span>
-              <span class="story-tech-ticket">#{{ ticket }}</span>
-            </div>
-            <div class="story-address-block">📍 {{ address || 'Кофейня Корж' }}</div>
-          </div>
+        
+        <!-- Фоновая картинка -->
+        <div class="story-bg-image"></div>
+        <div class="story-bg-overlay"></div>
+
+        <div class="story-content safe-area">
           
-          <div class="story-cloud-section">
-            <div class="story-tags-container">
-              <span v-for="(tag, index) in displayTags" :key="tag" class="story-tag-item" :class="{'tag-accent': index === 0}">
+          <!-- ВЕРХНЯЯ ЧАСТЬ -->
+          <div class="story-header">
+            <!-- Заголовок -->
+            <h1 class="story-main-title">
+              Мой Сигнал<br>в Корж
+            </h1>
+
+            <!-- Блок с номером и датой -->
+            <div class="story-info-row">
+              <div class="glass-pill-info">
+                <span class="info-icon">⚡️</span>
+                <span class="info-ticket">{{ ticket }}</span>
+                <span class="info-divider">|</span>
+                <span class="info-date">{{ date }}</span>
+              </div>
+            </div>
+
+            <!-- Адрес -->
+            <div class="story-address">
+              {{ address || 'Кофейня Корж' }}
+            </div>
+          </div>
+
+          <!-- ЦЕНТРАЛЬНАЯ ЧАСТЬ (Облако тегов) -->
+          <div class="story-tags-section">
+            <div class="tags-wrapper">
+              <span 
+                v-for="(tag, index) in displayTags" 
+                :key="tag" 
+                class="tag-pill"
+                :class="{ 'tag-highlight': index % 3 === 0 }" 
+              >
                 {{ tag }}
               </span>
             </div>
+            <!-- Градиент, скрывающий лишние теги снизу -->
+            <div class="tags-fade-gradient"></div>
           </div>
-          
+
+          <!-- НИЖНЯЯ ЧАСТЬ (Ссылка) -->
           <div class="story-footer">
-            <div class="story-link-pill">cffx.ru/korzh</div>
+            <div class="glass-pill-link">
+              cffx.ru/korzh
+            </div>
           </div>
+
         </div>
       </div>
     </div>
 
-    <!-- 2. Модальное окно -->
+    <!-- 2. МОДАЛЬНОЕ ОКНО ПРЕДПРОСМОТРА -->
     <transition name="modal-fade">
       <div v-if="showModal" class="story-modal-overlay" @click.self="closeModal">
         <div class="story-modal">
@@ -41,25 +73,23 @@
           </div>
           
           <div class="story-preview-container">
-            <!-- Картинка целиком (contain) -->
             <img v-if="generatedImageUrl" :src="generatedImageUrl" class="story-preview-img" alt="Story Preview" />
             <div v-else class="loading-spinner">
               <div class="spinner-icon">⚡️</div>
-              <div>Генерация...</div>
+              <div>Создаем магию...</div>
             </div>
           </div>
 
           <div class="story-modal-actions">
-            <!-- Кнопка Скачать / Поделиться -->
             <button @click="shareOrDownload" class="action-btn share-btn" :disabled="!generatedImageUrl">
               <span v-if="isMobile">Сохранить картинку 📥</span>
               <span v-else>Скачать картинку 📥</span>
             </button>
-            
             <p class="hint-text">
-              Сохраните картинку в галерею, а затем выложите в сторис с отметкой <b>@korzh_coffee</b>
+              Сохраните картинку и выложите в сторис с отметкой <b>@korzh_coffee</b>
             </p>
           </div>
+
         </div>
       </div>
     </transition>
@@ -82,7 +112,11 @@ const generatedBlob = ref(null);
 const isMobile = ref(false);
 
 const displayTags = computed(() => {
-  return props.tags && props.tags.length > 0 ? props.tags : ['Сигнал'];
+  // Если тегов нет, показываем дефолтные
+  if (!props.tags || props.tags.length === 0) {
+    return ['Сигнал', 'Впечатление', 'Корж'];
+  }
+  return props.tags;
 });
 
 onMounted(() => {
@@ -119,13 +153,13 @@ const generateAndShare = async () => {
 
     const canvas = await window.html2canvas(element, {
       scale: 2,
-      backgroundColor: '#1E1E20',
-      useCORS: true,
+      useCORS: true, // Важно для загрузки картинки фона
       logging: false,
       width: 1080,
       height: 1920,
       windowWidth: 1080,
-      windowHeight: 1920
+      windowHeight: 1920,
+      backgroundColor: null // Прозрачный, чтобы фон работал
     });
 
     generatedImageUrl.value = canvas.toDataURL('image/png');
@@ -141,20 +175,16 @@ const generateAndShare = async () => {
 const shareOrDownload = async () => {
   if (!generatedBlob.value) return;
 
-  // Пытаемся пошерить ТОЛЬКО файл (без текста), это повышает шансы в TG
   if (navigator.share && navigator.canShare) {
     const file = new File([generatedBlob.value], `signal-${props.ticket}.png`, { type: 'image/png' });
     try {
-      await navigator.share({
-        files: [file] // Никакого title или text, только файл
-      });
+      await navigator.share({ files: [file] });
       return;
     } catch (err) {
       console.log('Share failed, downloading...', err);
     }
   }
 
-  // Фолбек - скачивание
   const link = document.createElement('a');
   link.download = `signal-${props.ticket}.png`;
   link.href = generatedImageUrl.value;
@@ -173,48 +203,134 @@ defineExpose({
 </script>
 
 <style scoped>
-/* Скрытый блок */
+/* СКРЫТЫЙ БЛОК */
 .story-wrapper-hidden { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -1000; visibility: visible; }
-.story-template { width: 1080px; height: 1920px; background: #1E1E20; font-family: -apple-system, BlinkMacSystemFont, sans-serif; box-sizing: border-box; }
 
-/* Дизайн сторис: улучшили градиент, чтобы текст читался */
-.story-content { 
-  width: 100%; height: 100%; padding: 120px 80px; display: flex; flex-direction: column; justify-content: space-between; 
-  background: 
-    radial-gradient(circle at top right, rgba(179, 157, 200, 0.25), transparent 50%),
-    linear-gradient(180deg, #252529 0%, #151517 100%);
+/* ШАБЛОН 1080x1920 */
+.story-template { 
+  width: 1080px; height: 1920px; position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  box-sizing: border-box;
+  background: #111;
+  color: #fff;
 }
-.story-top-section { display: flex; flex-direction: column; gap: 50px; }
-.story-main-title { font-size: 86px; font-weight: 800; color: #fff; margin: 0; line-height: 1.05; letter-spacing: -2px; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-.story-tech-panel { display: inline-flex; align-items: center; gap: 30px; font-family: monospace; }
-.story-tech-date { color: #888; font-size: 36px; }
-.story-tech-ticket { background-color: #2a2a2e; color: #B39DC8; font-weight: 700; padding: 16px 36px; border-radius: 24px; font-size: 48px; border: 3px solid #3a3a3e; letter-spacing: 3px; }
-.story-address-block { font-size: 48px; color: #ccc; font-weight: 500; margin-top: 20px; }
-.story-cloud-section { flex-grow: 1; display: flex; align-items: center; padding: 60px 0; }
-.story-tags-container { display: flex; flex-wrap: wrap; gap: 24px; align-content: center; }
-.story-tag-item { font-size: 48px; color: #e0e0e0; background: rgba(255, 255, 255, 0.05); border: 3px solid rgba(255, 255, 255, 0.1); padding: 20px 48px; border-radius: 100px; font-weight: 600; line-height: 1; }
-.story-tag-item.tag-accent { background: rgba(179, 157, 200, 0.2); border-color: rgba(179, 157, 200, 0.5); color: #fff; box-shadow: 0 0 40px rgba(179, 157, 200, 0.2); }
-.story-footer { display: flex; justify-content: center; padding-bottom: 60px; }
-.story-link-pill { background: #fff; color: #000; font-size: 56px; font-weight: 800; padding: 30px 80px; border-radius: 100px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); letter-spacing: -1px; }
 
-/* === МОДАЛКА === */
+/* ФОН */
+.story-bg-image {
+  position: absolute; inset: 0; z-index: 1;
+  background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg');
+  background-size: cover; background-position: center;
+}
+.story-bg-overlay {
+  position: absolute; inset: 0; z-index: 2;
+  /* Темное затемнение для читаемости + фиолетовый оттенок снизу */
+  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 40%, rgba(20,10,30,0.8) 100%);
+}
+
+/* КОНТЕНТ (SAFE AREA) */
+.story-content {
+  position: relative; z-index: 10;
+  width: 100%; height: 100%;
+  /* Safe Area: отступы под интерфейс сторис (сверху и снизу по ~250px) */
+  padding: 240px 60px 280px 60px; 
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+}
+
+/* === ВЕРХНЯЯ ЧАСТЬ === */
+.story-header { display: flex; flex-direction: column; align-items: center; gap: 32px; width: 100%; text-align: center; }
+
+.story-main-title {
+  font-size: 82px; font-weight: 800; line-height: 1.05; letter-spacing: -2px;
+  margin: 0; text-transform: uppercase;
+  background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+}
+
+/* СТЕКЛЯННАЯ ПЛАШКА ИНФО */
+.glass-pill-info {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+  padding: 18px 42px;
+  display: inline-flex; align-items: center; gap: 20px;
+  font-size: 38px; font-weight: 600; font-family: "SF Mono", monospace;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.info-icon { font-size: 38px; }
+.info-ticket { color: #fff; letter-spacing: 1px; }
+.info-divider { color: rgba(255,255,255,0.3); font-weight: 300; }
+.info-date { color: rgba(255,255,255,0.8); }
+
+.story-address {
+  font-size: 42px; color: rgba(255,255,255,0.9); font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* === ОБЛАКО ТЕГОВ === */
+.story-tags-section {
+  width: 100%; position: relative;
+  flex-grow: 1; /* Занимает все свободное место в центре */
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; /* Обрезает слишком длинный список */
+  margin: 40px 0;
+}
+.tags-wrapper {
+  display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 24px;
+}
+
+.tag-pill {
+  font-size: 42px; font-weight: 600; color: #e0e0e0;
+  padding: 18px 40px; border-radius: 100px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* Подсветка каждого 3-го тега (или первого) */
+.tag-highlight {
+  background: rgba(224, 215, 248, 0.25); /* Фиолетовый оттенок из вашего примера */
+  border-color: rgba(224, 215, 248, 0.6);
+  color: #fff;
+  box-shadow: 0 0 30px rgba(142, 124, 195, 0.3);
+}
+
+/* Градиент снизу, чтобы "растворить" лишние теги */
+.tags-fade-gradient {
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 150px;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.01)); 
+  /* На темном фоне можно сделать более явное затемнение, если нужно */
+}
+
+/* === ФУТЕР (ССЫЛКА) === */
+.story-footer { width: 100%; display: flex; justify-content: center; }
+
+.glass-pill-link {
+  background: #fff; color: #000;
+  font-size: 48px; font-weight: 700;
+  padding: 28px 70px; border-radius: 100px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  letter-spacing: -0.5px;
+}
+
+/* === МОДАЛКА (то же самое) === */
 .story-modal-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.9); z-index: 10000;
+  background: rgba(0,0,0,0.92); z-index: 10000;
   display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(8px);
-  padding: 20px;
+  backdrop-filter: blur(10px); padding: 20px;
 }
 .story-modal {
-  background: #1E1E20; width: 100%; max-width: 420px;
-  max-height: 95vh; /* Ограничиваем высоту */
-  border-radius: 24px; border: 1px solid #333;
+  background: #1E1E20; width: 100%; max-width: 420px; max-height: 95vh;
+  border-radius: 28px; border: 1px solid #333;
   display: flex; flex-direction: column; 
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-  overflow: hidden; /* Важно для скролла внутри */
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+  overflow: hidden;
 }
 .story-modal-header {
-  padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; flex-shrink: 0;
+  padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; 
+  border-bottom: 1px solid #333; background: #252528;
 }
 .story-modal-header h3 { margin: 0; font-size: 18px; color: #fff; font-weight: 600; }
 .close-icon-btn {
@@ -222,49 +338,29 @@ defineExpose({
   width: 32px; height: 32px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center; cursor: pointer;
 }
-
 .story-preview-container {
-  background: #111;
-  width: 100%;
-  flex-grow: 1; /* Занимает доступное место */
-  min-height: 200px;
-  position: relative;
-  overflow: hidden;
-  padding: 20px; /* Отступы вокруг картинки */
-  display: flex; align-items: center; justify-content: center;
+  background: #000; flex-grow: 1; min-height: 200px;
+  display: flex; align-items: center; justify-content: center; position: relative;
+  overflow: hidden; padding: 20px;
 }
-/* Картинка целиком, ничего не обрезается */
 .story-preview-img {
-  max-width: 100%;
-  max-height: 50vh; /* Ограничиваем высоту картинки (50% экрана) */
-  object-fit: contain; 
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  max-width: 100%; max-height: 60vh; object-fit: contain; 
+  border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
 }
-
 .loading-spinner { color: #888; font-size: 14px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.spinner-icon { font-size: 24px; animation: spin 1s infinite linear; }
-
+.spinner-icon { font-size: 28px; animation: spin 1s infinite linear; }
 .story-modal-actions { 
-  padding: 20px; 
-  display: flex; flex-direction: column; gap: 12px; align-items: center; 
-  background: #1E1E20;
-  border-top: 1px solid #333;
-  flex-shrink: 0;
+  padding: 24px; background: #252528; border-top: 1px solid #333;
+  display: flex; flex-direction: column; gap: 14px; align-items: center; 
 }
 .action-btn {
-  width: 100%; padding: 14px; border-radius: 12px; border: none; 
+  width: 100%; padding: 16px; border-radius: 14px; border: none; 
   font-weight: 600; font-size: 16px; cursor: pointer;
-  background: #fff; color: #000;
+  background: #fff; color: #000; transition: transform 0.2s;
 }
-.action-btn:disabled { opacity: 0.5; }
-
-.hint-text { 
-  color: #777; font-size: 13px; margin: 0; text-align: center; line-height: 1.4; 
-  max-width: 280px;
-}
+.action-btn:active { transform: scale(0.98); }
+.hint-text { color: #888; font-size: 13px; margin: 0; text-align: center; line-height: 1.4; max-width: 90%; }
 .hint-text b { color: #ccc; }
-
 .modal-fade-enter-active, .modal-fade-leave-active { transition: opacity 0.3s ease; }
 .modal-fade-enter-from, .modal-fade-leave-to { opacity: 0; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
