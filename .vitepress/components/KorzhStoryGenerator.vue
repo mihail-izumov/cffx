@@ -18,7 +18,7 @@
             <h1 class="story-main-title">МОЙ СИГНАЛ<br>В КОРЖ</h1>
 
             <div class="story-info-row">
-              <div class="glass-pill-info meta-border">
+              <div class="glass-pill-info meta-border-pill">
                 <span class="info-icon">⚡️</span>
                 <span class="info-ticket">{{ ticket }}</span>
                 <span class="info-divider">|</span>
@@ -31,7 +31,7 @@
 
           <!-- ЦЕНТР: ПЛАШКА ОТЗЫВА -->
           <div class="story-body">
-            <div v-if="formattedText" class="text-card meta-border">
+            <div v-if="formattedText" class="text-card meta-border-card">
               <p class="text-content">{{ formattedText }}</p>
             </div>
           </div>
@@ -41,7 +41,7 @@
 
           <!-- ФУТЕР (ФИКСИРОВАННОЕ ПОЛОЖЕНИЕ) -->
           <div class="story-footer">
-            <div class="link-button meta-border">
+            <div class="link-button meta-border-pill">
                <span class="btn-text">cffx.ru/korzh</span>
             </div>
             <div class="footer-tagline">Ваш Сигнал – тому кто решает</div>
@@ -104,23 +104,16 @@ const showModal = ref(false);
 const generatedImageUrl = ref(null);
 const generatedBlob = ref(null);
 
-// ПРОСТАЯ ЛОГИКА ТЕКСТА: пробелы, заглавные, точка в конце (БЕЗ авто-запятых)
+// Мягкая логика текста: пробелы после знаков, заглавные, точка в конце
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
   
   let text = props.allText.trim();
-  
-  // Пробел после знаков препинания
   text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
-  // Нормализация пробелов
   text = text.replace(/\s+/g, ' ');
-  // Первая буква заглавная
   text = text.charAt(0).toUpperCase() + text.slice(1);
-  // Заглавная после точки/!/? + пробел(ы)
   text = text.replace(/([.!?]\s+)([а-яёa-z])/gi, (m, sep, ch) => sep + ch.toUpperCase());
-  // Точка в конце, если нет знака
   if (!/[.!?]$/.test(text)) text += '.';
-  
   return text;
 });
 
@@ -202,82 +195,64 @@ defineExpose({ generateAndShare });
 <style scoped>
 * { font-family: 'Inter', -apple-system, sans-serif; }
 
-.story-wrapper-hidden { 
-  position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -9999; 
-}
-
-.story-template { 
-  width: 1080px; height: 1920px; position: relative; background: #000; color: #fff; 
-}
+.story-wrapper-hidden { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -9999; }
+.story-template { width: 1080px; height: 1920px; position: relative; background: #000; color: #fff; }
 
 /* ФОН */
-.story-bg-image { 
-  position: absolute; inset: 0; z-index: 1; 
-  background-size: cover; background-position: center; 
-}
+.story-bg-image { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; }
 .story-bg-image.bg-default,
 .story-bg-image.bg-1,
 .story-bg-image.bg-2 {
   background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg');
 }
-
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 2;
   background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 60%, #000 100%);
 }
 
-/* КОНТЕНТ: центрируем композицию */
+/* Центрируем блоки по высоте, футер отделяем абсолютным позиционированием */
 .story-content {
-  position: relative; z-index: 10; 
-  width: 100%; height: 100%;
-  padding: 200px 60px 0 60px;
-  display: flex; 
-  flex-direction: column; 
-  align-items: center;
+  position: relative; z-index: 10; width: 100%; height: 100%;
+  padding: 200px 60px 220px 60px;
+  display: flex; flex-direction: column; align-items: center;
 }
 
-/* === ОБЩИЙ КЛАСС МЕТАМОРФОЗ-БОРДЕРА === */
-.meta-border {
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
-  border: 1.8px solid transparent;
-}
-
-/* ======================= ВЕРХ ======================= */
+/* ВЕРХ */
 .story-header { 
   display: flex; flex-direction: column; align-items: center; 
-  gap: 32px;
+  gap: 30px;
   text-align: center; width: 100%;
 }
 
 .story-main-title {
-  font-size: 68px;
+  font-size: 66px;
   font-weight: 300;
   line-height: 1.1; 
   letter-spacing: 0.15em;
-  margin: 0; 
-  text-transform: uppercase; 
-  color: #fff; 
+  margin: 0; text-transform: uppercase; color: #fff; 
   text-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-/* Плашка с номером: лёгкий светлый фон + яркая фиолетовая рамка */
-.glass-pill-info {
-  display: inline-flex; 
-  align-items: center; 
-  gap: 28px;
-  padding: 22px 48px;
-  border-radius: 100px;
-  font-size: 36px; 
-  font-weight: 400; 
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+/* Базовый стиль «стеклянных» плашек */
+.meta-border-pill,
+.meta-border-card {
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  border: 1.6px solid transparent;
+}
 
-  /* Два слоя background: внутренний светлый + внешний градиент-рамка */
+/* Плашка с номером сигнала — лёгкий фон + яркая фиолетовая рамка */
+.glass-pill-info {
+  display: inline-flex; align-items: center; gap: 26px;
+  padding: 20px 48px;
+  border-radius: 100px;
+  font-size: 34px; font-weight: 400; 
+  backdrop-filter: blur(20px);
+
   background-image:
-    linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.12)),
+    linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.10)),
     linear-gradient(135deg, #E0D7F8 0%, #C1B5F0 50%, #8E7CC3 100%);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
 
 .info-icon   { font-size: 40px; line-height: 1; }
@@ -286,36 +261,29 @@ defineExpose({ generateAndShare });
 .info-date   { color: #ffffff; letter-spacing: 0.06em; }
 
 .story-address { 
-  font-size: 40px; 
-  font-weight: 500; 
-  color: rgba(255,255,255,0.95); 
-  letter-spacing: 0.05em; 
-  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  font-size: 40px; font-weight: 500; color: rgba(255,255,255,0.95); 
+  letter-spacing: 0.05em; text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
-/* ======================= ЦЕНТР ======================= */
+/* ЦЕНТР */
 .story-body {
   flex: 1;
   width: 100%; 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: flex-start;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
   padding-top: 56px;
-  overflow: hidden; /* Если текст очень длинный, он обрезается, не сдвигая футер */
 }
 
-/* Карточка отзыва: светлый прозрачный фон + лёгкий сиреневый флер + метаморфоз-рамка */
+/* Карточка отзыва — светлый, прозрачный, лёгкий сиреневый флер */
 .text-card {
   width: 98%; 
   border-radius: 48px;
-  padding: 56px 46px;
+  padding: 54px 44px;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 28px 72px rgba(0,0,0,0.5);
+  box-shadow: 0 26px 70px rgba(0,0,0,0.45);
 
   background-image:
-    linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.14)),
+    linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.12)),
     linear-gradient(135deg, #E0D7F8 0%, #C1B5F0 50%, #8E7CC3 100%);
 }
 
@@ -324,42 +292,34 @@ defineExpose({ generateAndShare });
   font-size: 48px;
   font-weight: 400;
   line-height: 1.4; 
-  color: #F3EEFF;            /* лёгкий сиреневый оттенок для текста */
+  color: #F3EEFF;            /* лёгкий сиреневый оттенок */
   text-align: center; 
   letter-spacing: 0.01em;
   text-shadow: 0 2px 10px rgba(0,0,0,0.25);
 }
 
-/* НИЖНИЙ ГРАДИЕНТ — чтобы длинный текст красиво уходил в тень */
+/* НИЖНИЙ ГРАДИЕНТ — чтобы длинный текст мягко уходил в тень под кнопкой */
 .bottom-gradient {
-  position: absolute; 
-  bottom: 0; left: 0; 
-  width: 100%; height: 900px; 
-  z-index: 20;
-  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.88) 50%, #000 100%);
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 900px; z-index: 20;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.9) 55%, #000 100%);
   pointer-events: none;
 }
 
-/* ======================= ФУТЕР (ФИКСИРОВАННЫЙ) ======================= */
+/* ФУТЕР: фиксированное положение внутри шаблона */
 .story-footer { 
   position: absolute;
-  bottom: 160px;  /* Фиксируем положение относительно низа шаблона */
+  bottom: 150px;
   left: 0;
   width: 100%;
   z-index: 30; 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  gap: 28px; 
+  display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
 
-/* Кнопка: градиентная заливка внутри + метаморфоз-рамка снаружи */
+/* Кнопка: оставляем понравившийся стиль, добавляя такой же метаморфоз‑бордер */
 .link-button {
   border-radius: 100px; 
-  padding: 22px 170px;
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
+  padding: 20px 170px;
+  display: flex; align-items: center; justify-content: center;
 
   background-image:
     linear-gradient(90deg, #E0D7F8 0%, #C1B5F0 100%),
@@ -368,7 +328,7 @@ defineExpose({ generateAndShare });
 }
 
 .btn-text {
-  font-size: 48px;
+  font-size: 46px;
   font-weight: 600; 
   color: #1a1a1a; 
   letter-spacing: 0.02em;
@@ -385,135 +345,46 @@ defineExpose({ generateAndShare });
   text-shadow: 0 2px 12px rgba(0,0,0,0.5);
 }
 
-/* ======================= МОДАЛКА ======================= */
+/* МОДАЛКА (без изменений) */
 .modal-overlay { 
-  position: fixed; inset: 0; 
-  background: rgba(0,0,0,0.92); 
-  z-index: 10000;
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  backdrop-filter: blur(10px); 
-  padding: 20px;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000;
+  display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px;
 }
-
 .modal { 
-  background: #1E1E20; 
-  width: 100%; 
-  max-width: 420px; 
-  max-height: 95vh;
-  border-radius: 28px; 
-  border: 1px solid #333; 
-  display: flex; 
-  flex-direction: column;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.7); 
-  overflow: hidden;
+  background: #1E1E20; width: 100%; max-width: 420px; max-height: 95vh;
+  border-radius: 28px; border: 1px solid #333; display: flex; flex-direction: column;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7); overflow: hidden;
 }
-
 .modal-header { 
-  padding: 18px 24px; 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center;
-  border-bottom: 1px solid #333; 
-  background: #252528;
+  padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid #333; background: #252528;
 }
-
-.modal-header h3 { 
-  margin: 0; 
-  font-size: 18px; 
-  color: #fff; 
-  font-weight: 600; 
-}
-
+.modal-header h3 { margin: 0; font-size: 18px; color: #fff; font-weight: 600; }
 .modal-close { 
-  background: rgba(255,255,255,0.1); 
-  border: none; 
-  color: #fff; 
-  width: 32px; 
-  height: 32px; 
-  border-radius: 50%; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
+  background: rgba(255,255,255,0.1); border: none; color: #fff; 
+  width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
   cursor: pointer;
 }
-
 .modal-body { 
-  background: #000; 
-  flex-grow: 1; 
-  min-height: 200px;
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  padding: 20px;
+  background: #000; flex-grow: 1; min-height: 200px;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
 }
-
-.preview-img { 
-  max-width: 100%; 
-  max-height: 60vh; 
-  object-fit: contain; 
-  border-radius: 12px; 
-}
-
-.spinner { 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  gap: 16px; 
-}
-
-.spinner-icon { 
-  width: 48px; 
-  height: 48px; 
-  animation: breathe 3s ease-in-out infinite; 
-}
-
-.spinner-text { 
-  color: #888; 
-  font-size: 14px; 
-}
-
+.preview-img { max-width: 100%; max-height: 60vh; object-fit: contain; border-radius: 12px; }
+.spinner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.spinner-icon { width: 48px; height: 48px; animation: breathe 3s ease-in-out infinite; }
+.spinner-text { color: #888; font-size: 14px; }
 .modal-footer { 
-  padding: 24px; 
-  background: #252528; 
-  border-top: 1px solid #333;
-  display: flex; 
-  flex-direction: column; 
-  gap: 14px; 
-  align-items: center;
+  padding: 24px; background: #252528; border-top: 1px solid #333;
+  display: flex; flex-direction: column; gap: 14px; align-items: center;
 }
-
 .download-btn { 
-  width: 100%; 
-  padding: 16px; 
-  border-radius: 14px; 
-  border: none;
-  font-weight: 600; 
-  font-size: 16px; 
-  cursor: pointer; 
-  background: #fff; 
-  color: #000;
+  width: 100%; padding: 16px; border-radius: 14px; border: none;
+  font-weight: 600; font-size: 16px; cursor: pointer; background: #fff; color: #000;
   transition: transform 0.2s;
 }
-
-.download-btn:hover:not(:disabled) { 
-  transform: scale(1.02); 
-}
-
-.download-btn:disabled { 
-  opacity: 0.5; 
-  cursor: not-allowed; 
-}
-
-.modal-hint { 
-  color: #888; 
-  font-size: 13px; 
-  margin: 0; 
-  text-align: center; 
-  line-height: 1.4; 
-  max-width: 90%; 
-}
+.download-btn:hover:not(:disabled) { transform: scale(1.02); }
+.download-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.modal-hint { color: #888; font-size: 13px; margin: 0; text-align: center; line-height: 1.4; max-width: 90%; }
 
 @keyframes breathe {
   0%, 100% { transform: scale(1); opacity: 0.8; }
