@@ -241,8 +241,7 @@
   :ticket="formattedTicketNumber"
   :date="currentDate.split(' ')[0]"
   :address="form.coffeeShopAddress"
-  :emotion-tags="form.emotionalRelease"
-  :main-text="[form.factualAnalysis, form.constructiveSuggestions].filter(t => t && t.trim()).join(' ')"
+  :all-text="[form.emotionalRelease, form.factualAnalysis, form.constructiveSuggestions].filter(t => t && t.trim()).join(' ')"
 />
 
   </div> <!-- Закрытие signal-form-wrapper -->
