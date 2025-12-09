@@ -869,16 +869,21 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
     justify-content: center !important;
     /* 2. Прижимаем к верху (flex-start) */
     align-items: flex-start !important;
-    /* 3. Отступ сверху ровно 15 пикселей */
-    padding-top: 15px !important;
+    /* 3. Отступ 0, чтобы прижать к самому верху */
+    padding-top: 0 !important;
   }
 
   .signal2-review-modal-content {
-    /* Сбрасываем лишние марджины, которые могли ломать центровку */
+    /* Сбрасываем лишние марджины */
     margin: 0 auto !important;
     width: 94% !important;
     max-width: 94% !important;
-    max-height: 85vh; /* Ограничиваем высоту, чтобы влезало на экран */
+    /* Раз прижато к верху, можно дать больше места */
+    max-height: 90vh;
+    
+    /* Опционально: если прижато к верху, можно убрать верхние скругления */
+    /* border-top-left-radius: 0 !important; */
+    /* border-top-right-radius: 0 !important; */
   }
   
   .signal2-modal-scrollable-content {
