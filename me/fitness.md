@@ -11,7 +11,7 @@ description: Сигнал – тому кто решает
 
 <div align="center">
 
-<h1 class="responsive-heading-signal-industries">Простой способ поддержать<br>фитнес, который Вы любите.</h1>
+<h1 class="responsive-heading-signal-industries">Поддержите фитнес,<br> который Вы любите.</h1>
 
 <p>
   Ваш Сигнал – тому кто решает. <br class="mobile-break"> <strong>Без регистрации. Результат — сегодня.</strong>
