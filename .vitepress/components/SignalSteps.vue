@@ -27,6 +27,14 @@
     <!-- ШАГ 4 -->
     <div class="anna-brand-card anna-step-card">
       <div class="anna-tariff-badge anna-step">ШАГ 4</div>
+      <h3 class="anna-title">Поделитесь моментом</h3>
+      <p class="anna-description-main">Сигнал генерирует Вашу Историю о месте, впечатлениях и что можно там улучшить.</p>
+      <p class="anna-description-goals anna-step-goals">Все узнают, что вы чувствуете</p>
+    </div>
+
+    <!-- ШАГ 5 -->
+    <div class="anna-brand-card anna-step-card">
+      <div class="anna-tariff-badge anna-step">ШАГ 5</div>
       <h3 class="anna-title">Получите результат</h3>
       <p class="anna-description-main">Анна сообщит о решении бизнеса лично в Телеграм, когда разбор будет закончен</p>
       <p class="anna-description-goals anna-step-goals">Не просто ответ, а результат</p>
