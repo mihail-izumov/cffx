@@ -53,7 +53,7 @@ const props = defineProps({
     type: Array,
     required: true,
     default: () => [
-      '/fest2025/OST06122.jpg',
+      '/img/korzh/slider/korzh-production.jpg',
       '/fest2025/OST06021.jpg',
       '/fest2025/OST06039.jpg',
       '/fest2025/OST06176.jpg',
