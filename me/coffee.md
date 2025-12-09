@@ -62,7 +62,7 @@ description: Сигнал – тому кто решает
 <style>
 /* БАЗОВЫЙ СТИЛЬ (Десктоп) */
 .vp-doc h1.responsive-heading-signal-industries {
-  font-size: 52px !important;
+  font-size: 46px !important;
   line-height: 1.1 !important;
   margin: 0 0 20px 0 !important;
   padding-top: 0 !important;
