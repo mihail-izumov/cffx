@@ -20,7 +20,7 @@
 
       <!-- Секция 1: Эмоции -->
       <div v-if="selectedSection === 'emotions'" class="korzh-invest-form-section">
-        <div class="korzh-invest-form-block" style="--accent-color: #A972FF;">
+        <div class="korzh-invest-form-block" style="--accent-color: #ff69b4;">
           <div class="korzh-invest-form-rotating-container korzh-invest-form-fixed-height">
             <transition name="korzh-fade" mode="out-in">
               <p :key="currentQuestion1" class="korzh-invest-form-label">
@@ -42,7 +42,7 @@
 
       <!-- Секция 2: Факты -->
       <div v-if="selectedSection === 'facts'" class="korzh-invest-form-section">
-        <div class="korzh-invest-form-block" style="--accent-color: #A972FF;">
+        <div class="korzh-invest-form-block" style="--accent-color: #ff69b4;">
           <div class="korzh-invest-form-rotating-container korzh-invest-form-fixed-height">
             <transition name="korzh-fade" mode="out-in">
               <p :key="currentQuestion2" class="korzh-invest-form-label">
@@ -65,7 +65,7 @@
 
       <!-- Секция 3: Решение -->
       <div v-if="selectedSection === 'solutions'" class="korzh-invest-form-section">
-        <div class="korzh-invest-form-block" style="--accent-color: #A972FF;">
+        <div class="korzh-invest-form-block" style="--accent-color: #ff69b4;">
           <div class="korzh-invest-form-rotating-container korzh-invest-form-fixed-height">
             <transition name="korzh-fade" mode="out-in">
               <p :key="currentQuestion3" class="korzh-invest-form-label">
@@ -86,7 +86,7 @@
 
       <!-- Секция 4: Итого (Резюме) -->
       <div v-if="selectedSection === 'summary'" class="korzh-invest-form-section">
-        <div class="korzh-invest-form-block" style="--accent-color: #A972FF;">
+        <div class="korzh-invest-form-block" style="--accent-color: #ff69b4;">
           <p class="korzh-invest-form-direction-label">Ваш Сигнал</p>
           <div class="korzh-invest-form-rotating-container">
             <p class="korzh-invest-form-label">Что должно измениться?</p>
@@ -122,7 +122,7 @@
           </div>
         </div>
         <div v-else>
-          <div class="korzh-invest-form-block contact" style="--accent-color: #A972FF;">
+          <div class="korzh-invest-form-block contact" style="--accent-color: #ff69b4;">
             <div class="korzh-invest-form-rotating-container">
               <p class="korzh-invest-form-label">Отправьте Ваш Сигнал</p>
             </div>
@@ -138,28 +138,29 @@
             </span>
           </label>
           <button 
-            class="korzh-invest-form-submit-btn" 
+            class="korzh-invest-form-main-btn" 
             :disabled="submitStatus === 'processing' || !form.agreedToTerms || !isEmotionFilled"
             @click="submitForm"
           >
-            <!-- Восстановлена структура span внутри кнопки отправки -->
-            <span class="korzh-invest-form-next-text">{{ submitStatus === 'processing' ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ СИГНАЛ' }}</span>
+            <span class="korzh-invest-form-btn-text">{{ submitStatus === 'processing' ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ СИГНАЛ' }}</span>
           </button>
         </div>
       </div>
 
       <!-- Кнопки навигации по шагам -->
       <div v-if="selectedSection !== 'contact'" class="korzh-invest-form-nav">
-        <!-- Кнопка Next восстановлена 1-в-1 по структуре оригинала -->
         <button
-          class="korzh-invest-form-next-btn"
+          class="korzh-invest-form-main-btn"
           @click="goToNextSection"
           :disabled="
             (selectedSection === 'emotions' && !isEmotionFilled)
             || (selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim()))
           "
         >
-          <span class="korzh-invest-form-next-text">{{ currentSectionData.buttonText }}</span>
+          <!-- Текст и иконка центрируются вместе (flex-grow убран) -->
+          <span class="korzh-invest-form-btn-text">{{ currentSectionData.buttonText }}</span>
+          
+          <!-- Исправленная иконка: использует clipPath для идеального заполнения без дырок -->
           <CupFillIcon
             class="korzh-invest-form-icon"
             :step-index="sections.findIndex(s => s.id === selectedSection)"
@@ -175,7 +176,7 @@
 <script setup>
 import { reactive, ref, computed, onMounted, onUnmounted, watch, h } from 'vue'
 
-// ====== Внутренний компонент иконки чашки (SVG Animation) ======
+// ====== Внутренний компонент иконки чашки (Исправленный SVG) ======
 const CupFillIcon = {
   props: ['stepIndex', 'stepsTotal', 'size'],
   setup(props) {
@@ -183,8 +184,15 @@ const CupFillIcon = {
       const p = ((props.stepIndex + 1) / props.stepsTotal) * 100;
       return Math.min(Math.max(p, 0), 100);
     });
-    const fillHeight = computed(() => (fillPercent.value / 100) * 14);
-    const yOffset = computed(() => 18 - fillHeight.value);
+    
+    // Максимальная высота жидкости внутри чашки (примерно 13px от дна)
+    const maxLiquidHeight = 13; 
+    const currentHeight = computed(() => (fillPercent.value / 100) * maxLiquidHeight);
+    // Y координата верхней границы жидкости (дно чашки на Y=21)
+    const yPos = computed(() => 21 - currentHeight.value);
+
+    // Уникальный ID для clipPath, чтобы не конфликтовал при множественном использовании
+    const clipId = `cup-clip-${Math.random().toString(36).substr(2, 9)}`;
 
     return () => h('svg', {
       width: props.size,
@@ -196,21 +204,33 @@ const CupFillIcon = {
       'stroke-linecap': 'round',
       'stroke-linejoin': 'round'
     }, [
-      h('path', { d: 'M18 8h1a4 4 0 0 1 0 8h-1', stroke: 'currentColor' }),
-      h('path', { d: 'M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z', stroke: 'currentColor' }),
-      h('line', { x1: '6', y1: '1', x2: '6', y2: '4', stroke: 'currentColor' }),
-      h('line', { x1: '10', y1: '1', x2: '10', y2: '4', stroke: 'currentColor' }),
-      h('line', { x1: '14', y1: '1', x2: '14', y2: '4', stroke: 'currentColor' }),
-      h('rect', { 
-        x: '3', 
-        y: yOffset.value, 
-        width: '14', 
-        height: fillHeight.value, 
+      // 1. Определение маски по форме чашки
+      h('defs', [
+        h('clipPath', { id: clipId }, [
+          h('path', { d: 'M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z' })
+        ])
+      ]),
+      
+      // 2. Жидкость (Прямоугольник, обрезанный маской чашки)
+      h('rect', {
+        x: '0', 
+        y: yPos.value, 
+        width: '24', 
+        height: currentHeight.value,
         fill: 'currentColor',
         stroke: 'none',
-        style: { transition: 'all 0.5s ease' }, 
-        'clip-path': 'inset(0 0 0 0 round 0 0 2px 2px)' 
-      })
+        'clip-path': `url(#${clipId})`, // Магия здесь: жидкость только внутри чашки
+        style: { transition: 'all 0.5s ease' }
+      }),
+
+      // 3. Контур чашки (Рисуется поверх жидкости)
+      h('path', { d: 'M18 8h1a4 4 0 0 1 0 8h-1', stroke: 'currentColor' }), // Ручка
+      h('path', { d: 'M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z', stroke: 'currentColor' }), // Чаша
+      
+      // 4. Пар
+      h('line', { x1: '6', y1: '1', x2: '6', y2: '4', stroke: 'currentColor' }),
+      h('line', { x1: '10', y1: '1', x2: '10', y2: '4', stroke: 'currentColor' }),
+      h('line', { x1: '14', y1: '1', x2: '14', y2: '4', stroke: 'currentColor' })
     ])
   }
 }
@@ -386,7 +406,8 @@ async function submitForm() {
 :root {
   --korzh-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --korzh-font-mono: 'SF Mono', 'Monaco', monospace;
-  --korzh-submit-gradient: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%);
+  /* Розовый градиент (Женская тема) */
+  --korzh-submit-gradient: linear-gradient(90deg, #ffb6da 0%, #ff69b4 50%, #ff1493 100%);
 }
 
 .korzh-invest-form-wrapper {
@@ -457,7 +478,7 @@ async function submitForm() {
   background: #2a2a2e;
   border-radius: 16px;
   padding: 1.5rem;
-  border-left: 4px solid var(--accent-color, #A972FF);
+  border-left: 4px solid var(--accent-color, #ff69b4);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -507,10 +528,11 @@ async function submitForm() {
   font-family: inherit;
 }
 
+/* Розовая подсветка (Женская тема) */
 .korzh-invest-form-textarea:focus, .korzh-invest-form-input:focus {
   outline: none;
-  border-color: #A972FF;
-  box-shadow: 0 0 0 3px rgba(169, 114, 255, 0.2);
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2);
 }
 
 .korzh-invest-form-field {
@@ -538,7 +560,7 @@ async function submitForm() {
 .korzh-invest-form-agreement input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: #A972FF;
+  accent-color: #ff69b4;
   cursor: pointer;
   margin: 0;
   flex-shrink: 0;
@@ -552,8 +574,8 @@ async function submitForm() {
   color: #fff !important;
 }
 
-/* Кнопка отправки - 100% копия стилей из paste.txt */
-.korzh-invest-form-submit-btn {
+/* Единый стиль кнопок (розовый градиент), центровка вместе */
+.korzh-invest-form-main-btn {
   width: 100%;
   height: 56px;
   border-radius: 12px;
@@ -564,21 +586,25 @@ async function submitForm() {
   color: #fff;
   font-size: 16px;
   font-weight: 600;
-  text-transform: uppercase;
   cursor: pointer;
   transition: all 0.4s ease-out;
   margin-top: 1rem;
+  /* Центрируем содержимое (текст + иконка) единым блоком */
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; 
+  padding: 0 24px;
+  gap: 12px; /* Отступ между текстом и чашкой */
 }
-.korzh-invest-form-submit-btn:hover:not(:disabled) {
+
+.korzh-invest-form-main-btn:hover:not(:disabled) {
   background-position: 75% 50%;
   transform: scale(1.02);
 }
-.korzh-invest-form-submit-btn:disabled {
+.korzh-invest-form-main-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  filter: grayscale(0.5);
 }
 
 .korzh-invest-form-nav {
@@ -588,35 +614,6 @@ async function submitForm() {
   margin-top: 1rem;
 }
 
-/* Кнопка Далее - 100% копия стилей из paste.txt */
-.korzh-invest-form-next-btn {
-  width: 100%;
-  height: 56px;
-  border-radius: 12px;
-  border: none;
-  background: rgba(255, 255, 255, 0.1); /* Стандартный фон из оригинала */
-  color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  transition: all 0.3s ease;
-}
-
-.korzh-invest-form-next-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-.korzh-invest-form-next-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  background: rgba(255, 255, 255, 0.05);
-  color: #666;
-}
-
 .korzh-invest-form-icon {
   display: inline-flex;
   align-items: center;
@@ -624,18 +621,10 @@ async function submitForm() {
   color: currentColor; 
 }
 
-/* Текст внутри кнопок */
-.korzh-invest-form-next-text {
-  flex-grow: 1; /* Чтобы текст в кнопке отправки центрировался корректно */
-  display: flex;
-  justify-content: center;
+/* Текст внутри кнопки больше не растягивается, сидит рядом с иконкой */
+.korzh-invest-form-btn-text {
+  flex-grow: 0; 
 }
-/* В кнопке "Далее" текст должен быть слева */
-.korzh-invest-form-next-btn .korzh-invest-form-next-text {
-  justify-content: flex-start;
-  flex-grow: 0;
-}
-
 
 .korzh-fade-enter-active,
 .korzh-fade-leave-active {
@@ -709,7 +698,7 @@ async function submitForm() {
   border-radius: 12px;
   font-weight: 600;
   text-decoration: none !important;
-  background-color: #A972FF;
+  background-color: #ff69b4;
   color: #fff;
   transition: all 0.3s;
 }
@@ -755,7 +744,7 @@ async function submitForm() {
   .korzh-invest-form-block {
     padding: 1rem 0.5rem !important; 
   }
-  .korzh-invest-form-next-btn {
+  .korzh-invest-form-main-btn {
     width: 100%;
     height: 52px;
   }
