@@ -68,24 +68,25 @@
         </div>
       </div>
 
-      <!-- Секция 3: Инвестиции (Слайдер) -->
+      <!-- Секция 3: Инвестиции (Слайдер + Инпут) -->
       <div v-if="selectedSection === 'solutions'" class="korzh-invest-form-section">
         <div class="korzh-invest-form-block korzh-block-purple">
           
+          <!-- Хедер с текстом слева и иконкой справа -->
           <div class="korzh-slider-header">
+            <div class="korzh-slider-titles">
+              <div class="korzh-slider-title">Сколько хотели бы инвестировать?</div>
+              <div class="korzh-slider-subtitle">Помогите Коржу рассчитать предложение</div>
+            </div>
             <div class="korzh-icon-circle">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"/>
               </svg>
             </div>
-            <div class="korzh-slider-titles">
-              <div class="korzh-slider-title">Сколько хотели бы инвестировать?</div>
-              <div class="korzh-slider-subtitle">Помогите Коржу рассчитать предложение</div>
-            </div>
           </div>
 
           <div class="korzh-slider-body">
-            <!-- Отображение текущей суммы -->
+            <!-- Отображение текущей суммы (слайдер) -->
             <div class="korzh-slider-value">{{ formatMoney(form.investmentAmount) }}</div>
             
             <div class="korzh-slider-row">
@@ -102,10 +103,23 @@
             
             <div class="korzh-slider-labels">
               <span :class="{ 'active-label': form.investmentAmount >= 10000 }">10К</span>
-              <span :class="{ 'active-label': form.investmentAmount >= 5000000 }">5 Млн</span>
-              <span :class="{ 'active-label': form.investmentAmount >= 10000000 }">10 Млн</span>
-              <span :class="{ 'active-label': form.investmentAmount >= 15000000 }">15 Млн</span>
+              <span :class="{ 'active-label': form.investmentAmount >= 5000000 }">5 МЛН</span>
+              <span :class="{ 'active-label': form.investmentAmount >= 10000000 }">10 МЛН</span>
+              <span :class="{ 'active-label': form.investmentAmount >= 15000000 }">15 МЛН</span>
             </div>
+
+            <!-- Поле ручного ввода -->
+            <div class="korzh-manual-input-wrapper">
+              <div class="korzh-manual-currency">₽</div>
+              <input 
+                type="text" 
+                :value="manualInputValue"
+                @input="onManualInput"
+                class="korzh-manual-input" 
+                placeholder="Или напишите свою сумму ..."
+              />
+            </div>
+
           </div>
 
         </div>
@@ -153,7 +167,7 @@
         <div v-else>
           <div class="korzh-invest-form-block contact">
             <div class="korzh-invest-form-rotating-container">
-              <p class="korzh-invest-form-label">Отправьте Ваш Сигнал</p>
+              <p class="korzh-invest-form-label">Отправьте заявку</p>
             </div>
             
             <!-- Поле Имя -->
@@ -175,16 +189,14 @@
           </div>
           <label class="korzh-invest-form-agreement">
             <input type="checkbox" v-model="form.agreedToTerms" />
-            <span>Подтверждаю согласие с
-              <a href="/terms" target="_blank" class="korzh-invest-form-policy no-double-underline">Условиями использования</a>
-            </span>
+            <span>Не оферта. Вы делитесь своими данными с Коржем, чтобы получить возможность персонального предложения.</span>
           </label>
           <button 
             class="korzh-invest-form-main-btn" 
             :disabled="submitStatus === 'processing' || !canProceed"
             @click="submitForm"
           >
-            <span class="korzh-invest-form-btn-text">{{ submitStatus === 'processing' ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ СИГНАЛ' }}</span>
+            <span class="korzh-invest-form-btn-text">{{ submitStatus === 'processing' ? 'ОТПРАВКА...' : 'ПОДТВЕРЖДАЮ ИНТЕРЕС' }}</span>
           </button>
         </div>
       </div>
@@ -309,6 +321,39 @@ const sliderStyle = computed(() => {
 const formatMoney = (val) => {
   return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 }).format(val);
 }
+
+// Форматирование для ручного ввода (без символа валюты, только пробелы)
+const formatNumberWithSpaces = (val) => {
+  if (!val && val !== 0) return '';
+  return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+const manualInputValue = computed(() => {
+  return formatNumberWithSpaces(form.investmentAmount);
+});
+
+// Обработка ручного ввода
+const onManualInput = (e) => {
+  let val = e.target.value.replace(/\s/g, ''); // Удаляем пробелы
+  // Оставляем только цифры
+  val = val.replace(/[^0-9]/g, '');
+  
+  if (val === '') {
+    form.investmentAmount = 0;
+    return;
+  }
+  
+  let num = parseInt(val, 10);
+  if (isNaN(num)) num = 0;
+  
+  // Ограничиваем максимумом слайдера (по желанию, можно и больше разрешить, но слайдер упрется)
+  if (num > sliderMax) num = sliderMax;
+  
+  form.investmentAmount = num;
+  
+  // Принудительно обновляем значение в инпуте для форматирования пробелами "на лету"
+  e.target.value = formatNumberWithSpaces(num);
+};
 
 const canProceed = computed(() => {
   if (selectedSection.value === 'emotions') return !!form.emotionalRelease.trim();
@@ -562,9 +607,34 @@ async function submitForm() {
 /* Слайдер Хедер */
 .korzh-slider-header {
   display: flex;
-  align-items: center;
-  gap: 14px;
+  align-items: flex-start; /* Выравнивание по верху для мультистрочного текста */
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 1rem;
+}
+
+.korzh-slider-titles {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Задаем минимальную высоту, равную высоте иконки, чтобы центрировать визуально, если текст короткий */
+  min-height: 48px; 
+  gap: 6px; /* Межстрочный интервал между заголовком и подзаголовком */
+}
+
+.korzh-slider-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.korzh-slider-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6); /* Glass style */
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.4;
 }
 
 .korzh-icon-circle {
@@ -577,25 +647,7 @@ async function submitForm() {
   align-items: center;
   justify-content: center;
   color: #ffffff;
-}
-
-.korzh-slider-titles {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.korzh-slider-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #fff;
-}
-
-.korzh-slider-subtitle {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.5); /* Прозрачный белый */
-  font-weight: 400;
-  letter-spacing: normal;
+  flex-shrink: 0;
 }
 
 /* Слайдер Тело */
@@ -660,6 +712,7 @@ async function submitForm() {
   justify-content: space-between;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.4);
+  font-weight: 500; /* Жирность 500 в пассиве */
   margin-top: 4px;
   transition: all 0.3s ease;
 }
@@ -669,6 +722,48 @@ async function submitForm() {
   color: #ffffff !important;
   font-weight: 700;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* Новое поле ручного ввода */
+.korzh-manual-input-wrapper {
+  display: flex;
+  align-items: stretch;
+  background: #18181a;
+  border: 1px solid #444;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 16px;
+  transition: border-color 0.3s;
+}
+.korzh-manual-input-wrapper:focus-within {
+  border-color: #a855f7;
+}
+
+.korzh-manual-currency {
+  background: #2a2a2e;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-right: 1px solid #444;
+}
+
+.korzh-manual-input {
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  padding: 1rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  outline: none;
+  width: 100%;
+}
+.korzh-manual-input::placeholder {
+  color: #666;
 }
 
 /* --- Остальные стили формы --- */
@@ -754,20 +849,21 @@ async function submitForm() {
 .korzh-invest-form-agreement {
   margin: 20px 0 24px 0;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
+  align-items: flex-start; /* Выравнивание чекбокса по верху текста, если текст длинный */
+  gap: 0.75rem;
+  font-size: 0.85rem;
   color: #ccc;
   cursor: pointer;
   padding: 0;
+  line-height: 1.4;
 }
 
 .korzh-invest-form-agreement input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   accent-color: #8E65D6;
   cursor: pointer;
-  margin: 0;
+  margin-top: 2px; /* Чуть сдвигаем чекбокс вниз для визуального выравнивания с первой строкой */
   flex-shrink: 0;
 }
 
@@ -833,6 +929,9 @@ async function submitForm() {
 .korzh-invest-form-btn-text {
   flex-grow: 0; 
   color: #FFFFFF;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.9rem;
 }
 
 .korzh-fade-enter-active,
@@ -960,13 +1059,6 @@ async function submitForm() {
   .korzh-invest-form-ticket-info {
     flex-direction: column;
     gap: 0.75rem;
-  }
-  
-  /* Мобильные стили для слайдера */
-  .korzh-slider-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
   }
   .korzh-slider-value {
     font-size: 1.3rem;
