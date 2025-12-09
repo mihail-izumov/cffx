@@ -9,7 +9,8 @@
           :key="section.id"
           class="korzh-invest-form-breadcrumb"
           :class="[section.id, isActive(section.id) ? 'is-active' : '']"
-          @click="selectedSection = section.id"
+          @click="tryGoToSection(section.id)" 
+          :disabled="!canNavigateTo(section.id)"
         >
           <div class="korzh-invest-form-breadcrumb-circle"></div>
         </button>
@@ -160,7 +161,7 @@
           </label>
           <button 
             class="korzh-invest-form-main-btn" 
-            :disabled="submitStatus === 'processing' || !form.agreedToTerms || !isEmotionFilled"
+            :disabled="submitStatus === 'processing' || !canProceed"
             @click="submitForm"
           >
             <span class="korzh-invest-form-btn-text">{{ submitStatus === 'processing' ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ СИГНАЛ' }}</span>
@@ -173,10 +174,7 @@
         <button
           class="korzh-invest-form-main-btn"
           @click="goToNextSection"
-          :disabled="
-            (selectedSection === 'emotions' && !isEmotionFilled)
-            || (selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim()))
-          "
+          :disabled="!canProceed"
         >
           <span class="korzh-invest-form-btn-text">{{ currentSectionData.buttonText }}</span>
           
@@ -229,7 +227,7 @@ const CupFillIcon = {
         y: yPos.value, 
         width: '24', 
         height: currentHeight.value,
-        fill: 'currentColor', // Использует currentColor (будет белым в кнопке)
+        fill: 'currentColor', 
         stroke: 'none',
         'clip-path': `url(#${clipId})`, 
         style: { transition: 'all 0.5s ease' }
@@ -250,7 +248,7 @@ const form = reactive({
   constructiveSuggestions: '',
   summaryText: '',
   userName: '',
-  userContact: '', // Новое поле для Telegram
+  userContact: '', 
   agreedToTerms: false,
 });
 
@@ -261,8 +259,6 @@ const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
 const currentDate = ref('');
 const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2diIxXDyAZEfSxJ7wLvupwjb7IAIlKVsXlyOL6WcDjex/exec';
-
-const isEmotionFilled = computed(() => !!form.emotionalRelease.trim());
 
 const sections = [
   { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
@@ -275,13 +271,42 @@ const selectedSection = ref('emotions');
 const isActive = id => id === selectedSection.value;
 const currentSectionData = computed(() => sections.find(s => s.id === selectedSection.value));
 
-const goToNextSection = () => {
-  const idx = sections.findIndex(s => s.id === selectedSection.value);
-  if (selectedSection.value === 'solutions') summarizeAllContent();
-  if (idx < sections.length - 1) {
-    selectedSection.value = sections[idx + 1].id
+// Проверка валидности текущего шага
+const canProceed = computed(() => {
+  if (selectedSection.value === 'emotions') return !!form.emotionalRelease.trim();
+  if (selectedSection.value === 'facts') return !!form.factualAnalysis.trim();
+  if (selectedSection.value === 'solutions') return !!form.constructiveSuggestions.trim();
+  if (selectedSection.value === 'summary') return !!form.summaryText.trim();
+  if (selectedSection.value === 'contact') {
+    return form.agreedToTerms && !!form.userName.trim() && !!form.userContact.trim();
   }
-};
+  return false;
+});
+
+// Навигация
+function goToNextSection() {
+  if (!canProceed.value) return;
+  const idx = sections.findIndex(s => s.id === selectedSection.value);
+  if (idx < sections.length - 1) {
+    selectedSection.value = sections[idx + 1].id;
+  }
+}
+
+// Клик по хлебным крошкам (можно вернуться назад, но не прыгнуть вперед через пустоту)
+function tryGoToSection(id) {
+  if (canNavigateTo(id)) {
+    selectedSection.value = id;
+  }
+}
+
+function canNavigateTo(targetId) {
+  const targetIdx = sections.findIndex(s => s.id === targetId);
+  const currentIdx = sections.findIndex(s => s.id === selectedSection.value);
+  // Можно кликнуть на любой предыдущий шаг или на следующий, если текущий заполнен
+  if (targetIdx <= currentIdx) return true;
+  if (targetIdx === currentIdx + 1 && canProceed.value) return true;
+  return false; 
+}
 
 const questions1 = ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что расстроило или порадовало?', 'Ваше первое впечатление?'];
 const questions2 = ['Что именно произошло?', 'Какие детали важны?', 'Когда это случилось?', 'Что запомнилось больше всего?'];
@@ -318,11 +343,41 @@ function stopRotation() {
   }
 }
 
+// Форматирование предложения: Первая буква заглавная, в конце точка.
+function formatSentence(text) {
+  if (!text || !text.trim()) return '';
+  let clean = text.trim();
+  // Делаем первую букву заглавной
+  clean = clean.charAt(0).toUpperCase() + clean.slice(1);
+  // Если в конце нет точки, воскл. или вопр. знака — добавляем точку
+  if (!/[.!?]$/.test(clean)) {
+    clean += '.';
+  }
+  return clean;
+}
+
+// Сборка суммы
+function updateSummary() {
+  const parts = [];
+  if (form.emotionalRelease.trim()) parts.push(formatSentence(form.emotionalRelease));
+  if (form.factualAnalysis.trim()) parts.push(formatSentence(form.factualAnalysis));
+  if (form.constructiveSuggestions.trim()) parts.push(formatSentence(form.constructiveSuggestions));
+  
+  // Собираем в одну строку через пробел
+  form.summaryText = parts.join(' ');
+}
+
+// Следим за переключением секций. 
+// Если перешли на Summary, ОБЯЗАТЕЛЬНО обновляем поле (пересобираем)
 watch(selectedSection, (newSection) => {
   stopRotation();
   if (newSection === 'emotions') startRotation(1);
   else if (newSection === 'facts') startRotation(2);
   else if (newSection === 'solutions') startRotation(3);
+  
+  if (newSection === 'summary') {
+    updateSummary();
+  }
 }, { immediate: true });
 
 let checkMobile;
@@ -344,19 +399,6 @@ onUnmounted(() => {
     window.removeEventListener('resize', checkMobile);
   }
 });
-
-function summarizeAllContent() {
-  if (form.summaryText.trim()) return;
-  const emotional = form.emotionalRelease.trim();
-  const factual = form.factualAnalysis.trim();
-  const solutions = form.constructiveSuggestions.trim();
-
-  let result = '';
-  if (emotional) result += `Эмоции: ${emotional}\n\n`;
-  if (factual) result += `Факты: ${factual}\n\n`;
-  if (solutions) result += `Предложения: ${solutions}`;
-  form.summaryText = result.trim();
-}
 
 async function submitForm() {
   if (typeof window === 'undefined') return;
@@ -430,6 +472,10 @@ async function submitForm() {
   cursor: pointer;
   padding: 0;
 }
+.korzh-invest-form-breadcrumb:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 
 .korzh-invest-form-breadcrumb-circle {
   width: 12px;
@@ -448,7 +494,7 @@ async function submitForm() {
   transform: scale(1.1);
 }
 
-.korzh-invest-form-breadcrumb:hover .korzh-invest-form-breadcrumb-circle {
+.korzh-invest-form-breadcrumb:hover:not(:disabled) .korzh-invest-form-breadcrumb-circle {
   background: rgba(255, 255, 255, 0.6);
 }
 
@@ -570,7 +616,7 @@ async function submitForm() {
 .korzh-invest-form-agreement input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: #A972FF;
+  accent-color: #9d70ff;
   cursor: pointer;
   margin: 0;
   flex-shrink: 0;
@@ -585,8 +631,8 @@ async function submitForm() {
 }
 
 /* 
-  Кнопка с полной заливкой (force background).
-  Используем !important, чтобы перебить возможные конфликты.
+  Кнопка: Приглушенный фиолетовый для премиальности (#9d70ff).
+  Менее яркий, чем ранее, но сохраняющий оттенок.
 */
 .korzh-invest-form-main-btn {
   width: 100%;
@@ -594,17 +640,16 @@ async function submitForm() {
   border-radius: 12px;
   border: none;
   
-  /* Принудительная заливка градиентом */
-  background: linear-gradient(135deg, #A972FF 0%, #D4BFFF 50%, #A972FF 100%) !important;
+  /* Принудительная заливка приглушенным цветом */
+  background: #9d70ff !important;
   
-  /* Убираем дефолтные стили браузера, которые могут делать кнопку прозрачной */
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
 
-  box-shadow: 0 0 20px rgba(181, 142, 255, 0.4);
+  box-shadow: 0 0 20px rgba(157, 112, 255, 0.3);
   
-  color: #FFFFFF !important; /* Принудительно белый текст */
+  color: #FFFFFF !important;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -616,20 +661,20 @@ async function submitForm() {
   padding: 0 24px;
   gap: 12px;
   
-  /* Z-index на случай перекрытия прозрачными слоями */
   position: relative;
   z-index: 5;
 }
 
 .korzh-invest-form-main-btn:hover:not(:disabled) {
-  filter: brightness(1.1);
+  /* При наведении чуть осветляем/насыщаем */
+  background: #a97fff !important;
   transform: translateY(-1px);
-  box-shadow: 0 5px 25px rgba(181, 142, 255, 0.6);
+  box-shadow: 0 5px 25px rgba(157, 112, 255, 0.5);
 }
 .korzh-invest-form-main-btn:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
-  filter: grayscale(0.5);
+  filter: grayscale(0.4);
   box-shadow: none;
 }
 
@@ -644,7 +689,7 @@ async function submitForm() {
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  color: #FFFFFF; /* Белая иконка */
+  color: #FFFFFF; 
 }
 
 .korzh-invest-form-btn-text {
@@ -724,7 +769,7 @@ async function submitForm() {
   border-radius: 12px;
   font-weight: 600;
   text-decoration: none !important;
-  background-color: #A972FF;
+  background-color: #9d70ff;
   color: #fff;
   transition: all 0.3s;
 }
