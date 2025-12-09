@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed, defineAsyncComponent } from 'vue'
 
-// Вернул асинхронный импорт, так как он работал корректно
+// Асинхронный импорт (оптимизация загрузки)
 const InvestKorzhConfigurator2 = defineAsyncComponent(() =>
   import('./InvestKorzhConfigurator2.vue')
 )
@@ -116,7 +116,6 @@ const closeEarlyAccessModal = () => {
   if (typeof document !== 'undefined') {
     document.body.style.overflow = 'auto'
   }
-  // Убрали replaceState, чтобы избежать проблем с гидратацией
 }
 
 const onKeydown = (e) => {
@@ -126,7 +125,7 @@ const onKeydown = (e) => {
   }
 }
 
-// Проверка хэша (безопасная для SSR)
+// Проверка хэша
 const checkHashForModal = () => {
   if (typeof window !== 'undefined' && window.location.hash === `#${props.id}`) {
     openEarlyAccessModal()
@@ -299,7 +298,11 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
             <div v-if="showCopyTooltip" class="tooltip">Скопировать ссылку</div>
           </div>
 
-          <!-- КНОПКА TELEGRAM (БЕЗ javascript:void(0), DIV ВМЕСТО A) -->
+          <!-- 
+            ИСПРАВЛЕНО: 
+            padding увеличен до 18px (вместо 12px), чтобы иконка стала визуально ~24px
+            (60px - 18px*2 = 24px), что соответствует размеру иконки "скрепки".
+          -->
           <div 
             class="share-btn-circle telegram" 
             @click="shareTelegram"
@@ -309,7 +312,7 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
           >
             <div 
               class="niftybutton-telegram-black-white" 
-              style="display: inline-flex; align-items: center; justify-content: center; width: 100%; height: 100%; border-radius: 50%; color: rgb(0, 0, 0); transition: 0.3s; opacity: 1; padding: 12px; pointer-events: none;"
+              style="display: inline-flex; align-items: center; justify-content: center; width: 100%; height: 100%; border-radius: 50%; color: rgb(0, 0, 0); transition: 0.3s; opacity: 1; padding: 18px; pointer-events: none;"
             >
               <svg class="niftybutton-telegram" data-donate="true" data-tag="tel" data-name="Telegram" viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet" style="display: block; fill: rgb(0, 0, 0); width: 100%; height: 100%; color: rgb(0, 0, 0);" role="img" aria-label="telegram-black-white"><title>Telegram social icon</title>
                 <path d="M 200.894531 323.863281 L 192.425781 442.988281 C 204.542969 442.988281 209.792969 437.78125 216.085938 431.53125 L 272.894531 377.238281 L 390.613281 463.445312 C 412.203125 475.476562 427.414062 469.140625 433.238281 443.585938 L 510.507812 81.515625 L 510.527344 81.492188 C 517.375 49.578125 498.988281 37.097656 477.953125 44.929688 L 23.765625 218.816406 C -7.230469 230.847656 -6.761719 248.128906 18.496094 255.957031 L 134.613281 292.074219 L 404.332031 123.308594 C 417.023438 114.902344 428.566406 119.550781 419.070312 127.957031 Z M 200.894531 323.863281 " fill="#000000" style="fill: rgb(0, 0, 0);"></path>
@@ -866,18 +869,22 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
     border-radius: 30px !important;
   }
 
-  /* МОБИЛЬНАЯ ВЕРСИЯ МОДАЛКИ */
-  .signal2-review-modal-content {
-    max-width: 90% !important;
-    width: 90% !important;
-    /* 1. Поднял выше (отступ от верха 10% высоты экрана) */
-    margin-bottom: auto; 
-    margin-top: 10vh; 
-  }
-  
-  /* 1. На мобилке выравнивание по верхнему краю */
+  /* МОБИЛЬНАЯ ВЕРСИЯ МОДАЛКИ (Early Access) */
   .signal2-review-modal-overlay {
-    align-items: flex-start; 
+    /* 1. Жестко центрируем по горизонтали */
+    justify-content: center;
+    /* 2. Прижимаем к верху (flex-start) */
+    align-items: flex-start;
+    /* 3. Добавляем безопасный отступ сверху, чтобы не прилипало */
+    padding-top: 20px;
+  }
+
+  .signal2-review-modal-content {
+    /* Сбрасываем лишние марджины, которые могли ломать центровку */
+    margin: 0;
+    width: 90% !important;
+    max-width: 90% !important;
+    max-height: 85vh; /* Ограничиваем высоту, чтобы влезало на экран */
   }
   
   .signal2-modal-scrollable-content {
