@@ -115,7 +115,7 @@ onUnmounted(() => {
                 <span class="potential">({{ establishment.targetPoints }}+)</span>
               </div>
             </div>
-            <div class="stat-description">Точек сейчас и целевой масштаб сети</div>
+            <div class="stat-description">Кофейни сейчас и целевой масштаб сети</div>
           </div>
         </div>
 
