@@ -1,8 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed, defineAsyncComponent } from 'vue'
 
-// ⚡ ОПТИМИЗАЦИЯ: Асинхронная загрузка компонента.
-// Страница не будет ждать загрузки конфигуратора, пока пользователь не откроет модалку.
+// Асинхронная загрузка компонента
 const InvestKorzhConfigurator2 = defineAsyncComponent(() =>
   import('./InvestKorzhConfigurator2.vue')
 )
@@ -17,12 +16,19 @@ const INITIAL_BASE = {
 
 const stats = ref({ ...INITIAL_BASE })
 const isLiked = ref(false)
+
+const showEarlyAccessModal = ref(false)
 const showShareModal = ref(false)
 const showCopyToast = ref(false)
 const showCopyTooltip = ref(false)
 const showTelegramTooltip = ref(false)
 
-const showEarlyAccessModal = ref(false)
+const props = defineProps({
+  id: {
+    type: String,
+    default: 'early-access'
+  }
+})
 
 const formatNumber = (num) => {
   const safeNum = Math.max(0, num || 0)
@@ -97,15 +103,7 @@ const shareTelegram = () => {
   window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank')
 }
 
-const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
-
-defineProps({
-  id: {
-    type: String,
-    default: 'early-access'
-  }
-})
-
+// Функции управления модалкой
 const openEarlyAccessModal = () => {
   showEarlyAccessModal.value = true
   document.body.style.overflow = 'hidden'
@@ -114,12 +112,23 @@ const openEarlyAccessModal = () => {
 const closeEarlyAccessModal = () => {
   showEarlyAccessModal.value = false
   document.body.style.overflow = 'auto'
+  // Очищаем хэш, чтобы при обновлении страницы модалка не открывалась снова (опционально)
+  if (window.location.hash === `#${props.id}`) {
+    history.replaceState(null, null, ' ')
+  }
 }
 
 const onKeydown = (e) => {
   if (e.key === 'Escape') {
     if (showEarlyAccessModal.value) closeEarlyAccessModal()
     if (showShareModal.value) showShareModal.value = false
+  }
+}
+
+// Проверка хэша для открытия по ссылке
+const checkHashForModal = () => {
+  if (window.location.hash === `#${props.id}`) {
+    openEarlyAccessModal()
   }
 }
 
@@ -135,20 +144,27 @@ onMounted(async () => {
     stats.value.korzhLikes = e.detail.newCount
   })
   
-  // fetchStats делаем, но не await-им его жестко, чтобы не блокировать интерфейс, если скрипт тупит
   fetchStats()
   
   if (!sessionStorage.getItem('korzh_wide_session')) {
     incrementViews()
     sessionStorage.setItem('korzh_wide_session', 'true')
   }
-  
+
   window.addEventListener('keydown', onKeydown)
+  
+  // ПРАВКА 2: Проверяем хэш при загрузке страницы
+  checkHashForModal()
+  // И слушаем изменения хэша (если переход внутри SPA без перезагрузки)
+  window.addEventListener('hashchange', checkHashForModal)
 })
 
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown)
+  window.removeEventListener('hashchange', checkHashForModal)
 })
+
+const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 </script>
 
 <template>
@@ -163,7 +179,8 @@ onUnmounted(() => {
           style="scroll-margin-top: 80px; position: relative;"
         >
           Корж побеждает в сердцах
-          <a class="header-anchor" :href="`#${id}`" aria-hidden="true"></a>
+          <!-- Якорная ссылка, по которой можно открыть модалку -->
+          <a class="header-anchor" :href="`#${id}`" @click="openEarlyAccessModal"></a>
         </h1>
       </div>
 
@@ -197,7 +214,7 @@ onUnmounted(() => {
           <img src="/eye-icon.svg" alt="Просмотры" class="stat-icon" />
           <span>{{ formattedViews }}</span>
         </div>
-        <div class="stat-item like-trigger" @click="toggleLike">
+       <div class="stat-item like-trigger" @click="toggleLike">
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
             width="20" 
@@ -256,7 +273,6 @@ onUnmounted(() => {
         </button>
 
         <div class="signal2-modal-scrollable-content">
-          <!-- ИСПРАВЛЕНО: Правильное имя тега (с цифрой 2) -->
           <InvestKorzhConfigurator2 />
         </div>
       </div>
@@ -287,11 +303,14 @@ onUnmounted(() => {
             @click="shareTelegram"
             @mouseenter="showTelegramTooltip = true" 
             @mouseleave="showTelegramTooltip = false"
+            style="background: transparent;" 
           >
-            <!-- ИСПРАВЛЕНО: SVG код вместо img -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21.5 2L2 11.5L9 13.5L19.5 4.5L10.5 14.5L15 19L21.5 2Z" />
-            </svg>
+            <!-- ПРАВКА 3: Иконка Telegram заменена -->
+            <a href="javascript:void(0)" class="niftybutton-telegram-black-white" aria-label="telegram-black-white button" style="display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgb(255, 255, 255); border-radius: 50%; color: rgb(0, 0, 0); transition: 0.3s; opacity: 1; padding: 12px; pointer-events: none;">
+              <svg class="niftybutton-telegram" data-donate="true" data-tag="tel" data-name="Telegram" viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet" style="display: block; fill: rgb(0, 0, 0); width: 100%; height: 100%; color: rgb(0, 0, 0);" role="img" aria-label="telegram-black-white"><title>Telegram social icon</title>
+                <path d="M 200.894531 323.863281 L 192.425781 442.988281 C 204.542969 442.988281 209.792969 437.78125 216.085938 431.53125 L 272.894531 377.238281 L 390.613281 463.445312 C 412.203125 475.476562 427.414062 469.140625 433.238281 443.585938 L 510.507812 81.515625 L 510.527344 81.492188 C 517.375 49.578125 498.988281 37.097656 477.953125 44.929688 L 23.765625 218.816406 C -7.230469 230.847656 -6.761719 248.128906 18.496094 255.957031 L 134.613281 292.074219 L 404.332031 123.308594 C 417.023438 114.902344 428.566406 119.550781 419.070312 127.957031 Z M 200.894531 323.863281 " fill="#000000" style="fill: rgb(0, 0, 0);"></path>
+              </svg>
+            </a>
             <div v-if="showTelegramTooltip" class="tooltip">Отправить в Telegram</div>
           </div>
 
@@ -314,6 +333,7 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/* СТИЛИ */
 .wide-widget-container {
   width: 100%;
   max-width: 100%;
@@ -593,6 +613,61 @@ onUnmounted(() => {
   stroke: #1a1a1a;
 }
 
+/* МОДАЛКА */
+.signal2-review-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.signal2-review-modal-content {
+  background: #1e1e20;
+  border-radius: 20px;
+  width: 90%;
+  /* 1. Ширина для ДЕСКТОПА по умолчанию */
+  max-width: 800px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+}
+
+.signal2-modal-close-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 4px;
+  transition: opacity 0.2s;
+  opacity: 0.6;
+  z-index: 10;
+}
+
+.signal2-modal-close-icon:hover {
+  opacity: 1;
+}
+
+.signal2-modal-scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  /* 1. Отступы для пространства вокруг компонента */
+  padding: 40px; 
+}
+
+/* Modal Overlay общие стили */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -742,57 +817,6 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-.signal2-review-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.signal2-review-modal-content {
-  background: #1e1e20;
-  border-radius: 20px;
-  max-width: 500px;
-  width: 90%;
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
-}
-
-.signal2-modal-close-icon {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: transparent;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  padding: 4px;
-  transition: opacity 0.2s;
-  opacity: 0.6;
-  z-index: 10;
-}
-
-.signal2-modal-close-icon:hover {
-  opacity: 1;
-}
-
-.signal2-modal-scrollable-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0; 
-}
-
 @media (max-width: 768px) {
   .wide-widget-container {
     margin: 32px 0;
@@ -839,6 +863,16 @@ onUnmounted(() => {
   .btn-create,
   .btn-see-all {
     border-radius: 30px !important;
+  }
+
+  /* 1. Адаптив для МОБИЛЬНОЙ версии модалки */
+  .signal2-review-modal-content {
+    max-width: 90% !important; /* Узко на мобильном */
+    width: 90% !important;
+  }
+  
+  .signal2-modal-scrollable-content {
+    padding: 24px; /* Меньше отступы на мобильном */
   }
 }
 </style>
