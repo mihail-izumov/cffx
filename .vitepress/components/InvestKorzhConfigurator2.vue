@@ -20,7 +20,7 @@
 
       <!-- Секция 1: Эмоции -->
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #A972FF;">
+        <div class="signal-question-block" style="--accent-color: #7C72A0;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion1" class="signal-question-label">
@@ -41,7 +41,7 @@
 
       <!-- Секция 2: Факты -->
       <div v-if="selectedSection === 'facts'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #A972FF;">
+        <div class="signal-question-block" style="--accent-color: #7C72A0;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion2" class="signal-question-label">
@@ -63,7 +63,7 @@
 
       <!-- Секция 3: Решение -->
       <div v-if="selectedSection === 'solutions'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #A972FF;">
+        <div class="signal-question-block" style="--accent-color: #7C72A0;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
             <transition name="fade" mode="out-in">
               <p :key="currentQuestion3" class="signal-question-label">
@@ -83,7 +83,7 @@
 
       <!-- Секция 4: Итого (Резюме) -->
       <div v-if="selectedSection === 'summary'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #A972FF;">
+        <div class="signal-question-block" style="--accent-color: #7C72A0;">
           <p class="signal-direction-label">Ваш Сигнал</p>
           <div class="signal-rotating-phrase-container">
             <p class="signal-question-label">Что должно измениться?</p>
@@ -118,7 +118,7 @@
           </div>
         </div>
         <div v-else>
-          <div class="signal-question-block contact" style="--accent-color: #A972FF;">
+          <div class="signal-question-block contact" style="--accent-color: #7C72A0;">
             <div class="signal-rotating-phrase-container">
               <p class="signal-question-label">Отправьте Ваш Сигнал</p>
             </div>
@@ -154,11 +154,12 @@
           "
         >
           <span class="signal-liquid-next-text">{{ currentSectionData.buttonText }}</span>
+          <!-- Используем локальный компонент иконки с анимацией -->
           <CupFillIcon
             class="signal-next-icon"
             :step-index="sections.findIndex(s => s.id === selectedSection)"
             :steps-total="5"
-            :size="22"
+            :size="24"
           />
         </button>
       </div>
@@ -167,7 +168,54 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { reactive, ref, computed, onMounted, onUnmounted, watch, h } from 'vue'
+
+// ====== Внутренний компонент иконки чашки (SVG Animation) ======
+const CupFillIcon = {
+  props: ['stepIndex', 'stepsTotal', 'size'],
+  setup(props) {
+    // Рассчитываем процент заполнения (от 0 до 100)
+    // stepIndex идет от 0. Для первого шага (0) хотим заполнение 20% (1/5)
+    const fillPercent = computed(() => {
+      const p = ((props.stepIndex + 1) / props.stepsTotal) * 100;
+      return Math.min(Math.max(p, 0), 100);
+    });
+
+    // Высота "воды" внутри viewbox (всего 24px)
+    // Отступаем немного снизу (20) и идем вверх.
+    const fillHeight = computed(() => (fillPercent.value / 100) * 14); // 14px - высота чаши
+    const yOffset = computed(() => 18 - fillHeight.value); // 18 - дно чаши
+
+    return () => h('svg', {
+      width: props.size,
+      height: props.size,
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      'stroke-width': '1.5',
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round'
+    }, [
+      // Пар (статичный)
+      h('path', { d: 'M18 8h1a4 4 0 0 1 0 8h-1', stroke: 'currentColor' }),
+      h('path', { d: 'M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z', stroke: 'currentColor' }),
+      h('line', { x1: '6', y1: '1', x2: '6', y2: '4', stroke: 'currentColor' }),
+      h('line', { x1: '10', y1: '1', x2: '10', y2: '4', stroke: 'currentColor' }),
+      h('line', { x1: '14', y1: '1', x2: '14', y2: '4', stroke: 'currentColor' }),
+      // Жидкость (Заливка) - без stroke, только fill
+      h('rect', { 
+        x: '3', 
+        y: yOffset.value, 
+        width: '14', 
+        height: fillHeight.value, 
+        fill: 'currentColor',
+        stroke: 'none',
+        style: { transition: 'all 0.5s ease' }, // Плавная анимация наполнения
+        'clip-path': 'inset(0 0 0 0 round 0 0 2px 2px)' // Скругление снизу
+      })
+    ])
+  }
+}
 
 // ====== Стейт формы ======
 const form = reactive({
@@ -223,9 +271,10 @@ const currentQuestion3 = ref(questions3[0]);
 let rotationInterval = null;
 
 function startRotation(questionNum) {
-  // Защита для SSG: не запускаем таймеры на сервере
+  // Исправление для деплоя: не запускаем логику таймера на сервере,
+  // но оставляем функцию рабочей для браузера.
   if (typeof window === 'undefined') return;
-  
+
   stopRotation();
 
   let questionsArray = [];
@@ -250,13 +299,13 @@ function stopRotation() {
   }
 }
 
-// Слежение за секцией БЕЗ immediate: true для SSG безопасности
+// Вернул логику один в один, как вы просили (с immediate: true)
 watch(selectedSection, (newSection) => {
   stopRotation();
   if (newSection === 'emotions') startRotation(1);
   else if (newSection === 'facts') startRotation(2);
   else if (newSection === 'solutions') startRotation(3);
-});
+}, { immediate: true });
 
 // Lifecycle
 let checkMobile;
@@ -274,11 +323,6 @@ onMounted(() => {
   const now = new Date();
   const d = n => String(n).padStart(2, '0');
   currentDate.value = `${d(now.getDate())}.${d(now.getMonth()+1)}.${now.getFullYear()}, ${d(now.getHours())}:${d(now.getMinutes())}:${d(now.getSeconds())}`;
-
-  // Ручной запуск первой анимации на клиенте
-  if (selectedSection.value === 'emotions') {
-    startRotation(1);
-  }
 });
 
 onUnmounted(() => {
@@ -306,7 +350,6 @@ async function submitForm() {
 
   submitStatus.value = 'processing';
 
-  // LocalStorage безопасно
   let clientId = localStorage.getItem('signal_client_id');
   if (!clientId) {
     clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now();
@@ -344,24 +387,18 @@ async function submitForm() {
     submitStatus.value = 'idle';
   }
 }
-
-// Компонент иконки
-const CupFillIcon = {
-  props: ['stepIndex', 'stepsTotal', 'size'],
-  template: `
-    <svg :width="size" :height="size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M5 12h14" />
-      <path d="M12 5l7 7-7 7" />
-    </svg>
-  `
-}
 </script>
 
 <style scoped>
 :root {
   --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --signal-font-mono: 'SF Mono', 'Monaco', monospace;
-  --submit-gradient: linear-gradient(90deg, #A972FF 0%, #D8B4FE 50%, #A972FF 100%); 
+  /* Приглушенный премиальный градиент */
+  --submit-gradient: linear-gradient(90deg, #7C72A0 0%, #8F84BE 50%, #7C72A0 100%);
+  /* Приглушенный фиолетовый для акцентов */
+  --premium-accent: #7C72A0; 
+  /* Цвет подсветки (очень прозрачный) */
+  --premium-glow: rgba(124, 114, 160, 0.4);
 }
 
 .signal-demo-wrapper {
@@ -375,7 +412,8 @@ const CupFillIcon = {
   display: flex;
   justify-content: center;
   margin-bottom: 24px;
-  padding-top: 20px; 
+  /* Увеличенный отступ сверху */
+  padding-top: 50px; 
 }
 
 .signal-demo__breadcrumbs {
@@ -432,7 +470,8 @@ const CupFillIcon = {
   background: #2a2a2e;
   border-radius: 16px;
   padding: 1.5rem;
-  border-left: 4px solid var(--accent-color, #A972FF);
+  /* Используем переменную для цвета */
+  border-left: 4px solid var(--accent-color, #7C72A0);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -484,8 +523,9 @@ textarea, .signal-input {
 
 textarea:focus, .signal-input:focus {
   outline: none;
-  border-color: #A972FF;
-  box-shadow: 0 0 0 2px rgba(169, 114, 255, 0.2);
+  /* Приглушенный цвет фокуса */
+  border-color: var(--premium-accent);
+  box-shadow: 0 0 0 2px var(--premium-glow);
 }
 
 .signal-name-field {
@@ -513,7 +553,7 @@ textarea:focus, .signal-input:focus {
 .signal-agreement input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: #A972FF;
+  accent-color: var(--premium-accent);
   cursor: pointer;
   margin: 0;
   flex-shrink: 0;
@@ -562,13 +602,16 @@ textarea:focus, .signal-input:focus {
   margin-top: 1rem;
 }
 
+/* Возвращена структура с "жидкостью" и иконкой */
 .signal-liquid-next-btn {
   width: 100%;
   height: 56px;
   border-radius: 12px;
   border: none;
-  background: rgba(169, 114, 255, 0.15); 
-  color: #D8B4FE;
+  /* Легкий фиолетовый флер (очень прозрачный) */
+  background: rgba(124, 114, 160, 0.15); 
+  /* Цвет текста кнопки - приглушенная лаванда */
+  color: #AFA5D1;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -580,7 +623,8 @@ textarea:focus, .signal-input:focus {
 }
 
 .signal-liquid-next-btn:hover:not(:disabled) {
-  background: rgba(169, 114, 255, 0.3);
+  /* При наведении чуть ярче */
+  background: rgba(124, 114, 160, 0.25);
   color: #fff;
   transform: translateY(-2px);
 }
@@ -589,6 +633,14 @@ textarea:focus, .signal-input:focus {
   cursor: not-allowed;
   background: rgba(255, 255, 255, 0.05);
   color: #666;
+}
+
+/* Стилизация иконки внутри кнопки */
+.signal-next-icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: currentColor; 
 }
 
 .fade-enter-active,
@@ -663,7 +715,7 @@ textarea:focus, .signal-input:focus {
   border-radius: 12px;
   font-weight: 600;
   text-decoration: none !important;
-  background-color: #A972FF;
+  background-color: var(--premium-accent);
   color: #fff;
   transition: all 0.3s;
 }
