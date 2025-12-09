@@ -346,7 +346,7 @@ watch(showBranchList, (newValue) => {
               Отправить Сигнал
             </button>
             <button @click="showBranchList = true" class="signal-action-button signal-review-button">
-              Мне понравилось
+              Отзыв Яндекс/2ГИС
               <svg class="signal-button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m9 18 6-6-6-6"/>
               </svg>
