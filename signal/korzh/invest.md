@@ -2,11 +2,11 @@
 prev: false
 next: false
 title: Инвестиции в Корж
-description: Где Начинается Ваша Кофейня
+description: Ранний доступ
 head:
   - - meta
     - property: "og:image"
-      content: "https://cffx.ru/korzh_og_card.jpg"
+      content: "https://cffx.ru/korzh_badge.svg)"
 ---
 <div class="back-button-container">
   <a href="/korzh" class="back-button">
