@@ -1,7 +1,7 @@
 ---
 prev: false
 next: false
-title: Инвестиции в Корж
+title: Инвестиции в новую кофейню «Корж»
 description: Ранний доступ
 head:
   - - meta
