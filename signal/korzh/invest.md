@@ -76,8 +76,6 @@ head:
 
 </div>
 
-<br>
-
 <InvestKorzhInfoBlock />
 
 <InvestKorzhGallerySlider />
