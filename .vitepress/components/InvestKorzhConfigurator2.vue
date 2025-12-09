@@ -20,7 +20,7 @@
 
       <!-- Секция 1: Эмоции -->
       <div v-if="selectedSection === 'emotions'" class="korzh-invest-form-section">
-        <div class="korzh-invest-form-block" style="--accent-color: #ff69b4;">
+        <div class="korzh-invest-form-block">
           <div class="korzh-invest-form-rotating-container korzh-invest-form-fixed-height">
             <transition name="korzh-fade" mode="out-in">
               <p :key="currentQuestion1" class="korzh-invest-form-label">
@@ -29,20 +29,22 @@
             </transition>
           </div>
 
-          <textarea 
-            v-model="form.emotionalRelease" 
-            class="korzh-invest-form-textarea"
-            @focus="stopRotation"
-            @blur="startRotation(1)"
-            :rows="isMobile ? 5 : 3"
-            placeholder="Опишите ваши впечатления..."
-          ></textarea>
+          <div class="korzh-input-wrapper">
+             <textarea 
+              v-model="form.emotionalRelease" 
+              class="korzh-invest-form-textarea"
+              @focus="stopRotation"
+              @blur="startRotation(1)"
+              :rows="isMobile ? 5 : 3"
+              placeholder="Опишите ваши впечатления..."
+            ></textarea>
+          </div>
         </div>
       </div>
 
       <!-- Секция 2: Факты -->
       <div v-if="selectedSection === 'facts'" class="korzh-invest-form-section">
-        <div class="korzh-invest-form-block" style="--accent-color: #ff69b4;">
+        <div class="korzh-invest-form-block">
           <div class="korzh-invest-form-rotating-container korzh-invest-form-fixed-height">
             <transition name="korzh-fade" mode="out-in">
               <p :key="currentQuestion2" class="korzh-invest-form-label">
@@ -50,22 +52,24 @@
               </p>
             </transition>
           </div>
-          <textarea 
-            v-model="form.factualAnalysis" 
-            class="korzh-invest-form-textarea"
-            @focus="stopRotation" 
-            @blur="startRotation(2)"
-            :rows="isMobile ? 5 : 3"
-            :placeholder="isMobile 
-              ? 'Что и когда произошло...' 
-              : 'Несколько фактов: что и когда произошло...'"
-          ></textarea>
+          <div class="korzh-input-wrapper">
+            <textarea 
+              v-model="form.factualAnalysis" 
+              class="korzh-invest-form-textarea"
+              @focus="stopRotation" 
+              @blur="startRotation(2)"
+              :rows="isMobile ? 5 : 3"
+              :placeholder="isMobile 
+                ? 'Что и когда произошло...' 
+                : 'Несколько фактов: что и когда произошло...'"
+            ></textarea>
+          </div>
         </div>
       </div>
 
       <!-- Секция 3: Решение -->
       <div v-if="selectedSection === 'solutions'" class="korzh-invest-form-section">
-        <div class="korzh-invest-form-block" style="--accent-color: #ff69b4;">
+        <div class="korzh-invest-form-block">
           <div class="korzh-invest-form-rotating-container korzh-invest-form-fixed-height">
             <transition name="korzh-fade" mode="out-in">
               <p :key="currentQuestion3" class="korzh-invest-form-label">
@@ -73,30 +77,34 @@
               </p>
             </transition>
           </div>
-          <textarea 
-            v-model="form.constructiveSuggestions" 
-            class="korzh-invest-form-textarea"
-            @focus="stopRotation" 
-            @blur="startRotation(3)" 
-            :rows="isMobile ? 5 : 3"
-            placeholder="Ваш совет или предложение..."
-          ></textarea>
+          <div class="korzh-input-wrapper">
+            <textarea 
+              v-model="form.constructiveSuggestions" 
+              class="korzh-invest-form-textarea"
+              @focus="stopRotation" 
+              @blur="startRotation(3)" 
+              :rows="isMobile ? 5 : 3"
+              placeholder="Ваш совет или предложение..."
+            ></textarea>
+          </div>
         </div>
       </div>
 
       <!-- Секция 4: Итого (Резюме) -->
       <div v-if="selectedSection === 'summary'" class="korzh-invest-form-section">
-        <div class="korzh-invest-form-block" style="--accent-color: #ff69b4;">
+        <div class="korzh-invest-form-block">
           <p class="korzh-invest-form-direction-label">Ваш Сигнал</p>
           <div class="korzh-invest-form-rotating-container">
             <p class="korzh-invest-form-label">Что должно измениться?</p>
           </div>
-          <textarea 
-            v-model="form.summaryText" 
-            class="korzh-invest-form-textarea"
-            :rows="isMobile ? 8 : 6"
-            placeholder="Главный вывод..."
-          ></textarea>
+          <div class="korzh-input-wrapper">
+            <textarea 
+              v-model="form.summaryText" 
+              class="korzh-invest-form-textarea"
+              :rows="isMobile ? 8 : 6"
+              placeholder="Главный вывод..."
+            ></textarea>
+          </div>
           <p class="korzh-invest-form-hint korzh-invest-form-hint-white">Команда к действию и видимый результат для вас</p>
         </div>
       </div>
@@ -122,13 +130,15 @@
           </div>
         </div>
         <div v-else>
-          <div class="korzh-invest-form-block contact" style="--accent-color: #ff69b4;">
+          <div class="korzh-invest-form-block contact">
             <div class="korzh-invest-form-rotating-container">
               <p class="korzh-invest-form-label">Отправьте Ваш Сигнал</p>
             </div>
             <div class="korzh-invest-form-field">
               <label>Для персонального разбора</label>
-              <input v-model="form.userName" class="korzh-invest-form-input" placeholder="Ваше Имя" />
+              <div class="korzh-input-wrapper">
+                <input v-model="form.userName" class="korzh-invest-form-input" placeholder="Ваше Имя" />
+              </div>
             </div>
           </div>
           <label class="korzh-invest-form-agreement">
@@ -157,10 +167,8 @@
             || (selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim()))
           "
         >
-          <!-- Текст и иконка центрируются вместе (flex-grow убран) -->
           <span class="korzh-invest-form-btn-text">{{ currentSectionData.buttonText }}</span>
           
-          <!-- Исправленная иконка: использует clipPath для идеального заполнения без дырок -->
           <CupFillIcon
             class="korzh-invest-form-icon"
             :step-index="sections.findIndex(s => s.id === selectedSection)"
@@ -176,7 +184,7 @@
 <script setup>
 import { reactive, ref, computed, onMounted, onUnmounted, watch, h } from 'vue'
 
-// ====== Внутренний компонент иконки чашки (Исправленный SVG) ======
+// ====== Внутренний компонент иконки чашки (SVG) ======
 const CupFillIcon = {
   props: ['stepIndex', 'stepsTotal', 'size'],
   setup(props) {
@@ -185,13 +193,9 @@ const CupFillIcon = {
       return Math.min(Math.max(p, 0), 100);
     });
     
-    // Максимальная высота жидкости внутри чашки (примерно 13px от дна)
     const maxLiquidHeight = 13; 
     const currentHeight = computed(() => (fillPercent.value / 100) * maxLiquidHeight);
-    // Y координата верхней границы жидкости (дно чашки на Y=21)
     const yPos = computed(() => 21 - currentHeight.value);
-
-    // Уникальный ID для clipPath, чтобы не конфликтовал при множественном использовании
     const clipId = `cup-clip-${Math.random().toString(36).substr(2, 9)}`;
 
     return () => h('svg', {
@@ -204,14 +208,11 @@ const CupFillIcon = {
       'stroke-linecap': 'round',
       'stroke-linejoin': 'round'
     }, [
-      // 1. Определение маски по форме чашки
       h('defs', [
         h('clipPath', { id: clipId }, [
           h('path', { d: 'M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z' })
         ])
       ]),
-      
-      // 2. Жидкость (Прямоугольник, обрезанный маской чашки)
       h('rect', {
         x: '0', 
         y: yPos.value, 
@@ -219,15 +220,11 @@ const CupFillIcon = {
         height: currentHeight.value,
         fill: 'currentColor',
         stroke: 'none',
-        'clip-path': `url(#${clipId})`, // Магия здесь: жидкость только внутри чашки
+        'clip-path': `url(#${clipId})`, 
         style: { transition: 'all 0.5s ease' }
       }),
-
-      // 3. Контур чашки (Рисуется поверх жидкости)
-      h('path', { d: 'M18 8h1a4 4 0 0 1 0 8h-1', stroke: 'currentColor' }), // Ручка
-      h('path', { d: 'M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z', stroke: 'currentColor' }), // Чаша
-      
-      // 4. Пар
+      h('path', { d: 'M18 8h1a4 4 0 0 1 0 8h-1', stroke: 'currentColor' }),
+      h('path', { d: 'M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z', stroke: 'currentColor' }),
       h('line', { x1: '6', y1: '1', x2: '6', y2: '4', stroke: 'currentColor' }),
       h('line', { x1: '10', y1: '1', x2: '10', y2: '4', stroke: 'currentColor' }),
       h('line', { x1: '14', y1: '1', x2: '14', y2: '4', stroke: 'currentColor' })
@@ -253,10 +250,8 @@ const formattedTicketNumber = ref(null);
 const currentDate = ref('');
 const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2diIxXDyAZEfSxJ7wLvupwjb7IAIlKVsXlyOL6WcDjex/exec';
 
-// Валидация
 const isEmotionFilled = computed(() => !!form.emotionalRelease.trim());
 
-// Секции
 const sections = [
   { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
   { id: 'facts', title: 'Факты', buttonText: 'К решению ситуации' },
@@ -276,7 +271,6 @@ const goToNextSection = () => {
   }
 };
 
-// Вопросы
 const questions1 = ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что расстроило или порадовало?', 'Ваше первое впечатление?'];
 const questions2 = ['Что именно произошло?', 'Какие детали важны?', 'Когда это случилось?', 'Что запомнилось больше всего?'];
 const questions3 = ['Что можно сделать лучше?', 'Ваш совет управляющему?', 'Как исправить ситуацию?', 'Предложения по улучшению?'];
@@ -285,14 +279,11 @@ const currentQuestion1 = ref(questions1[0]);
 const currentQuestion2 = ref(questions2[0]);
 const currentQuestion3 = ref(questions3[0]);
 
-// Ротация
 let rotationInterval = null;
 
 function startRotation(questionNum) {
   if (typeof window === 'undefined') return;
-
   stopRotation();
-
   let questionsArray = [];
   let currentRef = null;
 
@@ -322,17 +313,14 @@ watch(selectedSection, (newSection) => {
   else if (newSection === 'solutions') startRotation(3);
 }, { immediate: true });
 
-// Lifecycle
 let checkMobile;
 
 onMounted(() => {
   checkMobile = () => { isMobile.value = window.innerWidth <= 768 }
   checkMobile();
   window.addEventListener('resize', checkMobile);
-
   rawTicketNumber.value = String(Date.now()).slice(-6);
   formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
-  
   const now = new Date();
   const d = n => String(n).padStart(2, '0');
   currentDate.value = `${d(now.getDate())}.${d(now.getMonth()+1)}.${now.getFullYear()}, ${d(now.getHours())}:${d(now.getMinutes())}:${d(now.getSeconds())}`;
@@ -360,19 +348,15 @@ function summarizeAllContent() {
 
 async function submitForm() {
   if (typeof window === 'undefined') return;
-
   submitStatus.value = 'processing';
-
   let clientId = localStorage.getItem('signal_client_id');
   if (!clientId) {
     clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now();
     localStorage.setItem('signal_client_id', clientId);
   }
-
   const now = new Date();
   const d = n => String(n).padStart(2, '0');
   const submittedTime = `${now.getFullYear()}-${d(now.getMonth()+1)}-${d(now.getDate())} ${d(now.getHours())}:${d(now.getMinutes())}:${d(now.getSeconds())}`;
-
   const formData = new FormData();
   formData.append('referer', window.location.origin);
   formData.append('clientId', clientId);
@@ -383,11 +367,9 @@ async function submitForm() {
   formData.append('address', ''); 
   formData.append('name', form.userName);
   formData.append('review', form.summaryText);
-
   try {
     const response = await fetch(API_ENDPOINT, { method: 'POST', body: formData });
     const result = await response.json();
-    
     if (result.status === 'success' && result.processed) {
       formSubmitted.value = true;
       submitStatus.value = 'idle';
@@ -406,8 +388,9 @@ async function submitForm() {
 :root {
   --korzh-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --korzh-font-mono: 'SF Mono', 'Monaco', monospace;
-  /* Розовый градиент (Женская тема) */
-  --korzh-submit-gradient: linear-gradient(90deg, #ffb6da 0%, #ff69b4 50%, #ff1493 100%);
+  /* Премиальный фиолетовый градиент для кнопок */
+  --korzh-btn-gradient: linear-gradient(135deg, #2E2E3A 0%, #4B4B5C 100%);
+  --korzh-btn-glow: 0 0 20px rgba(169, 114, 255, 0.15);
 }
 
 .korzh-invest-form-wrapper {
@@ -420,7 +403,7 @@ async function submitForm() {
 .korzh-invest-form__header {
   display: flex;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 40px; /* Увеличенный отступ */
   padding-top: 50px; 
 }
 
@@ -478,7 +461,7 @@ async function submitForm() {
   background: #2a2a2e;
   border-radius: 16px;
   padding: 1.5rem;
-  border-left: 4px solid var(--accent-color, #ff69b4);
+  /* УБРАНА розовая полоска слева */
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -515,24 +498,45 @@ async function submitForm() {
   font-weight: 700;
 }
 
+/* Glassmorphism Border Effect Container */
+.korzh-input-wrapper {
+  position: relative;
+  border-radius: 12px;
+  background: #2a2a2a; /* Цвет фона блока, чтобы сливался пока не активен */
+  padding: 1px; /* Толщина "бордера" */
+  transition: all 0.3s ease;
+}
+
+/* Эффект свечения при фокусе через псевдо-элемент не нужен, 
+   делаем напрямую через background самого враппера, как в примере */
+.korzh-input-wrapper:focus-within {
+  background: transparent;
+  background-image: linear-gradient(#2a2a2a, #2a2a2a), 
+                    linear-gradient(135deg, rgba(169, 114, 255, 0.8), rgba(169, 114, 255, 0));
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  box-shadow: 0 0 15px rgba(169, 114, 255, 0.3); /* Добавил свечение (blur) */
+}
+
 .korzh-invest-form-textarea, .korzh-invest-form-input {
   width: 100%;
   background: #18181a;
-  border: 1px solid #444;
-  border-radius: 12px;
+  border: 1px solid #444; /* Дефолтный бордер */
+  border-radius: 11px; /* Чуть меньше родителя */
   padding: 1rem;
   color: #fff;
   font-size: 1rem;
   resize: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
   font-family: inherit;
+  display: block;
+  transition: border-color 0.3s;
 }
 
-/* Розовая подсветка (Женская тема) */
+/* Убираем дефолтную обводку при фокусе, так как работает враппер */
 .korzh-invest-form-textarea:focus, .korzh-invest-form-input:focus {
   outline: none;
-  border-color: #ff69b4;
-  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2);
+  border-color: transparent; 
+  background: #18181a; 
 }
 
 .korzh-invest-form-field {
@@ -560,7 +564,7 @@ async function submitForm() {
 .korzh-invest-form-agreement input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: #ff69b4;
+  accent-color: #A972FF;
   cursor: pointer;
   margin: 0;
   flex-shrink: 0;
@@ -574,37 +578,37 @@ async function submitForm() {
   color: #fff !important;
 }
 
-/* Единый стиль кнопок (розовый градиент), центровка вместе */
+/* Кнопка с премиальным фиолетовым градиентом */
 .korzh-invest-form-main-btn {
   width: 100%;
   height: 56px;
   border-radius: 12px;
   border: none;
-  background: var(--korzh-submit-gradient);
-  background-size: 200% auto;
-  background-position: 25% 50%;
+  background: var(--korzh-btn-gradient);
+  box-shadow: var(--korzh-btn-glow);
   color: #fff;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.4s ease-out;
   margin-top: 1rem;
-  /* Центрируем содержимое (текст + иконка) единым блоком */
   display: flex;
   align-items: center;
   justify-content: center; 
   padding: 0 24px;
-  gap: 12px; /* Отступ между текстом и чашкой */
+  gap: 12px;
 }
 
 .korzh-invest-form-main-btn:hover:not(:disabled) {
-  background-position: 75% 50%;
-  transform: scale(1.02);
+  filter: brightness(1.2);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 25px rgba(169, 114, 255, 0.25);
 }
 .korzh-invest-form-main-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   filter: grayscale(0.5);
+  box-shadow: none;
 }
 
 .korzh-invest-form-nav {
@@ -618,12 +622,12 @@ async function submitForm() {
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  color: currentColor; 
+  color: #A972FF; /* Фиолетовый оттенок для иконки */
 }
 
-/* Текст внутри кнопки больше не растягивается, сидит рядом с иконкой */
 .korzh-invest-form-btn-text {
   flex-grow: 0; 
+  color: #e0e0e0;
 }
 
 .korzh-fade-enter-active,
@@ -698,7 +702,7 @@ async function submitForm() {
   border-radius: 12px;
   font-weight: 600;
   text-decoration: none !important;
-  background-color: #ff69b4;
+  background-color: #A972FF;
   color: #fff;
   transition: all 0.3s;
 }
@@ -726,7 +730,7 @@ async function submitForm() {
 
 @media (max-width: 768px) {
   .korzh-invest-form__header {
-    margin-bottom: 12px;
+    margin-bottom: 60px; /* Еще больше отступа на мобиле */
   }
   .korzh-invest-form-wrapper {
     width: 100%;
