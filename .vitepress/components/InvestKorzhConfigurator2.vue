@@ -70,19 +70,17 @@
 
       <!-- Секция 3: Инвестиции (Слайдер) -->
       <div v-if="selectedSection === 'solutions'" class="korzh-invest-form-section">
-        <!-- Добавляем класс для фиолетового фона -->
         <div class="korzh-invest-form-block korzh-block-purple">
           
           <div class="korzh-slider-header">
             <div class="korzh-icon-circle">
-              <!-- Иконка Heart Handshake -->
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"/>
               </svg>
             </div>
             <div class="korzh-slider-titles">
               <div class="korzh-slider-title">Сколько хотели бы инвестировать?</div>
-              <div class="korzh-slider-subtitle">Помогите Коржу рассчитать предложение для инвесторов</div>
+              <div class="korzh-slider-subtitle">Помогите Коржу рассчитать предложение</div>
             </div>
           </div>
 
@@ -93,9 +91,9 @@
             <div class="korzh-slider-row">
               <input 
                 type="range" 
-                min="10000" 
-                max="1500000" 
-                step="10000" 
+                :min="sliderMin" 
+                :max="sliderMax" 
+                :step="sliderStep" 
                 v-model.number="form.investmentAmount" 
                 class="korzh-slider-input" 
                 :style="sliderStyle"
@@ -103,10 +101,10 @@
             </div>
             
             <div class="korzh-slider-labels">
-              <span>10к</span>
-              <span>500к</span>
-              <span>1 млн</span>
-              <span>1.5 млн</span>
+              <span :class="{ 'active-label': form.investmentAmount >= 10000 }">10К</span>
+              <span :class="{ 'active-label': form.investmentAmount >= 5000000 }">5 Млн</span>
+              <span :class="{ 'active-label': form.investmentAmount >= 10000000 }">10 Млн</span>
+              <span :class="{ 'active-label': form.investmentAmount >= 15000000 }">15 Млн</span>
             </div>
           </div>
 
@@ -267,8 +265,8 @@ const CupFillIcon = {
 const form = reactive({
   emotionalRelease: '',
   factualAnalysis: '',
-  constructiveSuggestions: '', // Используется как заглушка для старой логики, но теперь слайдер пишет в investmentAmount
-  investmentAmount: 100000, // Дефолтное значение инвестиций
+  constructiveSuggestions: '',
+  investmentAmount: 100000,
   summaryText: '',
   userName: '',
   userContact: '', 
@@ -285,7 +283,7 @@ const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1y
 
 const sections = [
   { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
-  { id: 'facts', title: 'Факты', buttonText: 'К инвестициям' }, // Изменил текст кнопки
+  { id: 'facts', title: 'Факты', buttonText: 'К инвестициям' },
   { id: 'solutions', title: 'Решения', buttonText: 'Суммировать' },
   { id: 'summary', title: 'Резюме', buttonText: 'Готово, к отправке' },
   { id: 'contact', title: 'Контакт', buttonText: '' }
@@ -294,18 +292,20 @@ const selectedSection = ref('emotions');
 const isActive = id => id === selectedSection.value;
 const currentSectionData = computed(() => sections.find(s => s.id === selectedSection.value));
 
-// Вычисляемый стиль для слайдера (заполнение цветом)
+// Настройки слайдера
+const sliderMin = 10000;
+const sliderMax = 15000000;
+const sliderStep = 10000;
+
+// Градиент от светлого (#E9D5FF) к темному (#7E22CE)
 const sliderStyle = computed(() => {
-  const min = 10000;
-  const max = 1500000;
   const val = form.investmentAmount;
-  const percentage = ((val - min) / (max - min)) * 100;
+  const percentage = ((val - sliderMin) / (sliderMax - sliderMin)) * 100;
   return {
-    background: `linear-gradient(to right, #a855f7 0%, #a855f7 ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%, rgba(255, 255, 255, 0.2) 100%)`
+    background: `linear-gradient(to right, #E9D5FF 0%, #7E22CE ${percentage}%, rgba(255, 255, 255, 0.15) ${percentage}%, rgba(255, 255, 255, 0.15) 100%)`
   };
 });
 
-// Форматирование денег
 const formatMoney = (val) => {
   return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 }).format(val);
 }
@@ -313,7 +313,7 @@ const formatMoney = (val) => {
 const canProceed = computed(() => {
   if (selectedSection.value === 'emotions') return !!form.emotionalRelease.trim();
   if (selectedSection.value === 'facts') return !!form.factualAnalysis.trim();
-  if (selectedSection.value === 'solutions') return true; // Слайдер всегда имеет значение
+  if (selectedSection.value === 'solutions') return true; 
   if (selectedSection.value === 'summary') return !!form.summaryText.trim();
   if (selectedSection.value === 'contact') {
     return form.agreedToTerms && !!form.userName.trim() && !!form.userContact.trim();
@@ -390,9 +390,8 @@ function updateSummary() {
   if (form.emotionalRelease.trim()) parts.push(formatSentence(form.emotionalRelease));
   if (form.factualAnalysis.trim()) parts.push(formatSentence(form.factualAnalysis));
   
-  // Добавляем инвестиции в резюме
   if (form.investmentAmount) {
-    parts.push(`Планируемые инвестиции: ${formatMoney(form.investmentAmount)}.`);
+    parts.push(`Могу инвестировать: ${formatMoney(form.investmentAmount)}.`);
   }
   
   form.summaryText = parts.join(' ');
@@ -402,7 +401,6 @@ watch(selectedSection, (newSection) => {
   stopRotation();
   if (newSection === 'emotions') startRotation(1);
   else if (newSection === 'facts') startRotation(2);
-  // На шаге solutions ротации нет
   
   if (newSection === 'summary') {
     updateSummary();
@@ -451,7 +449,6 @@ async function submitForm() {
   formData.append('name', form.userName);
   formData.append('contact', form.userContact);
   formData.append('review', form.summaryText);
-  // Дополнительно можно передать сумму отдельно, если нужно, но сейчас она в review
   try {
     const response = await fetch(API_ENDPOINT, { method: 'POST', body: formData });
     const result = await response.json();
@@ -554,12 +551,12 @@ async function submitForm() {
   transition: all 0.3s ease;
 }
 
-/* Блок для слайдера (Purple Style) */
+/* Блок для слайдера (Purple/Pink Style) */
 .korzh-block-purple {
-  background: radial-gradient(circle at 0 0, #7c3aed33, transparent 55%),
-              radial-gradient(circle at 100% 100%, #22d3ee1f, transparent 60%),
-              linear-gradient(135deg, #0b0b21, #15152f);
-  border: 1px solid rgba(139, 92, 246, 0.2); /* Легкая обводка */
+  background: radial-gradient(circle at 0 0, rgba(124, 58, 237, 0.2), transparent 55%),
+              radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.15), transparent 60%),
+              linear-gradient(135deg, #1A1A24, #2D2D3F);
+  border: 1px solid rgba(139, 92, 246, 0.2);
 }
 
 /* Слайдер Хедер */
@@ -596,7 +593,7 @@ async function submitForm() {
 
 .korzh-slider-subtitle {
   font-size: 0.9rem;
-  color: #9ca3af; /* Серый */
+  color: rgba(255, 255, 255, 0.5); /* Прозрачный белый */
   font-weight: 400;
   letter-spacing: normal;
 }
@@ -632,7 +629,6 @@ async function submitForm() {
   outline: none;
   cursor: pointer;
   margin: 0;
-  /* Фон задается через style в шаблоне */
 }
 
 .korzh-slider-input::-webkit-slider-thumb {
@@ -663,8 +659,16 @@ async function submitForm() {
   display: flex;
   justify-content: space-between;
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.4);
   margin-top: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Класс для активной (пройденной) метки */
+.active-label {
+  color: #ffffff !important;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 /* --- Остальные стили формы --- */
