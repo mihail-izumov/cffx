@@ -1,29 +1,29 @@
 <template>
-  <div class="signal-demo-wrapper">
+  <div class="korzh-invest-form-wrapper">
 
     <!-- Переключатель секций (Хедер) -->
-    <div class="signal-demo__header">
-      <div class="signal-demo__breadcrumbs" role="tablist">
+    <div class="korzh-invest-form__header">
+      <div class="korzh-invest-form__breadcrumbs" role="tablist">
         <button
           v-for="section in sections"
           :key="section.id"
-          class="signal-breadcrumb"
+          class="korzh-invest-form-breadcrumb"
           :class="[section.id, isActive(section.id) ? 'is-active' : '']"
           @click="selectedSection = section.id"
         >
-          <div class="signal-breadcrumb-circle"></div>
+          <div class="korzh-invest-form-breadcrumb-circle"></div>
         </button>
       </div>
     </div>
 
-    <div class="signal-demo__form-container">
+    <div class="korzh-invest-form__container">
 
       <!-- Секция 1: Эмоции -->
-      <div v-if="selectedSection === 'emotions'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #7C72A0;">
-          <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion1" class="signal-question-label">
+      <div v-if="selectedSection === 'emotions'" class="korzh-invest-form-section">
+        <div class="korzh-invest-form-block" style="--accent-color: #A972FF;">
+          <div class="korzh-invest-form-rotating-container korzh-invest-form-fixed-height">
+            <transition name="korzh-fade" mode="out-in">
+              <p :key="currentQuestion1" class="korzh-invest-form-label">
                 {{ currentQuestion1 }}
               </p>
             </transition>
@@ -31,6 +31,7 @@
 
           <textarea 
             v-model="form.emotionalRelease" 
+            class="korzh-invest-form-textarea"
             @focus="stopRotation"
             @blur="startRotation(1)"
             :rows="isMobile ? 5 : 3"
@@ -40,17 +41,18 @@
       </div>
 
       <!-- Секция 2: Факты -->
-      <div v-if="selectedSection === 'facts'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #7C72A0;">
-          <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion2" class="signal-question-label">
+      <div v-if="selectedSection === 'facts'" class="korzh-invest-form-section">
+        <div class="korzh-invest-form-block" style="--accent-color: #A972FF;">
+          <div class="korzh-invest-form-rotating-container korzh-invest-form-fixed-height">
+            <transition name="korzh-fade" mode="out-in">
+              <p :key="currentQuestion2" class="korzh-invest-form-label">
                 {{ currentQuestion2 }}
               </p>
             </transition>
           </div>
           <textarea 
             v-model="form.factualAnalysis" 
+            class="korzh-invest-form-textarea"
             @focus="stopRotation" 
             @blur="startRotation(2)"
             :rows="isMobile ? 5 : 3"
@@ -62,17 +64,18 @@
       </div>
 
       <!-- Секция 3: Решение -->
-      <div v-if="selectedSection === 'solutions'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #7C72A0;">
-          <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
-            <transition name="fade" mode="out-in">
-              <p :key="currentQuestion3" class="signal-question-label">
+      <div v-if="selectedSection === 'solutions'" class="korzh-invest-form-section">
+        <div class="korzh-invest-form-block" style="--accent-color: #A972FF;">
+          <div class="korzh-invest-form-rotating-container korzh-invest-form-fixed-height">
+            <transition name="korzh-fade" mode="out-in">
+              <p :key="currentQuestion3" class="korzh-invest-form-label">
                 {{ currentQuestion3 }}
               </p>
             </transition>
           </div>
           <textarea 
             v-model="form.constructiveSuggestions" 
+            class="korzh-invest-form-textarea"
             @focus="stopRotation" 
             @blur="startRotation(3)" 
             :rows="isMobile ? 5 : 3"
@@ -82,84 +85,84 @@
       </div>
 
       <!-- Секция 4: Итого (Резюме) -->
-      <div v-if="selectedSection === 'summary'" class="signal-form-section">
-        <div class="signal-question-block" style="--accent-color: #7C72A0;">
-          <p class="signal-direction-label">Ваш Сигнал</p>
-          <div class="signal-rotating-phrase-container">
-            <p class="signal-question-label">Что должно измениться?</p>
+      <div v-if="selectedSection === 'summary'" class="korzh-invest-form-section">
+        <div class="korzh-invest-form-block" style="--accent-color: #A972FF;">
+          <p class="korzh-invest-form-direction-label">Ваш Сигнал</p>
+          <div class="korzh-invest-form-rotating-container">
+            <p class="korzh-invest-form-label">Что должно измениться?</p>
           </div>
           <textarea 
             v-model="form.summaryText" 
+            class="korzh-invest-form-textarea"
             :rows="isMobile ? 8 : 6"
             placeholder="Главный вывод..."
           ></textarea>
-          <p class="signal-example-hint signal-example-hint-white">Команда к действию и видимый результат для вас</p>
+          <p class="korzh-invest-form-hint korzh-invest-form-hint-white">Команда к действию и видимый результат для вас</p>
         </div>
       </div>
 
       <!-- Секция 5: Контакт -->
-      <div v-if="selectedSection === 'contact'" class="signal-form-section">
-        <div v-if="formSubmitted" class="signal-success-screen">
-          <div class="signal-success-content">
+      <div v-if="selectedSection === 'contact'" class="korzh-invest-form-section">
+        <div v-if="formSubmitted" class="korzh-invest-form-success">
+          <div class="korzh-invest-form-success-content">
             <h3>Сигнал отправлен ⚡</h3>
-            <div class="signal-success-ticket-info">
-              <span class="signal-success-date">{{ currentDate }}</span>
-              <span class="signal-success-ticket">{{ formattedTicketNumber }}</span>
+            <div class="korzh-invest-form-ticket-info">
+              <span class="korzh-invest-form-date">{{ currentDate }}</span>
+              <span class="korzh-invest-form-ticket">{{ formattedTicketNumber }}</span>
             </div>
-            <p class="signal-success-description">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
+            <p class="korzh-invest-form-desc">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
             <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`"
                target="_blank"
-               class="signal-telegram-button">
+               class="korzh-invest-form-telegram-btn">
               Начать чат с Анной
             </a>
-            <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">
+            <a href="/signals#знакомьтесь-–-анна" target="_blank" class="korzh-invest-form-link no-double-underline">
               Кто Анна и как работает
             </a>
           </div>
         </div>
         <div v-else>
-          <div class="signal-question-block contact" style="--accent-color: #7C72A0;">
-            <div class="signal-rotating-phrase-container">
-              <p class="signal-question-label">Отправьте Ваш Сигнал</p>
+          <div class="korzh-invest-form-block contact" style="--accent-color: #A972FF;">
+            <div class="korzh-invest-form-rotating-container">
+              <p class="korzh-invest-form-label">Отправьте Ваш Сигнал</p>
             </div>
-            <div class="signal-name-field">
+            <div class="korzh-invest-form-field">
               <label>Для персонального разбора</label>
-              <input v-model="form.userName" class="signal-input" placeholder="Ваше Имя" />
+              <input v-model="form.userName" class="korzh-invest-form-input" placeholder="Ваше Имя" />
             </div>
           </div>
-          <label class="signal-agreement">
+          <label class="korzh-invest-form-agreement">
             <input type="checkbox" v-model="form.agreedToTerms" />
             <span>Подтверждаю согласие с
-              <a href="/terms" target="_blank" class="signal-policy-link no-double-underline">Условиями использования</a>
+              <a href="/terms" target="_blank" class="korzh-invest-form-policy no-double-underline">Условиями использования</a>
             </span>
           </label>
           <button 
-            class="signal-submit-button" 
+            class="korzh-invest-form-submit-btn" 
             :disabled="submitStatus === 'processing' || !form.agreedToTerms || !isEmotionFilled"
             @click="submitForm"
           >
-            <span class="signal-liquid-next-text">{{ submitStatus === 'processing' ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ СИГНАЛ' }}</span>
+            <span class="korzh-invest-form-btn-text">{{ submitStatus === 'processing' ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ СИГНАЛ' }}</span>
           </button>
         </div>
       </div>
 
       <!-- Кнопки навигации по шагам -->
-      <div v-if="selectedSection !== 'contact'" class="signal-next-button-container">
+      <div v-if="selectedSection !== 'contact'" class="korzh-invest-form-nav">
         <button
-          class="signal-liquid-next-btn"
+          class="korzh-invest-form-next-btn"
           @click="goToNextSection"
           :disabled="
             (selectedSection === 'emotions' && !isEmotionFilled)
             || (selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim()))
           "
         >
-          <span class="signal-liquid-next-text">{{ currentSectionData.buttonText }}</span>
-          <!-- Используем локальный компонент иконки с анимацией -->
+          <span class="korzh-invest-form-btn-text">{{ currentSectionData.buttonText }}</span>
           <CupFillIcon
-            class="signal-next-icon"
+            class="korzh-invest-form-icon"
             :step-index="sections.findIndex(s => s.id === selectedSection)"
             :steps-total="5"
-            :size="24"
+            :size="22"
           />
         </button>
       </div>
@@ -174,17 +177,12 @@ import { reactive, ref, computed, onMounted, onUnmounted, watch, h } from 'vue'
 const CupFillIcon = {
   props: ['stepIndex', 'stepsTotal', 'size'],
   setup(props) {
-    // Рассчитываем процент заполнения (от 0 до 100)
-    // stepIndex идет от 0. Для первого шага (0) хотим заполнение 20% (1/5)
     const fillPercent = computed(() => {
       const p = ((props.stepIndex + 1) / props.stepsTotal) * 100;
       return Math.min(Math.max(p, 0), 100);
     });
-
-    // Высота "воды" внутри viewbox (всего 24px)
-    // Отступаем немного снизу (20) и идем вверх.
-    const fillHeight = computed(() => (fillPercent.value / 100) * 14); // 14px - высота чаши
-    const yOffset = computed(() => 18 - fillHeight.value); // 18 - дно чаши
+    const fillHeight = computed(() => (fillPercent.value / 100) * 14);
+    const yOffset = computed(() => 18 - fillHeight.value);
 
     return () => h('svg', {
       width: props.size,
@@ -196,13 +194,11 @@ const CupFillIcon = {
       'stroke-linecap': 'round',
       'stroke-linejoin': 'round'
     }, [
-      // Пар (статичный)
       h('path', { d: 'M18 8h1a4 4 0 0 1 0 8h-1', stroke: 'currentColor' }),
       h('path', { d: 'M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z', stroke: 'currentColor' }),
       h('line', { x1: '6', y1: '1', x2: '6', y2: '4', stroke: 'currentColor' }),
       h('line', { x1: '10', y1: '1', x2: '10', y2: '4', stroke: 'currentColor' }),
       h('line', { x1: '14', y1: '1', x2: '14', y2: '4', stroke: 'currentColor' }),
-      // Жидкость (Заливка) - без stroke, только fill
       h('rect', { 
         x: '3', 
         y: yOffset.value, 
@@ -210,8 +206,8 @@ const CupFillIcon = {
         height: fillHeight.value, 
         fill: 'currentColor',
         stroke: 'none',
-        style: { transition: 'all 0.5s ease' }, // Плавная анимация наполнения
-        'clip-path': 'inset(0 0 0 0 round 0 0 2px 2px)' // Скругление снизу
+        style: { transition: 'all 0.5s ease' }, 
+        'clip-path': 'inset(0 0 0 0 round 0 0 2px 2px)' 
       })
     ])
   }
@@ -271,8 +267,6 @@ const currentQuestion3 = ref(questions3[0]);
 let rotationInterval = null;
 
 function startRotation(questionNum) {
-  // Исправление для деплоя: не запускаем логику таймера на сервере,
-  // но оставляем функцию рабочей для браузера.
   if (typeof window === 'undefined') return;
 
   stopRotation();
@@ -299,7 +293,6 @@ function stopRotation() {
   }
 }
 
-// Вернул логику один в один, как вы просили (с immediate: true)
 watch(selectedSection, (newSection) => {
   stopRotation();
   if (newSection === 'emotions') startRotation(1);
@@ -311,12 +304,10 @@ watch(selectedSection, (newSection) => {
 let checkMobile;
 
 onMounted(() => {
-  // Вся работа с window/DOM строго здесь
   checkMobile = () => { isMobile.value = window.innerWidth <= 768 }
   checkMobile();
   window.addEventListener('resize', checkMobile);
 
-  // Данные тикета
   rawTicketNumber.value = String(Date.now()).slice(-6);
   formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
   
@@ -391,38 +382,32 @@ async function submitForm() {
 
 <style scoped>
 :root {
-  --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --signal-font-mono: 'SF Mono', 'Monaco', monospace;
-  /* Приглушенный премиальный градиент */
-  --submit-gradient: linear-gradient(90deg, #7C72A0 0%, #8F84BE 50%, #7C72A0 100%);
-  /* Приглушенный фиолетовый для акцентов */
-  --premium-accent: #7C72A0; 
-  /* Цвет подсветки (очень прозрачный) */
-  --premium-glow: rgba(124, 114, 160, 0.4);
+  --korzh-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --korzh-font-mono: 'SF Mono', 'Monaco', monospace;
+  --korzh-submit-gradient: linear-gradient(90deg, #A972FF 0%, #00C2FF 50%, #FFB800 100%);
 }
 
-.signal-demo-wrapper {
-  font-family: var(--signal-font-sans);
+.korzh-invest-form-wrapper {
+  font-family: var(--korzh-font-sans);
   width: 100%;
   max-width: none;
   margin: 0;
 }
 
-.signal-demo__header {
+.korzh-invest-form__header {
   display: flex;
   justify-content: center;
   margin-bottom: 24px;
-  /* Увеличенный отступ сверху */
   padding-top: 50px; 
 }
 
-.signal-demo__breadcrumbs {
+.korzh-invest-form__breadcrumbs {
   display: flex;
   gap: 12px;
   align-items: center;
 }
 
-.signal-breadcrumb {
+.korzh-invest-form-breadcrumb {
   appearance: none;
   border: none;
   background: transparent;
@@ -430,7 +415,7 @@ async function submitForm() {
   padding: 0;
 }
 
-.signal-breadcrumb-circle {
+.korzh-invest-form-breadcrumb-circle {
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -438,7 +423,7 @@ async function submitForm() {
   transition: all 0.3s ease;
 }
 
-.signal-breadcrumb.is-active .signal-breadcrumb-circle {
+.korzh-invest-form-breadcrumb.is-active .korzh-invest-form-breadcrumb-circle {
   width: 24px;
   height: 8px;
   border-radius: 4px;
@@ -447,11 +432,11 @@ async function submitForm() {
   transform: scale(1.1);
 }
 
-.signal-breadcrumb:hover .signal-breadcrumb-circle {
+.korzh-invest-form-breadcrumb:hover .korzh-invest-form-breadcrumb-circle {
   background: rgba(255, 255, 255, 0.6);
 }
 
-.signal-demo__form-container {
+.korzh-invest-form__container {
   background-color: #1E1E20;
   border-radius: 24px;
   padding: 2rem;
@@ -460,35 +445,34 @@ async function submitForm() {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-.signal-form-section {
+.korzh-invest-form-section {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.signal-question-block {
+.korzh-invest-form-block {
   background: #2a2a2e;
   border-radius: 16px;
   padding: 1.5rem;
-  /* Используем переменную для цвета */
-  border-left: 4px solid var(--accent-color, #7C72A0);
+  border-left: 4px solid var(--accent-color, #A972FF);
   display: flex;
   flex-direction: column;
   gap: 1rem;
   transition: all 0.3s ease;
 }
 
-.signal-rotating-phrase-container {
+.korzh-invest-form-rotating-container {
   height: 24px;
   position: relative;
   overflow: hidden;
   margin-bottom: 4px;
 }
-.signal-rotating-fixed-height {
+.korzh-invest-form-fixed-height {
   min-height: 24px;
 }
 
-.signal-question-label {
+.korzh-invest-form-label {
   font-size: 1.1rem;
   font-weight: 500;
   color: #fff;
@@ -499,7 +483,7 @@ async function submitForm() {
   top: 0;
 }
 
-.signal-direction-label {
+.korzh-invest-form-direction-label {
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 1px;
@@ -508,7 +492,7 @@ async function submitForm() {
   font-weight: 700;
 }
 
-textarea, .signal-input {
+.korzh-invest-form-textarea, .korzh-invest-form-input {
   width: 100%;
   background: #18181a;
   border: 1px solid #444;
@@ -521,17 +505,16 @@ textarea, .signal-input {
   font-family: inherit;
 }
 
-textarea:focus, .signal-input:focus {
+.korzh-invest-form-textarea:focus, .korzh-invest-form-input:focus {
   outline: none;
-  /* Приглушенный цвет фокуса */
-  border-color: var(--premium-accent);
-  box-shadow: 0 0 0 2px var(--premium-glow);
+  border-color: #A972FF;
+  box-shadow: 0 0 0 3px rgba(169, 114, 255, 0.2);
 }
 
-.signal-name-field {
+.korzh-invest-form-field {
   margin-bottom: 12px;
 }
-.signal-name-field label {
+.korzh-invest-form-field label {
   display: block;
   font-size: 0.9rem;
   font-weight: 500;
@@ -539,7 +522,7 @@ textarea:focus, .signal-input:focus {
   margin-bottom: 0.5rem;
 }
 
-.signal-agreement {
+.korzh-invest-form-agreement {
   margin: 20px 0 24px 0;
   display: flex;
   align-items: center;
@@ -550,29 +533,29 @@ textarea:focus, .signal-input:focus {
   padding: 0;
 }
 
-.signal-agreement input[type="checkbox"] {
+.korzh-invest-form-agreement input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: var(--premium-accent);
+  accent-color: #A972FF;
   cursor: pointer;
   margin: 0;
   flex-shrink: 0;
 }
 
-.signal-policy-link {
+.korzh-invest-form-policy {
   color: #999 !important;
   transition: color 0.3s ease;
 }
-.signal-policy-link:hover {
+.korzh-invest-form-policy:hover {
   color: #fff !important;
 }
 
-.signal-submit-button {
+.korzh-invest-form-submit-btn {
   width: 100%;
   height: 56px;
   border-radius: 12px;
   border: none;
-  background: var(--submit-gradient);
+  background: var(--korzh-submit-gradient);
   background-size: 200% auto;
   background-position: 25% 50%;
   color: #fff;
@@ -586,32 +569,29 @@ textarea:focus, .signal-input:focus {
   align-items: center;
   justify-content: center;
 }
-.signal-submit-button:hover:not(:disabled) {
+.korzh-invest-form-submit-btn:hover:not(:disabled) {
   background-position: 75% 50%;
   transform: scale(1.02);
 }
-.signal-submit-button:disabled {
+.korzh-invest-form-submit-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.signal-next-button-container {
+.korzh-invest-form-nav {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-top: 1rem;
 }
 
-/* Возвращена структура с "жидкостью" и иконкой */
-.signal-liquid-next-btn {
+.korzh-invest-form-next-btn {
   width: 100%;
   height: 56px;
   border-radius: 12px;
   border: none;
-  /* Легкий фиолетовый флер (очень прозрачный) */
-  background: rgba(124, 114, 160, 0.15); 
-  /* Цвет текста кнопки - приглушенная лаванда */
-  color: #AFA5D1;
+  background: rgba(169, 114, 255, 0.1); 
+  color: #A972FF;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -622,51 +602,49 @@ textarea:focus, .signal-input:focus {
   transition: all 0.3s ease;
 }
 
-.signal-liquid-next-btn:hover:not(:disabled) {
-  /* При наведении чуть ярче */
-  background: rgba(124, 114, 160, 0.25);
+.korzh-invest-form-next-btn:hover:not(:disabled) {
+  background: rgba(169, 114, 255, 0.2);
   color: #fff;
   transform: translateY(-2px);
 }
-.signal-liquid-next-btn:disabled {
+.korzh-invest-form-next-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
   background: rgba(255, 255, 255, 0.05);
   color: #666;
 }
 
-/* Стилизация иконки внутри кнопки */
-.signal-next-icon {
+.korzh-invest-form-icon {
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
   color: currentColor; 
 }
 
-.fade-enter-active,
-.fade-leave-active {
+.korzh-fade-enter-active,
+.korzh-fade-leave-active {
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
-.fade-enter-from {
+.korzh-fade-enter-from {
   opacity: 0;
   transform: translateY(10px);
 }
-.fade-leave-to {
+.korzh-fade-leave-to {
   opacity: 0;
   transform: translateY(-10px);
 }
 
-.signal-example-hint {
+.korzh-invest-form-hint {
   font-size: 0.85rem;
   color: #888;
   line-height: 1.4;
   margin: 0.25rem 0 0.5rem 0.5rem;
 }
-.signal-example-hint-white {
+.korzh-invest-form-hint-white {
   color: #f0f0f0 !important;
 }
 
-.signal-success-screen {
+.korzh-invest-form-success {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -675,63 +653,63 @@ textarea:focus, .signal-input:focus {
   padding: 3rem 2rem;
   width: 100%;
 }
-.signal-success-content h3 {
+.korzh-invest-form-success-content h3 {
   font-size: 1.5rem;
   font-weight: 600;
   color: #fff;
   margin: 0 0 1.5rem 0;
 }
-.signal-success-ticket-info {
+.korzh-invest-form-ticket-info {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
   margin-bottom: 2.5rem;
 }
-.signal-success-date {
-  font-family: var(--signal-font-mono);
+.korzh-invest-form-date {
+  font-family: var(--korzh-font-mono);
   font-size: 0.9rem;
   color: #888;
 }
-.signal-success-ticket {
+.korzh-invest-form-ticket {
   background-color: #2a2a2e;
   color: #fff;
   font-weight: 700;
   padding: 0.7rem 2.5rem;
   border-radius: 12px;
   letter-spacing: 1px;
-  font-family: var(--signal-font-mono);
+  font-family: var(--korzh-font-mono);
   font-size: 1.1rem;
 }
-.signal-success-description {
+.korzh-invest-form-desc {
   color: #b0b0b0;
   line-height: 1.6;
   margin: 0 0 1.5rem 0;
 }
 
-.signal-telegram-button {
+.korzh-invest-form-telegram-btn {
   display: inline-block;
   padding: 0.8rem 1.5rem;
   border-radius: 12px;
   font-weight: 600;
   text-decoration: none !important;
-  background-color: var(--premium-accent);
+  background-color: #A972FF;
   color: #fff;
   transition: all 0.3s;
 }
-.signal-telegram-button:hover {
+.korzh-invest-form-telegram-btn:hover {
   filter: brightness(110%);
   transform: scale(1.05);
 }
 
-.signal-secondary-link {
+.korzh-invest-form-link {
   display: block;
   margin-top: 1.5rem;
   font-size: 0.85rem;
   color: #888;
   transition: color 0.3s;
 }
-.signal-secondary-link:hover {
+.korzh-invest-form-link:hover {
   color: #fff !important;
 }
 
@@ -742,14 +720,14 @@ textarea:focus, .signal-input:focus {
 }
 
 @media (max-width: 768px) {
-  .signal-demo__header {
+  .korzh-invest-form__header {
     margin-bottom: 12px;
   }
-  .signal-demo-wrapper {
+  .korzh-invest-form-wrapper {
     width: 100%;
     margin: 0 auto;
   }
-  .signal-demo__form-container {
+  .korzh-invest-form__container {
     background: transparent;
     border: none;
     box-shadow: none;
@@ -758,14 +736,14 @@ textarea:focus, .signal-input:focus {
     margin: 0 !important;
     width: 100%;
   }
-  .signal-question-block {
+  .korzh-invest-form-block {
     padding: 1rem 0.5rem !important; 
   }
-  .signal-liquid-next-btn {
+  .korzh-invest-form-next-btn {
     width: 100%;
     height: 52px;
   }
-  .signal-success-ticket-info {
+  .korzh-invest-form-ticket-info {
     flex-direction: column;
     gap: 0.75rem;
   }
