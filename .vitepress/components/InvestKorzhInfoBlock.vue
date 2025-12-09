@@ -1,6 +1,11 @@
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
-import InvestKorzhConfigurator2 from './InvestKorzhConfigurator2.vue'
+import { ref, onMounted, onUnmounted, computed, defineAsyncComponent } from 'vue'
+
+// ⚡ ОПТИМИЗАЦИЯ: Асинхронная загрузка компонента.
+// Страница не будет ждать загрузки конфигуратора, пока пользователь не откроет модалку.
+const InvestKorzhConfigurator2 = defineAsyncComponent(() =>
+  import('./InvestKorzhConfigurator2.vue')
+)
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
@@ -12,7 +17,6 @@ const INITIAL_BASE = {
 
 const stats = ref({ ...INITIAL_BASE })
 const isLiked = ref(false)
-// старое showFollowModal убираем, оно больше не нужно
 const showShareModal = ref(false)
 const showCopyToast = ref(false)
 const showCopyTooltip = ref(false)
@@ -22,8 +26,8 @@ const showEarlyAccessModal = ref(false)
 
 const formatNumber = (num) => {
   const safeNum = Math.max(0, num || 0)
-  return safeNum >= 1000
-    ? (safeNum / 1000).toFixed(1).replace(/\.0$/, '') + 'K'
+  return safeNum >= 1000 
+    ? (safeNum / 1000).toFixed(1).replace(/\.0$/, '') + 'K' 
     : safeNum.toString()
 }
 
@@ -52,43 +56,28 @@ const fetchStats = async () => {
 const incrementViews = async () => {
   stats.value.pageViewsKorzh++
   saveToCache()
-  try {
-    await fetch(`${SCRIPT_URL}?action=incrementViewsKorzh`)
-  } catch (e) {}
+  try { await fetch(`${SCRIPT_URL}?action=incrementViewsKorzh`) } catch (e) {}
 }
 
-// Логика лайков
 const toggleLike = () => {
   isLiked.value = !isLiked.value
-
   const STORAGE_KEY = 'korzh_liked_status'
-
+  
   if (isLiked.value) {
     stats.value.korzhLikes++
     localStorage.setItem(STORAGE_KEY, 'true')
-    fetch(`${SCRIPT_URL}?action=addLike`).catch(() => {
-      stats.value.korzhLikes--
-      isLiked.value = false
-    })
+    fetch(`${SCRIPT_URL}?action=addLike`).catch(() => { stats.value.korzhLikes--; isLiked.value = false })
   } else {
     if (stats.value.korzhLikes > 0) stats.value.korzhLikes--
     localStorage.removeItem(STORAGE_KEY)
-    fetch(`${SCRIPT_URL}?action=removeLike`).catch(() => {
-      stats.value.korzhLikes++
-      isLiked.value = true
-    })
+    fetch(`${SCRIPT_URL}?action=removeLike`).catch(() => { stats.value.korzhLikes++; isLiked.value = true })
   }
-
+  
   saveToCache()
 
-  window.dispatchEvent(
-    new CustomEvent('korzh-like-changed', {
-      detail: {
-        liked: isLiked.value,
-        newCount: stats.value.korzhLikes
-      }
-    })
-  )
+  window.dispatchEvent(new CustomEvent('korzh-like-changed', {
+    detail: { liked: isLiked.value, newCount: stats.value.korzhLikes }
+  }))
 }
 
 const copyLink = async () => {
@@ -96,19 +85,16 @@ const copyLink = async () => {
     await navigator.clipboard.writeText(window.location.href)
     showShareModal.value = false
     showCopyToast.value = true
-    setTimeout(() => (showCopyToast.value = false), 3000)
+    setTimeout(() => showCopyToast.value = false, 3000)
   } catch (err) {
     console.error('Failed to copy', err)
   }
 }
 
 const shareTelegram = () => {
-  const text = 'Проверьте новую возможность поддержать Корж'
+  const text = "Проверьте новую возможность поддержать Корж"
   const url = window.location.href
-  window.open(
-    `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
-    '_blank'
-  )
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank')
 }
 
 const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
@@ -130,22 +116,16 @@ const closeEarlyAccessModal = () => {
   document.body.style.overflow = 'auto'
 }
 
-// Полный обработчик Escape
 const onKeydown = (e) => {
   if (e.key === 'Escape') {
-    if (showEarlyAccessModal.value) {
-      closeEarlyAccessModal()
-    }
-    if (showShareModal.value) {
-      showShareModal.value = false
-    }
-    // если появятся ещё модалки — можно добавить их сюда
+    if (showEarlyAccessModal.value) closeEarlyAccessModal()
+    if (showShareModal.value) showShareModal.value = false
   }
 }
 
 onMounted(async () => {
   loadFromCache()
-
+  
   if (localStorage.getItem('korzh_liked_status')) {
     isLiked.value = true
   }
@@ -154,15 +134,15 @@ onMounted(async () => {
     isLiked.value = e.detail.liked
     stats.value.korzhLikes = e.detail.newCount
   })
-
-  await fetchStats()
-
+  
+  // fetchStats делаем, но не await-им его жестко, чтобы не блокировать интерфейс, если скрипт тупит
+  fetchStats()
+  
   if (!sessionStorage.getItem('korzh_wide_session')) {
     incrementViews()
     sessionStorage.setItem('korzh_wide_session', 'true')
   }
-
-  // слушатель клавиатуры
+  
   window.addEventListener('keydown', onKeydown)
 })
 
@@ -171,13 +151,10 @@ onUnmounted(() => {
 })
 </script>
 
-
-
 <template>
   <div class="wide-widget-container">
     
     <div class="wide-card">
-      <!-- ЗАГОЛОВОК И ЛОГО -->
       <div class="card-top">
         <img src="/korzh_badge.svg" alt="Корж" class="logo-img" />
         <h1 
@@ -186,12 +163,10 @@ onUnmounted(() => {
           style="scroll-margin-top: 80px; position: relative;"
         >
           Корж побеждает в сердцах
-          <!-- Ссылка-якорь -->
           <a class="header-anchor" :href="`#${id}`" aria-hidden="true"></a>
         </h1>
       </div>
 
-      <!-- БАБЛЫ (Теперь над текстом) -->
       <div class="bubbles-row">
         <div class="bubble">
           <img src="/piggy-bank-icon.svg" alt="" class="bubble-icon" />
@@ -211,56 +186,50 @@ onUnmounted(() => {
         </a>
       </div>
 
-      <!-- ТЕКСТ -->
       <p class="card-text">
         Корж — это душа кофейной Самары. Благодаря легендарным круассанам и искренней заботе о гостях, они выросли в семью из 8 уютных локаций с особым характером. Скоро команда планирует привлечь инвестиции для открытия новых кофеен, чтобы делиться своей атмосферой и любовью к качеству с еще большим количеством гостей.
       </p>
 
       <a href="https://korzhcoffee.ru" target="_blank" class="website-link">korzhcoffee.ru</a>
 
-      <!-- СТАТИСТИКА (Сжатая по высоте) -->
       <div class="stats-block">
         <div class="stat-item">
           <img src="/eye-icon.svg" alt="Просмотры" class="stat-icon" />
           <span>{{ formattedViews }}</span>
         </div>
-       <div class="stat-item like-trigger" @click="toggleLike">
-  <!-- ИСПРАВЛЕННАЯ ИКОНКА СЕРДЦА -->
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width="20" 
-    height="20" 
-    viewBox="0 0 24 24" 
-    :fill="isLiked ? 'white' : 'none'" 
-    :stroke="isLiked ? 'none' : 'currentColor'" 
-    stroke-width="2" 
-    stroke-linecap="round" 
-    stroke-linejoin="round"
-  >
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-  </svg>
-  <span>{{ stats.korzhLikes }}</span>
-</div>
-
+        <div class="stat-item like-trigger" @click="toggleLike">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="20" 
+            height="20" 
+            viewBox="0 0 24 24" 
+            :fill="isLiked ? 'white' : 'none'" 
+            :stroke="isLiked ? 'none' : 'currentColor'" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+          >
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span>{{ stats.korzhLikes }}</span>
+        </div>
         <div class="stat-item">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           <span>{{ stats.korzhSignals }}</span>
         </div>
       </div>
 
-      <!-- КНОПКИ -->
       <div class="actions-wrapper">
         <div class="actions">
           <button class="btn-create" @click="openEarlyAccessModal">
-  Ранний доступ
-  <span class="icon-circle">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell-icon lucide-bell"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
-  </span>
-</button>
+            Ранний доступ
+            <span class="icon-circle">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell-icon lucide-bell"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+            </span>
+          </button>
           <button class="btn-see-all" @click="showShareModal = true">
             Поделиться
             <span class="icon-circle">
-              <!-- Иконка UPLOAD -->
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-icon lucide-upload"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
             </span>
           </button>
@@ -269,42 +238,29 @@ onUnmounted(() => {
 
     </div>
 
-<!-- МОДАЛКА РАННИЙ ДОСТУП -->
-<div 
-  v-if="showEarlyAccessModal" 
-  class="signal2-review-modal-overlay"
-  @click="closeEarlyAccessModal"
->
-  <div 
-    class="signal2-review-modal-content"
-    @click.stop
-  >
-    <button
+    <!-- МОДАЛКА РАННИЙ ДОСТУП -->
+    <div 
+      v-if="showEarlyAccessModal" 
+      class="signal2-review-modal-overlay"
       @click="closeEarlyAccessModal"
-      class="signal2-modal-close-icon"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+      <div 
+        class="signal2-review-modal-content"
+        @click.stop
       >
-        <path d="M18 6 6 18" />
-        <path d="m6 6 12 12" />
-      </svg>
-    </button>
+        <button
+          @click="closeEarlyAccessModal"
+          class="signal2-modal-close-icon"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        </button>
 
-    <div class="signal2-modal-scrollable-content">
-      <InvestKorzhConfigurator />
+        <div class="signal2-modal-scrollable-content">
+          <!-- ИСПРАВЛЕНО: Правильное имя тега (с цифрой 2) -->
+          <InvestKorzhConfigurator2 />
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-
 
     <!-- МОДАЛКА SHARE -->
     <div v-if="showShareModal" class="modal-overlay blur-bg" @click.self="showShareModal = false">
@@ -332,7 +288,10 @@ onUnmounted(() => {
             @mouseenter="showTelegramTooltip = true" 
             @mouseleave="showTelegramTooltip = false"
           >
-            <img src="/telegram-icon.svg" alt="Telegram" width="24" height="24" />
+            <!-- ИСПРАВЛЕНО: SVG код вместо img -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2L2 11.5L9 13.5L19.5 4.5L10.5 14.5L15 19L21.5 2Z" />
+            </svg>
             <div v-if="showTelegramTooltip" class="tooltip">Отправить в Telegram</div>
           </div>
 
@@ -364,44 +323,33 @@ onUnmounted(() => {
   color: #e0e0e0;
 }
 
-/* --- КАРТОЧКА С МАГИЧЕСКОЙ ОБВОДКОЙ --- */
 .wide-card {
   position: relative;
   background: #2a2a2a;
   border-radius: 24px;
   padding: 40px;
-  /* Убираем стандартный бордер */
   border: none;
-  /* Создаем прозрачный отступ для рамки */
   box-shadow: inset 0 0 0 1px transparent;
   z-index: 1;
-  /* Чтобы фон контента не залезал на прозрачность, обрезаем по паддингу */
   background-clip: padding-box;
 }
 
-/* Псевдо-элемент для ГРАДИЕНТНОЙ РАМКИ (как просил!) */
 .wide-card::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 24px;
-  padding: 1px; /* Толщина той самой тонкой рамки */
-  
-  /* Тот самый градиент: Белый сверху-слева -> Прозрачный снизу-справа */
+  padding: 1px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0) 100%);
-  
-  /* Маска для вырезания центра */
   -webkit-mask: 
      linear-gradient(#fff 0 0) content-box, 
      linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  
   pointer-events: none;
   z-index: -1;
 }
 
-/* Ховер эффект для рамки */
 .wide-card:hover::before {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
 }
@@ -422,7 +370,7 @@ onUnmounted(() => {
 }
 
 .card-title {
-  font-size: 36px; /* Уменьшил до 36px по запросу */
+  font-size: 36px;
   font-weight: 700;
   color: #fff;
   margin: 0;
@@ -511,13 +459,13 @@ onUnmounted(() => {
 .stats-block {
   background: #000000;
   border-radius: 50px;
-  padding: 10px 32px; /* Уменьшил высоту (было 16px) */
+  padding: 10px 32px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 32px;
   margin-bottom: 24px;
-  min-height: 48px; /* Было 56px */
+  min-height: 48px;
 }
 
 .stat-item {
@@ -588,7 +536,6 @@ onUnmounted(() => {
 
 .btn-see-all:hover {
   border-color: #616161;
-  /* Добавил светло-серый фон при ховере */
   background: #3a3a3a; 
   color: #e0e0e0;
 }
@@ -672,7 +619,7 @@ onUnmounted(() => {
   width: 90%;
   text-align: center;
   color: #fff;
-  position: relative; /* Для крестика */
+  position: relative;
 }
 
 .modal-card.white-theme {
@@ -843,7 +790,6 @@ onUnmounted(() => {
 .signal2-modal-scrollable-content {
   flex: 1;
   overflow-y: auto;
-  /* Паддинги можно настроить под компонент */
   padding: 0; 
 }
 
@@ -894,6 +840,5 @@ onUnmounted(() => {
   .btn-see-all {
     border-radius: 30px !important;
   }
-  
 }
 </style>
