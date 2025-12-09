@@ -36,7 +36,7 @@
               class="korzh-invest-form-textarea"
               @focus="stopRotation"
               @blur="startRotation(1)"
-              :rows="isMobile ? 5 : 3"
+              :rows="isMobile ? 8 : 6"
               placeholder='Например: Я ваш постоянный гость с 2018 года, обожаю "тот самый" раф и сырники. Мне близка идея "тишины внутри", и я хочу помочь сети расти органично...'
             ></textarea>
           </div>
@@ -59,7 +59,7 @@
               class="korzh-invest-form-textarea"
               @focus="stopRotation" 
               @blur="startRotation(2)"
-              :rows="isMobile ? 5 : 3"
+              :rows="isMobile ? 8 : 6"
               :placeholder="isMobile 
                 ? 'Ваши цели и ожидания...' 
                 : 'Напишите честно: Ищу надежный актив с пассивным доходом. Или: Хочу участвовать в развитии сообщества и открывать новые родные места в городе...'"
@@ -312,8 +312,8 @@ const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1y
 const sections = [
   { id: 'emotions', title: 'Философия', buttonText: 'Дальше: Мои цели' },
   { id: 'facts', title: 'Цели', buttonText: 'Настроить бюджет' },
-  { id: 'solutions', title: 'Ресурсы', buttonText: 'Суммировать' },
-  { id: 'summary', title: 'Резюме', buttonText: 'Всё верно, к контактам' },
+  { id: 'solutions', title: 'Ресурсы', buttonText: 'Собрать заявку' },
+  { id: 'summary', title: 'Резюме', buttonText: 'Всё верно' },
   { id: 'contact', title: 'Контакт', buttonText: '' }
 ];
 const selectedSection = ref('emotions');
@@ -402,7 +402,7 @@ function canNavigateTo(targetId) {
 
 const questions1 = [
   'Почему именно Корж?', 
-  'Вас покорила наша атмосфера?', 
+  'Вас покорила атмосфера?', 
   'Любовь к продукту или расчет?', 
   'Хотите стать частью истории?'
 ];
