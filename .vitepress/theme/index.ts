@@ -143,6 +143,7 @@ import InvestKorzhSendSignal from '../components/InvestKorzhSendSignal.vue'
 import InvestKorzhSpecsTabs from '../components/InvestKorzhSpecsTabs.vue'
 
 
+
 export default {
   extends: DefaultTheme,
 
