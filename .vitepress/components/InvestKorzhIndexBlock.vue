@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const establishment = {
-  name: 'Корж – лидер Индекса Роста среди всех кофеен Самары', // Обновленный текст
+  name: 'Корж – лидер Индекса Роста', // Обновленный текст
   index: 98,
   currentPoints: 8,
   targetPoints: 12,
@@ -73,7 +73,7 @@ onUnmounted(() => {
       <div class="header-section">
         <h3 class="cafe-name">{{ establishment.name }}</h3>
         <p class="cafe-subtitle">
-          Gains App will be Live soon, but with Early Access you'll get...
+           Сигнал непрерывно анализирует отзывы гостей кофеен в Самаре и превращает эту их в данные и оценки. Индекс Роста точно отражает, что на самом деле думают жители Самары. Так город сам выбрал себе лидера – Корж.
         </p>
       </div>
 
