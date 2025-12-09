@@ -78,7 +78,7 @@
               <div class="korzh-slider-title">Сколько хотели бы инвестировать?</div>
               <div class="korzh-slider-subtitle">Помогите Коржу рассчитать предложение</div>
             </div>
-            <div class="korzh-icon-circle">
+            <div class="korzh-icon-circle" :class="{ 'korzh-icon-circle--bounce': isHeartBouncing }">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"/>
               </svg>
@@ -98,6 +98,8 @@
                 v-model.number="form.investmentAmount" 
                 class="korzh-slider-input" 
                 :style="sliderStyle"
+                @input="onSliderInput"
+                @change="onSliderChange"
               />
             </div>
             
@@ -128,7 +130,7 @@
       <!-- Секция 4: Итого (Резюме) -->
       <div v-if="selectedSection === 'summary'" class="korzh-invest-form-section">
         <div class="korzh-invest-form-block">
-          <p class="korzh-invest-form-direction-label">Ваш Сигнал</p>
+          <p class="korzh-invest-form-direction-label korzh-invest-form-direction-label--violet">Ваш Сигнал</p>
           <div class="korzh-invest-form-rotating-container">
             <p class="korzh-invest-form-label">Что должно измениться?</p>
           </div>
@@ -140,7 +142,9 @@
               placeholder="Главный вывод..."
             ></textarea>
           </div>
-          <p class="korzh-invest-form-hint korzh-invest-form-hint-white">Команда к действию и видимый результат для вас</p>
+          <p class="korzh-invest-form-hint korzh-invest-form-hint-white">
+            Не оферта. Вы делитесь своими данными с Коржем, чтобы получить возможность персонального предложения.
+          </p>
         </div>
       </div>
 
@@ -167,7 +171,9 @@
         <div v-else>
           <div class="korzh-invest-form-block contact">
             <div class="korzh-invest-form-rotating-container">
-              <p class="korzh-invest-form-label">Отправьте заявку</p>
+              <p class="korzh-invest-form-direction-label korzh-invest-form-direction-label--violet">
+                Отправьте заявку
+              </p>
             </div>
             
             <!-- Поле Имя -->
@@ -189,7 +195,17 @@
           </div>
           <label class="korzh-invest-form-agreement">
             <input type="checkbox" v-model="form.agreedToTerms" />
-            <span>Не оферта. Вы делитесь своими данными с Коржем, чтобы получить возможность персонального предложения.</span>
+            <span>
+              Подтверждаю согласие с 
+              <a 
+                href="https://cffx.ru/terms" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="korzh-invest-form-policy"
+              >
+                Условиями использования
+              </a>
+            </span>
           </label>
           <button 
             class="korzh-invest-form-main-btn" 
@@ -293,6 +309,15 @@ const formattedTicketNumber = ref(null);
 const currentDate = ref('');
 const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2diIxXDyAZEfSxJ7wLvupwjb7IAIlKVsXlyOL6WcDjex/exec';
 
+// стейты для слайдера / ручного ввода
+const sliderTouched = ref(false);
+const manualEdited = ref(false);
+const manualHasValue = ref(false);
+
+// стейт анимации сердца
+const isHeartBouncing = ref(false);
+let heartTimeout = null;
+
 const sections = [
   { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
   { id: 'facts', title: 'Факты', buttonText: 'К инвестициям' },
@@ -328,31 +353,75 @@ const formatNumberWithSpaces = (val) => {
   return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
+// manualInputValue с учётом плейсхолдера и состояний
 const manualInputValue = computed(() => {
+  // слайдер ещё не трогали — показываем плейсхолдер
+  if (!sliderTouched.value && !manualEdited.value) {
+    return '';
+  }
+  // слайдер трогали, но поле ещё не редактировали — показываем значение слайдера
+  if (sliderTouched.value && !manualEdited.value) {
+    return formatNumberWithSpaces(form.investmentAmount);
+  }
+  // поле уже редактировали
+  if (manualEdited.value && !manualHasValue.value) {
+    // пользователь стёр сумму полностью — снова плейсхолдер
+    return '';
+  }
   return formatNumberWithSpaces(form.investmentAmount);
 });
 
 // Обработка ручного ввода
 const onManualInput = (e) => {
   let val = e.target.value.replace(/\s/g, ''); // Удаляем пробелы
+  manualEdited.value = true;
+
   // Оставляем только цифры
   val = val.replace(/[^0-9]/g, '');
   
   if (val === '') {
-    form.investmentAmount = 0;
+    manualHasValue.value = false;
+    // Держим значение в допустимом диапазоне слайдера
+    form.investmentAmount = sliderMin;
+    e.target.value = '';
     return;
   }
   
   let num = parseInt(val, 10);
   if (isNaN(num)) num = 0;
   
-  // Ограничиваем максимумом слайдера (по желанию, можно и больше разрешить, но слайдер упрется)
+  // Ограничиваем максимумом слайдера
   if (num > sliderMax) num = sliderMax;
+  if (num < sliderMin) num = sliderMin;
   
+  manualHasValue.value = true;
   form.investmentAmount = num;
   
   // Принудительно обновляем значение в инпуте для форматирования пробелами "на лету"
   e.target.value = formatNumberWithSpaces(num);
+};
+
+// обработчики слайдера
+const onSliderInput = (e) => {
+  sliderTouched.value = true;
+  const value = Number(e.target.value);
+  form.investmentAmount = value;
+};
+
+const triggerHeartAnimation = () => {
+  if (heartTimeout) clearTimeout(heartTimeout);
+  isHeartBouncing.value = false;
+  // следующий тик, чтобы перезапустить CSS-анимацию
+  requestAnimationFrame(() => {
+    isHeartBouncing.value = true;
+    heartTimeout = setTimeout(() => {
+      isHeartBouncing.value = false;
+    }, 400);
+  });
+};
+
+const onSliderChange = () => {
+  triggerHeartAnimation();
 };
 
 const canProceed = computed(() => {
@@ -436,7 +505,7 @@ function updateSummary() {
   if (form.factualAnalysis.trim()) parts.push(formatSentence(form.factualAnalysis));
   
   if (form.investmentAmount) {
-    parts.push(`Могу инвестировать: ${formatMoney(form.investmentAmount)}.`);
+    parts.push(`Хочу инвестировать: ${formatMoney(form.investmentAmount)}.`);
   }
   
   form.summaryText = parts.join(' ');
@@ -469,6 +538,9 @@ onUnmounted(() => {
   stopRotation();
   if (typeof window !== 'undefined') {
     window.removeEventListener('resize', checkMobile);
+  }
+  if (heartTimeout) {
+    clearTimeout(heartTimeout);
   }
 });
 
@@ -607,7 +679,7 @@ async function submitForm() {
 /* Слайдер Хедер */
 .korzh-slider-header {
   display: flex;
-  align-items: flex-start; /* Выравнивание по верху для мультистрочного текста */
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 1rem;
@@ -617,9 +689,8 @@ async function submitForm() {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Задаем минимальную высоту, равную высоте иконки, чтобы центрировать визуально, если текст короткий */
   min-height: 48px; 
-  gap: 6px; /* Межстрочный интервал между заголовком и подзаголовком */
+  gap: 6px;
 }
 
 .korzh-slider-title {
@@ -631,7 +702,7 @@ async function submitForm() {
 
 .korzh-slider-subtitle {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6); /* Glass style */
+  color: rgba(255, 255, 255, 0.6);
   font-weight: 400;
   letter-spacing: normal;
   line-height: 1.4;
@@ -648,6 +719,17 @@ async function submitForm() {
   justify-content: center;
   color: #ffffff;
   flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+@keyframes korzh-heart-bounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.16); }
+  100% { transform: scale(1); }
+}
+
+.korzh-icon-circle--bounce {
+  animation: korzh-heart-bounce 0.4s ease-out;
 }
 
 /* Слайдер Тело */
@@ -712,7 +794,7 @@ async function submitForm() {
   justify-content: space-between;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.4);
-  font-weight: 500; /* Жирность 500 в пассиве */
+  font-weight: 500;
   margin-top: 4px;
   transition: all 0.3s ease;
 }
@@ -724,31 +806,32 @@ async function submitForm() {
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
-/* Новое поле ручного ввода */
+/* Поле ручного ввода — сиреневые оттенки */
 .korzh-manual-input-wrapper {
   display: flex;
   align-items: stretch;
-  background: #18181a;
-  border: 1px solid #444;
+  background: #181322;
+  border: 1px solid rgba(168, 85, 247, 0.45);
   border-radius: 12px;
   overflow: hidden;
   margin-top: 16px;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 .korzh-manual-input-wrapper:focus-within {
-  border-color: #a855f7;
+  border-color: rgba(196, 181, 253, 0.9);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.45);
 }
 
 .korzh-manual-currency {
-  background: #2a2a2e;
-  color: #9ca3af;
+  background: #241432;
+  color: #c4b5fd;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 48px;
   font-weight: 600;
   font-size: 1.1rem;
-  border-right: 1px solid #444;
+  border-right: 1px solid rgba(168, 85, 247, 0.4);
 }
 
 .korzh-manual-input {
@@ -756,14 +839,14 @@ async function submitForm() {
   background: transparent;
   border: none;
   padding: 1rem;
-  color: #fff;
+  color: #f9f5ff;
   font-size: 1rem;
   font-weight: 500;
   outline: none;
   width: 100%;
 }
 .korzh-manual-input::placeholder {
-  color: #666;
+  color: #8b6fbf;
 }
 
 /* --- Остальные стили формы --- */
@@ -789,13 +872,18 @@ async function submitForm() {
   top: 0;
 }
 
+/* "Ваш Сигнал" и "Отправьте заявку" */
 .korzh-invest-form-direction-label {
   text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 1px;
-  color: #888;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
   margin-bottom: -0.5rem;
   font-weight: 700;
+  color: #888;
+}
+
+.korzh-invest-form-direction-label--violet {
+  color: #c4b5fd;
 }
 
 .korzh-input-wrapper {
@@ -849,7 +937,7 @@ async function submitForm() {
 .korzh-invest-form-agreement {
   margin: 20px 0 24px 0;
   display: flex;
-  align-items: flex-start; /* Выравнивание чекбокса по верху текста, если текст длинный */
+  align-items: flex-start;
   gap: 0.75rem;
   font-size: 0.85rem;
   color: #ccc;
@@ -863,16 +951,19 @@ async function submitForm() {
   height: 18px;
   accent-color: #8E65D6;
   cursor: pointer;
-  margin-top: 2px; /* Чуть сдвигаем чекбокс вниз для визуального выравнивания с первой строкой */
+  margin-top: 2px;
   flex-shrink: 0;
 }
 
 .korzh-invest-form-policy {
-  color: #999 !important;
+  color: #a78bfa !important;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
   transition: color 0.3s ease;
 }
 .korzh-invest-form-policy:hover {
-  color: #fff !important;
+  color: #ede9fe !important;
 }
 
 .korzh-invest-form-main-btn {
