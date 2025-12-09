@@ -209,12 +209,12 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
     <div class="actions-wrapper">
       <div class="actions">
         <a href="/invest/pulse" class="btn-create">
-          Инвестировать Сигналы
+          Инвестировать с Сигналом
           <span class="icon-circle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
           </span>
         </a>
-        <a href="/pro/ltvcalc" class="btn-see-all">
+        <a href="/invest/pulse" class="btn-see-all">
           Все возможности
           <span class="icon-circle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
