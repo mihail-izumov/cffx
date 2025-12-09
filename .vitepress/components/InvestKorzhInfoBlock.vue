@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed, defineAsyncComponent } from 'vue'
 
-// Асинхронный импорт (оптимизация загрузки)
 const InvestKorzhConfigurator2 = defineAsyncComponent(() =>
   import('./InvestKorzhConfigurator2.vue')
 )
@@ -298,11 +297,6 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
             <div v-if="showCopyTooltip" class="tooltip">Скопировать ссылку</div>
           </div>
 
-          <!-- 
-            ИСПРАВЛЕНО: 
-            padding увеличен до 18px (вместо 12px), чтобы иконка стала визуально ~24px
-            (60px - 18px*2 = 24px), что соответствует размеру иконки "скрепки".
-          -->
           <div 
             class="share-btn-circle telegram" 
             @click="shareTelegram"
@@ -872,18 +866,18 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   /* МОБИЛЬНАЯ ВЕРСИЯ МОДАЛКИ (Early Access) */
   .signal2-review-modal-overlay {
     /* 1. Жестко центрируем по горизонтали */
-    justify-content: center;
+    justify-content: center !important;
     /* 2. Прижимаем к верху (flex-start) */
-    align-items: flex-start;
+    align-items: flex-start !important;
     /* 3. Добавляем безопасный отступ сверху, чтобы не прилипало */
-    padding-top: 20px;
+    padding-top: 10px !important;
   }
 
   .signal2-review-modal-content {
     /* Сбрасываем лишние марджины, которые могли ломать центровку */
-    margin: 0;
-    width: 90% !important;
-    max-width: 90% !important;
+    margin: 0 auto !important;
+    width: 94% !important;
+    max-width: 94% !important;
     max-height: 85vh; /* Ограничиваем высоту, чтобы влезало на экран */
   }
   
