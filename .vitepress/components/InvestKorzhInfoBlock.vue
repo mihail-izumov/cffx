@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-import InvestKorzhConfigurator from './InvestKorzhConfigurator.vue'
+import InvestKorzhConfigurator2 from './InvestKorzhConfigurator2.vue'
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
