@@ -88,7 +88,6 @@
 
           <div class="korzh-slider-body">
             <!-- Отображение текущей суммы (слайдер) -->
-            <!-- Если 0, показываем 0 ₽ или можно скрыть, но по ТЗ просили только в инпуте плейсхолдер -->
             <div class="korzh-slider-value">{{ formatMoney(form.investmentAmount) }}</div>
             
             <div class="korzh-slider-row">
@@ -100,6 +99,7 @@
                 v-model.number="form.investmentAmount" 
                 class="korzh-slider-input" 
                 :style="sliderStyle"
+                @input="onSliderInput"
               />
             </div>
             
@@ -130,7 +130,6 @@
       <!-- Секция 4: Итого (Резюме) -->
       <div v-if="selectedSection === 'summary'" class="korzh-invest-form-section">
         <div class="korzh-invest-form-block">
-          <!-- Бледно-фиолетовый заголовок -->
           <p class="korzh-invest-form-direction-label korzh-pale-purple-text">Ваш Сигнал</p>
           <div class="korzh-invest-form-rotating-container">
             <p class="korzh-invest-form-label">Что должно измениться?</p>
@@ -169,10 +168,7 @@
         </div>
         <div v-else>
           <div class="korzh-invest-form-block contact">
-            <!-- Бледно-фиолетовый заголовок -->
             <p class="korzh-invest-form-direction-label korzh-pale-purple-text">Отправьте заявку</p>
-            
-            <!-- УДАЛЕНО: вращающийся контейнер с дублирующим заголовком -->
             
             <!-- Поле Имя -->
             <div class="korzh-invest-form-field">
@@ -182,7 +178,7 @@
               </div>
             </div>
 
-            <!-- Новое поле Telegram -->
+            <!-- Поле Telegram -->
             <div class="korzh-invest-form-field">
               <label>Ваш контакт в Telegram</label>
               <div class="korzh-input-wrapper">
@@ -198,7 +194,7 @@
               Я согласен с 
               <a href="/terms/policy" target="_blank" class="korzh-invest-form-policy">политикой конфиденциальности</a> 
               и 
-              <a href="/terms" target="_blank" class="korzh-invest-form-policy">обработкой персональных данных</a>
+              <a href="/terms/privacy" target="_blank" class="korzh-invest-form-policy">обработкой персональных данных</a>
             </span>
           </label>
           
@@ -285,12 +281,16 @@ const CupFillIcon = {
 }
 
 // ====== Стейт формы ======
+const sliderMin = 10000;
+const sliderMax = 15000000;
+const sliderStep = 10000;
+
 const form = reactive({
   emotionalRelease: '',
   factualAnalysis: '',
   constructiveSuggestions: '',
-  // По умолчанию 0, чтобы показывался плейсхолдер
-  investmentAmount: 0,
+  // По умолчанию ползунок на минимуме (10К), но ручной ввод пустой
+  investmentAmount: sliderMin,
   summaryText: '',
   userName: '',
   userContact: '', 
@@ -303,9 +303,11 @@ const submitStatus = ref('idle');
 const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
 const currentDate = ref('');
-// Стейт для анимации сердца
 const isSliderAnimating = ref(false);
 let sliderTimeout = null;
+
+// Флаг, трогал ли пользователь сумму (ползунок или ручной ввод)
+const hasInteractedWithAmount = ref(false);
 
 const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2diIxXDyAZEfSxJ7wLvupwjb7IAIlKVsXlyOL6WcDjex/exec';
 
@@ -320,21 +322,13 @@ const selectedSection = ref('emotions');
 const isActive = id => id === selectedSection.value;
 const currentSectionData = computed(() => sections.find(s => s.id === selectedSection.value));
 
-// Настройки слайдера
-const sliderMin = 10000;
-const sliderMax = 15000000;
-const sliderStep = 10000;
-
-// Градиент от светлого (#E9D5FF) к темному (#7E22CE) с учетом 0
+// Градиент слайдера
 const sliderStyle = computed(() => {
   const val = form.investmentAmount;
-  // Если 0, то процент 0
   let percentage = 0;
   if (val >= sliderMin) {
     percentage = ((val - sliderMin) / (sliderMax - sliderMin)) * 100;
   }
-  
-  // Цвета слайдера
   return {
     background: `linear-gradient(to right, #E9D5FF 0%, #7E22CE ${percentage}%, rgba(255, 255, 255, 0.15) ${percentage}%, rgba(255, 255, 255, 0.15) 100%)`
   };
@@ -344,21 +338,21 @@ const formatMoney = (val) => {
   return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 }).format(val);
 }
 
-// Форматирование для ручного ввода
 const formatNumberWithSpaces = (val) => {
   if (!val && val !== 0) return '';
   return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}
+};
 
+// Поле ручного ввода: по дефолту пустое, пока пользователь не тронул сумму
 const manualInputValue = computed(() => {
-  // Показываем плейсхолдер при 0 или null
-  if (!form.investmentAmount || form.investmentAmount === 0) return '';
+  if (!hasInteractedWithAmount.value || !form.investmentAmount || form.investmentAmount === 0) return '';
   return formatNumberWithSpaces(form.investmentAmount);
 });
 
 // Обработка ручного ввода
 const onManualInput = (e) => {
-  let val = e.target.value.replace(/\s/g, ''); 
+  hasInteractedWithAmount.value = true;
+  let val = e.target.value.replace(/\s/g, '');
   val = val.replace(/[^0-9]/g, '');
   
   if (val === '') {
@@ -368,11 +362,15 @@ const onManualInput = (e) => {
   
   let num = parseInt(val, 10);
   if (isNaN(num)) num = 0;
-  
   if (num > sliderMax) num = sliderMax;
   
   form.investmentAmount = num;
   e.target.value = formatNumberWithSpaces(num);
+};
+
+// Обработка движения ползунка
+const onSliderInput = () => {
+  hasInteractedWithAmount.value = true;
 };
 
 const canProceed = computed(() => {
@@ -457,6 +455,8 @@ function updateSummary() {
   
   if (form.investmentAmount && form.investmentAmount > 0) {
     parts.push(`Хочу инвестировать: ${formatMoney(form.investmentAmount)}.`);
+  } else {
+    parts.push('Сумма инвестиций не определена, но мне интересно.');
   }
   
   form.summaryText = parts.join(' ');
@@ -779,9 +779,9 @@ async function submitForm() {
 
 .korzh-manual-currency {
   background: #2a2a2e;
-  /* Бледно-фиолетовый, едва заметный */
-  color: #D8B4FE;
-  opacity: 0.7;
+  /* Ещё более светлый, почти белый фиолетовый */
+  color: #F3E8FF;
+  opacity: 0.9;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -838,10 +838,10 @@ async function submitForm() {
   font-weight: 700;
 }
 
-/* Новый класс для еле-еле фиолетового текста (светлый) */
+/* Ещё более светлый фиолетовый для заголовков "Ваш Сигнал" и "Отправьте заявку" */
 .korzh-pale-purple-text {
-  color: #D8B4FE !important;
-  opacity: 0.8;
+  color: #F3E8FF !important;
+  opacity: 0.9;
 }
 
 .korzh-input-wrapper {
@@ -884,7 +884,7 @@ async function submitForm() {
 .korzh-invest-form-field {
   margin-bottom: 12px;
 }
-/* Обновленная типографика лейблов */
+/* Лейблы 18/28/500 normal */
 .korzh-invest-form-field label {
   display: block;
   font-size: 18px;
@@ -898,7 +898,6 @@ async function submitForm() {
 .korzh-invest-form-agreement {
   margin: 20px 0 24px 0;
   display: flex;
-  /* Выравнивание регулируется ниже в Media Queries */
   gap: 0.75rem;
   font-size: 0.85rem;
   color: #ccc;
@@ -910,38 +909,33 @@ async function submitForm() {
 .korzh-invest-form-agreement input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  /* Серые тона для чекбокса */
   accent-color: #52525b; 
   cursor: pointer;
   flex-shrink: 0;
-  margin: 0; /* Сброс марджина */
-  filter: grayscale(1); /* Дополнительная гарантия отсутствия цвета */
+  margin: 0;
+  filter: grayscale(1);
 }
 
-/* Desktop: Центрирование по высоте чекбокса */
+/* Desktop: центр по высоте чекбокса */
 @media (min-width: 769px) {
   .korzh-invest-form-agreement {
     align-items: center;
   }
 }
 
-/* Mobile: Выравнивание по первой строке (top) */
+/* Mobile: по верхней линии */
 @media (max-width: 768px) {
   .korzh-invest-form-agreement {
     align-items: flex-start;
   }
   .korzh-invest-form-agreement input[type="checkbox"] {
-    /* Небольшой отступ сверху для визуального выравнивания с текстом 14px-16px */
     margin-top: 2px; 
   }
 }
 
-
 .korzh-invest-form-policy {
   color: #999 !important;
-  /* Vitepress override: убираем дефолтное подчеркивание ссылок */
   text-decoration: none !important;
-  /* Кастомное подчеркивание */
   border-bottom: 1px solid #999;
   padding-bottom: 0px;
   transition: all 0.3s ease;
@@ -956,12 +950,10 @@ async function submitForm() {
   height: 56px;
   border-radius: 12px;
   border: none;
-  /* Приглушенный, менее яркий градиент */
   background: linear-gradient(135deg, #7c68b0 0%, #8e7bbd 50%, #7c68b0 100%) !important;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  /* Тень тоже мягче */
   box-shadow: 0 0 20px rgba(124, 104, 176, 0.2);
   color: #FFFFFF !important;
   font-size: 16px;
