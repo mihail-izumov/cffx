@@ -271,7 +271,6 @@ const selectedSection = ref('emotions');
 const isActive = id => id === selectedSection.value;
 const currentSectionData = computed(() => sections.find(s => s.id === selectedSection.value));
 
-// Проверка валидности текущего шага
 const canProceed = computed(() => {
   if (selectedSection.value === 'emotions') return !!form.emotionalRelease.trim();
   if (selectedSection.value === 'facts') return !!form.factualAnalysis.trim();
@@ -283,7 +282,6 @@ const canProceed = computed(() => {
   return false;
 });
 
-// Навигация
 function goToNextSection() {
   if (!canProceed.value) return;
   const idx = sections.findIndex(s => s.id === selectedSection.value);
@@ -292,7 +290,6 @@ function goToNextSection() {
   }
 }
 
-// Клик по хлебным крошкам (можно вернуться назад, но не прыгнуть вперед через пустоту)
 function tryGoToSection(id) {
   if (canNavigateTo(id)) {
     selectedSection.value = id;
@@ -302,7 +299,6 @@ function tryGoToSection(id) {
 function canNavigateTo(targetId) {
   const targetIdx = sections.findIndex(s => s.id === targetId);
   const currentIdx = sections.findIndex(s => s.id === selectedSection.value);
-  // Можно кликнуть на любой предыдущий шаг или на следующий, если текущий заполнен
   if (targetIdx <= currentIdx) return true;
   if (targetIdx === currentIdx + 1 && canProceed.value) return true;
   return false; 
@@ -343,32 +339,24 @@ function stopRotation() {
   }
 }
 
-// Форматирование предложения: Первая буква заглавная, в конце точка.
 function formatSentence(text) {
   if (!text || !text.trim()) return '';
   let clean = text.trim();
-  // Делаем первую букву заглавной
   clean = clean.charAt(0).toUpperCase() + clean.slice(1);
-  // Если в конце нет точки, воскл. или вопр. знака — добавляем точку
   if (!/[.!?]$/.test(clean)) {
     clean += '.';
   }
   return clean;
 }
 
-// Сборка суммы
 function updateSummary() {
   const parts = [];
   if (form.emotionalRelease.trim()) parts.push(formatSentence(form.emotionalRelease));
   if (form.factualAnalysis.trim()) parts.push(formatSentence(form.factualAnalysis));
   if (form.constructiveSuggestions.trim()) parts.push(formatSentence(form.constructiveSuggestions));
-  
-  // Собираем в одну строку через пробел
   form.summaryText = parts.join(' ');
 }
 
-// Следим за переключением секций. 
-// Если перешли на Summary, ОБЯЗАТЕЛЬНО обновляем поле (пересобираем)
 watch(selectedSection, (newSection) => {
   stopRotation();
   if (newSection === 'emotions') startRotation(1);
@@ -616,7 +604,7 @@ async function submitForm() {
 .korzh-invest-form-agreement input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: #9d70ff;
+  accent-color: #8E65D6;
   cursor: pointer;
   margin: 0;
   flex-shrink: 0;
@@ -631,8 +619,8 @@ async function submitForm() {
 }
 
 /* 
-  Кнопка: Приглушенный фиолетовый для премиальности (#9d70ff).
-  Менее яркий, чем ранее, но сохраняющий оттенок.
+  Кнопка: Вернули ГРАДИЕНТ, но менее "ядовитый" (less bright).
+  Используем оттенки поглубже: #8E65D6 и #A985E8.
 */
 .korzh-invest-form-main-btn {
   width: 100%;
@@ -640,14 +628,14 @@ async function submitForm() {
   border-radius: 12px;
   border: none;
   
-  /* Принудительная заливка приглушенным цветом */
-  background: #9d70ff !important;
+  /* Принудительная заливка новым, более спокойным градиентом */
+  background: linear-gradient(135deg, #8E65D6 0%, #A985E8 50%, #8E65D6 100%) !important;
   
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
 
-  box-shadow: 0 0 20px rgba(157, 112, 255, 0.3);
+  box-shadow: 0 0 20px rgba(142, 101, 214, 0.3);
   
   color: #FFFFFF !important;
   font-size: 16px;
@@ -666,15 +654,14 @@ async function submitForm() {
 }
 
 .korzh-invest-form-main-btn:hover:not(:disabled) {
-  /* При наведении чуть осветляем/насыщаем */
-  background: #a97fff !important;
+  filter: brightness(1.1);
   transform: translateY(-1px);
-  box-shadow: 0 5px 25px rgba(157, 112, 255, 0.5);
+  box-shadow: 0 5px 25px rgba(142, 101, 214, 0.5);
 }
 .korzh-invest-form-main-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-  filter: grayscale(0.4);
+  filter: grayscale(0.5);
   box-shadow: none;
 }
 
@@ -769,7 +756,7 @@ async function submitForm() {
   border-radius: 12px;
   font-weight: 600;
   text-decoration: none !important;
-  background-color: #9d70ff;
+  background-color: #8E65D6;
   color: #fff;
   transition: all 0.3s;
 }
