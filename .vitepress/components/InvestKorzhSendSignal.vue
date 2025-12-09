@@ -38,7 +38,6 @@
 
 <script setup>
 import { ref } from 'vue'
-// В VitePress useRouter импортируется так
 import { useRouter } from 'vitepress'
 
 const props = defineProps({
@@ -56,19 +55,32 @@ const router = useRouter()
 
 const handleButtonClick = () => {
   if (props.buttonLink) {
-    // Проверка на внешнюю ссылку
     if (props.buttonLink.startsWith('http')) {
       window.open(props.buttonLink, '_blank')
     } else {
-      // Внутренняя навигация через VitePress Router
-      // Это сработает и для перехода на другую страницу, и для якоря
-      router.go(props.buttonLink)
+      // ЛОГИКА ДЛЯ ВНУТРЕННЕГО ПЕРЕХОДА
+      if (props.buttonLink.includes('#')) {
+        const [path, hash] = props.buttonLink.split('#')
+        
+        // Если мы уже на нужной странице, но просто хотим открыть модалку
+        if (window.location.pathname === path || window.location.pathname === path + '.html') {
+          // Сначала сбрасываем хэш, чтобы гарантированно сработало событие изменения
+          window.location.hash = ''
+          setTimeout(() => {
+            window.location.hash = hash
+          }, 10)
+        } else {
+          // Если другая страница — просто переходим
+          router.go(props.buttonLink)
+        }
+      } else {
+        router.go(props.buttonLink)
+      }
     }
   }
   emit('button-click')
 }
 </script>
-
 
 <style scoped>
 .investor-banner {
