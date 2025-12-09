@@ -9,7 +9,7 @@
 
       <div class="banner-overlay">
         <div class="banner-inner">
-          <div class="banner-intro">НОВАЯ КОФЕЙНЯ КОРЖ</div>
+          <div class="banner-intro">НОВАЯ КОФЕЙНЯ</div>
 
           <div class="banner-title">
             <span class="title-desktop">
