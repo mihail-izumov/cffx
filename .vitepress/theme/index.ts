@@ -141,7 +141,7 @@ import InvestKorzhGallerySlider from '../components/InvestKorzhGallerySlider.vue
 import InvestKorzhIndexBlock from '../components/InvestKorzhIndexBlock.vue'
 import InvestKorzhSendSignal from '../components/InvestKorzhSendSignal.vue'
 import InvestKorzhSpecsTabs from '../components/InvestKorzhSpecsTabs.vue'
-
+import InvestKorzhConfigurator2 from '../components/InvestKorzhConfigurator2.vue'
 
 
 export default {
@@ -289,7 +289,7 @@ export default {
     app.component('InvestKorzhIndexBlock', InvestKorzhIndexBlock)
     app.component('InvestKorzhSendSignal', InvestKorzhSendSignal)
     app.component('InvestKorzhSpecsTabs', InvestKorzhSpecsTabs)
-
+    app.component('InvestKorzhConfigurator2', InvestKorzhConfigurator2)
     
   },
 }
