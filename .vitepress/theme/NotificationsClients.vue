@@ -13,9 +13,9 @@ const notifications = [
     buttonUrl: 'https://t.me/runScale'
   },
   { 
-    text: 'Поддержите бизнес, который любите.', 
+    text: 'Поддержите место, которое Вы любите.', 
     hasButton: true,
-    buttonText: 'Инвестировать Сигналы',
+    buttonText: 'Все возможности',
     buttonUrl: '/invest/pulse'
   }
 
