@@ -18,7 +18,7 @@
 
     <div class="signal-demo__form-container">
 
-      <!-- Секция 1: Эмоции -->
+      <!-- Секция 1: Эмоции (Теперь первая) -->
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #A972FF;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
@@ -107,14 +107,11 @@
               <span class="signal-success-ticket">{{ formattedTicketNumber }}</span>
             </div>
             <p class="signal-success-description">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
-            
-            <!-- КНОПКА TELEGRAM -->
             <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`"
                target="_blank"
                class="signal-telegram-button">
-              Получить Ответ
+              Начать чат с Анной
             </a>
-            
             <a href="/signals#знакомьтесь-–-анна" target="_blank" class="signal-secondary-link no-double-underline">
               Кто Анна и как работает
             </a>
@@ -141,9 +138,7 @@
             :disabled="submitStatus === 'processing' || !form.agreedToTerms || !isEmotionFilled"
             @click="submitForm"
           >
-            <span class="signal-liquid-next-text">
-              {{ submitStatus === 'processing' ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ СИГНАЛ' }}
-            </span>
+            <span class="signal-liquid-next-text">{{ submitStatus === 'processing' ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ СИГНАЛ' }}</span>
           </button>
         </div>
       </div>
@@ -171,6 +166,7 @@
   </div>
 </template>
 
+
 <script setup>
 import { reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
@@ -182,12 +178,9 @@ const form = reactive({
   summaryText: '',
   userName: '',
   agreedToTerms: false,
-  // Поля для совместимости с Google Script (оставляем пустыми, т.к. шаг выбора убран)
-  selectedNetwork: '', 
-  selectedBranch: ''
 });
 
-// Для адаптивности
+// Для проп-шагов
 const isMobile = ref(false);
 onMounted(() => {
   const checkMobile = () => { isMobile.value = window.innerWidth <= 768 }
@@ -200,9 +193,9 @@ const submitStatus = ref('idle');
 const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
 const currentDate = ref('');
-const humanizeStatus = ref('idle');
 
 onMounted(() => {
+  // Генерируем номер тикета и дату при запуске формы
   rawTicketNumber.value = String(Date.now()).slice(-6);
   formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
 
@@ -217,10 +210,10 @@ onMounted(() => {
   currentDate.value = `${day}.${month}.${year}, ${hours}:${minutes}:${seconds}`;
 });
 
-// Валидация
+// Валидация: эмоции обязательны для продолжения
 const isEmotionFilled = computed(() => !!form.emotionalRelease.trim());
 
-// Навигация
+// Логика перехода по секциям
 const sections = [
   { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
   { id: 'facts', title: 'Факты', buttonText: 'К решению ситуации' },
@@ -228,7 +221,7 @@ const sections = [
   { id: 'summary', title: 'Резюме', buttonText: 'Готово, к отправке' },
   { id: 'contact', title: 'Контакт', buttonText: '' }
 ];
-const selectedSection = ref('emotions');
+const selectedSection = ref('emotions'); // Начинаем сразу с эмоций
 const isActive = id => id === selectedSection.value;
 const currentSectionData = computed(() => sections.find(s => s.id === selectedSection.value));
 
@@ -240,26 +233,52 @@ const goToNextSection = () => {
   }
 };
 
-// ======== Вопросы и анимация =======
-const questions1 = ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что расстроило или порадовало?', 'Ваше первое впечатление?'];
-const questions2 = ['Что именно произошло?', 'Какие детали важны?', 'Когда это случилось?', 'Что запомнилось больше всего?'];
-const questions3 = ['Что можно сделать лучше?', 'Ваш совет управляющему?', 'Как исправить ситуацию?', 'Предложения по улучшению?'];
+// ======== МАССИВЫ ВОПРОСОВ (Универсальные) =======
+const questions1 = [
+  'Что вы почувствовали?',
+  'Какие эмоции испытали?',
+  'Что расстроило или порадовало?',
+  'Ваше первое впечатление?'
+];
+const questions2 = [
+  'Что именно произошло?',
+  'Какие детали важны?',
+  'Когда это случилось?',
+  'Что запомнилось больше всего?'
+];
+const questions3 = [
+  'Что можно сделать лучше?',
+  'Ваш совет управляющему?',
+  'Как исправить ситуацию?',
+  'Предложения по улучшению?'
+];
 
+// ======== АКТИВНЫЙ ВОПРОС =======
 const currentQuestion1 = ref(questions1[0]);
 const currentQuestion2 = ref(questions2[0]);
 const currentQuestion3 = ref(questions3[0]);
 
+// ======== АНИМАЦИЯ/РОТАЦИЯ ВОПРОСОВ =======
 let rotationInterval = null;
 
 function startRotation(questionNum) {
   stopRotation();
+
   let questionsArray = [];
   let currentRef = null;
 
-  if (questionNum === 1) { questionsArray = questions1; currentRef = currentQuestion1; }
-  else if (questionNum === 2) { questionsArray = questions2; currentRef = currentQuestion2; }
-  else if (questionNum === 3) { questionsArray = questions3; currentRef = currentQuestion3; }
-  else return;
+  if (questionNum === 1) {
+    questionsArray = questions1;
+    currentRef = currentQuestion1;
+  } else if (questionNum === 2) {
+    questionsArray = questions2;
+    currentRef = currentQuestion2;
+  } else if (questionNum === 3) {
+    questionsArray = questions3;
+    currentRef = currentQuestion3;
+  } else {
+    return;
+  }
   
   rotationInterval = setInterval(() => {
     const currentIndex = questionsArray.indexOf(currentRef.value);
@@ -282,19 +301,30 @@ watch(selectedSection, (newSection) => {
   else if (newSection === 'solutions') startRotation(3);
 }, { immediate: true });
 
-onUnmounted(() => stopRotation());
+onUnmounted(() => {
+  stopRotation();
+});
 
+
+// Функция "Суммировать" (упрощенная, просто склеивает текст для превью)
 function summarizeAllContent() {
   if (form.summaryText.trim()) return;
-  
-  let parts = [];
-  if (form.emotionalRelease) parts.push(form.emotionalRelease.trim());
-  if (form.factualAnalysis) parts.push(form.factualAnalysis.trim());
-  if (form.constructiveSuggestions) parts.push(form.constructiveSuggestions.trim());
-  form.summaryText = parts.join('\n\n');
+
+  const emotional = form.emotionalRelease.trim();
+  const factual = form.factualAnalysis.trim();
+  const solutions = form.constructiveSuggestions.trim();
+
+  let result = '';
+  if (emotional) result += `Эмоции: ${emotional}\n\n`;
+  if (factual) result += `Факты: ${factual}\n\n`;
+  if (solutions) result += `Предложения: ${solutions}`;
+
+  form.summaryText = result.trim();
 }
 
-// ======== РЕАЛЬНАЯ ОТПРАВКА (GOOGLE APPS SCRIPT) ========
+// ======== ОТПРАВКА В GOOGLE SCRIPT ========
+const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2diIxXDyAZEfSxJ7wLvupwjb7IAIlKVsXlyOL6WcDjex/exec';
+
 async function submitForm() {
   submitStatus.value = 'processing';
 
@@ -307,25 +337,22 @@ async function submitForm() {
   const seconds = String(now.getSeconds()).padStart(2, '0');
   const submittedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
+  // Получаем или создаем clientId
   let clientId = localStorage.getItem('signal_client_id');
   if (!clientId) {
     clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now();
     localStorage.setItem('signal_client_id', clientId);
   }
 
-  // URL вашего скрипта
-  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2di_IxXDyAZEfSxJ7wLvupwjb7_IAIlKVsXlyOL6WcDj/exec';
-  
   const formData = new FormData();
   formData.append('referer', window.location.origin);
   formData.append('clientId', clientId);
   formData.append('ticketNumber', formattedTicketNumber.value);
   formData.append('date', currentDate.value);
   formData.append('submitted', submittedTime);
-  // Отправляем пустые строки, так как выбор убрали, или можно написать 'Не выбрано'
-  formData.append('network', form.selectedNetwork || '');
-  formData.append('address', form.selectedBranch || '');
-  formData.append('name', form.userName || 'Аноним');
+  formData.append('network', ''); // Нет сети, так как убрали локацию
+  formData.append('address', ''); // Нет адреса
+  formData.append('name', form.userName);
   formData.append('review', form.summaryText);
 
   try {
@@ -333,22 +360,23 @@ async function submitForm() {
       method: 'POST',
       body: formData
     });
-
+    
     const result = await response.json();
+    
     if (result.status === 'success' && result.processed) {
       formSubmitted.value = true;
       submitStatus.value = 'idle';
     } else {
-      throw new Error(result.message || 'Ошибка обработки данных');
+      throw new Error(result.message || 'Ошибка отправки');
     }
   } catch (error) {
-    console.error(error);
-    alert('Не удалось отправить отзыв. Пожалуйста, попробуйте позже.');
+    console.error('Ошибка отправки:', error);
+    alert('Произошла ошибка при отправке. Попробуйте ещё раз.');
     submitStatus.value = 'idle';
   }
 }
 
-// Компонент иконки
+// Простой компонент иконки для навигации
 const CupFillIcon = {
   props: ['stepIndex', 'stepsTotal', 'size'],
   template: `
@@ -364,7 +392,7 @@ const CupFillIcon = {
 :root {
   --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --signal-font-mono: 'SF Mono', 'Monaco', monospace;
-  /* Фиолетовый градиент */
+  /* Легкий фиолетовый градиент */
   --submit-gradient: linear-gradient(90deg, #A972FF 0%, #D8B4FE 50%, #A972FF 100%); 
 }
 
@@ -379,7 +407,7 @@ const CupFillIcon = {
   display: flex;
   justify-content: center;
   margin-bottom: 24px;
-  /* Отступ сверху 20px */
+  /* Опускаем переключатели и все что ниже на 20px */
   padding-top: 20px; 
 }
 
@@ -474,6 +502,7 @@ const CupFillIcon = {
   font-weight: 700;
 }
 
+/* Поля ввода */
 textarea, .signal-input {
   width: 100%;
   background: #18181a;
@@ -532,6 +561,7 @@ textarea:focus, .signal-input:focus {
   color: #fff !important;
 }
 
+/* Кнопка отправки */
 .signal-submit-button {
   width: 100%;
   height: 56px;
@@ -560,6 +590,7 @@ textarea:focus, .signal-input:focus {
   cursor: not-allowed;
 }
 
+/* Кнопки навигации (Далее) */
 .signal-next-button-container {
   display: flex;
   flex-direction: column;
@@ -596,6 +627,7 @@ textarea:focus, .signal-input:focus {
   color: #666;
 }
 
+/* Анимации перехода текста */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.4s ease, transform 0.4s ease;
@@ -609,6 +641,17 @@ textarea:focus, .signal-input:focus {
   transform: translateY(-10px);
 }
 
+.signal-example-hint {
+  font-size: 0.85rem;
+  color: #888;
+  line-height: 1.4;
+  margin: 0.25rem 0 0.5rem 0.5rem;
+}
+.signal-example-hint-white {
+  color: #f0f0f0 !important;
+}
+
+/* Экран успеха */
 .signal-success-screen {
   display: flex;
   flex-direction: column;
@@ -652,7 +695,7 @@ textarea:focus, .signal-input:focus {
   margin: 0 0 1.5rem 0;
 }
 
-/* Кнопка Телеграм */
+/* Кнопка Телеграм - Фиолетовая */
 .signal-telegram-button {
   display: inline-block;
   padding: 0.8rem 1.5rem;
@@ -685,6 +728,7 @@ textarea:focus, .signal-input:focus {
   padding-bottom: 1px !important;
 }
 
+/* Мобайл адаптация */
 @media (max-width: 768px) {
   .signal-demo__header {
     margin-bottom: 12px;
