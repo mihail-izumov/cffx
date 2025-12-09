@@ -1,9 +1,7 @@
 <script setup>
-import { ref, onMounted, onUnmounted, computed, defineAsyncComponent } from 'vue'
-
-const InvestKorzhConfigurator2 = defineAsyncComponent(() =>
-  import('./InvestKorzhConfigurator2.vue')
-)
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+// Синхронный импорт для стабильности сборки
+import InvestKorzhConfigurator2 from './InvestKorzhConfigurator2.vue'
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
@@ -105,16 +103,18 @@ const shareTelegram = () => {
 // Функции управления модалкой
 const openEarlyAccessModal = () => {
   showEarlyAccessModal.value = true
-  document.body.style.overflow = 'hidden'
+  // Безопасная проверка для SSR
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = 'hidden'
+  }
 }
 
 const closeEarlyAccessModal = () => {
   showEarlyAccessModal.value = false
-  document.body.style.overflow = 'auto'
-  // Очищаем хэш при закрытии, чтобы можно было снова открыть той же ссылкой
-  if (window.location.hash === `#${props.id}`) {
-    history.replaceState(null, null, ' ')
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = 'auto'
   }
+  // Убрали replaceState, так как он мог вызывать проблемы в некоторых средах
 }
 
 const onKeydown = (e) => {
@@ -126,8 +126,7 @@ const onKeydown = (e) => {
 
 // Проверка хэша
 const checkHashForModal = () => {
-  // Проверяем, совпадает ли хэш с ID компонента
-  if (window.location.hash === `#${props.id}`) {
+  if (typeof window !== 'undefined' && window.location.hash === `#${props.id}`) {
     openEarlyAccessModal()
   }
 }
@@ -155,13 +154,14 @@ onMounted(async () => {
   
   // ЛОГИКА ОТКРЫТИЯ ПО ССЫЛКЕ
   checkHashForModal()
-  // Слушаем изменения хэша (когда кликают на ссылку в другом компоненте)
   window.addEventListener('hashchange', checkHashForModal)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', onKeydown)
-  window.removeEventListener('hashchange', checkHashForModal)
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('keydown', onKeydown)
+    window.removeEventListener('hashchange', checkHashForModal)
+  }
 })
 
 const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
@@ -297,7 +297,7 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
             <div v-if="showCopyTooltip" class="tooltip">Скопировать ссылку</div>
           </div>
 
-          <!-- Кнопка Telegram (Исправленная) -->
+          <!-- Кнопка Telegram (Исправленная для сборки) -->
           <div 
             class="share-btn-circle telegram" 
             @click="shareTelegram"
@@ -305,11 +305,14 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
             @mouseleave="showTelegramTooltip = false"
             style="background: #f0f0f0;" 
           >
-            <a href="javascript:void(0)" class="niftybutton-telegram-black-white" aria-label="telegram-black-white button" style="display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; border-radius: 50%; color: rgb(0, 0, 0); transition: 0.3s; opacity: 1; padding: 12px; pointer-events: none;">
+            <div 
+              class="niftybutton-telegram-black-white" 
+              style="display: inline-flex; align-items: center; justify-content: center; width: 100%; height: 100%; border-radius: 50%; color: rgb(0, 0, 0); transition: 0.3s; opacity: 1; padding: 12px; pointer-events: none;"
+            >
               <svg class="niftybutton-telegram" data-donate="true" data-tag="tel" data-name="Telegram" viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet" style="display: block; fill: rgb(0, 0, 0); width: 100%; height: 100%; color: rgb(0, 0, 0);" role="img" aria-label="telegram-black-white"><title>Telegram social icon</title>
                 <path d="M 200.894531 323.863281 L 192.425781 442.988281 C 204.542969 442.988281 209.792969 437.78125 216.085938 431.53125 L 272.894531 377.238281 L 390.613281 463.445312 C 412.203125 475.476562 427.414062 469.140625 433.238281 443.585938 L 510.507812 81.515625 L 510.527344 81.492188 C 517.375 49.578125 498.988281 37.097656 477.953125 44.929688 L 23.765625 218.816406 C -7.230469 230.847656 -6.761719 248.128906 18.496094 255.957031 L 134.613281 292.074219 L 404.332031 123.308594 C 417.023438 114.902344 428.566406 119.550781 419.070312 127.957031 Z M 200.894531 323.863281 " fill="#000000" style="fill: rgb(0, 0, 0);"></path>
               </svg>
-            </a>
+            </div>
             <div v-if="showTelegramTooltip" class="tooltip">Отправить в Telegram</div>
           </div>
 
