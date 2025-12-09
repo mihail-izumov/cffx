@@ -1,7 +1,10 @@
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
-// Синхронный импорт для стабильности сборки
-import InvestKorzhConfigurator2 from './InvestKorzhConfigurator2.vue'
+import { ref, onMounted, onUnmounted, computed, defineAsyncComponent } from 'vue'
+
+// Вернул асинхронный импорт, так как он работал корректно
+const InvestKorzhConfigurator2 = defineAsyncComponent(() =>
+  import('./InvestKorzhConfigurator2.vue')
+)
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
@@ -103,7 +106,6 @@ const shareTelegram = () => {
 // Функции управления модалкой
 const openEarlyAccessModal = () => {
   showEarlyAccessModal.value = true
-  // Безопасная проверка для SSR
   if (typeof document !== 'undefined') {
     document.body.style.overflow = 'hidden'
   }
@@ -114,7 +116,7 @@ const closeEarlyAccessModal = () => {
   if (typeof document !== 'undefined') {
     document.body.style.overflow = 'auto'
   }
-  // Убрали replaceState, так как он мог вызывать проблемы в некоторых средах
+  // Убрали replaceState, чтобы избежать проблем с гидратацией
 }
 
 const onKeydown = (e) => {
@@ -124,7 +126,7 @@ const onKeydown = (e) => {
   }
 }
 
-// Проверка хэша
+// Проверка хэша (безопасная для SSR)
 const checkHashForModal = () => {
   if (typeof window !== 'undefined' && window.location.hash === `#${props.id}`) {
     openEarlyAccessModal()
@@ -297,7 +299,7 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
             <div v-if="showCopyTooltip" class="tooltip">Скопировать ссылку</div>
           </div>
 
-          <!-- Кнопка Telegram (Исправленная для сборки) -->
+          <!-- КНОПКА TELEGRAM (БЕЗ javascript:void(0), DIV ВМЕСТО A) -->
           <div 
             class="share-btn-circle telegram" 
             @click="shareTelegram"
