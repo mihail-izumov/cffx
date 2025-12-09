@@ -323,8 +323,8 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
       <div v-if="showCopyToast" class="toast-notification">
         <div class="check-circle">✓</div>
         <div>
-          <strong>Ссылка скопирована в буфер.</strong><br>
-          Ею может воспользоваться любой, у кого она есть.
+          <strong>Скопировано в буфер</strong><br>
+          Поделитесь ссылкой с друзьями.
         </div>
       </div>
     </Transition>
