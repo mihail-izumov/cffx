@@ -19,7 +19,7 @@
 
     <div class="korzh-invest-form__container">
 
-      <!-- Секция 1: Эмоции -->
+      <!-- Секция 1: Философия -->
       <div v-if="selectedSection === 'emotions'" class="korzh-invest-form-section">
         <div class="korzh-invest-form-block">
           <div class="korzh-invest-form-rotating-container korzh-invest-form-fixed-height">
@@ -37,13 +37,13 @@
               @focus="stopRotation"
               @blur="startRotation(1)"
               :rows="isMobile ? 5 : 3"
-              placeholder="Опишите ваши впечатления..."
+              placeholder='Например: Я ваш постоянный гость с 2018 года, обожаю "тот самый" раф и сырники. Мне близка идея "тишины внутри", и я хочу помочь сети расти органично...'
             ></textarea>
           </div>
         </div>
       </div>
 
-      <!-- Секция 2: Факты -->
+      <!-- Секция 2: Цели -->
       <div v-if="selectedSection === 'facts'" class="korzh-invest-form-section">
         <div class="korzh-invest-form-block">
           <div class="korzh-invest-form-rotating-container korzh-invest-form-fixed-height">
@@ -61,14 +61,14 @@
               @blur="startRotation(2)"
               :rows="isMobile ? 5 : 3"
               :placeholder="isMobile 
-                ? 'Что и когда произошло...' 
-                : 'Несколько фактов: что и когда произошло...'"
+                ? 'Ваши цели и ожидания...' 
+                : 'Напишите честно: Ищу надежный актив с пассивным доходом. Или: Хочу участвовать в развитии сообщества и открывать новые родные места в городе...'"
             ></textarea>
           </div>
         </div>
       </div>
 
-      <!-- Секция 3: Инвестиции (Слайдер + Инпут) -->
+      <!-- Секция 3: Ресурсы (Слайдер + Инпут) -->
       <div v-if="selectedSection === 'solutions'" class="korzh-invest-form-section">
         <div class="korzh-invest-form-block korzh-block-purple">
           
@@ -127,19 +127,19 @@
         </div>
       </div>
 
-      <!-- Секция 4: Итого (Резюме) -->
+      <!-- Секция 4: Резюме -->
       <div v-if="selectedSection === 'summary'" class="korzh-invest-form-section">
         <div class="korzh-invest-form-block">
-          <p class="korzh-invest-form-direction-label korzh-pale-purple-text">Ваш Сигнал</p>
+          <p class="korzh-invest-form-direction-label korzh-pale-purple-text">Заявка в Корж</p>
           <div class="korzh-invest-form-rotating-container">
-            <p class="korzh-invest-form-label">Что должно измениться?</p>
+            <p class="korzh-invest-form-label">Ваше видение партнерства</p>
           </div>
           <div class="korzh-input-wrapper">
             <textarea 
               v-model="form.summaryText" 
               class="korzh-invest-form-textarea"
               :rows="isMobile ? 8 : 6"
-              placeholder="Главный вывод..."
+              placeholder="Суммирую ваши пожелания..."
             ></textarea>
           </div>
           <p class="korzh-invest-form-hint korzh-invest-form-hint-white">Не оферта. Вы делитесь своими данными с Коржем, чтобы получить возможность персонального предложения.</p>
@@ -172,7 +172,7 @@
             
             <!-- Поле Имя -->
             <div class="korzh-invest-form-field">
-              <label>Для персонального разбора</label>
+              <label>Для персонального предложения</label>
               <div class="korzh-input-wrapper">
                 <input v-model="form.userName" class="korzh-invest-form-input" placeholder="Ваше Имя" />
               </div>
@@ -289,7 +289,6 @@ const form = reactive({
   emotionalRelease: '',
   factualAnalysis: '',
   constructiveSuggestions: '',
-  // По умолчанию ползунок на минимуме (10К), но ручной ввод пустой
   investmentAmount: sliderMin,
   summaryText: '',
   userName: '',
@@ -306,23 +305,21 @@ const currentDate = ref('');
 const isSliderAnimating = ref(false);
 let sliderTimeout = null;
 
-// Флаг, трогал ли пользователь сумму (ползунок или ручной ввод)
 const hasInteractedWithAmount = ref(false);
 
 const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2diIxXDyAZEfSxJ7wLvupwjb7IAIlKVsXlyOL6WcDjex/exec';
 
 const sections = [
-  { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
-  { id: 'facts', title: 'Факты', buttonText: 'К инвестициям' },
-  { id: 'solutions', title: 'Решения', buttonText: 'Суммировать' },
-  { id: 'summary', title: 'Резюме', buttonText: 'Готово, к отправке' },
+  { id: 'emotions', title: 'Философия', buttonText: 'Дальше: Мои цели' },
+  { id: 'facts', title: 'Цели', buttonText: 'Настроить бюджет' },
+  { id: 'solutions', title: 'Ресурсы', buttonText: 'Суммировать' },
+  { id: 'summary', title: 'Резюме', buttonText: 'Всё верно, к контактам' },
   { id: 'contact', title: 'Контакт', buttonText: '' }
 ];
 const selectedSection = ref('emotions');
 const isActive = id => id === selectedSection.value;
 const currentSectionData = computed(() => sections.find(s => s.id === selectedSection.value));
 
-// Градиент слайдера
 const sliderStyle = computed(() => {
   const val = form.investmentAmount;
   let percentage = 0;
@@ -343,13 +340,11 @@ const formatNumberWithSpaces = (val) => {
   return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 };
 
-// Поле ручного ввода: по дефолту пустое, пока пользователь не тронул сумму
 const manualInputValue = computed(() => {
   if (!hasInteractedWithAmount.value || !form.investmentAmount || form.investmentAmount === 0) return '';
   return formatNumberWithSpaces(form.investmentAmount);
 });
 
-// Обработка ручного ввода
 const onManualInput = (e) => {
   hasInteractedWithAmount.value = true;
   let val = e.target.value.replace(/\s/g, '');
@@ -368,7 +363,6 @@ const onManualInput = (e) => {
   e.target.value = formatNumberWithSpaces(num);
 };
 
-// Обработка движения ползунка
 const onSliderInput = () => {
   hasInteractedWithAmount.value = true;
 };
@@ -406,8 +400,19 @@ function canNavigateTo(targetId) {
   return false; 
 }
 
-const questions1 = ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что расстроило или порадовало?', 'Ваше первое впечатление?'];
-const questions2 = ['Что именно произошло?', 'Какие детали важны?', 'Когда это случилось?', 'Что запомнилось больше всего?'];
+const questions1 = [
+  'Почему именно Корж?', 
+  'Вас покорила наша атмосфера?', 
+  'Любовь к продукту или расчет?', 
+  'Хотите стать частью истории?'
+];
+
+const questions2 = [
+  'Что для вас важнее всего?', 
+  'Доверие команде или контроль?', 
+  'Быстрый возврат или игра в долгую?', 
+  'Пассивный доход или участие?'
+];
 
 const currentQuestion1 = ref(questions1[0]);
 const currentQuestion2 = ref(questions2[0]);
@@ -472,7 +477,6 @@ watch(selectedSection, (newSection) => {
   }
 }, { immediate: true });
 
-// Анимация сердца при изменении суммы
 watch(() => form.investmentAmount, () => {
   isSliderAnimating.value = true;
   if (sliderTimeout) clearTimeout(sliderTimeout);
@@ -779,7 +783,6 @@ async function submitForm() {
 
 .korzh-manual-currency {
   background: #2a2a2e;
-  /* Ещё более светлый, почти белый фиолетовый */
   color: #F3E8FF;
   opacity: 0.9;
   display: flex;
@@ -838,7 +841,6 @@ async function submitForm() {
   font-weight: 700;
 }
 
-/* Ещё более светлый фиолетовый для заголовков "Ваш Сигнал" и "Отправьте заявку" */
 .korzh-pale-purple-text {
   color: #F3E8FF !important;
   opacity: 0.9;
@@ -884,7 +886,6 @@ async function submitForm() {
 .korzh-invest-form-field {
   margin-bottom: 12px;
 }
-/* Лейблы 18/28/500 normal */
 .korzh-invest-form-field label {
   display: block;
   font-size: 18px;
@@ -916,14 +917,12 @@ async function submitForm() {
   filter: grayscale(1);
 }
 
-/* Desktop: центр по высоте чекбокса */
 @media (min-width: 769px) {
   .korzh-invest-form-agreement {
     align-items: center;
   }
 }
 
-/* Mobile: по верхней линии */
 @media (max-width: 768px) {
   .korzh-invest-form-agreement {
     align-items: flex-start;
@@ -1135,4 +1134,3 @@ async function submitForm() {
   }
 }
 </style>
-
