@@ -123,7 +123,7 @@
             v-model="form.emotionalRelease" 
             @focus="startRotation(1)" 
             rows="3" 
-            placeholder="Опишите свои чувства и впечатления..."
+            placeholder="Или напишите своими словами..."
           ></textarea>
           
           <!-- Подсказки-баблы для эмоций -->
@@ -159,7 +159,7 @@
             v-model="form.factualAnalysis" 
             @focus="startRotation(2)" 
             rows="3" 
-            placeholder="Опишите факты: что, когда и где произошло..."
+            placeholder="Несколько фактов: что, когда и где произошло..."
           ></textarea>
           
           <div class="signal-suggestions-container">
@@ -194,7 +194,7 @@
             v-model="form.constructiveSuggestions" 
             @focus="startRotation(3)" 
             rows="3" 
-            placeholder="Предложите, как это можно исправить..."
+            placeholder="Дайте честный совет..."
           ></textarea>
           
           <div class="signal-suggestions-container">
