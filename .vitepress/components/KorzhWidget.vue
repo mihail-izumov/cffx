@@ -343,7 +343,7 @@ watch(showBranchList, (newValue) => {
           </div>
           <div class="signal-button-container">
             <button @click="createTicket" class="signal-action-button signal-ticket-button">
-              Сообщить о проблеме
+              Отправить Сигнал
             </button>
             <button @click="showBranchList = true" class="signal-action-button signal-review-button">
               Мне понравилось
@@ -386,9 +386,9 @@ watch(showBranchList, (newValue) => {
     </div>
     <!-- Модальное окно -->
     <div v-if="showInfoModal" class="signal-modal-overlay" @click.self="showInfoModal = false">
-      <div class="signal-modal" role="dialog" aria-modal="true" id="signal-dialog" aria-label="Диалоги Сигнала">
+      <div class="signal-modal" role="dialog" aria-modal="true" id="signal-dialog" aria-label="Как работает Сигнал">
         <div class="signal-modal-header">
-          <div class="signal-modal-title">Диалоги Сигнала</div>
+          <div class="signal-modal-title">Как работает Сигнал</div>
         </div>
         <div class="signal-modal-body">
           Ваш Сигнал — это команда к действию для кофейни и видимый результат для вас.
