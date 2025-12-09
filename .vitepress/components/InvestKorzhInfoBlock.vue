@@ -869,8 +869,8 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
     justify-content: center !important;
     /* 2. Прижимаем к верху (flex-start) */
     align-items: flex-start !important;
-    /* 3. Добавляем безопасный отступ сверху, чтобы не прилипало */
-    padding-top: 10px !important;
+    /* 3. Отступ сверху ровно 15 пикселей */
+    padding-top: 15px !important;
   }
 
   .signal2-review-modal-content {
