@@ -229,7 +229,7 @@ const CupFillIcon = {
         y: yPos.value, 
         width: '24', 
         height: currentHeight.value,
-        fill: 'currentColor',
+        fill: 'currentColor', // Использует currentColor (будет белым в кнопке)
         stroke: 'none',
         'clip-path': `url(#${clipId})`, 
         style: { transition: 'all 0.5s ease' }
@@ -378,7 +378,7 @@ async function submitForm() {
   formData.append('network', ''); 
   formData.append('address', ''); 
   formData.append('name', form.userName);
-  formData.append('contact', form.userContact); // Передаем контакт
+  formData.append('contact', form.userContact);
   formData.append('review', form.summaryText);
   try {
     const response = await fetch(API_ENDPOINT, { method: 'POST', body: formData });
@@ -401,9 +401,6 @@ async function submitForm() {
 :root {
   --korzh-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --korzh-font-mono: 'SF Mono', 'Monaco', monospace;
-  /* Лёгкий фиолетовый градиент в стиле метаморфоз */
-  --korzh-btn-gradient: linear-gradient(135deg, #B58EFF 0%, #D4BFFF 50%, #B58EFF 100%);
-  --korzh-btn-glow: 0 0 20px rgba(181, 142, 255, 0.4);
 }
 
 .korzh-invest-form-wrapper {
@@ -587,15 +584,27 @@ async function submitForm() {
   color: #fff !important;
 }
 
-/* Кнопка с лёгким фиолетовым градиентом в стиле метаморфоз */
+/* 
+  Кнопка с полной заливкой (force background).
+  Используем !important, чтобы перебить возможные конфликты.
+*/
 .korzh-invest-form-main-btn {
   width: 100%;
   height: 56px;
   border-radius: 12px;
   border: none;
-  background: var(--korzh-btn-gradient);
-  box-shadow: var(--korzh-btn-glow);
-  color: #FFFFFF; /* Белый текст */
+  
+  /* Принудительная заливка градиентом */
+  background: linear-gradient(135deg, #A972FF 0%, #D4BFFF 50%, #A972FF 100%) !important;
+  
+  /* Убираем дефолтные стили браузера, которые могут делать кнопку прозрачной */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  box-shadow: 0 0 20px rgba(181, 142, 255, 0.4);
+  
+  color: #FFFFFF !important; /* Принудительно белый текст */
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -606,12 +615,16 @@ async function submitForm() {
   justify-content: center; 
   padding: 0 24px;
   gap: 12px;
+  
+  /* Z-index на случай перекрытия прозрачными слоями */
+  position: relative;
+  z-index: 5;
 }
 
 .korzh-invest-form-main-btn:hover:not(:disabled) {
   filter: brightness(1.1);
   transform: translateY(-1px);
-  box-shadow: 0 5px 25px rgba(181, 142, 255, 0.6); /* Более яркое свечение при наведении */
+  box-shadow: 0 5px 25px rgba(181, 142, 255, 0.6);
 }
 .korzh-invest-form-main-btn:disabled {
   opacity: 0.5;
@@ -636,7 +649,7 @@ async function submitForm() {
 
 .korzh-invest-form-btn-text {
   flex-grow: 0; 
-  color: #FFFFFF; /* Белый текст */
+  color: #FFFFFF;
 }
 
 .korzh-fade-enter-active,
@@ -739,7 +752,7 @@ async function submitForm() {
 
 @media (max-width: 768px) {
   .korzh-invest-form__header {
-    margin-bottom: 20px; /* Уменьшили отступ в 2 раза (было 40) */
+    margin-bottom: 20px; 
   }
   .korzh-invest-form-wrapper {
     width: 100%;
@@ -755,7 +768,6 @@ async function submitForm() {
     width: 100%;
   }
   .korzh-invest-form-block {
-    /* Больше отступов слева и справа для мобильной */
     padding: 1.5rem 1rem !important; 
   }
   .korzh-invest-form-main-btn {
