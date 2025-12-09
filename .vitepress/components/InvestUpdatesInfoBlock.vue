@@ -1,3 +1,12 @@
+<script setup>
+defineProps({
+  id: {
+    type: String,
+    default: 'early-access'
+  }
+})
+</script>
+
 <template>
   <div class="early-access-widget">
     
