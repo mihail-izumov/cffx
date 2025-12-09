@@ -319,6 +319,7 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
       </div>
     </div>
 
+    <!-- ТОСТ уведомление -->
     <Transition name="fade">
       <div v-if="showCopyToast" class="toast-notification">
         <div class="check-circle">✓</div>
@@ -777,6 +778,7 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   margin-bottom: 10px;
 }
 
+/* СТИЛИ ТОСТА */
 .toast-notification {
   position: fixed;
   bottom: 30px;
@@ -791,6 +793,11 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   gap: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   z-index: 2000;
+  
+  /* Управление шириной */
+  width: max-content;
+  max-width: 90vw;
+  text-align: left;
 }
 
 .check-circle {
@@ -803,6 +810,9 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  
+  /* ВАЖНО: Запрет на сжатие иконки */
+  flex-shrink: 0;
 }
 
 .fade-enter-active,
@@ -865,25 +875,16 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 
   /* МОБИЛЬНАЯ ВЕРСИЯ МОДАЛКИ (Early Access) */
   .signal2-review-modal-overlay {
-    /* 1. Жестко центрируем по горизонтали */
     justify-content: center !important;
-    /* 2. Прижимаем к верху (flex-start) */
     align-items: flex-start !important;
-    /* 3. Отступ 0, чтобы прижать к самому верху */
     padding-top: 0 !important;
   }
 
   .signal2-review-modal-content {
-    /* Сбрасываем лишние марджины */
     margin: 0 auto !important;
     width: 94% !important;
     max-width: 94% !important;
-    /* Раз прижато к верху, можно дать больше места */
     max-height: 90vh;
-    
-    /* Опционально: если прижато к верху, можно убрать верхние скругления */
-    /* border-top-left-radius: 0 !important; */
-    /* border-top-right-radius: 0 !important; */
   }
   
   .signal2-modal-scrollable-content {
