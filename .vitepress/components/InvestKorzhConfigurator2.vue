@@ -134,12 +134,23 @@
             <div class="korzh-invest-form-rotating-container">
               <p class="korzh-invest-form-label">Отправьте Ваш Сигнал</p>
             </div>
+            
+            <!-- Поле Имя -->
             <div class="korzh-invest-form-field">
               <label>Для персонального разбора</label>
               <div class="korzh-input-wrapper">
                 <input v-model="form.userName" class="korzh-invest-form-input" placeholder="Ваше Имя" />
               </div>
             </div>
+
+            <!-- Новое поле Telegram -->
+            <div class="korzh-invest-form-field">
+              <label>Ваш контакт в Telegram</label>
+              <div class="korzh-input-wrapper">
+                <input v-model="form.userContact" class="korzh-invest-form-input" placeholder="Ник или Номер телефона" />
+              </div>
+            </div>
+
           </div>
           <label class="korzh-invest-form-agreement">
             <input type="checkbox" v-model="form.agreedToTerms" />
@@ -239,6 +250,7 @@ const form = reactive({
   constructiveSuggestions: '',
   summaryText: '',
   userName: '',
+  userContact: '', // Новое поле для Telegram
   agreedToTerms: false,
 });
 
@@ -366,6 +378,7 @@ async function submitForm() {
   formData.append('network', ''); 
   formData.append('address', ''); 
   formData.append('name', form.userName);
+  formData.append('contact', form.userContact); // Передаем контакт
   formData.append('review', form.summaryText);
   try {
     const response = await fetch(API_ENDPOINT, { method: 'POST', body: formData });
@@ -388,9 +401,9 @@ async function submitForm() {
 :root {
   --korzh-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --korzh-font-mono: 'SF Mono', 'Monaco', monospace;
-  /* Премиальный фиолетовый градиент для кнопок */
-  --korzh-btn-gradient: linear-gradient(135deg, #2E2E3A 0%, #4B4B5C 100%);
-  --korzh-btn-glow: 0 0 20px rgba(169, 114, 255, 0.15);
+  /* Лёгкий фиолетовый градиент в стиле метаморфоз */
+  --korzh-btn-gradient: linear-gradient(135deg, #B58EFF 0%, #D4BFFF 50%, #B58EFF 100%);
+  --korzh-btn-glow: 0 0 20px rgba(181, 142, 255, 0.4);
 }
 
 .korzh-invest-form-wrapper {
@@ -403,7 +416,7 @@ async function submitForm() {
 .korzh-invest-form__header {
   display: flex;
   justify-content: center;
-  margin-bottom: 40px; /* Увеличенный отступ */
+  margin-bottom: 40px; 
   padding-top: 50px; 
 }
 
@@ -461,7 +474,6 @@ async function submitForm() {
   background: #2a2a2e;
   border-radius: 16px;
   padding: 1.5rem;
-  /* УБРАНА розовая полоска слева */
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -502,27 +514,25 @@ async function submitForm() {
 .korzh-input-wrapper {
   position: relative;
   border-radius: 12px;
-  background: #2a2a2a; /* Цвет фона блока, чтобы сливался пока не активен */
-  padding: 1px; /* Толщина "бордера" */
+  background: #2a2a2a; 
+  padding: 1px; 
   transition: all 0.3s ease;
 }
 
-/* Эффект свечения при фокусе через псевдо-элемент не нужен, 
-   делаем напрямую через background самого враппера, как в примере */
 .korzh-input-wrapper:focus-within {
   background: transparent;
   background-image: linear-gradient(#2a2a2a, #2a2a2a), 
                     linear-gradient(135deg, rgba(169, 114, 255, 0.8), rgba(169, 114, 255, 0));
   background-origin: border-box;
   background-clip: content-box, border-box;
-  box-shadow: 0 0 15px rgba(169, 114, 255, 0.3); /* Добавил свечение (blur) */
+  box-shadow: 0 0 15px rgba(169, 114, 255, 0.3);
 }
 
 .korzh-invest-form-textarea, .korzh-invest-form-input {
   width: 100%;
   background: #18181a;
-  border: 1px solid #444; /* Дефолтный бордер */
-  border-radius: 11px; /* Чуть меньше родителя */
+  border: 1px solid #444; 
+  border-radius: 11px; 
   padding: 1rem;
   color: #fff;
   font-size: 1rem;
@@ -532,7 +542,6 @@ async function submitForm() {
   transition: border-color 0.3s;
 }
 
-/* Убираем дефолтную обводку при фокусе, так как работает враппер */
 .korzh-invest-form-textarea:focus, .korzh-invest-form-input:focus {
   outline: none;
   border-color: transparent; 
@@ -578,7 +587,7 @@ async function submitForm() {
   color: #fff !important;
 }
 
-/* Кнопка с премиальным фиолетовым градиентом */
+/* Кнопка с лёгким фиолетовым градиентом в стиле метаморфоз */
 .korzh-invest-form-main-btn {
   width: 100%;
   height: 56px;
@@ -586,7 +595,7 @@ async function submitForm() {
   border: none;
   background: var(--korzh-btn-gradient);
   box-shadow: var(--korzh-btn-glow);
-  color: #fff;
+  color: #FFFFFF; /* Белый текст */
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -600,9 +609,9 @@ async function submitForm() {
 }
 
 .korzh-invest-form-main-btn:hover:not(:disabled) {
-  filter: brightness(1.2);
+  filter: brightness(1.1);
   transform: translateY(-1px);
-  box-shadow: 0 5px 25px rgba(169, 114, 255, 0.25);
+  box-shadow: 0 5px 25px rgba(181, 142, 255, 0.6); /* Более яркое свечение при наведении */
 }
 .korzh-invest-form-main-btn:disabled {
   opacity: 0.5;
@@ -622,12 +631,12 @@ async function submitForm() {
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  color: #A972FF; /* Фиолетовый оттенок для иконки */
+  color: #FFFFFF; /* Белая иконка */
 }
 
 .korzh-invest-form-btn-text {
   flex-grow: 0; 
-  color: #e0e0e0;
+  color: #FFFFFF; /* Белый текст */
 }
 
 .korzh-fade-enter-active,
@@ -730,7 +739,7 @@ async function submitForm() {
 
 @media (max-width: 768px) {
   .korzh-invest-form__header {
-    margin-bottom: 60px; /* Еще больше отступа на мобиле */
+    margin-bottom: 20px; /* Уменьшили отступ в 2 раза (было 40) */
   }
   .korzh-invest-form-wrapper {
     width: 100%;
@@ -746,7 +755,8 @@ async function submitForm() {
     width: 100%;
   }
   .korzh-invest-form-block {
-    padding: 1rem 0.5rem !important; 
+    /* Больше отступов слева и справа для мобильной */
+    padding: 1.5rem 1rem !important; 
   }
   .korzh-invest-form-main-btn {
     width: 100%;
