@@ -71,7 +71,7 @@ head:
 <h1 class="responsive-heading-signal-industries">Инвестиции в новую <br class="mobile-break">кофейню Корж</h1>
 
 <p>
-  Получите ранний доступ.<br class="mobile-break"> <strong>Легендарные круассаны в Своей кофейне Корж.</strong>
+  Получите ранний доступ.<br class="mobile-break"> <strong>Легендарные круассаны и ароматный кофе в Вашей кофейне Корж.</strong>
 </p>
 
 </div>
