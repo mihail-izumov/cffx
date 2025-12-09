@@ -38,27 +38,37 @@
 
 <script setup>
 import { ref } from 'vue'
-import { defineProps, defineEmits } from 'vue'
+// В VitePress useRouter импортируется так
+import { useRouter } from 'vitepress'
 
 const props = defineProps({
   imageSrc: { type: String, default: '/img/korzh/korzh_send_signal_ban.png' },
   imageAlt: { type: String, default: 'Новая кофейня Корж' },
   title: { type: String, default: 'Еще больше возможностей быть ближе к кофейне, которую вы любите.' },
   subtitle: { type: String, default: '' },
-  buttonText: { type: String, default: 'Ранный доступ' },
+  buttonText: { type: String, default: 'Ранний доступ' },
   buttonLink: { type: String, default: '/signal/korzh/invest#early-access' }
 })
 
 const emit = defineEmits(['button-click'])
 const isHovered = ref(false)
+const router = useRouter()
 
 const handleButtonClick = () => {
-  if (props.buttonLink && props.buttonLink !== '#') {
-    window.open(props.buttonLink, '_blank')
+  if (props.buttonLink) {
+    // Проверка на внешнюю ссылку
+    if (props.buttonLink.startsWith('http')) {
+      window.open(props.buttonLink, '_blank')
+    } else {
+      // Внутренняя навигация через VitePress Router
+      // Это сработает и для перехода на другую страницу, и для якоря
+      router.go(props.buttonLink)
+    }
   }
   emit('button-click')
 }
 </script>
+
 
 <style scoped>
 .investor-banner {
