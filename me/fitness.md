@@ -11,10 +11,10 @@ description: Сигнал – тому кто решает
 
 <div align="center">
 
-<h1 class="responsive-heading-signal-industries">Ваш Сигнал — тому<br>кто решает в фитнесе.</h1>
+<h1 class="responsive-heading-signal-industries">Простой способ поддержать<br>кофейню, которую ви любите.</h1>
 
 <p>
-  Без регистрации.<br class="mobile-break"> <strong>Результат — сегодня.</strong>
+  Ваш Сигнал – тому кто решает. <br class="mobile-break"> <strong>Без регистрации. Результат — сегодня.</strong>
 </p>
 
 <br>
