@@ -1,1 +1,3 @@
 # 123
+
+<InvestKorzhConfigurator2 />
