@@ -64,6 +64,8 @@ head:
 }
 </style>
 
+<br>
+
 <div align="center">
 
 <h1 class="responsive-heading-signal-industries">Инвестиции в новую кофейню Корж</h1>
