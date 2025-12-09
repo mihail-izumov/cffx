@@ -122,6 +122,14 @@ onMounted(async () => {
 })
 
 const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
+
+defineProps({
+  id: {
+    type: String,
+    default: 'early-access'
+  }
+})
+
 </script>
 
 
@@ -132,7 +140,15 @@ const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
       <!-- ЗАГОЛОВОК И ЛОГО -->
       <div class="card-top">
         <img src="/korzh_badge.svg" alt="Корж" class="logo-img" />
-        <h1 class="card-title">Корж побеждает в сердцах</h1>
+        <h1 
+          class="card-title" 
+          :id="id" 
+          style="scroll-margin-top: 80px; position: relative;"
+        >
+          Корж побеждает в сердцах
+          <!-- Ссылка-якорь -->
+          <a class="header-anchor" :href="`#${id}`" aria-hidden="true"></a>
+        </h1>
       </div>
 
       <!-- БАБЛЫ (Теперь над текстом) -->
