@@ -68,26 +68,48 @@
         </div>
       </div>
 
-      <!-- Секция 3: Решение -->
+      <!-- Секция 3: Инвестиции (Слайдер) -->
       <div v-if="selectedSection === 'solutions'" class="korzh-invest-form-section">
-        <div class="korzh-invest-form-block">
-          <div class="korzh-invest-form-rotating-container korzh-invest-form-fixed-height">
-            <transition name="korzh-fade" mode="out-in">
-              <p :key="currentQuestion3" class="korzh-invest-form-label">
-                {{ currentQuestion3 }}
-              </p>
-            </transition>
+        <!-- Добавляем класс для фиолетового фона -->
+        <div class="korzh-invest-form-block korzh-block-purple">
+          
+          <div class="korzh-slider-header">
+            <div class="korzh-icon-circle">
+              <!-- Иконка Heart Handshake -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"/>
+              </svg>
+            </div>
+            <div class="korzh-slider-titles">
+              <div class="korzh-slider-title">Сколько хотели бы инвестировать?</div>
+              <div class="korzh-slider-subtitle">Помогите Коржу рассчитать предложение для инвесторов</div>
+            </div>
           </div>
-          <div class="korzh-input-wrapper">
-            <textarea 
-              v-model="form.constructiveSuggestions" 
-              class="korzh-invest-form-textarea"
-              @focus="stopRotation" 
-              @blur="startRotation(3)" 
-              :rows="isMobile ? 5 : 3"
-              placeholder="Ваш совет или предложение..."
-            ></textarea>
+
+          <div class="korzh-slider-body">
+            <!-- Отображение текущей суммы -->
+            <div class="korzh-slider-value">{{ formatMoney(form.investmentAmount) }}</div>
+            
+            <div class="korzh-slider-row">
+              <input 
+                type="range" 
+                min="10000" 
+                max="1500000" 
+                step="10000" 
+                v-model.number="form.investmentAmount" 
+                class="korzh-slider-input" 
+                :style="sliderStyle"
+              />
+            </div>
+            
+            <div class="korzh-slider-labels">
+              <span>10к</span>
+              <span>500к</span>
+              <span>1 млн</span>
+              <span>1.5 млн</span>
+            </div>
           </div>
+
         </div>
       </div>
 
@@ -245,7 +267,8 @@ const CupFillIcon = {
 const form = reactive({
   emotionalRelease: '',
   factualAnalysis: '',
-  constructiveSuggestions: '',
+  constructiveSuggestions: '', // Используется как заглушка для старой логики, но теперь слайдер пишет в investmentAmount
+  investmentAmount: 100000, // Дефолтное значение инвестиций
   summaryText: '',
   userName: '',
   userContact: '', 
@@ -262,7 +285,7 @@ const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1y
 
 const sections = [
   { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
-  { id: 'facts', title: 'Факты', buttonText: 'К решению ситуации' },
+  { id: 'facts', title: 'Факты', buttonText: 'К инвестициям' }, // Изменил текст кнопки
   { id: 'solutions', title: 'Решения', buttonText: 'Суммировать' },
   { id: 'summary', title: 'Резюме', buttonText: 'Готово, к отправке' },
   { id: 'contact', title: 'Контакт', buttonText: '' }
@@ -271,10 +294,26 @@ const selectedSection = ref('emotions');
 const isActive = id => id === selectedSection.value;
 const currentSectionData = computed(() => sections.find(s => s.id === selectedSection.value));
 
+// Вычисляемый стиль для слайдера (заполнение цветом)
+const sliderStyle = computed(() => {
+  const min = 10000;
+  const max = 1500000;
+  const val = form.investmentAmount;
+  const percentage = ((val - min) / (max - min)) * 100;
+  return {
+    background: `linear-gradient(to right, #a855f7 0%, #a855f7 ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%, rgba(255, 255, 255, 0.2) 100%)`
+  };
+});
+
+// Форматирование денег
+const formatMoney = (val) => {
+  return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 }).format(val);
+}
+
 const canProceed = computed(() => {
   if (selectedSection.value === 'emotions') return !!form.emotionalRelease.trim();
   if (selectedSection.value === 'facts') return !!form.factualAnalysis.trim();
-  if (selectedSection.value === 'solutions') return !!form.constructiveSuggestions.trim();
+  if (selectedSection.value === 'solutions') return true; // Слайдер всегда имеет значение
   if (selectedSection.value === 'summary') return !!form.summaryText.trim();
   if (selectedSection.value === 'contact') {
     return form.agreedToTerms && !!form.userName.trim() && !!form.userContact.trim();
@@ -306,11 +345,9 @@ function canNavigateTo(targetId) {
 
 const questions1 = ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что расстроило или порадовало?', 'Ваше первое впечатление?'];
 const questions2 = ['Что именно произошло?', 'Какие детали важны?', 'Когда это случилось?', 'Что запомнилось больше всего?'];
-const questions3 = ['Что можно сделать лучше?', 'Ваш совет управляющему?', 'Как исправить ситуацию?', 'Предложения по улучшению?'];
 
 const currentQuestion1 = ref(questions1[0]);
 const currentQuestion2 = ref(questions2[0]);
-const currentQuestion3 = ref(questions3[0]);
 
 let rotationInterval = null;
 
@@ -322,7 +359,6 @@ function startRotation(questionNum) {
 
   if (questionNum === 1) { questionsArray = questions1; currentRef = currentQuestion1; }
   else if (questionNum === 2) { questionsArray = questions2; currentRef = currentQuestion2; }
-  else if (questionNum === 3) { questionsArray = questions3; currentRef = currentQuestion3; }
   else return;
   
   rotationInterval = setInterval(() => {
@@ -353,7 +389,12 @@ function updateSummary() {
   const parts = [];
   if (form.emotionalRelease.trim()) parts.push(formatSentence(form.emotionalRelease));
   if (form.factualAnalysis.trim()) parts.push(formatSentence(form.factualAnalysis));
-  if (form.constructiveSuggestions.trim()) parts.push(formatSentence(form.constructiveSuggestions));
+  
+  // Добавляем инвестиции в резюме
+  if (form.investmentAmount) {
+    parts.push(`Планируемые инвестиции: ${formatMoney(form.investmentAmount)}.`);
+  }
+  
   form.summaryText = parts.join(' ');
 }
 
@@ -361,7 +402,7 @@ watch(selectedSection, (newSection) => {
   stopRotation();
   if (newSection === 'emotions') startRotation(1);
   else if (newSection === 'facts') startRotation(2);
-  else if (newSection === 'solutions') startRotation(3);
+  // На шаге solutions ротации нет
   
   if (newSection === 'summary') {
     updateSummary();
@@ -410,6 +451,7 @@ async function submitForm() {
   formData.append('name', form.userName);
   formData.append('contact', form.userContact);
   formData.append('review', form.summaryText);
+  // Дополнительно можно передать сумму отдельно, если нужно, но сейчас она в review
   try {
     const response = await fetch(API_ENDPOINT, { method: 'POST', body: formData });
     const result = await response.json();
@@ -501,6 +543,7 @@ async function submitForm() {
   gap: 1.5rem;
 }
 
+/* Стандартный блок */
 .korzh-invest-form-block {
   background: #2a2a2e;
   border-radius: 16px;
@@ -510,6 +553,121 @@ async function submitForm() {
   gap: 1rem;
   transition: all 0.3s ease;
 }
+
+/* Блок для слайдера (Purple Style) */
+.korzh-block-purple {
+  background: radial-gradient(circle at 0 0, #7c3aed33, transparent 55%),
+              radial-gradient(circle at 100% 100%, #22d3ee1f, transparent 60%),
+              linear-gradient(135deg, #0b0b21, #15152f);
+  border: 1px solid rgba(139, 92, 246, 0.2); /* Легкая обводка */
+}
+
+/* Слайдер Хедер */
+.korzh-slider-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 1rem;
+}
+
+.korzh-icon-circle {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 50%;
+  background: rgba(167, 139, 250, 0.20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.korzh-slider-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.korzh-slider-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.korzh-slider-subtitle {
+  font-size: 0.9rem;
+  color: #9ca3af; /* Серый */
+  font-weight: 400;
+  letter-spacing: normal;
+}
+
+/* Слайдер Тело */
+.korzh-slider-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.korzh-slider-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.korzh-slider-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.korzh-slider-input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+  margin: 0;
+  /* Фон задается через style в шаблоне */
+}
+
+.korzh-slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.5);
+  cursor: pointer;
+  background: radial-gradient(circle, #a855f7 0%, #a855f7 35%, #ffffff 36%, #ffffff 100%);
+  transition: transform 0.1s;
+}
+.korzh-slider-input::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.korzh-slider-input::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgba(15, 23, 42, 0.2);
+  cursor: pointer;
+  background: radial-gradient(circle, #a855f7 0%, #a855f7 35%, #ffffff 36%, #ffffff 100%);
+}
+
+.korzh-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 4px;
+}
+
+/* --- Остальные стили формы --- */
 
 .korzh-invest-form-rotating-container {
   height: 24px;
@@ -541,7 +699,6 @@ async function submitForm() {
   font-weight: 700;
 }
 
-/* Glassmorphism Border Effect Container */
 .korzh-input-wrapper {
   position: relative;
   border-radius: 12px;
@@ -618,25 +775,16 @@ async function submitForm() {
   color: #fff !important;
 }
 
-/* 
-  Кнопка: Вернули ГРАДИЕНТ, но менее "ядовитый" (less bright).
-  Используем оттенки поглубже: #8E65D6 и #A985E8.
-*/
 .korzh-invest-form-main-btn {
   width: 100%;
   height: 56px;
   border-radius: 12px;
   border: none;
-  
-  /* Принудительная заливка новым, более спокойным градиентом */
   background: linear-gradient(135deg, #8E65D6 0%, #A985E8 50%, #8E65D6 100%) !important;
-  
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-
   box-shadow: 0 0 20px rgba(142, 101, 214, 0.3);
-  
   color: #FFFFFF !important;
   font-size: 16px;
   font-weight: 600;
@@ -648,7 +796,6 @@ async function submitForm() {
   justify-content: center; 
   padding: 0 24px;
   gap: 12px;
-  
   position: relative;
   z-index: 5;
 }
@@ -809,6 +956,16 @@ async function submitForm() {
   .korzh-invest-form-ticket-info {
     flex-direction: column;
     gap: 0.75rem;
+  }
+  
+  /* Мобильные стили для слайдера */
+  .korzh-slider-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .korzh-slider-value {
+    font-size: 1.3rem;
   }
 }
 </style>
