@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import InvestKorzhConfigurator from './InvestKorzhConfigurator.vue'
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEHAgAcoRx2pDzdIgRZ1RpzHYY4NZGbmb5XyuSImv0JMphoXSrFmwdVLyDe2xjjgOp1g/exec'
 
@@ -11,16 +12,18 @@ const INITIAL_BASE = {
 
 const stats = ref({ ...INITIAL_BASE })
 const isLiked = ref(false)
-const showFollowModal = ref(false)
+// старое showFollowModal убираем, оно больше не нужно
 const showShareModal = ref(false)
 const showCopyToast = ref(false)
 const showCopyTooltip = ref(false)
 const showTelegramTooltip = ref(false)
 
+const showEarlyAccessModal = ref(false)
+
 const formatNumber = (num) => {
   const safeNum = Math.max(0, num || 0)
-  return safeNum >= 1000 
-    ? (safeNum / 1000).toFixed(1).replace(/\.0$/, '') + 'K' 
+  return safeNum >= 1000
+    ? (safeNum / 1000).toFixed(1).replace(/\.0$/, '') + 'K'
     : safeNum.toString()
 }
 
@@ -49,36 +52,43 @@ const fetchStats = async () => {
 const incrementViews = async () => {
   stats.value.pageViewsKorzh++
   saveToCache()
-  try { await fetch(`${SCRIPT_URL}?action=incrementViewsKorzh`) } catch (e) {}
+  try {
+    await fetch(`${SCRIPT_URL}?action=incrementViewsKorzh`)
+  } catch (e) {}
 }
 
-// Логика лайков (Синхронизирована с родительским виджетом)
+// Логика лайков
 const toggleLike = () => {
   isLiked.value = !isLiked.value
-  
-  // Используем тот же ключ localStorage, что и в родительском компоненте!
+
   const STORAGE_KEY = 'korzh_liked_status'
-  
+
   if (isLiked.value) {
     stats.value.korzhLikes++
     localStorage.setItem(STORAGE_KEY, 'true')
-    fetch(`${SCRIPT_URL}?action=addLike`).catch(() => { stats.value.korzhLikes--; isLiked.value = false })
+    fetch(`${SCRIPT_URL}?action=addLike`).catch(() => {
+      stats.value.korzhLikes--
+      isLiked.value = false
+    })
   } else {
     if (stats.value.korzhLikes > 0) stats.value.korzhLikes--
     localStorage.removeItem(STORAGE_KEY)
-    fetch(`${SCRIPT_URL}?action=removeLike`).catch(() => { stats.value.korzhLikes++; isLiked.value = true })
+    fetch(`${SCRIPT_URL}?action=removeLike`).catch(() => {
+      stats.value.korzhLikes++
+      isLiked.value = true
+    })
   }
-  
+
   saveToCache()
 
-  // --- МАГИЯ СИНХРОНИЗАЦИИ ---
-  // Создаем и отправляем событие, чтобы другие компоненты на странице узнали об изменении
-  window.dispatchEvent(new CustomEvent('korzh-like-changed', {
-    detail: { 
-      liked: isLiked.value,
-      newCount: stats.value.korzhLikes
-    }
-  }))
+  window.dispatchEvent(
+    new CustomEvent('korzh-like-changed', {
+      detail: {
+        liked: isLiked.value,
+        newCount: stats.value.korzhLikes
+      }
+    })
+  )
 }
 
 const copyLink = async () => {
@@ -86,40 +96,20 @@ const copyLink = async () => {
     await navigator.clipboard.writeText(window.location.href)
     showShareModal.value = false
     showCopyToast.value = true
-    setTimeout(() => showCopyToast.value = false, 3000)
+    setTimeout(() => (showCopyToast.value = false), 3000)
   } catch (err) {
     console.error('Failed to copy', err)
   }
 }
 
 const shareTelegram = () => {
-  const text = "Проверьте новую возможность поддержать Корж"
+  const text = 'Проверьте новую возможность поддержать Корж'
   const url = window.location.href
-  window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank')
+  window.open(
+    `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
+    '_blank'
+  )
 }
-
-onMounted(async () => {
-  loadFromCache()
-  
-  // Проверяем общий ключ лайка
-  if (localStorage.getItem('korzh_liked_status')) {
-    isLiked.value = true
-  }
-
-  // --- СЛУШАЕМ СОСЕДЕЙ ---
-  // Если другой компонент изменил лайк, мы тоже обновимся
-  window.addEventListener('korzh-like-changed', (e) => {
-    isLiked.value = e.detail.liked
-    stats.value.korzhLikes = e.detail.newCount
-  })
-  
-  await fetchStats()
-  
-  if (!sessionStorage.getItem('korzh_wide_session')) {
-    incrementViews()
-    sessionStorage.setItem('korzh_wide_session', 'true')
-  }
-})
 
 const formattedViews = computed(() => formatNumber(stats.value.pageViewsKorzh))
 
@@ -130,7 +120,57 @@ defineProps({
   }
 })
 
+const openEarlyAccessModal = () => {
+  showEarlyAccessModal.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+const closeEarlyAccessModal = () => {
+  showEarlyAccessModal.value = false
+  document.body.style.overflow = 'auto'
+}
+
+// Полный обработчик Escape
+const onKeydown = (e) => {
+  if (e.key === 'Escape') {
+    if (showEarlyAccessModal.value) {
+      closeEarlyAccessModal()
+    }
+    if (showShareModal.value) {
+      showShareModal.value = false
+    }
+    // если появятся ещё модалки — можно добавить их сюда
+  }
+}
+
+onMounted(async () => {
+  loadFromCache()
+
+  if (localStorage.getItem('korzh_liked_status')) {
+    isLiked.value = true
+  }
+
+  window.addEventListener('korzh-like-changed', (e) => {
+    isLiked.value = e.detail.liked
+    stats.value.korzhLikes = e.detail.newCount
+  })
+
+  await fetchStats()
+
+  if (!sessionStorage.getItem('korzh_wide_session')) {
+    incrementViews()
+    sessionStorage.setItem('korzh_wide_session', 'true')
+  }
+
+  // слушатель клавиатуры
+  window.addEventListener('keydown', onKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', onKeydown)
+})
 </script>
+
 
 
 <template>
@@ -211,13 +251,12 @@ defineProps({
       <!-- КНОПКИ -->
       <div class="actions-wrapper">
         <div class="actions">
-          <button class="btn-create" @click="showFollowModal = true">
-            Ранний доступ
-            <span class="icon-circle">
-              <!-- Иконка BELL -->
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell-icon lucide-bell"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
-            </span>
-          </button>
+          <button class="btn-create" @click="openEarlyAccessModal">
+  Ранний доступ
+  <span class="icon-circle">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell-icon lucide-bell"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+  </span>
+</button>
           <button class="btn-see-all" @click="showShareModal = true">
             Поделиться
             <span class="icon-circle">
@@ -230,16 +269,42 @@ defineProps({
 
     </div>
 
-    <!-- МОДАЛКА FOLLOW -->
-    <div v-if="showFollowModal" class="modal-overlay" @click.self="showFollowModal = false">
-      <div class="modal-card relative">
-        <button class="modal-close-icon" @click="showFollowModal = false">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </button>
-        <h3>Получайте новости первым когда появятся возможности инвестировать в новые кофейни Корж</h3>
-        <p>Following allows you to stay up to date with everything a company is doing meaning you'll never miss out on an investment opportunity. Create an account to follow GARAGE BARCELONA.</p>
-      </div>
+<!-- МОДАЛКА РАННИЙ ДОСТУП -->
+<div 
+  v-if="showEarlyAccessModal" 
+  class="signal2-review-modal-overlay"
+  @click="closeEarlyAccessModal"
+>
+  <div 
+    class="signal2-review-modal-content"
+    @click.stop
+  >
+    <button
+      @click="closeEarlyAccessModal"
+      class="signal2-modal-close-icon"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+    </button>
+
+    <div class="signal2-modal-scrollable-content">
+      <InvestKorzhConfigurator />
     </div>
+  </div>
+</div>
+
 
     <!-- МОДАЛКА SHARE -->
     <div v-if="showShareModal" class="modal-overlay blur-bg" @click.self="showShareModal = false">
@@ -730,6 +795,58 @@ defineProps({
   opacity: 0;
 }
 
+.signal2-review-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.signal2-review-modal-content {
+  background: #1e1e20;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+}
+
+.signal2-modal-close-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 4px;
+  transition: opacity 0.2s;
+  opacity: 0.6;
+  z-index: 10;
+}
+
+.signal2-modal-close-icon:hover {
+  opacity: 1;
+}
+
+.signal2-modal-scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  /* Паддинги можно настроить под компонент */
+  padding: 0; 
+}
+
 @media (max-width: 768px) {
   .wide-widget-container {
     margin: 32px 0;
@@ -777,5 +894,6 @@ defineProps({
   .btn-see-all {
     border-radius: 30px !important;
   }
+  
 }
 </style>
