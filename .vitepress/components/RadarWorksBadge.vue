@@ -2,7 +2,7 @@
   <div class="sp-badge-wrapper-outer">
     <a
       class="sp-signal-badge-link"
-      href="https://runscale.ru/radar/overview"
+      href="/pro/index"
       target="_blank"
       rel="noopener"
       aria-label="Технология Радара"
