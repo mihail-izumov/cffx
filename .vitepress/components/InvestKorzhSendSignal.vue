@@ -9,7 +9,7 @@
 
       <div class="banner-overlay">
         <div class="banner-inner">
-          <div class="banner-intro">ЛУЧШЕ КАЖДЫЙ ДЕНЬ</div>
+          <div class="banner-intro">НОВАЯ КОФЕЙНЯ КОРЖ</div>
 
           <div class="banner-title">
             <span class="title-desktop">
@@ -42,11 +42,11 @@ import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
   imageSrc: { type: String, default: '/img/korzh/korzh_send_signal_ban.png' },
-  imageAlt: { type: String, default: 'Новости Сигнала в Телеграм' },
-  title: { type: String, default: 'Еще больше возможностей быть ближе к бизнесу, который вы любите.' },
+  imageAlt: { type: String, default: 'Новая кофейня Корж' },
+  title: { type: String, default: 'Еще больше возможностей быть ближе к кофейне, которую вы любите.' },
   subtitle: { type: String, default: '' },
-  buttonText: { type: String, default: 'Отправить Сигнал' },
-  buttonLink: { type: String, default: '/korzh' }
+  buttonText: { type: String, default: 'Ранный доступ' },
+  buttonLink: { type: String, default: '/signal/korzh/invest#early-access' }
 })
 
 const emit = defineEmits(['button-click'])
