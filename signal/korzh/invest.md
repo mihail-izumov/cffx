@@ -6,7 +6,7 @@ description: Ранний доступ
 head:
   - - meta
     - property: "og:image"
-      content: "https://cffx.ru/korzh_badge.svg)"
+      content: "https://cffx.ru/korzh_invest_card.png)"
 ---
 <div class="back-button-container">
   <a href="/korzh" class="back-button">
