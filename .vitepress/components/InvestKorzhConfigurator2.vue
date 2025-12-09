@@ -142,13 +142,15 @@
             :disabled="submitStatus === 'processing' || !form.agreedToTerms || !isEmotionFilled"
             @click="submitForm"
           >
-            <span class="korzh-invest-form-btn-text">{{ submitStatus === 'processing' ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ СИГНАЛ' }}</span>
+            <!-- Восстановлена структура span внутри кнопки отправки -->
+            <span class="korzh-invest-form-next-text">{{ submitStatus === 'processing' ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ СИГНАЛ' }}</span>
           </button>
         </div>
       </div>
 
       <!-- Кнопки навигации по шагам -->
       <div v-if="selectedSection !== 'contact'" class="korzh-invest-form-nav">
+        <!-- Кнопка Next восстановлена 1-в-1 по структуре оригинала -->
         <button
           class="korzh-invest-form-next-btn"
           @click="goToNextSection"
@@ -157,7 +159,7 @@
             || (selectedSection === 'summary' && (!form.summaryText || !form.summaryText.trim()))
           "
         >
-          <span class="korzh-invest-form-btn-text">{{ currentSectionData.buttonText }}</span>
+          <span class="korzh-invest-form-next-text">{{ currentSectionData.buttonText }}</span>
           <CupFillIcon
             class="korzh-invest-form-icon"
             :step-index="sections.findIndex(s => s.id === selectedSection)"
@@ -550,6 +552,7 @@ async function submitForm() {
   color: #fff !important;
 }
 
+/* Кнопка отправки - 100% копия стилей из paste.txt */
 .korzh-invest-form-submit-btn {
   width: 100%;
   height: 56px;
@@ -585,13 +588,14 @@ async function submitForm() {
   margin-top: 1rem;
 }
 
+/* Кнопка Далее - 100% копия стилей из paste.txt */
 .korzh-invest-form-next-btn {
   width: 100%;
   height: 56px;
   border-radius: 12px;
   border: none;
-  background: rgba(169, 114, 255, 0.1); 
-  color: #A972FF;
+  background: rgba(255, 255, 255, 0.1); /* Стандартный фон из оригинала */
+  color: #fff;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -603,8 +607,7 @@ async function submitForm() {
 }
 
 .korzh-invest-form-next-btn:hover:not(:disabled) {
-  background: rgba(169, 114, 255, 0.2);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
 .korzh-invest-form-next-btn:disabled {
@@ -620,6 +623,19 @@ async function submitForm() {
   flex-shrink: 0;
   color: currentColor; 
 }
+
+/* Текст внутри кнопок */
+.korzh-invest-form-next-text {
+  flex-grow: 1; /* Чтобы текст в кнопке отправки центрировался корректно */
+  display: flex;
+  justify-content: center;
+}
+/* В кнопке "Далее" текст должен быть слева */
+.korzh-invest-form-next-btn .korzh-invest-form-next-text {
+  justify-content: flex-start;
+  flex-grow: 0;
+}
+
 
 .korzh-fade-enter-active,
 .korzh-fade-leave-active {
