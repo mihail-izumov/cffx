@@ -18,7 +18,7 @@
 
     <div class="signal-demo__form-container">
 
-      <!-- Секция 1: Эмоции (Теперь первая) -->
+      <!-- Секция 1: Эмоции -->
       <div v-if="selectedSection === 'emotions'" class="signal-form-section">
         <div class="signal-question-block" style="--accent-color: #A972FF;">
           <div class="signal-rotating-phrase-container signal-rotating-fixed-height">
@@ -166,7 +166,6 @@
   </div>
 </template>
 
-
 <script setup>
 import { reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
@@ -180,40 +179,18 @@ const form = reactive({
   agreedToTerms: false,
 });
 
-// Для проп-шагов
 const isMobile = ref(false);
-onMounted(() => {
-  const checkMobile = () => { isMobile.value = window.innerWidth <= 768 }
-  checkMobile();
-  window.addEventListener('resize', checkMobile);
-});
-
 const formSubmitted = ref(false);
 const submitStatus = ref('idle');
 const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
 const currentDate = ref('');
+const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2diIxXDyAZEfSxJ7wLvupwjb7IAIlKVsXlyOL6WcDjex/exec';
 
-onMounted(() => {
-  // Генерируем номер тикета и дату при запуске формы
-  rawTicketNumber.value = String(Date.now()).slice(-6);
-  formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
-
-  const now = new Date();
-  const day = String(now.getDate()).padStart(2, '0');
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const year = now.getFullYear();
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
-
-  currentDate.value = `${day}.${month}.${year}, ${hours}:${minutes}:${seconds}`;
-});
-
-// Валидация: эмоции обязательны для продолжения
+// Валидация
 const isEmotionFilled = computed(() => !!form.emotionalRelease.trim());
 
-// Логика перехода по секциям
+// Секции
 const sections = [
   { id: 'emotions', title: 'Эмоции', buttonText: 'Дальше к фактам' },
   { id: 'facts', title: 'Факты', buttonText: 'К решению ситуации' },
@@ -221,7 +198,7 @@ const sections = [
   { id: 'summary', title: 'Резюме', buttonText: 'Готово, к отправке' },
   { id: 'contact', title: 'Контакт', buttonText: '' }
 ];
-const selectedSection = ref('emotions'); // Начинаем сразу с эмоций
+const selectedSection = ref('emotions');
 const isActive = id => id === selectedSection.value;
 const currentSectionData = computed(() => sections.find(s => s.id === selectedSection.value));
 
@@ -233,52 +210,31 @@ const goToNextSection = () => {
   }
 };
 
-// ======== МАССИВЫ ВОПРОСОВ (Универсальные) =======
-const questions1 = [
-  'Что вы почувствовали?',
-  'Какие эмоции испытали?',
-  'Что расстроило или порадовало?',
-  'Ваше первое впечатление?'
-];
-const questions2 = [
-  'Что именно произошло?',
-  'Какие детали важны?',
-  'Когда это случилось?',
-  'Что запомнилось больше всего?'
-];
-const questions3 = [
-  'Что можно сделать лучше?',
-  'Ваш совет управляющему?',
-  'Как исправить ситуацию?',
-  'Предложения по улучшению?'
-];
+// Вопросы
+const questions1 = ['Что вы почувствовали?', 'Какие эмоции испытали?', 'Что расстроило или порадовало?', 'Ваше первое впечатление?'];
+const questions2 = ['Что именно произошло?', 'Какие детали важны?', 'Когда это случилось?', 'Что запомнилось больше всего?'];
+const questions3 = ['Что можно сделать лучше?', 'Ваш совет управляющему?', 'Как исправить ситуацию?', 'Предложения по улучшению?'];
 
-// ======== АКТИВНЫЙ ВОПРОС =======
 const currentQuestion1 = ref(questions1[0]);
 const currentQuestion2 = ref(questions2[0]);
 const currentQuestion3 = ref(questions3[0]);
 
-// ======== АНИМАЦИЯ/РОТАЦИЯ ВОПРОСОВ =======
+// Ротация
 let rotationInterval = null;
 
 function startRotation(questionNum) {
+  // Защита для SSG: не запускаем таймеры на сервере
+  if (typeof window === 'undefined') return;
+  
   stopRotation();
 
   let questionsArray = [];
   let currentRef = null;
 
-  if (questionNum === 1) {
-    questionsArray = questions1;
-    currentRef = currentQuestion1;
-  } else if (questionNum === 2) {
-    questionsArray = questions2;
-    currentRef = currentQuestion2;
-  } else if (questionNum === 3) {
-    questionsArray = questions3;
-    currentRef = currentQuestion3;
-  } else {
-    return;
-  }
+  if (questionNum === 1) { questionsArray = questions1; currentRef = currentQuestion1; }
+  else if (questionNum === 2) { questionsArray = questions2; currentRef = currentQuestion2; }
+  else if (questionNum === 3) { questionsArray = questions3; currentRef = currentQuestion3; }
+  else return;
   
   rotationInterval = setInterval(() => {
     const currentIndex = questionsArray.indexOf(currentRef.value);
@@ -294,22 +250,46 @@ function stopRotation() {
   }
 }
 
+// Слежение за секцией БЕЗ immediate: true для SSG безопасности
 watch(selectedSection, (newSection) => {
   stopRotation();
   if (newSection === 'emotions') startRotation(1);
   else if (newSection === 'facts') startRotation(2);
   else if (newSection === 'solutions') startRotation(3);
-}, { immediate: true });
+});
+
+// Lifecycle
+let checkMobile;
+
+onMounted(() => {
+  // Вся работа с window/DOM строго здесь
+  checkMobile = () => { isMobile.value = window.innerWidth <= 768 }
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
+
+  // Данные тикета
+  rawTicketNumber.value = String(Date.now()).slice(-6);
+  formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
+  
+  const now = new Date();
+  const d = n => String(n).padStart(2, '0');
+  currentDate.value = `${d(now.getDate())}.${d(now.getMonth()+1)}.${now.getFullYear()}, ${d(now.getHours())}:${d(now.getMinutes())}:${d(now.getSeconds())}`;
+
+  // Ручной запуск первой анимации на клиенте
+  if (selectedSection.value === 'emotions') {
+    startRotation(1);
+  }
+});
 
 onUnmounted(() => {
   stopRotation();
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', checkMobile);
+  }
 });
 
-
-// Функция "Суммировать" (упрощенная, просто склеивает текст для превью)
 function summarizeAllContent() {
   if (form.summaryText.trim()) return;
-
   const emotional = form.emotionalRelease.trim();
   const factual = form.factualAnalysis.trim();
   const solutions = form.constructiveSuggestions.trim();
@@ -318,31 +298,24 @@ function summarizeAllContent() {
   if (emotional) result += `Эмоции: ${emotional}\n\n`;
   if (factual) result += `Факты: ${factual}\n\n`;
   if (solutions) result += `Предложения: ${solutions}`;
-
   form.summaryText = result.trim();
 }
 
-// ======== ОТПРАВКА В GOOGLE SCRIPT ========
-const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2diIxXDyAZEfSxJ7wLvupwjb7IAIlKVsXlyOL6WcDjex/exec';
-
 async function submitForm() {
+  if (typeof window === 'undefined') return;
+
   submitStatus.value = 'processing';
 
-  const now = new Date();
-  const day = String(now.getDate()).padStart(2, '0');
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const year = now.getFullYear();
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
-  const submittedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
-  // Получаем или создаем clientId
+  // LocalStorage безопасно
   let clientId = localStorage.getItem('signal_client_id');
   if (!clientId) {
     clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now();
     localStorage.setItem('signal_client_id', clientId);
   }
+
+  const now = new Date();
+  const d = n => String(n).padStart(2, '0');
+  const submittedTime = `${now.getFullYear()}-${d(now.getMonth()+1)}-${d(now.getDate())} ${d(now.getHours())}:${d(now.getMinutes())}:${d(now.getSeconds())}`;
 
   const formData = new FormData();
   formData.append('referer', window.location.origin);
@@ -350,17 +323,13 @@ async function submitForm() {
   formData.append('ticketNumber', formattedTicketNumber.value);
   formData.append('date', currentDate.value);
   formData.append('submitted', submittedTime);
-  formData.append('network', ''); // Нет сети, так как убрали локацию
-  formData.append('address', ''); // Нет адреса
+  formData.append('network', ''); 
+  formData.append('address', ''); 
   formData.append('name', form.userName);
   formData.append('review', form.summaryText);
 
   try {
-    const response = await fetch(API_ENDPOINT, {
-      method: 'POST',
-      body: formData
-    });
-    
+    const response = await fetch(API_ENDPOINT, { method: 'POST', body: formData });
     const result = await response.json();
     
     if (result.status === 'success' && result.processed) {
@@ -370,13 +339,13 @@ async function submitForm() {
       throw new Error(result.message || 'Ошибка отправки');
     }
   } catch (error) {
-    console.error('Ошибка отправки:', error);
+    console.error(error);
     alert('Произошла ошибка при отправке. Попробуйте ещё раз.');
     submitStatus.value = 'idle';
   }
 }
 
-// Простой компонент иконки для навигации
+// Компонент иконки
 const CupFillIcon = {
   props: ['stepIndex', 'stepsTotal', 'size'],
   template: `
@@ -392,7 +361,6 @@ const CupFillIcon = {
 :root {
   --signal-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --signal-font-mono: 'SF Mono', 'Monaco', monospace;
-  /* Легкий фиолетовый градиент */
   --submit-gradient: linear-gradient(90deg, #A972FF 0%, #D8B4FE 50%, #A972FF 100%); 
 }
 
@@ -407,7 +375,6 @@ const CupFillIcon = {
   display: flex;
   justify-content: center;
   margin-bottom: 24px;
-  /* Опускаем переключатели и все что ниже на 20px */
   padding-top: 20px; 
 }
 
@@ -502,7 +469,6 @@ const CupFillIcon = {
   font-weight: 700;
 }
 
-/* Поля ввода */
 textarea, .signal-input {
   width: 100%;
   background: #18181a;
@@ -561,7 +527,6 @@ textarea:focus, .signal-input:focus {
   color: #fff !important;
 }
 
-/* Кнопка отправки */
 .signal-submit-button {
   width: 100%;
   height: 56px;
@@ -590,7 +555,6 @@ textarea:focus, .signal-input:focus {
   cursor: not-allowed;
 }
 
-/* Кнопки навигации (Далее) */
 .signal-next-button-container {
   display: flex;
   flex-direction: column;
@@ -627,7 +591,6 @@ textarea:focus, .signal-input:focus {
   color: #666;
 }
 
-/* Анимации перехода текста */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.4s ease, transform 0.4s ease;
@@ -651,7 +614,6 @@ textarea:focus, .signal-input:focus {
   color: #f0f0f0 !important;
 }
 
-/* Экран успеха */
 .signal-success-screen {
   display: flex;
   flex-direction: column;
@@ -695,7 +657,6 @@ textarea:focus, .signal-input:focus {
   margin: 0 0 1.5rem 0;
 }
 
-/* Кнопка Телеграм - Фиолетовая */
 .signal-telegram-button {
   display: inline-block;
   padding: 0.8rem 1.5rem;
@@ -728,7 +689,6 @@ textarea:focus, .signal-input:focus {
   padding-bottom: 1px !important;
 }
 
-/* Мобайл адаптация */
 @media (max-width: 768px) {
   .signal-demo__header {
     margin-bottom: 12px;
