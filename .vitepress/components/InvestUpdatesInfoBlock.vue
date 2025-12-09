@@ -51,7 +51,11 @@ defineProps({
 
     <!-- Header -->
     <div class="header-section">
-      <h2 class="widget-title">Зачем Ранний Доступ</h2>
+      <h2 class="widget-title" :id="id" style="scroll-margin-top: 300px;">
+        Зачем Ранний Доступ
+        <a class="header-anchor" :href="`#${id}`" aria-hidden="true"></a>
+      </h2>
+
       <p class="widget-subtitle">
         Корж скоро откроет возможность инвестировать в новые кофейни. <br>С Ранним Доступом вы можете...
       </p>
