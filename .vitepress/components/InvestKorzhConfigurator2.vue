@@ -502,8 +502,8 @@ onMounted(() => {
   checkMobile();
   window.addEventListener('resize', checkMobile);
   
-  // Генерируем 3 цифры для тикета (достаточно для уникальности в рамках дня/проекта)
-  formattedTicketNumber.value = String(Date.now()).slice(-3);
+  // Генерируем случайное число от 10 до 99
+  formattedTicketNumber.value = String(Math.floor(Math.random() * 90) + 10);
   
   const now = new Date();
   const d = n => String(n).padStart(2, '0');
