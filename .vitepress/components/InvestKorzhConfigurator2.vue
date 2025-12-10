@@ -1040,6 +1040,17 @@ async function submitForm() {
   color: #f0f0f0 !important;
 }
 
+/* ============ Стили успеха ============ */
+
+/* Важно: Контейнер для выравнивания */
+.korzh-invest-form-success-content {
+  display: flex;
+  flex-direction: column; /* Всегда вертикально */
+  align-items: center; /* Центрируем по горизонтали */
+  justify-content: center;
+  width: 100%;
+}
+
 .korzh-invest-form-success {
   display: flex;
   flex-direction: column;
@@ -1049,15 +1060,18 @@ async function submitForm() {
   padding: 3rem 2rem;
   width: 100%;
 }
+
 .korzh-invest-form-success-content h3 {
   font-size: 1.5rem;
   font-weight: 600;
   color: #fff;
   margin: 0 0 1.5rem 0;
 }
+
+/* Блок Тикет + Дата */
 .korzh-invest-form-ticket-info {
   display: flex;
-  flex-direction: column; /* Изменено для вертикального отображения: Тикет сверху, Дата снизу */
+  flex-direction: column; /* Вертикально */
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
@@ -1067,7 +1081,7 @@ async function submitForm() {
   font-family: var(--korzh-font-mono);
   font-size: 0.9rem;
   color: #888;
-  order: 2; /* Дата вторым пунктом */
+  order: 2; 
 }
 .korzh-invest-form-ticket {
   background-color: #2a2a2e;
@@ -1077,21 +1091,23 @@ async function submitForm() {
   border-radius: 12px;
   letter-spacing: 1px;
   font-family: var(--korzh-font-mono);
-  font-size: 1.5rem; /* Увеличили размер цифр */
-  order: 1; /* Тикет первым пунктом */
+  font-size: 1.5rem; 
+  order: 1; 
 }
+
+/* Описание */
 .korzh-invest-form-desc {
   color: #b0b0b0;
   line-height: 1.6;
-  margin: 0 0 2rem 0; /* Чуть больше отступ снизу */
-  max-width: 500px; /* Ограничим ширину для красоты текста */
+  margin: 0 0 2rem 0; 
+  max-width: 500px;
 }
 .korzh-invest-form-desc strong {
   color: #fff;
   font-weight: 600;
 }
 
-/* Кнопка Телеграм - теперь копирует стиль Main Button с !important */
+/* Кнопка Телеграм */
 .korzh-invest-form-telegram-btn {
   display: inline-flex;
   align-items: center;
@@ -1108,6 +1124,7 @@ async function submitForm() {
   font-size: 0.95rem;
   letter-spacing: 0.05em;
   border: none;
+  margin-bottom: 0; /* Убираем лишний маржин, если был */
 }
 .korzh-invest-form-telegram-btn:hover {
   filter: brightness(1.1);
@@ -1118,18 +1135,19 @@ async function submitForm() {
 
 /* Нижняя ссылка */
 .korzh-invest-form-link {
-  display: inline-block; /* Чтобы подчеркивание было по длине текста */
-  margin-top: 1.5rem;
+  display: inline-block;
+  margin-top: 1.5rem; /* Отступ от кнопки */
   font-size: 0.85rem;
   color: #888;
   transition: color 0.3s;
 }
 
-/* Кастомное подчеркивание */
+/* Кастомное подчеркивание (ближе к тексту) */
 .korzh-custom-underline {
   text-decoration: none !important;
   border-bottom: 1px solid rgba(136, 136, 136, 0.5) !important;
-  padding-bottom: 2px !important; /* Небольшой отступ */
+  padding-bottom: 1px !important; /* Уменьшили до 1px */
+  line-height: 1.2;
 }
 
 .korzh-custom-underline:hover {
@@ -1162,7 +1180,6 @@ async function submitForm() {
     height: 52px;
   }
   .korzh-invest-form-ticket-info {
-    /* На мобильном оставляем вертикально, тикет уже большой */
     gap: 0.5rem;
   }
   .korzh-slider-value {
