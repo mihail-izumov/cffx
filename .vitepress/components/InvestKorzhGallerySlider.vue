@@ -53,24 +53,12 @@ const props = defineProps({
     type: Array,
     required: true,
     default: () => [
-      '/img/korzh/slider/korzh-production.jpg',
-      '/fest2025/OST06021.jpg',
-      '/fest2025/OST06039.jpg',
-      '/fest2025/OST06176.jpg',
-      '/fest2025/OST06111.jpg',
-      '/fest2025/OST06197.jpg',
-      '/fest2025/OST06187.jpg',
-      '/fest2025/OST06007.jpg',
-      '/fest2025/OST06045.jpg',
-      '/fest2025/OST06067.jpg',
-      '/fest2025/OST06073.jpg',
-      '/fest2025/OST06086.jpg',
-      '/fest2025/OST06092.jpg',
-      '/fest2025/OST06106.jpg',
-      '/fest2025/OST06117.jpg',
-      '/fest2025/OST06210.jpg',
-      '/fest2025/OST06260.jpg',
-      '/fest2025/OST06276.jpg'
+      '/img/korzh/slider/korzh-team-1.jpg',
+      '/img/korzh/slider/korzh-production-1.jpg',
+      '/img/korzh/slider/korzh-merch-1.jpg',
+      '/img/korzh/slider/korzh-merch-2.jpg',
+      '/img/korzh/slider/korzh-merch-3.jpg',
+      '/img/korzh/slider/korzh-merch-4.jpg'
     ]
   },
   autoplayDelay: {
