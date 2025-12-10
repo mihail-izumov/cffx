@@ -156,7 +156,7 @@
               <span class="korzh-invest-form-ticket">{{ formattedTicketNumber }}</span>
             </div>
             <p class="korzh-invest-form-desc">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
-            <a :href="`https://t.me/Anna_Signal?text=Тикет%20${rawTicketNumber}`"
+            <a :href="`https://t.me/Anna_Signal?text=${formattedTicketNumber}%20${projectName}`"
                target="_blank"
                class="korzh-invest-form-telegram-btn">
               Начать чат с Анной
@@ -284,6 +284,8 @@ const CupFillIcon = {
 const sliderMin = 10000;
 const sliderMax = 15000000;
 const sliderStep = 10000;
+// Название проекта для отправки в бот
+const projectName = 'КОРЖ – Инвестиции';
 
 const form = reactive({
   emotionalRelease: '',
@@ -299,7 +301,6 @@ const form = reactive({
 const isMobile = ref(false);
 const formSubmitted = ref(false);
 const submitStatus = ref('idle');
-const rawTicketNumber = ref(null);
 const formattedTicketNumber = ref(null);
 const currentDate = ref('');
 const isSliderAnimating = ref(false);
@@ -307,7 +308,7 @@ let sliderTimeout = null;
 
 const hasInteractedWithAmount = ref(false);
 
-const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPqW0GLJ7SCJc9J1yC17Bl2diIxXDyAZEfSxJ7wLvupwjb7IAIlKVsXlyOL6WcDjex/exec';
+const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyKgDYv13x9CLNzGeVxUE7fDOLHbFZpafgZqmAdxAkO3P06M2k3LPJvCfRNq30vDGzjpA/exec';
 
 const sections = [
   { id: 'emotions', title: 'Философия', buttonText: 'Дальше: Мои цели' },
@@ -491,8 +492,10 @@ onMounted(() => {
   checkMobile = () => { isMobile.value = window.innerWidth <= 768 }
   checkMobile();
   window.addEventListener('resize', checkMobile);
-  rawTicketNumber.value = String(Date.now()).slice(-6);
-  formattedTicketNumber.value = `${rawTicketNumber.value.slice(0, 3)}-${rawTicketNumber.value.slice(3, 6)}`;
+  
+  // Генерируем 3 цифры для тикета (достаточно для уникальности в рамках дня/проекта)
+  formattedTicketNumber.value = String(Date.now()).slice(-3);
+  
   const now = new Date();
   const d = n => String(n).padStart(2, '0');
   currentDate.value = `${d(now.getDate())}.${d(now.getMonth()+1)}.${now.getFullYear()}, ${d(now.getHours())}:${d(now.getMinutes())}:${d(now.getSeconds())}`;
@@ -516,7 +519,9 @@ async function submitForm() {
   const now = new Date();
   const d = n => String(n).padStart(2, '0');
   const submittedTime = `${now.getFullYear()}-${d(now.getMonth()+1)}-${d(now.getDate())} ${d(now.getHours())}:${d(now.getMinutes())}:${d(now.getSeconds())}`;
+  
   const formData = new FormData();
+  formData.append('project', projectName); // Передаем название проекта
   formData.append('referer', window.location.origin);
   formData.append('clientId', clientId);
   formData.append('ticketNumber', formattedTicketNumber.value);
