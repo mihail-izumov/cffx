@@ -150,19 +150,27 @@
       <div v-if="selectedSection === 'contact'" class="korzh-invest-form-section">
         <div v-if="formSubmitted" class="korzh-invest-form-success">
           <div class="korzh-invest-form-success-content">
-            <h3>Сигнал отправлен ⚡</h3>
+            <h3>Заявка отправлена ⚡</h3>
             <div class="korzh-invest-form-ticket-info">
-              <span class="korzh-invest-form-date">{{ currentDate }}</span>
+              <!-- Сначала ТИКЕТ, потом ДАТА -->
               <span class="korzh-invest-form-ticket">{{ formattedTicketNumber }}</span>
+              <span class="korzh-invest-form-date">{{ currentDate }}</span>
             </div>
-            <p class="korzh-invest-form-desc">Отправьте тикет Анне, чтобы получить результат в Телеграм.</p>
-            <a :href="`https://t.me/Anna_Signal?text=${formattedTicketNumber}%20${projectName}`"
+            
+            <p class="korzh-invest-form-desc">
+              Корж получит вашу заявку. Как только предложение будет готово – ваш персональный ИИ-помощник Анна сообщит в Телеграм. 
+              <strong>Начните чат, чтобы быть в курсе событий.</strong>
+            </p>
+            
+            <!-- Кнопка как основная -->
+            <a :href="`https://t.me/Anna_Signal?text=⚡️${formattedTicketNumber}%20${encodedProjectName}`"
                target="_blank"
                class="korzh-invest-form-telegram-btn">
               Начать чат с Анной
             </a>
-            <a href="/signals#знакомьтесь-–-анна" target="_blank" class="korzh-invest-form-link no-double-underline">
-              Кто Анна и как работает
+            
+            <a href="/invest/pulse" target="_blank" class="korzh-invest-form-link korzh-custom-underline">
+              Другие возможности инвестировать
             </a>
           </div>
         </div>
@@ -286,6 +294,7 @@ const sliderMax = 15000000;
 const sliderStep = 10000;
 // Название проекта для отправки в бот
 const projectName = 'КОРЖ – Инвестиции';
+const encodedProjectName = 'КОРЖ%20–%20ИНВЕСТИЦИИ'; // В верхнем регистре для URL
 
 const form = reactive({
   emotionalRelease: '',
@@ -1048,15 +1057,17 @@ async function submitForm() {
 }
 .korzh-invest-form-ticket-info {
   display: flex;
+  flex-direction: column; /* Изменено для вертикального отображения: Тикет сверху, Дата снизу */
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 0.5rem;
   margin-bottom: 2.5rem;
 }
 .korzh-invest-form-date {
   font-family: var(--korzh-font-mono);
   font-size: 0.9rem;
   color: #888;
+  order: 2; /* Дата вторым пунктом */
 }
 .korzh-invest-form-ticket {
   background-color: #2a2a2e;
@@ -1066,44 +1077,64 @@ async function submitForm() {
   border-radius: 12px;
   letter-spacing: 1px;
   font-family: var(--korzh-font-mono);
-  font-size: 1.1rem;
+  font-size: 1.5rem; /* Увеличили размер цифр */
+  order: 1; /* Тикет первым пунктом */
 }
 .korzh-invest-form-desc {
   color: #b0b0b0;
   line-height: 1.6;
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 2rem 0; /* Чуть больше отступ снизу */
+  max-width: 500px; /* Ограничим ширину для красоты текста */
+}
+.korzh-invest-form-desc strong {
+  color: #fff;
+  font-weight: 600;
 }
 
+/* Кнопка Телеграм - теперь копирует стиль Main Button с !important */
 .korzh-invest-form-telegram-btn {
-  display: inline-block;
-  padding: 0.8rem 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 2rem;
   border-radius: 12px;
   font-weight: 600;
   text-decoration: none !important;
-  background-color: #8E65D6;
-  color: #fff;
-  transition: all 0.3s;
+  background: linear-gradient(135deg, #7c68b0 0%, #8e7bbd 50%, #7c68b0 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 20px rgba(124, 104, 176, 0.2);
+  transition: all 0.4s ease-out;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  border: none;
 }
 .korzh-invest-form-telegram-btn:hover {
-  filter: brightness(110%);
-  transform: scale(1.05);
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 25px rgba(124, 104, 176, 0.4);
+  color: #FFFFFF !important;
 }
 
+/* Нижняя ссылка */
 .korzh-invest-form-link {
-  display: block;
+  display: inline-block; /* Чтобы подчеркивание было по длине текста */
   margin-top: 1.5rem;
   font-size: 0.85rem;
   color: #888;
   transition: color 0.3s;
 }
-.korzh-invest-form-link:hover {
-  color: #fff !important;
+
+/* Кастомное подчеркивание */
+.korzh-custom-underline {
+  text-decoration: none !important;
+  border-bottom: 1px solid rgba(136, 136, 136, 0.5) !important;
+  padding-bottom: 2px !important; /* Небольшой отступ */
 }
 
-.no-double-underline {
-  text-decoration: none !important;
-  border-bottom: 1px solid currentColor !important;
-  padding-bottom: 1px !important;
+.korzh-custom-underline:hover {
+  color: #fff !important;
+  border-bottom-color: #fff !important;
 }
 
 @media (max-width: 768px) {
@@ -1131,8 +1162,8 @@ async function submitForm() {
     height: 52px;
   }
   .korzh-invest-form-ticket-info {
-    flex-direction: column;
-    gap: 0.75rem;
+    /* На мобильном оставляем вертикально, тикет уже большой */
+    gap: 0.5rem;
   }
   .korzh-slider-value {
     font-size: 1.3rem;
