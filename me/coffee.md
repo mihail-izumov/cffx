@@ -33,6 +33,16 @@ description: Сигнал – тому кто решает
 
 <div align="center">
 
+# Инвестируйте в бизнес, который любите
+
+</div>
+
+<InvestKorzhWidget />
+
+<br>
+
+<div align="center">
+
 <br>
   
 # Что Сигнал делает <br class="mobile-break"> для вас
