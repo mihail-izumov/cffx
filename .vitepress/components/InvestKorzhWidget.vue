@@ -173,7 +173,7 @@ const formattedPageViews = computed(() => formatNumber(stats.value.pageViews))
         </div>
 
         <div class="card-footer">
-          <a href="/korzh" target="_blank" rel="noopener noreferrer" class="play-btn">Поддержать Корж</a>
+          <a href="/signal/korzh/invest" target="_blank" rel="noopener noreferrer" class="play-btn">Поддержать Корж</a>
         </div>
 
         <div class="bubbles-container">
