@@ -6,6 +6,10 @@ pageClass: centered-page
 notification: clients
 title: Отправьте Сигнал – World Class, FIZКУЛЬТУРА, X-fit, SMSTRETCHING, Спортлайф, Fitness House, DDX
 description: Сигнал – тому кто решает
+head:
+  - - meta
+    - property: "og:image"
+      content: "https://cffx.ru/fitness-og-icon.svg"
 ---
 <SignalItemsSlider />
 
