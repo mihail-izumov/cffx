@@ -500,7 +500,7 @@ function sidebarChangelog(): DefaultTheme.SidebarItem[] {
         { text: '19 Ноября, 2025', link: '/changelog/19-11-2025' },
         { text: '7 Ноября, 2025', link: '/changelog/07-11-2025' },
         { text: '3 Ноября, 2025', link: '/changelog/03-11-2025' },
-        { text: 'Август 19, 2025', link: '/changelog/19-08-2025' }
+        { text: '19 Августа, 2025', link: '/changelog/19-08-2025' }
       ]
     }]
 }
