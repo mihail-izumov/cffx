@@ -34,7 +34,7 @@ description: Безупречная работа с Сигналами
   <div class="project-card">
     <div>
       <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Конструктор Сигнала</h3>
-      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">3 дня до запуска вместо 2-3 недель обсуждений, которые в реальности растягиваются из-за уточнений и переговоров.</p>
+      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Минус одна воронка продаж. 3 дня до запуска вместо 2-3 недель обсуждений, которые в реальности растягиваются из-за уточнений и переговоров.</p>
     </div>
     <a href="/system/customizer" class="project-button">
       Как работает →
