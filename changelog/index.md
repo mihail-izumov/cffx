@@ -18,8 +18,9 @@ description: Узнавайте первым о новостях Сигнала
 
 ## Обновления
 
-- [7 Ноября, 2025](/changelog/07-11-2025) <Badge type="warning" text="public" /> <Badge type="info" text="Для Бизнеса" />
 - [19 Ноября, 2025](/changelog/19-11-2025) <Badge type="warning" text="public" /> <Badge type="info" text="Для Бизнеса" />
+- [7 Ноября, 2025](/changelog/07-11-2025) <Badge type="warning" text="public" /> <Badge type="info" text="Для Бизнеса" />
+- [3 Ноября, 2025](/changelog/03-11-2025) <Badge type="warning" text="public" /> <Badge type="info" text="Для Бизнеса" />
 - [19 Августа, 2025](/changelog/19-08-2025) <Badge type="warning" text="public" /> <Badge type="tip" text="Индекс Роста" /> <Badge type="info" text="Самара" />
 
 
