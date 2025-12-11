@@ -9,7 +9,7 @@ description: Узнавайте первым о новостях Сигнала
 
 # Следите за Сигналом
 
-### Узнавайте первым об обновлениях системы и изменениях в бизнесе, который вы любите.
+### Узнавайте об обновлениях системы и изменениях в бизнесе, который вы любите.
 
 <div class="start-button-container">
   <a href="https://t.me/runscale" class="btn btn-primary" rel="noopener noreferrer"><strong>Телеграм-канал</strong></a>
