@@ -62,7 +62,6 @@ LTV Калькулятор помогает точно и быстро пров�
 
 ---
 
-
 <div class="start-button-container">
   <a href="/pro/ltvcalc" class="btn btn-primary" target="_blank" rel="noopener noreferrer"><strong>LTV Калькулятор</strong></a>
 </div>
