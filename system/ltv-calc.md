@@ -60,6 +60,9 @@ LTV Калькулятор Сигнала — это финансовый сим
 
 LTV Калькулятор помогает точно и быстро проверить любую гипотезу. Вводите свои цифры и видите математическое обоснование рентабельности системы Сигнала до её подключения.
 
+---
+
+
 <div class="start-button-container">
   <a href="/pro/ltvcalc" class="btn btn-primary" target="_blank" rel="noopener noreferrer"><strong>LTV Калькулятор</strong></a>
 </div>
