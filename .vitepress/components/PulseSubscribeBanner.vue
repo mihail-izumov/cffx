@@ -9,7 +9,6 @@
 
       <div class="banner-overlay">
         <div class="banner-inner">
-          <!-- Текст из первого кода -->
           <div class="banner-intro">ОСТАНЕМСЯ НА СВЯЗИ</div>
 
           <div class="banner-title">
@@ -41,7 +40,7 @@
 
 <script setup>
 import { ref } from 'vue'
-// Оставляем скрипт из первого кода (простой window.open)
+
 const props = defineProps({
   imageSrc: { type: String, default: '/subscribe_ban.jpg' },
   imageAlt: { type: String, default: 'Новости Сигнала в Телеграм' },
@@ -108,11 +107,11 @@ const handleButtonClick = () => {
   text-align: center;
 }
 
-/* ЦВЕТА ИЗ ПЕРВОГО КОДА (ЛАЙМ) */
+/* ЦВЕТА: Лайм (из первого кода) */
 .banner-intro {
   font-size: clamp(0.62rem, 1.1vw, 0.76rem);
   font-weight: 500;
-  color: #b5f240; /* Лайм */
+  color: #b5f240;
   text-transform: uppercase;
   letter-spacing: 0.34em;
   text-shadow: 0 2px 10px rgba(0,0,0,0.7);
@@ -130,7 +129,7 @@ const handleButtonClick = () => {
 .title-desktop { display: block; }
 .title-mobile  { display: none; }
 
-/* КНОПКА — Чистое стекло (Ultra Clear) */
+/* КНОПКА: Лайм (из первого кода) */
 .glass-pill {
   pointer-events: auto;
   position: relative;
@@ -142,7 +141,7 @@ const handleButtonClick = () => {
   padding: 1.05rem 3.6rem;
   font-weight: 600;
   font-size: clamp(1.08rem, 2.3vw, 1.2rem);
-  color: #b5f240; /* Лайм */
+  color: #b5f240;
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
   cursor: pointer;
   overflow: hidden;
@@ -150,7 +149,6 @@ const handleButtonClick = () => {
   box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
 
-/* ЕДИНАЯ ОБВОДКА (ЛАЙМ) */
 .glass-pill::before {
   content: '';
   position: absolute;
@@ -187,34 +185,31 @@ const handleButtonClick = () => {
   transition-duration: 0.15s;
 }
 
-/* --- МОБИЛЬНАЯ ВЕРСИЯ (ОПТИМИЗИРОВАННАЯ) --- */
+/* --- МОБИЛЬНАЯ ВЕРСИЯ (ОБНОВЛЕННАЯ) --- */
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
 
-  /* Уменьшаем отступы фона, чтобы освободить место */
   .banner-overlay { 
     padding: 1rem; 
   }
 
-  /* Значительно уменьшаем расстояние между элементами */
   .banner-inner { 
     gap: 0.8rem; 
   }
 
-  /* Делаем шрифт интро чуть меньше */
   .banner-intro {
     font-size: 0.65rem;
     margin-bottom: -0.2rem;
   }
 
-  /* Размер заголовка */
   .banner-title {
-    font-size: 1.3rem;
-    line-height: 1.25;
+    /* Уменьшено на ~20% (было 1.3rem) */
+    font-size: 1.05rem;
+    /* Пропорционально уменьшен интервал (было 1.25-1.3) */
+    line-height: 1.2;
   }
 
-  /* Компактная кнопка */
   .glass-pill {
     padding: 0.8rem 2.2rem;
     font-size: 1rem;
