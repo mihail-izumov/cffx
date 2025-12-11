@@ -10,10 +10,6 @@ const fitness: Record<string, any> = {
     listeningStatus: 4.5,
     signalStatus: 3.8
   },
-  'FIZКУЛЬТУРА': {
-    listeningStatus: 4.3,
-    signalStatus: 3.6
-  },
   'X-Fit': {
     listeningStatus: 3.5,
     signalStatus: 3.0
@@ -30,8 +26,12 @@ const fitness: Record<string, any> = {
     listeningStatus: 2.5,
     signalStatus: 2.0
   },
+    'FIZКУЛЬТУРА': {
+    listeningStatus: 1.4,
+    signalStatus: 1.2
+  },
   'DDX': {
-    listeningStatus: 1.5,
+    listeningStatus: 1.3,
     signalStatus: 1.2
   }
 }
