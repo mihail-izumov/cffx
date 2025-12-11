@@ -498,13 +498,13 @@ function sidebarSystem(): DefaultTheme.SidebarItem[] {
       text: 'Система',
       collapsed: false,
       items: [
-        { text: 'Тикет-система', link: '/system/tickets' },
-        { text: 'Система уведомлений', link: '/system/tickets/notifications' },
-        { text: 'Примеры работы SLA-таймера', link: '/system/tickets/sla-timer-examples' },
-        { text: 'Аналитика и отчёты', link: '/system/tickets/analytics' },
         { text: 'LTV-калькулятор', link: '/system/ltv-calc' },
         { text: 'Конструктор Сигнала', link: '/system/customizer' },
         { text: 'Гид для Фитнеса', link: '/system/fitness-guide' }
+        { text: 'Тикет-система', link: '/system/tickets' },
+        { text: 'Тикеты: уведомления', link: '/system/tickets/notifications' },
+        { text: 'Тикеты: SLA-таймеры', link: '/system/tickets/sla-timer-examples' },
+        { text: 'Тикеты: аналитика', link: '/system/tickets/analytics' }
       ]
     }
   ]
