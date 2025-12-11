@@ -6,11 +6,11 @@ import AddVoteStatus from './AddVoteStatus.vue'
 // ============ ФИТНЕС КЛУБЫ ============
 const fitnessNames = [
   'World Class',
-  'FIZКУЛЬТУРА',
   'X-Fit',
   'SMSTRETCHING',
   'Спортлайф',
   'Fitness House',
+  'FIZКУЛЬТУРА',
   'DDX'
 ]
 
@@ -20,15 +20,6 @@ const fitnessClubs = {
     image: '/widget/fitness/worldclass-widget_bg.jpg',
     ListeningStatus: 'Реагируют',
     ListeningBadgeText: 'Обычно отвечают',
-    SignalsStatus: 'Внимательно',
-    SignalsBadgeText: 'Гарантия решения',
-    isConnected: false
-  },
-  'FIZКУЛЬТУРА': {
-    name: 'FIZКУЛЬТУРА',
-    image: '/widget/fitness/fiz-widget_bg.jpg',
-    ListeningStatus: 'Общаются',
-    ListeningBadgeText: 'Устойчивый диалог',
     SignalsStatus: 'Внимательно',
     SignalsBadgeText: 'Гарантия решения',
     isConnected: false
@@ -63,6 +54,15 @@ const fitnessClubs = {
   'Fitness House': {
     name: 'Fitness House',
     image: '/widget/fitness/fitness-house-widget_bg.jpg',
+    ListeningStatus: 'Принимают',
+    ListeningBadgeText: 'Сигналы доходят',
+    SignalsStatus: 'Оперативно',
+    SignalsBadgeText: 'Живой отклик',
+    isConnected: false
+  },
+  'FIZКУЛЬТУРА': {
+    name: 'FIZКУЛЬТУРА',
+    image: '/widget/fitness/fiz-widget_bg.jpg',
     ListeningStatus: 'Принимают',
     ListeningBadgeText: 'Сигналы доходят',
     SignalsStatus: 'Оперативно',
