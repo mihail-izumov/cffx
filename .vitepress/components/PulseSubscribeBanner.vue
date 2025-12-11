@@ -9,6 +9,7 @@
 
       <div class="banner-overlay">
         <div class="banner-inner">
+          <!-- Текст из первого кода -->
           <div class="banner-intro">ОСТАНЕМСЯ НА СВЯЗИ</div>
 
           <div class="banner-title">
@@ -40,8 +41,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { defineProps, defineEmits } from 'vue'
-
+// Оставляем скрипт из первого кода (простой window.open)
 const props = defineProps({
   imageSrc: { type: String, default: '/subscribe_ban.jpg' },
   imageAlt: { type: String, default: 'Новости Сигнала в Телеграм' },
@@ -108,10 +108,11 @@ const handleButtonClick = () => {
   text-align: center;
 }
 
+/* ЦВЕТА ИЗ ПЕРВОГО КОДА (ЛАЙМ) */
 .banner-intro {
   font-size: clamp(0.62rem, 1.1vw, 0.76rem);
   font-weight: 500;
-  color: #b5f240;
+  color: #b5f240; /* Лайм */
   text-transform: uppercase;
   letter-spacing: 0.34em;
   text-shadow: 0 2px 10px rgba(0,0,0,0.7);
@@ -133,64 +134,39 @@ const handleButtonClick = () => {
 .glass-pill {
   pointer-events: auto;
   position: relative;
-  
-  /* Фон: прозрачнее (0.3) для видимости фона страницы */
   background: rgba(20, 20, 24, 0.3);
-  
-  /* Блюр: минимальный (4px), чтобы сохранить текстуру фона */
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  
-  /* Border убираем, рисуем его через ::before для идеального стыка */
   border: none;
-  
   border-radius: 9999px;
   padding: 1.05rem 3.6rem;
   font-weight: 600;
   font-size: clamp(1.08rem, 2.3vw, 1.2rem);
-  color: #b5f240;
+  color: #b5f240; /* Лайм */
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
   cursor: pointer;
   overflow: hidden;
-  
-  /* Анимация: делаем плавнее (убираем резкость пружины) */
-  transition: 
-    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), 
-    background 0.6s ease, 
-    box-shadow 0.6s ease;
-    
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.6s ease, box-shadow 0.6s ease;
   box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
 
-/* ЕДИНАЯ ОБВОДКА (Решает проблему "дырок") */
+/* ЕДИНАЯ ОБВОДКА (ЛАЙМ) */
 .glass-pill::before {
   content: '';
   position: absolute;
-  inset: 0; /* Занимает всю площадь */
+  inset: 0;
   border-radius: 9999px; 
-  padding: 1px; /* Толщина обводки */
-  
-  /* 
-     ХИТРОСТЬ: Складываем два фона для рамки.
-     1. Radial-gradient: Яркое пятно сверху по центру.
-     2. Linear-gradient: Тусклая линия по всему периметру.
-  */
+  padding: 1px;
   background: 
     radial-gradient(60% 50% at 50% 0%, rgba(181, 242, 64, 1) 0%, transparent 100%),
     linear-gradient(rgba(181, 242, 64, 0.25), rgba(181, 242, 64, 0.25));
-    
-  /* Маска вырезает центр, оставляя только рамку 1px */
-  -webkit-mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  
   pointer-events: none;
   transition: opacity 0.5s ease;
 }
 
-/* Легкий внутренний блик для объема (опционально, очень тонкий) */
 .glass-pill::after {
   content: '';
   position: absolute;
@@ -201,29 +177,48 @@ const handleButtonClick = () => {
 }
 
 .glass-pill:hover {
-  transform: translateY(-5px); /* Чуть меньше амплитуда движения */
-  background: rgba(30,30,35,0.6); /* Чуть плотнее при наведении */
-  box-shadow: 
-    0 20px 50px rgba(0,0,0,0.5), 
-    0 0 25px rgba(181,242,64,0.15);
+  transform: translateY(-5px);
+  background: rgba(30,30,35,0.6);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 25px rgba(181,242,64,0.15);
 }
 
 .glass-pill:active {
   transform: translateY(-2px);
-  transition-duration: 0.15s; /* Быстрый отклик на клик */
+  transition-duration: 0.15s;
 }
 
-/* Мобильная версия */
+/* --- МОБИЛЬНАЯ ВЕРСИЯ (ОПТИМИЗИРОВАННАЯ) --- */
 @media (max-width: 768px) {
   .title-desktop { display: none; }
   .title-mobile  { display: block; }
 
-  .banner-overlay { padding: 1.6rem; }
-  .banner-inner { gap: 1.9rem; }
+  /* Уменьшаем отступы фона, чтобы освободить место */
+  .banner-overlay { 
+    padding: 1rem; 
+  }
 
+  /* Значительно уменьшаем расстояние между элементами */
+  .banner-inner { 
+    gap: 0.8rem; 
+  }
+
+  /* Делаем шрифт интро чуть меньше */
+  .banner-intro {
+    font-size: 0.65rem;
+    margin-bottom: -0.2rem;
+  }
+
+  /* Размер заголовка */
+  .banner-title {
+    font-size: 1.3rem;
+    line-height: 1.25;
+  }
+
+  /* Компактная кнопка */
   .glass-pill {
-    padding: 1rem 3rem;
-    font-size: 1.15rem;
+    padding: 0.8rem 2.2rem;
+    font-size: 1rem;
+    width: auto;
   }
 }
 </style>
