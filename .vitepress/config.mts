@@ -68,8 +68,7 @@ export default defineConfig({
           { text: 'Обновления', href: '/changelog/index' },
           { text: 'Культура кофе 2025', href: '/fest' },
           { text: 'Условия использования', href: '/terms' },
-          { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
-          { text: 'Контакт', href: '/about/contacts' }
+          { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' }
         ];
         let html = '<hr style="border: 0; border-top: 1px solid var(--vp-c-divider); margin: 24px 0;">';
         html += '<div class="custom-footer-links"><div class="footer-row">';
