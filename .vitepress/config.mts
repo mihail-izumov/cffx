@@ -497,6 +497,7 @@ function sidebarChangelog(): DefaultTheme.SidebarItem[] {
       text: 'Все Обновления', 
       collapsed: false, 
       items: [
+        { text: '11 Декабря, 2025', link: '/changelog/11-12-2025' },        
         { text: '19 Ноября, 2025', link: '/changelog/19-11-2025' },
         { text: '7 Ноября, 2025', link: '/changelog/07-11-2025' },
         { text: '3 Ноября, 2025', link: '/changelog/03-11-2025' },
