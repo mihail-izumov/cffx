@@ -4,7 +4,7 @@ prev: false
 next: false
 pageClass: centered-page
 notification: clients
-title: Отправьте Сигнал – World Class, FIZКУЛЬТУРА, X-fit, SMSTRETCHING, Спортлайф, Fitness House, DDX
+title: Отправьте Сигнал – World Class, X-fit, SMSTRETCHING, Спортлайф, Fitness House, FIZКУЛЬТУРА, DDX
 description: Сигнал – тому кто решает
 head:
   - - meta
