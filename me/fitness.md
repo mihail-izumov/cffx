@@ -9,7 +9,7 @@ description: Сигнал – тому кто решает
 head:
   - - meta
     - property: "og:image"
-      content: "https://cffx.ru/fitness-og-icon.svg"
+      content: "https://cffx.ru/fitness-og-icon.png"
 ---
 <SignalItemsSlider />
 
