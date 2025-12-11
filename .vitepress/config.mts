@@ -500,9 +500,9 @@ function sidebarSystem(): DefaultTheme.SidebarItem[] {
       items: [
         { text: 'LTV-калькулятор', link: '/system/ltv-calc' },
         { text: 'Конструктор Сигнала', link: '/system/customizer' },
-        { text: 'Гид для Фитнеса', link: '/system/fitness-guide' }
+        { text: 'Гид для Фитнеса', link: '/system/fitness-guide' },
         { text: 'Тикет-система', link: '/system/tickets' },
-        { text: 'Тикеты: уведомления', link: '/system/tickets/notifications' },
+        { text: 'Тикеты – уведомления', link: '/system/tickets/notifications' },
         { text: 'Тикеты: SLA-таймеры', link: '/system/tickets/sla-timer-examples' },
         { text: 'Тикеты: аналитика', link: '/system/tickets/analytics' }
       ]
