@@ -47,7 +47,7 @@ const props = defineProps({
   imageAlt: { type: String, default: 'Новости Сигнала в Телеграм' },
   title: { type: String, default: 'Еще больше возможностей быть ближе к бизнесу, который вы любите.' },
   subtitle: { type: String, default: '' },
-  buttonText: { type: String, default: 'Подписаться в Телеграм' },
+  buttonText: { type: String, default: 'Подписаться' },
   buttonLink: { type: String, default: 'https://t.me/runScale' }
 })
 
