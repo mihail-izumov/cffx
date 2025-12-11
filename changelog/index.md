@@ -5,7 +5,6 @@ next: false
 pageClass: centered-page
 title: Обновления Сигнала
 description: Узнавайте первым о новостях Сигнала
-
 ---
 
 # Следите за Сигналом
@@ -15,6 +14,8 @@ description: Узнавайте первым о новостях Сигнала
 <div class="start-button-container">
   <a href="https://t.me/runscale" class="btn btn-primary" rel="noopener noreferrer"><strong>Телеграм-канал</strong></a>
 </div>
+
+<br><br>
 
 ---
 
