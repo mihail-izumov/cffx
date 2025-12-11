@@ -101,3 +101,4 @@ description: Безупречная работа с Сигналами
   transform: translateY(-2px);
 }
 </style>
+
