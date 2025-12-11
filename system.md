@@ -4,7 +4,6 @@ prev: false
 next: false
 pageClass: centered-page
 title: Наша система
-notification: brew
 description: Безупречная работа с Сигналами
 
 ---
@@ -34,10 +33,10 @@ description: Безупречная работа с Сигналами
   <!-- Карточка 1 -->
   <div class="project-card">
     <div>
-      <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Умная тикет-система</h3>
-      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Заботится одновременно о госте и кофейне. Автоматически отслеживает время ответа и напоминает управляющему, когда нужно действовать.</p>
+      <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Конструктор Сигнала</h3>
+      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">3 дня до запуска вместо 2-3 недель обсуждений, которые в реальности растягиваются из-за уточнений и переговоров.</p>
     </div>
-    <a href="/system/tickets" class="project-button">
+    <a href="/system/customizer" class="project-button">
       Как работает →
     </a>
   </div>
@@ -45,10 +44,10 @@ description: Безупречная работа с Сигналами
   <!-- Карточка 2 -->
   <div class="project-card">
     <div>
-      <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Вторая система</h3>
-      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Заботится одновременно о госте и кофейне. Автоматически отслеживает время ответа и напоминает управляющему, когда нужно действовать.</p>
+      <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">LTV-калькулятор </h3>
+      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Переводит абстрактное «качество сервиса» в конкретные показатели выручки. Не теория, а расчёт конкретного прироста для конкретной компании.</p>
     </div>
-    <a href="/system/tickets" class="project-button">
+    <a href="/system/ltv-calc" class="project-button">
       Как работает →
     </a>
   </div>
@@ -60,10 +59,10 @@ description: Безупречная работа с Сигналами
 
   <div class="project-card">
     <div>
-      <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Умная тикет-система</h3>
-      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Заботится одновременно о госте и кофейне. Атоматически отслеживает время ответа и напоминает управляющему, когда нужно действовать.</p>
+      <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Гид для Фитнеса</h3>
+      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Показывает управленцу, как система Сигнала структурирует «сырые» эмоции клиента в понятный для команды кейс (эмоции → факты → решение), снижая страх негативной обратной связи и превращая её в управляемый процесс.</p>
     </div>
-    <a href="/system/tickets" class="project-button">
+    <a href="/system/fitness-guide" class="project-button">
       Как работает →
     </a>
   </div>
