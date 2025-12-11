@@ -65,7 +65,7 @@ export default defineConfig({
       function createFooterContent() {
         const links = [
           { text: 'Система', href: '/system' },          
-          { text: 'Обновления', href: '/changelog' },
+          { text: 'Обновления', href: '/changelog/index' },
           { text: 'Культура кофе 2025', href: '/fest' },
           { text: 'Условия использования', href: '/terms' },
           { text: 'Телеграм-канал', href: 'https://t.me/runscale', target: '_blank' },
@@ -401,6 +401,7 @@ export default defineConfig({
     sidebar: {
       '/invest/': { items: sidebarPulse() },
       '/terms/': { items: sidebarTerms() },
+      '/changelog/': { items: sidebarChangelog() },
       '/system/': { items: sidebarSystem() }
     },
     search: {
@@ -488,6 +489,19 @@ function sidebarTerms(): DefaultTheme.SidebarItem[] {
         { text: 'Политика конфиденциальности', link: '/terms/policy' },
         { text: 'Согласие на обработку данных', link: '/terms/privacy' },
         { text: 'Оферта', link: '/terms/oferta' }
+      ]
+    }]
+}
+
+function sidebarChangelog(): DefaultTheme.SidebarItem[] {
+  return [{
+      text: 'Все Обновления', 
+      collapsed: false, 
+      items: [
+        { text: '19 Ноября, 2025', link: '/changelog/19-11-2025' },
+        { text: '7 Ноября, 2025', link: '/changelog/07-11-2025' },
+        { text: '3 Ноября, 2025', link: '/changelog/03-11-2025' },
+        { text: 'Август 19, 2025', link: '/changelog/19-08-2025' }
       ]
     }]
 }
