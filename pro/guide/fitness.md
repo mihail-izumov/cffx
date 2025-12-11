@@ -135,7 +135,7 @@ notification: brew
 <div style="text-align: center;">
   <div class="checkup-cta-section">
     <a href="/pro/specs" class="checkup-price" target="_blank" rel="noopener noreferrer">От ₽65,500/мес</a>
-    <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Ноябре</a>
+    <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Декабре</a>
   </div>
 </div>
 
@@ -196,7 +196,7 @@ notification: brew
 <div style="text-align: center;">
   <div class="checkup-cta-section">
     <a href="/pro/specs" class="checkup-price" target="_blank" rel="noopener noreferrer">От ₽65,500/мес</a>
-    <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Ноябре</a>
+    <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Декабре</a>
   </div>
 </div>
 
@@ -265,7 +265,7 @@ notification: brew
 <div style="text-align: center;">
   <div class="checkup-cta-section">
     <a href="/pro/specs" class="checkup-price" target="_blank" rel="noopener noreferrer">От ₽65,500/мес</a>
-    <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Ноябре</a>
+    <a href="/pro/reserve" class="btn-cta">Запустить Сигнал в Декабре</a>
   </div>
 </div>
 
