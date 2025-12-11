@@ -10,7 +10,7 @@ description: Узнавайте первым о новостях Сигнала
 
 # Следите за Сигналом
 
-**Узнавайте первым о новых кофейнях рядом с вами, изменениях на кофейном рынке и обновлях Индекса.**
+**Узнавайте первым об обновлениях системы и изменениях в бизнесе, который вы любите.**
 
 <div class="start-button-container">
   <a href="https://t.me/runscale" class="btn btn-primary" rel="noopener noreferrer"><strong>Телеграм-канал</strong></a>
@@ -18,7 +18,8 @@ description: Узнавайте первым о новостях Сигнала
 
 ## Обновления
 
-[Август 19, 2025](/changelog/19-08-2025) <Badge type="warning" text="public" /> <Badge type="tip" text="Индекс Роста" /> <Badge type="info" text="Самара" />
+- [19 Ноября, 2025](/changelog/19-11-2025) <Badge type="warning" text="public" /> <Badge type="info" text="Для Бизнеса" />
+- [19 Августа, 2025](/changelog/19-08-2025) <Badge type="warning" text="public" /> <Badge type="tip" text="Индекс Роста" /> <Badge type="info" text="Самара" />
 
 
 <style>
