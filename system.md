@@ -24,6 +24,16 @@ description: Безупречная работа с Сигналами
     </a>
   </div>
 
+  <div class="project-card">
+    <div>
+      <h3 style="color: #C5F946; margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">Умная тикет-система</h3>
+      <p style="margin: 0; line-height: 1.6; color: var(--vp-c-text-1);">Заботится одновременно о госте и кофейне. Атоматически отслеживает время ответа и напоминает управляющему, когда нужно действовать.</p>
+    </div>
+    <a href="/system/tickets" class="project-button">
+      Как работает →
+    </a>
+  </div>
+
 <style>
 .project-card {
   background: rgba(52, 123, 108, 0.3);
