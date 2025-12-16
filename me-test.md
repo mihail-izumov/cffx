@@ -1,4 +1,4 @@
 
-<InvestKorzhBanner />
+<SignalFormKorzhCard1/>
 
 
