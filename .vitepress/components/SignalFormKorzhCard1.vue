@@ -1,31 +1,18 @@
 <template>
   <div class="signal-form-wrapper">
-    <!-- 1. Success wrapper -->
+    <!-- 1. Сообщение об успехе -->
     <div v-if="formSubmitted" class="signal-success-message">
       <div class="signal-success-text">
         <h3>Готово!</h3>
         <p>Сигнал отправлен. Номер: <strong>{{ formattedTicketNumber }}</strong></p>
       </div>
-
       <div class="signal-success-actions">
-        <a
-          :href="`https://t.me/AnnaSignal?text=${rawTicketNumber}`"
-          target="_blank"
-          class="signal-telegram-button"
-        >
-          Написать в Telegram
-        </a>
-        <button type="button" @click="handleShareClick" class="signal-share-btn">
-          Поделиться
-        </button>
+        <a :href="`https://t.me/AnnaSignal?text=${rawTicketNumber}`" target="_blank" class="signal-telegram-button">Написать в Telegram</a>
+        <a href="/signals" target="_blank" class="signal-secondary-link">Вернуться</a>
       </div>
-
-      <a href="/signals" target="_blank" class="signal-secondary-link">
-        Все сигналы
-      </a>
     </div>
 
-    <!-- 2. Form wrapper -->
+    <!-- 2. Форма -->
     <form v-else @submit.prevent="submitForm">
       <div class="signal-form-header">
         <div class="signal-form-title">Signal</div>
@@ -35,330 +22,248 @@
         </div>
       </div>
 
-      <!-- Выбор точки -->
-      <div class="signal-form-section">
-        <div class="signal-question-block signal-compact">
-          <label class="signal-question-label">Точка</label>
-          <p class="signal-question-help">Где это произошло?</p>
-          <select v-model="form.coffeeShopAddress" class="signal-address-select" required>
-            <option value="" disabled>Выберите точку</option>
-            <option value="Кофе, 103">Кофе, 103</option>
-            <option value="Кофе, 30">Кофе, 30</option>
-            <option value="Кофе, 101">Кофе, 101</option>
-            <option value="9 Просека (5-я просека),39 (5-я просека), 3">9 Просека (5-я просека),39 (5-я просека), 3</option>
-            <option value="Кофе, 270">Кофе, 270</option>
-            <option value="Кофе, 22">Кофе, 22</option>
-            <option value="Кофе, 19">Кофе, 19</option>
-            <option value="Ново-Садовая, 106">Ново-Садовая, 106</option>
-          </select>
-        </div>
-      </div>
-
       <div class="signal-separator-line"></div>
 
-      <!-- Гендерный переключатель и инфо -->
-      <div class="signal-controls-row">
-        <button
-          type="button"
-          class="signal-info-button"
-          :class="{
-            'signal-info-female': selectedGender === 'female',
-            'signal-info-male': selectedGender === 'male'
-          }"
-          @click="showInfoModal = true"
-        >
-          Как это работает?
-        </button>
-
-        <div class="signal-gender-switch">
-          <div class="signal-gender-container">
-            <div
-              class="signal-gender-btn signal-gender-female"
-              :class="{ 'is-active': selectedGender === 'female' }"
-              @click="onGenderClick('female')"
-            ></div>
-            <div
-              class="signal-gender-btn signal-gender-male"
-              :class="{ 'is-active': selectedGender === 'male' }"
-              @click="onGenderClick('male')"
-            ></div>
-          </div>
+      <div class="signal-form-section">
+        <!-- Блок выбора кофейни -->
+        <div class="signal-question-block signal-compact">
+          <label class="signal-question-label">Точка</label>
+          <p class="signal-question-help">Выберите адрес кофейни</p>
+          <select v-model="form.coffeeShopAddress" class="signal-address-select" required>
+             <option value="" disabled>Выберите точку</option>
+             <option value="Кофе, 103">Кофе, 103</option>
+             <option value="Кофе, 30">Кофе, 30</option>
+             <option value="Кофе, 101">Кофе, 101</option>
+             <option value="Кофе, 9 5-я линия,39">Кофе, 9 5-я линия,39</option>
+             <option value="Кофе, 270">Кофе, 270</option>
+             <option value="Кофе, 22">Кофе, 22</option>
+             <option value="Кофе, 19">Кофе, 19</option>
+             <option value="Кофе, -106">-106</option>
+          </select>
         </div>
-      </div>
 
-      <!-- Модальное окно -->
-      <div v-if="showInfoModal" class="modal-overlay" @click.self="showInfoModal = false">
-        <div class="modal">
-          <div class="modal-title">Как это работает</div>
-          <div class="modal-body">
-            Выберите точку, оставьте сигнал. Ответ в течение 24 часа. Анонимно и безопасно.<br><br>
-            <a href="https://cffx.ru/signals.html" target="_blank" class="modal-link">
-              Подробнее о Signal
-            </a>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="modal-ok" @click="showInfoModal = false">
-              Понятно
-            </button>
-          </div>
+        <div class="signal-controls-row">
+            <button type="button" :class="['signal-info-button', selectedGender === 'female' ? 'signal-info-female' : 'signal-info-male']" @click="showInfoModal = true">Что это?</button>
+            <div class="signal-gender-switch">
+                <div class="signal-gender-container">
+                    <div :class="['signal-gender-btn', 'signal-gender-female', {'is-active': selectedGender === 'female'}]" @click="onGenderClick('female')"></div>
+                    <div :class="['signal-gender-btn', 'signal-gender-male', {'is-active': selectedGender === 'male'}]" @click="onGenderClick('male')"></div>
+                </div>
+            </div>
         </div>
+
+        <!-- Модальное окно с информацией -->
+        <div v-if="showInfoModal" class="modal-overlay" @click.self="showInfoModal = false">
+            <div class="modal">
+                <div class="modal-title">О системе</div>
+                <div class="modal-body">Это новая система сбора обратной связи, подробнее можно прочитать в <a href="https://cffx.ru/signals.html" target="_blank" class="modal-link">статье</a>.</div>
+                <div class="modal-footer">
+                    <button type="button" class="modal-ok" @click="showInfoModal = false">Понятно</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Блок Эмоций (ОСТАВЛЕН) -->
+        <div class="signal-form-section">
+            <div :class="['signal-question-block', genderClass]" style="--accent-color: #A972FF;">
+                <p class="signal-direction-label">Что вы почувствовали?</p>
+                <div class="signal-rotating-phrase-container">
+                    <transition name="fade" mode="out-in">
+                        <p :key="currentQuestion1" class="signal-question-label">{{ currentQuestion1 }}</p>
+                    </transition>
+                </div>
+                <textarea v-model="form.emotionalRelease" @focus="startRotation(1)" rows="3" placeholder="Я почувствовал(а)..."></textarea>
+                <div class="signal-suggestions-container">
+                    <div v-for="suggestion in currentSuggestions.emotions" :key="suggestion" class="signal-suggestion-bubble signal-emotion-bubble" @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')">{{ suggestion }}</div>
+                    <div v-if="!isInitialSuggestions('emotions')" class="signal-suggestion-bubble signal-reset-bubble signal-emotion-bubble" @click="resetSuggestions('emotions')">↩</div>
+                </div>
+                <p class="signal-example-hint" v-html="'Например: <b>разочарование</b>, <b>недоумение</b>'"></p>
+            </div>
+        </div>
+
+        <!-- Блок Фактов (УДАЛЁН) -->
+        <!-- Блок Решений (УДАЛЁН) -->
       </div>
+      
+      <div class="signal-section-divider"><span>↓</span></div>
+      
+      <!-- Секция персональных данных (УДАЛЕНА) -->
 
-      <!-- УДАЛЕНЫ textarea для emotionalRelease, factualAnalysis, constructiveSuggestions -->
-
-      <!-- Footer с кнопкой -->
+      <!-- Футер с кнопкой -->
       <div class="signal-form-footer">
         <div class="signal-button-section">
-          <button
-            type="submit"
-            class="signal-submit-btn"
-            :disabled="!isFormValid || isSubmitting"
-          >
-            {{ isSubmitting ? 'Отправляю...' : 'Отправить сигнал' }}
+          <button type="submit" class="signal-submit-btn" :disabled="!isFormValid || isSubmitting">
+            {{ isSubmitting ? 'Отправляю…' : 'Отправить' }}
           </button>
         </div>
       </div>
     </form>
-
-    <!-- 3. Story Generator -->
-    <KorzhStoryGenerator
-      ref="storyGeneratorRef"
-      :ticket="formattedTicketNumber"
-      :date="currentDate.split(' ')[0]"
-      :address="form.coffeeShopAddress"
-      :all-text="[]"
-    />
   </div>
 </template>
+
 <script setup>
-import { reactive, ref, computed, onMounted, onUnmounted } from 'vue'
-import KorzhStoryGenerator from './KorzhStoryGenerator.vue'
+import { reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue';
 
+// --- Состояние формы (сокращено) ---
 const form = reactive({
-  coffeeShopAddress: ''
-})
+  coffeeShopAddress: '',
+  emotionalRelease: '',
+});
 
-const isSubmitting = ref(false)
-const submittedTime = ref('')
-const formSubmitted = ref(false)
-const rawTicketNumber = ref(null)
-const formattedTicketNumber = ref(null)
-const currentDate = ref('')
-const selectedGender = ref('female')
-const showInfoModal = ref(false)
+// --- Системные состояния ---
+const isSubmitting = ref(false);
+const formSubmitted = ref(false);
+const submittedTime = ref(null);
+const rawTicketNumber = ref(null);
+const formattedTicketNumber = ref(null);
+const currentDate = ref('');
+const activeRotator = ref(0);
+const selectedGender = ref('female');
+const showInfoModal = ref(false);
+const genderClass = computed(() => (selectedGender.value === 'female' ? 'gender-female' : 'gender-male'));
 
-const genderClass = computed(() => {
-  return selectedGender.value === 'female' ? 'gender-female' : 'gender-male'
-})
-
-// ============ ВСЕ ПОДСКАЗКИ (НЕ ТРОГАЕМ) ============
+// --- Логика подсказок (сокращена) ---
 const baseSuggestions = {
   female: {
-    emotions: {
-      initial: ['радовалась', 'восхитилась', 'удивилась', 'обрадовалась', 'расстроилась', 'разочаровалась', 'огорчилась', 'возмутилась'],
-      'радовалась': ['новому вкусу', 'атмосфере', 'обслуживанию', 'чистоте', 'музыке'],
-      'восхитилась': ['сервисом', 'подачей', 'вниманием', 'оформлением'],
-      'удивилась': ['скорости', 'качеству', 'выбору', 'чистоте'],
-      'обрадовалась': ['акции', 'подарку', 'новинке', 'скидке'],
-      'расстроилась': ['ожиданием', 'обслуживанием', 'качеством', 'чистотой'],
-      'разочаровалась': ['напитком', 'десертом', 'сервисом', 'атмосферой'],
-      'огорчилась': ['грубостью', 'невниманием', 'беспорядком', 'холодом'],
-      'возмутилась': ['хамством', 'грязью', 'задержкой', 'отказом']
-    }
+    emotions: { initial: ["разочарование", "недоумение", "радость", "удивление", "спокойствие", "благодарность", "тревогу", "раздражение", "любопытство"], /* ... */ },
   },
   male: {
-    emotions: {
-      initial: ['порадовался', 'впечатлился', 'удивился', 'обрадовался', 'расстроился', 'разочаровался', 'огорчился', 'возмутился'],
-      'порадовался': ['новому вкусу', 'атмосфере', 'обслуживанию', 'чистоте', 'музыке'],
-      'впечатлился': ['сервисом', 'подачей', 'вниманием', 'оформлением'],
-      'удивился': ['скорости', 'качеству', 'выбору', 'чистоте'],
-      'обрадовался': ['акции', 'подарку', 'новинке', 'скидке'],
-      'расстроился': ['ожиданием', 'обслуживанием', 'качеством', 'чистотой'],
-      'разочаровался': ['напитком', 'десертом', 'сервисом', 'атмосферой'],
-      'огорчился': ['грубостью', 'невниманием', 'беспорядком', 'холодом'],
-      'возмутился': ['хамством', 'грязью', 'задержкой', 'отказом']
-    }
+    emotions: { initial: ["досаду", "непонимание", "удовлетворение", "интерес", "спокойствие", "признательность", "беспокойство", "раздражение", "любопытство"], /* ... */ },
   },
   common: {
-    emotions: {
-      'новому вкусу': ['раф', 'капучино', 'латте', 'флэт уайт'],
-      'атмосфере': ['уютно', 'тихо', 'светло', 'комфортно'],
-      'обслуживанию': ['быстро', 'вежливо', 'внимательно', 'профессионально'],
-      'чистоте': ['столы', 'зал', 'туалет', 'витрина'],
-      'музыке': ['приятная', 'негромкая', 'подходящая', 'расслабляющая'],
-      'сервисом': ['быстро', 'качественно', 'внимательно', 'профессионально'],
-      'подачей': ['красиво', 'аккуратно', 'оригинально', 'эстетично'],
-      'вниманием': ['баристы', 'персонала', 'администратора', 'официанта'],
-      'оформлением': ['зала', 'витрины', 'меню', 'интерьера'],
-      'скорости': ['приготовления', 'обслуживания', 'подачи', 'расчёта'],
-      'качеству': ['кофе', 'десертов', 'выпечки', 'продуктов'],
-      'выбору': ['напитков', 'десертов', 'выпечки', 'закусок'],
-      'акции': ['2+1', 'скидка 20%', 'бонусы', 'подарок'],
-      'подарку': ['круассан', 'печенье', 'стикер', 'открытка'],
-      'новинке': ['раф', 'десерт', 'сэндвич', 'лимонад'],
-      'скидке': ['10%', '15%', '20%', 'по карте'],
-      'ожиданием': ['долго', '15 минут', '20 минут', 'очень долго'],
-      'качеством': ['кофе', 'десерта', 'выпечки', 'молока'],
-      'напитком': ['остыл', 'горький', 'слабый', 'пересластили'],
-      'десертом': ['чёрствый', 'несвежий', 'разваливается', 'не тот вкус'],
-      'грубостью': ['баристы', 'кассира', 'администратора', 'персонала'],
-      'невниманием': ['игнорировали', 'не подошли', 'забыли', 'не ответили'],
-      'беспорядком': ['на столах', 'в зале', 'на витрине', 'в туалете'],
-      'холодом': ['в зале', 'кофе', 'молоко', 'помещение'],
-      'хамством': ['баристы', 'кассира', 'администратора', 'персонала'],
-      'грязью': ['столы', 'пол', 'туалет', 'витрина'],
-      'задержкой': ['заказа', 'обслуживания', 'расчёта', 'выдачи'],
-      'отказом': ['принять карту', 'сделать замену', 'подогреть', 'вернуть деньги']
-    },
-    facts: {
-      initial: ['заказала', 'попросила', 'обратила внимание', 'заметила', 'ждала', 'получила', 'спросила', 'уточнила'],
-      'заказала': ['капучино', 'латте', 'раф', 'флэт уайт', 'эспрессо', 'американо'],
-      'попросила': ['без сахара', 'на миндальном', 'на кокосовом', 'на соевом', 'горячий', 'тёплый'],
-      'обратила внимание': ['на грязный стол', 'на долгое ожидание', 'на невежливость', 'на беспорядок'],
-      'заметила': ['грязь на столе', 'очередь 20 минут', 'холодный кофе', 'грубость баристы'],
-      'ждала': ['10 минут', '15 минут', '20 минут', '30 минут', 'очень долго'],
-      'получила': ['холодный кофе', 'не тот напиток', 'пролитый стакан', 'неправильный заказ'],
-      'спросила': ['про акцию', 'про новинки', 'про состав', 'про альтернативное молоко'],
-      'уточнила': ['время ожидания', 'стоимость', 'состав', 'условия акции']
-    },
-    solutions: {
-      initial: ['хорошо бы', 'было бы здорово', 'предлагаю', 'можно было бы', 'стоит', 'важно', 'нужно', 'имеет смысл'],
-      'хорошо бы': ['проверять температуру', 'ускорить обслуживание', 'чаще убирать столы', 'обучить персонал'],
-      'было бы здорово': ['добавить акцию', 'расширить меню', 'улучшить атмосферу', 'обновить интерьер'],
-      'предлагаю': ['ввести бонусы', 'добавить новинки', 'улучшить сервис', 'провести обучение'],
-      'можно было бы': ['быстрее готовить', 'внимательнее слушать', 'чаще убирать', 'вежливее общаться'],
-      'стоит': ['проверить качество', 'обучить персонал', 'улучшить чистоту', 'ускорить процесс'],
-      'важно': ['следить за чистотой', 'контролировать качество', 'обучать персонал', 'слушать клиентов'],
-      'нужно': ['убирать чаще', 'готовить быстрее', 'общаться вежливее', 'следить за температурой'],
-      'имеет смысл': ['пересмотреть процесс', 'провести обучение', 'добавить контроль', 'улучшить сервис']
-    }
+    emotions: { /* ... */ },
+    // Объекты facts и solutions удалены
   }
-}
+};
 
 const suggestions = computed(() => {
-  const gender = selectedGender.value
-  return {
-    emotions: [...baseSuggestions[gender].emotions, ...baseSuggestions.common.emotions],
-    facts: baseSuggestions.common.facts,
-    solutions: baseSuggestions.common.solutions
-  }
-})
+    const gender = selectedGender.value;
+    return {
+        emotions: { ...baseSuggestions[gender].emotions, ...baseSuggestions.common.emotions },
+    };
+});
 
-const currentSuggestions = reactive({
-  emotions: [],
-  facts: [],
-  solutions: []
-})
+const currentSuggestions = reactive({ emotions: [] });
+const selectedSuggestions = reactive({ emotions: [] });
+const branchCounters = reactive({ emotions: 0 });
 
-const selectedSuggestions = reactive({
-  emotions: [],
-  facts: [],
-  solutions: []
-})
+// --- Логика смены вопросов (сокращена) ---
+const phrasesForQuestion1 = ["Что вы почувствовали?", "Какая эмоция была основной?", "Опишите свои ощущения."];
+const currentQuestion1 = ref(phrasesForQuestion1[0]);
+let rotationInterval = null;
+let currentQuestionIndex1 = 0;
 
-const branchCounters = reactive({
-  emotions: 0,
-  facts: 0,
-  solutions: 0
-})
+function startRotation(questionNum) {
+    stopRotation();
+    activeRotator.value = questionNum;
+    rotationInterval = setInterval(() => {
+        if (questionNum === 1) {
+            currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length;
+            currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1];
+        }
+    }, 3000);
+}
 
+function stopRotation() {
+    clearInterval(rotationInterval);
+    activeRotator.value = 0;
+}
+
+// --- Функции для работы с подсказками (без изменений) ---
 function initializeSuggestions() {
-  currentSuggestions.emotions = [...suggestions.value.emotions.initial]
-  currentSuggestions.facts = [...suggestions.value.facts.initial]
-  currentSuggestions.solutions = [...suggestions.value.solutions.initial]
+    currentSuggestions.emotions = [...suggestions.value.emotions.initial];
 }
-
 function onGenderClick(gender) {
-  selectedGender.value = gender
-  currentSuggestions.emotions = [...suggestions.value.emotions.initial]
-  selectedSuggestions.emotions = []
-  branchCounters.emotions = 0
+    selectedGender.value = gender;
+    currentSuggestions.emotions = [...suggestions.value.emotions.initial];
+    selectedSuggestions.emotions = [];
+    branchCounters.emotions = 0;
+}
+function isInitialSuggestions(suggestionType) {
+    return JSON.stringify(currentSuggestions[suggestionType]) === JSON.stringify(suggestions.value[suggestionType].initial);
+}
+function resetSuggestions(suggestionType) {
+    currentSuggestions[suggestionType] = [...suggestions.value[suggestionType].initial];
+}
+function selectSuggestion(fieldName, suggestion, suggestionType) {
+    const currentText = form[fieldName].trim();
+    const isNewBranch = isInitialSuggestions(suggestionType);
+    if (currentText) {
+        form[fieldName] = currentText + '. ' + suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+    } else {
+        form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
+    }
 }
 
-const isFormValid = computed(() => form.coffeeShopAddress.trim())
+// --- Валидация и отправка (сокращены) ---
+const isFormValid = computed(() => {
+  return form.coffeeShopAddress.trim() && form.emotionalRelease.trim();
+});
 
 async function submitForm() {
-  if (!isFormValid.value) return
+  if (!isFormValid.value) return;
+  isSubmitting.value = true;
+  
+  const now = new Date();
+  submittedTime.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+  
+  let clientId = localStorage.getItem('signalclientid') || ('client_' + Math.random().toString(36).substring(2, 15) + Date.now());
+  localStorage.setItem('signalclientid', clientId);
 
-  isSubmitting.value = true
+  const APIENDPOINT = 'https://script.google.com/macros/s/AKfycbyO-bEv334omRz4i9Dsa4QRMQqx5Wj-67nIbEtLT6suK6MJu7myE1gpjGl7Gc7w0IeeNg/exec';
+  const formData = new FormData();
 
-  const now = new Date()
-  const day = String(now.getDate()).padStart(2, '0')
-  const month = String(now.getMonth() + 1).padStart(2, '0')
-  const year = now.getFullYear()
-  const hours = String(now.getHours()).padStart(2, '0')
-  const minutes = String(now.getMinutes()).padStart(2, '0')
-  const seconds = String(now.getSeconds()).padStart(2, '0')
-  submittedTime.value = `${year}-${month}-${day} ${hours}${minutes}${seconds}`
-
-  let clientId = localStorage.getItem('signalclientid')
-  if (!clientId) {
-    clientId = 'client_' + Math.random().toString(36).substring(2, 15) + Date.now()
-    localStorage.setItem('signalclientid', clientId)
-  }
-
-  const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyO-bEv334omRz4i9Dsa4QRMQqx5Wj-67nIbEtLT6suK6MJu7myE1gpjGl7Gc7w0IeeNg/exec'
-
-  const formData = new FormData()
-  formData.append('referer', window.location.origin)
-  formData.append('clientId', clientId)
-  formData.append('ticketNumber', formattedTicketNumber.value)
-  formData.append('date', currentDate.value)
-  formData.append('submitted', submittedTime.value)
-  formData.append('coffeehouse', form.coffeeShopAddress)
-  // УДАЛЕНО: name, telegram, emotionalRelease, factualAnalysis, constructiveSuggestions
+  formData.append('referer', window.location.origin);
+  formData.append('clientId', clientId);
+  formData.append('ticketNumber', formattedTicketNumber.value);
+  formData.append('date', currentDate.value);
+  formData.append('submitted', submittedTime.value);
+  formData.append('coffeehouse', form.coffeeShopAddress);
+  formData.append('emotionalRelease', form.emotionalRelease);
+  // Поля factualAnalysis, constructiveSuggestions, name, telegram удалены из отправки
 
   try {
-    const response = await fetch(API_ENDPOINT, { method: 'POST', body: formData })
-    const result = await response.json()
-
+    const response = await fetch(APIENDPOINT, { method: 'POST', body: formData });
+    const result = await response.json();
     if (result.status === 'success' || result.processed) {
-      console.log('Форма отправлена')
-      formSubmitted.value = true
+      console.log('Form submitted successfully:', result);
+      formSubmitted.value = true;
     } else {
-      throw new Error(result.message)
+      throw new Error(result.message || 'Server error');
     }
   } catch (error) {
-    console.error('Ошибка отправки:', error)
-    if (error.message && error.message.includes('quota')) {
-      alert('Превышен лимит отправок. Попробуйте через 5 минут.')
-    } else {
-      alert('Ошибка отправки. Попробуйте ещё раз.')
-    }
+    console.error('Submission Error:', error);
+    alert('Ошибка при отправке. Пожалуйста, попробуйте снова.');
   } finally {
-    isSubmitting.value = false
+    isSubmitting.value = false;
   }
 }
 
+// --- Хуки жизненного цикла ---
 onMounted(() => {
-  rawTicketNumber.value = String(Math.floor(Math.random() * 900000) + 100000)
-  formattedTicketNumber.value = rawTicketNumber.value.slice(0, 3) + '-' + rawTicketNumber.value.slice(3)
+  rawTicketNumber.value = String(Math.floor(Math.random() * 900000) + 100000);
+  formattedTicketNumber.value = rawTicketNumber.value.slice(0, 3) + '-' + rawTicketNumber.value.slice(3);
+  
+  const now = new Date();
+  currentDate.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
-  const now = new Date()
-  const day = String(now.getDate()).padStart(2, '0')
-  const month = String(now.getMonth() + 1).padStart(2, '0')
-  const year = now.getFullYear()
-  const hours = String(now.getHours()).padStart(2, '0')
-  const minutes = String(now.getMinutes()).padStart(2, '0')
-  const seconds = String(now.getSeconds()).padStart(2, '0')
-  currentDate.value = `${year}-${month}-${day} ${hours}${minutes}${seconds}`
+  initializeSuggestions();
+});
 
-  initializeSuggestions()
-})
+onUnmounted(() => {
+  stopRotation();
+});
 
-const storyGeneratorRef = ref(null)
+watch(selectedGender, () => {
+    initializeSuggestions();
+});
 
-const handleShareClick = () => {
-  if (storyGeneratorRef.value) {
-    storyGeneratorRef.value.generateAndShare()
-  }
-}
 </script>
 
 <style scoped>
 :root {
   --signal-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --signal-font-mono: "SF Mono", Monaco, "Inconsolata", "Fira Code", "Droid Sans Mono", "Source Code Pro", monospace;
+  --signal-font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Code", "Droid Sans Mono", "Source Code Pro", monospace;
 }
 
 .signal-form-wrapper {
@@ -414,6 +319,12 @@ const handleShareClick = () => {
   gap: 1.5rem;
 }
 
+.signal-personal-data-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
 .signal-question-block {
   background-color: #2a2a2e;
   border-radius: 16px;
@@ -430,6 +341,31 @@ const handleShareClick = () => {
   justify-content: space-between;
 }
 
+.signal-direction-label {
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.signal-question-help {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.signal-rotating-phrase-container {
+  height: 52px;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
 .signal-question-label {
   font-weight: 500;
   font-size: 1rem;
@@ -439,11 +375,14 @@ const handleShareClick = () => {
   width: 100%;
 }
 
-.signal-question-help {
-  font-size: 0.8rem;
-  color: #888;
-  margin-bottom: 0.75rem;
-  line-height: 1.4;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 .signal-address-select {
@@ -574,7 +513,90 @@ const handleShareClick = () => {
   transform: scale(1.05);
 }
 
-/* Modal styles */
+.signal-question-block.gender-female {
+  border-left-color: #ff69b4 !important;
+}
+
+.signal-question-block.gender-female .signal-emotion-bubble {
+  background: rgba(255, 105, 180, 0.1);
+  border-color: rgba(255, 105, 180, 0.3);
+  color: #ff69b4;
+}
+
+.signal-question-block.gender-female .signal-emotion-bubble:hover {
+  background: #ff69b4;
+  color: #fff;
+}
+
+.signal-question-block.gender-female .signal-fact-bubble {
+  background: rgba(255, 105, 180, 0.1);
+  border-color: rgba(255, 105, 180, 0.3);
+  color: #ff69b4;
+}
+
+.signal-question-block.gender-female .signal-fact-bubble:hover {
+  background: #ff69b4;
+  color: #fff;
+}
+
+.signal-question-block.gender-female .signal-solution-bubble {
+  background: rgba(255, 105, 180, 0.1);
+  border-color: rgba(255, 105, 180, 0.3);
+  color: #ff69b4;
+}
+
+.signal-question-block.gender-female .signal-solution-bubble:hover {
+  background: #ff69b4;
+  color: #fff;
+}
+
+.signal-question-block.gender-male {
+  border-left-color: #87ceeb !important;
+}
+
+.signal-question-block.gender-male .signal-emotion-bubble {
+  background: rgba(135, 206, 235, 0.1);
+  border-color: rgba(135, 206, 235, 0.3);
+  color: #87ceeb;
+}
+
+.signal-question-block.gender-male .signal-emotion-bubble:hover {
+  background: #87ceeb;
+  color: #000;
+}
+
+.signal-question-block.gender-female textarea:focus {
+  border-color: #ff69b4 !important;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2) !important;
+}
+
+.signal-question-block.gender-male textarea:focus {
+  border-color: #87ceeb !important;
+  box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.2) !important;
+}
+
+.signal-question-block.gender-male .signal-fact-bubble {
+  background: rgba(135, 206, 235, 0.1);
+  border-color: rgba(135, 206, 235, 0.3);
+  color: #87ceeb;
+}
+
+.signal-question-block.gender-male .signal-fact-bubble:hover {
+  background: #87ceeb;
+  color: #000;
+}
+
+.signal-question-block.gender-male .signal-solution-bubble {
+  background: rgba(135, 206, 235, 0.1);
+  border-color: rgba(135, 206, 235, 0.3);
+  color: #87ceeb;
+}
+
+.signal-question-block.gender-male .signal-solution-bubble:hover {
+  background: #87ceeb;
+  color: #000;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -665,19 +687,230 @@ const handleShareClick = () => {
   box-shadow: 0 8px 20px rgba(155, 127, 183, 0.4);
 }
 
+textarea,
+input {
+  width: 100%;
+  background-color: #242426;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #f0f0f0;
+  transition: all 0.3s ease;
+  font-family: var(--signal-font-sans);
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background-color: #2a2a2e;
+  box-shadow: 0 0 0 3px color-mixin(in srgb, var(--accent-color) 20%, transparent);
+}
+
+input#name:focus,
+input#telegramPhone:focus {
+  border-color: #B39DC8 !important;
+  box-shadow: 0 0 0 3px rgba(179, 157, 200, 0.2) !important;
+}
+
+::placeholder {
+  color: #666;
+}
+
+.signal-suggestions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.signal-suggestion-bubble {
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  user-select: none;
+}
+
+.signal-emotion-bubble {
+  background: rgba(169, 114, 255, 0.1);
+  border-color: rgba(169, 114, 255, 0.3);
+  color: #A972FF;
+}
+
+.signal-emotion-bubble:hover {
+  background: #A972FF;
+  color: #000;
+  transform: scale(1.05);
+}
+
+.signal-fact-bubble {
+  background: rgba(61, 220, 132, 0.1);
+  border-color: rgba(61, 220, 132, 0.3);
+  color: #3DDC84;
+}
+
+.signal-fact-bubble:hover {
+  background: #3DDC84;
+  color: #000;
+  transform: scale(1.05);
+}
+
+.signal-solution-bubble {
+  background: rgba(255, 184, 0, 0.1);
+  border-color: rgba(255, 184, 0, 0.3);
+  color: #FFB800;
+}
+
+.signal-solution-bubble:hover {
+  background: #FFB800;
+  color: #000;
+  transform: scale(1.05);
+}
+
+.signal-reset-bubble {
+  font-weight: 600;
+  opacity: 0.8;
+  font-size: 0.75rem;
+  border-style: dashed !important;
+}
+
+.signal-reset-bubble:hover {
+  opacity: 1;
+}
+
+.signal-example-hint {
+  font-size: 0.8rem;
+  color: #777;
+  margin: 0.5rem 0 0 0.25rem;
+}
+
+.signal-example-hint b {
+  color: #aaa;
+  font-weight: 600;
+}
+
+.signal-section-divider {
+  margin: 2.5rem 0;
+  text-align: center;
+  position: relative;
+  color: #888;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.signal-section-divider::before,
+.signal-section-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: calc(50% - 90px);
+  height: 1px;
+  background: #2c2c2f;
+}
+
+.signal-section-divider::before {
+  left: 0;
+}
+
+.signal-section-divider::after {
+  right: 0;
+}
+
 .signal-form-footer {
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid #2c2c2f;
   display: grid;
-  grid-template-areas: "button";
+  grid-template-areas:
+    "terms"
+    "button";
   gap: 1.5rem;
+  width: 100%;
+}
+
+.signal-terms-section {
+  grid-area: terms;
   width: 100%;
 }
 
 .signal-button-section {
   grid-area: button;
   width: 100%;
+}
+
+.signal-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.signal-checkbox-group input {
+  accent-color: #B39DC8;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.signal-checkbox-group label {
+  font-size: 0.85rem;
+  color: #999;
+  line-height: 1.4;
+  flex: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.signal-policy-link {
+  color: #b0b0b0;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.signal-policy-link:hover {
+  text-decoration: underline !important;
+  border-bottom: none !important;
+  color: #C5F946;
+}
+
+.signal-policy-link:focus {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.signal-policy-link:visited {
+  color: #b0b0b0;
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+.signal-policy-link:active {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+.signal-checkbox-group a {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.signal-checkbox-group a:hover {
+  text-decoration: underline !important;
+  border-bottom: none !important;
 }
 
 .signal-submit-btn {
@@ -707,7 +940,7 @@ const handleShareClick = () => {
   cursor: not-allowed;
 }
 
-/* Success message */
+/* ЭКРАН УСПЕХА */
 .signal-success-message {
   display: flex;
   flex-direction: column;
@@ -730,6 +963,9 @@ const handleShareClick = () => {
   margin: 0;
 }
 
+/* === НОВЫЕ СТИЛИ КНОПОК УСПЕХА === */
+
+/* Контейнер для двух кнопок */
 .signal-success-actions {
   display: flex;
   gap: 12px;
@@ -737,9 +973,10 @@ const handleShareClick = () => {
   width: 100%;
 }
 
+/* Общие стили для обеих кнопок */
 .signal-success-actions .signal-telegram-button,
 .signal-success-actions .signal-share-btn {
-  flex: 1 1 0;
+  flex: 1 1 0; /* Делим ширину поровну */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -751,14 +988,15 @@ const handleShareClick = () => {
   cursor: pointer;
 }
 
+/* 1. Кнопка "Получить ответ" */
 .signal-telegram-button {
   background-color: #9b7fb7;
   color: #ffffff;
   border: none;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  text-decoration: none !important;
 }
 
+/* Убираем артефакты VitePress и фиксируем цвет текста при ховере */
 .signal-success-message .signal-telegram-button,
 .signal-success-message .signal-telegram-button:hover {
   text-decoration: none !important;
@@ -767,10 +1005,11 @@ const handleShareClick = () => {
 }
 
 .signal-telegram-button:hover {
-  background-color: #b399c8;
+  background-color: #b399c8; /* Только осветление фона */
   transform: scale(1.02);
 }
 
+/* 2. Кнопка "Поделиться в Истории" */
 .signal-share-btn {
   background-color: #3a3a3e;
   color: #ffffff;
@@ -810,10 +1049,14 @@ const handleShareClick = () => {
   }
 }
 
-/* Media queries */
+/* АДАПТИВ */
 @media (max-width: 768px) {
   .signal-form-wrapper {
     padding: 1.5rem;
+  }
+
+  .signal-personal-data-section {
+    grid-template-columns: 1fr;
   }
 
   .signal-form-header {
@@ -831,6 +1074,23 @@ const handleShareClick = () => {
     justify-content: center;
   }
 
+  .signal-rotating-phrase-container {
+    height: 65px;
+  }
+
+  .signal-question-label {
+    font-size: 0.95rem;
+  }
+
+  .signal-suggestions-container {
+    gap: 0.4rem;
+  }
+
+  .signal-suggestion-bubble {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.7rem;
+  }
+
   .signal-controls-row {
     flex-direction: column;
     align-items: center;
@@ -841,6 +1101,20 @@ const handleShareClick = () => {
     justify-content: center;
   }
 
+  .signal-checkbox-group {
+    gap: 0.5rem;
+  }
+
+  .signal-checkbox-group input {
+    width: 16px;
+    height: 16px;
+  }
+
+  .signal-checkbox-group label {
+    font-size: 0.8rem;
+  }
+
+  /* АДАПТИВ КНОПОК УСПЕХА */
   .signal-success-actions {
     flex-direction: column;
   }
