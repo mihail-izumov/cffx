@@ -52,10 +52,10 @@ const cafeProfiles = {
 // -------------------------
 const establishment = {
   name: 'Корж',
-  totalReviews: '1',
+  totalReviews: '12',
   yandex2gis: '4,9',
   yandex2gisPercent: 94,
-  signals: 1,
+  signals: 3,
   signalsPercent: 100,
   branches: [
     { address: 'Куйбышева, 103', gisUrl: 'https://2gis.ru/samara/firm/70000001100403006/tab/reviews', yandexUrl: 'https://yandex.ru/maps/org/korzh/217541675197/reviews' },
