@@ -143,6 +143,7 @@ import InvestKorzhSendSignal from '../components/InvestKorzhSendSignal.vue'
 import InvestKorzhSpecsTabs from '../components/InvestKorzhSpecsTabs.vue'
 import InvestKorzhConfigurator2 from '../components/InvestKorzhConfigurator2.vue'
 import InvestKorzhBanner from '../components/InvestKorzhBanner.vue'
+import SignalFormKorzhCard1 from '../components/SignalFormKorzhCard1.vue'
 
 
 export default {
@@ -292,7 +293,6 @@ export default {
     app.component('InvestKorzhSpecsTabs', InvestKorzhSpecsTabs)
     app.component('InvestKorzhConfigurator2', InvestKorzhConfigurator2)
     app.component('InvestKorzhBanner', InvestKorzhBanner)
-    
-    
+    app.component('SignalFormKorzhCard1', SignalFormKorzhCard1)   
   },
 }
