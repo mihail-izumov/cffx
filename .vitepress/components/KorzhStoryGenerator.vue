@@ -119,10 +119,20 @@ const formattedText = computed(() => {
 });
 
 const bgClass = computed(() => {
-  if (props.address?.includes('Куйбышева')) return 'bg-1';
-  if (props.address?.includes('Льва Толстого')) return 'bg-2';
+  const a = props.address || '';
+
+  if (a.includes('Куйбышева')) return 'bg-1';
+  if (a.includes('Льва Толстого')) return 'bg-2';
+  if (a.includes('Революционная')) return 'bg-3';
+  if (a.includes('9 просека')) return 'bg-4';
+  if (a.includes('Самарская')) return 'bg-5';
+  if (a.includes('Дачная')) return 'bg-6';
+  if (a.includes('Ульяновская')) return 'bg-7';
+  if (a.includes('Ново-Садовая')) return 'bg-8';
+
   return 'bg-default';
 });
+
 
 const loadLibrary = () => {
   return new Promise((resolve, reject) => {
@@ -208,6 +218,30 @@ defineExpose({ generateAndShare });
   background-image: url('/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg');
 }
 .story-bg-image.bg-2 {
+  background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg');
+}
+.story-bg-image.bg-3 {
+  /* временно дублируем существующий баннер */
+  background-image: url('/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg');
+}
+.story-bg-image.bg-4 {
+  /* временно дублируем существующий баннер */
+  background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg');
+}
+.story-bg-image.bg-5 {
+  /* временно дублируем существующий баннер */
+  background-image: url('/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg');
+}
+.story-bg-image.bg-6 {
+  /* временно дублируем существующий баннер */
+  background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg');
+}
+.story-bg-image.bg-7 {
+  /* временно дублируем существующий баннер */
+  background-image: url('/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg');
+}
+.story-bg-image.bg-8 {
+  /* временно дублируем существующий баннер */
   background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg');
 }
 
