@@ -51,3 +51,7 @@ head:
 <KorzhWidget />
 <br>
 <SignalWidgetBadge />
+
+<br>
+
+<InvestKorzhBanner />
