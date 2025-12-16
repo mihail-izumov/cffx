@@ -14,11 +14,11 @@
           <div class="banner-title">
             <span class="title-desktop">
               Где начинается Ваша<br>
-              кофейня Корж.
+              кофейня Корж
             </span>
             <span class="title-mobile">
               Где начинается Ваша<br>
-              кофейня Корж.
+              кофейня Корж
             </span>
           </div>
 
