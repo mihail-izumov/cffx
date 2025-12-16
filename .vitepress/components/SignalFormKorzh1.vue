@@ -26,7 +26,7 @@
     </div>
 
     <a
-      href="/signals#знакомьтесь-–-анна"
+      href="/signals"
       target="_blank"
       class="signal-secondary-link"
     >
@@ -55,12 +55,12 @@
             <option value="">Выбрать локацию</option>
             <option value="Куйбышева, 103">Куйбышева, 103</option>
             <option value="Льва Толстого, 30Б">Льва Толстого, 30Б</option>
-            <option value="Революционная, 101В" disabled>Революционная, 101В</option>
-            <option value="9 просека 5-я малая линия,3б" disabled>9 просека 5-я малая линия, 3б</option>
-            <option value="Самарская, 270" disabled>Самарская, 270</option>
-            <option value="Дачная, 2к2" disabled>Дачная, 2к2</option>
-            <option value="Ульяновская, 19" disabled>Ульяновская, 19</option>
-            <option value="Ново-Садовая, 106Б" disabled>Ново-Садовая, 106Б</option>
+            <option value="Революционная, 101В">Революционная, 101В</option>
+            <option value="9 просека 5-я малая линия,3б">9 просека 5-я малая линия, 3б</option>
+            <option value="Самарская, 270">Самарская, 270</option>
+            <option value="Дачная, 2к2">Дачная, 2к2</option>
+            <option value="Ульяновская, 19">Ульяновская, 19</option>
+            <option value="Ново-Садовая, 106Б">Ново-Садовая, 106Б</option>
           </select>
         </div>
       </div>
