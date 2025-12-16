@@ -14,11 +14,11 @@
           <div class="banner-title">
             <span class="title-desktop">
               Где начинается Ваша<br>
-              кофейня Корж.
+              кофейня Корж
             </span>
             <span class="title-mobile">
               Где начинается Ваша<br>
-              кофейня Корж.
+              кофейня Корж
             </span>
           </div>
 
@@ -45,7 +45,7 @@ const props = defineProps({
   imageAlt: { type: String, default: 'Новая кофейня Корж' },
   title: { type: String, default: 'Еще больше возможностей быть ближе к кофейне, которую вы любите.' },
   subtitle: { type: String, default: '' },
-  buttonText: { type: String, default: 'Ранний доступ' },
+  buttonText: { type: String, default: 'Отправить заявку' },
   buttonLink: { type: String, default: '/signal/korzh/invest#early-access' }
 })
 
