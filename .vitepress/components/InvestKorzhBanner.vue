@@ -46,8 +46,8 @@ const props = defineProps({
   imageAlt: { type: String, default: 'Новая кофейня Корж' },
   title: { type: String, default: 'Еще больше возможностей быть ближе к кофейне, которую вы любите.' },
   subtitle: { type: String, default: '' },
-  buttonText: { type: String, default: 'Ранний доступ' },
-  buttonLink: { type: String, default: '/signal/korzh/invest#early-access' }
+  buttonText: { type: String, default: 'Стать инвестором' },
+  buttonLink: { type: String, default: '/signal/korzh/invest' }
 })
 
 const emit = defineEmits(['button-click'])
