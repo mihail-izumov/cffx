@@ -102,6 +102,11 @@ const selectedBadgeImage = computed(() => {
   return card ? card.image : null
 })
 
+const selectedBadgeLabel = computed(() => {
+  const card = cardTypes.find(c => c.id === form.badge)
+  return card ? card.label : null
+})
+
 // Алгоритм счетчиков (UTC, шаг 10)
 function getDayOfYearUTC() {
   const now = new Date();
@@ -656,13 +661,14 @@ const handleShareClick = () => {
     </form>
     
     <KorzhBadgeCardGenerator
-   ref="storyGeneratorRef"
-   :ticket="formattedTicketNumber"
-   :date="currentDate.split(' ')[0]"
-   :address="form.coffeeShopAddress"
-   :all-text="[form.emotionalRelease].filter(t => t && t.trim()).join(' ')"
-   :badge-image="selectedBadgeImage"   
-/>
+       ref="storyGeneratorRef"
+       :ticket="formattedTicketNumber"
+       :date="currentDate.split(' ')[0]"
+       :address="form.coffeeShopAddress"
+       :all-text="[form.emotionalRelease].filter(t => t && t.trim()).join(' ')"
+       :badge-image="selectedBadgeImage"   
+       :badge-label="selectedBadgeLabel" 
+    />
   </div>
 </template>
 
