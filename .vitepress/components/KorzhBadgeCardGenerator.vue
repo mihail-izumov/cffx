@@ -1,35 +1,34 @@
 <template>
   <div>
-    <!-- Шрифт Inter (оригинальный) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Шрифт Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- СКРЫТЫЙ ШАБЛОН (1080x1920) -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
         
-        <!-- ФОН (Динамический: либо дефолтный класс, либо пользовательская картинка) -->
+        <!-- ФОН -->
         <div 
           class="story-bg-image" 
           :class="!customBgImage ? bgClass : ''"
           :style="customBgImage ? { backgroundImage: `url(${customBgImage})` } : {}"
         ></div>
         
-        <!-- МАСКА (Оригинальная) -->
+        <!-- МАСКА -->
         <div class="story-bg-overlay"></div>
 
-        <!-- Контент -->
         <div class="story-content">
           
-          <!-- Большая буква К (фоновая, как в оригинале) -->
+          <!-- Большая буква К -->
           <div class="big-k-bg">K</div>
 
           <!-- ВЕРХ -->
           <div class="story-header">
-            <h1 class="story-main-title">МОЙ СИГНАЛ<br>В КОРЖ</h1>
+            <h1 class="story-main-title">МОЯ ОТКРЫТКА<br>В КОРЖ</h1>
 
             <div class="story-info-row">
               <div class="glass-pill-info">
-                <span class="info-icon">⚡️</span> <!-- Вернули молнию -->
+                <span class="info-icon">🎄</span>
                 <span class="info-ticket">{{ ticket }}</span>
                 <span class="info-divider">|</span>
                 <span class="info-date">{{ date }}</span>
@@ -39,27 +38,26 @@
             <div class="story-address">{{ address || 'Кофейня Корж' }}</div>
           </div>
 
-          <!-- ЦЕНТР: ПЛАШКА ОТЗЫВА -->
+          <!-- ЦЕНТР -->
           <div class="story-body">
             <div v-if="formattedText" class="text-card">
               <p class="text-content">{{ formattedText }}</p>
             </div>
           </div>
 
-          <!-- БЕЙДЖ (Новый элемент, вписанный в старый дизайн) -->
+          <!-- БЕЙДЖ (Просто выводим картинку PNG) -->
           <div v-if="badgeImage" class="story-badge-container">
-             <img :src="badgeImage" class="story-badge-img" alt="Badge" />
+             <img :src="badgeImage" class="story-badge-img" alt="Badge" crossorigin="anonymous" />
           </div>
 
-          <!-- НИЖНИЙ ГРАДИЕНТ -->
+          <!-- НИЗ -->
           <div class="bottom-gradient"></div>
 
-          <!-- ФУТЕР (Оригинальный) -->
           <div class="story-footer">
             <div class="link-button">
                <span class="btn-text">cffx.ru/korzh</span>
             </div>
-            <div class="footer-tagline">Ваш Сигнал – тому кто решает</div>
+            <div class="footer-tagline">ПОДЕЛИТЕСЬ НАСТРОЕНИЕМ</div>
           </div>
 
         </div>
@@ -70,9 +68,8 @@
     <transition name="modal-fade">
       <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
         <div class="modal">
-          
           <div class="modal-header">
-            <h3>Ваша история готова</h3>
+            <h3>Ваша открытка готова</h3>
             <button class="modal-close" @click="closeModal">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -84,14 +81,12 @@
           <div class="modal-body">
             <img v-if="generatedImageUrl" :src="generatedImageUrl" class="preview-img" alt="" />
             <div v-else class="spinner">
-              <!-- Вернули иконку сигнала в прелоадер -->
               <img src="/favicon.svg" class="spinner-icon" alt="⚡️" />
               <div class="spinner-text">Создаем магию...</div>
             </div>
           </div>
 
           <div class="modal-footer">
-            <!-- Кнопки управления (новые) -->
             <div class="buttons-row">
                <button @click="shareOrDownload" class="download-btn primary-btn" :disabled="!generatedImageUrl">
                  {{ canShare ? 'Поделиться' : 'Скачать' }}
@@ -100,19 +95,12 @@
                  Скачать
                </button>
             </div>
-
-            <!-- Загрузка фона (новая фича) -->
+            
             <div class="upload-section">
                <button class="text-btn upload-btn" @click="triggerFileUpload">
                   Загрузить свое фото
                </button>
-               <input 
-                 type="file" 
-                 ref="fileInputRef" 
-                 accept="image/*" 
-                 class="hidden-input"
-                 @change="handleFileUpload"
-               />
+               <input type="file" ref="fileInputRef" accept="image/*" class="hidden-input" @change="handleFileUpload" />
             </div>
 
             <p class="modal-hint">
@@ -120,7 +108,6 @@
               Отправить Сигнал: [https://cffx.ru/korzh](https://cffx.ru/korzh)
             </p>
           </div>
-
         </div>
       </div>
     </transition>
@@ -135,7 +122,7 @@ const props = defineProps({
   date: String,
   address: String,
   allText: String,
-  badgeImage: String // Пропс для картинки бейджа
+  badgeImage: String // Теперь ожидаем путь к PNG
 });
 
 const showModal = ref(false);
@@ -149,10 +136,8 @@ if (typeof navigator !== 'undefined') {
    canShare.value = !!(navigator.share && navigator.canShare);
 }
 
-// Мягкая логика текста
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
-  
   let text = props.allText.trim();
   text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
   text = text.replace(/\s+/g, ' ');
@@ -197,14 +182,15 @@ const generateImageInternal = async () => {
   try {
     await loadLibrary();
     await nextTick();
-    await new Promise(r => setTimeout(r, 500)); 
+    await new Promise(r => setTimeout(r, 600)); 
 
     const el = document.getElementById('story-capture-area');
     if (!el) return;
     
+    // ВАЖНО: allowTaint: true и useCORS: true нужны для картинок
     const canvas = await window.html2canvas(el, {
       scale: 2,
-      useCORS: true,
+      useCORS: true, 
       allowTaint: true,
       logging: false,
       width: 1080,
@@ -297,7 +283,7 @@ defineExpose({ generateAndShare });
 .story-bg-image.bg-7 { background-image: url('/img/korzh/korzh-ulyanovskaya-1080x1920.jpg'); }
 .story-bg-image.bg-8 { background-image: url('/img/korzh/korzh-novo-sadovaya-1080x1920.jpg'); }
 
-/* МАСКА (Оригинальная) */
+/* МАСКА */
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 2;
   background: linear-gradient(
@@ -309,7 +295,7 @@ defineExpose({ generateAndShare });
   mix-blend-mode: multiply;
 }
 
-/* Большая буква К (фоновая) - восстановлена */
+/* Большая буква К */
 .big-k-bg {
   position: absolute;
   top: 40px;
@@ -325,7 +311,7 @@ defineExpose({ generateAndShare });
 /* Контейнер */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 280px 60px 180px 60px; /* Отступы как в оригинале */
+  padding: 280px 60px 180px 60px;
   display: flex; flex-direction: column; align-items: center;
 }
 
@@ -339,7 +325,7 @@ defineExpose({ generateAndShare });
 
 .story-main-title {
   font-size: 66px;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.2; 
   letter-spacing: 0.20em;
   margin: 0; text-transform: uppercase; color: #fff; 
@@ -376,7 +362,7 @@ defineExpose({ generateAndShare });
   padding-top: 56px;
 }
 
-/* КАРТОЧКА ОТЗЫВА (Оригинальная: широкая, с рамкой) */
+/* КАРТОЧКА ОТЗЫВА */
 .text-card {
   width: 98%; 
   border-radius: 48px;
@@ -399,10 +385,10 @@ defineExpose({ generateAndShare });
   text-shadow: 0 0 15px rgba(180, 150, 255, 0.35); 
 }
 
-/* БЕЙДЖ (Вписан в старую структуру) */
+/* БЕЙДЖ */
 .story-badge-container {
   position: absolute;
-  bottom: 400px; /* Позиционируем над футером */
+  bottom: 400px;
   left: 50%;
   transform: translateX(-50%) rotate(-6deg);
   z-index: 40;
@@ -410,7 +396,7 @@ defineExpose({ generateAndShare });
 }
 
 .story-badge-img {
-  width: 380px; /* Крупный бейдж */
+  width: 380px; 
   height: 380px;
   object-fit: contain;
 }
@@ -422,7 +408,7 @@ defineExpose({ generateAndShare });
   pointer-events: none;
 }
 
-/* ФУТЕР (Оригинальный) */
+/* ФУТЕР */
 .story-footer { 
   position: absolute;
   bottom: 220px;
@@ -455,6 +441,7 @@ defineExpose({ generateAndShare });
   color: #D9D0F0; 
   opacity: 0.95;
   text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  text-transform: uppercase;
 }
 
 /* МОДАЛКА */
@@ -483,7 +470,7 @@ defineExpose({ generateAndShare });
 }
 .preview-img { max-width: 100%; max-height: 60vh; object-fit: contain; border-radius: 12px; }
 
-/* Спиннер с иконкой */
+/* Спиннер */
 .spinner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
 .spinner-icon { width: 48px; height: 48px; animation: breathe 3s ease-in-out infinite; }
 @keyframes breathe {
@@ -497,9 +484,7 @@ defineExpose({ generateAndShare });
   display: flex; flex-direction: column; gap: 14px; align-items: center;
 }
 
-.buttons-row {
-  display: flex; gap: 10px; width: 100%;
-}
+.buttons-row { display: flex; gap: 10px; width: 100%; }
 .download-btn { 
   flex: 1; padding: 14px; border-radius: 12px; border: none;
   font-weight: 600; font-size: 15px; cursor: pointer; transition: transform 0.2s;
