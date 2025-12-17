@@ -406,7 +406,6 @@ async function submitForm() {
   formData.append('factualAnalysis', '')
   formData.append('constructiveSuggestions', '')
 
-  // УВЕЛИЧЕН ТАЙМАУТ ДО 20 СЕКУНД (чтобы избежать AbortError)
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), 20000)
 
@@ -423,7 +422,7 @@ async function submitForm() {
 
     if (result.status === 'success' || result.processed) {
       console.log('Success:', result)
-      handleShareClick() // Открываем результат
+      handleShareClick()
       setTimeout(resetForm, 1000); 
     } else {
       throw new Error(result.message)
@@ -553,7 +552,8 @@ const handleShareClick = () => {
           </div>
         </div>
 
-        <div class="kzh-cards-label">Поделитесь настроением</div>
+        <!-- КЛАСС MOOD-LABEL ДЛЯ ОТСТУПОВ -->
+        <div class="kzh-cards-label mood-label">Поделитесь настроением</div>
         
         <div class="kzh-question-block kzh-no-border">
           <div class="kzh-rotating-phrase-container">
@@ -776,6 +776,12 @@ const handleShareClick = () => {
   text-align: center;
 }
 
+/* ОТСТУПЫ ДЛЯ ЗАГОЛОВКА "ПОДЕЛИТЕСЬ НАСТРОЕНИЕМ" */
+.mood-label {
+  margin-top: 16px; /* Отступ сверху от карточек */
+  margin-bottom: 6px; /* Отступ снизу к полю ввода */
+}
+
 .first-label {
   margin-bottom: 8px; 
   position: relative;
@@ -990,12 +996,17 @@ textarea {
   transform: scale(1.05);
 }
 
-/* === ПУНКТИР ЧЕРЕЗ SVG === */
+/* === ВОЗВРАТ К СТАНДАРТНОМУ ПУНКТИРУ === */
 .kzh-reset-bubble {
   font-weight: 600;
   opacity: 0.8;
-  border: none !important;
-  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' stroke='rgba(255,255,255,0.4)' stroke-width='1' stroke-dasharray='10%2c 10' stroke-linecap='square'/%3e%3c/svg%3e");
+  border: 1px dashed rgba(255, 255, 255, 0.4) !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  background: transparent !important;
+}
+.kzh-reset-bubble:hover {
+  border-color: #fff !important;
+  color: #fff !important;
 }
 
 .kzh-example-hint {
