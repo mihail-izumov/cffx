@@ -42,9 +42,9 @@ const genderThemeClass = computed(() => {
 
 // Карточки
 const cardTypes = [
-  { id: 'badge1', label: 'Вкус' },
-  { id: 'badge2', label: 'Сервис' },
-  { id: 'badge3', label: 'Атмосфера' }
+  { id: 'badge1', label: 'Сигналка', image: '/korzh_badge.svg' },
+  { id: 'badge2', label: 'Круассанчик', image: '/korzh_badge.svg' },
+  { id: 'badge3', label: 'Котик', image: '/korzh_badge.svg' }
 ]
 
 // Трекинг тачей (скролл vs клик)
@@ -544,7 +544,7 @@ const handleShareClick = () => {
                @touchend.prevent="handleTouchEnd(card.id, $event)"
              >
                 <div class="kzh-card-icon">
-                   <img src="/korzh_badge.svg" alt="" />
+                   <img :src="card.image" alt="" />
                 </div>
                 <div class="kzh-card-label">{{ card.label }}</div>
                 <div class="kzh-card-count">{{ badgeCounts[card.id] }}</div>
