@@ -11,7 +11,9 @@
         <div class="story-bg-base"></div>
 
         <!-- ФОН-КАРТИНКА -->
+        <!-- :key заставляет Vue пересоздать div при смене фона, это помогает html2canvas -->
         <div 
+          :key="bgKey"
           class="story-bg-image" 
           :class="!customBgImage ? bgClass : ''"
           :style="customBgImage ? { backgroundImage: `url(${customBgImage})` } : {}"
@@ -25,7 +27,7 @@
 
         <div class="story-content">
 
-          <!-- ЗАГОЛОВОК -->
+          <!-- ВЕРХНИЙ ЗАГОЛОВОК -->
           <div class="header-text">
              Вы превратили этот момент в<br>уникальное воспоминание
           </div>
@@ -33,37 +35,54 @@
           <!-- КАРТОЧКА -->
           <div class="gift-card-container">
             
-            <!-- ЛЕНТА (PNG Base64) -->
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAYAAAA8AXHiAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAI0SURBVHgB7doxTgNBEEDRfxwqIkqC4CQ5CufgLByDk3AOTpIjcIiIiArF0WzSWiPPbC/Venbe2G632w4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4Ld6vV7P5/N5v99fD4fD9Xg8Xk+n0/V8Pl/P1+v1/fV63a/X6/vj8Xh/u93ePz4+3r/d/n5/f99ut9v1crncbrfb/Xw+v9/f39+32+12uVzeb7fb/Ww2m/vtdrtfr9f7u93u/vHx8f7z8/P++fn5/vPz8/77+/v++fm5+x739/f33fe4v7+/777H/f39ffc97u/v77vvcc/5fL7u9/vrcDhcj8fjdTqdrp/P5/V8vV7f326394+Pj/dvt9v7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+w8AAAAAAAD4zT8Gv1y+40QonAAAAABJRU5ErkJggg==" class="ribbon-img" alt="gift ribbon" />
+            <!-- ЛЕНТА-УГОЛОК (Темная, внутри карточки) -->
+            <div class="corner-tag">
+               <span>GIFT</span>
+            </div>
 
-            <!-- ИЗОБРАЖЕНИЕ ПОДАРКА -->
+            <!-- ИЗОБРАЖЕНИЕ -->
             <div class="gift-image-wrapper">
                <div class="gift-glow"></div>
+               <!-- crossorigin="anonymous" важен для html2canvas -->
                <img v-if="badgeImage" :src="badgeImage" class="gift-main-img" alt="Gift" crossorigin="anonymous" />
             </div>
 
             <!-- ИНФО БЛОК -->
             <div class="gift-info-block">
-                <div class="gift-subtitle">Подарок от Гостя</div>
                 
-                <!-- НАЗВАНИЕ + НОМЕР -->
-                <div class="gift-title-row">
-                   <span class="gift-name" v-if="badgeLabel">{{ badgeLabel }}</span>
-                   <span class="gift-number">#{{ ticket }}</span>
+                <!-- МЕТА-СТРОКА: Подарок от... + БЕЙДЖ С НОМЕРОМ И ДАТОЙ -->
+                <div class="meta-row">
+                   <span class="meta-label">Подарок от Гостя</span>
+                   <div class="meta-badge">
+                      <span class="mb-num">#{{ ticket }}</span>
+                      <span class="mb-dot">•</span>
+                      <span class="mb-date">{{ date }}</span>
+                   </div>
+                </div>
+                
+                <!-- НАЗВАНИЕ ПОДАРКА -->
+                <div class="gift-name" v-if="badgeLabel">
+                   {{ badgeLabel }}
                 </div>
 
-                <!-- ЛОКАЦИЯ -->
-                <div class="location-simple">
+                <!-- ЛОКАЦИЯ (Пилюля) -->
+                <div class="location-pill">
+                   <span class="loc-icon">📍</span>
                    {{ address || 'Все кофейни' }}
                 </div>
                 
-                <!-- ТЕКСТ (Без градиентных масок, чтобы не ломался рендер) -->
-                <div v-if="formattedText" class="message-text-simple">
-                    {{ formattedText }}
+                <!-- ТЕКСТ СООБЩЕНИЯ -->
+                <div v-if="formattedText" class="message-container">
+                    <div class="message-text">
+                        {{ formattedText }}
+                    </div>
+                    <!-- Мягкий фейд снизу для длинного текста -->
+                    <div class="text-fade-mask"></div>
                 </div>
+
             </div>
             
-            <!-- Прозрачный спейсер вместо лого -->
+            <!-- Спейсер внизу для воздуха -->
             <div class="card-bottom-spacer"></div>
 
           </div>
@@ -72,7 +91,7 @@
       </div>
     </div>
 
-    <!-- МОДАЛКА (Без изменений) -->
+    <!-- МОДАЛКА -->
     <transition name="modal-fade">
       <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
         <div class="modal">
@@ -146,15 +165,16 @@ if (typeof navigator !== 'undefined') {
    canShare.value = !!(navigator.share && navigator.canShare);
 }
 
-// Перерисовка при смене фона
+// При смене фона обновляем ключ, чтобы DOM перерисовался начисто
 watch(customBgImage, () => {
   bgKey.value++;
-  generatedImageUrl.value = null; // Сброс старой картинки
+  generatedImageUrl.value = null;
 });
 
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
   let text = props.allText.trim();
+  // Убираем лишние пробелы и капитализируем
   text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
   text = text.replace(/\s+/g, ' ');
   text = text.charAt(0).toUpperCase() + text.slice(1);
@@ -174,6 +194,7 @@ const bgClass = computed(() => {
   return 'bg-default';
 });
 
+// Загрузка html2canvas
 const loadLibrary = () => {
   return new Promise((resolve, reject) => {
     if (window.html2canvas) return resolve(window.html2canvas);
@@ -181,14 +202,35 @@ const loadLibrary = () => {
     script.src = 'https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js';
     script.onload = () => resolve(window.html2canvas);
     script.onerror = () => {
+      // Фолбек на CDN
       const backup = document.createElement('script');
       backup.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
       backup.onload = () => resolve(window.html2canvas);
-      backup.onerror = () => reject(new Error('Failed'));
+      backup.onerror = () => reject(new Error('Failed to load html2canvas'));
       document.head.appendChild(backup);
     };
     document.head.appendChild(script);
   });
+};
+
+// Ожидание загрузки картинок внутри элемента
+const waitForImages = async (element) => {
+  const imgs = element.querySelectorAll('img');
+  const promises = Array.from(imgs).map(img => {
+    if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
+    return new Promise(resolve => {
+      img.onload = () => resolve();
+      img.onerror = () => resolve(); // Даже если ошибка, не блокируем
+    });
+  });
+  await Promise.all(promises);
+};
+
+// Ожидание шрифтов
+const waitForFonts = async () => {
+   if (document.fonts && document.fonts.ready) {
+      await document.fonts.ready;
+   }
 };
 
 const generateImageInternal = async () => {
@@ -197,12 +239,15 @@ const generateImageInternal = async () => {
     await loadLibrary();
     await nextTick();
     
-    // ВАЖНО: Даем браузеру больше времени на рендеринг DOM перед скриншотом
-    await new Promise(r => setTimeout(r, 1000));
-
     const el = document.getElementById('story-capture-area');
     if (!el) return;
-    
+
+    // Ждем шрифты и картинки, чтобы текст не пропадал
+    await waitForFonts();
+    await waitForImages(el);
+    // Дополнительная пауза для верности
+    await new Promise(r => setTimeout(r, 600));
+
     const canvas = await window.html2canvas(el, {
       scale: 2,
       useCORS: true, 
@@ -213,7 +258,7 @@ const generateImageInternal = async () => {
       windowWidth: 1080,
       windowHeight: 1920,
       backgroundColor: null,
-      // ВАЖНО: Отключаем клонирование скриптов, это ускоряет и делает стабильнее
+      // Игнорируем скрипты при клонировании
       ignoreElements: (element) => element.tagName === 'SCRIPT'
     });
     
@@ -242,7 +287,7 @@ const handleFileUpload = (event) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
       customBgImage.value = e.target.result;
-      // Задержка перед авто-генерацией после загрузки
+      // Запускаем генерацию с задержкой после загрузки фона
       setTimeout(() => {
         generateImageInternal();
       }, 500);
@@ -316,7 +361,7 @@ defineExpose({ generateAndShare });
   opacity: 0.6; mix-blend-mode: overlay; pointer-events: none;
 }
 
-/* ОВЕРЛЕЙ */
+/* ОВЕРЛЕЙ (Легкое затемнение для контраста) */
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 3;
   background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
@@ -330,38 +375,52 @@ defineExpose({ generateAndShare });
 
 /* ЗАГОЛОВОК */
 .header-text {
-  font-size: 34px; line-height: 1.4; text-align: center; color: #fff; font-weight: 500;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.5); margin-bottom: 60px;
+  font-size: 36px; line-height: 1.4; text-align: center; color: #fff; font-weight: 500;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5); margin-bottom: 50px;
 }
 
-/* КАРТОЧКА - Упрощаем фон для html2canvas */
+/* КАРТОЧКА */
 .gift-card-container {
   width: 100%; max-width: 860px;
-  /* Используем RGBA вместо blur для надежности */
-  background: rgba(188, 159, 255, 0.7); 
+  /* Стабильный полупрозрачный фон */
+  background: rgba(168, 139, 235, 0.65); 
+  /* Если браузер поддерживает, будет матовое стекло, если нет - просто цвет */
+  backdrop-filter: blur(35px) saturate(120%);
   border-radius: 60px;
   padding: 0; 
   position: relative;
   box-shadow: 0 40px 100px -10px rgba(0,0,0,0.3);
   display: flex; flex-direction: column; align-items: center;
-  border: 2px solid rgba(255,255,255,0.4);
+  border: 2px solid rgba(255,255,255,0.3);
   overflow: hidden; 
 }
 
-/* ЛЕНТА (КАРТИНКА) */
-.ribbon-img {
-  position: absolute; top: 0; right: 0; width: 220px; height: 220px; z-index: 20;
+/* ЛЕНТА-УГОЛОК (CSS Only) */
+.corner-tag {
+  position: absolute; top: 0; right: 0; width: 160px; height: 160px; z-index: 20;
   pointer-events: none;
+}
+.corner-tag::before {
+  content: ""; position: absolute; top: 0; right: 0;
+  border-top: 160px solid #4A3B69; /* Темно-фиолетовый угол */
+  border-left: 160px solid transparent;
+  box-shadow: -4px 4px 15px rgba(0,0,0,0.2);
+}
+.corner-tag span {
+  position: absolute; top: 28px; right: 28px;
+  transform: rotate(45deg);
+  font-size: 20px; font-weight: 800; color: #fff; letter-spacing: 0.1em;
+  z-index: 21;
 }
 
 /* ИЗОБРАЖЕНИЕ */
 .gift-image-wrapper {
   position: relative; width: 100%; height: 550px;
   display: flex; align-items: center; justify-content: center;
-  margin-top: 60px;
+  margin-top: 40px;
 }
 .gift-glow {
-  position: absolute; width: 400px; height: 400px; 
+  position: absolute; width: 450px; height: 450px; 
   background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%); opacity: 0.6;
 }
 .gift-main-img {
@@ -376,43 +435,60 @@ defineExpose({ generateAndShare });
   position: relative; z-index: 5;
 }
 
-.gift-subtitle {
-  font-size: 30px; font-weight: 500; color: rgba(255,255,255,0.9); margin-bottom: 8px;
+/* МЕТА-СТРОКА: Подарок... + Бейдж */
+.meta-row {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 12px;
+  flex-wrap: wrap; justify-content: center;
 }
+.meta-label {
+  font-size: 30px; font-weight: 500; color: rgba(255,255,255,0.9);
+}
+.meta-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(0,0,0,0.25); padding: 6px 16px; border-radius: 20px;
+}
+.mb-num { font-size: 26px; font-weight: 700; color: #fff; }
+.mb-dot { font-size: 24px; color: rgba(255,255,255,0.5); }
+.mb-date { font-size: 26px; font-weight: 500; color: rgba(255,255,255,0.9); }
 
-/* НАЗВАНИЕ + НОМЕР */
-.gift-title-row {
-  display: flex; align-items: baseline; gap: 16px; margin-bottom: 30px; justify-content: center; flex-wrap: wrap;
-}
+/* НАЗВАНИЕ ПОДАРКА */
 .gift-name {
-  font-size: 56px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.02em;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.2); line-height: 1;
-}
-.gift-number {
-  font-size: 36px; font-weight: 400; color: rgba(255,255,255,0.7);
+  font-size: 58px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.02em;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2); line-height: 1.1;
+  margin-bottom: 24px;
 }
 
-/* ЛОКАЦИЯ (Простой текст без иконок, чтобы не ехала верстка) */
-.location-simple {
-  font-size: 28px; color: rgba(255,255,255,0.9); font-weight: 500;
-  background: rgba(0,0,0,0.1); padding: 10px 30px; border-radius: 40px;
-  margin-bottom: 40px;
+/* ЛОКАЦИЯ (Пилюля) */
+.location-pill {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.2); 
+  padding: 10px 24px; border-radius: 50px;
+  font-size: 28px; color: #fff; font-weight: 500;
+  margin-bottom: 30px;
+  border: 1px solid rgba(255,255,255,0.2);
 }
+.loc-icon { font-size: 26px; }
 
-/* ТЕКСТ (Без сложных масок) */
-.message-text-simple {
-  font-size: 36px; line-height: 1.4; color: #fff; font-weight: 400;
+/* ТЕКСТ СООБЩЕНИЯ */
+.message-container {
+  position: relative; width: 100%; max-height: 320px; overflow: hidden;
+  margin-bottom: 10px;
+}
+.message-text {
+  font-size: 34px; line-height: 1.4; color: #fff; font-weight: 400; /* Прямой шрифт */
   text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  max-width: 90%;
-  margin-bottom: 20px;
+}
+/* Маска градиента снизу */
+.text-fade-mask {
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
+  background: linear-gradient(to bottom, transparent, rgba(168, 139, 235, 0.4));
+  opacity: 0.8;
 }
 
 /* СПЕЙСЕР ВНИЗУ */
-.card-bottom-spacer {
-  height: 60px; width: 100%;
-}
+.card-bottom-spacer { height: 40px; width: 100%; }
 
-/* МОДАЛКА (Без изменений) */
+/* МОДАЛКА */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px; }
 .modal { background: #1E1E20; width: 100%; max-width: 420px; max-height: 95vh; border-radius: 28px; border: 1px solid #333; display: flex; flex-direction: column; box-shadow: 0 30px 80px rgba(0,0,0,0.7); overflow: hidden; }
 .modal-header { padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; background: #252528; }
