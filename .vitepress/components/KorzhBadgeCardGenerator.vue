@@ -10,10 +10,8 @@
         <!-- ФОН (Базовый) -->
         <div class="story-bg-base"></div>
 
-        <!-- ФОН-КАРТИНКА (Локация или загруженное) -->
-        <!-- Добавлен :key для принудительной перерисовки при смене фона -->
+        <!-- ФОН-КАРТИНКА -->
         <div 
-          :key="bgKey"
           class="story-bg-image" 
           :class="!customBgImage ? bgClass : ''"
           :style="customBgImage ? { backgroundImage: `url(${customBgImage})` } : {}"
@@ -22,25 +20,21 @@
         <!-- ШУМ (Grain) -->
         <div class="story-noise"></div>
 
-        <!-- ОВЕРЛЕЙ (Для читаемости) -->
+        <!-- ОВЕРЛЕЙ -->
         <div class="story-bg-overlay"></div>
 
         <div class="story-content">
 
-          <!-- ЗАГОЛОВОК (С отступом под интерфейс Instagram) -->
+          <!-- ЗАГОЛОВОК -->
           <div class="header-text">
              Вы превратили этот момент в<br>уникальное воспоминание
           </div>
 
-          <!-- ГЛАВНАЯ "ПОДАРОЧНАЯ КАРТА" -->
+          <!-- КАРТОЧКА -->
           <div class="gift-card-container">
             
-            <!-- ЛЕНТА "ПОДАРОК" (Темная, объемная) -->
-            <div class="corner-ribbon-wrapper">
-               <div class="corner-ribbon">
-                  <span>GIFT</span>
-               </div>
-            </div>
+            <!-- ЛЕНТА (PNG Base64) -->
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAYAAAA8AXHiAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAI0SURBVHgB7doxTgNBEEDRfxwqIkqC4CQ5CufgLByDk3AOTpIjcIiIiArF0WzSWiPPbC/Venbe2G632w4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4Ld6vV7P5/N5v99fD4fD9Xg8Xk+n0/V8Pl/P1+v1/fV63a/X6/vj8Xh/u93ePz4+3r/d/n5/f99ut9v1crncbrfb/Xw+v9/f39+32+12uVzeb7fb/Ww2m/vtdrtfr9f7u93u/vHx8f7z8/P++fn5/vPz8/77+/v++fm5+x739/f33fe4v7+/777H/f39ffc97u/v77vvcc/5fL7u9/vrcDhcj8fjdTqdrp/P5/V8vV7f326394+Pj/dvt9v7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+8fHx/vHx8f7x8fH+w8AAAAAAAD4zT8Gv1y+40QonAAAAABJRU5ErkJggg==" class="ribbon-img" alt="gift ribbon" />
 
             <!-- ИЗОБРАЖЕНИЕ ПОДАРКА -->
             <div class="gift-image-wrapper">
@@ -58,26 +52,19 @@
                    <span class="gift-number">#{{ ticket }}</span>
                 </div>
 
-                <!-- ЛОКАЦИЯ (Маленькая, аккуратная) -->
-                <div class="location-row">
-                   <span class="loc-text">{{ address || 'Все кофейни' }}</span>
+                <!-- ЛОКАЦИЯ -->
+                <div class="location-simple">
+                   {{ address || 'Все кофейни' }}
                 </div>
                 
-                <!-- ТЕКСТ (Прямой шрифт, без курсива) -->
-                <div v-if="formattedText" class="message-text-wrapper">
-                   <!-- Если текста нет, блок схлопнется -->
-                   <div class="message-text">
-                      {{ formattedText }}
-                   </div>
-                   <!-- Маска градиента снизу (для длинного текста) -->
-                   <div class="text-fade-mask"></div>
+                <!-- ТЕКСТ (Без градиентных масок, чтобы не ломался рендер) -->
+                <div v-if="formattedText" class="message-text-simple">
+                    {{ formattedText }}
                 </div>
             </div>
             
-            <!-- ВОЗДУХ / ЛОГОТИП ВНИЗУ -->
-            <div class="card-bottom-spacer">
-               <img src="/favicon.svg" class="bottom-logo" alt="logo" />
-            </div>
+            <!-- Прозрачный спейсер вместо лого -->
+            <div class="card-bottom-spacer"></div>
 
           </div>
 
@@ -152,25 +139,22 @@ const generatedImageUrl = ref(null);
 const generatedBlob = ref(null);
 const customBgImage = ref(null);
 const fileInputRef = ref(null);
-const bgKey = ref(0); // Ключ для перерисовки фона
+const bgKey = ref(0); 
 const canShare = ref(false);
 
 if (typeof navigator !== 'undefined') {
    canShare.value = !!(navigator.share && navigator.canShare);
 }
 
-// При смене кастомного фона обновляем ключ, чтобы компонент перерисовался
+// Перерисовка при смене фона
 watch(customBgImage, () => {
   bgKey.value++;
+  generatedImageUrl.value = null; // Сброс старой картинки
 });
 
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
   let text = props.allText.trim();
-  // Убираем "Дарю: ..." если оно есть в начале, чтобы не дублировать
-  const prefixRegex = /^Дарю:\s*.*?\.\s*/i;
-  // text = text.replace(prefixRegex, ''); 
-
   text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
   text = text.replace(/\s+/g, ' ');
   text = text.charAt(0).toUpperCase() + text.slice(1);
@@ -212,7 +196,9 @@ const generateImageInternal = async () => {
   try {
     await loadLibrary();
     await nextTick();
-    await new Promise(r => setTimeout(r, 800)); // Чуть больше задержка для рендера шрифтов
+    
+    // ВАЖНО: Даем браузеру больше времени на рендеринг DOM перед скриншотом
+    await new Promise(r => setTimeout(r, 1000));
 
     const el = document.getElementById('story-capture-area');
     if (!el) return;
@@ -226,7 +212,9 @@ const generateImageInternal = async () => {
       height: 1920,
       windowWidth: 1080,
       windowHeight: 1920,
-      backgroundColor: null
+      backgroundColor: null,
+      // ВАЖНО: Отключаем клонирование скриптов, это ускоряет и делает стабильнее
+      ignoreElements: (element) => element.tagName === 'SCRIPT'
     });
     
     generatedImageUrl.value = canvas.toDataURL('image/png');
@@ -240,7 +228,7 @@ const generateImageInternal = async () => {
 const generateAndShare = async () => {
   showModal.value = true;
   customBgImage.value = null; 
-  bgKey.value++; // Сброс
+  bgKey.value++; 
   await generateImageInternal();
 };
 
@@ -254,8 +242,10 @@ const handleFileUpload = (event) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
       customBgImage.value = e.target.result;
-      // Генерируем заново после загрузки
-      setTimeout(generateImageInternal, 200);
+      // Задержка перед авто-генерацией после загрузки
+      setTimeout(() => {
+        generateImageInternal();
+      }, 500);
     }
     reader.readAsDataURL(file);
   }
@@ -319,7 +309,7 @@ defineExpose({ generateAndShare });
 .story-bg-image.bg-7 { background-image: url('/img/korzh/korzh-ulyanovskaya-1080x1920.jpg'); }
 .story-bg-image.bg-8 { background-image: url('/img/korzh/korzh-novo-sadovaya-1080x1920.jpg'); }
 
-/* ШУМ (Grain) - создает эффект бумаги */
+/* ШУМ (Grain) */
 .story-noise {
   position: absolute; inset: 0; z-index: 2;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
@@ -334,7 +324,7 @@ defineExpose({ generateAndShare });
 
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 160px 60px 100px 60px; /* Отступ сверху под интерфейс */
+  padding: 160px 60px 100px 60px;
   display: flex; flex-direction: column; align-items: center;
 }
 
@@ -344,41 +334,29 @@ defineExpose({ generateAndShare });
   text-shadow: 0 4px 20px rgba(0,0,0,0.5); margin-bottom: 60px;
 }
 
-/* КАРТОЧКА */
+/* КАРТОЧКА - Упрощаем фон для html2canvas */
 .gift-card-container {
   width: 100%; max-width: 860px;
-  /* Полупрозрачный градиент */
-  background: linear-gradient(135deg, rgba(168, 139, 235, 0.65) 0%, rgba(241, 150, 199, 0.65) 100%);
-  backdrop-filter: blur(35px) saturate(120%);
+  /* Используем RGBA вместо blur для надежности */
+  background: rgba(188, 159, 255, 0.7); 
   border-radius: 60px;
-  padding: 0; /* Паддинги внутри будут у блоков */
+  padding: 0; 
   position: relative;
   box-shadow: 0 40px 100px -10px rgba(0,0,0,0.3);
   display: flex; flex-direction: column; align-items: center;
-  border: 2px solid rgba(255,255,255,0.3);
-  overflow: hidden; /* Чтобы лента обрезалась красиво */
+  border: 2px solid rgba(255,255,255,0.4);
+  overflow: hidden; 
 }
 
-/* ЛЕНТА "GIFT" (Темная, объемная) */
-.corner-ribbon-wrapper {
-  position: absolute; width: 150px; height: 150px; top: 0; right: 0; overflow: hidden; z-index: 20;
-}
-.corner-ribbon {
-  position: absolute; top: 24px; right: -54px;
-  width: 200px; padding: 8px 0;
-  background: #4A3B69; /* Темно-фиолетовый */
-  transform: rotate(45deg);
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  border: 1px solid rgba(255,255,255,0.1);
-}
-.corner-ribbon span {
-  font-size: 18px; font-weight: 800; color: #fff; letter-spacing: 0.1em;
+/* ЛЕНТА (КАРТИНКА) */
+.ribbon-img {
+  position: absolute; top: 0; right: 0; width: 220px; height: 220px; z-index: 20;
+  pointer-events: none;
 }
 
 /* ИЗОБРАЖЕНИЕ */
 .gift-image-wrapper {
-  position: relative; width: 100%; height: 550px; /* Фиксированная высота для картинки */
+  position: relative; width: 100%; height: 550px;
   display: flex; align-items: center; justify-content: center;
   margin-top: 60px;
 }
@@ -395,52 +373,46 @@ defineExpose({ generateAndShare });
 .gift-info-block {
   width: 100%; padding: 0 50px 40px 50px;
   display: flex; flex-direction: column; align-items: center; text-align: center;
+  position: relative; z-index: 5;
 }
 
 .gift-subtitle {
   font-size: 30px; font-weight: 500; color: rgba(255,255,255,0.9); margin-bottom: 8px;
 }
 
-/* Строка: НАЗВАНИЕ + НОМЕР */
+/* НАЗВАНИЕ + НОМЕР */
 .gift-title-row {
-  display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; justify-content: center; flex-wrap: wrap;
+  display: flex; align-items: baseline; gap: 16px; margin-bottom: 30px; justify-content: center; flex-wrap: wrap;
 }
 .gift-name {
   font-size: 56px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.02em;
   text-shadow: 0 2px 10px rgba(0,0,0,0.2); line-height: 1;
 }
 .gift-number {
-  font-size: 36px; font-weight: 400; color: rgba(255,255,255,0.6);
+  font-size: 36px; font-weight: 400; color: rgba(255,255,255,0.7);
 }
 
-/* ЛОКАЦИЯ */
-.location-row { margin-bottom: 40px; }
-.loc-text { font-size: 28px; color: rgba(255,255,255,0.8); font-weight: 500; }
-
-/* ТЕКСТ СООБЩЕНИЯ */
-.message-text-wrapper {
-  position: relative; width: 100%; max-height: 380px; overflow: hidden; /* Обрезаем, если очень много */
+/* ЛОКАЦИЯ (Простой текст без иконок, чтобы не ехала верстка) */
+.location-simple {
+  font-size: 28px; color: rgba(255,255,255,0.9); font-weight: 500;
+  background: rgba(0,0,0,0.1); padding: 10px 30px; border-radius: 40px;
+  margin-bottom: 40px;
 }
-.message-text {
-  font-size: 36px; line-height: 1.4; color: #fff; font-weight: 400; /* Прямой шрифт */
+
+/* ТЕКСТ (Без сложных масок) */
+.message-text-simple {
+  font-size: 36px; line-height: 1.4; color: #fff; font-weight: 400;
   text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-.text-fade-mask {
-  position: absolute; bottom: 0; left: 0; width: 100%; height: 80px;
-  background: linear-gradient(to bottom, transparent 0%, rgba(168, 139, 235, 0.0) 20%, rgba(200, 145, 215, 0.0) 100%); 
-  /* Можно добавить реальный цвет фона карточки в градиент, если нужно жесткое скрытие, но тут прозрачность сложная */
+  max-width: 90%;
+  margin-bottom: 20px;
 }
 
-/* НИЖНИЙ СПЕЙСЕР С ЛОГО */
+/* СПЕЙСЕР ВНИЗУ */
 .card-bottom-spacer {
-  height: 100px; width: 100%; display: flex; align-items: center; justify-content: center;
-  margin-top: auto; padding-bottom: 30px;
-}
-.bottom-logo {
-  width: 48px; height: 48px; opacity: 0.8; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+  height: 60px; width: 100%;
 }
 
-/* МОДАЛКА */
+/* МОДАЛКА (Без изменений) */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px; }
 .modal { background: #1E1E20; width: 100%; max-width: 420px; max-height: 95vh; border-radius: 28px; border: 1px solid #333; display: flex; flex-direction: column; box-shadow: 0 30px 80px rgba(0,0,0,0.7); overflow: hidden; }
 .modal-header { padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; background: #252528; }
