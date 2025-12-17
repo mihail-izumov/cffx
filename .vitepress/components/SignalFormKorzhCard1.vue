@@ -47,48 +47,44 @@ const cardTypes = [
   { id: 'badge3', label: 'Атмосфера' }
 ]
 
-// 2) ТРЕКИНГ ДЛЯ РАЗЛИЧИЯ СКРОЛЛА И КЛИКА
+// ТРЕКИНГ ТАЧЕЙ (Чтобы не выбирать при скролле)
 const touchState = reactive({
   startX: 0,
   startY: 0,
-  moved: false
+  isScroll: false
 })
 
 function handleTouchStart(event) {
-  const touch = event.touches[0];
-  touchState.startX = touch.clientX;
-  touchState.startY = touch.clientY;
-  touchState.moved = false;
+  const t = event.touches[0];
+  touchState.startX = t.clientX;
+  touchState.startY = t.clientY;
+  touchState.isScroll = false;
 }
 
 function handleTouchMove(event) {
-  if (!touchState.moved) {
-    const touch = event.touches[0];
-    const deltaX = Math.abs(touch.clientX - touchState.startX);
-    const deltaY = Math.abs(touch.clientY - touchState.startY);
-    
-    // Если сдвиг больше 10px — это скролл
-    if (deltaX > 10 || deltaY > 10) {
-      touchState.moved = true;
-    }
+  const t = event.touches[0];
+  const deltaX = Math.abs(t.clientX - touchState.startX);
+  const deltaY = Math.abs(t.clientY - touchState.startY);
+  // Если сдвинули палец больше чем на 10px, считаем это скроллом
+  if (deltaX > 10 || deltaY > 10) {
+    touchState.isScroll = true;
   }
 }
 
+// 4) ИСПРАВЛЕНИЕ АВТО-ТЕКСТА И СЕЛЕКЦИИ
+// preventDefault важен, чтобы не сработал click после touchend
 function handleTouchEnd(id, event) {
-  // Если был скролл — игнорируем клик
-  if (touchState.moved) {
-    return;
-  }
+  if (touchState.isScroll) return; // Был скролл — игнорируем
   
-  // Иначе переключаем карточку
-  toggleCard(id);
+  toggleCard(id); // Вызываем логику
 }
 
+// 2) ЛОГИКА ПЕРЕКЛЮЧЕНИЯ
 function toggleCard(id) {
   const oldLabel = form.badge ? cardTypes.find(c => c.id === form.badge)?.label : null;
   const newLabel = cardTypes.find(c => c.id === id)?.label;
 
-  // Убираем старую фразу
+  // 1. Сначала чистим старый текст, если он был
   if (oldLabel) {
     const oldPhrase = `Дарю: ${oldLabel} `;
     if (form.emotionalRelease.startsWith(oldPhrase)) {
@@ -96,43 +92,45 @@ function toggleCard(id) {
     }
   }
 
-  // Логика переключения
+  // 2. Логика переключения
   if (form.badge === id) {
-    setTimeout(() => {
-       form.badge = '';
-    }, 10);
+    // Кликнули по той же самой -> снимаем выбор
+    form.badge = '';
   } else {
+    // Выбрали новую
     form.badge = id;
     const newPhrase = `Дарю: ${newLabel} `;
     form.emotionalRelease = newPhrase + form.emotionalRelease;
   }
 }
 
-function getDayOfYear() {
+// 3) АЛГОРИТМ СЧЕТЧИКОВ (Шаг 10, UTC синхронизация)
+function getDayOfYearUTC() {
   const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 0);
+  const start = new Date(Date.UTC(now.getUTCFullYear(), 0, 0));
   const diff = now - start;
   const oneDay = 1000 * 60 * 60 * 24;
   return Math.floor(diff / oneDay);
 }
 
-// 3) ИСПРАВЛЕННЫЙ АЛГОРИТМ (НАЧАЛО С НУЛЯ)
 function initBadgeCounts() {
-  const day = getDayOfYear();
-  const startDay = 351; 
+  const day = getDayOfYearUTC();
+  const startDay = 351; // 17 декабря
   const daysPassed = Math.max(0, day - startDay);
   
-  // База: растет на 25 в день (сегодня 0, завтра 25, послезавтра 50)
-  const growthBase = daysPassed * 25;
+  // База: растет на 10 в день
+  const growthBase = daysPassed * 10;
 
-  // Временная добавка (0-23 в течение дня)
+  // Время дня (UTC+4 Самара, грубо говоря, просто берем UTC часы чтобы везде одинаково было)
+  // 0-24 часа мапим в диапазон 0-5 добавочных кликов
   const now = new Date();
-  const timeBonus = Math.floor(now.getHours());
+  const hours = now.getUTCHours(); 
+  const timeBonus = Math.floor(hours / 5); // Каждые 5 часов +1 клик
 
-  // Небольшие фиксированные различия (1-5), чтобы цифры были разными
-  const diff1 = 2;
-  const diff2 = 1;
-  const diff3 = 4;
+  // Статические смещения, чтобы цифры были разными
+  const offset1 = 4;
+  const offset2 = 1;
+  const offset3 = 7;
   
   const savedLocal = localStorage.getItem('korzh_user_clicks');
   let userClicks = { badge1: 0, badge2: 0, badge3: 0 };
@@ -143,10 +141,9 @@ function initBadgeCounts() {
     } catch (e) { console.error(e) }
   }
 
-  // Итого: (0 или 25*N) + (0-23) + (1-5) + личные клики
-  badgeCounts.badge1 = growthBase + timeBonus + diff1 + (userClicks.badge1 || 0);
-  badgeCounts.badge2 = growthBase + timeBonus + diff2 + (userClicks.badge2 || 0);
-  badgeCounts.badge3 = growthBase + timeBonus + diff3 + (userClicks.badge3 || 0);
+  badgeCounts.badge1 = growthBase + timeBonus + offset1 + (userClicks.badge1 || 0);
+  badgeCounts.badge2 = growthBase + timeBonus + offset2 + (userClicks.badge2 || 0);
+  badgeCounts.badge3 = growthBase + timeBonus + offset3 + (userClicks.badge3 || 0);
 }
 
 function incrementBadgeCount(id) {
@@ -556,7 +553,7 @@ const handleShareClick = () => {
                class="kzh-card"
                :class="{ 'is-active': form.badge === card.id }"
                @click="toggleCard(card.id)"
-               @touchend="handleTouchEnd(card.id, $event)"
+               @touchend.prevent="handleTouchEnd(card.id, $event)"
              >
                 <div class="kzh-card-icon">
                    <img src="/korzh_badge.svg" alt="" />
@@ -790,7 +787,7 @@ const handleShareClick = () => {
   text-align: center;
 }
 
-/* 4) ДЕСКТОП — ОТСТУП 8px, МОБАЙЛ — -16px */
+/* 4) ДЕСКТОП: 8px, МОБАЙЛ: -16px */
 .first-label {
   margin-bottom: 8px; /* Десктоп */
   position: relative;
@@ -826,7 +823,6 @@ const handleShareClick = () => {
   backdrop-filter: blur(10px);
 }
 
-/* 1) ГРАДИЕНТ 50% */
 .kzh-card::after {
   content: '';
   position: absolute;
@@ -1006,12 +1002,20 @@ textarea {
   transform: scale(1.05);
 }
 
+/* 3) КНОПКА СБРОС (ШИРОКИЙ ПУНКТИР ЧЕРЕЗ ГРАДИЕНТ) */
 .kzh-reset-bubble {
   font-weight: 600;
   opacity: 0.8;
-  border-width: 1px !important; 
-  border-style: dashed !important;
-  border-color: rgba(255,255,255,0.4) !important;
+  border: none !important; /* Отключаем стандартный border */
+  /* Рисуем пунктир градиентом: 6px цвет, 6px прозрачность */
+  background-image: 
+    linear-gradient(to right, rgba(255,255,255,0.4) 50%, transparent 50%),
+    linear-gradient(to right, rgba(255,255,255,0.4) 50%, transparent 50%),
+    linear-gradient(to bottom, rgba(255,255,255,0.4) 50%, transparent 50%),
+    linear-gradient(to bottom, rgba(255,255,255,0.4) 50%, transparent 50%);
+  background-position: top, bottom, left, right;
+  background-size: 12px 1px, 12px 1px, 1px 12px, 1px 12px;
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
 }
 
 .kzh-example-hint {
@@ -1170,7 +1174,6 @@ textarea {
     width: 140px;
   }
   
-  /* Мобайл — прижимаем сильнее */
   .first-label {
     margin-bottom: -16px; 
   }
@@ -1180,24 +1183,23 @@ textarea {
     flex-direction: row; 
     justify-content: center;
     width: 100%;
-    gap: 16px; /* Чуть больше gap */
+    gap: 16px; 
   }
   .kzh-card-icon img { width: 90px; height: 90px; }
   
-  /* 5) УВЕЛИЧЕНИЕ НА 30% В МОБИЛКЕ */
   .kzh-info-button {
-    font-size: 17px; /* +30% от 13px */
-    height: 42px; /* +30% от 32px */
+    font-size: 17px; 
+    height: 42px; 
     padding: 8px 20px;
   }
   
   .kzh-gender-container {
-    height: 42px; /* +30% от 32px */
+    height: 42px; 
     padding: 5px;
   }
   
   .kzh-gender-btn {
-    width: 31px; /* +30% от 24px */
+    width: 31px; 
     height: 31px;
   }
 }
