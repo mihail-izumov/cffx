@@ -10,8 +10,8 @@ const form = reactive({
 })
 
 const isSubmitting = ref(false)
-const rawTicketNumber = ref('000') // Инициализация строкой
-const formattedTicketNumber = ref('000') // Инициализация строкой
+const rawTicketNumber = ref('000')
+const formattedTicketNumber = ref('000')
 const currentDate = ref('')
 
 // Счетчики
@@ -56,29 +56,52 @@ function toggleCard(id) {
   }
 }
 
-// Счетчики
-function initBadgeCounts() {
-  const saved = localStorage.getItem('korzh_badge_counts')
-  if (saved) {
-    try {
-      Object.assign(badgeCounts, JSON.parse(saved))
-    } catch (e) { console.error(e) }
-  } else {
-    badgeCounts.taste = 120 + Math.floor(Math.random() * 50)
-    badgeCounts.service = 90 + Math.floor(Math.random() * 40)
-    badgeCounts.atmosphere = 150 + Math.floor(Math.random() * 60)
-    saveBadgeCounts()
-  }
+// === УМНАЯ ГЕНЕРАЦИЯ ЦИФР (СИНХРОНИЗАЦИЯ ПО ДАТЕ) ===
+function getDayOfYear() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const diff = now - start;
+  const oneDay = 1000 * 60 * 60 * 24;
+  return Math.floor(diff / oneDay);
 }
 
-function saveBadgeCounts() {
-  localStorage.setItem('korzh_badge_counts', JSON.stringify(badgeCounts))
+function initBadgeCounts() {
+  // Генерация "общих" цифр на основе дня года
+  // (чтобы у всех юзеров было примерно одинаково без бэкенда)
+  const day = getDayOfYear();
+  
+  // Базовые значения + (день * множитель)
+  const baseTaste = 120 + (day * 2);
+  const baseService = 90 + (day * 1.5);
+  const baseAtmosphere = 150 + (day * 3);
+
+  // Добавляем локальные клики пользователя сверху
+  const savedLocal = localStorage.getItem('korzh_user_clicks');
+  let userClicks = { taste: 0, service: 0, atmosphere: 0 };
+  
+  if (savedLocal) {
+    try {
+      userClicks = JSON.parse(savedLocal);
+    } catch (e) { console.error(e) }
+  }
+
+  badgeCounts.taste = Math.floor(baseTaste + userClicks.taste);
+  badgeCounts.service = Math.floor(baseService + userClicks.service);
+  badgeCounts.atmosphere = Math.floor(baseAtmosphere + userClicks.atmosphere);
 }
 
 function incrementBadgeCount(id) {
   if (badgeCounts[id] !== undefined) {
-    badgeCounts[id]++
-    saveBadgeCounts()
+    badgeCounts[id]++;
+    
+    // Сохраняем личный вклад пользователя
+    const savedLocal = localStorage.getItem('korzh_user_clicks');
+    let userClicks = { taste: 0, service: 0, atmosphere: 0 };
+    if (savedLocal) {
+       try { userClicks = JSON.parse(savedLocal); } catch (e) {}
+    }
+    userClicks[id] = (userClicks[id] || 0) + 1;
+    localStorage.setItem('korzh_user_clicks', JSON.stringify(userClicks));
   }
 }
 
@@ -248,13 +271,11 @@ const branchCounters = reactive({
 })
 
 function initializeSuggestions() {
-  // Копируем из computed в reactive
   if (suggestions.value && suggestions.value.emotions) {
      currentSuggestions.emotions = [...suggestions.value.emotions.initial]
   }
 }
 
-// Следим за сменой гендера, чтобы обновить подсказки
 watch(selectedGender, () => {
   initializeSuggestions()
   selectedSuggestions.emotions = []
@@ -308,7 +329,6 @@ function updateSuggestions(suggestionType, selectedWord) {
   }
 }
 
-// Ротация
 function startRotation() {
   stopRotation()
   if (rotationPaused.value) return 
@@ -338,7 +358,6 @@ const isFormValid = computed(() => {
          form.emotionalRelease.trim().length > 0
 })
 
-// ОТПРАВКА С ТАЙМАУТОМ
 async function submitForm() {
   if (!isFormValid.value) return
 
@@ -368,7 +387,6 @@ async function submitForm() {
   const formData = new FormData()
   formData.append('referer', window.location.origin)
   formData.append('clientId', clientId)
-  // ВАЖНО: используем .value для рефов!
   formData.append('ticketNumber', formattedTicketNumber.value)
   formData.append('date', currentDate.value)
   formData.append('submitted', submittedTimeValue)
@@ -381,7 +399,6 @@ async function submitForm() {
   formData.append('factualAnalysis', '')
   formData.append('constructiveSuggestions', '')
 
-  // AbortController для таймаута
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), 5000)
 
@@ -392,7 +409,7 @@ async function submitForm() {
       signal: controller.signal
     })
     
-    clearTimeout(timeoutId) // Очищаем таймер, если успели
+    clearTimeout(timeoutId)
 
     const result = await response.json()
 
@@ -419,7 +436,6 @@ async function submitForm() {
 }
 
 onMounted(() => {
-  // Номер сигнала XXX (99-999)
   const randomNum = Math.floor(Math.random() * 901) + 99; 
   rawTicketNumber.value = String(randomNum);
   formattedTicketNumber.value = rawTicketNumber.value;
@@ -457,7 +473,6 @@ const handleShareClick = () => {
       <div class="kzh-form-header">
         <div class="kzh-form-title">Открытка в Корж</div>
         <div class="kzh-tech-info">
-          <!-- ВЕРНУЛИ ДАТУ И НОМЕР -->
           <span class="kzh-info-item">{{ currentDate }}</span>
           <span class="kzh-info-item kzh-ticket-display">{{ formattedTicketNumber }}</span>
         </div>
@@ -465,7 +480,6 @@ const handleShareClick = () => {
 
       <div class="kzh-form-section">
         
-        <!-- ЛОКАЦИЯ -->
         <div class="kzh-location-pure">
           <select v-model="form.coffeeShopAddress" class="kzh-address-select" required>
             <option value="Все кофейни">Все кофейни</option>
@@ -480,7 +494,6 @@ const handleShareClick = () => {
           </select>
         </div>
 
-        <!-- КАРТОЧКИ -->
          <div class="kzh-cards-label">Отправьте подарок</div>
          <div class="kzh-cards-container">
            <div class="kzh-cards-grid">
@@ -495,13 +508,11 @@ const handleShareClick = () => {
                    <img src="/korzh_badge.svg" alt="" />
                 </div>
                 <div class="kzh-card-label">{{ card.label }}</div>
-                <!-- Счетчик только цифра -->
                 <div class="kzh-card-count">{{ badgeCounts[card.id] }}</div>
              </div>
           </div>
         </div>
 
-        <!-- ТЕКСТОВЫЙ БЛОК -->
         <div class="kzh-cards-label">Поделитесь настроением</div>
         
         <div class="kzh-question-block kzh-no-border">
@@ -542,7 +553,7 @@ const handleShareClick = () => {
         </div>
 
         <!-- ГЕНДЕР И ИНФО -->
-        <!-- МИКРО-ТЕКСТ В 2 РАЗА БЛИЖЕ -->
+        <!-- ОТСТУП 5PX -->
         <p class="kzh-micro-hint">Выберите гендер и подсказки изменятся</p>
         
         <div class="kzh-controls-row">
@@ -570,7 +581,6 @@ const handleShareClick = () => {
           </div>
         </div>
         
-        <!-- МОДАЛКА -->
         <div v-if="showInfoModal" class="kzh-modal-overlay" @click.self="showInfoModal = false">
            <div class="kzh-modal">
               <div class="kzh-modal-title">О Сигнале</div>
@@ -702,21 +712,21 @@ const handleShareClick = () => {
   justify-content: center;
   gap: 10px;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* Добавлено transform для фикса залипания */
+  transform: translateZ(0); 
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease, border-color 0.4s ease;
   overflow: hidden;
   backdrop-filter: blur(10px);
-  /* FIX ДЛЯ МОБИЛЬНОЙ АНИМАЦИИ */
-  transform: translateZ(0);
 }
 
-/* ГРАДИЕНТНАЯ ПОДЛОЖКА (УМЕНЬШЕНА ВЫСОТА) */
+/* ГРАДИЕНТНАЯ ПОДЛОЖКА (50%) */
 .kzh-card::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 50%; /* Было 90%, теперь текст виден, картинка тоже */
+  height: 50%; 
   background: linear-gradient(to bottom, transparent 0%, rgba(30, 30, 32, 0.6) 40%, #1e1e20 100%);
   z-index: 1;
   pointer-events: none;
@@ -732,6 +742,7 @@ const handleShareClick = () => {
   z-index: 0;
 }
 
+/* HOVER ТОЛЬКО НА ДЕСКТОПЕ */
 @media (hover: hover) {
   .kzh-card:hover {
     background: rgba(60, 60, 65, 0.4);
@@ -747,6 +758,7 @@ const handleShareClick = () => {
   .kzh-theme-male .kzh-card:hover { border-color: rgba(135, 206, 235, 0.3); }
 }
 
+/* АКТИВНОЕ СОСТОЯНИЕ (РАБОТАЕТ ВЕЗДЕ) */
 .kzh-theme-female .kzh-card.is-active {
   border-color: var(--kzh-color-female);
   box-shadow: 0 0 20px rgba(255, 105, 180, 0.3), inset 0 0 20px rgba(255, 105, 180, 0.1);
@@ -781,7 +793,6 @@ const handleShareClick = () => {
   opacity: 1;
 }
 
-/* Счетчик на карточке (БЕЗ ПЛАШКИ) */
 .kzh-card-count {
   position: absolute;
   top: 8px;
@@ -908,7 +919,7 @@ textarea {
   color: #666;
   text-align: center;
   margin-top: 0;
-  margin-bottom: 2px; /* Максимально прижат */
+  margin-bottom: 5px; /* Отступ 5px */
 }
 
 .kzh-controls-row {
@@ -919,7 +930,6 @@ textarea {
   margin-top: 0;
 }
 
-/* ИНФО - ВЕРНУЛИ НЕЙТРАЛЬНЫЙ СТИЛЬ */
 .kzh-info-button {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -931,7 +941,7 @@ textarea {
   transition: all 0.3s ease;
   white-space: nowrap;
   height: 32px;
-  color: #ccc; /* Нейтральный цвет */
+  color: #ccc; 
   display: inline-flex;
   align-items: center;
 }
@@ -967,12 +977,8 @@ textarea {
 .kzh-gender-male { background: rgba(135, 206, 235, 0.3); }
 .kzh-gender-male.is-active { background: #87ceeb; box-shadow: 0 0 12px rgba(135, 206, 235, 0.5); }
 
-
 /* === ЛОКАЦИЯ === */
-.kzh-location-pure {
-  width: 100%;
-}
-
+.kzh-location-pure { width: 100%; }
 .kzh-address-select {
   width: 100%;
   background-color: transparent; 
@@ -985,7 +991,6 @@ textarea {
   font-family: var(--kzh-font-sans);
   cursor: pointer;
 }
-
 .kzh-address-select:focus {
   outline: none;
   border-color: #9B7FB7;
@@ -994,11 +999,7 @@ textarea {
 .kzh-address-select option { background-color: #1E1E20; color: #fff; }
 
 /* === FOOTER === */
-.kzh-form-footer {
-  margin-top: 1rem;
-  width: 100%;
-}
-
+.kzh-form-footer { margin-top: 1rem; width: 100%; }
 .kzh-submit-btn {
   background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 50%, #C5B3D9 100%);
   color: #fff;
@@ -1013,13 +1014,11 @@ textarea {
   width: 100%;
   display: block;
 }
-
 .kzh-submit-btn:hover:not(:disabled) {
   background-position: 75% 50%;
   transform: scale(1.02);
   box-shadow: 0 10px 20px -5px rgba(155, 127, 183, 0.4);
 }
-
 .kzh-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* === MODAL === */
@@ -1030,7 +1029,6 @@ textarea {
   display: flex; justify-content: center; align-items: center;
   z-index: 9999; backdrop-filter: blur(4px);
 }
-
 .kzh-modal {
   background-color: #1E1E20;
   border: 1px solid #2c2c2f;
@@ -1041,12 +1039,10 @@ textarea {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   animation: kzhModalFadeIn 0.3s ease-out;
 }
-
 @keyframes kzhModalFadeIn {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
 .kzh-modal-title { font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 1rem; text-align: center; }
 .kzh-modal-body { font-size: 0.95rem; line-height: 1.6; color: #b0b0b0; margin-bottom: 1.5rem; text-align: center; }
 .kzh-modal-link { color: #B39DC8; text-decoration: none; font-weight: 600; }
@@ -1058,13 +1054,15 @@ textarea {
   .kzh-form-header { flex-direction: column; text-align: center; gap: 0.5rem; }
   .kzh-tech-info { justify-content: center; }
   
-  /* Слайдер с увеличенными полями (padding-top/bottom) чтобы не резало scale */
+  /* СЛАЙДЕР С БОЛЬШИМИ ПОЛЯМИ, ЧТОБЫ НЕ ОБРЕЗАЛОСЬ */
   .kzh-cards-grid {
     display: flex; 
     overflow-x: auto;
     gap: 12px;
-    padding-bottom: 15px; 
-    padding-top: 10px; /* Добавлено поле сверху */
+    padding-bottom: 20px; /* Поле снизу */
+    padding-top: 15px;    /* Поле сверху */
+    padding-left: 10px;   /* Поле слева */
+    margin-left: -10px;   /* Компенсация */
     margin-right: -1.5rem;
     padding-right: 1.5rem;
     scrollbar-width: none;
@@ -1074,19 +1072,16 @@ textarea {
   .kzh-card {
     min-width: 140px; 
     width: 140px;
+    /* На мобилке трансформ только при активности */
   }
 
-  textarea {
-    min-height: 180px; 
-  }
-
+  textarea { min-height: 180px; }
   .kzh-controls-row {
     flex-direction: row; 
     justify-content: center;
     width: 100%;
     gap: 12px;
   }
-  
   .kzh-card-icon img { width: 90px; height: 90px; }
 }
 </style>
