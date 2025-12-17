@@ -1,79 +1,91 @@
 <template>
   <div>
     <!-- Шрифт Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- СКРЫТЫЙ ШАБЛОН (1080x1920) -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
         
-        <!-- ФОН -->
+        <!-- ФОН (Размытый паттерн или фото кофейни) -->
         <div 
           class="story-bg-image" 
           :class="!customBgImage ? bgClass : ''"
           :style="customBgImage ? { backgroundImage: `url(${customBgImage})` } : {}"
         ></div>
         
-        <!-- МАСКА -->
+        <!-- МАСКА (для читаемости) -->
         <div class="story-bg-overlay"></div>
 
         <div class="story-content">
-          
-          <!-- Большая буква К (оставляем для атмосферы) -->
-          <div class="big-k-bg">K</div>
 
-          <!-- ВЕРХНИЙ БЛОК (Изменен порядок) -->
-          <div class="story-header">
-            
-            <!-- 1. Инфо-плашка теперь САМАЯ первая -->
-            <div class="glass-pill-info">
-              <span class="info-icon">🎄</span>
-              <span class="info-ticket">{{ ticket }}</span>
-              <span class="info-divider">|</span>
-              <span class="info-date">{{ date }}</span>
-            </div>
-
-            <!-- 2. Заголовок под ней -->
-            <h1 class="story-main-title">МОЯ ОТКРЫТКА<br>В КОРЖ</h1>
-            
-            <!-- 3. Адрес -->
-            <div class="story-address">{{ address || 'Кофейня Корж' }}</div>
+          <!-- 1. ВЕРХНЯЯ ДАТА-КАПСУЛА (стиль Telegram "Today") -->
+          <div class="date-capsule">
+             <span class="capsule-icon">🍬</span> <!-- Леденец -->
+             <span class="capsule-text">Открытка #{{ ticket }}</span>
+             <span class="capsule-dot">•</span>
+             <span class="capsule-date">{{ date }}</span>
           </div>
 
-          <!-- ЦЕНТРАЛЬНЫЙ БЛОК (Подарок + Текст) -->
-          <div class="story-center-stage">
-            
-            <!-- БЕЙДЖ ПО ЦЕНТРУ (Герой) -->
-            <div v-if="badgeImage" class="gift-container">
-               <div class="gift-glow"></div> <!-- Подсветка -->
-               <img :src="badgeImage" class="gift-img" alt="Badge" crossorigin="anonymous" />
-               
-               <!-- Название бейджа -->
-               <div v-if="badgeLabel" class="gift-label">{{ badgeLabel }}</div>
-            </div>
-
-            <!-- Текст пользователя (сразу под подарком) -->
-            <div v-if="formattedText" class="text-card-compact">
-              <p class="text-content">{{ formattedText }}</p>
-            </div>
-
+          <!-- 2. ЗАГОЛОВОК-ПОДВОДКА -->
+          <div class="header-text">
+             Вы превратили этот момент в<br>уникальное воспоминание
           </div>
 
-          <!-- НИЗ -->
-          <div class="bottom-gradient"></div>
+          <!-- 3. ГЛАВНАЯ "ПОДАРОЧНАЯ КАРТА" -->
+          <div class="gift-card-container">
+            
+            <!-- ЛЕНТА "ПОДАРОК" -->
+            <div class="corner-ribbon">
+               <span>ПОДАРОК</span>
+            </div>
 
-          <div class="story-footer">
-            <div class="link-button">
+            <!-- ИЗОБРАЖЕНИЕ ПОДАРКА -->
+            <div class="gift-image-wrapper">
+               <div class="gift-glow"></div>
+               <img v-if="badgeImage" :src="badgeImage" class="gift-main-img" alt="Gift" crossorigin="anonymous" />
+            </div>
+
+            <!-- НАЗВАНИЕ ПОДАРКА -->
+            <div class="gift-title">
+               Подарок от Гостя
+            </div>
+            
+            <div v-if="badgeLabel" class="gift-name">
+               {{ badgeLabel }}
+            </div>
+
+            <!-- ИНФО-БЛОК (Текст открытки) -->
+            <div class="gift-details">
+              <div class="detail-row">
+                 <span class="detail-label">Локация</span>
+                 <span class="detail-value">{{ address || 'Все кофейни' }}</span>
+              </div>
+              
+              <!-- Текст сообщения -->
+              <div v-if="formattedText" class="message-box">
+                 "{{ formattedText }}"
+              </div>
+            </div>
+
+            <!-- КНОПКА ВНИЗУ КАРТОЧКИ -->
+            <div class="card-footer-btn">
                <span class="btn-text">cffx.ru/korzh</span>
+               <span class="btn-stars">✨</span>
             </div>
-            <div class="footer-tagline">ПОДЕЛИТЕСЬ НАСТРОЕНИЕМ</div>
+
+          </div>
+
+          <!-- НИЖНИЙ СЛОГАН -->
+          <div class="bottom-tagline">
+             ПОДЕЛИТЕСЬ НАСТРОЕНИЕМ
           </div>
 
         </div>
       </div>
     </div>
 
-    <!-- МОДАЛКА (без изменений функционала) -->
+    <!-- МОДАЛКА (без изменений) -->
     <transition name="modal-fade">
       <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
         <div class="modal">
@@ -132,7 +144,7 @@ const props = defineProps({
   address: String,
   allText: String,
   badgeImage: String,
-  badgeLabel: String // НОВЫЙ ПРОПС ДЛЯ НАЗВАНИЯ
+  badgeLabel: String
 });
 
 const showModal = ref(false);
@@ -149,12 +161,11 @@ if (typeof navigator !== 'undefined') {
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
   let text = props.allText.trim();
+  // Очистка от "Дарю: ..." если оно дублируется, но тут мы просто форматируем
   text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
   text = text.replace(/\s+/g, ' ');
   text = text.charAt(0).toUpperCase() + text.slice(1);
-  text = text.replace(/([.!?]\s+)([а-яёa-z])/gi, (m, sep, ch) => sep + ch.toUpperCase());
-  if (!/[.!?]$/.test(text)) text += '.';
-  return text;
+  return text.length > 120 ? text.slice(0, 117) + '...' : text; // Обрезаем если слишком длинно
 });
 
 const bgClass = computed(() => {
@@ -280,9 +291,10 @@ defineExpose({ generateAndShare });
 }
 
 /* ФОНЫ */
-.story-bg-image { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; }
+.story-bg-image { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; filter: blur(20px); transform: scale(1.1); }
 .story-bg-image.bg-default { background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg'); }
 .story-bg-image.bg-1 { background-image: url('/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg'); }
+/* ... остальные фоны ... */
 .story-bg-image.bg-2 { background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg'); }
 .story-bg-image.bg-3 { background-image: url('/img/korzh/korzh-revolucionnaya-1080x1920.jpg'); }
 .story-bg-image.bg-4 { background-image: url('/img/korzh/korzh-9proseka-1080x1920.jpg'); }
@@ -293,137 +305,126 @@ defineExpose({ generateAndShare });
 
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 2;
-  background: linear-gradient(180deg, rgba(65, 45, 100, 0.35) 0%, rgba(40, 30, 70, 0.6) 60%, #1A1025 100%);
-  mix-blend-mode: multiply;
+  background: linear-gradient(180deg, rgba(255, 230, 240, 0.1) 0%, rgba(130, 100, 200, 0.4) 100%);
+  mix-blend-mode: overlay;
 }
 
-.big-k-bg {
-  position: absolute; top: 40px; left: 30px;
-  font-size: 600px; font-weight: 800; color: rgba(179, 157, 200, 0.25); 
-  z-index: 5; line-height: 1; pointer-events: none;
-}
-
-/* === СТРУКТУРА === */
+/* ОСНОВНОЙ КОНТЕНТ */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 140px 60px 180px 60px; /* Уменьшили верхний отступ чтобы все влезло */
+  padding: 120px 60px;
   display: flex; flex-direction: column; align-items: center;
 }
 
-/* ВЕРХНИЙ БЛОК */
-.story-header { 
-  display: flex; flex-direction: column; align-items: center; 
-  gap: 30px; text-align: center; width: 100%;
-  margin-bottom: 40px;
-}
-
-/* 1. Плашка вверху */
-.glass-pill-info {
-  display: inline-flex; align-items: center; gap: 26px;
-  padding: 20px 48px;
+/* 1. КАПСУЛА С ДАТОЙ */
+.date-capsule {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 40px;
   border-radius: 100px;
-  font-size: 34px; font-weight: 400; 
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(35px);
-  border: 1px solid rgba(224, 215, 248, 0.5);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  margin-bottom: 50px;
 }
-.info-icon   { font-size: 40px; line-height: 1; }
-.info-ticket { color: #ffffff; letter-spacing: 0.1em; font-weight: 500; }
-.info-divider{ color: rgba(255,255,255,0.6); }
-.info-date   { color: #ffffff; letter-spacing: 0.06em; }
+.capsule-icon { font-size: 32px; }
+.capsule-text { font-size: 28px; font-weight: 600; color: #fff; letter-spacing: 0.02em; }
+.capsule-dot { font-size: 28px; color: rgba(255,255,255,0.5); }
+.capsule-date { font-size: 28px; font-weight: 500; color: rgba(255,255,255,0.9); }
 
-/* 2. Заголовок */
-.story-main-title {
-  font-size: 60px; /* Чуть меньше чтобы не давило */
-  font-weight: 700;
-  line-height: 1.2; 
-  letter-spacing: 0.20em;
-  margin: 0; text-transform: uppercase; color: #fff; 
-  text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+/* 2. ЗАГОЛОВОК */
+.header-text {
+  font-size: 36px; line-height: 1.4; text-align: center; color: #fff; font-weight: 500;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3); margin-bottom: 60px; opacity: 0.95;
 }
 
-.story-address { 
-  font-size: 36px; font-weight: 500; color: rgba(255,255,255,0.85); 
-  letter-spacing: 0.05em; text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-}
-
-/* ЦЕНТРАЛЬНАЯ СЦЕНА */
-.story-center-stage {
-  flex: 1; width: 100%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 40px;
-  transform: translateY(-40px); /* Чуть поднять визуально */
-}
-
-/* ПОДАРОК */
-.gift-container {
+/* 3. ПОДАРОЧНАЯ КАРТА (Центральный элемент) */
+.gift-card-container {
+  width: 100%; max-width: 860px;
+  background: linear-gradient(135deg, #A88BEB 0%, #F196C7 50%, #8561C5 100%);
+  border-radius: 60px;
+  padding: 80px 50px 60px 50px; /* Сверху побольше для ленты */
   position: relative;
+  box-shadow: 0 40px 100px -20px rgba(100, 50, 150, 0.6);
   display: flex; flex-direction: column; align-items: center;
+  overflow: hidden;
+  border: 4px solid rgba(255,255,255,0.2);
+}
+
+/* ЛЕНТА В УГЛУ */
+.corner-ribbon {
+  position: absolute; top: 60px; right: -60px;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(10px);
+  width: 300px; height: 60px;
+  transform: rotate(45deg);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.corner-ribbon span {
+  font-size: 24px; font-weight: 800; color: #fff; letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+/* КАРТИНКА ПОДАРКА */
+.gift-image-wrapper {
+  position: relative; width: 500px; height: 500px; margin-bottom: 40px;
 }
 .gift-glow {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(155, 127, 183, 0.4) 0%, transparent 70%);
-  z-index: -1;
+  width: 400px; height: 400px; background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%); opacity: 0.6; z-index: 1;
 }
-.gift-img {
-  width: 500px; height: 500px; /* Большой размер */
-  object-fit: contain;
-  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
-  z-index: 10;
-}
-.gift-label {
-  margin-top: 20px;
-  font-size: 48px;
-  font-weight: 800;
-  color: #E0D4EC;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  text-shadow: 0 4px 15px rgba(0,0,0,0.8);
-  background: rgba(0,0,0,0.3);
-  padding: 10px 30px;
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
+.gift-main-img {
+  width: 100%; height: 100%; object-fit: contain; z-index: 2; position: relative;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
 }
 
-/* ТЕКСТ (Компактный под подарком) */
-.text-card-compact {
-  width: 90%; 
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(40px);
-  border-radius: 40px;
-  padding: 40px;
-  border: 1px solid rgba(220, 210, 255, 0.4);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+/* ИНФОРМАЦИЯ НА КАРТЕ */
+.gift-title {
+  font-size: 36px; font-weight: 600; color: rgba(255,255,255,0.9); margin-bottom: 16px;
 }
-.text-content {
-  margin: 0; font-size: 42px; font-weight: 400; line-height: 1.4; 
-  color: #fff; text-align: center; letter-spacing: 0.01em;
+.gift-name {
+  font-size: 64px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.02em;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-bottom: 50px; text-align: center;
 }
 
-/* НИЗ */
-.bottom-gradient {
-  position: absolute; bottom: 0; left: 0; width: 100%; height: 900px; z-index: 20;
-  background: linear-gradient(to bottom, transparent 0%, rgba(20, 10, 30, 0.9) 55%, #0F0518 100%);
-  pointer-events: none;
+.gift-details {
+  width: 100%;
+  display: flex; flex-direction: column; gap: 24px; align-items: center;
+  margin-bottom: 60px;
 }
-.story-footer { 
-  position: absolute; bottom: 220px; left: 0; width: 100%; z-index: 50; 
-  display: flex; flex-direction: column; align-items: center; gap: 26px; 
+.detail-row {
+  display: flex; gap: 20px; align-items: baseline;
 }
-.link-button {
-  border-radius: 100px; padding: 20px 170px;
-  display: flex; align-items: center; justify-content: center;
-  background: #D9D0F0; box-shadow: 0 16px 50px rgba(160, 130, 220, 0.4);
-}
-.btn-text { font-size: 46px; font-weight: 700; color: #1A1A1A; letter-spacing: 0.01em; }
-.footer-tagline {
-  font-size: 40px; font-weight: 400; letter-spacing: 0.02em; text-align: center;
-  color: #D9D0F0; opacity: 0.95; text-shadow: 0 2px 10px rgba(0,0,0,0.8); text-transform: uppercase;
+.detail-label { font-size: 32px; color: rgba(255,255,255,0.7); font-weight: 500; }
+.detail-value { font-size: 36px; color: #fff; font-weight: 700; }
+
+.message-box {
+  background: rgba(0,0,0,0.15);
+  padding: 30px 40px;
+  border-radius: 30px;
+  font-size: 34px; line-height: 1.4; color: #fff; text-align: center;
+  width: 90%; font-style: italic;
 }
 
-/* МОДАЛКА - стили без изменений */
+/* КНОПКА ВНИЗУ КАРТОЧКИ */
+.card-footer-btn {
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255,255,255,0.4);
+  border-radius: 100px;
+  padding: 24px 80px;
+  display: flex; align-items: center; gap: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.btn-text { font-size: 38px; font-weight: 700; color: #fff; letter-spacing: 0.05em; }
+.btn-stars { font-size: 32px; }
+
+/* НИЖНИЙ СЛОГАН */
+.bottom-tagline {
+  margin-top: auto;
+  font-size: 32px; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+/* МОДАЛКА - без изменений */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px; }
 .modal { background: #1E1E20; width: 100%; max-width: 420px; max-height: 95vh; border-radius: 28px; border: 1px solid #333; display: flex; flex-direction: column; box-shadow: 0 30px 80px rgba(0,0,0,0.7); overflow: hidden; }
 .modal-header { padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; background: #252528; }
