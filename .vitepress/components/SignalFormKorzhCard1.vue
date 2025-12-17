@@ -1,10 +1,11 @@
 <script setup>
-import { reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { reactive, ref, computed, onMounted, onUnmounted } from 'vue'
 import KorzhStoryGenerator from './KorzhStoryGenerator.vue'
 
 const form = reactive({
   coffeeShopAddress: '',
-  emotionalRelease: '', 
+  emotionalRelease: '',
+  signalType: '' // Поле для выбранной карточки
 })
 
 const isSubmitting = ref(false)
@@ -14,10 +15,10 @@ const rawTicketNumber = ref(null)
 const formattedTicketNumber = ref(null)
 const currentDate = ref('')
 
-// Ротация вопросов (оставляем только для 1-го блока - эмоций)
+// Ротация вопросов
 const activeRotator = ref(0) 
 
-// Гендер (оставляем, так как от него зависят подсказки эмоций)
+// Гендер
 const selectedGender = ref('female') 
 const showInfoModal = ref(false)
 
@@ -25,7 +26,22 @@ const genderClass = computed(() => {
   return selectedGender.value === 'female' ? 'gender-female' : 'gender-male'
 })
 
-// ПОЛНАЯ 3-УРОВНЕВАЯ система подсказок (Виральная версия + Базовые сценарии)
+// === КАРТОЧКИ (НОВЫЙ БЛОК) ===
+const cardTypes = [
+  { id: 'taste', label: 'Вкус' },
+  { id: 'service', label: 'Сервис' },
+  { id: 'atmosphere', label: 'Атмосфера' }
+]
+
+function toggleCard(id) {
+  if (form.signalType === id) {
+    form.signalType = '' // Снять выбор при повторном клике
+  } else {
+    form.signalType = id // Выбрать
+  }
+}
+
+// === ПОЛНАЯ 3-УРОВНЕВАЯ СИСТЕМА ПОДСКАЗОК ===
 const baseSuggestions = {
   female: {
     emotions: {
@@ -34,7 +50,6 @@ const baseSuggestions = {
         'наслаждаюсь', 'ловлю', 'официально заявляю', 'признаюсь',
         'мой муд', 'виновата', 'вместо психолога', 'этот кофе'
       ],
-      // LEVEL 2 (FEMALE)
       'поздравляю': ['любимую кофейню', 'команду', 'себя', 'всех', 'этот мир'],
       'желаю': ['себе', 'лёгкости', 'вдохновения', 'чуда', 'денег'],
       'шлю': ['лучи добра', 'сердечко', 'обнимашки', 'сигнал в космос', 'вайб успеха'],
@@ -56,7 +71,6 @@ const baseSuggestions = {
         'кайфую от', 'ловлю', 'официально заявляю', 'признаюсь',
         'мой муд', 'виноват', 'вместо психолога', 'этот кофе'
       ],
-      // LEVEL 2 (MALE)
       'поздравляю': ['любимую кофейню', 'команду', 'себя', 'всех', 'этот мир'],
       'желаю': ['себе', 'мощи', 'прорыва', 'успеха', 'драйва'],
       'шлю': ['лучи добра', 'респект', 'салют', 'сигнал в космос', 'вайб успеха'],
@@ -71,36 +85,23 @@ const baseSuggestions = {
       'этот кофе': ['лучше, чем сон', 'топливо для ракеты', 'моя прелесть', 'решает вопросы']
     }
   },
-
-  // ОБЩИЕ ПРАВИЛА ДЛЯ УРОВНЯ 3 (ПРОДОЛЖЕНИЯ)
   common: {
     emotions: {
-      // === СЦЕНАРИИ: ЛОЯЛЬНОСТЬ И БРЕНД ===
       'любимую кофейню': ['с Новым годом', 'и Рождеством!', 'с днем рождения', 'с классным сервисом', 'с расширением'],
       'мой девиз': ['— Жить любить кофе пить', '— ни дня без кофе', '— и пусть весь мир подождет'],
       'команду': ['вы супер', 'люблю вас!', 'так держать', 'с праздником', 'спасибо за труд'],
       'лайк': ['команде', 'за атмосферу', 'от души', 'вашему кофе', 'не глядя'],
-
-      // === СЦЕНАРИИ: АТМОСФЕРА И СОСТОЯНИЕ ===
       'этой зимой': ['здесь и сейчас', 'и снегом', 'из окна', 'уютной', 'сказочной'],
       'дзен': ['посреди хаоса', 'города', 'в чашке кофе', 'и гармонию', 'сейчас'],
       'себе': ['лёгкости', 'бытия', 'с перерывом', 'с бодрым утром', 'с правильным выбором'],
-      
-      // === СЦЕНАРИИ: СОЦИУМ ===
       'лучи добра': ['вас', 'просто так', 'всем вокруг', 'персонально вам', 'этому дню'],
       'всех': ['Жить любить кофе пить', 'с праздником', 'вокруг', 'с новой жизнью', 'кто это читает'],
       'сердечко': ['команде', 'люблю вас!', 'бариста', 'этому городу', 'друзьям'],
-      
-      // === СЦЕНАРИИ: ЮМОР И ЖИЗА (Ж) ===
       'патчи не спасли': ['вся надежда на кофе', 'нужен фильтр', 'но капучино спасет', 'день тяжелый'],
       'согрешили с десертом': ['и не стыдно', 'было вкусно', 'каюсь', 'отработаем в зале'],
       'дедлайны горят': ['а я пью кофе', 'и пусть весь мир подождет', 'но пусть подождут', 'гори они огнем'],
-      
-      // === СЦЕНАРИИ: ЮМОР И ЖИЗА (М) ===
       'спасся кофеином': ['от зомби-апокалипсиса', 'от сна', 'верните меня к жизни', 'батарейка заряжена'],
       'у меня растущий организм': ['требует калорий', 'это на массу', 'в ширину', 'силе нужно питание'],
-
-      // === НОВЫЕ ВИРАЛЬНЫЕ СЦЕНАРИИ (ASTROLOGY, EX, PSYCHOLOGY) ===
       'Ретроградный Меркурий': ['поэтому мне нужен этот латте', 'бессилен против кофе', 'испортил планы', 'виноват во всем'],
       'энергия главной героини': ['требует кофе', 'активирована', 'в этом платье', 'сияет'],
       'шальная императрица': ['хочет круассан', 'гуляет', 'на троне', 'отдыхает'],
@@ -108,8 +109,6 @@ const baseSuggestions = {
       'лучше, чем бывший': ['однозначно', 'и горячее', 'и не предает', '100%'],
       'лучше, чем сон': ['и вкуснее', 'бодрит мощнее', 'однозначно', 'работает'],
       'волк с уолл-стрит': ['заряжен кофеином', 'делает деньги', 'на перерыве', 'строит империю'],
-      
-      // === ВСПОМОГАТЕЛЬНЫЕ КЛЮЧИ (ЧТОБЫ НЕ БЫЛО БИТЫХ ССЫЛОК) ===
       'этот мир': ['с моим пробуждением', 'с красотой', 'с новым годом', 'с любовью', 'позитивом'],
       'лёгкости': ['бытия', 'в решениях', 'в каждом шаге', 'как пенка', 'в голове'],
       'вдохновения': ['творить', 'на новые свершения', 'жить ярко', 'каждый день'],
@@ -140,8 +139,6 @@ const baseSuggestions = {
       'моя новая любовь': ['с первого глотка', 'в чашке', 'навеки'],
       'спасает жизни': ['по утрам', 'уставших людей', 'бухгалтеров', 'молодых мам'],
       'произведение искусства': ['в чашке', 'на тарелке', 'от бариста', 'достойно музея'],
-      
-      // Male specific aux
       'мощи': ['для рывка', 'в делах', 'характера', 'и силы', 'безлимитной'],
       'прорыва': ['в бизнесе', 'в жизни', 'к новым высотам', 'прямо сейчас'],
       'успеха': ['во всем', 'громкого', 'заслуженного', 'стабильного'],
@@ -173,8 +170,6 @@ const baseSuggestions = {
       'топливо для ракеты': ['залито', 'готово', 'поехали', 'высший сорт'],
       'моя прелесть': ['горячая', 'в чашке', 'никому не дам', 'моя'],
       'решает вопросы': ['с утра', 'сложные', 'быстро', 'без слов'],
-      
-      // Additional requested fillers
       'обнимашки': ['всем котикам', 'команде', 'друзьям', 'крепкие-крепкие'],
       'вас': ['просто так', 'с наступающим', 'с новым днем', 'от души'],
       'своими руками': ['создаем', 'творим', 'делаем'],
@@ -189,20 +184,18 @@ const baseSuggestions = {
   }
 };
 
-
-// Вычисляем актуальные подсказки только для эмоций
 const suggestions = computed(() => {
   const gender = selectedGender.value
   return {
     emotions: {
       ...baseSuggestions[gender].emotions,
-      ...baseSuggestions.common.emotions // Если используете общие
+      ...baseSuggestions.common.emotions
     }
   }
 })
 
 const currentSuggestions = reactive({
-  emotions: [], // Только эмоции
+  emotions: [],
 })
 
 const selectedSuggestions = reactive({
@@ -213,7 +206,6 @@ const branchCounters = reactive({
   emotions: 0,
 })
 
-// Фразы только для первого вопроса
 const phrasesForQuestion1 = [
   "Как ты себя чувствуешь?",
   "Что у тебя на душе?",
@@ -224,12 +216,10 @@ const currentQuestion1 = ref(phrasesForQuestion1[0])
 let rotationInterval = null
 let currentQuestionIndex1 = 0
 
-// Инициализация
 function initializeSuggestions() {
   currentSuggestions.emotions = [...suggestions.value.emotions.initial]
 }
 
-// Смена пола
 function onGenderClick(gender) {
   selectedGender.value = gender
   currentSuggestions.emotions = [...suggestions.value.emotions.initial]
@@ -237,21 +227,18 @@ function onGenderClick(gender) {
   branchCounters.emotions = 0
 }
 
-// Проверка на "начальные" подсказки
 function isInitialSuggestions(suggestionType) {
   if (suggestionType !== 'emotions') return false
   return JSON.stringify(currentSuggestions.emotions) === JSON.stringify(suggestions.value.emotions.initial)
 }
 
-// Сброс
 function resetSuggestions(suggestionType) {
   if (suggestionType !== 'emotions') return
   currentSuggestions.emotions = [...suggestions.value.emotions.initial]
 }
 
-// Выбор подсказки (оставили логику только для emotions)
 function selectSuggestion(fieldName, suggestion, suggestionType) {
-  if (suggestionType !== 'emotions') return // Игнорируем вызовы других типов
+  if (suggestionType !== 'emotions') return
 
   const currentText = form[fieldName].trim()
   const isNewBranch = isInitialSuggestions(suggestionType)
@@ -272,7 +259,6 @@ function selectSuggestion(fieldName, suggestion, suggestionType) {
   updateSuggestions(suggestionType, suggestion)
 }
 
-// Обновление списка подсказок
 function updateSuggestions(suggestionType, selectedWord) {
   if (suggestionType !== 'emotions') return
 
@@ -284,7 +270,6 @@ function updateSuggestions(suggestionType, selectedWord) {
   }
 }
 
-// Ротация вопросов (только для 1 блока)
 function startRotation(questionNum) {
   stopRotation()
   activeRotator.value = questionNum
@@ -302,7 +287,7 @@ function stopRotation() {
   activeRotator.value = 0
 }
 
-// Валидация: Только адрес и эмоции
+// Валидация: Адрес + Эмоции (карточка опциональна или нет? оставим опциональной для совместимости)
 const isFormValid = computed(() => {
   return form.coffeeShopAddress.trim().length > 0 && 
          form.emotionalRelease.trim().length > 0
@@ -323,7 +308,6 @@ async function submitForm() {
   
   submittedTime.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 
-  // ID rate limiting
   let clientId = localStorage.getItem('signalclientid')
   if (!clientId) {
     clientId = 'client_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now()
@@ -339,10 +323,9 @@ async function submitForm() {
   formData.append('date', currentDate.value)
   formData.append('submitted', submittedTime.value)
   formData.append('coffeehouse', form.coffeeShopAddress)
-  // Отправляем эмоции
   formData.append('emotionalRelease', form.emotionalRelease)
+  formData.append('signalType', form.signalType) // Отправляем тип карточки
   
-  // Пустые поля для совместимости со скриптом (если скрипт их требует)
   formData.append('name', '')
   formData.append('telegram', '')
   formData.append('factualAnalysis', '')
@@ -393,7 +376,6 @@ onUnmounted(() => {
   stopRotation()
 })
 
-// Для генератора историй (если используется)
 const storyGeneratorRef = ref(null)
 const handleShareClick = () => {
   if (storyGeneratorRef.value) {
@@ -401,12 +383,7 @@ const handleShareClick = () => {
   }
 }
 </script>
-```
 
-### 2. Template
-Здесь оставлен только выбор точки, переключатель пола и блок с эмоциями.
-
-```vue
 <template>
   <div class="signal-form-wrapper">
     <!-- 1. Success Message Wrapper -->
@@ -417,7 +394,6 @@ const handleShareClick = () => {
       </div>
 
       <div class="signal-success-actions">
-        <!-- Кнопка Telegram оставлена только в финальном экране как "Написать", если нужно -->
         <a
           :href="`https://t.me/AnnaSignal?text=${rawTicketNumber}`"
           target="_blank"
@@ -426,7 +402,6 @@ const handleShareClick = () => {
           Написать в Telegram
         </a>
         
-        <!-- Кнопка Share для истории (если генератор остался) -->
         <button
            type="button"
            @click="handleShareClick"
@@ -470,9 +445,25 @@ const handleShareClick = () => {
           </select>
         </div>
         
+        <!-- НОВЫЙ БЛОК: КАРТОЧКИ -->
+        <div class="signal-cards-grid">
+           <div 
+             v-for="card in cardTypes" 
+             :key="card.id"
+             class="signal-card"
+             :class="{ 'is-active': form.signalType === card.id }"
+             @click="toggleCard(card.id)"
+           >
+              <div class="signal-card-icon">
+                 <img src="/korzh_badge.svg" alt="" />
+              </div>
+              <div class="signal-card-label">{{ card.label }}</div>
+           </div>
+        </div>
+
         <div class="signal-separator-line"></div>
 
-        <!-- ГЕНДЕР (нужен для эмоций) -->
+        <!-- ГЕНДЕР -->
         <div class="signal-controls-row">
           <button 
             type="button" 
@@ -516,7 +507,7 @@ const handleShareClick = () => {
            </div>
         </div>
 
-        <!-- ЭМОЦИИ (СОХРАНЕНО ПОЛНОСТЬЮ С ЦЕПОЧКАМИ) -->
+        <!-- ЭМОЦИИ -->
         <div 
           class="signal-question-block" 
           :class="genderClass"
@@ -537,7 +528,6 @@ const handleShareClick = () => {
             placeholder="Нажмите на слова ниже или пишите сами..."
           ></textarea>
 
-          <!-- Пузырьки подсказок -->
           <div class="signal-suggestions-container">
             <div 
                v-for="suggestion in currentSuggestions.emotions" 
@@ -560,10 +550,6 @@ const handleShareClick = () => {
           <p class="signal-example-hint" v-html="'<b>Нажимайте</b>, чтобы строить фразы'"></p>
         </div>
 
-        <!-- ДРУГИЕ БЛОКИ (ФАКТЫ, РЕШЕНИЯ) УДАЛЕНЫ -->
-        
-        <!-- ЛИЧНЫЕ ДАННЫЕ И СОГЛАСИЕ УДАЛЕНЫ -->
-
         <div class="signal-form-footer" style="grid-template-areas: 'button';">
            <div class="signal-button-section">
               <button
@@ -578,8 +564,6 @@ const handleShareClick = () => {
       </div>
     </form>
     
-    <!-- 3. Генератор истории (Скрытый helper) -->
-    <!-- Передаем только то, что осталось. Если компонент требует solutions, передаем пустые строки или удаляем пропсы -->
     <KorzhStoryGenerator
        ref="storyGeneratorRef"
        :ticket="formattedTicketNumber"
@@ -589,12 +573,7 @@ const handleShareClick = () => {
     />
   </div>
 </template>
-```
 
-### 3. Style (Scoped)
-Убраны стили для удаленных инпутов (input#name, input#telegramPhone), чекбоксов и бабблов фактов/решений (fact-bubble, solution-bubble), чтобы почистить CSS.
-
-```vue
 <style scoped>
 :root {
   --signal-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -734,6 +713,70 @@ const handleShareClick = () => {
   background-color: #2a2a2e;
   color: #f0f0f0;
 }
+
+/* === СТИЛИ ДЛЯ КАРТОЧЕК === */
+.signal-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 0.5rem;
+}
+
+.signal-card {
+  background-color: #2a2a2e;
+  border: 1px solid #3a3a3e;
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  min-height: 100px;
+}
+
+.signal-card:hover {
+  background-color: #323236;
+  border-color: #555;
+  transform: translateY(-2px);
+}
+
+.signal-card.is-active {
+  background-color: #323236;
+  border-color: #9B7FB7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(155, 127, 183, 0.2);
+}
+
+.signal-card-icon img {
+  width: 40px;
+  height: 40px;
+  display: block;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.signal-card:hover .signal-card-icon img,
+.signal-card.is-active .signal-card-icon img {
+  opacity: 1;
+}
+
+.signal-card-label {
+  font-size: 0.8rem;
+  color: #fff;
+  opacity: 0.5; /* Полупрозрачные подписи */
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+.signal-card:hover .signal-card-label,
+.signal-card.is-active .signal-card-label {
+  opacity: 0.9;
+}
+
+/* === КОНЕЦ СТИЛЕЙ КАРТОЧЕК === */
 
 .signal-separator-line {
   height: 1px;
