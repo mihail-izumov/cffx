@@ -47,7 +47,7 @@ const cardTypes = [
   { id: 'badge3', label: 'Атмосфера' }
 ]
 
-// ТРЕКИНГ ТАЧЕЙ (Чтобы не выбирать при скролле)
+// Трекинг тачей (скролл vs клик)
 const touchState = reactive({
   startX: 0,
   startY: 0,
@@ -65,26 +65,21 @@ function handleTouchMove(event) {
   const t = event.touches[0];
   const deltaX = Math.abs(t.clientX - touchState.startX);
   const deltaY = Math.abs(t.clientY - touchState.startY);
-  // Если сдвинули палец больше чем на 10px, считаем это скроллом
   if (deltaX > 10 || deltaY > 10) {
     touchState.isScroll = true;
   }
 }
 
-// 4) ИСПРАВЛЕНИЕ АВТО-ТЕКСТА И СЕЛЕКЦИИ
-// preventDefault важен, чтобы не сработал click после touchend
 function handleTouchEnd(id, event) {
-  if (touchState.isScroll) return; // Был скролл — игнорируем
-  
-  toggleCard(id); // Вызываем логику
+  if (touchState.isScroll) return; 
+  toggleCard(id);
 }
 
-// 2) ЛОГИКА ПЕРЕКЛЮЧЕНИЯ
+// Логика переключения карточек
 function toggleCard(id) {
   const oldLabel = form.badge ? cardTypes.find(c => c.id === form.badge)?.label : null;
   const newLabel = cardTypes.find(c => c.id === id)?.label;
 
-  // 1. Сначала чистим старый текст, если он был
   if (oldLabel) {
     const oldPhrase = `Дарю: ${oldLabel} `;
     if (form.emotionalRelease.startsWith(oldPhrase)) {
@@ -92,19 +87,16 @@ function toggleCard(id) {
     }
   }
 
-  // 2. Логика переключения
   if (form.badge === id) {
-    // Кликнули по той же самой -> снимаем выбор
     form.badge = '';
   } else {
-    // Выбрали новую
     form.badge = id;
     const newPhrase = `Дарю: ${newLabel} `;
     form.emotionalRelease = newPhrase + form.emotionalRelease;
   }
 }
 
-// 3) АЛГОРИТМ СЧЕТЧИКОВ (Шаг 10, UTC синхронизация)
+// Алгоритм счетчиков (UTC, шаг 10)
 function getDayOfYearUTC() {
   const now = new Date();
   const start = new Date(Date.UTC(now.getUTCFullYear(), 0, 0));
@@ -115,19 +107,15 @@ function getDayOfYearUTC() {
 
 function initBadgeCounts() {
   const day = getDayOfYearUTC();
-  const startDay = 351; // 17 декабря
+  const startDay = 351; 
   const daysPassed = Math.max(0, day - startDay);
   
-  // База: растет на 10 в день
   const growthBase = daysPassed * 10;
 
-  // Время дня (UTC+4 Самара, грубо говоря, просто берем UTC часы чтобы везде одинаково было)
-  // 0-24 часа мапим в диапазон 0-5 добавочных кликов
   const now = new Date();
   const hours = now.getUTCHours(); 
-  const timeBonus = Math.floor(hours / 5); // Каждые 5 часов +1 клик
+  const timeBonus = Math.floor(hours / 5); 
 
-  // Статические смещения, чтобы цифры были разными
   const offset1 = 4;
   const offset2 = 1;
   const offset3 = 7;
@@ -418,8 +406,9 @@ async function submitForm() {
   formData.append('factualAnalysis', '')
   formData.append('constructiveSuggestions', '')
 
+  // УВЕЛИЧЕН ТАЙМАУТ ДО 20 СЕКУНД (чтобы избежать AbortError)
   const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), 5000)
+  const timeoutId = setTimeout(() => controller.abort(), 20000)
 
   try {
     const response = await fetch(APIENDPOINT, {
@@ -434,7 +423,7 @@ async function submitForm() {
 
     if (result.status === 'success' || result.processed) {
       console.log('Success:', result)
-      handleShareClick()
+      handleShareClick() // Открываем результат
       setTimeout(resetForm, 1000); 
     } else {
       throw new Error(result.message)
@@ -787,9 +776,8 @@ const handleShareClick = () => {
   text-align: center;
 }
 
-/* 4) ДЕСКТОП: 8px, МОБАЙЛ: -16px */
 .first-label {
-  margin-bottom: 8px; /* Десктоп */
+  margin-bottom: 8px; 
   position: relative;
   z-index: 5;
 }
@@ -1002,20 +990,12 @@ textarea {
   transform: scale(1.05);
 }
 
-/* 3) КНОПКА СБРОС (ШИРОКИЙ ПУНКТИР ЧЕРЕЗ ГРАДИЕНТ) */
+/* === ПУНКТИР ЧЕРЕЗ SVG === */
 .kzh-reset-bubble {
   font-weight: 600;
   opacity: 0.8;
-  border: none !important; /* Отключаем стандартный border */
-  /* Рисуем пунктир градиентом: 6px цвет, 6px прозрачность */
-  background-image: 
-    linear-gradient(to right, rgba(255,255,255,0.4) 50%, transparent 50%),
-    linear-gradient(to right, rgba(255,255,255,0.4) 50%, transparent 50%),
-    linear-gradient(to bottom, rgba(255,255,255,0.4) 50%, transparent 50%),
-    linear-gradient(to bottom, rgba(255,255,255,0.4) 50%, transparent 50%);
-  background-position: top, bottom, left, right;
-  background-size: 12px 1px, 12px 1px, 1px 12px, 1px 12px;
-  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  border: none !important;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' stroke='rgba(255,255,255,0.4)' stroke-width='1' stroke-dasharray='10%2c 10' stroke-linecap='square'/%3e%3c/svg%3e");
 }
 
 .kzh-example-hint {
