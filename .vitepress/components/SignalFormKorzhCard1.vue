@@ -14,11 +14,11 @@ const rawTicketNumber = ref('000')
 const formattedTicketNumber = ref('000')
 const currentDate = ref('')
 
-// Счетчики
+// 1) ЗАМЕНА НА badge1, badge2, badge3
 const badgeCounts = reactive({
-  taste: 0,
-  service: 0,
-  atmosphere: 0
+  badge1: 0,
+  badge2: 0,
+  badge3: 0
 })
 
 // Ротация
@@ -41,36 +41,38 @@ const genderThemeClass = computed(() => {
   return selectedGender.value === 'female' ? 'kzh-theme-female' : 'kzh-theme-male'
 })
 
-// Карточки
+// Карточки (ID обновлены)
 const cardTypes = [
-  { id: 'taste', label: 'Вкус' },
-  { id: 'service', label: 'Сервис' },
-  { id: 'atmosphere', label: 'Атмосфера' }
+  { id: 'badge1', label: 'Вкус' },
+  { id: 'badge2', label: 'Сервис' },
+  { id: 'badge3', label: 'Атмосфера' }
 ]
 
-// ЛОГИКА АВТО-ДОБАВЛЕНИЯ ТЕКСТА (БЕЗ ТОЧКИ)
+// ЛОГИКА АВТО-ДОБАВЛЕНИЯ ТЕКСТА
 function toggleCard(id) {
   const oldLabel = form.badge ? cardTypes.find(c => c.id === form.badge)?.label : null;
   const newLabel = cardTypes.find(c => c.id === id)?.label;
 
   // Убираем старую фразу
   if (oldLabel) {
-    const oldPhrase = `Дарю: ${oldLabel} `; // БЕЗ ТОЧКИ
+    const oldPhrase = `Дарю: ${oldLabel} `;
     if (form.emotionalRelease.startsWith(oldPhrase)) {
        form.emotionalRelease = form.emotionalRelease.replace(oldPhrase, '');
     }
   }
 
+  // 6) ЛОГИКА СНЯТИЯ ВЫДЕЛЕНИЯ
+  // Если нажали на ту же самую -> сбрасываем
   if (form.badge === id) {
     form.badge = '';
   } else {
+    // Иначе выбираем новую
     form.badge = id;
-    const newPhrase = `Дарю: ${newLabel} `; // БЕЗ ТОЧКИ
+    const newPhrase = `Дарю: ${newLabel} `;
     form.emotionalRelease = newPhrase + form.emotionalRelease;
   }
 }
 
-// === УМНАЯ ГЕНЕРАЦИЯ ЦИФР (МЕНЬШЕ ЧИСЛА) ===
 function getDayOfYear() {
   const now = new Date();
   const start = new Date(now.getFullYear(), 0, 0);
@@ -79,21 +81,26 @@ function getDayOfYear() {
   return Math.floor(diff / oneDay);
 }
 
+// 2) НОВЫЙ АЛГОРИТМ (Нарастающий итог с нуля)
 function initBadgeCounts() {
-  const now = new Date();
-  const day = getDayOfYear(); // Например 350
+  const day = getDayOfYear();
+  // Точка старта: 351 (примерно 17 декабря). 
+  // Если сейчас 351, то diff = 0.
+  // Завтра diff = 1.
+  const startDay = 351; 
+  const daysPassed = Math.max(0, day - startDay);
   
-  // Добавка времени (0-30): Час + полминуты
-  const timeBonus = now.getHours() + (now.getMinutes() * 0.5);
+  // База растет на ~20 в день. Сегодня 0.
+  const growthBase = daysPassed * 20;
 
-  // База теперь ниже: День года + время
-  // ~350 + 15 = 365. Если начало года (день 1), будет ~15.
-  const baseTaste = day + timeBonus + 20; 
-  const baseService = day + timeBonus + 10;
-  const baseAtmosphere = day + timeBonus + 45;
+  // Рандомное распределение (чтобы не было одинаково, но и без аутсайдеров)
+  // Добавляем от 5 до 15 кликов "сегодняшних"
+  const rand1 = Math.floor(Math.random() * 10) + 5;
+  const rand2 = Math.floor(Math.random() * 10) + 5;
+  const rand3 = Math.floor(Math.random() * 10) + 5;
 
   const savedLocal = localStorage.getItem('korzh_user_clicks');
-  let userClicks = { taste: 0, service: 0, atmosphere: 0 };
+  let userClicks = { badge1: 0, badge2: 0, badge3: 0 };
   
   if (savedLocal) {
     try {
@@ -101,16 +108,16 @@ function initBadgeCounts() {
     } catch (e) { console.error(e) }
   }
 
-  badgeCounts.taste = Math.floor(baseTaste + userClicks.taste);
-  badgeCounts.service = Math.floor(baseService + userClicks.service);
-  badgeCounts.atmosphere = Math.floor(baseAtmosphere + userClicks.atmosphere);
+  badgeCounts.badge1 = growthBase + rand1 + (userClicks.badge1 || 0);
+  badgeCounts.badge2 = growthBase + rand2 + (userClicks.badge2 || 0);
+  badgeCounts.badge3 = growthBase + rand3 + (userClicks.badge3 || 0);
 }
 
 function incrementBadgeCount(id) {
   if (badgeCounts[id] !== undefined) {
     badgeCounts[id]++;
     const savedLocal = localStorage.getItem('korzh_user_clicks');
-    let userClicks = { taste: 0, service: 0, atmosphere: 0 };
+    let userClicks = { badge1: 0, badge2: 0, badge3: 0 };
     if (savedLocal) {
        try { userClicks = JSON.parse(savedLocal); } catch (e) {}
     }
@@ -224,22 +231,27 @@ const branchCounters = reactive({
 
 function initializeSuggestions() {
   if (suggestions.value && suggestions.value.emotions) {
-     filterInitialSuggestions(); // Сразу фильтруем
+     filterInitialSuggestions(); 
   }
 }
 
-// УМНАЯ ФИЛЬТРАЦИЯ (Если слово уже есть в тексте - не показываем его в Initial)
 function filterInitialSuggestions() {
   const allInitial = [...suggestions.value.emotions.initial];
   const currentText = form.emotionalRelease.toLowerCase();
   
-  // Оставляем только те, которых нет в тексте
-  currentSuggestions.emotions = allInitial.filter(phrase => 
+  const filtered = allInitial.filter(phrase => 
     !currentText.includes(phrase.toLowerCase())
   );
+
+  // 7) ПЕРЕЗАПУСК ЦИКЛА
+  // Если все использовали - показываем снова все
+  if (filtered.length === 0) {
+    currentSuggestions.emotions = [...allInitial];
+  } else {
+    currentSuggestions.emotions = filtered;
+  }
 }
 
-// Следим за текстом, чтобы убирать использованные подсказки в реальном времени
 watch(() => form.emotionalRelease, () => {
   if (isInitialSuggestions('emotions')) {
      filterInitialSuggestions();
@@ -249,7 +261,6 @@ watch(() => form.emotionalRelease, () => {
 watch(selectedGender, () => {
   selectedSuggestions.emotions = []
   branchCounters.emotions = 0
-  // Сброс при смене гендера, но с учетом уже введенного текста
   initializeSuggestions(); 
 })
 
@@ -259,15 +270,16 @@ function onGenderClick(gender) {
 
 function isInitialSuggestions(suggestionType) {
   if (suggestionType !== 'emotions') return false
-  // Проверяем, содержит ли текущий список элементы из initial
-  // (упрощенная проверка, так как мы модифицируем массив)
+  // Мы считаем список "начальным", если в нем есть хотя бы один элемент из initial
+  // ИЛИ если мы только что его сбросили (он полный)
   const initialSet = new Set(suggestions.value.emotions.initial);
-  return currentSuggestions.emotions.length > 0 && initialSet.has(currentSuggestions.emotions[0]);
+  return currentSuggestions.emotions.some(s => initialSet.has(s));
 }
 
 function resetSuggestions(suggestionType) {
   if (suggestionType !== 'emotions') return
-  filterInitialSuggestions(); // Возвращаем фильтрованный список
+  // Принудительный сброс на полный список (новый цикл)
+  currentSuggestions.emotions = [...suggestions.value.emotions.initial];
 }
 
 function selectSuggestion(fieldName, suggestion, suggestionType) {
@@ -299,7 +311,6 @@ function updateSuggestions(suggestionType, selectedWord) {
   if (nextSuggestions && nextSuggestions.length > 0) {
     currentSuggestions[suggestionType] = [...nextSuggestions]
   } else {
-    // Если цепочка кончилась — возвращаем в начало (фильтрованное)
     filterInitialSuggestions();
   }
 }
@@ -333,10 +344,8 @@ const isFormValid = computed(() => {
          form.emotionalRelease.trim().length > 0
 })
 
-// СБРОС ФОРМЫ (Оставляем адрес и badge)
 function resetForm() {
   form.emotionalRelease = '';
-  // badge не сбрасываем, может человек хочет еще одну отправить с тем же
   initializeSuggestions();
 }
 
@@ -398,7 +407,6 @@ async function submitForm() {
     if (result.status === 'success' || result.processed) {
       console.log('Success:', result)
       handleShareClick()
-      // СБРОС ПОСЛЕ УСПЕХА
       setTimeout(resetForm, 1000); 
     } else {
       throw new Error(result.message)
@@ -472,7 +480,6 @@ const handleShareClick = () => {
 </script>
 
 <template>
-  <!-- ДОБАВЛЕНО touch-action для запрета зума жестами -->
   <div class="kzh-form-wrapper" :class="genderThemeClass" style="touch-action: pan-x pan-y;">
     
     <form @submit.prevent="submitForm">
@@ -486,18 +493,25 @@ const handleShareClick = () => {
 
       <div class="kzh-form-section">
         
+        <!-- 9) УВЕЛИЧЕННЫЙ ОТСТУП СНИЗУ -->
         <div class="kzh-location-pure">
-          <select v-model="form.coffeeShopAddress" class="kzh-address-select" required>
-            <option value="Все кофейни">Все кофейни</option>
-            <option value="Куйбышева, 103">Куйбышева, 103</option>
-            <option value="Льва Толстого, 30Б">Льва Толстого, 30Б</option>
-            <option value="Революционная, 101В">Революционная, 101В</option>
-            <option value="9 просека 5-я малая линия, 3б">9 просека 5-я малая линия, 3б</option>
-            <option value="Самарская, 270">Самарская, 270</option>
-            <option value="Дачная, 2к2">Дачная, 2к2</option>
-            <option value="Ульяновская, 19">Ульяновская, 19</option>
-            <option value="Ново-Садовая, 106Б">Ново-Садовая, 106Б</option>
-          </select>
+          <!-- 8) ИКОНКА ШЕВРОНА В ОБЕРТКЕ -->
+          <div class="kzh-select-wrapper">
+             <select v-model="form.coffeeShopAddress" class="kzh-address-select" required>
+               <option value="Все кофейни">Все кофейни</option>
+               <option value="Куйбышева, 103">Куйбышева, 103</option>
+               <option value="Льва Толстого, 30Б">Льва Толстого, 30Б</option>
+               <option value="Революционная, 101В">Революционная, 101В</option>
+               <option value="9 просека 5-я малая линия, 3б">9 просека 5-я малая линия, 3б</option>
+               <option value="Самарская, 270">Самарская, 270</option>
+               <option value="Дачная, 2к2">Дачная, 2к2</option>
+               <option value="Ульяновская, 19">Ульяновская, 19</option>
+               <option value="Ново-Садовая, 106Б">Ново-Садовая, 106Б</option>
+             </select>
+             <div class="kzh-select-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
+             </div>
+          </div>
         </div>
 
          <div class="kzh-cards-label">Отправьте подарок</div>
@@ -558,8 +572,6 @@ const handleShareClick = () => {
           <p class="kzh-example-hint" v-html="'<b>Нажимайте</b>, чтобы строить фразы'"></p>
         </div>
 
-        <!-- ГЕНДЕР И ИНФО -->
-        <!-- ОБЕРТКА ДЛЯ КОМПЕНСАЦИИ ОТСТУПА -->
         <div class="kzh-bottom-controls-wrapper">
           <div class="kzh-controls-row">
             <button 
@@ -586,7 +598,6 @@ const handleShareClick = () => {
             </div>
           </div>
           
-          <!-- ТЕКСТ С ОТРИЦАТЕЛЬНЫМ МАРГИНОМ ДЛЯ ПРИЖИМА -->
           <p class="kzh-micro-hint">Выберите гендер и подсказки изменятся</p>
         </div>
         
@@ -646,7 +657,6 @@ const handleShareClick = () => {
   color: #f0f0f0;
   border: 1px solid #2c2c2f;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  /* ЗАПРЕТ ВЫДЕЛЕНИЯ И ЖЕСТОВ ДЛЯ МОБАЙЛА */
   user-select: none;
 }
 
@@ -691,12 +701,58 @@ const handleShareClick = () => {
   gap: 1.5rem;
 }
 
+/* === СЕЛЕКТ И ИКОНКА === */
+.kzh-location-pure { width: 100%; margin-bottom: 24px; /* Увеличил отступ */ }
+
+.kzh-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.kzh-address-select {
+  width: 100%;
+  background-color: transparent; 
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  color: #fff;
+  transition: all 0.3s ease;
+  font-family: var(--kzh-font-sans);
+  cursor: pointer;
+  appearance: none; /* Убираем стандартную стрелку */
+  -webkit-appearance: none;
+}
+.kzh-address-select:focus {
+  outline: none;
+  border-color: #9B7FB7;
+  background-color: #242426;
+}
+.kzh-address-select option { background-color: #1E1E20; color: #fff; }
+
+.kzh-select-icon {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #888;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.kzh-address-select:focus + .kzh-select-icon {
+  transform: translateY(-50%) rotate(180deg);
+  color: #9B7FB7;
+}
+
 /* === КАРТОЧКИ === */
 .kzh-cards-label {
   font-size: 0.9rem;
   font-weight: 600;
   color: #bbb;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px; /* Прижал ближе */
   text-align: center;
 }
 
@@ -851,8 +907,9 @@ textarea {
   color: #f0f0f0;
   transition: all 0.3s ease;
   font-family: var(--kzh-font-sans);
-  /* Разрешаем выделять текст внутри поля */
   user-select: text !important;
+  /* 4) УБИРАЕМ БЕЛУЮ ТОЧКУ */
+  resize: none; 
 }
 
 .kzh-theme-female textarea:focus {
@@ -908,13 +965,15 @@ textarea {
   transform: scale(1.05);
 }
 
-/* КНОПКА СБРОС (УЛУЧШЕННАЯ ДЛЯ МОБАЙЛА) */
+/* 3) КНОПКА СБРОС (РЕДКИЙ ПУНКТИР) */
 .kzh-reset-bubble {
   font-weight: 600;
   opacity: 0.8;
-  border-width: 2px !important; /* Толще для видимости */
+  border-width: 1px !important; 
   border-style: dashed !important;
-  border-color: rgba(255,255,255,0.2) !important; /* Явный цвет */
+  border-color: rgba(255,255,255,0.4) !important;
+  /* Увеличиваем разряженность через dasharray не выйдет в border, 
+     но визуально 1px и цвет помогут. Либо можно юзать background-image, но это оверхед. */
 }
 
 .kzh-example-hint {
@@ -945,9 +1004,8 @@ textarea {
   font-size: 0.75rem;
   color: #666;
   text-align: center;
-  margin: 4px 0 0 0; /* Принудительно 4px сверху */
+  margin: 4px 0 0 0; 
   padding: 0;
-  /* Доп. компенсация если у родителя есть gap */
   position: relative;
   top: -2px; 
 }
@@ -998,27 +1056,6 @@ textarea {
 
 .kzh-gender-male { background: rgba(135, 206, 235, 0.3); }
 .kzh-gender-male.is-active { background: #87ceeb; box-shadow: 0 0 12px rgba(135, 206, 235, 0.5); }
-
-/* === ЛОКАЦИЯ === */
-.kzh-location-pure { width: 100%; }
-.kzh-address-select {
-  width: 100%;
-  background-color: transparent; 
-  border: 1px solid #444;
-  border-radius: 12px;
-  padding: 0.9rem 1rem;
-  font-size: 1rem;
-  color: #fff;
-  transition: all 0.3s ease;
-  font-family: var(--kzh-font-sans);
-  cursor: pointer;
-}
-.kzh-address-select:focus {
-  outline: none;
-  border-color: #9B7FB7;
-  background-color: #242426;
-}
-.kzh-address-select option { background-color: #1E1E20; color: #fff; }
 
 /* === FOOTER === */
 .kzh-form-footer { margin-top: 1rem; width: 100%; }
@@ -1076,7 +1113,6 @@ textarea {
   .kzh-form-header { flex-direction: column; text-align: center; gap: 0.5rem; }
   .kzh-tech-info { justify-content: center; }
   
-  /* СЛАЙДЕР С БОЛЬШИМИ ПОЛЯМИ */
   .kzh-cards-grid {
     display: flex; 
     overflow-x: auto;
