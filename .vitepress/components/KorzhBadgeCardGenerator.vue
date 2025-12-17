@@ -11,7 +11,6 @@
         <div class="story-bg-base"></div>
 
         <!-- ФОН-КАРТИНКА -->
-        <!-- :key заставляет Vue пересоздать div при смене фона, это помогает html2canvas -->
         <div 
           :key="bgKey"
           class="story-bg-image" 
@@ -35,7 +34,7 @@
           <!-- КАРТОЧКА -->
           <div class="gift-card-container">
             
-            <!-- ЛЕНТА-УГОЛОК (Темная, внутри карточки) -->
+            <!-- ЛЕНТА-УГОЛОК -->
             <div class="corner-tag">
                <span>GIFT</span>
             </div>
@@ -43,14 +42,13 @@
             <!-- ИЗОБРАЖЕНИЕ -->
             <div class="gift-image-wrapper">
                <div class="gift-glow"></div>
-               <!-- crossorigin="anonymous" важен для html2canvas -->
                <img v-if="badgeImage" :src="badgeImage" class="gift-main-img" alt="Gift" crossorigin="anonymous" />
             </div>
 
             <!-- ИНФО БЛОК -->
             <div class="gift-info-block">
                 
-                <!-- МЕТА-СТРОКА: Подарок от... + БЕЙДЖ С НОМЕРОМ И ДАТОЙ -->
+                <!-- МЕТА-СТРОКА -->
                 <div class="meta-row">
                    <span class="meta-label">Подарок от Гостя</span>
                    <div class="meta-badge">
@@ -60,29 +58,27 @@
                    </div>
                 </div>
                 
-                <!-- НАЗВАНИЕ ПОДАРКА -->
+                <!-- НАЗВАНИЕ -->
                 <div class="gift-name" v-if="badgeLabel">
                    {{ badgeLabel }}
                 </div>
 
-                <!-- ЛОКАЦИЯ (Пилюля) -->
+                <!-- ЛОКАЦИЯ -->
                 <div class="location-pill">
                    <span class="loc-icon">📍</span>
                    {{ address || 'Все кофейни' }}
                 </div>
                 
-                <!-- ТЕКСТ СООБЩЕНИЯ -->
+                <!-- ТЕКСТ (Чуть больше отступа снизу) -->
                 <div v-if="formattedText" class="message-container">
                     <div class="message-text">
                         {{ formattedText }}
                     </div>
-                    <!-- Мягкий фейд снизу для длинного текста -->
                     <div class="text-fade-mask"></div>
                 </div>
 
             </div>
             
-            <!-- Спейсер внизу для воздуха -->
             <div class="card-bottom-spacer"></div>
 
           </div>
@@ -124,10 +120,19 @@
             </div>
             
             <div class="upload-section">
-               <button class="text-btn upload-btn" @click="triggerFileUpload">
+               <!-- Добавляем .stop для предотвращения всплытия событий -->
+               <button class="text-btn upload-btn" @click.stop="triggerFileUpload">
                   Загрузить свое фото
                </button>
-               <input type="file" ref="fileInputRef" accept="image/*" class="hidden-input" @change="handleFileUpload" />
+               <!-- Скрытый инпут -->
+               <input 
+                  type="file" 
+                  ref="fileInputRef" 
+                  accept="image/*" 
+                  class="hidden-input" 
+                  @change="handleFileUpload" 
+                  @click.stop 
+               />
             </div>
 
             <p class="modal-hint">
@@ -165,7 +170,6 @@ if (typeof navigator !== 'undefined') {
    canShare.value = !!(navigator.share && navigator.canShare);
 }
 
-// При смене фона обновляем ключ, чтобы DOM перерисовался начисто
 watch(customBgImage, () => {
   bgKey.value++;
   generatedImageUrl.value = null;
@@ -174,7 +178,6 @@ watch(customBgImage, () => {
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
   let text = props.allText.trim();
-  // Убираем лишние пробелы и капитализируем
   text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
   text = text.replace(/\s+/g, ' ');
   text = text.charAt(0).toUpperCase() + text.slice(1);
@@ -194,7 +197,6 @@ const bgClass = computed(() => {
   return 'bg-default';
 });
 
-// Загрузка html2canvas
 const loadLibrary = () => {
   return new Promise((resolve, reject) => {
     if (window.html2canvas) return resolve(window.html2canvas);
@@ -202,31 +204,28 @@ const loadLibrary = () => {
     script.src = 'https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js';
     script.onload = () => resolve(window.html2canvas);
     script.onerror = () => {
-      // Фолбек на CDN
       const backup = document.createElement('script');
       backup.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
       backup.onload = () => resolve(window.html2canvas);
-      backup.onerror = () => reject(new Error('Failed to load html2canvas'));
+      backup.onerror = () => reject(new Error('Failed'));
       document.head.appendChild(backup);
     };
     document.head.appendChild(script);
   });
 };
 
-// Ожидание загрузки картинок внутри элемента
 const waitForImages = async (element) => {
   const imgs = element.querySelectorAll('img');
   const promises = Array.from(imgs).map(img => {
     if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
     return new Promise(resolve => {
       img.onload = () => resolve();
-      img.onerror = () => resolve(); // Даже если ошибка, не блокируем
+      img.onerror = () => resolve(); 
     });
   });
   await Promise.all(promises);
 };
 
-// Ожидание шрифтов
 const waitForFonts = async () => {
    if (document.fonts && document.fonts.ready) {
       await document.fonts.ready;
@@ -242,10 +241,8 @@ const generateImageInternal = async () => {
     const el = document.getElementById('story-capture-area');
     if (!el) return;
 
-    // Ждем шрифты и картинки, чтобы текст не пропадал
     await waitForFonts();
     await waitForImages(el);
-    // Дополнительная пауза для верности
     await new Promise(r => setTimeout(r, 600));
 
     const canvas = await window.html2canvas(el, {
@@ -258,7 +255,6 @@ const generateImageInternal = async () => {
       windowWidth: 1080,
       windowHeight: 1920,
       backgroundColor: null,
-      // Игнорируем скрипты при клонировании
       ignoreElements: (element) => element.tagName === 'SCRIPT'
     });
     
@@ -278,7 +274,11 @@ const generateAndShare = async () => {
 };
 
 const triggerFileUpload = () => {
-  fileInputRef.value.click();
+  // Явный клик с проверкой
+  if (fileInputRef.value) {
+    fileInputRef.value.value = ''; // Сбрасываем значение, чтобы сработало change даже для того же файла
+    fileInputRef.value.click();
+  }
 }
 
 const handleFileUpload = (event) => {
@@ -287,7 +287,6 @@ const handleFileUpload = (event) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
       customBgImage.value = e.target.result;
-      // Запускаем генерацию с задержкой после загрузки фона
       setTimeout(() => {
         generateImageInternal();
       }, 500);
@@ -361,7 +360,7 @@ defineExpose({ generateAndShare });
   opacity: 0.6; mix-blend-mode: overlay; pointer-events: none;
 }
 
-/* ОВЕРЛЕЙ (Легкое затемнение для контраста) */
+/* ОВЕРЛЕЙ */
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 3;
   background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
@@ -382,9 +381,7 @@ defineExpose({ generateAndShare });
 /* КАРТОЧКА */
 .gift-card-container {
   width: 100%; max-width: 860px;
-  /* Стабильный полупрозрачный фон */
   background: rgba(168, 139, 235, 0.65); 
-  /* Если браузер поддерживает, будет матовое стекло, если нет - просто цвет */
   backdrop-filter: blur(35px) saturate(120%);
   border-radius: 60px;
   padding: 0; 
@@ -395,14 +392,14 @@ defineExpose({ generateAndShare });
   overflow: hidden; 
 }
 
-/* ЛЕНТА-УГОЛОК (CSS Only) */
+/* ЛЕНТА-УГОЛОК */
 .corner-tag {
   position: absolute; top: 0; right: 0; width: 160px; height: 160px; z-index: 20;
   pointer-events: none;
 }
 .corner-tag::before {
   content: ""; position: absolute; top: 0; right: 0;
-  border-top: 160px solid #4A3B69; /* Темно-фиолетовый угол */
+  border-top: 160px solid #4A3B69;
   border-left: 160px solid transparent;
   box-shadow: -4px 4px 15px rgba(0,0,0,0.2);
 }
@@ -435,7 +432,7 @@ defineExpose({ generateAndShare });
   position: relative; z-index: 5;
 }
 
-/* МЕТА-СТРОКА: Подарок... + Бейдж */
+/* МЕТА-СТРОКА */
 .meta-row {
   display: flex; align-items: center; gap: 16px; margin-bottom: 12px;
   flex-wrap: wrap; justify-content: center;
@@ -451,14 +448,14 @@ defineExpose({ generateAndShare });
 .mb-dot { font-size: 24px; color: rgba(255,255,255,0.5); }
 .mb-date { font-size: 26px; font-weight: 500; color: rgba(255,255,255,0.9); }
 
-/* НАЗВАНИЕ ПОДАРКА */
+/* НАЗВАНИЕ */
 .gift-name {
   font-size: 58px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.02em;
   text-shadow: 0 2px 10px rgba(0,0,0,0.2); line-height: 1.1;
   margin-bottom: 24px;
 }
 
-/* ЛОКАЦИЯ (Пилюля) */
+/* ЛОКАЦИЯ */
 .location-pill {
   display: flex; align-items: center; gap: 8px;
   background: rgba(255,255,255,0.2); 
@@ -469,16 +466,16 @@ defineExpose({ generateAndShare });
 }
 .loc-icon { font-size: 26px; }
 
-/* ТЕКСТ СООБЩЕНИЯ */
+/* ТЕКСТ */
 .message-container {
   position: relative; width: 100%; max-height: 320px; overflow: hidden;
   margin-bottom: 10px;
 }
 .message-text {
-  font-size: 34px; line-height: 1.4; color: #fff; font-weight: 400; /* Прямой шрифт */
+  font-size: 34px; line-height: 1.4; color: #fff; font-weight: 400;
   text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  padding-bottom: 10px; /* Отступ внутри текста */
 }
-/* Маска градиента снизу */
 .text-fade-mask {
   position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
   background: linear-gradient(to bottom, transparent, rgba(168, 139, 235, 0.4));
