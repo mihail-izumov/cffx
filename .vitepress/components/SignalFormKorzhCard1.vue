@@ -1,22 +1,29 @@
 <script setup>
-import { reactive, ref, computed, onMounted, onUnmounted } from 'vue'
+import { reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import KorzhStoryGenerator from './KorzhStoryGenerator.vue'
 
 // Данные формы
 const form = reactive({
-  coffeeShopAddress: '',
+  coffeeShopAddress: 'Все кофейни', // Значение по умолчанию
   emotionalRelease: '',
   badge: '' 
 })
 
 const isSubmitting = ref(false)
-const submittedTime = ref('')
 const rawTicketNumber = ref(null)
-const formattedTicketNumber = ref(null)
 const currentDate = ref('')
+
+// Счетчики для бейджей (имитация + сохранение)
+const badgeCounts = reactive({
+  taste: 0,
+  service: 0,
+  atmosphere: 0
+})
 
 // Ротация вопросов
 const activeRotator = ref(0) 
+let rotationInterval = null
+const rotationPaused = ref(false) // Флаг паузы
 
 // Гендер (по умолчанию женский)
 const selectedGender = ref('female') 
@@ -39,6 +46,31 @@ function toggleCard(id) {
     form.badge = '' 
   } else {
     form.badge = id 
+  }
+}
+
+// Инициализация счетчиков (рандом + сохраненные)
+function initBadgeCounts() {
+  const saved = localStorage.getItem('korzh_badge_counts')
+  if (saved) {
+    Object.assign(badgeCounts, JSON.parse(saved))
+  } else {
+    // Стартовые значения для красоты, если пусто
+    badgeCounts.taste = 120 + Math.floor(Math.random() * 50)
+    badgeCounts.service = 90 + Math.floor(Math.random() * 40)
+    badgeCounts.atmosphere = 150 + Math.floor(Math.random() * 60)
+    saveBadgeCounts()
+  }
+}
+
+function saveBadgeCounts() {
+  localStorage.setItem('korzh_badge_counts', JSON.stringify(badgeCounts))
+}
+
+function incrementBadgeCount(id) {
+  if (badgeCounts[id] !== undefined) {
+    badgeCounts[id]++
+    saveBadgeCounts()
   }
 }
 
@@ -214,7 +246,6 @@ const phrasesForQuestion1 = [
 ]
 
 const currentQuestion1 = ref(phrasesForQuestion1[0])
-let rotationInterval = null
 let currentQuestionIndex1 = 0
 
 function initializeSuggestions() {
@@ -271,21 +302,30 @@ function updateSuggestions(suggestionType, selectedWord) {
   }
 }
 
-function startRotation(questionNum) {
+// Ротация вопросов с паузой
+function startRotation() {
   stopRotation()
-  activeRotator.value = questionNum
-  
-  if (questionNum === 1) {
-    rotationInterval = setInterval(() => {
-      currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length
-      currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1]
-    }, 3000)
-  }
+  if (rotationPaused.value) return // Если на паузе - не запускаем
+
+  rotationInterval = setInterval(() => {
+    currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length
+    currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1]
+  }, 3000)
 }
 
 function stopRotation() {
   if (rotationInterval) clearInterval(rotationInterval)
-  activeRotator.value = 0
+}
+
+// Хендлеры фокуса/блюра
+function onTextFocus() {
+  rotationPaused.value = true
+  stopRotation()
+}
+
+function onTextBlur() {
+  rotationPaused.value = false
+  startRotation()
 }
 
 const isFormValid = computed(() => {
@@ -297,6 +337,12 @@ async function submitForm() {
   if (!isFormValid.value) return
 
   isSubmitting.value = true
+  
+  // Увеличиваем счетчик выбранной карточки при успешной попытке
+  if (form.badge) {
+    incrementBadgeCount(form.badge)
+  }
+
   const now = new Date()
 
   const day = String(now.getDate()).padStart(2, '0')
@@ -306,7 +352,7 @@ async function submitForm() {
   const minutes = String(now.getMinutes()).padStart(2, '0')
   const seconds = String(now.getSeconds()).padStart(2, '0')
   
-  submittedTime.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+  const submittedTimeValue = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 
   let clientId = localStorage.getItem('signalclientid')
   if (!clientId) {
@@ -321,7 +367,7 @@ async function submitForm() {
   formData.append('clientId', clientId)
   formData.append('ticketNumber', formattedTicketNumber.value)
   formData.append('date', currentDate.value)
-  formData.append('submitted', submittedTime.value)
+  formData.append('submitted', submittedTimeValue)
   formData.append('coffeehouse', form.coffeeShopAddress)
   formData.append('emotionalRelease', form.emotionalRelease)
   formData.append('badge', form.badge)
@@ -340,7 +386,6 @@ async function submitForm() {
 
     if (result.status === 'success' || result.processed) {
       console.log('Success:', result)
-      // ВМЕСТО ЭКРАНА УСПЕХА СРАЗУ ЗАПУСКАЕМ ГЕНЕРАТОР
       handleShareClick()
     } else {
       throw new Error(result.message)
@@ -358,8 +403,10 @@ async function submitForm() {
 }
 
 onMounted(() => {
-  rawTicketNumber.value = String(Math.floor(Math.random() * 900000) + 100000)
-  formattedTicketNumber.value = rawTicketNumber.value.slice(0, 3) + '-' + rawTicketNumber.value.slice(3)
+  // Номер сигнала XXX (99-999)
+  const randomNum = Math.floor(Math.random() * 901) + 99; // 99 to 999
+  rawTicketNumber.value = String(randomNum);
+  formattedTicketNumber.value = rawTicketNumber.value;
 
   const now = new Date()
   const day = String(now.getDate()).padStart(2, '0')
@@ -371,6 +418,8 @@ onMounted(() => {
   currentDate.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
   
   initializeSuggestions()
+  initBadgeCounts()
+  startRotation()
 })
 
 onUnmounted(() => {
@@ -399,42 +448,47 @@ const handleShareClick = () => {
 
       <div class="kzh-form-section">
         
-        <!-- 1. ЛОКАЦИЯ (ПОДНЯТА ВВЕРХ) -->
+        <!-- 1. ЛОКАЦИЯ -->
         <div class="kzh-location-pure">
           <select v-model="form.coffeeShopAddress" class="kzh-address-select" required>
-            <option value="" disabled>Выберите точку</option>
-            <option value="Кофе, 103">Кофе, 103</option>
-            <option value="Кофе, 30">Кофе, 30</option>
-            <option value="Кофе, 101">Кофе, 101</option>
-            <option value="9 Просека 5-я линия, 3">9 Просека 5-я линия, 3</option>
-            <option value="Кофе, 270">Кофе, 270</option>
-            <option value="Кофе, 22">Кофе, 22</option>
-            <option value="Кофе, 19">Кофе, 19</option>
-            <option value="Садовая-Спасская, 106">Садовая-Спасская, 106</option>
+            <option value="Все кофейни">Все кофейни</option>
+            <option value="Куйбышева, 103">Куйбышева, 103</option>
+            <option value="Льва Толстого, 30Б">Льва Толстого, 30Б</option>
+            <option value="Революционная, 101В">Революционная, 101В</option>
+            <option value="9 просека 5-я малая линия, 3б">9 просека 5-я малая линия, 3б</option>
+            <option value="Самарская, 270">Самарская, 270</option>
+            <option value="Дачная, 2к2">Дачная, 2к2</option>
+            <option value="Ульяновская, 19">Ульяновская, 19</option>
+            <option value="Ново-Садовая, 106Б">Ново-Садовая, 106Б</option>
           </select>
         </div>
 
-        <div class="kzh-separator-line"></div>
-
         <!-- 2. КАРТОЧКИ -->
          <div class="kzh-cards-label">Отправьте подарок</div>
-         <div class="kzh-cards-grid">
-           <div 
-             v-for="card in cardTypes" 
-             :key="card.id"
-             class="kzh-card"
-             :class="{ 'is-active': form.badge === card.id }"
-             @click="toggleCard(card.id)"
-           >
-              <div class="kzh-card-icon">
-                 <img src="/korzh_badge.svg" alt="" />
-              </div>
-              <div class="kzh-card-label">{{ card.label }}</div>
-           </div>
+         <div class="kzh-cards-container">
+           <div class="kzh-cards-grid">
+             <div 
+               v-for="card in cardTypes" 
+               :key="card.id"
+               class="kzh-card"
+               :class="{ 'is-active': form.badge === card.id }"
+               @click="toggleCard(card.id)"
+             >
+                <div class="kzh-card-icon">
+                   <img src="/korzh_badge.svg" alt="" />
+                </div>
+                <div class="kzh-card-label">{{ card.label }}</div>
+                <!-- Счетчик -->
+                <div class="kzh-card-count">{{ badgeCounts[card.id] }}</div>
+             </div>
+          </div>
         </div>
 
         <!-- 3. ТЕКСТОВЫЙ БЛОК -->
-        <div class="kzh-question-block" :class="genderThemeClass">
+        <div class="kzh-cards-label">Поделитесь настроением</div>
+        
+        <!-- Убрали цветную полоску слева убрав genderThemeClass или переопределив стиль -->
+        <div class="kzh-question-block kzh-no-border">
           <div class="kzh-rotating-phrase-container">
              <transition name="kzh-fade" mode="out-in">
                <p :key="currentQuestion1" class="kzh-question-label">{{ currentQuestion1 }}</p>
@@ -443,7 +497,8 @@ const handleShareClick = () => {
 
           <textarea
             v-model="form.emotionalRelease"
-            @focus="startRotation(1)"
+            @focus="onTextFocus"
+            @blur="onTextBlur"
             rows="3"
             placeholder="Нажмите на слова ниже или пишите сами..."
           ></textarea>
@@ -471,6 +526,9 @@ const handleShareClick = () => {
         </div>
 
         <!-- 4. ГЕНДЕР И ИНФО -->
+        <!-- МИКРО-ТЕКСТ -->
+        <p class="kzh-micro-hint">Выберите гендер и подсказки изменятся</p>
+        
         <div class="kzh-controls-row">
           <button 
             type="button" 
@@ -499,9 +557,6 @@ const handleShareClick = () => {
           </div>
         </div>
         
-        <!-- 5. МИКРО-ТЕКСТ ПОДСКАЗКИ -->
-        <p class="kzh-micro-hint">Выберите ваш пол и подсказки изменятся</p>
-
         <!-- МОДАЛКА ИНФО -->
         <div v-if="showInfoModal" class="kzh-modal-overlay" @click.self="showInfoModal = false">
            <div class="kzh-modal">
@@ -519,7 +574,6 @@ const handleShareClick = () => {
 
         <div class="kzh-form-footer">
            <div class="kzh-button-section">
-              <!-- ТЕКСТ КНОПКИ: Создать открытку -->
               <button
                  type="submit"
                  class="kzh-submit-btn"
@@ -612,6 +666,11 @@ const handleShareClick = () => {
   text-align: center;
 }
 
+/* Обертка для грида (для слайдера в мобайл) */
+.kzh-cards-container {
+  width: 100%;
+}
+
 .kzh-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -623,7 +682,7 @@ const handleShareClick = () => {
   position: relative;
   aspect-ratio: 1 / 1;
   background: rgba(42, 42, 46, 0.6);
-  border: 1px solid #3a3a3e;
+  border: 1px solid #3a3a3e; /* Базовый бордер */
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -636,15 +695,15 @@ const handleShareClick = () => {
   backdrop-filter: blur(10px);
 }
 
-/* ГРАДИЕНТНАЯ ПОДЛОЖКА (50%+ КАРТОЧКИ) */
+/* ГРАДИЕНТНАЯ ПОДЛОЖКА (ПЛОТНАЯ СНИЗУ) */
 .kzh-card::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 60%; /* Перекрывает чуть больше половины */
-  background: linear-gradient(to bottom, transparent 0%, rgba(30, 30, 32, 0.9) 100%);
+  height: 90%; /* Почти полностью скрывает низ */
+  background: linear-gradient(to bottom, transparent 0%, rgba(30, 30, 32, 0.6) 40%, #1e1e20 100%);
   z-index: 1;
   pointer-events: none;
 }
@@ -656,33 +715,38 @@ const handleShareClick = () => {
   opacity: 0.8;
   transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
   object-fit: contain;
-  /* Иконка должна быть под градиентом, но над фоном. 
-     В текущей структуре она внутри, а ::after сверху. */
   z-index: 0;
 }
 
-/* Метаморфоз */
-.kzh-card:hover {
-  background: rgba(60, 60, 65, 0.4);
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-  border-color: rgba(255, 255, 255, 0.1);
+/* Ховер */
+@media (hover: hover) {
+  .kzh-card:hover {
+    background: rgba(60, 60, 65, 0.4);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  }
+  .kzh-card:hover .kzh-card-icon img {
+    transform: scale(1.15) rotate(5deg);
+    opacity: 1;
+    filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
+  }
+  
+  /* Цвет бордера при ховере тоже зависит от темы */
+  .kzh-theme-female .kzh-card:hover { border-color: rgba(255, 105, 180, 0.3); }
+  .kzh-theme-male .kzh-card:hover { border-color: rgba(135, 206, 235, 0.3); }
 }
 
-.kzh-card:hover .kzh-card-icon img {
-  transform: scale(1.15) rotate(5deg);
-  opacity: 1;
-  filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
-}
-
+/* Активное состояние (единое поведение цветов) */
 .kzh-theme-female .kzh-card.is-active {
   border-color: var(--kzh-color-female);
   box-shadow: 0 0 20px rgba(255, 105, 180, 0.3), inset 0 0 20px rgba(255, 105, 180, 0.1);
+  transform: translateY(-4px) scale(1.02); /* Активная карта "парит" */
 }
 
 .kzh-theme-male .kzh-card.is-active {
   border-color: var(--kzh-color-male);
   box-shadow: 0 0 20px rgba(135, 206, 235, 0.3), inset 0 0 20px rgba(135, 206, 235, 0.1);
+  transform: translateY(-4px) scale(1.02);
 }
 
 .kzh-card.is-active .kzh-card-icon img {
@@ -695,10 +759,10 @@ const handleShareClick = () => {
   bottom: 12px;
   font-size: 0.85rem;
   color: #fff;
-  opacity: 0.7; /* Чуть ярче, так как на темном градиенте */
+  opacity: 0.8;
   font-weight: 500;
   transition: opacity 0.3s ease;
-  z-index: 2; /* Поверх градиента */
+  z-index: 2;
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
@@ -707,21 +771,32 @@ const handleShareClick = () => {
   opacity: 1;
 }
 
+/* Счетчик на карточке */
+.kzh-card-count {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.4);
+  background: rgba(0,0,0,0.3);
+  padding: 2px 6px;
+  border-radius: 10px;
+  z-index: 2;
+}
+
 /* === ТЕКСТОВЫЙ БЛОК === */
 .kzh-question-block {
   background-color: #2a2a2e;
   border-radius: 16px;
   padding: 1.25rem;
-  border: 1px solid #3a3a3e;
-  border-left: 4px solid #444; 
+  /* Убрана цветная полоска */
+  border: 1px solid #3a3a3e; 
 }
-
-.kzh-theme-female .kzh-question-block { border-left-color: var(--kzh-color-female); }
-.kzh-theme-male .kzh-question-block { border-left-color: var(--kzh-color-male); }
+.kzh-no-border { border-left: none; }
 
 .kzh-rotating-phrase-container {
   height: 24px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem; /* Больше пространства до поля ввода */
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -752,15 +827,16 @@ textarea {
   font-family: var(--kzh-font-sans);
 }
 
+/* Фокус текстового поля: ЦВЕТ ТАКОЙ ЖЕ КАК У КНОПКИ ИНФО/КАРТОЧКИ */
 .kzh-theme-female textarea:focus {
   outline: none;
-  border-color: var(--kzh-color-female);
+  border-color: var(--kzh-color-female); /* Розовый */
   box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2);
 }
 
 .kzh-theme-male textarea:focus {
   outline: none;
-  border-color: var(--kzh-color-male);
+  border-color: var(--kzh-color-male); /* Голубой */
   box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.2);
 }
 
@@ -784,12 +860,12 @@ textarea {
   user-select: none;
 }
 
+/* Цвета бабблов */
 .kzh-theme-female .kzh-emotion-bubble {
   background: rgba(255, 105, 180, 0.1);
   border-color: rgba(255, 105, 180, 0.3);
   color: var(--kzh-color-female);
 }
-
 .kzh-theme-female .kzh-emotion-bubble:hover {
   background: var(--kzh-color-female);
   color: #fff;
@@ -801,10 +877,10 @@ textarea {
   border-color: rgba(135, 206, 235, 0.3);
   color: var(--kzh-color-male);
 }
-
+/* Исправлен цвет текста при ховере на мужской теме */
 .kzh-theme-male .kzh-emotion-bubble:hover {
   background: var(--kzh-color-male);
-  color: #000;
+  color: #fff !important; /* Белый текст */
   transform: scale(1.05);
 }
 
@@ -822,14 +898,23 @@ textarea {
 }
 
 /* === ГЕНДЕР И ИНФО === */
+.kzh-micro-hint {
+  font-size: 0.75rem;
+  color: #666;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 4px; /* Прижат к переключателям */
+}
+
 .kzh-controls-row {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 16px;
-  margin-top: 0.5rem;
+  margin-top: 0;
 }
 
+/* Кнопка Инфо - цвет обводки синхронизирован */
 .kzh-info-button {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -845,8 +930,8 @@ textarea {
   align-items: center;
 }
 
-.kzh-info-female { color: var(--kzh-color-female); border-color: rgba(255, 105, 180, 0.3); }
-.kzh-info-male { color: var(--kzh-color-male); border-color: rgba(135, 206, 235, 0.3); }
+.kzh-info-female { color: var(--kzh-color-female); border-color: var(--kzh-color-female); }
+.kzh-info-male { color: var(--kzh-color-male); border-color: var(--kzh-color-male); }
 
 .kzh-gender-switch { display: flex; justify-content: center; }
 
@@ -875,24 +960,8 @@ textarea {
 .kzh-gender-male { background: rgba(135, 206, 235, 0.3); }
 .kzh-gender-male.is-active { background: #87ceeb; box-shadow: 0 0 12px rgba(135, 206, 235, 0.5); }
 
-/* МИКРО-ТЕКСТ ПОДСКАЗКИ */
-.kzh-micro-hint {
-  font-size: 0.75rem;
-  color: #666;
-  text-align: center;
-  margin-top: 6px;
-  margin-bottom: 0;
-}
 
-/* === РАЗДЕЛИТЕЛЬ === */
-.kzh-separator-line {
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, #444 50%, transparent 100%);
-  margin: 2rem 0;
-  opacity: 0.6;
-}
-
-/* === ЛОКАЦИЯ (ВВЕРХУ) === */
+/* === ЛОКАЦИЯ === */
 .kzh-location-pure {
   width: 100%;
 }
@@ -981,7 +1050,39 @@ textarea {
   .kzh-form-wrapper { padding: 1.5rem; }
   .kzh-form-header { flex-direction: column; text-align: center; gap: 0.5rem; }
   .kzh-tech-info { justify-content: center; }
-  .kzh-controls-row { flex-direction: row; justify-content: space-between; width: 100%; }
-  .kzh-card-icon img { width: 80px; height: 80px; }
+  
+  /* Карточки в слайдер */
+  .kzh-cards-grid {
+    display: flex; /* Слайдер */
+    overflow-x: auto;
+    gap: 12px;
+    padding-bottom: 10px; /* Место для скроллбара */
+    margin-right: -1.5rem; /* Компенсация паддинга контейнера */
+    padding-right: 1.5rem;
+    scrollbar-width: none;
+  }
+  .kzh-cards-grid::-webkit-scrollbar { display: none; }
+  
+  .kzh-card {
+    min-width: 140px; /* Фикс размер */
+    width: 140px;
+    /* Не уменьшать в мобайле, карточки такие же квадратные */
+  }
+
+  /* Текстовое поле в 3 раза выше */
+  textarea {
+    min-height: 180px; 
+  }
+
+  /* Инфо и гендер НЕ разъезжаются, а остаются вместе */
+  .kzh-controls-row {
+    flex-direction: row; 
+    justify-content: center; /* Центрируем */
+    width: 100%;
+    gap: 12px;
+  }
+  
+  /* Иконка в карточке чуть меньше для моб, чтобы влезла в 140px */
+  .kzh-card-icon img { width: 90px; height: 90px; }
 }
 </style>
