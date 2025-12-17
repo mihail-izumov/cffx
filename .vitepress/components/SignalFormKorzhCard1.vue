@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref, computed, onMounted, onUnmounted, watch } from 'vue'
-import KorzhStoryGenerator from './KorzhStoryGenerator.vue'
+import KorzhBadgeCardGenerator from './KorzhBadgeCardGenerator.vue'
 
 // Данные формы
 const form = reactive({
