@@ -47,7 +47,43 @@ const cardTypes = [
   { id: 'badge3', label: 'Атмосфера' }
 ]
 
-// 2) ЛОГИКА ПЕРЕКЛЮЧЕНИЯ (С ФИКСОМ ДЛЯ МОБАЙЛА)
+// 2) ТРЕКИНГ ДЛЯ РАЗЛИЧИЯ СКРОЛЛА И КЛИКА
+const touchState = reactive({
+  startX: 0,
+  startY: 0,
+  moved: false
+})
+
+function handleTouchStart(event) {
+  const touch = event.touches[0];
+  touchState.startX = touch.clientX;
+  touchState.startY = touch.clientY;
+  touchState.moved = false;
+}
+
+function handleTouchMove(event) {
+  if (!touchState.moved) {
+    const touch = event.touches[0];
+    const deltaX = Math.abs(touch.clientX - touchState.startX);
+    const deltaY = Math.abs(touch.clientY - touchState.startY);
+    
+    // Если сдвиг больше 10px — это скролл
+    if (deltaX > 10 || deltaY > 10) {
+      touchState.moved = true;
+    }
+  }
+}
+
+function handleTouchEnd(id, event) {
+  // Если был скролл — игнорируем клик
+  if (touchState.moved) {
+    return;
+  }
+  
+  // Иначе переключаем карточку
+  toggleCard(id);
+}
+
 function toggleCard(id) {
   const oldLabel = form.badge ? cardTypes.find(c => c.id === form.badge)?.label : null;
   const newLabel = cardTypes.find(c => c.id === id)?.label;
@@ -62,23 +98,14 @@ function toggleCard(id) {
 
   // Логика переключения
   if (form.badge === id) {
-    // Если клик по уже активной - снимаем активность
-    // SetTimeout помогает на мобильных устройствах корректно обработать "снятие"
     setTimeout(() => {
        form.badge = '';
     }, 10);
   } else {
-    // Активируем новую
     form.badge = id;
     const newPhrase = `Дарю: ${newLabel} `;
     form.emotionalRelease = newPhrase + form.emotionalRelease;
   }
-}
-
-// Хелпер для тач-событий (чтобы предотвратить двойные срабатывания)
-function handleCardTouch(id, event) {
-  // Блокируем стандартный клик, если сработал тач, и вызываем логику
-  toggleCard(id);
 }
 
 function getDayOfYear() {
@@ -89,24 +116,23 @@ function getDayOfYear() {
   return Math.floor(diff / oneDay);
 }
 
-// 1) ИСПРАВЛЕННЫЙ АЛГОРИТМ (ДЕТЕРМИНИРОВАННЫЙ)
+// 3) ИСПРАВЛЕННЫЙ АЛГОРИТМ (НАЧАЛО С НУЛЯ)
 function initBadgeCounts() {
   const day = getDayOfYear();
-  const startDay = 351; // 17 декабря как точка отсчета
+  const startDay = 351; 
   const daysPassed = Math.max(0, day - startDay);
   
-  // База: растет одинаково для всех (25 кликов в день)
+  // База: растет на 25 в день (сегодня 0, завтра 25, послезавтра 50)
   const growthBase = daysPassed * 25;
 
-  // Временная добавка (чтобы цифры росли в течение дня)
+  // Временная добавка (0-23 в течение дня)
   const now = new Date();
-  const timeBonus = Math.floor(now.getHours() + (now.getMinutes() / 2));
+  const timeBonus = Math.floor(now.getHours());
 
-  // Фиксированные смещения, чтобы цифры отличались друг от друга, 
-  // но были одинаковыми у всех пользователей
-  // badge1 (Вкус): +12
-  // badge2 (Сервис): +5
-  // badge3 (Атмосфера): +18
+  // Небольшие фиксированные различия (1-5), чтобы цифры были разными
+  const diff1 = 2;
+  const diff2 = 1;
+  const diff3 = 4;
   
   const savedLocal = localStorage.getItem('korzh_user_clicks');
   let userClicks = { badge1: 0, badge2: 0, badge3: 0 };
@@ -117,10 +143,10 @@ function initBadgeCounts() {
     } catch (e) { console.error(e) }
   }
 
-  // Итоговая формула: (Дни * 25) + (Часы) + ФиксСмещение + ЛичныеКлики
-  badgeCounts.badge1 = growthBase + timeBonus + 12 + (userClicks.badge1 || 0);
-  badgeCounts.badge2 = growthBase + timeBonus + 5 + (userClicks.badge2 || 0);
-  badgeCounts.badge3 = growthBase + timeBonus + 18 + (userClicks.badge3 || 0);
+  // Итого: (0 или 25*N) + (0-23) + (1-5) + личные клики
+  badgeCounts.badge1 = growthBase + timeBonus + diff1 + (userClicks.badge1 || 0);
+  badgeCounts.badge2 = growthBase + timeBonus + diff2 + (userClicks.badge2 || 0);
+  badgeCounts.badge3 = growthBase + timeBonus + diff3 + (userClicks.badge3 || 0);
 }
 
 function incrementBadgeCount(id) {
@@ -517,17 +543,20 @@ const handleShareClick = () => {
           </div>
         </div>
 
-         <!-- 5) НОВЫЙ ЗАГОЛОВОК -->
          <div class="kzh-cards-label first-label">Выберите подарок</div>
          <div class="kzh-cards-container">
-           <div class="kzh-cards-grid">
+           <div 
+             class="kzh-cards-grid"
+             @touchstart="handleTouchStart"
+             @touchmove="handleTouchMove"
+           >
              <div 
                v-for="card in cardTypes" 
                :key="card.id"
                class="kzh-card"
                :class="{ 'is-active': form.badge === card.id }"
                @click="toggleCard(card.id)"
-               @touchend.prevent="handleCardTouch(card.id, $event)"
+               @touchend="handleTouchEnd(card.id, $event)"
              >
                 <div class="kzh-card-icon">
                    <img src="/korzh_badge.svg" alt="" />
@@ -627,7 +656,7 @@ const handleShareClick = () => {
                  class="kzh-submit-btn"
                  :disabled="!isFormValid || isSubmitting"
               >
-                 {{ isSubmitting ? 'Отправка...' : 'Создать открытку' }}
+                 {{ isSubmitting ? 'Создаем магию...' : 'Создать открытку' }}
               </button>
            </div>
         </div>
@@ -753,20 +782,19 @@ const handleShareClick = () => {
 }
 
 /* === КАРТОЧКИ === */
-/* 4) СТИЛЬ ЗАГОЛОВКОВ */
 .kzh-cards-label {
-  font-size: 1.1rem; /* Больше */
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #fff; /* Белый */
+  color: #fff;
   margin-bottom: 8px;
   text-align: center;
 }
 
-/* 3) ПРИЖИМАЕМ ВЕРХНИЙ ЗАГОЛОВОК */
+/* 4) ДЕСКТОП — ОТСТУП 8px, МОБАЙЛ — -16px */
 .first-label {
-  margin-bottom: -12px; /* Отрицательный отступ для десктопа */
+  margin-bottom: 8px; /* Десктоп */
   position: relative;
-  z-index: 5; /* Поверх карточек, если вдруг наедет */
+  z-index: 5;
 }
 
 .kzh-cards-container {
@@ -798,14 +826,14 @@ const handleShareClick = () => {
   backdrop-filter: blur(10px);
 }
 
-/* 6) ГРАДИЕНТ 30% */
+/* 1) ГРАДИЕНТ 50% */
 .kzh-card::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 30%; 
+  height: 50%; 
   background: linear-gradient(to bottom, transparent 0%, rgba(30, 30, 32, 0.6) 40%, #1e1e20 100%);
   z-index: 1;
   pointer-events: none;
@@ -1142,7 +1170,7 @@ textarea {
     width: 140px;
   }
   
-  /* Прижимаем сильнее на мобилке (-16px) */
+  /* Мобайл — прижимаем сильнее */
   .first-label {
     margin-bottom: -16px; 
   }
@@ -1152,8 +1180,25 @@ textarea {
     flex-direction: row; 
     justify-content: center;
     width: 100%;
-    gap: 12px;
+    gap: 16px; /* Чуть больше gap */
   }
   .kzh-card-icon img { width: 90px; height: 90px; }
+  
+  /* 5) УВЕЛИЧЕНИЕ НА 30% В МОБИЛКЕ */
+  .kzh-info-button {
+    font-size: 17px; /* +30% от 13px */
+    height: 42px; /* +30% от 32px */
+    padding: 8px 20px;
+  }
+  
+  .kzh-gender-container {
+    height: 42px; /* +30% от 32px */
+    padding: 5px;
+  }
+  
+  .kzh-gender-btn {
+    width: 31px; /* +30% от 24px */
+    height: 31px;
+  }
 }
 </style>
