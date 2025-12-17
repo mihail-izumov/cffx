@@ -221,28 +221,22 @@ defineExpose({ generateAndShare });
   background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg');
 }
 .story-bg-image.bg-3 {
-  /* временно дублируем существующий баннер */
-  background-image: url('/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg');
+  background-image: url('/img/korzh/korzh-revolucionnaya-1080x1920.jpg');
 }
 .story-bg-image.bg-4 {
-  /* временно дублируем существующий баннер */
-  background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg');
+  background-image: url('/img/korzh/korzh-9proseka-1080x1920.jpg');
 }
 .story-bg-image.bg-5 {
-  /* временно дублируем существующий баннер */
-  background-image: url('/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg');
+  background-image: url('/img/korzh/korzh-samarskaya-1080x1920.jpg');
 }
 .story-bg-image.bg-6 {
-  /* временно дублируем существующий баннер */
-  background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg');
+  background-image: url('/img/korzh/korzh-dachnaya-1080x1920.jpg');
 }
 .story-bg-image.bg-7 {
-  /* временно дублируем существующий баннер */
-  background-image: url('/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg');
+  background-image: url('/img/korzh/korzh-ulyanovskaya-1080x1920.jpg');
 }
 .story-bg-image.bg-8 {
-  /* временно дублируем существующий баннер */
-  background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg');
+  background-image: url('/img/korzh/korzh-novo-sadovaya-1080x1920.jpg');
 }
 
 /* МАСКА */
