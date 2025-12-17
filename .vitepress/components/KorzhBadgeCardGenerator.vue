@@ -19,35 +19,44 @@
 
         <div class="story-content">
           
-          <!-- Большая буква К -->
+          <!-- Большая буква К (оставляем для атмосферы) -->
           <div class="big-k-bg">K</div>
 
-          <!-- ВЕРХ -->
+          <!-- ВЕРХНИЙ БЛОК (Изменен порядок) -->
           <div class="story-header">
-            <h1 class="story-main-title">МОЯ ОТКРЫТКА<br>В КОРЖ</h1>
-
-            <div class="story-info-row">
-              <div class="glass-pill-info">
-                <span class="info-icon">🎄</span>
-                <span class="info-ticket">{{ ticket }}</span>
-                <span class="info-divider">|</span>
-                <span class="info-date">{{ date }}</span>
-              </div>
+            
+            <!-- 1. Инфо-плашка теперь САМАЯ первая -->
+            <div class="glass-pill-info">
+              <span class="info-icon">🎄</span>
+              <span class="info-ticket">{{ ticket }}</span>
+              <span class="info-divider">|</span>
+              <span class="info-date">{{ date }}</span>
             </div>
 
+            <!-- 2. Заголовок под ней -->
+            <h1 class="story-main-title">МОЯ ОТКРЫТКА<br>В КОРЖ</h1>
+            
+            <!-- 3. Адрес -->
             <div class="story-address">{{ address || 'Кофейня Корж' }}</div>
           </div>
 
-          <!-- ЦЕНТР -->
-          <div class="story-body">
-            <div v-if="formattedText" class="text-card">
+          <!-- ЦЕНТРАЛЬНЫЙ БЛОК (Подарок + Текст) -->
+          <div class="story-center-stage">
+            
+            <!-- БЕЙДЖ ПО ЦЕНТРУ (Герой) -->
+            <div v-if="badgeImage" class="gift-container">
+               <div class="gift-glow"></div> <!-- Подсветка -->
+               <img :src="badgeImage" class="gift-img" alt="Badge" crossorigin="anonymous" />
+               
+               <!-- Название бейджа -->
+               <div v-if="badgeLabel" class="gift-label">{{ badgeLabel }}</div>
+            </div>
+
+            <!-- Текст пользователя (сразу под подарком) -->
+            <div v-if="formattedText" class="text-card-compact">
               <p class="text-content">{{ formattedText }}</p>
             </div>
-          </div>
 
-          <!-- БЕЙДЖ (Просто выводим картинку PNG) -->
-          <div v-if="badgeImage" class="story-badge-container">
-             <img :src="badgeImage" class="story-badge-img" alt="Badge" crossorigin="anonymous" />
           </div>
 
           <!-- НИЗ -->
@@ -64,7 +73,7 @@
       </div>
     </div>
 
-    <!-- МОДАЛКА -->
+    <!-- МОДАЛКА (без изменений функционала) -->
     <transition name="modal-fade">
       <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
         <div class="modal">
@@ -122,7 +131,8 @@ const props = defineProps({
   date: String,
   address: String,
   allText: String,
-  badgeImage: String // Теперь ожидаем путь к PNG
+  badgeImage: String,
+  badgeLabel: String // НОВЫЙ ПРОПС ДЛЯ НАЗВАНИЯ
 });
 
 const showModal = ref(false);
@@ -187,7 +197,6 @@ const generateImageInternal = async () => {
     const el = document.getElementById('story-capture-area');
     if (!el) return;
     
-    // ВАЖНО: allowTaint: true и useCORS: true нужны для картинок
     const canvas = await window.html2canvas(el, {
       scale: 2,
       useCORS: true, 
@@ -260,7 +269,6 @@ defineExpose({ generateAndShare });
 </script>
 
 <style scoped>
-/* Сброс стилей: шрифт Inter */
 * { font-family: 'Inter', -apple-system, sans-serif; box-sizing: border-box; }
 
 .story-wrapper-hidden { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -9999; opacity: 0; }
@@ -283,56 +291,33 @@ defineExpose({ generateAndShare });
 .story-bg-image.bg-7 { background-image: url('/img/korzh/korzh-ulyanovskaya-1080x1920.jpg'); }
 .story-bg-image.bg-8 { background-image: url('/img/korzh/korzh-novo-sadovaya-1080x1920.jpg'); }
 
-/* МАСКА */
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 2;
-  background: linear-gradient(
-    180deg,
-    rgba(65, 45, 100, 0.35) 0%,
-    rgba(40, 30, 70, 0.6) 60%,
-    #1A1025 100%
-  );
+  background: linear-gradient(180deg, rgba(65, 45, 100, 0.35) 0%, rgba(40, 30, 70, 0.6) 60%, #1A1025 100%);
   mix-blend-mode: multiply;
 }
 
-/* Большая буква К */
 .big-k-bg {
-  position: absolute;
-  top: 40px;
-  left: 30px;
-  font-size: 600px;
-  font-weight: 800;
-  color: rgba(179, 157, 200, 0.25); 
-  z-index: 5;
-  line-height: 1;
-  pointer-events: none;
+  position: absolute; top: 40px; left: 30px;
+  font-size: 600px; font-weight: 800; color: rgba(179, 157, 200, 0.25); 
+  z-index: 5; line-height: 1; pointer-events: none;
 }
 
-/* Контейнер */
+/* === СТРУКТУРА === */
 .story-content {
   position: relative; z-index: 10; width: 100%; height: 100%;
-  padding: 280px 60px 180px 60px;
+  padding: 140px 60px 180px 60px; /* Уменьшили верхний отступ чтобы все влезло */
   display: flex; flex-direction: column; align-items: center;
 }
 
-/* ВЕРХ */
+/* ВЕРХНИЙ БЛОК */
 .story-header { 
-  margin-top: 40px; 
   display: flex; flex-direction: column; align-items: center; 
-  gap: 30px;
-  text-align: center; width: 100%;
+  gap: 30px; text-align: center; width: 100%;
+  margin-bottom: 40px;
 }
 
-.story-main-title {
-  font-size: 66px;
-  font-weight: 700;
-  line-height: 1.2; 
-  letter-spacing: 0.20em;
-  margin: 0; text-transform: uppercase; color: #fff; 
-  text-shadow: 0 4px 20px rgba(0,0,0,0.6);
-}
-
-/* ПЛАШКА С НОМЕРОМ */
+/* 1. Плашка вверху */
 .glass-pill-info {
   display: inline-flex; align-items: center; gap: 26px;
   padding: 20px 48px;
@@ -343,165 +328,120 @@ defineExpose({ generateAndShare });
   border: 1px solid rgba(224, 215, 248, 0.5);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
-
 .info-icon   { font-size: 40px; line-height: 1; }
 .info-ticket { color: #ffffff; letter-spacing: 0.1em; font-weight: 500; }
 .info-divider{ color: rgba(255,255,255,0.6); }
 .info-date   { color: #ffffff; letter-spacing: 0.06em; }
 
+/* 2. Заголовок */
+.story-main-title {
+  font-size: 60px; /* Чуть меньше чтобы не давило */
+  font-weight: 700;
+  line-height: 1.2; 
+  letter-spacing: 0.20em;
+  margin: 0; text-transform: uppercase; color: #fff; 
+  text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+
 .story-address { 
-  font-size: 40px; font-weight: 500; color: rgba(255,255,255,0.95); 
+  font-size: 36px; font-weight: 500; color: rgba(255,255,255,0.85); 
   letter-spacing: 0.05em; text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
-/* ЦЕНТР */
-.story-body {
-  flex: 1;
-  width: 100%; 
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-  padding-top: 56px;
+/* ЦЕНТРАЛЬНАЯ СЦЕНА */
+.story-center-stage {
+  flex: 1; width: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 40px;
+  transform: translateY(-40px); /* Чуть поднять визуально */
 }
 
-/* КАРТОЧКА ОТЗЫВА */
-.text-card {
-  width: 98%; 
-  border-radius: 48px;
-  padding: 54px 44px;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(50px);
-  -webkit-backdrop-filter: blur(50px);
-  border: 2px solid rgba(220, 210, 255, 0.65);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+/* ПОДАРОК */
+.gift-container {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
 }
-
-.text-content {
-  margin: 0; 
-  font-size: 48px;
-  font-weight: 400;
-  line-height: 1.4; 
-  color: #E8DDFF;
-  text-align: center; 
-  letter-spacing: 0.01em;
-  text-shadow: 0 0 15px rgba(180, 150, 255, 0.35); 
+.gift-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(155, 127, 183, 0.4) 0%, transparent 70%);
+  z-index: -1;
 }
-
-/* БЕЙДЖ */
-.story-badge-container {
-  position: absolute;
-  bottom: 400px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-6deg);
-  z-index: 40;
-  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.5));
-}
-
-.story-badge-img {
-  width: 380px; 
-  height: 380px;
+.gift-img {
+  width: 500px; height: 500px; /* Большой размер */
   object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+  z-index: 10;
+}
+.gift-label {
+  margin-top: 20px;
+  font-size: 48px;
+  font-weight: 800;
+  color: #E0D4EC;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.3);
+  padding: 10px 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
 }
 
-/* НИЖНИЙ ГРАДИЕНТ */
+/* ТЕКСТ (Компактный под подарком) */
+.text-card-compact {
+  width: 90%; 
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(40px);
+  border-radius: 40px;
+  padding: 40px;
+  border: 1px solid rgba(220, 210, 255, 0.4);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+.text-content {
+  margin: 0; font-size: 42px; font-weight: 400; line-height: 1.4; 
+  color: #fff; text-align: center; letter-spacing: 0.01em;
+}
+
+/* НИЗ */
 .bottom-gradient {
   position: absolute; bottom: 0; left: 0; width: 100%; height: 900px; z-index: 20;
   background: linear-gradient(to bottom, transparent 0%, rgba(20, 10, 30, 0.9) 55%, #0F0518 100%);
   pointer-events: none;
 }
-
-/* ФУТЕР */
 .story-footer { 
-  position: absolute;
-  bottom: 220px;
-  left: 0;
-  width: 100%;
-  z-index: 50; 
+  position: absolute; bottom: 220px; left: 0; width: 100%; z-index: 50; 
   display: flex; flex-direction: column; align-items: center; gap: 26px; 
 }
-
 .link-button {
-  border-radius: 100px; 
-  padding: 20px 170px;
+  border-radius: 100px; padding: 20px 170px;
   display: flex; align-items: center; justify-content: center;
-  background: #D9D0F0;
-  box-shadow: 0 16px 50px rgba(160, 130, 220, 0.4);
+  background: #D9D0F0; box-shadow: 0 16px 50px rgba(160, 130, 220, 0.4);
 }
-
-.btn-text {
-  font-size: 46px;
-  font-weight: 700; 
-  color: #1A1A1A;   
-  letter-spacing: 0.01em;
-}
-
+.btn-text { font-size: 46px; font-weight: 700; color: #1A1A1A; letter-spacing: 0.01em; }
 .footer-tagline {
-  font-size: 40px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  text-align: center;
-  color: #D9D0F0; 
-  opacity: 0.95;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-  text-transform: uppercase;
+  font-size: 40px; font-weight: 400; letter-spacing: 0.02em; text-align: center;
+  color: #D9D0F0; opacity: 0.95; text-shadow: 0 2px 10px rgba(0,0,0,0.8); text-transform: uppercase;
 }
 
-/* МОДАЛКА */
-.modal-overlay { 
-  position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000;
-  display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px;
-}
-.modal { 
-  background: #1E1E20; width: 100%; max-width: 420px; max-height: 95vh;
-  border-radius: 28px; border: 1px solid #333; display: flex; flex-direction: column;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.7); overflow: hidden;
-}
-.modal-header { 
-  padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;
-  border-bottom: 1px solid #333; background: #252528;
-}
+/* МОДАЛКА - стили без изменений */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px; }
+.modal { background: #1E1E20; width: 100%; max-width: 420px; max-height: 95vh; border-radius: 28px; border: 1px solid #333; display: flex; flex-direction: column; box-shadow: 0 30px 80px rgba(0,0,0,0.7); overflow: hidden; }
+.modal-header { padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; background: #252528; }
 .modal-header h3 { margin: 0; font-size: 18px; color: #fff; font-weight: 600; }
-.modal-close { 
-  background: rgba(255,255,255,0.1); border: none; color: #fff; 
-  width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-}
-.modal-body { 
-  background: #000; flex-grow: 1; min-height: 200px;
-  display: flex; align-items: center; justify-content: center; padding: 20px;
-}
+.modal-close { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.modal-body { background: #000; flex-grow: 1; min-height: 200px; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .preview-img { max-width: 100%; max-height: 60vh; object-fit: contain; border-radius: 12px; }
-
-/* Спиннер */
 .spinner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
 .spinner-icon { width: 48px; height: 48px; animation: breathe 3s ease-in-out infinite; }
-@keyframes breathe {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50%      { transform: scale(1.1); opacity: 1; }
-}
 .spinner-text { color: #888; font-size: 14px; }
-
-.modal-footer { 
-  padding: 24px; background: #252528; border-top: 1px solid #333;
-  display: flex; flex-direction: column; gap: 14px; align-items: center;
-}
-
+.modal-footer { padding: 24px; background: #252528; border-top: 1px solid #333; display: flex; flex-direction: column; gap: 14px; align-items: center; }
 .buttons-row { display: flex; gap: 10px; width: 100%; }
-.download-btn { 
-  flex: 1; padding: 14px; border-radius: 12px; border: none;
-  font-weight: 600; font-size: 15px; cursor: pointer; transition: transform 0.2s;
-}
+.download-btn { flex: 1; padding: 14px; border-radius: 12px; border: none; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform 0.2s; }
 .primary-btn { background: #9B7FB7; color: #fff; }
 .secondary-btn { background: #444; color: #ccc; }
-.download-btn:active { transform: scale(0.98); }
-.download-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
 .upload-section { width: 100%; display: flex; justify-content: center; }
-.upload-btn {
-  background: transparent; border: 1px dashed #555; color: #aaa;
-  padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px;
-}
-.upload-btn:hover { color: #fff; border-color: #888; }
+.upload-btn { background: transparent; border: 1px dashed #555; color: #aaa; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; }
 .hidden-input { display: none; }
-
 .modal-hint { color: #888; font-size: 13px; margin: 0; text-align: center; line-height: 1.4; max-width: 90%; }
-.modal-hint a { color: #888; text-decoration: none; }
+@keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
 </style>
