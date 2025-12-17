@@ -42,9 +42,9 @@ const genderThemeClass = computed(() => {
 
 // Карточки
 const cardTypes = [
-  { id: 'badge1', label: 'Сигналка', image: '/korzh_badge.svg' },
-  { id: 'badge2', label: 'Круассанчик', image: '/korzh_badge.svg' },
-  { id: 'badge3', label: 'Котик', image: '/korzh_badge.svg' }
+  { id: 'badge1', label: 'Сигналка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
+  { id: 'badge2', label: 'Круассанчик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
+  { id: 'badge3', label: 'Котик', image: '/img/korzh/badge/korzh-cffx-cup.png' }
 ]
 
 // Трекинг тачей (скролл vs клик)
