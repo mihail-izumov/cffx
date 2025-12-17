@@ -14,7 +14,6 @@ const rawTicketNumber = ref('000')
 const formattedTicketNumber = ref('000')
 const currentDate = ref('')
 
-// 1) ЗАМЕНА НА badge1, badge2, badge3
 const badgeCounts = reactive({
   badge1: 0,
   badge2: 0,
@@ -41,14 +40,14 @@ const genderThemeClass = computed(() => {
   return selectedGender.value === 'female' ? 'kzh-theme-female' : 'kzh-theme-male'
 })
 
-// Карточки (ID обновлены)
+// Карточки
 const cardTypes = [
   { id: 'badge1', label: 'Вкус' },
   { id: 'badge2', label: 'Сервис' },
   { id: 'badge3', label: 'Атмосфера' }
 ]
 
-// ЛОГИКА АВТО-ДОБАВЛЕНИЯ ТЕКСТА
+// 2) ЛОГИКА ПЕРЕКЛЮЧЕНИЯ (С ФИКСОМ ДЛЯ МОБАЙЛА)
 function toggleCard(id) {
   const oldLabel = form.badge ? cardTypes.find(c => c.id === form.badge)?.label : null;
   const newLabel = cardTypes.find(c => c.id === id)?.label;
@@ -61,16 +60,25 @@ function toggleCard(id) {
     }
   }
 
-  // 6) ЛОГИКА СНЯТИЯ ВЫДЕЛЕНИЯ
-  // Если нажали на ту же самую -> сбрасываем
+  // Логика переключения
   if (form.badge === id) {
-    form.badge = '';
+    // Если клик по уже активной - снимаем активность
+    // SetTimeout помогает на мобильных устройствах корректно обработать "снятие"
+    setTimeout(() => {
+       form.badge = '';
+    }, 10);
   } else {
-    // Иначе выбираем новую
+    // Активируем новую
     form.badge = id;
     const newPhrase = `Дарю: ${newLabel} `;
     form.emotionalRelease = newPhrase + form.emotionalRelease;
   }
+}
+
+// Хелпер для тач-событий (чтобы предотвратить двойные срабатывания)
+function handleCardTouch(id, event) {
+  // Блокируем стандартный клик, если сработал тач, и вызываем логику
+  toggleCard(id);
 }
 
 function getDayOfYear() {
@@ -81,24 +89,25 @@ function getDayOfYear() {
   return Math.floor(diff / oneDay);
 }
 
-// 2) НОВЫЙ АЛГОРИТМ (Нарастающий итог с нуля)
+// 1) ИСПРАВЛЕННЫЙ АЛГОРИТМ (ДЕТЕРМИНИРОВАННЫЙ)
 function initBadgeCounts() {
   const day = getDayOfYear();
-  // Точка старта: 351 (примерно 17 декабря). 
-  // Если сейчас 351, то diff = 0.
-  // Завтра diff = 1.
-  const startDay = 351; 
+  const startDay = 351; // 17 декабря как точка отсчета
   const daysPassed = Math.max(0, day - startDay);
   
-  // База растет на ~20 в день. Сегодня 0.
-  const growthBase = daysPassed * 20;
+  // База: растет одинаково для всех (25 кликов в день)
+  const growthBase = daysPassed * 25;
 
-  // Рандомное распределение (чтобы не было одинаково, но и без аутсайдеров)
-  // Добавляем от 5 до 15 кликов "сегодняшних"
-  const rand1 = Math.floor(Math.random() * 10) + 5;
-  const rand2 = Math.floor(Math.random() * 10) + 5;
-  const rand3 = Math.floor(Math.random() * 10) + 5;
+  // Временная добавка (чтобы цифры росли в течение дня)
+  const now = new Date();
+  const timeBonus = Math.floor(now.getHours() + (now.getMinutes() / 2));
 
+  // Фиксированные смещения, чтобы цифры отличались друг от друга, 
+  // но были одинаковыми у всех пользователей
+  // badge1 (Вкус): +12
+  // badge2 (Сервис): +5
+  // badge3 (Атмосфера): +18
+  
   const savedLocal = localStorage.getItem('korzh_user_clicks');
   let userClicks = { badge1: 0, badge2: 0, badge3: 0 };
   
@@ -108,9 +117,10 @@ function initBadgeCounts() {
     } catch (e) { console.error(e) }
   }
 
-  badgeCounts.badge1 = growthBase + rand1 + (userClicks.badge1 || 0);
-  badgeCounts.badge2 = growthBase + rand2 + (userClicks.badge2 || 0);
-  badgeCounts.badge3 = growthBase + rand3 + (userClicks.badge3 || 0);
+  // Итоговая формула: (Дни * 25) + (Часы) + ФиксСмещение + ЛичныеКлики
+  badgeCounts.badge1 = growthBase + timeBonus + 12 + (userClicks.badge1 || 0);
+  badgeCounts.badge2 = growthBase + timeBonus + 5 + (userClicks.badge2 || 0);
+  badgeCounts.badge3 = growthBase + timeBonus + 18 + (userClicks.badge3 || 0);
 }
 
 function incrementBadgeCount(id) {
@@ -243,8 +253,6 @@ function filterInitialSuggestions() {
     !currentText.includes(phrase.toLowerCase())
   );
 
-  // 7) ПЕРЕЗАПУСК ЦИКЛА
-  // Если все использовали - показываем снова все
   if (filtered.length === 0) {
     currentSuggestions.emotions = [...allInitial];
   } else {
@@ -270,15 +278,12 @@ function onGenderClick(gender) {
 
 function isInitialSuggestions(suggestionType) {
   if (suggestionType !== 'emotions') return false
-  // Мы считаем список "начальным", если в нем есть хотя бы один элемент из initial
-  // ИЛИ если мы только что его сбросили (он полный)
   const initialSet = new Set(suggestions.value.emotions.initial);
   return currentSuggestions.emotions.some(s => initialSet.has(s));
 }
 
 function resetSuggestions(suggestionType) {
   if (suggestionType !== 'emotions') return
-  // Принудительный сброс на полный список (новый цикл)
   currentSuggestions.emotions = [...suggestions.value.emotions.initial];
 }
 
@@ -493,9 +498,7 @@ const handleShareClick = () => {
 
       <div class="kzh-form-section">
         
-        <!-- 9) УВЕЛИЧЕННЫЙ ОТСТУП СНИЗУ -->
         <div class="kzh-location-pure">
-          <!-- 8) ИКОНКА ШЕВРОНА В ОБЕРТКЕ -->
           <div class="kzh-select-wrapper">
              <select v-model="form.coffeeShopAddress" class="kzh-address-select" required>
                <option value="Все кофейни">Все кофейни</option>
@@ -514,7 +517,8 @@ const handleShareClick = () => {
           </div>
         </div>
 
-         <div class="kzh-cards-label">Отправьте подарок</div>
+         <!-- 5) НОВЫЙ ЗАГОЛОВОК -->
+         <div class="kzh-cards-label first-label">Выберите подарок</div>
          <div class="kzh-cards-container">
            <div class="kzh-cards-grid">
              <div 
@@ -523,6 +527,7 @@ const handleShareClick = () => {
                class="kzh-card"
                :class="{ 'is-active': form.badge === card.id }"
                @click="toggleCard(card.id)"
+               @touchend.prevent="handleCardTouch(card.id, $event)"
              >
                 <div class="kzh-card-icon">
                    <img src="/korzh_badge.svg" alt="" />
@@ -702,7 +707,7 @@ const handleShareClick = () => {
 }
 
 /* === СЕЛЕКТ И ИКОНКА === */
-.kzh-location-pure { width: 100%; margin-bottom: 24px; /* Увеличил отступ */ }
+.kzh-location-pure { width: 100%; margin-bottom: 24px; }
 
 .kzh-select-wrapper {
   position: relative;
@@ -720,7 +725,7 @@ const handleShareClick = () => {
   transition: all 0.3s ease;
   font-family: var(--kzh-font-sans);
   cursor: pointer;
-  appearance: none; /* Убираем стандартную стрелку */
+  appearance: none;
   -webkit-appearance: none;
 }
 .kzh-address-select:focus {
@@ -748,12 +753,20 @@ const handleShareClick = () => {
 }
 
 /* === КАРТОЧКИ === */
+/* 4) СТИЛЬ ЗАГОЛОВКОВ */
 .kzh-cards-label {
-  font-size: 0.9rem;
+  font-size: 1.1rem; /* Больше */
   font-weight: 600;
-  color: #bbb;
-  margin-bottom: 8px; /* Прижал ближе */
+  color: #fff; /* Белый */
+  margin-bottom: 8px;
   text-align: center;
+}
+
+/* 3) ПРИЖИМАЕМ ВЕРХНИЙ ЗАГОЛОВОК */
+.first-label {
+  margin-bottom: -12px; /* Отрицательный отступ для десктопа */
+  position: relative;
+  z-index: 5; /* Поверх карточек, если вдруг наедет */
 }
 
 .kzh-cards-container {
@@ -785,13 +798,14 @@ const handleShareClick = () => {
   backdrop-filter: blur(10px);
 }
 
+/* 6) ГРАДИЕНТ 30% */
 .kzh-card::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 50%; 
+  height: 30%; 
   background: linear-gradient(to bottom, transparent 0%, rgba(30, 30, 32, 0.6) 40%, #1e1e20 100%);
   z-index: 1;
   pointer-events: none;
@@ -908,7 +922,6 @@ textarea {
   transition: all 0.3s ease;
   font-family: var(--kzh-font-sans);
   user-select: text !important;
-  /* 4) УБИРАЕМ БЕЛУЮ ТОЧКУ */
   resize: none; 
 }
 
@@ -965,15 +978,12 @@ textarea {
   transform: scale(1.05);
 }
 
-/* 3) КНОПКА СБРОС (РЕДКИЙ ПУНКТИР) */
 .kzh-reset-bubble {
   font-weight: 600;
   opacity: 0.8;
   border-width: 1px !important; 
   border-style: dashed !important;
   border-color: rgba(255,255,255,0.4) !important;
-  /* Увеличиваем разряженность через dasharray не выйдет в border, 
-     но визуально 1px и цвет помогут. Либо можно юзать background-image, но это оверхед. */
 }
 
 .kzh-example-hint {
@@ -1130,6 +1140,11 @@ textarea {
   .kzh-card {
     min-width: 140px; 
     width: 140px;
+  }
+  
+  /* Прижимаем сильнее на мобилке (-16px) */
+  .first-label {
+    margin-bottom: -16px; 
   }
 
   textarea { min-height: 180px; }
