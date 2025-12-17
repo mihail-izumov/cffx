@@ -2,31 +2,32 @@
 import { reactive, ref, computed, onMounted, onUnmounted } from 'vue'
 import KorzhStoryGenerator from './KorzhStoryGenerator.vue'
 
+// Данные формы
 const form = reactive({
   coffeeShopAddress: '',
   emotionalRelease: '',
-  badge: '' // выбранная карточка
+  badge: '' 
 })
 
 const isSubmitting = ref(false)
 const submittedTime = ref('')
-const formSubmitted = ref(false)
 const rawTicketNumber = ref(null)
 const formattedTicketNumber = ref(null)
 const currentDate = ref('')
 
 // Ротация вопросов
-const activeRotator = ref(0)
+const activeRotator = ref(0) 
 
-// Гендер
-const selectedGender = ref('female')
+// Гендер (по умолчанию женский)
+const selectedGender = ref('female') 
 const showInfoModal = ref(false)
 
-const genderClass = computed(() => {
-  return selectedGender.value === 'female' ? 'korzhcard-gender-female' : 'korzhcard-gender-male'
+// Динамические классы для цветов гендера
+const genderThemeClass = computed(() => {
+  return selectedGender.value === 'female' ? 'kzh-theme-female' : 'kzh-theme-male'
 })
 
-// КАРТОЧКИ (бейджи)
+// === КАРТОЧКИ ===
 const cardTypes = [
   { id: 'taste', label: 'Вкус' },
   { id: 'service', label: 'Сервис' },
@@ -35,18 +36,18 @@ const cardTypes = [
 
 function toggleCard(id) {
   if (form.badge === id) {
-    form.badge = '' // повторный клик снимает выбор
+    form.badge = '' 
   } else {
-    form.badge = id // выбираем одну карточку
+    form.badge = id 
   }
 }
 
-// ПОДСКАЗКИ
+// === СИСТЕМА ПОДСКАЗОК ===
 const baseSuggestions = {
   female: {
     emotions: {
       initial: [
-        'поздравляю', 'желаю', 'шлю', 'дарю',
+        'поздравляю', 'желаю', 'шлю', 'дарю', 
         'наслаждаюсь', 'ловлю', 'официально заявляю', 'признаюсь',
         'мой муд', 'виновата', 'вместо психолога', 'этот кофе'
       ],
@@ -67,7 +68,7 @@ const baseSuggestions = {
   male: {
     emotions: {
       initial: [
-        'поздравляю', 'желаю', 'шлю', 'дарю',
+        'поздравляю', 'желаю', 'шлю', 'дарю', 
         'кайфую от', 'ловлю', 'официально заявляю', 'признаюсь',
         'мой муд', 'виноват', 'вместо психолога', 'этот кофе'
       ],
@@ -182,7 +183,7 @@ const baseSuggestions = {
       'хочу на ручки': ['и кофе', 'и шоколадку', 'прямо сейчас', 'и заботы']
     }
   }
-}
+};
 
 const suggestions = computed(() => {
   const gender = selectedGender.value
@@ -195,21 +196,21 @@ const suggestions = computed(() => {
 })
 
 const currentSuggestions = reactive({
-  emotions: []
+  emotions: [],
 })
 
 const selectedSuggestions = reactive({
-  emotions: []
+  emotions: [],
 })
 
 const branchCounters = reactive({
-  emotions: 0
+  emotions: 0,
 })
 
 const phrasesForQuestion1 = [
-  'Как ты себя чувствуешь?',
-  'Что у тебя на душе?',
-  'Какое настроение?'
+  "Как ты себя чувствуешь?",
+  "Что у тебя на душе?",
+  "Какое настроение?"
 ]
 
 const currentQuestion1 = ref(phrasesForQuestion1[0])
@@ -229,9 +230,7 @@ function onGenderClick(gender) {
 
 function isInitialSuggestions(suggestionType) {
   if (suggestionType !== 'emotions') return false
-  return JSON.stringify(currentSuggestions.emotions) === JSON.stringify(
-    suggestions.value.emotions.initial
-  )
+  return JSON.stringify(currentSuggestions.emotions) === JSON.stringify(suggestions.value.emotions.initial)
 }
 
 function resetSuggestions(suggestionType) {
@@ -247,18 +246,13 @@ function selectSuggestion(fieldName, suggestion, suggestionType) {
 
   if (currentText) {
     if (isNewBranch) {
-      form[fieldName] =
-        currentText +
-        '. ' +
-        suggestion.charAt(0).toUpperCase() +
-        suggestion.slice(1)
+      form[fieldName] = currentText + ". " + suggestion.charAt(0).toUpperCase() + suggestion.slice(1)
       branchCounters[suggestionType]++
     } else {
-      form[fieldName] = currentText + ' ' + suggestion
+      form[fieldName] = currentText + " " + suggestion
     }
   } else {
-    form[fieldName] =
-      suggestion.charAt(0).toUpperCase() + suggestion.slice(1)
+    form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1)
     branchCounters[suggestionType] = 1
   }
 
@@ -273,20 +267,17 @@ function updateSuggestions(suggestionType, selectedWord) {
   if (nextSuggestions && nextSuggestions.length > 0) {
     currentSuggestions[suggestionType] = [...nextSuggestions]
   } else {
-    currentSuggestions[suggestionType] = [
-      ...suggestions.value[suggestionType].initial
-    ]
+    currentSuggestions[suggestionType] = [...suggestions.value[suggestionType].initial]
   }
 }
 
 function startRotation(questionNum) {
   stopRotation()
   activeRotator.value = questionNum
-
+  
   if (questionNum === 1) {
     rotationInterval = setInterval(() => {
-      currentQuestionIndex1 =
-        (currentQuestionIndex1 + 1) % phrasesForQuestion1.length
+      currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length
       currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1]
     }, 3000)
   }
@@ -297,12 +288,9 @@ function stopRotation() {
   activeRotator.value = 0
 }
 
-// Валидация: адрес + эмоции
 const isFormValid = computed(() => {
-  return (
-    form.coffeeShopAddress.trim().length > 0 &&
-    form.emotionalRelease.trim().length > 0
-  )
+  return form.coffeeShopAddress.trim().length > 0 && 
+         form.emotionalRelease.trim().length > 0
 })
 
 async function submitForm() {
@@ -317,21 +305,16 @@ async function submitForm() {
   const hours = String(now.getHours()).padStart(2, '0')
   const minutes = String(now.getMinutes()).padStart(2, '0')
   const seconds = String(now.getSeconds()).padStart(2, '0')
-
+  
   submittedTime.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 
   let clientId = localStorage.getItem('signalclientid')
   if (!clientId) {
-    clientId =
-      'client_' +
-      Math.random().toString(36).substring(2, 15) +
-      '_' +
-      Date.now()
+    clientId = 'client_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now()
     localStorage.setItem('signalclientid', clientId)
   }
 
-  const APIENDPOINT =
-    'https://script.google.com/macros/s/AKfycbyO-bEv334omRz4i9Dsa4QRMQqx5Wj-67nIbEtLT6suK6MJu7myE1gpjGl7Gc7w0IeeNg/exec'
+  const APIENDPOINT = 'https://script.google.com/macros/s/AKfycbyO-bEv334omRz4i9Dsa4QRMQqx5Wj-67nIbEtLT6suK6MJu7myE1gpjGl7Gc7w0IeeNg/exec'
 
   const formData = new FormData()
   formData.append('referer', window.location.origin)
@@ -342,7 +325,7 @@ async function submitForm() {
   formData.append('coffeehouse', form.coffeeShopAddress)
   formData.append('emotionalRelease', form.emotionalRelease)
   formData.append('badge', form.badge)
-
+  
   formData.append('name', '')
   formData.append('telegram', '')
   formData.append('factualAnalysis', '')
@@ -357,16 +340,17 @@ async function submitForm() {
 
     if (result.status === 'success' || result.processed) {
       console.log('Success:', result)
-      formSubmitted.value = true
+      // ВМЕСТО ЭКРАНА УСПЕХА СРАЗУ ЗАПУСКАЕМ ГЕНЕРАТОР
+      handleShareClick()
     } else {
       throw new Error(result.message)
     }
   } catch (error) {
     console.error('Submission error:', error)
     if (error.message && error.message.includes('quota')) {
-      alert('Слишком много запросов. Подождите пару минут.')
+       alert('Слишком много запросов. Подождите пару минут.')
     } else {
-      alert('Ошибка при отправке. Попробуйте еще раз.')
+       alert('Ошибка при отправке. Попробуйте еще раз.')
     }
   } finally {
     isSubmitting.value = false
@@ -374,13 +358,8 @@ async function submitForm() {
 }
 
 onMounted(() => {
-  rawTicketNumber.value = String(
-    Math.floor(Math.random() * 900000) + 100000
-  )
-  formattedTicketNumber.value =
-    rawTicketNumber.value.slice(0, 3) +
-    '-' +
-    rawTicketNumber.value.slice(3)
+  rawTicketNumber.value = String(Math.floor(Math.random() * 900000) + 100000)
+  formattedTicketNumber.value = rawTicketNumber.value.slice(0, 3) + '-' + rawTicketNumber.value.slice(3)
 
   const now = new Date()
   const day = String(now.getDate()).padStart(2, '0')
@@ -390,7 +369,7 @@ onMounted(() => {
   const minutes = String(now.getMinutes()).padStart(2, '0')
   const seconds = String(now.getSeconds()).padStart(2, '0')
   currentDate.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-
+  
   initializeSuggestions()
 })
 
@@ -407,127 +386,59 @@ const handleShareClick = () => {
 </script>
 
 <template>
-  <div class="korzhcard-form-wrapper">
-    <!-- 1. Success Message Wrapper -->
-    <div v-if="formSubmitted" class="korzhcard-success-message">
-      <div class="korzhcard-success-text">
-        <h3>Принято!</h3>
-        <p>Ваш сигнал: <strong>{{ formattedTicketNumber }}</strong></p>
-      </div>
-
-      <div class="korzhcard-success-actions">
-        <a
-          :href="`https://t.me/AnnaSignal?text=${rawTicketNumber}`"
-          target="_blank"
-          class="korzhcard-telegram-button"
-        >
-          Написать в Telegram
-        </a>
-
-        <button
-          type="button"
-          @click="handleShareClick"
-          class="korzhcard-share-btn"
-        >
-          Поделиться
-        </button>
-      </div>
-
-      <div>
-        <a
-          href="/signals"
-          target="_blank"
-          class="korzhcard-secondary-link"
-        >
-          Вернуться
-        </a>
-      </div>
-    </div>
-
-    <!-- 2. Form Wrapper -->
-    <form v-else @submit.prevent="submitForm">
-      <div class="korzhcard-form-header">
-        <div class="korzhcard-form-title">Открытка в Корж</div>
-        <div class="korzhcard-tech-info">
-          <span class="korzhcard-info-item">{{ currentDate }}</span>
-          <span class="korzhcard-info-item korzhcard-ticket-display">
-            {{ formattedTicketNumber }}
-          </span>
+  <div class="kzh-form-wrapper" :class="genderThemeClass">
+    
+    <form @submit.prevent="submitForm">
+      <div class="kzh-form-header">
+        <div class="kzh-form-title">Открытка в Корж</div>
+        <div class="kzh-tech-info">
+          <span class="kzh-info-item">{{ currentDate }}</span>
+          <span class="kzh-info-item kzh-ticket-display">{{ formattedTicketNumber }}</span>
         </div>
       </div>
 
-      <div class="korzhcard-form-section">
-        <!-- ЕДИНСТВЕННЫЙ РАЗДЕЛИТЕЛЬ -->
-        <div class="korzhcard-separator-line"></div>
+      <div class="kzh-form-section">
+        
+        <!-- 1. ЛОКАЦИЯ (ПОДНЯТА ВВЕРХ) -->
+        <div class="kzh-location-pure">
+          <select v-model="form.coffeeShopAddress" class="kzh-address-select" required>
+            <option value="" disabled>Выберите точку</option>
+            <option value="Кофе, 103">Кофе, 103</option>
+            <option value="Кофе, 30">Кофе, 30</option>
+            <option value="Кофе, 101">Кофе, 101</option>
+            <option value="9 Просека 5-я линия, 3">9 Просека 5-я линия, 3</option>
+            <option value="Кофе, 270">Кофе, 270</option>
+            <option value="Кофе, 22">Кофе, 22</option>
+            <option value="Кофе, 19">Кофе, 19</option>
+            <option value="Садовая-Спасская, 106">Садовая-Спасская, 106</option>
+          </select>
+        </div>
 
-        <!-- ЛОКАЦИЯ: только селект -->
-        <select
-          v-model="form.coffeeShopAddress"
-          class="korzhcard-address-select"
-          required
-        >
-          <option value="" disabled>Выберите точку</option>
-          <option value="Кофе, 103">Кофе, 103</option>
-          <option value="Кофе, 30">Кофе, 30</option>
-          <option value="Кофе, 101">Кофе, 101</option>
-          <option value="9 Просека 5-я линия, 3">
-            9 Просека 5-я линия, 3
-          </option>
-          <option value="Кофе, 270">Кофе, 270</option>
-          <option value="Кофе, 22">Кофе, 22</option>
-          <option value="Кофе, 19">Кофе, 19</option>
-          <option value="Садовая-Спасская, 106">
-            Садовая-Спасская, 106
-          </option>
-        </select>
+        <div class="kzh-separator-line"></div>
 
-        <!-- БЛОК КАРТОЧЕК -->
-        <div class="korzhcard-cards-block">
-          <div class="korzhcard-cards-title">Отправьте подарок</div>
-
-          <div class="korzhcard-cards-grid">
-            <div
-              v-for="card in cardTypes"
-              :key="card.id"
-              class="korzhcard-card"
-              :class="{
-                'is-active': form.badge === card.id,
-                'korzhcard-card-female': selectedGender === 'female',
-                'korzhcard-card-male': selectedGender === 'male'
-              }"
-              :style="{
-                '--korzhcard-gender-color':
-                  selectedGender === 'female' ? '#ff69b4' : '#87ceeb'
-              }"
-              @click="toggleCard(card.id)"
-            >
-              <div class="korzhcard-card-inner">
-                <div class="korzhcard-card-icon">
-                  <img src="/korzh_badge.svg" alt="" />
-                </div>
-                <div class="korzhcard-card-label">
-                  {{ card.label }}
-                </div>
+        <!-- 2. КАРТОЧКИ -->
+         <div class="kzh-cards-label">Отправьте подарок</div>
+         <div class="kzh-cards-grid">
+           <div 
+             v-for="card in cardTypes" 
+             :key="card.id"
+             class="kzh-card"
+             :class="{ 'is-active': form.badge === card.id }"
+             @click="toggleCard(card.id)"
+           >
+              <div class="kzh-card-icon">
+                 <img src="/korzh_badge.svg" alt="" />
               </div>
-            </div>
-          </div>
+              <div class="kzh-card-label">{{ card.label }}</div>
+           </div>
         </div>
 
-        <!-- ЭМОЦИИ -->
-        <div
-          class="korzhcard-question-block"
-          :class="genderClass"
-          style="--accent-color: #A972FF;"
-        >
-          <div class="korzhcard-rotating-phrase-container">
-            <transition name="korzhcard-fade" mode="out-in">
-              <p
-                :key="currentQuestion1"
-                class="korzhcard-question-label"
-              >
-                {{ currentQuestion1 }}
-              </p>
-            </transition>
+        <!-- 3. ТЕКСТОВЫЙ БЛОК -->
+        <div class="kzh-question-block" :class="genderThemeClass">
+          <div class="kzh-rotating-phrase-container">
+             <transition name="kzh-fade" mode="out-in">
+               <p :key="currentQuestion1" class="kzh-question-label">{{ currentQuestion1 }}</p>
+             </transition>
           </div>
 
           <textarea
@@ -537,147 +448,113 @@ const handleShareClick = () => {
             placeholder="Нажмите на слова ниже или пишите сами..."
           ></textarea>
 
-          <div class="korzhcard-suggestions-container">
-            <div
-              v-for="suggestion in currentSuggestions.emotions"
-              :key="suggestion"
-              class="korzhcard-suggestion-bubble korzhcard-emotion-bubble"
-              @click="
-                selectSuggestion(
-                  'emotionalRelease',
-                  suggestion,
-                  'emotions'
-                )
-              "
+          <div class="kzh-suggestions-container">
+            <div 
+               v-for="suggestion in currentSuggestions.emotions" 
+               :key="suggestion"
+               class="kzh-suggestion-bubble kzh-emotion-bubble"
+               @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
             >
-              {{ suggestion }}
+               {{ suggestion }}
             </div>
-
-            <div
-              v-if="!isInitialSuggestions('emotions')"
-              class="korzhcard-suggestion-bubble korzhcard-reset-bubble korzhcard-emotion-bubble"
-              @click="resetSuggestions('emotions')"
+            
+            <div 
+               v-if="!isInitialSuggestions('emotions')"
+               class="kzh-suggestion-bubble kzh-reset-bubble kzh-emotion-bubble"
+               @click="resetSuggestions('emotions')"
             >
-              Сброс
+               Сброс
             </div>
           </div>
-
-          <p
-            class="korzhcard-example-hint"
-            v-html="'<b>Нажимайте</b>, чтобы строить фразы'"
-          ></p>
+          
+          <p class="kzh-example-hint" v-html="'<b>Нажимайте</b>, чтобы строить фразы'"></p>
         </div>
 
-        <!-- ИНФО + ПЕРЕКЛЮЧАТЕЛЬ ГЕНДЕРА (ПОД ПОДСКАЗКАМИ) -->
-        <div class="korzhcard-controls-row">
-          <button
-            type="button"
-            class="korzhcard-info-button"
+        <!-- 4. ГЕНДЕР И ИНФО -->
+        <div class="kzh-controls-row">
+          <button 
+            type="button" 
+            class="kzh-info-button"
             :class="[
-              selectedGender === 'female'
-                ? 'korzhcard-info-female'
-                : 'korzhcard-info-male'
+              selectedGender === 'female' ? 'kzh-info-female' : 'kzh-info-male'
             ]"
             @click="showInfoModal = true"
           >
             Инфо
           </button>
-
-          <div class="korzhcard-gender-switch">
-            <div class="korzhcard-gender-container">
-              <div
-                class="korzhcard-gender-btn korzhcard-gender-female"
-                :class="{
-                  'is-active': selectedGender === 'female'
-                }"
-                @click="onGenderClick('female')"
-              ></div>
-              <div
-                class="korzhcard-gender-btn korzhcard-gender-male"
-                :class="{
-                  'is-active': selectedGender === 'male'
-                }"
-                @click="onGenderClick('male')"
-              ></div>
-            </div>
+          
+          <div class="kzh-gender-switch">
+             <div class="kzh-gender-container">
+                <div 
+                   class="kzh-gender-btn kzh-gender-female"
+                   :class="{ 'is-active': selectedGender === 'female' }"
+                   @click="onGenderClick('female')"
+                ></div>
+                <div 
+                   class="kzh-gender-btn kzh-gender-male"
+                   :class="{ 'is-active': selectedGender === 'male' }"
+                   @click="onGenderClick('male')"
+                ></div>
+             </div>
           </div>
         </div>
+        
+        <!-- 5. МИКРО-ТЕКСТ ПОДСКАЗКИ -->
+        <p class="kzh-micro-hint">Выберите ваш пол и подсказки изменятся</p>
 
         <!-- МОДАЛКА ИНФО -->
-        <div
-          v-if="showInfoModal"
-          class="korzhcard-modal-overlay"
-          @click.self="showInfoModal = false"
-        >
-          <div class="korzhcard-modal">
-            <div class="korzhcard-modal-title">О Сигнале</div>
-            <div class="korzhcard-modal-body">
-              Это система прямой связи. Мы реагируем на каждый
-              сигнал в течение 24 часов.
-              <br /><br />
-              <a
-                href="https://cffx.ru/signals.html"
-                target="_blank"
-                class="korzhcard-modal-link"
-              >
-                Подробнее о системе
-              </a>
-            </div>
-            <div class="korzhcard-modal-footer">
-              <button
-                type="button"
-                class="korzhcard-modal-ok"
-                @click="showInfoModal = false"
-              >
-                Понятно
-              </button>
-            </div>
-          </div>
+        <div v-if="showInfoModal" class="kzh-modal-overlay" @click.self="showInfoModal = false">
+           <div class="kzh-modal">
+              <div class="kzh-modal-title">О Сигнале</div>
+              <div class="kzh-modal-body">
+                 Это система прямой связи. Мы реагируем на каждый сигнал в течение 24 часов.
+                 <br><br>
+                 <a href="https://cffx.ru/signals.html" target="_blank" class="kzh-modal-link">Подробнее о системе</a>
+              </div>
+              <div class="kzh-modal-footer">
+                 <button type="button" class="kzh-modal-ok" @click="showInfoModal = false">Понятно</button>
+              </div>
+           </div>
         </div>
 
-        <div
-          class="korzhcard-form-footer"
-          style="grid-template-areas: 'button';"
-        >
-          <div class="korzhcard-button-section">
-            <button
-              type="submit"
-              class="korzhcard-submit-btn"
-              :disabled="!isFormValid || isSubmitting"
-            >
-              {{ isSubmitting ? 'Отправка...' : 'Отправить сигнал' }}
-            </button>
-          </div>
+        <div class="kzh-form-footer">
+           <div class="kzh-button-section">
+              <!-- ТЕКСТ КНОПКИ: Создать открытку -->
+              <button
+                 type="submit"
+                 class="kzh-submit-btn"
+                 :disabled="!isFormValid || isSubmitting"
+              >
+                 {{ isSubmitting ? 'Отправка...' : 'Создать открытку' }}
+              </button>
+           </div>
         </div>
       </div>
     </form>
-
-    <!-- 3. Генератор истории -->
+    
     <KorzhStoryGenerator
-      ref="storyGeneratorRef"
-      :ticket="formattedTicketNumber"
-      :date="currentDate.split(' ')[0]"
-      :address="form.coffeeShopAddress"
-      :all-text="[form.emotionalRelease]
-        .filter(t => t && t.trim())
-        .join(' ')"
+       ref="storyGeneratorRef"
+       :ticket="formattedTicketNumber"
+       :date="currentDate.split(' ')[0]"
+       :address="form.coffeeShopAddress"
+       :all-text="[form.emotionalRelease].filter(t => t && t.trim()).join(' ')"
     />
   </div>
 </template>
 
 <style scoped>
 :root {
-  --korzhcard-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Helvetica, Arial, sans-serif;
-  --korzhcard-font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code',
-    'Droid Sans Mono', 'Source Code Pro', monospace;
+  --kzh-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --kzh-font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Code", "Droid Sans Mono", "Source Code Pro", monospace;
+  --kzh-color-female: #ff69b4;
+  --kzh-color-male: #87ceeb;
 }
 
-.korzhcard-form-wrapper {
-  font-family: var(--korzhcard-font-sans);
+.kzh-form-wrapper {
+  font-family: var(--kzh-font-sans);
   max-width: 640px;
   margin: 40px auto;
-  background-color: #1e1e20;
+  background-color: #1E1E20;
   border-radius: 24px;
   padding: 2rem;
   color: #f0f0f0;
@@ -685,7 +562,7 @@ const handleShareClick = () => {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-.korzhcard-form-header {
+.kzh-form-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -694,247 +571,163 @@ const handleShareClick = () => {
   border-bottom: 1px solid #2c2c2f;
 }
 
-.korzhcard-form-title {
+.kzh-form-title {
   font-size: 1.5rem;
   font-weight: 600;
   color: #fff;
   margin: 0;
 }
 
-.korzhcard-tech-info {
+.kzh-tech-info {
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-family: var(--korzhcard-font-mono);
+  font-family: var(--kzh-font-mono);
   font-size: 0.9rem;
   color: #888;
 }
 
-.korzhcard-info-item {
-  opacity: 0.9;
-}
-
-.korzhcard-ticket-display {
+.kzh-ticket-display {
   background-color: #2a2a2e;
   color: #9b7fb7;
   font-weight: 700;
   padding: 0.5rem 1rem;
   border-radius: 12px;
   letter-spacing: 1px;
-  font-family: var(--korzhcard-font-mono);
+  font-family: var(--kzh-font-mono);
 }
 
-.korzhcard-form-section {
+.kzh-form-section {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-/* ЕДИНСТВЕННЫЙ РАЗДЕЛИТЕЛЬ */
-.korzhcard-separator-line {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(44, 44, 47, 0) 0%,
-    rgba(44, 44, 47, 1) 50%,
-    rgba(44, 44, 47, 0) 100%
-  );
-  margin: 0 0 1rem 0;
-}
-
-/* Селект локаций */
-.korzhcard-address-select {
-  width: 100%;
-  background-color: #242426;
-  border: 1px solid #444;
-  border-radius: 10px;
-  padding: 0.75rem 1rem;
-  font-size: 0.95rem;
-  color: #f0f0f0;
-  transition: all 0.3s ease;
-  font-family: var(--korzhcard-font-sans);
-}
-
-.korzhcard-address-select:focus {
-  outline: none;
-  border-color: #b39dc8;
-  background-color: #2a2a2e;
-  box-shadow: 0 0 0 3px rgba(179, 157, 200, 0.2);
-}
-
-.korzhcard-address-select option {
-  background-color: #2a2a2e;
-  color: #f0f0f0;
-}
-
-/* КАРТОЧКИ БЕЙДЖЕЙ */
-.korzhcard-cards-block {
-  margin-top: 0.5rem;
-}
-
-.korzhcard-cards-title {
+/* === КАРТОЧКИ === */
+.kzh-cards-label {
   font-size: 0.9rem;
-  color: #aaa;
-  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: #bbb;
+  margin-bottom: 0.5rem;
+  text-align: center;
 }
 
-.korzhcard-cards-grid {
+.kzh-cards-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 0.5rem;
 }
 
-.korzhcard-card {
+.kzh-card {
   position: relative;
-  background: radial-gradient(
-      circle at top left,
-      rgba(255, 255, 255, 0.05),
-      transparent 55%
-    ),
-    #242426;
-  border-radius: 20px;
-  padding: 10px;
-  cursor: pointer;
-  transition: transform 0.35s ease, box-shadow 0.35s ease,
-    background 0.35s ease;
   aspect-ratio: 1 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-/* Метаморфоз‑обводка */
-.korzhcard-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: conic-gradient(
-    from 140deg,
-    rgba(255, 255, 255, 0) 0deg,
-    rgba(255, 255, 255, 0.02) 60deg,
-    color-mix(
-      in srgb,
-      var(--korzhcard-gender-color, #a972ff) 70%,
-      transparent
-    )
-      120deg,
-    rgba(255, 255, 255, 0.02) 210deg,
-    rgba(255, 255, 255, 0) 360deg
-  );
-  -webkit-mask: linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.6;
-  transform: scale(1);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: none;
-}
-
-.korzhcard-card-inner {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-  background: radial-gradient(
-      circle at bottom right,
-      rgba(169, 114, 255, 0.12),
-      transparent 55%
-    ),
-    rgba(36, 36, 38, 0.98);
+  background: rgba(42, 42, 46, 0.6);
+  border: 1px solid #3a3a3e;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
 }
 
-/* Картинка в 5 раз больше (с ограничением по карточке) */
-.korzhcard-card-icon img {
-  width: 200px;
-  height: 200px;
-  max-width: 80%;
-  max-height: 80%;
+/* ГРАДИЕНТНАЯ ПОДЛОЖКА (50%+ КАРТОЧКИ) */
+.kzh-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%; /* Перекрывает чуть больше половины */
+  background: linear-gradient(to bottom, transparent 0%, rgba(30, 30, 32, 0.9) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.kzh-card-icon img {
+  width: 120px;
+  height: 120px;
   display: block;
-  opacity: 0.9;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  opacity: 0.8;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  object-fit: contain;
+  /* Иконка должна быть под градиентом, но над фоном. 
+     В текущей структуре она внутри, а ::after сверху. */
+  z-index: 0;
 }
 
-.korzhcard-card-label {
-  font-size: 0.8rem;
-  color: #ffffff;
-  opacity: 0.55;
+/* Метаморфоз */
+.kzh-card:hover {
+  background: rgba(60, 60, 65, 0.4);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.kzh-card:hover .kzh-card-icon img {
+  transform: scale(1.15) rotate(5deg);
+  opacity: 1;
+  filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
+}
+
+.kzh-theme-female .kzh-card.is-active {
+  border-color: var(--kzh-color-female);
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.3), inset 0 0 20px rgba(255, 105, 180, 0.1);
+}
+
+.kzh-theme-male .kzh-card.is-active {
+  border-color: var(--kzh-color-male);
+  box-shadow: 0 0 20px rgba(135, 206, 235, 0.3), inset 0 0 20px rgba(135, 206, 235, 0.1);
+}
+
+.kzh-card.is-active .kzh-card-icon img {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.kzh-card-label {
+  position: absolute;
+  bottom: 12px;
+  font-size: 0.85rem;
+  color: #fff;
+  opacity: 0.7; /* Чуть ярче, так как на темном градиенте */
   font-weight: 500;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.3s ease;
+  z-index: 2; /* Поверх градиента */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
-/* Ховер и активное состояние — эффект метаморфоз */
-.korzhcard-card:hover,
-.korzhcard-card.is-active {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
-  background: radial-gradient(
-      circle at top left,
-      rgba(255, 255, 255, 0.08),
-      transparent 60%
-    ),
-    #27272a;
-}
-
-.korzhcard-card:hover::before,
-.korzhcard-card.is-active::before {
+.kzh-card:hover .kzh-card-label,
+.kzh-card.is-active .kzh-card-label {
   opacity: 1;
-  transform: scale(1.03);
-  animation: korzhcard-metaborder 2.4s linear infinite;
 }
 
-.korzhcard-card:hover .korzhcard-card-icon img,
-.korzhcard-card.is-active .korzhcard-card-icon img {
-  opacity: 1;
-  transform: scale(1.02);
+/* === ТЕКСТОВЫЙ БЛОК === */
+.kzh-question-block {
+  background-color: #2a2a2e;
+  border-radius: 16px;
+  padding: 1.25rem;
+  border: 1px solid #3a3a3e;
+  border-left: 4px solid #444; 
 }
 
-.korzhcard-card:hover .korzhcard-card-label,
-.korzhcard-card.is-active .korzhcard-card-label {
-  opacity: 0.95;
-  transform: translateY(1px);
-}
+.kzh-theme-female .kzh-question-block { border-left-color: var(--kzh-color-female); }
+.kzh-theme-male .kzh-question-block { border-left-color: var(--kzh-color-male); }
 
-/* Цвет бордера по гендеру (через переменную) */
-.korzhcard-card-female {
-  --korzhcard-gender-color: #ff69b4;
-}
-
-.korzhcard-card-male {
-  --korzhcard-gender-color: #87ceeb;
-}
-
-@keyframes korzhcard-metaborder {
-  0% {
-    transform: scale(1.03) rotate(0deg);
-  }
-  50% {
-    transform: scale(1.05) rotate(2deg);
-  }
-  100% {
-    transform: scale(1.03) rotate(0deg);
-  }
-}
-
-/* Ротирующий вопрос */
-.korzhcard-rotating-phrase-container {
-  height: 52px;
-  margin-bottom: 0.75rem;
+.kzh-rotating-phrase-container {
+  height: 24px;
+  margin-bottom: 0.5rem;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   overflow: hidden;
 }
 
-.korzhcard-question-label {
+.kzh-question-label {
   font-weight: 500;
   font-size: 1rem;
   margin: 0;
@@ -943,73 +736,11 @@ const handleShareClick = () => {
   width: 100%;
 }
 
-/* Транзишн для текста */
-.korzhcard-fade-enter-active,
-.korzhcard-fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-.korzhcard-fade-enter-from,
-.korzhcard-fade-leave-to {
-  opacity: 0;
-}
+.kzh-fade-enter-active, .kzh-fade-leave-active { transition: opacity 0.5s ease; }
+.kzh-fade-enter-from, .kzh-fade-leave-to { opacity: 0; }
 
-/* Блок с эмоциями */
-.korzhcard-question-block {
-  background-color: #2a2a2e;
-  border-radius: 16px;
-  padding: 1.25rem;
-  border: 1px solid #3a3a3e;
-  border-left: 4px solid var(--accent-color, #444);
-}
-
-/* Гендерные окраски */
-.korzhcard-question-block.korzhcard-gender-female {
-  border-left-color: #ff69b4 !important;
-}
-
-.korzhcard-question-block.korzhcard-gender-female
-  .korzhcard-emotion-bubble {
-  background: rgba(255, 105, 180, 0.1);
-  border-color: rgba(255, 105, 180, 0.3);
-  color: #ff69b4;
-}
-
-.korzhcard-question-block.korzhcard-gender-female
-  .korzhcard-emotion-bubble:hover {
-  background: #ff69b4;
-  color: #fff;
-}
-
-.korzhcard-question-block.korzhcard-gender-male {
-  border-left-color: #87ceeb !important;
-}
-
-.korzhcard-question-block.korzhcard-gender-male
-  .korzhcard-emotion-bubble {
-  background: rgba(135, 206, 235, 0.1);
-  border-color: rgba(135, 206, 235, 0.3);
-  color: #87ceeb;
-}
-
-.korzhcard-question-block.korzhcard-gender-male
-  .korzhcard-emotion-bubble:hover {
-  background: #87ceeb;
-  color: #000;
-}
-
-.korzhcard-question-block.korzhcard-gender-female textarea:focus {
-  border-color: #ff69b4 !important;
-  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2) !important;
-}
-
-.korzhcard-question-block.korzhcard-gender-male textarea:focus {
-  border-color: #87ceeb !important;
-  box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.2) !important;
-}
-
-/* Текстовые поля */
-textarea,
-input {
+textarea.kzh-address-select, 
+textarea {
   width: 100%;
   background-color: #242426;
   border: 1px solid #444;
@@ -1018,19 +749,23 @@ input {
   font-size: 0.95rem;
   color: #f0f0f0;
   transition: all 0.3s ease;
-  font-family: var(--korzhcard-font-sans);
+  font-family: var(--kzh-font-sans);
 }
 
-textarea:focus {
+.kzh-theme-female textarea:focus {
   outline: none;
-  border-color: var(--accent-color);
-  background-color: #2a2a2e;
-  box-shadow: 0 0 0 3px
-    color-mix(in srgb, var(--accent-color) 20%, transparent);
+  border-color: var(--kzh-color-female);
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2);
 }
 
-/* Подсказки */
-.korzhcard-suggestions-container {
+.kzh-theme-male textarea:focus {
+  outline: none;
+  border-color: var(--kzh-color-male);
+  box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.2);
+}
+
+/* === БАББЛЫ === */
+.kzh-suggestions-container {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -1038,7 +773,7 @@ textarea:focus {
   margin-bottom: 0.5rem;
 }
 
-.korzhcard-suggestion-bubble {
+.kzh-suggestion-bubble {
   padding: 0.35rem 0.85rem;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -1049,54 +784,55 @@ textarea:focus {
   user-select: none;
 }
 
-.korzhcard-emotion-bubble {
-  background: rgba(169, 114, 255, 0.1);
-  border-color: rgba(169, 114, 255, 0.3);
-  color: #a972ff;
+.kzh-theme-female .kzh-emotion-bubble {
+  background: rgba(255, 105, 180, 0.1);
+  border-color: rgba(255, 105, 180, 0.3);
+  color: var(--kzh-color-female);
 }
 
-.korzhcard-emotion-bubble:hover {
-  background: #a972ff;
+.kzh-theme-female .kzh-emotion-bubble:hover {
+  background: var(--kzh-color-female);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.kzh-theme-male .kzh-emotion-bubble {
+  background: rgba(135, 206, 235, 0.1);
+  border-color: rgba(135, 206, 235, 0.3);
+  color: var(--kzh-color-male);
+}
+
+.kzh-theme-male .kzh-emotion-bubble:hover {
+  background: var(--kzh-color-male);
   color: #000;
   transform: scale(1.05);
 }
 
-.korzhcard-reset-bubble {
+.kzh-reset-bubble {
   font-weight: 600;
   opacity: 0.8;
   font-size: 0.75rem;
   border-style: dashed !important;
 }
 
-.korzhcard-reset-bubble:hover {
-  opacity: 1;
-}
-
-.korzhcard-example-hint {
+.kzh-example-hint {
   font-size: 0.8rem;
   color: #777;
   margin: 0.5rem 0 0 0.25rem;
 }
 
-.korzhcard-example-hint b {
-  color: #aaa;
-  font-weight: 600;
-}
-
-/* Инфо + переключатель гендера */
-.korzhcard-controls-row {
+/* === ГЕНДЕР И ИНФО === */
+.kzh-controls-row {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 16px;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 }
 
-.korzhcard-info-button {
-  background: rgba(135, 206, 235, 0.1);
-  border: 1px solid rgba(135, 206, 235, 0.3);
-  color: #87ceeb;
+.kzh-info-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 13px;
@@ -1107,37 +843,14 @@ textarea:focus {
   height: 32px;
   display: inline-flex;
   align-items: center;
-  width: auto;
 }
 
-.korzhcard-info-button.korzhcard-info-female {
-  background: rgba(255, 105, 180, 0.1);
-  border-color: rgba(255, 105, 180, 0.3);
-  color: #ff69b4;
-}
+.kzh-info-female { color: var(--kzh-color-female); border-color: rgba(255, 105, 180, 0.3); }
+.kzh-info-male { color: var(--kzh-color-male); border-color: rgba(135, 206, 235, 0.3); }
 
-.korzhcard-info-button.korzhcard-info-female:hover {
-  background: rgba(255, 105, 180, 0.2);
-  border-color: rgba(255, 105, 180, 0.5);
-}
+.kzh-gender-switch { display: flex; justify-content: center; }
 
-.korzhcard-info-button.korzhcard-info-male {
-  background: rgba(135, 206, 235, 0.1);
-  border-color: rgba(135, 206, 235, 0.3);
-  color: #87ceeb;
-}
-
-.korzhcard-info-button.korzhcard-info-male:hover {
-  background: rgba(135, 206, 235, 0.2);
-  border-color: rgba(135, 206, 235, 0.5);
-}
-
-.korzhcard-gender-switch {
-  display: flex;
-  justify-content: center;
-}
-
-.korzhcard-gender-container {
+.kzh-gender-container {
   display: flex;
   background: #2a2a2e;
   border-radius: 20px;
@@ -1147,7 +860,7 @@ textarea:focus {
   align-items: center;
 }
 
-.korzhcard-gender-btn {
+.kzh-gender-btn {
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -1156,148 +869,62 @@ textarea:focus {
   margin: 0 2px;
 }
 
-.korzhcard-gender-female {
-  background: rgba(255, 105, 180, 0.3);
+.kzh-gender-female { background: rgba(255, 105, 180, 0.3); }
+.kzh-gender-female.is-active { background: #ff69b4; box-shadow: 0 0 12px rgba(255, 105, 180, 0.5); }
+
+.kzh-gender-male { background: rgba(135, 206, 235, 0.3); }
+.kzh-gender-male.is-active { background: #87ceeb; box-shadow: 0 0 12px rgba(135, 206, 235, 0.5); }
+
+/* МИКРО-ТЕКСТ ПОДСКАЗКИ */
+.kzh-micro-hint {
+  font-size: 0.75rem;
+  color: #666;
+  text-align: center;
+  margin-top: 6px;
+  margin-bottom: 0;
 }
 
-.korzhcard-gender-female.is-active {
-  background: #ff69b4;
-  box-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
+/* === РАЗДЕЛИТЕЛЬ === */
+.kzh-separator-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #444 50%, transparent 100%);
+  margin: 2rem 0;
+  opacity: 0.6;
 }
 
-.korzhcard-gender-male {
-  background: rgba(135, 206, 235, 0.3);
-}
-
-.korzhcard-gender-male.is-active {
-  background: #87ceeb;
-  box-shadow: 0 0 12px rgba(135, 206, 235, 0.5);
-}
-
-.korzhcard-gender-btn:hover {
-  opacity: 0.7;
-  transform: scale(1.05);
-}
-
-/* Модалка */
-.korzhcard-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
+/* === ЛОКАЦИЯ (ВВЕРХУ) === */
+.kzh-location-pure {
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  backdrop-filter: blur(4px);
 }
 
-.korzhcard-modal {
-  background-color: #1e1e20;
-  border: 1px solid #2c2c2f;
-  border-radius: 20px;
-  padding: 2rem;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  animation: korzhcard-modal-fade-in 0.3s ease-out;
-}
-
-@keyframes korzhcard-modal-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.korzhcard-modal-title {
-  font-size: 1.4rem;
-  font-weight: 700;
+.kzh-address-select {
+  width: 100%;
+  background-color: transparent; 
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
   color: #fff;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.korzhcard-modal-body {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: #b0b0b0;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.korzhcard-modal-link {
-  color: #b39dc8;
-  text-decoration: none;
-  font-weight: 600;
-  border-bottom: 1px solid transparent;
   transition: all 0.3s ease;
-}
-
-.korzhcard-modal-link:hover {
-  color: #c5b3d9;
-  border-bottom-color: #c5b3d9;
-}
-
-.korzhcard-modal-footer {
-  display: flex;
-  justify-content: center;
-}
-
-.korzhcard-modal-ok {
-  background: linear-gradient(
-    90deg,
-    #9b7fb7 0%,
-    #b39dc8 50%,
-    #c5b3d9 100%
-  );
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.95rem;
-  border: none;
-  border-radius: 10px;
-  padding: 0.75rem 2rem;
+  font-family: var(--kzh-font-sans);
   cursor: pointer;
-  transition: all 0.3s ease;
-  background-size: 200% auto;
-  background-position: 25% 50%;
 }
 
-.korzhcard-modal-ok:hover {
-  background-position: 75% 50%;
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(155, 127, 183, 0.4);
+.kzh-address-select:focus {
+  outline: none;
+  border-color: #9B7FB7;
+  background-color: #242426;
 }
+.kzh-address-select option { background-color: #1E1E20; color: #fff; }
 
-/* Футер формы */
-.korzhcard-form-footer {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #2c2c2f;
-  display: grid;
-  grid-template-areas: 'button';
-  gap: 1.5rem;
+/* === FOOTER === */
+.kzh-form-footer {
+  margin-top: 1rem;
   width: 100%;
 }
 
-.korzhcard-button-section {
-  grid-area: button;
-  width: 100%;
-}
-
-.korzhcard-submit-btn {
-  background: linear-gradient(
-    90deg,
-    #9b7fb7 0%,
-    #b39dc8 50%,
-    #c5b3d9 100%
-  );
+.kzh-submit-btn {
+  background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 50%, #C5B3D9 100%);
   color: #fff;
   font-weight: 600;
   font-size: 1rem;
@@ -1307,156 +934,54 @@ textarea:focus {
   cursor: pointer;
   transition: all 0.4s ease-out;
   background-size: 200% auto;
-  background-position: 25% 50%;
   width: 100%;
   display: block;
 }
 
-.korzhcard-submit-btn:hover:not(:disabled) {
+.kzh-submit-btn:hover:not(:disabled) {
   background-position: 75% 50%;
   transform: scale(1.02);
   box-shadow: 0 10px 20px -5px rgba(155, 127, 183, 0.4);
 }
 
-.korzhcard-submit-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.kzh-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* === MODAL === */
+.kzh-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 9999; backdrop-filter: blur(4px);
 }
 
-/* Success‑экран */
-.korzhcard-success-message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 4rem 2rem 2rem 2rem;
-  animation: korzhcard-fade-in 0.5s ease-out;
+.kzh-modal {
+  background-color: #1E1E20;
+  border: 1px solid #2c2c2f;
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: kzhModalFadeIn 0.3s ease-out;
 }
 
-.korzhcard-success-text h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #fff;
-  margin: 0 0 0.5rem 0;
+@keyframes kzhModalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.korzhcard-success-text p {
-  color: #b0b0b0;
-  line-height: 1.6;
-  margin: 0;
-}
+.kzh-modal-title { font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 1rem; text-align: center; }
+.kzh-modal-body { font-size: 0.95rem; line-height: 1.6; color: #b0b0b0; margin-bottom: 1.5rem; text-align: center; }
+.kzh-modal-link { color: #B39DC8; text-decoration: none; font-weight: 600; }
+.kzh-modal-footer { display: flex; justify-content: center; }
+.kzh-modal-ok { background: #9B7FB7; color: #fff; border: none; border-radius: 10px; padding: 0.75rem 2rem; cursor: pointer; }
 
-.korzhcard-success-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 1.5rem;
-  width: 100%;
-}
-
-.korzhcard-success-actions .korzhcard-telegram-button,
-.korzhcard-success-actions .korzhcard-share-btn {
-  flex: 1 1 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.9rem 1.5rem;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
-  cursor: pointer;
-}
-
-.korzhcard-telegram-button {
-  background-color: #9b7fb7;
-  color: #ffffff;
-  border: none;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  text-decoration: none !important;
-}
-
-.korzhcard-telegram-button:hover {
-  background-color: #b399c8;
-  transform: scale(1.02);
-}
-
-.korzhcard-share-btn {
-  background-color: #3a3a3e;
-  color: #ffffff;
-  border: none;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.korzhcard-share-btn:hover {
-  background-color: #4a4a4f;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
-}
-
-.korzhcard-secondary-link {
-  display: block;
-  margin-top: 1.5rem;
-  font-size: 0.85rem;
-  color: #888;
-  text-decoration: none;
-  border-bottom: none !important;
-  transition: color 0.3s;
-}
-
-.korzhcard-secondary-link:hover {
-  color: #b39dc8;
-  text-decoration: underline !important;
-  border-bottom: none !important;
-}
-
-@keyframes korzhcard-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Адаптив */
 @media (max-width: 768px) {
-  .korzhcard-form-wrapper {
-    padding: 1.5rem;
-  }
-  .korzhcard-form-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.5rem;
-  }
-  .korzhcard-tech-info {
-    justify-content: center;
-  }
-  .korzhcard-rotating-phrase-container {
-    height: 65px;
-  }
-  .korzhcard-question-label {
-    font-size: 0.95rem;
-  }
-  .korzhcard-suggestions-container {
-    gap: 0.4rem;
-  }
-  .korzhcard-suggestion-bubble {
-    font-size: 0.75rem;
-    padding: 0.3rem 0.7rem;
-  }
-  /* Инфо + гендер в одну строку */
-  .korzhcard-controls-row {
-    flex-direction: row;
-    justify-content: center;
-  }
-  .korzhcard-success-actions {
-    flex-direction: column;
-  }
-  .korzhcard-success-actions .korzhcard-telegram-button,
-  .korzhcard-success-actions .korzhcard-share-btn {
-    width: 100%;
-  }
+  .kzh-form-wrapper { padding: 1.5rem; }
+  .kzh-form-header { flex-direction: column; text-align: center; gap: 0.5rem; }
+  .kzh-tech-info { justify-content: center; }
+  .kzh-controls-row { flex-direction: row; justify-content: space-between; width: 100%; }
+  .kzh-card-icon img { width: 80px; height: 80px; }
 }
 </style>
