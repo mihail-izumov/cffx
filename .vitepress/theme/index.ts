@@ -145,6 +145,8 @@ import InvestKorzhConfigurator2 from '../components/InvestKorzhConfigurator2.vue
 import InvestKorzhBanner from '../components/InvestKorzhBanner.vue'
 import SignalFormKorzhCard1 from '../components/SignalFormKorzhCard1.vue'
 import KorzhBadgeCardGenerator from '../components/KorzhBadgeCardGenerator.vue'
+import ShareButton from '../components/ShareButton.vue'
+
 
 
 export default {
@@ -296,6 +298,7 @@ export default {
     app.component('InvestKorzhBanner', InvestKorzhBanner)
     app.component('SignalFormKorzhCard1', SignalFormKorzhCard1)   
     app.component('KorzhBadgeCardGenerator', KorzhBadgeCardGenerator)   
+    app.component('ShareButton', ShareButton)   
     
   },
 }
