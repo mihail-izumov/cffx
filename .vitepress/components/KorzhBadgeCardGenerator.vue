@@ -6,8 +6,7 @@
     />
 
     <div class="story-wrapper-hidden">
-      <!-- добавлен класс story-vars -->
-      <div id="story-capture-area" class="story-template story-vars">
+      <div id="story-capture-area" class="story-template">
         <div class="story-bg-base"></div>
 
         <div
@@ -524,33 +523,6 @@ defineExpose({ generateAndShare })
 <style scoped>
 * { font-family: 'Inter', -apple-system, sans-serif; box-sizing: border-box; }
 
-/* =========================================================
-   ТВОИ НАСТРОЙКИ (меняешь только значения ниже)
-   Desktop значения = по умолчанию.
-   Mobile значения = внутри @media (max-width: 520px).
-   ========================================================= */
-.story-template.story-vars{
-  /* высота карточки подарка */
-  --gift-card-h: 855px;
-
-  /* отступ между message-блоком и "Сделано в Сигнале" */
-  --footer-gap: 55px;
-
-  /* подгонка композиции внутри карточки при изменении высоты */
-  --gift-img-wrap-h: 440px;
-  --gift-img-wrap-mt: 144px;
-}
-
-@media (max-width: 520px) {
-  .story-template.story-vars{
-    --gift-card-h: 820px;
-    --footer-gap: 66px;
-    --gift-img-wrap-h: 420px;
-    --gift-img-wrap-mt: 150px;
-  }
-}
-/* ========================================================= */
-
 .story-wrapper-hidden {
   position: fixed; top: 0; left: 0;
   width: 0; height: 0; overflow: hidden;
@@ -604,16 +576,16 @@ defineExpose({ generateAndShare })
   margin-bottom: 60px;
 }
 
-/* Gift card — теперь управляется через --gift-card-h */
+/* Gift card — УМЕНЬШЕНА ВЫСОТА */
 .gift-card-shell {
   position: relative;
   width: 860px;
-  height: var(--gift-card-h);
+  height: 885px;           /* было 965 */
   margin-bottom: 34px;
 }
 .gift-card-container {
   width: 860px;
-  height: var(--gift-card-h);
+  height: 885px;           /* было 965 */
   background: rgba(168, 139, 235, 0.65);
   backdrop-filter: blur(35px) saturate(120%);
   border-radius: 60px;
@@ -659,15 +631,15 @@ defineExpose({ generateAndShare })
   text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* Картинка + сдвиг вниз: тоже управляемо (если меняешь высоту карточки) */
+/* Поджали высоту картинки + сохранили сдвиг вниз */
 .gift-image-wrapper {
   position: relative;
   width: 100%;
-  height: var(--gift-img-wrap-h);
+  height: 400px;       /* было 480 */
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: var(--gift-img-wrap-mt);
+  margin-top: 144px;   /* оставляем сдвиг вниз */
 }
 .gift-glow {
   position: absolute;
@@ -693,14 +665,14 @@ defineExpose({ generateAndShare })
   z-index: 5;
 }
 .meta-from {
-  font-size: 46px;
+  font-size: 46px;   /* чуть компактнее */
   font-weight: 500;
   color: #fff;
   margin-bottom: 18px;
   line-height: 1.1;
 }
 .gift-name {
-  font-size: 56px;
+  font-size: 56px;   /* чуть компактнее */
   font-weight: 700;
   color: rgba(214, 186, 255, 0.9);
   text-shadow: 0 2px 18px rgba(155, 127, 183, 0.55);
@@ -729,12 +701,13 @@ defineExpose({ generateAndShare })
 .mb-num, .mb-date, .mb-icon { line-height: 1; display: inline-flex; align-items: center; }
 .mb-num { font-size: 28px; font-weight: 800; color: #fff; }
 .mb-date { font-size: 28px; font-weight: 600; color: #fff; }
-.mb-icon { font-size: 26px; transform: translateY(-3px); }
+/* ПРАВКА: эмодзи выше */
+.mb-icon { font-size: 26px; transform: translateY(-3px); } /* было без/ниже */
 
 .card-bottom-spacer { height: 8px; width: 100%; }
 
-/* Message — margin-bottom теперь управляется через --footer-gap */
-.message-section { width: 860px; margin-bottom: var(--footer-gap); }
+/* Message + spacing to footer (увеличили, особенно на мобилке) */
+.message-section { width: 860px; margin-bottom: 44px; } /* было 26 */
 
 .message-row {
   width: 860px;
