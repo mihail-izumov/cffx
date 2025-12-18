@@ -5,12 +5,10 @@
       rel="stylesheet"
     />
 
-    <!-- СКРЫТЫЙ ШАБЛОН (1080x1920) -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
         <div class="story-bg-base"></div>
 
-        <!-- ФОН: теперь всегда задается inline-стилем bgResolvedUrl (с preloading + fallback) -->
         <div
           :key="bgKey"
           class="story-bg-image"
@@ -20,9 +18,7 @@
         <div class="story-noise"></div>
         <div class="story-bg-overlay"></div>
 
-        <!-- Flex-колонка: footer едет вместе с высотой message -->
         <div class="story-content">
-          <!-- Header -->
           <div class="header-text">
             Вы превратили этот момент в<br />уникальное воспоминание
           </div>
@@ -30,13 +26,11 @@
           <!-- Gift -->
           <div class="gift-card-shell">
             <div class="gift-card-container">
-              <!-- Локация -->
               <div class="card-inner-location">
                 <img class="loc-icon" src="/korzh_invest_card.png" alt="" crossorigin="anonymous" />
                 <span class="loc-text">{{ sAddress || 'Все кофейни' }}</span>
               </div>
 
-              <!-- Картинка + все ниже -->
               <div class="gift-image-wrapper">
                 <div class="gift-glow"></div>
                 <img
@@ -62,11 +56,9 @@
                 </div>
               </div>
 
-              <!-- Отступ от бейджа до низа карточки -->
               <div class="card-bottom-spacer"></div>
             </div>
 
-            <!-- Лента (PNG) -->
             <img
               class="corner-tag-img"
               src="/img/korzh/badge/corner-tag-img.png"
@@ -85,7 +77,6 @@
                   </div>
                 </div>
 
-                <!-- Хвостик (справа сверху) -->
                 <svg
                   class="message-tail-top"
                   width="56"
@@ -98,18 +89,16 @@
                 </svg>
               </div>
 
-              <!-- Аватар прижат к правому краю gift-контейнера -->
               <div class="message-avatar-top">{{ sAvatar }}</div>
             </div>
           </div>
 
-          <!-- Footer: теперь привязан к высоте message -->
           <div class="story-footer-text">Сделано в Сигнале</div>
         </div>
       </div>
     </div>
 
-    <!-- МОДАЛКА -->
+    <!-- Modal -->
     <transition name="modal-fade">
       <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
         <div class="modal">
@@ -234,7 +223,7 @@ const BG_MAP = [
   { includes: 'Самарская', url: '/img/korzh/korzh-samarskaya-1080x1920.jpg' },
   { includes: 'Дачная', url: '/img/korzh/korzh-dachnaya-1080x1920.jpg' },
   { includes: 'Ульяновская', url: '/img/korzh/korzh-ulyanovskaya-1080x1920.jpg' },
-  { includes: 'Ново-Садовая', url: '/img/korzh/korzh-novo-sadovaya-1080x1920.jpg' },
+  { includes: 'Ново-Садовая', url: '/img/korzh/korzh-novo-sadovaya-1080x1920.jpg' }
 ]
 
 function resolveBgUrlFromAddress(address) {
@@ -294,11 +283,9 @@ function toAccusativeGiftName(name) {
   const words = s.split(/\s+/)
   let last = words.pop()
   const low = last.toLowerCase()
-
   if (low.endsWith('ия')) last = last.slice(0, -2) + 'ию'
   else if (low.endsWith('а')) last = last.slice(0, -1) + 'у'
   else if (low.endsWith('я')) last = last.slice(0, -1) + 'ю'
-
   words.push(last)
   return words.join(' ')
 }
@@ -307,7 +294,6 @@ function applyGiftDeclensionInText(text, giftLabel) {
   const t = String(text || '')
   const gl = String(giftLabel || '').trim()
   if (!t || !gl) return t
-
   const acc = toAccusativeGiftName(gl)
   return t.replace(/(Дарю:\s*)([^.\n!?]+)([.!?])?/i, (m, p1, p2, p3) => {
     const end = p3 || '.'
@@ -375,7 +361,6 @@ async function fitMessageTextToBox() {
     return
   }
 
-  // если влезает полностью — не режем
   el.textContent = full
   const fitsFully = () => el.scrollHeight <= wrap.clientHeight + 1
   if (fitsFully()) {
@@ -383,7 +368,6 @@ async function fitMessageTextToBox() {
     return
   }
 
-  // иначе — режем по словам
   const SAFE_BOTTOM_PX = 22
   const maxH = Math.max(0, wrap.clientHeight - SAFE_BOTTOM_PX)
   const fits = () => el.scrollHeight <= maxH + 1
@@ -450,7 +434,7 @@ const generateImageInternal = async () => {
     await loadLibrary()
     await nextTick()
 
-    await updateBackgroundResolved() // гарантируем выбранный фон (или fallback)
+    await updateBackgroundResolved()
     await fitMessageTextToBox()
 
     const el = document.getElementById('story-capture-area')
@@ -474,9 +458,7 @@ const generateImageInternal = async () => {
     })
 
     generatedImageUrl.value = canvas.toDataURL('image/png')
-    canvas.toBlob((b) => {
-      generatedBlob.value = b
-    }, 'image/png')
+    canvas.toBlob((b) => { generatedBlob.value = b }, 'image/png')
   } catch (e) {
     console.error('Error generating image:', e)
     alert('Ошибка генерации.')
@@ -486,7 +468,6 @@ const generateImageInternal = async () => {
 const generateAndShare = async () => {
   makeSnapshot()
   await updateBackgroundResolved()
-
   showModal.value = true
   customBgImage.value = null
   await generateImageInternal()
@@ -534,9 +515,7 @@ const downloadFile = () => {
   document.body.removeChild(link)
 }
 
-const closeModal = () => {
-  showModal.value = false
-}
+const closeModal = () => { showModal.value = false }
 
 defineExpose({ generateAndShare })
 </script>
@@ -575,7 +554,7 @@ defineExpose({ generateAndShare })
   background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.45) 100%);
 }
 
-/* Flex layout */
+/* Layout */
 .story-content {
   position: relative;
   z-index: 10;
@@ -597,11 +576,16 @@ defineExpose({ generateAndShare })
   margin-bottom: 60px;
 }
 
-/* Gift */
-.gift-card-shell { position: relative; width: 860px; height: 965px; margin-bottom: 34px; }
+/* Gift card — УМЕНЬШЕНА ВЫСОТА */
+.gift-card-shell {
+  position: relative;
+  width: 860px;
+  height: 885px;           /* было 965 */
+  margin-bottom: 34px;
+}
 .gift-card-container {
   width: 860px;
-  height: 965px;
+  height: 885px;           /* было 965 */
   background: rgba(168, 139, 235, 0.65);
   backdrop-filter: blur(35px) saturate(120%);
   border-radius: 60px;
@@ -624,7 +608,6 @@ defineExpose({ generateAndShare })
   object-fit: contain;
 }
 
-/* Location */
 .card-inner-location {
   position: absolute;
   top: 40px;
@@ -648,28 +631,24 @@ defineExpose({ generateAndShare })
   text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* СДВИГ ВНИЗ (гарантированный, без transform):
-   - margin-top +40px
-   - height -40px
-   => внутри той же высоты карточки все визуально опустится */
+/* Поджали высоту картинки + сохранили сдвиг вниз */
 .gift-image-wrapper {
   position: relative;
   width: 100%;
-  height: 480px;     /* было 520 */
+  height: 440px;       /* было 480 */
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 144px; /* было 104 */
+  margin-top: 144px;   /* оставляем сдвиг вниз */
 }
-
 .gift-glow {
   position: absolute;
-  width: 450px; height: 450px;
+  width: 420px; height: 420px;
   background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
   opacity: 0.6;
 }
 .gift-main-img {
-  width: 440px; height: 440px;
+  width: 420px; height: 420px;
   object-fit: contain;
   z-index: 2;
   position: relative;
@@ -686,22 +665,22 @@ defineExpose({ generateAndShare })
   z-index: 5;
 }
 .meta-from {
-  font-size: 48px;
+  font-size: 46px;   /* чуть компактнее */
   font-weight: 500;
   color: #fff;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
   line-height: 1.1;
 }
 .gift-name {
-  font-size: 58px;
+  font-size: 56px;   /* чуть компактнее */
   font-weight: 700;
   color: rgba(214, 186, 255, 0.9);
   text-shadow: 0 2px 18px rgba(155, 127, 183, 0.55);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   line-height: 1.1;
 }
 
-/* Badge */
+/* badge */
 .meta-gradient-badge {
   height: 72px;
   padding: 0 36px;
@@ -722,12 +701,14 @@ defineExpose({ generateAndShare })
 .mb-num, .mb-date, .mb-icon { line-height: 1; display: inline-flex; align-items: center; }
 .mb-num { font-size: 28px; font-weight: 800; color: #fff; }
 .mb-date { font-size: 28px; font-weight: 600; color: #fff; }
-.mb-icon { font-size: 26px; }
+/* ПРАВКА: эмодзи выше */
+.mb-icon { font-size: 26px; transform: translateY(-3px); } /* было без/ниже */
 
 .card-bottom-spacer { height: 8px; width: 100%; }
 
-/* Message */
-.message-section { width: 860px; margin-bottom: 26px; }
+/* Message + spacing to footer (увеличили, особенно на мобилке) */
+.message-section { width: 860px; margin-bottom: 44px; } /* было 26 */
+
 .message-row {
   width: 860px;
   display: flex;
@@ -784,7 +765,6 @@ defineExpose({ generateAndShare })
   margin-left: auto;
 }
 
-/* Footer (привязан к message, потому что в потоке) */
 .story-footer-text {
   font-size: 48px;
   color: rgba(255,255,255,0.5);
@@ -792,7 +772,7 @@ defineExpose({ generateAndShare })
   letter-spacing: 0.02em;
 }
 
-/* Modal */
+/* Modal styles */
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.92);
