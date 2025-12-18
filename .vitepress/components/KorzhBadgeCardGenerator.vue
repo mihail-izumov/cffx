@@ -20,81 +20,86 @@
         <div class="story-bg-overlay"></div>
 
         <div class="story-content-grid">
+          <!-- Header -->
           <div class="grid-header">
             <div class="header-text">
               Вы превратили этот момент в<br>уникальное воспоминание
             </div>
           </div>
 
-          <!-- Gift -->
-          <div class="grid-gift">
-            <div class="gift-card-shell">
-              <div class="gift-card-container">
-                <div class="card-inner-location">
-                  {{ sAddress || 'Все кофейни' }}
-                </div>
-
-                <div class="gift-image-wrapper">
-                  <div class="gift-glow"></div>
-                  <img
-                    v-if="sBadgeImage"
-                    :src="sBadgeImage"
-                    class="gift-main-img"
-                    alt="Gift"
-                    crossorigin="anonymous"
-                  />
-                </div>
-
-                <div class="gift-info-block">
-                  <div class="meta-from">
-                    Подарок от {{ sFromName }}
+          <!-- Shared container: 860px, чтобы message и gift были по одному левому краю -->
+          <div class="grid-main">
+            <!-- Gift -->
+            <div class="grid-gift">
+              <div class="gift-card-shell">
+                <div class="gift-card-container">
+                  <!-- Локация с иконкой -->
+                  <div class="card-inner-location">
+                    <img class="loc-icon" src="/korzh_invest_card.png" alt="" crossorigin="anonymous" />
+                    <span class="loc-text">{{ sAddress || 'Все кофейни' }}</span>
                   </div>
 
-                  <div class="gift-name">
-                    {{ sBadgeLabel }}
+                  <div class="gift-image-wrapper">
+                    <div class="gift-glow"></div>
+                    <img
+                      v-if="sBadgeImage"
+                      :src="sBadgeImage"
+                      class="gift-main-img"
+                      alt="Gift"
+                      crossorigin="anonymous"
+                    />
                   </div>
 
-                  <div class="meta-gradient-badge" aria-label="Номер и дата">
-                    <div class="mb-content">
-                      <span class="mb-num">{{ sTicket }}</span>
-                      <span class="mb-icon">🎁</span>
-                      <span class="mb-date">{{ sDate }}</span>
+                  <div class="gift-info-block">
+                    <div class="meta-from">
+                      Подарок от {{ sFromName }}
+                    </div>
+
+                    <div class="gift-name">
+                      {{ sBadgeLabel }}
+                    </div>
+
+                    <div class="meta-gradient-badge" aria-label="Номер и дата">
+                      <div class="mb-content">
+                        <span class="mb-num">{{ sTicket }}</span>
+                        <span class="mb-icon">🎁</span>
+                        <span class="mb-date">{{ sDate }}</span>
+                      </div>
                     </div>
                   </div>
+
+                  <div class="card-bottom-spacer"></div>
                 </div>
 
-                <div class="card-bottom-spacer"></div>
+                <!-- Лента поверх -->
+                <img
+                  class="corner-tag-img"
+                  src="/img/korzh/badge/corner-tag-img.png"
+                  alt=""
+                  crossorigin="anonymous"
+                />
               </div>
-
-              <!-- Лента поверх бордера, без смещения -->
-              <img
-                class="corner-tag-img"
-                src="/img/korzh/badge/corner-tag-img.png"
-                alt=""
-                crossorigin="anonymous"
-              />
             </div>
-          </div>
 
-          <!-- Message -->
-          <div class="grid-message">
-            <div v-if="sTextFull" class="message-row">
-              <div class="message-bubble">
-                <div ref="messageWrapRef" class="message-body-wrap">
-                  <div ref="messageTextRef" class="message-body">
-                    {{ sTextDisplay }}
+            <!-- Message -->
+            <div class="grid-message">
+              <div v-if="sTextFull" class="message-row">
+                <div class="message-bubble">
+                  <div ref="messageWrapRef" class="message-body-wrap">
+                    <div ref="messageTextRef" class="message-body">
+                      {{ sTextDisplay }}
+                    </div>
                   </div>
+
+                  <!-- хвостик справа сверху -->
+                  <svg class="message-tail-top" width="52" height="38" viewBox="0 0 52 38" fill="none" aria-hidden="true">
+                    <path d="M2 36C2 36 12 20 50 6V36H2Z" fill="rgba(30, 30, 35, 0.50)"/>
+                  </svg>
                 </div>
 
-                <!-- хвостик справа сверху -->
-                <svg class="message-tail-top" width="46" height="34" viewBox="0 0 46 34" fill="none" aria-hidden="true">
-                  <path d="M2 32C2 32 10 18 44 6V32H2Z" fill="rgba(30, 30, 35, 0.50)"/>
-                </svg>
-              </div>
-
-              <!-- аватар справа от хвостика (вверху) -->
-              <div class="message-avatar-top">
-                {{ sAvatar }}
+                <div class="message-avatar-top">
+                  {{ sAvatar }}
+                </div>
               </div>
             </div>
           </div>
@@ -297,6 +302,13 @@ const bgClass = computed(() => {
   return 'bg-default'
 })
 
+function trimToWordBoundary(text) {
+  const t = String(text || '').replace(/\s+/g, ' ').trim()
+  if (!t) return ''
+  // удаляем обрывки пунктуации в конце
+  return t.replace(/[,\s.;:!?]+$/g, '').trim()
+}
+
 async function fitMessageTextToBox() {
   await nextTick()
   const wrap = messageWrapRef.value
@@ -309,9 +321,8 @@ async function fitMessageTextToBox() {
     return
   }
 
-  // запас: хотим чуть больше воздуха снизу, поэтому считаем “доп. запас”
-  // и режем так, будто высота контейнера меньше.
-  const SAFE_BOTTOM_PX = 18
+  // запас снизу, чтобы было “немного места” до нижнего края
+  const SAFE_BOTTOM_PX = 24
   const maxH = Math.max(0, wrap.clientHeight - SAFE_BOTTOM_PX)
 
   const fits = () => el.scrollHeight <= maxH + 1
@@ -322,18 +333,22 @@ async function fitMessageTextToBox() {
     return
   }
 
+  // бинарный поиск по символам
   let lo = 0
   let hi = full.length
 
   while (lo < hi) {
     const mid = Math.ceil((lo + hi) / 2)
-    const candidate = full.slice(0, mid).trimEnd() + '..'
+    const candidate = trimToWordBoundary(full.slice(0, mid)) + '...'
     el.textContent = candidate
     if (fits()) lo = mid
     else hi = mid - 1
   }
 
-  const finalText = full.slice(0, Math.max(lo, 0)).trimEnd() + '..'
+  // финал: режем на слове + ...
+  let base = trimToWordBoundary(full.slice(0, Math.max(lo, 0)))
+  if (!base) base = trimToWordBoundary(full.slice(0, 12))
+  const finalText = base + '...'
   sTextDisplay.value = finalText
   el.textContent = finalText
 }
@@ -504,22 +519,37 @@ defineExpose({ generateAndShare })
   height: 100%;
   padding: 160px 60px 90px 60px;
   display: grid;
-  grid-template-rows: 170px 965px 415px 120px;
+  grid-template-rows: 170px 1fr 120px;
   align-items: start;
 }
 
 .grid-header { display: flex; justify-content: center; }
+
+.grid-main {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 965px 415px;
+  justify-content: center;
+}
+
+/* общий контейнер 860px (как подарок) */
+.grid-gift,
+.grid-message {
+  width: 860px;
+  justify-self: center;
+}
+
 .grid-gift {
-  display: flex; justify-content: center;
   overflow: visible;
   transform: translateY(-15px);
 }
+
 .grid-message {
-  display: flex;
-  justify-content: flex-start; /* левый край */
   overflow: hidden;
   padding-bottom: 10px;
 }
+
 .grid-footer { display: flex; justify-content: center; align-items: flex-end; }
 
 .header-text {
@@ -534,13 +564,12 @@ defineExpose({ generateAndShare })
 /* gift */
 .gift-card-shell {
   position: relative;
-  width: 100%;
-  max-width: 860px;
+  width: 860px;
   height: 965px;
 }
 
 .gift-card-container {
-  width: 100%;
+  width: 860px;
   height: 965px;
   background: rgba(168, 139, 235, 0.65);
   backdrop-filter: blur(35px) saturate(120%);
@@ -565,15 +594,29 @@ defineExpose({ generateAndShare })
   object-fit: contain;
 }
 
+/* location row */
 .card-inner-location {
   position: absolute;
   top: 32px;
   left: 45px;
-  font-size: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 30;
+}
+.loc-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  object-fit: cover;
+  opacity: 0.95;
+}
+.loc-text {
+  font-size: 30px; /* +2px */
   font-weight: 600;
   color: #fff;
   text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  z-index: 30;
+  letter-spacing: 0.02em;
 }
 
 .gift-image-wrapper {
@@ -583,7 +626,7 @@ defineExpose({ generateAndShare })
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 104px; /* меньше отступ от адреса к картинке */
+  margin-top: 104px;
 }
 .gift-glow {
   position: absolute;
@@ -609,7 +652,6 @@ defineExpose({ generateAndShare })
   position: relative;
   z-index: 5;
 }
-
 .meta-from {
   font-size: 48px;
   font-weight: 500;
@@ -626,6 +668,7 @@ defineExpose({ generateAndShare })
   line-height: 1.1;
 }
 
+/* badge */
 .meta-gradient-badge {
   height: 70px;
   padding: 0 36px;
@@ -648,31 +691,29 @@ defineExpose({ generateAndShare })
 .mb-date { font-size: 28px; font-weight: 600; color: #fff; }
 .mb-icon { font-size: 26px; }
 
-/* отступ от бейджа до края карточки в 2 раза меньше */
-.card-bottom-spacer { height: 34px; width: 100%; }
+/* уменьшили ещё на 7px */
+.card-bottom-spacer { height: 27px; width: 100%; }
 
 /* message */
 .message-row {
-  width: 100%;
-  max-width: 860px;
-  height: 100%;
+  width: 860px;
+  height: 415px;
   display: flex;
   align-items: flex-start;
+  justify-content: flex-start;
   gap: 14px;
-  /* выравниваем по левому краю подарка: просто ограничиваем ширину и не центрируем */
 }
 
 .message-bubble {
   position: relative;
   width: 720px;
-  height: 100%;
-  max-height: 405px;
+  height: 405px;
   background: rgba(30, 30, 35, 0.4);
   backdrop-filter: blur(25px);
   border-radius: 40px;
   padding: 28px 34px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.30); /* 1px */
+  border: 1px solid rgba(255,255,255,0.30);
   overflow: hidden;
 }
 
@@ -692,7 +733,6 @@ defineExpose({ generateAndShare })
   word-break: break-word;
 }
 
-/* хвостик сверху справа */
 .message-tail-top {
   position: absolute;
   top: 14px;
@@ -701,7 +741,6 @@ defineExpose({ generateAndShare })
   pointer-events: none;
 }
 
-/* аватар поднят к верхнему правому углу */
 .message-avatar-top {
   width: 74px;
   height: 74px;
@@ -713,10 +752,10 @@ defineExpose({ generateAndShare })
   justify-content: center;
   font-size: 36px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-  margin-top: 0px; /* поднят */
+  margin-top: 8px;
 }
 
-/* footer вниз на 5px */
+/* footer */
 .story-footer-text {
   font-size: 48px;
   color: rgba(255,255,255,0.5);
