@@ -310,7 +310,6 @@ function onTextBlur() { rotationPaused.value = false; startRotation(); }
 const isFormValid = computed(() => {
   return form.coffeeShopAddress.trim().length > 0 && 
          form.emotionalRelease.trim().length > 0 &&
-         form.userName.trim().length > 0 // Имя обязательно
 })
 
 function resetForm() {
@@ -462,8 +461,7 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
                type="text" 
                v-model="form.userName" 
                class="kzh-address-select" 
-               placeholder="Ваше имя" 
-               required 
+               placeholder="Ваше имя (необязательно)"  
              />
           </div>
         </div>
