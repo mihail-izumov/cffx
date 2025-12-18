@@ -1,106 +1,132 @@
 <template>
   <div>
     <!-- Шрифт Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    >
 
     <!-- СКРЫТЫЙ ШАБЛОН (1080x1920) -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
-        
         <!-- ФОН (Базовый) -->
         <div class="story-bg-base"></div>
 
         <!-- ФОН-КАРТИНКА -->
-        <div 
+        <div
           :key="bgKey"
-          class="story-bg-image" 
+          class="story-bg-image"
           :class="!customBgImage ? bgClass : ''"
           :style="customBgImage ? { backgroundImage: `url(${customBgImage})` } : {}"
         ></div>
-        
-        <!-- ШУМ (Grain) -->
+
+        <!-- ШУМ -->
         <div class="story-noise"></div>
 
         <!-- ОВЕРЛЕЙ -->
         <div class="story-bg-overlay"></div>
 
         <div class="story-content">
-
           <!-- ВЕРХНИЙ ЗАГОЛОВОК -->
           <div class="header-text">
-             Вы превратили этот момент в<br>уникальное воспоминание
+            Вы превратили этот момент в<br>уникальное воспоминание
           </div>
 
           <!-- КАРТОЧКА ПОДАРКА -->
           <div class="gift-card-container">
-            
-            <!-- ЛОКАЦИЯ (Внутри карточки, левый верхний угол) -->
+            <!-- ЛОКАЦИЯ (внутри карточки) -->
             <div class="card-inner-location">
-              {{ address || 'Все кофейни' }}
+              {{ sAddress || 'Все кофейни' }}
             </div>
 
-            <!-- ЛЕНТА-УГОЛОК (Темный треугольник) -->
-            <div class="corner-tag-triangle">
-               <span>ПОДАРОК</span>
-            </div>
+            <!-- УГОЛОК (SVG треугольник с градиентом) -->
+            <svg class="corner-tag-svg" width="210" height="210" viewBox="0 0 210 210" aria-hidden="true">
+              <defs>
+                <linearGradient id="cornerGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#2b2b30"/>
+                  <stop offset="60%" stop-color="#141418"/>
+                  <stop offset="100%" stop-color="#000000"/>
+                </linearGradient>
+                <filter id="cornerShadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="-6" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.5"/>
+                </filter>
+              </defs>
 
-            <!-- ИЗОБРАЖЕНИЕ (Сдвинуто ниже) -->
+              <polygon points="0,0 210,0 210,210" fill="url(#cornerGrad)" filter="url(#cornerShadow)"></polygon>
+
+              <g transform="translate(118 62) rotate(45)">
+                <text
+                  x="0"
+                  y="0"
+                  text-anchor="middle"
+                  dominant-baseline="middle"
+                  fill="#FFFFFF"
+                  font-size="18"
+                  font-weight="900"
+                  letter-spacing="3"
+                  font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Arial, sans-serif"
+                >
+                  ПОДАРОК
+                </text>
+              </g>
+            </svg>
+
+            <!-- ИЗОБРАЖЕНИЕ (опущено ещё на 20px) -->
             <div class="gift-image-wrapper">
-               <div class="gift-glow"></div>
-               <img v-if="badgeImage" :src="badgeImage" class="gift-main-img" alt="Gift" crossorigin="anonymous" />
+              <div class="gift-glow"></div>
+              <img
+                v-if="sBadgeImage"
+                :src="sBadgeImage"
+                class="gift-main-img"
+                alt="Gift"
+                crossorigin="anonymous"
+              />
             </div>
 
             <!-- ИНФО БЛОК -->
             <div class="gift-info-block">
-                
-                <!-- ОТ КОГО (Крупнее, 48px) -->
-                <div class="meta-from">
-                   Подарок от {{ formattedName }}
-                </div>
-                
-                <!-- НАЗВАНИЕ ПОДАРКА (Фиолетовый градиент, Bold 700, не Caps) -->
-                <div class="gift-name" v-if="badgeLabel">
-                   {{ badgeLabel }}
-                </div>
+              <!-- ОТ КОГО -->
+              <div class="meta-from">
+                Подарок от {{ sFromName }}
+              </div>
 
-                <!-- НОМЕР И ДАТА (По центру) -->
-                <div class="meta-gradient-badge">
-                   <span class="mb-content">
-                      <span class="mb-icon">🎁</span>
-                      <span class="mb-num">{{ ticket }}</span>
-                      <span class="mb-sep">•</span>
-                      <span class="mb-date">{{ date }}</span>
-                   </span>
-                </div>
+              <!-- НАЗВАНИЕ ПОДАРКА (легкий фиолетовый, небольшая прозрачность) -->
+              <div class="gift-name" v-if="sBadgeLabel">
+                {{ sBadgeLabel }}
+              </div>
 
+              <!-- НОМЕР И ДАТА (идеально по центру) -->
+              <div class="meta-gradient-badge">
+                <div class="mb-content">
+                  <span class="mb-icon">🎁</span>
+                  <span class="mb-num">{{ sTicket }}</span>
+                  <span class="mb-sep">•</span>
+                  <span class="mb-date">{{ sDate }}</span>
+                </div>
+              </div>
             </div>
-            
+
             <div class="card-bottom-spacer"></div>
           </div>
 
-          <!-- ОТДЕЛЬНАЯ КАРТОЧКА СООБЩЕНИЯ (Чат-баббл) -->
-          <div v-if="formattedText" class="message-card-container">
-             <div class="message-header">Делюсь настроением:</div>
-             <div class="message-body">
-                {{ formattedText }}
-             </div>
-             
-             <!-- Хвостик баббла -->
-             <svg class="message-tail" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0C0 0 10 20 40 40V0H0Z" fill="rgba(30, 30, 35, 0.6)"/>
-             </svg>
+          <!-- КАРТОЧКА СООБЩЕНИЯ -->
+          <div v-if="sText" class="message-card-container">
+            <div class="message-header">Делюсь настроением:</div>
+            <div class="message-body">{{ sText }}</div>
 
-             <!-- Аватарка (Смайлик) -->
-             <div class="message-avatar">
-                {{ randomSmiley }}
-             </div>
+            <!-- Хвостик (сдвинут влево, чтобы аватар не перекрывал) -->
+            <svg class="message-tail" width="64" height="54" viewBox="0 0 64 54" fill="none" aria-hidden="true">
+              <path d="M2 2C2 2 18 28 62 52V2H2Z" fill="rgba(30, 30, 35, 0.55)"/>
+            </svg>
+
+            <!-- Аватарка -->
+            <div class="message-avatar">{{ sAvatar }}</div>
           </div>
 
-          <!-- FOOTER (Крупнее) -->
+          <!-- FOOTER -->
           <div class="story-footer-text">
-             Сделано в Сигнале
+            Сделано в Сигнале
           </div>
-
         </div>
       </div>
     </div>
@@ -111,43 +137,58 @@
         <div class="modal">
           <div class="modal-header">
             <h3>Ваша открытка готова</h3>
-            <button class="modal-close" @click="closeModal">
+            <button class="modal-close" @click="closeModal" type="button" aria-label="Закрыть">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             </button>
           </div>
-          
+
           <div class="modal-body">
             <img v-if="generatedImageUrl" :src="generatedImageUrl" class="preview-img" alt="" />
             <div v-else class="spinner">
-              <img src="/favicon.svg" class="spinner-icon" alt="⚡️" />
+              <img src="/favicon.svg" class="spinner-icon" alt="" />
               <div class="spinner-text">Создаем магию...</div>
             </div>
           </div>
 
           <div class="modal-footer">
             <div class="buttons-row">
-               <button @click="shareOrDownload" class="download-btn primary-btn" :disabled="!generatedImageUrl">
-                 {{ canShare ? 'Поделиться' : 'Скачать' }}
-               </button>
-               <button @click="downloadFile" class="download-btn secondary-btn" :disabled="!generatedImageUrl" v-if="canShare">
-                 Скачать
-               </button>
+              <button
+                @click="shareOrDownload"
+                class="download-btn primary-btn"
+                :disabled="!generatedImageUrl"
+                type="button"
+              >
+                {{ canShare ? 'Поделиться' : 'Скачать' }}
+              </button>
+
+              <button
+                @click="downloadFile"
+                class="download-btn secondary-btn"
+                :disabled="!generatedImageUrl"
+                v-if="canShare"
+                type="button"
+              >
+                Скачать
+              </button>
             </div>
-            
+
             <div class="upload-section">
-               <button class="text-btn upload-btn" @click="triggerFileUpload">
-                  Загрузить свое фото
-               </button>
-               <input 
-                  type="file" 
-                  ref="fileInputRef" 
-                  accept="image/*" 
-                  style="display: none;" 
-                  @change="handleFileUpload" 
-               />
+              <button class="text-btn upload-btn" type="button" @click.stop="triggerFileUpload">
+                Загрузить свое фото
+              </button>
+
+              <!-- ВАЖНО: не display:none (иногда ломает клик на iOS), а “визуально скрыть” -->
+              <input
+                type="file"
+                ref="fileInputRef"
+                accept="image/*"
+                class="hidden-input"
+                @change="handleFileUpload"
+                @click.stop
+              />
             </div>
           </div>
         </div>
@@ -157,7 +198,7 @@
 </template>
 
 <script setup>
-import { ref, defineExpose, computed, nextTick, watch, onMounted } from 'vue';
+import { ref, defineExpose, computed, nextTick, watch } from 'vue'
 
 const props = defineProps({
   ticket: String,
@@ -166,130 +207,161 @@ const props = defineProps({
   allText: String,
   badgeImage: String,
   badgeLabel: String,
-  userName: String 
-});
+  userName: String
+})
 
-const showModal = ref(false);
-const generatedImageUrl = ref(null);
-const generatedBlob = ref(null);
-const customBgImage = ref(null);
-const fileInputRef = ref(null);
-const bgKey = ref(0); 
-const canShare = ref(false);
+const showModal = ref(false)
+const generatedImageUrl = ref(null)
+const generatedBlob = ref(null)
+const customBgImage = ref(null)
+const fileInputRef = ref(null)
+const bgKey = ref(0)
+const canShare = ref(false)
 
-// Рандомный смайлик для аватарки
-const smileys = ['😊','😅','😉','😋','😀', '🥰', '😎'];
-const randomSmiley = ref(smileys[0]);
-
-onMounted(() => {
-   if (typeof navigator !== 'undefined') {
-      canShare.value = !!(navigator.share && navigator.canShare);
-   }
-   randomSmiley.value = smileys[Math.floor(Math.random() * smileys.length)];
-});
-
-watch(customBgImage, () => {
-  bgKey.value++;
-  generatedImageUrl.value = null;
-});
-
-// === ЛОГИКА СКЛОНЕНИЯ ИМЕНИ ===
-function getGenitiveName(name) {
-  if (!name) return 'Гостя';
-  const n = name.trim();
-  if (!n) return 'Гостя';
-
-  const lastChar = n.slice(-1).toLowerCase();
-  if (lastChar === 'а') return n.slice(0, -1) + 'ы'; 
-  if (lastChar === 'я') return n.slice(0, -1) + 'и'; 
-  if (lastChar === 'ь') return n.slice(0, -1) + 'и'; 
-  if (lastChar === 'й') return n.slice(0, -1) + 'я'; 
-  if (/[бвгджзклмнпрстфхцчшщ]/.test(lastChar)) return n + 'а'; 
-  return n; 
+if (typeof navigator !== 'undefined') {
+  canShare.value = !!(navigator.share && navigator.canShare)
 }
 
-const formattedName = computed(() => {
-  if (props.userName && props.userName.trim() !== '') {
-    return getGenitiveName(props.userName);
-  }
-  return 'Гостя';
-});
+/**
+ * === СНИМОК ДАННЫХ ===
+ * Нужен, чтобы после отправки родитель не “обнулил” текст/имя,
+ * а перегенерации (после загрузки фото) работали со стабильными значениями.
+ */
+const sTicketRaw = ref('')
+const sDateRaw = ref('')
+const sAddressRaw = ref('')
+const sUserNameRaw = ref('')
+const sAllTextRaw = ref('')
+const sBadgeLabelRaw = ref('')
+const sBadgeImageRaw = ref(null)
 
-const formattedText = computed(() => {
-  if (!props.allText || !props.allText.trim()) return '';
-  let text = props.allText.trim();
-  text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
-  text = text.replace(/\s+/g, ' ');
-  text = text.charAt(0).toUpperCase() + text.slice(1);
-  return text; 
-});
+const sAvatar = ref('😊')
+
+const smileys = ['😊', '😅', '😉', '😋', '😀']
+
+function makeSnapshot() {
+  sTicketRaw.value = props.ticket || ''
+  sDateRaw.value = props.date || ''
+  sAddressRaw.value = props.address || ''
+  sUserNameRaw.value = props.userName || ''
+  sAllTextRaw.value = props.allText || ''
+  sBadgeLabelRaw.value = props.badgeLabel || ''
+  sBadgeImageRaw.value = props.badgeImage || null
+
+  sAvatar.value = smileys[Math.floor(Math.random() * smileys.length)]
+}
+
+watch(customBgImage, () => {
+  bgKey.value++
+  generatedImageUrl.value = null
+})
+
+function getGenitiveName(name) {
+  if (!name) return 'Гостя'
+  const n = String(name).trim()
+  if (!n) return 'Гостя'
+
+  const last = n.slice(-1).toLowerCase()
+
+  // Минимальная, “безопасная” эвристика
+  // (лучше, чем ничего; редкие исключения можно допилить по списку).
+  if (last === 'а') return n.slice(0, -1) + 'ы'  // Елена -> Елены
+  if (last === 'я') return n.slice(0, -1) + 'и'  // Мария -> Марии
+  if (last === 'ь') return n.slice(0, -1) + 'и'  // Любовь -> Любви
+  if (last === 'й') return n.slice(0, -1) + 'я'  // Андрей -> Андрея
+  if (/[бвгджзклмнпрстфхцчшщ]/.test(last)) return n + 'а' // Иван -> Ивана
+
+  return n
+}
+
+const sFromName = computed(() => {
+  const n = sUserNameRaw.value && sUserNameRaw.value.trim()
+  return n ? getGenitiveName(n) : 'Гостя'
+})
+
+const sText = computed(() => {
+  const raw = sAllTextRaw.value
+  if (!raw || !raw.trim()) return ''
+
+  let text = raw.trim()
+  text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2')
+  text = text.replace(/\s+/g, ' ')
+  text = text.charAt(0).toUpperCase() + text.slice(1)
+
+  return text
+})
+
+const sTicket = computed(() => (sTicketRaw.value || '').trim())
+const sDate = computed(() => (sDateRaw.value || '').trim())
+const sAddress = computed(() => (sAddressRaw.value || '').trim())
+const sBadgeLabel = computed(() => (sBadgeLabelRaw.value || '').trim())
+const sBadgeImage = computed(() => sBadgeImageRaw.value)
 
 const bgClass = computed(() => {
-  const a = props.address || '';
-  if (a.includes('Куйбышева')) return 'bg-1';
-  if (a.includes('Льва Толстого')) return 'bg-2';
-  if (a.includes('Революционная')) return 'bg-3';
-  if (a.includes('9 просека')) return 'bg-4';
-  if (a.includes('Самарская')) return 'bg-5';
-  if (a.includes('Дачная')) return 'bg-6';
-  if (a.includes('Ульяновская')) return 'bg-7';
-  if (a.includes('Ново-Садовая')) return 'bg-8';
-  return 'bg-default';
-});
+  const a = sAddressRaw.value || props.address || ''
+  if (a.includes('Куйбышева')) return 'bg-1'
+  if (a.includes('Льва Толстого')) return 'bg-2'
+  if (a.includes('Революционная')) return 'bg-3'
+  if (a.includes('9 просека')) return 'bg-4'
+  if (a.includes('Самарская')) return 'bg-5'
+  if (a.includes('Дачная')) return 'bg-6'
+  if (a.includes('Ульяновская')) return 'bg-7'
+  if (a.includes('Ново-Садовая')) return 'bg-8'
+  return 'bg-default'
+})
 
 const loadLibrary = () => {
   return new Promise((resolve, reject) => {
-    if (window.html2canvas) return resolve(window.html2canvas);
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js';
-    script.onload = () => resolve(window.html2canvas);
+    if (window.html2canvas) return resolve(window.html2canvas)
+    const script = document.createElement('script')
+    script.src = 'https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js'
+    script.onload = () => resolve(window.html2canvas)
     script.onerror = () => {
-      const backup = document.createElement('script');
-      backup.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
-      backup.onload = () => resolve(window.html2canvas);
-      backup.onerror = () => reject(new Error('Failed'));
-      document.head.appendChild(backup);
-    };
-    document.head.appendChild(script);
-  });
-};
+      const backup = document.createElement('script')
+      backup.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js'
+      backup.onload = () => resolve(window.html2canvas)
+      backup.onerror = () => reject(new Error('Failed'))
+      document.head.appendChild(backup)
+    }
+    document.head.appendChild(script)
+  })
+}
 
 const waitForImages = async (element) => {
-  const imgs = element.querySelectorAll('img');
-  const promises = Array.from(imgs).map(img => {
-    if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
-    return new Promise(resolve => {
-      img.onload = () => resolve();
-      img.onerror = () => resolve(); 
-    });
-  });
-  await Promise.all(promises);
-};
+  const imgs = element.querySelectorAll('img')
+  const promises = Array.from(imgs).map((img) => {
+    if (img.complete && img.naturalHeight !== 0) return Promise.resolve()
+    return new Promise((resolve) => {
+      img.onload = () => resolve()
+      img.onerror = () => resolve()
+    })
+  })
+  await Promise.all(promises)
+}
 
 const waitForFonts = async () => {
-   if (document.fonts && document.fonts.ready) {
-      await document.fonts.ready;
-   }
-};
+  if (document.fonts && document.fonts.ready) {
+    await document.fonts.ready
+  }
+}
 
 const generateImageInternal = async () => {
-  generatedImageUrl.value = null;
-  randomSmiley.value = smileys[Math.floor(Math.random() * smileys.length)]; // Новый смайл при каждой генерации
-  
-  try {
-    await loadLibrary();
-    await nextTick();
-    
-    const el = document.getElementById('story-capture-area');
-    if (!el) return;
+  generatedImageUrl.value = null
 
-    await waitForFonts();
-    await waitForImages(el);
-    await new Promise(r => setTimeout(r, 600));
+  try {
+    await loadLibrary()
+    await nextTick()
+
+    const el = document.getElementById('story-capture-area')
+    if (!el) return
+
+    await waitForFonts()
+    await waitForImages(el)
+    await new Promise((r) => setTimeout(r, 550))
 
     const canvas = await window.html2canvas(el, {
       scale: 2,
-      useCORS: true, 
+      useCORS: true,
       allowTaint: true,
       logging: false,
       width: 1080,
@@ -298,92 +370,105 @@ const generateImageInternal = async () => {
       windowHeight: 1920,
       backgroundColor: null,
       ignoreElements: (element) => element.tagName === 'SCRIPT'
-    });
-    
-    generatedImageUrl.value = canvas.toDataURL('image/png');
-    canvas.toBlob(b => { generatedBlob.value = b; }, 'image/png');
+    })
+
+    generatedImageUrl.value = canvas.toDataURL('image/png')
+    canvas.toBlob((b) => { generatedBlob.value = b }, 'image/png')
   } catch (e) {
-    console.error('Error generating image:', e);
-    alert('Ошибка генерации.');
+    console.error('Error generating image:', e)
+    alert('Ошибка генерации.')
   }
-};
+}
 
 const generateAndShare = async () => {
-  showModal.value = true;
-  customBgImage.value = null; 
-  bgKey.value++; 
-  await generateImageInternal();
-};
+  // фикс: делаем снимок данных до того, как родитель может их сбросить
+  makeSnapshot()
 
-const triggerFileUpload = () => {
-  if (fileInputRef.value) {
-    fileInputRef.value.click();
-  }
+  showModal.value = true
+  customBgImage.value = null
+  bgKey.value++
+
+  await generateImageInternal()
+}
+
+const triggerFileUpload = async () => {
+  // важно: если это не будет вызвано из user-gesture, браузер может блокировать диалог
+  if (!fileInputRef.value) return
+  fileInputRef.value.value = '' // чтобы можно было выбрать тот же файл повторно
+  await nextTick()
+  fileInputRef.value.click()
 }
 
 const handleFileUpload = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      customBgImage.value = e.target.result;
-      setTimeout(() => {
-        generateImageInternal();
-      }, 500);
-    }
-    reader.readAsDataURL(file);
+  const file = event.target.files && event.target.files[0]
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onload = async (e) => {
+    customBgImage.value = e.target.result
+    await nextTick()
+    // небольшая пауза — чтобы DOM/фон гарантированно обновились перед снимком
+    setTimeout(() => generateImageInternal(), 350)
   }
-  event.target.value = '';
+  reader.readAsDataURL(file)
 }
 
 const shareOrDownload = async () => {
-  if (!generatedBlob.value) return;
+  if (!generatedBlob.value) return
+
   if (canShare.value) {
-    const file = new File([generatedBlob.value], `signal-${props.ticket}.png`, { type: 'image/png' });
+    const file = new File([generatedBlob.value], `signal-${sTicket.value || props.ticket || 'card'}.png`, { type: 'image/png' })
     try {
-      await navigator.share({ files: [file] });
-      return;
+      await navigator.share({ files: [file] })
+      return
     } catch (err) {
-      console.log('Share cancelled');
+      // cancelled
     }
   }
-  downloadFile();
-};
-
-const downloadFile = () => {
-  if (!generatedImageUrl.value) return;
-  const link = document.createElement('a');
-  link.download = `signal-${props.ticket}.png`;
-  link.href = generatedImageUrl.value;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  downloadFile()
 }
 
-const closeModal = () => { showModal.value = false; };
+const downloadFile = () => {
+  if (!generatedImageUrl.value) return
+  const link = document.createElement('a')
+  link.download = `signal-${sTicket.value || props.ticket || 'card'}.png`
+  link.href = generatedImageUrl.value
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
 
-defineExpose({ generateAndShare });
+const closeModal = () => { showModal.value = false }
+
+defineExpose({ generateAndShare })
 </script>
 
 <style scoped>
 * { font-family: 'Inter', -apple-system, sans-serif; box-sizing: border-box; }
 
-.story-wrapper-hidden { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: hidden; z-index: -9999; opacity: 0; }
-.story-template { 
-  width: 1080px; height: 1920px; 
-  position: relative; 
-  background: #000; color: #fff; 
+.story-wrapper-hidden {
+  position: fixed; top: 0; left: 0;
+  width: 0; height: 0; overflow: hidden;
+  z-index: -9999; opacity: 0;
+}
+
+.story-template {
+  width: 1080px; height: 1920px;
+  position: relative;
+  background: #000; color: #fff;
   overflow: hidden;
 }
 
 /* ФОНЫ */
 .story-bg-base { position: absolute; inset: 0; background: #1a1a1a; z-index: 0; }
-.story-bg-image { 
-  position: absolute; inset: 0; z-index: 1; 
-  background-size: cover; background-position: center; 
-  filter: blur(8px); 
-  transform: scale(1.05); 
+
+.story-bg-image {
+  position: absolute; inset: 0; z-index: 1;
+  background-size: cover; background-position: center;
+  filter: blur(8px);
+  transform: scale(1.05);
 }
+
 .story-bg-image.bg-default { background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg'); }
 .story-bg-image.bg-1 { background-image: url('/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg'); }
 .story-bg-image.bg-2 { background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg'); }
@@ -394,47 +479,55 @@ defineExpose({ generateAndShare });
 .story-bg-image.bg-7 { background-image: url('/img/korzh/korzh-ulyanovskaya-1080x1920.jpg'); }
 .story-bg-image.bg-8 { background-image: url('/img/korzh/korzh-novo-sadovaya-1080x1920.jpg'); }
 
-/* ШУМ (Grain) */
+/* ШУМ */
 .story-noise {
   position: absolute; inset: 0; z-index: 2;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
-  opacity: 0.6; mix-blend-mode: overlay; pointer-events: none;
+  opacity: 0.6;
+  mix-blend-mode: overlay;
+  pointer-events: none;
 }
 
 /* ОВЕРЛЕЙ */
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 3;
-  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.45) 100%);
 }
 
 .story-content {
-  position: relative; z-index: 10; width: 100%; height: 100%;
+  position: relative; z-index: 10;
+  width: 100%; height: 100%;
   padding: 160px 60px 100px 60px;
   display: flex; flex-direction: column; align-items: center;
 }
 
 /* ЗАГОЛОВОК */
 .header-text {
-  font-size: 36px; line-height: 1.4; text-align: center; color: #fff; font-weight: 500;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.5); margin-bottom: 50px; margin-top: 40px;
+  font-size: 36px;
+  line-height: 1.4;
+  text-align: center;
+  color: #fff;
+  font-weight: 500;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  margin: 40px 0 50px 0;
 }
 
 /* КАРТОЧКА ПОДАРКА */
 .gift-card-container {
   width: 100%; max-width: 860px;
-  background: rgba(168, 139, 235, 0.65); 
+  background: rgba(168, 139, 235, 0.65);
   backdrop-filter: blur(35px) saturate(120%);
   border-radius: 60px;
-  padding: 0; 
+  padding: 0;
   position: relative;
   box-shadow: 0 40px 100px -10px rgba(0,0,0,0.3);
   display: flex; flex-direction: column; align-items: center;
-  border: 8px solid rgba(255,255,255,0.3); /* Обводка 8px */
-  overflow: hidden; 
-  margin-bottom: 30px; 
+  border: 8px solid rgba(255,255,255,0.3); /* в 2 раза толще */
+  overflow: hidden;
+  margin-bottom: 30px;
 }
 
-/* ЛОКАЦИЯ (Внутри карточки) */
+/* ЛОКАЦИЯ (внутри карточки) */
 .card-inner-location {
   position: absolute;
   top: 40px;
@@ -444,186 +537,285 @@ defineExpose({ generateAndShare });
   color: #fff;
   text-shadow: 0 2px 8px rgba(0,0,0,0.3);
   letter-spacing: 0.02em;
+  z-index: 30;
+}
+
+/* УГОЛОК SVG */
+.corner-tag-svg {
+  position: absolute;
+  top: -6px;
+  right: -6px;
   z-index: 25;
+  pointer-events: none;
 }
 
-/* УГОЛОК (Темный треугольник) */
-.corner-tag-triangle {
-  position: absolute;
-  top: -1px; /* Чуть сдвиг для перекрытия бордера */
-  right: -1px;
-  width: 180px;
-  height: 180px;
-  background: linear-gradient(135deg, #1a1a1c 0%, #000 100%);
-  clip-path: polygon(0 0, 100% 0, 100% 100%);
-  z-index: 20;
-  box-shadow: -4px 4px 20px rgba(0,0,0,0.6);
-}
-.corner-tag-triangle span {
-  position: absolute;
-  top: 36px;
-  right: 18px;
-  transform: rotate(45deg);
-  font-size: 22px;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: 0.1em;
-  z-index: 21;
-}
-
-/* ИЗОБРАЖЕНИЕ (Сдвинуто ниже) */
+/* ИЗОБРАЖЕНИЕ */
 .gift-image-wrapper {
-  position: relative; width: 100%; height: 500px;
-  display: flex; align-items: center; justify-content: center;
-  margin-top: 80px; /* Было 40, стало 80 */
+  position: relative;
+  width: 100%;
+  height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px; /* было 80, опустили ещё на 20 */
 }
+
 .gift-glow {
-  position: absolute; width: 450px; height: 450px; 
-  background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%); opacity: 0.6;
+  position: absolute;
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
+  opacity: 0.6;
 }
+
 .gift-main-img {
-  width: 440px; height: 440px; object-fit: contain; z-index: 2; position: relative;
+  width: 440px; height: 440px;
+  object-fit: contain;
+  z-index: 2;
+  position: relative;
   filter: drop-shadow(0 20px 40px rgba(0,0,0,0.35));
 }
 
 /* БЛОК ИНФОРМАЦИИ */
 .gift-info-block {
-  width: 100%; padding: 0 50px 40px 50px;
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-  position: relative; z-index: 5;
+  width: 100%;
+  padding: 0 50px 40px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 5;
 }
 
-/* ОТ КОГО (48px) */
+/* ОТ КОГО */
 .meta-from {
-  font-size: 48px; font-weight: 500; color: rgba(255,255,255,0.95);
-  margin-bottom: 24px;
+  font-size: 48px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.95);
+  margin-bottom: 22px;
   line-height: 1.1;
 }
 
-/* НАЗВАНИЕ (Градиент, не капс) */
+/* НАЗВАНИЕ (без градиента, легкий фиолетовый + прозрачность) */
 .gift-name {
-  font-size: 58px; font-weight: 700; 
-  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.7) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 2px 15px rgba(155, 127, 183, 0.5); /* Легкое фиолетовое свечение */
-  margin-bottom: 30px;
+  font-size: 58px;
+  font-weight: 700;
+  color: rgba(214, 186, 255, 0.9);
+  text-shadow: 0 2px 18px rgba(155, 127, 183, 0.55);
+  margin-bottom: 28px;
   line-height: 1.1;
 }
 
-/* ГРАДИЕНТНЫЙ БЛОК (НОМЕР + ДАТА) */
+/* БЕЙДЖ (🎁 + номер + дата) */
 .meta-gradient-badge {
   display: inline-block;
   background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 100%);
-  padding: 12px 32px; border-radius: 50px;
+  padding: 12px 32px;
+  border-radius: 50px;
   box-shadow: 0 10px 20px -5px rgba(155, 127, 183, 0.4);
 }
-/* Центровка контента внутри бейджа */
-.mb-content {
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-}
-.mb-icon { font-size: 26px; line-height: 1; }
-.mb-num { font-size: 28px; font-weight: 800; color: #fff; line-height: 1; position: relative; top: 1px; }
-.mb-sep { font-size: 24px; color: rgba(255,255,255,0.6); line-height: 1; position: relative; top: -1px; }
-.mb-date { font-size: 28px; font-weight: 600; color: #fff; line-height: 1; position: relative; top: 1px; }
 
-/* СПЕЙСЕР ВНИЗУ ПОДАРКА */
+.mb-content {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* ключ для идеального центра */
+  gap: 12px;
+}
+
+.mb-icon { font-size: 26px; line-height: 1; }
+.mb-num { font-size: 28px; font-weight: 800; color: #fff; line-height: 1; }
+.mb-sep { font-size: 24px; color: rgba(255,255,255,0.65); line-height: 1; }
+.mb-date { font-size: 28px; font-weight: 600; color: #fff; line-height: 1; }
+
+/* СПЕЙСЕР */
 .card-bottom-spacer { height: 40px; width: 100%; }
 
-
-/* ОТДЕЛЬНАЯ КАРТОЧКА СООБЩЕНИЯ (Чат-баббл) */
+/* КАРТОЧКА СООБЩЕНИЯ */
 .message-card-container {
-  width: 100%; max-width: 860px;
+  width: 100%;
+  max-width: 860px;
   position: relative;
-  background: rgba(30, 30, 35, 0.4); 
+  background: rgba(30, 30, 35, 0.4);
   backdrop-filter: blur(25px);
   border-radius: 40px;
   padding: 40px 50px;
-  display: flex; flex-direction: column; align-items: center; text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  
-  /* Градиентная обводка 1px */
-  border: 1px solid transparent;
-  background-clip: padding-box; 
-}
-
-/* Реализация градиентной рамки через псевдо-элемент */
-.message-card-container::before {
-  content: "";
-  position: absolute; inset: 0; 
-  border-radius: 40px; 
-  padding: 1px; 
-  background: linear-gradient(90deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%); 
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor; 
-  mask-composite: exclude; 
-  pointer-events: none;
+  border: 1px solid rgba(255,255,255,0.35); /* 1px, надежно для html2canvas */
 }
 
 .message-header {
-  font-size: 24px; font-weight: 600; color: rgba(255,255,255,0.6);
-  margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.05em;
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .message-body {
-  font-size: 36px; line-height: 1.4; color: #fff; font-weight: 500;
+  font-size: 36px;
+  line-height: 1.4;
+  color: #fff;
+  font-weight: 500;
   text-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* Хвостик (SVG) */
+/* Хвостик: справа снизу, но сдвинут влево, чтобы не закрывался аватаром */
 .message-tail {
   position: absolute;
-  bottom: -2px; /* Чуть перекрывает */
-  right: -2px; 
-  width: 50px; height: 50px;
-  transform: rotate(0deg);
+  bottom: -8px;
+  right: 62px; /* оставили место под аватар */
   z-index: 2;
-}
-.message-tail path {
-  fill: rgba(30, 30, 35, 0.6); /* Цвет подложки баббла */
+  pointer-events: none;
 }
 
 /* Аватарка */
 .message-avatar {
   position: absolute;
-  bottom: -25px;
-  right: -25px;
-  width: 70px; height: 70px;
+  bottom: -26px;
+  right: -26px;
+  width: 72px;
+  height: 72px;
   background: #fff;
   border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 36px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  z-index: 5;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  z-index: 6;
 }
 
-/* FOOTER (Крупнее и выше) */
+/* FOOTER */
 .story-footer-text {
-  position: absolute; bottom: 80px;
-  font-size: 48px; 
+  position: absolute;
+  bottom: 90px;
+  font-size: 48px;
   color: rgba(255,255,255,0.5);
-  font-weight: 500; 
+  font-weight: 500;
   letter-spacing: 0.02em;
 }
 
 /* МОДАЛКА */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px; }
-.modal { background: #1E1E20; width: 100%; max-width: 420px; max-height: 95vh; border-radius: 28px; border: 1px solid #333; display: flex; flex-direction: column; box-shadow: 0 30px 80px rgba(0,0,0,0.7); overflow: hidden; }
-.modal-header { padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; background: #252528; }
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  padding: 20px;
+}
+
+.modal {
+  background: #1E1E20;
+  width: 100%;
+  max-width: 420px;
+  max-height: 95vh;
+  border-radius: 28px;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #333;
+  background: #252528;
+}
+
 .modal-header h3 { margin: 0; font-size: 18px; color: #fff; font-weight: 600; }
-.modal-close { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-.modal-body { background: #000; flex-grow: 1; min-height: 200px; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.preview-img { max-width: 100%; max-height: 60vh; object-fit: contain; border-radius: 12px; }
+
+.modal-close {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.modal-body {
+  background: #000;
+  flex-grow: 1;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.preview-img {
+  max-width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
 .spinner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.spinner-icon { width: 48px; height: 48px; animation: breathe 3s ease-in-out infinite; }
+
+.spinner-icon {
+  width: 48px;
+  height: 48px;
+  animation: breathe 3s ease-in-out infinite;
+}
+
 .spinner-text { color: #888; font-size: 14px; }
-.modal-footer { padding: 24px; background: #252528; border-top: 1px solid #333; display: flex; flex-direction: column; gap: 14px; align-items: center; }
+
+.modal-footer {
+  padding: 24px;
+  background: #252528;
+  border-top: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
 .buttons-row { display: flex; gap: 10px; width: 100%; }
-.download-btn { flex: 1; padding: 14px; border-radius: 12px; border: none; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform 0.2s; }
+
+.download-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
 .primary-btn { background: #9B7FB7; color: #fff; }
 .secondary-btn { background: #444; color: #ccc; }
+
 .upload-section { width: 100%; display: flex; justify-content: center; }
 .upload-btn { background: transparent; border: 1px dashed #555; color: #aaa; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; }
-@keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
+
+/* Инпут: визуально скрыт, но НЕ display:none */
+.hidden-input {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
 </style>
