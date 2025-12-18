@@ -707,7 +707,7 @@ defineExpose({ generateAndShare })
 .card-bottom-spacer { height: 8px; width: 100%; }
 
 /* Message + spacing to footer (увеличили, особенно на мобилке) */
-.message-section { width: 860px; margin-bottom: 44px; } /* было 26 */
+.message-section { width: 860px; margin-bottom: 54px; } /* было 26 */
 
 .message-row {
   width: 860px;
