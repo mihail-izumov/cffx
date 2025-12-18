@@ -1,4 +1,6 @@
 
 <SignalFormKorzhCard1/>
 
+<ShareButton/>
+
 
