@@ -211,7 +211,7 @@ const DEFAULT_BADGE = {
 const smileys = ['😊', '😅', '😉', '😋', '😀']
 
 /** Background resolve + fallback */
-const DEFAULT_BG = '/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg'
+const DEFAULT_BG = 'https://cffx.ru/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg'
 const bgResolvedUrl = ref(DEFAULT_BG)
 let lastBgRequestId = 0
 
