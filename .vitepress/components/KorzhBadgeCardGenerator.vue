@@ -93,7 +93,7 @@
             </div>
           </div>
 
-          <div class="story-footer-text">Сделано в Сигнале</div>
+          <div class="story-footer-text">Сделано в Сигнале <br> cffx.ru</div>
         </div>
       </div>
     </div>
