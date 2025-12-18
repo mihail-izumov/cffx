@@ -39,12 +39,12 @@
               {{ address || 'Все кофейни' }}
             </div>
 
-            <!-- ЛЕНТА-УГОЛОК (Темный объемный треугольник) -->
+            <!-- ЛЕНТА-УГОЛОК (Темный треугольник) -->
             <div class="corner-tag-triangle">
-               <span>GIFT</span>
+               <span>ПОДАРОК</span>
             </div>
 
-            <!-- ИЗОБРАЖЕНИЕ -->
+            <!-- ИЗОБРАЖЕНИЕ (Сдвинуто ниже) -->
             <div class="gift-image-wrapper">
                <div class="gift-glow"></div>
                <img v-if="badgeImage" :src="badgeImage" class="gift-main-img" alt="Gift" crossorigin="anonymous" />
@@ -53,22 +53,24 @@
             <!-- ИНФО БЛОК -->
             <div class="gift-info-block">
                 
-                <!-- ОТ КОГО (Со склонением) -->
+                <!-- ОТ КОГО (Крупнее, 48px) -->
                 <div class="meta-from">
                    Подарок от {{ formattedName }}
                 </div>
                 
-                <!-- НАЗВАНИЕ ПОДАРКА -->
+                <!-- НАЗВАНИЕ ПОДАРКА (Фиолетовый градиент, Bold 700, не Caps) -->
                 <div class="gift-name" v-if="badgeLabel">
                    {{ badgeLabel }}
                 </div>
 
-                <!-- НОМЕР И ДАТА (Градиент, непрозрачный, по центру) -->
+                <!-- НОМЕР И ДАТА (По центру) -->
                 <div class="meta-gradient-badge">
-                   <span class="mb-icon">🎁</span>
-                   <span class="mb-num">{{ ticket }}</span>
-                   <span class="mb-sep">•</span>
-                   <span class="mb-date">{{ date }}</span>
+                   <span class="mb-content">
+                      <span class="mb-icon">🎁</span>
+                      <span class="mb-num">{{ ticket }}</span>
+                      <span class="mb-sep">•</span>
+                      <span class="mb-date">{{ date }}</span>
+                   </span>
                 </div>
 
             </div>
@@ -76,15 +78,25 @@
             <div class="card-bottom-spacer"></div>
           </div>
 
-          <!-- ОТДЕЛЬНАЯ КАРТОЧКА СООБЩЕНИЯ -->
+          <!-- ОТДЕЛЬНАЯ КАРТОЧКА СООБЩЕНИЯ (Чат-баббл) -->
           <div v-if="formattedText" class="message-card-container">
              <div class="message-header">Делюсь настроением:</div>
              <div class="message-body">
                 {{ formattedText }}
              </div>
+             
+             <!-- Хвостик баббла -->
+             <svg class="message-tail" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0C0 0 10 20 40 40V0H0Z" fill="rgba(30, 30, 35, 0.6)"/>
+             </svg>
+
+             <!-- Аватарка (Смайлик) -->
+             <div class="message-avatar">
+                {{ randomSmiley }}
+             </div>
           </div>
 
-          <!-- FOOTER (Крупнее и выше) -->
+          <!-- FOOTER (Крупнее) -->
           <div class="story-footer-text">
              Сделано в Сигнале
           </div>
@@ -126,10 +138,9 @@
             </div>
             
             <div class="upload-section">
-               <button class="text-btn upload-btn" @click.prevent="triggerFileUpload">
+               <button class="text-btn upload-btn" @click="triggerFileUpload">
                   Загрузить свое фото
                </button>
-               <!-- Скрытый инпут -->
                <input 
                   type="file" 
                   ref="fileInputRef" 
@@ -146,7 +157,7 @@
 </template>
 
 <script setup>
-import { ref, defineExpose, computed, nextTick, watch } from 'vue';
+import { ref, defineExpose, computed, nextTick, watch, onMounted } from 'vue';
 
 const props = defineProps({
   ticket: String,
@@ -166,9 +177,16 @@ const fileInputRef = ref(null);
 const bgKey = ref(0); 
 const canShare = ref(false);
 
-if (typeof navigator !== 'undefined') {
-   canShare.value = !!(navigator.share && navigator.canShare);
-}
+// Рандомный смайлик для аватарки
+const smileys = ['😊','😅','😉','😋','😀', '🥰', '😎'];
+const randomSmiley = ref(smileys[0]);
+
+onMounted(() => {
+   if (typeof navigator !== 'undefined') {
+      canShare.value = !!(navigator.share && navigator.canShare);
+   }
+   randomSmiley.value = smileys[Math.floor(Math.random() * smileys.length)];
+});
 
 watch(customBgImage, () => {
   bgKey.value++;
@@ -181,20 +199,12 @@ function getGenitiveName(name) {
   const n = name.trim();
   if (!n) return 'Гостя';
 
-  // Простая эвристика для русского языка (Родительный падеж)
   const lastChar = n.slice(-1).toLowerCase();
-  // const lastTwo = n.slice(-2).toLowerCase(); // можно расширить для 'ия' -> 'ии'
-
-  // Женские и мягкие окончания
-  if (lastChar === 'а') return n.slice(0, -1) + 'ы'; // Елена -> Елены
-  if (lastChar === 'я') return n.slice(0, -1) + 'и'; // Мария -> Марии, Аня -> Ани
-  if (lastChar === 'ь') return n.slice(0, -1) + 'и'; // Любовь -> Любви
-
-  // Мужские окончания
-  if (lastChar === 'й') return n.slice(0, -1) + 'я'; // Андрей -> Андрея
-  if (/[бвгджзклмнпрстфхцчшщ]/.test(lastChar)) return n + 'а'; // Иван -> Ивана
-
-  // Если не попало под правила (иностранные, несклоняемые или оканчивается на гласную не а/я)
+  if (lastChar === 'а') return n.slice(0, -1) + 'ы'; 
+  if (lastChar === 'я') return n.slice(0, -1) + 'и'; 
+  if (lastChar === 'ь') return n.slice(0, -1) + 'и'; 
+  if (lastChar === 'й') return n.slice(0, -1) + 'я'; 
+  if (/[бвгджзклмнпрстфхцчшщ]/.test(lastChar)) return n + 'а'; 
   return n; 
 }
 
@@ -264,6 +274,8 @@ const waitForFonts = async () => {
 
 const generateImageInternal = async () => {
   generatedImageUrl.value = null;
+  randomSmiley.value = smileys[Math.floor(Math.random() * smileys.length)]; // Новый смайл при каждой генерации
+  
   try {
     await loadLibrary();
     await nextTick();
@@ -304,7 +316,6 @@ const generateAndShare = async () => {
 };
 
 const triggerFileUpload = () => {
-  // Исправлено: прямой вызов click без .stop в шаблоне, .prevent добавлен
   if (fileInputRef.value) {
     fileInputRef.value.click();
   }
@@ -322,7 +333,6 @@ const handleFileUpload = (event) => {
     }
     reader.readAsDataURL(file);
   }
-  // Сброс value, чтобы можно было загрузить тот же файл повторно
   event.target.value = '';
 }
 
@@ -419,7 +429,7 @@ defineExpose({ generateAndShare });
   position: relative;
   box-shadow: 0 40px 100px -10px rgba(0,0,0,0.3);
   display: flex; flex-direction: column; align-items: center;
-  border: 4px solid rgba(255,255,255,0.3); 
+  border: 8px solid rgba(255,255,255,0.3); /* Обводка 8px */
   overflow: hidden; 
   margin-bottom: 30px; 
 }
@@ -440,32 +450,32 @@ defineExpose({ generateAndShare });
 /* УГОЛОК (Темный треугольник) */
 .corner-tag-triangle {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -1px; /* Чуть сдвиг для перекрытия бордера */
+  right: -1px;
   width: 180px;
   height: 180px;
-  background: linear-gradient(135deg, #2a2a2e 0%, #151515 100%);
+  background: linear-gradient(135deg, #1a1a1c 0%, #000 100%);
   clip-path: polygon(0 0, 100% 0, 100% 100%);
   z-index: 20;
-  box-shadow: -5px 5px 15px rgba(0,0,0,0.5); 
+  box-shadow: -4px 4px 20px rgba(0,0,0,0.6);
 }
 .corner-tag-triangle span {
   position: absolute;
-  top: 35px;
-  right: 35px;
+  top: 36px;
+  right: 18px;
   transform: rotate(45deg);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   color: #fff;
   letter-spacing: 0.1em;
   z-index: 21;
 }
 
-/* ИЗОБРАЖЕНИЕ */
+/* ИЗОБРАЖЕНИЕ (Сдвинуто ниже) */
 .gift-image-wrapper {
   position: relative; width: 100%; height: 500px;
   display: flex; align-items: center; justify-content: center;
-  margin-top: 40px;
+  margin-top: 80px; /* Было 40, стало 80 */
 }
 .gift-glow {
   position: absolute; width: 450px; height: 450px; 
@@ -483,45 +493,72 @@ defineExpose({ generateAndShare });
   position: relative; z-index: 5;
 }
 
-/* ОТ КОГО */
+/* ОТ КОГО (48px) */
 .meta-from {
-  font-size: 30px; font-weight: 500; color: rgba(255,255,255,0.9);
-  margin-bottom: 16px;
-}
-
-/* НАЗВАНИЕ */
-.gift-name {
-  font-size: 58px; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 0.02em;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.2); line-height: 1.1;
+  font-size: 48px; font-weight: 500; color: rgba(255,255,255,0.95);
   margin-bottom: 24px;
+  line-height: 1.1;
 }
 
-/* ГРАДИЕНТНЫЙ БЛОК (НОМЕР + ДАТА) - Непрозрачный */
+/* НАЗВАНИЕ (Градиент, не капс) */
+.gift-name {
+  font-size: 58px; font-weight: 700; 
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 15px rgba(155, 127, 183, 0.5); /* Легкое фиолетовое свечение */
+  margin-bottom: 30px;
+  line-height: 1.1;
+}
+
+/* ГРАДИЕНТНЫЙ БЛОК (НОМЕР + ДАТА) */
 .meta-gradient-badge {
-  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  display: inline-block;
   background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 100%);
   padding: 12px 32px; border-radius: 50px;
   box-shadow: 0 10px 20px -5px rgba(155, 127, 183, 0.4);
 }
-.mb-icon { font-size: 26px; }
-.mb-num { font-size: 28px; font-weight: 800; color: #fff; }
-.mb-sep { font-size: 24px; color: rgba(255,255,255,0.6); }
-.mb-date { font-size: 28px; font-weight: 600; color: #fff; }
+/* Центровка контента внутри бейджа */
+.mb-content {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+}
+.mb-icon { font-size: 26px; line-height: 1; }
+.mb-num { font-size: 28px; font-weight: 800; color: #fff; line-height: 1; position: relative; top: 1px; }
+.mb-sep { font-size: 24px; color: rgba(255,255,255,0.6); line-height: 1; position: relative; top: -1px; }
+.mb-date { font-size: 28px; font-weight: 600; color: #fff; line-height: 1; position: relative; top: 1px; }
 
 /* СПЕЙСЕР ВНИЗУ ПОДАРКА */
 .card-bottom-spacer { height: 40px; width: 100%; }
 
 
-/* ОТДЕЛЬНАЯ КАРТОЧКА СООБЩЕНИЯ */
+/* ОТДЕЛЬНАЯ КАРТОЧКА СООБЩЕНИЯ (Чат-баббл) */
 .message-card-container {
   width: 100%; max-width: 860px;
+  position: relative;
   background: rgba(30, 30, 35, 0.4); 
   backdrop-filter: blur(25px);
-  border: 2px solid rgba(255,255,255,0.15);
   border-radius: 40px;
   padding: 40px 50px;
   display: flex; flex-direction: column; align-items: center; text-align: center;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  
+  /* Градиентная обводка 1px */
+  border: 1px solid transparent;
+  background-clip: padding-box; 
+}
+
+/* Реализация градиентной рамки через псевдо-элемент */
+.message-card-container::before {
+  content: "";
+  position: absolute; inset: 0; 
+  border-radius: 40px; 
+  padding: 1px; 
+  background: linear-gradient(90deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%); 
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; 
+  mask-composite: exclude; 
+  pointer-events: none;
 }
 
 .message-header {
@@ -532,6 +569,33 @@ defineExpose({ generateAndShare });
 .message-body {
   font-size: 36px; line-height: 1.4; color: #fff; font-weight: 500;
   text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Хвостик (SVG) */
+.message-tail {
+  position: absolute;
+  bottom: -2px; /* Чуть перекрывает */
+  right: -2px; 
+  width: 50px; height: 50px;
+  transform: rotate(0deg);
+  z-index: 2;
+}
+.message-tail path {
+  fill: rgba(30, 30, 35, 0.6); /* Цвет подложки баббла */
+}
+
+/* Аватарка */
+.message-avatar {
+  position: absolute;
+  bottom: -25px;
+  right: -25px;
+  width: 70px; height: 70px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 5;
 }
 
 /* FOOTER (Крупнее и выше) */
