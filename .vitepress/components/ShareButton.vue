@@ -80,7 +80,7 @@ onUnmounted(() => {
         </button>
 
         <h3>Поделитесь</h3>
-        <p>Пригласите друзей следить за инвестициями в Корж</p>
+        <p>Пригласите друзей отправить открытку в Корж</p>
 
         <div class="share-buttons">
           <div
@@ -142,7 +142,6 @@ onUnmounted(() => {
 
 .share-only {
   display: inline-block;
-  min-height: 100vh;
   width: 100%;
   display: flex;
   align-items: center;
