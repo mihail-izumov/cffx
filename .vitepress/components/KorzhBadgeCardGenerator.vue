@@ -635,7 +635,7 @@ defineExpose({ generateAndShare })
 .gift-image-wrapper {
   position: relative;
   width: 100%;
-  height: 440px;       /* было 480 */
+  height: 480px;       /* было 480 */
   display: flex;
   align-items: center;
   justify-content: center;
