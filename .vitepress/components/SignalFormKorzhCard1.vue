@@ -18,7 +18,8 @@ const currentDate = ref('')
 const badgeCounts = reactive({
   badge1: 0,
   badge2: 0,
-  badge3: 0
+  badge3: 0,
+  badge4: 0
 })
 
 // Ротация
@@ -45,7 +46,8 @@ const genderThemeClass = computed(() => {
 const cardTypes = [
   { id: 'badge1', label: 'Сигналка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
   { id: 'badge2', label: 'Круассанчик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge3', label: 'Котик', image: '/img/korzh/badge/korzh-cffx-cup.png' }
+  { id: 'badge3', label: 'Котик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
+  { id: 'badge4', label: 'Снежинка', image: '/img/korzh/badge/korzh-cffx-cup.png' }
 ]
 
 // Трекинг тачей
