@@ -595,7 +595,7 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
    :all-text="[form.emotionalRelease].filter(t => t && t.trim()).join(' ')"
    :badge-image="selectedBadgeImage"   
    :badge-label="selectedBadgeLabel"
-   :user-name="form.userName" <!-- ДОБАВИТЬ ВОТ ЭТУ СТРОКУ -->
+   :user-name="form.userName"
 />
   </div>
 </template>
