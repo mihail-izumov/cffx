@@ -19,100 +19,88 @@
         <div class="story-noise"></div>
         <div class="story-bg-overlay"></div>
 
-        <div class="story-content-grid">
+        <!-- ВАЖНО: теперь это flex-колонка, footer привязан к высоте message -->
+        <div class="story-content">
           <!-- Header -->
-          <div class="grid-header">
-            <div class="header-text">
-              Вы превратили этот момент в<br />уникальное воспоминание
-            </div>
+          <div class="header-text">
+            Вы превратили этот момент в<br />уникальное воспоминание
           </div>
 
-          <!-- Shared container 860px -->
-          <div class="grid-main">
-            <!-- Gift -->
-            <div class="grid-gift">
-              <div class="gift-card-shell">
-                <div class="gift-card-container">
-                  <!-- Локация -->
-                  <div class="card-inner-location">
-                    <img class="loc-icon" src="/korzh_invest_card.png" alt="" crossorigin="anonymous" />
-                    <span class="loc-text">{{ sAddress || 'Все кофейни' }}</span>
-                  </div>
+          <!-- Gift -->
+          <div class="gift-card-shell">
+            <div class="gift-card-container">
+              <!-- Локация -->
+              <div class="card-inner-location">
+                <img class="loc-icon" src="/korzh_invest_card.png" alt="" crossorigin="anonymous" />
+                <span class="loc-text">{{ sAddress || 'Все кофейни' }}</span>
+              </div>
 
-                  <!-- Центральная группа (опущена на 15px вниз) -->
-                  <div class="gift-main-group">
-                    <div class="gift-image-wrapper">
-                      <div class="gift-glow"></div>
-                      <img
-                        v-if="sBadgeImage"
-                        :src="sBadgeImage"
-                        class="gift-main-img"
-                        alt="Gift"
-                        crossorigin="anonymous"
-                      />
-                    </div>
-
-                    <div class="gift-info-block">
-                      <div class="meta-from">Подарок от {{ sFromName }}</div>
-
-                      <div class="gift-name">{{ sBadgeLabel }}</div>
-
-                      <div class="meta-gradient-badge" aria-label="Номер и дата">
-                        <div class="mb-content">
-                          <span class="mb-num">{{ sTicket }}</span>
-                          <span class="mb-icon">🎁</span>
-                          <span class="mb-date">{{ sDate }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Отступ от бейджа до низа карточки -->
-                  <div class="card-bottom-spacer"></div>
-                </div>
-
-                <!-- Лента поверх бордера -->
+              <!-- Картинка + всё ниже: сдвинуты вниз ВНУТРИ той же высоты карточки -->
+              <div class="gift-image-wrapper">
+                <div class="gift-glow"></div>
                 <img
-                  class="corner-tag-img"
-                  src="/img/korzh/badge/corner-tag-img.png"
-                  alt=""
+                  v-if="sBadgeImage"
+                  :src="sBadgeImage"
+                  class="gift-main-img"
+                  alt="Gift"
                   crossorigin="anonymous"
                 />
               </div>
+
+              <div class="gift-info-block">
+                <div class="meta-from">Подарок от {{ sFromName }}</div>
+                <div class="gift-name">{{ sBadgeLabel }}</div>
+
+                <div class="meta-gradient-badge" aria-label="Номер и дата">
+                  <div class="mb-content">
+                    <span class="mb-num">{{ sTicket }}</span>
+                    <span class="mb-icon">🎁</span>
+                    <span class="mb-date">{{ sDate }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-bottom-spacer"></div>
             </div>
 
-            <!-- Message -->
-            <div class="grid-message">
-              <div v-if="sTextFull" class="message-row">
-                <div class="message-bubble">
-                  <div ref="messageWrapRef" class="message-body-wrap">
-                    <div ref="messageTextRef" class="message-body">
-                      {{ sTextDisplay }}
-                    </div>
-                  </div>
+            <!-- Лента -->
+            <img
+              class="corner-tag-img"
+              src="/img/korzh/badge/corner-tag-img.png"
+              alt=""
+              crossorigin="anonymous"
+            />
+          </div>
 
-                  <!-- хвостик -->
-                  <svg
-                    class="message-tail-top"
-                    width="56"
-                    height="42"
-                    viewBox="0 0 56 42"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path d="M2 40C2 40 14 22 54 6V40H2Z" fill="rgba(30, 30, 35, 0.55)" />
-                  </svg>
+          <!-- Message -->
+          <div class="message-section">
+            <div v-if="sTextFull" class="message-row">
+              <div class="message-bubble">
+                <div ref="messageWrapRef" class="message-body-wrap">
+                  <div ref="messageTextRef" class="message-body">
+                    {{ sTextDisplay }}
+                  </div>
                 </div>
 
-                <div class="message-avatar-top">{{ sAvatar }}</div>
+                <!-- хвостик -->
+                <svg
+                  class="message-tail-top"
+                  width="56"
+                  height="42"
+                  viewBox="0 0 56 42"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path d="M2 40C2 40 14 22 54 6V40H2Z" fill="rgba(30, 30, 35, 0.55)" />
+                </svg>
               </div>
+
+              <div class="message-avatar-top">{{ sAvatar }}</div>
             </div>
           </div>
 
-          <!-- Footer -->
-          <div class="grid-footer">
-            <div class="story-footer-text">Сделано в Сигнале</div>
-          </div>
+          <!-- Footer: теперь “привязан” к высоте окна текста -->
+          <div class="story-footer-text">Сделано в Сигнале</div>
         </div>
       </div>
     </div>
@@ -331,7 +319,6 @@ const bgClass = computed(() => {
   if (a.includes('Дачная')) return 'bg-6'
   if (a.includes('Ульяновская')) return 'bg-7'
   if (a.includes('Ново-Садовая')) return 'bg-8'
-  // дефолт обязательно
   return 'bg-default'
 })
 
@@ -536,6 +523,15 @@ defineExpose({ generateAndShare })
   transform: scale(1.05);
 }
 .story-bg-image.bg-default { background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg'); }
+.story-bg-image.bg-1 { background-image: url('/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg'); }
+.story-bg-image.bg-2 { background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg'); }
+.story-bg-image.bg-3 { background-image: url('/img/korzh/korzh-revolucionnaya-1080x1920.jpg'); }
+.story-bg-image.bg-4 { background-image: url('/img/korzh/korzh-9proseka-1080x1920.jpg'); }
+.story-bg-image.bg-5 { background-image: url('/img/korzh/korzh-samarskaya-1080x1920.jpg'); }
+.story-bg-image.bg-6 { background-image: url('/img/korzh/korzh-dachnaya-1080x1920.jpg'); }
+.story-bg-image.bg-7 { background-image: url('/img/korzh/korzh-ulyanovskaya-1080x1920.jpg'); }
+.story-bg-image.bg-8 { background-image: url('/img/korzh/korzh-novo-sadovaya-1080x1920.jpg'); }
+
 .story-noise {
   position: absolute; inset: 0; z-index: 2;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
@@ -546,18 +542,18 @@ defineExpose({ generateAndShare })
   background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.45) 100%);
 }
 
-/* grid */
-.story-content-grid {
+/* НОВОЕ: flex-колонка, footer в потоке */
+.story-content {
   position: relative;
   z-index: 10;
   width: 100%;
   height: 100%;
   padding: 160px 60px 90px 60px;
-  display: grid;
-  grid-template-rows: 170px 1fr 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.grid-header { display: flex; justify-content: center; }
 .header-text {
   font-size: 36px;
   line-height: 1.4;
@@ -565,29 +561,11 @@ defineExpose({ generateAndShare })
   color: #fff;
   font-weight: 500;
   text-shadow: 0 4px 20px rgba(0,0,0,0.5);
-}
-
-.grid-main {
-  width: 860px;
-  justify-self: center;
-  display: grid;
-  grid-template-rows: 965px 415px;
-}
-
-.grid-gift { transform: translateY(-15px); }
-.grid-message { overflow: hidden; padding-bottom: 10px; }
-
-.grid-footer { display: flex; justify-content: center; align-items: flex-end; }
-.story-footer-text {
-  font-size: 48px;
-  color: rgba(255,255,255,0.5);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  transform: translateY(5px);
+  margin-bottom: 60px;
 }
 
 /* gift */
-.gift-card-shell { position: relative; width: 860px; height: 965px; }
+.gift-card-shell { position: relative; width: 860px; height: 965px; margin-bottom: 34px; }
 .gift-card-container {
   width: 860px;
   height: 965px;
@@ -613,7 +591,6 @@ defineExpose({ generateAndShare })
   object-fit: contain;
 }
 
-/* location */
 .card-inner-location {
   position: absolute;
   top: 40px;
@@ -637,39 +614,32 @@ defineExpose({ generateAndShare })
   text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* главная группа (сдвиг вниз на 15px) */
-.gift-main-group {
-  width: 100%;
-  transform: translateY(15px);
-}
-
-/* gift image */
+/* ПРАВКА #1: гарантированный сдвиг вниз внутри той же высоты карточки:
+   увеличили margin-top на +40px и уменьшили height на -40px (суммарно одинаково) */
 .gift-image-wrapper {
   position: relative;
   width: 100%;
-  height: 520px;
+  height: 480px;     /* было 520 */
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 104px;
+  margin-top: 144px; /* было 104 */
 }
+
 .gift-glow {
   position: absolute;
-  width: 450px;
-  height: 450px;
+  width: 450px; height: 450px;
   background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
   opacity: 0.6;
 }
 .gift-main-img {
-  width: 440px;
-  height: 440px;
+  width: 440px; height: 440px;
   object-fit: contain;
   z-index: 2;
   position: relative;
   filter: drop-shadow(0 20px 40px rgba(0,0,0,0.35));
 }
 
-/* gift info */
 .gift-info-block {
   width: 100%;
   padding: 0 50px 0 50px;
@@ -679,6 +649,7 @@ defineExpose({ generateAndShare })
   text-align: center;
   z-index: 5;
 }
+
 .meta-from {
   font-size: 48px;
   font-weight: 500;
@@ -695,7 +666,6 @@ defineExpose({ generateAndShare })
   line-height: 1.1;
 }
 
-/* badge */
 .meta-gradient-badge {
   height: 72px;
   padding: 0 36px;
@@ -711,39 +681,20 @@ defineExpose({ generateAndShare })
   align-items: center;
   justify-content: center;
   gap: 14px;
-  transform: translateY(-2px); /* поднять всё содержимое на 2px */
+  transform: translateY(-2px);
 }
-.mb-num,
-.mb-date,
-.mb-icon {
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-}
-.mb-num {
-  font-size: 28px;
-  font-weight: 800;
-  color: #fff;
-}
-.mb-date {
-  font-size: 28px;
-  font-weight: 600;
-  color: #fff;
-}
-.mb-icon {
-  font-size: 26px;
-}
+.mb-num, .mb-date, .mb-icon { line-height: 1; display: inline-flex; align-items: center; }
+.mb-num { font-size: 28px; font-weight: 800; color: #fff; }
+.mb-date { font-size: 28px; font-weight: 600; color: #fff; }
+.mb-icon { font-size: 26px; }
 
-/* отступ от бейджа до низа карточки */
-.card-bottom-spacer {
-  height: 8px;
-  width: 100%;
-}
+.card-bottom-spacer { height: 8px; width: 100%; }
 
 /* message */
+.message-section { width: 860px; margin-bottom: 26px; }
+
 .message-row {
   width: 860px;
-  height: 100%;
   display: flex;
   align-items: flex-start;
   gap: 14px;
@@ -797,16 +748,23 @@ defineExpose({ generateAndShare })
   align-items: center;
   justify-content: center;
   font-size: 36px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
   margin-top: 8px;
   margin-left: auto;
 }
 
+/* ПРАВКА #2: footer в потоке — поднимается/опускается вместе с message */
+.story-footer-text {
+  font-size: 48px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
 /* modal */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.92);
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.92);
   z-index: 10000;
   display: flex;
   align-items: center;
@@ -823,7 +781,7 @@ defineExpose({ generateAndShare })
   border: 1px solid #333;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7);
   overflow: hidden;
 }
 .modal-header {
@@ -834,14 +792,9 @@ defineExpose({ generateAndShare })
   border-bottom: 1px solid #333;
   background: #252528;
 }
-.modal-header h3 {
-  margin: 0;
-  font-size: 18px;
-  color: #fff;
-  font-weight: 600;
-}
+.modal-header h3 { margin: 0; font-size: 18px; color: #fff; font-weight: 600; }
 .modal-close {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,0.1);
   border: none;
   color: #fff;
   width: 32px;
@@ -867,21 +820,9 @@ defineExpose({ generateAndShare })
   object-fit: contain;
   border-radius: 12px;
 }
-.spinner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-.spinner-icon {
-  width: 48px;
-  height: 48px;
-  animation: breathe 3s ease-in-out infinite;
-}
-.spinner-text {
-  color: #888;
-  font-size: 14px;
-}
+.spinner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.spinner-icon { width: 48px; height: 48px; animation: breathe 3s ease-in-out infinite; }
+.spinner-text { color: #888; font-size: 14px; }
 
 .modal-footer {
   padding: 24px;
@@ -892,11 +833,7 @@ defineExpose({ generateAndShare })
   gap: 14px;
   align-items: center;
 }
-.buttons-row {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-}
+.buttons-row { display: flex; gap: 10px; width: 100%; }
 .download-btn {
   flex: 1;
   padding: 14px;
@@ -906,45 +843,14 @@ defineExpose({ generateAndShare })
   font-size: 15px;
   cursor: pointer;
 }
-.primary-btn {
-  background: #9b7fb7;
-  color: #fff;
-}
-.secondary-btn {
-  background: #444;
-  color: #ccc;
-}
-.upload-section {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-.upload-btn {
-  background: transparent;
-  border: 1px dashed #555;
-  color: #aaa;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 13px;
-}
-.hidden-input {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
+.primary-btn { background: #9b7fb7; color: #fff; }
+.secondary-btn { background: #444; color: #ccc; }
+.upload-section { width: 100%; display: flex; justify-content: center; }
+.upload-btn { background: transparent; border: 1px dashed #555; color: #aaa; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; }
+.hidden-input { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 
 @keyframes breathe {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.1);
-    opacity: 1;
-  }
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
 }
 </style>
