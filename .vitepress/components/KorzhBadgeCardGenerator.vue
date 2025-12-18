@@ -5,21 +5,22 @@
       rel="stylesheet"
     />
 
+    <!-- СКРЫТЫЙ ШАБЛОН (1080x1920) -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
         <div class="story-bg-base"></div>
 
+        <!-- ФОН: теперь всегда задается inline-стилем bgResolvedUrl (с preloading + fallback) -->
         <div
           :key="bgKey"
           class="story-bg-image"
-          :class="!customBgImage ? bgClass : ''"
-          :style="customBgImage ? { backgroundImage: `url(${customBgImage})` } : {}"
+          :style="{ backgroundImage: `url(${bgResolvedUrl})` }"
         ></div>
 
         <div class="story-noise"></div>
         <div class="story-bg-overlay"></div>
 
-        <!-- ВАЖНО: теперь это flex-колонка, footer привязан к высоте message -->
+        <!-- Flex-колонка: footer едет вместе с высотой message -->
         <div class="story-content">
           <!-- Header -->
           <div class="header-text">
@@ -35,7 +36,7 @@
                 <span class="loc-text">{{ sAddress || 'Все кофейни' }}</span>
               </div>
 
-              <!-- Картинка + всё ниже: сдвинуты вниз ВНУТРИ той же высоты карточки -->
+              <!-- Картинка + все ниже -->
               <div class="gift-image-wrapper">
                 <div class="gift-glow"></div>
                 <img
@@ -49,6 +50,7 @@
 
               <div class="gift-info-block">
                 <div class="meta-from">Подарок от {{ sFromName }}</div>
+
                 <div class="gift-name">{{ sBadgeLabel }}</div>
 
                 <div class="meta-gradient-badge" aria-label="Номер и дата">
@@ -60,10 +62,11 @@
                 </div>
               </div>
 
+              <!-- Отступ от бейджа до низа карточки -->
               <div class="card-bottom-spacer"></div>
             </div>
 
-            <!-- Лента -->
+            <!-- Лента (PNG) -->
             <img
               class="corner-tag-img"
               src="/img/korzh/badge/corner-tag-img.png"
@@ -82,7 +85,7 @@
                   </div>
                 </div>
 
-                <!-- хвостик -->
+                <!-- Хвостик (справа сверху) -->
                 <svg
                   class="message-tail-top"
                   width="56"
@@ -95,17 +98,18 @@
                 </svg>
               </div>
 
+              <!-- Аватар прижат к правому краю gift-контейнера -->
               <div class="message-avatar-top">{{ sAvatar }}</div>
             </div>
           </div>
 
-          <!-- Footer: теперь “привязан” к высоте окна текста -->
+          <!-- Footer: теперь привязан к высоте message -->
           <div class="story-footer-text">Сделано в Сигнале</div>
         </div>
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- МОДАЛКА -->
     <transition name="modal-fade">
       <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
         <div class="modal">
@@ -217,6 +221,58 @@ const DEFAULT_BADGE = {
 }
 const smileys = ['😊', '😅', '😉', '😋', '😀']
 
+/** Background resolve + fallback */
+const DEFAULT_BG = 'https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg'
+const bgResolvedUrl = ref(DEFAULT_BG)
+let lastBgRequestId = 0
+
+const BG_MAP = [
+  { includes: 'Куйбышева', url: '/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg' },
+  { includes: 'Льва Толстого', url: '/img/korzh/korzh-lva-tolstogo-1080x1920.jpg' },
+  { includes: 'Революционная', url: '/img/korzh/korzh-revolucionnaya-1080x1920.jpg' },
+  { includes: '9 просека', url: '/img/korzh/korzh-9proseka-1080x1920.jpg' },
+  { includes: 'Самарская', url: '/img/korzh/korzh-samarskaya-1080x1920.jpg' },
+  { includes: 'Дачная', url: '/img/korzh/korzh-dachnaya-1080x1920.jpg' },
+  { includes: 'Ульяновская', url: '/img/korzh/korzh-ulyanovskaya-1080x1920.jpg' },
+  { includes: 'Ново-Садовая', url: '/img/korzh/korzh-novo-sadovaya-1080x1920.jpg' },
+]
+
+function resolveBgUrlFromAddress(address) {
+  const a = String(address || '')
+  if (!a.trim()) return DEFAULT_BG
+  const found = BG_MAP.find(x => a.includes(x.includes))
+  return found?.url || DEFAULT_BG
+}
+
+function preloadImage(url) {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => resolve(true)
+    img.onerror = () => resolve(false)
+    img.src = url
+  })
+}
+
+async function updateBackgroundResolved() {
+  const reqId = ++lastBgRequestId
+
+  if (customBgImage.value) {
+    bgResolvedUrl.value = customBgImage.value
+    bgKey.value++
+    return
+  }
+
+  const candidate = resolveBgUrlFromAddress(sAddressRaw.value || props.address || '')
+  const ok = await preloadImage(candidate)
+  if (reqId !== lastBgRequestId) return
+
+  bgResolvedUrl.value = ok ? candidate : DEFAULT_BG
+  bgKey.value++
+}
+
+watch(() => props.address, updateBackgroundResolved)
+watch(customBgImage, updateBackgroundResolved)
+
 function capitalizeFirst(str) {
   const s = String(str || '').trim()
   if (!s) return ''
@@ -279,11 +335,6 @@ function makeSnapshot() {
   sTextDisplay.value = fixedText
 }
 
-watch(customBgImage, () => {
-  bgKey.value++
-  generatedImageUrl.value = null
-})
-
 function getGenitiveName(name) {
   if (!name) return 'Гостя'
   const n = String(name).trim()
@@ -308,20 +359,6 @@ const sAddress = computed(() => (sAddressRaw.value || '').trim())
 const sBadgeLabel = computed(() => (sBadgeLabelRaw.value || DEFAULT_BADGE.label).trim())
 const sBadgeImage = computed(() => sBadgeImageRaw.value || DEFAULT_BADGE.image)
 
-const bgClass = computed(() => {
-  const a = sAddressRaw.value || props.address || ''
-  if (!a) return 'bg-default'
-  if (a.includes('Куйбышева')) return 'bg-1'
-  if (a.includes('Льва Толстого')) return 'bg-2'
-  if (a.includes('Революционная')) return 'bg-3'
-  if (a.includes('9 просека')) return 'bg-4'
-  if (a.includes('Самарская')) return 'bg-5'
-  if (a.includes('Дачная')) return 'bg-6'
-  if (a.includes('Ульяновская')) return 'bg-7'
-  if (a.includes('Ново-Садовая')) return 'bg-8'
-  return 'bg-default'
-})
-
 function normalizeSpaces(text) {
   return String(text || '').replace(/\s+/g, ' ').trim()
 }
@@ -338,6 +375,7 @@ async function fitMessageTextToBox() {
     return
   }
 
+  // если влезает полностью — не режем
   el.textContent = full
   const fitsFully = () => el.scrollHeight <= wrap.clientHeight + 1
   if (fitsFully()) {
@@ -345,6 +383,7 @@ async function fitMessageTextToBox() {
     return
   }
 
+  // иначе — режем по словам
   const SAFE_BOTTOM_PX = 22
   const maxH = Math.max(0, wrap.clientHeight - SAFE_BOTTOM_PX)
   const fits = () => el.scrollHeight <= maxH + 1
@@ -410,6 +449,8 @@ const generateImageInternal = async () => {
   try {
     await loadLibrary()
     await nextTick()
+
+    await updateBackgroundResolved() // гарантируем выбранный фон (или fallback)
     await fitMessageTextToBox()
 
     const el = document.getElementById('story-capture-area')
@@ -444,9 +485,10 @@ const generateImageInternal = async () => {
 
 const generateAndShare = async () => {
   makeSnapshot()
+  await updateBackgroundResolved()
+
   showModal.value = true
   customBgImage.value = null
-  bgKey.value++
   await generateImageInternal()
 }
 
@@ -522,15 +564,6 @@ defineExpose({ generateAndShare })
   filter: blur(8px);
   transform: scale(1.05);
 }
-.story-bg-image.bg-default { background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg'); }
-.story-bg-image.bg-1 { background-image: url('/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg'); }
-.story-bg-image.bg-2 { background-image: url('/img/korzh/korzh-lva-tolstogo-1080x1920.jpg'); }
-.story-bg-image.bg-3 { background-image: url('/img/korzh/korzh-revolucionnaya-1080x1920.jpg'); }
-.story-bg-image.bg-4 { background-image: url('/img/korzh/korzh-9proseka-1080x1920.jpg'); }
-.story-bg-image.bg-5 { background-image: url('/img/korzh/korzh-samarskaya-1080x1920.jpg'); }
-.story-bg-image.bg-6 { background-image: url('/img/korzh/korzh-dachnaya-1080x1920.jpg'); }
-.story-bg-image.bg-7 { background-image: url('/img/korzh/korzh-ulyanovskaya-1080x1920.jpg'); }
-.story-bg-image.bg-8 { background-image: url('/img/korzh/korzh-novo-sadovaya-1080x1920.jpg'); }
 
 .story-noise {
   position: absolute; inset: 0; z-index: 2;
@@ -542,7 +575,7 @@ defineExpose({ generateAndShare })
   background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.45) 100%);
 }
 
-/* НОВОЕ: flex-колонка, footer в потоке */
+/* Flex layout */
 .story-content {
   position: relative;
   z-index: 10;
@@ -564,7 +597,7 @@ defineExpose({ generateAndShare })
   margin-bottom: 60px;
 }
 
-/* gift */
+/* Gift */
 .gift-card-shell { position: relative; width: 860px; height: 965px; margin-bottom: 34px; }
 .gift-card-container {
   width: 860px;
@@ -591,6 +624,7 @@ defineExpose({ generateAndShare })
   object-fit: contain;
 }
 
+/* Location */
 .card-inner-location {
   position: absolute;
   top: 40px;
@@ -614,8 +648,10 @@ defineExpose({ generateAndShare })
   text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* ПРАВКА #1: гарантированный сдвиг вниз внутри той же высоты карточки:
-   увеличили margin-top на +40px и уменьшили height на -40px (суммарно одинаково) */
+/* СДВИГ ВНИЗ (гарантированный, без transform):
+   - margin-top +40px
+   - height -40px
+   => внутри той же высоты карточки все визуально опустится */
 .gift-image-wrapper {
   position: relative;
   width: 100%;
@@ -649,7 +685,6 @@ defineExpose({ generateAndShare })
   text-align: center;
   z-index: 5;
 }
-
 .meta-from {
   font-size: 48px;
   font-weight: 500;
@@ -666,6 +701,7 @@ defineExpose({ generateAndShare })
   line-height: 1.1;
 }
 
+/* Badge */
 .meta-gradient-badge {
   height: 72px;
   padding: 0 36px;
@@ -690,16 +726,14 @@ defineExpose({ generateAndShare })
 
 .card-bottom-spacer { height: 8px; width: 100%; }
 
-/* message */
+/* Message */
 .message-section { width: 860px; margin-bottom: 26px; }
-
 .message-row {
   width: 860px;
   display: flex;
   align-items: flex-start;
   gap: 14px;
 }
-
 .message-bubble {
   position: relative;
   flex: 1;
@@ -714,7 +748,6 @@ defineExpose({ generateAndShare })
   border: 1px solid rgba(255,255,255,0.3);
   overflow: visible;
 }
-
 .message-body-wrap {
   width: 100%;
   max-height: 349px;
@@ -729,7 +762,6 @@ defineExpose({ generateAndShare })
   text-align: left;
   word-break: break-word;
 }
-
 .message-tail-top {
   position: absolute;
   top: 10px;
@@ -737,7 +769,6 @@ defineExpose({ generateAndShare })
   z-index: 50;
   pointer-events: none;
 }
-
 .message-avatar-top {
   width: 74px;
   height: 74px;
@@ -753,7 +784,7 @@ defineExpose({ generateAndShare })
   margin-left: auto;
 }
 
-/* ПРАВКА #2: footer в потоке — поднимается/опускается вместе с message */
+/* Footer (привязан к message, потому что в потоке) */
 .story-footer-text {
   font-size: 48px;
   color: rgba(255,255,255,0.5);
@@ -761,7 +792,7 @@ defineExpose({ generateAndShare })
   letter-spacing: 0.02em;
 }
 
-/* modal */
+/* Modal */
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.92);
