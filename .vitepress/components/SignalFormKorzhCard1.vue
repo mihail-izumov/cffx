@@ -309,7 +309,7 @@ function onTextBlur() { rotationPaused.value = false; startRotation(); }
 // ВАЛИДАЦИЯ: Проверяем, что есть локация, сообщение И имя (если хотите обязательное)
 const isFormValid = computed(() => {
   return form.coffeeShopAddress.trim().length > 0 && 
-         form.emotionalRelease.trim().length > 0 &&
+         form.emotionalRelease.trim().length > 0
 })
 
 function resetForm() {
