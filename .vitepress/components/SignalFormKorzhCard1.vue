@@ -18,7 +18,15 @@ const currentDate = ref('')
 const badgeCounts = reactive({
   badge1: 0,
   badge2: 0,
-  badge3: 0
+  badge3: 0,
+  badge4: 0,
+  badge5: 0,
+  badge6: 0,
+  badge7: 0,
+  badge8: 0,
+  badge9: 0,
+  badge10: 0,
+  badge11: 0
 })
 
 // Ротация
@@ -45,7 +53,15 @@ const genderThemeClass = computed(() => {
 const cardTypes = [
   { id: 'badge1', label: 'Сигналка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
   { id: 'badge2', label: 'Круассанчик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge3', label: 'Котик', image: '/img/korzh/badge/korzh-cffx-cup.png' }
+  { id: 'badge3', label: 'Котик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
+  { id: 'badge4', label: 'Сердечко', image: '/img/korzh/badge/korzh-cffx-cup.png' },
+  { id: 'badge5', label: 'Звёздочка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
+  { id: 'badge6', label: 'Кофейка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
+  { id: 'badge7', label: 'Улыбочка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
+  { id: 'badge8', label: 'Подарочек', image: '/img/korzh/badge/korzh-cffx-cup.png' },
+  { id: 'badge9', label: 'Сюрпризик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
+  { id: 'badge10', label: 'Радостик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
+  { id: 'badge11', label: 'Вдохновик', image: '/img/korzh/badge/korzh-cffx-cup.png' }
 ]
 
 // Трекинг тачей
@@ -128,7 +144,10 @@ function initBadgeCounts() {
   const timeBonus = Math.floor(hours / 5); 
 
   const savedLocal = localStorage.getItem('korzh_user_clicks');
-  let userClicks = { badge1: 0, badge2: 0, badge3: 0 };
+  let userClicks = { 
+    badge1: 0, badge2: 0, badge3: 0, badge4: 0, badge5: 0, badge6: 0, 
+    badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0 
+  };
   if (savedLocal) {
     try { userClicks = JSON.parse(savedLocal); } catch (e) { console.error(e) }
   }
@@ -136,13 +155,24 @@ function initBadgeCounts() {
   badgeCounts.badge1 = growthBase + timeBonus + 4 + (userClicks.badge1 || 0);
   badgeCounts.badge2 = growthBase + timeBonus + 1 + (userClicks.badge2 || 0);
   badgeCounts.badge3 = growthBase + timeBonus + 7 + (userClicks.badge3 || 0);
+  badgeCounts.badge4 = growthBase + timeBonus + 5 + (userClicks.badge4 || 0);
+  badgeCounts.badge5 = growthBase + timeBonus + 2 + (userClicks.badge5 || 0);
+  badgeCounts.badge6 = growthBase + timeBonus + 8 + (userClicks.badge6 || 0);
+  badgeCounts.badge7 = growthBase + timeBonus + 3 + (userClicks.badge7 || 0);
+  badgeCounts.badge8 = growthBase + timeBonus + 9 + (userClicks.badge8 || 0);
+  badgeCounts.badge9 = growthBase + timeBonus + 4 + (userClicks.badge9 || 0);
+  badgeCounts.badge10 = growthBase + timeBonus + 6 + (userClicks.badge10 || 0);
+  badgeCounts.badge11 = growthBase + timeBonus + 0 + (userClicks.badge11 || 0);
 }
 
 function incrementBadgeCount(id) {
   if (badgeCounts[id] !== undefined) {
     badgeCounts[id]++;
     const savedLocal = localStorage.getItem('korzh_user_clicks');
-    let userClicks = { badge1: 0, badge2: 0, badge3: 0 };
+    let userClicks = { 
+      badge1: 0, badge2: 0, badge3: 0, badge4: 0, badge5: 0, badge6: 0, 
+      badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0 
+    };
     if (savedLocal) { try { userClicks = JSON.parse(savedLocal); } catch (e) {} }
     userClicks[id] = (userClicks[id] || 0) + 1;
     localStorage.setItem('korzh_user_clicks', JSON.stringify(userClicks));
@@ -768,8 +798,8 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease, border-color 0.4s ease;
   overflow: hidden;
   backdrop-filter: blur(10px);
-  min-width: 140px; 
-  width: 140px;
+  min-width: 180px; 
+  width: 180px;
 }
 
 .kzh-card::after {
@@ -785,8 +815,8 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
 }
 
 .kzh-card-icon img {
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   display: block;
   opacity: 0.8;
   transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
@@ -1106,6 +1136,11 @@ textarea {
     width: 140px;
   }
   
+  .kzh-card-icon img {
+    width: 110px;
+    height: 110px;
+  }
+  
   textarea { min-height: 180px; }
   .kzh-controls-row {
     flex-direction: row; 
@@ -1113,7 +1148,6 @@ textarea {
     width: 100%;
     gap: 16px; 
   }
-  .kzh-card-icon img { width: 90px; height: 90px; }
   
   .kzh-info-button {
     font-size: 17px; 
