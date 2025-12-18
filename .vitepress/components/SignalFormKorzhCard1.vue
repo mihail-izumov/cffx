@@ -588,14 +588,15 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
     </form>
     
     <KorzhBadgeCardGenerator
-       ref="storyGeneratorRef"
-       :ticket="formattedTicketNumber"
-       :date="currentDate.split(' ')[0]"
-       :address="form.coffeeShopAddress"
-       :all-text="[form.emotionalRelease].filter(t => t && t.trim()).join(' ')"
-       :badge-image="selectedBadgeImage"   
-       :badge-label="selectedBadgeLabel" 
-    />
+   ref="storyGeneratorRef"
+   :ticket="formattedTicketNumber"
+   :date="currentDate.split(' ')[0]"
+   :address="form.coffeeShopAddress"
+   :all-text="[form.emotionalRelease].filter(t => t && t.trim()).join(' ')"
+   :badge-image="selectedBadgeImage"   
+   :badge-label="selectedBadgeLabel"
+   :user-name="form.userName" <!-- ДОБАВИТЬ ВОТ ЭТУ СТРОКУ -->
+/>
   </div>
 </template>
 
