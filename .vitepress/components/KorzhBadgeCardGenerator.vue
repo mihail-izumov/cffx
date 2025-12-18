@@ -20,7 +20,7 @@
         <div class="story-noise"></div>
         <div class="story-bg-overlay"></div>
 
-        <!-- ФИКС-СЕТКА: подарок никогда не режется из-за текста -->
+        <!-- ФИКС-СЕТКА: подарок не режется, сообщение не залезает на футер -->
         <div class="story-content-grid">
           <!-- Header -->
           <div class="grid-header">
@@ -29,75 +29,75 @@
             </div>
           </div>
 
-          <!-- Gift card (фикс высота/место) -->
+          <!-- Gift zone -->
           <div class="grid-gift">
-            <div class="gift-card-container">
-              <div class="card-inner-location">
-                {{ sAddress || 'Все кофейни' }}
+            <div class="gift-card-shell">
+              <div class="gift-card-container">
+                <div class="card-inner-location">
+                  {{ sAddress || 'Все кофейни' }}
+                </div>
+
+                <div class="gift-image-wrapper">
+                  <div class="gift-glow"></div>
+                  <img
+                    v-if="sBadgeImage"
+                    :src="sBadgeImage"
+                    class="gift-main-img"
+                    alt="Gift"
+                    crossorigin="anonymous"
+                  />
+                </div>
+
+                <div class="gift-info-block">
+                  <div class="meta-from">
+                    Подарок от {{ sFromName }}
+                  </div>
+
+                  <div class="gift-name">
+                    {{ sBadgeLabel }}
+                  </div>
+
+                  <div class="meta-gradient-badge" aria-label="Номер и дата">
+                    <div class="mb-content">
+                      <span class="mb-num">{{ sTicket }}</span>
+                      <span class="mb-icon">🎁</span>
+                      <span class="mb-date">{{ sDate }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-bottom-spacer"></div>
               </div>
 
-              <!-- УГОЛОК PNG (сдвиг на толщину бордера: 8px) -->
+              <!-- ЛЕНТОЧКА: поверх карточки и бордера -->
               <img
                 class="corner-tag-img"
                 src="/img/korzh/badge/corner-tag-img.png"
                 alt=""
                 crossorigin="anonymous"
               />
-
-              <div class="gift-image-wrapper">
-                <div class="gift-glow"></div>
-                <img
-                  v-if="sBadgeImage"
-                  :src="sBadgeImage"
-                  class="gift-main-img"
-                  alt="Gift"
-                  crossorigin="anonymous"
-                />
-              </div>
-
-              <div class="gift-info-block">
-                <div class="meta-from">
-                  Подарок от {{ sFromName }}
-                </div>
-
-                <div class="gift-name">
-                  {{ sBadgeLabel }}
-                </div>
-
-                <!-- БЕЙДЖ: больше высота + flex-center -->
-                <div class="meta-gradient-badge" aria-label="Номер и дата">
-                  <div class="mb-content">
-                    <span class="mb-icon">🎁</span>
-                    <span class="mb-num">{{ sTicket }}</span>
-                    <span class="mb-icon">🎁</span>
-                    <span class="mb-date">{{ sDate }}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card-bottom-spacer"></div>
             </div>
           </div>
 
-          <!-- Message bubble (фикс зона) -->
+          <!-- Message zone (фикс высота, слева bubble, справа avatar как в чате) -->
           <div class="grid-message">
-            <div v-if="sText" class="message-card-container">
-              <div class="message-header">Делюсь настроением:</div>
-
-              <!-- Текст “тает” в прозрачность внизу карточки -->
-              <div class="message-body-wrap">
-                <div class="message-body masked-text">
-                  {{ sText }}
+            <div v-if="sTextFull" class="message-row">
+              <div class="message-bubble">
+                <div ref="messageWrapRef" class="message-body-wrap">
+                  <div ref="messageTextRef" class="message-body">
+                    {{ sTextDisplay }}
+                  </div>
                 </div>
+
+                <!-- хвостик справа -->
+                <svg class="message-tail" width="44" height="30" viewBox="0 0 44 30" fill="none" aria-hidden="true">
+                  <path d="M2 2C2 2 12 15 42 28V2H2Z" fill="rgba(30, 30, 35, 0.50)"/>
+                </svg>
               </div>
 
-              <!-- хвост -->
-              <svg class="message-tail" width="64" height="54" viewBox="0 0 64 54" fill="none" aria-hidden="true">
-                <path d="M2 2C2 2 18 28 62 52V2H2Z" fill="rgba(30, 30, 35, 0.55)"/>
-              </svg>
-
-              <!-- аватар строго под хвостом -->
-              <div class="message-avatar">{{ sAvatar }}</div>
+              <div class="message-avatar">
+                {{ sAvatar }}
+              </div>
             </div>
           </div>
 
@@ -212,6 +212,12 @@ const sBadgeLabelRaw = ref('')
 const sBadgeImageRaw = ref(null)
 const sAvatar = ref('😊')
 
+const sTextFull = ref('')
+const sTextDisplay = ref('')
+
+const messageWrapRef = ref(null)
+const messageTextRef = ref(null)
+
 const DEFAULT_BADGE = {
   label: 'Сигналка',
   image: '/img/korzh/badge/korzh-cffx-cup.png'
@@ -222,6 +228,15 @@ function capitalizeFirst(str) {
   const s = String(str || '').trim()
   if (!s) return ''
   return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
+function formatText(raw) {
+  if (!raw || !String(raw).trim()) return ''
+  let text = String(raw).trim()
+  text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2')
+  text = text.replace(/\s+/g, ' ')
+  text = text.charAt(0).toUpperCase() + text.slice(1)
+  return text
 }
 
 function makeSnapshot() {
@@ -237,6 +252,9 @@ function makeSnapshot() {
   sBadgeImageRaw.value = img || DEFAULT_BADGE.image
 
   sAvatar.value = smileys[Math.floor(Math.random() * smileys.length)]
+
+  sTextFull.value = formatText(sAllTextRaw.value)
+  sTextDisplay.value = sTextFull.value
 }
 
 watch(customBgImage, () => {
@@ -248,7 +266,6 @@ function getGenitiveName(name) {
   if (!name) return 'Гостя'
   const n = String(name).trim()
   if (!n) return 'Гостя'
-
   const last = n.slice(-1).toLowerCase()
   if (last === 'а') return n.slice(0, -1) + 'ы'
   if (last === 'я') return n.slice(0, -1) + 'и'
@@ -261,16 +278,6 @@ function getGenitiveName(name) {
 const sFromName = computed(() => {
   const n = (sUserNameRaw.value || '').trim()
   return n ? getGenitiveName(n) : 'Гостя'
-})
-
-const sText = computed(() => {
-  const raw = sAllTextRaw.value
-  if (!raw || !raw.trim()) return ''
-  let text = raw.trim()
-  text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2')
-  text = text.replace(/\s+/g, ' ')
-  text = text.charAt(0).toUpperCase() + text.slice(1)
-  return text
 })
 
 const sTicket = computed(() => (sTicketRaw.value || '').trim())
@@ -291,6 +298,44 @@ const bgClass = computed(() => {
   if (a.includes('Ново-Садовая')) return 'bg-8'
   return 'bg-default'
 })
+
+async function fitMessageTextToBox() {
+  await nextTick()
+  const wrap = messageWrapRef.value
+  const el = messageTextRef.value
+  const full = sTextFull.value || ''
+
+  if (!wrap || !el) return
+  if (!full) {
+    sTextDisplay.value = ''
+    return
+  }
+
+  const fits = () => el.scrollHeight <= wrap.clientHeight + 1
+
+  // пробуем полный
+  el.textContent = full
+  if (fits()) {
+    sTextDisplay.value = full
+    return
+  }
+
+  // бинарный поиск по длине
+  let lo = 0
+  let hi = full.length
+
+  while (lo < hi) {
+    const mid = Math.ceil((lo + hi) / 2)
+    const candidate = full.slice(0, mid).trimEnd() + '..'
+    el.textContent = candidate
+    if (fits()) lo = mid
+    else hi = mid - 1
+  }
+
+  const finalText = full.slice(0, Math.max(lo, 0)).trimEnd() + '..'
+  sTextDisplay.value = finalText
+  el.textContent = finalText
+}
 
 const loadLibrary = () => {
   return new Promise((resolve, reject) => {
@@ -330,6 +375,9 @@ const generateImageInternal = async () => {
   try {
     await loadLibrary()
     await nextTick()
+
+    // важно: перед снимком подгоняем текст под коробку
+    await fitMessageTextToBox()
 
     const el = document.getElementById('story-capture-area')
     if (!el) return
@@ -430,6 +478,7 @@ defineExpose({ generateAndShare })
   overflow: hidden;
 }
 
+/* backgrounds */
 .story-bg-base { position: absolute; inset: 0; background: #1a1a1a; z-index: 0; }
 .story-bg-image {
   position: absolute; inset: 0; z-index: 1;
@@ -457,18 +506,17 @@ defineExpose({ generateAndShare })
   background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.45) 100%);
 }
 
-/* === фикс-сетка === */
+/* === FIXED GRID === */
 .story-content-grid {
   position: relative;
   z-index: 10;
   width: 100%;
   height: 100%;
   padding: 160px 60px 90px 60px;
-  display: grid;
 
-  /* СДЕЛАЛИ КОМПАКТНЕЕ: gift зона чуть меньше, message зона чуть больше */
-  grid-template-rows: 170px 965px 1fr 120px;
-  gap: 0;
+  display: grid;
+  /* внутри: 1920 - 160 - 90 = 1670 */
+  grid-template-rows: 170px 965px 415px 120px; /* message row fixed => не лезет на футер */
   align-items: start;
 }
 
@@ -476,12 +524,14 @@ defineExpose({ generateAndShare })
 .grid-gift {
   display: flex; align-items: flex-start; justify-content: center;
   overflow: visible;
-  transform: translateY(-15px); /* поднять подарок на 15px */
+  transform: translateY(-15px);
 }
 .grid-message {
-  display: flex; align-items: flex-start; justify-content: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   overflow: hidden;
-  padding-top: 10px;
+  padding-bottom: 10px; /* гарантированный зазор до футера по сетке */
 }
 .grid-footer { display: flex; align-items: flex-end; justify-content: center; }
 
@@ -494,22 +544,28 @@ defineExpose({ generateAndShare })
   text-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
-/* === Gift card: размер фикс === */
-.gift-card-container {
+/* === Gift card === */
+.gift-card-shell {
+  position: relative;
   width: 100%;
   max-width: 860px;
-  height: 965px; /* подогнали под компактность, но в рамках фикс строки */
+  height: 965px;
+  overflow: visible;
+}
+
+.gift-card-container {
+  width: 100%;
+  height: 965px;
   background: rgba(168, 139, 235, 0.65);
   backdrop-filter: blur(35px) saturate(120%);
   border-radius: 60px;
-  padding: 0;
   position: relative;
   box-shadow: 0 40px 100px -10px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 8px solid rgba(255,255,255,0.3);
-  overflow: hidden;
+  overflow: hidden; /* сохраняем как было */
 }
 
 .card-inner-location {
@@ -524,14 +580,14 @@ defineExpose({ generateAndShare })
   z-index: 30;
 }
 
-/* Сдвиг ленты на 8px вверх/вправо, чтобы покрывала бордер */
+/* ленточка поверх бордера */
 .corner-tag-img {
   position: absolute;
   top: -8px;
   right: -8px;
   width: 250px;
   height: 250px;
-  z-index: 40;
+  z-index: 999;
   pointer-events: none;
   object-fit: contain;
 }
@@ -543,7 +599,7 @@ defineExpose({ generateAndShare })
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 120px;
+  margin-top: 112px; /* было 120 — чуть меньше (5-10px) */
 }
 .gift-glow {
   position: absolute;
@@ -573,7 +629,7 @@ defineExpose({ generateAndShare })
 .meta-from {
   font-size: 48px;
   font-weight: 500;
-  color: rgba(255,255,255,0.95);
+  color: #fff; /* чисто белый */
   margin-bottom: 22px;
   line-height: 1.1;
 }
@@ -583,14 +639,14 @@ defineExpose({ generateAndShare })
   font-weight: 700;
   color: rgba(214, 186, 255, 0.9);
   text-shadow: 0 2px 18px rgba(155, 127, 183, 0.55);
-  margin-bottom: 26px; /* чуть меньше */
+  margin-bottom: 24px; /* чуть компактнее */
   line-height: 1.1;
 }
 
-/* Бейдж выше и центрированнее */
+/* badge */
 .meta-gradient-badge {
-  height: 64px;             /* увеличили высоту — визуально центр лучше */
-  padding: 0 34px;
+  height: 70px; /* чуть выше, чтобы “не прижималось снизу” */
+  padding: 0 36px;
   border-radius: 999px;
   background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 100%);
   box-shadow: 0 10px 20px -5px rgba(155, 127, 183, 0.4);
@@ -602,100 +658,77 @@ defineExpose({ generateAndShare })
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  height: 64px;
+  gap: 14px;
+  transform: translateY(-1px); /* микроподъем для оптического центра */
 }
-.mb-icon, .mb-num, .mb-date {
-  line-height: 1;           /* ключ: не “тянем” вниз */
+.mb-num, .mb-date, .mb-icon {
+  line-height: 1;
   display: inline-flex;
   align-items: center;
 }
-.mb-icon { font-size: 26px; }
 .mb-num { font-size: 28px; font-weight: 800; color: #fff; }
 .mb-date { font-size: 28px; font-weight: 600; color: #fff; }
+.mb-icon { font-size: 26px; }
 
-/* уменьшили прижатость к низу: спейсер немного меньше, но не “впритык” */
-.card-bottom-spacer { height: 78px; width: 100%; }
+.card-bottom-spacer { height: 68px; width: 100%; } /* было 78 — компактнее */
 
-/* === Message card === */
-.message-card-container {
+/* === Message row (telegram-like) === */
+.message-row {
   width: 100%;
   max-width: 860px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* аватар снизу, как в чатах */
+  gap: 18px;
+}
+
+.message-bubble {
   position: relative;
+  width: 720px; /* уже, чтобы справа был аватар */
+  height: 100%;
+  max-height: 405px; /* меньше строки 415, оставляем воздух */
   background: rgba(30, 30, 35, 0.4);
   backdrop-filter: blur(25px);
   border-radius: 40px;
-  padding: 40px 50px 56px 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  padding: 34px 40px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  border: 6px solid rgba(255,255,255,0.30);
-  overflow: visible;
-
-  /* Важно: даем внешний отступ снизу, чтобы не лезло на футер */
-  margin-bottom: 0;
+  border: 8px solid rgba(255,255,255,0.26); /* толще */
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
 }
 
-.message-header {
-  font-size: 24px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.6);
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* фиксируем переполнение внутри карточки, не влияя на сетку */
 .message-body-wrap {
   width: 100%;
-  position: relative;
-  max-height: 520px;
-  overflow: hidden;
-
-  /* “стоп” за 10px до нижнего края карточки */
-  padding-bottom: 10px;
+  height: 100%;
+  overflow: hidden;          /* фикс */
 }
 
 .message-body {
-  font-size: 36px;
-  line-height: 1.4;
+  font-size: 34px;
+  line-height: 1.38;
   color: #fff;
-  font-weight: 500;
+  font-weight: 600;
   text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  text-align: left;          /* слева */
+  white-space: normal;
+  word-break: break-word;
 }
 
-/* Маска: текст уходит в прозрачность ближе к низу карточки */
-.masked-text {
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,1) 68%,
-    rgba(0,0,0,0) 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,1) 68%,
-    rgba(0,0,0,0) 100%
-  );
-}
-
-/* tail + avatar */
+/* хвост справа (не вниз) */
 .message-tail {
   position: absolute;
-  bottom: -10px;
-  right: 120px;
-  z-index: 6;
+  right: -22px;
+  bottom: 22px;
+  z-index: 5;
   pointer-events: none;
 }
+
 .message-avatar {
-  position: absolute;
-  bottom: -62px;
-  right: 118px;
-  width: 72px;
-  height: 72px;
+  width: 74px;
+  height: 74px;
+  flex: 0 0 74px;
   background: #fff;
   border-radius: 50%;
   display: flex;
@@ -703,7 +736,7 @@ defineExpose({ generateAndShare })
   justify-content: center;
   font-size: 36px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-  z-index: 5;
+  transform: translateY(-10px); /* центр аватара примерно на уровне хвостика */
 }
 
 /* footer */
@@ -802,5 +835,9 @@ defineExpose({ generateAndShare })
 .upload-section { width: 100%; display: flex; justify-content: center; }
 .upload-btn { background: transparent; border: 1px dashed #555; color: #aaa; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; }
 .hidden-input { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
-@keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
 </style>
