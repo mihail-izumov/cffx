@@ -39,32 +39,35 @@
                     <span class="loc-text">{{ sAddress || 'Все кофейни' }}</span>
                   </div>
 
-                  <div class="gift-image-wrapper">
-                    <div class="gift-glow"></div>
-                    <img
-                      v-if="sBadgeImage"
-                      :src="sBadgeImage"
-                      class="gift-main-img"
-                      alt="Gift"
-                      crossorigin="anonymous"
-                    />
-                  </div>
+                  <!-- Центральная группа (опущена на 15px вниз) -->
+                  <div class="gift-main-group">
+                    <div class="gift-image-wrapper">
+                      <div class="gift-glow"></div>
+                      <img
+                        v-if="sBadgeImage"
+                        :src="sBadgeImage"
+                        class="gift-main-img"
+                        alt="Gift"
+                        crossorigin="anonymous"
+                      />
+                    </div>
 
-                  <div class="gift-info-block">
-                    <div class="meta-from">Подарок от {{ sFromName }}</div>
+                    <div class="gift-info-block">
+                      <div class="meta-from">Подарок от {{ sFromName }}</div>
 
-                    <div class="gift-name">{{ sBadgeLabel }}</div>
+                      <div class="gift-name">{{ sBadgeLabel }}</div>
 
-                    <div class="meta-gradient-badge" aria-label="Номер и дата">
-                      <div class="mb-content">
-                        <span class="mb-num">{{ sTicket }}</span>
-                        <span class="mb-icon">🎁</span>
-                        <span class="mb-date">{{ sDate }}</span>
+                      <div class="meta-gradient-badge" aria-label="Номер и дата">
+                        <div class="mb-content">
+                          <span class="mb-num">{{ sTicket }}</span>
+                          <span class="mb-icon">🎁</span>
+                          <span class="mb-date">{{ sDate }}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <!-- Реальный отступ от бейджа до низа карточки (уменьшен в 2 раза и больше) -->
+                  <!-- Отступ от бейджа до низа карточки -->
                   <div class="card-bottom-spacer"></div>
                 </div>
 
@@ -88,7 +91,7 @@
                     </div>
                   </div>
 
-                  <!-- ХВОСТИК (справа сверху) -->
+                  <!-- хвостик -->
                   <svg
                     class="message-tail-top"
                     width="56"
@@ -101,7 +104,6 @@
                   </svg>
                 </div>
 
-                <!-- Аватар прижат к правому краю gift-контейнера -->
                 <div class="message-avatar-top">{{ sAvatar }}</div>
               </div>
             </div>
@@ -245,17 +247,14 @@ function formatText(raw) {
 function toAccusativeGiftName(name) {
   const s = String(name || '').trim()
   if (!s) return s
-
   const words = s.split(/\s+/)
   let last = words.pop()
-
   const low = last.toLowerCase()
 
-  // частые окончания (очень практичная эвристика для названий подарков)
   if (low.endsWith('ия')) last = last.slice(0, -2) + 'ию'
   else if (low.endsWith('а')) last = last.slice(0, -1) + 'у'
   else if (low.endsWith('я')) last = last.slice(0, -1) + 'ю'
-  // ь/й/согласные/о/е обычно без изменений для “подарков”
+
   words.push(last)
   return words.join(' ')
 }
@@ -265,10 +264,7 @@ function applyGiftDeclensionInText(text, giftLabel) {
   const gl = String(giftLabel || '').trim()
   if (!t || !gl) return t
 
-  // Ищем конструкцию "Дарю: <...>" и заменяем именно "подарок" на винительный
-  // Пример: "Дарю: Сигналка." -> "Дарю: Сигналку."
   const acc = toAccusativeGiftName(gl)
-
   return t.replace(/(Дарю:\s*)([^.\n!?]+)([.!?])?/i, (m, p1, p2, p3) => {
     const end = p3 || '.'
     return `${p1}${acc}${end}`
@@ -326,6 +322,7 @@ const sBadgeImage = computed(() => sBadgeImageRaw.value || DEFAULT_BADGE.image)
 
 const bgClass = computed(() => {
   const a = sAddressRaw.value || props.address || ''
+  if (!a) return 'bg-default'
   if (a.includes('Куйбышева')) return 'bg-1'
   if (a.includes('Льва Толстого')) return 'bg-2'
   if (a.includes('Революционная')) return 'bg-3'
@@ -334,6 +331,7 @@ const bgClass = computed(() => {
   if (a.includes('Дачная')) return 'bg-6'
   if (a.includes('Ульяновская')) return 'bg-7'
   if (a.includes('Ново-Садовая')) return 'bg-8'
+  // дефолт обязательно
   return 'bg-default'
 })
 
@@ -353,7 +351,6 @@ async function fitMessageTextToBox() {
     return
   }
 
-  // 1) Сначала проверяем "влезает ли полностью" (без запасов) — если да, не режем вообще
   el.textContent = full
   const fitsFully = () => el.scrollHeight <= wrap.clientHeight + 1
   if (fitsFully()) {
@@ -361,7 +358,6 @@ async function fitMessageTextToBox() {
     return
   }
 
-  // 2) Если не влезло, режем с запасом снизу, чтобы было "немного воздуха"
   const SAFE_BOTTOM_PX = 22
   const maxH = Math.max(0, wrap.clientHeight - SAFE_BOTTOM_PX)
   const fits = () => el.scrollHeight <= maxH + 1
@@ -373,7 +369,6 @@ async function fitMessageTextToBox() {
     return
   }
 
-  // бинарный поиск по КОЛИЧЕСТВУ СЛОВ
   let lo = 1
   let hi = words.length
 
@@ -621,25 +616,31 @@ defineExpose({ generateAndShare })
 /* location */
 .card-inner-location {
   position: absolute;
-  top: 40px;   /* одинаковое расстояние сверху */
-  left: 40px;  /* одинаковое расстояние слева */
+  top: 40px;
+  left: 40px;
   display: flex;
   align-items: center;
   gap: 18px;
   z-index: 30;
 }
 .loc-icon {
-  width: 120px;   /* +20% от 100 */
-  height: 120px;  /* +20% от 100 */
-  border-radius: 28px; /* сильнее скругление */
+  width: 120px;
+  height: 120px;
+  border-radius: 28px;
   object-fit: cover;
   opacity: 0.95;
 }
 .loc-text {
-  font-size: 36px; /* ещё больше */
+  font-size: 36px;
   font-weight: 700;
   color: #fff;
   text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* главная группа (сдвиг вниз на 15px) */
+.gift-main-group {
+  width: 100%;
+  transform: translateY(15px);
 }
 
 /* gift image */
@@ -654,12 +655,14 @@ defineExpose({ generateAndShare })
 }
 .gift-glow {
   position: absolute;
-  width: 450px; height: 450px;
+  width: 450px;
+  height: 450px;
   background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
   opacity: 0.6;
 }
 .gift-main-img {
-  width: 440px; height: 440px;
+  width: 440px;
+  height: 440px;
   object-fit: contain;
   z-index: 2;
   position: relative;
@@ -676,7 +679,13 @@ defineExpose({ generateAndShare })
   text-align: center;
   z-index: 5;
 }
-.meta-from { font-size: 48px; font-weight: 500; color: #fff; margin-bottom: 22px; line-height: 1.1; }
+.meta-from {
+  font-size: 48px;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 22px;
+  line-height: 1.1;
+}
 .gift-name {
   font-size: 58px;
   font-weight: 700;
@@ -702,14 +711,34 @@ defineExpose({ generateAndShare })
   align-items: center;
   justify-content: center;
   gap: 14px;
+  transform: translateY(-2px); /* поднять всё содержимое на 2px */
 }
-.mb-num, .mb-date, .mb-icon { line-height: 1; display: inline-flex; align-items: center; }
-.mb-num { font-size: 28px; font-weight: 800; color: #fff; }
-.mb-date { font-size: 28px; font-weight: 600; color: #fff; }
-.mb-icon { font-size: 26px; transform: translateY(-2px); } /* лечим “сползание” эмодзи */
+.mb-num,
+.mb-date,
+.mb-icon {
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+.mb-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+}
+.mb-date {
+  font-size: 28px;
+  font-weight: 600;
+  color: #fff;
+}
+.mb-icon {
+  font-size: 26px;
+}
 
-/* ВОТ ОН: реальный отступ от нижнего края бейджа до края карточки */
-.card-bottom-spacer { height: 8px; width: 100%; }
+/* отступ от бейджа до низа карточки */
+.card-bottom-spacer {
+  height: 8px;
+  width: 100%;
+}
 
 /* message */
 .message-row {
@@ -724,18 +753,15 @@ defineExpose({ generateAndShare })
   position: relative;
   flex: 1;
   min-width: 0;
-
   height: auto;
   max-height: 405px;
-
   background: rgba(30, 30, 35, 0.4);
   backdrop-filter: blur(25px);
   border-radius: 40px;
   padding: 28px 34px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.30);
-
-  overflow: visible; /* важно: иначе хвостик будет резаться */
+  border: 1px solid rgba(255,255,255,0.3);
+  overflow: visible;
 }
 
 .message-body-wrap {
@@ -743,7 +769,6 @@ defineExpose({ generateAndShare })
   max-height: 349px;
   overflow: hidden;
 }
-
 .message-body {
   font-size: 34px;
   line-height: 1.38;
@@ -772,15 +797,16 @@ defineExpose({ generateAndShare })
   align-items: center;
   justify-content: center;
   font-size: 36px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
   margin-top: 8px;
-  margin-left: auto; /* прижать к правому краю контейнера */
+  margin-left: auto;
 }
 
-/* modal (как было) */
+/* modal */
 .modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.92);
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
   z-index: 10000;
   display: flex;
   align-items: center;
@@ -789,7 +815,7 @@ defineExpose({ generateAndShare })
   padding: 20px;
 }
 .modal {
-  background: #1E1E20;
+  background: #1e1e20;
   width: 100%;
   max-width: 420px;
   max-height: 95vh;
@@ -797,7 +823,7 @@ defineExpose({ generateAndShare })
   border: 1px solid #333;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
   overflow: hidden;
 }
 .modal-header {
@@ -808,9 +834,14 @@ defineExpose({ generateAndShare })
   border-bottom: 1px solid #333;
   background: #252528;
 }
-.modal-header h3 { margin: 0; font-size: 18px; color: #fff; font-weight: 600; }
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #fff;
+  font-weight: 600;
+}
 .modal-close {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   border: none;
   color: #fff;
   width: 32px;
@@ -836,9 +867,21 @@ defineExpose({ generateAndShare })
   object-fit: contain;
   border-radius: 12px;
 }
-.spinner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.spinner-icon { width: 48px; height: 48px; animation: breathe 3s ease-in-out infinite; }
-.spinner-text { color: #888; font-size: 14px; }
+.spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.spinner-icon {
+  width: 48px;
+  height: 48px;
+  animation: breathe 3s ease-in-out infinite;
+}
+.spinner-text {
+  color: #888;
+  font-size: 14px;
+}
 
 .modal-footer {
   padding: 24px;
@@ -849,7 +892,11 @@ defineExpose({ generateAndShare })
   gap: 14px;
   align-items: center;
 }
-.buttons-row { display: flex; gap: 10px; width: 100%; }
+.buttons-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
 .download-btn {
   flex: 1;
   padding: 14px;
@@ -859,11 +906,45 @@ defineExpose({ generateAndShare })
   font-size: 15px;
   cursor: pointer;
 }
-.primary-btn { background: #9B7FB7; color: #fff; }
-.secondary-btn { background: #444; color: #ccc; }
-.upload-section { width: 100%; display: flex; justify-content: center; }
-.upload-btn { background: transparent; border: 1px dashed #555; color: #aaa; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; }
-.hidden-input { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.primary-btn {
+  background: #9b7fb7;
+  color: #fff;
+}
+.secondary-btn {
+  background: #444;
+  color: #ccc;
+}
+.upload-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.upload-btn {
+  background: transparent;
+  border: 1px dashed #555;
+  color: #aaa;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.hidden-input {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
 
-@keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
 </style>
