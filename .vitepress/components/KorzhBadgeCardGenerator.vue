@@ -27,13 +27,13 @@
             </div>
           </div>
 
-          <!-- Shared container: 860px, чтобы message и gift были по одному левому краю -->
+          <!-- Shared container 860px -->
           <div class="grid-main">
             <!-- Gift -->
             <div class="grid-gift">
               <div class="gift-card-shell">
                 <div class="gift-card-container">
-                  <!-- Локация с иконкой -->
+                  <!-- Локация -->
                   <div class="card-inner-location">
                     <img class="loc-icon" src="/korzh_invest_card.png" alt="" crossorigin="anonymous" />
                     <span class="loc-text">{{ sAddress || 'Все кофейни' }}</span>
@@ -51,13 +51,9 @@
                   </div>
 
                   <div class="gift-info-block">
-                    <div class="meta-from">
-                      Подарок от {{ sFromName }}
-                    </div>
+                    <div class="meta-from">Подарок от {{ sFromName }}</div>
 
-                    <div class="gift-name">
-                      {{ sBadgeLabel }}
-                    </div>
+                    <div class="gift-name">{{ sBadgeLabel }}</div>
 
                     <div class="meta-gradient-badge" aria-label="Номер и дата">
                       <div class="mb-content">
@@ -91,24 +87,28 @@
                     </div>
                   </div>
 
-                  <!-- хвостик справа сверху -->
-                  <svg class="message-tail-top" width="52" height="38" viewBox="0 0 52 38" fill="none" aria-hidden="true">
-                    <path d="M2 36C2 36 12 20 50 6V36H2Z" fill="rgba(30, 30, 35, 0.50)"/>
+                  <!-- хвостик справа сверху (вылет наружу) -->
+                  <svg
+                    class="message-tail-top"
+                    width="56"
+                    height="42"
+                    viewBox="0 0 56 42"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path d="M2 40C2 40 14 22 54 6V40H2Z" fill="rgba(30, 30, 35, 0.55)"/>
                   </svg>
                 </div>
 
-                <div class="message-avatar-top">
-                  {{ sAvatar }}
-                </div>
+                <!-- аватар прижат к правому краю контейнера 860px -->
+                <div class="message-avatar-top">{{ sAvatar }}</div>
               </div>
             </div>
           </div>
 
           <!-- Footer -->
           <div class="grid-footer">
-            <div class="story-footer-text">
-              Сделано в Сигнале
-            </div>
+            <div class="story-footer-text">Сделано в Сигнале</div>
           </div>
         </div>
       </div>
@@ -176,7 +176,6 @@
         </div>
       </div>
     </transition>
-
   </div>
 </template>
 
@@ -255,7 +254,6 @@ function makeSnapshot() {
   sBadgeImageRaw.value = img || DEFAULT_BADGE.image
 
   sAvatar.value = smileys[Math.floor(Math.random() * smileys.length)]
-
   sTextFull.value = formatText(sAllTextRaw.value)
   sTextDisplay.value = sTextFull.value
 }
@@ -305,8 +303,15 @@ const bgClass = computed(() => {
 function trimToWordBoundary(text) {
   const t = String(text || '').replace(/\s+/g, ' ').trim()
   if (!t) return ''
-  // удаляем обрывки пунктуации в конце
   return t.replace(/[,\s.;:!?]+$/g, '').trim()
+}
+
+function findLastWordCut(str) {
+  // режем на границе слова: ищем последний пробел
+  const s = trimToWordBoundary(str)
+  const idx = s.lastIndexOf(' ')
+  if (idx <= 0) return s
+  return s.slice(0, idx).trim()
 }
 
 async function fitMessageTextToBox() {
@@ -321,10 +326,8 @@ async function fitMessageTextToBox() {
     return
   }
 
-  // запас снизу, чтобы было “немного места” до нижнего края
-  const SAFE_BOTTOM_PX = 24
+  const SAFE_BOTTOM_PX = 26
   const maxH = Math.max(0, wrap.clientHeight - SAFE_BOTTOM_PX)
-
   const fits = () => el.scrollHeight <= maxH + 1
 
   el.textContent = full
@@ -333,22 +336,21 @@ async function fitMessageTextToBox() {
     return
   }
 
-  // бинарный поиск по символам
+  // бинарный поиск по символам, но финал режем по словам
   let lo = 0
   let hi = full.length
 
   while (lo < hi) {
     const mid = Math.ceil((lo + hi) / 2)
-    const candidate = trimToWordBoundary(full.slice(0, mid)) + '...'
+    const base = findLastWordCut(full.slice(0, mid))
+    const candidate = (base ? base : trimToWordBoundary(full.slice(0, mid))).trimEnd() + '...'
     el.textContent = candidate
     if (fits()) lo = mid
     else hi = mid - 1
   }
 
-  // финал: режем на слове + ...
-  let base = trimToWordBoundary(full.slice(0, Math.max(lo, 0)))
-  if (!base) base = trimToWordBoundary(full.slice(0, 12))
-  const finalText = base + '...'
+  const baseFinal = findLastWordCut(full.slice(0, Math.max(lo, 0)))
+  const finalText = (baseFinal || trimToWordBoundary(full.slice(0, 24))) + '...'
   sTextDisplay.value = finalText
   el.textContent = finalText
 }
@@ -391,7 +393,6 @@ const generateImageInternal = async () => {
   try {
     await loadLibrary()
     await nextTick()
-
     await fitMessageTextToBox()
 
     const el = document.getElementById('story-capture-area')
@@ -501,6 +502,7 @@ defineExpose({ generateAndShare })
   transform: scale(1.05);
 }
 .story-bg-image.bg-default { background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg'); }
+
 .story-noise {
   position: absolute; inset: 0; z-index: 2;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
@@ -520,38 +522,9 @@ defineExpose({ generateAndShare })
   padding: 160px 60px 90px 60px;
   display: grid;
   grid-template-rows: 170px 1fr 120px;
-  align-items: start;
 }
 
 .grid-header { display: flex; justify-content: center; }
-
-.grid-main {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-rows: 965px 415px;
-  justify-content: center;
-}
-
-/* общий контейнер 860px (как подарок) */
-.grid-gift,
-.grid-message {
-  width: 860px;
-  justify-self: center;
-}
-
-.grid-gift {
-  overflow: visible;
-  transform: translateY(-15px);
-}
-
-.grid-message {
-  overflow: hidden;
-  padding-bottom: 10px;
-}
-
-.grid-footer { display: flex; justify-content: center; align-items: flex-end; }
-
 .header-text {
   font-size: 36px;
   line-height: 1.4;
@@ -561,13 +534,27 @@ defineExpose({ generateAndShare })
   text-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
-/* gift */
-.gift-card-shell {
-  position: relative;
+.grid-main {
   width: 860px;
-  height: 965px;
+  justify-self: center;
+  display: grid;
+  grid-template-rows: 965px 415px;
 }
 
+.grid-gift { transform: translateY(-15px); }
+.grid-message { overflow: hidden; padding-bottom: 10px; }
+
+.grid-footer { display: flex; justify-content: center; align-items: flex-end; }
+.story-footer-text {
+  font-size: 48px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transform: translateY(5px);
+}
+
+/* gift */
+.gift-card-shell { position: relative; width: 860px; height: 965px; }
 .gift-card-container {
   width: 860px;
   height: 965px;
@@ -582,7 +569,6 @@ defineExpose({ generateAndShare })
   border: 8px solid rgba(255,255,255,0.3);
   overflow: hidden;
 }
-
 .corner-tag-img {
   position: absolute;
   top: 0;
@@ -594,29 +580,27 @@ defineExpose({ generateAndShare })
   object-fit: contain;
 }
 
-/* location row */
 .card-inner-location {
   position: absolute;
-  top: 32px;
+  top: 28px;
   left: 45px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
   z-index: 30;
 }
 .loc-icon {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
+  width: 100px;   /* 5x */
+  height: 100px;  /* 5x */
+  border-radius: 16px;
   object-fit: cover;
   opacity: 0.95;
 }
 .loc-text {
-  font-size: 30px; /* +2px */
+  font-size: 30px;
   font-weight: 600;
   color: #fff;
   text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  letter-spacing: 0.02em;
 }
 
 .gift-image-wrapper {
@@ -644,31 +628,23 @@ defineExpose({ generateAndShare })
 
 .gift-info-block {
   width: 100%;
-  padding: 0 50px 0 50px;
+  padding: 0 50px 0 50px; /* меньше “внутреннего” снизу */
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  position: relative;
   z-index: 5;
 }
-.meta-from {
-  font-size: 48px;
-  font-weight: 500;
-  color: #fff;
-  margin-bottom: 22px;
-  line-height: 1.1;
-}
+.meta-from { font-size: 48px; font-weight: 500; color: #fff; margin-bottom: 22px; line-height: 1.1; }
 .gift-name {
   font-size: 58px;
   font-weight: 700;
   color: rgba(214, 186, 255, 0.9);
   text-shadow: 0 2px 18px rgba(155, 127, 183, 0.55);
-  margin-bottom: 22px;
+  margin-bottom: 18px;
   line-height: 1.1;
 }
 
-/* badge */
 .meta-gradient-badge {
   height: 70px;
   padding: 0 36px;
@@ -679,35 +655,34 @@ defineExpose({ generateAndShare })
   align-items: center;
   justify-content: center;
 }
-.mb-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  transform: translateY(-1px);
-}
+.mb-content { display: flex; align-items: center; justify-content: center; gap: 14px; transform: translateY(-1px); }
 .mb-num, .mb-date, .mb-icon { line-height: 1; display: inline-flex; align-items: center; }
 .mb-num { font-size: 28px; font-weight: 800; color: #fff; }
 .mb-date { font-size: 28px; font-weight: 600; color: #fff; }
 .mb-icon { font-size: 26px; }
 
-/* уменьшили ещё на 7px */
-.card-bottom-spacer { height: 27px; width: 100%; }
+/* ключ: уменьшаем дистанцию бейджа до низа в 2 раза */
+.card-bottom-spacer { height: 14px; width: 100%; }
 
 /* message */
 .message-row {
   width: 860px;
-  height: 415px;
+  height: 100%;
   display: flex;
   align-items: flex-start;
-  justify-content: flex-start;
   gap: 14px;
 }
 
+/* bubble растягивается, аватар справа фиксированный и прижат к правому краю */
 .message-bubble {
   position: relative;
-  width: 720px;
-  height: 405px;
+  flex: 1;
+  min-width: 0;
+
+  /* высота по контенту */
+  height: auto;
+  max-height: 405px;
+
   background: rgba(30, 30, 35, 0.4);
   backdrop-filter: blur(25px);
   border-radius: 40px;
@@ -719,10 +694,9 @@ defineExpose({ generateAndShare })
 
 .message-body-wrap {
   width: 100%;
-  height: 100%;
+  max-height: 349px; /* чтобы хвост/паддинги не конфликтовали */
   overflow: hidden;
 }
-
 .message-body {
   font-size: 34px;
   line-height: 1.38;
@@ -733,11 +707,12 @@ defineExpose({ generateAndShare })
   word-break: break-word;
 }
 
+/* хвостик сверху справа — гарантированно виден */
 .message-tail-top {
   position: absolute;
-  top: 14px;
-  right: -22px;
-  z-index: 5;
+  top: 10px;
+  right: -26px;
+  z-index: 20;
   pointer-events: none;
 }
 
@@ -755,16 +730,7 @@ defineExpose({ generateAndShare })
   margin-top: 8px;
 }
 
-/* footer */
-.story-footer-text {
-  font-size: 48px;
-  color: rgba(255,255,255,0.5);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  transform: translateY(5px);
-}
-
-/* modal */
+/* modal styles (без изменений) */
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.92);
