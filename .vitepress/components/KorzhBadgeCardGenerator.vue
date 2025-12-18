@@ -531,10 +531,10 @@ defineExpose({ generateAndShare })
    ========================================================= */
 .story-template.story-vars{
   /* высота карточки подарка */
-  --gift-card-h: 885px;
+  --gift-card-h: 855px;
 
   /* отступ между message-блоком и "Сделано в Сигнале" */
-  --footer-gap: 44px;
+  --footer-gap: 55px;
 
   /* подгонка композиции внутри карточки при изменении высоты */
   --gift-img-wrap-h: 440px;
@@ -543,8 +543,8 @@ defineExpose({ generateAndShare })
 
 @media (max-width: 520px) {
   .story-template.story-vars{
-    --gift-card-h: 840px;
-    --footer-gap: 56px;
+    --gift-card-h: 820px;
+    --footer-gap: 66px;
     --gift-img-wrap-h: 420px;
     --gift-img-wrap-mt: 150px;
   }
