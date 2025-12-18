@@ -824,7 +824,7 @@ const handleShareClick = () => {
   backdrop-filter: blur(10px);
 
   /* ширина карточки в слайдере */
-  min-width: 180px;
+  min-width: 140px;
   width: 180px;
 
   /* snap point */
