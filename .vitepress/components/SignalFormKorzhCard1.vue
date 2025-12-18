@@ -52,7 +52,7 @@ const genderThemeClass = computed(() => {
 // Карточки
 const cardTypes = [
   { id: 'badge1', label: 'Сигналка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge2', label: 'Круассанчик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
+  { id: 'badge2', label: 'Кикус', image: '/img/korzh/badge/korzh-cffx-cup.png' },
   { id: 'badge3', label: 'Котик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
   { id: 'badge4', label: 'Сердечко', image: '/img/korzh/badge/korzh-cffx-cup.png' },
   { id: 'badge5', label: 'Звёздочка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
