@@ -8,7 +8,6 @@
     <!-- СКРЫТЫЙ ШАБЛОН (1080x1920) -->
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
-
         <div class="story-bg-base"></div>
 
         <div
@@ -21,7 +20,7 @@
         <div class="story-noise"></div>
         <div class="story-bg-overlay"></div>
 
-        <!-- ВАЖНО: фиксируем раскладку, чтобы подарок не “резался” из-за текста -->
+        <!-- ФИКС-СЕТКА: подарок никогда не режется из-за текста -->
         <div class="story-content-grid">
           <!-- Header -->
           <div class="grid-header">
@@ -33,12 +32,11 @@
           <!-- Gift card (фикс высота/место) -->
           <div class="grid-gift">
             <div class="gift-card-container">
-              <!-- ЛОКАЦИЯ -->
               <div class="card-inner-location">
                 {{ sAddress || 'Все кофейни' }}
               </div>
 
-              <!-- УГОЛОК PNG -->
+              <!-- УГОЛОК PNG (сдвиг на толщину бордера: 8px) -->
               <img
                 class="corner-tag-img"
                 src="/img/korzh/badge/corner-tag-img.png"
@@ -46,7 +44,6 @@
                 crossorigin="anonymous"
               />
 
-              <!-- ИЗОБРАЖЕНИЕ -->
               <div class="gift-image-wrapper">
                 <div class="gift-glow"></div>
                 <img
@@ -67,11 +64,12 @@
                   {{ sBadgeLabel }}
                 </div>
 
+                <!-- БЕЙДЖ: больше высота + flex-center -->
                 <div class="meta-gradient-badge" aria-label="Номер и дата">
                   <div class="mb-content">
                     <span class="mb-icon">🎁</span>
                     <span class="mb-num">{{ sTicket }}</span>
-                    <span class="mb-sep">•</span>
+                    <span class="mb-icon">🎁</span>
                     <span class="mb-date">{{ sDate }}</span>
                   </div>
                 </div>
@@ -81,24 +79,24 @@
             </div>
           </div>
 
-          <!-- Message bubble (фикс зона; переполнение только внутри текста) -->
+          <!-- Message bubble (фикс зона) -->
           <div class="grid-message">
             <div v-if="sText" class="message-card-container">
               <div class="message-header">Делюсь настроением:</div>
 
-              <!-- Маска на тексте (градиент в прозрачность снизу) -->
+              <!-- Текст “тает” в прозрачность внизу карточки -->
               <div class="message-body-wrap">
                 <div class="message-body masked-text">
                   {{ sText }}
                 </div>
               </div>
 
-              <!-- Хвостик -->
+              <!-- хвост -->
               <svg class="message-tail" width="64" height="54" viewBox="0 0 64 54" fill="none" aria-hidden="true">
                 <path d="M2 2C2 2 18 28 62 52V2H2Z" fill="rgba(30, 30, 35, 0.55)"/>
               </svg>
 
-              <!-- Аватар СТРОГО ПОД хвостиком -->
+              <!-- аватар строго под хвостом -->
               <div class="message-avatar">{{ sAvatar }}</div>
             </div>
           </div>
@@ -432,7 +430,6 @@ defineExpose({ generateAndShare })
   overflow: hidden;
 }
 
-/* backgrounds */
 .story-bg-base { position: absolute; inset: 0; background: #1a1a1a; z-index: 0; }
 .story-bg-image {
   position: absolute; inset: 0; z-index: 1;
@@ -460,23 +457,32 @@ defineExpose({ generateAndShare })
   background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.45) 100%);
 }
 
-/* === ГЛАВНОЕ: фиксируем сетку, чтобы подарок не страдал от длинного текста === */
+/* === фикс-сетка === */
 .story-content-grid {
   position: relative;
   z-index: 10;
   width: 100%;
   height: 100%;
   padding: 160px 60px 90px 60px;
-
   display: grid;
-  grid-template-rows: 170px 980px 1fr 120px; /* header / gift / message / footer */
+
+  /* СДЕЛАЛИ КОМПАКТНЕЕ: gift зона чуть меньше, message зона чуть больше */
+  grid-template-rows: 170px 965px 1fr 120px;
   gap: 0;
   align-items: start;
 }
 
 .grid-header { display: flex; align-items: flex-start; justify-content: center; }
-.grid-gift { display: flex; align-items: flex-start; justify-content: center; overflow: visible; }
-.grid-message { display: flex; align-items: flex-start; justify-content: center; overflow: hidden; padding-top: 20px; }
+.grid-gift {
+  display: flex; align-items: flex-start; justify-content: center;
+  overflow: visible;
+  transform: translateY(-15px); /* поднять подарок на 15px */
+}
+.grid-message {
+  display: flex; align-items: flex-start; justify-content: center;
+  overflow: hidden;
+  padding-top: 10px;
+}
 .grid-footer { display: flex; align-items: flex-end; justify-content: center; }
 
 .header-text {
@@ -488,12 +494,11 @@ defineExpose({ generateAndShare })
   text-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
-/* === Gift card (НЕ МЕНЯТЬ РАЗМЕР) === */
+/* === Gift card: размер фикс === */
 .gift-card-container {
   width: 100%;
   max-width: 860px;
-  height: 980px;              /* фиксируем высоту, чтобы не “прыгала” */
-  flex: 0 0 980px;            /* дополнительная фиксация */
+  height: 965px; /* подогнали под компактность, но в рамках фикс строки */
   background: rgba(168, 139, 235, 0.65);
   backdrop-filter: blur(35px) saturate(120%);
   border-radius: 60px;
@@ -507,7 +512,6 @@ defineExpose({ generateAndShare })
   overflow: hidden;
 }
 
-/* location */
 .card-inner-location {
   position: absolute;
   top: 40px;
@@ -520,11 +524,11 @@ defineExpose({ generateAndShare })
   z-index: 30;
 }
 
-/* corner image */
+/* Сдвиг ленты на 8px вверх/вправо, чтобы покрывала бордер */
 .corner-tag-img {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -8px;
+  right: -8px;
   width: 250px;
   height: 250px;
   z-index: 40;
@@ -532,7 +536,6 @@ defineExpose({ generateAndShare })
   object-fit: contain;
 }
 
-/* image */
 .gift-image-wrapper {
   position: relative;
   width: 100%;
@@ -556,7 +559,6 @@ defineExpose({ generateAndShare })
   filter: drop-shadow(0 20px 40px rgba(0,0,0,0.35));
 }
 
-/* info */
 .gift-info-block {
   width: 100%;
   padding: 0 50px 0 50px;
@@ -581,12 +583,13 @@ defineExpose({ generateAndShare })
   font-weight: 700;
   color: rgba(214, 186, 255, 0.9);
   text-shadow: 0 2px 18px rgba(155, 127, 183, 0.55);
-  margin-bottom: 30px;
+  margin-bottom: 26px; /* чуть меньше */
   line-height: 1.1;
 }
 
+/* Бейдж выше и центрированнее */
 .meta-gradient-badge {
-  height: 56px;
+  height: 64px;             /* увеличили высоту — визуально центр лучше */
   padding: 0 34px;
   border-radius: 999px;
   background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 100%);
@@ -600,16 +603,19 @@ defineExpose({ generateAndShare })
   align-items: center;
   justify-content: center;
   gap: 12px;
-  height: 56px;
+  height: 64px;
 }
-.mb-icon, .mb-num, .mb-sep, .mb-date { line-height: 56px; }
+.mb-icon, .mb-num, .mb-date {
+  line-height: 1;           /* ключ: не “тянем” вниз */
+  display: inline-flex;
+  align-items: center;
+}
 .mb-icon { font-size: 26px; }
 .mb-num { font-size: 28px; font-weight: 800; color: #fff; }
-.mb-sep { font-size: 24px; color: rgba(255,255,255,0.65); }
 .mb-date { font-size: 28px; font-weight: 600; color: #fff; }
 
-/* extra bottom space inside gift card */
-.card-bottom-spacer { height: 90px; width: 100%; }
+/* уменьшили прижатость к низу: спейсер немного меньше, но не “впритык” */
+.card-bottom-spacer { height: 78px; width: 100%; }
 
 /* === Message card === */
 .message-card-container {
@@ -625,8 +631,11 @@ defineExpose({ generateAndShare })
   align-items: center;
   text-align: center;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  border: 6px solid rgba(255,255,255,0.30); /* толще как просил */
+  border: 6px solid rgba(255,255,255,0.30);
   overflow: visible;
+
+  /* Важно: даем внешний отступ снизу, чтобы не лезло на футер */
+  margin-bottom: 0;
 }
 
 .message-header {
@@ -638,11 +647,14 @@ defineExpose({ generateAndShare })
   letter-spacing: 0.05em;
 }
 
+/* фиксируем переполнение внутри карточки, не влияя на сетку */
 .message-body-wrap {
   width: 100%;
   position: relative;
-  max-height: 520px;  /* текст режем только здесь */
+  max-height: 520px;
   overflow: hidden;
+
+  /* “стоп” за 10px до нижнего края карточки */
   padding-bottom: 10px;
 }
 
@@ -654,13 +666,23 @@ defineExpose({ generateAndShare })
   text-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* Градиент прозрачности текста вниз (вместо оверлея) */
+/* Маска: текст уходит в прозрачность ближе к низу карточки */
 .masked-text {
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 100%);
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 68%,
+    rgba(0,0,0,0) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 68%,
+    rgba(0,0,0,0) 100%
+  );
 }
 
-/* tail */
+/* tail + avatar */
 .message-tail {
   position: absolute;
   bottom: -10px;
@@ -668,12 +690,10 @@ defineExpose({ generateAndShare })
   z-index: 6;
   pointer-events: none;
 }
-
-/* avatar строго ПОД хвостиком */
 .message-avatar {
   position: absolute;
-  bottom: -62px;     /* ниже, чем хвост */
-  right: 118px;      /* центрируем под хвостом визуально */
+  bottom: -62px;
+  right: 118px;
   width: 72px;
   height: 72px;
   background: #fff;
@@ -683,7 +703,7 @@ defineExpose({ generateAndShare })
   justify-content: center;
   font-size: 36px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-  z-index: 5;        /* ниже хвоста */
+  z-index: 5;
 }
 
 /* footer */
@@ -779,20 +799,8 @@ defineExpose({ generateAndShare })
 }
 .primary-btn { background: #9B7FB7; color: #fff; }
 .secondary-btn { background: #444; color: #ccc; }
-
 .upload-section { width: 100%; display: flex; justify-content: center; }
 .upload-btn { background: transparent; border: 1px dashed #555; color: #aaa; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; }
-
-.hidden-input {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-
-@keyframes breathe {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.1); opacity: 1; }
-}
+.hidden-input { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+@keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
 </style>
