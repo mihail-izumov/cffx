@@ -159,7 +159,7 @@ function initBadgeCounts() {
   const dayProgress = Math.min(1, Math.max(0, hours / 24))
 
   const savedLocal = localStorage.getItem('korzh_user_clicks')
-  let userClicks = { badge1: 0, badge2: 0, badge3: 0 }
+  let userClicks = { badge1: 0, badge2: 0, badge3: 0, badge4: 0 }
   if (savedLocal) {
     try { userClicks = JSON.parse(savedLocal) } catch (e) { console.error(e) }
   }
@@ -169,7 +169,7 @@ function initBadgeCounts() {
   // - + "часть сегодняшнего дневного шага" (плавно в течение суток)
   // - + небольшая константа (как у вас было: 4/1/7) для различимости
   // - + клики пользователя
-  const baseOffsets = { badge1: 4, badge2: 1, badge3: 7 }
+  const baseOffsets = { badge1: 4, badge2: 1, badge3: 7, badge3: 3 }
 
   for (const badgeId of Object.keys(badgeCounts)) {
     const totalDaysGrowth = daysPassed > 0 ? sumGrowth(startDay + 1, day, badgeId) : 0
@@ -188,7 +188,7 @@ function incrementBadgeCount(id) {
   if (badgeCounts[id] !== undefined) {
     badgeCounts[id]++
     const savedLocal = localStorage.getItem('korzh_user_clicks')
-    let userClicks = { badge1: 0, badge2: 0, badge3: 0 }
+    let userClicks = { badge1: 0, badge2: 0, badge3: 0, badge4: 0 }
     if (savedLocal) {
       try { userClicks = JSON.parse(savedLocal) } catch (e) {}
     }
