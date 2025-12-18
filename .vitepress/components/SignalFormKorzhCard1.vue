@@ -72,9 +72,12 @@ function handleTouchEnd(id, event) {
 
 // Логика переключения карточек
 function toggleCard(id) {
+  // Находим старый бейдж (если он был выбран)
   const oldLabel = form.badge ? cardTypes.find(c => c.id === form.badge)?.label : null;
+  // Находим новый бейдж (на который кликнули)
   const newLabel = cardTypes.find(c => c.id === id)?.label;
 
+  // 1. Сначала всегда удаляем "старый" текст, если он есть
   if (oldLabel) {
     const oldPhrase = `Дарю: ${oldLabel} `;
     if (form.emotionalRelease.startsWith(oldPhrase)) {
@@ -82,9 +85,13 @@ function toggleCard(id) {
     }
   }
 
+  // 2. Теперь смотрим: это клик по активному бейджу или по новому?
   if (form.badge === id) {
+    // Кликнули по активному -> Снимаем выделение
     form.badge = '';
+    // Текст уже удален выше (в блоке if (oldLabel)), так что здесь просто выходим
   } else {
+    // Кликнули по новому -> Выбираем его и добавляем текст
     form.badge = id;
     const newPhrase = `Дарю: ${newLabel} `;
     form.emotionalRelease = newPhrase + form.emotionalRelease;
