@@ -5,6 +5,7 @@ import KorzhBadgeCardGenerator from './KorzhBadgeCardGenerator.vue'
 // Данные формы
 const form = reactive({
   coffeeShopAddress: 'Все кофейни',
+  userName: '', // НОВОЕ ПОЛЕ
   emotionalRelease: '',
   badge: '' 
 })
@@ -47,12 +48,8 @@ const cardTypes = [
   { id: 'badge3', label: 'Котик', image: '/img/korzh/badge/korzh-cffx-cup.png' }
 ]
 
-// Трекинг тачей (скролл vs клик)
-const touchState = reactive({
-  startX: 0,
-  startY: 0,
-  isScroll: false
-})
+// Трекинг тачей
+const touchState = reactive({ startX: 0, startY: 0, isScroll: false })
 
 function handleTouchStart(event) {
   const t = event.touches[0];
@@ -65,9 +62,7 @@ function handleTouchMove(event) {
   const t = event.touches[0];
   const deltaX = Math.abs(t.clientX - touchState.startX);
   const deltaY = Math.abs(t.clientY - touchState.startY);
-  if (deltaX > 10 || deltaY > 10) {
-    touchState.isScroll = true;
-  }
+  if (deltaX > 10 || deltaY > 10) { touchState.isScroll = true; }
 }
 
 function handleTouchEnd(id, event) {
@@ -96,7 +91,6 @@ function toggleCard(id) {
   }
 }
 
-  // Вычисляем картинку выбранного бейджа
 const selectedBadgeImage = computed(() => {
   const card = cardTypes.find(c => c.id === form.badge)
   return card ? card.image : null
@@ -107,7 +101,7 @@ const selectedBadgeLabel = computed(() => {
   return card ? card.label : null
 })
 
-// Алгоритм счетчиков (UTC, шаг 10)
+// Алгоритм счетчиков
 function getDayOfYearUTC() {
   const now = new Date();
   const start = new Date(Date.UTC(now.getUTCFullYear(), 0, 0));
@@ -120,29 +114,20 @@ function initBadgeCounts() {
   const day = getDayOfYearUTC();
   const startDay = 351; 
   const daysPassed = Math.max(0, day - startDay);
-  
   const growthBase = daysPassed * 10;
-
   const now = new Date();
   const hours = now.getUTCHours(); 
   const timeBonus = Math.floor(hours / 5); 
 
-  const offset1 = 4;
-  const offset2 = 1;
-  const offset3 = 7;
-  
   const savedLocal = localStorage.getItem('korzh_user_clicks');
   let userClicks = { badge1: 0, badge2: 0, badge3: 0 };
-  
   if (savedLocal) {
-    try {
-      userClicks = JSON.parse(savedLocal);
-    } catch (e) { console.error(e) }
+    try { userClicks = JSON.parse(savedLocal); } catch (e) { console.error(e) }
   }
 
-  badgeCounts.badge1 = growthBase + timeBonus + offset1 + (userClicks.badge1 || 0);
-  badgeCounts.badge2 = growthBase + timeBonus + offset2 + (userClicks.badge2 || 0);
-  badgeCounts.badge3 = growthBase + timeBonus + offset3 + (userClicks.badge3 || 0);
+  badgeCounts.badge1 = growthBase + timeBonus + 4 + (userClicks.badge1 || 0);
+  badgeCounts.badge2 = growthBase + timeBonus + 1 + (userClicks.badge2 || 0);
+  badgeCounts.badge3 = growthBase + timeBonus + 7 + (userClicks.badge3 || 0);
 }
 
 function incrementBadgeCount(id) {
@@ -150,9 +135,7 @@ function incrementBadgeCount(id) {
     badgeCounts[id]++;
     const savedLocal = localStorage.getItem('korzh_user_clicks');
     let userClicks = { badge1: 0, badge2: 0, badge3: 0 };
-    if (savedLocal) {
-       try { userClicks = JSON.parse(savedLocal); } catch (e) {}
-    }
+    if (savedLocal) { try { userClicks = JSON.parse(savedLocal); } catch (e) {} }
     userClicks[id] = (userClicks[id] || 0) + 1;
     localStorage.setItem('korzh_user_clicks', JSON.stringify(userClicks));
   }
@@ -162,10 +145,7 @@ function incrementBadgeCount(id) {
 const baseSuggestions = {
   female: {
     emotions: {
-      initial: [
-        'поздравляю', 'желаю', 'шлю', 
-        'мой муд', 'официально заявляю', 'признаюсь'
-      ],
+      initial: ['поздравляю', 'желаю', 'шлю', 'мой муд', 'официально заявляю', 'признаюсь'],
       'поздравляю': ['любимую кофейню', 'команду', 'себя', 'всех', 'этот мир'],
       'желаю': ['себе', 'лёгкости', 'вдохновения', 'чуда', 'денег'],
       'шлю': ['лучи добра', 'сердечко', 'обнимашки', 'сигнал в космос', 'вайб успеха'],
@@ -176,10 +156,7 @@ const baseSuggestions = {
   },
   male: {
     emotions: {
-      initial: [
-        'поздравляю', 'желаю', 'шлю', 
-        'мой муд', 'официально заявляю', 'признаюсь'
-      ],
+      initial: ['поздравляю', 'желаю', 'шлю', 'мой муд', 'официально заявляю', 'признаюсь'],
       'поздравляю': ['любимую кофейню', 'команду', 'себя', 'всех', 'этот мир'],
       'желаю': ['себе', 'мощи', 'прорыва', 'успеха', 'драйва'],
       'шлю': ['лучи добра', 'респект', 'салют', 'сигнал в космос', 'вайб успеха'],
@@ -241,51 +218,27 @@ const baseSuggestions = {
 
 const suggestions = computed(() => {
   const gender = selectedGender.value
-  return {
-    emotions: {
-      ...baseSuggestions[gender].emotions,
-      ...baseSuggestions.common.emotions
-    }
-  }
+  return { emotions: { ...baseSuggestions[gender].emotions, ...baseSuggestions.common.emotions } }
 })
 
-const currentSuggestions = reactive({
-  emotions: [],
-})
-
-const selectedSuggestions = reactive({
-  emotions: [],
-})
-
-const branchCounters = reactive({
-  emotions: 0,
-})
+const currentSuggestions = reactive({ emotions: [], })
+const selectedSuggestions = reactive({ emotions: [], })
+const branchCounters = reactive({ emotions: 0, })
 
 function initializeSuggestions() {
-  if (suggestions.value && suggestions.value.emotions) {
-     filterInitialSuggestions(); 
-  }
+  if (suggestions.value && suggestions.value.emotions) { filterInitialSuggestions(); }
 }
 
 function filterInitialSuggestions() {
   const allInitial = [...suggestions.value.emotions.initial];
   const currentText = form.emotionalRelease.toLowerCase();
-  
-  const filtered = allInitial.filter(phrase => 
-    !currentText.includes(phrase.toLowerCase())
-  );
-
-  if (filtered.length === 0) {
-    currentSuggestions.emotions = [...allInitial];
-  } else {
-    currentSuggestions.emotions = filtered;
-  }
+  const filtered = allInitial.filter(phrase => !currentText.includes(phrase.toLowerCase()));
+  if (filtered.length === 0) { currentSuggestions.emotions = [...allInitial]; } 
+  else { currentSuggestions.emotions = filtered; }
 }
 
 watch(() => form.emotionalRelease, () => {
-  if (isInitialSuggestions('emotions')) {
-     filterInitialSuggestions();
-  }
+  if (isInitialSuggestions('emotions')) { filterInitialSuggestions(); }
 });
 
 watch(selectedGender, () => {
@@ -294,9 +247,7 @@ watch(selectedGender, () => {
   initializeSuggestions(); 
 })
 
-function onGenderClick(gender) {
-  selectedGender.value = gender
-}
+function onGenderClick(gender) { selectedGender.value = gender }
 
 function isInitialSuggestions(suggestionType) {
   if (suggestionType !== 'emotions') return false
@@ -311,10 +262,8 @@ function resetSuggestions(suggestionType) {
 
 function selectSuggestion(fieldName, suggestion, suggestionType) {
   if (suggestionType !== 'emotions') return
-
   const currentText = form[fieldName].trim()
   const isNewBranch = isInitialSuggestions(suggestionType)
-
   if (currentText) {
     if (isNewBranch) {
       form[fieldName] = currentText + ". " + suggestion.charAt(0).toUpperCase() + suggestion.slice(1)
@@ -326,64 +275,47 @@ function selectSuggestion(fieldName, suggestion, suggestionType) {
     form[fieldName] = suggestion.charAt(0).toUpperCase() + suggestion.slice(1)
     branchCounters[suggestionType] = 1
   }
-
   selectedSuggestions[suggestionType].push(suggestion)
   updateSuggestions(suggestionType, suggestion)
 }
 
 function updateSuggestions(suggestionType, selectedWord) {
   if (suggestionType !== 'emotions') return
-
   const nextSuggestions = suggestions.value[suggestionType][selectedWord]
-  if (nextSuggestions && nextSuggestions.length > 0) {
-    currentSuggestions[suggestionType] = [...nextSuggestions]
-  } else {
-    filterInitialSuggestions();
-  }
+  if (nextSuggestions && nextSuggestions.length > 0) { currentSuggestions[suggestionType] = [...nextSuggestions] } 
+  else { filterInitialSuggestions(); }
 }
 
 function startRotation() {
   stopRotation()
   if (rotationPaused.value) return 
-
   rotationInterval = setInterval(() => {
     currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length
     currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1]
   }, 3000)
 }
 
-function stopRotation() {
-  if (rotationInterval) clearInterval(rotationInterval)
-}
+function stopRotation() { if (rotationInterval) clearInterval(rotationInterval) }
+function onTextFocus() { rotationPaused.value = true; stopRotation(); }
+function onTextBlur() { rotationPaused.value = false; startRotation(); }
 
-function onTextFocus() {
-  rotationPaused.value = true
-  stopRotation()
-}
-
-function onTextBlur() {
-  rotationPaused.value = false
-  startRotation()
-}
-
+// ВАЛИДАЦИЯ: Проверяем, что есть локация, сообщение И имя (если хотите обязательное)
 const isFormValid = computed(() => {
   return form.coffeeShopAddress.trim().length > 0 && 
-         form.emotionalRelease.trim().length > 0
+         form.emotionalRelease.trim().length > 0 &&
+         form.userName.trim().length > 0 // Имя обязательно
 })
 
 function resetForm() {
   form.emotionalRelease = '';
+  form.userName = ''; // Сброс имени
   initializeSuggestions();
 }
 
 async function submitForm() {
   if (!isFormValid.value) return
-
   isSubmitting.value = true
-  
-  if (form.badge) {
-    incrementBadgeCount(form.badge)
-  }
+  if (form.badge) { incrementBadgeCount(form.badge) }
 
   const now = new Date()
   const day = String(now.getDate()).padStart(2, '0')
@@ -400,7 +332,8 @@ async function submitForm() {
     localStorage.setItem('signalclientid', clientId)
   }
 
-  const APIENDPOINT = 'https://script.google.com/macros/s/AKfycbwV-WN52hpuPxCBAIdP9ltrOQ_wYcKFI0u-x7VMFtORdytgVVKHVtMOLt0o-zME2uNY0A/exec'
+  // ВАЖНО: Укажите ваш новый URL Web App
+  const APIENDPOINT = 'https://script.google.com/macros/s/AKfycbyO-bEv334omRz4i9Dsa4QRMQqx5Wj-67nIbEtLT6suK6MJu7myE1gpjGl7Gc7w0IeeNg/exec'
 
   const formData = new FormData()
   formData.append('referer', window.location.origin)
@@ -409,10 +342,12 @@ async function submitForm() {
   formData.append('date', currentDate.value)
   formData.append('submitted', submittedTimeValue)
   formData.append('coffeehouse', form.coffeeShopAddress)
+  
+  // Добавляем Имя
+  formData.append('name', form.userName)
+  
   formData.append('emotionalRelease', form.emotionalRelease)
   formData.append('badge', form.badge)
-  
-  formData.append('name', '')
   formData.append('telegram', '')
   formData.append('factualAnalysis', '')
   formData.append('constructiveSuggestions', '')
@@ -428,7 +363,6 @@ async function submitForm() {
     })
     
     clearTimeout(timeoutId)
-
     const result = await response.json()
 
     if (result.status === 'success' || result.processed) {
@@ -439,42 +373,26 @@ async function submitForm() {
       throw new Error(result.message)
     }
   } catch (error) {
-    if (error.name === 'AbortError') {
-      alert('Большой поток открыток. Попробуйте еще через минуту.')
-    } else {
-      console.error('Submission error:', error)
-      if (error.message && error.message.includes('quota')) {
-         alert('Слишком много запросов. Подождите пару минут.')
-      } else {
-         alert('Ошибка при отправке. Попробуйте еще раз.')
-      }
-    }
-  } finally {
-    isSubmitting.value = false
-  }
+    if (error.name === 'AbortError') { alert('Большой поток открыток. Попробуйте еще через минуту.') } 
+    else { console.error('Submission error:', error); alert('Ошибка при отправке. Попробуйте еще раз.'); }
+  } finally { isSubmitting.value = false }
 }
 
 let metaViewport = null;
 function disableZoom() {
   metaViewport = document.querySelector('meta[name="viewport"]');
-  if (metaViewport) {
-    metaViewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
-  } else {
+  if (metaViewport) { metaViewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'; } 
+  else {
     metaViewport = document.createElement('meta');
     metaViewport.name = 'viewport';
     metaViewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
     document.head.appendChild(metaViewport);
   }
 }
-function enableZoom() {
-  if (metaViewport) {
-    metaViewport.content = 'width=device-width, initial-scale=1';
-  }
-}
+function enableZoom() { if (metaViewport) { metaViewport.content = 'width=device-width, initial-scale=1'; } }
 
 onMounted(() => {
   disableZoom();
-
   const randomNum = Math.floor(Math.random() * 901) + 99; 
   rawTicketNumber.value = String(randomNum);
   formattedTicketNumber.value = rawTicketNumber.value;
@@ -493,17 +411,10 @@ onMounted(() => {
   startRotation()
 })
 
-onUnmounted(() => {
-  enableZoom();
-  stopRotation();
-})
+onUnmounted(() => { enableZoom(); stopRotation(); })
 
 const storyGeneratorRef = ref(null)
-const handleShareClick = () => {
-  if (storyGeneratorRef.value) {
-    storyGeneratorRef.value.generateAndShare()
-  }
-}
+const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRef.value.generateAndShare() } }
 </script>
 
 <template>
@@ -537,9 +448,21 @@ const handleShareClick = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
              </div>
           </div>
+          
+          <!-- НОВОЕ ПОЛЕ ВВОДА ИМЕНИ -->
+          <div class="kzh-name-input-wrapper">
+             <input 
+               type="text" 
+               v-model="form.userName" 
+               class="kzh-address-select" 
+               placeholder="Ваше имя" 
+               required 
+             />
+          </div>
         </div>
 
          <div class="kzh-cards-label first-label">Выберите подарок</div>
+         <!-- Далее без изменений -->
          <div class="kzh-cards-container">
            <div 
              class="kzh-cards-grid"
@@ -563,7 +486,6 @@ const handleShareClick = () => {
           </div>
         </div>
 
-        <!-- КЛАСС MOOD-LABEL ДЛЯ ОТСТУПОВ -->
         <div class="kzh-cards-label mood-label">Поделитесь настроением</div>
         
         <div class="kzh-question-block kzh-no-border">
@@ -673,6 +595,10 @@ const handleShareClick = () => {
 </template>
 
 <style scoped>
+/* Стили остаются прежними, добавляем отступ для input */
+.kzh-name-input-wrapper {
+  margin-top: 12px;
+}
 :root {
   --kzh-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --kzh-font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Code", "Droid Sans Mono", "Source Code Pro", monospace;
