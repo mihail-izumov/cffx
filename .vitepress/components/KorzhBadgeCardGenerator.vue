@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Шрифт Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- СКРЫТЫЙ ШАБЛОН (1080x1920) -->
     <div class="story-wrapper-hidden">
@@ -26,17 +26,22 @@
 
         <div class="story-content">
 
+          <!-- ЛОКАЦИЯ (Левый верхний угол) -->
+          <div class="top-left-location">
+            {{ address || 'Все кофейни' }}
+          </div>
+
           <!-- ВЕРХНИЙ ЗАГОЛОВОК -->
           <div class="header-text">
              Вы превратили этот момент в<br>уникальное воспоминание
           </div>
 
-          <!-- КАРТОЧКА -->
+          <!-- КАРТОЧКА ПОДАРКА -->
           <div class="gift-card-container">
             
             <!-- ЛЕНТА-УГОЛОК -->
-            <div class="corner-tag">
-               <span>GIFT</span>
+            <div class="corner-ribbon">
+               <span>ПОДАРОК</span>
             </div>
 
             <!-- ИЗОБРАЖЕНИЕ -->
@@ -48,39 +53,39 @@
             <!-- ИНФО БЛОК -->
             <div class="gift-info-block">
                 
-                <!-- МЕТА-СТРОКА -->
-                <div class="meta-row">
-                   <span class="meta-label">Подарок от Гостя</span>
-                   <div class="meta-badge">
-                      <span class="mb-num">#{{ ticket }}</span>
-                      <span class="mb-dot">•</span>
-                      <span class="mb-date">{{ date }}</span>
-                   </div>
+                <!-- ОТ КОГО -->
+                <div class="meta-from">
+                   Подарок от {{ formattedName }}
                 </div>
                 
-                <!-- НАЗВАНИЕ -->
+                <!-- НАЗВАНИЕ ПОДАРКА -->
                 <div class="gift-name" v-if="badgeLabel">
                    {{ badgeLabel }}
                 </div>
 
-                <!-- ЛОКАЦИЯ -->
-                <div class="location-pill">
-                   <span class="loc-icon">📍</span>
-                   {{ address || 'Все кофейни' }}
-                </div>
-                
-                <!-- ТЕКСТ (Чуть больше отступа снизу) -->
-                <div v-if="formattedText" class="message-container">
-                    <div class="message-text">
-                        {{ formattedText }}
-                    </div>
-                    <div class="text-fade-mask"></div>
+                <!-- НОМЕР И ДАТА (Градиентный блок) -->
+                <div class="meta-gradient-badge">
+                   <span class="mb-num">#{{ ticket }}</span>
+                   <span class="mb-sep">•</span>
+                   <span class="mb-date">{{ date }}</span>
                 </div>
 
             </div>
             
             <div class="card-bottom-spacer"></div>
+          </div>
 
+          <!-- ОТДЕЛЬНАЯ КАРТОЧКА СООБЩЕНИЯ -->
+          <div v-if="formattedText" class="message-card-container">
+             <div class="message-header">Делюсь настроением:</div>
+             <div class="message-body">
+                {{ formattedText }}
+             </div>
+          </div>
+
+          <!-- FOOTER -->
+          <div class="story-footer-text">
+             Сделано в Сигнале
           </div>
 
         </div>
@@ -120,11 +125,9 @@
             </div>
             
             <div class="upload-section">
-               <!-- Добавляем .stop для предотвращения всплытия событий -->
                <button class="text-btn upload-btn" @click.stop="triggerFileUpload">
                   Загрузить свое фото
                </button>
-               <!-- Скрытый инпут -->
                <input 
                   type="file" 
                   ref="fileInputRef" 
@@ -134,11 +137,6 @@
                   @click.stop 
                />
             </div>
-
-            <p class="modal-hint">
-              Мой Сигнал в Корж ⚡️{{ ticket }}<br>
-              Отправить Сигнал: [https://cffx.ru/korzh](https://cffx.ru/korzh)
-            </p>
           </div>
         </div>
       </div>
@@ -155,7 +153,8 @@ const props = defineProps({
   address: String,
   allText: String,
   badgeImage: String,
-  badgeLabel: String
+  badgeLabel: String,
+  userName: String // НОВЫЙ ПРОП
 });
 
 const showModal = ref(false);
@@ -175,9 +174,16 @@ watch(customBgImage, () => {
   generatedImageUrl.value = null;
 });
 
+// Логика имени
+const formattedName = computed(() => {
+  return props.userName && props.userName.trim() !== '' ? props.userName : 'Гостя';
+});
+
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
   let text = props.allText.trim();
+  // Убираем "Дарю: ..." если оно вдруг просочилось, хотя мы это фильтруем в родителе
+  // Но здесь лучше оставить чистый текст
   text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
   text = text.replace(/\s+/g, ' ');
   text = text.charAt(0).toUpperCase() + text.slice(1);
@@ -274,9 +280,8 @@ const generateAndShare = async () => {
 };
 
 const triggerFileUpload = () => {
-  // Явный клик с проверкой
   if (fileInputRef.value) {
-    fileInputRef.value.value = ''; // Сбрасываем значение, чтобы сработало change даже для того же файла
+    fileInputRef.value.value = ''; 
     fileInputRef.value.click();
   }
 }
@@ -372,13 +377,25 @@ defineExpose({ generateAndShare });
   display: flex; flex-direction: column; align-items: center;
 }
 
+/* ЛОКАЦИЯ (Top Left) */
+.top-left-location {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  font-size: 32px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  letter-spacing: 0.02em;
+}
+
 /* ЗАГОЛОВОК */
 .header-text {
   font-size: 36px; line-height: 1.4; text-align: center; color: #fff; font-weight: 500;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.5); margin-bottom: 50px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5); margin-bottom: 50px; margin-top: 40px;
 }
 
-/* КАРТОЧКА */
+/* КАРТОЧКА ПОДАРКА */
 .gift-card-container {
   width: 100%; max-width: 860px;
   background: rgba(168, 139, 235, 0.65); 
@@ -388,31 +405,42 @@ defineExpose({ generateAndShare });
   position: relative;
   box-shadow: 0 40px 100px -10px rgba(0,0,0,0.3);
   display: flex; flex-direction: column; align-items: center;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 4px solid rgba(255,255,255,0.3); /* Обводка толще */
   overflow: hidden; 
+  margin-bottom: 30px; /* Отступ до карточки с текстом */
 }
 
-/* ЛЕНТА-УГОЛОК */
-.corner-tag {
-  position: absolute; top: 0; right: 0; width: 160px; height: 160px; z-index: 20;
-  pointer-events: none;
+/* ЛЕНТА-УГОЛОК (Gradient) */
+.corner-ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  z-index: 20;
 }
-.corner-tag::before {
-  content: ""; position: absolute; top: 0; right: 0;
-  border-top: 160px solid #4A3B69;
-  border-left: 160px solid transparent;
-  box-shadow: -4px 4px 15px rgba(0,0,0,0.2);
-}
-.corner-tag span {
-  position: absolute; top: 28px; right: 28px;
+.corner-ribbon span {
+  position: absolute;
+  display: block;
+  width: 280px;
+  padding: 15px 0;
+  background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 100%);
+  box-shadow: 0 5px 10px rgba(0,0,0,.1);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-align: center;
+  right: -65px;
+  top: 65px;
   transform: rotate(45deg);
-  font-size: 20px; font-weight: 800; color: #fff; letter-spacing: 0.1em;
-  z-index: 21;
+  letter-spacing: 0.05em;
 }
 
 /* ИЗОБРАЖЕНИЕ */
 .gift-image-wrapper {
-  position: relative; width: 100%; height: 550px;
+  position: relative; width: 100%; height: 500px;
   display: flex; align-items: center; justify-content: center;
   margin-top: 40px;
 }
@@ -421,7 +449,7 @@ defineExpose({ generateAndShare });
   background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%); opacity: 0.6;
 }
 .gift-main-img {
-  width: 480px; height: 480px; object-fit: contain; z-index: 2; position: relative;
+  width: 440px; height: 440px; object-fit: contain; z-index: 2; position: relative;
   filter: drop-shadow(0 20px 40px rgba(0,0,0,0.35));
 }
 
@@ -432,58 +460,64 @@ defineExpose({ generateAndShare });
   position: relative; z-index: 5;
 }
 
-/* МЕТА-СТРОКА */
-.meta-row {
-  display: flex; align-items: center; gap: 16px; margin-bottom: 12px;
-  flex-wrap: wrap; justify-content: center;
-}
-.meta-label {
+/* ОТ КОГО */
+.meta-from {
   font-size: 30px; font-weight: 500; color: rgba(255,255,255,0.9);
+  margin-bottom: 16px;
 }
-.meta-badge {
-  display: flex; align-items: center; gap: 8px;
-  background: rgba(0,0,0,0.25); padding: 6px 16px; border-radius: 20px;
-}
-.mb-num { font-size: 26px; font-weight: 700; color: #fff; }
-.mb-dot { font-size: 24px; color: rgba(255,255,255,0.5); }
-.mb-date { font-size: 26px; font-weight: 500; color: rgba(255,255,255,0.9); }
 
 /* НАЗВАНИЕ */
 .gift-name {
-  font-size: 58px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.02em;
+  font-size: 58px; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 0.02em;
   text-shadow: 0 2px 10px rgba(0,0,0,0.2); line-height: 1.1;
   margin-bottom: 24px;
 }
 
-/* ЛОКАЦИЯ */
-.location-pill {
-  display: flex; align-items: center; gap: 8px;
-  background: rgba(255,255,255,0.2); 
-  padding: 10px 24px; border-radius: 50px;
-  font-size: 28px; color: #fff; font-weight: 500;
-  margin-bottom: 30px;
+/* ГРАДИЕНТНЫЙ БЛОК (НОМЕР + ДАТА) */
+.meta-gradient-badge {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 100%);
   border: 1px solid rgba(255,255,255,0.2);
+  padding: 12px 32px; border-radius: 50px;
+  backdrop-filter: blur(10px);
 }
-.loc-icon { font-size: 26px; }
+.mb-num { font-size: 28px; font-weight: 800; color: #fff; }
+.mb-sep { font-size: 24px; color: rgba(255,255,255,0.6); }
+.mb-date { font-size: 28px; font-weight: 500; color: rgba(255,255,255,0.95); }
 
-/* ТЕКСТ */
-.message-container {
-  position: relative; width: 100%; max-height: 320px; overflow: hidden;
-  margin-bottom: 10px;
-}
-.message-text {
-  font-size: 34px; line-height: 1.4; color: #fff; font-weight: 400;
-  text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  padding-bottom: 10px; /* Отступ внутри текста */
-}
-.text-fade-mask {
-  position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
-  background: linear-gradient(to bottom, transparent, rgba(168, 139, 235, 0.4));
-  opacity: 0.8;
-}
-
-/* СПЕЙСЕР ВНИЗУ */
+/* СПЕЙСЕР ВНИЗУ ПОДАРКА */
 .card-bottom-spacer { height: 40px; width: 100%; }
+
+
+/* ОТДЕЛЬНАЯ КАРТОЧКА СООБЩЕНИЯ */
+.message-card-container {
+  width: 100%; max-width: 860px;
+  background: rgba(30, 30, 35, 0.4); 
+  backdrop-filter: blur(25px);
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 40px;
+  padding: 40px 50px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+.message-header {
+  font-size: 24px; font-weight: 600; color: rgba(255,255,255,0.6);
+  margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+
+.message-body {
+  font-size: 36px; line-height: 1.4; color: #fff; font-weight: 500;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* FOOTER */
+.story-footer-text {
+  position: absolute; bottom: 50px;
+  font-size: 24px; color: rgba(255,255,255,0.4);
+  font-weight: 500; letter-spacing: 0.05em;
+}
+
 
 /* МОДАЛКА */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px; }
@@ -504,6 +538,5 @@ defineExpose({ generateAndShare });
 .upload-section { width: 100%; display: flex; justify-content: center; }
 .upload-btn { background: transparent; border: 1px dashed #555; color: #aaa; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; }
 .hidden-input { display: none; }
-.modal-hint { color: #888; font-size: 13px; margin: 0; text-align: center; line-height: 1.4; max-width: 90%; }
 @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
 </style>
