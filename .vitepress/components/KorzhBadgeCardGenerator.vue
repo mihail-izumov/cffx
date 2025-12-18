@@ -580,7 +580,7 @@ defineExpose({ generateAndShare })
 .gift-card-shell {
   position: relative;
   width: 860px;
-  height: 855px;           /* было 965 */
+  height: 885px;           /* было 965 */
   margin-bottom: 34px;
 }
 .gift-card-container {
@@ -635,7 +635,7 @@ defineExpose({ generateAndShare })
 .gift-image-wrapper {
   position: relative;
   width: 100%;
-  height: 480px;       /* было 480 */
+  height: 440px;       /* было 480 */
   display: flex;
   align-items: center;
   justify-content: center;
