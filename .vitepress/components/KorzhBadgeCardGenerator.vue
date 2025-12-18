@@ -21,83 +21,93 @@
         <div class="story-noise"></div>
         <div class="story-bg-overlay"></div>
 
-        <div class="story-content">
-          <div class="header-text">
-            Вы превратили этот момент в<br>уникальное воспоминание
+        <!-- ВАЖНО: фиксируем раскладку, чтобы подарок не “резался” из-за текста -->
+        <div class="story-content-grid">
+          <!-- Header -->
+          <div class="grid-header">
+            <div class="header-text">
+              Вы превратили этот момент в<br>уникальное воспоминание
+            </div>
           </div>
 
-          <!-- КАРТОЧКА ПОДАРКА -->
-          <div class="gift-card-container">
-            <!-- ЛОКАЦИЯ -->
-            <div class="card-inner-location">
-              {{ sAddress || 'Все кофейни' }}
-            </div>
+          <!-- Gift card (фикс высота/место) -->
+          <div class="grid-gift">
+            <div class="gift-card-container">
+              <!-- ЛОКАЦИЯ -->
+              <div class="card-inner-location">
+                {{ sAddress || 'Все кофейни' }}
+              </div>
 
-            <!-- УГОЛОК (CSS, без SVG) -->
-            <div class="corner-tag" aria-hidden="true">
-              <span class="corner-tag-text">ПОДАРОК</span>
-            </div>
-
-            <!-- ИЗОБРАЖЕНИЕ -->
-            <div class="gift-image-wrapper">
-              <div class="gift-glow"></div>
+              <!-- УГОЛОК PNG -->
               <img
-                v-if="sBadgeImage"
-                :src="sBadgeImage"
-                class="gift-main-img"
-                alt="Gift"
+                class="corner-tag-img"
+                src="/img/korzh/badge/corner-tag-img.png"
+                alt=""
                 crossorigin="anonymous"
               />
-            </div>
 
-            <div class="gift-info-block">
-              <div class="meta-from">
-                Подарок от {{ sFromName }}
+              <!-- ИЗОБРАЖЕНИЕ -->
+              <div class="gift-image-wrapper">
+                <div class="gift-glow"></div>
+                <img
+                  v-if="sBadgeImage"
+                  :src="sBadgeImage"
+                  class="gift-main-img"
+                  alt="Gift"
+                  crossorigin="anonymous"
+                />
               </div>
 
-              <!-- Название (без background-clip) -->
-              <div class="gift-name">
-                {{ sBadgeLabel }}
-              </div>
+              <div class="gift-info-block">
+                <div class="meta-from">
+                  Подарок от {{ sFromName }}
+                </div>
 
-              <!-- БЕЙДЖ: фиксированная высота + flex -->
-              <div class="meta-gradient-badge" aria-label="Номер и дата">
-                <div class="mb-content">
-                  <span class="mb-icon">🎁</span>
-                  <span class="mb-num">{{ sTicket }}</span>
-                  <span class="mb-sep">•</span>
-                  <span class="mb-date">{{ sDate }}</span>
+                <div class="gift-name">
+                  {{ sBadgeLabel }}
+                </div>
+
+                <div class="meta-gradient-badge" aria-label="Номер и дата">
+                  <div class="mb-content">
+                    <span class="mb-icon">🎁</span>
+                    <span class="mb-num">{{ sTicket }}</span>
+                    <span class="mb-sep">•</span>
+                    <span class="mb-date">{{ sDate }}</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Больше “воздуха” до низа карточки -->
-            <div class="card-bottom-spacer"></div>
+              <div class="card-bottom-spacer"></div>
+            </div>
           </div>
 
-          <!-- КАРТОЧКА ТЕКСТА -->
-          <div v-if="sText" class="message-card-container">
-            <div class="message-header">Делюсь настроением:</div>
+          <!-- Message bubble (фикс зона; переполнение только внутри текста) -->
+          <div class="grid-message">
+            <div v-if="sText" class="message-card-container">
+              <div class="message-header">Делюсь настроением:</div>
 
-            <!-- Ограничиваем высоту и делаем fade снизу при переполнении -->
-            <div class="message-body-wrap">
-              <div class="message-body">
-                {{ sText }}
+              <!-- Маска на тексте (градиент в прозрачность снизу) -->
+              <div class="message-body-wrap">
+                <div class="message-body masked-text">
+                  {{ sText }}
+                </div>
               </div>
-              <div class="message-fade"></div>
+
+              <!-- Хвостик -->
+              <svg class="message-tail" width="64" height="54" viewBox="0 0 64 54" fill="none" aria-hidden="true">
+                <path d="M2 2C2 2 18 28 62 52V2H2Z" fill="rgba(30, 30, 35, 0.55)"/>
+              </svg>
+
+              <!-- Аватар СТРОГО ПОД хвостиком -->
+              <div class="message-avatar">{{ sAvatar }}</div>
             </div>
-
-            <!-- Хвостик (сдвинут левее, аватар не перекрывает) -->
-            <svg class="message-tail" width="64" height="54" viewBox="0 0 64 54" fill="none" aria-hidden="true">
-              <path d="M2 2C2 2 18 28 62 52V2H2Z" fill="rgba(30, 30, 35, 0.55)"/>
-            </svg>
-
-            <!-- Аватар (опускаем ниже и правее, чтобы хвост был виден) -->
-            <div class="message-avatar">{{ sAvatar }}</div>
           </div>
 
-          <div class="story-footer-text">
-            Сделано в Сигнале
+          <!-- Footer -->
+          <div class="grid-footer">
+            <div class="story-footer-text">
+              Сделано в Сигнале
+            </div>
           </div>
         </div>
       </div>
@@ -152,7 +162,6 @@
                 Загрузить свое фото
               </button>
 
-              <!-- НЕ display:none: оставляем “визуально скрытым” -->
               <input
                 type="file"
                 ref="fileInputRef"
@@ -195,10 +204,7 @@ if (typeof navigator !== 'undefined') {
   canShare.value = !!(navigator.share && navigator.canShare)
 }
 
-/**
- * Снимок данных, чтобы при повторной генерации (после загрузки фона)
- * не терялись имя/текст даже если родитель уже сбросил форму.
- */
+/** Snapshot */
 const sTicketRaw = ref('')
 const sDateRaw = ref('')
 const sAddressRaw = ref('')
@@ -214,10 +220,9 @@ const DEFAULT_BADGE = {
 }
 const smileys = ['😊', '😅', '😉', '😋', '😀']
 
-function capitalizeWords(str) {
+function capitalizeFirst(str) {
   const s = String(str || '').trim()
   if (!s) return ''
-  // "андрей петров" -> "Андрей петров" (только первая буква всего ввода)
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
@@ -225,13 +230,9 @@ function makeSnapshot() {
   sTicketRaw.value = props.ticket || ''
   sDateRaw.value = props.date || ''
   sAddressRaw.value = props.address || ''
-
-  // имя — всегда с большой буквы
-  sUserNameRaw.value = capitalizeWords(props.userName || '')
-
+  sUserNameRaw.value = capitalizeFirst(props.userName || '')
   sAllTextRaw.value = props.allText || ''
 
-  // дефолтный подарок, если не выбран
   const label = (props.badgeLabel || '').trim()
   const img = props.badgeImage || null
   sBadgeLabelRaw.value = label || DEFAULT_BADGE.label
@@ -251,13 +252,11 @@ function getGenitiveName(name) {
   if (!n) return 'Гостя'
 
   const last = n.slice(-1).toLowerCase()
-
   if (last === 'а') return n.slice(0, -1) + 'ы'
   if (last === 'я') return n.slice(0, -1) + 'и'
   if (last === 'ь') return n.slice(0, -1) + 'и'
   if (last === 'й') return n.slice(0, -1) + 'я'
   if (/[бвгджзклмнпрстфхцчшщ]/.test(last)) return n + 'а'
-
   return n
 }
 
@@ -269,7 +268,6 @@ const sFromName = computed(() => {
 const sText = computed(() => {
   const raw = sAllTextRaw.value
   if (!raw || !raw.trim()) return ''
-
   let text = raw.trim()
   text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2')
   text = text.replace(/\s+/g, ' ')
@@ -364,9 +362,7 @@ const generateImageInternal = async () => {
 }
 
 const generateAndShare = async () => {
-  // важное: фиксируем значения ДО любых асинхронных действий
   makeSnapshot()
-
   showModal.value = true
   customBgImage.value = null
   bgKey.value++
@@ -395,7 +391,6 @@ const handleFileUpload = (event) => {
 
 const shareOrDownload = async () => {
   if (!generatedBlob.value) return
-
   if (canShare.value) {
     const file = new File([generatedBlob.value], `signal-${sTicket.value || props.ticket || 'card'}.png`, { type: 'image/png' })
     try {
@@ -437,9 +432,8 @@ defineExpose({ generateAndShare })
   overflow: hidden;
 }
 
-/* ФОНЫ */
+/* backgrounds */
 .story-bg-base { position: absolute; inset: 0; background: #1a1a1a; z-index: 0; }
-
 .story-bg-image {
   position: absolute; inset: 0; z-index: 1;
   background-size: cover; background-position: center;
@@ -461,20 +455,30 @@ defineExpose({ generateAndShare })
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
   opacity: 0.6; mix-blend-mode: overlay; pointer-events: none;
 }
-
 .story-bg-overlay {
   position: absolute; inset: 0; z-index: 3;
   background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.45) 100%);
 }
 
-.story-content {
-  position: relative; z-index: 10;
-  width: 100%; height: 100%;
-  padding: 160px 60px 100px 60px;
-  display: flex; flex-direction: column; align-items: center;
+/* === ГЛАВНОЕ: фиксируем сетку, чтобы подарок не страдал от длинного текста === */
+.story-content-grid {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  padding: 160px 60px 90px 60px;
+
+  display: grid;
+  grid-template-rows: 170px 980px 1fr 120px; /* header / gift / message / footer */
+  gap: 0;
+  align-items: start;
 }
 
-/* ЗАГОЛОВОК */
+.grid-header { display: flex; align-items: flex-start; justify-content: center; }
+.grid-gift { display: flex; align-items: flex-start; justify-content: center; overflow: visible; }
+.grid-message { display: flex; align-items: flex-start; justify-content: center; overflow: hidden; padding-top: 20px; }
+.grid-footer { display: flex; align-items: flex-end; justify-content: center; }
+
 .header-text {
   font-size: 36px;
   line-height: 1.4;
@@ -482,25 +486,28 @@ defineExpose({ generateAndShare })
   color: #fff;
   font-weight: 500;
   text-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  margin: 40px 0 50px 0;
 }
 
-/* КАРТОЧКА ПОДАРКА */
+/* === Gift card (НЕ МЕНЯТЬ РАЗМЕР) === */
 .gift-card-container {
-  width: 100%; max-width: 860px;
+  width: 100%;
+  max-width: 860px;
+  height: 980px;              /* фиксируем высоту, чтобы не “прыгала” */
+  flex: 0 0 980px;            /* дополнительная фиксация */
   background: rgba(168, 139, 235, 0.65);
   backdrop-filter: blur(35px) saturate(120%);
   border-radius: 60px;
   padding: 0;
   position: relative;
   box-shadow: 0 40px 100px -10px rgba(0,0,0,0.3);
-  display: flex; flex-direction: column; align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border: 8px solid rgba(255,255,255,0.3);
   overflow: hidden;
-  margin-bottom: 30px;
 }
 
-/* ЛОКАЦИЯ */
+/* location */
 .card-inner-location {
   position: absolute;
   top: 40px;
@@ -513,49 +520,19 @@ defineExpose({ generateAndShare })
   z-index: 30;
 }
 
-/* УГОЛОК: контейнер обрезает повернутый квадрат -> треугольник */
-.corner-tag {
+/* corner image */
+.corner-tag-img {
   position: absolute;
   top: 0;
   right: 0;
-  width: 210px;
-  height: 210px;
-  overflow: hidden;
+  width: 250px;
+  height: 250px;
   z-index: 40;
   pointer-events: none;
-}
-.corner-tag::before {
-  content: "";
-  position: absolute;
-  top: -120px;
-  right: -120px;
-  width: 320px;
-  height: 320px;
-  transform: rotate(45deg);
-  background: linear-gradient(135deg, #2b2b30 0%, #141418 60%, #000 100%);
-  box-shadow: -10px 10px 24px rgba(0,0,0,0.55);
-}
-.corner-tag::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 60%);
-  mix-blend-mode: overlay;
-}
-.corner-tag-text {
-  position: absolute;
-  top: 58px;
-  right: 22px;
-  transform: rotate(45deg);
-  transform-origin: center;
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  color: #fff;
-  text-shadow: 0 4px 14px rgba(0,0,0,0.45);
+  object-fit: contain;
 }
 
-/* ИЗОБРАЖЕНИЕ (опущено ещё на 20px относительно предыдущей версии) */
+/* image */
 .gift-image-wrapper {
   position: relative;
   width: 100%;
@@ -579,10 +556,10 @@ defineExpose({ generateAndShare })
   filter: drop-shadow(0 20px 40px rgba(0,0,0,0.35));
 }
 
-/* ИНФО */
+/* info */
 .gift-info-block {
   width: 100%;
-  padding: 0 50px 20px 50px;
+  padding: 0 50px 0 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -608,7 +585,6 @@ defineExpose({ generateAndShare })
   line-height: 1.1;
 }
 
-/* БЕЙДЖ НОМЕР+ДАТА */
 .meta-gradient-badge {
   height: 56px;
   padding: 0 34px;
@@ -624,18 +600,18 @@ defineExpose({ generateAndShare })
   align-items: center;
   justify-content: center;
   gap: 12px;
-  height: 56px; /* тот же, что у бейджа */
+  height: 56px;
 }
-.mb-icon, .mb-num, .mb-sep, .mb-date { line-height: 56px; } /* принудительно в центр по вертикали */
+.mb-icon, .mb-num, .mb-sep, .mb-date { line-height: 56px; }
 .mb-icon { font-size: 26px; }
 .mb-num { font-size: 28px; font-weight: 800; color: #fff; }
 .mb-sep { font-size: 24px; color: rgba(255,255,255,0.65); }
 .mb-date { font-size: 28px; font-weight: 600; color: #fff; }
 
-/* Больше воздуха снизу под бейджем */
+/* extra bottom space inside gift card */
 .card-bottom-spacer { height: 90px; width: 100%; }
 
-/* КАРТОЧКА ТЕКСТА */
+/* === Message card === */
 .message-card-container {
   width: 100%;
   max-width: 860px;
@@ -643,14 +619,14 @@ defineExpose({ generateAndShare })
   background: rgba(30, 30, 35, 0.4);
   backdrop-filter: blur(25px);
   border-radius: 40px;
-  padding: 40px 50px;
+  padding: 40px 50px 56px 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  border: 2px solid rgba(255,255,255,0.35); /* в 2 раза толще */
-  margin-bottom: 170px; /* чтобы низ не приближался к “Сделано...” */
+  border: 6px solid rgba(255,255,255,0.30); /* толще как просил */
+  overflow: visible;
 }
 
 .message-header {
@@ -662,13 +638,12 @@ defineExpose({ generateAndShare })
   letter-spacing: 0.05em;
 }
 
-/* Ограничение высоты контента: не “давим” футер */
 .message-body-wrap {
   width: 100%;
   position: relative;
-  max-height: 520px; /* ключ: длинный текст не раздвигает блок */
+  max-height: 520px;  /* текст режем только здесь */
   overflow: hidden;
-  padding-bottom: 10px; /* “хотя бы 10px” до fade */
+  padding-bottom: 10px;
 }
 
 .message-body {
@@ -679,31 +654,26 @@ defineExpose({ generateAndShare })
   text-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* Темный fade снизу, чтобы “уходило в никуда” */
-.message-fade {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 120px;
-  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 100%);
-  pointer-events: none;
+/* Градиент прозрачности текста вниз (вместо оверлея) */
+.masked-text {
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 100%);
 }
 
-/* Хвостик: правый-низ, но сдвинут влево от аватара */
+/* tail */
 .message-tail {
   position: absolute;
   bottom: -10px;
-  right: 110px;
-  z-index: 5; /* выше аватара */
+  right: 120px;
+  z-index: 6;
   pointer-events: none;
 }
 
-/* Аватар: уводим правее/ниже, чтобы не перекрывал хвост */
+/* avatar строго ПОД хвостиком */
 .message-avatar {
   position: absolute;
-  bottom: -44px;
-  right: -34px;
+  bottom: -62px;     /* ниже, чем хвост */
+  right: 118px;      /* центрируем под хвостом визуально */
   width: 72px;
   height: 72px;
   background: #fff;
@@ -713,20 +683,18 @@ defineExpose({ generateAndShare })
   justify-content: center;
   font-size: 36px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-  z-index: 4;
+  z-index: 5;        /* ниже хвоста */
 }
 
-/* FOOTER */
+/* footer */
 .story-footer-text {
-  position: absolute;
-  bottom: 90px;
   font-size: 48px;
   color: rgba(255,255,255,0.5);
   font-weight: 500;
   letter-spacing: 0.02em;
 }
 
-/* МОДАЛКА */
+/* modal */
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.92);
@@ -815,7 +783,6 @@ defineExpose({ generateAndShare })
 .upload-section { width: 100%; display: flex; justify-content: center; }
 .upload-btn { background: transparent; border: 1px dashed #555; color: #aaa; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; }
 
-/* Инпут: визуально скрыт, но НЕ display:none */
 .hidden-input {
   position: absolute;
   left: -9999px;
