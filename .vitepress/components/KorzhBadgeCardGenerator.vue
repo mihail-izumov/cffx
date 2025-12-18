@@ -93,7 +93,7 @@
             </div>
           </div>
 
-          <div class="story-footer-text">Сделано в Сигнале <br> cffx.ru</div>
+          <div class="story-footer-text">Сделано в Сигнале</div>
         </div>
       </div>
     </div>
@@ -208,7 +208,7 @@ const DEFAULT_BADGE = {
   label: 'Сигналка',
   image: '/img/korzh/badge/korzh-cffx-cup.png'
 }
-const smileys = ['😊', '😅', '😉', '😋', '😀']
+const smileys = ['😊', '❄️', '😅', '🎄', '😉', '🎁', '😋', '😀', '🥐', '🐱', '👑', '🤩', '🤗', '🥳', '😎']
 
 /** Background resolve + fallback */
 const DEFAULT_BG = 'https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg'
