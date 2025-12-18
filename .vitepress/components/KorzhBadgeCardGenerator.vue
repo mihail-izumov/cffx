@@ -26,11 +26,6 @@
 
         <div class="story-content">
 
-          <!-- ЛОКАЦИЯ (Левый верхний угол) -->
-          <div class="top-left-location">
-            {{ address || 'Все кофейни' }}
-          </div>
-
           <!-- ВЕРХНИЙ ЗАГОЛОВОК -->
           <div class="header-text">
              Вы превратили этот момент в<br>уникальное воспоминание
@@ -39,9 +34,14 @@
           <!-- КАРТОЧКА ПОДАРКА -->
           <div class="gift-card-container">
             
-            <!-- ЛЕНТА-УГОЛОК -->
-            <div class="corner-ribbon">
-               <span>ПОДАРОК</span>
+            <!-- ЛОКАЦИЯ (Внутри карточки, левый верхний угол) -->
+            <div class="card-inner-location">
+              {{ address || 'Все кофейни' }}
+            </div>
+
+            <!-- ЛЕНТА-УГОЛОК (Темный объемный треугольник) -->
+            <div class="corner-tag-triangle">
+               <span>GIFT</span>
             </div>
 
             <!-- ИЗОБРАЖЕНИЕ -->
@@ -53,7 +53,7 @@
             <!-- ИНФО БЛОК -->
             <div class="gift-info-block">
                 
-                <!-- ОТ КОГО -->
+                <!-- ОТ КОГО (Со склонением) -->
                 <div class="meta-from">
                    Подарок от {{ formattedName }}
                 </div>
@@ -63,9 +63,10 @@
                    {{ badgeLabel }}
                 </div>
 
-                <!-- НОМЕР И ДАТА (Градиентный блок) -->
+                <!-- НОМЕР И ДАТА (Градиент, непрозрачный, по центру) -->
                 <div class="meta-gradient-badge">
-                   <span class="mb-num">#{{ ticket }}</span>
+                   <span class="mb-icon">🎁</span>
+                   <span class="mb-num">{{ ticket }}</span>
                    <span class="mb-sep">•</span>
                    <span class="mb-date">{{ date }}</span>
                 </div>
@@ -83,7 +84,7 @@
              </div>
           </div>
 
-          <!-- FOOTER -->
+          <!-- FOOTER (Крупнее и выше) -->
           <div class="story-footer-text">
              Сделано в Сигнале
           </div>
@@ -125,16 +126,16 @@
             </div>
             
             <div class="upload-section">
-               <button class="text-btn upload-btn" @click.stop="triggerFileUpload">
+               <button class="text-btn upload-btn" @click.prevent="triggerFileUpload">
                   Загрузить свое фото
                </button>
+               <!-- Скрытый инпут -->
                <input 
                   type="file" 
                   ref="fileInputRef" 
                   accept="image/*" 
-                  class="hidden-input" 
+                  style="display: none;" 
                   @change="handleFileUpload" 
-                  @click.stop 
                />
             </div>
           </div>
@@ -154,7 +155,7 @@ const props = defineProps({
   allText: String,
   badgeImage: String,
   badgeLabel: String,
-  userName: String // НОВЫЙ ПРОП
+  userName: String 
 });
 
 const showModal = ref(false);
@@ -174,16 +175,39 @@ watch(customBgImage, () => {
   generatedImageUrl.value = null;
 });
 
-// Логика имени
+// === ЛОГИКА СКЛОНЕНИЯ ИМЕНИ ===
+function getGenitiveName(name) {
+  if (!name) return 'Гостя';
+  const n = name.trim();
+  if (!n) return 'Гостя';
+
+  // Простая эвристика для русского языка (Родительный падеж)
+  const lastChar = n.slice(-1).toLowerCase();
+  // const lastTwo = n.slice(-2).toLowerCase(); // можно расширить для 'ия' -> 'ии'
+
+  // Женские и мягкие окончания
+  if (lastChar === 'а') return n.slice(0, -1) + 'ы'; // Елена -> Елены
+  if (lastChar === 'я') return n.slice(0, -1) + 'и'; // Мария -> Марии, Аня -> Ани
+  if (lastChar === 'ь') return n.slice(0, -1) + 'и'; // Любовь -> Любви
+
+  // Мужские окончания
+  if (lastChar === 'й') return n.slice(0, -1) + 'я'; // Андрей -> Андрея
+  if (/[бвгджзклмнпрстфхцчшщ]/.test(lastChar)) return n + 'а'; // Иван -> Ивана
+
+  // Если не попало под правила (иностранные, несклоняемые или оканчивается на гласную не а/я)
+  return n; 
+}
+
 const formattedName = computed(() => {
-  return props.userName && props.userName.trim() !== '' ? props.userName : 'Гостя';
+  if (props.userName && props.userName.trim() !== '') {
+    return getGenitiveName(props.userName);
+  }
+  return 'Гостя';
 });
 
 const formattedText = computed(() => {
   if (!props.allText || !props.allText.trim()) return '';
   let text = props.allText.trim();
-  // Убираем "Дарю: ..." если оно вдруг просочилось, хотя мы это фильтруем в родителе
-  // Но здесь лучше оставить чистый текст
   text = text.replace(/([.,!?;:])([^\s])/g, '$1 $2');
   text = text.replace(/\s+/g, ' ');
   text = text.charAt(0).toUpperCase() + text.slice(1);
@@ -280,8 +304,8 @@ const generateAndShare = async () => {
 };
 
 const triggerFileUpload = () => {
+  // Исправлено: прямой вызов click без .stop в шаблоне, .prevent добавлен
   if (fileInputRef.value) {
-    fileInputRef.value.value = ''; 
     fileInputRef.value.click();
   }
 }
@@ -298,6 +322,8 @@ const handleFileUpload = (event) => {
     }
     reader.readAsDataURL(file);
   }
+  // Сброс value, чтобы можно было загрузить тот же файл повторно
+  event.target.value = '';
 }
 
 const shareOrDownload = async () => {
@@ -377,18 +403,6 @@ defineExpose({ generateAndShare });
   display: flex; flex-direction: column; align-items: center;
 }
 
-/* ЛОКАЦИЯ (Top Left) */
-.top-left-location {
-  position: absolute;
-  top: 60px;
-  left: 60px;
-  font-size: 32px;
-  font-weight: 600;
-  color: #fff;
-  text-shadow: 0 4px 10px rgba(0,0,0,0.4);
-  letter-spacing: 0.02em;
-}
-
 /* ЗАГОЛОВОК */
 .header-text {
   font-size: 36px; line-height: 1.4; text-align: center; color: #fff; font-weight: 500;
@@ -405,37 +419,46 @@ defineExpose({ generateAndShare });
   position: relative;
   box-shadow: 0 40px 100px -10px rgba(0,0,0,0.3);
   display: flex; flex-direction: column; align-items: center;
-  border: 4px solid rgba(255,255,255,0.3); /* Обводка толще */
+  border: 4px solid rgba(255,255,255,0.3); 
   overflow: hidden; 
-  margin-bottom: 30px; /* Отступ до карточки с текстом */
+  margin-bottom: 30px; 
 }
 
-/* ЛЕНТА-УГОЛОК (Gradient) */
-.corner-ribbon {
+/* ЛОКАЦИЯ (Внутри карточки) */
+.card-inner-location {
+  position: absolute;
+  top: 40px;
+  left: 45px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  letter-spacing: 0.02em;
+  z-index: 25;
+}
+
+/* УГОЛОК (Темный треугольник) */
+.corner-tag-triangle {
   position: absolute;
   top: 0;
   right: 0;
-  width: 200px;
-  height: 200px;
-  overflow: hidden;
+  width: 180px;
+  height: 180px;
+  background: linear-gradient(135deg, #2a2a2e 0%, #151515 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
   z-index: 20;
+  box-shadow: -5px 5px 15px rgba(0,0,0,0.5); 
 }
-.corner-ribbon span {
+.corner-tag-triangle span {
   position: absolute;
-  display: block;
-  width: 280px;
-  padding: 15px 0;
-  background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 100%);
-  box-shadow: 0 5px 10px rgba(0,0,0,.1);
-  color: #fff;
-  font-size: 22px;
-  font-weight: 800;
-  text-transform: uppercase;
-  text-align: center;
-  right: -65px;
-  top: 65px;
+  top: 35px;
+  right: 35px;
   transform: rotate(45deg);
-  letter-spacing: 0.05em;
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.1em;
+  z-index: 21;
 }
 
 /* ИЗОБРАЖЕНИЕ */
@@ -473,17 +496,17 @@ defineExpose({ generateAndShare });
   margin-bottom: 24px;
 }
 
-/* ГРАДИЕНТНЫЙ БЛОК (НОМЕР + ДАТА) */
+/* ГРАДИЕНТНЫЙ БЛОК (НОМЕР + ДАТА) - Непрозрачный */
 .meta-gradient-badge {
-  display: inline-flex; align-items: center; gap: 12px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 100%);
-  border: 1px solid rgba(255,255,255,0.2);
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 100%);
   padding: 12px 32px; border-radius: 50px;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 20px -5px rgba(155, 127, 183, 0.4);
 }
+.mb-icon { font-size: 26px; }
 .mb-num { font-size: 28px; font-weight: 800; color: #fff; }
 .mb-sep { font-size: 24px; color: rgba(255,255,255,0.6); }
-.mb-date { font-size: 28px; font-weight: 500; color: rgba(255,255,255,0.95); }
+.mb-date { font-size: 28px; font-weight: 600; color: #fff; }
 
 /* СПЕЙСЕР ВНИЗУ ПОДАРКА */
 .card-bottom-spacer { height: 40px; width: 100%; }
@@ -511,13 +534,14 @@ defineExpose({ generateAndShare });
   text-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* FOOTER */
+/* FOOTER (Крупнее и выше) */
 .story-footer-text {
-  position: absolute; bottom: 50px;
-  font-size: 24px; color: rgba(255,255,255,0.4);
-  font-weight: 500; letter-spacing: 0.05em;
+  position: absolute; bottom: 80px;
+  font-size: 48px; 
+  color: rgba(255,255,255,0.5);
+  font-weight: 500; 
+  letter-spacing: 0.02em;
 }
-
 
 /* МОДАЛКА */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px; }
@@ -537,6 +561,5 @@ defineExpose({ generateAndShare });
 .secondary-btn { background: #444; color: #ccc; }
 .upload-section { width: 100%; display: flex; justify-content: center; }
 .upload-btn { background: transparent; border: 1px dashed #555; color: #aaa; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; }
-.hidden-input { display: none; }
 @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
 </style>
