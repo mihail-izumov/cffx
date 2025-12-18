@@ -27,7 +27,7 @@
           <div class="gift-card-shell">
             <div class="gift-card-container">
               <div class="card-inner-location">
-                <img class="loc-icon" src="/korzh_invest_card.png" alt="" crossorigin="anonymous" />
+                <img class="loc-icon" src="/img/korzh/badge/korzh_badge_white.png" alt="" crossorigin="anonymous" />
                 <span class="loc-text">{{ sAddress || 'Все кофейни' }}</span>
               </div>
 
@@ -103,7 +103,7 @@
       <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
         <div class="modal">
           <div class="modal-header">
-            <h3>Ваша открытка готова</h3>
+            <h3>Открытка в Корж</h3>
             <button class="modal-close" @click="closeModal" type="button" aria-label="Закрыть">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -211,7 +211,7 @@ const DEFAULT_BADGE = {
 const smileys = ['😊', '😅', '😉', '😋', '😀']
 
 /** Background resolve + fallback */
-const DEFAULT_BG = 'https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg'
+const DEFAULT_BG = '/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg'
 const bgResolvedUrl = ref(DEFAULT_BG)
 let lastBgRequestId = 0
 
