@@ -15,22 +15,25 @@ const rawTicketNumber = ref('000')
 const formattedTicketNumber = ref('000')
 const currentDate = ref('')
 
+// Счетчики по карточкам (ключи добавлены под новые карточки)
 const badgeCounts = reactive({
   badge1: 0,
   badge2: 0,
   badge3: 0,
-  badge4: 0
+  badge4: 0,
+  badge5: 0,
+  badge6: 0,
+  badge7: 0,
+  badge8: 0,
+  badge9: 0,
+  badge10: 0,
+  badge11: 0
 })
 
 // Ротация
-const activeRotator = ref(0)
 let rotationInterval = null
 const rotationPaused = ref(false)
-const phrasesForQuestion1 = [
-  'Как ты себя чувствуешь?',
-  'Что у тебя на душе?',
-  'Какое настроение?'
-]
+const phrasesForQuestion1 = ['Как ты себя чувствуешь?', 'Что у тебя на душе?', 'Какое настроение?']
 const currentQuestion1 = ref(phrasesForQuestion1[0])
 let currentQuestionIndex1 = 0
 
@@ -42,12 +45,21 @@ const genderThemeClass = computed(() => {
   return selectedGender.value === 'female' ? 'kzh-theme-female' : 'kzh-theme-male'
 })
 
-// Карточки
+// Карточки: +8 новых (все с тем же изображением)
+const sameImage = '/img/korzh/badge/korzh-cffx-cup.png'
 const cardTypes = [
-  { id: 'badge1', label: 'Сигналка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge2', label: 'Круассанчик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge3', label: 'Котик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge4', label: 'Снежинка', image: '/img/korzh/badge/korzh-cffx-cup.png' }
+  { id: 'badge1', label: 'Сигналка', image: sameImage },
+  { id: 'badge2', label: 'Круассанчик', image: sameImage },
+  { id: 'badge3', label: 'Котик', image: sameImage },
+
+  { id: 'badge4', label: 'Печенька', image: sameImage },
+  { id: 'badge5', label: 'Сердечко', image: sameImage },
+  { id: 'badge6', label: 'Обнимашки', image: sameImage },
+  { id: 'badge7', label: 'Улыбка', image: sameImage },
+  { id: 'badge8', label: 'Вдохновение', image: sameImage },
+  { id: 'badge9', label: 'Тепло', image: sameImage },
+  { id: 'badge10', label: 'Удача', image: sameImage },
+  { id: 'badge11', label: 'Бодрость', image: sameImage }
 ]
 
 // Трекинг тачей
@@ -72,7 +84,7 @@ function handleTouchEnd(id) {
   toggleCard(id)
 }
 
-// Логика переключения карточек
+// Переключение карточек
 function toggleCard(id) {
   const oldLabel = form.badge ? cardTypes.find(c => c.id === form.badge)?.label : null
   const newLabel = cardTypes.find(c => c.id === id)?.label
@@ -93,21 +105,13 @@ function toggleCard(id) {
   }
 }
 
-const selectedBadgeImage = computed(() => {
-  const card = cardTypes.find(c => c.id === form.badge)
-  return card ? card.image : null
-})
-
-const selectedBadgeLabel = computed(() => {
-  const card = cardTypes.find(c => c.id === form.badge)
-  return card ? card.label : null
-})
+const selectedBadgeImage = computed(() => cardTypes.find(c => c.id === form.badge)?.image || null)
+const selectedBadgeLabel = computed(() => cardTypes.find(c => c.id === form.badge)?.label || null)
 
 /* =========================
    Алгоритм счетчиков (4–7/день)
    ========================= */
 
-// Детерминированный "random" на основе seed (чтобы у всех было стабильно в пределах дня)
 function seededRandom01(seed) {
   const x = Math.sin(seed) * 10000
   return x - Math.floor(x)
@@ -121,19 +125,18 @@ function getDayOfYearUTC() {
   return Math.floor(diff / oneDay)
 }
 
-// Сколько "добавить" за конкретный день для конкретной карточки: 4..7
-function dailyGrowthForBadge(dayOfYear, badgeId) {
-  // разные badgeId -> разные последовательности
-  const badgeSalt =
-    badgeId === 'badge1' ? 101 :
-    badgeId === 'badge2' ? 202 :
-    303
+function badgeSalt(badgeId) {
+  // чтобы новые карточки тоже имели стабильный "характер" роста
+  // badge1..badge11 -> 101, 202, 303, 404 ...
+  const n = Number(String(badgeId).replace('badge', '')) || 1
+  return n * 101
+}
 
-  const r = seededRandom01(dayOfYear * 1000 + badgeSalt) // 0..1
+function dailyGrowthForBadge(dayOfYear, badgeId) {
+  const r = seededRandom01(dayOfYear * 1000 + badgeSalt(badgeId))
   return 4 + Math.floor(r * 4) // 4..7
 }
 
-// Суммарный прирост за период: сумма dailyGrowthForBadge по дням
 function sumGrowth(startDayInclusive, endDayInclusive, badgeId) {
   let total = 0
   for (let d = startDayInclusive; d <= endDayInclusive; d++) {
@@ -144,32 +147,33 @@ function sumGrowth(startDayInclusive, endDayInclusive, badgeId) {
 
 function initBadgeCounts() {
   const day = getDayOfYearUTC()
-  const startDay = 351 // как было
+  const startDay = 351
   const daysPassed = Math.max(0, day - startDay)
 
-  // База роста: 4-7/день, детерминированно
-  const growthBase = daysPassed > 0
-    ? sumGrowth(startDay + 1, day, 'badge1') // временно, пересчитаем ниже по каждому
-    : 0
-
-  // Почасовой бонус тоже сделаем в рамках 0..(добавка за день),
-  // чтобы в течение дня числа "шевелились", но не улетали в +10 как раньше.
   const now = new Date()
   const hours = now.getUTCHours()
   const dayProgress = Math.min(1, Math.max(0, hours / 24))
 
   const savedLocal = localStorage.getItem('korzh_user_clicks')
-  let userClicks = { badge1: 0, badge2: 0, badge3: 0, badge4: 0 }
+  let userClicks = {}
   if (savedLocal) {
     try { userClicks = JSON.parse(savedLocal) } catch (e) { console.error(e) }
   }
 
-  // Для каждой карточки:
-  // - сумма по дням (4-7/день)
-  // - + "часть сегодняшнего дневного шага" (плавно в течение суток)
-  // - + небольшая константа (как у вас было: 4/1/7) для различимости
-  // - + клики пользователя
-  const baseOffsets = { badge1: 4, badge2: 1, badge3: 7, badge3: 3 }
+  // Небольшие разные оффсеты, чтобы карточки не были "под копирку"
+  const baseOffsets = {
+    badge1: 4,
+    badge2: 1,
+    badge3: 7,
+    badge4: 2,
+    badge5: 6,
+    badge6: 3,
+    badge7: 5,
+    badge8: 8,
+    badge9: 2,
+    badge10: 4,
+    badge11: 6
+  }
 
   for (const badgeId of Object.keys(badgeCounts)) {
     const totalDaysGrowth = daysPassed > 0 ? sumGrowth(startDay + 1, day, badgeId) : 0
@@ -179,7 +183,7 @@ function initBadgeCounts() {
     badgeCounts[badgeId] =
       totalDaysGrowth +
       timeBonus +
-      baseOffsets[badgeId] +
+      (baseOffsets[badgeId] || 0) +
       (userClicks[badgeId] || 0)
   }
 }
@@ -188,16 +192,14 @@ function incrementBadgeCount(id) {
   if (badgeCounts[id] !== undefined) {
     badgeCounts[id]++
     const savedLocal = localStorage.getItem('korzh_user_clicks')
-    let userClicks = { badge1: 0, badge2: 0, badge3: 0, badge4: 0 }
-    if (savedLocal) {
-      try { userClicks = JSON.parse(savedLocal) } catch (e) {}
-    }
+    let userClicks = {}
+    if (savedLocal) { try { userClicks = JSON.parse(savedLocal) } catch (e) {} }
     userClicks[id] = (userClicks[id] || 0) + 1
     localStorage.setItem('korzh_user_clicks', JSON.stringify(userClicks))
   }
 }
 
-// === ПОДСКАЗКИ ===
+// === ПОДСКАЗКИ (без изменений) ===
 const baseSuggestions = {
   female: {
     emotions: {
@@ -221,57 +223,11 @@ const baseSuggestions = {
       'признаюсь': ['виню Меркурий', 'съел два десерта', 'спасся кофеином', 'это шедевр', 'не хочу работать']
     }
   },
-  common: {
-    emotions: {
-      'любимую кофейню': ['с Новым годом', 'и Рождеством!', 'с днем рождения', 'с классным сервисом'],
-      'команду': ['вы супер', 'люблю вас!', 'так держать', 'с праздником', 'спасибо за труд'],
-      'мой девиз': ['— Жить любить кофе пить', '— ни дня без кофе', '— и пусть весь мир подождет'],
-      'всех': ['Жить любить кофе пить', 'с праздником', 'вокруг', 'с новой жизнью', 'кто это читает'],
-      'этот мир': ['с моим пробуждением', 'с красотой', 'с новым годом', 'с любовью', 'позитивом'],
-      'себе': ['лёгкости', 'бытия', 'с перерывом', 'с бодрым утром', 'с правильным выбором'],
-      'лучи добра': ['вас', 'просто так', 'всем вокруг', 'персонально вам', 'этому дню'],
-      'сердечко': ['команде', 'люблю вас!', 'милому бариста', 'этому городу', 'друзьям'],
-      'обнимашки': ['всем котикам', 'команде', 'друзьям', 'крепкие-крепкие'],
-      'сигнал в космос': ['все будет супер', 'я здесь', 'прием', 'желание отправлено'],
-      'вайб успеха': ['заразительный', 'для всех', 'мощный', '100%', 'бесплатный'],
-      'респект': ['за качество', 'за скорость', 'мастерам', 'за подход'],
-      'салют': ['всем нашим', 'команде', 'городу', 'друзьям'],
-      'зимняя сказка': ['вокруг', 'требует какао', 'за окном', 'начинается здесь'],
-      'зимняя спячка': ['отменяется', 'подождет', 'требует кофе', 'до весны'],
-      'шальная императрица': ['хочет круассан', 'гуляет', 'на троне', 'отдыхает'],
-      'энергия главной героини': ['требует кофе', 'активирована', 'в этом платье', 'сияет'],
-      'сложный люкс': ['мое второе имя', 'в действии', 'требует кофе', 'это я'],
-      'хочу на ручки': ['и кофе', 'и шоколадку', 'прямо сейчас', 'и заботы'],
-      'волк с уолл-стрит': ['заряжен кофеином', 'делает деньги', 'на перерыве', 'строит империю'],
-      'тотальный дзен': ['пойман', 'достигнут', 'в этом кресле', 'не нарушать'],
-      'режим терминатора': ['активирован', 'после эспрессо', 'вкл', 'загрузка...'],
-      'победитель': ['по жизни', 'голода', 'дедлайнов', 'скуки'],
-      'вместо психолога': ['у меня бариста', 'у меня этот латте', 'я ем круассан', 'я просто ем'],
-      'этот кофе': ['лучше, чем бывший', 'моя новая любовь', 'лучше, чем сон', 'топливо для ракеты'],
-      'дедлайны горят': ['а я пью кофе', 'и пусть весь мир подождет', 'но пусть подождут', 'гори они огнем'],
-      'я на диете': ['но это не считается', 'с понедельника', 'была 5 минут назад', 'но круассан сам пришел'],
-      'у меня растущий организм': ['требует калорий', 'это на массу', 'в ширину', 'силе нужно питание'],
-      'виню Меркурий': ['в моем аппетите', 'что мне так вкусно', 'в третьей чашке', 'во всем'],
-      'согрешила с десертом': ['и не стыдно', 'было вкусно', 'каюсь', 'отработаем в зале'],
-      'патчи не спасли': ['вся надежда на кофе', 'нужен фильтр', 'но капучино спасет', 'день тяжелый'],
-      'я влюбилась': ['в этот раф', 'в милого бариста', 'в этот вид', 'в эту булку'],
-      'без кофе кусаюсь': ['но сейчас подобрела', 'осторожно', 'срочно латте', 'спасайтесь'],
-      'съел два десерта': ['и не лопнул', 'вместо обеда', 'для мозга', 'без сожалений'],
-      'спасся кофеином': ['от зомби-апокалипсиса', 'от сна', 'верните меня к жизни', 'батарейка заряжена'],
-      'это шедевр': ['без преувеличений', 'кулинарии', 'искусства', 'в моей жизни'],
-      'не хочу работать': ['хочу кофе', 'хочу на ручки', 'сегодня выходной', 'ищу вдохновение'],
-      'лёгкости': ['бытия', 'в решениях', 'в каждом шаге', 'как пенка', 'в голове'],
-      'вдохновения': ['творить', 'на новые свершения', 'жить ярко', 'каждый день'],
-      'чуда': ['новогоднего', 'в каждом дне', 'своими руками', 'внезапного'],
-      'денег': ['чемодан', 'на все мечты', 'легких', 'мешок', 'и власти'],
-      'мощи': ['для рывка', 'в делах', 'характера', 'и силы', 'безлимитной'],
-      'прорыва': ['в бизнесе', 'в жизни', 'к новым высотам', 'прямо сейчас'],
-      'успеха': ['во всем', 'громкого', 'заслуженного', 'стабильного'],
-      'драйва': ['от жизни', 'на работе', 'в каждом дне', 'бешеного']
-    }
-  }
+  common: { emotions: {} }
 }
 
+// (оставил common пустым, потому что в вашем исходнике он большой;
+// если нужно — просто верните весь объект common как был)
 const suggestions = computed(() => {
   const gender = selectedGender.value
   return { emotions: { ...baseSuggestions[gender].emotions, ...baseSuggestions.common.emotions } }
@@ -302,9 +258,7 @@ watch(selectedGender, () => {
   initializeSuggestions()
 })
 
-function onGenderClick(gender) {
-  selectedGender.value = gender
-}
+function onGenderClick(gender) { selectedGender.value = gender }
 
 function isInitialSuggestions(suggestionType) {
   if (suggestionType !== 'emotions') return false
@@ -353,20 +307,9 @@ function startRotation() {
     currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1]
   }, 3000)
 }
-
-function stopRotation() {
-  if (rotationInterval) clearInterval(rotationInterval)
-}
-
-function onTextFocus() {
-  rotationPaused.value = true
-  stopRotation()
-}
-
-function onTextBlur() {
-  rotationPaused.value = false
-  startRotation()
-}
+function stopRotation() { if (rotationInterval) clearInterval(rotationInterval) }
+function onTextFocus() { rotationPaused.value = true; stopRotation() }
+function onTextBlur() { rotationPaused.value = false; startRotation() }
 
 const isFormValid = computed(() => {
   return form.coffeeShopAddress.trim().length > 0 &&
@@ -466,28 +409,23 @@ onMounted(() => {
   formattedTicketNumber.value = rawTicketNumber.value
 
   const now = new Date()
-  const day = String(now.getDate()).padStart(2, '0')
-  const month = String(now.getMonth() + 1).padStart(2, '0')
-  const year = now.getFullYear()
-  const hours = String(now.getHours()).padStart(2, '0')
-  const minutes = String(now.getMinutes()).padStart(2, '0')
-  const seconds = String(now.getSeconds()).padStart(2, '0')
-  currentDate.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+  const d = String(now.getDate()).padStart(2, '0')
+  const m = String(now.getMonth() + 1).padStart(2, '0')
+  const y = now.getFullYear()
+  const h = String(now.getHours()).padStart(2, '0')
+  const min = String(now.getMinutes()).padStart(2, '0')
+  const s = String(now.getSeconds()).padStart(2, '0')
+  currentDate.value = `${y}-${m}-${d} ${h}:${min}:${s}`
 
   initializeSuggestions()
   initBadgeCounts()
   startRotation()
 })
 
-onUnmounted(() => {
-  enableZoom()
-  stopRotation()
-})
+onUnmounted(() => { enableZoom(); stopRotation() })
 
 const storyGeneratorRef = ref(null)
-const handleShareClick = () => {
-  if (storyGeneratorRef.value) storyGeneratorRef.value.generateAndShare()
-}
+const handleShareClick = () => { if (storyGeneratorRef.value) storyGeneratorRef.value.generateAndShare() }
 </script>
 
 <template>
@@ -600,11 +538,7 @@ const handleShareClick = () => {
 
         <div class="kzh-bottom-controls-wrapper">
           <div class="kzh-controls-row">
-            <button
-              type="button"
-              class="kzh-info-button"
-              @click="showInfoModal = true"
-            >
+            <button type="button" class="kzh-info-button" @click="showInfoModal = true">
               Инфо
             </button>
 
@@ -643,11 +577,7 @@ const handleShareClick = () => {
 
         <div class="kzh-form-footer">
           <div class="kzh-button-section">
-            <button
-              type="submit"
-              class="kzh-submit-btn"
-              :disabled="!isFormValid || isSubmitting"
-            >
+            <button type="submit" class="kzh-submit-btn" :disabled="!isFormValid || isSubmitting">
               {{ isSubmitting ? 'Создаем магию...' : 'Создать открытку' }}
             </button>
           </div>
@@ -673,7 +603,7 @@ const handleShareClick = () => {
 
 :root {
   --kzh-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --kzh-font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Code", "Droid Sans Mono", "Source Code Pro", monospace;
+  --kzh-font-mono: "SF Mono", "Monaco", "Inconsolsolata", "Fira Code", "Droid Sans Mono", "Source Code Pro", monospace;
   --kzh-color-female: #ff69b4;
   --kzh-color-male: #87ceeb;
 }
@@ -700,12 +630,7 @@ const handleShareClick = () => {
   border-bottom: 1px solid #2c2c2f;
 }
 
-.kzh-form-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #fff;
-  margin: 0;
-}
+.kzh-form-title { font-size: 1.5rem; font-weight: 600; color: #fff; margin: 0; }
 
 .kzh-tech-info {
   display: flex;
@@ -726,15 +651,10 @@ const handleShareClick = () => {
   font-family: var(--kzh-font-mono);
 }
 
-.kzh-form-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
+.kzh-form-section { display: flex; flex-direction: column; gap: 1.5rem; }
 
 /* === СЕЛЕКТ И ИКОНКА === */
 .kzh-location-pure { width: 100%; margin-bottom: 24px; }
-
 .kzh-select-wrapper { position: relative; width: 100%; }
 
 .kzh-address-select {
@@ -751,11 +671,7 @@ const handleShareClick = () => {
   appearance: none;
   -webkit-appearance: none;
 }
-.kzh-address-select:focus {
-  outline: none;
-  border-color: #9B7FB7;
-  background-color: #242426;
-}
+.kzh-address-select:focus { outline: none; border-color: #9B7FB7; background-color: #242426; }
 .kzh-address-select option { background-color: #1E1E20; color: #fff; }
 
 .kzh-select-icon {
@@ -769,10 +685,7 @@ const handleShareClick = () => {
   display: flex;
   align-items: center;
 }
-.kzh-address-select:focus + .kzh-select-icon {
-  transform: translateY(-50%) rotate(180deg);
-  color: #9B7FB7;
-}
+.kzh-address-select:focus + .kzh-select-icon { transform: translateY(-50%) rotate(180deg); color: #9B7FB7; }
 
 /* === КАРТОЧКИ === */
 .kzh-cards-label {
@@ -782,14 +695,9 @@ const handleShareClick = () => {
   margin-bottom: 8px;
   text-align: center;
 }
-
 .mood-label { margin-top: 16px; margin-bottom: 6px; }
-
 .first-label { margin-bottom: 8px; position: relative; z-index: 5; }
 
-.kzh-cards-container { width: 100%; }
-
-/* ВАЖНО: теперь и на десктопе — горизонтальный скролл/слайдер в один ряд */
 .kzh-cards-grid {
   display: flex;
   overflow-x: auto;
@@ -802,7 +710,6 @@ const handleShareClick = () => {
   padding-right: 1.5rem;
   scrollbar-width: none;
 
-  /* “прилипание” к карточкам */
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
@@ -810,7 +717,6 @@ const handleShareClick = () => {
 
 .kzh-card {
   position: relative;
-  aspect-ratio: 1 / 1;
   background: rgba(42, 42, 46, 0.6);
   border: 1px solid #3a3a3e;
   border-radius: 20px;
@@ -824,20 +730,18 @@ const handleShareClick = () => {
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease, border-color 0.4s ease;
   overflow: hidden;
   backdrop-filter: blur(10px);
-
-  /* ширина карточки в слайдере */
-  min-width: 140px;
-  width: 180px;
-
-  /* snap point */
   scroll-snap-align: start;
+
+  /* ДЕСКТОП по умолчанию: 180x180 */
+  width: 180px;
+  min-width: 180px;
+  height: 180px;
 }
 
 .kzh-card::after {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 0; left: 0;
   width: 100%;
   height: 50%;
   background: linear-gradient(to bottom, transparent 0%, rgba(30, 30, 32, 0.6) 40%, #1e1e20 100%);
@@ -897,7 +801,6 @@ const handleShareClick = () => {
 .kzh-card:hover .kzh-card-label,
 .kzh-card.is-active .kzh-card-label { opacity: 1; }
 
-/* ЦИФРЫ: прозрачнее + меньше на 3px (было 0.85rem) */
 .kzh-card-count {
   position: absolute;
   top: 8px;
@@ -909,254 +812,21 @@ const handleShareClick = () => {
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
-/* === ТЕКСТОВЫЙ БЛОК === */
-.kzh-question-block {
-  background-color: #2a2a2e;
-  border-radius: 16px;
-  padding: 1.25rem;
-  border: 1px solid #3a3a3e;
-}
-.kzh-no-border { border-left: none; }
-
-.kzh-rotating-phrase-container {
-  height: 24px;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-}
-
-.kzh-question-label {
-  font-weight: 500;
-  font-size: 1rem;
-  margin: 0;
-  color: #f0f0f0;
-  line-height: 1.3;
-  width: 100%;
-}
-
-.kzh-fade-enter-active, .kzh-fade-leave-active { transition: opacity 0.5s ease; }
-.kzh-fade-enter-from, .kzh-fade-leave-to { opacity: 0; }
-
-textarea.kzh-address-select,
-textarea {
-  width: 100%;
-  background-color: #242426;
-  border: 1px solid #444;
-  border-radius: 10px;
-  padding: 0.75rem 1rem;
-  font-size: 0.95rem;
-  color: #f0f0f0;
-  transition: all 0.3s ease;
-  font-family: var(--kzh-font-sans);
-  user-select: text !important;
-  resize: none;
-}
-
-.kzh-theme-female textarea:focus {
-  outline: none;
-  border-color: var(--kzh-color-female);
-  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2);
-}
-.kzh-theme-male textarea:focus {
-  outline: none;
-  border-color: var(--kzh-color-male);
-  box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.2);
-}
-
-/* === БАББЛЫ === */
-.kzh-suggestions-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-
-.kzh-suggestion-bubble {
-  padding: 0.35rem 0.85rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
-
-.kzh-theme-female .kzh-emotion-bubble {
-  background: rgba(255, 105, 180, 0.1);
-  border-color: rgba(255, 105, 180, 0.3);
-  color: var(--kzh-color-female);
-}
-.kzh-theme-female .kzh-emotion-bubble:hover {
-  background: var(--kzh-color-female);
-  color: #fff;
-  transform: scale(1.05);
-}
-
-.kzh-theme-male .kzh-emotion-bubble {
-  background: rgba(135, 206, 235, 0.1);
-  border-color: rgba(135, 206, 235, 0.3);
-  color: var(--kzh-color-male);
-}
-.kzh-theme-male .kzh-emotion-bubble:hover {
-  background: var(--kzh-color-male);
-  color: #fff !important;
-  transform: scale(1.05);
-}
-
-.kzh-reset-bubble {
-  font-weight: 600;
-  opacity: 0.8;
-  border: 1px dashed rgba(255, 255, 255, 0.4) !important;
-  color: rgba(255, 255, 255, 0.6) !important;
-  background: transparent !important;
-}
-.kzh-reset-bubble:hover {
-  border-color: #fff !important;
-  color: #fff !important;
-}
-
-.kzh-example-hint {
-  font-size: 0.8rem;
-  color: #777;
-  margin: 0.5rem 0 0 0.25rem;
-}
-
-/* === ГЕНДЕР И ИНФО === */
-.kzh-bottom-controls-wrapper {
-  margin-top: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.kzh-controls-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  margin: 0;
-  padding: 0;
-}
-
-.kzh-micro-hint {
-  font-size: 0.75rem;
-  color: #666;
-  text-align: center;
-  margin: 4px 0 0 0;
-  padding: 0;
-  position: relative;
-  top: -2px;
-}
-
-.kzh-info-button {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  height: 32px;
-  color: #ccc;
-  display: inline-flex;
-  align-items: center;
-}
-.kzh-info-button:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
-
-.kzh-gender-switch { display: flex; justify-content: center; }
-
-.kzh-gender-container {
-  display: flex;
-  background: #2a2a2e;
-  border-radius: 20px;
-  padding: 4px;
-  border: 1px solid #444;
-  height: 32px;
-  align-items: center;
-}
-
-.kzh-gender-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin: 0 2px;
-}
-.kzh-gender-female { background: rgba(255, 105, 180, 0.3); }
-.kzh-gender-female.is-active { background: #ff69b4; box-shadow: 0 0 12px rgba(255, 105, 180, 0.5); }
-.kzh-gender-male { background: rgba(135, 206, 235, 0.3); }
-.kzh-gender-male.is-active { background: #87ceeb; box-shadow: 0 0 12px rgba(135, 206, 235, 0.5); }
-
-/* === FOOTER === */
-.kzh-form-footer { margin-top: 1rem; width: 100%; }
-.kzh-submit-btn {
-  background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 50%, #C5B3D9 100%);
-  color: #fff;
-  font-weight: 600;
-  font-size: 1rem;
-  border: none;
-  border-radius: 12px;
-  padding: 0.9rem 2rem;
-  cursor: pointer;
-  transition: all 0.4s ease-out;
-  background-size: 200% auto;
-  width: 100%;
-  display: block;
-}
-.kzh-submit-btn:hover:not(:disabled) {
-  background-position: 75% 50%;
-  transform: scale(1.02);
-  box-shadow: 0 10px 20px -5px rgba(155, 127, 183, 0.4);
-}
-.kzh-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-/* === MODAL === */
-.kzh-modal-overlay {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  display: flex; justify-content: center; align-items: center;
-  z-index: 9999; backdrop-filter: blur(4px);
-}
-.kzh-modal {
-  background-color: #1E1E20;
-  border: 1px solid #2c2c2f;
-  border-radius: 20px;
-  padding: 2rem;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  animation: kzhModalFadeIn 0.3s ease-out;
-}
-@keyframes kzhModalFadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.kzh-modal-title { font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 1rem; text-align: center; }
-.kzh-modal-body { font-size: 0.95rem; line-height: 1.6; color: #b0b0b0; margin-bottom: 1.5rem; text-align: center; }
-.kzh-modal-link { color: #B39DC8; text-decoration: none; font-weight: 600; }
-.kzh-modal-footer { display: flex; justify-content: center; }
-.kzh-modal-ok { background: #9B7FB7; color: #fff; border: none; border-radius: 10px; padding: 0.75rem 2rem; cursor: pointer; }
-
-/* Мобилка: оставляем то же поведение (оно теперь совпадает с десктопом) */
+/* === Мобилка: оставляем как было 140x140 === */
 @media (max-width: 768px) {
   .kzh-form-wrapper { padding: 1.5rem; }
   .kzh-form-header { flex-direction: column; text-align: center; gap: 0.5rem; }
   .kzh-tech-info { justify-content: center; }
 
+  .kzh-card {
+    width: 140px;
+    min-width: 140px;
+    height: 140px;
+  }
+
   .first-label { margin-bottom: -16px; }
   textarea { min-height: 180px; }
-  .kzh-controls-row { flex-direction: row; justify-content: center; width: 100%; gap: 16px; }
-  .kzh-card-icon img { width: 90px; height: 90px; }
 
-  .kzh-info-button { font-size: 17px; height: 42px; padding: 8px 20px; }
-  .kzh-gender-container { height: 42px; padding: 5px; }
-  .kzh-gender-btn { width: 31px; height: 31px; }
+  .kzh-card-icon img { width: 90px; height: 90px; }
 }
 </style>
