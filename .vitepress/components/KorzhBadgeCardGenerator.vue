@@ -3,7 +3,7 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
-    >
+    />
 
     <div class="story-wrapper-hidden">
       <div id="story-capture-area" class="story-template">
@@ -23,7 +23,7 @@
           <!-- Header -->
           <div class="grid-header">
             <div class="header-text">
-              Вы превратили этот момент в<br>уникальное воспоминание
+              Вы превратили этот момент в<br />уникальное воспоминание
             </div>
           </div>
 
@@ -64,10 +64,11 @@
                     </div>
                   </div>
 
+                  <!-- Реальный отступ от бейджа до низа карточки (уменьшен в 2 раза и больше) -->
                   <div class="card-bottom-spacer"></div>
                 </div>
 
-                <!-- Лента поверх -->
+                <!-- Лента поверх бордера -->
                 <img
                   class="corner-tag-img"
                   src="/img/korzh/badge/corner-tag-img.png"
@@ -87,7 +88,7 @@
                     </div>
                   </div>
 
-                  <!-- хвостик справа сверху (вылет наружу) -->
+                  <!-- ХВОСТИК (справа сверху) -->
                   <svg
                     class="message-tail-top"
                     width="56"
@@ -96,11 +97,11 @@
                     fill="none"
                     aria-hidden="true"
                   >
-                    <path d="M2 40C2 40 14 22 54 6V40H2Z" fill="rgba(30, 30, 35, 0.55)"/>
+                    <path d="M2 40C2 40 14 22 54 6V40H2Z" fill="rgba(30, 30, 35, 0.55)" />
                   </svg>
                 </div>
 
-                <!-- аватар прижат к правому краю контейнера 860px -->
+                <!-- Аватар прижат к правому краю gift-контейнера -->
                 <div class="message-avatar-top">{{ sAvatar }}</div>
               </div>
             </div>
@@ -241,6 +242,39 @@ function formatText(raw) {
   return text
 }
 
+function toAccusativeGiftName(name) {
+  const s = String(name || '').trim()
+  if (!s) return s
+
+  const words = s.split(/\s+/)
+  let last = words.pop()
+
+  const low = last.toLowerCase()
+
+  // частые окончания (очень практичная эвристика для названий подарков)
+  if (low.endsWith('ия')) last = last.slice(0, -2) + 'ию'
+  else if (low.endsWith('а')) last = last.slice(0, -1) + 'у'
+  else if (low.endsWith('я')) last = last.slice(0, -1) + 'ю'
+  // ь/й/согласные/о/е обычно без изменений для “подарков”
+  words.push(last)
+  return words.join(' ')
+}
+
+function applyGiftDeclensionInText(text, giftLabel) {
+  const t = String(text || '')
+  const gl = String(giftLabel || '').trim()
+  if (!t || !gl) return t
+
+  // Ищем конструкцию "Дарю: <...>" и заменяем именно "подарок" на винительный
+  // Пример: "Дарю: Сигналка." -> "Дарю: Сигналку."
+  const acc = toAccusativeGiftName(gl)
+
+  return t.replace(/(Дарю:\s*)([^.\n!?]+)([.!?])?/i, (m, p1, p2, p3) => {
+    const end = p3 || '.'
+    return `${p1}${acc}${end}`
+  })
+}
+
 function makeSnapshot() {
   sTicketRaw.value = props.ticket || ''
   sDateRaw.value = props.date || ''
@@ -254,8 +288,11 @@ function makeSnapshot() {
   sBadgeImageRaw.value = img || DEFAULT_BADGE.image
 
   sAvatar.value = smileys[Math.floor(Math.random() * smileys.length)]
-  sTextFull.value = formatText(sAllTextRaw.value)
-  sTextDisplay.value = sTextFull.value
+
+  const baseText = formatText(sAllTextRaw.value)
+  const fixedText = applyGiftDeclensionInText(baseText, sBadgeLabelRaw.value)
+  sTextFull.value = fixedText
+  sTextDisplay.value = fixedText
 }
 
 watch(customBgImage, () => {
@@ -300,25 +337,15 @@ const bgClass = computed(() => {
   return 'bg-default'
 })
 
-function trimToWordBoundary(text) {
-  const t = String(text || '').replace(/\s+/g, ' ').trim()
-  if (!t) return ''
-  return t.replace(/[,\s.;:!?]+$/g, '').trim()
-}
-
-function findLastWordCut(str) {
-  // режем на границе слова: ищем последний пробел
-  const s = trimToWordBoundary(str)
-  const idx = s.lastIndexOf(' ')
-  if (idx <= 0) return s
-  return s.slice(0, idx).trim()
+function normalizeSpaces(text) {
+  return String(text || '').replace(/\s+/g, ' ').trim()
 }
 
 async function fitMessageTextToBox() {
   await nextTick()
   const wrap = messageWrapRef.value
   const el = messageTextRef.value
-  const full = sTextFull.value || ''
+  const full = normalizeSpaces(sTextFull.value || '')
   if (!wrap || !el) return
 
   if (!full) {
@@ -326,31 +353,39 @@ async function fitMessageTextToBox() {
     return
   }
 
-  const SAFE_BOTTOM_PX = 26
-  const maxH = Math.max(0, wrap.clientHeight - SAFE_BOTTOM_PX)
-  const fits = () => el.scrollHeight <= maxH + 1
-
+  // 1) Сначала проверяем "влезает ли полностью" (без запасов) — если да, не режем вообще
   el.textContent = full
-  if (fits()) {
+  const fitsFully = () => el.scrollHeight <= wrap.clientHeight + 1
+  if (fitsFully()) {
     sTextDisplay.value = full
     return
   }
 
-  // бинарный поиск по символам, но финал режем по словам
-  let lo = 0
-  let hi = full.length
+  // 2) Если не влезло, режем с запасом снизу, чтобы было "немного воздуха"
+  const SAFE_BOTTOM_PX = 22
+  const maxH = Math.max(0, wrap.clientHeight - SAFE_BOTTOM_PX)
+  const fits = () => el.scrollHeight <= maxH + 1
+
+  const words = full.split(/\s+/).filter(Boolean)
+  if (words.length <= 1) {
+    sTextDisplay.value = full + '...'
+    el.textContent = sTextDisplay.value
+    return
+  }
+
+  // бинарный поиск по КОЛИЧЕСТВУ СЛОВ
+  let lo = 1
+  let hi = words.length
 
   while (lo < hi) {
     const mid = Math.ceil((lo + hi) / 2)
-    const base = findLastWordCut(full.slice(0, mid))
-    const candidate = (base ? base : trimToWordBoundary(full.slice(0, mid))).trimEnd() + '...'
+    const candidate = words.slice(0, mid).join(' ') + '...'
     el.textContent = candidate
     if (fits()) lo = mid
     else hi = mid - 1
   }
 
-  const baseFinal = findLastWordCut(full.slice(0, Math.max(lo, 0)))
-  const finalText = (baseFinal || trimToWordBoundary(full.slice(0, 24))) + '...'
+  const finalText = words.slice(0, Math.max(lo, 1)).join(' ') + '...'
   sTextDisplay.value = finalText
   el.textContent = finalText
 }
@@ -416,7 +451,9 @@ const generateImageInternal = async () => {
     })
 
     generatedImageUrl.value = canvas.toDataURL('image/png')
-    canvas.toBlob((b) => { generatedBlob.value = b }, 'image/png')
+    canvas.toBlob((b) => {
+      generatedBlob.value = b
+    }, 'image/png')
   } catch (e) {
     console.error('Error generating image:', e)
     alert('Ошибка генерации.')
@@ -473,7 +510,9 @@ const downloadFile = () => {
   document.body.removeChild(link)
 }
 
-const closeModal = () => { showModal.value = false }
+const closeModal = () => {
+  showModal.value = false
+}
 
 defineExpose({ generateAndShare })
 </script>
@@ -502,7 +541,6 @@ defineExpose({ generateAndShare })
   transform: scale(1.05);
 }
 .story-bg-image.bg-default { background-image: url('https://cffx.ru/widget/rest-and-coffee/korzh_widget_bg.jpg'); }
-
 .story-noise {
   position: absolute; inset: 0; z-index: 2;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
@@ -580,29 +618,31 @@ defineExpose({ generateAndShare })
   object-fit: contain;
 }
 
+/* location */
 .card-inner-location {
   position: absolute;
-  top: 28px;
-  left: 45px;
+  top: 40px;   /* одинаковое расстояние сверху */
+  left: 40px;  /* одинаковое расстояние слева */
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
   z-index: 30;
 }
 .loc-icon {
-  width: 100px;   /* 5x */
-  height: 100px;  /* 5x */
-  border-radius: 16px;
+  width: 120px;   /* +20% от 100 */
+  height: 120px;  /* +20% от 100 */
+  border-radius: 28px; /* сильнее скругление */
   object-fit: cover;
   opacity: 0.95;
 }
 .loc-text {
-  font-size: 30px;
-  font-weight: 600;
+  font-size: 36px; /* ещё больше */
+  font-weight: 700;
   color: #fff;
   text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
+/* gift image */
 .gift-image-wrapper {
   position: relative;
   width: 100%;
@@ -626,9 +666,10 @@ defineExpose({ generateAndShare })
   filter: drop-shadow(0 20px 40px rgba(0,0,0,0.35));
 }
 
+/* gift info */
 .gift-info-block {
   width: 100%;
-  padding: 0 50px 0 50px; /* меньше “внутреннего” снизу */
+  padding: 0 50px 0 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -641,12 +682,13 @@ defineExpose({ generateAndShare })
   font-weight: 700;
   color: rgba(214, 186, 255, 0.9);
   text-shadow: 0 2px 18px rgba(155, 127, 183, 0.55);
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   line-height: 1.1;
 }
 
+/* badge */
 .meta-gradient-badge {
-  height: 70px;
+  height: 72px;
   padding: 0 36px;
   border-radius: 999px;
   background: linear-gradient(90deg, #9B7FB7 0%, #B39DC8 100%);
@@ -655,14 +697,19 @@ defineExpose({ generateAndShare })
   align-items: center;
   justify-content: center;
 }
-.mb-content { display: flex; align-items: center; justify-content: center; gap: 14px; transform: translateY(-1px); }
+.mb-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
 .mb-num, .mb-date, .mb-icon { line-height: 1; display: inline-flex; align-items: center; }
 .mb-num { font-size: 28px; font-weight: 800; color: #fff; }
 .mb-date { font-size: 28px; font-weight: 600; color: #fff; }
-.mb-icon { font-size: 26px; }
+.mb-icon { font-size: 26px; transform: translateY(-2px); } /* лечим “сползание” эмодзи */
 
-/* ключ: уменьшаем дистанцию бейджа до низа в 2 раза */
-.card-bottom-spacer { height: 14px; width: 100%; }
+/* ВОТ ОН: реальный отступ от нижнего края бейджа до края карточки */
+.card-bottom-spacer { height: 8px; width: 100%; }
 
 /* message */
 .message-row {
@@ -673,13 +720,11 @@ defineExpose({ generateAndShare })
   gap: 14px;
 }
 
-/* bubble растягивается, аватар справа фиксированный и прижат к правому краю */
 .message-bubble {
   position: relative;
   flex: 1;
   min-width: 0;
 
-  /* высота по контенту */
   height: auto;
   max-height: 405px;
 
@@ -689,14 +734,16 @@ defineExpose({ generateAndShare })
   padding: 28px 34px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   border: 1px solid rgba(255,255,255,0.30);
-  overflow: hidden;
+
+  overflow: visible; /* важно: иначе хвостик будет резаться */
 }
 
 .message-body-wrap {
   width: 100%;
-  max-height: 349px; /* чтобы хвост/паддинги не конфликтовали */
+  max-height: 349px;
   overflow: hidden;
 }
+
 .message-body {
   font-size: 34px;
   line-height: 1.38;
@@ -707,12 +754,11 @@ defineExpose({ generateAndShare })
   word-break: break-word;
 }
 
-/* хвостик сверху справа — гарантированно виден */
 .message-tail-top {
   position: absolute;
   top: 10px;
-  right: -26px;
-  z-index: 20;
+  right: -30px;
+  z-index: 50;
   pointer-events: none;
 }
 
@@ -728,9 +774,10 @@ defineExpose({ generateAndShare })
   font-size: 36px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.35);
   margin-top: 8px;
+  margin-left: auto; /* прижать к правому краю контейнера */
 }
 
-/* modal styles (без изменений) */
+/* modal (как было) */
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.92);
