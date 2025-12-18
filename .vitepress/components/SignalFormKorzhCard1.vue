@@ -135,7 +135,7 @@ function getDayOfYearUTC() {
 
 function initBadgeCounts() {
   const day = getDayOfYearUTC();
-  const startDay = 351; 
+  const startDay = 352; 
   const daysPassed = Math.max(0, day - startDay);
   const growthStep = Math.floor(Math.random() * 4) + 4; // 4-7
   const growthBase = daysPassed * growthStep;
@@ -153,7 +153,7 @@ function initBadgeCounts() {
   }
 
   badgeCounts.badge1 = growthBase + timeBonus + 4 + (userClicks.badge1 || 0);
-  badgeCounts.badge2 = growthBase + timeBonus + 1 + (userClicks.badge2 || 0);
+  badgeCounts.badge2 = growthBase + timeBonus + 12 + (userClicks.badge2 || 0);
   badgeCounts.badge3 = growthBase + timeBonus + 7 + (userClicks.badge3 || 0);
   badgeCounts.badge4 = growthBase + timeBonus + 5 + (userClicks.badge4 || 0);
   badgeCounts.badge5 = growthBase + timeBonus + 2 + (userClicks.badge5 || 0);
@@ -492,7 +492,7 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
                type="text" 
                v-model="form.userName" 
                class="kzh-address-select" 
-               placeholder="Ваше имя (необязательно)"  
+               placeholder="Ваше Имя (от кого подарок)"  
              />
           </div>
         </div>
