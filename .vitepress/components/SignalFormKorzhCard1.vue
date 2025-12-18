@@ -333,7 +333,7 @@ async function submitForm() {
   }
 
   // ВАЖНО: Укажите ваш новый URL Web App
-  const APIENDPOINT = 'https://script.google.com/macros/s/AKfycbyO-bEv334omRz4i9Dsa4QRMQqx5Wj-67nIbEtLT6suK6MJu7myE1gpjGl7Gc7w0IeeNg/exec'
+  const APIENDPOINT = 'https://script.google.com/macros/s/AKfycbwV-WN52hpuPxCBAIdP9ltrOQ_wYcKFI0u-x7VMFtORdytgVVKHVtMOLt0o-zME2uNY0A/exec'
 
   const formData = new FormData()
   formData.append('referer', window.location.origin)
