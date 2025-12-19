@@ -76,6 +76,8 @@ head:
   <strong>Каждая чашка кофе</strong> делает <br class="mobile-break">Вашу любимую кофейню еще лучше.
 </p>
 
+</div>
+
 <style>
 /* По умолчанию скрываем тег <br> с классом .mobile-break */
 .mobile-break {
