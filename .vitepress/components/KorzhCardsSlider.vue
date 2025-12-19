@@ -3,20 +3,20 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 // Карточки (14 штук, с placeholder изображениями; замените пути на реальные если нужно)
 const cardTypes = ref([
-  { id: 'card1', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card2', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card3', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card4', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card5', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card6', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card7', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card8', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card9', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card10', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card11', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card12', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card13', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'card14', image: '/img/korzh/badge/korzh-cffx-cup.png' }
+  { id: 'card1', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card2', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card3', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card4', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card5', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card6', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card7', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card8', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card9', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card10', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card11', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card12', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card13', image: '/img/korzh/usercards/signal-267.png' },
+  { id: 'card14', image: '/img/korzh/usercards/signal-267.png' }
 ])
 
 // Зум для мобильки
