@@ -13,12 +13,12 @@
 
           <div class="banner-title">
             <span class="title-desktop">
-              Долгое ожидание? <br>
+              Есть проблема? <br>
               Персональный разбор <br>
               и решение за 24 часа.
             </span>
             <span class="title-mobile">
-              Долгое ожидание? <br>
+              Есть проблема? <br>
               Персональный разбор <br>
               и решение за 24 часа.
             </span>
