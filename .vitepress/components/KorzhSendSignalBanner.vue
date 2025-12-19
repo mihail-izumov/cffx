@@ -9,7 +9,7 @@
 
       <div class="banner-overlay">
         <div class="banner-inner">
-          <div class="banner-intro">ТОМУ – КТО РЕШАЕТ</div>
+          <div class="banner-intro">СИГНАЛ – ТОМУ КТО РЕШАЕТ</div>
 
           <div class="banner-title">
             <span class="title-desktop">
