@@ -3,20 +3,20 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 // Карточки (14 штук, с placeholder изображениями; замените пути на реальные если нужно)
 const cardTypes = ref([
-  { id: 'card1', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card2', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card3', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card4', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card5', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card6', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card7', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card8', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card9', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card10', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card11', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card12', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card13', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card14', image: '/img/korzh/usercards/signal-267.png' }
+  { id: ‘card1’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card2’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card3’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card4’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card5’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card6’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card7’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card8’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card9’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card10’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card11’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card12’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card13’, image: ‘/img/korzh/usercards/signal-267.png’ },
+  { id: ‘card14’, image: ‘/img/korzh/usercards/signal-267.png’ }
 ])
 
 // Зум для мобильки
@@ -92,11 +92,13 @@ onUnmounted(() => {
   margin-right: -1.5rem;
   padding-right: 1.5rem;
   scrollbar-width: none;
+  scroll-snap-type: x proximity;
 }
 .kzh-cards-grid::-webkit-scrollbar { display: none; }
 
 .kzh-card {
   position: relative;
+  flex: 0 0 300px;
   width: 300px;
   height: 530px;
   background-image: 
@@ -106,11 +108,16 @@ onUnmounted(() => {
   border: 1px solid transparent; /* Прозрачный бордер для занятия места */
   border-radius: 20px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   backdrop-filter: blur(10px);
+  scroll-snap-align: start;
+}
+
+.kzh-card-icon {
+  width: 100%;
+  height: 100%;
 }
 
 .kzh-card-icon img {
@@ -124,6 +131,7 @@ onUnmounted(() => {
 /* Медиа-запрос для мобильки */
 @media (max-width: 768px) {
   .kzh-card {
+    flex: 0 0 200px;
     width: 200px;
     height: 353px;
   }
@@ -141,11 +149,13 @@ onUnmounted(() => {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(10px);
 }
 
 .kzh-zoomed-image {
   max-width: 90%;
   max-height: 90%;
   object-fit: contain;
+  border-radius: 20px;
 }
 </style>
