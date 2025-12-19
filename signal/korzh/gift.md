@@ -70,10 +70,10 @@ head:
 
 <div align="center">
 
-<h1 class="responsive-heading-signal-industries">Превратите этот момент <br class="mobile-break">в уникальное воспоминание</h1>
+<h1 class="responsive-heading-signal-industries">Отправьте подарок <br class="mobile-break">и несколько теплых слов</h1>
 
 <p>
-  <strong>Отправьте подарок и несколько теплых слов. </strong> Команде Коржа будет приятно.
+  <strong>Превратите этот момент в уникальное воспоминание </strong>
 </p>
 
 </div>
