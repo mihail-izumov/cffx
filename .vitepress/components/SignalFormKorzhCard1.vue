@@ -57,17 +57,17 @@ const genderThemeClass = computed(() => {
 
 // Карточки
 const cardTypes = [
-  { id: 'badge1', label: 'Сигналка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge2', label: 'Кикус', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge3', label: 'Котик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge4', label: 'Сердечко', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge5', label: 'Звёздочка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge6', label: 'Кофейка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge7', label: 'Улыбочка', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge8', label: 'Подарочек', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge9', label: 'Сюрпризик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge10', label: 'Радостик', image: '/img/korzh/badge/korzh-cffx-cup.png' },
-  { id: 'badge11', label: 'Вдохновик', image: '/img/korzh/badge/korzh-cffx-cup.png' }
+  { id: 'badge1', label: 'Сигналка', image: '/img/korzh/gifts/signalka-gift.png' },
+  { id: 'badge2', label: 'Бонжур', image: '/img/korzh/gifts/bonjour-gift.png' },
+  { id: 'badge3', label: 'Нян Кот', image: '/img/korzh/gifts/nyancat-gift.png' },
+  { id: 'badge4', label: 'Сладкий Кусь', image: '/img/korzh/gifts/sladkiykus-gift.png' },
+  { id: 'badge5', label: 'Холодок', image: '/img/korzh/gifts/holodok-gift.png' },
+  { id: 'badge6', label: 'Кальцифер', image: '/img/korzh/gifts/calcifer-gift.png' },
+  { id: 'badge7', label: 'Ход королевы', image: '/img/korzh/gifts/queensmove-gift.png' },
+  { id: 'badge8', label: 'Леденцовая Ель', image: '/img/korzh/gifts/candytree-gift.png' },
+  { id: 'badge9', label: 'Почита-заряд', image: '/img/korzh/gifts/pochitazaryad-gift.png' },
+  { id: 'badge10', label: 'Сердечный Дроп', image: '/img/korzh/gifts/heartdrop-gift.png' },
+  { id: 'badge11', label: 'Вдохновик', image: '/img/korzh/gifts/korzh-cffx-cup.png' }
 ]
 
 // Трекинг тачей
