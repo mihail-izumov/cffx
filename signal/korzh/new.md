@@ -68,7 +68,7 @@ head:
 
 <br>
 
-<h1 class="responsive-heading-signal-industries">Отправьте Сигнал <br class="mobile-break">в Корж</h1>
+<h1 class="responsive-heading-signal-industries">Отправьте Сигнал <br>в Корж</h1>
 
 <p>
   <strong>Поделитесь моментом и сделайте <br class="mobile-break"> вашу любимую кофейню еще лучше сегодня.</strong>
