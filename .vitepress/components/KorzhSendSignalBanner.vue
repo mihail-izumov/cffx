@@ -9,16 +9,18 @@
 
       <div class="banner-overlay">
         <div class="banner-inner">
-          <div class="banner-intro">НОВАЯ КОФЕЙНЯ</div>
+          <div class="banner-intro">ТОМУ – КТО РЕШАЕТ</div>
 
           <div class="banner-title">
             <span class="title-desktop">
-              Где начинается Ваша<br>
-              кофейня Корж
+              Долгое ожидание? Не доложили сырник? <br>
+              Отправьте Сигнал. Получите <br>
+              персональный разбор и решение.
             </span>
             <span class="title-mobile">
-              Где начинается Ваша<br>
-              кофейня Корж
+              Долгое ожидание? Не доложили сырник? <br>
+              Отправьте Сигнал. Получите <br>
+              персональный разбор и решение.
             </span>
           </div>
 
@@ -43,11 +45,11 @@ import { useRouter } from 'vitepress'
 
 const props = defineProps({
   imageSrc: { type: String, default: '/img/korzh/korzh_send_signal_ban.png' },
-  imageAlt: { type: String, default: 'Новая кофейня Корж' },
-  title: { type: String, default: 'Еще больше возможностей быть ближе к кофейне, которую вы любите.' },
+  imageAlt: { type: String, default: 'Ваш Сигнал – тому кто решает' },
+  title: { type: String, default: 'Отправьте Сигнал в Корж' },
   subtitle: { type: String, default: '' },
   buttonText: { type: String, default: 'Стать инвестором' },
-  buttonLink: { type: String, default: '/signal/korzh/invest' }
+  buttonLink: { type: String, default: '/signal/korzh/new' }
 })
 
 const emit = defineEmits(['button-click'])
