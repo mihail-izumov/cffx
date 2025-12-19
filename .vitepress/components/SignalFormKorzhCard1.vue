@@ -38,7 +38,7 @@ const phrasesForQuestion1 = [
   "Что чувствуете сейчас?",
   "Какое настроение?",
   "Круассан был хрустящий?",
-  "Понравился Апельсиновый раф",
+  "Понравился Апельсиновый раф?",
   "Какой момент запомнился?",
   "Понравился бариста?",
   "Что передать в Корж?",
@@ -109,11 +109,8 @@ function toggleCard(id) {
 
   // 2. Теперь смотрим: это клик по активному бейджу или по новому?
   if (form.badge === id) {
-    // Кликнули по активному -> Снимаем выделение
     form.badge = '';
-    // Текст уже удален выше (в блоке if (oldLabel)), так что здесь просто выходим
   } else {
-    // Кликнули по новому -> Выбираем его и добавляем текст
     form.badge = id;
     const newPhrase = `Дарю: ${newLabel} `;
     form.emotionalRelease = newPhrase + form.emotionalRelease;
@@ -542,7 +539,7 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
             @focus="onTextFocus"
             @blur="onTextBlur"
             rows="3"
-            placeholder="Нажмите на слова ниже или пишите сами..."
+            placeholder="Или напишите своими словами ..."
           ></textarea>
 
           <div class="kzh-suggestions-container">
