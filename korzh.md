@@ -10,8 +10,6 @@ head:
       content: "https://cffx.ru/korzh_og_card.jpg"
 ---
 
-</div>
-
 <div align="center">
 
 <span class="korzh-badge">Где начинается ваша кофейня</span> <br>
