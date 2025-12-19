@@ -433,7 +433,7 @@ function enableZoom() { if (metaViewport) { metaViewport.content = 'width=device
 
 onMounted(() => {
   disableZoom();
-  const randomNum = Math.floor(Math.random() * 901) + 99; 
+  const randomNum = Math.floor(Math.random() * 151) + 50; 
   rawTicketNumber.value = String(randomNum);
   formattedTicketNumber.value = rawTicketNumber.value;
 
