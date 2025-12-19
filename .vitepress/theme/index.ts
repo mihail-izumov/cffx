@@ -147,8 +147,7 @@ import SignalFormKorzhCard1 from '../components/SignalFormKorzhCard1.vue'
 import KorzhBadgeCardGenerator from '../components/KorzhBadgeCardGenerator.vue'
 import ShareButton from '../components/ShareButton.vue'
 import KorzhCardsSlider from '../components/KorzhCardsSlider.vue'
-
-
+import KorzhSendSignalBanner from '../components/KorzhSendSignalBanner.vue'
 
 export default {
   extends: DefaultTheme,
@@ -301,6 +300,8 @@ export default {
     app.component('KorzhBadgeCardGenerator', KorzhBadgeCardGenerator)   
     app.component('ShareButton', ShareButton)   
     app.component('KorzhCardsSlider', KorzhCardsSlider)   
+    app.component('KorzhSendSignalBanner', KorzhSendSignalBanner)  
+    
     
   },
 }
