@@ -9,18 +9,18 @@
 
       <div class="banner-overlay">
         <div class="banner-inner">
-          <div class="banner-intro">ВАШ СИГНАЛ ТОМУ – КТО РЕШАЕТ</div>
+          <div class="banner-intro">ТОМУ – КТО РЕШАЕТ</div>
 
           <div class="banner-title">
             <span class="title-desktop">
               Долгое ожидание? <br>
-              Не доложили сырник? <br>
-              Персональный разбор и решение.
+              Персональный разбор <br>
+              и решение за 24 часа.
             </span>
             <span class="title-mobile">
               Долгое ожидание? <br>
-              Не доложили сырник? <br>
-              Персональный разбор и решение.
+              Персональный разбор <br>
+              и решение за 24 часа.
             </span>
           </div>
 
