@@ -44,7 +44,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vitepress'
 
 const props = defineProps({
-  imageSrc: { type: String, default: '/img/korzh/korzh_send_signal_ban.png' },
+  imageSrc: { type: String, default: '/img/korzh/send-signal-to-korzh-banner.jpg' },
   imageAlt: { type: String, default: 'Ваш Сигнал – тому кто решает' },
   title: { type: String, default: 'Отправьте Сигнал в Корж' },
   subtitle: { type: String, default: '' },
