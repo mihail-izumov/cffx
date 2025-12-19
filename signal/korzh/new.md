@@ -106,3 +106,6 @@ head:
   }
 }
 </style>
+
+<br>
+<ShareButton/>
