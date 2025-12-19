@@ -49,12 +49,10 @@ onMounted(() => {
   autoScrollInterval = setInterval(() => {
     if (gridRef.value) {
       const grid = gridRef.value
-      const cardWidth = isMobile.value ? 200 : 300
-      const gap = 12
-      const step = cardWidth + gap
-      let next = grid.scrollLeft + step
+      const cardWidth = isMobile.value ? 200 + 12 : 300 + 12  // width + gap
+      let next = grid.scrollLeft + cardWidth
       const max = grid.scrollWidth - grid.clientWidth
-      if (next > max) {
+      if (next >= max) {
         next = 0
       }
       grid.scrollTo({ left: next, behavior: 'smooth' })
@@ -104,20 +102,18 @@ onUnmounted(() => {
 
 .kzh-cards-container {
   width: 100%;
+  padding: 20px 0;
 }
 
 .kzh-cards-grid {
   display: flex; 
   overflow-x: auto;
   gap: 12px;
-  padding-bottom: 25px; 
-  padding-top: 20px;    
   padding-left: 15px;   
-  margin-left: -15px;
-  margin-right: -1.5rem;
-  padding-right: 1.5rem;
+  padding-right: 15px;
+  padding-bottom: 20px;
   scrollbar-width: none;
-  scroll-snap-type: x proximity;
+  scroll-snap-type: x mandatory;
 }
 .kzh-cards-grid::-webkit-scrollbar { display: none; }
 
@@ -126,36 +122,25 @@ onUnmounted(() => {
   flex: 0 0 300px;
   width: 300px;
   height: 530px;
+  background: #2a2a2a; /* Нижний слой - серый фон */
   background-image: 
-    linear-gradient(#2a2a2a, #2a2a2a), /* Нижний слой - серый фон */
-    linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.1) 50%, transparent); /* Верхний слой - улучшенный градиент для рамки */
-  background-clip: padding-box, border-box; /* Обрезка: контент для фона, бордер для градиента */
-  border: 3px solid transparent; /* Утолщаем бордер для большей видимости */
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    linear-gradient(#2a2a2a, #2a2a2a),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1) 30%, transparent 70%);
+  background-origin: padding-box, border-box;
+  background-repeat: no-repeat;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent; /* Тонкая рамка в 1px */
+  border-radius: 28px; /* Как в оригинальном дизайне — большой радиус */
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  scroll-snap-align: start;
-}
-
-.kzh-card::before {
-  content: '';
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  border-radius: 23px; /* Радиус чуть больше для покрытия */
-  background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
-  pointer-events: none;
-  z-index: 1; /* Поверх изображения */
+  backdrop-filter: blur(12px);
+  scroll-snap-align: center;
 }
 
 .kzh-card-icon {
   width: 100%;
   height: 100%;
+  border-radius: 28px; /* Чтобы img не вылезало за скругление */
+  overflow: hidden;
 }
 
 .kzh-card-icon img {
@@ -163,24 +148,19 @@ onUnmounted(() => {
   height: 100%;
   display: block;
   object-fit: cover;
-  z-index: 0;
 }
 
-/* Медиа-запрос для мобильки */
+/* Мобильная версия */
 @media (max-width: 768px) {
   .kzh-card {
     flex: 0 0 200px;
     width: 200px;
-    height: 353px;
-    border: 2px solid transparent; /* Чуть тоньше на мобильке */
+    height: 353px; /* ~300:530 пропорция */
+    border-radius: 24px;
   }
 
-  .kzh-card::before {
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border-radius: 22px;
+  .kzh-card-icon {
+    border-radius: 24px;
   }
 }
 
@@ -191,18 +171,19 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 }
 
 .kzh-zoomed-image {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 92%;
+  max-height: 92%;
   object-fit: contain;
-  border-radius: 20px;
+  border-radius: 28px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 </style>
