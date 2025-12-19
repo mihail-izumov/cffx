@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-// Карточки (14 штук, с placeholder изображениями; замените пути на реальные если нужно)
+// Карточки (14 штук, с указанным изображением)
 const cardTypes = ref([
   { id: 'card1', image: '/img/korzh/usercards/signal-267.png' },
   { id: 'card2', image: '/img/korzh/usercards/signal-267.png' },
@@ -18,6 +18,9 @@ const cardTypes = ref([
   { id: 'card13', image: '/img/korzh/usercards/signal-267.png' },
   { id: 'card14', image: '/img/korzh/usercards/signal-267.png' }
 ])
+
+// Ref для контейнера слайдера
+const gridRef = ref(null)
 
 // Зум для мобильки
 const zoomedImage = ref(null)
@@ -37,12 +40,33 @@ const toggleZoom = (image) => {
   }
 }
 
+let autoScrollInterval = null
+
 onMounted(() => {
   window.addEventListener('resize', handleResize)
+  
+  // Авто-слайдер
+  autoScrollInterval = setInterval(() => {
+    if (gridRef.value) {
+      const grid = gridRef.value
+      const cardWidth = isMobile.value ? 200 : 300
+      const gap = 12
+      const step = cardWidth + gap
+      let next = grid.scrollLeft + step
+      const max = grid.scrollWidth - grid.clientWidth
+      if (next > max) {
+        next = 0
+      }
+      grid.scrollTo({ left: next, behavior: 'smooth' })
+    }
+  }, 3000) // Каждые 3 секунды
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
+  if (autoScrollInterval) {
+    clearInterval(autoScrollInterval)
+  }
 })
 </script>
 
@@ -50,6 +74,7 @@ onUnmounted(() => {
   <div class="kzh-cards-container">
     <div 
       class="kzh-cards-grid"
+      ref="gridRef"
     >
       <div 
         v-for="card in cardTypes" 
@@ -103,9 +128,9 @@ onUnmounted(() => {
   height: 530px;
   background-image: 
     linear-gradient(#2a2a2a, #2a2a2a), /* Нижний слой - серый фон */
-    linear-gradient(to right, rgba(255,255,255,0.3), transparent); /* Верхний слой - градиент для рамки */
+    linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.1) 50%, transparent); /* Верхний слой - улучшенный градиент для рамки */
   background-clip: padding-box, border-box; /* Обрезка: контент для фона, бордер для градиента */
-  border: 1px solid transparent; /* Прозрачный бордер для занятия места */
+  border: 3px solid transparent; /* Утолщаем бордер для большей видимости */
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -113,6 +138,19 @@ onUnmounted(() => {
   overflow: hidden;
   backdrop-filter: blur(10px);
   scroll-snap-align: start;
+}
+
+.kzh-card::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 23px; /* Радиус чуть больше для покрытия */
+  background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
+  pointer-events: none;
+  z-index: 1; /* Поверх изображения */
 }
 
 .kzh-card-icon {
@@ -134,6 +172,15 @@ onUnmounted(() => {
     flex: 0 0 200px;
     width: 200px;
     height: 353px;
+    border: 2px solid transparent; /* Чуть тоньше на мобильке */
+  }
+
+  .kzh-card::before {
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 22px;
   }
 }
 
