@@ -5,7 +5,7 @@ import KorzhBadgeCardGenerator from './KorzhBadgeCardGenerator.vue'
 // Данные формы
 const form = reactive({
   coffeeShopAddress: 'Все кофейни',
-  userName: '', // НОВОЕ ПОЛЕ
+  userName: '',
   emotionalRelease: '',
   badge: '' 
 })
@@ -34,9 +34,15 @@ const activeRotator = ref(0)
 let rotationInterval = null
 const rotationPaused = ref(false)
 const phrasesForQuestion1 = [
-  "Как ты себя чувствуешь?",
-  "Что у тебя на душе?",
-  "Какое настроение?"
+  "Понравился кофе?",
+  "Что чувствуете сейчас?",
+  "Какое настроение?",
+  "Круассан был хрустящий?",
+  "Понравился Апельсиновый раф",
+  "Какой момент запомнился?",
+  "Понравился бариста?",
+  "Что передать в Корж?",
+  "Оставили чаевые?"
 ]
 const currentQuestion1 = ref(phrasesForQuestion1[0])
 let currentQuestionIndex1 = 0
@@ -135,7 +141,7 @@ function getDayOfYearUTC() {
 
 function initBadgeCounts() {
   const day = getDayOfYearUTC();
-  const startDay = 352; 
+  const startDay = 353; 
   const daysPassed = Math.max(0, day - startDay);
   const growthStep = Math.floor(Math.random() * 4) + 4; // 4-7
   const growthBase = daysPassed * growthStep;
