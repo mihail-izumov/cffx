@@ -138,7 +138,7 @@ function getDayOfYearUTC() {
 
 function initBadgeCounts() {
   const day = getDayOfYearUTC();
-  const startDay = 353; 
+  const startDay = 354; 
   const daysPassed = Math.max(0, day - startDay);
   const growthStep = Math.floor(Math.random() * 4) + 4; // 4-7
   const growthBase = daysPassed * growthStep;
@@ -155,16 +155,16 @@ function initBadgeCounts() {
     try { userClicks = JSON.parse(savedLocal); } catch (e) { console.error(e) }
   }
 
-  badgeCounts.badge1 = growthBase + timeBonus + 4 + (userClicks.badge1 || 0);
-  badgeCounts.badge2 = growthBase + timeBonus + 12 + (userClicks.badge2 || 0);
-  badgeCounts.badge3 = growthBase + timeBonus + 7 + (userClicks.badge3 || 0);
-  badgeCounts.badge4 = growthBase + timeBonus + 5 + (userClicks.badge4 || 0);
-  badgeCounts.badge5 = growthBase + timeBonus + 2 + (userClicks.badge5 || 0);
-  badgeCounts.badge6 = growthBase + timeBonus + 8 + (userClicks.badge6 || 0);
-  badgeCounts.badge7 = growthBase + timeBonus + 3 + (userClicks.badge7 || 0);
-  badgeCounts.badge8 = growthBase + timeBonus + 9 + (userClicks.badge8 || 0);
-  badgeCounts.badge9 = growthBase + timeBonus + 4 + (userClicks.badge9 || 0);
-  badgeCounts.badge10 = growthBase + timeBonus + 6 + (userClicks.badge10 || 0);
+  badgeCounts.badge1 = growthBase + timeBonus + 2 + (userClicks.badge1 || 0);
+  badgeCounts.badge2 = growthBase + timeBonus + 5 + (userClicks.badge2 || 0);
+  badgeCounts.badge3 = growthBase + timeBonus + 3 + (userClicks.badge3 || 0);
+  badgeCounts.badge4 = growthBase + timeBonus + 1 + (userClicks.badge4 || 0);
+  badgeCounts.badge5 = growthBase + timeBonus + 0 + (userClicks.badge5 || 0);
+  badgeCounts.badge6 = growthBase + timeBonus + 3 + (userClicks.badge6 || 0);
+  badgeCounts.badge7 = growthBase + timeBonus + 2 + (userClicks.badge7 || 0);
+  badgeCounts.badge8 = growthBase + timeBonus + 0 + (userClicks.badge8 || 0);
+  badgeCounts.badge9 = growthBase + timeBonus + 1 + (userClicks.badge9 || 0);
+  badgeCounts.badge10 = growthBase + timeBonus + 2 + (userClicks.badge10 || 0);
   badgeCounts.badge11 = growthBase + timeBonus + 0 + (userClicks.badge11 || 0);
 }
 
