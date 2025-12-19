@@ -9,18 +9,18 @@
 
       <div class="banner-overlay">
         <div class="banner-inner">
-          <div class="banner-intro">ТОМУ – КТО РЕШАЕТ</div>
+          <div class="banner-intro">ВАШ СИГНАЛ ТОМУ – КТО РЕШАЕТ</div>
 
           <div class="banner-title">
             <span class="title-desktop">
-              Долгое ожидание? Не доложили сырник? <br>
-              Отправьте Сигнал. Получите <br>
-              персональный разбор и решение.
+              Долгое ожидание? <br>
+              Не доложили сырник? <br>
+              Персональный разбор и решение.
             </span>
             <span class="title-mobile">
-              Долгое ожидание? Не доложили сырник? <br>
-              Отправьте Сигнал. Получите <br>
-              персональный разбор и решение.
+              Долгое ожидание? <br>
+              Не доложили сырник? <br>
+              Персональный разбор и решение.
             </span>
           </div>
 
@@ -48,7 +48,7 @@ const props = defineProps({
   imageAlt: { type: String, default: 'Ваш Сигнал – тому кто решает' },
   title: { type: String, default: 'Отправьте Сигнал в Корж' },
   subtitle: { type: String, default: '' },
-  buttonText: { type: String, default: 'Стать инвестором' },
+  buttonText: { type: String, default: 'Отправить Сигнал' },
   buttonLink: { type: String, default: '/signal/korzh/new' }
 })
 
