@@ -14,7 +14,7 @@ head:
 
 <span class="korzh-badge">Где начинается ваша кофейня</span> <br>
 
-<h1 class="responsive-heading-signal-industries">Отправьте Сигнал <br class="mobile-break">в Корж</h1>
+<h1 class="responsive-heading-signal-industries">Отправьте Сигнал <br> в Корж</h1>
 
 <p>
   <strong>Каждая чашка кофе </strong> делает <br class="mobile-break">Вашу любимую кофейню еще лучше.
