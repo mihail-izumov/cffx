@@ -80,9 +80,7 @@ onUnmounted(() => {
         class="kzh-card"
         @click="toggleZoom(card.image)"
       >
-        <div class="kzh-card-icon">
-          <img :src="card.image" alt="" />
-        </div>
+        <img :src="card.image" alt="" class="kzh-card-image" />
       </div>
     </div>
   </div>
@@ -94,12 +92,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-:root {
-  --kzh-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --kzh-color-female: #ff69b4;
-  --kzh-color-male: #87ceeb;
-}
-
 .kzh-cards-container {
   width: 100%;
   padding: 20px 0;
@@ -118,32 +110,16 @@ onUnmounted(() => {
 .kzh-cards-grid::-webkit-scrollbar { display: none; }
 
 .kzh-card {
-  position: relative;
   flex: 0 0 300px;
   width: 300px;
   height: 530px;
-  background: #2a2a2a; /* Нижний слой - серый фон */
-  background-image: 
-    linear-gradient(#2a2a2a, #2a2a2a),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1) 30%, transparent 70%);
-  background-origin: padding-box, border-box;
-  background-repeat: no-repeat;
-  background-clip: padding-box, border-box;
-  border: 1px solid transparent; /* Тонкая рамка в 1px */
-  border-radius: 28px; /* Как в оригинальном дизайне — большой радиус */
+  border-radius: 28px;
   overflow: hidden;
-  backdrop-filter: blur(12px);
   scroll-snap-align: center;
+  cursor: pointer;
 }
 
-.kzh-card-icon {
-  width: 100%;
-  height: 100%;
-  border-radius: 28px; /* Чтобы img не вылезало за скругление */
-  overflow: hidden;
-}
-
-.kzh-card-icon img {
+.kzh-card-image {
   width: 100%;
   height: 100%;
   display: block;
@@ -155,11 +131,7 @@ onUnmounted(() => {
   .kzh-card {
     flex: 0 0 200px;
     width: 200px;
-    height: 353px; /* ~300:530 пропорция */
-    border-radius: 24px;
-  }
-
-  .kzh-card-icon {
+    height: 353px;
     border-radius: 24px;
   }
 }
