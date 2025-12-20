@@ -61,15 +61,15 @@ const cardTypes = [
   { id: 'badge1', label: 'Сигналка', image: '/img/korzh/gifts/signalka-gift.png' },
   { id: 'badge2', label: 'Бонжур', image: '/img/korzh/gifts/bonjour-gift.png' },
   { id: 'badge3', label: 'Нян Кот', image: '/img/korzh/gifts/nyancat-gift.png' },
-  { id: 'badge4', label: 'Сладкий Кусь', image: '/img/korzh/gifts/sladkiykus-gift.png' },
-  { id: 'badge5', label: 'Холодок', image: '/img/korzh/gifts/holodok-gift.png' },
+  { id: 'badge4', label: 'Пёрпи', image: '/img/korzh/gifts/purrpy-gifts.png' },
+  { id: 'badge5', label: 'Дерпи', image: 'derpy-gift.png' },
   { id: 'badge6', label: 'Кальцифер', image: '/img/korzh/gifts/calcifer-gift.png' },
-  { id: 'badge7', label: 'Ход королевы', image: '/img/korzh/gifts/queensmove-gift.png' },
-  { id: 'badge8', label: 'Леденцовая Ель', image: '/img/korzh/gifts/candytree-gift.png' },
-  { id: 'badge9', label: 'Почита-заряд', image: '/img/korzh/gifts/pochitazaryad-gift.png' },
-  { id: 'badge10', label: 'Сердечный Дроп', image: '/img/korzh/gifts/heartdrop-gift.png' },
-  { id: 'badge11', label: 'Вдохновик', image: '/img/korzh/gifts/signalka-gift.png' },
-  { id: 'badge12', label: 'Вдохновик', image: '/img/korzh/gifts/signalka-gift.png' },
+  { id: 'badge7', label: 'Почита-заряд', image: '/img/korzh/gifts/pochitazaryad-gift.png' },
+  { id: 'badge8', label: 'Сладкий Кусь', image: '/img/korzh/gifts/sladkiykus-gift.png' },
+  { id: 'badge9', label: 'Холодок', image: '/img/korzh/gifts/holodok-gift.png' },
+  { id: 'badge10', label: 'Ход королевы', image: '/img/korzh/gifts/queensmove-gift.png' },
+  { id: 'badge11', label: 'Леденцовая Ель', image: '/img/korzh/gifts/candytree-gift.png' },
+  { id: 'badge12', label: 'Сердечный Дроп', image: '/img/korzh/gifts/heartdrop-gift.png' },
 ]
 
 // Трекинг тачей
