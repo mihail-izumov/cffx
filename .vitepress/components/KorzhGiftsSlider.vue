@@ -55,9 +55,9 @@ function initBadgeCounts() {
   }
 
   const day = getDayOfYearUTC();
-  const startDay = 354; 
+  const startDay = 355; 
   const daysPassed = Math.max(0, day - startDay);
-  const growthStep = Math.floor(Math.random() * 4) + 4; // 4-7
+  const growthStep = Math.floor(Math.random() * 4) + 4;
   const growthBase = daysPassed * growthStep;
   const now = new Date();
   const timeBonus = Math.floor(now.getUTCHours() / 5); 
