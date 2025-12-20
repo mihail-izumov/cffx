@@ -1,7 +1,6 @@
 <script setup>
 import { reactive, onMounted } from 'vue'
 
-// Карточки
 const cardTypes = [
   { id: 'badge1', label: 'Сигналка', image: '/img/korzh/gifts/signalka-gift.png' },
   { id: 'badge2', label: 'Бонжур', image: '/img/korzh/gifts/bonjour-gift.png' },
@@ -13,7 +12,8 @@ const cardTypes = [
   { id: 'badge8', label: 'Леденцовая Ель', image: '/img/korzh/gifts/candytree-gift.png' },
   { id: 'badge9', label: 'Почита-заряд', image: '/img/korzh/gifts/pochitazaryad-gift.png' },
   { id: 'badge10', label: 'Сердечный Дроп', image: '/img/korzh/gifts/heartdrop-gift.png' },
-  { id: 'badge11', label: 'Вдохновик', image: '/img/korzh/gifts/korzh-cffx-cup.png' }
+  { id: 'badge11', label: 'Вдохновик', image: '/img/korzh/gifts/signalka-gift.png' },
+  { id: 'badge12', label: 'Тайный Снеговик', image: '/img/korzh/gifts/signalka-gift.png' }
 ]
 
 const badgeCounts = reactive({
@@ -27,7 +27,8 @@ const badgeCounts = reactive({
   badge8: 0,
   badge9: 0,
   badge10: 0,
-  badge11: 0
+  badge11: 0,
+  badge12: 0
 })
 
 // Алгоритм счетчиков
@@ -59,29 +60,29 @@ function initBadgeCounts() {
   const growthStep = Math.floor(Math.random() * 4) + 4; // 4-7
   const growthBase = daysPassed * growthStep;
   const now = new Date();
-  const hours = now.getUTCHours(); 
-  const timeBonus = Math.floor(hours / 5); 
+  const timeBonus = Math.floor(now.getUTCHours() / 5); 
 
   const savedLocal = localStorage.getItem('korzh_user_clicks');
   let userClicks = { 
     badge1: 0, badge2: 0, badge3: 0, badge4: 0, badge5: 0, badge6: 0, 
-    badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0 
+    badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0, badge12: 0 
   };
   if (savedLocal) {
     try { userClicks = JSON.parse(savedLocal); } catch (e) { console.error(e) }
   }
 
   badgeCounts.badge1 = growthBase + timeBonus + 2 + (userClicks.badge1 || 0);
-  badgeCounts.badge2 = growthBase + timeBonus + 5 + (userClicks.badge2 || 0);
-  badgeCounts.badge3 = growthBase + timeBonus + 3 + (userClicks.badge3 || 0);
+  badgeCounts.badge2 = growthBase + timeBonus + 4 + (userClicks.badge2 || 0);
+  badgeCounts.badge3 = growthBase + timeBonus + 2 + (userClicks.badge3 || 0);
   badgeCounts.badge4 = growthBase + timeBonus + 1 + (userClicks.badge4 || 0);
   badgeCounts.badge5 = growthBase + timeBonus + 0 + (userClicks.badge5 || 0);
-  badgeCounts.badge6 = growthBase + timeBonus + 3 + (userClicks.badge6 || 0);
+  badgeCounts.badge6 = growthBase + timeBonus + 2 + (userClicks.badge6 || 0);
   badgeCounts.badge7 = growthBase + timeBonus + 2 + (userClicks.badge7 || 0);
   badgeCounts.badge8 = growthBase + timeBonus + 0 + (userClicks.badge8 || 0);
   badgeCounts.badge9 = growthBase + timeBonus + 1 + (userClicks.badge9 || 0);
   badgeCounts.badge10 = growthBase + timeBonus + 2 + (userClicks.badge10 || 0);
   badgeCounts.badge11 = growthBase + timeBonus + 0 + (userClicks.badge11 || 0);
+  badgeCounts.badge12 = growthBase + timeBonus + 1 + (userClicks.badge12 || 0);
 
   sessionStorage.setItem(sessionKey, JSON.stringify(badgeCounts));
 }
