@@ -625,14 +625,14 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
         
         <div v-if="showInfoModal" class="kzh-modal-overlay" @click.self="showInfoModal = false">
            <div class="kzh-modal">
-              <div class="kzh-modal-title">О Сигнале</div>
+              <div class="kzh-modal-title">Поделитесь настроением</div>
               <div class="kzh-modal-body">
-                 Это система прямой связи. Мы реагируем на каждый сигнал в течение 24 часов.
+                 Превратите этот момент в уникальное воспоминание. Отправьте подарок и несколько теплых слов в Вашу любимую кофейню.
                  <br><br>
-                 <a href="https://cffx.ru/signals.html" target="_blank" class="kzh-modal-link">Подробнее о системе</a>
+                 <a href="https://cffx.ru/korzh" target="_blank" class="kzh-modal-link">Больше возможностей сказать "Спасибо!"</a>
               </div>
               <div class="kzh-modal-footer">
-                 <button type="button" class="kzh-modal-ok" @click="showInfoModal = false">Понятно</button>
+                 <button type="button" class="kzh-modal-ok" @click="showInfoModal = false">Супер!</button>
               </div>
            </div>
         </div>
