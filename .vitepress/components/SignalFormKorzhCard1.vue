@@ -140,7 +140,7 @@ function getDayOfYearUTC() {
 
 function initBadgeCounts() {
   const day = getDayOfYearUTC();
-  const startDay = 354; 
+  const startDay = 355; 
   const daysPassed = Math.max(0, day - startDay);
   const growthStep = Math.floor(Math.random() * 4) + 4; // 4-7
   const growthBase = daysPassed * growthStep;
