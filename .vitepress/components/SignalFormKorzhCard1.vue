@@ -68,8 +68,8 @@ const cardTypes = [
   { id: 'badge8', label: 'Леденцовая Ель', image: '/img/korzh/gifts/candytree-gift.png' },
   { id: 'badge9', label: 'Почита-заряд', image: '/img/korzh/gifts/pochitazaryad-gift.png' },
   { id: 'badge10', label: 'Сердечный Дроп', image: '/img/korzh/gifts/heartdrop-gift.png' },
-  { id: 'badge11', label: 'Вдохновик', image: '/img/korzh/gifts/korzh-cffx-cup.png' },
-  { id: 'badge11', label: 'Вдохновик', image: '/img/korzh/gifts/korzh-cffx-cup.png' },
+  { id: 'badge11', label: 'Вдохновик', image: '/img/korzh/gifts/signalka-gift.png' },
+  { id: 'badge12', label: 'Вдохновик', image: '/img/korzh/gifts/signalka-gift.png' },
 ]
 
 // Трекинг тачей
