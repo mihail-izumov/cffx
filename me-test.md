@@ -1,1 +1,3 @@
 <KorzhCardsSlider/>
+
+<KorzhGiftsSlider/>
