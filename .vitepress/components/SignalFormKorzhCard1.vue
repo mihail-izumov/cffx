@@ -627,9 +627,9 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
            <div class="kzh-modal">
               <div class="kzh-modal-title">Поделитесь настроением</div>
               <div class="kzh-modal-body">
-                 Превратите этот момент в уникальное воспоминание. Отправьте подарок и несколько теплых слов в Вашу любимую кофейню.
+                 Отправьте подарок и несколько теплых слов в Вашу любимую кофейню. Превратите этот момент в уникальное воспоминание.
                  <br><br>
-                 <a href="https://cffx.ru/korzh" target="_blank" class="kzh-modal-link">Больше возможностей сказать "Спасибо!"</a>
+                 <a href="https://cffx.ru/korzh" target="_blank" class="kzh-modal-link">Больше возможностей сказать "Спасибо"</a>
               </div>
               <div class="kzh-modal-footer">
                  <button type="button" class="kzh-modal-ok" @click="showInfoModal = false">Супер!</button>
@@ -1157,7 +1157,7 @@ textarea {
 .kzh-modal-body { font-size: 0.95rem; line-height: 1.6; color: #b0b0b0; margin-bottom: 1.5rem; text-align: center; }
 .kzh-modal-link { color: #B39DC8; text-decoration: none; font-weight: 600; }
 .kzh-modal-footer { display: flex; justify-content: center; }
-.kzh-modal-ok { background: #9B7FB7; color: #fff; border: none; border-radius: 10px; padding: 0.75rem 2rem; cursor: pointer; }
+.kzh-modal-ok { background: #9B7FB7; color: #fff; border: none; border-radius: 10px; padding: 0.75rem 2rem; cursor: pointer; font-weight: 600; }
 
 @media (max-width: 768px) {
   .kzh-form-wrapper { padding: 1.5rem; }
