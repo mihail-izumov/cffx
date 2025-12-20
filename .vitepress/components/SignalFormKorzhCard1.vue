@@ -34,15 +34,15 @@ const activeRotator = ref(0)
 let rotationInterval = null
 const rotationPaused = ref(false)
 const phrasesForQuestion1 = [
-  "Понравился кофе?",
   "Что чувствуете сейчас?",
+  "Кто вы в этом моменте?",
+  "В чем признаемся?",
+  "Кому пошлем Сигнал?",
   "Какое настроение?",
-  "Круассан был хрустящий?",
-  "Понравился Апельсиновый раф?",
+  "В чем секрет этого дня?",
+  "Чего желаете?",
   "Какой момент запомнился?",
-  "Понравился бариста?",
-  "Что передать в Корж?",
-  "Оставили чаевые?"
+  "Что передать в Корж?"
 ]
 const currentQuestion1 = ref(phrasesForQuestion1[0])
 let currentQuestionIndex1 = 0
