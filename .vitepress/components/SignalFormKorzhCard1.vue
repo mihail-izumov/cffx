@@ -569,7 +569,7 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
             @focus="onTextFocus"
             @blur="onTextBlur"
             rows="3"
-            placeholder="Или напишите своими словами ..."
+            placeholder="Или напишите своими словами..."
           ></textarea>
 
           <div class="kzh-suggestions-container">
