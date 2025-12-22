@@ -277,30 +277,6 @@ function formatText(raw) {
   return text
 }
 
-function toAccusativeGiftName(name) {
-  const s = String(name || '').trim()
-  if (!s) return s
-  const words = s.split(/\s+/)
-  let last = words.pop()
-  const low = last.toLowerCase()
-  if (low.endsWith('ия')) last = last.slice(0, -2) + 'ию'
-  else if (low.endsWith('а')) last = last.slice(0, -1) + 'у'
-  else if (low.endsWith('я')) last = last.slice(0, -1) + 'ю'
-  words.push(last)
-  return words.join(' ')
-}
-
-function applyGiftDeclensionInText(text, giftLabel) {
-  const t = String(text || '')
-  const gl = String(giftLabel || '').trim()
-  if (!t || !gl) return t
-  const acc = toAccusativeGiftName(gl)
-  return t.replace(/(Дарю:\s*)([^.\n!?]+)([.!?])?/i, (m, p1, p2, p3) => {
-    const end = p3 || '.'
-    return `${p1}${acc}${end}`
-  })
-}
-
 function makeSnapshot() {
   sTicketRaw.value = props.ticket || ''
   sDateRaw.value = props.date || ''
@@ -316,9 +292,8 @@ function makeSnapshot() {
   sAvatar.value = smileys[Math.floor(Math.random() * smileys.length)]
 
   const baseText = formatText(sAllTextRaw.value)
-  const fixedText = applyGiftDeclensionInText(baseText, sBadgeLabelRaw.value)
-  sTextFull.value = fixedText
-  sTextDisplay.value = fixedText
+  sTextFull.value = baseText
+  sTextDisplay.value = baseText
 }
 
 function getGenitiveName(name) {
