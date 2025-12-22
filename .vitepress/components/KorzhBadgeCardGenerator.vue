@@ -219,7 +219,7 @@ const BG_MAP = [
   { includes: 'Куйбышева, 103', url: '/img/korzh/korzh-kuybisheva103-1080x1920.jpg' },
   { includes: 'Льва Толстого, 30Б', url: '/img/korzh/korzh-lva-tolstogo-1080x1920.jpg' },
   { includes: 'Революционная, 101В', url: '/img/korzh/korzh-revolucionnaya-1080x1920.jpg' },
-  { includes: '9 просека 5-я малая линия, 3б', url: '/img/korzh/korzh-9proseka-1080x1920.jpg' },
+  { includes: '9 просека', url: '/img/korzh/korzh-9proseka-1080x1920.jpg' },
   { includes: 'Самарская, 270', url: '/img/korzh/korzh-samarskaya-1080x1920.jpg' },
   { includes: 'Дачная, 2к2', url: '/img/korzh/korzh-dachnaya-1080x1920.jpg' },
   { includes: 'Ульяновская, 19', url: '/img/korzh/korzh-ulyanovskaya-1080x1920.jpg' },
