@@ -216,7 +216,7 @@ const bgResolvedUrl = ref(DEFAULT_BG)
 let lastBgRequestId = 0
 
 const BG_MAP = [
-  { includes: 'Куйбышева, 103', url: '/img/korzh/korzh-kuybisheva103-1080x1920(2).jpg' },
+  { includes: 'Куйбышева, 103', url: '/img/korzh/korzh-kuybisheva103-1080x1920.jpg' },
   { includes: 'Льва Толстого, 30Б', url: '/img/korzh/korzh-lva-tolstogo-1080x1920.jpg' },
   { includes: 'Революционная, 101В', url: '/img/korzh/korzh-revolucionnaya-1080x1920.jpg' },
   { includes: '9 просека 5-я малая линия, 3б', url: '/img/korzh/korzh-9proseka-1080x1920.jpg' },
