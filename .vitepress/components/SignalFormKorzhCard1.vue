@@ -58,18 +58,18 @@ const genderThemeClass = computed(() => {
 
 // Карточки
 const cardTypes = [
-  { id: 'badge1', label: 'Сигналка', image: '/img/korzh/gifts/signalka-gift.png' },
-  { id: 'badge2', label: 'Бонжур', image: '/img/korzh/gifts/bonjour-gift.png' },
-  { id: 'badge3', label: 'Кальцифер', image: '/img/korzh/gifts/calcifer-gift.png' },
-  { id: 'badge4', label: 'Нян Кот', image: '/img/korzh/gifts/nyancat-gift.png' },
-  { id: 'badge5', label: 'Пёрпи', image: '/img/korzh/gifts/purrpy-gifts.png' },
-  { id: 'badge6', label: 'Дерпи', image: '/img/korzh/gifts/derpy-gift.png' }, 
-  { id: 'badge7', label: 'Почита-заряд', image: '/img/korzh/gifts/pochitazaryad-gift.png' },
-  { id: 'badge8', label: 'Сладкий Кусь', image: '/img/korzh/gifts/sladkiykus-gift.png' },
-  { id: 'badge9', label: 'Холодок', image: '/img/korzh/gifts/holodok-gift.png' },
-  { id: 'badge10', label: 'Ход королевы', image: '/img/korzh/gifts/queensmove-gift.png' },
-  { id: 'badge11', label: 'Леденцовая Ель', image: '/img/korzh/gifts/candytree-gift.png' },
-  { id: 'badge12', label: 'Сердечный Дроп', image: '/img/korzh/gifts/heartdrop-gift.png' },
+  { id: 'badge1', label: 'Сигналка', accusative: 'Сигналку', image: '/img/korzh/gifts/signalka-gift.png' },
+  { id: 'badge2', label: 'Бонжур', accusative: 'Бонжур', image: '/img/korzh/gifts/bonjour-gift.png' },
+  { id: 'badge3', label: 'Кальцифер', accusative: 'Кальцифера', image: '/img/korzh/gifts/calcifer-gift.png' },
+  { id: 'badge4', label: 'Нян Кот', accusative: 'Нян Кота', image: '/img/korzh/gifts/nyancat-gift.png' },
+  { id: 'badge5', label: 'Пёрпи', accusative: 'Пёрпи', image: '/img/korzh/gifts/purrpy-gifts.png' },
+  { id: 'badge6', label: 'Дерпи', accusative: 'Дерпи', image: '/img/korzh/gifts/derpy-gift.png' },
+  { id: 'badge7', label: 'Почита-заряд', accusative: 'Почита-заряд', image: '/img/korzh/gifts/pochitazaryad-gift.png' },
+  { id: 'badge8', label: 'Сладкий Кусь', accusative: 'Сладкий Кусь', image: '/img/korzh/gifts/sladkiykus-gift.png' },
+  { id: 'badge9', label: 'Холодок', accusative: 'Холодок', image: '/img/korzh/gifts/holodok-gift.png' },
+  { id: 'badge10', label: 'Ход королевы', accusative: 'Ход королевы', image: '/img/korzh/gifts/queensmove-gift.png' },
+  { id: 'badge11', label: 'Леденцовая Ель', accusative: 'Леденцовую Ель', image: '/img/korzh/gifts/candytree-gift.png' },
+  { id: 'badge12', label: 'Сердечный Дроп', accusative: 'Сердечный Дроп', image: '/img/korzh/gifts/heartdrop-gift.png' },
 ]
 
 // Трекинг тачей
@@ -96,26 +96,37 @@ function handleTouchEnd(id, event) {
 
 // Логика переключения карточек
 function toggleCard(id) {
-  // Находим старый бейдж (если он был выбран)
-  const oldLabel = form.badge ? cardTypes.find(c => c.id === form.badge)?.label : null;
-  // Находим новый бейдж (на который кликнули)
-  const newLabel = cardTypes.find(c => c.id === id)?.label;
+  // Находим старый бейдж
+  const oldCard = form.badge ? cardTypes.find(c => c.id === form.badge) : null
+  const oldLabel = oldCard ? oldCard.label : null
+  const oldAccusative = oldCard ? oldCard.accusative : null
 
-  // 1. Сначала всегда удаляем "старый" текст, если он есть
-  if (oldLabel) {
-    const oldPhrase = `Дарю: ${oldLabel} `;
+  // Находим новый бейдж
+  const newCard = cardTypes.find(c => c.id === id)
+  const newLabel = newCard ? newCard.label : null
+  const newAccusative = newCard ? newCard.accusative : null
+
+  // Удаляем старый текст (если был)
+  if (oldLabel && oldAccusative) {
+    const oldPhrase = `Дарю: ${oldAccusative} `
     if (form.emotionalRelease.startsWith(oldPhrase)) {
-       form.emotionalRelease = form.emotionalRelease.replace(oldPhrase, '');
+      form.emotionalRelease = form.emotionalRelease.replace(oldPhrase, '')
+    } else {
+      // На случай, если по какой-то причине использовался label вместо accusative
+      const fallbackPhrase = `Дарю: ${oldLabel} `
+      if (form.emotionalRelease.startsWith(fallbackPhrase)) {
+        form.emotionalRelease = form.emotionalRelease.replace(fallbackPhrase, '')
+      }
     }
   }
 
-  // 2. Теперь смотрим: это клик по активному бейджу или по новому?
+  // Переключаем выбор
   if (form.badge === id) {
-    form.badge = '';
+    form.badge = ''
   } else {
-    form.badge = id;
-    const newPhrase = `Дарю: ${newLabel} `;
-    form.emotionalRelease = newPhrase + form.emotionalRelease;
+    form.badge = id
+    const newPhrase = `Дарю: ${newAccusative} `
+    form.emotionalRelease = newPhrase + form.emotionalRelease
   }
 }
 
