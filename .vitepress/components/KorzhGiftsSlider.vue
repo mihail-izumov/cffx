@@ -16,6 +16,7 @@ const cardTypes = [
   { id: 'badge12', label: 'Сердечный Дроп', image: '/img/korzh/gifts/heartdrop-gift.png' },
 ]
 
+// То, что показывается на карточках
 const badgeCounts = reactive({
   badge1: 0, badge2: 0, badge3: 0, badge4: 0, badge5: 0, badge6: 0,
   badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0, badge12: 0
@@ -23,21 +24,37 @@ const badgeCounts = reactive({
 
 /**
  * =========================
- * НАСТРОЙКИ (крути тут)
+ * ВАРИАНТ A (ручная статистика)
  * =========================
+ * Меняешь эти числа -> деплоишь -> у всех обновится.
  */
+const BASE_COUNTS = {
+  badge1: 0,
+  badge2: 0,
+  badge3: 0,
+  badge4: 0,
+  badge5: 0,
+  badge6: 0,
+  badge7: 0,
+  badge8: 0,
+  badge9: 0,
+  badge10: 0,
+  badge11: 0,
+  badge12: 0,
+}
 
-// Версия ключа: меняешь -> пересоздаст распределение с нуля
-const STATE_KEY = 'korzh_badge_state_v3'
+/**
+ * =========================
+ * (Опционально) Ручной буст по весам
+ * =========================
+ * Это НЕ авто-рост. Ты сам меняешь BOOST_TOTAL / WEIGHTS / BOOST_SEED и деплоишь.
+ */
+const ENABLE_BOOST = true
 
-// Потолки
-const START_TOTAL_MIN = 15        // сколько всего очков раздать на старте (минимум)
-const START_TOTAL_MAX = 20        // сколько всего очков раздать на старте (максимум)
-const START_PER_BADGE_MAX = 3     // максимум на один бейдж на старте (0..3)
-const DAILY_TOTAL_ADD_MIN = 0     // сколько всего добавлять за новый день (минимум)
-const DAILY_TOTAL_ADD_MAX = 7    // сколько всего добавлять за новый день (максимум)
+// “Потолок” буста — сколько всего очков добавить поверх BASE_COUNTS
+const BOOST_TOTAL = 15
 
-// Коэффициенты (веса): больше = чаще получит +1 при распределении
+// Коэффициенты (веса): больше = чаще получит +1 внутри буста
 const WEIGHTS = {
   badge1: 2,
   badge2: 3,
@@ -53,26 +70,24 @@ const WEIGHTS = {
   badge12: 0.5,
 }
 
-// (опционально) Ограничение дневного прироста на одну карточку
-// null/Infinity = без ограничения
-const DAILY_PER_BADGE_MAX = Infinity
+// Меняешь seed -> меняется “рисунок” распределения, но одинаково у всех
+const BOOST_SEED = 123456789
 
 /**
  * =========================
- * Утилиты
+ * Утилиты (seeded random)
  * =========================
  */
-
-function getUTCDateKey() {
-  // "YYYY-MM-DD" в UTC, чтобы смена дня была одинаковой для всех часовых поясов
-  return new Date().toISOString().slice(0, 10)
+function mulberry32(a) {
+  return function () {
+    let t = (a += 0x6D2B79F5)
+    t = Math.imul(t ^ (t >>> 15), t | 1)
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
 }
 
-function randInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
-function weightedPickId(ids, weights) {
+function weightedPickId(ids, weights, rand) {
   let total = 0
   const cum = []
 
@@ -84,105 +99,45 @@ function weightedPickId(ids, weights) {
 
   if (total <= 0) return ids[0]
 
-  const r = Math.random() * total
+  const r = rand() * total
   for (let i = 0; i < cum.length; i++) {
     if (r < cum[i]) return ids[i]
   }
   return ids[ids.length - 1]
 }
 
-// распределение "points" по ids по 1 очку за итерацию
-// perBadgeCap — общий cap на значение (например 3 на старте)
-// perBadgeAddedCapMap — cap на ДОБАВЛЕНИЕ в рамках одной операции (например +3 в день на одну карточку)
-function distributeWeightedPoints(counts, ids, points, weights, perBadgeCap = Infinity, perBadgeAddedCapMap = null) {
+function makeEmptyCounts(ids) {
+  const o = {}
+  for (const id of ids) o[id] = 0
+  return o
+}
+
+function distributeBoost(ids, totalPoints, weights, seed) {
+  const boost = makeEmptyCounts(ids)
+  const rand = mulberry32(seed)
+
+  let points = Math.max(0, Math.floor(totalPoints))
   let guard = 200000
+
   while (points > 0 && guard-- > 0) {
-    const id = weightedPickId(ids, weights)
-
-    const current = counts[id] ?? 0
-    if (current >= perBadgeCap) continue
-
-    if (perBadgeAddedCapMap) {
-      const added = perBadgeAddedCapMap[id] ?? 0
-      if (added >= perBadgeAddedCapMap.__cap) continue
-      perBadgeAddedCapMap[id] = added + 1
-    }
-
-    counts[id] = current + 1
+    const id = weightedPickId(ids, weights, rand)
+    boost[id] += 1
     points--
   }
+
+  return boost
 }
 
-function ensureAllKeys(counts, ids) {
-  for (const id of ids) {
-    if (typeof counts[id] !== 'number' || Number.isNaN(counts[id])) counts[id] = 0
-  }
-}
-
-/**
- * =========================
- * Инициализация/обновление
- * =========================
- */
 function initBadgeCounts() {
   const ids = cardTypes.map(c => c.id)
-  const todayKey = getUTCDateKey()
 
-  // 1) Восстановление
-  const raw = localStorage.getItem(STATE_KEY)
-  if (raw) {
-    try {
-      const state = JSON.parse(raw)
-      Object.assign(badgeCounts, state.counts || {})
-      ensureAllKeys(badgeCounts, ids)
+  const boost = ENABLE_BOOST
+    ? distributeBoost(ids, BOOST_TOTAL, WEIGHTS, BOOST_SEED)
+    : makeEmptyCounts(ids)
 
-      // 2) Доначисление за прошедшие дни
-      if (state.dayKey && state.dayKey !== todayKey) {
-        const daysDiff = Math.max(
-          0,
-          Math.floor((Date.parse(todayKey) - Date.parse(state.dayKey)) / (1000 * 60 * 60 * 24))
-        )
-
-        for (let i = 0; i < daysDiff; i++) {
-          const add = randInt(DAILY_TOTAL_ADD_MIN, DAILY_TOTAL_ADD_MAX)
-
-          const addedMap = {
-            __cap: DAILY_PER_BADGE_MAX
-          }
-
-          distributeWeightedPoints(
-            badgeCounts,
-            ids,
-            add,
-            WEIGHTS,
-            Infinity,
-            Number.isFinite(DAILY_PER_BADGE_MAX) ? addedMap : null
-          )
-        }
-
-        localStorage.setItem(STATE_KEY, JSON.stringify({
-          dayKey: todayKey,
-          counts: { ...badgeCounts }
-        }))
-      }
-
-      return
-    } catch (e) {
-      console.error(e)
-      // упадём в генерацию заново
-    }
+  for (const id of ids) {
+    badgeCounts[id] = (BASE_COUNTS[id] ?? 0) + (boost[id] ?? 0)
   }
-
-  // 3) Первый запуск: стартовые значения
-  ids.forEach(id => (badgeCounts[id] = 0))
-
-  const startTotal = randInt(START_TOTAL_MIN, START_TOTAL_MAX)
-  distributeWeightedPoints(badgeCounts, ids, startTotal, WEIGHTS, START_PER_BADGE_MAX)
-
-  localStorage.setItem(STATE_KEY, JSON.stringify({
-    dayKey: todayKey,
-    counts: { ...badgeCounts }
-  }))
 }
 
 onMounted(() => {
