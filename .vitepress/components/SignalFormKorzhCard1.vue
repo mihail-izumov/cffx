@@ -15,21 +15,6 @@ const rawTicketNumber = ref('000')
 const formattedTicketNumber = ref('000')
 const currentDate = ref('')
 
-const badgeCounts = reactive({
-  badge1: 0,
-  badge2: 0,
-  badge3: 0,
-  badge4: 0,
-  badge5: 0,
-  badge6: 0,
-  badge7: 0,
-  badge8: 0,
-  badge9: 0,
-  badge10: 0,
-  badge11: 0,
-  badge12: 0,
-})
-
 // Ротация
 const activeRotator = ref(0) 
 let rotationInterval = null
@@ -140,138 +125,6 @@ const selectedBadgeLabel = computed(() => {
   return card ? card.label : null
 })
 
-/**
- * =========================
- * Ручная статистика
- * =========================
- */
-const BASE_COUNTS = {
-  badge1: 0,
-  badge2: 0,
-  badge3: 0,
-  badge4: 0,
-  badge5: 0,
-  badge6: 0,
-  badge7: 0,
-  badge8: 0,
-  badge9: 0,
-  badge10: 0,
-  badge11: 0,
-  badge12: 0,
-}
-
-/**
- * =========================
- * (Опционально) Ручной буст по весам
- * =========================
- */
-const ENABLE_BOOST = true
-
-// “Потолок” буста
-const BOOST_TOTAL = 20
-
-// Веса
-const WEIGHTS = {
-  badge1: 10,
-  badge2: 10,
-  badge3: 4,
-  badge4: 6,
-  badge5: 4,
-  badge6: 4,
-  badge7: 5,
-  badge8: 1,
-  badge9: 3,
-  badge10: 4,
-  badge11: 1,
-  badge12: 2.5,
-}
-
-const BOOST_SEED = 123456789
-
-function mulberry32(a) {
-  return function () {
-    let t = (a += 0x6D2B79F5)
-    t = Math.imul(t ^ (t >>> 15), t | 1)
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
-}
-
-function weightedPickId(ids, weights, rand) {
-  let total = 0
-  const cum = []
-
-  for (const id of ids) {
-    const w = Math.max(0, Number(weights[id] ?? 1))
-    total += w
-    cum.push(total)
-  }
-
-  if (total <= 0) return ids[0]
-
-  const r = rand() * total
-  for (let i = 0; i < cum.length; i++) {
-    if (r < cum[i]) return ids[i]
-  }
-  return ids[ids.length - 1]
-}
-
-function makeEmptyCounts(ids) {
-  const o = {}
-  for (const id of ids) o[id] = 0
-  return o
-}
-
-function distributeBoost(ids, totalPoints, weights, seed) {
-  const boost = makeEmptyCounts(ids)
-  const rand = mulberry32(seed)
-
-  let points = Math.max(0, Math.floor(totalPoints))
-  let guard = 200000
-
-  while (points > 0 && guard-- > 0) {
-    const id = weightedPickId(ids, weights, rand)
-    boost[id] += 1
-    points--
-  }
-
-  return boost
-}
-
-function initBadgeCounts() {
-  const ids = cardTypes.map(c => c.id)
-
-  const savedLocal = localStorage.getItem('korzh_user_clicks');
-  let userClicks = makeEmptyCounts(ids);
-  if (savedLocal) {
-    try { userClicks = JSON.parse(savedLocal); } catch (e) { console.error(e) }
-  }
-
-  const boost = ENABLE_BOOST
-    ? distributeBoost(ids, BOOST_TOTAL, WEIGHTS, BOOST_SEED)
-    : makeEmptyCounts(ids)
-
-  for (const id of ids) {
-    badgeCounts[id] = (BASE_COUNTS[id] ?? 0) + (boost[id] ?? 0) + (userClicks[id] || 0)
-  }
-}
-
-function incrementBadgeCount(id) {
-  if (badgeCounts[id] !== undefined) {
-    badgeCounts[id]++;
-    const savedLocal = localStorage.getItem('korzh_user_clicks');
-    let userClicks = { 
-      badge1: 0, badge2: 0, badge3: 0, badge4: 0, badge5: 0, badge6: 0, 
-      badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0, badge12: 0 
-    };
-    if (savedLocal) { 
-      try { userClicks = JSON.parse(savedLocal); } catch (e) {} 
-    }
-    userClicks[id] = (userClicks[id] || 0) + 1;
-    localStorage.setItem('korzh_user_clicks', JSON.stringify(userClicks));
-  }
-}
-
 // === ПОДСКАЗКИ ===
 const baseSuggestions = {
   female: {
@@ -365,7 +218,7 @@ const baseSuggestions = {
       
       // === ПРИЗНАЮСЬ (MALE SPECIFIC) ===
       'виню пробки': ['в опоздании', 'поэтому я здесь', 'нужен кофе', 'нервы на пределе'],
-      'ушел в оффлайн': ['до завтра', 'не беспокоить', 'с этим кофе', 'и точка'],
+      'ушел в оффлайн': ['до завтра', 'не беспокоить', 'с этим кофе', 'и точка'], // Вместо "не хочу работать"
       
       // === ПРИЗНАЮСЬ (SHARED) ===
       'согрешила с десертом': ['и не стыдно', 'было вкусно', 'каюсь', 'отработаем в зале'],
@@ -475,7 +328,6 @@ function resetForm() {
 async function submitForm() {
   if (!isFormValid.value) return
   isSubmitting.value = true
-  if (form.badge) { incrementBadgeCount(form.badge) }
 
   const now = new Date()
   const day = String(now.getDate()).padStart(2, '0')
@@ -521,34 +373,59 @@ async function submitForm() {
       body: formData,
       signal: controller.signal
     })
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
-
-    // Успешная отправка — можно сбросить форму или показать успех
-    resetForm()
-    // Здесь можно добавить уведомление об успехе, если нужно
-
-  } catch (error) {
-    console.error('Error submitting form:', error)
-    // Здесь можно показать ошибку пользователю
-    alert('Произошла ошибка при отправке. Попробуйте позже.')
-  } finally {
+    
     clearTimeout(timeoutId)
-    isSubmitting.value = false
-  }
+    const result = await response.json()
+
+    if (result.status === 'success' || result.processed) {
+      console.log('Success:', result)
+      handleShareClick()
+      setTimeout(resetForm, 1000); 
+    } else {
+      throw new Error(result.message)
+    }
+  } catch (error) {
+    if (error.name === 'AbortError') { alert('Большой поток открыток. Попробуйте еще через минуту.') } 
+    else { console.error('Submission error:', error); alert('Ошибка при отправке. Попробуйте еще раз.'); }
+  } finally { isSubmitting.value = false }
 }
 
+let metaViewport = null;
+function disableZoom() {
+  metaViewport = document.querySelector('meta[name="viewport"]');
+  if (metaViewport) { metaViewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'; } 
+  else {
+    metaViewport = document.createElement('meta');
+    metaViewport.name = 'viewport';
+    metaViewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
+    document.head.appendChild(metaViewport);
+  }
+}
+function enableZoom() { if (metaViewport) { metaViewport.content = 'width=device-width, initial-scale=1'; } }
+
 onMounted(() => {
-  initBadgeCounts()
-  startRotation()
+  disableZoom();
+  const randomNum = Math.floor(Math.random() * 151) + 50; 
+  rawTicketNumber.value = String(randomNum);
+  formattedTicketNumber.value = rawTicketNumber.value;
+
+  const now = new Date()
+  const day = String(now.getDate()).padStart(2, '0')
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const year = now.getFullYear()
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  const seconds = String(now.getSeconds()).padStart(2, '0')
+  currentDate.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+  
   initializeSuggestions()
+  startRotation()
 })
 
-onUnmounted(() => {
-  stopRotation()
-})
+onUnmounted(() => { enableZoom(); stopRotation(); })
+
+const storyGeneratorRef = ref(null)
+const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRef.value.generateAndShare() } }
 </script>
 
 <template>
@@ -614,7 +491,6 @@ onUnmounted(() => {
                    <img :src="card.image" alt="" />
                 </div>
                 <div class="kzh-card-label">{{ card.label }}</div>
-                <div class="kzh-card-count">{{ badgeCounts[card.id] }}</div>
              </div>
           </div>
         </div>
@@ -968,17 +844,6 @@ onUnmounted(() => {
 .kzh-card:hover .kzh-card-label,
 .kzh-card.is-active .kzh-card-label {
   opacity: 1;
-}
-
-.kzh-card-count {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: 600;
-  z-index: 2;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
 /* === ТЕКСТОВЫЙ БЛОК === */
