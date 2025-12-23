@@ -49,10 +49,10 @@ const BASE_COUNTS = {
  */
 const ENABLE_BOOST = true
 
-// “Потолок” буста — сколько всего очков добавить поверх BASE_COUNTS
+// “Потолок” буста
 const BOOST_TOTAL = 15
 
-// Коэффициенты (веса): больше = чаще получит +1 внутри буста
+// Веса
 const WEIGHTS = {
   badge1: 1,
   badge2: 2,
@@ -68,14 +68,8 @@ const WEIGHTS = {
   badge12: 0.5,
 }
 
-// Меняешь seed -> меняется “рисунок” распределения, но одинаково у всех
 const BOOST_SEED = 123456789
 
-/**
- * =========================
- * Утилиты (seeded random)
- * =========================
- */
 function mulberry32(a) {
   return function () {
     let t = (a += 0x6D2B79F5)
