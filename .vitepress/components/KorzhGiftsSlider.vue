@@ -28,7 +28,7 @@ const badgeCounts = reactive({
  * =========================
  */
 const BASE_COUNTS = {
-  badge1: 2,
+  badge1: 0,
   badge2: 0,
   badge3: 0,
   badge4: 0,
@@ -59,7 +59,7 @@ const WEIGHTS = {
   badge3: 4,
   badge4: 6,
   badge5: 4,
-  badge6: 3,
+  badge6: 4,
   badge7: 5,
   badge8: 1,
   badge9: 3,
