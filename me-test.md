@@ -95,7 +95,7 @@ head:
 
 <ShareButton/>
 
-<br>
+<br><br>
 
 <div align="center">
 
