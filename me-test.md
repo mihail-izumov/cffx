@@ -14,7 +14,7 @@ head:
 
 <span class="korzh-badge">Где начинается ваша кофейня</span> <br>
 
-<h1 class="responsive-heading-signal-industries">Корж на связи</h1>
+<h1 class="korzh-heading">Корж на связи</h1>
 
 <p>
 <strong>Каждая чашка кофе </strong> делает <br class="mobile-break">Вашу любимую кофейню еще лучше.
@@ -36,7 +36,7 @@ head:
 }
 
 /* ваш код как был */
-.vp-doc h1.responsive-heading-signal-industries {
+.vp-doc h1.korzh-heading {
   font-size: 46px !important;
   line-height: 1.1 !important;
   margin: 0 0 20px 0 !important;
@@ -47,7 +47,7 @@ head:
 /* ПЛАНШЕТЫ (от 601px до 768px)
 Используем min-width, чтобы это правило НЕ касалось телефонов */
 @media screen and (min-width: 601px) and (max-width: 768px) {
-  .vp-doc h1.responsive-heading-signal-industries {
+  .vp-doc h1.korzh-heading {
     font-size: 32px !important;
     line-height: 1.2 !important;
     margin-bottom: 15px !important;
@@ -55,7 +55,7 @@ head:
 }
 
 @media screen and (max-width: 600px) {
-  .vp-doc h1.responsive-heading-signal-industries {
+  .vp-doc h1.korzh-heading {
     font-size: 32px !important;
     line-height: 1.2 !important;
     margin-bottom: 15px !important;
