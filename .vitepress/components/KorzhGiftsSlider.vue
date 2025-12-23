@@ -103,7 +103,7 @@ function initBadgeCounts() {
 
   // 3) Первый запуск: стартовые 0..3, сумма <= 15
   ids.forEach(id => (badgeCounts[id] = 0));
-  const startTotal = randInt(0, START_TOTAL_MAX);
+  const startTotal = randInt(10, 15);
   distributePoints(badgeCounts, ids, startTotal, START_PER_BADGE_MAX);
 
   localStorage.setItem(STATE_KEY, JSON.stringify({
