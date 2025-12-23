@@ -256,7 +256,7 @@ onUnmounted(() => {
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="signal-button-icon lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           </button>
           <button @click="goToGift" class="signal-action-button signal-review-button">
-            Отправить Открытку
+            Отправить Подарок
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="signal-button-icon lucide lucide-gift-icon lucide-gift"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
           </button>
         </div>
@@ -271,7 +271,7 @@ onUnmounted(() => {
         <div class="signal-modal-body">
           Ваш Сигнал — это команда к действию для кофейни и видимый результат для вас.
           <br><br>
-          <a href="/signals" target="_blank" class="signal-modal-link">Как работает</a>
+          <a href="/signals" target="_blank" class="custom-signal-modal-link">Как работает</a>
         </div>
         <div class="signal-modal-footer">
           <button class="signal-modal-ok" type="button" @click="showInfoModal = false">Супер!</button>
@@ -325,9 +325,9 @@ onUnmounted(() => {
   border-color: var(--vp-c-text-2);
   color: white;
 }
-/* Основная карточка */
+/* Основная карточка — ярче фон */
 .signal-main-card {
-  background: rgba(30, 30, 30, 0.3);
+  background: rgba(40, 40, 50, 0.45);
   border-radius: 20px;
   padding: 24px;
 }
@@ -372,12 +372,12 @@ onUnmounted(() => {
 .signal-stat-card {
   position: relative;
   border-radius: 22px;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
   overflow: hidden;
   background: var(--vp-c-bg-soft);
 }
 .signal-stat-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-12px);
 }
 .signal-stat-card::before {
   content: '';
@@ -389,11 +389,11 @@ onUnmounted(() => {
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  transition: filter 0.4s ease;
+  transition: filter 0.6s ease;
   z-index: 3;
 }
 .signal-stat-card:hover::before {
-  filter: brightness(2) saturate(1.5);
+  filter: brightness(2.2) saturate(1.6);
 }
 /* Цветовые схемы карточек */
 .signal-signals-card,
@@ -414,14 +414,14 @@ onUnmounted(() => {
   height: 100%;
   text-align: center;
   box-shadow: 0 10px 25px -10px rgba(0,0,0,0.3);
-  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
   z-index: 2;
   gap: 8px;
 }
 .signal-stat-card:hover .signal-stat-content {
   background: radial-gradient(circle at 50% 0%, var(--signal-glow-hover-color) 0%, transparent 70%);
-  box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
+  box-shadow: 0 30px 60px -12px rgba(0,0,0,0.5);
 }
 .signal-stat-icon {
   position: absolute;
@@ -431,7 +431,7 @@ onUnmounted(() => {
   z-index: -1;
   opacity: 0.35;
   pointer-events: none;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .signal-stat-icon img {
   width: 140px;
@@ -440,6 +440,7 @@ onUnmounted(() => {
 }
 .signal-stat-card:hover .signal-stat-icon {
   opacity: 0.5;
+  transform: translate(-50%, -58%);
 }
 .signal-stat-left-group {
   display: flex;
@@ -454,10 +455,11 @@ onUnmounted(() => {
   line-height: 1;
   color: #fff;
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7);
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .signal-stat-card:hover .signal-stat-value {
-  transform: scale(1.15);
-  text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.8);
+  transform: scale(1.18);
+  text-shadow: 0 0 35px rgba(0, 0, 0, 0.8), 0 0 18px rgba(0, 0, 0, 0.8);
 }
 .signal-stat-label {
   font-size: 11px;
@@ -465,9 +467,10 @@ onUnmounted(() => {
   color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .signal-stat-card:hover .signal-stat-label {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 /* Баблы в карточках */
 .signal-stat-badge {
@@ -669,13 +672,13 @@ onUnmounted(() => {
   box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4);
 }
 .signal-button-icon {
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .signal-review-button:hover .signal-button-icon {
   transform: translateX(4px);
 }
 .signal-ticket-button:hover .signal-button-icon {
-  transform: translate(4px, -4px);
+  transform: translate(2px, -2px);
 }
 /* Модальное окно */
 .signal-modal-overlay {
@@ -714,15 +717,16 @@ onUnmounted(() => {
   line-height: 1.5;
   text-align: left;
 }
-.signal-modal-link {
+/* Специальный класс для ссылки — гарантированно перебиваем VitePress */
+.custom-signal-modal-link {
   color: #c4b5fd !important;
   text-decoration: none !important;
-  font-weight: 600;
-  transition: color 0.3s ease;
   background-image: none !important;
   box-shadow: none !important;
+  font-weight: 600;
+  transition: color 0.3s ease;
 }
-.signal-modal-link:hover {
+.custom-signal-modal-link:hover {
   color: #ddd6fe !important;
   text-decoration: underline !important;
 }
@@ -805,6 +809,10 @@ onUnmounted(() => {
     position: static;
     transform: none;
     z-index: auto;
+    opacity: 0.6;
+    transition: opacity 0.4s ease;
+  }
+  .signal-stat-card:hover .signal-stat-icon {
     opacity: 1;
   }
   .signal-stat-icon img {
