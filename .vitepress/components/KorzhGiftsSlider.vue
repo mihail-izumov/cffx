@@ -31,26 +31,26 @@ const badgeCounts = reactive({
 const STATE_KEY = 'korzh_badge_state_v3'
 
 // Потолки
-const START_TOTAL_MIN = 10        // сколько всего очков раздать на старте (минимум)
-const START_TOTAL_MAX = 15        // сколько всего очков раздать на старте (максимум)
+const START_TOTAL_MIN = 15        // сколько всего очков раздать на старте (минимум)
+const START_TOTAL_MAX = 20        // сколько всего очков раздать на старте (максимум)
 const START_PER_BADGE_MAX = 3     // максимум на один бейдж на старте (0..3)
 const DAILY_TOTAL_ADD_MIN = 0     // сколько всего добавлять за новый день (минимум)
-const DAILY_TOTAL_ADD_MAX = 10    // сколько всего добавлять за новый день (максимум)
+const DAILY_TOTAL_ADD_MAX = 7    // сколько всего добавлять за новый день (максимум)
 
 // Коэффициенты (веса): больше = чаще получит +1 при распределении
 const WEIGHTS = {
-  badge1: 1.0,
+  badge1: 0.9,
   badge2: 1.0,
-  badge3: 1.0,
-  badge4: 1.0,
-  badge5: 1.0,
-  badge6: 1.0,
-  badge7: 1.0,
-  badge8: 1.0,
-  badge9: 1.0,
-  badge10: 1.0,
-  badge11: 1.0,
-  badge12: 1.0,
+  badge3: 0.6,
+  badge4: 0.5,
+  badge5: 0.6,
+  badge6: 0.4,
+  badge7: 0.3,
+  badge8: 0.5,
+  badge9: 0.5,
+  badge10: 0.5,
+  badge11: 0.5,
+  badge12: 0.5,
 }
 
 // (опционально) Ограничение дневного прироста на одну карточку
