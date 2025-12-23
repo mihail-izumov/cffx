@@ -28,14 +28,14 @@ const handleResize = () => {
   isMobile.value = window.innerWidth < 768
 }
 
-// Открытие/закрытие зума только на мобильных
+// Открытие/закрытие зума
 const toggleZoom = (image) => {
   if (isMobile.value) {
     zoomedImage.value = zoomedImage.value === image ? null : image
   }
 }
 
-// Закрытие по крестику
+// Явное закрытие (для крестика и клика по изображению)
 const closeZoom = () => {
   zoomedImage.value = null
 }
@@ -100,23 +100,25 @@ onUnmounted(() => {
   <div
     v-if="zoomedImage && isMobile"
     class="kzh-zoom-modal"
-    @click="toggleZoom(null)"
+    @click="closeZoom"
   >
-    <!-- Изображение — клик по нему НЕ закрывает модал -->
-    <img
-      :src="zoomedImage"
-      alt="Zoomed image"
-      class="kzh-zoomed-image"
-      @click.stop
-    />
+    <!-- Обёртка с изображением и крестиком -->
+    <div class="kzh-zoom-content" @click.stop>
+      <img
+        :src="zoomedImage"
+        alt="Zoomed image"
+        class="kzh-zoomed-image"
+        @click="closeZoom"
+      />
 
-    <!-- Крестик закрытия -->
-    <button class="kzh-zoom-close" @click.stop="closeZoom" aria-label="Закрыть">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 6 6 18"/>
-        <path d="m6 6 12 12"/>
-      </svg>
-    </button>
+      <!-- Крестик внутри изображения -->
+      <button class="kzh-zoom-close" @click="closeZoom" aria-label="Закрыть">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"/>
+          <path d="m6 6 12 12"/>
+        </svg>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -150,16 +152,14 @@ onUnmounted(() => {
   overflow: hidden;
   scroll-snap-align: center;
   background: #0f0f0f;
-  /* На десктопе — обычный курсор */
   cursor: default;
 }
 
-/* Только на мобильке — курсор pointer */
 .kzh-card--clickable {
   cursor: pointer;
 }
 
-/* Тёмный шиммер-прелоадер */
+/* Тёмный шиммер */
 .kzh-card-placeholder {
   position: absolute;
   inset: 0;
@@ -222,22 +222,31 @@ onUnmounted(() => {
   backdrop-filter: blur(12px);
 }
 
-.kzh-zoomed-image {
+/* Контейнер для изображения и крестика */
+.kzh-zoom-content {
+  position: relative;
   max-width: 92%;
   max-height: 92%;
+}
+
+.kzh-zoomed-image {
+  width: 100%;
+  height: auto;
+  max-height: 92vh;
   object-fit: contain;
   border-radius: 28px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  display: block;
 }
 
-/* Крестик закрытия */
+/* Крестик — только иконка, без фона */
 .kzh-zoom-close {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 44px;
-  height: 44px;
-  background: rgba(0, 0, 0, 0.5);
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
   border: none;
   border-radius: 50%;
   display: flex;
@@ -245,17 +254,18 @@ onUnmounted(() => {
   justify-content: center;
   color: white;
   opacity: 0.7;
-  transition: opacity 0.2s ease, background 0.2s ease;
+  transition: opacity 0.2s ease;
   cursor: pointer;
+  padding: 0;
 }
 
 .kzh-zoom-close:hover {
   opacity: 1;
-  background: rgba(0, 0, 0, 0.7);
 }
 
 .kzh-zoom-close svg {
   width: 28px;
   height: 28px;
+  stroke-width: 2.5;
 }
 </style>
