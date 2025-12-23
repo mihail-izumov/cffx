@@ -54,7 +54,7 @@ const BOOST_TOTAL = 20
 
 // Веса
 const WEIGHTS = {
-  badge1: 8,
+  badge1: 10,
   badge2: 10,
   badge3: 4,
   badge4: 6,
