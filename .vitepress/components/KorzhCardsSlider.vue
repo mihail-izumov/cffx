@@ -20,7 +20,7 @@ const cardTypes = ref([
 // Ref для контейнера слайдера
 const gridRef = ref(null)
 
-// Зум для мобильки
+// Зум только для мобильки
 const zoomedImage = ref(null)
 const isMobile = ref(window.innerWidth < 768)
 
@@ -28,10 +28,16 @@ const handleResize = () => {
   isMobile.value = window.innerWidth < 768
 }
 
+// Открытие/закрытие зума только на мобильных
 const toggleZoom = (image) => {
   if (isMobile.value) {
     zoomedImage.value = zoomedImage.value === image ? null : image
   }
+}
+
+// Закрытие по крестику
+const closeZoom = () => {
+  zoomedImage.value = null
 }
 
 // Предзагрузка всех изображений
@@ -45,7 +51,7 @@ const preloadImages = () => {
 let autoScrollInterval = null
 
 onMounted(() => {
-  preloadImages() // Начинаем загрузку сразу
+  preloadImages()
 
   window.addEventListener('resize', handleResize)
 
@@ -74,9 +80,9 @@ onUnmounted(() => {
         v-for="card in cardTypes"
         :key="card.id"
         class="kzh-card"
+        :class="{ 'kzh-card--clickable': isMobile }"
         @click="toggleZoom(card.image)"
       >
-        <!-- Изображение первым — чтобы оно было под placeholder'ом изначально -->
         <img
           :src="card.image"
           alt=""
@@ -85,15 +91,32 @@ onUnmounted(() => {
           @load="$event.target.classList.add('loaded')"
         />
 
-        <!-- Тёмный скелетон-прелоадер поверх изображения -->
         <div class="kzh-card-placeholder"></div>
       </div>
     </div>
   </div>
 
-  <!-- Зум модал -->
-  <div v-if="zoomedImage" class="kzh-zoom-modal" @click="toggleZoom(null)">
-    <img :src="zoomedImage" alt="Zoomed image" class="kzh-zoomed-image" />
+  <!-- Зум модал (только для мобильных) -->
+  <div
+    v-if="zoomedImage && isMobile"
+    class="kzh-zoom-modal"
+    @click="toggleZoom(null)"
+  >
+    <!-- Изображение — клик по нему НЕ закрывает модал -->
+    <img
+      :src="zoomedImage"
+      alt="Zoomed image"
+      class="kzh-zoomed-image"
+      @click.stop
+    />
+
+    <!-- Крестик закрытия -->
+    <button class="kzh-zoom-close" @click.stop="closeZoom" aria-label="Закрыть">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18"/>
+        <path d="m6 6 12 12"/>
+      </svg>
+    </button>
   </div>
 </template>
 
@@ -126,8 +149,14 @@ onUnmounted(() => {
   border-radius: 28px;
   overflow: hidden;
   scroll-snap-align: center;
+  background: #0f0f0f;
+  /* На десктопе — обычный курсор */
+  cursor: default;
+}
+
+/* Только на мобильке — курсор pointer */
+.kzh-card--clickable {
   cursor: pointer;
-  background: #0f0f0f; /* тёмный фон на случай ошибок загрузки */
 }
 
 /* Тёмный шиммер-прелоадер */
@@ -141,19 +170,14 @@ onUnmounted(() => {
   transition: opacity 0.4s ease;
 }
 
-/* Когда изображение загрузилось — скрываем прелоадер */
 .kzh-card-image.loaded + .kzh-card-placeholder {
   opacity: 0;
   pointer-events: none;
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 .kzh-card-image {
@@ -204,5 +228,34 @@ onUnmounted(() => {
   object-fit: contain;
   border-radius: 28px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Крестик закрытия */
+.kzh-zoom-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+}
+
+.kzh-zoom-close:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.kzh-zoom-close svg {
+  width: 28px;
+  height: 28px;
 }
 </style>
