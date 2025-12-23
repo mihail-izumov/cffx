@@ -45,21 +45,17 @@ const preloadImages = () => {
 let autoScrollInterval = null
 
 onMounted(() => {
-  // Предзагружаем изображения как можно раньше
-  preloadImages()
+  preloadImages() // Начинаем загрузку сразу
 
   window.addEventListener('resize', handleResize)
 
-  // Авто-слайдер
   autoScrollInterval = setInterval(() => {
     if (gridRef.value) {
       const grid = gridRef.value
-      const cardWidth = isMobile.value ? 200 + 12 : 300 + 12 // width + gap
+      const cardWidth = isMobile.value ? 200 + 12 : 300 + 12
       let next = grid.scrollLeft + cardWidth
       const max = grid.scrollWidth - grid.clientWidth
-      if (next >= max) {
-        next = 0
-      }
+      if (next >= max) next = 0
       grid.scrollTo({ left: next, behavior: 'smooth' })
     }
   }, 3000)
@@ -80,10 +76,7 @@ onUnmounted(() => {
         class="kzh-card"
         @click="toggleZoom(card.image)"
       >
-        <!-- Скелетон-placeholder -->
-        <div class="kzh-card-placeholder"></div>
-
-        <!-- Основное изображение -->
+        <!-- Изображение первым — чтобы оно было под placeholder'ом изначально -->
         <img
           :src="card.image"
           alt=""
@@ -91,11 +84,14 @@ onUnmounted(() => {
           loading="eager"
           @load="$event.target.classList.add('loaded')"
         />
+
+        <!-- Тёмный скелетон-прелоадер поверх изображения -->
+        <div class="kzh-card-placeholder"></div>
       </div>
     </div>
   </div>
 
-  <!-- Модал для зума на мобильке -->
+  <!-- Зум модал -->
   <div v-if="zoomedImage" class="kzh-zoom-modal" @click="toggleZoom(null)">
     <img :src="zoomedImage" alt="Zoomed image" class="kzh-zoomed-image" />
   </div>
@@ -131,17 +127,24 @@ onUnmounted(() => {
   overflow: hidden;
   scroll-snap-align: center;
   cursor: pointer;
-  background: #e0e0e0; /* fallback цвет скелетона */
+  background: #0f0f0f; /* тёмный фон на случай ошибок загрузки */
 }
 
-/* Скелетон с анимацией шиммера */
+/* Тёмный шиммер-прелоадер */
 .kzh-card-placeholder {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, #1a1a1a 25%, #242424 50%, #1a1a1a 75%);
   background-size: 200% 100%;
   animation: shimmer 1.8s infinite;
   border-radius: 28px;
+  transition: opacity 0.4s ease;
+}
+
+/* Когда изображение загрузилось — скрываем прелоадер */
+.kzh-card-image.loaded + .kzh-card-placeholder {
+  opacity: 0;
+  pointer-events: none;
 }
 
 @keyframes shimmer {
@@ -162,15 +165,8 @@ onUnmounted(() => {
   transition: opacity 0.4s ease;
 }
 
-/* Когда изображение загрузилось — показываем его, скрываем placeholder */
 .kzh-card-image.loaded {
   opacity: 1;
-}
-
-.kzh-card-image.loaded ~ .kzh-card-placeholder,
-.kzh-card-image.loaded + .kzh-card-placeholder {
-  opacity: 0;
-  pointer-events: none;
 }
 
 /* Мобильная версия */
