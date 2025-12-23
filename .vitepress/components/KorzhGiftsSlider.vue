@@ -40,51 +40,76 @@ function getDayOfYearUTC() {
   return Math.floor(diff / oneDay);
 }
 
+function getUTCDateKey() {
+  return new Date().toISOString().slice(0, 10); // "YYYY-MM-DD" в UTC
+}
+
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function distributePoints(counts, ids, points, perBadgeCap = Infinity) {
+  let guard = 100000;
+  while (points > 0 && guard-- > 0) {
+    const id = ids[randInt(0, ids.length - 1)];
+    if ((counts[id] ?? 0) < perBadgeCap) {
+      counts[id] = (counts[id] ?? 0) + 1;
+      points--;
+    }
+  }
+}
+
 function initBadgeCounts() {
-  const sessionKey = 'korzh_badge_counts_session';
-  const savedSession = sessionStorage.getItem(sessionKey);
-  
-  if (savedSession) {
+  // НАСТРОЙКИ
+  const STATE_KEY = 'korzh_badge_state_v1';
+  const START_TOTAL_MAX = 15;
+  const START_PER_BADGE_MAX = 3;
+  const DAILY_TOTAL_ADD_MAX = 10;
+
+  const ids = cardTypes.map(c => c.id);
+  const todayKey = getUTCDateKey();
+
+  // 1) Пытаемся восстановить состояние
+  const raw = localStorage.getItem(STATE_KEY);
+  if (raw) {
     try {
-      const parsed = JSON.parse(savedSession);
-      Object.assign(badgeCounts, parsed);
+      const state = JSON.parse(raw);
+      Object.assign(badgeCounts, state.counts || {});
+
+      // 2) Если день сменился — добавляем прирост(ы) по дням
+      if (state.dayKey && state.dayKey !== todayKey) {
+        const daysDiff = Math.max(
+          0,
+          Math.floor((Date.parse(todayKey) - Date.parse(state.dayKey)) / (1000 * 60 * 60 * 24))
+        );
+
+        for (let i = 0; i < daysDiff; i++) {
+          const add = randInt(0, DAILY_TOTAL_ADD_MAX); // <= 10 на ВСЕ карточки
+          distributePoints(badgeCounts, ids, add);
+        }
+
+        localStorage.setItem(STATE_KEY, JSON.stringify({
+          dayKey: todayKey,
+          counts: { ...badgeCounts }
+        }));
+      }
+
       return;
     } catch (e) {
       console.error(e);
+      // если сломано — упадём в генерацию заново
     }
   }
 
-  const day = getDayOfYearUTC();
-  const startDay = 357; 
-  const daysPassed = Math.max(0, day - startDay);
-  const growthStep = Math.floor(Math.random() * 4) + 4;
-  const growthBase = daysPassed * growthStep;
-  const now = new Date();
-  const timeBonus = Math.floor(now.getUTCHours() / 5); 
+  // 3) Первый запуск: стартовые 0..3, сумма <= 15
+  ids.forEach(id => (badgeCounts[id] = 0));
+  const startTotal = randInt(0, START_TOTAL_MAX);
+  distributePoints(badgeCounts, ids, startTotal, START_PER_BADGE_MAX);
 
-  const savedLocal = localStorage.getItem('korzh_user_clicks');
-  let userClicks = { 
-    badge1: 0, badge2: 0, badge3: 0, badge4: 0, badge5: 0, badge6: 0, 
-    badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0, badge12: 0 
-  };
-  if (savedLocal) {
-    try { userClicks = JSON.parse(savedLocal); } catch (e) { console.error(e) }
-  }
-
-  badgeCounts.badge1 = growthBase + timeBonus + 2 + (userClicks.badge1 || 0);
-  badgeCounts.badge2 = growthBase + timeBonus + 3 + (userClicks.badge2 || 0);
-  badgeCounts.badge3 = growthBase + timeBonus + 2 + (userClicks.badge3 || 0);
-  badgeCounts.badge4 = growthBase + timeBonus + 1 + (userClicks.badge4 || 0);
-  badgeCounts.badge5 = growthBase + timeBonus + 0 + (userClicks.badge5 || 0);
-  badgeCounts.badge6 = growthBase + timeBonus + 2 + (userClicks.badge6 || 0);
-  badgeCounts.badge7 = growthBase + timeBonus + 2 + (userClicks.badge7 || 0);
-  badgeCounts.badge8 = growthBase + timeBonus + 0 + (userClicks.badge8 || 0);
-  badgeCounts.badge9 = growthBase + timeBonus + 1 + (userClicks.badge9 || 0);
-  badgeCounts.badge10 = growthBase + timeBonus + 2 + (userClicks.badge10 || 0);
-  badgeCounts.badge11 = growthBase + timeBonus + 0 + (userClicks.badge11 || 0);
-  badgeCounts.badge12 = growthBase + timeBonus + 1 + (userClicks.badge12 || 0);
-
-  sessionStorage.setItem(sessionKey, JSON.stringify(badgeCounts));
+  localStorage.setItem(STATE_KEY, JSON.stringify({
+    dayKey: todayKey,
+    counts: { ...badgeCounts }
+  }));
 }
 
 onMounted(() => {
