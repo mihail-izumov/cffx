@@ -287,13 +287,13 @@ onUnmounted(() => {
   max-height: calc(100vh - 80px);
   overflow-y: auto;
   scroll-behavior: smooth;
-  width: 100%; /* всегда занимает 100% ширины родителя */
-  box-sizing: border-box; /* ДОБАВИТЬ */
+  width: 100%;
+  box-sizing: border-box;
 }
 /* Стили только для модального режима */
 .signal-widget-content.modal-mode {
-  max-width: 850px; /* ограничение только в модалке */
-  margin: 0 auto; /* центрирование только в модалке */
+  max-width: 850px;
+  margin: 0 auto;
 }
  
 .signal-widget-header {
@@ -301,20 +301,6 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-}
-.signal-header-title {
-  margin: 0;
-  color: white;
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1.2;
-  text-align: left;
-  flex-grow: 1;
-}
-.signal-header-subtitle {
-  margin-top: 8px;
-  font-size: 15px;
-  color: var(--vp-c-text-2);
 }
 /* Кнопка закрытия виджета (только для модального режима) */
 .signal-widget-close-btn {
@@ -409,7 +395,7 @@ onUnmounted(() => {
 .signal-stat-card:hover::before {
   filter: brightness(2) saturate(1.5);
 }
-/* Цветовые схемы карточек - ВСЕ В ФИОЛЕТОВОЙ ГАММЕ */
+/* Цветовые схемы карточек */
 .signal-signals-card,
 .signal-reviews-card {
   --signal-border-gradient: linear-gradient(135deg, #6d28d9, #a78bfa, #ddd6fe);
@@ -437,23 +423,23 @@ onUnmounted(() => {
   background: radial-gradient(circle at 50% 0%, var(--signal-glow-hover-color) 0%, transparent 70%);
   box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
 }
-.signal-stat-icon,
-.signal-stat-value,
-.signal-stat-label {
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
 .signal-stat-icon {
-  opacity: 0.8;
-  height: 32px;
-  margin-bottom: 4px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  opacity: 0.35;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 .signal-stat-icon img {
-  width: 84px;
-  height: 84px;
+  width: 140px;
+  height: 140px;
   object-fit: contain;
 }
 .signal-stat-card:hover .signal-stat-icon {
-  transform: scale(1.2);
+  opacity: 0.5;
 }
 .signal-stat-left-group {
   display: flex;
@@ -502,13 +488,9 @@ onUnmounted(() => {
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
-/* Анимация для бабла "Решение: 100%" - плавный перелив */
 .signal-100-badge {
   position: relative;
   overflow: hidden;
-  background: rgba(30, 10, 60, 0.6);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(109, 40, 217, 0.3);
 }
 .signal-100-badge::before {
   content: '';
@@ -526,14 +508,6 @@ onUnmounted(() => {
   );
   background-size: 200% 100%;
   animation: shimmer-wave 6s ease-in-out infinite;
-  opacity: 0;
-  animation: shimmer-wave 6s ease-in-out infinite, fade-in-out 6s ease-in-out infinite;
-}
-.signal-100-badge .signal-badge-text {
-  color: rgba(200, 190, 230, 0.85);
-  font-weight: 700;
-  position: relative;
-  z-index: 1;
 }
 @keyframes shimmer-wave {
   0%, 100% {
@@ -541,20 +515,6 @@ onUnmounted(() => {
   }
   50% {
     background-position: 200% 0;
-  }
-}
-@keyframes fade-in-out {
-  0%, 100% {
-    opacity: 0;
-  }
-  40% {
-    opacity: 0.8;
-  }
-  60% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0;
   }
 }
 /* Статус системы */
@@ -653,8 +613,8 @@ onUnmounted(() => {
   min-height: 36px;
   display: flex;
   align-items: center;
-  min-width: 350px; /* ИЗМЕНИТЬ: уменьшить с 420px */
-  max-width: none; /* ИЗМЕНИТЬ: убрать ограничение max-width */
+  min-width: 350px;
+  max-width: none;
 }
 .signal-rotating-text {
   transition: opacity 0.5s ease-in-out;
@@ -714,6 +674,9 @@ onUnmounted(() => {
 .signal-review-button:hover .signal-button-icon {
   transform: translateX(4px);
 }
+.signal-ticket-button:hover .signal-button-icon {
+  transform: translate(4px, -4px);
+}
 /* Модальное окно */
 .signal-modal-overlay {
   position: fixed;
@@ -752,13 +715,15 @@ onUnmounted(() => {
   text-align: left;
 }
 .signal-modal-link {
-  color: #c4b5fd;
+  color: #c4b5fd !important;
   text-decoration: none !important;
   font-weight: 600;
   transition: color 0.3s ease;
+  background-image: none !important;
+  box-shadow: none !important;
 }
 .signal-modal-link:hover {
-  color: #ddd6fe;
+  color: #ddd6fe !important;
   text-decoration: underline !important;
 }
 .signal-modal-footer {
@@ -786,10 +751,6 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .signal-widget-content {
     padding: 16px 0;
-    max-width: 100%;
-    width: 100%;
-    min-width: unset;
-    margin: 0 auto;
   }
   .signal-widget-close-btn {
     top: 12px;
@@ -804,17 +765,14 @@ onUnmounted(() => {
     grid-template-columns: 1fr;
     gap: 10px;
   }
- 
   .signal-rotating-text-container {
     min-width: unset;
     max-width: unset;
   }
- 
   .signal-rotating-text {
     white-space: normal;
     overflow: visible;
   }
- 
   /* Порядок карточек в мобильной версии: Подарки, Сигналы */
   .signal-reviews-card {
     order: 1;
@@ -822,7 +780,6 @@ onUnmounted(() => {
   .signal-signals-card {
     order: 2;
   }
- 
   .signal-stat-card {
     display: flex;
     flex-direction: row;
@@ -844,7 +801,16 @@ onUnmounted(() => {
     gap: 10px;
   }
   .signal-stat-icon {
-    display: none;
+    display: block;
+    position: static;
+    transform: none;
+    z-index: auto;
+    opacity: 1;
+  }
+  .signal-stat-icon img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
   }
   .signal-stat-left-group {
     display: flex;
@@ -912,31 +878,12 @@ onUnmounted(() => {
   .signal-widget-content {
     padding: 14px 0;
   }
-  .signal-header-title {
-    font-size: 22px;
-    text-align: left;
-  }
-  .signal-header-subtitle {
-    font-size: 14px;
-  }
   .signal-cafe-name {
     font-size: 20px;
   }
   .signal-status-badge {
     padding: 4px 12px;
     font-size: 10px;
-  }
-  .signal-status-metrics {
-    gap: 8px;
-  }
-  .signal-modal {
-    padding: 24px;
-  }
-  .signal-modal-body {
-    margin-top: 12px;
-  }
-  .signal-modal-footer {
-    margin-top: 20px;
   }
 }
 </style>
