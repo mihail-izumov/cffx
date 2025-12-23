@@ -140,46 +140,120 @@ const selectedBadgeLabel = computed(() => {
   return card ? card.label : null
 })
 
-// Алгоритм счетчиков
-function getDayOfYearUTC() {
-  const now = new Date();
-  const start = new Date(Date.UTC(now.getUTCFullYear(), 0, 0));
-  const diff = now - start;
-  const oneDay = 1000 * 60 * 60 * 24;
-  return Math.floor(diff / oneDay);
+/**
+ * =========================
+ * Ручная статистика
+ * =========================
+ */
+const BASE_COUNTS = {
+  badge1: 0,
+  badge2: 0,
+  badge3: 0,
+  badge4: 0,
+  badge5: 0,
+  badge6: 0,
+  badge7: 0,
+  badge8: 0,
+  badge9: 0,
+  badge10: 0,
+  badge11: 0,
+  badge12: 0,
+}
+
+/**
+ * =========================
+ * (Опционально) Ручной буст по весам
+ * =========================
+ */
+const ENABLE_BOOST = true
+
+// “Потолок” буста
+const BOOST_TOTAL = 20
+
+// Веса
+const WEIGHTS = {
+  badge1: 10,
+  badge2: 10,
+  badge3: 4,
+  badge4: 6,
+  badge5: 4,
+  badge6: 4,
+  badge7: 5,
+  badge8: 1,
+  badge9: 3,
+  badge10: 4,
+  badge11: 1,
+  badge12: 2.5,
+}
+
+const BOOST_SEED = 123456789
+
+function mulberry32(a) {
+  return function () {
+    let t = (a += 0x6D2B79F5)
+    t = Math.imul(t ^ (t >>> 15), t | 1)
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function weightedPickId(ids, weights, rand) {
+  let total = 0
+  const cum = []
+
+  for (const id of ids) {
+    const w = Math.max(0, Number(weights[id] ?? 1))
+    total += w
+    cum.push(total)
+  }
+
+  if (total <= 0) return ids[0]
+
+  const r = rand() * total
+  for (let i = 0; i < cum.length; i++) {
+    if (r < cum[i]) return ids[i]
+  }
+  return ids[ids.length - 1]
+}
+
+function makeEmptyCounts(ids) {
+  const o = {}
+  for (const id of ids) o[id] = 0
+  return o
+}
+
+function distributeBoost(ids, totalPoints, weights, seed) {
+  const boost = makeEmptyCounts(ids)
+  const rand = mulberry32(seed)
+
+  let points = Math.max(0, Math.floor(totalPoints))
+  let guard = 200000
+
+  while (points > 0 && guard-- > 0) {
+    const id = weightedPickId(ids, weights, rand)
+    boost[id] += 1
+    points--
+  }
+
+  return boost
 }
 
 function initBadgeCounts() {
-  const day = getDayOfYearUTC();
-  const startDay = 355; 
-  const daysPassed = Math.max(0, day - startDay);
-  const growthStep = Math.floor(Math.random() * 4) + 4; // 4-7
-  const growthBase = daysPassed * growthStep;
-  const now = new Date();
-  const hours = now.getUTCHours(); 
-  const timeBonus = Math.floor(hours / 5); 
+  const ids = cardTypes.map(c => c.id)
 
   const savedLocal = localStorage.getItem('korzh_user_clicks');
-  let userClicks = { 
-    badge1: 0, badge2: 0, badge3: 0, badge4: 0, badge5: 0, badge6: 0, 
-    badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0, badge12: 0
-  };
+  let userClicks = makeEmptyCounts(ids);
   if (savedLocal) {
     try { userClicks = JSON.parse(savedLocal); } catch (e) { console.error(e) }
   }
 
-  badgeCounts.badge1 = growthBase + timeBonus + 2 + (userClicks.badge1 || 0);
-  badgeCounts.badge2 = growthBase + timeBonus + 4 + (userClicks.badge2 || 0);
-  badgeCounts.badge3 = growthBase + timeBonus + 2 + (userClicks.badge3 || 0);
-  badgeCounts.badge4 = growthBase + timeBonus + 1 + (userClicks.badge4 || 0);
-  badgeCounts.badge5 = growthBase + timeBonus + 0 + (userClicks.badge5 || 0);
-  badgeCounts.badge6 = growthBase + timeBonus + 2 + (userClicks.badge6 || 0);
-  badgeCounts.badge7 = growthBase + timeBonus + 2 + (userClicks.badge7 || 0);
-  badgeCounts.badge8 = growthBase + timeBonus + 0 + (userClicks.badge8 || 0);
-  badgeCounts.badge9 = growthBase + timeBonus + 1 + (userClicks.badge9 || 0);
-  badgeCounts.badge10 = growthBase + timeBonus + 2 + (userClicks.badge10 || 0);
-  badgeCounts.badge11 = growthBase + timeBonus + 0 + (userClicks.badge11 || 0);
-  badgeCounts.badge12 = growthBase + timeBonus + 1 + (userClicks.badge12 || 0);
+  const boost = ENABLE_BOOST
+    ? distributeBoost(ids, BOOST_TOTAL, WEIGHTS, BOOST_SEED)
+    : makeEmptyCounts(ids)
+
+  for (const id of ids) {
+    badgeCounts[id] = (BASE_COUNTS[id] ?? 0) + (boost[id] ?? 0) + (userClicks[id] || 0)
+  }
 }
 
 function incrementBadgeCount(id) {
@@ -188,7 +262,7 @@ function incrementBadgeCount(id) {
     const savedLocal = localStorage.getItem('korzh_user_clicks');
     let userClicks = { 
       badge1: 0, badge2: 0, badge3: 0, badge4: 0, badge5: 0, badge6: 0, 
-      badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0 
+      badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0, badge12: 0 
     };
     if (savedLocal) { try { userClicks = JSON.parse(savedLocal); } catch (e) {} }
     userClicks[id] = (userClicks[id] || 0) + 1;
@@ -440,65 +514,11 @@ async function submitForm() {
   const timeoutId = setTimeout(() => controller.abort(), 20000)
 
   try {
-    const response = await fetch(APIENDPOINT, {
-      method: 'POST',
-      body: formData,
-      signal: controller.signal
-    })
-    
-    clearTimeout(timeoutId)
-    const result = await response.json()
-
-    if (result.status === 'success' || result.processed) {
-      console.log('Success:', result)
-      handleShareClick()
-      setTimeout(resetForm, 1000); 
-    } else {
-      throw new Error(result.message)
-    }
-  } catch (error) {
-    if (error.name === 'AbortError') { alert('Большой поток открыток. Попробуйте еще через минуту.') } 
-    else { console.error('Submission error:', error); alert('Ошибка при отправке. Попробуйте еще раз.'); }
-  } finally { isSubmitting.value = false }
-}
-
-let metaViewport = null;
-function disableZoom() {
-  metaViewport = document.querySelector('meta[name="viewport"]');
-  if (metaViewport) { metaViewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'; } 
-  else {
-    metaViewport = document.createElement('meta');
-    metaViewport.name = 'viewport';
-    metaViewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
-    document.head.appendChild(metaViewport);
-  }
-}
-function enableZoom() { if (metaViewport) { metaViewport.content = 'width=device-width, initial-scale=1'; } }
+    const response = await fetch(AP...(truncated 2158 characters)...ipt>
 
 onMounted(() => {
-  disableZoom();
-  const randomNum = Math.floor(Math.random() * 151) + 50; 
-  rawTicketNumber.value = String(randomNum);
-  formattedTicketNumber.value = rawTicketNumber.value;
-
-  const now = new Date()
-  const day = String(now.getDate()).padStart(2, '0')
-  const month = String(now.getMonth() + 1).padStart(2, '0')
-  const year = now.getFullYear()
-  const hours = String(now.getHours()).padStart(2, '0')
-  const minutes = String(now.getMinutes()).padStart(2, '0')
-  const seconds = String(now.getSeconds()).padStart(2, '0')
-  currentDate.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-  
-  initializeSuggestions()
   initBadgeCounts()
-  startRotation()
 })
-
-onUnmounted(() => { enableZoom(); stopRotation(); })
-
-const storyGeneratorRef = ref(null)
-const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRef.value.generateAndShare() } }
 </script>
 
 <template>
