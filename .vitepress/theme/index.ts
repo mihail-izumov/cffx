@@ -149,6 +149,7 @@ import ShareButton from '../components/ShareButton.vue'
 import KorzhCardsSlider from '../components/KorzhCardsSlider.vue'
 import KorzhSendSignalBanner from '../components/KorzhSendSignalBanner.vue'
 import KorzhGiftsSlider from '../components/KorzhGiftsSlider.vue'
+import KorzhWidget2 from '../components/KorzhWidget2.vue'
 
 
 export default {
@@ -304,6 +305,7 @@ export default {
     app.component('KorzhCardsSlider', KorzhCardsSlider)   
     app.component('KorzhSendSignalBanner', KorzhSendSignalBanner)  
     app.component('KorzhGiftsSlider', KorzhGiftsSlider)  
+    app.component('KorzhWidget2', KorzhWidget2) 
     
   },
 }
