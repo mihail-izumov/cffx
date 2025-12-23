@@ -21,7 +21,7 @@ const cafeProfiles = {
 const establishment = {
   name: 'Корж',
   gifts: '12',
-  giftsText: 'Доставка работает',
+  giftsText: 'С новым годом!',
   signals: 3,
   signalsPercent: 100,
 }
@@ -325,9 +325,9 @@ onUnmounted(() => {
   border-color: var(--vp-c-text-2);
   color: white;
 }
-/* Основная карточка — ещё ярче фон */
+/* Основная карточка — ярче фон */
 .signal-main-card {
-  background: rgba(45, 45, 60, 0.5);
+  background: rgba(40, 40, 50, 0.45);
   border-radius: 20px;
   padding: 24px;
 }
@@ -735,7 +735,7 @@ onUnmounted(() => {
   bottom: -1px;
   width: 100%;
   height: 1px;
-  background: #ffffff;
+  background: currentColor;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -805,7 +805,10 @@ onUnmounted(() => {
     flex-direction: row;
     align-items: center;
     border-radius: 16px;
-    cursor: pointer;
+    transition: none;
+  }
+  .signal-stat-card:hover {
+    transform: none;
   }
   .signal-stat-content {
     flex-direction: row;
@@ -825,7 +828,7 @@ onUnmounted(() => {
     opacity: 0.6;
     transition: opacity 0.4s ease, transform 0.4s ease;
   }
-  .signal-stat-card.active .signal-stat-icon {
+  .signal-stat-card:hover .signal-stat-icon {
     opacity: 1;
     transform: scale(1.15);
   }
