@@ -50,7 +50,7 @@ const BASE_COUNTS = {
 const ENABLE_BOOST = true
 
 // “Потолок” буста
-const BOOST_TOTAL = 20
+const BOOST_TOTAL = 12
 
 // Веса
 const WEIGHTS = {
