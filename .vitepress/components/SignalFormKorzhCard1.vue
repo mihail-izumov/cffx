@@ -264,7 +264,9 @@ function incrementBadgeCount(id) {
       badge1: 0, badge2: 0, badge3: 0, badge4: 0, badge5: 0, badge6: 0, 
       badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0, badge12: 0 
     };
-    if (savedLocal) { try { userClicks = JSON.parse(savedLocal); } catch (e) {} }
+    if (savedLocal) { 
+      try { userClicks = JSON.parse(savedLocal); } catch (e) {} 
+    }
     userClicks[id] = (userClicks[id] || 0) + 1;
     localStorage.setItem('korzh_user_clicks', JSON.stringify(userClicks));
   }
@@ -363,7 +365,7 @@ const baseSuggestions = {
       
       // === ПРИЗНАЮСЬ (MALE SPECIFIC) ===
       'виню пробки': ['в опоздании', 'поэтому я здесь', 'нужен кофе', 'нервы на пределе'],
-      'ушел в оффлайн': ['до завтра', 'не беспокоить', 'с этим кофе', 'и точка'], // Вместо "не хочу работать"
+      'ушел в оффлайн': ['до завтра', 'не беспокоить', 'с этим кофе', 'и точка'],
       
       // === ПРИЗНАЮСЬ (SHARED) ===
       'согрешила с десертом': ['и не стыдно', 'было вкусно', 'каюсь', 'отработаем в зале'],
@@ -514,10 +516,38 @@ async function submitForm() {
   const timeoutId = setTimeout(() => controller.abort(), 20000)
 
   try {
-    const response = await fetch(AP...(truncated 2158 characters)...ipt>
+    const response = await fetch(APIENDPOINT, {
+      method: 'POST',
+      body: formData,
+      signal: controller.signal
+    })
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+
+    // Успешная отправка — можно сбросить форму или показать успех
+    resetForm()
+    // Здесь можно добавить уведомление об успехе, если нужно
+
+  } catch (error) {
+    console.error('Error submitting form:', error)
+    // Здесь можно показать ошибку пользователю
+    alert('Произошла ошибка при отправке. Попробуйте позже.')
+  } finally {
+    clearTimeout(timeoutId)
+    isSubmitting.value = false
+  }
+}
 
 onMounted(() => {
   initBadgeCounts()
+  startRotation()
+  initializeSuggestions()
+})
+
+onUnmounted(() => {
+  stopRotation()
 })
 </script>
 
