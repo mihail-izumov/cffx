@@ -10,52 +10,39 @@ head:
       content: "https://cffx.ru/korzh_og_card.jpg"
 ---
 
-<div align="center">
+<div class="hero-header">
   <span class="korzh-badge">Где начинается ваша кофейня</span>
-
-  <br>
-  
   <h1 class="responsive-heading-signal-industries">Корж на связи</h1>
-  <p>
-    <strong>Каждая чашка кофе </strong> делает <br class="mobile-break">Вашу любимую кофейню еще лучше.
-  </p>
 </div>
 
 <style>
-/* БАЗОВЫЙ (десктоп >768px) */
+.hero-header {
+  text-align: center;
+}
+
+.hero-header .korzh-badge {
+  display: block;
+  margin-bottom: 20px;  /* ← Пространство вместо <br> */
+}
+
 .vp-doc h1.responsive-heading-signal-industries {
   font-size: 46px !important;
   line-height: 1.1 !important;
-  margin: 0 0 20px 0 !important;
+  margin: 0 0 20px 0 !important;  /* Убираем top */
   font-weight: 700 !important;
 }
 
-/* Таблеты 769px+ — нет изменений */
-@media (min-width: 769px) {
-  .vp-doc h1.responsive-heading-signal-industries {
-    font-size: 46px !important;
-    line-height: 1.1 !important;
-  }
-}
-
-/* Мобильные ≤768px — УМЕНЬШАЕМ размер */
+/* Мобильные — только размер */
 @media (max-width: 768px) {
-  .vp-doc h1.responsive-heading-signal-industries {
-    font-size: 36px !important;  /* ← ИЗМЕНИЛИ на меньший */
-    line-height: 1.3 !important;
-    margin-bottom: 12px !important;
+  .hero-header .korzh-badge {
+    margin-bottom: 16px;  /* Меньше на мобиле */
   }
-}
-
-/* Очень маленькие экраны ≤480px */
-@media (max-width: 480px) {
   .vp-doc h1.responsive-heading-signal-industries {
-    font-size: 32px !important;  /* ← Еще меньше */
+    font-size: 32px !important;
     line-height: 1.3 !important;
   }
 }
 </style>
-
 
 
 <style>
