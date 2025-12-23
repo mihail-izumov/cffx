@@ -36,7 +36,7 @@ head:
    Используем min-width, чтобы это правило НЕ касалось телефонов */
 @media screen and (min-width: 601px) and (max-width: 768px) {
   .vp-doc h1.responsive-heading-signal-industries {
-    font-size: 32px !important;
+    font-size: 36px !important;
     line-height: 1.2 !important;
     margin-bottom: 15px !important;
   }
@@ -45,7 +45,7 @@ head:
 /* ТЕЛЕФОНЫ (всё, что меньше 600px)*/
 @media screen and (max-width: 600px) {
   .vp-doc h1.responsive-heading-signal-industries {
-    font-size: 32px !important;
+    font-size: 36px !important;
     line-height: 1.2 !important;
     margin-bottom: 15px !important;
   }
