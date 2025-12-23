@@ -2,7 +2,7 @@
 outline: false
 prev: false
 next: false
-title: Отправьте Сигнал в Корж
+title: Корж на связи
 description: Где Начинается Ваша Кофейня
 head:
   - - meta
