@@ -37,7 +37,7 @@ head:
 
 /* ваш код как был */
 .vp-doc h1.korzh-heading {
-  font-size: 46px !important;
+  font-size: 52px !important;
   line-height: 1.1 !important;
   margin: 0 0 20px 0 !important;
   padding-top: 0 !important;
@@ -48,7 +48,7 @@ head:
 Используем min-width, чтобы это правило НЕ касалось телефонов */
 @media screen and (min-width: 601px) and (max-width: 768px) {
   .vp-doc h1.korzh-heading {
-    font-size: 32px !important;
+    font-size: 42px !important;
     line-height: 1.2 !important;
     margin-bottom: 15px !important;
   }
@@ -56,7 +56,7 @@ head:
 
 @media screen and (max-width: 600px) {
   .vp-doc h1.korzh-heading {
-    font-size: 32px !important;
+    font-size: 38px !important;
     line-height: 1.2 !important;
     margin-bottom: 15px !important;
   }
