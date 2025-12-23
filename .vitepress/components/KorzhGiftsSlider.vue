@@ -7,7 +7,7 @@ const cardTypes = [
   { id: 'badge3', label: 'Кальцифер', image: '/img/korzh/gifts/calcifer-gift.png' },
   { id: 'badge4', label: 'Нян Кот', image: '/img/korzh/gifts/nyancat-gift.png' },
   { id: 'badge5', label: 'Пёрпи', image: '/img/korzh/gifts/purrpy-gifts.png' },
-  { id: 'badge6', label: 'Дерпи', image: '/img/korzh/gifts/derpy-gift.png' }, 
+  { id: 'badge6', label: 'Дерпи', image: '/img/korzh/gifts/derpy-gift.png' },
   { id: 'badge7', label: 'Почита-заряд', image: '/img/korzh/gifts/pochitazaryad-gift.png' },
   { id: 'badge8', label: 'Сладкий Кусь', image: '/img/korzh/gifts/sladkiykus-gift.png' },
   { id: 'badge9', label: 'Холодок', image: '/img/korzh/gifts/holodok-gift.png' },
@@ -17,99 +17,172 @@ const cardTypes = [
 ]
 
 const badgeCounts = reactive({
-  badge1: 0,
-  badge2: 0,
-  badge3: 0,
-  badge4: 0,
-  badge5: 0,
-  badge6: 0,
-  badge7: 0,
-  badge8: 0,
-  badge9: 0,
-  badge10: 0,
-  badge11: 0,
-  badge12: 0
+  badge1: 0, badge2: 0, badge3: 0, badge4: 0, badge5: 0, badge6: 0,
+  badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0, badge12: 0
 })
 
-// Алгоритм счетчиков
-function getDayOfYearUTC() {
-  const now = new Date();
-  const start = new Date(Date.UTC(now.getUTCFullYear(), 0, 0));
-  const diff = now - start;
-  const oneDay = 1000 * 60 * 60 * 24;
-  return Math.floor(diff / oneDay);
+/**
+ * =========================
+ * НАСТРОЙКИ (крути тут)
+ * =========================
+ */
+
+// Версия ключа: меняешь -> пересоздаст распределение с нуля
+const STATE_KEY = 'korzh_badge_state_v3'
+
+// Потолки
+const START_TOTAL_MIN = 10        // сколько всего очков раздать на старте (минимум)
+const START_TOTAL_MAX = 15        // сколько всего очков раздать на старте (максимум)
+const START_PER_BADGE_MAX = 3     // максимум на один бейдж на старте (0..3)
+const DAILY_TOTAL_ADD_MIN = 0     // сколько всего добавлять за новый день (минимум)
+const DAILY_TOTAL_ADD_MAX = 10    // сколько всего добавлять за новый день (максимум)
+
+// Коэффициенты (веса): больше = чаще получит +1 при распределении
+const WEIGHTS = {
+  badge1: 1.0,
+  badge2: 1.0,
+  badge3: 1.0,
+  badge4: 1.0,
+  badge5: 1.0,
+  badge6: 1.0,
+  badge7: 1.0,
+  badge8: 1.0,
+  badge9: 1.0,
+  badge10: 1.0,
+  badge11: 1.0,
+  badge12: 1.0,
 }
 
+// (опционально) Ограничение дневного прироста на одну карточку
+// null/Infinity = без ограничения
+const DAILY_PER_BADGE_MAX = Infinity
+
+/**
+ * =========================
+ * Утилиты
+ * =========================
+ */
+
 function getUTCDateKey() {
-  return new Date().toISOString().slice(0, 10); // "YYYY-MM-DD" в UTC
+  // "YYYY-MM-DD" в UTC, чтобы смена дня была одинаковой для всех часовых поясов
+  return new Date().toISOString().slice(0, 10)
 }
 
 function randInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-function distributePoints(counts, ids, points, perBadgeCap = Infinity) {
-  let guard = 100000;
+function weightedPickId(ids, weights) {
+  let total = 0
+  const cum = []
+
+  for (const id of ids) {
+    const w = Math.max(0, Number(weights[id] ?? 1))
+    total += w
+    cum.push(total)
+  }
+
+  if (total <= 0) return ids[0]
+
+  const r = Math.random() * total
+  for (let i = 0; i < cum.length; i++) {
+    if (r < cum[i]) return ids[i]
+  }
+  return ids[ids.length - 1]
+}
+
+// распределение "points" по ids по 1 очку за итерацию
+// perBadgeCap — общий cap на значение (например 3 на старте)
+// perBadgeAddedCapMap — cap на ДОБАВЛЕНИЕ в рамках одной операции (например +3 в день на одну карточку)
+function distributeWeightedPoints(counts, ids, points, weights, perBadgeCap = Infinity, perBadgeAddedCapMap = null) {
+  let guard = 200000
   while (points > 0 && guard-- > 0) {
-    const id = ids[randInt(0, ids.length - 1)];
-    if ((counts[id] ?? 0) < perBadgeCap) {
-      counts[id] = (counts[id] ?? 0) + 1;
-      points--;
+    const id = weightedPickId(ids, weights)
+
+    const current = counts[id] ?? 0
+    if (current >= perBadgeCap) continue
+
+    if (perBadgeAddedCapMap) {
+      const added = perBadgeAddedCapMap[id] ?? 0
+      if (added >= perBadgeAddedCapMap.__cap) continue
+      perBadgeAddedCapMap[id] = added + 1
     }
+
+    counts[id] = current + 1
+    points--
   }
 }
 
+function ensureAllKeys(counts, ids) {
+  for (const id of ids) {
+    if (typeof counts[id] !== 'number' || Number.isNaN(counts[id])) counts[id] = 0
+  }
+}
+
+/**
+ * =========================
+ * Инициализация/обновление
+ * =========================
+ */
 function initBadgeCounts() {
-  // НАСТРОЙКИ
-  const STATE_KEY = 'korzh_badge_state_v1';
-  const START_TOTAL_MAX = 15;
-  const START_PER_BADGE_MAX = 3;
-  const DAILY_TOTAL_ADD_MAX = 10;
+  const ids = cardTypes.map(c => c.id)
+  const todayKey = getUTCDateKey()
 
-  const ids = cardTypes.map(c => c.id);
-  const todayKey = getUTCDateKey();
-
-  // 1) Пытаемся восстановить состояние
-  const raw = localStorage.getItem(STATE_KEY);
+  // 1) Восстановление
+  const raw = localStorage.getItem(STATE_KEY)
   if (raw) {
     try {
-      const state = JSON.parse(raw);
-      Object.assign(badgeCounts, state.counts || {});
+      const state = JSON.parse(raw)
+      Object.assign(badgeCounts, state.counts || {})
+      ensureAllKeys(badgeCounts, ids)
 
-      // 2) Если день сменился — добавляем прирост(ы) по дням
+      // 2) Доначисление за прошедшие дни
       if (state.dayKey && state.dayKey !== todayKey) {
         const daysDiff = Math.max(
           0,
           Math.floor((Date.parse(todayKey) - Date.parse(state.dayKey)) / (1000 * 60 * 60 * 24))
-        );
+        )
 
         for (let i = 0; i < daysDiff; i++) {
-          const add = randInt(0, DAILY_TOTAL_ADD_MAX); // <= 10 на ВСЕ карточки
-          distributePoints(badgeCounts, ids, add);
+          const add = randInt(DAILY_TOTAL_ADD_MIN, DAILY_TOTAL_ADD_MAX)
+
+          const addedMap = {
+            __cap: DAILY_PER_BADGE_MAX
+          }
+
+          distributeWeightedPoints(
+            badgeCounts,
+            ids,
+            add,
+            WEIGHTS,
+            Infinity,
+            Number.isFinite(DAILY_PER_BADGE_MAX) ? addedMap : null
+          )
         }
 
         localStorage.setItem(STATE_KEY, JSON.stringify({
           dayKey: todayKey,
           counts: { ...badgeCounts }
-        }));
+        }))
       }
 
-      return;
+      return
     } catch (e) {
-      console.error(e);
-      // если сломано — упадём в генерацию заново
+      console.error(e)
+      // упадём в генерацию заново
     }
   }
 
-  // 3) Первый запуск: стартовые 0..3, сумма <= 15
-  ids.forEach(id => (badgeCounts[id] = 0));
-  const startTotal = randInt(10, 15);
-  distributePoints(badgeCounts, ids, startTotal, START_PER_BADGE_MAX);
+  // 3) Первый запуск: стартовые значения
+  ids.forEach(id => (badgeCounts[id] = 0))
+
+  const startTotal = randInt(START_TOTAL_MIN, START_TOTAL_MAX)
+  distributeWeightedPoints(badgeCounts, ids, startTotal, WEIGHTS, START_PER_BADGE_MAX)
 
   localStorage.setItem(STATE_KEY, JSON.stringify({
     dayKey: todayKey,
     counts: { ...badgeCounts }
-  }));
+  }))
 }
 
 onMounted(() => {
@@ -120,8 +193,8 @@ onMounted(() => {
 <template>
   <div class="kzh-cards-container">
     <div class="kzh-cards-grid">
-      <div 
-        v-for="card in cardTypes" 
+      <div
+        v-for="card in cardTypes"
         :key="card.id"
         class="kzh-card"
       >
@@ -148,12 +221,12 @@ onMounted(() => {
 }
 
 .kzh-cards-grid {
-  display: flex; 
+  display: flex;
   overflow-x: auto;
   gap: 12px;
-  padding-bottom: 25px; 
-  padding-top: 20px;    
-  padding-left: 15px;   
+  padding-bottom: 25px;
+  padding-top: 20px;
+  padding-left: 15px;
   margin-left: -15px;
   margin-right: -1.5rem;
   padding-right: 1.5rem;
@@ -172,11 +245,11 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transform: translateZ(0); 
+  transform: translateZ(0);
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease, border-color 0.4s ease;
   overflow: hidden;
   backdrop-filter: blur(10px);
-  min-width: 180px; 
+  min-width: 180px;
   width: 180px;
 }
 
@@ -186,7 +259,7 @@ onMounted(() => {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 50%; 
+  height: 50%;
   background: linear-gradient(to bottom, transparent 0%, rgba(30, 30, 32, 0.6) 40%, #1e1e20 100%);
   z-index: 1;
   pointer-events: none;
@@ -244,10 +317,10 @@ onMounted(() => {
 
 @media (max-width: 768px) {
   .kzh-card {
-    min-width: 140px; 
+    min-width: 140px;
     width: 140px;
   }
-  
+
   .kzh-card-icon img {
     width: 110px;
     height: 110px;
