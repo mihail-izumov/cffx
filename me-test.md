@@ -10,39 +10,59 @@ head:
       content: "https://cffx.ru/korzh_og_card.jpg"
 ---
 
-<div class="hero-header">
-  <span class="korzh-badge">Где начинается ваша кофейня</span>
-  <h1 class="responsive-heading-signal-industries">Корж на связи</h1>
+<div align="center">
+
+<span class="korzh-badge">Где начинается ваша кофейня</span> <br>
+
+<h1 class="responsive-heading-signal-industries">Корж на связи</h1>
+
+<p>
+<strong>Каждая чашка кофе </strong> делает <br class="mobile-break">Вашу любимую кофейню еще лучше.
+</p>
+
 </div>
 
 <style>
-.hero-header {
-  text-align: center;
+/* FIX #1: возвращаем пространство между бейджем и H1 (не трогая разметку) */
+.korzh-badge {
+  display: inline-block;
+  margin-bottom: 14px;
 }
 
-.hero-header .korzh-badge {
+/* Доп. фикс: делаем <br> после бейджа “высотой в зазор” */
+.korzh-badge + br {
   display: block;
-  margin-bottom: 20px;  /* ← Пространство вместо <br> */
+  line-height: 14px;
 }
 
+/* ваш код как был */
 .vp-doc h1.responsive-heading-signal-industries {
   font-size: 46px !important;
   line-height: 1.1 !important;
-  margin: 0 0 20px 0 !important;  /* Убираем top */
+  margin: 0 0 20px 0 !important;
+  padding-top: 0 !important;
   font-weight: 700 !important;
 }
 
-/* Мобильные — только размер */
-@media (max-width: 768px) {
-  .hero-header .korzh-badge {
-    margin-bottom: 16px;  /* Меньше на мобиле */
-  }
+/* ПЛАНШЕТЫ (от 601px до 768px)
+Используем min-width, чтобы это правило НЕ касалось телефонов */
+@media screen and (min-width: 601px) and (max-width: 768px) {
   .vp-doc h1.responsive-heading-signal-industries {
     font-size: 32px !important;
-    line-height: 1.3 !important;
+    line-height: 1.2 !important;
+    margin-bottom: 15px !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .vp-doc h1.responsive-heading-signal-industries {
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 15px !important;
   }
 }
 </style>
+
 
 
 <style>
