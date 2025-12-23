@@ -11,46 +11,48 @@ head:
 ---
 
 <div align="center">
-
-<span class="korzh-badge">Где начинается ваша кофейня</span> <br>
-
-<h1 class="responsive-heading-signal-industries">Корж на связи</h1>
-
-<p>
-  <strong>Каждая чашка кофе </strong> делает <br class="mobile-break">Вашу любимую кофейню еще лучше.
-</p>
-
+  <span class="korzh-badge">Где начинается ваша кофейня</span> <br>
+  <h1 class="responsive-heading-signal-industries">Корж на связи</h1>
+  <p>
+    <strong>Каждая чашка кофе </strong> делает <br class="mobile-break">Вашу любимую кофейню еще лучше.
+  </p>
 </div>
 
 <style>
-/* БАЗОВЫЙ СТИЛЬ (Десктоп) */
+/* БАЗОВЫЙ (десктоп >768px) */
 .vp-doc h1.responsive-heading-signal-industries {
   font-size: 46px !important;
   line-height: 1.1 !important;
   margin: 0 0 20px 0 !important;
-  padding-top: 0 !important;
   font-weight: 700 !important;
 }
 
-/* ПЛАНШЕТЫ (от 601px до 768px) 
-   Используем min-width, чтобы это правило НЕ касалось телефонов */
-@media screen and (min-width: 601px) and (max-width: 768px) {
+/* Таблеты 769px+ — нет изменений */
+@media (min-width: 769px) {
   .vp-doc h1.responsive-heading-signal-industries {
     font-size: 46px !important;
-    line-height: 1.2 !important;
-    margin-bottom: 15px !important;
+    line-height: 1.1 !important;
   }
 }
 
-/* ТЕЛЕФОНЫ (всё, что меньше 600px)*/
-@media screen and (max-width: 600px) {
+/* Мобильные ≤768px — УМЕНЬШАЕМ размер */
+@media (max-width: 768px) {
   .vp-doc h1.responsive-heading-signal-industries {
-    font-size: 46px !important;
-    line-height: 1.2 !important;
-    margin-bottom: 15px !important;
+    font-size: 32px !important;  /* ← ИЗМЕНИЛИ на меньший */
+    line-height: 1.3 !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+/* Очень маленькие экраны ≤480px */
+@media (max-width: 480px) {
+  .vp-doc h1.responsive-heading-signal-industries {
+    font-size: 28px !important;  /* ← Еще меньше */
+    line-height: 1.3 !important;
   }
 }
 </style>
+
 
 
 <style>
