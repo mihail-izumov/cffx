@@ -39,11 +39,11 @@ const DAILY_TOTAL_ADD_MAX = 7    // сколько всего добавлять
 
 // Коэффициенты (веса): больше = чаще получит +1 при распределении
 const WEIGHTS = {
-  badge1: 0.9,
-  badge2: 1.0,
-  badge3: 0.6,
-  badge4: 0.5,
-  badge5: 0.6,
+  badge1: 2,
+  badge2: 3,
+  badge3: 0.9,
+  badge4: 1.5,
+  badge5: 0.8,
   badge6: 0.4,
   badge7: 0.3,
   badge8: 0.5,
