@@ -55,9 +55,9 @@ function initBadgeCounts() {
   }
 
   const day = getDayOfYearUTC();
-  const startDay = 355; 
+  const startDay = 357; 
   const daysPassed = Math.max(0, day - startDay);
-  const growthStep = Math.floor(Math.random() * 4) + 4;
+  const growthStep = Math.floor(Math.random() * 2) + 2;
   const growthBase = daysPassed * growthStep;
   const now = new Date();
   const timeBonus = Math.floor(now.getUTCHours() / 5); 
@@ -72,7 +72,7 @@ function initBadgeCounts() {
   }
 
   badgeCounts.badge1 = growthBase + timeBonus + 2 + (userClicks.badge1 || 0);
-  badgeCounts.badge2 = growthBase + timeBonus + 4 + (userClicks.badge2 || 0);
+  badgeCounts.badge2 = growthBase + timeBonus + 3 + (userClicks.badge2 || 0);
   badgeCounts.badge3 = growthBase + timeBonus + 2 + (userClicks.badge3 || 0);
   badgeCounts.badge4 = growthBase + timeBonus + 1 + (userClicks.badge4 || 0);
   badgeCounts.badge5 = growthBase + timeBonus + 0 + (userClicks.badge5 || 0);
