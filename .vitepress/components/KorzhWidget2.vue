@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
+import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
 // Проп для определения использования в модальном окне
 const props = defineProps({
   isModal: {
@@ -15,42 +15,13 @@ const cafeProfiles = {
   'корж': {
     responseTime: { base: 2.3, min: 1.8, max: 2.8 },
     resolutionTime: { base: 17.5, min: 15, max: 20 }
-  },
-  'cafe_1': {
-    responseTime: { base: 1.6, min: 1.2, max: 2.1 },
-    resolutionTime: { base: 15.2, min: 13, max: 18 }
-  },
-  'cafe_2': {
-    responseTime: { base: 3.1, min: 2.5, max: 3.8 },
-    resolutionTime: { base: 20.3, min: 18, max: 23 }
-  },
-  'cafe_3': {
-    responseTime: { base: 1.4, min: 1.0, max: 1.9 },
-    resolutionTime: { base: 14.7, min: 12, max: 17 }
-  },
-  'cafe_4': {
-    responseTime: { base: 2.7, min: 2.2, max: 3.2 },
-    resolutionTime: { base: 18.8, min: 16, max: 22 }
-  },
-  'cafe_5': {
-    responseTime: { base: 2.0, min: 1.5, max: 2.6 },
-    resolutionTime: { base: 16.4, min: 14, max: 19 }
-  },
-  'cafe_6': {
-    responseTime: { base: 1.8, min: 1.3, max: 2.4 },
-    resolutionTime: { base: 15.9, min: 13, max: 18 }
-  },
-  'cafe_7': {
-    responseTime: { base: 2.9, min: 2.3, max: 3.5 },
-    resolutionTime: { base: 19.1, min: 17, max: 22 }
   }
 }
 // -------------------------
 const establishment = {
   name: 'Корж',
-  totalReviews: '12',
-  yandex2gis: '4,9',
-  yandex2gisPercent: 94,
+  gifts: '12',
+  giftsText: 'С новым годом!',
   signals: 3,
   signalsPercent: 100,
 }
@@ -118,7 +89,6 @@ const formatTime = (hours) => {
   return `${hours.toFixed(1)}ч`
 }
 const emit = defineEmits(['close'])
-const widgetContentRef = ref(null)
 const createTicket = () => {
   emit('close')
   window.location.href = '/signal/korzh/new'
@@ -190,16 +160,9 @@ onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown)
   window.removeEventListener('resize', checkMobile)
 })
-watch(showInfoModal, (newValue) => {
-  if (newValue) {
-    nextTick(() => {
-      widgetContentRef.value.scrollTo({ top: 0, behavior: 'smooth' })
-    })
-  }
-})
 </script>
 <template>
-  <div class="signal-widget-content" :class="{ 'modal-mode': props.isModal }" ref="widgetContentRef">
+  <div class="signal-widget-content" :class="{ 'modal-mode': props.isModal }">
     <!-- Первый экран -->
     <div class="signal-widget-header" style="margin-bottom: 0;">
       <button
@@ -221,28 +184,27 @@ watch(showInfoModal, (newValue) => {
       </div>
      
       <div class="signal-stats-grid">
-        <div class="signal-stat-card signal-reviews-card">
-          <div class="signal-stat-content">
-            <div class="signal-stat-icon"><img src="/img/korzh/gifts/signalka-gift.png" alt="Signalka Gift" /></div>
-            <div class="signal-stat-left-group">
-              <div class="signal-stat-value">{{ establishment.totalReviews }}</div>
-              <div class="signal-stat-label">Отзывы</div>
-            </div>
-            <div class="signal-stat-badge signal-reviews-badge">
-              <span class="signal-badge-text">Ответ: {{ establishment.yandex2gisPercent }}%</span>
-            </div>
-          </div>
-        </div>
-       
         <div class="signal-stat-card signal-signals-card">
           <div class="signal-stat-content">
-            <div class="signal-stat-icon"><img src="/img/korzh/gifts/heartdrop-gift.png" alt="Heartdrop Gift" /></div>
+            <div class="signal-stat-icon"><img src="/img/korzh/gifts/signalka-gift.png" alt="Signalka Gift" /></div>
             <div class="signal-stat-left-group">
               <div class="signal-stat-value">{{ establishment.signals }}</div>
               <div class="signal-stat-label">Сигналы</div>
             </div>
             <div class="signal-stat-badge signal-signals-badge" :class="{ 'signal-100-badge': establishment.signalsPercent === 100 }">
               <span class="signal-badge-text">{{ getSolutionText(establishment.signalsPercent) }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="signal-stat-card signal-reviews-card">
+          <div class="signal-stat-content">
+            <div class="signal-stat-icon"><img src="/img/korzh/gifts/heartdrop-gift.png" alt="Heartdrop Gift" /></div>
+            <div class="signal-stat-left-group">
+              <div class="signal-stat-value">{{ establishment.gifts }}</div>
+              <div class="signal-stat-label">Подарки</div>
+            </div>
+            <div class="signal-stat-badge signal-reviews-badge">
+              <span class="signal-badge-text">{{ establishment.giftsText }}</span>
             </div>
           </div>
         </div>
@@ -270,6 +232,20 @@ watch(showInfoModal, (newValue) => {
      
       <div class="signal-control-panel">
         <div class="signal-control-panel-header">
+          <button
+            v-if="!isMobile"
+            type="button"
+            class="signal-info-link signal-info-button"
+            aria-haspopup="dialog"
+            aria-controls="signal-dialog"
+            :aria-expanded="showInfoModal ? 'true' : 'false'"
+            @click="showInfoModal = true"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+            </svg>
+          </button>
+          <span v-if="!isMobile" class="signal-static-prompt">Поделитесь:</span>
           <div class="signal-rotating-text-container" :class="{ 'centered-mobile': isMobile }">
             <span :class="['signal-rotating-text', { 'signal-show': showText }]">{{ rotatingQuestions[currentQuestionIndex] }}</span>
           </div>
@@ -366,7 +342,7 @@ watch(showInfoModal, (newValue) => {
 }
 /* Основная карточка */
 .signal-main-card {
-  background: rgba(56, 26, 111, 0.18);
+  background: rgba(56, 26, 111, 0.1);
   border-radius: 20px;
   padding: 24px;
 }
@@ -423,7 +399,7 @@ watch(showInfoModal, (newValue) => {
   position: absolute;
   inset: 0;
   border-radius: 22px;
-  padding: 2px;
+  padding: 1px;
   background: var(--signal-border-gradient);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -473,8 +449,8 @@ watch(showInfoModal, (newValue) => {
   margin-bottom: 4px;
 }
 .signal-stat-icon img {
-  width: 28px;
-  height: 28px;
+  width: 84px;
+  height: 84px;
   object-fit: contain;
 }
 .signal-stat-card:hover .signal-stat-icon {
@@ -650,6 +626,22 @@ watch(showInfoModal, (newValue) => {
   font-size: 14px;
   font-weight: 600;
 }
+.signal-info-link {
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+  flex-shrink: 0;
+}
+.signal-info-link:hover,
+.signal-info-link:focus {
+  color: white;
+}
+.signal-info-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
 .signal-static-prompt {
   color: white;
   margin-right: 8px;
@@ -824,11 +816,11 @@ watch(showInfoModal, (newValue) => {
     overflow: visible;
   }
  
-  /* Порядок карточек в мобильной версии: Отзывы, Сигналы */
-  .signal-reviews-card {
+  /* Порядок карточек в мобильной версии: Сигналы, Подарки */
+  .signal-signals-card {
     order: 1;
   }
-  .signal-signals-card {
+  .signal-reviews-card {
     order: 2;
   }
  
