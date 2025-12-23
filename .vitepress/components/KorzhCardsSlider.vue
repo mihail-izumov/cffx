@@ -3,20 +3,18 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 // Карточки (14 штук, с указанным изображением)
 const cardTypes = ref([
-  { id: 'card1', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card2', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card3', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card4', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card5', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card6', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card7', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card8', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card9', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card10', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card11', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card12', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card13', image: '/img/korzh/usercards/signal-267.png' },
-  { id: 'card14', image: '/img/korzh/usercards/signal-267.png' }
+  { id: 'card1', image: '/img/korzh/usercards/signal-card-22-12-2025-92.jpg' },
+  { id: 'card2', image: '/img/korzh/usercards/signal-card-22-12-2025-114.jpg' },
+  { id: 'card3', image: '/img/korzh/usercards/signal-card-22-12-2025-122.jpg' },
+  { id: 'card4', image: '/img/korzh/usercards/signal-card-22-12-2025-163.jpg' },
+  { id: 'card5', image: '/img/korzh/usercards/signal-card-22-12-2025-54.jpg' },
+  { id: 'card6', image: '/img/korzh/usercards/signal-card-22-12-2025-91.jpg' },
+  { id: 'card7', image: '/img/korzh/usercards/signal-card-22-12-2025-131.jpg' },
+  { id: 'card8', image: '/img/korzh/usercards/signal-card-22-12-2025-150.jpg' },
+  { id: 'card9', image: '/img/korzh/usercards/signal-card-22-12-2025-170.jpg' },
+  { id: 'card10', image: '/img/korzh/usercards/signal-card-22-12-2025-192.jpg' },
+  { id: 'card11', image: '/img/korzh/usercards/signal-card-22-12-2025-195.jpg' },
+  { id: 'card12', image: '/img/korzh/usercards/signal-card-22-12-2025-198.jpg' }
 ])
 
 // Ref для контейнера слайдера
