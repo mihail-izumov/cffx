@@ -253,9 +253,10 @@ onUnmounted(() => {
         <div class="signal-button-container">
           <button @click="createTicket" class="signal-action-button signal-ticket-button">
             Отправить Сигнал
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="signal-button-icon lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           </button>
           <button @click="goToGift" class="signal-action-button signal-review-button">
-            Отправить открытку
+            Отправить Открытку
             <svg class="signal-button-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="m9 18 6-6-6-6"/>
             </svg>
@@ -275,7 +276,7 @@ onUnmounted(() => {
           <a href="/signals" target="_blank" class="signal-modal-link">Как работает</a>
         </div>
         <div class="signal-modal-footer">
-          <button class="signal-modal-ok" type="button" @click="showInfoModal = false">Понятно</button>
+          <button class="signal-modal-ok" type="button" @click="showInfoModal = false">Супер!</button>
         </div>
       </div>
     </div>
@@ -444,17 +445,23 @@ onUnmounted(() => {
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .signal-stat-icon {
-  opacity: 0.8;
-  height: 32px;
-  margin-bottom: 4px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  opacity: 0.3;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 .signal-stat-icon img {
-  width: 84px;
-  height: 84px;
+  width: 120px;
+  height: 120px;
   object-fit: contain;
 }
 .signal-stat-card:hover .signal-stat-icon {
-  transform: scale(1.2);
+  opacity: 0.5;
+  transform: translate(-50%, -50%) scale(1.1);
 }
 .signal-stat-left-group {
   display: flex;
@@ -715,6 +722,9 @@ onUnmounted(() => {
 .signal-review-button:hover .signal-button-icon {
   transform: translateX(4px);
 }
+.signal-ticket-button:hover .signal-button-icon {
+  transform: translateX(4px);
+}
 /* Модальное окно */
 .signal-modal-overlay {
   position: fixed;
@@ -754,13 +764,13 @@ onUnmounted(() => {
 }
 .signal-modal-link {
   color: #c4b5fd;
-  text-decoration: none;
+  text-decoration: none !important;
   font-weight: 600;
   transition: color 0.3s ease;
 }
 .signal-modal-link:hover {
   color: #ddd6fe;
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 .signal-modal-footer {
   margin-top: 24px;
@@ -816,11 +826,11 @@ onUnmounted(() => {
     overflow: visible;
   }
  
-  /* Порядок карточек в мобильной версии: Сигналы, Подарки */
-  .signal-signals-card {
+  /* Порядок карточек в мобильной версии: Подарки, Сигналы */
+  .signal-reviews-card {
     order: 1;
   }
-  .signal-reviews-card {
+  .signal-signals-card {
     order: 2;
   }
  
@@ -845,7 +855,15 @@ onUnmounted(() => {
     gap: 10px;
   }
   .signal-stat-icon {
-    display: none;
+    display: block !important;
+    position: static;
+    transform: none;
+    z-index: auto;
+    opacity: 1;
+  }
+  .signal-stat-icon img {
+    width: 40px;
+    height: 40px;
   }
   .signal-stat-left-group {
     display: flex;
