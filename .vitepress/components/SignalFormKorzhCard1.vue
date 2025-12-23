@@ -7,7 +7,7 @@ const form = reactive({
   coffeeShopAddress: 'Все кофейни',
   userName: '',
   emotionalRelease: '',
-  badge: '' 
+  badge: ''
 })
 
 const isSubmitting = ref(false)
@@ -15,6 +15,7 @@ const rawTicketNumber = ref('000')
 const formattedTicketNumber = ref('000')
 const currentDate = ref('')
 
+// Счётчики на карточках (то, что показываем)
 const badgeCounts = reactive({
   badge1: 0,
   badge2: 0,
@@ -31,7 +32,7 @@ const badgeCounts = reactive({
 })
 
 // Ротация
-const activeRotator = ref(0) 
+const activeRotator = ref(0)
 let rotationInterval = null
 const rotationPaused = ref(false)
 const phrasesForQuestion1 = [
@@ -49,7 +50,7 @@ const currentQuestion1 = ref(phrasesForQuestion1[0])
 let currentQuestionIndex1 = 0
 
 // Гендер
-const selectedGender = ref('female') 
+const selectedGender = ref('female')
 const showInfoModal = ref(false)
 
 const genderThemeClass = computed(() => {
@@ -72,6 +73,112 @@ const cardTypes = [
   { id: 'badge12', label: 'Сердечный Дроп', accusative: 'Сердечный Дроп', image: '/img/korzh/gifts/heartdrop-gift.png' },
 ]
 
+/**
+ * =========================
+ * СЧЁТЧИКИ: Вариант A (ручная статистика)
+ * =========================
+ * Меняешь BASE_COUNTS -> деплоишь -> у всех меняются цифры.
+ * Никаких кликов/локального хранилища/автоприроста.
+ */
+
+// 1) Ручная “реальная статистика” (вписываешь сюда)
+const BASE_COUNTS = {
+  badge1: 0,
+  badge2: 0,
+  badge3: 0,
+  badge4: 0,
+  badge5: 0,
+  badge6: 0,
+  badge7: 0,
+  badge8: 0,
+  badge9: 0,
+  badge10: 0,
+  badge11: 0,
+  badge12: 0,
+}
+
+// 2) Опциональный ручной “буст” по весам (тоже контролируешь вручную)
+const ENABLE_BOOST = true
+const BOOST_TOTAL = 12
+
+const WEIGHTS = {
+  badge1: 2,
+  badge2: 3,
+  badge3: 0.9,
+  badge4: 1.5,
+  badge5: 0.8,
+  badge6: 0.4,
+  badge7: 0.3,
+  badge8: 0.5,
+  badge9: 0.5,
+  badge10: 0.5,
+  badge11: 0.5,
+  badge12: 0.5,
+}
+
+// Меняешь seed -> меняется рисунок распределения буста (но одинаково у всех)
+const BOOST_SEED = 123456789
+
+function mulberry32(a) {
+  return function () {
+    let t = (a += 0x6D2B79F5)
+    t = Math.imul(t ^ (t >>> 15), t | 1)
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function weightedPickId(ids, weights, rand) {
+  let total = 0
+  const cum = []
+
+  for (const id of ids) {
+    const w = Math.max(0, Number(weights[id] ?? 1))
+    total += w
+    cum.push(total)
+  }
+  if (total <= 0) return ids[0]
+
+  const r = rand() * total
+  for (let i = 0; i < cum.length; i++) {
+    if (r < cum[i]) return ids[i]
+  }
+  return ids[ids.length - 1]
+}
+
+function makeEmptyCounts(ids) {
+  const o = {}
+  for (const id of ids) o[id] = 0
+  return o
+}
+
+function distributeBoost(ids, totalPoints, weights, seed) {
+  const boost = makeEmptyCounts(ids)
+  const rand = mulberry32(seed)
+
+  let points = Math.max(0, Math.floor(totalPoints))
+  let guard = 200000
+
+  while (points > 0 && guard-- > 0) {
+    const id = weightedPickId(ids, weights, rand)
+    boost[id] += 1
+    points--
+  }
+  return boost
+}
+
+function initBadgeCounts() {
+  const ids = cardTypes.map(c => c.id)
+
+  const boost = ENABLE_BOOST
+    ? distributeBoost(ids, BOOST_TOTAL, WEIGHTS, BOOST_SEED)
+    : makeEmptyCounts(ids)
+
+  for (const id of ids) {
+    badgeCounts[id] = (BASE_COUNTS[id] ?? 0) + (boost[id] ?? 0)
+  }
+}
+
 // Трекинг тачей
 const touchState = reactive({ startX: 0, startY: 0, isScroll: false })
 
@@ -90,7 +197,7 @@ function handleTouchMove(event) {
 }
 
 function handleTouchEnd(id, event) {
-  if (touchState.isScroll) return; 
+  if (touchState.isScroll) return;
   toggleCard(id);
 }
 
@@ -112,7 +219,6 @@ function toggleCard(id) {
     if (form.emotionalRelease.startsWith(oldPhrase)) {
       form.emotionalRelease = form.emotionalRelease.replace(oldPhrase, '')
     } else {
-      // На случай, если по какой-то причине использовался label вместо accusative
       const fallbackPhrase = `Дарю: ${oldLabel} `
       if (form.emotionalRelease.startsWith(fallbackPhrase)) {
         form.emotionalRelease = form.emotionalRelease.replace(fallbackPhrase, '')
@@ -140,62 +246,6 @@ const selectedBadgeLabel = computed(() => {
   return card ? card.label : null
 })
 
-// Алгоритм счетчиков
-function getDayOfYearUTC() {
-  const now = new Date();
-  const start = new Date(Date.UTC(now.getUTCFullYear(), 0, 0));
-  const diff = now - start;
-  const oneDay = 1000 * 60 * 60 * 24;
-  return Math.floor(diff / oneDay);
-}
-
-function initBadgeCounts() {
-  const day = getDayOfYearUTC();
-  const startDay = 355; 
-  const daysPassed = Math.max(0, day - startDay);
-  const growthStep = Math.floor(Math.random() * 4) + 4; // 4-7
-  const growthBase = daysPassed * growthStep;
-  const now = new Date();
-  const hours = now.getUTCHours(); 
-  const timeBonus = Math.floor(hours / 5); 
-
-  const savedLocal = localStorage.getItem('korzh_user_clicks');
-  let userClicks = { 
-    badge1: 0, badge2: 0, badge3: 0, badge4: 0, badge5: 0, badge6: 0, 
-    badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0, badge12: 0
-  };
-  if (savedLocal) {
-    try { userClicks = JSON.parse(savedLocal); } catch (e) { console.error(e) }
-  }
-
-  badgeCounts.badge1 = growthBase + timeBonus + 2 + (userClicks.badge1 || 0);
-  badgeCounts.badge2 = growthBase + timeBonus + 4 + (userClicks.badge2 || 0);
-  badgeCounts.badge3 = growthBase + timeBonus + 2 + (userClicks.badge3 || 0);
-  badgeCounts.badge4 = growthBase + timeBonus + 1 + (userClicks.badge4 || 0);
-  badgeCounts.badge5 = growthBase + timeBonus + 0 + (userClicks.badge5 || 0);
-  badgeCounts.badge6 = growthBase + timeBonus + 2 + (userClicks.badge6 || 0);
-  badgeCounts.badge7 = growthBase + timeBonus + 2 + (userClicks.badge7 || 0);
-  badgeCounts.badge8 = growthBase + timeBonus + 0 + (userClicks.badge8 || 0);
-  badgeCounts.badge9 = growthBase + timeBonus + 1 + (userClicks.badge9 || 0);
-  badgeCounts.badge10 = growthBase + timeBonus + 2 + (userClicks.badge10 || 0);
-  badgeCounts.badge11 = growthBase + timeBonus + 0 + (userClicks.badge11 || 0);
-  badgeCounts.badge12 = growthBase + timeBonus + 1 + (userClicks.badge12 || 0);
-}
-
-function incrementBadgeCount(id) {
-  if (badgeCounts[id] !== undefined) {
-    badgeCounts[id]++;
-    const savedLocal = localStorage.getItem('korzh_user_clicks');
-    let userClicks = { 
-      badge1: 0, badge2: 0, badge3: 0, badge4: 0, badge5: 0, badge6: 0, 
-      badge7: 0, badge8: 0, badge9: 0, badge10: 0, badge11: 0 
-    };
-    if (savedLocal) { try { userClicks = JSON.parse(savedLocal); } catch (e) {} }
-    userClicks[id] = (userClicks[id] || 0) + 1;
-    localStorage.setItem('korzh_user_clicks', JSON.stringify(userClicks));
-  }
-}
-
 // === ПОДСКАЗКИ ===
 const baseSuggestions = {
   female: {
@@ -216,26 +266,22 @@ const baseSuggestions = {
       'желаю': ['себе', 'любимой кофейне', 'команде', 'мощи', 'прорыва'],
       'шлю': ['респект', 'салют', 'сигнал в космос', 'вайб успеха', 'благодарность'],
       'мой муд': ['зимняя спячка', 'волк с уолл-стрит', 'тотальный дзен', 'режим терминатора', 'победитель'],
-      // ИЗМЕНЕНО: Уникальные ключи для мужчин, чтобы избежать "женских" концовок
       'официально заявляю': ['мой допинг', 'этот напиток', 'мой девиз', 'дедлайны горят', 'у меня растущий организм'],
       'признаюсь': ['виню пробки', 'съел два десерта', 'спасся кофеином', 'это шедевр', 'ушел в оффлайн']
     }
   },
   common: {
     emotions: {
-      // === ПОЗДРАВЛЯЮ ===
       'любимую кофейню': ['с Новым годом', 'с новой кофейней', 'с днем рождения', 'с классным сервисом'],
       'команду': ['с праздником', 'с успешной сменой', 'с рекордом', 'спасибо за труд'],
       'себя': ['с вкусным кофе', 'с этим моментом', 'с пятницей', 'с пробуждением', 'с отличным днем'],
       'всех': ['с началом дня', 'с праздником', 'вокруг', 'с новой жизнью', 'кто это читает'],
       'этот мир': ['с моим пробуждением', 'с красотой', 'с новым годом', 'с любовью', 'с моей улыбкой'],
 
-      // === ЖЕЛАЮ ===
       'себе': ['лёгкости', 'денег', 'любви', 'вдохновения', 'терпения', 'мощи', 'прорыва'],
       'любимой кофейне': ['процветания', 'много гостей', 'щедрых чаевых', 'расширения'],
       'команде': ['сил', 'терпения', 'счастья', 'премии'],
-      
-      // === ПРЯМЫЕ ПОЖЕЛАНИЯ ===
+
       'лёгкости': ['бытия', 'в решениях', 'в каждом шаге', 'как пенка', 'в голове'],
       'вдохновения': ['творить', 'на новые свершения', 'жить ярко', 'каждый день'],
       'чуда': ['новогоднего', 'в каждом дне', 'своими руками', 'внезапного'],
@@ -245,7 +291,6 @@ const baseSuggestions = {
       'успеха': ['во всем', 'громкого', 'заслуженного', 'стабильного'],
       'драйва': ['от жизни', 'на работе', 'в каждом дне', 'бешеного'],
 
-      // === ШЛЮ ===
       'лучи добра': ['всем вокруг', 'персонально вам', 'этому дню', 'на удачу'],
       'сердечко': ['команде', 'люблю вас', 'милому бариста', 'этому городу', 'друзьям'],
       'обнимашки': ['всем котикам', 'команде', 'друзьям', 'крепкие-крепкие'],
@@ -255,7 +300,6 @@ const baseSuggestions = {
       'салют': ['всем нашим', 'команде', 'городу', 'друзьям'],
       'благодарность': ['за сервис', 'от души', 'за качество', 'мастерам'],
 
-      // === МОЙ МУД ===
       'зимняя сказка': ['вокруг', 'требует какао', 'за окном', 'начинается здесь'],
       'зимняя спячка': ['отменяется', 'подождет', 'требует кофе', 'до весны'],
       'шальная императрица': ['хочет круассан', 'гуляет', 'на троне', 'отдыхает'],
@@ -267,36 +311,30 @@ const baseSuggestions = {
       'режим терминатора': ['активирован', 'после эспрессо', 'вкл', 'загрузка...'],
       'победитель': ['по жизни', 'голода', 'дедлайнов', 'скуки'],
 
-      // === ОФИЦИАЛЬНО ЗАЯВЛЯЮ (FEMALE) ===
       'вместо психолога': ['у меня бариста', 'у меня этот латте', 'я ем круассан', 'я просто ем'],
       'этот кофе': ['лучше, чем бывший', 'моя новая любовь', 'лучше, чем сон', 'топливо для ракеты'],
-      
-      // === ОФИЦИАЛЬНО ЗАЯВЛЯЮ (MALE SPECIFIC) ===
-      'мой допинг': ['этот эспрессо', 'легальный', 'для рывка', 'найден'],
-      'этот напиток': ['лучше, чем сон', 'топливо для ракеты', 'решает вопросы', 'заряжает'], // Без "бывших" и "любви"
 
-      // === ОФИЦИАЛЬНО ЗАЯВЛЯЮ (SHARED) ===
+      'мой допинг': ['этот эспрессо', 'легальный', 'для рывка', 'найден'],
+      'этот напиток': ['лучше, чем сон', 'топливо для ракеты', 'решает вопросы', 'заряжает'],
+
       'дедлайны горят': ['а я пью кофе', 'и это нормально', 'но кофе важнее', 'спасаюсь здесь'],
       'я на диете': ['но это не считается', 'с понедельника', 'была 5 минут назад', 'но круассан сам пришел'],
       'у меня растущий организм': ['требует калорий', 'это на массу', 'в ширину', 'силе нужно питание'],
       'мой девиз': ['ни дня без кофе', 'и пусть весь мир подождет', 'жить любить кофе пить'],
 
-      // === ПРИЗНАЮСЬ (FEMALE) ===
       'виню Меркурий': ['в моем аппетите', 'что мне так вкусно', 'в третьей чашке', 'во всем'],
       'патчи не спасли': ['вся надежда на кофе', 'нужен фильтр', 'но капучино спасет', 'день тяжелый'],
       'я влюбилась': ['в этот раф', 'в милого бариста', 'в этот вид', 'в эту булку'],
       'без кофе кусаюсь': ['но сейчас подобрела', 'осторожно', 'срочно латте', 'спасайтесь'],
-      
-      // === ПРИЗНАЮСЬ (MALE SPECIFIC) ===
+
       'виню пробки': ['в опоздании', 'поэтому я здесь', 'нужен кофе', 'нервы на пределе'],
-      'ушел в оффлайн': ['до завтра', 'не беспокоить', 'с этим кофе', 'и точка'], // Вместо "не хочу работать"
-      
-      // === ПРИЗНАЮСЬ (SHARED) ===
+      'ушел в оффлайн': ['до завтра', 'не беспокоить', 'с этим кофе', 'и точка'],
+
       'согрешила с десертом': ['и не стыдно', 'было вкусно', 'каюсь', 'отработаем в зале'],
       'съел два десерта': ['и не лопнул', 'вместо обеда', 'для мозга', 'без сожалений'],
       'спасся кофеином': ['от зомби-апокалипсиса', 'от сна', 'верните меня к жизни', 'батарейка заряжена'],
       'это шедевр': ['без преувеличений', 'кулинарии', 'искусства', 'в моей жизни'],
-      'не хочу работать': ['хочу кофе', 'хочу на ручки', 'сегодня выходной', 'ищу вдохновение'] // Оставлено для женщин (мужчины используют "ушел в оффлайн")
+      'не хочу работать': ['хочу кофе', 'хочу на ручки', 'сегодня выходной', 'ищу вдохновение']
     }
   }
 }
@@ -306,9 +344,9 @@ const suggestions = computed(() => {
   return { emotions: { ...baseSuggestions[gender].emotions, ...baseSuggestions.common.emotions } }
 })
 
-const currentSuggestions = reactive({ emotions: [], })
-const selectedSuggestions = reactive({ emotions: [], })
-const branchCounters = reactive({ emotions: 0, })
+const currentSuggestions = reactive({ emotions: [] })
+const selectedSuggestions = reactive({ emotions: [] })
+const branchCounters = reactive({ emotions: 0 })
 
 function initializeSuggestions() {
   if (suggestions.value && suggestions.value.emotions) { filterInitialSuggestions(); }
@@ -318,7 +356,7 @@ function filterInitialSuggestions() {
   const allInitial = [...suggestions.value.emotions.initial];
   const currentText = form.emotionalRelease.toLowerCase();
   const filtered = allInitial.filter(phrase => !currentText.includes(phrase.toLowerCase()));
-  if (filtered.length === 0) { currentSuggestions.emotions = [...allInitial]; } 
+  if (filtered.length === 0) { currentSuggestions.emotions = [...allInitial]; }
   else { currentSuggestions.emotions = filtered; }
 }
 
@@ -329,7 +367,7 @@ watch(() => form.emotionalRelease, () => {
 watch(selectedGender, () => {
   selectedSuggestions.emotions = []
   branchCounters.emotions = 0
-  initializeSuggestions(); 
+  initializeSuggestions();
 })
 
 function onGenderClick(gender) { selectedGender.value = gender }
@@ -367,13 +405,13 @@ function selectSuggestion(fieldName, suggestion, suggestionType) {
 function updateSuggestions(suggestionType, selectedWord) {
   if (suggestionType !== 'emotions') return
   const nextSuggestions = suggestions.value[suggestionType][selectedWord]
-  if (nextSuggestions && nextSuggestions.length > 0) { currentSuggestions[suggestionType] = [...nextSuggestions] } 
+  if (nextSuggestions && nextSuggestions.length > 0) { currentSuggestions[suggestionType] = [...nextSuggestions] }
   else { filterInitialSuggestions(); }
 }
 
 function startRotation() {
   stopRotation()
-  if (rotationPaused.value) return 
+  if (rotationPaused.value) return
   rotationInterval = setInterval(() => {
     currentQuestionIndex1 = (currentQuestionIndex1 + 1) % phrasesForQuestion1.length
     currentQuestion1.value = phrasesForQuestion1[currentQuestionIndex1]
@@ -384,22 +422,21 @@ function stopRotation() { if (rotationInterval) clearInterval(rotationInterval) 
 function onTextFocus() { rotationPaused.value = true; stopRotation(); }
 function onTextBlur() { rotationPaused.value = false; startRotation(); }
 
-// ВАЛИДАЦИЯ: Проверяем, что есть локация, сообщение И имя (если хотите обязательное)
+// ВАЛИДАЦИЯ
 const isFormValid = computed(() => {
-  return form.coffeeShopAddress.trim().length > 0 && 
+  return form.coffeeShopAddress.trim().length > 0 &&
          form.emotionalRelease.trim().length > 0
 })
 
 function resetForm() {
-  form.emotionalRelease = '';
-  form.userName = ''; // Сброс имени
-  initializeSuggestions();
+  form.emotionalRelease = ''
+  form.userName = ''
+  initializeSuggestions()
 }
 
 async function submitForm() {
   if (!isFormValid.value) return
   isSubmitting.value = true
-  if (form.badge) { incrementBadgeCount(form.badge) }
 
   const now = new Date()
   const day = String(now.getDate()).padStart(2, '0')
@@ -416,7 +453,6 @@ async function submitForm() {
     localStorage.setItem('signalclientid', clientId)
   }
 
-  // ВАЖНО: Укажите ваш новый URL Web App
   const APIENDPOINT = 'https://script.google.com/macros/s/AKfycbwV-WN52hpuPxCBAIdP9ltrOQ_wYcKFI0u-x7VMFtORdytgVVKHVtMOLt0o-zME2uNY0A/exec'
 
   const formData = new FormData()
@@ -426,10 +462,7 @@ async function submitForm() {
   formData.append('date', currentDate.value)
   formData.append('submitted', submittedTimeValue)
   formData.append('coffeehouse', form.coffeeShopAddress)
-  
-  // Добавляем Имя
   formData.append('name', form.userName)
-  
   formData.append('emotionalRelease', form.emotionalRelease)
   formData.append('badge', form.badge)
   formData.append('telegram', '')
@@ -445,19 +478,19 @@ async function submitForm() {
       body: formData,
       signal: controller.signal
     })
-    
+
     clearTimeout(timeoutId)
     const result = await response.json()
 
     if (result.status === 'success' || result.processed) {
       console.log('Success:', result)
       handleShareClick()
-      setTimeout(resetForm, 1000); 
+      setTimeout(resetForm, 1000);
     } else {
       throw new Error(result.message)
     }
   } catch (error) {
-    if (error.name === 'AbortError') { alert('Большой поток открыток. Попробуйте еще через минуту.') } 
+    if (error.name === 'AbortError') { alert('Большой поток открыток. Попробуйте еще через минуту.') }
     else { console.error('Submission error:', error); alert('Ошибка при отправке. Попробуйте еще раз.'); }
   } finally { isSubmitting.value = false }
 }
@@ -465,7 +498,7 @@ async function submitForm() {
 let metaViewport = null;
 function disableZoom() {
   metaViewport = document.querySelector('meta[name="viewport"]');
-  if (metaViewport) { metaViewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'; } 
+  if (metaViewport) { metaViewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'; }
   else {
     metaViewport = document.createElement('meta');
     metaViewport.name = 'viewport';
@@ -477,7 +510,8 @@ function enableZoom() { if (metaViewport) { metaViewport.content = 'width=device
 
 onMounted(() => {
   disableZoom();
-  const randomNum = Math.floor(Math.random() * 151) + 50; 
+
+  const randomNum = Math.floor(Math.random() * 151) + 50;
   rawTicketNumber.value = String(randomNum);
   formattedTicketNumber.value = rawTicketNumber.value;
 
@@ -489,7 +523,7 @@ onMounted(() => {
   const minutes = String(now.getMinutes()).padStart(2, '0')
   const seconds = String(now.getSeconds()).padStart(2, '0')
   currentDate.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-  
+
   initializeSuggestions()
   initBadgeCounts()
   startRotation()
@@ -503,7 +537,6 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
 
 <template>
   <div class="kzh-form-wrapper" :class="genderThemeClass" style="touch-action: pan-x pan-y;">
-    
     <form @submit.prevent="submitForm">
       <div class="kzh-form-header">
         <div class="kzh-form-title">Открытка в Корж</div>
@@ -514,68 +547,66 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
       </div>
 
       <div class="kzh-form-section">
-        
         <div class="kzh-location-pure">
           <div class="kzh-select-wrapper">
-             <select v-model="form.coffeeShopAddress" class="kzh-address-select" required>
-               <option value="Все кофейни">Все кофейни</option>
-               <option value="Куйбышева, 103">Куйбышева, 103</option>
-               <option value="Льва Толстого, 30Б">Льва Толстого, 30Б</option>
-               <option value="Революционная, 101В">Революционная, 101В</option>
-               <option value="9 просека">9 просека</option>
-               <option value="Самарская, 270">Самарская, 270</option>
-               <option value="Дачная, 2к2">Дачная, 2к2</option>
-               <option value="Ульяновская, 19">Ульяновская, 19</option>
-               <option value="Ново-Садовая, 106Б">Ново-Садовая, 106Б</option>
-             </select>
-             <div class="kzh-select-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
-             </div>
+            <select v-model="form.coffeeShopAddress" class="kzh-address-select" required>
+              <option value="Все кофейни">Все кофейни</option>
+              <option value="Куйбышева, 103">Куйбышева, 103</option>
+              <option value="Льва Толстого, 30Б">Льва Толстого, 30Б</option>
+              <option value="Революционная, 101В">Революционная, 101В</option>
+              <option value="9 просека">9 просека</option>
+              <option value="Самарская, 270">Самарская, 270</option>
+              <option value="Дачная, 2к2">Дачная, 2к2</option>
+              <option value="Ульяновская, 19">Ульяновская, 19</option>
+              <option value="Ново-Садовая, 106Б">Ново-Садовая, 106Б</option>
+            </select>
+            <div class="kzh-select-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
           </div>
-          
-          <!-- НОВОЕ ПОЛЕ ВВОДА ИМЕНИ -->
+
           <div class="kzh-name-input-wrapper">
-             <input 
-               type="text" 
-               v-model="form.userName" 
-               class="kzh-address-select" 
-               placeholder="Ваше Имя (от кого подарок)"  
-             />
+            <input
+              type="text"
+              v-model="form.userName"
+              class="kzh-address-select"
+              placeholder="Ваше Имя (от кого подарок)"
+            />
           </div>
         </div>
 
-         <div class="kzh-cards-label first-label">Выберите подарок</div>
-         <!-- Далее без изменений -->
-         <div class="kzh-cards-container">
-           <div 
-             class="kzh-cards-grid"
-             @touchstart="handleTouchStart"
-             @touchmove="handleTouchMove"
-           >
-             <div 
-               v-for="card in cardTypes" 
-               :key="card.id"
-               class="kzh-card"
-               :class="{ 'is-active': form.badge === card.id }"
-               @click="toggleCard(card.id)"
-               @touchend.prevent="handleTouchEnd(card.id, $event)"
-             >
-                <div class="kzh-card-icon">
-                   <img :src="card.image" alt="" />
-                </div>
-                <div class="kzh-card-label">{{ card.label }}</div>
-                <div class="kzh-card-count">{{ badgeCounts[card.id] }}</div>
-             </div>
+        <div class="kzh-cards-label first-label">Выберите подарок</div>
+
+        <div class="kzh-cards-container">
+          <div
+            class="kzh-cards-grid"
+            @touchstart="handleTouchStart"
+            @touchmove="handleTouchMove"
+          >
+            <div
+              v-for="card in cardTypes"
+              :key="card.id"
+              class="kzh-card"
+              :class="{ 'is-active': form.badge === card.id }"
+              @click="toggleCard(card.id)"
+              @touchend.prevent="handleTouchEnd(card.id, $event)"
+            >
+              <div class="kzh-card-icon">
+                <img :src="card.image" alt="" />
+              </div>
+              <div class="kzh-card-label">{{ card.label }}</div>
+              <div class="kzh-card-count">{{ badgeCounts[card.id] }}</div>
+            </div>
           </div>
         </div>
 
         <div class="kzh-cards-label mood-label">Поделитесь настроением</div>
-        
+
         <div class="kzh-question-block kzh-no-border">
           <div class="kzh-rotating-phrase-container">
-             <transition name="kzh-fade" mode="out-in">
-               <p :key="currentQuestion1" class="kzh-question-label">{{ currentQuestion1 }}</p>
-             </transition>
+            <transition name="kzh-fade" mode="out-in">
+              <p :key="currentQuestion1" class="kzh-question-label">{{ currentQuestion1 }}</p>
+            </transition>
           </div>
 
           <textarea
@@ -587,94 +618,94 @@ const handleShareClick = () => { if (storyGeneratorRef.value) { storyGeneratorRe
           ></textarea>
 
           <div class="kzh-suggestions-container">
-            <div 
-               v-for="suggestion in currentSuggestions.emotions" 
-               :key="suggestion"
-               class="kzh-suggestion-bubble kzh-emotion-bubble"
-               @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
+            <div
+              v-for="suggestion in currentSuggestions.emotions"
+              :key="suggestion"
+              class="kzh-suggestion-bubble kzh-emotion-bubble"
+              @click="selectSuggestion('emotionalRelease', suggestion, 'emotions')"
             >
-               {{ suggestion }}
+              {{ suggestion }}
             </div>
-            
-            <div 
-               v-if="!isInitialSuggestions('emotions')"
-               class="kzh-suggestion-bubble kzh-reset-bubble kzh-emotion-bubble"
-               @click="resetSuggestions('emotions')"
+
+            <div
+              v-if="!isInitialSuggestions('emotions')"
+              class="kzh-suggestion-bubble kzh-reset-bubble kzh-emotion-bubble"
+              @click="resetSuggestions('emotions')"
             >
-               Сброс
+              Сброс
             </div>
           </div>
-          
+
           <p class="kzh-example-hint" v-html="'<b>Нажимайте</b>, чтобы строить фразы'"></p>
         </div>
 
         <div class="kzh-bottom-controls-wrapper">
           <div class="kzh-controls-row">
-            <button 
-              type="button" 
+            <button
+              type="button"
               class="kzh-info-button"
               @click="showInfoModal = true"
             >
               Инфо
             </button>
-            
+
             <div class="kzh-gender-switch">
-               <div class="kzh-gender-container">
-                  <div 
-                     class="kzh-gender-btn kzh-gender-female"
-                     :class="{ 'is-active': selectedGender === 'female' }"
-                     @click="onGenderClick('female')"
-                  ></div>
-                  <div 
-                     class="kzh-gender-btn kzh-gender-male"
-                     :class="{ 'is-active': selectedGender === 'male' }"
-                     @click="onGenderClick('male')"
-                  ></div>
-               </div>
+              <div class="kzh-gender-container">
+                <div
+                  class="kzh-gender-btn kzh-gender-female"
+                  :class="{ 'is-active': selectedGender === 'female' }"
+                  @click="onGenderClick('female')"
+                ></div>
+                <div
+                  class="kzh-gender-btn kzh-gender-male"
+                  :class="{ 'is-active': selectedGender === 'male' }"
+                  @click="onGenderClick('male')"
+                ></div>
+              </div>
             </div>
           </div>
-          
+
           <p class="kzh-micro-hint">Выберите гендер и подсказки изменятся</p>
         </div>
-        
+
         <div v-if="showInfoModal" class="kzh-modal-overlay" @click.self="showInfoModal = false">
-           <div class="kzh-modal">
-              <div class="kzh-modal-title">Поделитесь настроением</div>
-              <div class="kzh-modal-body">
-                 Отправьте подарок и несколько теплых слов в Вашу любимую кофейню. Превратите этот момент в уникальное воспоминание.
-                 <br><br>
-                 <a href="https://cffx.ru/korzh" target="_blank" class="kzh-modal-link">Больше возможностей сказать "Спасибо"</a>
-              </div>
-              <div class="kzh-modal-footer">
-                 <button type="button" class="kzh-modal-ok" @click="showInfoModal = false">Супер!</button>
-              </div>
-           </div>
+          <div class="kzh-modal">
+            <div class="kzh-modal-title">Поделитесь настроением</div>
+            <div class="kzh-modal-body">
+              Отправьте подарок и несколько теплых слов в Вашу любимую кофейню. Превратите этот момент в уникальное воспоминание.
+              <br><br>
+              <a href="https://cffx.ru/korzh" target="_blank" class="kzh-modal-link">Больше возможностей сказать "Спасибо"</a>
+            </div>
+            <div class="kzh-modal-footer">
+              <button type="button" class="kzh-modal-ok" @click="showInfoModal = false">Супер!</button>
+            </div>
+          </div>
         </div>
 
         <div class="kzh-form-footer">
-           <div class="kzh-button-section">
-              <button
-                 type="submit"
-                 class="kzh-submit-btn"
-                 :disabled="!isFormValid || isSubmitting"
-              >
-                 {{ isSubmitting ? 'Создаем магию...' : 'Создать открытку' }}
-              </button>
-           </div>
+          <div class="kzh-button-section">
+            <button
+              type="submit"
+              class="kzh-submit-btn"
+              :disabled="!isFormValid || isSubmitting"
+            >
+              {{ isSubmitting ? 'Создаем магию...' : 'Создать открытку' }}
+            </button>
+          </div>
         </div>
       </div>
     </form>
-    
+
     <KorzhBadgeCardGenerator
-   ref="storyGeneratorRef"
-   :ticket="formattedTicketNumber"
-   :date="currentDate.split(' ')[0]"
-   :address="form.coffeeShopAddress"
-   :all-text="[form.emotionalRelease].filter(t => t && t.trim()).join(' ')"
-   :badge-image="selectedBadgeImage"   
-   :badge-label="selectedBadgeLabel"
-   :user-name="form.userName"
-/>
+      ref="storyGeneratorRef"
+      :ticket="formattedTicketNumber"
+      :date="currentDate.split(' ')[0]"
+      :address="form.coffeeShopAddress"
+      :all-text="[form.emotionalRelease].filter(t => t && t.trim()).join(' ')"
+      :badge-image="selectedBadgeImage"
+      :badge-label="selectedBadgeLabel"
+      :user-name="form.userName"
+    />
   </div>
 </template>
 
