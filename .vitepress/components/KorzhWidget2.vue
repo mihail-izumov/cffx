@@ -717,18 +717,33 @@ onUnmounted(() => {
   line-height: 1.5;
   text-align: left;
 }
-/* Специальный класс для ссылки — гарантированно перебиваем VitePress */
+/* Специальный класс для ссылки — максимальная защита от VitePress */
 .custom-signal-modal-link {
   color: #c4b5fd !important;
   text-decoration: none !important;
   background-image: none !important;
   box-shadow: none !important;
+  -webkit-box-decoration-break: clone !important;
   font-weight: 600;
   transition: color 0.3s ease;
+  position: relative;
+}
+.custom-signal-modal-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 .custom-signal-modal-link:hover {
   color: #ddd6fe !important;
-  text-decoration: underline !important;
+}
+.custom-signal-modal-link:hover::after {
+  opacity: 0.8;
 }
 .signal-modal-footer {
   margin-top: 24px;
@@ -736,16 +751,17 @@ onUnmounted(() => {
   justify-content: flex-end;
 }
 .signal-modal-ok {
-  background: var(--vp-c-bg-mute, #222);
-  border: 1px solid var(--vp-c-border);
-  color: var(--vp-c-text-1);
+  background: #ffffff;
+  color: #111111;
+  border: none;
   border-radius: 8px;
-  padding: 10px 16px;
+  padding: 10px 20px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 15px;
 }
 .signal-modal-ok:hover {
-  background: var(--vp-c-bg-soft, #333);
+  background: #f0f0f0;
 }
 /* Адаптивность */
 .signal-rotating-text-container.centered-mobile {
@@ -810,10 +826,11 @@ onUnmounted(() => {
     transform: none;
     z-index: auto;
     opacity: 0.6;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease, transform 0.4s ease;
   }
   .signal-stat-card:hover .signal-stat-icon {
     opacity: 1;
+    transform: scale(1.15);
   }
   .signal-stat-icon img {
     width: 40px;
