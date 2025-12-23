@@ -59,13 +59,13 @@ const WEIGHTS = {
   badge3: 1.3,
   badge4: 1.7,
   badge5: 1.1,
-  badge6: 0.5,
-  badge7: 0.4,
-  badge8: 0.8,
-  badge9: 0.5,
-  badge10: 0.9,
-  badge11: 0.7,
-  badge12: 0.5,
+  badge6: 1.6,
+  badge7: 1.1,
+  badge8: 1.9,
+  badge9: 1.1,
+  badge10: 1.1,
+  badge11: 1.1,
+  badge12: 1.1,
 }
 
 const BOOST_SEED = 123456789
