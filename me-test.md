@@ -78,13 +78,26 @@ head:
 </style>
 
 <KorzhWidget2/>
+
 <br>
+
+<ShareButton/>
+
+<div align="center">
+
+# Подарок вместо чаевых
+
+</div>
+
 <KorzhGiftsSlider/>
 
 <br>
-<ShareButton/>
 
-<br>
+<div align="center">
+
+# Работает доставка подарков
+
+</div>
 
 <KorzhCardsSlider/>
 
