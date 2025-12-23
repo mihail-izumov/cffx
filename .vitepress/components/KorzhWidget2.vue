@@ -21,8 +21,8 @@ const cafeProfiles = {
 const establishment = {
   name: 'Корж',
   gifts: '12',
-  giftsText: 'С новым годом!',
-  signals: 3,
+  giftsText: 'Доставка работает',
+  signals: 4,
   signalsPercent: 100,
 }
 // Функция получения конфига кофейни с фоллбэком
