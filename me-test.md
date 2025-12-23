@@ -11,7 +11,10 @@ head:
 ---
 
 <div align="center">
-  <span class="korzh-badge">Где начинается ваша кофейня</span> <br>
+  <span class="korzh-badge">Где начинается ваша кофейня</span>
+
+  <br>
+  
   <h1 class="responsive-heading-signal-industries">Корж на связи</h1>
   <p>
     <strong>Каждая чашка кофе </strong> делает <br class="mobile-break">Вашу любимую кофейню еще лучше.
@@ -38,7 +41,7 @@ head:
 /* Мобильные ≤768px — УМЕНЬШАЕМ размер */
 @media (max-width: 768px) {
   .vp-doc h1.responsive-heading-signal-industries {
-    font-size: 32px !important;  /* ← ИЗМЕНИЛИ на меньший */
+    font-size: 36px !important;  /* ← ИЗМЕНИЛИ на меньший */
     line-height: 1.3 !important;
     margin-bottom: 12px !important;
   }
@@ -47,7 +50,7 @@ head:
 /* Очень маленькие экраны ≤480px */
 @media (max-width: 480px) {
   .vp-doc h1.responsive-heading-signal-industries {
-    font-size: 28px !important;  /* ← Еще меньше */
+    font-size: 32px !important;  /* ← Еще меньше */
     line-height: 1.3 !important;
   }
 }
