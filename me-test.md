@@ -41,7 +41,7 @@ head:
   line-height: 1.1 !important;
   margin: 0 0 20px 0 !important;
   padding-top: 0 !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
 }
 
 /* ПЛАНШЕТЫ (от 601px до 768px)
