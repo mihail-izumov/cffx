@@ -24,9 +24,8 @@ const badgeCounts = reactive({
 
 /**
  * =========================
- * ВАРИАНТ A (ручная статистика)
+ * Ручная статистика
  * =========================
- * Меняешь эти числа -> деплоишь -> у всех обновится.
  */
 const BASE_COUNTS = {
   badge1: 0,
@@ -47,7 +46,6 @@ const BASE_COUNTS = {
  * =========================
  * (Опционально) Ручной буст по весам
  * =========================
- * Это НЕ авто-рост. Ты сам меняешь BOOST_TOTAL / WEIGHTS / BOOST_SEED и деплоишь.
  */
 const ENABLE_BOOST = true
 
@@ -56,16 +54,16 @@ const BOOST_TOTAL = 15
 
 // Коэффициенты (веса): больше = чаще получит +1 внутри буста
 const WEIGHTS = {
-  badge1: 2,
-  badge2: 3,
+  badge1: 1,
+  badge2: 2,
   badge3: 0.9,
   badge4: 1.5,
   badge5: 0.8,
   badge6: 0.4,
-  badge7: 0.3,
+  badge7: 0.4,
   badge8: 0.5,
   badge9: 0.5,
-  badge10: 0.5,
+  badge10: 0.9,
   badge11: 0.5,
   badge12: 0.5,
 }
